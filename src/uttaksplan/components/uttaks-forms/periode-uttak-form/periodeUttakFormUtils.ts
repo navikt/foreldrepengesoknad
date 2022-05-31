@@ -216,6 +216,15 @@ const getErArbeidstaker = (arbeidsformer: Arbeidsform[]): boolean => {
     );
 };
 
+const getSamtidigUttaksProsentWLB = (
+    ønskerGradering: boolean | undefined,
+    dekningsgrad: string | undefined
+): string => {
+    return ønskerGradering && dekningsgrad !== undefined
+        ? (100 - parseFloat(trimNumberValue(dekningsgrad))).toString()
+        : '100';
+};
+
 const velgVedleggSomSkalBrukes = (
     aktivitetskravMorDokumentasjon: Attachment[],
     erMorForSykDokumentasjon: Attachment[]
@@ -301,7 +310,10 @@ export const mapPeriodeUttakFormToPeriode = (
 
     const samtidigUttakProsentVerdi =
         hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak
-            ? '100' //TODO: Er dette riktig eller skal samtidig uttak kunne oppgis i prosent også?
+            ? getSamtidigUttaksProsentWLB(
+                  convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
+                  values.stillingsprosent
+              )
             : hasValue(values.samtidigUttakProsent)
             ? trimNumberValue(values.samtidigUttakProsent!)
             : undefined;
