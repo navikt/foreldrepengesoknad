@@ -33,8 +33,7 @@ import {
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import addPeriode from 'uttaksplan/builder/addPeriode';
-import { getUttaksstatusFunc } from 'uttaksplan/utils/uttaksstatus';
+import UttaksplanbuilderNew from 'uttaksplan/builder/UttaksplanbuilderNew';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -56,10 +55,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const harMorRett = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger;
     const erDeltUttak = true;
-    const erFlerbarnssøknad = barn.antallBarn > 1;
-    const harKomplettUttaksplan = false;
     const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
@@ -93,27 +89,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         let uttaksplanMedAnnenPart;
         const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;
         if (eksisterendeSakAnnenPart && nyPeriode !== undefined) {
-            uttaksplanMedAnnenPart = addPeriode({
-                getUttaksstatusFunc: getUttaksstatusFunc({
-                    erDeltUttak,
-                    erEndringssøknad,
-                    harKomplettUttaksplan,
-                    erFarEllerMedmor,
-                    tilgjengeligeStønadskontoer: stønadskontoer,
-                    uttaksplan,
-                }),
-                uttaksplan,
-                nyPeriode,
-                tilgjengeligeStønadskontoer: stønadskontoer,
-                familiehendelsesdato: familiehendelsedatoDate!,
-                erFlerbarnssøknad,
-                erEndringsøknadUtenEkisterendeSak: false,
-                relevantStartDatoForUttak: nyPeriode.tidsperiode.fom,
-                harMidlertidigOmsorg: false,
-                harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-                erAdopsjon: søkersituasjon.situasjon === 'adopsjon',
-                opprinneligPlan: eksisterendeSakAnnenPart.uttaksplan,
-            }).updatedPlan;
+            const builder = UttaksplanbuilderNew(uttaksplan, familiehendelsedatoDate!);
+            uttaksplanMedAnnenPart = builder.leggTilPeriode(nyPeriode);
         } else if (eksisterendeSakAnnenPart) {
             uttaksplanMedAnnenPart = eksisterendeSakAnnenPart.uttaksplan;
         } else {
