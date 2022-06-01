@@ -62,7 +62,7 @@ const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode):
     return 0;
 };
 
-export interface LeggTilPeriodeParams {
+interface LeggTilPeriodeParams {
     perioder: Periode[];
     nyPeriode: Periode;
     familiehendelsesdato: Date;

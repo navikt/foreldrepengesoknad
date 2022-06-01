@@ -1,10 +1,8 @@
 import { isForeldrepengerFørFødselUttaksperiode, isUtsettelsesperiode, Periode } from 'uttaksplan/types/Periode';
 import { leggTilPeriode } from './leggTilPeriode';
-import { resetTidsperioder, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
-
-const oppdaterPeriode = () => null;
-
-const slettPeriode = () => null;
+import { oppdaterPeriode } from './oppdaterPeriode';
+import { slettPeriode } from './slettPeriode';
+import { fjernHullPåSlutten, resetTidsperioder, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
 const UttaksplanbuilderNew = (
     perioder: Periode[],
@@ -39,8 +37,27 @@ const UttaksplanbuilderNew = (
 
             return slåSammenLikePerioder(result);
         },
-        oppdaterPeriode,
-        slettPeriode,
+        oppdaterPeriode: (endretPeriode: Periode) =>
+            oppdaterPeriode({
+                perioder,
+                endretPeriode,
+                familiehendelsesdato,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon,
+            }),
+        slettPeriode: (slettetPeriode: Periode) => {
+            return fjernHullPåSlutten(
+                slåSammenLikePerioder(
+                    slettPeriode({
+                        perioder,
+                        slettetPeriode,
+                        familiehendelsesdato,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        erAdopsjon,
+                    })
+                )
+            );
+        },
     };
 };
 

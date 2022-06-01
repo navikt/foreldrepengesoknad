@@ -8,9 +8,7 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import deletePeriode from './builder/deletePeriode';
-import { getUttaksstatusFunc } from './utils/uttaksstatus';
-import updatePeriode from './builder/updatePeriode';
+// import { getUttaksstatusFunc } from './utils/uttaksstatus';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import { ISOStringToDate } from 'app/utils/dateUtils';
@@ -25,7 +23,7 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+// import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import UttaksplanbuilderNew from './builder/UttaksplanbuilderNew';
@@ -63,28 +61,28 @@ interface Props {
     handleSlettUttaksplan: () => void;
 }
 
-const getRelevantStartdato = (
-    familiehendelsesdato: Date,
-    erFarEllerMedmor: boolean,
-    erAdopsjon: boolean,
-    morsSisteDag: Date | undefined
-) => {
-    const førsteUttaksdagEtterSeksUker = Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30);
+// const getRelevantStartdato = (
+//     familiehendelsesdato: Date,
+//     erFarEllerMedmor: boolean,
+//     erAdopsjon: boolean,
+//     morsSisteDag: Date | undefined
+// ) => {
+//     const førsteUttaksdagEtterSeksUker = Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30);
 
-    if (erFarEllerMedmor) {
-        if (morsSisteDag) {
-            return Uttaksdagen(morsSisteDag).neste();
-        }
+//     if (erFarEllerMedmor) {
+//         if (morsSisteDag) {
+//             return Uttaksdagen(morsSisteDag).neste();
+//         }
 
-        if (erAdopsjon) {
-            return familiehendelsesdato;
-        }
+//         if (erAdopsjon) {
+//             return familiehendelsesdato;
+//         }
 
-        return førsteUttaksdagEtterSeksUker;
-    }
+//         return førsteUttaksdagEtterSeksUker;
+//     }
 
-    return familiehendelsesdato;
-};
+//     return familiehendelsesdato;
+// };
 
 const Uttaksplan: FunctionComponent<Props> = ({
     foreldreSituasjon,
@@ -110,85 +108,38 @@ const Uttaksplan: FunctionComponent<Props> = ({
     tilleggsopplysninger,
     eksisterendeSak,
     perioderSomSkalSendesInn,
-    morsSisteDag,
     harKomplettUttaksplan,
-    opprinneligPlan,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
     handleSlettUttaksplan,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
-    const relevantStartdato = getRelevantStartdato(
-        familiehendelsesdatoDate,
-        erFarEllerMedmor,
-        situasjon === 'adopsjon',
-        morsSisteDag
-    );
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
+    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !harMorRett;
+
+    const builder = UttaksplanbuilderNew(
+        uttaksplan,
+        familiehendelsesdatoDate,
+        harAktivitetskravIPeriodeUtenUttak,
+        situasjon === 'adopsjon'
+    );
 
     const handleDeletePeriode = (periodeId: string) => {
-        const slettetPeriode = uttaksplan.find((p) => p.id === periodeId);
+        const slettetPeriode = uttaksplan.find((p) => p.id === periodeId)!;
+        const result = builder.slettPeriode(slettetPeriode);
 
-        const updatedPlan = deletePeriode({
-            getUttaksstatusFunc: getUttaksstatusFunc({
-                erDeltUttak,
-                erEndringssøknad,
-                harKomplettUttaksplan,
-                erFarEllerMedmor,
-                tilgjengeligeStønadskontoer: stønadskontoer,
-                uttaksplan,
-            }),
-            uttaksplan,
-            slettetPeriode: slettetPeriode!,
-            tilgjengeligeStønadskontoer: stønadskontoer,
-            familiehendelsesdato: familiehendelsesdatoDate!,
-            erFlerbarnssøknad,
-            erEndringsøknadUtenEkisterendeSak: false,
-            relevantStartDatoForUttak: relevantStartdato,
-            harMidlertidigOmsorg: false,
-            harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-            erAdopsjon: situasjon === 'adopsjon',
-            opprinneligPlan,
-        });
-
-        handleOnPlanChange(updatedPlan);
+        handleOnPlanChange(result);
     };
 
     const handleUpdatePeriode = (oppdatertPeriode: Periode) => {
-        const updatedPlan = updatePeriode({
-            getUttaksstatusFunc: getUttaksstatusFunc({
-                erDeltUttak,
-                erEndringssøknad,
-                harKomplettUttaksplan,
-                erFarEllerMedmor,
-                tilgjengeligeStønadskontoer: stønadskontoer,
-                uttaksplan,
-            }),
-            uttaksplan,
-            oppdatertPeriode,
-            tilgjengeligeStønadskontoer: stønadskontoer,
-            familiehendelsesdato: familiehendelsesdatoDate!,
-            erFlerbarnssøknad,
-            erEndringsøknadUtenEkisterendeSak: false,
-            relevantStartDatoForUttak: relevantStartdato,
-            harMidlertidigOmsorg: false,
-            harAktivitetskravIPeriodeUtenUttak: !erDeltUttak && !harMorRett,
-            erAdopsjon: situasjon === 'adopsjon',
-            opprinneligPlan,
-        });
-        handleOnPlanChange(updatedPlan);
+        const result = builder.oppdaterPeriode(oppdatertPeriode);
+
+        handleOnPlanChange(result);
     };
 
     const handleAddPeriode = (nyPeriode: Periode) => {
-        const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !harMorRett;
-        const builder = UttaksplanbuilderNew(
-            uttaksplan,
-            familiehendelsesdatoDate,
-            harAktivitetskravIPeriodeUtenUttak,
-            situasjon === 'adopsjon'
-        );
         const resultat = builder.leggTilPeriode(nyPeriode);
 
         handleOnPlanChange(resultat);

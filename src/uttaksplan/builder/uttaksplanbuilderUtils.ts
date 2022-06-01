@@ -6,7 +6,14 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
-import { Periode, PeriodeHull, Periodetype, PeriodeUtenUttak } from 'uttaksplan/types/Periode';
+import {
+    isHull,
+    isPeriodeUtenUttak,
+    Periode,
+    PeriodeHull,
+    Periodetype,
+    PeriodeUtenUttak,
+} from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 
 export const resetTidsperioder = (perioder: Periode[]): Periode[] => {
@@ -149,4 +156,20 @@ export const getTidsperiodeMellomPerioder = (
     }
 
     return undefined;
+};
+
+export const fjernHullPåSlutten = (perioder: Periode[]) => {
+    return perioder.reduce((res, periode, index) => {
+        if (index === perioder.length - 1) {
+            if (isHull(periode) || isPeriodeUtenUttak(periode)) {
+                return res;
+            }
+
+            res.push(periode);
+            return res;
+        }
+
+        res.push(periode);
+        return res;
+    }, [] as Periode[]);
 };
