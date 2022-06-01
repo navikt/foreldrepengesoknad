@@ -42,7 +42,7 @@ import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
@@ -95,9 +95,11 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>) => {
-        const startDatoUttaksplan = getErMorUfør(annenForelder, erFarEllerMedmor)
-            ? values.permisjonStartdato
-            : dateToISOString(Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(30));
+        const startDatoUttaksplan =
+            andreAugust2022ReglerGjelder(familiehendelsesdatoDate!) || getErMorUfør(annenForelder, erFarEllerMedmor)
+                ? values.permisjonStartdato
+                : dateToISOString(Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(30));
+
         return [
             actionCreator.setUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values)),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
@@ -167,6 +169,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                 const visibility = farMedmorFødselOgMorHarIkkeRettQuestionsConfig.getVisbility({
                     ...formValues,
                     erMorUfør,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
                 });
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
