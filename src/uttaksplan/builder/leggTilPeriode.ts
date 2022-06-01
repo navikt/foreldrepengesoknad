@@ -62,7 +62,21 @@ const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode):
     return 0;
 };
 
-export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familiehendelsesdato: Date): Periode[] => {
+export interface LeggTilPeriodeParams {
+    perioder: Periode[];
+    nyPeriode: Periode;
+    familiehendelsesdato: Date;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    erAdopsjon: boolean;
+}
+
+export const leggTilPeriode = ({
+    perioder,
+    nyPeriode,
+    familiehendelsesdato,
+    harAktivitetskravIPeriodeUtenUttak,
+    erAdopsjon,
+}: LeggTilPeriodeParams): Periode[] => {
     if (perioder.length === 0) {
         return [nyPeriode];
     }
@@ -148,7 +162,12 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familieh
             if (tidsperiodeMellomNyPeriodeOgFørstePeriode) {
                 return [
                     nyPeriode,
-                    getPeriodeHullEllerPeriodeUtenUttak(tidsperiodeMellomNyPeriodeOgFørstePeriode),
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        tidsperiodeMellomNyPeriodeOgFørstePeriode,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon
+                    ),
                     ...perioder,
                 ];
             }
@@ -163,7 +182,12 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familieh
             if (tidsperiodeMellomSistePeriodeOgNyPeriode) {
                 return [
                     ...perioder,
-                    getPeriodeHullEllerPeriodeUtenUttak(tidsperiodeMellomSistePeriodeOgNyPeriode),
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        tidsperiodeMellomSistePeriodeOgNyPeriode,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon
+                    ),
                     nyPeriode,
                 ];
             }

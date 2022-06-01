@@ -62,7 +62,7 @@ const getDatoavgrensningerForPeriodeUtenKonto = (familiehendelsesdato: Date, ugy
             helgedagerIkkeTillatt: true,
         },
         til: {
-            minDato: minDato,
+            minDato,
             maksDato: getSisteMuligeUttaksdag(familiehendelsesdato),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,

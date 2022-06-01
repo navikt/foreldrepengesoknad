@@ -212,7 +212,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(5);
         expect(result[2]).toEqual(nyPeriode);
@@ -230,7 +236,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioderMedHull, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: perioderMedHull,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(5);
         expect(result[2]).toEqual(nyPeriode);
@@ -246,7 +258,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result2 = leggTilPeriode(perioderMedHull, nyPeriode2, new Date('2022-05-05'));
+        const result2 = leggTilPeriode({
+            perioder: perioderMedHull,
+            nyPeriode: nyPeriode2,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result2.length).toEqual(6);
         expect(result2[2]).toEqual(nyPeriode2);
@@ -264,7 +282,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(periodeMedAnnenPartsUttak, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: periodeMedAnnenPartsUttak,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(5);
         expect(result[2]).toEqual(nyPeriode);
@@ -280,7 +304,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result2 = leggTilPeriode(periodeMedAnnenPartsUttak, nyPeriode2, new Date('2022-05-05'));
+        const result2 = leggTilPeriode({
+            perioder: periodeMedAnnenPartsUttak,
+            nyPeriode: nyPeriode2,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result2.length).toEqual(6);
         expect(result2[2]).toEqual(nyPeriode2);
@@ -298,7 +328,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(periodeMedPeriodeUtenUttak, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: periodeMedPeriodeUtenUttak,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(5);
         expect(result[2]).toEqual(nyPeriode);
@@ -314,7 +350,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result2 = leggTilPeriode(periodeMedPeriodeUtenUttak, nyPeriode2, new Date('2022-05-05'));
+        const result2 = leggTilPeriode({
+            perioder: periodeMedPeriodeUtenUttak,
+            nyPeriode: nyPeriode2,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result2.length).toEqual(6);
         expect(result2[2]).toEqual(nyPeriode2);
@@ -332,7 +374,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode([], nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: [],
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(1);
         expect(result[0]).toEqual(nyPeriode);
@@ -350,7 +398,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(4);
         expect(result[0]).toEqual(nyPeriode);
@@ -368,7 +422,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            erAdopsjon: false,
+            harAktivitetskravIPeriodeUtenUttak: false,
+        });
 
         expect(result.length).toEqual(5);
         expect(result[0]).toEqual(nyPeriode);
@@ -387,7 +447,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(4);
         expect(result[3]).toEqual(nyPeriode);
@@ -405,7 +471,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(5);
         expect(result[4]).toEqual(nyPeriode);
@@ -425,7 +497,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(4);
         expect(result[1]).toEqual(nyPeriode);
@@ -445,7 +523,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fellesperiode,
         };
 
-        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            erAdopsjon: false,
+            harAktivitetskravIPeriodeUtenUttak: false,
+        });
 
         expect(result.length).toEqual(3);
     });
@@ -462,7 +546,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fedrekvote,
         };
 
-        const result = leggTilPeriode(perioderMedFarsUttak, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: perioderMedFarsUttak,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(2);
         expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
@@ -483,7 +573,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fedrekvote,
         };
 
-        const result = leggTilPeriode(perioderMedFarsUttak, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: perioderMedFarsUttak,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(2);
         expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
@@ -504,7 +600,13 @@ describe('Test av legg til periode i uttaksplan', () => {
             konto: StønadskontoType.Fedrekvote,
         };
 
-        const result = leggTilPeriode(perioderKunAnnenPartsUttak, nyPeriode, new Date('2022-05-05'));
+        const result = leggTilPeriode({
+            perioder: perioderKunAnnenPartsUttak,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+        });
 
         expect(result.length).toEqual(2);
         expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);

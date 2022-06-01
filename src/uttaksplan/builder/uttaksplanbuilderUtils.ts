@@ -3,6 +3,8 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { getTidsperiode, isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import { Periode, PeriodeHull, Periodetype, PeriodeUtenUttak } from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
@@ -59,8 +61,63 @@ export const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
     return nyePerioder;
 };
 
-export const getPeriodeHullEllerPeriodeUtenUttak = (tidsperiode: TidsperiodeDate) => {
-    return getNyPeriodeUtenUttak(tidsperiode);
+export const getPeriodeHullEllerPeriodeUtenUttak = (
+    tidsperiode: TidsperiodeDate,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean,
+    årsak: PeriodeHullÅrsak = PeriodeHullÅrsak.fridag
+): Array<PeriodeHull | PeriodeUtenUttak> => {
+    const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
+
+    if (skalLeggeInnPerioderUtenUttak) {
+        const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+        const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
+            ANTALL_UTTAKSDAGER_SEKS_UKER
+        );
+        const tidsperiodeErInnenFørsteSeksUker =
+            Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato);
+
+        if (harAktivitetskravIPeriodeUtenUttak) {
+            return [getPeriodeHull(tidsperiode, årsak)];
+        }
+
+        if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)) {
+            return [getNyPeriodeUtenUttak(tidsperiode)];
+        }
+
+        if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
+            if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker)) {
+                return [getPeriodeHull(tidsperiode, årsak)];
+            }
+
+            const antallDagerFraFomTilFørsteUttaksdagSeksUker =
+                Tidsperioden({ fom: tidsperiode.fom, tom: førsteUttaksdagEtterSeksUker }).getAntallUttaksdager() - 2;
+
+            const nyPeriodeUtenUttakTidsperiodeLengde =
+                Tidsperioden(tidsperiode).getAntallUttaksdager() - antallDagerFraFomTilFørsteUttaksdagSeksUker;
+
+            const førsteSeksUkerTidsperiode: TidsperiodeDate = {
+                fom: tidsperiode.fom,
+                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(-1),
+            };
+
+            const periodeUtenUttakTidsperiode: TidsperiodeDate = {
+                fom: førsteUttaksdagEtterSeksUker,
+                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde - 2),
+            };
+
+            const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode, årsak);
+            const periodeUtenUttak = getNyPeriodeUtenUttak(periodeUtenUttakTidsperiode);
+
+            return [periodeHull, periodeUtenUttak];
+        }
+
+        return [getNyPeriodeUtenUttak(tidsperiode)];
+    }
+
+    return [getPeriodeHull(tidsperiode, årsak)];
 };
 
 export const getPeriodeHull = (tidsperiode: TidsperiodeDate, årsak?: PeriodeHullÅrsak): PeriodeHull => ({

@@ -9,6 +9,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
 import { DatoAvgrensninger, getDatoavgrensningerForStønadskonto } from 'uttaksplan/utils/datoAvgrensningerUtils';
 import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils';
+import { getFørsteMuligeUttaksdag } from 'uttaksplan/utils/uttaksdatoerUtils';
 
 interface Props {
     periode?: Periode;
@@ -48,7 +49,7 @@ const getDatoAvgrensninger = (
 
     return {
         fra: {
-            minDato: familiehendelsesdato,
+            minDato: getFørsteMuligeUttaksdag(familiehendelsesdato),
             maksDato: tidsperiode
                 ? ISOStringToDate(tom)!
                 : dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
@@ -56,7 +57,7 @@ const getDatoAvgrensninger = (
             helgedagerIkkeTillatt: true,
         },
         til: {
-            minDato: tidsperiode ? ISOStringToDate(fom)! : familiehendelsesdato,
+            minDato: tidsperiode ? ISOStringToDate(fom)! : getFørsteMuligeUttaksdag(familiehendelsesdato),
             maksDato: dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
