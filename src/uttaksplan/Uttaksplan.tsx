@@ -56,6 +56,7 @@ interface Props {
     morsSisteDag: Date | undefined;
     harKomplettUttaksplan: boolean;
     opprinneligPlan: Periode[] | undefined;
+    termindato: Date | undefined;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
@@ -109,6 +110,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     eksisterendeSak,
     perioderSomSkalSendesInn,
     harKomplettUttaksplan,
+    termindato,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
     handleSlettUttaksplan,
@@ -169,6 +171,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         morHarRett: harMorRett,
         erFlerbarnssøknad: erFlerbarnssøknad,
         familiehendelsesdato: familiehendelsesdatoDate,
+        termindato: termindato,
         stønadskontoer: stønadskontoer,
         perioder: uttaksplan,
         harKomplettUttaksplan,
@@ -230,6 +233,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
                     setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
+                    termindato={termindato}
                 />
             </Block>
             <Block padBottom="l">

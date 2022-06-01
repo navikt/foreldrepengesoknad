@@ -23,10 +23,17 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
             passerer: true,
         };
     }
-    const perioderRundtFødsel = getFarMedmorUttakRundtFødsel(grunnlag.perioder, grunnlag.familiehendelsesdato);
+    const perioderRundtFødsel = getFarMedmorUttakRundtFødsel(
+        grunnlag.perioder,
+        grunnlag.familiehendelsesdato,
+        grunnlag.termindato
+    );
 
     let dagerIgjenRundtFødsel;
-    const førsteUttaksdag2UkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato);
+    const førsteUttaksdag2UkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(
+        grunnlag.familiehendelsesdato,
+        grunnlag.termindato
+    );
     const sisteUttak6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato);
 
     if (perioderRundtFødsel.length > 0) {

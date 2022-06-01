@@ -63,6 +63,7 @@ interface Props {
     isNyPeriode?: boolean;
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    termindato: Date | undefined;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -119,6 +120,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erMorUfør,
     erEndringssøknad,
     setPeriodeErGyldig,
+    termindato,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -178,6 +180,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         periodetype,
                         situasjon,
                         erSamtidigUttak,
+                        termindato,
                     },
                     stønadskontoer,
                 });

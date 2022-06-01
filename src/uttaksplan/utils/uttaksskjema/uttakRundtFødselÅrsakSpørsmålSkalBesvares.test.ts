@@ -23,7 +23,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
         );
         expect(result).toEqual(true);
     });
@@ -38,7 +40,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
         );
         expect(result).toEqual(false);
     });
@@ -53,7 +57,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
         );
         expect(result).toEqual(false);
     });
@@ -68,7 +74,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
         );
         expect(result).toEqual(false);
     });
@@ -83,7 +91,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //annenForelderKanIkkeOppgis
             true, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
         );
         expect(result).toEqual(false);
     });
@@ -98,7 +108,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' // situasjon
         );
         expect(result).toEqual(false);
     });
@@ -113,7 +125,26 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             true, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
+        );
+        expect(result).toEqual(false);
+    });
+    it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis barnet er adoptert', () => {
+        const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
+            Periodetype.Uttak,
+            StønadskontoType.Fedrekvote,
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            true, //søkerErFarEllerMedmor
+            false, //erFlerbarnssøknad
+            false, //erAleneOmOmsorg
+            false, //annenForelderKanIkkeOppgis
+            false, //ønskerFlerbarnsdager
+            false, //søkerHarMidlertidigOmsorg
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'adopsjon' //situasjon
         );
         expect(result).toEqual(false);
     });
@@ -139,7 +170,9 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB ikke gjelder'
             false, //annenForelderKanIkkeOppgis
             false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel' //situasjon
         );
         expect(result).toEqual(false);
     });

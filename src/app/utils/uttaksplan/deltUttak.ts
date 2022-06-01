@@ -88,6 +88,7 @@ const deltUttakAdopsjonSøktSist = (
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
             familiehendelsesdato,
+            undefined,
             'adopsjon'
         );
     } else {
@@ -99,6 +100,7 @@ const deltUttakAdopsjonSøktSist = (
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
             familiehendelsesdato,
+            undefined,
             'adopsjon'
         ).map((periode) => {
             if (
@@ -276,6 +278,7 @@ const deltUttakFødselFarMedmor = (
     farSinFørsteUttaksdag: Date,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     familiehendelsesdato: Date,
+    termindato: Date | undefined,
     situasjon = 'fødsel'
 ): Periode[] => {
     if (
@@ -319,7 +322,8 @@ const deltUttakFødselFarMedmor = (
             andreAugust2022ReglerGjelder(familiehendelsesdato) &&
             starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
                 getTidsperiode(startDatoUttak, 1),
-                familiehendelsesdato
+                familiehendelsesdato,
+                termindato
             );
 
         const lengdePåForeslåttUttak = erPeriodeWLBRundtFødsel
@@ -381,7 +385,8 @@ const deltUttakFødsel = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    termindato?: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return deltUttakFødselMor(famDato, tilgjengeligeStønadskontoer, startdatoPermisjon, fellesperiodeukerMor);
@@ -397,7 +402,8 @@ const deltUttakFødsel = (
             morSinSisteUttaksdag!,
             farSinFørsteUttaksdag!,
             begrunnelseForUtsettelse,
-            famDato
+            famDato,
+            termindato
         );
     }
 };
@@ -414,7 +420,8 @@ export const deltUttak = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    termindato?: Date | undefined
 ) => {
     if (situasjon === 'adopsjon') {
         return deltUttakAdopsjon(
@@ -443,7 +450,8 @@ export const deltUttak = (
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse
+            begrunnelseForUtsettelse,
+            termindato
         );
     }
 

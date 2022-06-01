@@ -25,13 +25,14 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-08-08T00:00:00.000Z'),
-            undefined
+            undefined,
+            new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-08-19T00:00:00.000Z'));
     });
-    it('skal legge til 1 uke etter fødsel hvis WLB gjelder, situasjon er fødsel og far velger 5 uken etter fødsel som start', () => {
+    it('skal legge til 1 uke etter fødsel hvis WLB gjelder, situasjon er fødsel og far velger 5. uken etter fødsel som start', () => {
         const perioder = deltUttak(
             'fødsel',
             new Date('2022-08-08T00:00:00.000Z'),
@@ -44,7 +45,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-09-12T00:00:00.000Z'),
-            undefined
+            undefined,
+            new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-12T00:00:00.000Z'));
@@ -63,7 +65,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-09-19T00:00:00.000Z'),
-            undefined
+            undefined,
+            new Date('2022-08-08T00:00:00.000Z') //terminato
         );
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-19T00:00:00.000Z'));
@@ -82,6 +85,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-08-08T00:00:00.000Z'),
+            undefined,
             undefined
         );
         expect(perioder.length).toEqual(1);
@@ -112,11 +116,12 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-08-08T00:00:00.000Z'),
-            undefined
+            undefined,
+            new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(0);
     });
-    it('skal ikke legge til 5 uker til far (hans fulle kvote) hvis far velger dato etter at mor er ferdig med uttaket', () => {
+    it('skal legge til 5 uker til far (hans fulle kvote) hvis far velger dato etter at mor er ferdig med uttaket', () => {
         const perioder = deltUttak(
             'fødsel',
             new Date('2022-08-08T00:00:00.000Z'),
@@ -129,7 +134,8 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-12-28T00:00:00.000Z'),
-            undefined
+            undefined,
+            new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-12-28T00:00:00.000Z'));

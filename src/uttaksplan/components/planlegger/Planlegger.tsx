@@ -37,6 +37,7 @@ interface Props {
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
+    termindato: Date | undefined;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -59,6 +60,7 @@ const Planlegger: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     erEndringssøknad,
     setSlettUttaksplanModalOpen,
+    termindato,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -111,6 +113,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 setPeriodeErGyldig={setPeriodeErGyldig}
                                 erEndringssøknad={erEndringssøknad}
+                                termindato={termindato}
                             />
                         </section>
                     </Block>
@@ -135,6 +138,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 nesteLedigeUttaksdato={nesteLedigeUttaksdato}
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 erEndringssøknad={erEndringssøknad}
+                                termindato={termindato}
                             />
                         </div>
                     )}

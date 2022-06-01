@@ -1,10 +1,10 @@
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RegistrertBarn } from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
-import { velgEldsteBarn } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, velgEldsteBarn } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
@@ -39,9 +39,12 @@ const includeTermindato = (
         return false;
     }
 
-    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
+    const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
 
     if (isFarEllerMedmor(rolle)) {
+        if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {
+            return true;
+        }
         const sixWeeksAfterBirthday = dayjs(relevantFødselsdato).add(6, 'weeks');
 
         return dayjs(sixWeeksAfterBirthday).isAfter(new Date());

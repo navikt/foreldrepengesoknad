@@ -10,7 +10,7 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { formaterDatoUtenDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -63,6 +63,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO
     );
+    const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
@@ -95,6 +96,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         startdatoPermisjon: uttaksplanInfo.startdatoUttak,
                     },
                     bareFarMedmorHarRett: false,
+                    termindato,
                 })
             ),
         ];

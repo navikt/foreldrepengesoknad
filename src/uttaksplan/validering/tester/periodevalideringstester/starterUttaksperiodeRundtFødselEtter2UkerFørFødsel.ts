@@ -26,10 +26,17 @@ export const starterUttaksperiodeRundtFødselEtter2UkerFørFødsel: RegelTest = 
 
     const perioderFarMedmorSomStarterFør2UkerFørFødsel = grunnlag.perioder
         .filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p))
-        .filter((p) => !starterTidsperiodeEtter2UkerFørFødsel(p.tidsperiode, grunnlag.familiehendelsesdato));
+        .filter(
+            (p) =>
+                !starterTidsperiodeEtter2UkerFørFødsel(
+                    p.tidsperiode,
+                    grunnlag.familiehendelsesdato,
+                    grunnlag.termindato
+                )
+        );
 
     const førsteUttaksdagToUkerFørFødsel = formaterDatoKompakt(
-        getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato)
+        getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato)
     );
     return {
         passerer: perioderFarMedmorSomStarterFør2UkerFørFødsel.length === 0,

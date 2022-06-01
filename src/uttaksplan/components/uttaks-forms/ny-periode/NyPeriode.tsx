@@ -30,6 +30,7 @@ interface Props {
     nesteLedigeUttaksdato: Date | undefined;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     erEndringssøknad: boolean;
+    termindato: Date | undefined;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -51,6 +52,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     nesteLedigeUttaksdato,
     søkerErFarEllerMedmorOgKunDeHarRett,
     erEndringssøknad,
+    termindato,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -83,6 +85,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 erMorUfør={erMorUfør}
                 setPeriodeErGyldig={setPeriodeErGyldig}
                 erEndringssøknad={erEndringssøknad}
+                termindato={termindato}
             />
         </>
     ) : (

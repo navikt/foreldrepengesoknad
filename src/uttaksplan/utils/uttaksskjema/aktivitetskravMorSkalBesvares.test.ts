@@ -24,8 +24,10 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             false, //  annenForelderKanIkkeOppgis
             false, //søkerHarMidlertidigOmsorg
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            new Date('2022-08-08T00:00:00.000Z'),
-            false //erFlerbarnssøknad
+            new Date('2022-08-08T00:00:00.000Z'), //familiehendelsesdato
+            false, //erFlerbarnssøknad
+            new Date('2022-08-08T00:00:00.000Z'), //termindato
+            'fødsel'
         );
         expect(result).toEqual(false);
     });
@@ -41,8 +43,10 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             false, //  annenForelderKanIkkeOppgis
             false, //søkerHarMidlertidigOmsorg
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            new Date('2022-08-01T00:00:00.000Z'),
-            false //erFlerbarnssøknad
+            new Date('2022-08-01T00:00:00.000Z'), //familiehendelsesdato
+            false, //erFlerbarnssøknad
+            new Date('2022-08-01T00:00:00.000Z'), //termindato
+            'fødsel'
         );
         expect(result).toEqual(true);
     });

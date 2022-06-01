@@ -19,7 +19,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fedrekvote,
             true, //samtidigUttak,
             true, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z') //termindato
         );
         expect(result).toEqual(true);
     });
@@ -30,7 +31,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fedrekvote,
             false, //samtidigUttak,
             true, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z') //termindato
         );
         expect(result).toEqual(false);
     });
@@ -41,7 +43,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fedrekvote,
             true, //samtidigUttak,
             false, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z') //termindato
         );
         expect(result).toEqual(false);
     });
@@ -52,7 +55,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fellesperiode,
             true, //samtidigUttak,
             true, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z') //termindato
         );
         expect(result).toEqual(false);
     });
@@ -73,7 +77,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB ikke gjelder',
             StønadskontoType.Fedrekvote,
             true, //samtidigUttak,
             true, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z') //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z') //termindato,
         );
         expect(result).toEqual(false);
     });

@@ -1,4 +1,5 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
+import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { erFarMedmorSinWLBPeriodeRundtFødsel } from 'app/utils/wlbUtils';
 import { Periodetype } from 'uttaksplan/types/Periode';
@@ -14,13 +15,16 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     annenForelderKanIkkeOppgis: boolean,
     ønskerFlerbarnsdager: boolean | undefined,
     søkerHarMidlertidigOmsorg: boolean,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    situasjon: Situasjon
 ): boolean => {
     if (
         erAleneOmOmsorg ||
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg ||
-        !andreAugust2022ReglerGjelder(familiehendelsesdato)
+        !andreAugust2022ReglerGjelder(familiehendelsesdato) ||
+        situasjon !== 'fødsel'
     ) {
         return false;
     }
@@ -32,7 +36,8 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
                 familiehendelsesdato,
                 periodetype,
                 konto,
-                søkerErFarEllerMedmor
+                søkerErFarEllerMedmor,
+                termindato
             )
         ) {
             if (erFlerbarnssøknad) {

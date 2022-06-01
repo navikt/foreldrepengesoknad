@@ -11,7 +11,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -60,6 +60,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const erDeltUttak = true;
     const erFlerbarnssøknad = barn.antallBarn > 1;
     const harKomplettUttaksplan = false;
+    const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
@@ -87,6 +88,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 antallUkerFellesperiodeFarMedmor: undefined,
             },
             bareFarMedmorHarRett: false,
+            termindato,
         });
         let uttaksplanMedAnnenPart;
         const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;

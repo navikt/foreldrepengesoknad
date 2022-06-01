@@ -35,6 +35,7 @@ export interface UttakSkjemaReglerProps {
     familiehendelsesdato: Date;
     periodetype: Periodetype;
     erSamtidigUttak: boolean;
+    termindato: Date | undefined;
 }
 
 export const getUttakSkjemaregler = (
@@ -51,6 +52,7 @@ export const getUttakSkjemaregler = (
         familiehendelsesdato,
         periodetype,
         erSamtidigUttak,
+        termindato,
     } = regelProps;
 
     const { konto } = formValues;
@@ -67,7 +69,9 @@ export const getUttakSkjemaregler = (
         annenForelder.kanIkkeOppgis,
         convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
         false, //TODO: midlertidig omsorg
-        familiehendelsesdato
+        familiehendelsesdato,
+        termindato,
+        situasjon
     );
 
     return {
@@ -84,7 +88,9 @@ export const getUttakSkjemaregler = (
                 false, // TODO Midlertidig omsorg,
                 tidsperiode,
                 familiehendelsesdato,
-                erFlerbarnssøknad
+                erFlerbarnssøknad,
+                termindato,
+                situasjon
             ),
         erMorForSykSkalBesvares: (): boolean =>
             !årsakTilUttakRundtFødselSkalBesvares &&
@@ -126,7 +132,8 @@ export const getUttakSkjemaregler = (
                 konto as StønadskontoType,
                 erSamtidigUttak,
                 erFarEllerMedmor,
-                familiehendelsesdato
+                familiehendelsesdato,
+                termindato
             );
         },
         overføringsårsakSkalBesvares: () => periodetype === Periodetype.Overføring,
@@ -141,7 +148,9 @@ export const getUttakSkjemaregler = (
                 annenForelder.kanIkkeOppgis,
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
                 false, //TODO: midlertidig omsorg
-                familiehendelsesdato
+                familiehendelsesdato,
+                termindato,
+                situasjon
             );
         },
     };

@@ -1,4 +1,5 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
+import { Situasjon } from 'app/types/Situasjon';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
@@ -15,7 +16,9 @@ export const aktivitetskravMorSkalBesvares = (
     søkerHarMidlertidigOmsorg: boolean,
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
-    erFlerbarnssøknad: boolean
+    erFlerbarnssøknad: boolean,
+    termindato: Date | undefined,
+    situasjon: Situasjon
 ): boolean => {
     if (
         søkerErMor ||
@@ -33,7 +36,9 @@ export const aktivitetskravMorSkalBesvares = (
             annenForelderKanIkkeOppgis,
             ønskerFlerbarnsdager,
             søkerHarMidlertidigOmsorg,
-            familiehendelsesdato
+            familiehendelsesdato,
+            termindato,
+            situasjon
         )
     ) {
         return false;

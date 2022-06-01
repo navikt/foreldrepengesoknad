@@ -1,4 +1,4 @@
-import { ANTALL_UTTAKSDAGER_SEKS_UKER, isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import dayjs from 'dayjs';
@@ -10,7 +10,8 @@ import { finnAntallDagerÅTrekke } from 'app/steps/uttaksplan-info/utils/uttaksP
 import { Situasjon } from 'app/types/Situasjon';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
-export const ANTALL_UTTAKSDAGER_TO_UKER = 10;
+const ANTALL_DAGER_TO_UKER = 2 * 7;
+const ANTALL_DAGER_SEKS_UKER = 6 * 7;
 
 export const gjelderWLBReglerFarMedmorRundtFødsel = (
     familiehendelsesdato: Date,
@@ -34,38 +35,55 @@ export const isUttaksperiodeFarMedmorPgaFødsel = (periode: Periode): boolean =>
     );
 };
 
-export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date): Date => {
-    const førsteUttaksdagFørFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerForrige();
-    return Uttaksdagen(førsteUttaksdagFørFamiliehendelsesdato).trekkFra(ANTALL_UTTAKSDAGER_TO_UKER);
+export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date, termindato: Date | undefined): Date => {
+    const terminEllerFamHendelsesdatoMinusToUker =
+        termindato !== undefined
+            ? dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day')
+            : dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
+    const datoÅRegneFra = dayjs.min(dayjs(), terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
+    return Uttaksdagen(datoÅRegneFra.toDate()).denneEllerNeste();
 };
 
 export const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): Date => {
-    const førsteUttaksdagEtterFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const førsteUttaksdagForPeriodeEtterFødsel = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     return Uttaksdagen(
-        Uttaksdagen(førsteUttaksdagEtterFamiliehendelsesdato).leggTil(ANTALL_UTTAKSDAGER_SEKS_UKER)
+        dayjs(førsteUttaksdagForPeriodeEtterFødsel).add(ANTALL_DAGER_SEKS_UKER, 'day').toDate()
     ).forrige();
 };
 
-export const starterTidsperiodeEtter2UkerFørFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
-    const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato);
+export const starterTidsperiodeEtter2UkerFørFødsel = (
+    tidsperiode: any,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
+): boolean => {
+    const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
     return dayjs(tidsperiode.fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
 };
 
 export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
     tidsperiode: any,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
 ) => {
     return (
-        starterTidsperiodeEtter2UkerFørFødsel(tidsperiode, familiehendelsesdato) &&
+        starterTidsperiodeEtter2UkerFørFødsel(tidsperiode, familiehendelsesdato, termindato) &&
         dayjs(tidsperiode.fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
     );
 };
 
-export const getFarMedmorUttakRundtFødsel = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
+export const getFarMedmorUttakRundtFødsel = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    terminDato: Date | undefined
+): Periode[] => {
     return perioder
         .filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p))
         .filter((p) =>
-            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(p.tidsperiode, familiehendelsesdato)
+            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p.tidsperiode,
+                familiehendelsesdato,
+                terminDato
+            )
         );
 };
 
@@ -74,7 +92,8 @@ export const erFarMedmorSinWLBPeriodeRundtFødsel = (
     familiehendelsesdato: Date,
     periodetype: Periodetype,
     konto: StønadskontoType,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
 ): boolean => {
     return (
         tidsperiode !== undefined &&
@@ -83,7 +102,7 @@ export const erFarMedmorSinWLBPeriodeRundtFødsel = (
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         periodetype === Periodetype.Uttak &&
         konto === StønadskontoType.Fedrekvote &&
-        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato)
+        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato, termindato)
     );
 };
 

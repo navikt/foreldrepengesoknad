@@ -27,14 +27,20 @@ export const farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest: RegelTest
             grunnlag.søkersituasjon.situasjon
         )
     ) {
-        const perioderUttakRundtFødsel = getFarMedmorUttakRundtFødsel(grunnlag.perioder, grunnlag.familiehendelsesdato);
+        const perioderUttakRundtFødsel = getFarMedmorUttakRundtFødsel(
+            grunnlag.perioder,
+            grunnlag.familiehendelsesdato,
+            grunnlag.termindato
+        );
         const antallDagerForMye = overskridelseUttakRundtFødselAntallDager(perioderUttakRundtFødsel);
         return {
             passerer: antallDagerForMye >= 0,
             info: {
                 intlKey: 'uttaksplan.validering.feil.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel',
                 values: {
-                    fraDato: formaterDatoKompakt(getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato)),
+                    fraDato: formaterDatoKompakt(
+                        getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato)
+                    ),
                     tilDato: formaterDatoKompakt(getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato)),
                     dagerForMye: Math.abs(antallDagerForMye),
                 },

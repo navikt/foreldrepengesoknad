@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import {
     FarMedmorFødselOgMorHarIkkeRettFormComponents,
     FarMedmorFødselOgMorHarIkkeRettFormData,
@@ -30,7 +30,6 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import dayjs from 'dayjs';
-import { isFødtBarn } from 'app/context/types/Barn';
 import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
@@ -93,6 +92,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         : false;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>) => {
         const startDatoUttaksplan = getErMorUfør(annenForelder, erFarEllerMedmor)
@@ -120,6 +120,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                         startdatoPermisjon: startDatoUttaksplan,
                     },
                     bareFarMedmorHarRett: true,
+                    termindato,
                 })
             ),
         ];
@@ -146,9 +147,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const navnFarMedmor = formaterNavn(fornavn, etternavn, mellomnavn);
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste();
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(dateToISOString(førsteUttaksdag));
-
-    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
-    const termindato = isFødtBarn(barn) ? barn.termindato : undefined;
+    const fødselsdato = getFødselsdato(barn);
     const visInfoOmPrematuruker =
         søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
