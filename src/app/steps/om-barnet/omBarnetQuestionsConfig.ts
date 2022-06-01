@@ -42,7 +42,7 @@ const includeTermindato = (
     const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
 
     if (isFarEllerMedmor(rolle)) {
-        if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {
+        if (andreAugust2022ReglerGjelder(relevantFødselsdato!) && registrerteBarn.length === 0) {
             return true;
         }
         const sixWeeksAfterBirthday = dayjs(relevantFødselsdato).add(6, 'weeks');
