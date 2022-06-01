@@ -169,6 +169,19 @@ const periodeMedAnnenPartsUttak: Periode[] = [
     },
 ];
 
+const perioderMedFarsUttak: Periode[] = [
+    {
+        id: '1',
+        type: Periodetype.Uttak,
+        tidsperiode: {
+            fom: new Date('2022-10-04'),
+            tom: new Date('2022-12-12'),
+        },
+        forelder: Forelder.farMedmor,
+        konto: StønadskontoType.Fedrekvote,
+    },
+];
+
 describe('Test av legg til periode i uttaksplan', () => {
     it('Burde legge til periode korrekt', () => {
         const nyPeriode: Periode = {
@@ -401,5 +414,43 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(result[1]).toEqual(nyPeriode);
         expect(result[2].tidsperiode.fom).toEqual(new Date('2022-05-19'));
         expect(result[2].tidsperiode.tom).toEqual(new Date('2022-08-31'));
+    });
+
+    it('Skal ignorere perioder hvis tidsperiode starter før famdato og ender etter', () => {
+        const nyPeriode: Periode = {
+            id: '4',
+            type: Periodetype.Uttak,
+            tidsperiode: {
+                fom: new Date('2022-05-03'),
+                tom: new Date('2022-05-06'),
+            },
+            forelder: Forelder.mor,
+            konto: StønadskontoType.Fellesperiode,
+        };
+
+        const result = leggTilPeriode(perioder, nyPeriode, new Date('2022-05-05'));
+
+        expect(result.length).toEqual(3);
+    });
+
+    it('Skal ta hensyn til overlappende dager og forskyve når ny periode legges inn i starten med overlapp', () => {
+        const nyPeriode: Periode = {
+            id: '4',
+            type: Periodetype.Uttak,
+            tidsperiode: {
+                fom: new Date('2022-09-12'),
+                tom: new Date('2022-10-14'),
+            },
+            forelder: Forelder.mor,
+            konto: StønadskontoType.Fedrekvote,
+        };
+
+        const result = leggTilPeriode(perioderMedFarsUttak, nyPeriode, new Date('2022-05-05'));
+
+        expect(result.length).toEqual(2);
+        expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
+        expect(result[0].tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
+        expect(result[1].tidsperiode.fom).toEqual(new Date('2022-10-17'));
+        expect(result[1].tidsperiode.tom).toEqual(new Date('2022-12-23'));
     });
 });

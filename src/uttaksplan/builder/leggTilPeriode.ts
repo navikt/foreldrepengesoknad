@@ -41,13 +41,42 @@ const splittPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] =
     return [førsteDel, nyPeriode, andreDel];
 };
 
+const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode): number => {
+    if (Periodene([periode]).finnOverlappendePerioder(nyPeriode).length > 0) {
+        const dateArray = [
+            dayjs(periode.tidsperiode.fom),
+            dayjs(periode.tidsperiode.tom),
+            dayjs(nyPeriode.tidsperiode.fom),
+            dayjs(nyPeriode.tidsperiode.tom),
+        ];
+        const minDate = dayjs.min(dateArray);
+        const maxDate = dayjs.max(dateArray);
+        const overlappendeTidsperiode = dateArray.filter((date) => date !== minDate && date !== maxDate);
+        return Tidsperioden({
+            fom: dayjs.min(overlappendeTidsperiode).toDate(),
+            tom: dayjs.max(overlappendeTidsperiode).toDate(),
+        }).getAntallUttaksdager();
+    }
+    return 0;
+};
+
 export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familiehendelsesdato: Date): Periode[] => {
     if (perioder.length === 0) {
         return [nyPeriode];
     }
 
-    const nyPeriodeFom = nyPeriode.tidsperiode.fom;
-    const berørtPeriode = perioder.find((p) => Tidsperioden(p.tidsperiode).inneholderDato(nyPeriodeFom));
+    const nyPeriodeFomDate = nyPeriode.tidsperiode.fom;
+    const nyPeriodeTomDate = nyPeriode.tidsperiode.tom;
+
+    if (
+        dayjs(nyPeriodeFomDate).isBefore(familiehendelsesdato) &&
+        dayjs(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato)
+    ) {
+        // Nye perioder skal legges før eller etter famdato ikke begge deler
+        return [...perioder];
+    }
+
+    const berørtPeriode = perioder.find((p) => Tidsperioden(p.tidsperiode).inneholderDato(nyPeriodeFomDate));
 
     if (berørtPeriode) {
         if (isUtsettelsesperiode(berørtPeriode) || isForeldrepengerFørFødselUttaksperiode(berørtPeriode)) {
@@ -59,7 +88,7 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familieh
         const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtPeriode);
         const antallDagerINyPeriode = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
 
-        if (dayjs(berørtPeriode.tidsperiode.fom).isSame(nyPeriode.tidsperiode.fom)) {
+        if (dayjs(berørtPeriode.tidsperiode.fom).isSame(nyPeriodeFomDate)) {
             return [
                 ...foregåendePerioder,
                 nyPeriode,
@@ -108,6 +137,10 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familieh
                     // Kan ikke overlappe perioder før fødsel
                     return [...perioder];
                 }
+
+                const antallOverlappendeUttaksdager = getAntallOverlappendeUttaksdager(førstePeriode, nyPeriode);
+
+                return [nyPeriode, ...Periodene(perioder).forskyvPerioder(antallOverlappendeUttaksdager)];
             }
 
             if (tidsperiodeMellomNyPeriodeOgFørstePeriode) {
