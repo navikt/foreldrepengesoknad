@@ -52,11 +52,13 @@ const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode):
         const minDate = dayjs.min(dateArray);
         const maxDate = dayjs.max(dateArray);
         const overlappendeTidsperiode = dateArray.filter((date) => date !== minDate && date !== maxDate);
+
         return Tidsperioden({
             fom: dayjs.min(overlappendeTidsperiode).toDate(),
             tom: dayjs.max(overlappendeTidsperiode).toDate(),
         }).getAntallUttaksdager();
     }
+
     return 0;
 };
 
@@ -157,14 +159,6 @@ export const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode, familieh
                 sistePeriode.tidsperiode,
                 nyPeriode.tidsperiode
             );
-
-            if (
-                nyPeriodeFom.isSameOrBefore(sistePeriode.tidsperiode.tom) &&
-                nyPeriodeFom.isBefore(familiehendelsesdato)
-            ) {
-                // Kan ikke overlappe perioder før fødsel
-                return [...perioder];
-            }
 
             if (tidsperiodeMellomSistePeriodeOgNyPeriode) {
                 return [
