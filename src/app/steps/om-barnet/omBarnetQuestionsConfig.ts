@@ -1,10 +1,10 @@
 import { hasValue } from '@navikt/fp-common';
-import { ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RegistrertBarn } from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
-import { andreAugust2022ReglerGjelder, velgEldsteBarn } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate, velgEldsteBarn } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';

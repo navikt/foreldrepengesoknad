@@ -1,7 +1,7 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
-import { erFarMedmorSinWLBPeriodeRundtFødsel } from 'app/utils/wlbUtils';
+import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from 'app/utils/wlbUtils';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
@@ -31,7 +31,7 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
 
     if (periodetype === Periodetype.Uttak && søkerErFarEllerMedmor) {
         if (
-            erFarMedmorSinWLBPeriodeRundtFødsel(
+            erFarMedmorSinWLBTidsperiodeRundtFødsel(
                 tidsperiode,
                 familiehendelsesdato,
                 periodetype,
@@ -41,7 +41,7 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
             )
         ) {
             if (erFlerbarnssøknad) {
-                return ønskerFlerbarnsdager !== undefined && ønskerFlerbarnsdager === false;
+                return ønskerFlerbarnsdager === false;
             }
 
             return true;

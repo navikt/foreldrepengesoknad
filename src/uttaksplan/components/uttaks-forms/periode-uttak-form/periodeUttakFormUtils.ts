@@ -308,15 +308,17 @@ export const mapPeriodeUttakFormToPeriode = (
             ? true
             : convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak);
 
+    const samtidigUttakProsentInputVerdi = hasValue(values.samtidigUttakProsent)
+        ? trimNumberValue(values.samtidigUttakProsent!)
+        : undefined;
+
     const samtidigUttakProsentVerdi =
         hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak
             ? getSamtidigUttaksProsentWLB(
                   convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
                   values.stillingsprosent
               )
-            : hasValue(values.samtidigUttakProsent)
-            ? trimNumberValue(values.samtidigUttakProsent!)
-            : undefined;
+            : samtidigUttakProsentInputVerdi;
 
     const periode: Uttaksperiode = {
         id,

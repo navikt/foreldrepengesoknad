@@ -59,20 +59,6 @@ export const getUttakSkjemaregler = (
 
     const uttaksdatoer = getUttaksdatoer(familiehendelsesdato);
     const tidsperiode: TidsperiodeDate = { fom: formValues.fom!, tom: formValues.tom! };
-    const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
-        periodetype,
-        konto as StønadskontoType,
-        tidsperiode,
-        erFarEllerMedmor,
-        erFlerbarnssøknad,
-        erAleneOmOmsorg,
-        annenForelder.kanIkkeOppgis,
-        convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
-        false, //TODO: midlertidig omsorg
-        familiehendelsesdato,
-        termindato,
-        situasjon
-    );
 
     return {
         aktivitetskravMorSkalBesvares: () =>
@@ -93,7 +79,6 @@ export const getUttakSkjemaregler = (
                 situasjon
             ),
         erMorForSykSkalBesvares: (): boolean =>
-            !årsakTilUttakRundtFødselSkalBesvares &&
             erMorForForSykSkalBesvares(
                 periodetype,
                 konto as StønadskontoType,
@@ -105,7 +90,9 @@ export const getUttakSkjemaregler = (
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
-                false // TODO Midlertidig omsorg,
+                false, // TODO Midlertidig omsorg,
+                familiehendelsesdato,
+                termindato
             ),
         samtidigUttakSkalBesvares: (): boolean =>
             samtidigUttakSkalBesvares(

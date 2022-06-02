@@ -3,6 +3,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { erInnenFørsteSeksUkerFødselFarMedmor, Uttaksdatoer } from '../uttaksdatoerUtils';
+import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const erMorForForSykSkalBesvares = (
     periodetype: Periodetype,
@@ -15,9 +16,31 @@ const erMorForForSykSkalBesvares = (
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
     ønskerFlerbarnsdager: boolean | undefined,
-    søkerHarMidlertidigOmsorg: boolean
+    søkerHarMidlertidigOmsorg: boolean,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
 ): boolean => {
-    if (erAleneOmOmsorg || annenForelderKanIkkeOppgis || søkerHarMidlertidigOmsorg) {
+    const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
+        periodetype,
+        konto as StønadskontoType,
+        tidsperiode,
+        søkerErFarEllerMedmor,
+        erFlerbarnssøknad,
+        erAleneOmOmsorg,
+        annenForelderKanIkkeOppgis,
+        ønskerFlerbarnsdager,
+        søkerHarMidlertidigOmsorg,
+        familiehendelsesdato,
+        termindato,
+        situasjon
+    );
+
+    if (
+        erAleneOmOmsorg ||
+        annenForelderKanIkkeOppgis ||
+        søkerHarMidlertidigOmsorg ||
+        årsakTilUttakRundtFødselSkalBesvares
+    ) {
         return false;
     }
 

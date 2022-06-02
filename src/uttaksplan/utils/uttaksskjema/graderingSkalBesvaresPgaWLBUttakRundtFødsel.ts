@@ -1,5 +1,5 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
-import { erFarMedmorSinWLBPeriodeRundtFødsel } from 'app/utils/wlbUtils';
+import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from 'app/utils/wlbUtils';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
@@ -13,7 +13,7 @@ export const graderingSkalBesvaresPgaWLBUttakRundtFødsel = (
     termindato: Date | undefined
 ): boolean => {
     return (
-        erFarMedmorSinWLBPeriodeRundtFødsel(
+        erFarMedmorSinWLBTidsperiodeRundtFødsel(
             tidperiode,
             familiehendelsesdato,
             periodetype,

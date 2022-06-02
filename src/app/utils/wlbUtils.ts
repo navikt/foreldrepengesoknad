@@ -87,7 +87,7 @@ export const getFarMedmorUttakRundtFødsel = (
         );
 };
 
-export const erFarMedmorSinWLBPeriodeRundtFødsel = (
+export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
