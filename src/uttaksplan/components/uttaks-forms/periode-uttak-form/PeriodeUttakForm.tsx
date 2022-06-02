@@ -17,6 +17,7 @@ import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpør
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKontoSpørsmål from '../spørsmål/hvilken-konto/HvilkenKontoSpørsmål';
+import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import OverføringsårsakSpørsmål from '../spørsmål/overføringsårsak/OverføringsårsakSpørsmål';
 import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
 import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGraderingSpørsmål';
@@ -60,6 +61,7 @@ interface Props {
     isNyPeriode?: boolean;
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    termindato: Date | undefined;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -116,6 +118,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erMorUfør,
     erEndringssøknad,
     setPeriodeErGyldig,
+    termindato,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -169,6 +172,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         familiehendelsesdato,
                         periodetype,
                         situasjon,
+                        termindato,
                     },
                     stønadskontoer,
                 });
@@ -241,10 +245,21 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
-                            <Block visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
                                 <ErMorForSykSpørsmål
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
                                     erMorForSyk={values.erMorForSyk}
+                                    navnMor={navnPåForeldre.mor}
+                                    vedlegg={values.erMorForSykDokumentasjon}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)}
+                            >
+                                <UttakRundtFødselÅrsakSpørsmål
+                                    fieldName={PeriodeUttakFormField.uttakRundtFødselÅrsak}
+                                    uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak}
                                     navnMor={navnPåForeldre.mor}
                                     vedlegg={values.erMorForSykDokumentasjon}
                                 />

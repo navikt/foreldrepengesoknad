@@ -21,7 +21,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -76,7 +76,7 @@ const UttaksplanStep = () => {
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
-
+    const termindato = getTermindato(barn);
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
@@ -235,6 +235,7 @@ const UttaksplanStep = () => {
                 harKomplettUttaksplan={harKomplettUttaksplan}
                 opprinneligPlan={opprinneligPlan}
                 handleSlettUttaksplan={handleSlettUttaksplan}
+                termindato={termindato}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

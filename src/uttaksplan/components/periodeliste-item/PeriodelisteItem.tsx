@@ -49,6 +49,7 @@ interface Props {
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
+    termindato: Date | undefined;
 }
 
 const renderPeriodeListeInnhold = (
@@ -69,7 +70,8 @@ const renderPeriodeListeInnhold = (
     erMorUfør: boolean,
     søkerErFarEllerMedmorOgKunDeHarRett: boolean,
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>,
-    erEndringssøknad: boolean
+    erEndringssøknad: boolean,
+    termindato: Date | undefined
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -102,8 +104,9 @@ const renderPeriodeListeInnhold = (
                     erDeltUttak={erDeltUttak}
                     situasjon={situasjon}
                     erMorUfør={erMorUfør}
-                    setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
+                    setPeriodeErGyldig={setPeriodeErGyldig}
+                    termindato={termindato}
                 />
             );
         case Periodetype.Utsettelse:
@@ -169,6 +172,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     erEndringssøknad,
     setPeriodeErGyldig,
+    termindato,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -214,7 +218,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erMorUfør,
                     søkerErFarEllerMedmorOgKunDeHarRett,
                     setPeriodeErGyldig,
-                    erEndringssøknad
+                    erEndringssøknad,
+                    termindato
                 )}
             </EkspanderbartpanelBase>
         </article>

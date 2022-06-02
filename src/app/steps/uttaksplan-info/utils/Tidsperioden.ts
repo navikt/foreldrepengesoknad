@@ -6,7 +6,7 @@ import { formaterDatoUtenDag, dateIsSameOrBefore, dateIsSameOrAfter } from 'app/
 import { Uttaksdagen } from './Uttaksdagen';
 import { TidsperiodeDate } from '@navikt/fp-common';
 
-const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),

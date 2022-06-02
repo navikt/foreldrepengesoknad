@@ -6,16 +6,21 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { storeAppState } from 'app/utils/submitUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -28,6 +33,8 @@ import {
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
+import UttaksplanbuilderNew from 'uttaksplan/builder/UttaksplanbuilderNew';
+import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -42,19 +49,67 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 }) => {
     const søknad = useSøknad();
     const intl = useIntl();
-    const { barn, søkersituasjon, annenForelder } = søknad;
+    const { barn, søkersituasjon, annenForelder, erEndringssøknad } = søknad;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo>();
-
+    const familiehendelsedato = getFamiliehendelsedato(barn);
+    const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
+    const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const erDeltUttak = true;
+    const termindato = getTermindato(barn);
+    const harAktivitetskravIPeriodeUtenUttak =
+        !erDeltUttak && !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
         };
+        const stønadskontoer = tilgjengeligeStønadskontoer[getDekningsgradFromString(grunnlag.dekningsgrad)];
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[grunnlag.dekningsgrad]);
+        const farMedmorSinePerioder = lagUttaksplan({
+            annenForelderErUfør: erMorUfør,
+            erDeltUttak,
+            erEndringssøknad,
+            erEnkelEndringssøknad: erEndringssøknad,
+            familiehendelsesdato: familiehendelsedatoDate!,
+            førsteUttaksdagEtterSeksUker: Uttaksdagen(Uttaksdagen(familiehendelsedatoDate!).denneEllerNeste()).leggTil(
+                30
+            ),
+            situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+            søkerErFarEllerMedmor: erFarEllerMedmor,
+            søkerHarMidlertidigOmsorg: false,
+            tilgjengeligeStønadskontoer: stønadskontoer,
+            uttaksplanSkjema: {
+                morSinSisteUttaksdag: undefined,
+                farSinFørsteUttaksdag: values.permisjonStartdato,
+                antallDagerFellesperiodeFarMedmor: undefined,
+                antallUkerFellesperiodeFarMedmor: undefined,
+            },
+            bareFarMedmorHarRett: false,
+            termindato,
+        });
+        let uttaksplanMedAnnenPart;
+        const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;
+        if (eksisterendeSakAnnenPart && nyPeriode !== undefined) {
+            const builder = UttaksplanbuilderNew(
+                uttaksplan,
+                familiehendelsedatoDate!,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon
+            );
+            uttaksplanMedAnnenPart = builder.leggTilPeriode(nyPeriode);
+        } else if (eksisterendeSakAnnenPart) {
+            uttaksplanMedAnnenPart = eksisterendeSakAnnenPart.uttaksplan;
+        } else {
+            uttaksplanMedAnnenPart = farMedmorSinePerioder;
+        }
+
         return [
             actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(uttaksplanInfo),
             actionCreator.setDekningsgrad(grunnlag.dekningsgrad),
+            actionCreator.lagUttaksplanforslag(uttaksplanMedAnnenPart),
         ];
     };
 
@@ -68,7 +123,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         return null;
     }
 
-    const familiehendelsedato = getFamiliehendelsedato(barn);
     const navnMor = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
     const { grunnlag, uttaksplan } = eksisterendeSakAnnenPart;
     const morsPerioder = uttaksplan.filter((p) => isInfoPeriode(p) && p.forelder === Forelder.mor);

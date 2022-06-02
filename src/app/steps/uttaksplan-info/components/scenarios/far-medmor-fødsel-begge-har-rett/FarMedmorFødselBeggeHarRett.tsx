@@ -20,7 +20,7 @@ import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDa
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBeggeHarRettQuestionsConfig';
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
@@ -76,6 +76,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     );
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
@@ -105,6 +106,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         antallUkerFellesperiodeFarMedmor: parseInt(values.antallUkerFellesperiode || '0', 10),
                     },
                     bareFarMedmorHarRett: false,
+                    termindato,
                 })
             ),
         ];
@@ -120,7 +122,10 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             initialValues={getInitialFarMedmorFødselBeggeHarRettValues(lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
+                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility({
+                    ...formValues,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                });
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
                 const tilgjengeligeDager = valgtStønadskonto

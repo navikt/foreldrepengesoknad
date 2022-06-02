@@ -4,7 +4,7 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RegistrertBarn } from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
-import { velgEldsteBarn } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate, velgEldsteBarn } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
@@ -39,9 +39,12 @@ const includeTermindato = (
         return false;
     }
 
-    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
+    const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
 
     if (isFarEllerMedmor(rolle)) {
+        if (andreAugust2022ReglerGjelder(relevantFødselsdato!) && registrerteBarn.length === 0) {
+            return true;
+        }
         const sixWeeksAfterBirthday = dayjs(relevantFødselsdato).add(6, 'weeks');
 
         return dayjs(sixWeeksAfterBirthday).isAfter(new Date());

@@ -37,6 +37,7 @@ import { Perioden } from './Perioden';
 import { datoErInnenforTidsperiode, isValidTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
+import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -403,4 +404,8 @@ export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
 
 export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
     return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
+};
+
+export const getSumUttaksdagerÅTrekkeIPeriodene = (perioder: Periode[]) => {
+    return perioder.map((p) => finnAntallDagerÅTrekke(p)).reduce((prev, curr) => prev + curr, 0);
 };

@@ -6,11 +6,10 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import actionCreator from 'app/context/action/actionCreator';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { isFødtBarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { formaterNavn } from 'app/utils/personUtils';
 import { getFlerbarnsuker } from '../../../utils/uttaksplanHarForMangeFlerbarnsuker';
@@ -77,8 +76,8 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const antallBarn = barn.antallBarn;
 
-    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
-    const termindato = isFødtBarn(barn) ? barn.termindato : undefined;
+    const fødselsdato = getFødselsdato(barn);
+    const termindato = getTermindato(barn);
     const visInfoOmPrematuruker =
         søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
@@ -141,6 +140,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                         skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
                     },
                     bareFarMedmorHarRett: false,
+                    termindato,
                 })
             ),
         ];
