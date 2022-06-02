@@ -21,8 +21,8 @@ const skalViseGradering = (regler: UttakSkjemaregler, values: PeriodeUttakFormDa
         return false;
     }
 
-    if (regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel()) {
-        return true;
+    if (regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel() && values.uttakRundtFødselÅrsak === '') {
+        return false;
     }
     if (
         values.konto === '' ||

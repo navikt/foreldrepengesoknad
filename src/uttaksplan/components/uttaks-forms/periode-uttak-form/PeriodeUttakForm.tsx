@@ -39,8 +39,6 @@ import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { guid } from 'nav-frontend-js-utils';
-import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 
 interface Props {
     periode: Periode;
@@ -163,11 +161,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 const periodetype = getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!);
                 setPeriodeErGyldig(isValid);
 
-                const erSamtidigUttak =
-                    values.konto === StønadskontoType.Fedrekvote &&
-                    (convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak) ||
-                        values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak);
-
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,
                     regelProps: {
@@ -179,7 +172,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         familiehendelsesdato,
                         periodetype,
                         situasjon,
-                        erSamtidigUttak,
                         termindato,
                     },
                     stønadskontoer,

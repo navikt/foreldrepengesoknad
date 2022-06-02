@@ -7,19 +7,16 @@ export const graderingSkalBesvaresPgaWLBUttakRundtFødsel = (
     tidperiode: TidsperiodeDate,
     periodetype: Periodetype,
     konto: StønadskontoType,
-    erSamtidigUttak: boolean,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     termindato: Date | undefined
 ): boolean => {
-    return (
-        erFarMedmorSinWLBTidsperiodeRundtFødsel(
-            tidperiode,
-            familiehendelsesdato,
-            periodetype,
-            konto,
-            erFarEllerMedmor,
-            termindato
-        ) && erSamtidigUttak
+    return erFarMedmorSinWLBTidsperiodeRundtFødsel(
+        tidperiode,
+        familiehendelsesdato,
+        periodetype,
+        konto,
+        erFarEllerMedmor,
+        termindato
     );
 };

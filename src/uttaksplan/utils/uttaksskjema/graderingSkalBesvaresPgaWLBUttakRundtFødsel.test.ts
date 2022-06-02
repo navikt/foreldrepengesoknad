@@ -12,36 +12,22 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
         MockDate.reset();
     });
 
-    it('Skal måtte besvare spørsmål om gradering hvis legger til samtidig uttak av fedrekvote rundt fødsel', () => {
+    it('Skal måtte besvare spørsmål om gradering hvis legger til uttak av fedrekvote rundt fødsel', () => {
         const result = graderingSkalBesvaresPgaWLBUttakRundtFødsel(
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             Periodetype.Uttak,
             StønadskontoType.Fedrekvote,
-            true, //samtidigUttak,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z') //termindato
         );
         expect(result).toEqual(true);
     });
-    it('Skal ikke måtte besvare spørsmål om gradering hvis ikke legger til samtidig uttak av fedrekvote rundt fødsel', () => {
-        const result = graderingSkalBesvaresPgaWLBUttakRundtFødsel(
-            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
-            false, //samtidigUttak,
-            true, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            new Date('2022-08-02T00:00:00.000Z') //termindato
-        );
-        expect(result).toEqual(false);
-    });
     it('Skal ikke måtte besvare spørsmål om gradering hvis er mor', () => {
         const result = graderingSkalBesvaresPgaWLBUttakRundtFødsel(
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             Periodetype.Uttak,
             StønadskontoType.Fedrekvote,
-            true, //samtidigUttak,
             false, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z') //termindato
@@ -53,7 +39,6 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             Periodetype.Uttak,
             StønadskontoType.Fellesperiode,
-            true, //samtidigUttak,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z') //termindato
@@ -75,7 +60,6 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB ikke gjelder',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             Periodetype.Uttak,
             StønadskontoType.Fedrekvote,
-            true, //samtidigUttak,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z') //termindato,

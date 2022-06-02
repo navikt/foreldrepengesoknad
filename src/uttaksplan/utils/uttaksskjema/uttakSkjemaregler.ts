@@ -34,7 +34,6 @@ export interface UttakSkjemaReglerProps {
     erDeltUttak: boolean;
     familiehendelsesdato: Date;
     periodetype: Periodetype;
-    erSamtidigUttak: boolean;
     termindato: Date | undefined;
 }
 
@@ -51,7 +50,6 @@ export const getUttakSkjemaregler = (
         erDeltUttak,
         familiehendelsesdato,
         periodetype,
-        erSamtidigUttak,
         termindato,
     } = regelProps;
 
@@ -117,7 +115,6 @@ export const getUttakSkjemaregler = (
                 tidsperiode,
                 periodetype,
                 konto as StønadskontoType,
-                erSamtidigUttak,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 termindato
