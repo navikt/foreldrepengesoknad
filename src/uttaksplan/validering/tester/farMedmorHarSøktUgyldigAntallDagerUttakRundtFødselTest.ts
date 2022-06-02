@@ -10,9 +10,19 @@ import {
 } from 'app/utils/wlbUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL } from 'app/utils/wlbUtils';
+import dayjs from 'dayjs';
 
-const overskridelseUttakRundtFødselAntallDager = (perioderRundtFødsel: Periode[]): number => {
-    const antallDager = getSumUttaksdagerÅTrekkeIPeriodene(perioderRundtFødsel);
+const overskridelseUttakRundtFødselAntallDager = (
+    perioderRundtFødsel: Periode[],
+    familiehendelsesdato: Date
+): number => {
+    const sisteUttak6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+    const perioderAvkortetTilÅSlutte6UkerEtterFødsel = perioderRundtFødsel.map((p) =>
+        dayjs(p.tidsperiode.tom).isAfter(dayjs(sisteUttak6UkerEtterFødsel))
+            ? { ...p, tidsperiode: { fom: p.tidsperiode.fom, tom: sisteUttak6UkerEtterFødsel } }
+            : p
+    );
+    const antallDager = getSumUttaksdagerÅTrekkeIPeriodene(perioderAvkortetTilÅSlutte6UkerEtterFødsel);
     return ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL - antallDager;
 };
 
@@ -32,7 +42,10 @@ export const farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest: RegelTest
             grunnlag.familiehendelsesdato,
             grunnlag.termindato
         );
-        const antallDagerForMye = overskridelseUttakRundtFødselAntallDager(perioderUttakRundtFødsel);
+        const antallDagerForMye = overskridelseUttakRundtFødselAntallDager(
+            perioderUttakRundtFødsel,
+            grunnlag.familiehendelsesdato
+        );
         return {
             passerer: antallDagerForMye >= 0,
             info: {

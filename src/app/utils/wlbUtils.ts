@@ -60,6 +60,11 @@ export const starterTidsperiodeEtter2UkerFørFødsel = (
     return dayjs(tidsperiode.fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
 };
 
+export const slutterTidsperiodeInnen6UkerEtterFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
+    const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+    return dayjs(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
+};
+
 export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
     tidsperiode: any,
     familiehendelsesdato: Date,
