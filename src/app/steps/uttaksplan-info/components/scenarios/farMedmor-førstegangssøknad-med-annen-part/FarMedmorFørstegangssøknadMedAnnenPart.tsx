@@ -34,6 +34,7 @@ import {
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import UttaksplanbuilderNew from 'uttaksplan/builder/UttaksplanbuilderNew';
+import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -54,10 +55,12 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
-
+    const harAktivitetskravIPeriodeUtenUttak =
+        !erDeltUttak && !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
@@ -89,7 +92,12 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         let uttaksplanMedAnnenPart;
         const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;
         if (eksisterendeSakAnnenPart && nyPeriode !== undefined) {
-            const builder = UttaksplanbuilderNew(uttaksplan, familiehendelsedatoDate!);
+            const builder = UttaksplanbuilderNew(
+                uttaksplan,
+                familiehendelsedatoDate!,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon
+            );
             uttaksplanMedAnnenPart = builder.leggTilPeriode(nyPeriode);
         } else if (eksisterendeSakAnnenPart) {
             uttaksplanMedAnnenPart = eksisterendeSakAnnenPart.uttaksplan;
