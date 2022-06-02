@@ -47,7 +47,9 @@ spec:
           value: 'on'
         - name: FEATURE_TEST_WLB_REGLER
           value: 'on'
-        - name: FAMILIE
+        - name: FEATURE_TEST_WLB_REGLER
+      value: "on"
+    - name: FAMILIE
           value: 'https://familie.dev.nav.no'
         - name: APP_VERSION
           value: { { image } }
