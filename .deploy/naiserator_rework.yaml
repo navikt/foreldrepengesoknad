@@ -40,7 +40,7 @@ spec:
     - name: FORELDREPENGESOKNAD_API_URL
       value: "https://foreldrepengesoknad-api.dev.nav.no/rest"
     - name: LOGINSERVICE_URL
-      value: "https://loginservice.dev.nav.no/login"
+      value: "https://loginservice-testing.dev.nav.no/login"
     - name: FP_UTTAK_SERVICE_URL
       value: "https://foreldrepengesoknad-api.dev.nav.no"
     - name: FEATURE_VIS_PERIODER_SOM_SENDES_INN
