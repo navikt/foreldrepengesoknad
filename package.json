@@ -134,7 +134,7 @@
         "@formatjs/intl-datetimeformat": "^4.2.0",
         "@formatjs/intl-numberformat": "^7.2.0",
         "@formatjs/intl-pluralrules": "^4.1.0",
-        "@formatjs/intl-relativetimeformat": "^9.2.0",
+        "@formatjs/intl-relativetimeformat": "^11.0.2",
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/fp-common": "^4.1.0",
         "@navikt/sif-common-formik": "^22.1.2",
