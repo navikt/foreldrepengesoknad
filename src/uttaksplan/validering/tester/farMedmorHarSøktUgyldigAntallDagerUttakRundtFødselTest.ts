@@ -7,6 +7,7 @@ import {
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
     gjelderWLBReglerFarMedmorRundtFødsel,
+    slutterTidsperiodeInnen6UkerEtterFødsel,
 } from 'app/utils/wlbUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL } from 'app/utils/wlbUtils';
@@ -46,18 +47,37 @@ export const farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest: RegelTest
             perioderUttakRundtFødsel,
             grunnlag.familiehendelsesdato
         );
-        return {
-            passerer: antallDagerForMye >= 0,
-            info: {
+
+        const slutterEnAvPeriodeneForSent = perioderUttakRundtFødsel.some(
+            (p) => !slutterTidsperiodeInnen6UkerEtterFødsel(p.tidsperiode, grunnlag.familiehendelsesdato)
+        );
+        let info;
+        const fraDato = formaterDatoKompakt(
+            getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato)
+        );
+        const tilDato = formaterDatoKompakt(getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato));
+        if (slutterEnAvPeriodeneForSent) {
+            info = {
+                intlKey:
+                    'uttaksplan.validering.feil.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel.periodeSlutterForSent',
+                values: {
+                    fraDato: fraDato,
+                    tilDato: tilDato,
+                },
+            };
+        } else {
+            info = {
                 intlKey: 'uttaksplan.validering.feil.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel',
                 values: {
-                    fraDato: formaterDatoKompakt(
-                        getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato)
-                    ),
-                    tilDato: formaterDatoKompakt(getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato)),
+                    fraDato: fraDato,
+                    tilDato: tilDato,
                     dagerForMye: Math.abs(antallDagerForMye),
                 },
-            },
+            };
+        }
+        return {
+            passerer: antallDagerForMye >= 0,
+            info: info,
         };
     }
 
