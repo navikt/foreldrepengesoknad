@@ -1,11 +1,13 @@
 import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 import { Attachment } from 'app/types/Attachment';
 import MorErForSykDokumentasjonOpplastning from '../er-mor-for-syk-dokumentasjon/MorErForSykDokumentasjonOpplastning';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import VeilederNormal from 'app/assets/VeilederNormal';
 
 interface Props {
     fieldName: PeriodeUttakFormField;
@@ -23,11 +25,11 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
     const intl = useIntl();
     const radios = [
         {
-            label: intlUtils(intl, 'uttaksplan.uttakrundtFødseÅrsak.samtidigUttak'),
+            label: intlUtils(intl, 'ja'),
             value: UttakRundtFødselÅrsak.samtidigUttak,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.uttakrundtFødseÅrsak.morErForSyk'),
+            label: intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.nei.morErForSyk'),
             value: UttakRundtFødselÅrsak.morErForSyk,
         },
     ];
@@ -36,7 +38,7 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
         <>
             <Block padBottom="l">
                 <PeriodeUttakFormComponents.RadioPanelGroup
-                    legend={intlUtils(intl, 'uttaksplan.uttakrundtFødseÅrsak.spørsmål')}
+                    legend={intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.spørsmål')}
                     name={fieldName}
                     radios={radios}
                     useTwoColumns={true}
@@ -49,6 +51,11 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="l" visible={uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk}>
                 <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} />
+            </Block>
+            <Block padBottom="l" visible={uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak}>
+                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                    <FormattedMessage id="uttaksplan.samtidigUttakVeileder" />
+                </Veilederpanel>
             </Block>
         </>
     );
