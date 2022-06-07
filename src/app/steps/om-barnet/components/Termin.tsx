@@ -36,8 +36,17 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
         return null;
     }
 
-    const farMedMorSøkerPåTermin = isFarEllerMedmor(søkersituasjon.rolle) && hasValue(formValues.termindato);
+    const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const farMedMorSøkerPåTermin = søkerErFarMedmor && hasValue(formValues.termindato);
+    const intlSpørsmålAntallBarnId = søkerErFarMedmor ? 'omBarnet.antallBarn.termin.far' : 'omBarnet.antallBarn.termin';
 
+    const intlTerminbekreftelseId = søkerErFarMedmor
+        ? 'omBarnet.veileder.terminbekreftelse.far'
+        : 'omBarnet.veileder.terminbekreftelse';
+
+    const intlTermindatoInfotekst = søkerErFarMedmor
+        ? 'omBarnet.termindato.infotekst.farMedmor'
+        : 'omBarnet.termindato.infotekst';
     return (
         <>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
@@ -58,7 +67,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                         },
                     ]}
                     useTwoColumns={true}
-                    legend={intlUtils(intl, 'omBarnet.antallBarn.termin')}
+                    legend={intlUtils(intl, intlSpørsmålAntallBarnId)}
                 />
             </Block>
             <Block
@@ -83,7 +92,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     placeholder={'dd.mm.åååå'}
                     description={
                         <UtvidetInformasjon apneLabel={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
-                            {intlUtils(intl, 'omBarnet.termindato.infotekst')}
+                            {intlUtils(intl, intlTermindatoInfotekst)}
                         </UtvidetInformasjon>
                     }
                     minDate={date21DaysAgo}
@@ -111,7 +120,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
 
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage id="omBarnet.veileder.terminbekreftelse" />
+                    <FormattedMessage id={intlTerminbekreftelseId} />
                 </Veilederpanel>
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
