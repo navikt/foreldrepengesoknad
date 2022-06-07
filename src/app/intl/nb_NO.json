@@ -812,6 +812,7 @@
     "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.uttakrundtFødselÅrsak.spørsmål": "Ønsker du å ta ut foreldrepenger rundt fødselen samtidig med mor?",
+    "uttaksplan.uttakrundtFødselÅrsak.samtidigUttak": "Ja",
     "uttaksplan.uttakrundtFødselÅrsak.morErForSyk": "Mor er for syk eller innlagt helseinstitusjon",
     "uttaksplan.uttakrundtFødselÅrsak.nei.morErForSyk": "Nei, mor er syk eller innlagt helseinstitusjon",
     "uttaksplan.validering.kanIkkeGåVidere": "Planen din inneholder feil som du må rette opp i før du kan gå videre",
