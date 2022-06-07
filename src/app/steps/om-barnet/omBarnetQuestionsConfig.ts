@@ -53,6 +53,13 @@ const includeTermindato = (
     return true;
 };
 
+export const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+    if (!isFarEllerMedmor(rolle)) {
+        return true;
+    }
+    return hasValue(termindato) ? andreAugust2022ReglerGjelder(new Date(termindato)) : false;
+};
+
 const skalViseErBarnFødt = (
     situasjon: string,
     registrerteBarn: RegistrertBarn[],
@@ -145,12 +152,15 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
         },
     },
     [OmBarnetFormField.terminbekreftelse]: {
-        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
-        isAnswered: () => true,
+        isIncluded: ({ erBarnetFødt, arbeidsforhold, rolle, termindato }) =>
+            erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
+        isAnswered: ({ rolle, termindato, terminbekreftelse }) =>
+            kanSøkePåTermin(rolle, termindato) && hasValue(terminbekreftelse),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },
     [OmBarnetFormField.terminbekreftelsedato]: {
-        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
+        isIncluded: ({ erBarnetFødt, arbeidsforhold, rolle, termindato }) =>
+            erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
         isAnswered: ({ terminbekreftelsedato }) => hasValue(terminbekreftelsedato),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },
