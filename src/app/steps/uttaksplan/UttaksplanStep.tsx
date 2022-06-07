@@ -236,6 +236,7 @@ const UttaksplanStep = () => {
                 opprinneligPlan={opprinneligPlan}
                 handleSlettUttaksplan={handleSlettUttaksplan}
                 termindato={termindato}
+                barn={barn}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

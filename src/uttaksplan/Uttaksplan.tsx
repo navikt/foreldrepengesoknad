@@ -27,6 +27,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import UttaksplanbuilderNew from './builder/UttaksplanbuilderNew';
+import Barn from 'app/context/types/Barn';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -57,6 +58,7 @@ interface Props {
     harKomplettUttaksplan: boolean;
     opprinneligPlan: Periode[] | undefined;
     termindato: Date | undefined;
+    barn: Barn;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
@@ -114,6 +116,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
     handleSlettUttaksplan,
+    barn,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -234,6 +237,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
                     termindato={termindato}
+                    barn={barn}
                 />
             </Block>
             <Block padBottom="l">

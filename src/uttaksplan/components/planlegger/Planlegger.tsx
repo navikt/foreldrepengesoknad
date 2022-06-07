@@ -1,5 +1,6 @@
 import { bemUtils, InfoBlock, intlUtils, Block, ActionLink } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import Barn from 'app/context/types/Barn';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -38,6 +39,7 @@ interface Props {
     erEndringssøknad: boolean;
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
     termindato: Date | undefined;
+    barn: Barn;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -61,6 +63,7 @@ const Planlegger: FunctionComponent<Props> = ({
     erEndringssøknad,
     setSlettUttaksplanModalOpen,
     termindato,
+    barn,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -88,10 +91,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.slettPlan.tittel" />
                                     </ActionLink>
                                 </div>
-                                <FamiliehendelsedatoDisplay
-                                    familiehendelsedato={familiehendelsesdato}
-                                    erAdopsjon={situasjon === 'adopsjon'}
-                                />
+                                <FamiliehendelsedatoDisplay familiehendelsedato={familiehendelsesdato} barn={barn} />
                             </div>
 
                             <Periodeliste
