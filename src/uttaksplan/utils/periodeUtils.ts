@@ -36,6 +36,7 @@ import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
+import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -163,10 +164,23 @@ export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåFore
     return forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
 };
 
-export const getPeriodeTittel = (intl: IntlShape, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
+export const getPeriodeTittel = (
+    intl: IntlShape,
+    periode: Periode,
+    navnPåForeldre: NavnPåForeldre,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
+): string => {
     switch (periode.type) {
         case Periodetype.Uttak:
-            const tittel = getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+            const tittelMedNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+            const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
+                intl,
+                tittelMedNavn,
+                periode,
+                familiehendelsesdato,
+                termindato
+            );
             if (
                 (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
                 (periode.ønskerSamtidigUttak && isValidStillingsprosent(periode.samtidigUttakProsent))

@@ -32,7 +32,7 @@ import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
@@ -71,6 +71,7 @@ const Oppsummering = () => {
         : undefined;
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
+    const termindato = getTermindato(søknad.barn);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger;
     const erklæringOmAnnenForelderInformert = erEndringssøknadOgAnnenForelderHarRett
@@ -197,6 +198,8 @@ const Oppsummering = () => {
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
                                             }
+                                            familiehendelsesdato={familiehendelsesdato!}
+                                            termindato={termindato}
                                         />
                                     </OppsummeringsPanel>
                                 </div>

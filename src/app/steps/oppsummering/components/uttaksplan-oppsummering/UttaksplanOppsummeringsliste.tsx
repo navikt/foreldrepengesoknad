@@ -23,6 +23,7 @@ import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeri
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
+import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -32,6 +33,8 @@ interface UttaksplanOppsummeringslisteProps {
     annenForelder: AnnenForelder;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
 }
 
 const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslisteProps> = ({
@@ -42,11 +45,18 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     annenForelder,
     begrunnelseForSenEndring,
     eksisterendeUttaksplan,
+    familiehendelsesdato,
+    termindato,
 }) => {
     const intl = useIntl();
 
     const getStønadskontoNavnFromKonto = (konto: StønadskontoType) => {
         return getStønadskontoNavn(intl, konto, navnPåForeldre);
+    };
+
+    const getUttaksperiodeNavn = (periode: Uttaksperiode) => {
+        const tittel = getStønadskontoNavnFromKonto(periode.konto);
+        return appendPeriodeNavnHvisUttakRundtFødselFarMedmor(intl, tittel, periode, familiehendelsesdato, termindato);
     };
 
     const formatTidsperiode = (tidsperiode: TidsperiodeDate) => {
@@ -60,7 +70,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periodeErNyEllerEndret = true
     ): OppsummeringslisteelementProps => {
         return {
-            venstrestiltTekst: getStønadskontoNavnFromKonto(periode.konto),
+            venstrestiltTekst: getUttaksperiodeNavn(periode),
             venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
             content: (
@@ -79,7 +89,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periode: Oppholdsperiode
     ): OppsummeringslisteelementProps => {
         return {
-            venstrestiltTekst: getPeriodeTittel(intl, periode, navnPåForeldre),
+            venstrestiltTekst: getPeriodeTittel(intl, periode, navnPåForeldre, familiehendelsesdato, termindato),
             venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
         };

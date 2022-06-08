@@ -33,7 +33,14 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                     intlKey: 'uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode',
                     renderAsHtml: true,
                     values: {
-                        periode: (intl: IntlShape) => getPeriodeTittel(intl, periode, grunnlag.navnPåForeldre),
+                        periode: (intl: IntlShape) =>
+                            getPeriodeTittel(
+                                intl,
+                                periode,
+                                grunnlag.navnPåForeldre,
+                                grunnlag.familiehendelsesdato,
+                                grunnlag.termindato
+                            ),
                         tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: fornavnAnnenForelder,
                         forelders: (intl: IntlShape) => getNavnGenitivEierform(fornavnAnnenForelder, intl.locale),

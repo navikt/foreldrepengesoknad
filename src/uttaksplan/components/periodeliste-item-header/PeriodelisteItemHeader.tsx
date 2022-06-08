@@ -32,6 +32,8 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     melding: VeilederMessage | undefined;
     annenForelderSamtidigUttakPeriode?: Periode;
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
 }
 
 const bem = bemUtils('periodelisteItemHeader');
@@ -131,6 +133,8 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     navnPåForeldre,
     melding,
     annenForelderSamtidigUttakPeriode,
+    familiehendelsesdato,
+    termindato,
 }) => {
     const intl = useIntl();
 
@@ -168,7 +172,9 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                 >
                     <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                     <div className={bem.element('tittel')}>
-                        <Element tag="h2">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
+                        <Element tag="h2">
+                            {getPeriodeTittel(intl, periode, navnPåForeldre, familiehendelsesdato, termindato)}
+                        </Element>
                         <Normaltekst>{varighetString}</Normaltekst>
                     </div>
                     <div className={bem.element('advarsel')}>

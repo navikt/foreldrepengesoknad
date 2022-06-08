@@ -192,6 +192,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                         navnPåForeldre={navnPåForeldre}
                         melding={melding}
                         annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
+                        familiehendelsesdato={familiehendelsesdato}
+                        termindato={termindato}
                     />
                 }
                 apen={isOpen}

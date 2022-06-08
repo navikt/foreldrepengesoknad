@@ -5,9 +5,10 @@ import dayjs from 'dayjs';
 import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
-import { TidsperiodeDate } from '@navikt/fp-common';
+import { intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import { finnAntallDagerÅTrekke } from 'app/steps/uttaksplan-info/utils/uttaksPlanStatus';
 import { Situasjon } from 'app/types/Situasjon';
+import { IntlShape } from 'react-intl';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 const ANTALL_DAGER_TO_UKER = 2 * 7;
@@ -117,4 +118,21 @@ export const getLengdePåForeslåttWLBUttakFarMedmor = (familiehendelsesdato: Da
         tidsperiode: { fom: startDatoUttak, tom: sisteUttaksDagFørFødsel },
     } as Periode);
     return Math.min(antallUttaksdagerFraStartDato, ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL);
+};
+
+export const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
+    intl: IntlShape,
+    periodeNavn: string,
+    periode: Periode,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
+): string => {
+    return isUttaksperiodeFarMedmorPgaFødsel(periode) &&
+        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode.tidsperiode,
+            familiehendelsesdato,
+            termindato
+        )
+        ? periodeNavn + intlUtils(intl, 'rundtFødsel')
+        : periodeNavn;
 };

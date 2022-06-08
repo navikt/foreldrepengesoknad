@@ -15,12 +15,16 @@ interface Props {
     oppgittePerioder: Periode[];
     navnForOverskrift?: string;
     navnPåForeldre: NavnPåForeldre;
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
 }
 
 const InfoEksisterendePerioder: FunctionComponent<Props> = ({
     oppgittePerioder,
     navnForOverskrift,
     navnPåForeldre,
+    familiehendelsesdato,
+    termindato,
 }) => {
     const intl = useIntl();
     const dateFormat = 'DD. MMM YYYY';
@@ -47,7 +51,9 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                     {formaterDato(periode.tidsperiode.fom, dateFormat)} -{' '}
                                     {formaterDato(periode.tidsperiode.tom, dateFormat)}:
                                 </Element>
-                                <Normaltekst>{getPeriodeTittel(intl, periode, navnPåForeldre)}</Normaltekst>
+                                <Normaltekst>
+                                    {getPeriodeTittel(intl, periode, navnPåForeldre, familiehendelsesdato, termindato)}
+                                </Normaltekst>
                             </div>
                         </li>
                     );

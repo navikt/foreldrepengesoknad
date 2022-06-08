@@ -21,6 +21,8 @@ interface Props {
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
 }

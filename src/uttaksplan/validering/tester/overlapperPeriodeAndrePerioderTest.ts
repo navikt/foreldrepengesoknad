@@ -23,7 +23,14 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo
                 intlKey: 'uttaksplan.validering.feil.periodeoverlapp.oppsummering',
                 renderAsHtml: true,
                 values: {
-                    periode: (intl: IntlShape) => getPeriodeTittel(intl, periode, navnPåForeldre),
+                    periode: (intl: IntlShape) =>
+                        getPeriodeTittel(
+                            intl,
+                            periode,
+                            navnPåForeldre,
+                            grunnlag.familiehendelsesdato,
+                            grunnlag.termindato
+                        ),
                     tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                     forelder: (intl: IntlShape) =>
                         getNavnGenitivEierform(getPeriodeForelderNavn(periode, navnPåForeldre), intl.locale),
