@@ -407,5 +407,5 @@ export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
 };
 
 export const getSumUttaksdagerÅTrekkeIPeriodene = (perioder: Periode[]) => {
-    return perioder.map((p) => finnAntallDagerÅTrekke(p)).reduce((prev, curr) => prev + curr, 0);
+    return Math.floor(perioder.map((p) => finnAntallDagerÅTrekke(p)).reduce((prev, curr) => prev + curr, 0));
 };

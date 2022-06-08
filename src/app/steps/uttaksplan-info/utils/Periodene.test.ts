@@ -138,6 +138,20 @@ describe('Periodene - getSumUttaksdagerÅTrekkeIPeriodene', () => {
         stillingsprosent: '20',
         tidsperiode: { fom: new Date('2022-05-02T00:00:00.000Z'), tom: new Date('2022-05-06T00:00:00.000Z') },
     } as Periode;
+    const periodeMedToDagerOg60prosentGradering = {
+        type: Periodetype.Uttak,
+        ønskerSamtidigUttak: false,
+        gradert: true,
+        stillingsprosent: '40',
+        tidsperiode: { fom: new Date('2022-06-07T00:00:00.000Z'), tom: new Date('2022-06-08T00:00:00.000Z') },
+    } as Periode;
+    const periodeMedEnDagOg50prosentGradering = {
+        type: Periodetype.Uttak,
+        ønskerSamtidigUttak: false,
+        gradert: true,
+        stillingsprosent: '50',
+        tidsperiode: { fom: new Date('2022-06-07T00:00:00.000Z'), tom: new Date('2022-06-07T00:00:00.000Z') },
+    } as Periode;
     it('skal returnere 0 for ingen perioder', () => {
         const perioder = [] as Periode[];
         const result = getSumUttaksdagerÅTrekkeIPeriodene(perioder);
@@ -167,5 +181,17 @@ describe('Periodene - getSumUttaksdagerÅTrekkeIPeriodene', () => {
     it('skal returnere 4 for Uttaksperiode med 5 uttaksdager med 20% gradering og  50% samtidig uttak', () => {
         const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedSamtidigUttakOgGradering]);
         expect(result).toEqual(4);
+    });
+    it('skal returnere 4 for Uttaksperiode med 5 uttaksdager med 20% gradering og  50% samtidig uttak', () => {
+        const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedSamtidigUttakOgGradering]);
+        expect(result).toEqual(4);
+    });
+    it('skal returnere 1 for Uttaksperiode med 2 uttaksdager med 40% gradering, fordi man avrunder ned til nærmeste heltall ', () => {
+        const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedToDagerOg60prosentGradering]);
+        expect(result).toEqual(1);
+    });
+    it('skal returnere 0 for Uttaksperiode med 1 uttaksdager med 50% gradering, fordi man avrunder ned til nærmeste heltall ', () => {
+        const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedEnDagOg50prosentGradering]);
+        expect(result).toEqual(0);
     });
 });
