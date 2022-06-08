@@ -14,7 +14,7 @@ import {
 } from 'uttaksplan/types/Periode';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
-const splittPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {
+const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {
     const dagerIBerørtPeriode = Tidsperioden(berørtPeriode.tidsperiode).getAntallUttaksdager();
 
     const førsteDel: Periode = {
@@ -112,7 +112,7 @@ export const leggTilPeriode = ({
             ];
         }
 
-        const berørtPeriodeSplittetPåNyPeriode = splittPeriode(berørtPeriode, nyPeriode);
+        const berørtPeriodeSplittetPåNyPeriode = splittPeriodePåPeriode(berørtPeriode, nyPeriode);
 
         if (
             isInfoPeriode(berørtPeriode) ||

@@ -4,6 +4,35 @@ import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
 import { fjernHullPåSlutten, resetTidsperioder, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
+const leggTilPeriodeOgBuild = (
+    bevegeligePerioder: Periode[],
+    fastePerioder: Periode[],
+    nyPeriode: Periode,
+    familiehendelsesdato: Date,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean
+) => {
+    let result = leggTilPeriode({
+        perioder: bevegeligePerioder,
+        nyPeriode,
+        familiehendelsesdato,
+        harAktivitetskravIPeriodeUtenUttak,
+        erAdopsjon,
+    });
+
+    fastePerioder.forEach((fastPeriode) => {
+        result = leggTilPeriode({
+            perioder: result,
+            nyPeriode: fastPeriode,
+            familiehendelsesdato,
+            harAktivitetskravIPeriodeUtenUttak,
+            erAdopsjon,
+        });
+    });
+
+    return slåSammenLikePerioder(result);
+};
+
 const UttaksplanbuilderNew = (
     perioder: Periode[],
     familiehendelsesdato: Date,
@@ -16,27 +45,15 @@ const UttaksplanbuilderNew = (
     );
 
     return {
-        leggTilPeriode: (nyPeriode: Periode) => {
-            let result = leggTilPeriode({
-                perioder: bevegeligePerioder,
+        leggTilPeriode: (nyPeriode: Periode) =>
+            leggTilPeriodeOgBuild(
+                bevegeligePerioder,
+                fastePerioder,
                 nyPeriode,
                 familiehendelsesdato,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon,
-            });
-
-            fastePerioder.forEach((fastPeriode) => {
-                result = leggTilPeriode({
-                    perioder: result,
-                    nyPeriode: fastPeriode,
-                    familiehendelsesdato,
-                    harAktivitetskravIPeriodeUtenUttak,
-                    erAdopsjon,
-                });
-            });
-
-            return slåSammenLikePerioder(result);
-        },
+                erAdopsjon
+            ),
         oppdaterPeriode: (endretPeriode: Periode) =>
             oppdaterPeriode({
                 perioder,
