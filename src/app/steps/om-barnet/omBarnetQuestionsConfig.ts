@@ -45,9 +45,9 @@ const includeTermindato = (
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!) && registrerteBarn.length === 0) {
             return true;
         }
-        const sixWeeksAfterBirthday = dayjs(relevantFødselsdato).add(6, 'weeks');
-
-        return dayjs(sixWeeksAfterBirthday).isAfter(new Date());
+        const twelveWeeksAfterBirthday = dayjs(relevantFødselsdato).add(12, 'weeks');
+        console.log('12 weeks: ', dayjs(twelveWeeksAfterBirthday).isAfter(new Date()));
+        return dayjs(twelveWeeksAfterBirthday).isAfter(new Date());
     }
 
     return true;
@@ -143,11 +143,11 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
                 adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED
             ) || erBarnetFødt === YesOrNo.NO,
         isAnswered: ({ termindato }) => hasValue(termindato),
-        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn, rolle }) => {
+        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn }) => {
             return (
                 hasValue(fødselsdatoer[0]) ||
                 (erBarnetFødt === YesOrNo.NO && hasValue(antallBarn)) ||
-                (valgteBarn.length > 0 && rolle === 'mor')
+                valgteBarn.length > 0
             );
         },
     },

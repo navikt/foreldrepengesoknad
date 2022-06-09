@@ -61,7 +61,6 @@ const OmBarnet: React.FunctionComponent = () => {
                 // } else if (hasValue(formValues.termindato)) {
                 //     familiehendelsesdato = ISOStringToDate(formValues.termindato);
                 // }
-
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -102,6 +101,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 visible={
                                     visibility.areAllQuestionsAnswered() &&
                                     (formValues.erBarnetFødt === YesOrNo.YES ||
+                                        formValues.valgteBarn.length > 0 ||
                                         kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato))
                                 }
                                 textAlignCenter={true}
