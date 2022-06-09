@@ -16,6 +16,11 @@ export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     registrerteBarn: RegistrertBarn[];
 }
 
+const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
+    const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
+    return dayjs(twelveWeeksAfterBirthday).isAfter(new Date());
+};
+
 const includeTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
@@ -45,9 +50,7 @@ const includeTermindato = (
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!) && registrerteBarn.length === 0) {
             return true;
         }
-        const twelveWeeksAfterBirthday = dayjs(relevantFødselsdato).add(12, 'weeks');
-        console.log('12 weeks: ', dayjs(twelveWeeksAfterBirthday).isAfter(new Date()));
-        return dayjs(twelveWeeksAfterBirthday).isAfter(new Date());
+        return erDatoInnenforDeSiste12Ukene(relevantFødselsdato!);
     }
 
     return true;
@@ -142,7 +145,9 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
                 registrerteBarn,
                 adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED
             ) || erBarnetFødt === YesOrNo.NO,
-        isAnswered: ({ termindato }) => hasValue(termindato),
+        isAnswered: ({ termindato, rolle, valgteBarn }) =>
+            (kanSøkePåTermin(rolle, termindato) && hasValue(termindato)) ||
+            (valgteBarn.length > 0 && hasValue(termindato)),
         visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn }) => {
             return (
                 hasValue(fødselsdatoer[0]) ||

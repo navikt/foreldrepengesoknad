@@ -15,14 +15,12 @@ import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
 import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
-import omBarnetQuestionsConfig, { kanSøkePåTermin } from './omBarnetQuestionsConfig';
+import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 import RegistrertBarn from './components/RegistrertBarn';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-// import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -55,12 +53,6 @@ const OmBarnet: React.FunctionComponent = () => {
                     registrerteBarn,
                 });
 
-                // let familiehendelsesdato = undefined;
-                // if (hasValue(formValues.fødselsdatoer)) {
-                //     familiehendelsesdato = ISOStringToDate(formValues.fødselsdatoer[0]);
-                // } else if (hasValue(formValues.termindato)) {
-                //     familiehendelsesdato = ISOStringToDate(formValues.termindato);
-                // }
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -97,15 +89,7 @@ const OmBarnet: React.FunctionComponent = () => {
                             />
                             <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
-                            <Block
-                                visible={
-                                    visibility.areAllQuestionsAnswered() &&
-                                    (formValues.erBarnetFødt === YesOrNo.YES ||
-                                        formValues.valgteBarn.length > 0 ||
-                                        kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato))
-                                }
-                                textAlignCenter={true}
-                            >
+                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                                 <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Hovedknapp>

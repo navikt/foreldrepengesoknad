@@ -1,7 +1,6 @@
 import { hasValue } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import {
@@ -12,7 +11,7 @@ import {
 interface FarMedmorFødselBeggeHarRettFormPayload extends FarMedmorFødselBeggeHarRettFormData {
     familiehendelsesdato: Date;
 }
-const includeFellesperiodeSpørsmål = (farMedmorsFørsteDag: any, familiehendelsesdato: Date) => {
+const includeFellesperiodeSpørsmål = (farMedmorsFørsteDag: string, familiehendelsesdato: Date) => {
     return (
         hasValue(farMedmorsFørsteDag) &&
         (!andreAugust2022ReglerGjelder ||
