@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
-import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
+import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
 import { bemUtils, Block, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
+import { Hovedknapp } from 'nav-frontend-knapper';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { logAmplitudeEvent } from 'app/amplitude/amplitude';
+import actionCreator from 'app/context/action/actionCreator';
+import Api from 'app/api/api';
 
 import './feilside.less';
 
@@ -35,6 +40,20 @@ const Feilside: React.FunctionComponent<Props> = ({
     setLanguage,
 }) => {
     const bem = bemUtils('feilside');
+    const { dispatch, state } = useForeldrepengesøknadContext();
+    const { søkerinfo } = state;
+
+    const avbrytSøknadHandler = useCallback(async () => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'avbrutt',
+        });
+
+        dispatch(actionCreator.avbrytSøknad());
+        await Api.deleteStoredAppState(søkerinfo.person.fnr);
+        window.location.href = 'http://localhost:8080';
+    }, [dispatch, søkerinfo.person.fnr]);
 
     return (
         <>
@@ -51,9 +70,7 @@ const Feilside: React.FunctionComponent<Props> = ({
                             <>
                                 <Block padBottom="m">{illustrasjon.tekst}</Block>
                                 {illustrasjon.lenke && (
-                                    <Lenke className="intro-snakkelenke" href={illustrasjon.lenke.url}>
-                                        {illustrasjon.lenke.tekst}
-                                    </Lenke>
+                                    <Lenke href={illustrasjon.lenke.url}>{illustrasjon.lenke.tekst}</Lenke>
                                 )}
                             </>
                         ),
@@ -61,13 +78,14 @@ const Feilside: React.FunctionComponent<Props> = ({
                 />
             )}
             <div id={containerId} className={bem.block}>
-                <div className="responsiveContainer">
-                    <div className="blokk-s">
-                        <Innholdstittel>{tittel}</Innholdstittel>
-                    </div>
-                    <div className="blokk-l">
-                        <Ingress>{ingress}</Ingress>
-                    </div>
+                <Block padBottom="l">
+                    <Innholdstittel>{tittel}</Innholdstittel>
+                </Block>
+                <Block padBottom="l">
+                    <Normaltekst>{ingress}</Normaltekst>
+                </Block>
+                <div className={bem.element('avbrytKnapp')}>
+                    <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
                 </div>
             </div>
         </>
