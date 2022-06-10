@@ -5,6 +5,7 @@ import IntlProvider from './intl/IntlProvider';
 import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
+import ErrorBoundary from './errorBoundary/ErrorBoundary';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
@@ -15,16 +16,18 @@ const AppContainer = () => {
 
     return (
         <ForeldrepengesøknadContextProvider>
-            <IntlProvider locale={locale}>
-                <ByttBrowserModal />
-                <Foreldrepengesøknad
-                    locale={locale}
-                    onChangeLocale={(activeLocale: Locale) => {
-                        setLocaleInSessionStorage(activeLocale);
-                        setLocale(activeLocale);
-                    }}
-                />
-            </IntlProvider>
+            <ErrorBoundary>
+                <IntlProvider locale={locale}>
+                    <ByttBrowserModal />
+                    <Foreldrepengesøknad
+                        locale={locale}
+                        onChangeLocale={(activeLocale: Locale) => {
+                            setLocaleInSessionStorage(activeLocale);
+                            setLocale(activeLocale);
+                        }}
+                    />
+                </IntlProvider>
+            </ErrorBoundary>
         </ForeldrepengesøknadContextProvider>
     );
 };

@@ -49,16 +49,17 @@ const UttaksplanInfo = () => {
         }
     }, [eksisterendeSak, dispatch]);
 
-    const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            Dekningsgrad.HUNDRE_PROSENT,
-            barn,
-            annenForelder,
-            søkersituasjon,
-            eksisterendeSakAnnenPartData?.grunnlag.termindato
-        ),
-        !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
-    );
+    const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
+        Api.useGetUttakskontoer(
+            getStønadskontoParams(
+                Dekningsgrad.HUNDRE_PROSENT,
+                barn,
+                annenForelder,
+                søkersituasjon,
+                eksisterendeSakAnnenPartData?.grunnlag.termindato
+            ),
+            !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
             Dekningsgrad.ÅTTI_PROSENT,
@@ -77,6 +78,12 @@ const UttaksplanInfo = () => {
         !stønadskontoer80 ||
         (!!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED)
     ) {
+        if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
+            );
+        }
+
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <NavFrontendSpinner type="XXL" />

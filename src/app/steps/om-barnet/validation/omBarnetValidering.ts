@@ -29,6 +29,10 @@ export const validateFødselsdato = (intl: IntlShape) => (fødselsdato: string) 
         return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere');
     }
 
+    if (dayjs(fødselsdato).isBefore(dayjs(new Date()).subtract(3, 'years'))) {
+        return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3ÅrTilbake');
+    }
+
     return undefined;
 };
 

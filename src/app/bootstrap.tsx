@@ -8,7 +8,6 @@ import { initAmplitude } from './amplitude/amplitude';
 import AppContainer from './AppContainer';
 
 import './styles/app.less';
-import ErrorBoundary from './errorBoundary/ErrorBoundary';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
@@ -33,9 +32,4 @@ Sentry.init({
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
 
-render(
-    <ErrorBoundary>
-        <AppContainer />
-    </ErrorBoundary>,
-    root
-);
+render(<AppContainer />, root);
