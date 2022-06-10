@@ -1,31 +1,30 @@
 name: Bygg branch eller PR
 
 on:
-  pull_request:
-  push:
-    branches-ignore:
-      - master
-      - uttaksplanbuilder-rework
+    pull_request:
+    push:
+        branches-ignore:
+            - master
+            - uttaksplanbuilder-rework
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  kompiler:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Cache node modules
-        uses: actions/cache@v2.1.6
-        with:
-         path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-         restore-keys: |
-           ${{ runner.os }}-build-${{ env.cache-name }}-
-           ${{ runner.os }}-build-
-           ${{ runner.os }}-
+    kompiler:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Cache node modules
+              uses: actions/cache@v2.1.6
+              with:
+                  path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
 
-      - run:  npm install
-      - run:  npm run jest
-      - run:  npm run build
-
+            - run: npm install --legacy-peer-deps
+            - run: npm run jest
+            - run: npm run build
