@@ -41,7 +41,7 @@ import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 interface Props {
@@ -167,7 +167,14 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 />
                             )}
                         </Block>
-                        <Block padBottom="l" visible={erFarEllerMedmor && formValues.dekningsgrad !== ''}>
+                        <Block
+                            padBottom="l"
+                            visible={
+                                erFarEllerMedmor &&
+                                formValues.dekningsgrad !== '' &&
+                                !andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesdato)!)
+                            }
+                        >
                             <Veilederpanel svg={<VeilederNormal transparentBackground={true} />}>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag"
