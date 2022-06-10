@@ -1,62 +1,61 @@
 name: Build, push og deploy til q1 for uttaksplanbuilder-rework branch
 
 on:
-  push:
-    branches:
-      - uttaksplanbuilder-rework
+    push:
+        branches:
+            - uttaksplanbuilder-rework
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  IMAGE_BASE: ghcr.io/navikt/fpsoknad-uttak-rework
-  SHOULD_DEPLOY: true
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    IMAGE_BASE: ghcr.io/navikt/fpsoknad-uttak-rework
+    SHOULD_DEPLOY: true
 
 jobs:
-  kompiler:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Sjekk ut kode
-        uses: actions/checkout@v3
-      - run: git fetch --prune --unshallow
+    kompiler:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Sjekk ut kode
+              uses: actions/checkout@v3
+            - run: git fetch --prune --unshallow
 
-      - name: Hent tag
-        run: |
-          echo 'TAG<<EOF' >> $GITHUB_ENV
-          git log -1 --pretty=%ad --date=format:%Y%m%d%H%M%S-`echo $GITHUB_SHA | cut -c1-7`  >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+            - name: Hent tag
+              run: |
+                  echo 'TAG<<EOF' >> $GITHUB_ENV
+                  git log -1 --pretty=%ad --date=format:%Y%m%d%H%M%S-`echo $GITHUB_SHA | cut -c1-7`  >> $GITHUB_ENV
+                  echo 'EOF' >> $GITHUB_ENV
 
-      - name: Cache node modules
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            - name: Cache node modules
+              uses: actions/cache@v2.1.6
+              with:
+                  path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
 
-      - run: npm install
-      - run: npm run jest
-      - run: |
-          npm run build
-          echo "IMAGE=$IMAGE_BASE:$TAG" >> $GITHUB_ENV
+            - run: npm install --legacy-peer-deps
+            - run: npm run jest
+            - run: |
+                  npm run build
+                  echo "IMAGE=$IMAGE_BASE:$TAG" >> $GITHUB_ENV
 
-      - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9 # Use commit-sha1 instead of tag for security concerns
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Login to GitHub Packages Docker Registry
+              uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9 # Use commit-sha1 instead of tag for security concerns
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bygg, tag og push Docker image
-        run: |
-          docker build --pull --tag ${IMAGE_BASE}:${TAG} .
-          docker push ${IMAGE_BASE} --all-tags
+            - name: Bygg, tag og push Docker image
+              run: |
+                  docker build --pull --tag ${IMAGE_BASE}:${TAG} .
+                  docker push ${IMAGE_BASE} --all-tags
 
-      - name: Deploy
-        if: success() && env.SHOULD_DEPLOY == 'true'
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          PRINT_PAYLOAD: true
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .deploy/naiserator_rework.yaml
-
+            - name: Deploy
+              if: success() && env.SHOULD_DEPLOY == 'true'
+              uses: nais/deploy/actions/deploy@v1
+              env:
+                  PRINT_PAYLOAD: true
+                  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                  CLUSTER: dev-gcp
+                  RESOURCE: .deploy/naiserator_rework.yaml
