@@ -1,6 +1,8 @@
 import { hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
+import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
+import dayjs from 'dayjs';
 import {
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
@@ -9,7 +11,15 @@ import {
 interface FarMedmorFødselBeggeHarRettFormPayload extends FarMedmorFødselBeggeHarRettFormData {
     familiehendelsesdato: Date;
 }
-
+const includeFellesperiodeSpørsmål = (farMedmorsFørsteDag: string, familiehendelsesdato: Date) => {
+    return (
+        hasValue(farMedmorsFørsteDag) &&
+        (!andreAugust2022ReglerGjelder ||
+            dayjs(ISOStringToDate(farMedmorsFørsteDag)).isAfter(
+                getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato)
+            ))
+    );
+};
 const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
     FarMedmorFødselBeggeHarRettFormPayload,
     FarMedmorFødselBeggeHarRettFormField
@@ -30,11 +40,14 @@ const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
         isAnswered: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
     },
     [FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode]: {
-        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
+        isIncluded: ({ farMedmorsFørsteDag, familiehendelsesdato }) =>
+            includeFellesperiodeSpørsmål(farMedmorsFørsteDag, familiehendelsesdato),
         isAnswered: () => true,
     },
     [FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode]: {
-        isIncluded: ({ farMedmorsFørsteDag }) => hasValue(farMedmorsFørsteDag),
+        isIncluded: ({ farMedmorsFørsteDag, familiehendelsesdato }) =>
+            includeFellesperiodeSpørsmål(farMedmorsFørsteDag, familiehendelsesdato),
+
         isAnswered: () => true,
     },
 };

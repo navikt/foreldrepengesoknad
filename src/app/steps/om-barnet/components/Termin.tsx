@@ -1,4 +1,12 @@
-import { attenUkerTreDager, Block, date21DaysAgo, dateToday, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import {
+    attenUkerTreDager,
+    date21DaysAgo,
+    Block,
+    dateToday,
+    hasValue,
+    intlUtils,
+    UtvidetInformasjon,
+} from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import VeilederNormal from 'app/assets/VeilederNormal';
@@ -7,13 +15,14 @@ import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import links from 'app/links/links';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import Lenke from 'nav-frontend-lenker';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
+import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
-
 interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
@@ -27,25 +36,17 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
         return null;
     }
 
-    if (søkersituasjon.rolle !== 'mor') {
-        return (
-            <Block padBottom="l">
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage
-                        id="omBarnet.veileder.medMorEllerFarTermin"
-                        values={{
-                            lenke: (
-                                <Lenke href={links.papirsøknad}>
-                                    <FormattedMessage id="omBarnet.papirsøknad.lenke" />
-                                </Lenke>
-                            ),
-                        }}
-                    />
-                </Veilederpanel>
-            </Block>
-        );
-    }
+    const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const farMedMorSøkerPåTermin = søkerErFarMedmor && hasValue(formValues.termindato);
+    const intlSpørsmålAntallBarnId = søkerErFarMedmor ? 'omBarnet.antallBarn.termin.far' : 'omBarnet.antallBarn.termin';
 
+    const intlTerminbekreftelseId = søkerErFarMedmor
+        ? 'omBarnet.veileder.terminbekreftelse.far'
+        : 'omBarnet.veileder.terminbekreftelse';
+
+    const intlTermindatoInfotekst = søkerErFarMedmor
+        ? 'omBarnet.termindato.infotekst.farMedmor'
+        : 'omBarnet.termindato.infotekst';
     return (
         <>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
@@ -66,7 +67,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                         },
                     ]}
                     useTwoColumns={true}
-                    legend={intlUtils(intl, 'omBarnet.antallBarn.termin')}
+                    legend={intlUtils(intl, intlSpørsmålAntallBarnId)}
                 />
             </Block>
             <Block
@@ -91,7 +92,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     placeholder={'dd.mm.åååå'}
                     description={
                         <UtvidetInformasjon apneLabel={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
-                            {intlUtils(intl, 'omBarnet.termindato.infotekst')}
+                            {intlUtils(intl, intlTermindatoInfotekst)}
                         </UtvidetInformasjon>
                     }
                     minDate={date21DaysAgo}
@@ -99,9 +100,27 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     validate={validateTermindato(intl)}
                 />
             </Block>
+
+            {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato) && (
+                <Block padBottom="l">
+                    <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                        <FormattedMessage
+                            id="omBarnet.veileder.medMorEllerFarTermin"
+                            values={{
+                                lenke: (
+                                    <Lenke href={links.papirsøknad}>
+                                        <FormattedMessage id="omBarnet.papirsøknad.lenke" />
+                                    </Lenke>
+                                ),
+                            }}
+                        />
+                    </Veilederpanel>
+                </Block>
+            )}
+
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage id="omBarnet.veileder.terminbekreftelse" />
+                    <FormattedMessage id={intlTerminbekreftelseId} />
                 </Veilederpanel>
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>

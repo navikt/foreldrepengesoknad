@@ -16,6 +16,11 @@ export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     registrerteBarn: RegistrertBarn[];
 }
 
+const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
+    const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
+    return dayjs(twelveWeeksAfterBirthday).isAfter(new Date());
+};
+
 const includeTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
@@ -45,12 +50,17 @@ const includeTermindato = (
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!) && registrerteBarn.length === 0) {
             return true;
         }
-        const sixWeeksAfterBirthday = dayjs(relevantFødselsdato).add(6, 'weeks');
-
-        return dayjs(sixWeeksAfterBirthday).isAfter(new Date());
+        return erDatoInnenforDeSiste12Ukene(relevantFødselsdato!);
     }
 
     return true;
+};
+
+export const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+    if (!isFarEllerMedmor(rolle)) {
+        return true;
+    }
+    return hasValue(termindato) ? andreAugust2022ReglerGjelder(new Date(termindato)) : false;
 };
 
 const skalViseErBarnFødt = (
@@ -135,22 +145,27 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
                 registrerteBarn,
                 adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED
             ) || erBarnetFødt === YesOrNo.NO,
-        isAnswered: ({ termindato }) => hasValue(termindato),
-        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn, rolle }) => {
+        isAnswered: ({ termindato, rolle, valgteBarn }) =>
+            (kanSøkePåTermin(rolle, termindato) && hasValue(termindato)) ||
+            (valgteBarn.length > 0 && hasValue(termindato)),
+        visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn }) => {
             return (
                 hasValue(fødselsdatoer[0]) ||
                 (erBarnetFødt === YesOrNo.NO && hasValue(antallBarn)) ||
-                (valgteBarn.length > 0 && rolle === 'mor')
+                valgteBarn.length > 0
             );
         },
     },
     [OmBarnetFormField.terminbekreftelse]: {
-        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
-        isAnswered: () => true,
+        isIncluded: ({ erBarnetFødt, arbeidsforhold, rolle, termindato }) =>
+            erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
+        isAnswered: ({ rolle, termindato, terminbekreftelse }) =>
+            kanSøkePåTermin(rolle, termindato) && hasValue(terminbekreftelse),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },
     [OmBarnetFormField.terminbekreftelsedato]: {
-        isIncluded: ({ erBarnetFødt, arbeidsforhold }) => erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0,
+        isIncluded: ({ erBarnetFødt, arbeidsforhold, rolle, termindato }) =>
+            erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
         isAnswered: ({ terminbekreftelsedato }) => hasValue(terminbekreftelsedato),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },

@@ -1,6 +1,6 @@
 import { bemUtils } from '@navikt/fp-common';
+import Barn, { isAdoptertBarn, isFødtBarn } from 'app/context/types/Barn';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
-import dayjs from 'dayjs';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -10,12 +10,12 @@ import './familiehendelsesdatoDisplay.less';
 
 interface Props {
     familiehendelsedato: Date;
-    erAdopsjon: boolean;
+    barn: Barn;
 }
 
-const getTekst = (erAdopsjon: boolean, familiehendelsedato: Date): ReactNode => {
-    if (!erAdopsjon) {
-        if (dayjs(familiehendelsedato).isSameOrBefore(new Date())) {
+const getTekst = (barn: Barn, familiehendelsedato: Date): ReactNode => {
+    if (!isAdoptertBarn(barn)) {
+        if (isFødtBarn(barn)) {
             return (
                 <FormattedMessage
                     id="uttaksplan.familiehendelsesdato.født"
@@ -40,7 +40,7 @@ const getTekst = (erAdopsjon: boolean, familiehendelsedato: Date): ReactNode => 
     );
 };
 
-const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ erAdopsjon, familiehendelsedato }) => {
+const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsedato, barn }) => {
     const bem = bemUtils('familiehendelsesdatoDisplay');
 
     return (
@@ -48,7 +48,7 @@ const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ erAdopsjon, fami
             <div className={bem.element('hjerte')}>
                 <HjerteIkon fylt={true} title="Hjerte" />
             </div>
-            <Normaltekst>{getTekst(erAdopsjon, familiehendelsedato)}</Normaltekst>
+            <Normaltekst>{getTekst(barn, familiehendelsedato)}</Normaltekst>
         </div>
     );
 };
