@@ -1,6 +1,6 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { getTidsperiode, isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
@@ -9,10 +9,13 @@ import { guid } from 'nav-frontend-js-utils';
 import {
     isHull,
     isPeriodeUtenUttak,
+    isPeriodeUtenUttakUtsettelse,
+    isUttakAnnenPart,
     Periode,
     PeriodeHull,
     Periodetype,
     PeriodeUtenUttak,
+    UttakAnnenPartInfoPeriode,
 } from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 
@@ -172,4 +175,52 @@ export const fjernHullPåSlutten = (perioder: Periode[]) => {
         res.push(periode);
         return res;
     }, [] as Periode[]);
+};
+
+export const settInnAnnenPartsUttakOmNødvendig = (perioder: Periode[], annenPartsUttak: Periode[]) => {
+    if (annenPartsUttak.length === 0) {
+        return perioder;
+    }
+
+    const result = perioder.reduce((res, p) => {
+        if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
+            const opprinneligePerioderAnnenPart = Periodene(annenPartsUttak).finnOverlappendePerioder(p);
+
+            if (opprinneligePerioderAnnenPart.length === 0) {
+                res.push(p);
+
+                return res;
+            } else {
+                opprinneligePerioderAnnenPart.forEach((opprinneligPeriode) => {
+                    const op: Periode = {
+                        ...opprinneligPeriode,
+                        id: guid(),
+                        tidsperiode: {
+                            fom: dayjs
+                                .max([dayjs(p.tidsperiode.fom), dayjs(opprinneligPeriode.tidsperiode.fom)])
+                                .toDate(),
+                            tom: dayjs
+                                .min([dayjs(p.tidsperiode.tom), dayjs(opprinneligPeriode.tidsperiode.tom)])
+                                .toDate(),
+                        },
+                    };
+
+                    if (isUttakAnnenPart(op) && op.ønskerSamtidigUttak) {
+                        const infoPeriode: UttakAnnenPartInfoPeriode = { ...op, visPeriodeIPlan: true };
+                        res.push(infoPeriode);
+                    } else {
+                        res.push(op);
+                    }
+                });
+
+                return res;
+            }
+        } else {
+            res.push(p);
+
+            return res;
+        }
+    }, [] as Periode[]);
+
+    return slåSammenLikePerioder(result);
 };

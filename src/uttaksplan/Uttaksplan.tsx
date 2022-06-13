@@ -113,6 +113,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     perioderSomSkalSendesInn,
     harKomplettUttaksplan,
     termindato,
+    opprinneligPlan,
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
     handleSlettUttaksplan,
@@ -128,7 +129,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
         uttaksplan,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
-        situasjon === 'adopsjon'
+        situasjon === 'adopsjon',
+        opprinneligPlan
     );
 
     const handleDeletePeriode = (periodeId: string) => {

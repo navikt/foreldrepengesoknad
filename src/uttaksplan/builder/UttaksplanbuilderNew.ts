@@ -1,8 +1,19 @@
-import { isForeldrepengerFørFødselUttaksperiode, isUtsettelsesperiode, Periode } from 'uttaksplan/types/Periode';
+import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
+import {
+    isForeldrepengerFørFødselUttaksperiode,
+    isInfoPeriode,
+    isUtsettelsesperiode,
+    Periode,
+} from 'uttaksplan/types/Periode';
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
-import { fjernHullPåSlutten, resetTidsperioder, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
+import {
+    fjernHullPåSlutten,
+    resetTidsperioder,
+    settInnAnnenPartsUttakOmNødvendig,
+    slåSammenLikePerioder,
+} from './uttaksplanbuilderUtils';
 
 const leggTilPeriodeOgBuild = (
     bevegeligePerioder: Periode[],
@@ -33,16 +44,80 @@ const leggTilPeriodeOgBuild = (
     return slåSammenLikePerioder(result);
 };
 
+const oppdaterPeriodeOgBuild = (
+    endretPeriode: Periode,
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean,
+    annenPartsUttak?: Periode[]
+) => {
+    const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
+
+    let oppdatertePerioder = fjernHullPåSlutten(
+        oppdaterPeriode({
+            perioder,
+            endretPeriode,
+            originalPeriode,
+            familiehendelsesdato,
+            harAktivitetskravIPeriodeUtenUttak,
+            erAdopsjon,
+        })
+    );
+
+    const antallDagerOriginalt = Perioden(originalPeriode).getAntallUttaksdager();
+    const antallDagerNyPeriode = Perioden(endretPeriode).getAntallUttaksdager();
+
+    if (annenPartsUttak && antallDagerNyPeriode < antallDagerOriginalt) {
+        oppdatertePerioder = settInnAnnenPartsUttakOmNødvendig(perioder, annenPartsUttak);
+    }
+
+    return oppdatertePerioder;
+};
+
+const slettPeriodeOgBuild = (
+    perioder: Periode[],
+    slettetPeriode: Periode,
+    familiehendelsesdato: Date,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean,
+    annenPartsUttak?: Periode[]
+) => {
+    let nyePerioder = fjernHullPåSlutten(
+        slåSammenLikePerioder(
+            slettPeriode({
+                perioder,
+                slettetPeriode,
+                familiehendelsesdato,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon,
+            })
+        )
+    );
+
+    if (annenPartsUttak) {
+        nyePerioder = settInnAnnenPartsUttakOmNødvendig(nyePerioder, annenPartsUttak);
+    }
+
+    return nyePerioder;
+};
+
 const UttaksplanbuilderNew = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     harAktivitetskravIPeriodeUtenUttak: boolean,
-    erAdopsjon: boolean
+    erAdopsjon: boolean,
+    opprinneligPlan?: Periode[]
 ) => {
     const fastePerioder = perioder.filter((p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p));
     const bevegeligePerioder = resetTidsperioder(
         perioder.filter((p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p))
     );
+    let annenPartsUttak: Periode[] | undefined = undefined;
+
+    if (opprinneligPlan) {
+        annenPartsUttak = opprinneligPlan.filter((p) => isInfoPeriode(p));
+    }
 
     return {
         leggTilPeriode: (nyPeriode: Periode) =>
@@ -55,26 +130,23 @@ const UttaksplanbuilderNew = (
                 erAdopsjon
             ),
         oppdaterPeriode: (endretPeriode: Periode) =>
-            oppdaterPeriode({
-                perioder,
+            oppdaterPeriodeOgBuild(
                 endretPeriode,
+                perioder,
                 familiehendelsesdato,
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
-            }),
-        slettPeriode: (slettetPeriode: Periode) => {
-            return fjernHullPåSlutten(
-                slåSammenLikePerioder(
-                    slettPeriode({
-                        perioder,
-                        slettetPeriode,
-                        familiehendelsesdato,
-                        harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                    })
-                )
-            );
-        },
+                annenPartsUttak
+            ),
+        slettPeriode: (slettetPeriode: Periode) =>
+            slettPeriodeOgBuild(
+                perioder,
+                slettetPeriode,
+                familiehendelsesdato,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon,
+                annenPartsUttak
+            ),
     };
 };
 

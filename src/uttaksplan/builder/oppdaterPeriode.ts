@@ -6,6 +6,7 @@ import { slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 interface OppdaterPeriodeParams {
     perioder: Periode[];
     endretPeriode: Periode;
+    originalPeriode: Periode;
     familiehendelsesdato: Date;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
@@ -14,12 +15,11 @@ interface OppdaterPeriodeParams {
 export const oppdaterPeriode = ({
     perioder,
     endretPeriode,
+    originalPeriode,
     familiehendelsesdato,
     harAktivitetskravIPeriodeUtenUttak,
     erAdopsjon,
 }: OppdaterPeriodeParams): Periode[] => {
-    const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
-
     const perioderSlettetEndretPeriode = slåSammenLikePerioder(
         slettPeriode({
             perioder,
@@ -30,11 +30,13 @@ export const oppdaterPeriode = ({
         })
     );
 
-    return leggTilPeriode({
-        perioder: perioderSlettetEndretPeriode,
-        nyPeriode: endretPeriode,
-        familiehendelsesdato,
-        harAktivitetskravIPeriodeUtenUttak,
-        erAdopsjon,
-    });
+    return slåSammenLikePerioder(
+        leggTilPeriode({
+            perioder: perioderSlettetEndretPeriode,
+            nyPeriode: endretPeriode,
+            familiehendelsesdato,
+            harAktivitetskravIPeriodeUtenUttak,
+            erAdopsjon,
+        })
+    );
 };
