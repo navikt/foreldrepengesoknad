@@ -207,9 +207,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     });
 
     useEffect(() => {
-        if (!periodeErGyldig) {
-            setUttaksplanErGyldig(false);
-        } else if (uttaksplanValidering.harFeil) {
+        if (!periodeErGyldig || uttaksplanValidering.harFeil) {
             setUttaksplanErGyldig(false);
         } else {
             setUttaksplanErGyldig(true);
