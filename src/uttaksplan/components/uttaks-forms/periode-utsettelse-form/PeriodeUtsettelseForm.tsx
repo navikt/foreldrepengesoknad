@@ -33,8 +33,8 @@ interface Props {
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
     erAleneOmOmsorg: boolean;
-    handleUpdatePeriode: (periode: Periode) => void;
-    handleAddPeriode?: (nyPeriode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
+    handleAddPeriode?: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     setNyPeriodeFormIsVisible?: Dispatch<React.SetStateAction<boolean>>;
     toggleIsOpen?: (id: string) => void;
     handleDeletePeriode?: (periodeId: string) => void;
@@ -103,7 +103,12 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     return (
         <PeriodeUtsettelseFormComponents.FormikWrapper
             initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
-            onSubmit={(values) => handleUpdatePeriode(mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor))}
+            onSubmit={(values) =>
+                handleUpdatePeriode(
+                    mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
+                    familiehendelsesdato
+                )
+            }
             renderForm={({ setFieldValue, values }) => {
                 const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
                     values,
@@ -123,6 +128,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                erFarEllerMedmor={erFarEllerMedmor}
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
@@ -149,6 +155,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     tidsperiode={tidsperiode}
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
+                                    erFarEllerMedmor={erFarEllerMedmor}
                                 />
                             </Block>
                             <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="l">
@@ -238,7 +245,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor)
+                                                    mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
+                                                    familiehendelsesdato
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}

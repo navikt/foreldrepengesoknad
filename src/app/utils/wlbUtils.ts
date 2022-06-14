@@ -67,7 +67,7 @@ export const slutterTidsperiodeInnen6UkerEtterFødsel = (tidsperiode: any, famil
 };
 
 export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
-    tidsperiode: any,
+    tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     termindato: Date | undefined
 ) => {
@@ -135,4 +135,15 @@ export const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
         )
         ? periodeNavn + intlUtils(intl, 'rundtFødsel')
         : periodeNavn;
+};
+
+export const farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato = (
+    periode: Periode,
+    familiehendelsesdato: Date
+) => {
+    return (
+        isUttaksperiodeFarMedmorPgaFødsel(periode) &&
+        dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato) &&
+        dayjs(periode.tidsperiode.tom).isSameOrAfter(familiehendelsesdato)
+    );
 };

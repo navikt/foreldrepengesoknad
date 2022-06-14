@@ -10,6 +10,8 @@ interface OppdaterPeriodeParams {
     familiehendelsesdato: Date;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
+    erFarEllerMedmor: boolean;
+    termindato: Date | undefined;
 }
 
 export const oppdaterPeriode = ({
@@ -19,6 +21,8 @@ export const oppdaterPeriode = ({
     familiehendelsesdato,
     harAktivitetskravIPeriodeUtenUttak,
     erAdopsjon,
+    erFarEllerMedmor,
+    termindato,
 }: OppdaterPeriodeParams): Periode[] => {
     const perioderSlettetEndretPeriode = slåSammenLikePerioder(
         slettPeriode({
@@ -27,7 +31,10 @@ export const oppdaterPeriode = ({
             familiehendelsesdato,
             harAktivitetskravIPeriodeUtenUttak,
             erAdopsjon,
-        })
+            erFarEllerMedmor,
+            termindato,
+        }),
+        familiehendelsesdato
     );
 
     return slåSammenLikePerioder(
@@ -37,6 +44,7 @@ export const oppdaterPeriode = ({
             familiehendelsesdato,
             harAktivitetskravIPeriodeUtenUttak,
             erAdopsjon,
-        })
+        }),
+        familiehendelsesdato
     );
 };

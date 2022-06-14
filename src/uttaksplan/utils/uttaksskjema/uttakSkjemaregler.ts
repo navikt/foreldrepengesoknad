@@ -55,7 +55,7 @@ export const getUttakSkjemaregler = (
 
     const { konto } = formValues;
 
-    const uttaksdatoer = getUttaksdatoer(familiehendelsesdato);
+    const uttaksdatoer = getUttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato);
     const tidsperiode: TidsperiodeDate = { fom: formValues.fom!, tom: formValues.tom! };
 
     return {

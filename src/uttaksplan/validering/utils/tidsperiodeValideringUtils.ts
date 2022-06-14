@@ -19,24 +19,40 @@ const erUttaksdagTest = (dato: DateValue) => ({
     failText: { intlKey: `uttaksplan.validering.feil.datoErIkkeUttaksdag` },
 });
 
-const slutterInnenforGyldigPermisjonsperiode = (dato: DateValue, familiehendelsesdato: Date) => ({
+const slutterInnenforGyldigPermisjonsperiode = (
+    dato: DateValue,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
+) => ({
     test: () =>
         dato !== undefined &&
-        dayjs(dato).isSameOrBefore(uttaksdatoer(familiehendelsesdato).sisteMuligeUttaksdagEtterTermin),
+        dayjs(dato).isSameOrBefore(
+            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).sisteMuligeUttaksdagEtterTermin
+        ),
     failText: { intlKey: 'uttaksplan.validering.feil.etterSistePermisjonsdag' },
 });
 
-const starterInnenfor12UkerFørTermin = (dato: DateValue, familiehendelsesdato: Date) => ({
+const starterInnenforGyldigAntallUkerFørTermin = (
+    dato: DateValue,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
+) => ({
     test: () =>
         dato !== undefined &&
-        dayjs(dato).isSameOrAfter(uttaksdatoer(familiehendelsesdato).førsteMuligeUttaksdagFørTermin),
+        dayjs(dato).isSameOrAfter(
+            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).førsteMuligeUttaksdagFørTermin
+        ),
     failText: { intlKey: 'uttaksplan.validering.feil.før12UkerFørTermin' },
 });
 
 export const getUttakTidsperiodeValidatorer = (
     skalIkkeHaUttak: boolean,
     tidsperiode: Partial<TidsperiodeDate>,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
 ): DatoValidatorer | undefined => {
     if (skalIkkeHaUttak) {
         return undefined;
@@ -45,16 +61,25 @@ export const getUttakTidsperiodeValidatorer = (
     const { fom, tom } = tidsperiode;
 
     return {
-        fra: [erUtfyltTest(fom), erUttaksdagTest(fom), starterInnenfor12UkerFørTermin(fom, familiehendelsesdato)],
+        fra: [
+            erUtfyltTest(fom),
+            erUttaksdagTest(fom),
+            starterInnenforGyldigAntallUkerFørTermin(fom, familiehendelsesdato, erFarEllerMedmor, termindato),
+        ],
         til: [
             erUtfyltTest(tom),
             erUttaksdagTest(tom),
-            slutterInnenforGyldigPermisjonsperiode(tom, familiehendelsesdato),
+            slutterInnenforGyldigPermisjonsperiode(tom, familiehendelsesdato, erFarEllerMedmor, termindato),
         ],
     };
 };
 
-export const uttakTidsperiodeErGyldig = (uttaksperiode: Periode, familiehendelsesdato: Date): boolean => {
+export const uttakTidsperiodeErGyldig = (
+    uttaksperiode: Periode,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
+): boolean => {
     const { tidsperiode } = uttaksperiode;
     if (!tidsperiode) {
         return false;
@@ -66,7 +91,13 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: Periode, familiehendelse
     if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
         return false;
     }
-    const validators = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
+    const validators = getUttakTidsperiodeValidatorer(
+        skalIkkeHaUttak,
+        tidsperiode,
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        termindato
+    );
     if (validators === undefined) {
         return true;
     }
@@ -78,28 +109,37 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: Periode, familiehendelse
 
 const getUtsettelseTidsperiodeValidatorer = (
     tidsperiode: Partial<TidsperiodeDate>,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
 ): DatoValidatorer | undefined => {
     return {
         fra: [erUtfyltTest(tidsperiode.fom), erUttaksdagTest(tidsperiode.fom)],
         til: [
             erUtfyltTest(tidsperiode.tom),
             erUttaksdagTest(tidsperiode.tom),
-            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato),
+            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato, erFarEllerMedmor, termindato),
         ],
     };
 };
 
 export const utsettelseTidsperiodeErGyldig = (
     utsettelesperiode: UtsettelseFormPeriodeType,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
 ): boolean => {
     const { tidsperiode } = utsettelesperiode;
 
     if (isValidTidsperiode(tidsperiode) === false) {
         return false;
     }
-    const validators = getUtsettelseTidsperiodeValidatorer(tidsperiode, familiehendelsesdato);
+    const validators = getUtsettelseTidsperiodeValidatorer(
+        tidsperiode,
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        termindato
+    );
     if (validators === undefined) {
         return true;
     }

@@ -19,9 +19,9 @@ import {
 } from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 
-export const resetTidsperioder = (perioder: Periode[]): Periode[] => {
+export const resetTidsperioder = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
     let forrigePeriode: Periode;
-    const sammenslåttePerioder = slåSammenLikePerioder(perioder.sort(sorterPerioder));
+    const sammenslåttePerioder = slåSammenLikePerioder(perioder.sort(sorterPerioder), familiehendelsesdato);
     const resattePerioder = sammenslåttePerioder.map((periode) => {
         if (forrigePeriode === undefined) {
             forrigePeriode = periode;
@@ -43,7 +43,7 @@ export const resetTidsperioder = (perioder: Periode[]): Periode[] => {
     return resattePerioder;
 };
 
-export const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
+export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
     if (perioder.length <= 1) {
         return perioder;
     }
@@ -58,6 +58,14 @@ export const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
             return;
         }
         if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
+            if (
+                dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato) &&
+                dayjs(periode.tidsperiode.fom).isSame(familiehendelsesdato)
+            ) {
+                nyePerioder.push(forrigePeriode);
+                forrigePeriode = periode;
+                return;
+            }
             forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
             return;
         } else {
@@ -177,7 +185,11 @@ export const fjernHullPåSlutten = (perioder: Periode[]) => {
     }, [] as Periode[]);
 };
 
-export const settInnAnnenPartsUttakOmNødvendig = (perioder: Periode[], annenPartsUttak: Periode[]) => {
+export const settInnAnnenPartsUttakOmNødvendig = (
+    perioder: Periode[],
+    annenPartsUttak: Periode[],
+    familiehendelsesdato: Date
+) => {
     if (annenPartsUttak.length === 0) {
         return perioder;
     }
@@ -222,5 +234,5 @@ export const settInnAnnenPartsUttakOmNødvendig = (perioder: Periode[], annenPar
         }
     }, [] as Periode[]);
 
-    return slåSammenLikePerioder(result);
+    return slåSammenLikePerioder(result, familiehendelsesdato);
 };

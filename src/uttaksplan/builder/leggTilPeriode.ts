@@ -11,6 +11,7 @@ import {
     isPeriodeUtenUttakUtsettelse,
     isUtsettelsesperiode,
     Periode,
+    Uttaksperiode,
 } from 'uttaksplan/types/Periode';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
@@ -39,6 +40,27 @@ const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): P
     };
 
     return [førsteDel, nyPeriode, andreDel];
+};
+
+export const splittUttaksperiodePåDato = (periode: Uttaksperiode, dato: Date): Uttaksperiode[] => {
+    const periodeFørDato: Periode = {
+        ...periode,
+        tidsperiode: {
+            fom: periode.tidsperiode.fom,
+            tom: Uttaksdagen(dato).forrige(),
+        },
+    };
+
+    const periodeFraOgMedDato: Periode = {
+        ...periode,
+        id: guid(),
+        tidsperiode: {
+            fom: Uttaksdagen(periodeFørDato.tidsperiode.tom).neste(),
+            tom: periode.tidsperiode.tom,
+        },
+    };
+
+    return [periodeFørDato, periodeFraOgMedDato];
 };
 
 const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode): number => {

@@ -15,7 +15,7 @@ interface Props {
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
     erAleneOmOmsorg: boolean;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
 }
 
 const PeriodeHull: FunctionComponent<Props> = ({
@@ -39,13 +39,13 @@ const PeriodeHull: FunctionComponent<Props> = ({
     const onLeggInnNyPeriode = () => {
         const { id, tidsperiode } = periode;
 
-        handleUpdatePeriode({ id, type: Periodetype.Uttak, tidsperiode } as Periode);
+        handleUpdatePeriode({ id, type: Periodetype.Uttak, tidsperiode } as Periode, familiehendelsesdato);
     };
 
     const leggInnNyUtsettelse = () => {
         const { id, tidsperiode } = periode;
 
-        handleUpdatePeriode({ id, type: Periodetype.Utsettelse, tidsperiode } as Periode);
+        handleUpdatePeriode({ id, type: Periodetype.Utsettelse, tidsperiode } as Periode, familiehendelsesdato);
     };
 
     const nyeRegler = førsteOktober2021ReglerGjelder(familiehendelsesdato);

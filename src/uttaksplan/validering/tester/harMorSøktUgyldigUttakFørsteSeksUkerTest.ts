@@ -9,6 +9,8 @@ export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (grunnlag: 
             grunnlag.perioder,
             grunnlag.familiehendelsesdato,
             grunnlag.søkersituasjon.situasjon,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.termindato,
             grunnlag.erFlerbarnssøknad,
             'førsteSeksUkerForMor'
         );
