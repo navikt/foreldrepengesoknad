@@ -15,7 +15,7 @@ import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUt
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;

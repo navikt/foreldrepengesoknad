@@ -19,7 +19,7 @@ interface Props {
     setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;
     arbeidsforhold: Arbeidsforhold[];
     isUtsettelse: boolean;
-    handleAddPeriode: (nyPeriode: Periode) => void;
+    handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;

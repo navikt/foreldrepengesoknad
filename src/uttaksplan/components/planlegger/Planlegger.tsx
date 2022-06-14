@@ -21,13 +21,13 @@ import './planlegger.less';
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
-    handleAddPeriode: (nyPeriode: Periode) => void;
+    handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;

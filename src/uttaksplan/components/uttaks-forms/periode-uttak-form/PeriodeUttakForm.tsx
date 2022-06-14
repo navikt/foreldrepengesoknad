@@ -53,8 +53,8 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erDeltUttak: boolean;
     situasjon: Situasjon;
-    handleUpdatePeriode: (periode: Periode) => void;
-    handleAddPeriode?: (nyPeriode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
+    handleAddPeriode?: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     setNyPeriodeFormIsVisible?: Dispatch<SetStateAction<boolean>>;
     toggleIsOpen?: (id: string) => void;
     handleDeletePeriode?: (periodeId: string) => void;
@@ -154,7 +154,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         values,
                         periode.id,
                         getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!)
-                    )
+                    ),
+                    familiehendelsesdato
                 )
             }
             renderForm={({ setFieldValue, values, isValid }) => {
@@ -189,6 +190,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                termindato={termindato}
+                                erFarEllerMedmor={erFarEllerMedmor}
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
@@ -215,6 +218,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
+                                    termindato={termindato}
+                                    erFarEllerMedmor={erFarEllerMedmor}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
@@ -331,7 +336,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUttakFormToPeriode(values, guid(), periodetype)
+                                                    mapPeriodeUttakFormToPeriode(values, guid(), periodetype),
+                                                    familiehendelsesdato
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}

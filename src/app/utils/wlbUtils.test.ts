@@ -1,4 +1,8 @@
+import { Forelder } from 'app/types/Forelder';
+import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
     starterTidsperiodeEtter2UkerFørFødsel,
@@ -140,6 +144,71 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
+            new Date('2022-05-27T00:00:00.000Z')
+        );
+        expect(result).toEqual(false);
+    });
+});
+describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', () => {
+    it('skal returnere at periode som går over fødsel skal splittes, når det er far/medmors periode rundt fødsel', () => {
+        const periode = {
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Fedrekvote,
+            forelder: Forelder.farMedmor,
+            erMorForSyk: false,
+            ønskerSamtidigUttak: true,
+            samtidigUttakProsent: '100',
+            tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
+        } as Periode;
+        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+            periode,
+            new Date('2022-05-27T00:00:00.000Z')
+        );
+        expect(result).toEqual(true);
+    });
+    it('skal returnere at periode som ikke går over fødsel ikke skal splittes, når det er far/medmors periode rundt fødsel', () => {
+        const periode = {
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Fedrekvote,
+            forelder: Forelder.farMedmor,
+            erMorForSyk: false,
+            ønskerSamtidigUttak: true,
+            samtidigUttakProsent: '100',
+            tidsperiode: { fom: new Date('2022-05-27T00:00:00.000Z'), tom: new Date('2022-05-29T00:00:00.000Z') },
+        } as Periode;
+        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+            periode,
+            new Date('2022-05-27T00:00:00.000Z')
+        );
+        expect(result).toEqual(false);
+    });
+    it('skal returnere at periode som slutter før fødsel ikke skal splittes, når det er far/medmors periode rundt fødsel', () => {
+        const periode = {
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Fedrekvote,
+            forelder: Forelder.farMedmor,
+            erMorForSyk: false,
+            ønskerSamtidigUttak: true,
+            samtidigUttakProsent: '100',
+            tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-26T00:00:00.000Z') },
+        } as Periode;
+        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+            periode,
+            new Date('2022-05-27T00:00:00.000Z')
+        );
+        expect(result).toEqual(false);
+    });
+    it('skal returnere at periode som går over fødsel ikke skal splittes, når det ikke er samtidig uttaksperiode', () => {
+        const periode = {
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Fedrekvote,
+            forelder: Forelder.farMedmor,
+            erMorForSyk: true,
+            ønskerSamtidigUttak: false,
+            tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-286T00:00:00.000Z') },
+        } as Periode;
+        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+            periode,
             new Date('2022-05-27T00:00:00.000Z')
         );
         expect(result).toEqual(false);

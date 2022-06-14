@@ -3,7 +3,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
 import { Forelder } from 'app/types/Forelder';
-import { Periode } from './types/Periode';
+import { Periode, Uttaksperiode } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
@@ -28,6 +28,8 @@ import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknade
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import UttaksplanbuilderNew from './builder/UttaksplanbuilderNew';
 import Barn from 'app/context/types/Barn';
+import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
+import { splittUttaksperiodePåDato } from './builder/leggTilPeriode';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -130,6 +132,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
         situasjon === 'adopsjon',
+        erFarEllerMedmor,
+        termindato,
         opprinneligPlan
     );
 
@@ -140,16 +144,33 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleOnPlanChange(result);
     };
 
-    const handleUpdatePeriode = (oppdatertPeriode: Periode) => {
-        const result = builder.oppdaterPeriode(oppdatertPeriode);
+    const handleUpdatePeriode = (oppdatertPeriode: Periode, familiehendelsesdato: Date) => {
+        let resultat: Periode[] = [];
+        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(oppdatertPeriode, familiehendelsesdato)) {
+            const perioder = splittUttaksperiodePåDato(oppdatertPeriode as Uttaksperiode, familiehendelsesdato);
 
-        handleOnPlanChange(result);
+            resultat = builder.oppdaterPerioder(perioder);
+
+            handleOnPlanChange(resultat);
+        } else {
+            const result = builder.oppdaterPeriode(oppdatertPeriode);
+
+            handleOnPlanChange(result);
+        }
     };
 
-    const handleAddPeriode = (nyPeriode: Periode) => {
-        const resultat = builder.leggTilPeriode(nyPeriode);
+    const handleAddPeriode = (nyPeriode: Periode, familiehendelsesdato: Date) => {
+        let resultat: Periode[] = [];
+        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(nyPeriode, familiehendelsesdato)) {
+            const perioder = splittUttaksperiodePåDato(nyPeriode as Uttaksperiode, familiehendelsesdato);
 
-        handleOnPlanChange(resultat);
+            resultat = builder.leggTilPerioder(perioder);
+
+            handleOnPlanChange(resultat);
+        } else {
+            resultat = builder.leggTilPeriode(nyPeriode);
+            handleOnPlanChange(resultat);
+        }
     };
 
     const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
@@ -186,9 +207,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     });
 
     useEffect(() => {
-        if (!periodeErGyldig) {
-            setUttaksplanErGyldig(false);
-        } else if (uttaksplanValidering.harFeil) {
+        if (!periodeErGyldig || uttaksplanValidering.harFeil) {
             setUttaksplanErGyldig(false);
         } else {
             setUttaksplanErGyldig(true);

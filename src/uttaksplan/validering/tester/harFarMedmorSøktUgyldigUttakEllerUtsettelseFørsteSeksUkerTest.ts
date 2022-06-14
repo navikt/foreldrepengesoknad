@@ -16,7 +16,9 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
             grunnlag.søkersituasjon.situasjon,
             grunnlag.annenForelder,
             grunnlag.søkerErAleneOmOmsorg,
-            grunnlag.søkerHarMidlertidigOmsorg
+            grunnlag.søkerHarMidlertidigOmsorg,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.termindato
         );
         const passerer = ugyldigePerioder.length === 0;
         return {

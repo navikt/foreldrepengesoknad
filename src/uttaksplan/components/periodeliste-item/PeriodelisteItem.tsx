@@ -32,7 +32,7 @@ interface Props {
     isOpen: boolean;
     toggleIsOpen: (id: string) => void;
     familiehendelsesdato: Date;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
@@ -55,7 +55,7 @@ interface Props {
 const renderPeriodeListeInnhold = (
     periode: Periode,
     familiehendelsesdato: Date,
-    handleUpdatePeriode: (periode: Periode) => void,
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void,
     stønadskontoer: TilgjengeligStønadskonto[],
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
@@ -83,6 +83,7 @@ const renderPeriodeListeInnhold = (
                         periode={periode}
                         familiehendelsesdato={familiehendelsesdato}
                         handleUpdatePeriode={handleUpdatePeriode}
+                        erFarEllerMedmor={erFarEllerMedmor}
                     />
                 );
             }
@@ -138,7 +139,13 @@ const renderPeriodeListeInnhold = (
                 />
             );
         case Periodetype.PeriodeUtenUttak:
-            return <PeriodeUtenUttak periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
+            return (
+                <PeriodeUtenUttak
+                    periode={periode}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    familiehendelsesdato={familiehendelsesdato}
+                />
+            );
         case Periodetype.Info:
             return (
                 periode.visPeriodeIPlan &&

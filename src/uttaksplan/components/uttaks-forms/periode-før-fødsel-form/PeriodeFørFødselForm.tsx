@@ -19,11 +19,17 @@ import { getPeriodeFørFødselFormInitialValues, mapPeriodeFørFødselFormToPeri
 
 interface Props {
     periode: ForeldrepengerFørFødselUttaksperiode;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     familiehendelsesdato: Date;
+    erFarEllerMedmor: boolean;
 }
 
-const PeriodeFørFødselForm: FunctionComponent<Props> = ({ periode, familiehendelsesdato, handleUpdatePeriode }) => {
+const PeriodeFørFødselForm: FunctionComponent<Props> = ({
+    periode,
+    familiehendelsesdato,
+    handleUpdatePeriode,
+    erFarEllerMedmor,
+}) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const intl = useIntl();
@@ -42,7 +48,9 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({ periode, familiehend
     return (
         <PeriodeFørFødselFormComponents.FormikWrapper
             initialValues={getPeriodeFørFødselFormInitialValues(periode)}
-            onSubmit={(values) => handleUpdatePeriode(mapPeriodeFørFødselFormToPeriode(values, periode))}
+            onSubmit={(values) =>
+                handleUpdatePeriode(mapPeriodeFørFødselFormToPeriode(values, periode), familiehendelsesdato)
+            }
             renderForm={({ setFieldValue, values }) => {
                 const visibility = periodeFørFødselFormQuestionsConfig.getVisbility(values);
 
@@ -62,6 +70,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({ periode, familiehend
                                     setFieldValue(PeriodeFørFødselFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                erFarEllerMedmor={erFarEllerMedmor}
                             />
                         </Block>
                         <PeriodeFørFødselFormComponents.Form includeButtons={false}>
@@ -94,6 +103,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({ periode, familiehend
                                     tidsperiode={tidsperiode}
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
+                                    erFarEllerMedmor={erFarEllerMedmor}
                                 />
                             </Block>
 
