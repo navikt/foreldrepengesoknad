@@ -69,7 +69,7 @@ const oppdaterPeriodeOgBuild = (
     const antallDagerNyPeriode = Perioden(endretPeriode).getAntallUttaksdager();
 
     if (annenPartsUttak && antallDagerNyPeriode < antallDagerOriginalt) {
-        oppdatertePerioder = settInnAnnenPartsUttakOmNødvendig(perioder, annenPartsUttak);
+        oppdatertePerioder = settInnAnnenPartsUttakOmNødvendig(oppdatertePerioder, annenPartsUttak);
     }
 
     return oppdatertePerioder;
