@@ -185,6 +185,53 @@ export const fjernHullPåSlutten = (perioder: Periode[]) => {
     }, [] as Periode[]);
 };
 
+export const finnOgSettInnHull = (
+    perioder: Periode[],
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean
+) => {
+    if (perioder.length === 0) {
+        return perioder;
+    }
+
+    const result = perioder.reduce((res, periode, index) => {
+        if (index === perioder.length - 1) {
+            return res;
+        }
+
+        res.push(periode);
+
+        const nestePeriode = perioder[index + 1];
+
+        const tidsperiodeMellomPerioder: TidsperiodeDate = {
+            fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+            tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige(),
+        };
+
+        if (dayjs(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
+            return res;
+        }
+
+        const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+
+        if (uttaksdagerITidsperiode > 0) {
+            res.push(
+                ...getPeriodeHullEllerPeriodeUtenUttak(
+                    tidsperiodeMellomPerioder,
+                    harAktivitetskravIPeriodeUtenUttak,
+                    familiehendelsesdato,
+                    erAdopsjon
+                )
+            );
+        }
+
+        return res;
+    }, [] as Periode[]);
+
+    return result;
+};
+
 export const settInnAnnenPartsUttakOmNødvendig = (
     perioder: Periode[],
     annenPartsUttak: Periode[],
