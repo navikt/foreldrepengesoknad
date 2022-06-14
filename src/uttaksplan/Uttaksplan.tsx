@@ -132,8 +132,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
         situasjon === 'adopsjon',
-        erFarEllerMedmor,
-        termindato,
         opprinneligPlan
     );
 

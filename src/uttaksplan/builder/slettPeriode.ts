@@ -1,5 +1,4 @@
-import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from 'app/utils/wlbUtils';
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { Periode } from 'uttaksplan/types/Periode';
 import { getPeriodeHullEllerPeriodeUtenUttak } from './uttaksplanbuilderUtils';
 
 interface SlettPeriodeParams {
@@ -8,8 +7,6 @@ interface SlettPeriodeParams {
     familiehendelsesdato: Date;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
-    erFarEllerMedmor: boolean;
-    termindato: Date | undefined;
 }
 
 export const slettPeriode = ({
@@ -18,32 +15,17 @@ export const slettPeriode = ({
     familiehendelsesdato,
     harAktivitetskravIPeriodeUtenUttak,
     erAdopsjon,
-    erFarEllerMedmor,
-    termindato,
 }: SlettPeriodeParams): Periode[] => {
     const result: Periode[] = perioder.reduce((res, periode) => {
         if (periode.id === slettetPeriode.id) {
-            const erFarMedmorsUttaksperiodeRundtFødsel =
-                isUttaksperiode(slettetPeriode) &&
-                erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            res.push(
+                ...getPeriodeHullEllerPeriodeUtenUttak(
                     slettetPeriode.tidsperiode,
+                    harAktivitetskravIPeriodeUtenUttak,
                     familiehendelsesdato,
-                    slettetPeriode.type,
-                    slettetPeriode.konto,
-                    erFarEllerMedmor,
-                    termindato
-                );
-
-            if (!erFarMedmorsUttaksperiodeRundtFødsel) {
-                res.push(
-                    ...getPeriodeHullEllerPeriodeUtenUttak(
-                        slettetPeriode.tidsperiode,
-                        harAktivitetskravIPeriodeUtenUttak,
-                        familiehendelsesdato,
-                        erAdopsjon
-                    )
-                );
-            }
+                    erAdopsjon
+                )
+            );
             return res;
         }
 

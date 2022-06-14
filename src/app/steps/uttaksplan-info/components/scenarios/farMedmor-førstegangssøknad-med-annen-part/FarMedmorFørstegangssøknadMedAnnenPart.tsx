@@ -96,9 +96,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 uttaksplan,
                 familiehendelsedatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon,
-                erFarEllerMedmor,
-                termindato
+                erAdopsjon
             );
             uttaksplanMedAnnenPart = builder.leggTilPeriode(nyPeriode);
         } else if (eksisterendeSakAnnenPart) {
