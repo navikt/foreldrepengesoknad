@@ -196,12 +196,11 @@ export const finnOgSettInnHull = (
     }
 
     const result = perioder.reduce((res, periode, index) => {
+        res.push(periode);
+
         if (index === perioder.length - 1) {
-            res.push(periode);
             return res;
         }
-
-        res.push(periode);
 
         const nestePeriode = perioder[index + 1];
 
