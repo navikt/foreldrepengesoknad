@@ -5,6 +5,7 @@ import {
     gjelderWLBReglerFarMedmorRundtFødsel,
     isUttaksperiodeFarMedmorPgaFødsel,
     slutterTidsperiodeInnen6UkerEtterFødsel,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from 'app/utils/wlbUtils';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 
@@ -24,16 +25,23 @@ export const slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel: RegelTest =
         };
     }
 
-    const perioderFarMedmorSomStarterFør2UkerFørFødsel = grunnlag.perioder
+    const perioderFarMedmorSomIkkeSlutterFør6UkerEtterFødsel = grunnlag.perioder
         .filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p))
+        .filter((p) =>
+            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p.tidsperiode,
+                grunnlag.familiehendelsesdato,
+                grunnlag.termindato
+            )
+        )
         .filter((p) => !slutterTidsperiodeInnen6UkerEtterFødsel(p.tidsperiode, grunnlag.familiehendelsesdato));
 
     const sisteUttaksdagSeksUkerEtterFødsel = formaterDatoKompakt(
         getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato)
     );
     return {
-        passerer: perioderFarMedmorSomStarterFør2UkerFørFødsel.length === 0,
-        info: perioderFarMedmorSomStarterFør2UkerFørFødsel.map((periode) => ({
+        passerer: perioderFarMedmorSomIkkeSlutterFør6UkerEtterFødsel.length === 0,
+        info: perioderFarMedmorSomIkkeSlutterFør6UkerEtterFødsel.map((periode) => ({
             intlKey: 'uttaksplan.validering.feil.slutterUttaksperiodeRundtFødselEtter6UkerEtterFødsel',
             values: { dato: sisteUttaksdagSeksUkerEtterFødsel },
             periodeId: periode.id,
