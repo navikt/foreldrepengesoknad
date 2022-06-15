@@ -52,6 +52,28 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-12T00:00:00.000Z'));
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-09-16T00:00:00.000Z'));
     });
+    it('skal legge til to perioder: en som slutter rett før fødsel og en som starter på fødselsdato hvis far velger å starte uken før fødsel', () => {
+        const perioder = deltUttak(
+            'fødsel',
+            new Date('2022-08-08T00:00:00.000Z'),
+            true,
+            [fedrekvote] as TilgjengeligStønadskonto[],
+            new Date('2022-08-01T00:00:00.000Z'),
+            undefined,
+            true,
+            undefined,
+            undefined,
+            undefined,
+            new Date('2022-08-01T00:00:00.000Z'),
+            undefined,
+            undefined //termindato
+        );
+        expect(perioder.length).toEqual(2);
+        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-01T00:00:00.000Z'));
+        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-08-05T00:00:00.000Z'));
+        expect(perioder[1].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
+        expect(perioder[1].tidsperiode.tom).toEqual(new Date('2022-08-12T00:00:00.000Z'));
+    });
     it('skal legge til fars 5 uker etter fødsel hvis WLB gjelder, situasjon er fødsel og far velger startdato etter 6 uken etter fødsel', () => {
         const perioder = deltUttak(
             'fødsel',

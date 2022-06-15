@@ -10,9 +10,11 @@ import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode'
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder, dateIsSameOrAfter, skalFarUtsetteEtterMorSinSisteUttaksdag } from '../dateUtils';
 import {
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getLengdePåForeslåttWLBUttakFarMedmor,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '../wlbUtils';
+import { splittUttaksperiodePåDato } from 'uttaksplan/builder/leggTilPeriode';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -343,7 +345,12 @@ const deltUttakFødselFarMedmor = (
 
         sisteUttaksDag = Uttaksdagen(fedrekvotePeriode.tidsperiode.tom).neste();
 
-        perioder.push(fedrekvotePeriode);
+        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(fedrekvotePeriode, familiehendelsesdato)) {
+            const fedrekvotePerioder = splittUttaksperiodePåDato(fedrekvotePeriode, familiehendelsesdato);
+            fedrekvotePerioder.forEach((periode) => perioder.push(periode));
+        } else {
+            perioder.push(fedrekvotePeriode);
+        }
     }
 
     if (fellesKonto !== undefined) {
