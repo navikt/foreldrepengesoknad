@@ -197,6 +197,7 @@ export const finnOgSettInnHull = (
 
     const result = perioder.reduce((res, periode, index) => {
         if (index === perioder.length - 1) {
+            res.push(periode);
             return res;
         }
 
