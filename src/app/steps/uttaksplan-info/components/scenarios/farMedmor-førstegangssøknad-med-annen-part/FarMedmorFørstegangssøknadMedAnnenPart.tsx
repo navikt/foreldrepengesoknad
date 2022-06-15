@@ -157,10 +157,12 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                             <FarMedmorsFørsteDag
                                 FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
                                 fieldName={FarMedmorFørstegangssøknadMedAnnenPartFormField.permisjonStartdato}
-                                familiehendelsesdato={familiehendelsedato}
+                                familiehendelsesdato={familiehendelsedatoDate!}
                                 setFieldValue={setFieldValue}
                                 morsSisteDag={morsSisteDag}
                                 navnMor={navnMor}
+                                termindato={termindato}
+                                situasjon={søkersituasjon.situasjon}
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

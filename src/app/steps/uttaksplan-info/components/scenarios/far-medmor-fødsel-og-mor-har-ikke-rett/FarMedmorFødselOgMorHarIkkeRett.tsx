@@ -147,8 +147,11 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
         : '';
     const navnFarMedmor = formaterNavn(fornavn, etternavn, mellomnavn);
-    const førsteUttaksdag = Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste();
-    const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(dateToISOString(førsteUttaksdag));
+    const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
+        familiehendelsesdatoDate!,
+        termindato,
+        søkersituasjon.situasjon
+    );
     const fødselsdato = getFødselsdato(barn);
     const visInfoOmPrematuruker =
         søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;

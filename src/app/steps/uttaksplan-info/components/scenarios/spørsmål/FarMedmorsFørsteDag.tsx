@@ -3,6 +3,7 @@ import { dateToISOString, TypedFormComponents } from '@navikt/sif-common-formik/
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
+import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -10,10 +11,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;
     fieldName: string;
-    familiehendelsesdato: string;
+    familiehendelsesdato: Date;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     morsSisteDag: Date | undefined;
     navnMor: string;
+    termindato: Date | undefined;
+    situasjon: Situasjon;
 }
 
 const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
@@ -23,14 +26,15 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
     morsSisteDag,
     setFieldValue,
     navnMor,
+    termindato,
+    situasjon,
 }) => {
     const intl = useIntl();
-
     const maxDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato).maxDate
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).maxDate
     );
     const minDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato).minDate
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).minDate
     );
 
     return (
@@ -46,7 +50,7 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                     placeholder={'dd.mm.åååå'}
                 />
             </Block>
-            {!andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesdato)!) && (
+            {!andreAugust2022ReglerGjelder(familiehendelsesdato) && (
                 <LenkeKnapp
                     text={
                         <FormattedMessage

@@ -3,6 +3,9 @@ import { Uttaksdagen } from './Uttaksdagen';
 import uttaksConstants from 'app/constants';
 import { DatepickerLimitations } from 'nav-datovelger';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { Situasjon } from 'app/types/Situasjon';
+import { getFørsteUttaksdag2UkerFørFødsel } from 'app/utils/wlbUtils';
 
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     const startDato = Uttaksdagen(familiehendelsedato).denneEllerNeste();
@@ -77,8 +80,19 @@ const morsSisteUttaksdag = (familiehendelsesdato: string): DatepickerLimitations
     return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
-const startdatoPermisjonFarMedmor = (familiehendelsesdato: string): DatepickerLimitations => {
-    return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
+const startdatoPermisjonFarMedmor = (
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    situasjon: Situasjon
+): DatepickerLimitations => {
+    const defaultAvgrensning = defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
+    if (situasjon === 'fødsel' && andreAugust2022ReglerGjelder(familiehendelsesdato)) {
+        return {
+            ...defaultAvgrensning,
+            minDate: dateToISOString(getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato)),
+        };
+    }
+    return defaultAvgrensning;
 };
 
 export const uttaksplanDatoavgrensninger = {
