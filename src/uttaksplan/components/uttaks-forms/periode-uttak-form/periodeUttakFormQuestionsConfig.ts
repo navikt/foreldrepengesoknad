@@ -6,7 +6,6 @@ import { Forelder } from 'app/types/Forelder';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import dayjs from 'dayjs';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import getUttakSkjemaregler, {
     UttakSkjemaregler,
     UttakSkjemaReglerProps,
@@ -16,7 +15,6 @@ import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormC
 interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;
-    stønadskontoer: StønadskontoUttak[];
 }
 
 export const erSamtidigUttakFørFødsel = (values: Partial<PeriodeUttakFormData>, familiehendelsesdato: Date) => {
@@ -127,8 +125,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     },
     [PeriodeUttakFormField.konto]: {
         isAnswered: ({ values }) => hasValue(values.konto),
-        isIncluded: ({ stønadskontoer, values }) =>
-            isValidTidsperiode({ fom: values.fom, tom: values.tom }) && stønadskontoer.length > 0,
+        isIncluded: ({ regelProps, values }) => getUttakSkjemaregler(values, regelProps).kontoSkalBesvares(),
         visibilityFilter: ({ values }) => hasValue(values.hvemSkalTaUttak),
     },
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: {

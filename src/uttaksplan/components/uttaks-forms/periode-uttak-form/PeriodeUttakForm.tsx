@@ -182,8 +182,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         periodetype,
                         situasjon,
                         termindato,
+                        morHarRett,
+                        stønadskontoer,
                     },
-                    stønadskontoer,
                 });
 
                 return (

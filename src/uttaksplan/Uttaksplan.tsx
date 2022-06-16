@@ -29,7 +29,7 @@ import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttak
 import UttaksplanbuilderNew from './builder/UttaksplanbuilderNew';
 import Barn from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
-import { splittUttaksperiodePåDato } from './builder/leggTilPeriode';
+import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -147,7 +147,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
         if (
             farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(oppdatertPeriode, familiehendelsesdato, morHarRett)
         ) {
-            const perioder = splittUttaksperiodePåDato(oppdatertPeriode as Uttaksperiode, familiehendelsesdato);
+            const perioder = splittUttaksperiodePåFamiliehendelsesdato(
+                oppdatertPeriode as Uttaksperiode,
+                familiehendelsesdato
+            );
 
             resultat = builder.oppdaterPerioder(perioder);
 
@@ -162,7 +165,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const handleAddPeriode = (nyPeriode: Periode, familiehendelsesdato: Date) => {
         let resultat: Periode[] = [];
         if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(nyPeriode, familiehendelsesdato, morHarRett)) {
-            const perioder = splittUttaksperiodePåDato(nyPeriode as Uttaksperiode, familiehendelsesdato);
+            const perioder = splittUttaksperiodePåFamiliehendelsesdato(
+                nyPeriode as Uttaksperiode,
+                familiehendelsesdato
+            );
 
             resultat = builder.leggTilPerioder(perioder);
 

@@ -5,7 +5,7 @@ import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { guid } from 'nav-frontend-js-utils';
-import { splittUttaksperiodePåDato } from 'uttaksplan/builder/leggTilPeriode';
+import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder } from '../dateUtils';
@@ -234,7 +234,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 harIkkeAktivitetskrav: true,
             };
             if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(aktivitetsFriPeriode, famDato, morHarRett)) {
-                const aktivitetsFriePerioder = splittUttaksperiodePåDato(aktivitetsFriPeriode, famDato);
+                const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
                 aktivitetsFriePerioder.forEach((periode) => perioder.push(periode));
             } else {
                 perioder.push(aktivitetsFriPeriode);
@@ -266,7 +266,7 @@ const ikkeDeltUttakFødselFarMedmor = (
         };
 
         if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(aktivitetsFriPeriode, famDato, morHarRett)) {
-            const aktivitetsFriePerioder = splittUttaksperiodePåDato(aktivitetsFriPeriode, famDato);
+            const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
             aktivitetsFriePerioder.forEach((periode) => perioder.push(periode));
         } else {
             perioder.push(aktivitetsFriPeriode);

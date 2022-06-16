@@ -14,11 +14,14 @@ import { graderingSkalBesvaresPgaWLBUttakRundtFødsel } from './graderingSkalBes
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import kontoSkalBesvares from './kontoSkalBesvarer';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
     uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => boolean;
     samtidigUttakSkalBesvares: () => boolean;
+    kontoSkalBesvares: () => boolean;
     overføringsårsakSkalBesvares: () => boolean;
     ønskerFlerbarnsdagerSkalBesvares: () => boolean;
     graderingSkalBesvares: () => boolean;
@@ -35,6 +38,8 @@ export interface UttakSkjemaReglerProps {
     familiehendelsesdato: Date;
     periodetype: Periodetype;
     termindato: Date | undefined;
+    morHarRett: boolean;
+    stønadskontoer: StønadskontoUttak[];
 }
 
 export const getUttakSkjemaregler = (
@@ -51,6 +56,8 @@ export const getUttakSkjemaregler = (
         familiehendelsesdato,
         periodetype,
         termindato,
+        morHarRett,
+        stønadskontoer,
     } = regelProps;
 
     const { konto } = formValues;
@@ -74,7 +81,9 @@ export const getUttakSkjemaregler = (
                 familiehendelsesdato,
                 erFlerbarnssøknad,
                 termindato,
-                situasjon
+                situasjon,
+                stønadskontoer,
+                morHarRett
             ),
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
@@ -103,6 +112,15 @@ export const getUttakSkjemaregler = (
                 false, // TODO Midlertidig omsorg,
                 convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
+            ),
+        kontoSkalBesvares: (): boolean =>
+            kontoSkalBesvares(
+                periodetype,
+                tidsperiode,
+                stønadskontoer,
+                familiehendelsesdato,
+                erFarEllerMedmor,
+                morHarRett
             ),
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
             return ønskerFlerbarnsdagerSkalBesvares(periodetype, erFlerbarnssøknad, erFarEllerMedmor);

@@ -13,6 +13,7 @@ import {
     Periode,
     Uttaksperiode,
 } from 'uttaksplan/types/Periode';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
 const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {
@@ -42,25 +43,29 @@ const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): P
     return [førsteDel, nyPeriode, andreDel];
 };
 
-export const splittUttaksperiodePåDato = (periode: Uttaksperiode, dato: Date): Uttaksperiode[] => {
-    const periodeFørDato: Periode = {
+export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiode, famDato: Date): Uttaksperiode[] => {
+    const periodeFørFamDato: Periode = {
         ...periode,
+        konto: periode.konto == StønadskontoType.Foreldrepenger ? StønadskontoType.AktivitetsfriKvote : periode.konto,
+        morsAktivitetIPerioden:
+            periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitetIPerioden,
+        erMorForSyk: periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.erMorForSyk,
         tidsperiode: {
             fom: periode.tidsperiode.fom,
-            tom: Uttaksdagen(dato).forrige(),
+            tom: Uttaksdagen(famDato).forrige(),
         },
     };
 
-    const periodeFraOgMedDato: Periode = {
+    const periodeFraOgMedFamDato: Periode = {
         ...periode,
         id: guid(),
         tidsperiode: {
-            fom: Uttaksdagen(periodeFørDato.tidsperiode.tom).neste(),
+            fom: Uttaksdagen(periodeFørFamDato.tidsperiode.tom).neste(),
             tom: periode.tidsperiode.tom,
         },
     };
 
-    return [periodeFørDato, periodeFraOgMedDato];
+    return [periodeFørFamDato, periodeFraOgMedFamDato];
 };
 
 const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode): number => {

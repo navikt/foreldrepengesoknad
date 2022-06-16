@@ -2,6 +2,8 @@ import { TidsperiodeDate } from '@navikt/fp-common';
 import { Situasjon } from 'app/types/Situasjon';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
+import kontoSkalBesvares from './kontoSkalBesvarer';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 export const aktivitetskravMorSkalBesvares = (
@@ -18,7 +20,9 @@ export const aktivitetskravMorSkalBesvares = (
     familiehendelsesdato: Date,
     erFlerbarnssøknad: boolean,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
+    stønadskontoer: StønadskontoUttak[],
+    morHarRett: boolean
 ): boolean => {
     if (
         søkerErMor ||
@@ -39,7 +43,8 @@ export const aktivitetskravMorSkalBesvares = (
             familiehendelsesdato,
             termindato,
             situasjon
-        )
+        ) ||
+        !kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, !søkerErMor, morHarRett)
     ) {
         return false;
     }

@@ -14,7 +14,7 @@ import {
     getLengdePåForeslåttWLBUttakFarMedmor,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '../wlbUtils';
-import { splittUttaksperiodePåDato } from 'uttaksplan/builder/leggTilPeriode';
+import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -350,7 +350,10 @@ const deltUttakFødselFarMedmor = (
         if (
             farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(fedrekvotePeriode, familiehendelsesdato, morHarRett)
         ) {
-            const fedrekvotePerioder = splittUttaksperiodePåDato(fedrekvotePeriode, familiehendelsesdato);
+            const fedrekvotePerioder = splittUttaksperiodePåFamiliehendelsesdato(
+                fedrekvotePeriode,
+                familiehendelsesdato
+            );
             fedrekvotePerioder.forEach((periode) => perioder.push(periode));
         } else {
             perioder.push(fedrekvotePeriode);

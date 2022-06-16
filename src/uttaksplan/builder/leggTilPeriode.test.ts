@@ -1,11 +1,12 @@
 import { Forelder } from 'app/types/Forelder';
+import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { leggTilPeriode, splittUttaksperiodePåDato } from './leggTilPeriode';
+import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
 
 const perioder: Periode[] = [
     {
@@ -617,7 +618,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 });
 
 describe('Test av split periode i uttaksplan', () => {
-    const splitPeriode = {
+    const splitPeriodeFedrekvote = {
         id: '156',
         type: Periodetype.Uttak,
         tidsperiode: {
@@ -627,30 +628,55 @@ describe('Test av split periode i uttaksplan', () => {
         forelder: Forelder.farMedmor,
         konto: StønadskontoType.Fedrekvote,
     } as Uttaksperiode;
-    it('Skal spitte periode med splittedato på en virkedag i to perioder der den andre periode skal starte på splittedato', () => {
+    const splitPeriodeBFHRMedAktivitetskrav = {
+        id: '157',
+        type: Periodetype.Uttak,
+        tidsperiode: {
+            fom: new Date('2022-04-14'),
+            tom: new Date('2022-05-02'),
+        },
+        forelder: Forelder.farMedmor,
+        konto: StønadskontoType.Foreldrepenger,
+        morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+        erMorForSyk: false,
+    } as Uttaksperiode;
+    it('Skal spitte periode med fedrekvote med familiehendelsesdato på en virkedag i to perioder der den andre periode skal starte på splittedato', () => {
         const splitteDato = new Date('2022-05-02');
-        const perioder = splittUttaksperiodePåDato(splitPeriode, splitteDato);
+        const perioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(perioder.length).toEqual(2);
-        expect(perioder[0].id).toEqual(splitPeriode.id);
-        expect(perioder[0].type).toEqual(splitPeriode.type);
-        expect(perioder[0].forelder).toEqual(splitPeriode.forelder);
-        expect(perioder[0].konto).toEqual(splitPeriode.konto);
-        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriode.tidsperiode.fom);
+        expect(perioder[0].id).toEqual(splitPeriodeFedrekvote.id);
+        expect(perioder[0].type).toEqual(splitPeriodeFedrekvote.type);
+        expect(perioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(perioder[0].konto).toEqual(splitPeriodeFedrekvote.konto);
+        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(perioder[1].id).not.toEqual(splitPeriode.id);
-        expect(perioder[1].type).toEqual(splitPeriode.type);
-        expect(perioder[1].forelder).toEqual(splitPeriode.forelder);
-        expect(perioder[1].konto).toEqual(splitPeriode.konto);
+        expect(perioder[1].id).not.toEqual(splitPeriodeFedrekvote.id);
+        expect(perioder[1].type).toEqual(splitPeriodeFedrekvote.type);
+        expect(perioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(perioder[1].konto).toEqual(splitPeriodeFedrekvote.konto);
         expect(perioder[1].tidsperiode.fom).toEqual(splitteDato);
-        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriode.tidsperiode.tom);
+        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
     });
-    it('Skal spitte periode med splittedato på en helgedag i to perioder med riktige datoer', () => {
+    it('Skal spitte periodeperiode med fedrekvote med familiehendelsesdato på en helgedag i to perioder med riktige datoer', () => {
         const splitteDato = new Date('2022-05-01');
-        const perioder = splittUttaksperiodePåDato(splitPeriode, splitteDato);
+        const perioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(perioder.length).toEqual(2);
-        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriode.tidsperiode.fom);
+        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(perioder[1].tidsperiode.fom).toEqual(splitPeriode.tidsperiode.tom);
-        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriode.tidsperiode.tom);
+        expect(perioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+    });
+    it('Skal spitte periode med aktivitetskrav der BFHR slik at perioden før familiehendelsesdato blir automatisk satt til uten aktivitetskrav', () => {
+        const splitteDato = new Date('2022-05-02');
+        const perioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeBFHRMedAktivitetskrav, splitteDato);
+        expect(perioder.length).toEqual(2);
+        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(perioder[0].morsAktivitetIPerioden).toBeUndefined();
+        expect(perioder[0].erMorForSyk).toBeUndefined();
+        expect(perioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(perioder[1].morsAktivitetIPerioden).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitetIPerioden);
+        expect(perioder[1].erMorForSyk).toEqual(splitPeriodeBFHRMedAktivitetskrav.erMorForSyk);
     });
 });
