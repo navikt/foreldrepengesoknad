@@ -232,7 +232,11 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 maxDate={ISOStringToDate(datoAvgrensinger.maxDate)}
                                 disabledDateRanges={konverterStringTilDate(datoAvgrensinger.invalidDateRanges)}
                                 disableWeekend={datoAvgrensinger.weekendsNotSelectable}
-                                validate={validateStartdatoFarMedmor(intl)}
+                                validate={validateStartdatoFarMedmor(
+                                    intl,
+                                    ISOStringToDate(datoAvgrensinger.minDate)!,
+                                    ISOStringToDate(datoAvgrensinger.maxDate)!
+                                )}
                                 placeholder={'dd.mm.åååå'}
                             />
                         </Block>
