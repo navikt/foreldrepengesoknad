@@ -1,13 +1,11 @@
 import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import React, { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 import { Attachment } from 'app/types/Attachment';
 import MorErForSykDokumentasjonOpplastning from '../er-mor-for-syk-dokumentasjon/MorErForSykDokumentasjonOpplastning';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
 
 interface Props {
     fieldName: PeriodeUttakFormField;
@@ -51,11 +49,6 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="l" visible={uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk}>
                 <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} />
-            </Block>
-            <Block padBottom="l" visible={uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage id="uttaksplan.samtidigUttakVeileder" />
-                </Veilederpanel>
             </Block>
         </>
     );

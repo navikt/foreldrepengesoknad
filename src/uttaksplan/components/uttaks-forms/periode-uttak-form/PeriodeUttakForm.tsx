@@ -24,7 +24,10 @@ import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGra
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { periodeUttakFormQuestionsConfig } from './periodeUttakFormQuestionsConfig';
+import {
+    periodeUttakFormQuestionsConfig,
+    skalViseInfoOmSamtidigUttakRundtFødsel,
+} from './periodeUttakFormQuestionsConfig';
 import {
     cleanPeriodeUttakFormData,
     getPeriodeUttakFormInitialValues,
@@ -39,6 +42,8 @@ import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { guid } from 'nav-frontend-js-utils';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import VeilederNormal from 'app/assets/VeilederNormal';
 
 interface Props {
     periode: Periode;
@@ -153,7 +158,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     mapPeriodeUttakFormToPeriode(
                         values,
                         periode.id,
-                        getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!)
+                        getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!),
+                        familiehendelsesdato
                     ),
                     familiehendelsesdato
                 )
@@ -269,6 +275,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     vedlegg={values.erMorForSykDokumentasjon}
                                 />
                             </Block>
+                            <Block
+                                padBottom="l"
+                                visible={skalViseInfoOmSamtidigUttakRundtFødsel(values, familiehendelsesdato)}
+                            >
+                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                    <FormattedMessage id="uttaksplan.samtidigUttakVeileder" />
+                                </Veilederpanel>
+                            </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
                                     erFlerbarnssøknad={true}
@@ -336,7 +350,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUttakFormToPeriode(values, guid(), periodetype),
+                                                    mapPeriodeUttakFormToPeriode(
+                                                        values,
+                                                        guid(),
+                                                        periodetype,
+                                                        familiehendelsesdato
+                                                    ),
                                                     familiehendelsesdato
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);

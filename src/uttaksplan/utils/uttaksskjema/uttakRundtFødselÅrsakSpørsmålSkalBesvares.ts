@@ -2,6 +2,7 @@ import { TidsperiodeDate } from '@navikt/fp-common';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from 'app/utils/wlbUtils';
+import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
@@ -24,7 +25,8 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg ||
         !andreAugust2022ReglerGjelder(familiehendelsesdato) ||
-        situasjon !== 'fødsel'
+        situasjon !== 'fødsel' ||
+        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)
     ) {
         return false;
     }

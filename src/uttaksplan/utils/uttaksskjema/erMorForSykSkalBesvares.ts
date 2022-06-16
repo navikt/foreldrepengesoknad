@@ -1,5 +1,6 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { Situasjon } from 'app/types/Situasjon';
+import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { erInnenFørsteSeksUkerFødselFarMedmor, Uttaksdatoer } from '../uttaksdatoerUtils';
@@ -39,7 +40,8 @@ const erMorForForSykSkalBesvares = (
         erAleneOmOmsorg ||
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg ||
-        årsakTilUttakRundtFødselSkalBesvares
+        årsakTilUttakRundtFødselSkalBesvares ||
+        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)
     ) {
         return false;
     }

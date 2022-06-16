@@ -2,6 +2,9 @@ import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { Forelder } from 'app/types/Forelder';
+import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
+import dayjs from 'dayjs';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import getUttakSkjemaregler, {
@@ -15,6 +18,24 @@ interface PeriodeUttakFormQuestionsPayload {
     regelProps: UttakSkjemaReglerProps;
     stønadskontoer: StønadskontoUttak[];
 }
+
+export const erSamtidigUttakFørFødsel = (values: Partial<PeriodeUttakFormData>, familiehendelsesdato: Date) => {
+    return (
+        hasValue(values.konto) &&
+        hasValue(values.hvemSkalTaUttak) &&
+        hasValue(values.fom) &&
+        values.konto === StønadskontoType.Fedrekvote &&
+        values.hvemSkalTaUttak === Forelder.farMedmor &&
+        dayjs(values.fom).isBefore(familiehendelsesdato)
+    );
+};
+
+export const skalViseInfoOmSamtidigUttakRundtFødsel = (values: PeriodeUttakFormData, familiehendelsesdato: Date) => {
+    return (
+        values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak ||
+        erSamtidigUttakFørFødsel(values, familiehendelsesdato)
+    );
+};
 
 const skalViseGradering = (regler: UttakSkjemaregler, values: PeriodeUttakFormData): boolean => {
     if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {

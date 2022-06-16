@@ -906,7 +906,6 @@
     "uttaksplan.validering.info.manglendeVedlegg": "Du må sende inn manglande vedlegg innan 3 veker. Dersom vi ikkje får vedlegga innan fristen, manglar vi nødvendige opplysningar for å behandle saka di. Vi kan då avgjere saka di med dei opplysningane vi har tilgjengeleg, og du kan risikere å få avslag.",
     "uttaksplan.validering.info.rettTilUttakRundtFødsel": "Du har igjen {antallDager} dager som du kan ta ut av din egen kvote rundt fødselen ({fraDato} - {tilDato}). Du kan ta ut disse dagene senere i foreldrepengeperioden dersom du heller ønsker det.",
     "uttaksplan.validering.feil.inneholderUtsettelserUtenÅrsak": "Du må legge inn hvorfor du skal utsette",
-    "uttaksplan.validering.info.rettTilUttakRundtFødsel": "Du har igjen {antallDager} av opptil 10 dager av din egen kvote som du kan ta ut i forbindelse med fødselen, innenfor perioden {fraDato} - {tilDato}. Dager av kvoten din som du ikke tar ut i denne perioden kan du ta ut senere.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen din inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Hugs at du må søkja om foreldrepengar seinast {sisteDag}.",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen din inneholder kun utsettelser",

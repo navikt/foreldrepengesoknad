@@ -26,6 +26,7 @@ import {
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'uttaksplan/utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+import { erSamtidigUttakFørFødsel } from './periodeUttakFormQuestionsConfig';
 
 const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: boolean): PeriodeUttakFormData => {
     const hvemSkalTaUttak = erDeltUttak ? '' : forelder;
@@ -247,7 +248,8 @@ const skalVedleggPåkreves = (morsAktivitetIPerioden: '' | MorsAktivitet | undef
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
-    type: Periodetype
+    type: Periodetype,
+    familiehendelsesdato: Date
 ): Periode => {
     if (type === Periodetype.Overføring) {
         const periode: Overføringsperiode = {
@@ -304,7 +306,9 @@ export const mapPeriodeUttakFormToPeriode = (
             : convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk);
 
     const erSamtidigUttak =
-        hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak
+        (hasValue(values.uttakRundtFødselÅrsak) &&
+            values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak) ||
+        erSamtidigUttakFørFødsel(values, familiehendelsesdato)
             ? true
             : convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak);
 
@@ -313,7 +317,9 @@ export const mapPeriodeUttakFormToPeriode = (
         : undefined;
 
     const samtidigUttakProsentVerdi =
-        hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak
+        (hasValue(values.uttakRundtFødselÅrsak) &&
+            values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak) ||
+        erSamtidigUttakFørFødsel(values, familiehendelsesdato)
             ? getSamtidigUttaksProsentWLB(
                   convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
                   values.stillingsprosent

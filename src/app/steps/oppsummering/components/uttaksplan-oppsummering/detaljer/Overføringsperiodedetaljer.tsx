@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import { NavnPåForeldre } from 'common/types';
 import { Overføringsperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
@@ -8,6 +7,7 @@ import { intlUtils } from '@navikt/fp-common';
 import OppsummeringAvDokumentasjon from '../oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import { dokumentasjonBehøvesForOverføringsperiode } from 'app/utils/manglendeVedleggUtils';
 import { getÅrsakTekst } from '../OppsummeringUtils';
+import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 
 interface OverføringsperiodedetaljerProps {
     periode: Overføringsperiode;

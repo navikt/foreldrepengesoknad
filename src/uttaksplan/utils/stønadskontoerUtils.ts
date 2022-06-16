@@ -1,7 +1,7 @@
 import { intlUtils } from '@navikt/fp-common';
+import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Forelder } from 'common/types';
 import { IntlShape } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getForelderNavn } from './periodeUtils';
