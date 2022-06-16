@@ -67,6 +67,7 @@ interface Props {
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     termindato: Date | undefined;
+    morHarRett: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -124,6 +125,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erEndringssøknad,
     setPeriodeErGyldig,
     termindato,
+    morHarRett,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -198,6 +200,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 ugyldigeTidsperioder={undefined}
                                 termindato={termindato}
                                 erFarEllerMedmor={erFarEllerMedmor}
+                                morHarRett={morHarRett}
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
@@ -226,6 +229,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     visible={tidsperiodeIsOpen}
                                     termindato={termindato}
                                     erFarEllerMedmor={erFarEllerMedmor}
+                                    morHarRett={morHarRett}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>

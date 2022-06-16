@@ -84,6 +84,7 @@ const renderPeriodeListeInnhold = (
                         familiehendelsesdato={familiehendelsesdato}
                         handleUpdatePeriode={handleUpdatePeriode}
                         erFarEllerMedmor={erFarEllerMedmor}
+                        morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                     />
                 );
             }
@@ -108,6 +109,7 @@ const renderPeriodeListeInnhold = (
                     erEndringssøknad={erEndringssøknad}
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     termindato={termindato}
+                    morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                 />
             );
         case Periodetype.Utsettelse:

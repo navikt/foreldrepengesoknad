@@ -36,6 +36,10 @@ export const isUttaksperiodeFarMedmorPgaFødsel = (periode: Periode): boolean =>
     );
 };
 
+export const isUttaksperiodeBareFarMedmorHarRett = (periode: Periode, morHarRett: boolean): boolean => {
+    return isUttaksperiode(periode) && periode.forelder === Forelder.farMedmor && !morHarRett;
+};
+
 export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date, termindato: Date | undefined): Date => {
     const terminEllerFamHendelsesdatoMinusToUker =
         termindato !== undefined
@@ -139,10 +143,11 @@ export const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
 
 export const farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato = (
     periode: Periode,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    morHarRett: boolean
 ) => {
     return (
-        isUttaksperiodeFarMedmorPgaFødsel(periode) &&
+        (isUttaksperiodeFarMedmorPgaFødsel(periode) || isUttaksperiodeBareFarMedmorHarRett(periode, morHarRett)) &&
         dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato) &&
         dayjs(periode.tidsperiode.tom).isSameOrAfter(familiehendelsesdato)
     );

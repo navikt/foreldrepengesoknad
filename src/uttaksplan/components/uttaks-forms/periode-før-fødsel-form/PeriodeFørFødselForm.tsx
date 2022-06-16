@@ -22,6 +22,7 @@ interface Props {
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
+    morHarRett: boolean;
 }
 
 const PeriodeFørFødselForm: FunctionComponent<Props> = ({
@@ -29,6 +30,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
     handleUpdatePeriode,
     erFarEllerMedmor,
+    morHarRett,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -71,6 +73,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 erFarEllerMedmor={erFarEllerMedmor}
+                                morHarRett={morHarRett}
                             />
                         </Block>
                         <PeriodeFørFødselFormComponents.Form includeButtons={false}>
@@ -104,6 +107,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
+                                    morHarRett={morHarRett}
                                 />
                             </Block>
 

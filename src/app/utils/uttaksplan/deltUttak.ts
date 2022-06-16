@@ -300,6 +300,8 @@ const deltUttakFødselFarMedmor = (
         (konto) => konto.konto === StønadskontoType.Fellesperiode
     );
 
+    const morHarRett = true;
+
     if (
         begrunnelseForUtsettelse &&
         morSinSisteUttaksdag !== undefined &&
@@ -345,7 +347,9 @@ const deltUttakFødselFarMedmor = (
 
         sisteUttaksDag = Uttaksdagen(fedrekvotePeriode.tidsperiode.tom).neste();
 
-        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(fedrekvotePeriode, familiehendelsesdato)) {
+        if (
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(fedrekvotePeriode, familiehendelsesdato, morHarRett)
+        ) {
             const fedrekvotePerioder = splittUttaksperiodePåDato(fedrekvotePeriode, familiehendelsesdato);
             fedrekvotePerioder.forEach((periode) => perioder.push(periode));
         } else {

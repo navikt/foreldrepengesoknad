@@ -16,6 +16,7 @@ interface Props {
     ugyldigeTidsperioder: Tidsperiode[];
     visible: boolean;
     erFarEllerMedmor: boolean;
+    morHarRett: boolean;
     onAvbryt: () => void;
     onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
@@ -31,6 +32,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     familiehendelsesdato,
     ugyldigeTidsperioder,
     erFarEllerMedmor,
+    morHarRett,
 }) => {
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
@@ -73,6 +75,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     ugyldigeTidsperioder={ugyldigeTidsperioder}
                     initialMonth={initialMonth}
                     erFarEllerMedmor={erFarEllerMedmor}
+                    morHarRett={morHarRett}
                 />
             </Modal>
             <UkerDagerTeller

@@ -129,6 +129,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 erFarEllerMedmor={erFarEllerMedmor}
+                                morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
@@ -156,6 +157,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
+                                    morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                                 />
                             </Block>
                             <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="l">

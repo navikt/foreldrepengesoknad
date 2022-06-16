@@ -49,7 +49,7 @@ interface Props {
     harMidlertidigOmsorg: boolean;
     situasjon: Situasjon;
     erMorUfør: boolean;
-    harMorRett: boolean;
+    morHarRett: boolean;
     søkersituasjon: Søkersituasjon;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
@@ -106,7 +106,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     harMidlertidigOmsorg,
     situasjon,
     erMorUfør,
-    harMorRett,
+    morHarRett,
     søkersituasjon,
     dekningsgrad,
     antallBarn,
@@ -125,7 +125,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
-    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !harMorRett;
+    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett;
 
     const builder = UttaksplanbuilderNew(
         uttaksplan,
@@ -144,7 +144,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const handleUpdatePeriode = (oppdatertPeriode: Periode, familiehendelsesdato: Date) => {
         let resultat: Periode[] = [];
-        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(oppdatertPeriode, familiehendelsesdato)) {
+        if (
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(oppdatertPeriode, familiehendelsesdato, morHarRett)
+        ) {
             const perioder = splittUttaksperiodePåDato(oppdatertPeriode as Uttaksperiode, familiehendelsesdato);
 
             resultat = builder.oppdaterPerioder(perioder);
@@ -159,7 +161,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const handleAddPeriode = (nyPeriode: Periode, familiehendelsesdato: Date) => {
         let resultat: Periode[] = [];
-        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(nyPeriode, familiehendelsesdato)) {
+        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(nyPeriode, familiehendelsesdato, morHarRett)) {
             const perioder = splittUttaksperiodePåDato(nyPeriode as Uttaksperiode, familiehendelsesdato);
 
             resultat = builder.leggTilPerioder(perioder);
@@ -192,7 +194,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         søkerHarMidlertidigOmsorg: harMidlertidigOmsorg,
         erDeltUttak: erDeltUttak,
         morErUfør: erMorUfør,
-        morHarRett: harMorRett,
+        morHarRett: morHarRett,
         erFlerbarnssøknad: erFlerbarnssøknad,
         familiehendelsesdato: familiehendelsesdatoDate,
         termindato: termindato,

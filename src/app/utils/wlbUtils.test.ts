@@ -162,7 +162,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         } as Periode;
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
+            true
         );
         expect(result).toEqual(true);
     });
@@ -178,7 +179,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         } as Periode;
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
+            true
         );
         expect(result).toEqual(false);
     });
@@ -194,7 +196,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         } as Periode;
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
+            true
         );
         expect(result).toEqual(false);
     });
@@ -209,7 +212,36 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         } as Periode;
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
+            true
+        );
+        expect(result).toEqual(false);
+    });
+    it('skal returnere at periode som går over fødsel skal splittes, når det er far/medmors periode og bare far/medmor har rett', () => {
+        const periode = {
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Foreldrepenger,
+            forelder: Forelder.farMedmor,
+            tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
+        } as Periode;
+        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+            periode,
+            new Date('2022-05-27T00:00:00.000Z'),
+            false
+        );
+        expect(result).toEqual(true);
+    });
+    it('skal returnere at periode som går over fødsel ikke skal splittes, når det er far/medmors foreldrepengeperiode og både mor og far/medmor har rett', () => {
+        const periode = {
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Foreldrepenger,
+            forelder: Forelder.farMedmor,
+            tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
+        } as Periode;
+        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+            periode,
+            new Date('2022-05-27T00:00:00.000Z'),
+            true
         );
         expect(result).toEqual(false);
     });

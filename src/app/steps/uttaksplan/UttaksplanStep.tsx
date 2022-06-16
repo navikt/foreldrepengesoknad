@@ -71,7 +71,7 @@ const UttaksplanStep = () => {
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
-    const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
+    const morHarRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
     const opprinneligPlan = eksisterendeSak?.uttaksplan;
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
@@ -222,7 +222,7 @@ const UttaksplanStep = () => {
                 harMidlertidigOmsorg={harMidlertidigOmsorg}
                 situasjon={situasjon}
                 erMorUfør={erMorUfør}
-                harMorRett={harMorRett}
+                morHarRett={morHarRett}
                 søkersituasjon={søkersituasjon}
                 dekningsgrad={dekningsgrad}
                 antallBarn={antallBarn}

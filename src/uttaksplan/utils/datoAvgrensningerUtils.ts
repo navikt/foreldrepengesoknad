@@ -156,3 +156,27 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date
         },
     };
 };
+
+export const getDatoavgrensningerForBareFarMedmorHarRettWLB = (
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    ugyldigeTidsperioder: Tidsperiode[]
+): DatoAvgrensninger => {
+    const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
+    const maksDato = getSisteMuligeUttaksdag(familiehendelsesdato);
+    return {
+        fra: {
+            minDato,
+            maksDato,
+            helgedagerIkkeTillatt: true,
+            ugyldigeTidsperioder,
+        },
+        til: {
+            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : minDato,
+            maksDato,
+            helgedagerIkkeTillatt: true,
+            ugyldigeTidsperioder,
+        },
+    };
+};

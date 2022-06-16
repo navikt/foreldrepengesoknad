@@ -86,6 +86,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 setPeriodeErGyldig={setPeriodeErGyldig}
                 erEndringssøknad={erEndringssøknad}
                 termindato={termindato}
+                morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
             />
         </>
     ) : (
