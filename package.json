@@ -146,7 +146,7 @@
         "classnames": "^2.3.1",
         "compression": "^1.7.4",
         "core-js": "^3.16.0",
-        "date-holidays": "^2.1.1",
+        "date-holidays": "^3.16.1",
         "dayjs": "^1.10.6",
         "detect-browser": "^5.2.0",
         "express": "^4.17.1",
