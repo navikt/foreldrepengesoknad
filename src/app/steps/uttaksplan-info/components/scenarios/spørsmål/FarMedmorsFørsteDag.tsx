@@ -7,6 +7,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { validateStartdatoFarMedmor } from '../far-medmor-fødsel-og-mor-har-ikke-rett/validation/farMedmorFødselOgMorHarIkkeRettValidering';
 
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;
@@ -48,6 +49,7 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                     showYearSelector={true}
                     disableWeekend={true}
                     placeholder={'dd.mm.åååå'}
+                    validate={validateStartdatoFarMedmor(intl, minDate!, maxDate!)}
                 />
             </Block>
             {!andreAugust2022ReglerGjelder(familiehendelsesdato) && (
