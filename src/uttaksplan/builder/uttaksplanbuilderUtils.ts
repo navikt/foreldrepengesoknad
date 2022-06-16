@@ -60,7 +60,7 @@ export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato
         if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
             if (
                 dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato) &&
-                dayjs(periode.tidsperiode.fom).isSame(familiehendelsesdato)
+                dayjs(periode.tidsperiode.fom).isSame(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
             ) {
                 nyePerioder.push(forrigePeriode);
                 forrigePeriode = periode;
