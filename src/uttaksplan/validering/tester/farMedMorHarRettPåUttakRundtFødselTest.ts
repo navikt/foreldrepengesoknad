@@ -9,15 +9,18 @@ import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 
 export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
+    const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;
     if (
         !gjelderWLBReglerFarMedmorRundtFødsel(
             grunnlag.familiehendelsesdato,
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.morHarRett,
             grunnlag.søkersituasjon.situasjon
-        )
+        ) ||
+        tattUtForMangeDagerIPlanen
     ) {
         return {
             passerer: true,
