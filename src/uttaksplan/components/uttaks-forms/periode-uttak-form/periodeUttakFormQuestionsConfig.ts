@@ -35,12 +35,20 @@ export const skalViseInfoOmSamtidigUttakRundtFødsel = (values: PeriodeUttakForm
     );
 };
 
-const skalViseGradering = (regler: UttakSkjemaregler, values: PeriodeUttakFormData): boolean => {
+const skalViseGradering = (
+    regler: UttakSkjemaregler,
+    values: PeriodeUttakFormData,
+    familiehendelsesdato: Date
+): boolean => {
     if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
         return false;
     }
 
-    if (regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel() && values.uttakRundtFødselÅrsak === '') {
+    if (
+        regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel() &&
+        dayjs(values.fom).isSameOrAfter(familiehendelsesdato) &&
+        values.uttakRundtFødselÅrsak === ''
+    ) {
         return false;
     }
     if (
@@ -160,7 +168,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isAnswered: ({ values }) => values.skalHaGradering !== YesOrNo.UNANSWERED,
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
         visibilityFilter: ({ values, regelProps }) =>
-            skalViseGradering(getUttakSkjemaregler(values, regelProps), values),
+            skalViseGradering(getUttakSkjemaregler(values, regelProps), values, regelProps.familiehendelsesdato),
     },
     [PeriodeUttakFormField.stillingsprosent]: {
         isAnswered: ({ values }) => hasValue(values.stillingsprosent),
