@@ -1,7 +1,7 @@
 {
     "grunnlag": {
-        "termindato": "2021-06-27",
-        "fødselsdato": "2021-06-27",
+        "termindato": "2022-06-13",
+        "fødselsdato": "2022-06-13",
         "dekningsgrad": 100,
         "antallBarn": 1,
         "søkerErFarEllerMedmor": false,
@@ -17,93 +17,251 @@
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
+            "fom": "2022-05-23",
+            "tom": "2022-06-10",
+            "periode": {
+                "fom": "2022-05-23",
+                "tom": "2022-06-10"
+            },
             "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
             "trekkDager": 15,
             "arbeidstidprosent": 0,
             "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
             "flerbarnsdager": false,
+            "manueltBehandlet": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "972674818",
-                "type": "ORGANISASJON",
-                "navn": "PENGELØS SPAREBANK"
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
             },
-            "periodeResultatÅrsak": "2006",
-            "periode": {
-                "fom": "2021-06-07",
-                "tom": "2021-06-25"
-            }
+            "periodeResultatÅrsak": "2006"
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
+            "fom": "2022-06-13",
+            "tom": "2022-07-24",
+            "periode": {
+                "fom": "2022-06-13",
+                "tom": "2022-07-24"
+            },
             "stønadskontotype": "MØDREKVOTE",
             "trekkDager": 30,
             "arbeidstidprosent": 0,
             "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
             "flerbarnsdager": false,
+            "manueltBehandlet": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "972674818",
-                "type": "ORGANISASJON",
-                "navn": "PENGELØS SPAREBANK"
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
             },
-            "periodeResultatÅrsak": "2003",
-            "periode": {
-                "fom": "2021-06-28",
-                "tom": "2021-08-07"
-            }
+            "periodeResultatÅrsak": "2003"
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
+            "fom": "2022-07-25",
+            "tom": "2022-08-19",
+            "periode": {
+                "fom": "2022-07-25",
+                "tom": "2022-08-19"
+            },
             "stønadskontotype": "MØDREKVOTE",
-            "trekkDager": 45,
+            "trekkDager": 20,
             "arbeidstidprosent": 0,
             "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
             "flerbarnsdager": false,
+            "manueltBehandlet": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "972674818",
-                "type": "ORGANISASJON",
-                "navn": "PENGELØS SPAREBANK"
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
             },
-            "periodeResultatÅrsak": "2003",
-            "periode": {
-                "fom": "2021-08-08",
-                "tom": "2021-10-08"
-            }
+            "periodeResultatÅrsak": "2003"
         },
         {
             "periodeResultatType": "INNVILGET",
             "graderingInnvilget": false,
             "samtidigUttak": false,
+            "fom": "2022-08-22",
+            "tom": "2022-08-22",
+            "periode": {
+                "fom": "2022-08-22",
+                "tom": "2022-08-22"
+            },
             "stønadskontotype": "FELLESPERIODE",
-            "trekkDager": 80,
+            "trekkDager": 1,
             "arbeidstidprosent": 0,
             "utbetalingsprosent": 100,
             "gjelderAnnenPart": true,
-            "manueltBehandlet": false,
             "flerbarnsdager": false,
+            "manueltBehandlet": false,
             "uttakArbeidType": "ORDINÆRT_ARBEID",
             "arbeidsgiverInfo": {
-                "id": "972674818",
-                "type": "ORGANISASJON",
-                "navn": "PENGELØS SPAREBANK"
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
             },
-            "periodeResultatÅrsak": "2002",
+            "periodeResultatÅrsak": "2002"
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "fom": "2022-08-23",
+            "tom": "2022-08-23",
             "periode": {
-                "fom": "2021-10-11",
-                "tom": "2022-01-28"
-            }
+                "fom": "2022-08-23",
+                "tom": "2022-08-23"
+            },
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 1,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "flerbarnsdager": false,
+            "manueltBehandlet": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
+            },
+            "periodeResultatÅrsak": "2003"
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "fom": "2022-08-25",
+            "tom": "2022-08-25",
+            "periode": {
+                "fom": "2022-08-25",
+                "tom": "2022-08-25"
+            },
+            "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": 1,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "flerbarnsdager": false,
+            "manueltBehandlet": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
+            },
+            "periodeResultatÅrsak": "2002"
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "fom": "2022-08-26",
+            "tom": "2022-08-26",
+            "periode": {
+                "fom": "2022-08-26",
+                "tom": "2022-08-26"
+            },
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 1,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "flerbarnsdager": false,
+            "manueltBehandlet": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
+            },
+            "periodeResultatÅrsak": "2003"
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "fom": "2022-08-30",
+            "tom": "2022-08-30",
+            "periode": {
+                "fom": "2022-08-30",
+                "tom": "2022-08-30"
+            },
+            "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": 1,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "flerbarnsdager": false,
+            "manueltBehandlet": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
+            },
+            "periodeResultatÅrsak": "2002"
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "fom": "2022-08-31",
+            "tom": "2022-08-31",
+            "periode": {
+                "fom": "2022-08-31",
+                "tom": "2022-08-31"
+            },
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 1,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "flerbarnsdager": false,
+            "manueltBehandlet": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
+            },
+            "periodeResultatÅrsak": "2003"
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "fom": "2022-09-20",
+            "tom": "2022-09-27",
+            "periode": {
+                "fom": "2022-09-20",
+                "tom": "2022-09-27"
+            },
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 6,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": true,
+            "flerbarnsdager": false,
+            "manueltBehandlet": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "navn": "SJOKKERENDE ELEKTRIKER",
+                "type": "ORGANISASJON"
+            },
+            "periodeResultatÅrsak": "2003"
         }
     ]
 }
