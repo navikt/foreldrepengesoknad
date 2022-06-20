@@ -46,6 +46,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_SPRÅKKODE = 'setSpråkkode',
     SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
     SLETT_UTTAKSPLAN = 'slettUttaksplan',
+    SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
 }
 
 interface SetVelkommen {
@@ -316,6 +317,16 @@ const slettUttaksplan = (): SlettUttaksplan => ({
     type: ForeldrepengesøknadContextActionKeys.SLETT_UTTAKSPLAN,
 });
 
+interface SetUttaksplanSlettet {
+    type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_SLETTET;
+    uttaksplanHarBlittSlettet: boolean;
+}
+
+const setUttaksplanSlettet = (uttaksplanHarBlittSlettet: boolean): SetUttaksplanSlettet => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_SLETTET,
+    uttaksplanHarBlittSlettet,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -343,7 +354,8 @@ export type ForeldrepengesøknadContextAction =
     | SetSpråkkode
     | SetUttaksplan
     | SetPerioderSomSkalSendesInn
-    | SlettUttaksplan;
+    | SlettUttaksplan
+    | SetUttaksplanSlettet;
 
 export default {
     setVelkommen,
@@ -373,4 +385,5 @@ export default {
     setSpråkkode,
     setPerioderSomSkalSendesInn,
     slettUttaksplan,
+    setUttaksplanSlettet,
 };

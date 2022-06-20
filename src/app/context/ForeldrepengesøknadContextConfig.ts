@@ -24,6 +24,7 @@ export interface ForeldrepengesøknadContextState {
     antallUkerIUttaksplan: number;
     endringstidspunkt?: Date;
     perioderSomSkalSendesInn: Periode[];
+    harUttaksplanBlittSlettet: boolean;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -70,4 +71,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     kvittering: undefined!,
     endringstidspunkt: undefined,
     perioderSomSkalSendesInn: [],
+    harUttaksplanBlittSlettet: false,
 };

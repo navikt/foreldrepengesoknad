@@ -30,6 +30,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         antallUkerIUttaksplan: undefined!,
         endringstidspunkt: undefined,
         perioderSomSkalSendesInn: [],
+        harUttaksplanBlittSlettet: false,
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', () => {
