@@ -103,6 +103,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             erMorUfør={erMorUfør}
             søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
             arbeidsforhold={arbeidsforhold}
+            situasjon={situasjon}
         />
     );
 };

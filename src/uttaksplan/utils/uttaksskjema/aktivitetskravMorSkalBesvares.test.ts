@@ -29,7 +29,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-08T00:00:00.000Z'), //termindato
             'fødsel',
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
-            false //morHarRett
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -50,11 +50,11 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-01T00:00:00.000Z'), //termindato
             'fødsel',
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
-            false //morHarRett
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(true);
     });
-    it('Skal ikke måtte besvare spørsmål om mors aktivitet hvis far legger til periode før fødsel og mor ikke har rett', () => {
+    it('Skal ikke måtte besvare spørsmål om mors aktivitet hvis far legger til periode før fødsel', () => {
         const result = aktivitetskravMorSkalBesvares(
             false, //ønskerFlerbarnsdager
             false, //samtidigUttak
@@ -71,7 +71,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel',
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
-            false //morHarRett
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });

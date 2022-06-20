@@ -29,7 +29,8 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo
                             periode,
                             navnPåForeldre,
                             grunnlag.familiehendelsesdato,
-                            grunnlag.termindato
+                            grunnlag.termindato,
+                            grunnlag.søkersituasjon.situasjon
                         ),
                     tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                     forelder: (intl: IntlShape) =>

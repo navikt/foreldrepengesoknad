@@ -10,8 +10,7 @@ const kontoSkalBesvares = (
     tidsperiode: TidsperiodeDate,
     stønadskontoer: StønadskontoUttak[],
     familiehendelsesdato: Date,
-    erFarEllerMedmor: boolean,
-    morHarRett: boolean
+    erFarEllerMedmor: boolean
 ): boolean => {
     if (
         !isValidTidsperiode(tidsperiode) ||
@@ -19,7 +18,6 @@ const kontoSkalBesvares = (
         (andreAugust2022ReglerGjelder(familiehendelsesdato) &&
             periodetype === Periodetype.Uttak &&
             erFarEllerMedmor &&
-            !morHarRett &&
             dayjs(tidsperiode.fom).isBefore(familiehendelsesdato))
     ) {
         return false;

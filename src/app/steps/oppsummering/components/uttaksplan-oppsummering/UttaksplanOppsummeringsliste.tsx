@@ -24,6 +24,7 @@ import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer'
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -35,6 +36,7 @@ interface UttaksplanOppsummeringslisteProps {
     eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
     termindato: Date | undefined;
+    situasjon: Situasjon;
 }
 
 const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslisteProps> = ({
@@ -47,6 +49,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     eksisterendeUttaksplan,
     familiehendelsesdato,
     termindato,
+    situasjon,
 }) => {
     const intl = useIntl();
 
@@ -56,7 +59,14 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
 
     const getUttaksperiodeNavn = (periode: Uttaksperiode) => {
         const tittel = getStønadskontoNavnFromKonto(periode.konto);
-        return appendPeriodeNavnHvisUttakRundtFødselFarMedmor(intl, tittel, periode, familiehendelsesdato, termindato);
+        return appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
+            intl,
+            tittel,
+            periode,
+            familiehendelsesdato,
+            termindato,
+            situasjon
+        );
     };
 
     const formatTidsperiode = (tidsperiode: TidsperiodeDate) => {
@@ -89,7 +99,14 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periode: Oppholdsperiode
     ): OppsummeringslisteelementProps => {
         return {
-            venstrestiltTekst: getPeriodeTittel(intl, periode, navnPåForeldre, familiehendelsesdato, termindato),
+            venstrestiltTekst: getPeriodeTittel(
+                intl,
+                periode,
+                navnPåForeldre,
+                familiehendelsesdato,
+                termindato,
+                situasjon
+            ),
             venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
         };

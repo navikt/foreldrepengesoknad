@@ -26,7 +26,7 @@ import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     periodeUttakFormQuestionsConfig,
-    skalViseInfoOmSamtidigUttakRundtFødsel,
+    skalViseInfoOmSamtidigUttakRundtFødsel as skalViseWLBInfoOmSamtidigUttakRundtFødsel,
 } from './periodeUttakFormQuestionsConfig';
 import {
     cleanPeriodeUttakFormData,
@@ -161,7 +161,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         values,
                         periode.id,
                         getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!),
-                        familiehendelsesdato
+                        familiehendelsesdato,
+                        erFarEllerMedmor,
+                        morHarRett,
+                        situasjon
                     ),
                     familiehendelsesdato
                 )
@@ -202,6 +205,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 termindato={termindato}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
+                                situasjon={situasjon}
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
@@ -231,6 +235,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     termindato={termindato}
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={morHarRett}
+                                    situasjon={situasjon}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
@@ -282,7 +287,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             </Block>
                             <Block
                                 padBottom="l"
-                                visible={skalViseInfoOmSamtidigUttakRundtFødsel(values, familiehendelsesdato)}
+                                visible={skalViseWLBInfoOmSamtidigUttakRundtFødsel(
+                                    values,
+                                    familiehendelsesdato,
+                                    erFarEllerMedmor,
+                                    erDeltUttak,
+                                    situasjon
+                                )}
                             >
                                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                                     <FormattedMessage id="uttaksplan.samtidigUttakVeileder" />
@@ -359,7 +370,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                                         values,
                                                         guid(),
                                                         periodetype,
-                                                        familiehendelsesdato
+                                                        familiehendelsesdato,
+                                                        erFarEllerMedmor,
+                                                        morHarRett,
+                                                        situasjon
                                                     ),
                                                     familiehendelsesdato
                                                 );

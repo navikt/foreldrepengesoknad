@@ -85,6 +85,7 @@ const renderPeriodeListeInnhold = (
                         handleUpdatePeriode={handleUpdatePeriode}
                         erFarEllerMedmor={erFarEllerMedmor}
                         morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                        situasjon={situasjon}
                     />
                 );
             }
@@ -126,6 +127,7 @@ const renderPeriodeListeInnhold = (
                     erMorUfør={erMorUfør}
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     arbeidsforhold={arbeidsforhold}
+                    situasjon={situasjon}
                 />
             );
         case Periodetype.Hull:
@@ -203,6 +205,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                         annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
                         familiehendelsesdato={familiehendelsesdato}
                         termindato={termindato}
+                        situasjon={situasjon}
                     />
                 }
                 apen={isOpen}

@@ -4,6 +4,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
@@ -26,7 +27,10 @@ import {
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'uttaksplan/utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { erSamtidigUttakFørFødsel } from './periodeUttakFormQuestionsConfig';
+import {
+    erSamtidigUttakFarMedmorFørFødselWLB,
+    erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
+} from './periodeUttakFormQuestionsConfig';
 
 const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: boolean): PeriodeUttakFormData => {
     const hvemSkalTaUttak = erDeltUttak ? '' : forelder;
@@ -249,7 +253,10 @@ export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
     type: Periodetype,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    situasjon: Situasjon
 ): Periode => {
     if (type === Periodetype.Overføring) {
         const periode: Overføringsperiode = {
@@ -286,7 +293,20 @@ export const mapPeriodeUttakFormToPeriode = (
 
         return periode;
     }
-
+    const samtidigWLBUttakFørFødselFarMedmor = erSamtidigUttakFarMedmorFørFødselWLB(
+        values,
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        erDeltUttak,
+        situasjon
+    );
+    const samtidigWLBUttakFørFørsteSeksUkerFarMedmor = erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB(
+        values,
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        erDeltUttak,
+        situasjon
+    );
     const attachmentType = hasValue(values.aktivitetskravMor)
         ? AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
         : AttachmentType.UTSETTELSE_SYKDOM;
@@ -308,7 +328,7 @@ export const mapPeriodeUttakFormToPeriode = (
     const erSamtidigUttak =
         (hasValue(values.uttakRundtFødselÅrsak) &&
             values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak) ||
-        erSamtidigUttakFørFødsel(values, familiehendelsesdato)
+        samtidigWLBUttakFørFødselFarMedmor
             ? true
             : convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak);
 
@@ -319,17 +339,25 @@ export const mapPeriodeUttakFormToPeriode = (
     const samtidigUttakProsentVerdi =
         (hasValue(values.uttakRundtFødselÅrsak) &&
             values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak) ||
-        erSamtidigUttakFørFødsel(values, familiehendelsesdato)
+        samtidigWLBUttakFørFødselFarMedmor
             ? getSamtidigUttaksProsentWLB(
                   convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
                   values.stillingsprosent
               )
             : samtidigUttakProsentInputVerdi;
 
+    const forelderVerdi = samtidigWLBUttakFørFørsteSeksUkerFarMedmor
+        ? Forelder.farMedmor
+        : (values.hvemSkalTaUttak as Forelder);
+
+    const kontoVerdi = samtidigWLBUttakFørFødselFarMedmor
+        ? StønadskontoType.Fedrekvote
+        : (values.konto as StønadskontoType);
+
     const periode: Uttaksperiode = {
         id,
-        forelder: values.hvemSkalTaUttak as Forelder,
-        konto: values.konto as StønadskontoType,
+        forelder: forelderVerdi,
+        konto: kontoVerdi,
         tidsperiode: {
             fom: values.fom!,
             tom: values.tom!,

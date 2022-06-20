@@ -1,6 +1,7 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import React, { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -23,6 +24,7 @@ interface Props {
     familiehendelsesdato: Date;
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
+    situasjon: Situasjon;
 }
 
 const PeriodeFørFødselForm: FunctionComponent<Props> = ({
@@ -31,6 +33,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
     handleUpdatePeriode,
     erFarEllerMedmor,
     morHarRett,
+    situasjon,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -74,6 +77,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                 ugyldigeTidsperioder={undefined}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
+                                situasjon={situasjon}
                             />
                         </Block>
                         <PeriodeFørFødselFormComponents.Form includeButtons={false}>
@@ -108,6 +112,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={morHarRett}
+                                    situasjon={situasjon}
                                 />
                             </Block>
 

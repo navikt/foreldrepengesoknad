@@ -19,7 +19,8 @@ const erMorForForSykSkalBesvares = (
     ønskerFlerbarnsdager: boolean | undefined,
     søkerHarMidlertidigOmsorg: boolean,
     familiehendelsesdato: Date,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    bareFarMedmorHarRett: boolean
 ): boolean => {
     const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
         periodetype,
@@ -33,7 +34,8 @@ const erMorForForSykSkalBesvares = (
         søkerHarMidlertidigOmsorg,
         familiehendelsesdato,
         termindato,
-        situasjon
+        situasjon,
+        bareFarMedmorHarRett
     );
 
     if (
@@ -41,16 +43,15 @@ const erMorForForSykSkalBesvares = (
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg ||
         årsakTilUttakRundtFødselSkalBesvares ||
-        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)
+        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato) ||
+        konto === StønadskontoType.AktivitetsfriKvote
     ) {
         return false;
     }
 
     if (periodetype === Periodetype.Uttak && søkerErFarEllerMedmor) {
         if (
-            (konto === StønadskontoType.Fedrekvote ||
-                konto === StønadskontoType.Foreldrepenger ||
-                konto === StønadskontoType.AktivitetsfriKvote) &&
+            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
             erInnenFørsteSeksUkerFødselFarMedmor(
                 tidsperiode,
                 situasjon,

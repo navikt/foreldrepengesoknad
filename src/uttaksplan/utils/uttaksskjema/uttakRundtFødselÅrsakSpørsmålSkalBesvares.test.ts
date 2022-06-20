@@ -25,9 +25,28 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(true);
+    });
+    it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis kun far/medmor har rett', () => {
+        const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
+            Periodetype.Uttak,
+            StønadskontoType.Fedrekvote,
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            true, //søkerErFarEllerMedmor
+            false, //erFlerbarnssøknad
+            false, //erAleneOmOmsorg
+            false, //annenForelderKanIkkeOppgis
+            false, //ønskerFlerbarnsdager
+            false, //søkerHarMidlertidigOmsorg
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel', //situasjon
+            true //bareFarMedmorHarRett
+        );
+        expect(result).toEqual(false);
     });
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor ikke velger å bruke fedrekvote', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
@@ -42,7 +61,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -59,7 +79,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -76,7 +97,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -93,7 +115,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -110,7 +133,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' // situasjon
+            'fødsel', // situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -127,7 +151,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -144,7 +169,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'adopsjon' //situasjon
+            'adopsjon', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -172,7 +198,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB ikke gjelder'
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel' //situasjon
+            'fødsel', //situasjon
+            false //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });

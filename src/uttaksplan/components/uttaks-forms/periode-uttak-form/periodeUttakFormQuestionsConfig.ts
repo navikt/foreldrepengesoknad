@@ -2,8 +2,10 @@ import { hasValue } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import getUttakSkjemaregler, {
@@ -17,28 +19,60 @@ interface PeriodeUttakFormQuestionsPayload {
     regelProps: UttakSkjemaReglerProps;
 }
 
-export const erSamtidigUttakFørFødsel = (values: Partial<PeriodeUttakFormData>, familiehendelsesdato: Date) => {
+export const erSamtidigUttakFarMedmorFørFødselWLB = (
+    values: Partial<PeriodeUttakFormData>,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    situasjon: Situasjon
+) => {
     return (
-        hasValue(values.konto) &&
-        hasValue(values.hvemSkalTaUttak) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        erFarEllerMedmor &&
+        erDeltUttak &&
+        situasjon === 'fødsel' &&
         hasValue(values.fom) &&
-        values.konto === StønadskontoType.Fedrekvote &&
-        values.hvemSkalTaUttak === Forelder.farMedmor &&
         dayjs(values.fom).isBefore(familiehendelsesdato)
     );
 };
 
-export const skalViseInfoOmSamtidigUttakRundtFødsel = (values: PeriodeUttakFormData, familiehendelsesdato: Date) => {
+export const erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB = (
+    values: Partial<PeriodeUttakFormData>,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    situasjon: Situasjon
+) => {
+    const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        erFarEllerMedmor &&
+        erDeltUttak &&
+        situasjon === 'fødsel' &&
+        hasValue(values.fom) &&
+        dayjs(values.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel)
+    );
+};
+
+export const skalViseInfoOmSamtidigUttakRundtFødsel = (
+    values: PeriodeUttakFormData,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    situasjon: Situasjon
+) => {
     return (
         values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak ||
-        erSamtidigUttakFørFødsel(values, familiehendelsesdato)
+        erSamtidigUttakFarMedmorFørFødselWLB(values, familiehendelsesdato, erFarEllerMedmor, erDeltUttak, situasjon)
     );
 };
 
 const skalViseGradering = (
     regler: UttakSkjemaregler,
     values: PeriodeUttakFormData,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    erDeltUttak: boolean
 ): boolean => {
     if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
         return false;
@@ -47,6 +81,7 @@ const skalViseGradering = (
     if (
         regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel() &&
         dayjs(values.fom).isSameOrAfter(familiehendelsesdato) &&
+        erDeltUttak &&
         values.uttakRundtFødselÅrsak === ''
     ) {
         return false;
@@ -128,7 +163,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     },
     [PeriodeUttakFormField.hvemSkalTaUttak]: {
         isAnswered: ({ values }) => hasValue(values.hvemSkalTaUttak),
-        isIncluded: ({ regelProps }) => regelProps.erDeltUttak,
+        isIncluded: ({ regelProps, values }) => getUttakSkjemaregler(values, regelProps).hvemSkalTaUttakSkalBesvares(),
         visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
     },
     [PeriodeUttakFormField.konto]: {
@@ -168,7 +203,12 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isAnswered: ({ values }) => values.skalHaGradering !== YesOrNo.UNANSWERED,
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).graderingSkalBesvares(),
         visibilityFilter: ({ values, regelProps }) =>
-            skalViseGradering(getUttakSkjemaregler(values, regelProps), values, regelProps.familiehendelsesdato),
+            skalViseGradering(
+                getUttakSkjemaregler(values, regelProps),
+                values,
+                regelProps.familiehendelsesdato,
+                regelProps.erDeltUttak
+            ),
     },
     [PeriodeUttakFormField.stillingsprosent]: {
         isAnswered: ({ values }) => hasValue(values.stillingsprosent),

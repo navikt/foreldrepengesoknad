@@ -12,6 +12,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     perioder: Periode[];
@@ -25,6 +26,7 @@ interface Props {
     termindato: Date | undefined;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
+    situasjon: Situasjon;
 }
 
 const UttaksplanOppsummering: React.FunctionComponent<Props> = ({ dekningsgrad, antallUkerUttaksplan, ...rest }) => {

@@ -8,6 +8,7 @@ import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperi
 import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     periode: Periode;
@@ -20,6 +21,7 @@ interface Props {
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
+    situasjon: Situasjon;
     termindato?: Date;
 }
 
@@ -35,6 +37,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     termindato,
     erFarEllerMedmor,
     morHarRett,
+    situasjon,
 }) => {
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
@@ -79,6 +82,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     termindato={termindato}
                     erFarEllerMedmor={erFarEllerMedmor}
                     morHarRett={morHarRett}
+                    situasjon={situasjon}
                 />
             </Modal>
             <UkerDagerTeller

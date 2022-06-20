@@ -25,6 +25,7 @@ import { getIkonForVeilederMelding } from 'uttaksplan/validering/veilederInfo/co
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import UttaksplanAdvarselIkon from 'uttaksplan/assets/UttaksplanAdvarselIkon';
 import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     egenPeriode: boolean;
@@ -34,6 +35,7 @@ interface Props {
     annenForelderSamtidigUttakPeriode?: Periode;
     familiehendelsesdato: Date;
     termindato: Date | undefined;
+    situasjon: Situasjon;
 }
 
 const bem = bemUtils('periodelisteItemHeader');
@@ -135,6 +137,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     annenForelderSamtidigUttakPeriode,
     familiehendelsesdato,
     termindato,
+    situasjon,
 }) => {
     const intl = useIntl();
 
@@ -173,7 +176,14 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                     <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                     <div className={bem.element('tittel')}>
                         <Element tag="h2">
-                            {getPeriodeTittel(intl, periode, navnPåForeldre, familiehendelsesdato, termindato)}
+                            {getPeriodeTittel(
+                                intl,
+                                periode,
+                                navnPåForeldre,
+                                familiehendelsesdato,
+                                termindato,
+                                situasjon
+                            )}
                         </Element>
                         <Normaltekst>{varighetString}</Normaltekst>
                     </div>

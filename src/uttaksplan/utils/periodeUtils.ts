@@ -37,6 +37,7 @@ import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
+import { Situasjon } from 'app/types/Situasjon';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -169,7 +170,8 @@ export const getPeriodeTittel = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: Date,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    situasjon: Situasjon
 ): string => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -179,7 +181,8 @@ export const getPeriodeTittel = (
                 tittelMedNavn,
                 periode,
                 familiehendelsesdato,
-                termindato
+                termindato,
+                situasjon
             );
             if (
                 (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||

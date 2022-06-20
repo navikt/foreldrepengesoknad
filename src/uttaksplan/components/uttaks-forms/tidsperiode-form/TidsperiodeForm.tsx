@@ -10,12 +10,13 @@ import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-comm
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
-    getDatoavgrensningerForFarMedmorPeriodeRundtFødsel,
+    getDatoavgrensningerForFarMedmorPeriodeRundtFødsel as getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
     getDatoavgrensningerForStønadskonto,
 } from 'uttaksplan/utils/datoAvgrensningerUtils';
 import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils';
 import { getFørsteMuligeUttaksdag } from 'uttaksplan/utils/uttaksdatoerUtils';
 import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from 'app/utils/wlbUtils';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     periode?: Periode;
@@ -28,6 +29,7 @@ interface Props {
     onCancel?: () => void;
     initialMonth?: Date;
     termindato?: Date;
+    situasjon: Situasjon;
 }
 
 enum TidsperiodeFormFields {
@@ -48,11 +50,16 @@ const getDatoAvgrensninger = (
     ugyldigeTidsperioder: Tidsperiode[] | undefined,
     termindato: Date | undefined,
     erFarEllerMedmor: boolean,
-    morHarRett: boolean
+    morHarRett: boolean,
+    situasjon: Situasjon
 ): DatoAvgrensninger => {
     if (periode && ugyldigeTidsperioder && !isUtsettelsesperiode(periode)) {
-        if (isUttaksperiodeFarMedmorPgaFødsel(periode) && andreAugust2022ReglerGjelder(familiehendelsesdato)) {
-            return getDatoavgrensningerForFarMedmorPeriodeRundtFødsel(
+        if (
+            isUttaksperiodeFarMedmorPgaFødsel(periode) &&
+            andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+            situasjon === 'fødsel'
+        ) {
+            return getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB(
                 periode.tidsperiode,
                 familiehendelsesdato,
                 termindato,
@@ -61,7 +68,8 @@ const getDatoAvgrensninger = (
         }
         if (
             isUttaksperiodeBareFarMedmorHarRett(periode, morHarRett) &&
-            andreAugust2022ReglerGjelder(familiehendelsesdato)
+            andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+            situasjon === 'fødsel'
         ) {
             return getDatoavgrensningerForBareFarMedmorHarRettWLB(
                 periode.tidsperiode,
@@ -109,6 +117,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
     termindato,
     erFarEllerMedmor,
     morHarRett,
+    situasjon,
     onBekreft,
     onCancel,
 }) => {
@@ -129,7 +138,8 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                     ugyldigeTidsperioder,
                     termindato,
                     erFarEllerMedmor,
-                    morHarRett
+                    morHarRett,
+                    situasjon
                 );
 
                 return (

@@ -170,6 +170,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 navnPåForeldre={navnPåForeldre}
                                 familiehendelsesdato={familiehendelsesdato!}
                                 termindato={termindato}
+                                situasjon={søknad.søkersituasjon.situasjon}
                             />
                         </UtvidetInformasjon>
                     )}
@@ -188,6 +189,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                         navnPåForeldre={navnPåForeldre}
                                         familiehendelsesdato={familiehendelsesdato!}
                                         termindato={termindato}
+                                        situasjon={søknad.søkersituasjon.situasjon}
                                     />
                                 </UtvidetInformasjon>
                             </>

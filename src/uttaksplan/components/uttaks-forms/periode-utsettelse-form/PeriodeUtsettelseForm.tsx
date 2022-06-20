@@ -28,6 +28,8 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { CheckboksPanelProps } from 'nav-frontend-skjema';
 import { guid } from 'nav-frontend-js-utils';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
+import { Situasjon } from 'app/types/Situasjon';
+
 interface Props {
     periode: Periode;
     familiehendelsesdato: Date;
@@ -43,6 +45,7 @@ interface Props {
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     arbeidsforhold: Arbeidsforhold[];
+    situasjon: Situasjon;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -60,6 +63,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
     arbeidsforhold,
+    situasjon,
 }) => {
     const intl = useIntl();
     const { tidsperiode, id } = periode;
@@ -130,6 +134,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 ugyldigeTidsperioder={undefined}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                                situasjon={situasjon}
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
@@ -158,6 +163,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                                    situasjon={situasjon}
                                 />
                             </Block>
                             <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="l">

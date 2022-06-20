@@ -18,12 +18,15 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     søkerHarMidlertidigOmsorg: boolean,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
+    bareFarMedmorHarRett: boolean
 ): boolean => {
     if (
         erAleneOmOmsorg ||
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg ||
+        !søkerErFarEllerMedmor ||
+        bareFarMedmorHarRett ||
         !andreAugust2022ReglerGjelder(familiehendelsesdato) ||
         situasjon !== 'fødsel' ||
         dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)
@@ -39,7 +42,8 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
                 periodetype,
                 konto,
                 søkerErFarEllerMedmor,
-                termindato
+                termindato,
+                situasjon
             )
         ) {
             if (erFlerbarnssøknad) {

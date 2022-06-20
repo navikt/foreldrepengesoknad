@@ -16,12 +16,14 @@ import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBe
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 import kontoSkalBesvares from './kontoSkalBesvarer';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
+import hvemSkalTaUttakSkalBesvares from './hvemSkalTaUttakSkalBesvares';
 export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
     uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => boolean;
     samtidigUttakSkalBesvares: () => boolean;
     kontoSkalBesvares: () => boolean;
+    hvemSkalTaUttakSkalBesvares: () => boolean;
     overføringsårsakSkalBesvares: () => boolean;
     ønskerFlerbarnsdagerSkalBesvares: () => boolean;
     graderingSkalBesvares: () => boolean;
@@ -56,8 +58,8 @@ export const getUttakSkjemaregler = (
         familiehendelsesdato,
         periodetype,
         termindato,
-        morHarRett,
         stønadskontoer,
+        morHarRett,
     } = regelProps;
 
     const { konto } = formValues;
@@ -83,7 +85,7 @@ export const getUttakSkjemaregler = (
                 termindato,
                 situasjon,
                 stønadskontoer,
-                morHarRett
+                !morHarRett
             ),
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
@@ -99,7 +101,8 @@ export const getUttakSkjemaregler = (
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
                 false, // TODO Midlertidig omsorg,
                 familiehendelsesdato,
-                termindato
+                termindato,
+                !morHarRett
             ),
         samtidigUttakSkalBesvares: (): boolean =>
             samtidigUttakSkalBesvares(
@@ -114,17 +117,12 @@ export const getUttakSkjemaregler = (
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
             ),
         kontoSkalBesvares: (): boolean =>
-            kontoSkalBesvares(
-                periodetype,
-                tidsperiode,
-                stønadskontoer,
-                familiehendelsesdato,
-                erFarEllerMedmor,
-                morHarRett
-            ),
+            kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, erFarEllerMedmor),
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
             return ønskerFlerbarnsdagerSkalBesvares(periodetype, erFlerbarnssøknad, erFarEllerMedmor);
         },
+        hvemSkalTaUttakSkalBesvares: (): boolean =>
+            hvemSkalTaUttakSkalBesvares(tidsperiode, erDeltUttak, familiehendelsesdato, erFarEllerMedmor, situasjon),
         graderingSkalBesvares: (): boolean => {
             return graderingSkalBesvares(periodetype, konto as StønadskontoType);
         },
@@ -135,7 +133,8 @@ export const getUttakSkjemaregler = (
                 konto as StønadskontoType,
                 erFarEllerMedmor,
                 familiehendelsesdato,
-                termindato
+                termindato,
+                situasjon
             );
         },
         overføringsårsakSkalBesvares: () => periodetype === Periodetype.Overføring,
@@ -152,7 +151,8 @@ export const getUttakSkjemaregler = (
                 false, //TODO: midlertidig omsorg
                 familiehendelsesdato,
                 termindato,
-                situasjon
+                situasjon,
+                !morHarRett
             );
         },
     };

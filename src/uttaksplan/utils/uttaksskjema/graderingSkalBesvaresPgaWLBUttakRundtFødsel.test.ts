@@ -19,7 +19,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fedrekvote,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            new Date('2022-08-02T00:00:00.000Z') //termindato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel'
         );
         expect(result).toEqual(true);
     });
@@ -30,7 +31,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fedrekvote,
             false, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            new Date('2022-08-02T00:00:00.000Z') //termindato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel'
         );
         expect(result).toEqual(false);
     });
@@ -41,7 +43,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB gjelder', () =
             StønadskontoType.Fellesperiode,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            new Date('2022-08-02T00:00:00.000Z') //termindato
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel'
         );
         expect(result).toEqual(false);
     });
@@ -62,7 +65,8 @@ describe('graderingSkalBesvaresPgaWLBUttakRundtFødsel - når WLB ikke gjelder',
             StønadskontoType.Fedrekvote,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            new Date('2022-08-02T00:00:00.000Z') //termindato,
+            new Date('2022-08-02T00:00:00.000Z'), //termindato,
+            'fødsel'
         );
         expect(result).toEqual(false);
     });

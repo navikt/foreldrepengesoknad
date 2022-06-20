@@ -39,7 +39,8 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                                 periode,
                                 grunnlag.navnPåForeldre,
                                 grunnlag.familiehendelsesdato,
-                                grunnlag.termindato
+                                grunnlag.termindato,
+                                grunnlag.søkersituasjon.situasjon
                             ),
                         tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: fornavnAnnenForelder,

@@ -103,15 +103,19 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
     periodetype: Periodetype,
     konto: StønadskontoType,
     erFarEllerMedmor: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    situasjon: Situasjon
 ): boolean => {
     return (
         tidsperiode !== undefined &&
         isValidTidsperiode(tidsperiode) &&
         erFarEllerMedmor &&
+        situasjon === 'fødsel' &&
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         periodetype === Periodetype.Uttak &&
-        konto === StønadskontoType.Fedrekvote &&
+        (konto === StønadskontoType.Fedrekvote ||
+            konto === StønadskontoType.Foreldrepenger ||
+            konto === StønadskontoType.AktivitetsfriKvote) &&
         starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato, termindato)
     );
 };
@@ -129,9 +133,11 @@ export const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     periodeNavn: string,
     periode: Periode,
     familiehendelsesdato: Date,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    situasjon: Situasjon
 ): string => {
-    return isUttaksperiodeFarMedmorPgaFødsel(periode) &&
+    return situasjon === 'fødsel' &&
+        isUttaksperiodeFarMedmorPgaFødsel(periode) &&
         starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode.tidsperiode,
             familiehendelsesdato,
