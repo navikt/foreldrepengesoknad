@@ -251,6 +251,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     velgbareStønadskontoer={velgbareStønadskontoer}
                                     erOppholdsperiode={false}
                                     navnPåForeldre={navnPåForeldre}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    situasjon={situasjon}
+                                    erAleneOmOmsorg={erAleneOmOmsorg}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>

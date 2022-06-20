@@ -201,6 +201,7 @@ const Oppsummering = () => {
                                             familiehendelsesdato={familiehendelsesdato!}
                                             termindato={termindato}
                                             situasjon={søkersituasjon.situasjon}
+                                            erAleneOmOmsorg={erAleneOmOmsorg}
                                         />
                                     </OppsummeringsPanel>
                                 </div>

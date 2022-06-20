@@ -171,11 +171,20 @@ export const getPeriodeTittel = (
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
+    erFarEllerMedmor?: boolean,
+    erAleneOmOmsorg?: boolean
 ): string => {
     switch (periode.type) {
         case Periodetype.Uttak:
-            const tittelMedNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+            const tittelMedNavn = getStønadskontoNavn(
+                intl,
+                periode.konto,
+                navnPåForeldre,
+                erFarEllerMedmor,
+                situasjon,
+                erAleneOmOmsorg
+            );
             const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
                 intl,
                 tittelMedNavn,

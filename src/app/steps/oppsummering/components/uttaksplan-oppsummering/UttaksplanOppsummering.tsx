@@ -24,9 +24,10 @@ interface Props {
     annenForelder: AnnenForelder;
     familiehendelsesdato: Date;
     termindato: Date | undefined;
+    situasjon: Situasjon;
+    erAleneOmOmsorg: boolean;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
-    situasjon: Situasjon;
 }
 
 const UttaksplanOppsummering: React.FunctionComponent<Props> = ({ dekningsgrad, antallUkerUttaksplan, ...rest }) => {

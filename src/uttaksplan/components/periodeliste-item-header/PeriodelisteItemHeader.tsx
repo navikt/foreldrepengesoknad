@@ -36,6 +36,8 @@ interface Props {
     familiehendelsesdato: Date;
     termindato: Date | undefined;
     situasjon: Situasjon;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 const bem = bemUtils('periodelisteItemHeader');
@@ -43,7 +45,10 @@ const bem = bemUtils('periodelisteItemHeader');
 export const getPeriodeIkon = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
-    harMidlertidigOmsorg?: boolean
+    harMidlertidigOmsorg?: boolean,
+    erFarEllerMedmor?: boolean,
+    situasjon?: Situasjon,
+    erAleneOmOmsorg?: boolean
 ): React.ReactNode | undefined => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -54,6 +59,9 @@ export const getPeriodeIkon = (
                     gradert={periode.gradert}
                     navnPåForeldre={navnPåForeldre}
                     harMidlertidigOmsorg={harMidlertidigOmsorg}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    situasjon={situasjon}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
                 />
             );
         case Periodetype.Overføring:
@@ -138,6 +146,8 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     familiehendelsesdato,
     termindato,
     situasjon,
+    erFarEllerMedmor,
+    erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
 
@@ -182,7 +192,9 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                                 navnPåForeldre,
                                 familiehendelsesdato,
                                 termindato,
-                                situasjon
+                                situasjon,
+                                erFarEllerMedmor,
+                                erAleneOmOmsorg
                             )}
                         </Element>
                         <Normaltekst>{varighetString}</Normaltekst>

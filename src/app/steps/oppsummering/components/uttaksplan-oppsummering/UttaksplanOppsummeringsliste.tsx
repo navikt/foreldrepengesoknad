@@ -37,6 +37,7 @@ interface UttaksplanOppsummeringslisteProps {
     familiehendelsesdato: Date;
     termindato: Date | undefined;
     situasjon: Situasjon;
+    erAleneOmOmsorg: boolean;
 }
 
 const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslisteProps> = ({
@@ -50,11 +51,12 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     familiehendelsesdato,
     termindato,
     situasjon,
+    erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
 
     const getStønadskontoNavnFromKonto = (konto: StønadskontoType) => {
-        return getStønadskontoNavn(intl, konto, navnPåForeldre);
+        return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, situasjon, erAleneOmOmsorg);
     };
 
     const getUttaksperiodeNavn = (periode: Uttaksperiode) => {
