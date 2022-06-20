@@ -215,6 +215,11 @@ const foreldrepengesøknadReducer = (
                     uttaksplan: [],
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_SLETTET:
+            return {
+                ...state,
+                harUttaksplanBlittSlettet: action.uttaksplanHarBlittSlettet,
+            };
         default:
             return state;
     }
