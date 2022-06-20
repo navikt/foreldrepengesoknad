@@ -8,6 +8,7 @@ import { Regel, RegelAlvorlighet } from '../../utils/types/regelTypes';
 import { harUtsettelsePgaArbeidMedDeltidUtenAvtale } from './harUtsettelsePgaArbeidMedDeltidUtenAvtale';
 import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starterUttaksperiodeRundtFødselEtter2UkerFørFødsel';
 import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
+import { periodeDeFørsteSeksUkeneHarUlovligUttakBFHR } from './periodeDeFørsteSeksUkeneHarUlovligUttakBFHR';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
@@ -19,6 +20,7 @@ export enum PeriodeValiderRegelKey {
     'harUtsettelsePgaArbeidMedDeltidUtenAvtale' = 'harUtsettelsePgaArbeidMedDeltidUtenAvtale',
     'starterUttaksperiodeRundtFødselEtter2UkerFørFødsel' = 'starterUttaksperiodeRundtFødselEtter2UkerFørFødsel',
     'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel' = 'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel',
+    'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR' = 'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR',
 }
 
 /** Meldingene skal default kun vises inne i skjema */
@@ -55,6 +57,12 @@ const periodevalideringsregler: Regel[] = [
         key: PeriodeValiderRegelKey.uttaksperiodeHarStønadskonto,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksperiodeStønadskonto,
+        skjulesIOppsummering: skjulIOppsummering,
+    },
+    {
+        key: PeriodeValiderRegelKey.periodeDeFørsteSeksUkeneHarUlovligUttakBFHR,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: periodeDeFørsteSeksUkeneHarUlovligUttakBFHR,
         skjulesIOppsummering: skjulIOppsummering,
     },
     {
