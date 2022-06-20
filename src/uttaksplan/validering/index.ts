@@ -32,6 +32,7 @@ import { inneholderUtsettelserUtenÅrsak } from './tester/inneholderUtsettelserU
 import { farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest } from './tester/farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest';
 import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
 import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
+import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -66,6 +67,7 @@ export enum UttaksplanRegelKey {
     'inneholderUtsettelserUtenÅrsak' = 'inneholderUtsettelserUtenÅrsak',
     'farMedMorHarRettPåUttakRundtFødsel' = 'farMedMorHarRettPåUttakRundtFødsel',
     'farMedmorHarRettPåForeldrepengerUtenAktivitetskrav' = 'farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest',
+    'inneholderUttaksperioderMedUbesvartGradering' = 'inneholderUttaksperioderMedUbesvartGradering',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -231,6 +233,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.inneholderPerioderUtenAktivitetskrav,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderPerioderUtenAktivitetskrav,
+    },
+    {
+        key: UttaksplanRegelKey.inneholderUttaksperioderMedUbesvartGradering,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: inneholderUttaksperioderMedUbesvartGradering,
     },
     {
         key: UttaksplanRegelKey.inneholderUtsettelserUtenÅrsak,

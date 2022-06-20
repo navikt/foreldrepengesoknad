@@ -342,7 +342,6 @@ const deltUttakFødselFarMedmor = (
             tidsperiode: getTidsperiode(startDatoUttak, lengdePåForeslåttUttak),
             ønskerSamtidigUttak: erPeriodeWLBRundtFødsel,
             samtidigUttakProsent: erPeriodeWLBRundtFødsel ? '100' : undefined,
-            gradert: false,
         };
 
         sisteUttaksDag = Uttaksdagen(fedrekvotePeriode.tidsperiode.tom).neste();

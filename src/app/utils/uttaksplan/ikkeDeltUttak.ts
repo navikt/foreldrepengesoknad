@@ -230,7 +230,6 @@ const ikkeDeltUttakFødselFarMedmor = (
                 konto: StønadskontoType.AktivitetsfriKvote,
                 tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
                 vedlegg: [],
-                gradert: false,
                 harIkkeAktivitetskrav: true,
             };
             if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(aktivitetsFriPeriode, famDato, morHarRett)) {

@@ -860,6 +860,8 @@
     "uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart": "Nokon av spørsmåla for perioden manglar svar",
     "uttaksplan.validering.feil.erUtsettelseEtterFamiliehendelsesdato": "Du kan ikkje utsette før barnet er født",
     "uttaksplan.validering.feil.uttaksperiodeHarGyldigGradering": "Stillingsprosenten du skal jobbe kan bare inneholde tall, over vera mellom 1 og 99",
+    "uttaksplan.validering.feil.inneholderUttaksperioderMedUbesvartGradering.tittel": "Manglende informasjon om delvis arbeid",
+    "uttaksplan.validering.feil.inneholderUttaksperioderMedUbesvartGradering": "Du må oppgi om du skal kombinere foreldrepengene med delvis arbeid",
     "uttaksplan.validering.feil.periodeHarGyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.starterUttaksperiodeRundtFødselEtter2UkerFørFødsel": "Perioden med uttak rundt fødsel kan ikkje begynne tidligare enn {dato}. Du må korrigere datoene.",
     "uttaksplan.validering.feil.slutterUttaksperiodeRundtFødselEtter6UkerEtterFødsel": "Perioden med foreldrepenger rundt fødsel kan slutte senest {dato}. Du må korrigere datoene i perioden.",
