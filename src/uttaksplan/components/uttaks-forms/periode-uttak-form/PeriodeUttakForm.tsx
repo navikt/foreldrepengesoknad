@@ -39,11 +39,12 @@ import { FormattedMessage } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { guid } from 'nav-frontend-js-utils';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
+import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 
 interface Props {
     periode: Periode;
@@ -151,6 +152,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
     const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
 
+    const startDatoPeriodeRundtFødselFarMedmor =
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
+            ? getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato)
+            : undefined;
+    const sluttDatoPeriodeRundtFødselFarMedmor =
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
+            ? getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato)
+            : undefined;
     return (
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder, erMorUfør)}
@@ -288,20 +297,32 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     vedlegg={values.erMorForSykDokumentasjon}
                                 />
                             </Block>
-                            <Block
-                                padBottom="l"
-                                visible={skalViseWLBInfoOmSamtidigUttakRundtFødsel(
-                                    values,
-                                    familiehendelsesdato,
-                                    erFarEllerMedmor,
-                                    erDeltUttak,
-                                    situasjon
+                            {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
+                                sluttDatoPeriodeRundtFødselFarMedmor !== undefined && (
+                                    <Block
+                                        padBottom="l"
+                                        visible={skalViseWLBInfoOmSamtidigUttakRundtFødsel(
+                                            values,
+                                            familiehendelsesdato,
+                                            erFarEllerMedmor,
+                                            erDeltUttak,
+                                            situasjon
+                                        )}
+                                    >
+                                        <Veilederpanel
+                                            fargetema="normal"
+                                            svg={<VeilederNormal transparentBackground={true} />}
+                                        >
+                                            <FormattedMessage
+                                                id="uttaksplan.samtidigUttakVeileder"
+                                                values={{
+                                                    fomDato: formaterDatoKompakt(startDatoPeriodeRundtFødselFarMedmor),
+                                                    tomDato: formaterDatoKompakt(sluttDatoPeriodeRundtFødselFarMedmor),
+                                                }}
+                                            />
+                                        </Veilederpanel>
+                                    </Block>
                                 )}
-                            >
-                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                    <FormattedMessage id="uttaksplan.samtidigUttakVeileder" />
-                                </Veilederpanel>
-                            </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
                                     erFlerbarnssøknad={true}
