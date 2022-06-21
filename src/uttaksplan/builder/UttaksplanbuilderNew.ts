@@ -1,4 +1,3 @@
-import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import {
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
@@ -22,9 +21,10 @@ const leggTilPeriodeOgBuild = (
     nyPeriode: Periode,
     familiehendelsesdato: Date,
     harAktivitetskravIPeriodeUtenUttak: boolean,
-    erAdopsjon: boolean
+    erAdopsjon: boolean,
+    annenPartsUttak: Periode[] | undefined
 ) => {
-    let result = leggTilPeriode({
+    let nyePerioder = leggTilPeriode({
         perioder: bevegeligePerioder,
         nyPeriode,
         familiehendelsesdato,
@@ -33,8 +33,8 @@ const leggTilPeriodeOgBuild = (
     });
 
     fastePerioder.forEach((fastPeriode) => {
-        result = leggTilPeriode({
-            perioder: result,
+        nyePerioder = leggTilPeriode({
+            perioder: nyePerioder,
             nyPeriode: fastPeriode,
             familiehendelsesdato,
             harAktivitetskravIPeriodeUtenUttak,
@@ -42,7 +42,16 @@ const leggTilPeriodeOgBuild = (
         });
     });
 
-    return slåSammenLikePerioder(result, familiehendelsesdato);
+    if (annenPartsUttak) {
+        nyePerioder = finnOgSettInnHull(
+            settInnAnnenPartsUttakOmNødvendig(nyePerioder, annenPartsUttak, familiehendelsesdato),
+            harAktivitetskravIPeriodeUtenUttak,
+            familiehendelsesdato,
+            erAdopsjon
+        );
+    }
+
+    return nyePerioder;
 };
 
 const oppdaterPeriodeOgBuild = (
@@ -51,7 +60,7 @@ const oppdaterPeriodeOgBuild = (
     familiehendelsesdato: Date,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
-    annenPartsUttak?: Periode[]
+    annenPartsUttak: Periode[] | undefined
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
 
@@ -66,10 +75,7 @@ const oppdaterPeriodeOgBuild = (
         })
     );
 
-    const antallDagerOriginalt = Perioden(originalPeriode).getAntallUttaksdager();
-    const antallDagerNyPeriode = Perioden(endretPeriode).getAntallUttaksdager();
-
-    if (annenPartsUttak && antallDagerNyPeriode < antallDagerOriginalt) {
+    if (annenPartsUttak) {
         oppdatertePerioder = finnOgSettInnHull(
             settInnAnnenPartsUttakOmNødvendig(oppdatertePerioder, annenPartsUttak, familiehendelsesdato),
             harAktivitetskravIPeriodeUtenUttak,
@@ -87,7 +93,7 @@ const slettPeriodeOgBuild = (
     familiehendelsesdato: Date,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
-    annenPartsUttak?: Periode[]
+    annenPartsUttak: Periode[] | undefined
 ) => {
     let nyePerioder = fjernHullPåSlutten(
         slåSammenLikePerioder(
@@ -140,7 +146,8 @@ const UttaksplanbuilderNew = (
                 nyPeriode,
                 familiehendelsesdato,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon
+                erAdopsjon,
+                annenPartsUttak
             ),
         leggTilPerioder: (nyePerioder: Periode[]) => {
             let resultat: Periode[] = [];
@@ -152,7 +159,8 @@ const UttaksplanbuilderNew = (
                         periode,
                         familiehendelsesdato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon
+                        erAdopsjon,
+                        annenPartsUttak
                     );
                 } else {
                     const nyFastePerioder = resultat.filter(
@@ -168,7 +176,8 @@ const UttaksplanbuilderNew = (
                         periode,
                         familiehendelsesdato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon
+                        erAdopsjon,
+                        annenPartsUttak
                     );
                 }
             });
@@ -192,7 +201,8 @@ const UttaksplanbuilderNew = (
                         perioder,
                         familiehendelsesdato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon
+                        erAdopsjon,
+                        annenPartsUttak
                     );
                 } else {
                     const nyFastePerioder = resultat.filter(
@@ -208,7 +218,8 @@ const UttaksplanbuilderNew = (
                         endretPeriode,
                         familiehendelsesdato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon
+                        erAdopsjon,
+                        annenPartsUttak
                     );
                 }
             });

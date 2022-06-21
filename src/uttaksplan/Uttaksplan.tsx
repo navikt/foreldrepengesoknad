@@ -3,7 +3,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
 import { Forelder } from 'app/types/Forelder';
-import { Periode, Uttaksperiode } from './types/Periode';
+import { isInfoPeriode, Periode, Uttaksperiode } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
@@ -126,9 +126,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett;
+    const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter((p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan));
 
     const builder = UttaksplanbuilderNew(
-        uttaksplan,
+        uttaksplanUtenAnnenPartsSamtidigUttak,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
         situasjon === 'adopsjon',

@@ -11,6 +11,7 @@ import {
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUttakAnnenPart,
+    isUttaksperiode,
     Periode,
     PeriodeHull,
     Periodetype,
@@ -271,6 +272,81 @@ export const settInnAnnenPartsUttakOmNødvendig = (
                         res.push(op);
                     }
                 });
+
+                return res;
+            }
+        }
+
+        if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
+            const opprinneligePerioderAnnenPart = Periodene(annenPartsUttak).finnOverlappendePerioder(p);
+
+            if (opprinneligePerioderAnnenPart.length === 0) {
+                res.push(p);
+
+                return res;
+            } else {
+                const førsteOpprinneligePeriode = opprinneligePerioderAnnenPart[0];
+                const sisteOpprinneligePeriode =
+                    opprinneligePerioderAnnenPart.length > 1
+                        ? opprinneligePerioderAnnenPart[opprinneligePerioderAnnenPart.length - 1]
+                        : undefined;
+
+                if (dayjs(p.tidsperiode.fom).isBefore(førsteOpprinneligePeriode.tidsperiode.fom)) {
+                    const nyPeriode: Periode = {
+                        ...p,
+                        id: guid(),
+                        tidsperiode: {
+                            fom: p.tidsperiode.fom,
+                            tom: Uttaksdagen(førsteOpprinneligePeriode.tidsperiode.tom).forrige(),
+                        },
+                    };
+
+                    res.push(nyPeriode);
+                }
+
+                opprinneligePerioderAnnenPart.forEach((opprinneligPeriode, index) => {
+                    const op = {
+                        ...opprinneligPeriode,
+                        id: guid(),
+                        tidsperiode: {
+                            fom: dayjs
+                                .max([dayjs(p.tidsperiode.fom), dayjs(opprinneligPeriode.tidsperiode.fom)])
+                                .toDate(),
+                            tom: dayjs
+                                .min([dayjs(p.tidsperiode.tom), dayjs(opprinneligPeriode.tidsperiode.tom)])
+                                .toDate(),
+                        },
+                        visPeriodeIPlan: false,
+                        ønskerSamtidigUttak: true,
+                    };
+
+                    const nyPeriode: Periode = {
+                        ...p,
+                        id: index === 0 ? p.id : guid(),
+                        tidsperiode: {
+                            ...op.tidsperiode,
+                        },
+                    };
+
+                    res.push(nyPeriode);
+                    res.push(op);
+                });
+
+                if (
+                    sisteOpprinneligePeriode &&
+                    dayjs(p.tidsperiode.tom).isAfter(sisteOpprinneligePeriode.tidsperiode.tom)
+                ) {
+                    const nyPeriode: Periode = {
+                        ...p,
+                        id: guid(),
+                        tidsperiode: {
+                            fom: Uttaksdagen(sisteOpprinneligePeriode.tidsperiode.fom).neste(),
+                            tom: p.tidsperiode.tom,
+                        },
+                    };
+
+                    res.push(nyPeriode);
+                }
 
                 return res;
             }
