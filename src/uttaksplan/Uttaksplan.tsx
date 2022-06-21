@@ -125,7 +125,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
-    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett;
+    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !erAleneOmOmsorg;
     const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter((p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan));
     const bareFarHarRett = !morHarRett;
 
