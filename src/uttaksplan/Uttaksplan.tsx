@@ -127,12 +127,14 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett;
     const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter((p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan));
+    const bareFarHarRett = !morHarRett;
 
     const builder = UttaksplanbuilderNew(
         uttaksplanUtenAnnenPartsSamtidigUttak,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
         situasjon === 'adopsjon',
+        bareFarHarRett,
         opprinneligPlan
     );
 

@@ -219,6 +219,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);
@@ -243,6 +244,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);
@@ -265,6 +267,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result2.length).toEqual(6);
@@ -289,6 +292,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);
@@ -311,6 +315,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result2.length).toEqual(6);
@@ -335,6 +340,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);
@@ -357,6 +363,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result2.length).toEqual(6);
@@ -381,6 +388,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(1);
@@ -405,6 +413,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(4);
@@ -429,6 +438,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             erAdopsjon: false,
             harAktivitetskravIPeriodeUtenUttak: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);
@@ -454,6 +464,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(4);
@@ -478,6 +489,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);
@@ -504,6 +516,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(4);
@@ -530,6 +543,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             erAdopsjon: false,
             harAktivitetskravIPeriodeUtenUttak: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(3);
@@ -553,6 +567,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(2);
@@ -580,6 +595,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(2);
@@ -607,6 +623,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(2);

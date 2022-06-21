@@ -3,6 +3,7 @@ import uttaksConstants from 'app/constants';
 import { getTidsperiode, isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Situasjon } from 'app/types/Situasjon';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { getFørsteUttaksdag2UkerFørFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 
@@ -70,7 +71,7 @@ export function getFørsteMuligeUttaksdag(
     erFarEllerMedmor: boolean,
     termindato: Date | undefined
 ): Date {
-    if (erFarEllerMedmor) {
+    if (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)) {
         return getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
     }
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
