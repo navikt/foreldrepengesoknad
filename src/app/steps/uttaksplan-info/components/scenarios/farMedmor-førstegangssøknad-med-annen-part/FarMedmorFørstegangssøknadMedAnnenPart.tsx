@@ -57,6 +57,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
+    const bareFarHarRett = !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak =
@@ -86,7 +87,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 antallDagerFellesperiodeFarMedmor: undefined,
                 antallUkerFellesperiodeFarMedmor: undefined,
             },
-            bareFarMedmorHarRett: false,
+            bareFarMedmorHarRett: bareFarHarRett,
             termindato,
         });
         let uttaksplanMedAnnenPart;
@@ -96,7 +97,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 uttaksplan,
                 familiehendelsedatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon
+                erAdopsjon,
+                bareFarHarRett
             );
             uttaksplanMedAnnenPart = builder.leggTilPeriode(nyPeriode);
         } else if (eksisterendeSakAnnenPart) {

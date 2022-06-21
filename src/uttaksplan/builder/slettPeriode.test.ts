@@ -99,6 +99,7 @@ describe('Test av slett periode', () => {
             familiehendelsesdato: new Date('2022-05-05'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(4);
@@ -117,6 +118,7 @@ describe('Test av slett periode', () => {
             familiehendelsesdato: new Date('2022-05-11'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
+            bareFarHarRett: false,
         });
 
         expect(result.length).toEqual(5);

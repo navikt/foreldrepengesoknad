@@ -95,6 +95,7 @@ interface LeggTilPeriodeParams {
     familiehendelsesdato: Date;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
+    bareFarHarRett: boolean;
 }
 
 export const leggTilPeriode = ({
@@ -103,6 +104,7 @@ export const leggTilPeriode = ({
     familiehendelsesdato,
     harAktivitetskravIPeriodeUtenUttak,
     erAdopsjon,
+    bareFarHarRett,
 }: LeggTilPeriodeParams): Periode[] => {
     if (perioder.length === 0) {
         return [nyPeriode];
@@ -193,7 +195,8 @@ export const leggTilPeriode = ({
                         tidsperiodeMellomNyPeriodeOgFørstePeriode,
                         harAktivitetskravIPeriodeUtenUttak,
                         familiehendelsesdato,
-                        erAdopsjon
+                        erAdopsjon,
+                        bareFarHarRett
                     ),
                     ...perioder,
                 ];
@@ -213,7 +216,8 @@ export const leggTilPeriode = ({
                         tidsperiodeMellomSistePeriodeOgNyPeriode,
                         harAktivitetskravIPeriodeUtenUttak,
                         familiehendelsesdato,
-                        erAdopsjon
+                        erAdopsjon,
+                        bareFarHarRett
                     ),
                     nyPeriode,
                 ];

@@ -126,12 +126,14 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett;
+    const bareFarHarRett = !morHarRett;
 
     const builder = UttaksplanbuilderNew(
         uttaksplan,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
         situasjon === 'adopsjon',
+        bareFarHarRett,
         opprinneligPlan
     );
 
