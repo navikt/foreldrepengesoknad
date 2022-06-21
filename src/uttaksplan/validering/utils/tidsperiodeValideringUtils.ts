@@ -42,7 +42,8 @@ const starterInnenforGyldigAntallUkerFørTermin = (
     test: () =>
         dato !== undefined &&
         dayjs(dato).isSameOrAfter(
-            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).førsteMuligeUttaksdagFørTermin
+            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).førsteMuligeUttaksdagFørTermin,
+            'day'
         ),
     failText: { intlKey: 'uttaksplan.validering.feil.før12UkerFørTermin' },
 });
