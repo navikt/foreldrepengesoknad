@@ -347,7 +347,12 @@ const deltUttakFødselFarMedmor = (
         sisteUttaksDag = Uttaksdagen(fedrekvotePeriode.tidsperiode.tom).neste();
 
         if (
-            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(fedrekvotePeriode, familiehendelsesdato, morHarRett)
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+                fedrekvotePeriode,
+                familiehendelsesdato,
+                morHarRett,
+                termindato
+            )
         ) {
             const fedrekvotePerioder = splittUttaksperiodePåFamiliehendelsesdato(
                 fedrekvotePeriode,

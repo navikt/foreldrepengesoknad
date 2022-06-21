@@ -214,7 +214,8 @@ const ikkeDeltUttakFødselFarMedmor = (
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
+    termindato: Date | undefined
 ) => {
     const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const morHarRett = false;
@@ -232,7 +233,14 @@ const ikkeDeltUttakFødselFarMedmor = (
                 vedlegg: [],
                 harIkkeAktivitetskrav: true,
             };
-            if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(aktivitetsFriPeriode, famDato, morHarRett)) {
+            if (
+                farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+                    aktivitetsFriPeriode,
+                    famDato,
+                    morHarRett,
+                    termindato
+                )
+            ) {
                 const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
                 aktivitetsFriePerioder.forEach((periode) => perioder.push(periode));
             } else {
@@ -264,7 +272,14 @@ const ikkeDeltUttakFødselFarMedmor = (
             harIkkeAktivitetskrav: true,
         };
 
-        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(aktivitetsFriPeriode, famDato, morHarRett)) {
+        if (
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+                aktivitetsFriPeriode,
+                famDato,
+                morHarRett,
+                termindato
+            )
+        ) {
             const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
             aktivitetsFriePerioder.forEach((periode) => perioder.push(periode));
         } else {
@@ -297,7 +312,8 @@ const ikkeDeltUttakFødsel = (
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined,
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
+    termindato: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon, foreldrePengerFørFødselKonto!);
@@ -308,7 +324,8 @@ const ikkeDeltUttakFødsel = (
             startdatoPermisjon,
             erMorUfør,
             aktivitetsfriKvote,
-            bareFarMedmorHarRett
+            bareFarMedmorHarRett,
+            termindato
         );
     }
 };
@@ -320,7 +337,8 @@ export const ikkeDeltUttak = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
+    termindato: Date | undefined
 ) => {
     const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Foreldrepenger
@@ -353,7 +371,8 @@ export const ikkeDeltUttak = (
             foreldrePengerFørFødselKonto,
             erMorUfør,
             aktivitetsfriKvote,
-            bareFarMedmorHarRett
+            bareFarMedmorHarRett,
+            termindato
         );
     }
 

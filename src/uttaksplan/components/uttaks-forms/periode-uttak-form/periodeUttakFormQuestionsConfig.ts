@@ -8,6 +8,7 @@ import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import hvemSkalTaUttakSkalBesvares from 'uttaksplan/utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
 import getUttakSkjemaregler, {
     UttakSkjemaregler,
     UttakSkjemaReglerProps,
@@ -152,6 +153,26 @@ const skalViseFlerbarnsdager = (values: PeriodeUttakFormData): boolean => {
     );
 };
 
+const skalViseKonto = (
+    values: PeriodeUttakFormData,
+    familiehendelsesdato: Date,
+    erDeltUttak: boolean,
+    erFarEllerMedmor: boolean,
+    situasjon: Situasjon
+): boolean => {
+    const tidsperiode = { fom: values.fom, tom: values.tom };
+    if (!isValidTidsperiode(tidsperiode)) {
+        return false;
+    }
+    if (
+        hvemSkalTaUttakSkalBesvares(tidsperiode, erDeltUttak, familiehendelsesdato, erFarEllerMedmor, situasjon) &&
+        !hasValue(values.hvemSkalTaUttak)
+    ) {
+        return false;
+    }
+    return true;
+};
+
 const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField> = {
     [PeriodeUttakFormField.fom]: {
         isAnswered: ({ values }) => hasValue(values.fom),
@@ -169,7 +190,14 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     [PeriodeUttakFormField.konto]: {
         isAnswered: ({ values }) => hasValue(values.konto),
         isIncluded: ({ regelProps, values }) => getUttakSkjemaregler(values, regelProps).kontoSkalBesvares(),
-        visibilityFilter: ({ values }) => hasValue(values.hvemSkalTaUttak),
+        visibilityFilter: ({ regelProps, values }) =>
+            skalViseKonto(
+                values,
+                regelProps.familiehendelsesdato,
+                regelProps.erDeltUttak,
+                regelProps.erFarEllerMedmor,
+                regelProps.situasjon
+            ),
     },
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: {
         isAnswered: ({ values }) => values.ønskerFlerbarnsdager !== YesOrNo.UNANSWERED,

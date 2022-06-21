@@ -3,7 +3,7 @@ import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import {
     getFørsteUttaksdag2UkerFørFødsel,
     gjelderWLBReglerFarMedmorRundtFødsel,
-    isUttaksperiodeFarMedmorPgaFødsel,
+    isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel,
     starterTidsperiodeEtter2UkerFørFødsel,
 } from 'app/utils/wlbUtils';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
@@ -25,7 +25,7 @@ export const starterUttaksperiodeRundtFødselEtter2UkerFørFødsel: RegelTest = 
     }
 
     const perioderFarMedmorSomStarterFør2UkerFørFødsel = grunnlag.perioder
-        .filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p))
+        .filter((p) => isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel(p))
         .filter(
             (p) =>
                 !starterTidsperiodeEtter2UkerFørFødsel(

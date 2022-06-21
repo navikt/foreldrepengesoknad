@@ -55,7 +55,7 @@ const getDatoAvgrensninger = (
 ): DatoAvgrensninger => {
     if (periode && ugyldigeTidsperioder && !isUtsettelsesperiode(periode)) {
         if (
-            isUttaksperiodeFarMedmorPgaFødsel(periode) &&
+            isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato) &&
             andreAugust2022ReglerGjelder(familiehendelsesdato) &&
             situasjon === 'fødsel'
         ) {

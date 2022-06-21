@@ -189,9 +189,9 @@ export const getPeriodeTittel = (
                 intl,
                 tittelMedNavn,
                 periode,
+                situasjon,
                 familiehendelsesdato,
-                termindato,
-                situasjon
+                termindato
             );
             if (
                 (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||

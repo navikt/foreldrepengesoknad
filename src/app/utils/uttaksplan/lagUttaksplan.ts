@@ -106,7 +106,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 tilgjengeligeStønadskontoer,
                 ISOStringToDate(startdatoPermisjon),
                 annenForelderErUfør,
-                bareFarMedmorHarRett
+                bareFarMedmorHarRett,
+                termindato
             );
 
             const førsteUttaksdagEtterSeksUker = Uttaksdagen(

@@ -65,9 +65,9 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             intl,
             tittel,
             periode,
+            situasjon,
             familiehendelsesdato,
-            termindato,
-            situasjon
+            termindato
         );
     };
 

@@ -5,7 +5,6 @@ import {
     gjelderWLBReglerFarMedmorRundtFødsel,
     isUttaksperiodeFarMedmorPgaFødsel,
     slutterTidsperiodeInnen6UkerEtterFødsel,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from 'app/utils/wlbUtils';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 
@@ -26,14 +25,7 @@ export const slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel: RegelTest =
     }
 
     const perioderFarMedmorSomIkkeSlutterFør6UkerEtterFødsel = grunnlag.perioder
-        .filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p))
-        .filter((p) =>
-            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-                p.tidsperiode,
-                grunnlag.familiehendelsesdato,
-                grunnlag.termindato
-            )
-        )
+        .filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p, grunnlag.familiehendelsesdato, grunnlag.termindato))
         .filter((p) => !slutterTidsperiodeInnen6UkerEtterFødsel(p.tidsperiode, grunnlag.familiehendelsesdato));
 
     const sisteUttaksdagSeksUkerEtterFødsel = formaterDatoKompakt(

@@ -148,7 +148,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const handleUpdatePeriode = (oppdatertPeriode: Periode, familiehendelsesdato: Date) => {
         let resultat: Periode[] = [];
         if (
-            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(oppdatertPeriode, familiehendelsesdato, morHarRett)
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+                oppdatertPeriode,
+                familiehendelsesdato,
+                morHarRett,
+                termindato
+            )
         ) {
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 oppdatertPeriode as Uttaksperiode,
@@ -167,7 +172,14 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const handleAddPeriode = (nyPeriode: Periode, familiehendelsesdato: Date) => {
         let resultat: Periode[] = [];
-        if (farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(nyPeriode, familiehendelsesdato, morHarRett)) {
+        if (
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+                nyPeriode,
+                familiehendelsesdato,
+                morHarRett,
+                termindato
+            )
+        ) {
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 nyPeriode as Uttaksperiode,
                 familiehendelsesdato

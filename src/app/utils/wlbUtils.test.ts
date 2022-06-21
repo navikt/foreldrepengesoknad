@@ -163,7 +163,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
-            true
+            true,
+            undefined
         );
         expect(result).toEqual(true);
     });
@@ -180,7 +181,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
-            true
+            true,
+            undefined
         );
         expect(result).toEqual(false);
     });
@@ -197,7 +199,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
-            true
+            true,
+            undefined
         );
         expect(result).toEqual(false);
     });
@@ -213,7 +216,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
-            true
+            true,
+            undefined
         );
         expect(result).toEqual(false);
     });
@@ -227,7 +231,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
-            false
+            false,
+            undefined
         );
         expect(result).toEqual(true);
     });
@@ -241,7 +246,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
-            true
+            true,
+            undefined
         );
         expect(result).toEqual(false);
     });
