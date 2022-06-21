@@ -121,7 +121,7 @@
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1",
         "react-test-renderer": "^17.0.2",
-        "storybook-formik": "^2.1.6",
+        "storybook-formik": "^2.4.2",
         "svg-sprite-loader": "^6.0.9",
         "terser-webpack-plugin": "^5.1.4",
         "ts-loader": "^9.2.4",
