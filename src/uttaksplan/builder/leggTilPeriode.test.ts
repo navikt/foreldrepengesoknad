@@ -632,6 +632,32 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(result[1].tidsperiode.fom).toEqual(new Date('2022-10-17'));
         expect(result[1].tidsperiode.tom).toEqual(new Date('2022-12-12'));
     });
+
+    it('Skal overskrive og ikke forskyve annen parts uttak hvis ny periode legger seg over annen parts uttak', () => {
+        const nyPeriode: Periode = {
+            id: '5',
+            type: Periodetype.Uttak,
+            tidsperiode: {
+                fom: new Date('2022-08-05'),
+                tom: new Date('2022-08-10'),
+            },
+            forelder: Forelder.farMedmor,
+            konto: StønadskontoType.Fedrekvote,
+        };
+
+        const result = leggTilPeriode({
+            perioder: periodeMedPeriodeUtenUttak,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+            bareFarHarRett: false,
+        });
+
+        expect(result.length).toEqual(6);
+        expect(result[3]).toEqual(nyPeriode);
+        expect(result[4].tidsperiode).toEqual({ fom: new Date('2022-08-11'), tom: new Date('2022-08-17') });
+    });
 });
 
 describe('Test av split periode i uttaksplan', () => {

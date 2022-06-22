@@ -220,7 +220,8 @@ export const isOverskrivbarPeriode = (periode: Periode): boolean => {
     return (
         (periode.type === Periodetype.Info && periode.overskrives === true) ||
         periode.type === Periodetype.Hull ||
-        isPeriodeUtenUttak(periode)
+        isPeriodeUtenUttak(periode) ||
+        isPeriodeUtenUttakUtsettelse(periode)
     );
 };
 

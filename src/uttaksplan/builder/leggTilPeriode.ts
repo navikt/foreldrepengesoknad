@@ -5,10 +5,7 @@ import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
     isForeldrepengerFørFødselUttaksperiode,
-    isHull,
-    isInfoPeriode,
-    isPeriodeUtenUttak,
-    isPeriodeUtenUttakUtsettelse,
+    isOverskrivbarPeriode,
     isUtsettelsesperiode,
     Periode,
     Uttaksperiode,
@@ -31,16 +28,30 @@ const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): P
     const dagerIAndreDel = dagerIBerørtPeriode - dagerIFørsteDel;
     const startDatoAndreDel = Uttaksdagen(nyPeriode.tidsperiode.tom).neste();
 
-    const andreDel: Periode = {
-        ...berørtPeriode,
-        id: guid(),
-        tidsperiode: {
-            fom: startDatoAndreDel,
-            tom: Uttaksdagen(startDatoAndreDel).leggTil(dagerIAndreDel - 1),
-        },
-    };
+    if (isOverskrivbarPeriode(berørtPeriode)) {
+        // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for forskyving av datoer
+        const andreDel: Periode = {
+            ...berørtPeriode,
+            id: guid(),
+            tidsperiode: {
+                fom: nyPeriode.tidsperiode.fom,
+                tom: berørtPeriode.tidsperiode.tom,
+            },
+        };
 
-    return [førsteDel, nyPeriode, andreDel];
+        return [førsteDel, nyPeriode, andreDel];
+    } else {
+        const andreDel: Periode = {
+            ...berørtPeriode,
+            id: guid(),
+            tidsperiode: {
+                fom: startDatoAndreDel,
+                tom: Uttaksdagen(startDatoAndreDel).leggTil(dagerIAndreDel - 1),
+            },
+        };
+
+        return [førsteDel, nyPeriode, andreDel];
+    }
 };
 
 export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiode, famDato: Date): Uttaksperiode[] => {
@@ -143,12 +154,7 @@ export const leggTilPeriode = ({
 
         const berørtPeriodeSplittetPåNyPeriode = splittPeriodePåPeriode(berørtPeriode, nyPeriode);
 
-        if (
-            isInfoPeriode(berørtPeriode) ||
-            isHull(berørtPeriode) ||
-            isPeriodeUtenUttak(berørtPeriode) ||
-            isPeriodeUtenUttakUtsettelse(berørtPeriode)
-        ) {
+        if (isOverskrivbarPeriode(berørtPeriode)) {
             // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for overskriving
             return [
                 ...foregåendePerioder,
