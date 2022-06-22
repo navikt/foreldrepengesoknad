@@ -36,6 +36,13 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn | undefin
     return undefined;
 };
 
+export const getKjønnFromFnrString = (fnr: string): Kjønn | undefined => {
+    if (fnr.length !== 11) {
+        return undefined;
+    }
+    return parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+};
+
 export const getMorErAleneOmOmsorg = (
     søkerErMor: boolean,
     søkerErAleneOmOmsorg: boolean,
