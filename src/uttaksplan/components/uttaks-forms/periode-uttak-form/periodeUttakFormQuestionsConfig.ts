@@ -87,11 +87,14 @@ const skalViseGradering = (
     ) {
         return false;
     }
+
     if (
         values.konto === '' ||
         (regler.samtidigUttakSkalBesvares() && values.samtidigUttak === YesOrNo.UNANSWERED) ||
         (regler.ønskerFlerbarnsdagerSkalBesvares() && values.ønskerFlerbarnsdager === YesOrNo.UNANSWERED) ||
-        (regler.aktivitetskravMorSkalBesvares() && values.aktivitetskravMor === '') ||
+        (regler.aktivitetskravMorSkalBesvares() &&
+            values.aktivitetskravMor === '' &&
+            values.erMorForSyk !== YesOrNo.YES) ||
         (regler.erMorForSykSkalBesvares() && values.erMorForSyk !== YesOrNo.YES)
     ) {
         return false;

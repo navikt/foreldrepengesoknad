@@ -7,7 +7,15 @@ export const inneholderUttaksperioderMedUbesvartGradering = (grunnlag: Søknadsi
     const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p)) as Uttaksperiode[];
 
     const perioderMedUbesvartGradering = uttaksperioder
-        .filter((p) => graderingSkalBesvares(p.type, p.konto))
+        .filter((p) =>
+            graderingSkalBesvares(
+                p.type,
+                p.konto,
+                grunnlag.familiehendelsesdato,
+                grunnlag.søkerErFarEllerMedmor,
+                p.erMorForSyk
+            )
+        )
         .filter((p) => p.gradert === undefined);
 
     return {

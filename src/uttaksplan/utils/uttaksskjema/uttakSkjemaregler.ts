@@ -124,7 +124,13 @@ export const getUttakSkjemaregler = (
         hvemSkalTaUttakSkalBesvares: (): boolean =>
             hvemSkalTaUttakSkalBesvares(tidsperiode, erDeltUttak, familiehendelsesdato, erFarEllerMedmor, situasjon),
         graderingSkalBesvares: (): boolean => {
-            return graderingSkalBesvares(periodetype, konto as StønadskontoType);
+            return graderingSkalBesvares(
+                periodetype,
+                konto as StønadskontoType,
+                familiehendelsesdato,
+                erFarEllerMedmor,
+                convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk)
+            );
         },
         graderingSkalBesvaresPgaWLBUttakRundtFødsel: (): boolean => {
             return graderingSkalBesvaresPgaWLBUttakRundtFødsel(
