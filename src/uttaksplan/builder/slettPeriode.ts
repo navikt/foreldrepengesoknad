@@ -8,6 +8,7 @@ interface SlettPeriodeParams {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
     bareFarHarRett: boolean;
+    erFarEllerMedmor: boolean;
 }
 
 export const slettPeriode = ({
@@ -17,6 +18,7 @@ export const slettPeriode = ({
     harAktivitetskravIPeriodeUtenUttak,
     erAdopsjon,
     bareFarHarRett,
+    erFarEllerMedmor,
 }: SlettPeriodeParams): Periode[] => {
     const result: Periode[] = perioder.reduce((res, periode) => {
         if (periode.id === slettetPeriode.id) {
@@ -26,7 +28,8 @@ export const slettPeriode = ({
                     harAktivitetskravIPeriodeUtenUttak,
                     familiehendelsesdato,
                     erAdopsjon,
-                    bareFarHarRett
+                    bareFarHarRett,
+                    erFarEllerMedmor
                 )
             );
             return res;
