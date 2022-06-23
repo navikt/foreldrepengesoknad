@@ -247,6 +247,7 @@ export const mapUttaksperiodeFromSaksperiode = (
         erMorForSyk:
             erFarEllerMedmor &&
             !saksperiode.flerbarnsdager &&
+            !saksperiode.samtidigUttak &&
             dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelseDato).add(6, 'weeks'))
                 ? true
                 : undefined,
