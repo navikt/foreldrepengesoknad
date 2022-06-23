@@ -176,11 +176,16 @@ const UttaksplanbuilderNew = (
                         annenPartsUttak
                     );
                 } else {
-                    const nyFastePerioder = resultat.filter(
+                    const uttaksplanUtenAnnenPartsSamtidigUttak = resultat.filter(
+                        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
+                    );
+                    const nyFastePerioder = uttaksplanUtenAnnenPartsSamtidigUttak.filter(
                         (p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p)
                     );
                     const nyBevegeligePerioder = resetTidsperioder(
-                        resultat.filter((p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)),
+                        uttaksplanUtenAnnenPartsSamtidigUttak.filter(
+                            (p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)
+                        ),
                         familiehendelsesdato
                     );
                     resultat = leggTilPeriodeOgBuild(
@@ -221,11 +226,16 @@ const UttaksplanbuilderNew = (
                         annenPartsUttak
                     );
                 } else {
-                    const nyFastePerioder = resultat.filter(
+                    const uttaksplanUtenAnnenPartsSamtidigUttak = resultat.filter(
+                        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
+                    );
+                    const nyFastePerioder = uttaksplanUtenAnnenPartsSamtidigUttak.filter(
                         (p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p)
                     );
                     const nyBevegeligePerioder = resetTidsperioder(
-                        resultat.filter((p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)),
+                        uttaksplanUtenAnnenPartsSamtidigUttak.filter(
+                            (p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)
+                        ),
                         familiehendelsesdato
                     );
                     resultat = leggTilPeriodeOgBuild(
