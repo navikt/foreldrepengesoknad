@@ -3,7 +3,7 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { getTidsperiode, isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
@@ -86,6 +86,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     familiehendelsesdato: Date,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean,
     årsak: PeriodeHullÅrsak = PeriodeHullÅrsak.fridag
 ): Array<PeriodeHull | PeriodeUtenUttak> => {
     const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
@@ -101,9 +102,9 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 
         const farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene =
             dayjs(tidsperiode.fom).isBefore(førsteUttaksdagEtterSeksUker) &&
-            bareFarHarRett &&
             !erAdopsjon &&
-            førsteOktober2021ReglerGjelder(familiehendelsesdato);
+            ((bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
+                (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)));
 
         if (harAktivitetskravIPeriodeUtenUttak && !farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene) {
             return [getPeriodeHull(tidsperiode, årsak)];
@@ -115,7 +116,10 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
             if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker)) {
-                if (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
+                if (
+                    (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
+                    (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato))
+                ) {
                     return [getNyPeriodeUtenUttak(tidsperiode)];
                 }
                 return [getPeriodeHull(tidsperiode, årsak)];
@@ -132,19 +136,22 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(-1),
             };
 
-            const periodeUtenUttakTidsperiode: TidsperiodeDate = {
+            const etterFørsteSeksUkerTidsperiode: TidsperiodeDate = {
                 fom: førsteUttaksdagEtterSeksUker,
                 tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde - 2),
             };
 
-            if (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
+            if (
+                (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
+                (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato))
+            ) {
                 const periodeUtenUttak = getNyPeriodeUtenUttak(førsteSeksUkerTidsperiode);
-                const periodeHull = getPeriodeHull(periodeUtenUttakTidsperiode, årsak);
+                const periodeHull = getPeriodeHull(etterFørsteSeksUkerTidsperiode, årsak);
                 return [periodeUtenUttak, periodeHull];
             }
 
             const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode, årsak);
-            const periodeUtenUttak = getNyPeriodeUtenUttak(periodeUtenUttakTidsperiode);
+            const periodeUtenUttak = getNyPeriodeUtenUttak(etterFørsteSeksUkerTidsperiode);
 
             return [periodeHull, periodeUtenUttak];
         }
@@ -207,7 +214,8 @@ export const finnOgSettInnHull = (
     harAktivitetskravIPeriodeUtenUttak: boolean,
     familiehendelsesdato: Date,
     erAdopsjon: boolean,
-    bareFarHarRett: boolean
+    bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean
 ) => {
     if (perioder.length === 0) {
         return perioder;
@@ -240,7 +248,8 @@ export const finnOgSettInnHull = (
                     harAktivitetskravIPeriodeUtenUttak,
                     familiehendelsesdato,
                     erAdopsjon,
-                    bareFarHarRett
+                    bareFarHarRett,
+                    erFarEllerMedmor
                 )
             );
         }

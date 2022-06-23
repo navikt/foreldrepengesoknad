@@ -51,9 +51,14 @@ describe('Uttaksplanbuilder tester', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result = UttaksplanbuilderNew(perioder, new Date('2022-05-02'), false, false, false).leggTilPeriode(
-            nyPeriode
-        );
+        const result = UttaksplanbuilderNew(
+            perioder,
+            new Date('2022-05-02'),
+            false,
+            false,
+            false,
+            false
+        ).leggTilPeriode(nyPeriode);
 
         expect(result.length).toBe(4);
         expect(result[2]).toEqual(nyPeriode);
@@ -70,7 +75,7 @@ describe('Uttaksplanbuilder tester', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result2 = UttaksplanbuilderNew(result, new Date('2022-05-02'), false, false, false).leggTilPeriode(
+        const result2 = UttaksplanbuilderNew(result, new Date('2022-05-02'), false, false, false, false).leggTilPeriode(
             nyPeriode2
         );
 

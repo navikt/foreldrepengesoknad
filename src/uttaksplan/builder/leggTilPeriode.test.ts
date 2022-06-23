@@ -220,6 +220,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(5);
@@ -245,6 +246,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(5);
@@ -268,6 +270,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result2.length).toEqual(6);
@@ -293,6 +296,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(5);
@@ -316,6 +320,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result2.length).toEqual(6);
@@ -341,6 +346,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(5);
@@ -364,6 +370,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result2.length).toEqual(6);
@@ -389,6 +396,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(1);
@@ -414,6 +422,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(4);
@@ -439,6 +448,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             harAktivitetskravIPeriodeUtenUttak: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(5);
@@ -465,6 +475,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(4);
@@ -490,6 +501,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(5);
@@ -517,6 +529,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(4);
@@ -544,6 +557,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             harAktivitetskravIPeriodeUtenUttak: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(3);
@@ -568,6 +582,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(2);
@@ -596,6 +611,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(2);
@@ -624,6 +640,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(2);
@@ -652,6 +669,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
+            erFarEllerMedmor: false,
         });
 
         expect(result.length).toEqual(6);

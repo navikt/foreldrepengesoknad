@@ -135,6 +135,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         harAktivitetskravIPeriodeUtenUttak,
         situasjon === 'adopsjon',
         bareFarHarRett,
+        erFarEllerMedmor,
         opprinneligPlan
     );
 

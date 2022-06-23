@@ -23,6 +23,7 @@ const leggTilPeriodeOgBuild = (
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean,
     annenPartsUttak: Periode[] | undefined
 ) => {
     let nyePerioder = leggTilPeriode({
@@ -32,6 +33,7 @@ const leggTilPeriodeOgBuild = (
         harAktivitetskravIPeriodeUtenUttak,
         erAdopsjon,
         bareFarHarRett,
+        erFarEllerMedmor,
     });
 
     fastePerioder.forEach((fastPeriode) => {
@@ -42,6 +44,7 @@ const leggTilPeriodeOgBuild = (
             harAktivitetskravIPeriodeUtenUttak,
             erAdopsjon,
             bareFarHarRett,
+            erFarEllerMedmor,
         });
     });
 
@@ -51,7 +54,8 @@ const leggTilPeriodeOgBuild = (
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
-            bareFarHarRett
+            bareFarHarRett,
+            erFarEllerMedmor
         );
     }
 
@@ -65,6 +69,7 @@ const oppdaterPeriodeOgBuild = (
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean,
     annenPartsUttak: Periode[] | undefined
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
@@ -78,6 +83,7 @@ const oppdaterPeriodeOgBuild = (
             harAktivitetskravIPeriodeUtenUttak,
             erAdopsjon,
             bareFarHarRett,
+            erFarEllerMedmor,
         })
     );
 
@@ -87,7 +93,8 @@ const oppdaterPeriodeOgBuild = (
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
-            bareFarHarRett
+            bareFarHarRett,
+            erFarEllerMedmor
         );
     }
 
@@ -101,6 +108,7 @@ const slettPeriodeOgBuild = (
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean,
     annenPartsUttak: Periode[] | undefined
 ) => {
     let nyePerioder = fjernHullPåSlutten(
@@ -112,6 +120,7 @@ const slettPeriodeOgBuild = (
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
                 bareFarHarRett,
+                erFarEllerMedmor,
             }),
             familiehendelsesdato
         )
@@ -123,7 +132,8 @@ const slettPeriodeOgBuild = (
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
-            bareFarHarRett
+            bareFarHarRett,
+            erFarEllerMedmor
         );
     }
 
@@ -136,6 +146,7 @@ const UttaksplanbuilderNew = (
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean,
     opprinneligPlan?: Periode[]
 ) => {
     const fastePerioder = perioder.filter((p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p));
@@ -159,6 +170,7 @@ const UttaksplanbuilderNew = (
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
                 bareFarHarRett,
+                erFarEllerMedmor,
                 annenPartsUttak
             ),
         leggTilPerioder: (nyePerioder: Periode[]) => {
@@ -173,6 +185,7 @@ const UttaksplanbuilderNew = (
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
                         bareFarHarRett,
+                        erFarEllerMedmor,
                         annenPartsUttak
                     );
                 } else {
@@ -196,6 +209,7 @@ const UttaksplanbuilderNew = (
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
                         bareFarHarRett,
+                        erFarEllerMedmor,
                         annenPartsUttak
                     );
                 }
@@ -210,6 +224,7 @@ const UttaksplanbuilderNew = (
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
                 bareFarHarRett,
+                erFarEllerMedmor,
                 annenPartsUttak
             ),
         oppdaterPerioder: (oppdatertePerioder: Periode[]) => {
@@ -223,6 +238,7 @@ const UttaksplanbuilderNew = (
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
                         bareFarHarRett,
+                        erFarEllerMedmor,
                         annenPartsUttak
                     );
                 } else {
@@ -246,6 +262,7 @@ const UttaksplanbuilderNew = (
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
                         bareFarHarRett,
+                        erFarEllerMedmor,
                         annenPartsUttak
                     );
                 }
@@ -260,6 +277,7 @@ const UttaksplanbuilderNew = (
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
                 bareFarHarRett,
+                erFarEllerMedmor,
                 annenPartsUttak
             ),
     };
