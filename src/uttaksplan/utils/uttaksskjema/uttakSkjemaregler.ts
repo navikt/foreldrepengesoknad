@@ -119,7 +119,13 @@ export const getUttakSkjemaregler = (
         kontoSkalBesvares: (): boolean =>
             kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, erFarEllerMedmor),
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
-            return ønskerFlerbarnsdagerSkalBesvares(periodetype, erFlerbarnssøknad, erFarEllerMedmor);
+            return ønskerFlerbarnsdagerSkalBesvares(
+                periodetype,
+                erFlerbarnssøknad,
+                erFarEllerMedmor,
+                familiehendelsesdato,
+                tidsperiode
+            );
         },
         hvemSkalTaUttakSkalBesvares: (): boolean =>
             hvemSkalTaUttakSkalBesvares(tidsperiode, erDeltUttak, familiehendelsesdato, erFarEllerMedmor, situasjon),
