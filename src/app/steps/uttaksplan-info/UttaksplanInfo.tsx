@@ -84,7 +84,10 @@ const UttaksplanInfo = () => {
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
-        (!!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED)
+        (!!registrertBarn &&
+            erFarEllerMedmor &&
+            eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
+            !eksisterendeSakAnnenPartRequestIsSuspended)
     ) {
         if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
             throw new Error(
