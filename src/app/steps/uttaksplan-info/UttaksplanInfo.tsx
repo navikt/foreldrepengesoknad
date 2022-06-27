@@ -30,6 +30,8 @@ const UttaksplanInfo = () => {
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+    const eksisterendeSakAnnenPartRequestIsSuspended =
+        registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
 
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetEksisterendeSakMedFnr(
         søkerinfo.person.fnr,
@@ -58,7 +60,11 @@ const UttaksplanInfo = () => {
                 søkersituasjon,
                 eksisterendeSakAnnenPartData?.grunnlag.termindato
             ),
-            !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+            eksisterendeSakAnnenPartRequestIsSuspended
+                ? false
+                : !!registrertBarn &&
+                      erFarEllerMedmor &&
+                      eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -68,7 +74,9 @@ const UttaksplanInfo = () => {
             søkersituasjon,
             eksisterendeSakAnnenPartData?.grunnlag.termindato
         ),
-        !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
