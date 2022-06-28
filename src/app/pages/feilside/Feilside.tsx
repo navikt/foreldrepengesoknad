@@ -44,6 +44,10 @@ const Feilside: React.FunctionComponent<Props> = ({
     const { søkerinfo } = state;
 
     const avbrytSøknadHandler = useCallback(async () => {
+        if (!søkerinfo) {
+            return;
+        }
+
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
@@ -53,7 +57,7 @@ const Feilside: React.FunctionComponent<Props> = ({
         dispatch(actionCreator.avbrytSøknad());
         await Api.deleteStoredAppState(søkerinfo.person.fnr);
         window.location.href = 'http://localhost:8080';
-    }, [dispatch, søkerinfo.person.fnr]);
+    }, [dispatch, søkerinfo]);
 
     return (
         <>
@@ -84,9 +88,11 @@ const Feilside: React.FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>{ingress}</Normaltekst>
                 </Block>
-                <div className={bem.element('avbrytKnapp')}>
-                    <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
-                </div>
+                {søkerinfo !== undefined && (
+                    <div className={bem.element('avbrytKnapp')}>
+                        <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
+                    </div>
+                )}
             </div>
         </>
     );
