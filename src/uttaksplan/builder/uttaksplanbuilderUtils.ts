@@ -145,6 +145,10 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
                 (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato))
             ) {
+                if (erFarEllerMedmor && !bareFarHarRett) {
+                    return [getNyPeriodeUtenUttak(tidsperiode)];
+                }
+
                 const periodeUtenUttak = getNyPeriodeUtenUttak(førsteSeksUkerTidsperiode);
                 const periodeHull = getPeriodeHull(etterFørsteSeksUkerTidsperiode, årsak);
                 return [periodeUtenUttak, periodeHull];
