@@ -10,6 +10,7 @@ export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),
+    overlapper: (tidsperiode2: TidsperiodeDate) => overlapperTidsperioder(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: TidsperiodeDate) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
     erUtenfor: (tidsperiode2: TidsperiodeDate) => erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
     getAntallUttaksdager: () => getAntallUttaksdagerITidsperiode(tidsperiode),
@@ -25,6 +26,10 @@ export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erInnenforFørsteSeksUker: (familiehendelsesdato: Date) =>
         erTidsperiodeInnenforFørsteSeksUker(tidsperiode, familiehendelsesdato),
 });
+
+const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
+    return dayjs(t1.fom).isBetween(t2.fom, t2.tom, 'day', '[]') || dayjs(t1.tom).isBetween(t2.fom, t2.tom, 'day', '[]');
+};
 
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
     const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();

@@ -32,8 +32,8 @@ import {
 } from './dateUtils';
 import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
-import { finnOgSettInnHull } from 'uttaksplan/builder/UttaksplanBuilder';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
+import { finnOgSettInnHull, settInnAnnenPartsUttakOmNødvendig } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -326,7 +326,8 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         innvilgedePerioder !== undefined &&
         !innvilgedePerioder.some(
             (ip) =>
-                Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) &&
+                (Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) ||
+                    Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).overlapper(tidsperiodeDate)) &&
                 ip.guid !== saksperiode.guid
         );
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
@@ -336,7 +337,8 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         innvilgedePerioder !== undefined
             ? innvilgedePerioder.find(
                   (ip) =>
-                      Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) &&
+                      (Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) ||
+                          Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).overlapper(tidsperiodeDate)) &&
                       ip.guid !== saksperiode.guid
               )
             : undefined;
@@ -438,7 +440,7 @@ const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
     erFarEllerMedmor: boolean,
-    erEndringsøknadUtenEkisterendeSak: boolean
+    _erEndringsøknadUtenEkisterendeSak: boolean
 ): Periode[] => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
@@ -457,13 +459,32 @@ const mapSaksperioderTilUttaksperioder = (
     const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
     const erAdopsjon = grunnlag.familiehendelseType === FamiliehendelseType.ADOPSJON;
 
-    return finnOgSettInnHull(
-        sammenslåddePerioder,
-        erEndringsøknadUtenEkisterendeSak,
-        førsteOktober2021ReglerGjelder(new Date(grunnlag.familiehendelseDato)),
+    const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter(
+        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
+    );
+    const annenPartsUttak = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
+    const familiehendelsesdato = new Date(grunnlag.familiehendelseDato);
+
+    const perioderUtenAnnenPartsSamtidigUttakMedHull = finnOgSettInnHull(
+        perioderUtenAnnenPartsSamtidigUttak,
+        førsteOktober2021ReglerGjelder(familiehendelsesdato),
+        familiehendelsesdato,
+        erAdopsjon,
         kunFarMedmorHarRett,
-        new Date(grunnlag.familiehendelseDato),
-        erAdopsjon
+        erFarEllerMedmor
+    );
+
+    return finnOgSettInnHull(
+        settInnAnnenPartsUttakOmNødvendig(
+            perioderUtenAnnenPartsSamtidigUttakMedHull,
+            annenPartsUttak,
+            familiehendelsesdato
+        ),
+        førsteOktober2021ReglerGjelder(familiehendelsesdato),
+        familiehendelsesdato,
+        erAdopsjon,
+        kunFarMedmorHarRett,
+        erFarEllerMedmor
     );
 };
 
