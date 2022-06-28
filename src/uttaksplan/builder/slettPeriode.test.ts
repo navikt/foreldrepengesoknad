@@ -220,7 +220,7 @@ describe('Test av slett periode for far - etter WLB', () => {
             familiehendelsesdato: new Date('2022-08-02'),
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
-            bareFarHarRett: false,
+            bareFarHarRett: true,
             erFarEllerMedmor: true,
         });
 
