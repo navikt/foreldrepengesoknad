@@ -124,7 +124,8 @@ export const getUttakSkjemaregler = (
                 erFlerbarnssøknad,
                 erFarEllerMedmor,
                 familiehendelsesdato,
-                tidsperiode
+                tidsperiode,
+                konto as StønadskontoType
             );
         },
         hvemSkalTaUttakSkalBesvares: (): boolean =>
