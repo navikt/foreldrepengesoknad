@@ -875,7 +875,7 @@
     "uttaksplan.validering.feil.harSøktOmFerieUtenArbeidsforhold": "Du kan dessverre ikke legge inn utsettelse på grunn av lovbestemt ferie fordi du ikke er registrert med et arbeidsforhold i valgt tidsperiode.",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker": "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om du tar ut foreldrepenger fordi mor er for syk eller innlagt i helseinstitusjon.",
-    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel": "Du kan ta ut inntil 10 dager av kvoten din rundt fødsel ({fraDato} - {tilDato}). Du har tatt ut {dagerForMye} dager for mye.",
+    "uttaksplan.validering.feil.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel": "Du kan ta ut inntil 10 dager av kvoten din rundt fødsel ({fraDato} - {tilDato}). Du har tatt ut {dagerForMye, plural, one {# dag} other {# dager}} for mye.",
     "uttaksplan.validering.feil.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel.periodeSlutterForSent": "Du kan ta ut inntil 10 dager av kvoten din rundt fødsel ({fraDato} - {tilDato}). Du har tatt ut for mange dager.",
     "uttaksplan.validering.feil.uttaksmengdeForFarMedmorErForHøy": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "uttaksplan.validering.feil.forMyeUttak.tittel": "Lagt inn for mange dager i planen",
