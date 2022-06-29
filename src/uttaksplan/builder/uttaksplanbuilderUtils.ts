@@ -71,7 +71,6 @@ export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato
             return;
         } else {
             nyePerioder.push(forrigePeriode);
-            forrigePeriode = undefined;
         }
         forrigePeriode = periode;
     });

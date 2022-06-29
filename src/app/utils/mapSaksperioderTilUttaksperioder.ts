@@ -34,6 +34,7 @@ import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
 import { finnOgSettInnHull, settInnAnnenPartsUttakOmNødvendig } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -187,6 +188,21 @@ export const getKontotypeBareFarHarRett = (periodeResultatÅrsak: string): Støn
     }
 };
 
+const getErMorForSyk = (erFarEllerMedmor: boolean, saksperiode: Saksperiode, familiehendelsesdato: string) => {
+    if (
+        erFarEllerMedmor &&
+        !saksperiode.flerbarnsdager &&
+        !saksperiode.samtidigUttak &&
+        dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'))
+    ) {
+        if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {
+            return true;
+        }
+    }
+
+    return undefined;
+};
+
 export const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
@@ -244,13 +260,7 @@ export const mapUttaksperiodeFromSaksperiode = (
             : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
-        erMorForSyk:
-            erFarEllerMedmor &&
-            !saksperiode.flerbarnsdager &&
-            !saksperiode.samtidigUttak &&
-            dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelseDato).add(6, 'weeks'))
-                ? true
-                : undefined,
+        erMorForSyk: getErMorForSyk(erFarEllerMedmor, saksperiode, familiehendelseDato),
     };
 
     return uttaksperiode;
