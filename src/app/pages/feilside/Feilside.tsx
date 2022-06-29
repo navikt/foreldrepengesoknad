@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
 import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
-import { bemUtils, Block, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
+import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
@@ -59,9 +58,10 @@ const Feilside: React.FunctionComponent<Props> = ({
         window.location.href = 'http://localhost:8080';
     }, [dispatch, søkerinfo]);
 
+    useDocumentTitle(dokumenttittel);
+
     return (
         <>
-            <DocumentTitle title={dokumenttittel} />
             {setLanguage && språkkode && (
                 <LanguageToggle locale={språkkode} availableLocales={['en', 'nb', 'nn']} toggle={setLanguage} />
             )}

@@ -22,23 +22,24 @@ describe('<OmBarnet>', () => {
         expect(screen.getByText('15.03.2021')).toBeInTheDocument();
 
         userEvent.click(screen.getByText('Søknaden min gjelder et annet barn'));
-
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+
         userEvent.click(screen.getByText(JA));
-
         expect(await screen.findByText('Hvor mange barn har du fått?')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Ett barn'));
 
+        userEvent.click(screen.getByText('Ett barn'));
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
+
         const barnFødtInput = utils.getByLabelText('Når ble barnet født?');
         userEvent.type(barnFødtInput, dayjs().format('DD.MM.YYYY'));
-        fireEvent.blur(barnFødtInput);
 
+        fireEvent.blur(barnFødtInput);
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
+
         const termindatoInput = utils.getByLabelText('Hva var termindatoen?');
         userEvent.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
-        fireEvent.blur(termindatoInput);
 
+        fireEvent.blur(termindatoInput);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
@@ -198,6 +199,7 @@ describe('<OmBarnet>', () => {
             MockDate.reset();
         }
     );
+
     it.each(farEllerMedMorSøker)(
         'Far/medmor må ikke oppgi termin hvis han velger registrert barn som er født tidligere enn de siste 12 ukene',
         async (FarEllerMedMorSøker) => {
@@ -213,33 +215,40 @@ describe('<OmBarnet>', () => {
             MockDate.reset();
         }
     );
+
     it.each(farEllerMedMorSøker)(
         'Far/medmor kan ikke søke på termin hvis WLB regler ikke gjelder',
         async (FarEllerMedMorSøker) => {
             MockDate.set(new Date('2022-08-01'));
             const utils = render(<FarEllerMedMorSøker />);
+
             expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
             expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
             expect(screen.getByText('15.03.2021')).toBeInTheDocument();
 
             userEvent.click(screen.getByText('Søknaden min gjelder et annet barn'));
-
             expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+
             userEvent.click(screen.getByText(NEI));
             expect(await screen.findByText('Hvor mange barn venter dere?')).toBeInTheDocument();
+
             userEvent.click(screen.getByText('Ett barn'));
             expect(await screen.findByText('Når er termindatoen?')).toBeInTheDocument();
 
             const termindatoInput = utils.getByLabelText('Når er termindatoen?');
             userEvent.type(termindatoInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
             fireEvent.blur(termindatoInput);
+
             expect(
-                screen.getByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', { exact: false })
+                await screen.findByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
+                    exact: false,
+                })
             ).toBeInTheDocument();
             expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
             MockDate.reset();
         }
     );
+
     it.each(farEllerMedMorSøker)(
         'Far/medmor kan søke på termin hvis WLB regler gjelder',
         async (FarEllerMedMorSøker) => {

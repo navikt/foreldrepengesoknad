@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
 import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 
@@ -8,7 +7,7 @@ import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';
 import StatusBoks from './components/StatusBoks';
 import SøknadSendtSectionHeader from './components/SøknadSendtSectionHeader';
-import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { openPdfPreview } from 'app/utils/pdfUtils';
 import links from 'app/links/links';
 import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
@@ -49,6 +48,7 @@ const SøknadSendt = () => {
     const intl = useIntl();
     const { person, arbeidsforhold } = søkerinfo;
     const bem = bemUtils('søknadSendt');
+    useDocumentTitle(intlUtils(intl, 'søknad.søknadSendt'));
 
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
@@ -68,7 +68,6 @@ const SøknadSendt = () => {
 
     return (
         <>
-            <DocumentTitle title={intlUtils(intl, 'søknad.søknadSendt')} />
             <SøknadSendtTittel />
             <div className={bem.block}>
                 <KvitteringHeader søker={person} kvittering={kvittering} />
