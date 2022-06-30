@@ -135,6 +135,8 @@ const UttaksplanStep = () => {
             barn,
             annenForelder,
             søkersituasjon,
+            farMedmorErAleneOmOmsorg,
+            morErAleneOmOmsorg,
             eksisterendeSak?.grunnlag.termindato
         )
     );
@@ -144,6 +146,8 @@ const UttaksplanStep = () => {
             barn,
             annenForelder,
             søkersituasjon,
+            farMedmorErAleneOmOmsorg,
+            morErAleneOmOmsorg,
             eksisterendeSak?.grunnlag.termindato
         )
     );

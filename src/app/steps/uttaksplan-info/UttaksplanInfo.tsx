@@ -17,6 +17,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
+import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -25,9 +26,10 @@ const UttaksplanInfo = () => {
     const søknad = useSøknad();
     const { dispatch } = useForeldrepengesøknadContext();
 
-    const { barn, annenForelder, søkersituasjon } = søknad;
+    const { barn, annenForelder, søkersituasjon, søker } = søknad;
     const { registrerteBarn } = søkerinfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const { erAleneOmOmsorg } = søker;
 
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
     const eksisterendeSakAnnenPartRequestIsSuspended =
@@ -38,6 +40,9 @@ const UttaksplanInfo = () => {
         erFarEllerMedmor,
         registrertBarn?.annenForelder?.fnr
     );
+
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
 
     const eksisterendeSak = useMemo(
         () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, true),
@@ -58,6 +63,8 @@ const UttaksplanInfo = () => {
                 barn,
                 annenForelder,
                 søkersituasjon,
+                farMedmorErAleneOmOmsorg,
+                morErAleneOmOmsorg,
                 eksisterendeSakAnnenPartData?.grunnlag.termindato
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
@@ -72,6 +79,8 @@ const UttaksplanInfo = () => {
             barn,
             annenForelder,
             søkersituasjon,
+            farMedmorErAleneOmOmsorg,
+            morErAleneOmOmsorg,
             eksisterendeSakAnnenPartData?.grunnlag.termindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended
