@@ -20,7 +20,7 @@ interface Props {
     morHarRett: boolean;
     situasjon: Situasjon;
     onAvbryt: () => void;
-    onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
+    onBekreft: (tidsperiode: TidsperiodeFormValues) => void;
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
 }
 

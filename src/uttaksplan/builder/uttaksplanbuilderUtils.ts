@@ -61,7 +61,7 @@ export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato
         if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
             if (
                 dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato) &&
-                dayjs(periode.tidsperiode.fom).isSame(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
+                dayjs(periode.tidsperiode.tom).isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
             ) {
                 nyePerioder.push(forrigePeriode);
                 forrigePeriode = periode;
@@ -196,8 +196,14 @@ export const getTidsperiodeMellomPerioder = (
     return undefined;
 };
 
-export const fjernHullPåSlutten = (perioder: Periode[]) => {
+export const fjernUnødvendigeHull = (perioder: Periode[]) => {
     return perioder.reduce((res, periode, index) => {
+        if (index === 0) {
+            if (isPeriodeUtenUttak(periode)) {
+                return res;
+            }
+        }
+
         if (index === perioder.length - 1) {
             if (isHull(periode) || isPeriodeUtenUttak(periode)) {
                 return res;

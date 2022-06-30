@@ -17,7 +17,7 @@ interface Props {
     ugyldigeTidsperioder: Tidsperiode[];
     visible: boolean;
     onAvbryt: () => void;
-    onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
+    onBekreft: (tidsperiode: TidsperiodeFormValues) => void;
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
@@ -42,16 +42,12 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
-    const varighetIDager =
-        tidsperiode &&
-        tidsperiode.fom &&
-        tidsperiode.tom &&
-        dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
-            ? Tidsperioden({
-                  fom: tidsperiode.fom,
-                  tom: tidsperiode.tom,
-              }).getAntallUttaksdager()
-            : undefined;
+    const varighetIDager = dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+        ? Tidsperioden({
+              fom: tidsperiode.fom,
+              tom: tidsperiode.tom,
+          }).getAntallUttaksdager()
+        : undefined;
     const { uker, dager } = varighetIDager ? getUkerOgDagerFromDager(Math.abs(varighetIDager)) : { uker: 0, dager: 0 };
     const handleOnSubmit = (values: TidsperiodeFormValues) => {
         onBekreft(values);

@@ -33,8 +33,6 @@ import {
     getPeriodeUttakFormInitialValues,
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
-
-import './periodeUttakForm.less';
 import { FormattedMessage } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
@@ -45,6 +43,10 @@ import { guid } from 'nav-frontend-js-utils';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
 import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import dayjs from 'dayjs';
+
+import './periodeUttakForm.less';
 
 interface Props {
     periode: Periode;
@@ -146,7 +148,15 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         values: PeriodeUttakFormData,
         visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
     ): PeriodeUttakFormData => {
-        return cleanPeriodeUttakFormData(values, visibility, erDeltUttak, forelder, erMorUfør);
+        return cleanPeriodeUttakFormData(
+            values,
+            visibility,
+            erDeltUttak,
+            forelder,
+            erMorUfør,
+            familiehendelsesdato,
+            erFarEllerMedmor
+        );
     };
 
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
@@ -162,7 +172,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
             : undefined;
     return (
         <PeriodeUttakFormComponents.FormikWrapper
-            initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder, erMorUfør)}
+            initialValues={getPeriodeUttakFormInitialValues(
+                periode,
+                erDeltUttak,
+                forelder,
+                erMorUfør,
+                familiehendelsesdato,
+                erFarEllerMedmor
+            )}
             enableReinitialize={false}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
                 handleUpdatePeriode(
@@ -231,12 +248,34 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={[]}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
-                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
-                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
+                                        if (
+                                            dayjs(values.fom).isBefore(familiehendelsesdato) &&
+                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato)
+                                        ) {
+                                            setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                            setFieldValue(
+                                                PeriodeUttakFormField.tom,
+                                                Uttaksdagen(familiehendelsesdato).forrige()
+                                            );
+                                        } else {
+                                            setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                            setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
+                                        }
                                     }}
                                     changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        if (
+                                            dayjs(values.fom).isBefore(familiehendelsesdato) &&
+                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato)
+                                        ) {
+                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                            setFieldValue(
+                                                PeriodeUttakFormField.tom,
+                                                Uttaksdagen(familiehendelsesdato).forrige()
+                                            );
+                                        } else {
+                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                            setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        }
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}

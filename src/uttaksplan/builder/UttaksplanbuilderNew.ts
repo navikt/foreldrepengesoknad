@@ -9,7 +9,7 @@ import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
 import {
     finnOgSettInnHull,
-    fjernHullPåSlutten,
+    fjernUnødvendigeHull,
     resetTidsperioder,
     settInnAnnenPartsUttakOmNødvendig,
     slåSammenLikePerioder,
@@ -74,7 +74,7 @@ const oppdaterPeriodeOgBuild = (
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
 
-    let oppdatertePerioder = fjernHullPåSlutten(
+    let oppdatertePerioder = fjernUnødvendigeHull(
         oppdaterPeriode({
             perioder,
             endretPeriode,
@@ -111,7 +111,7 @@ const slettPeriodeOgBuild = (
     erFarEllerMedmor: boolean,
     annenPartsUttak: Periode[] | undefined
 ) => {
-    let nyePerioder = fjernHullPåSlutten(
+    let nyePerioder = fjernUnødvendigeHull(
         slåSammenLikePerioder(
             slettPeriode({
                 perioder,
