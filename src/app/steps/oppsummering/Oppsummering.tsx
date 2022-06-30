@@ -163,27 +163,35 @@ const Oppsummering = () => {
                                     <Block padBottom="l">
                                         <Personalia søkerinfo={søkerinfo} />
                                     </Block>
-                                    <OppsummeringsPanel title="Om barnet">
-                                        <BarnOppsummering barn={barn} />
-                                    </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Den andre forelderen">
-                                        <AnnenForelderOppsummering
-                                            annenForelder={annenForelder}
-                                            søker={søker}
-                                            søkerrolle={søkersituasjon.rolle}
-                                            barn={barn}
-                                            farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
-                                        />
-                                    </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Utenlandsopphold">
-                                        <UtenlandsoppholdOppsummering
-                                            informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
-                                            barn={barn}
-                                        />
-                                    </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
-                                        <ArbeidsforholdOgAndreInntekterOppsummering />
-                                    </OppsummeringsPanel>
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Om barnet">
+                                            <BarnOppsummering barn={barn} />
+                                        </OppsummeringsPanel>
+                                    )}
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Den andre forelderen">
+                                            <AnnenForelderOppsummering
+                                                annenForelder={annenForelder}
+                                                søker={søker}
+                                                søkerrolle={søkersituasjon.rolle}
+                                                barn={barn}
+                                                farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
+                                            />
+                                        </OppsummeringsPanel>
+                                    )}
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Utenlandsopphold">
+                                            <UtenlandsoppholdOppsummering
+                                                informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
+                                                barn={barn}
+                                            />
+                                        </OppsummeringsPanel>
+                                    )}
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
+                                            <ArbeidsforholdOgAndreInntekterOppsummering />
+                                        </OppsummeringsPanel>
+                                    )}
                                     <OppsummeringsPanel title={intlUtils(intl, 'oppsummering.uttak')}>
                                         <UttaksplanOppsummering
                                             perioder={uttaksplan}
