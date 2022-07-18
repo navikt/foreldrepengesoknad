@@ -23,11 +23,15 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                 perioderSomOverlapper.push(periode);
             }
         });
-        const passerer =
-            perioderSomOverlapper.filter((p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak)).length === 0;
+
+        const perioderSomOverlapperUtenSamtidigUttak = perioderSomOverlapper.filter(
+            (p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak)
+        );
+
+        const passerer = perioderSomOverlapperUtenSamtidigUttak.length === 0;
         return {
             passerer,
-            info: perioderSomOverlapper.map((periode) => {
+            info: perioderSomOverlapperUtenSamtidigUttak.map((periode) => {
                 const regelInfo: RegelTestresultatInfo = {
                     periodeId: periode.id,
                     intlKey: 'uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode',
