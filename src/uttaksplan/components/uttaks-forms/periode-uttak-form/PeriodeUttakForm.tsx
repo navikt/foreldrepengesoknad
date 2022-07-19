@@ -1,4 +1,4 @@
-import { bemUtils, Block } from '@navikt/fp-common';
+import { bemUtils, Block, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -42,7 +42,11 @@ import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/Aktivitetskra
 import { guid } from 'nav-frontend-js-utils';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
-import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
+import {
+    getFørsteUttaksdag2UkerFørFødsel,
+    getSisteUttaksdag6UkerEtterFødsel,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+} from 'app/utils/wlbUtils';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import dayjs from 'dayjs';
 
@@ -90,8 +94,18 @@ const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFar
 const getPeriodeType = (
     periodenGjelder: Forelder | '',
     erFarEllerMedmor: boolean,
-    konto: StønadskontoType | ''
+    konto: StønadskontoType | '',
+    familiehendelsedato: Date,
+    termindato: Date | undefined,
+    tidsperiode: TidsperiodeDate
 ): Periodetype => {
+    if (
+        erFarEllerMedmor &&
+        erUttakAvAnnenForeldersKvote(konto, erFarEllerMedmor) &&
+        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsedato, termindato)
+    ) {
+        return Periodetype.Overføring;
+    }
     if (periodenGjelder === '' || konto === '') {
         return Periodetype.Uttak;
     }
@@ -188,7 +202,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     mapPeriodeUttakFormToPeriode(
                         values,
                         periode.id,
-                        getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!),
+                        getPeriodeType(
+                            values.hvemSkalTaUttak!,
+                            erFarEllerMedmor,
+                            values.konto!,
+                            familiehendelsesdato,
+                            termindato,
+                            { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                        ),
                         familiehendelsesdato,
                         erFarEllerMedmor,
                         morHarRett,
@@ -198,7 +219,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 )
             }
             renderForm={({ setFieldValue, values, isValid }) => {
-                const periodetype = getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!);
+                const periodetype = getPeriodeType(
+                    values.hvemSkalTaUttak!,
+                    erFarEllerMedmor,
+                    values.konto!,
+                    familiehendelsesdato,
+                    termindato,
+                    { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                );
                 setPeriodeErGyldig(isValid);
 
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
