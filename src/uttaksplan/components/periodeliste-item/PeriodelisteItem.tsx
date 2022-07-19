@@ -50,6 +50,7 @@ interface Props {
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
     termindato: Date | undefined;
+    antallBarn: number;
 }
 
 const renderPeriodeListeInnhold = (
@@ -71,7 +72,8 @@ const renderPeriodeListeInnhold = (
     søkerErFarEllerMedmorOgKunDeHarRett: boolean,
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>,
     erEndringssøknad: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    antallBarn: number
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -111,6 +113,7 @@ const renderPeriodeListeInnhold = (
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     termindato={termindato}
                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                    antallBarn={antallBarn}
                 />
             );
         case Periodetype.Utsettelse:
@@ -184,6 +187,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     erEndringssøknad,
     setPeriodeErGyldig,
     termindato,
+    antallBarn,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -235,7 +239,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     søkerErFarEllerMedmorOgKunDeHarRett,
                     setPeriodeErGyldig,
                     erEndringssøknad,
-                    termindato
+                    termindato,
+                    antallBarn
                 )}
             </EkspanderbartpanelBase>
         </article>

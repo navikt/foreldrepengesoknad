@@ -42,6 +42,7 @@ export interface UttakSkjemaReglerProps {
     termindato: Date | undefined;
     morHarRett: boolean;
     stønadskontoer: StønadskontoUttak[];
+    antallBarn: number;
 }
 
 export const getUttakSkjemaregler = (
@@ -60,6 +61,7 @@ export const getUttakSkjemaregler = (
         termindato,
         stønadskontoer,
         morHarRett,
+        antallBarn,
     } = regelProps;
 
     const { konto } = formValues;
@@ -125,7 +127,10 @@ export const getUttakSkjemaregler = (
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 tidsperiode,
-                konto as StønadskontoType
+                konto as StønadskontoType,
+                !morHarRett,
+                antallBarn,
+                erAleneOmOmsorg
             );
         },
         hvemSkalTaUttakSkalBesvares: (): boolean =>

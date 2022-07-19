@@ -32,6 +32,7 @@ interface Props {
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
     termindato: Date | undefined;
+    antallBarn: number;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -54,6 +55,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     erEndringssøknad,
     termindato,
+    antallBarn,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -94,6 +96,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
                     termindato={termindato}
+                    antallBarn={antallBarn}
                 />
             ))}
         </div>

@@ -9,13 +9,19 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     tidsperiode: TidsperiodeDate,
-    stønadskontoType: StønadskontoType
+    stønadskontoType: StønadskontoType,
+    bareFarHarRett: boolean,
+    antallBarn: number,
+    erAleneOmOmsorg: boolean
 ): boolean => {
     if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)) {
         return false;
     }
 
     if (stønadskontoType === StønadskontoType.AktivitetsfriKvote) {
+        return false;
+    }
+    if (søkerErFarEllerMedmor && (bareFarHarRett || erAleneOmOmsorg) && antallBarn > 1) {
         return false;
     }
 

@@ -2,9 +2,9 @@ import React from 'react';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import links from 'app/links/links';
 import { IntlShape } from 'react-intl';
+import { getkontoUtenAktivitetskravUker } from 'app/utils/minsterettUtils';
 
 export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest = (
     grunnlag: Søknadsinfo
@@ -15,14 +15,13 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
             passerer: true,
         };
     }
-
-    let kontoUtenAktivitetskravUker = 0;
-    if (grunnlag.morErUfør) {
-        kontoUtenAktivitetskravUker = 15;
-    } else if (andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato)) {
-        kontoUtenAktivitetskravUker = 8;
-    }
-
+    const kontoUtenAktivitetskravUker = getkontoUtenAktivitetskravUker(
+        grunnlag.antallBarn,
+        grunnlag.morErUfør,
+        grunnlag.familiehendelsesdato,
+        grunnlag.dekningsgrad,
+        !grunnlag.morHarRett
+    );
     return {
         passerer: kontoUtenAktivitetskravUker === 0,
         info: {

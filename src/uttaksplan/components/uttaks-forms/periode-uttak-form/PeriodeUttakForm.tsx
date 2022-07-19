@@ -71,6 +71,7 @@ interface Props {
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     termindato: Date | undefined;
     morHarRett: boolean;
+    antallBarn: number;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -129,6 +130,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     termindato,
     morHarRett,
+    antallBarn,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -213,6 +215,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         termindato,
                         morHarRett,
                         stønadskontoer,
+                        antallBarn,
                     },
                 });
 

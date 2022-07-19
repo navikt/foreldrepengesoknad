@@ -114,6 +114,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 setPeriodeErGyldig={setPeriodeErGyldig}
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
+                                antallBarn={barn.antallBarn}
                             />
                         </section>
                     </Block>
@@ -139,6 +140,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
+                                antallBarn={barn.antallBarn}
                             />
                         </div>
                     )}
