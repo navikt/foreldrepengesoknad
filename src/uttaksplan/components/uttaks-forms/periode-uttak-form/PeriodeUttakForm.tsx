@@ -367,7 +367,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 )}
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
-                                    erFlerbarnssøknad={true}
+                                    erFlerbarnssøknad={erFlerbarnssøknad}
                                     navnPåForeldre={navnPåForeldre}
                                     navnPåAnnenForelder={navnPåAnnenForelder}
                                     samtidigUttakProsentVisible={visibility.isVisible(
