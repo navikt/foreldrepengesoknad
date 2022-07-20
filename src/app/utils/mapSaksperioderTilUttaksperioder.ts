@@ -211,7 +211,8 @@ export const mapUttaksperiodeFromSaksperiode = (
 ): Periode => {
     const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
-    const erFarEllerMedmorOgKunSøkerHarRett = erFarEllerMedmor && !grunnlag.morHarRett;
+    const erFarEllerMedmorOgKunSøkerHarRett =
+        erFarEllerMedmor && !grunnlag.morHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
 
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor, innvilgedePerioder);
