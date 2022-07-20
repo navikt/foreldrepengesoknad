@@ -171,6 +171,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 FormKomponent={MorFødselFormComponents}
                                 dekningsgradFeltNavn={MorFødselFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={erDeltUttak}
                             />
                         </Block>
                         <Block padBottom="l" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>

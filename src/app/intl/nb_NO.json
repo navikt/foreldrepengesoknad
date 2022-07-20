@@ -237,6 +237,7 @@
     "uttaksplaninfo.spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "uttaksplaninfo.veileder.dekningsgrad80": "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
     "uttaksplaninfo.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
+    "uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
     "uttaksplaninfo.informasjon.tilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
     "uttaksplaninfo.startdatoAdopsjon.spørsmål": "Når ønsker du å starte perioden?",

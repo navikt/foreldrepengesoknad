@@ -146,6 +146,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                 FormKomponent={FarMedmorAleneomsorgFødselFormComponents}
                                 dekningsgradFeltNavn={FarMedmorAleneomsorgFødselFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={false}
                             />
                         </Block>
                         <Block visible={formValues.dekningsgrad !== ''}>

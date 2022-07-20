@@ -154,6 +154,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 FormKomponent={FarMedmorFødselBeggeHarRettFormComponents}
                                 dekningsgradFeltNavn={FarMedmorFødselBeggeHarRettFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={true}
                             />
                         </Block>
                         <Block visible={formValues.dekningsgrad !== ''}>

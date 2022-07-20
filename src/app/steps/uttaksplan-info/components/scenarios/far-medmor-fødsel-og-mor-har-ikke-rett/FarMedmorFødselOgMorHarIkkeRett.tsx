@@ -190,6 +190,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 FormKomponent={FarMedmorFødselOgMorHarIkkeRettFormComponents}
                                 dekningsgradFeltNavn={FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={erDeltUttak}
                             />
                         </Block>
                         <Block

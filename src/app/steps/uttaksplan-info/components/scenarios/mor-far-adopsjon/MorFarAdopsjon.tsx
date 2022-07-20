@@ -221,6 +221,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 FormKomponent={MorFarAdopsjonFormComponents}
                                 dekningsgradFeltNavn={MorFarAdopsjonFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={erDeltUttak}
                             />
                         </Block>
                         <Block padBottom="l" visible={visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad)}>
