@@ -10,7 +10,12 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
     grunnlag: Søknadsinfo
 ): RegelTestresultat => {
     const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;
-    if (!grunnlag.søkerErFarEllerMedmor || grunnlag.morHarRett || tattUtForMangeDagerIPlanen) {
+    if (
+        !grunnlag.søkerErFarEllerMedmor ||
+        grunnlag.morHarRett ||
+        tattUtForMangeDagerIPlanen ||
+        (grunnlag.søkerErFarEllerMedmor && grunnlag.søkerErAleneOmOmsorg)
+    ) {
         return {
             passerer: true,
         };
