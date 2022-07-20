@@ -36,7 +36,6 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
     navnPåForeldre,
     fieldName,
     erFarEllerMedmor,
-    situasjon,
     erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
@@ -44,7 +43,7 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
 
     const radios = velgbareStønadskontoer.map(
         (konto): RadioPanelProps => ({
-            label: getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, situasjon, erAleneOmOmsorg),
+            label: getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg),
             value: `${konto}`,
         })
     );

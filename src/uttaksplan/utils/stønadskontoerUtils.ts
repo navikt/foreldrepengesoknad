@@ -1,7 +1,6 @@
 import { intlUtils } from '@navikt/fp-common';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { IntlShape } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -24,7 +23,6 @@ export const getStønadskontoNavn = (
     konto: StønadskontoType,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor?: boolean,
-    situasjon?: Situasjon,
     erAleneOmOmsorg?: boolean
 ) => {
     let navn;
@@ -47,7 +45,7 @@ export const getStønadskontoNavn = (
         );
     }
 
-    if (erFarEllerMedmor === true && situasjon === 'fødsel' && erAleneOmOmsorg === false) {
+    if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (konto === StønadskontoType.AktivitetsfriKvote) {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
@@ -65,7 +63,6 @@ export const getUttakAnnenPartStønadskontoNavn = (
     navnPåForeldre: NavnPåForeldre,
     samtidigUttakProsent: string | undefined,
     erFarEllerMedmor?: boolean,
-    situasjon?: Situasjon,
     erAleneOmOmsorg?: boolean
 ) => {
     const forelderNavn = getForelderNavn(periodeForelder, navnPåForeldre);
@@ -80,7 +77,7 @@ export const getUttakAnnenPartStønadskontoNavn = (
             prosent: samtidigUttakProsent,
         });
     }
-    return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, situasjon, erAleneOmOmsorg);
+    return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {

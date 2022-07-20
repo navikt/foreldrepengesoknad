@@ -52,14 +52,7 @@ const Kontostatus: FunctionComponent<Props> = ({
             </div>
             <div className={bem.element('content')}>
                 <div className={kontoErOvertrukket ? bem.element('kontoOvertrukket') : bem.element('konto')}>
-                    {getStønadskontoNavn(
-                        intl,
-                        uttak.konto,
-                        navnPåForeldre,
-                        erFarEllerMedmor,
-                        situasjon,
-                        erAleneOmOmsorg
-                    )}
+                    {getStønadskontoNavn(intl, uttak.konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg)}
                 </div>
                 <strong
                     className={kontoErOvertrukket ? bem.element('dagerOvertrukket') : bem.element('dager')}

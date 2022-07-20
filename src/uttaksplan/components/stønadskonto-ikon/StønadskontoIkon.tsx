@@ -27,7 +27,6 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     navnPåForeldre,
     harMidlertidigOmsorg,
     erFarEllerMedmor,
-    situasjon,
     erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
@@ -36,7 +35,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
         <IconBox color={getStønadskontoFarge(konto, forelder, true, harMidlertidigOmsorg)} stripes={gradert}>
             <UttaksplanIkon
                 ikon={UttaksplanIkonKeys.uttak}
-                title={getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, situasjon, erAleneOmOmsorg)}
+                title={getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg)}
             />
         </IconBox>
     );

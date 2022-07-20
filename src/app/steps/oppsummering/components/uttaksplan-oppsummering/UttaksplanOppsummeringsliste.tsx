@@ -56,7 +56,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     const intl = useIntl();
 
     const getStønadskontoNavnFromKonto = (konto: StønadskontoType) => {
-        return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, situasjon, erAleneOmOmsorg);
+        return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     };
 
     const getUttaksperiodeNavn = (periode: Uttaksperiode) => {

@@ -15,7 +15,6 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
         harKomplettUttaksplan,
         søkerErFarEllerMedmor,
         søkerErAleneOmOmsorg,
-        søkersituasjon,
     } = grunnlag;
     const stønadskontoerMedForMyeUttak = getUttaksstatus({
         erDeltUttak,
@@ -38,7 +37,6 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
                             uttak.konto,
                             navnPåForeldre,
                             søkerErFarEllerMedmor,
-                            søkersituasjon.situasjon,
                             søkerErAleneOmOmsorg
                         ),
                 },

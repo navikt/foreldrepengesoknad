@@ -182,7 +182,6 @@ export const getPeriodeTittel = (
                 periode.konto,
                 navnPåForeldre,
                 erFarEllerMedmor,
-                situasjon,
                 erAleneOmOmsorg
             );
             const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
