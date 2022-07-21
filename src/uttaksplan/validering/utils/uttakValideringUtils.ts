@@ -11,6 +11,7 @@ import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { erPeriodeFørDato } from 'uttaksplan/utils/periodeUtils';
 import AnnenForelder from 'app/context/types/AnnenForelder';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
@@ -133,7 +134,7 @@ export const getUgyldigUttakMor = (
 
     let samtidigUttaksperioder: Uttaksperiode[] = [];
 
-    if (!flerbarnsFødsel && flerbarnsFødsel !== undefined) {
+    if (!flerbarnsFødsel && flerbarnsFødsel !== undefined && !andreAugust2022ReglerGjelder(familiehendelsesdato)) {
         samtidigUttaksperioder = Periodene(ugyldigPeriode)
             .getUttak()
             .filter((p) => p.forelder === Forelder.mor && p.ønskerSamtidigUttak);

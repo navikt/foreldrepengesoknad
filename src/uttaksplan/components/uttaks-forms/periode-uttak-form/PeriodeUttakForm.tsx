@@ -401,6 +401,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     samtidigUttakProsentVisible={visibility.isVisible(
                                         PeriodeUttakFormField.samtidigUttakProsent
                                     )}
+                                    familiehendelsesdato={familiehendelsesdato}
                                 />
                             </Block>
                             <Block

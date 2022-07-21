@@ -30,6 +30,7 @@ import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import { inneholderPerioderUtenAktivitetskrav } from './tester/inneholderPerioderUtenAktivitetskrav';
 import { inneholderUtsettelserUtenÅrsak } from './tester/inneholderUtsettelserUtenÅrsak';
 import { farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest } from './tester/farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest';
+import { harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest } from './tester/harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest';
 import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
 import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
 import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
@@ -39,6 +40,7 @@ export enum UttaksplanRegelKey {
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
     'farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel' = 'farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel',
+    'harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUker' = 'harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUker',
     'farMedmorHarSøktUttakRundtFødselUtenforGyldigPeriode' = 'farMedmorHarSøktUttakRundtFødselUtenforGyldigPeriode',
     'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
@@ -97,6 +99,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest,
+    },
+    {
+        key: UttaksplanRegelKey.harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUker,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest,
     },
     {
         key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
