@@ -18,7 +18,7 @@ export const getkontoUtenAktivitetskravUker = (
 
     let kontoUtenAktivitetskravUker = 0;
     if (antallBarn === 1 && morErUfør) {
-        kontoUtenAktivitetskravUker = 15;
+        kontoUtenAktivitetskravUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 15 : 19;
     } else if (antallBarn === 2) {
         kontoUtenAktivitetskravUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 17 : 21;
     } else if (antallBarn > 2) {

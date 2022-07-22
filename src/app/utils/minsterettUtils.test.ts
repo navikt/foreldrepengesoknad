@@ -104,7 +104,7 @@ describe('Minsterett når bare far har rett  - mor er ufør', () => {
 
         expect(antallUker).toEqual(15);
     });
-    it('Far skal ha 15 uker minsterett hvis ett barn og 80% dekningsgrad og mor er ufør', () => {
+    it('Far skal ha 19 uker minsterett hvis ett barn og 80% dekningsgrad og mor er ufør', () => {
         const antallUker = getkontoUtenAktivitetskravUker(
             1,
             morErUfør,
@@ -113,7 +113,7 @@ describe('Minsterett når bare far har rett  - mor er ufør', () => {
             bareFarHarRett
         );
 
-        expect(antallUker).toEqual(15);
+        expect(antallUker).toEqual(19);
     });
     it('Far skal ha 17 uker minsterett hvis to barn og 100% dekningsgrad og mor er ufør', () => {
         const antallUker = getkontoUtenAktivitetskravUker(
@@ -186,7 +186,7 @@ describe('MinsterettUtils (WLB gjelder ikke)', () => {
             1,
             morErUfør,
             familiehendelsesdato,
-            Dekningsgrad.ÅTTI_PROSENT,
+            Dekningsgrad.HUNDRE_PROSENT,
             bareFarHarRett
         );
 
