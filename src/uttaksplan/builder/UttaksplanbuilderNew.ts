@@ -26,15 +26,18 @@ const leggTilPeriodeOgBuild = (
     erFarEllerMedmor: boolean,
     annenPartsUttak: Periode[] | undefined
 ) => {
-    let nyePerioder = leggTilPeriode({
-        perioder: bevegeligePerioder,
-        nyPeriode,
-        familiehendelsesdato,
-        harAktivitetskravIPeriodeUtenUttak,
-        erAdopsjon,
-        bareFarHarRett,
-        erFarEllerMedmor,
-    });
+    let nyePerioder = slåSammenLikePerioder(
+        leggTilPeriode({
+            perioder: bevegeligePerioder,
+            nyPeriode,
+            familiehendelsesdato,
+            harAktivitetskravIPeriodeUtenUttak,
+            erAdopsjon,
+            bareFarHarRett,
+            erFarEllerMedmor,
+        }),
+        familiehendelsesdato
+    );
 
     fastePerioder.forEach((fastPeriode) => {
         nyePerioder = leggTilPeriode({
