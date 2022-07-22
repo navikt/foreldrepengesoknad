@@ -25,11 +25,7 @@ import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
-import {
-    convertTidsperiodeToTidsperiodeDate,
-    førsteOktober2021ReglerGjelder,
-    getRelevantFamiliehendelseDato,
-} from './dateUtils';
+import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } from './dateUtils';
 import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
@@ -481,10 +477,11 @@ const mapSaksperioderTilUttaksperioder = (
     );
     const annenPartsUttak = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
     const familiehendelsesdato = new Date(grunnlag.familiehendelseDato);
-
+    const harAktivitetskravIPeriodeUtenUttak =
+        !grunnlag.erDeltUttak && kunFarMedmorHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
     const perioderUtenAnnenPartsSamtidigUttakMedHull = finnOgSettInnHull(
         perioderUtenAnnenPartsSamtidigUttak,
-        førsteOktober2021ReglerGjelder(familiehendelsesdato),
+        harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
@@ -497,7 +494,7 @@ const mapSaksperioderTilUttaksperioder = (
             annenPartsUttak,
             familiehendelsesdato
         ),
-        førsteOktober2021ReglerGjelder(familiehendelsesdato),
+        harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
