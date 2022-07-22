@@ -188,12 +188,18 @@ export const getKontotypeBareFarHarRett = (periodeResultatÅrsak: string): Støn
     }
 };
 
-const getErMorForSyk = (erFarEllerMedmor: boolean, saksperiode: Saksperiode, familiehendelsesdato: string) => {
+const getErMorForSyk = (
+    erFarEllerMedmor: boolean,
+    saksperiode: Saksperiode,
+    familiehendelsesdato: string,
+    konto: StønadskontoType
+) => {
     if (
         erFarEllerMedmor &&
         !saksperiode.flerbarnsdager &&
         !saksperiode.samtidigUttak &&
-        dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'))
+        dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks')) &&
+        konto !== StønadskontoType.AktivitetsfriKvote
     ) {
         if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {
             return true;
@@ -244,11 +250,11 @@ export const mapUttaksperiodeFromSaksperiode = (
     const { termindato, fødselsdato, omsorgsovertakelsesdato } = grunnlag;
 
     const familiehendelseDato = getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato);
-
+    const kontoType = konto !== undefined ? konto : saksperiode.stønadskontotype;
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
-        konto: konto !== undefined ? konto : saksperiode.stønadskontotype,
+        konto: kontoType,
         tidsperiode: tidsperiodeDate,
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
@@ -261,7 +267,7 @@ export const mapUttaksperiodeFromSaksperiode = (
             : undefined,
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
-        erMorForSyk: getErMorForSyk(erFarEllerMedmor, saksperiode, familiehendelseDato),
+        erMorForSyk: getErMorForSyk(erFarEllerMedmor, saksperiode, familiehendelseDato, kontoType),
     };
 
     return uttaksperiode;
