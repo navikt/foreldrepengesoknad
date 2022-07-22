@@ -141,7 +141,8 @@ export const getUttakSkjemaregler = (
                 konto as StønadskontoType,
                 familiehendelsesdato,
                 erFarEllerMedmor,
-                convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk)
+                convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
+                tidsperiode
             );
         },
         graderingSkalBesvaresPgaWLBUttakRundtFødsel: (): boolean => {

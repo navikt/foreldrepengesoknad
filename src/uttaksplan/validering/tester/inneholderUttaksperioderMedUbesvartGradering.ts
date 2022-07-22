@@ -13,7 +13,8 @@ export const inneholderUttaksperioderMedUbesvartGradering = (grunnlag: Søknadsi
                 p.konto,
                 grunnlag.familiehendelsesdato,
                 grunnlag.søkerErFarEllerMedmor,
-                p.erMorForSyk
+                p.erMorForSyk,
+                p.tidsperiode
             )
         )
         .filter((p) => p.gradert === undefined);
