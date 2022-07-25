@@ -32,10 +32,7 @@ import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
 import { finnOgSettInnHull, settInnAnnenPartsUttakOmNødvendig } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import {
-    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
-    tidperiodeGårOverFamiliehendelsesdato,
-} from './wlbUtils';
+import { tidperiodeGårOverFamiliehendelsesdato } from './wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 
 const harUttaksdager = (periode: Periode): boolean => {
