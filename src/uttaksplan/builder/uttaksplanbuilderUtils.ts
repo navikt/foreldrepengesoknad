@@ -278,7 +278,7 @@ export const settInnAnnenPartsUttakOmNødvendig = (
         return perioder;
     }
 
-    const result = perioder.reduce((res, p) => {
+    const result = perioder.reduce((res, p, currentIndex) => {
         if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
             const opprinneligePerioderAnnenPart = Periodene(annenPartsUttak).finnOverlappendePerioder(p);
 
@@ -363,6 +363,22 @@ export const settInnAnnenPartsUttakOmNødvendig = (
                             ...op.tidsperiode,
                         },
                     };
+
+                    if (
+                        currentIndex === 0 &&
+                        dayjs(opprinneligPeriode.tidsperiode.fom).isBefore(p.tidsperiode.fom, 'day')
+                    ) {
+                        const opprinneligPeriodeSomStarterUttaksplanen = {
+                            ...opprinneligPeriode,
+                            id: guid(),
+                            tidsperiode: {
+                                fom: opprinneligPeriode.tidsperiode.fom,
+                                tom: Uttaksdagen(op.tidsperiode.fom).forrige(),
+                            },
+                            visPeriodeIPlan: true,
+                        };
+                        res.push(opprinneligPeriodeSomStarterUttaksplanen);
+                    }
 
                     res.push(nyPeriode);
                     res.push(op);
