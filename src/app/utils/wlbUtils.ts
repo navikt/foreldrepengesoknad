@@ -157,7 +157,16 @@ export const farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato = (
     return (
         (isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato) ||
             isUttaksperiodeBareFarMedmorHarRett(periode, morHarRett)) &&
-        dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day') &&
-        dayjs(periode.tidsperiode.tom).isSameOrAfter(familiehendelsesdato, 'day')
+        tidperiodeGårOverFamiliehendelsesdato(periode.tidsperiode, familiehendelsesdato)
+    );
+};
+
+export const tidperiodeGårOverFamiliehendelsesdato = (
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date
+): boolean => {
+    return (
+        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day') &&
+        dayjs(tidsperiode.tom).isSameOrAfter(familiehendelsesdato, 'day')
     );
 };

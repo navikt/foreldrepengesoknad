@@ -4,6 +4,7 @@ import {
     Arbeidsform,
     AvslåttPeriode,
     isInfoPeriode,
+    isUttaksperiode,
     Overføringsperiode,
     Periode,
     Periodetype,
@@ -31,6 +32,11 @@ import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
 import { finnOgSettInnHull, settInnAnnenPartsUttakOmNødvendig } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
+import {
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    tidperiodeGårOverFamiliehendelsesdato,
+} from './wlbUtils';
+import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -40,7 +46,7 @@ const harGyldigTidsperiode = (periode: Periode): boolean => {
     return isValidTidsperiode(periode.tidsperiode);
 };
 
-const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
+const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
     if (perioder.length <= 1) {
         return perioder;
     }
@@ -63,7 +69,8 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
 
         if (
             Perioden(forrigePeriode).erLik(periode, false, true) &&
-            Perioden(forrigePeriode).erSammenhengende(periode)
+            Perioden(forrigePeriode).erSammenhengende(periode) &&
+            !dayjs(periode.tidsperiode.fom).isSame(familiehendelsesdato, 'day')
         ) {
             forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
             return;
@@ -449,6 +456,19 @@ const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
     return false;
 };
 
+const getPerioderSplittetOverFødsel = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
+    const nyePerioder = [] as Periode[];
+    perioder.forEach((p) => {
+        if (tidperiodeGårOverFamiliehendelsesdato(p.tidsperiode, familiehendelsesdato) && isUttaksperiode(p)) {
+            const splittedePerioder = splittUttaksperiodePåFamiliehendelsesdato(p, familiehendelsesdato);
+            splittedePerioder.forEach((periode) => nyePerioder.push(periode));
+        } else {
+            nyePerioder.push(p);
+        }
+    });
+    return nyePerioder;
+};
+
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
@@ -459,14 +479,18 @@ const mapSaksperioderTilUttaksperioder = (
     const perioder = innvilgedePerioder.map((periode) =>
         mapPeriodeFromSaksperiode(periode, grunnlag, innvilgedePerioder, erFarEllerMedmor)
     );
+    const familiehendelsesdato = new Date(grunnlag.familiehendelseDato);
+
+    const perioderSplittetOverFødsel = getPerioderSplittetOverFødsel(perioder, familiehendelsesdato);
 
     const sammenslåddePerioder: Periode[] = slåSammenLikePerioder(
-        perioder
+        perioderSplittetOverFødsel
             .sort(sorterPerioder)
             .filter(harUttaksdager)
             .map(korrigerTidsperiodeTilGyldigUttaksdag)
             .filter(harGyldigTidsperiode)
-            .filter(harUttaksdager)
+            .filter(harUttaksdager),
+        familiehendelsesdato
     );
 
     const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
@@ -476,7 +500,6 @@ const mapSaksperioderTilUttaksperioder = (
         (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
     );
     const annenPartsUttak = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
-    const familiehendelsesdato = new Date(grunnlag.familiehendelseDato);
     const harAktivitetskravIPeriodeUtenUttak =
         !grunnlag.erDeltUttak && kunFarMedmorHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
     const perioderUtenAnnenPartsSamtidigUttakMedHull = finnOgSettInnHull(
