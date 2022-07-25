@@ -47,6 +47,10 @@ const getInitialKonto = (
         return '';
     }
 
+    if (!erDeltUttak && erFarEllerMedmor && periodenStarterFørFamdato) {
+        return StønadskontoType.AktivitetsfriKvote;
+    }
+
     if (erMorUfør) {
         return '';
     }
@@ -79,7 +83,9 @@ const getInitialValues = (
     startdatoPeriode: Date | undefined,
     erFarEllerMedmor: boolean
 ): PeriodeUttakFormData => {
-    const periodenStarterFørFamdato = startdatoPeriode ? dayjs(startdatoPeriode).isBefore(familiehendelsesdato) : false;
+    const periodenStarterFørFamdato = startdatoPeriode
+        ? dayjs(startdatoPeriode).isBefore(familiehendelsesdato, 'day')
+        : false;
     const hvemSkalTaUttak = getHvemSkalTaUttak(erDeltUttak, forelder, periodenStarterFørFamdato, erFarEllerMedmor);
     const konto = getInitialKonto(erDeltUttak, erMorUfør, periodenStarterFørFamdato, erFarEllerMedmor);
 
@@ -324,6 +330,23 @@ const skalVedleggPåkreves = (
     return false;
 };
 
+const getKontoVerdi = (
+    samtidigWLBUttakFørFødselFarMedmor: boolean,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    startDato: Date,
+    inputKonto: StønadskontoType
+): StønadskontoType => {
+    if (samtidigWLBUttakFørFødselFarMedmor) {
+        return StønadskontoType.Fedrekvote;
+    }
+    if (!erDeltUttak && erFarEllerMedmor && startDato) {
+        return StønadskontoType.AktivitetsfriKvote;
+    }
+
+    return inputKonto;
+};
+
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
@@ -421,9 +444,13 @@ export const mapPeriodeUttakFormToPeriode = (
         ? Forelder.farMedmor
         : (values.hvemSkalTaUttak as Forelder);
 
-    const kontoVerdi = samtidigWLBUttakFørFødselFarMedmor
-        ? StønadskontoType.Fedrekvote
-        : (values.konto as StønadskontoType);
+    const kontoVerdi = getKontoVerdi(
+        samtidigWLBUttakFørFødselFarMedmor,
+        erFarEllerMedmor,
+        erDeltUttak,
+        values.fom!,
+        values.konto as StønadskontoType
+    );
 
     const periode: Uttaksperiode = {
         id,
