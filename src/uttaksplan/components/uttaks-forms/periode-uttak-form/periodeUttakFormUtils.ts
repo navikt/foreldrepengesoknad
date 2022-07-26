@@ -335,12 +335,13 @@ const getKontoVerdi = (
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
     startDato: Date,
-    inputKonto: StønadskontoType
+    inputKonto: StønadskontoType,
+    familiehendelsesdato: Date
 ): StønadskontoType => {
     if (samtidigWLBUttakFørFødselFarMedmor) {
         return StønadskontoType.Fedrekvote;
     }
-    if (!erDeltUttak && erFarEllerMedmor && startDato) {
+    if (!erDeltUttak && erFarEllerMedmor && dayjs(startDato).isBefore(familiehendelsesdato, 'day')) {
         return StønadskontoType.AktivitetsfriKvote;
     }
 
@@ -449,7 +450,8 @@ export const mapPeriodeUttakFormToPeriode = (
         erFarEllerMedmor,
         erDeltUttak,
         values.fom!,
-        values.konto as StønadskontoType
+        values.konto as StønadskontoType,
+        familiehendelsesdato
     );
 
     const periode: Uttaksperiode = {
