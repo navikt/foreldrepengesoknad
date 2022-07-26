@@ -917,6 +917,7 @@
     "uttaksplan.validering.info.manglendeVedlegg": "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
     "uttaksplan.validering.info.rettTilUttakRundtFødsel": "Du har igjen {antallDager} dager som du kan ta ut av din egen kvote rundt fødselen ({fraDato} - {tilDato}). Du kan ta ut disse dagene senere i foreldrepengeperioden dersom du heller ønsker det.",
     "uttaksplan.validering.info.rettTilAktivitetsfriUttak": "Du kan ta ut opptil {antallUker} uker uten at det stilles krav til at mor skal være i aktivitet. Disse ukene kan du ta ut når som helst før barnet fyller tre år. Skal du ta ut mer enn disse ukene må mor være i jobb, studere eller i annen godkjent aktivitet når du skal være hjemme med barnet. Det samme gjelder hvis du skal ha opphold i foreldrepengene. Du kan lese mer om dette på <a>nav.no</a>.",
+    "uttaksplan.validering.info.flerbarnsdagerKanBrukes": "Du kan benytte deg av opptil {antallUker} uker med flerbarnsdager uten at det stilles krav til at mor skal være i aktivitet. Du kan lese mer om dette på <a>nav.no</a>.",
     "uttaksplan.validering.feil.inneholderUtsettelserUtenÅrsak": "Du må legge inn hvorfor du skal utsette",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",

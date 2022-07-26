@@ -1,7 +1,7 @@
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 
-export const getkontoUtenAktivitetskravUker = (
+export const getBareFarHarRettKontoUtenAktivitetskravUker = (
     antallBarn: number,
     morErUfør: boolean,
     familiehendelsesdato: Date,
@@ -15,15 +15,46 @@ export const getkontoUtenAktivitetskravUker = (
     if (andreAugust2022ReglerGjelder(familiehendelsesdato) && antallBarn === 1 && !morErUfør) {
         return 8;
     }
+    let morUførUker = 0;
+    let flerbarnsukerSomDelAvMinsterett = 0;
 
-    let kontoUtenAktivitetskravUker = 0;
-    if (antallBarn === 1 && morErUfør) {
-        kontoUtenAktivitetskravUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 15 : 19;
-    } else if (antallBarn === 2) {
-        kontoUtenAktivitetskravUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 17 : 21;
-    } else if (antallBarn > 2) {
-        kontoUtenAktivitetskravUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 46 : 56;
+    if (morErUfør) {
+        morUførUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 15 : 19;
     }
 
-    return kontoUtenAktivitetskravUker;
+    if (andreAugust2022ReglerGjelder(familiehendelsesdato)) {
+        if (antallBarn === 2) {
+            flerbarnsukerSomDelAvMinsterett = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 17 : 21;
+        } else if (antallBarn > 2) {
+            flerbarnsukerSomDelAvMinsterett = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 46 : 56;
+        }
+    }
+
+    return flerbarnsukerSomDelAvMinsterett + morUførUker;
+};
+
+export const getBareFarHarRettFlerbarnsdagerUker = (
+    antallBarn: number,
+    familiehendelsesdato: Date,
+    dekningsgrad: Dekningsgrad,
+    bareFarHarRett: boolean
+): number => {
+    if (!bareFarHarRett || antallBarn === 1) {
+        return 0;
+    }
+
+    //Flerbarnsdager regnes som en del av minsteretten når WLB Regler gjelder, og blir med i kontoen uten aktivitetskrav
+    if (andreAugust2022ReglerGjelder(familiehendelsesdato)) {
+        return 0;
+    }
+
+    let flerbarnsUker = 0;
+
+    if (antallBarn === 2) {
+        flerbarnsUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 17 : 21;
+    } else if (antallBarn > 2) {
+        flerbarnsUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 46 : 56;
+    }
+
+    return flerbarnsUker;
 };

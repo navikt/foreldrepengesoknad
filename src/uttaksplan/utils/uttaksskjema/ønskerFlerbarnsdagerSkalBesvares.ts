@@ -1,4 +1,5 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -21,7 +22,12 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     if (stønadskontoType === StønadskontoType.AktivitetsfriKvote) {
         return false;
     }
-    if (søkerErFarEllerMedmor && (bareFarHarRett || erAleneOmOmsorg) && antallBarn > 1) {
+    if (
+        søkerErFarEllerMedmor &&
+        (bareFarHarRett || erAleneOmOmsorg) &&
+        antallBarn > 1 &&
+        andreAugust2022ReglerGjelder(familiehendelsesdato)
+    ) {
         return false;
     }
 

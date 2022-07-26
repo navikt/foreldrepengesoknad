@@ -4,36 +4,35 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 import links from 'app/links/links';
 import { IntlShape } from 'react-intl';
-import { getBareFarHarRettKontoUtenAktivitetskravUker } from 'app/utils/minsterettUtils';
+import { getBareFarHarRettFlerbarnsdagerUker } from 'app/utils/minsterettUtils';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
-export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest = (
-    grunnlag: Søknadsinfo
-): RegelTestresultat => {
+export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;
     if (
         !grunnlag.søkerErFarEllerMedmor ||
         grunnlag.morHarRett ||
         tattUtForMangeDagerIPlanen ||
-        (grunnlag.søkerErFarEllerMedmor && grunnlag.søkerErAleneOmOmsorg)
+        (grunnlag.søkerErFarEllerMedmor && grunnlag.søkerErAleneOmOmsorg) ||
+        andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato)
     ) {
         return {
             passerer: true,
         };
     }
-    const kontoUtenAktivitetskravUker = getBareFarHarRettKontoUtenAktivitetskravUker(
+    const flerbarnsUker = getBareFarHarRettFlerbarnsdagerUker(
         grunnlag.antallBarn,
-        grunnlag.morErUfør,
         grunnlag.familiehendelsesdato,
         grunnlag.dekningsgrad,
         !grunnlag.morHarRett
     );
     return {
-        passerer: kontoUtenAktivitetskravUker === 0,
+        passerer: flerbarnsUker === 0,
         info: {
-            intlKey: 'uttaksplan.validering.info.rettTilAktivitetsfriUttak',
+            intlKey: 'uttaksplan.validering.info.flerbarnsdagerKanBrukes',
             renderAsHtml: true,
             values: {
-                antallUker: kontoUtenAktivitetskravUker,
+                antallUker: flerbarnsUker,
                 a: (_intl: IntlShape) => (msg: any) =>
                     (
                         <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
