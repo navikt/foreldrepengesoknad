@@ -4,7 +4,10 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 import links from 'app/links/links';
 import { IntlShape } from 'react-intl';
-import { getBareFarHarRettFlerbarnsdagerUker } from 'app/utils/minsterettUtils';
+import {
+    getBareFarHarRettFlerbarnsdagerUker,
+    getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
+} from 'app/utils/minsterettUtils';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
@@ -26,6 +29,14 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
         grunnlag.dekningsgrad,
         !grunnlag.morHarRett
     );
+    const bareFarHarRett = grunnlag.søkerErFarEllerMedmor && !grunnlag.morHarRett;
+    const antallUkerPåÅTaUtDager = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+        grunnlag.antallBarn,
+        grunnlag.familiehendelsesdato,
+        grunnlag.dekningsgrad,
+        bareFarHarRett
+    );
+
     return {
         passerer: flerbarnsUker === 0,
         info: {
@@ -33,6 +44,7 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
             renderAsHtml: true,
             values: {
                 antallUker: flerbarnsUker,
+                antallUkerÅTaUtFlerbarnsdager: antallUkerPåÅTaUtDager,
                 a: (_intl: IntlShape) => (msg: any) =>
                     (
                         <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">

@@ -1,3 +1,4 @@
+import uttaksConstants from 'app/constants';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 
@@ -51,10 +52,40 @@ export const getBareFarHarRettFlerbarnsdagerUker = (
     let flerbarnsUker = 0;
 
     if (antallBarn === 2) {
-        flerbarnsUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 17 : 21;
+        flerbarnsUker =
+            dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                ? uttaksConstants.ANTALL_UKER_2_BARN_100_PROSENT_UTTAK
+                : uttaksConstants.ANTALL_UKER_2_BARN_80_PROSENT_UTTAK;
     } else if (antallBarn > 2) {
-        flerbarnsUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 46 : 56;
+        flerbarnsUker =
+            dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                ? uttaksConstants.ANTALL_UKER_3_ELLER_FLERE_BARN_100_PROSENT_UTTAK
+                : uttaksConstants.ANTALL_UKER_3_ELLER_FLERE_BARN_80_PROSENT_UTTAK;
     }
 
     return flerbarnsUker;
+};
+
+export const getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB = (
+    antallBarn: number,
+    familiehendelsesdato: Date,
+    dekningsgrad: Dekningsgrad,
+    bareFarHarRett: boolean
+) => {
+    if (!bareFarHarRett) {
+        return 0;
+    }
+    const antallUkerEtterFødselMor = uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL;
+    const antallUkerForeldrepengerFar =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? uttaksConstants.ANTALL_UKER_FORELDREPENGER_BARE_FAR_HAR_RETT_100_PROSENT
+            : uttaksConstants.ANTALL_UKER_FORELDREPENGER_BARE_FAR_HAR_RETT_80_PROSENT;
+    const flerbarnsUker = getBareFarHarRettFlerbarnsdagerUker(
+        antallBarn,
+        familiehendelsesdato,
+        dekningsgrad,
+        bareFarHarRett
+    );
+
+    return antallUkerEtterFødselMor + antallUkerForeldrepengerFar + flerbarnsUker;
 };

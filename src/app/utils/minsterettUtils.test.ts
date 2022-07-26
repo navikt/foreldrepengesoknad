@@ -3,6 +3,7 @@ import MockDate from 'mockdate';
 import {
     getBareFarHarRettFlerbarnsdagerUker as getBareFarHarRettFlerbarnsuker,
     getBareFarHarRettKontoUtenAktivitetskravUker,
+    getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
 } from './minsterettUtils';
 
 const bareFarHarRett = true;
@@ -316,5 +317,68 @@ describe('Flerbarnsuker når bare far har rett og når WLB ikke gjelder', () => 
         );
 
         expect(antallUker).toEqual(56);
+    });
+});
+
+describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', () => {
+    it('Skal returnere 46 uker hvis 1 barn og 100 % dekning', () => {
+        const antallUker = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+            1,
+            new Date('2021-12-12'),
+            Dekningsgrad.HUNDRE_PROSENT,
+            bareFarHarRett
+        );
+
+        expect(antallUker).toEqual(46);
+    });
+    it('Skal returnere 56 uker hvis 1 barn og 80 % dekning', () => {
+        const antallUker = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+            1,
+            new Date('2021-12-12'),
+            Dekningsgrad.ÅTTI_PROSENT,
+            bareFarHarRett
+        );
+
+        expect(antallUker).toEqual(56);
+    });
+    it('Skal returnere 63 uker hvis 2 barn og 100 % dekning', () => {
+        const antallUker = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+            2,
+            new Date('2021-12-12'),
+            Dekningsgrad.HUNDRE_PROSENT,
+            bareFarHarRett
+        );
+
+        expect(antallUker).toEqual(63);
+    });
+    it('Skal returnere 77 uker hvis 2 barn og 80 % dekning', () => {
+        const antallUker = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+            2,
+            new Date('2021-12-12'),
+            Dekningsgrad.ÅTTI_PROSENT,
+            bareFarHarRett
+        );
+
+        expect(antallUker).toEqual(77);
+    });
+    it('Skal returnere 92 uker hvis 3 barn og 100 % dekning', () => {
+        const antallUker = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+            3,
+            new Date('2021-12-12'),
+            Dekningsgrad.HUNDRE_PROSENT,
+            bareFarHarRett
+        );
+
+        expect(antallUker).toEqual(92);
+    });
+    it('Skal returnere 112 uker hvis 3 barn og 80 % dekning', () => {
+        const antallUker = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
+            3,
+            new Date('2021-12-12'),
+            Dekningsgrad.ÅTTI_PROSENT,
+            bareFarHarRett
+        );
+
+        expect(antallUker).toEqual(112);
     });
 });
