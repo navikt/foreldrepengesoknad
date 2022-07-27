@@ -169,16 +169,14 @@ const changeClientonlyKontotype = (
         }
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
-            if (morErUfør) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
-            }
             if (
                 søkerErFarEllerMedmor &&
                 !annenForelderHarRettPåForeldrepenger &&
-                !morErUfør &&
                 andreAugust2022ReglerGjelder(familihendelsesdato)
             ) {
                 periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
+            } else if (morErUfør) {
+                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
             }
         }
     }
