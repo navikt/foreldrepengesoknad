@@ -186,6 +186,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
             ? getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato)
             : undefined;
+
+    const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
+
     return (
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(
@@ -263,6 +266,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
                                 situasjon={situasjon}
+                                erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
@@ -315,6 +319,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={morHarRett}
                                     situasjon={situasjon}
+                                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>

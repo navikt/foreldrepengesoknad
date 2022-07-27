@@ -78,6 +78,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
                                 situasjon={situasjon}
+                                erFarMedmorOgHarAleneomsorg={false}
                             />
                         </Block>
                         <PeriodeFørFødselFormComponents.Form includeButtons={false}>
@@ -113,6 +114,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={morHarRett}
                                     situasjon={situasjon}
+                                    erFarMedmorOgHarAleneomsorg={false}
                                 />
                             </Block>
 

@@ -74,6 +74,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     const antallUttaksdager = Tidsperioden(tidsperiode).getAntallUttaksdager();
     const periodenErKunHelligdager = antallHelligdager === antallUttaksdager;
     const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false; // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
+    const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
 
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
@@ -135,6 +136,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                                 situasjon={situasjon}
+                                erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
@@ -164,6 +166,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                                     situasjon={situasjon}
+                                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
                             <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="l">

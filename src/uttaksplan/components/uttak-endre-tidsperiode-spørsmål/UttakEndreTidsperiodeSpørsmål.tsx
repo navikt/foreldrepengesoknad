@@ -22,6 +22,7 @@ interface Props {
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
     situasjon: Situasjon;
+    erFarMedmorOgHarAleneomsorg: boolean;
     termindato?: Date;
 }
 
@@ -38,6 +39,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
     morHarRett,
     situasjon,
+    erFarMedmorOgHarAleneomsorg,
 }) => {
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
@@ -79,6 +81,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     erFarEllerMedmor={erFarEllerMedmor}
                     morHarRett={morHarRett}
                     situasjon={situasjon}
+                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                 />
             </Modal>
             <UkerDagerTeller
