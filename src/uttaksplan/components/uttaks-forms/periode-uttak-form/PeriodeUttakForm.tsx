@@ -407,6 +407,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         PeriodeUttakFormField.samtidigUttakProsent
                                     )}
                                     familiehendelsesdato={familiehendelsesdato}
+                                    situasjon={situasjon}
                                 />
                             </Block>
                             <Block
