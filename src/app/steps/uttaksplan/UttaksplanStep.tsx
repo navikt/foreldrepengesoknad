@@ -52,7 +52,7 @@ const UttaksplanStep = () => {
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
-    const { uttaksplanInfo, eksisterendeSak } = state;
+    const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
@@ -186,6 +186,7 @@ const UttaksplanStep = () => {
 
     const handleSlettUttaksplan = () => {
         dispatch(actionCreator.slettUttaksplan());
+        dispatch(actionCreator.setUttaksplanSlettet(true));
     };
 
     return (
@@ -237,7 +238,7 @@ const UttaksplanStep = () => {
                 perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                 morsSisteDag={morsSisteDag}
                 harKomplettUttaksplan={harKomplettUttaksplan}
-                opprinneligPlan={opprinneligPlan}
+                opprinneligPlan={harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
                 handleSlettUttaksplan={handleSlettUttaksplan}
                 termindato={termindato}
                 barn={barn}

@@ -56,6 +56,10 @@ const UttaksplanInfo = () => {
         }
     }, [eksisterendeSak, dispatch]);
 
+    useEffect(() => {
+        dispatch(actionCreator.setUttaksplanSlettet(false));
+    }, [dispatch]);
+
     const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
         Api.useGetUttakskontoer(
             getStønadskontoParams(

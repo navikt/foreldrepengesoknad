@@ -52,6 +52,7 @@ const context = {
     antallUkerIUttaksplan: undefined!,
     endringstidspunkt: undefined!,
     perioderSomSkalSendesInn: [],
+    harUttaksplanBlittSlettet: false,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {
