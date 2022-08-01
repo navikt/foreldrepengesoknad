@@ -183,5 +183,5 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
         return true;
     }
 
-    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo);
+    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };

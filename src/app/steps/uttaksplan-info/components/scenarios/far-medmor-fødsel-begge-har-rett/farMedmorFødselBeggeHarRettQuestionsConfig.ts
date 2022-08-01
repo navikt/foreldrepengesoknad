@@ -16,7 +16,8 @@ const includeFellesperiodeSpørsmål = (farMedmorsFørsteDag: string, familiehen
         hasValue(farMedmorsFørsteDag) &&
         (!andreAugust2022ReglerGjelder ||
             dayjs(ISOStringToDate(farMedmorsFørsteDag)).isAfter(
-                getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato)
+                getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato),
+                'day'
             ))
     );
 };

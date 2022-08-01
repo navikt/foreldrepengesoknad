@@ -30,7 +30,8 @@ export const getInitialFarMedmorAleneomsorgFødselValues = (
 ): FarMedmorAleneomsorgFødselFormData => {
     if (lagretUttaksplanInfo) {
         const startetPåOmsorgsovertakelse = dayjs(lagretUttaksplanInfo.startdatoUttak).isSame(
-            dayjs(datoForAleneomsorg)
+            dayjs(datoForAleneomsorg),
+            'day'
         );
 
         return {

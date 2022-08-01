@@ -14,7 +14,7 @@ export const validateDatoForAleneomsorg =
             return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat');
         }
 
-        if (dayjs(datoForAleneomsorg).isBefore(familiehendelsedato)) {
+        if (dayjs(datoForAleneomsorg).isBefore(familiehendelsedato, 'day')) {
             return intlUtils(intl, 'valideringsfeil.annenForelder.datoForAleneomsorg.førFamiliehendelsedato', {
                 dato: formatDate(familiehendelsedato.toDate()),
             });

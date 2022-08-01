@@ -246,7 +246,7 @@ export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): 
 
 export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], endringstidspunkt: Date): Periode[] => {
     const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
-        dayjs(periode.tidsperiode.fom).isAfter(endringstidspunkt)
+        dayjs(periode.tidsperiode.fom).isAfter(endringstidspunkt, 'day')
     );
 
     const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt

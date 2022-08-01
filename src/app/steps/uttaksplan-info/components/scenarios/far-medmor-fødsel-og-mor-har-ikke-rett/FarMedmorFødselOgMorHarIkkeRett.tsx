@@ -50,10 +50,10 @@ const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: 
         return false;
     }
 
-    const fødselsdatoEtterEllerLikFørsteJuli = dayjs(fødselsdato).isSameOrAfter(dayjs(new Date('2019-07-01')));
+    const fødselsdatoEtterEllerLikFørsteJuli = dayjs(fødselsdato).isSameOrAfter(dayjs(new Date('2019-07-01')), 'day');
 
     return (
-        dayjs(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(dayjs(termindato)) &&
+        dayjs(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(dayjs(termindato), 'days') &&
         fødselsdatoEtterEllerLikFørsteJuli
     );
 };

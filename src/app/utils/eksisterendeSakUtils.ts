@@ -358,7 +358,7 @@ const finnAnnenForelderPåFødselsdato = (
         return undefined;
     }
 
-    const barnMedGittFødselsdato = barn.find((b) => dayjs(b.fødselsdato).isSame(dayjs(fødselsdato)));
+    const barnMedGittFødselsdato = barn.find((b) => dayjs(b.fødselsdato).isSame(dayjs(fødselsdato), 'day'));
 
     if (barnMedGittFødselsdato !== undefined) {
         const annenForelder = barnMedGittFødselsdato.annenForelder;

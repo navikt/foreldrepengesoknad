@@ -198,7 +198,7 @@ const getErMorForSyk = (
         erFarEllerMedmor &&
         !saksperiode.flerbarnsdager &&
         !saksperiode.samtidigUttak &&
-        dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks')) &&
+        dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'), 'day') &&
         konto !== StønadskontoType.AktivitetsfriKvote
     ) {
         if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {

@@ -18,7 +18,7 @@ const kontoSkalBesvares = (
         (andreAugust2022ReglerGjelder(familiehendelsesdato) &&
             periodetype === Periodetype.Uttak &&
             erFarEllerMedmor &&
-            dayjs(tidsperiode.fom).isBefore(familiehendelsesdato))
+            dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day'))
     ) {
         return false;
     }

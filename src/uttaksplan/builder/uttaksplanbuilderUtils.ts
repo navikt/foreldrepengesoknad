@@ -60,7 +60,7 @@ export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato
         }
         if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
             if (
-                dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato) &&
+                dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
                 dayjs(periode.tidsperiode.tom).isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
             ) {
                 nyePerioder.push(forrigePeriode);
@@ -100,7 +100,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
             Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato);
 
         const farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene =
-            dayjs(tidsperiode.fom).isBefore(førsteUttaksdagEtterSeksUker) &&
+            dayjs(tidsperiode.fom).isBefore(førsteUttaksdagEtterSeksUker, 'day') &&
             !erAdopsjon &&
             ((bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
                 (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)));
@@ -109,12 +109,12 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
             return [getPeriodeHull(tidsperiode, årsak)];
         }
 
-        if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato)) {
+        if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
             return [getNyPeriodeUtenUttak(tidsperiode)];
         }
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
-            if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker)) {
+            if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker, 'day')) {
                 if (
                     (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
                     (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato))
@@ -327,7 +327,7 @@ export const settInnAnnenPartsUttakOmNødvendig = (
                         ? opprinneligePerioderAnnenPart[opprinneligePerioderAnnenPart.length - 1]
                         : undefined;
 
-                if (dayjs(p.tidsperiode.fom).isBefore(førsteOpprinneligePeriode.tidsperiode.fom)) {
+                if (dayjs(p.tidsperiode.fom).isBefore(førsteOpprinneligePeriode.tidsperiode.fom, 'day')) {
                     const nyPeriode: Periode = {
                         ...p,
                         id: guid(),
@@ -386,7 +386,7 @@ export const settInnAnnenPartsUttakOmNødvendig = (
 
                 if (
                     sisteOpprinneligePeriode &&
-                    dayjs(p.tidsperiode.tom).isAfter(sisteOpprinneligePeriode.tidsperiode.tom)
+                    dayjs(p.tidsperiode.tom).isAfter(sisteOpprinneligePeriode.tidsperiode.tom, 'day')
                 ) {
                     const nyPeriode: Periode = {
                         ...p,

@@ -28,7 +28,8 @@ const slutterInnenforGyldigPermisjonsperiode = (
     test: () =>
         dato !== undefined &&
         dayjs(dato).isSameOrBefore(
-            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).sisteMuligeUttaksdagEtterTermin
+            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).sisteMuligeUttaksdagEtterTermin,
+            'day'
         ),
     failText: { intlKey: 'uttaksplan.validering.feil.etterSistePermisjonsdag' },
 });

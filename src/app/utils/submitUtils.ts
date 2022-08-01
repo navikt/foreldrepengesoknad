@@ -44,7 +44,7 @@ const finnEndringerIUttaksplan = (nyPlan: Periode[], endringstidspunkt: Date): P
     return nyPlan.filter(
         (p) =>
             dateIsWithinRange(endringstidspunkt, p.tidsperiode.fom, p.tidsperiode.tom) ||
-            dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(endringstidspunkt))
+            dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(endringstidspunkt), 'day')
     );
 };
 

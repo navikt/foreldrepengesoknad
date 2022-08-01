@@ -169,7 +169,7 @@ export const isDateTodayOrInTheFuture = (date: string): boolean => {
 };
 
 export const isDateInTheFuture = (date: string): boolean => {
-    if (dayjs().isBefore(date)) {
+    if (dayjs().isBefore(date, 'day')) {
         return true;
     }
 
@@ -300,8 +300,8 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
     const førsteOktober2021 = new Date('2021-10-01');
 
     return (
-        dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021) &&
-        dayjs(new Date()).isSameOrAfter(førsteOktober2021)
+        dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021, 'day') &&
+        dayjs(new Date()).isSameOrAfter(førsteOktober2021, 'day')
     );
 };
 
@@ -310,11 +310,12 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
 
     //For testing av WLB regler i dev: WLB start-dato settes til 01.01.2022.
     if (fn.isFeatureEnabled(FeatureToggle.testWLBRegler)) {
-        return dayjs(familiehendelsesdato).isSameOrAfter('2022-01-01');
+        return dayjs(familiehendelsesdato).isSameOrAfter('2022-01-01', 'day');
     }
 
     return (
-        dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022) && dayjs(new Date()).isSameOrAfter(andreAugust2022)
+        dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
+        dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
     );
 };
 
@@ -322,7 +323,7 @@ export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
     farSinFørsteUttaksdag: Date,
     morsSisteUttaksdag: Date
 ): boolean => {
-    return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste());
+    return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste(), 'day');
 };
 
 export const getEndringstidspunkt = (
@@ -344,7 +345,7 @@ export const getEndringstidspunkt = (
 
             const { fom } = periode.tidsperiode;
             const opprinneligPeriodeMedSammeFom = opprinneligPlan.find((opprinneligPeriode) =>
-                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom)
+                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day')
             );
 
             if (opprinneligPeriodeMedSammeFom !== undefined) {
@@ -375,7 +376,9 @@ export const getEndringstidspunkt = (
             }
 
             const { fom } = periode.tidsperiode;
-            const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) => dayjs(nyPeriode.tidsperiode.fom).isSame(fom));
+            const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) =>
+                dayjs(nyPeriode.tidsperiode.fom).isSame(fom, 'day')
+            );
 
             if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
                 endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.tidsperiode.fom;

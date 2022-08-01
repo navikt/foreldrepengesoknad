@@ -297,7 +297,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                             dateToISOString(ankomstdato),
                                             formValues.søkersFørsteDag
                                         )
-                                    )
+                                    ),
+                                    'day'
                                 ) &&
                                 !isAdoptertStebarn(barn)
                             }
