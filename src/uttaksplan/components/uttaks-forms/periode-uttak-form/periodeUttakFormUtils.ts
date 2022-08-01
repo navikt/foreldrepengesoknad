@@ -47,7 +47,7 @@ const getInitialKonto = (
         return '';
     }
 
-    if (!erDeltUttak && erFarEllerMedmor && periodenStarterFørFamdato) {
+    if (erFarEllerMedmor && periodenStarterFørFamdato) {
         return StønadskontoType.AktivitetsfriKvote;
     }
 

@@ -34,7 +34,7 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
         return false;
     }
 
-    if (periodetype === Periodetype.Uttak && søkerErFarEllerMedmor) {
+    if (periodetype === Periodetype.Uttak) {
         if (
             erFarMedmorSinWLBTidsperiodeRundtFødsel(
                 tidsperiode,
