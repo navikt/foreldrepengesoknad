@@ -9,12 +9,16 @@ import links from 'app/links/links';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { prosentValideringSamtidigUttak } from 'uttaksplan/utils/prosentValidering';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     erFlerbarnssøknad: boolean;
     navnPåForeldre: NavnPåForeldre;
     navnPåAnnenForelder: string | undefined;
     samtidigUttakProsentVisible: boolean;
+    familiehendelsesdato: Date;
+    situasjon: Situasjon;
 }
 
 const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
@@ -22,8 +26,18 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
     navnPåForeldre,
     navnPåAnnenForelder,
     samtidigUttakProsentVisible,
+    familiehendelsesdato,
+    situasjon,
 }) => {
     const intl = useIntl();
+    let samtidigUttakInfoTekst;
+    if (erFlerbarnssøknad) {
+        samtidigUttakInfoTekst = 'uttaksplan.samtidigUttak.flerBarnsuker.veiledertekst';
+    } else if (andreAugust2022ReglerGjelder(familiehendelsesdato) && situasjon === 'fødsel') {
+        samtidigUttakInfoTekst = 'uttaksplan.samtidigUttak.veiledertekst.etterWLB';
+    } else {
+        samtidigUttakInfoTekst = 'uttaksplan.samtidigUttak.veiledertekst.førWLB';
+    }
 
     return (
         <>
@@ -41,11 +55,7 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
             <Block visible={samtidigUttakProsentVisible} padBottom="l">
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                     <FormattedMessage
-                        id={
-                            erFlerbarnssøknad
-                                ? 'uttaksplan.samtidigUttak.flerBarnsuker.veiledertekst'
-                                : 'uttaksplan.samtidigUttak.veiledertekst'
-                        }
+                        id={samtidigUttakInfoTekst}
                         values={{
                             link: (
                                 <Lenke href={links.fleksibeltuttak} target="_blank">

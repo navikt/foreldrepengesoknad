@@ -46,6 +46,8 @@ const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: Søkersituasjon,
+    farHarAleneomsorg: boolean,
+    morHarAleneomsorg: boolean,
     oppgittTermindato?: string
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -57,8 +59,8 @@ const getStønadskontoParams = (
         dekningsgrad: dekningsgrad,
         farHarRett: getFarHarRett(erFarMedmor, annenForelder),
         morHarRett: getMorHarRett(erFarMedmor, annenForelder),
-        morHarAleneomsorg: !erFarMedmor && barn.datoForAleneomsorg !== undefined,
-        farHarAleneomsorg: erFarMedmor && barn.datoForAleneomsorg !== undefined,
+        morHarAleneomsorg,
+        farHarAleneomsorg,
         fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
         omsorgsovertakelsesdato:
             isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,

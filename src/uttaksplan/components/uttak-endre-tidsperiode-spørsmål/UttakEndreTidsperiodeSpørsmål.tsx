@@ -8,6 +8,7 @@ import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperi
 import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     periode: Periode;
@@ -16,8 +17,13 @@ interface Props {
     ugyldigeTidsperioder: Tidsperiode[];
     visible: boolean;
     onAvbryt: () => void;
-    onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
+    onBekreft: (tidsperiode: TidsperiodeFormValues) => void;
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
+    erFarEllerMedmor: boolean;
+    morHarRett: boolean;
+    situasjon: Situasjon;
+    erFarMedmorOgHarAleneomsorg: boolean;
+    termindato?: Date;
 }
 
 const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
@@ -29,20 +35,21 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
+    termindato,
+    erFarEllerMedmor,
+    morHarRett,
+    situasjon,
+    erFarMedmorOgHarAleneomsorg,
 }) => {
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
-    const varighetIDager =
-        tidsperiode &&
-        tidsperiode.fom &&
-        tidsperiode.tom &&
-        dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
-            ? Tidsperioden({
-                  fom: tidsperiode.fom,
-                  tom: tidsperiode.tom,
-              }).getAntallUttaksdager()
-            : undefined;
+    const varighetIDager = dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+        ? Tidsperioden({
+              fom: tidsperiode.fom,
+              tom: tidsperiode.tom,
+          }).getAntallUttaksdager()
+        : undefined;
     const { uker, dager } = varighetIDager ? getUkerOgDagerFromDager(Math.abs(varighetIDager)) : { uker: 0, dager: 0 };
     const handleOnSubmit = (values: TidsperiodeFormValues) => {
         onBekreft(values);
@@ -70,6 +77,11 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     tidsperiode={tidsperiode}
                     ugyldigeTidsperioder={ugyldigeTidsperioder}
                     initialMonth={initialMonth}
+                    termindato={termindato}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    morHarRett={morHarRett}
+                    situasjon={situasjon}
+                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                 />
             </Modal>
             <UkerDagerTeller

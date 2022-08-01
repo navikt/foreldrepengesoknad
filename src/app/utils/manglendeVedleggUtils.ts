@@ -240,7 +240,14 @@ const missingAttachmentForAktivitetskrav = (
             søkerErMor,
             søknadsinfo.søkerErAleneOmOmsorg,
             søknadsinfo.annenForelder.kanIkkeOppgis,
-            søknadsinfo.søkerHarMidlertidigOmsorg
+            søknadsinfo.søkerHarMidlertidigOmsorg,
+            periode.tidsperiode,
+            søknadsinfo.familiehendelsesdato,
+            søknadsinfo.erFlerbarnssøknad,
+            søknadsinfo.termindato,
+            søknadsinfo.søkersituasjon.situasjon,
+            søknadsinfo.stønadskontoer,
+            !søknadsinfo.morHarRett
         ) &&
         isAttachmentMissing(
             periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE),

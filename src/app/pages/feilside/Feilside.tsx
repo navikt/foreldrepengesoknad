@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
 import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
-import { bemUtils, Block, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
+import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
@@ -44,6 +43,10 @@ const Feilside: React.FunctionComponent<Props> = ({
     const { søkerinfo } = state;
 
     const avbrytSøknadHandler = useCallback(async () => {
+        if (!søkerinfo) {
+            return;
+        }
+
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
@@ -53,11 +56,12 @@ const Feilside: React.FunctionComponent<Props> = ({
         dispatch(actionCreator.avbrytSøknad());
         await Api.deleteStoredAppState(søkerinfo.person.fnr);
         window.location.href = 'http://localhost:8080';
-    }, [dispatch, søkerinfo.person.fnr]);
+    }, [dispatch, søkerinfo]);
+
+    useDocumentTitle(dokumenttittel);
 
     return (
         <>
-            <DocumentTitle title={dokumenttittel} />
             {setLanguage && språkkode && (
                 <LanguageToggle locale={språkkode} availableLocales={['en', 'nb', 'nn']} toggle={setLanguage} />
             )}
@@ -84,9 +88,11 @@ const Feilside: React.FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>{ingress}</Normaltekst>
                 </Block>
-                <div className={bem.element('avbrytKnapp')}>
-                    <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
-                </div>
+                {søkerinfo !== undefined && (
+                    <div className={bem.element('avbrytKnapp')}>
+                        <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
+                    </div>
+                )}
             </div>
         </>
     );

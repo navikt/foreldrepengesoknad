@@ -1,24 +1,24 @@
 {
     "søker": {
-        "fnr": "08128222368",
-        "fornavn": "SEDAT",
-        "etternavn": "TRANE",
-        "kjønn": "K",
-        "fødselsdato": "1982-12-08",
+        "fnr": "10038909377",
+        "fornavn": "Skjør",
+        "etternavn": "Jeans",
+        "kjønn": "M",
+        "fødselsdato": "1989-03-10",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fnr": "27062153275",
-                "fødselsdato": "2021-06-27",
+                "fnr": "13062252647",
+                "fornavn": "Realistisk",
+                "etternavn": "Lefse",
+                "kjønn": "K",
+                "fødselsdato": "2022-06-13",
                 "annenForelder": {
-                    "fnr": "28118221607",
-                    "fødselsdato": "1982-11-28",
-                    "fornavn": "SMIDIG",
-                    "etternavn": "KOPP"
-                },
-                "fornavn": "TALENTFULL",
-                "etternavn": "MIDTPUNKT",
-                "kjønn": "K"
+                    "fnr": "03088908065",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
             }
         ]
     }

@@ -24,6 +24,7 @@ export interface Søknadsinfo {
     morHarRett: boolean;
     erFlerbarnssøknad: boolean;
     familiehendelsesdato: Date;
+    termindato: Date | undefined;
     stønadskontoer: TilgjengeligStønadskonto[];
     perioder: Periode[];
     harKomplettUttaksplan: boolean;

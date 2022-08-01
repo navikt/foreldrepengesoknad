@@ -10,16 +10,24 @@ import { getUttaksdatoer } from '../uttaksdatoerUtils';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import { graderingSkalBesvares } from './graderingSkalBesvares';
+import { graderingSkalBesvaresPgaWLBUttakRundtFødsel } from './graderingSkalBesvaresPgaWLBUttakRundtFødsel';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
-
+import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import kontoSkalBesvares from './kontoSkalBesvarer';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
+import hvemSkalTaUttakSkalBesvares from './hvemSkalTaUttakSkalBesvares';
 export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
+    uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => boolean;
     samtidigUttakSkalBesvares: () => boolean;
+    kontoSkalBesvares: () => boolean;
+    hvemSkalTaUttakSkalBesvares: () => boolean;
     overføringsårsakSkalBesvares: () => boolean;
     ønskerFlerbarnsdagerSkalBesvares: () => boolean;
     graderingSkalBesvares: () => boolean;
+    graderingSkalBesvaresPgaWLBUttakRundtFødsel: () => boolean;
 }
 
 export interface UttakSkjemaReglerProps {
@@ -31,6 +39,10 @@ export interface UttakSkjemaReglerProps {
     erDeltUttak: boolean;
     familiehendelsesdato: Date;
     periodetype: Periodetype;
+    termindato: Date | undefined;
+    morHarRett: boolean;
+    stønadskontoer: StønadskontoUttak[];
+    antallBarn: number;
 }
 
 export const getUttakSkjemaregler = (
@@ -46,11 +58,15 @@ export const getUttakSkjemaregler = (
         erDeltUttak,
         familiehendelsesdato,
         periodetype,
+        termindato,
+        stønadskontoer,
+        morHarRett,
+        antallBarn,
     } = regelProps;
 
     const { konto } = formValues;
 
-    const uttaksdatoer = getUttaksdatoer(familiehendelsesdato);
+    const uttaksdatoer = getUttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato);
     const tidsperiode: TidsperiodeDate = { fom: formValues.fom!, tom: formValues.tom! };
 
     return {
@@ -64,7 +80,14 @@ export const getUttakSkjemaregler = (
                 !erFarEllerMedmor,
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
-                false // TODO Midlertidig omsorg
+                false, // TODO Midlertidig omsorg,
+                tidsperiode,
+                familiehendelsesdato,
+                erFlerbarnssøknad,
+                termindato,
+                situasjon,
+                stønadskontoer,
+                !morHarRett
             ),
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
@@ -78,7 +101,10 @@ export const getUttakSkjemaregler = (
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
-                false // TODO Midlertidig omsorg,
+                false, // TODO Midlertidig omsorg,
+                familiehendelsesdato,
+                termindato,
+                !morHarRett
             ),
         samtidigUttakSkalBesvares: (): boolean =>
             samtidigUttakSkalBesvares(
@@ -92,13 +118,62 @@ export const getUttakSkjemaregler = (
                 convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
                 convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
             ),
+        kontoSkalBesvares: (): boolean =>
+            kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, erFarEllerMedmor),
         ønskerFlerbarnsdagerSkalBesvares: (): boolean => {
-            return ønskerFlerbarnsdagerSkalBesvares(periodetype, erFlerbarnssøknad, erFarEllerMedmor);
+            return ønskerFlerbarnsdagerSkalBesvares(
+                periodetype,
+                erFlerbarnssøknad,
+                erFarEllerMedmor,
+                familiehendelsesdato,
+                tidsperiode,
+                konto as StønadskontoType,
+                !morHarRett,
+                antallBarn,
+                erAleneOmOmsorg
+            );
         },
+        hvemSkalTaUttakSkalBesvares: (): boolean =>
+            hvemSkalTaUttakSkalBesvares(tidsperiode, erDeltUttak, familiehendelsesdato, erFarEllerMedmor, situasjon),
         graderingSkalBesvares: (): boolean => {
-            return graderingSkalBesvares(periodetype, konto as StønadskontoType);
+            return graderingSkalBesvares(
+                periodetype,
+                konto as StønadskontoType,
+                familiehendelsesdato,
+                erFarEllerMedmor,
+                convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
+                tidsperiode
+            );
+        },
+        graderingSkalBesvaresPgaWLBUttakRundtFødsel: (): boolean => {
+            return graderingSkalBesvaresPgaWLBUttakRundtFødsel(
+                tidsperiode,
+                periodetype,
+                konto as StønadskontoType,
+                erFarEllerMedmor,
+                familiehendelsesdato,
+                termindato,
+                situasjon
+            );
         },
         overføringsårsakSkalBesvares: () => periodetype === Periodetype.Overføring,
+        uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => {
+            return uttakRundtFødselÅrsakSpørsmålSkalBesvares(
+                periodetype,
+                konto as StønadskontoType,
+                tidsperiode,
+                erFarEllerMedmor,
+                erFlerbarnssøknad,
+                erAleneOmOmsorg,
+                annenForelder.kanIkkeOppgis,
+                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
+                false, //TODO: midlertidig omsorg
+                familiehendelsesdato,
+                termindato,
+                situasjon,
+                !morHarRett
+            );
+        },
     };
 };
 

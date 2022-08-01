@@ -15,7 +15,7 @@ import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUt
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
@@ -31,6 +31,8 @@ interface Props {
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
+    termindato: Date | undefined;
+    antallBarn: number;
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -52,6 +54,8 @@ const Periodeliste: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     setPeriodeErGyldig,
     erEndringssøknad,
+    termindato,
+    antallBarn,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -91,6 +95,8 @@ const Periodeliste: FunctionComponent<Props> = ({
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
+                    termindato={termindato}
+                    antallBarn={antallBarn}
                 />
             ))}
         </div>

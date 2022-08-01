@@ -3,6 +3,8 @@ import uttaksConstants from 'app/constants';
 import { getTidsperiode, isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Situasjon } from 'app/types/Situasjon';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { getFørsteUttaksdag2UkerFørFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 
 export interface Uttaksdatoer {
@@ -19,18 +21,22 @@ export interface Uttaksdatoer {
     };
 }
 
-export const uttaksdatoer = (familiehendelsesdato: Date) => ({
+export const uttaksdatoer = (familiehendelsesdato: Date, erFarEllerMedmor: boolean, termindato: Date | undefined) => ({
     førsteUttaksdagForeldrepengerFørFødsel: getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato),
     førsteUttaksdagPåEllerEtterFødsel: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-    førsteMuligeUttaksdagFørTermin: getFørsteMuligeUttaksdag(familiehendelsesdato),
+    førsteMuligeUttaksdagFørTermin: getFørsteMuligeUttaksdag(familiehendelsesdato, erFarEllerMedmor, termindato),
     sisteMuligeUttaksdagEtterTermin: getSisteMuligeUttaksdag(familiehendelsesdato),
 });
 
-export const getUttaksdatoer = (familiehendelsesdato: Date): Uttaksdatoer => {
+export const getUttaksdatoer = (
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
+): Uttaksdatoer => {
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
     const førsteUttaksdagForeldrepengerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
-    const førsteMuligeUttaksdag = getFørsteMuligeUttaksdag(familiehendelsesdato);
+    const førsteMuligeUttaksdag = getFørsteMuligeUttaksdag(familiehendelsesdato, erFarEllerMedmor, termindato);
     const sisteUttaksdagFørFødsel = Uttaksdagen(førsteUttaksdag).forrige();
     const sisteMuligeUttaksdag = getSisteMuligeUttaksdag(familiehendelsesdato);
 
@@ -60,7 +66,14 @@ export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdat
     );
 }
 
-export function getFørsteMuligeUttaksdag(familiehendelsesdato: Date): Date {
+export function getFørsteMuligeUttaksdag(
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
+): Date {
+    if (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)) {
+        return getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
+    }
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );

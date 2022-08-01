@@ -25,6 +25,7 @@ import { getIkonForVeilederMelding } from 'uttaksplan/validering/veilederInfo/co
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import UttaksplanAdvarselIkon from 'uttaksplan/assets/UttaksplanAdvarselIkon';
 import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     egenPeriode: boolean;
@@ -32,6 +33,11 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     melding: VeilederMessage | undefined;
     annenForelderSamtidigUttakPeriode?: Periode;
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
+    situasjon: Situasjon;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 const bem = bemUtils('periodelisteItemHeader');
@@ -39,7 +45,10 @@ const bem = bemUtils('periodelisteItemHeader');
 export const getPeriodeIkon = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
-    harMidlertidigOmsorg?: boolean
+    harMidlertidigOmsorg?: boolean,
+    erFarEllerMedmor?: boolean,
+    situasjon?: Situasjon,
+    erAleneOmOmsorg?: boolean
 ): React.ReactNode | undefined => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -50,6 +59,9 @@ export const getPeriodeIkon = (
                     gradert={periode.gradert}
                     navnPåForeldre={navnPåForeldre}
                     harMidlertidigOmsorg={harMidlertidigOmsorg}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    situasjon={situasjon}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
                 />
             );
         case Periodetype.Overføring:
@@ -131,6 +143,11 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     navnPåForeldre,
     melding,
     annenForelderSamtidigUttakPeriode,
+    familiehendelsesdato,
+    termindato,
+    situasjon,
+    erFarEllerMedmor,
+    erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
 
@@ -168,7 +185,18 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                 >
                     <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                     <div className={bem.element('tittel')}>
-                        <Element tag="h2">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
+                        <Element tag="h2">
+                            {getPeriodeTittel(
+                                intl,
+                                periode,
+                                navnPåForeldre,
+                                familiehendelsesdato,
+                                termindato,
+                                situasjon,
+                                erFarEllerMedmor,
+                                erAleneOmOmsorg
+                            )}
+                        </Element>
                         <Normaltekst>{varighetString}</Normaltekst>
                     </div>
                     <div className={bem.element('advarsel')}>

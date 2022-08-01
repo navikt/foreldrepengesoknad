@@ -37,6 +37,7 @@ import { Perioden } from './Perioden';
 import { datoErInnenforTidsperiode, isValidTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
+import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -200,7 +201,12 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
             return result;
         }
 
-        if (isInfoPeriode(periode) || isOppholdsperiode(periode)) {
+        if (
+            isInfoPeriode(periode) ||
+            isHull(periode) ||
+            isPeriodeUtenUttak(periode) ||
+            isPeriodeUtenUttakUtsettelse(periode)
+        ) {
             const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
 
             if (dagerIPerioden > uttaksdagerCurrent) {
@@ -234,6 +240,10 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 }
 
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
+    if (uttaksdager === 0) {
+        return periode;
+    }
+
     const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(uttaksdager);
     return Perioden(periode).setStartdato(forskyvetStartdato);
 }
@@ -394,4 +404,8 @@ export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
 
 export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
     return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
+};
+
+export const getSumUttaksdagerÅTrekkeIPeriodene = (perioder: Periode[]) => {
+    return Math.floor(perioder.map((p) => finnAntallDagerÅTrekke(p)).reduce((prev, curr) => prev + curr, 0));
 };

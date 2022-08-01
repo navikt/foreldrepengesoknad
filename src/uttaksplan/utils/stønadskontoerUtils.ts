@@ -1,7 +1,7 @@
 import { intlUtils } from '@navikt/fp-common';
+import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Forelder } from 'common/types';
 import { IntlShape } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getForelderNavn } from './periodeUtils';
@@ -18,7 +18,13 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
         )
         .map((kontoType) => kontoType.konto);
 
-export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, navnPåForeldre: NavnPåForeldre) => {
+export const getStønadskontoNavn = (
+    intl: IntlShape,
+    konto: StønadskontoType,
+    navnPåForeldre: NavnPåForeldre,
+    erFarEllerMedmor?: boolean,
+    erAleneOmOmsorg?: boolean
+) => {
     let navn;
 
     switch (konto) {
@@ -39,6 +45,14 @@ export const getStønadskontoNavn = (intl: IntlShape, konto: StønadskontoType, 
         );
     }
 
+    if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+        if (konto === StønadskontoType.AktivitetsfriKvote) {
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
+        }
+        if (konto === StønadskontoType.Foreldrepenger) {
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
+        }
+    }
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };
 
@@ -47,7 +61,9 @@ export const getUttakAnnenPartStønadskontoNavn = (
     konto: StønadskontoType,
     periodeForelder: Forelder,
     navnPåForeldre: NavnPåForeldre,
-    samtidigUttakProsent: string | undefined
+    samtidigUttakProsent: string | undefined,
+    erFarEllerMedmor?: boolean,
+    erAleneOmOmsorg?: boolean
 ) => {
     const forelderNavn = getForelderNavn(periodeForelder, navnPåForeldre);
     if (samtidigUttakProsent !== undefined) {
@@ -61,7 +77,7 @@ export const getUttakAnnenPartStønadskontoNavn = (
             prosent: samtidigUttakProsent,
         });
     }
-    return getStønadskontoNavn(intl, konto, navnPåForeldre);
+    return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {

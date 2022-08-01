@@ -14,6 +14,7 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
         erEndringssøknad,
         harKomplettUttaksplan,
         søkerErFarEllerMedmor,
+        søkerErAleneOmOmsorg,
     } = grunnlag;
     const stønadskontoerMedForMyeUttak = getUttaksstatus({
         erDeltUttak,
@@ -30,7 +31,14 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
                 intlKey: 'uttaksplan.validering.feil.forMyeUttak',
                 values: {
                     dager: (intl: IntlShape) => getVarighetString(Math.abs(uttak.dager), intl),
-                    konto: (intl: IntlShape) => getStønadskontoNavn(intl, uttak.konto, navnPåForeldre),
+                    konto: (intl: IntlShape) =>
+                        getStønadskontoNavn(
+                            intl,
+                            uttak.konto,
+                            navnPåForeldre,
+                            søkerErFarEllerMedmor,
+                            søkerErAleneOmOmsorg
+                        ),
                 },
             })
         ),

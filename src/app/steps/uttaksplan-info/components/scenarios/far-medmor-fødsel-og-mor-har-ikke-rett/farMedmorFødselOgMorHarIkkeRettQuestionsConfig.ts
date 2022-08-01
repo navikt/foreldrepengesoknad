@@ -4,9 +4,11 @@ import {
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 interface FarMedmorFødselOgMorHarIkkeRettQuestionsPayload extends FarMedmorFødselOgMorHarIkkeRettFormData {
     erMorUfør: boolean;
+    familiehendelsesdato: Date;
 }
 
 const FarMedmorFødselOgMorHarIkkeRettFormConfig: QuestionConfig<
@@ -19,7 +21,8 @@ const FarMedmorFødselOgMorHarIkkeRettFormConfig: QuestionConfig<
     },
     [FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato]: {
         isAnswered: ({ permisjonStartdato }) => hasValue(permisjonStartdato),
-        isIncluded: ({ dekningsgrad, erMorUfør }) => hasValue(dekningsgrad) && erMorUfør,
+        isIncluded: ({ dekningsgrad, erMorUfør, familiehendelsesdato }) =>
+            andreAugust2022ReglerGjelder(familiehendelsesdato) || (hasValue(dekningsgrad) && erMorUfør),
     },
 };
 

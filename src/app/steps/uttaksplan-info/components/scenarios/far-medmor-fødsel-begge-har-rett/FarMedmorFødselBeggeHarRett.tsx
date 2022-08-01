@@ -20,7 +20,7 @@ import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDa
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBeggeHarRettQuestionsConfig';
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
@@ -41,7 +41,7 @@ import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 interface Props {
@@ -76,6 +76,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     );
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const termindato = getTermindato(barn);
 
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
@@ -105,6 +106,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         antallUkerFellesperiodeFarMedmor: parseInt(values.antallUkerFellesperiode || '0', 10),
                     },
                     bareFarMedmorHarRett: false,
+                    termindato,
                 })
             ),
         ];
@@ -120,7 +122,10 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             initialValues={getInitialFarMedmorFødselBeggeHarRettValues(lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility(formValues);
+                const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility({
+                    ...formValues,
+                    familiehendelsesdato: familiehendelsesdatoDate!,
+                });
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
                 const tilgjengeligeDager = valgtStønadskonto
@@ -149,6 +154,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 FormKomponent={FarMedmorFødselBeggeHarRettFormComponents}
                                 dekningsgradFeltNavn={FarMedmorFødselBeggeHarRettFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={true}
                             />
                         </Block>
                         <Block visible={formValues.dekningsgrad !== ''}>
@@ -162,7 +168,14 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 />
                             )}
                         </Block>
-                        <Block padBottom="l" visible={erFarEllerMedmor && formValues.dekningsgrad !== ''}>
+                        <Block
+                            padBottom="l"
+                            visible={
+                                erFarEllerMedmor &&
+                                formValues.dekningsgrad !== '' &&
+                                !andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesdato)!)
+                            }
+                        >
                             <Veilederpanel svg={<VeilederNormal transparentBackground={true} />}>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag"
@@ -188,10 +201,12 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             <FarMedmorsFørsteDag
                                 FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
                                 fieldName={FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag}
-                                familiehendelsesdato={familiehendelsesdato}
+                                familiehendelsesdato={familiehendelsesdatoDate!}
                                 setFieldValue={setFieldValue}
                                 morsSisteDag={ISOStringToDate(formValues.morsSisteDag)}
                                 navnMor={navnMor}
+                                termindato={termindato}
+                                situasjon={søkersituasjon.situasjon}
                             />
                         </Block>
                         <Block

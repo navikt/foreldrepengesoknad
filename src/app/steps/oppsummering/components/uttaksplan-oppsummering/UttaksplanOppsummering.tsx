@@ -12,6 +12,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     perioder: Periode[];
@@ -21,6 +22,10 @@ interface Props {
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
+    situasjon: Situasjon;
+    erAleneOmOmsorg: boolean;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
 }

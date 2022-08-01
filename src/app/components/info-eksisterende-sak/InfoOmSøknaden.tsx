@@ -18,7 +18,7 @@ import {
 } from 'app/utils/personUtils';
 import { InfoPeriode, isInfoPeriode, Periodetype } from 'uttaksplan/types/Periode';
 import InnholdMedIllustrasjon from '../innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import { formaterDato, getVarighetString } from 'app/utils/dateUtils';
+import { formaterDato, getVarighetString, ISOStringToDate } from 'app/utils/dateUtils';
 import links from 'app/links/links';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -29,6 +29,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 
 import './infoOmSøknaden.less';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -63,7 +64,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
-    const { annenForelder, søker } = søknad;
+    const { annenForelder, søker, barn } = søknad;
     const { person } = søkerinfo;
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
@@ -93,7 +94,8 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false
     );
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
-
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
+    const termindato = getTermindato(barn);
     let sisteInfoPeriode;
     if (eksisterendeSak) {
         sisteInfoPeriode = eksisterendeSak.uttaksplan
@@ -166,6 +168,9 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 oppgittePerioder={infoperioder}
                                 navnForOverskrift={annenForelderNavn}
                                 navnPåForeldre={navnPåForeldre}
+                                familiehendelsesdato={familiehendelsesdato!}
+                                termindato={termindato}
+                                situasjon={søknad.søkersituasjon.situasjon}
                             />
                         </UtvidetInformasjon>
                     )}
@@ -182,6 +187,9 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                     <InfoEksisterendePerioder
                                         oppgittePerioder={søkersPerioder}
                                         navnPåForeldre={navnPåForeldre}
+                                        familiehendelsesdato={familiehendelsesdato!}
+                                        termindato={termindato}
+                                        situasjon={søknad.søkersituasjon.situasjon}
                                     />
                                 </UtvidetInformasjon>
                             </>

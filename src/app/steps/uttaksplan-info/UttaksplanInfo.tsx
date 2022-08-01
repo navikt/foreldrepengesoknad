@@ -17,6 +17,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
+import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -25,17 +26,23 @@ const UttaksplanInfo = () => {
     const søknad = useSøknad();
     const { dispatch } = useForeldrepengesøknadContext();
 
-    const { barn, annenForelder, søkersituasjon } = søknad;
+    const { barn, annenForelder, søkersituasjon, søker } = søknad;
     const { registrerteBarn } = søkerinfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const { erAleneOmOmsorg } = søker;
 
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+    const eksisterendeSakAnnenPartRequestIsSuspended =
+        registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
 
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetEksisterendeSakMedFnr(
         søkerinfo.person.fnr,
         erFarEllerMedmor,
         registrertBarn?.annenForelder?.fnr
     );
+
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
 
     const eksisterendeSak = useMemo(
         () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, true),
@@ -60,9 +67,15 @@ const UttaksplanInfo = () => {
                 barn,
                 annenForelder,
                 søkersituasjon,
+                farMedmorErAleneOmOmsorg,
+                morErAleneOmOmsorg,
                 eksisterendeSakAnnenPartData?.grunnlag.termindato
             ),
-            !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+            eksisterendeSakAnnenPartRequestIsSuspended
+                ? false
+                : !!registrertBarn &&
+                      erFarEllerMedmor &&
+                      eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -70,9 +83,13 @@ const UttaksplanInfo = () => {
             barn,
             annenForelder,
             søkersituasjon,
+            farMedmorErAleneOmOmsorg,
+            morErAleneOmOmsorg,
             eksisterendeSakAnnenPartData?.grunnlag.termindato
         ),
-        !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -80,7 +97,10 @@ const UttaksplanInfo = () => {
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
-        (!!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED)
+        (!!registrertBarn &&
+            erFarEllerMedmor &&
+            eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
+            !eksisterendeSakAnnenPartRequestIsSuspended)
     ) {
         if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
             throw new Error(

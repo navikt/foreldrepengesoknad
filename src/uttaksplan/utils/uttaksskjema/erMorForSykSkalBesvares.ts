@@ -1,8 +1,10 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { Situasjon } from 'app/types/Situasjon';
+import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { erInnenFørsteSeksUkerFødselFarMedmor, Uttaksdatoer } from '../uttaksdatoerUtils';
+import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const erMorForForSykSkalBesvares = (
     periodetype: Periodetype,
@@ -15,17 +17,41 @@ const erMorForForSykSkalBesvares = (
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
     ønskerFlerbarnsdager: boolean | undefined,
-    søkerHarMidlertidigOmsorg: boolean
+    søkerHarMidlertidigOmsorg: boolean,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    bareFarMedmorHarRett: boolean
 ): boolean => {
-    if (erAleneOmOmsorg || annenForelderKanIkkeOppgis || søkerHarMidlertidigOmsorg) {
+    const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
+        periodetype,
+        konto as StønadskontoType,
+        tidsperiode,
+        søkerErFarEllerMedmor,
+        erFlerbarnssøknad,
+        erAleneOmOmsorg,
+        annenForelderKanIkkeOppgis,
+        ønskerFlerbarnsdager,
+        søkerHarMidlertidigOmsorg,
+        familiehendelsesdato,
+        termindato,
+        situasjon,
+        bareFarMedmorHarRett
+    );
+
+    if (
+        erAleneOmOmsorg ||
+        annenForelderKanIkkeOppgis ||
+        søkerHarMidlertidigOmsorg ||
+        årsakTilUttakRundtFødselSkalBesvares ||
+        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato) ||
+        konto === StønadskontoType.AktivitetsfriKvote
+    ) {
         return false;
     }
 
     if (periodetype === Periodetype.Uttak && søkerErFarEllerMedmor) {
         if (
-            (konto === StønadskontoType.Fedrekvote ||
-                konto === StønadskontoType.Foreldrepenger ||
-                konto === StønadskontoType.AktivitetsfriKvote) &&
+            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
             erInnenFørsteSeksUkerFødselFarMedmor(
                 tidsperiode,
                 situasjon,

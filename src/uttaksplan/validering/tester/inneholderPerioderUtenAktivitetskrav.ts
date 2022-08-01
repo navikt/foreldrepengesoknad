@@ -3,9 +3,17 @@ import { RegelTestresultat } from '../utils/types/regelTypes';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { isUttaksperiode } from 'uttaksplan/types/Periode';
 import { hasValue } from '@navikt/fp-common';
+import { farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk } from 'uttaksplan/utils/uttaksskjema/aktivitetskravMorSkalBesvares';
 
 export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const { perioder, søkerErFarEllerMedmor, søkerErAleneOmOmsorg, søkerHarMidlertidigOmsorg } = grunnlag;
+    const {
+        perioder,
+        søkerErFarEllerMedmor,
+        søkerErAleneOmOmsorg,
+        søkerHarMidlertidigOmsorg,
+        familiehendelsesdato,
+        søkersituasjon,
+    } = grunnlag;
 
     if (!søkerErFarEllerMedmor || søkerErAleneOmOmsorg || søkerHarMidlertidigOmsorg) {
         return {
@@ -19,6 +27,14 @@ export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): Re
             !p.erMorForSyk &&
             !p.ønskerSamtidigUttak &&
             !p.ønskerFlerbarnsdager &&
+            !farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk(
+                familiehendelsesdato,
+                søkerErFarEllerMedmor,
+                p.konto,
+                p.erMorForSyk,
+                p.tidsperiode,
+                søkersituasjon.situasjon
+            ) &&
             (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger)
     );
 

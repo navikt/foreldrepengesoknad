@@ -13,15 +13,19 @@ interface Props {
         [Dekningsgrad.ÅTTI_PROSENT]: TilgjengeligStønadskonto[];
         [Dekningsgrad.HUNDRE_PROSENT]: TilgjengeligStønadskonto[];
     };
+    erDeltUttak: boolean;
 }
 
 const DekningsgradSpørsmål: FunctionComponent<Props> = ({
     FormKomponent,
     dekningsgradFeltNavn,
     tilgjengeligeStønadskontoer,
+    erDeltUttak,
 }) => {
     const intl = useIntl();
-
+    const spørsmålTekst = erDeltUttak
+        ? 'uttaksplaninfo.dekningsgrad.label.deltUttak'
+        : 'uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak';
     return (
         <FormKomponent.RadioPanelGroup
             name={dekningsgradFeltNavn}
@@ -39,7 +43,7 @@ const DekningsgradSpørsmål: FunctionComponent<Props> = ({
                     value: Dekningsgrad.ÅTTI_PROSENT,
                 },
             ]}
-            legend={intlUtils(intl, 'uttaksplaninfo.dekningsgrad.label.deltUttak')}
+            legend={intlUtils(intl, spørsmålTekst)}
             description={
                 <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
                     Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan

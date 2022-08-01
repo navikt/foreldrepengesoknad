@@ -1,5 +1,6 @@
 import { bemUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Situasjon } from 'app/types/Situasjon';
 import { formaterDato } from 'app/utils/dateUtils';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { guid } from 'nav-frontend-js-utils';
@@ -15,12 +16,18 @@ interface Props {
     oppgittePerioder: Periode[];
     navnForOverskrift?: string;
     navnPåForeldre: NavnPåForeldre;
+    familiehendelsesdato: Date;
+    termindato: Date | undefined;
+    situasjon: Situasjon;
 }
 
 const InfoEksisterendePerioder: FunctionComponent<Props> = ({
     oppgittePerioder,
     navnForOverskrift,
     navnPåForeldre,
+    familiehendelsesdato,
+    termindato,
+    situasjon,
 }) => {
     const intl = useIntl();
     const dateFormat = 'DD. MMM YYYY';
@@ -47,7 +54,16 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                     {formaterDato(periode.tidsperiode.fom, dateFormat)} -{' '}
                                     {formaterDato(periode.tidsperiode.tom, dateFormat)}:
                                 </Element>
-                                <Normaltekst>{getPeriodeTittel(intl, periode, navnPåForeldre)}</Normaltekst>
+                                <Normaltekst>
+                                    {getPeriodeTittel(
+                                        intl,
+                                        periode,
+                                        navnPåForeldre,
+                                        familiehendelsesdato,
+                                        termindato,
+                                        situasjon
+                                    )}
+                                </Normaltekst>
                             </div>
                         </li>
                     );

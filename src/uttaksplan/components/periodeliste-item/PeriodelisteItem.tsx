@@ -32,7 +32,7 @@ interface Props {
     isOpen: boolean;
     toggleIsOpen: (id: string) => void;
     familiehendelsesdato: Date;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
@@ -49,12 +49,14 @@ interface Props {
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
+    termindato: Date | undefined;
+    antallBarn: number;
 }
 
 const renderPeriodeListeInnhold = (
     periode: Periode,
     familiehendelsesdato: Date,
-    handleUpdatePeriode: (periode: Periode) => void,
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void,
     stønadskontoer: TilgjengeligStønadskonto[],
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
@@ -69,7 +71,9 @@ const renderPeriodeListeInnhold = (
     erMorUfør: boolean,
     søkerErFarEllerMedmorOgKunDeHarRett: boolean,
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>,
-    erEndringssøknad: boolean
+    erEndringssøknad: boolean,
+    termindato: Date | undefined,
+    antallBarn: number
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -81,6 +85,9 @@ const renderPeriodeListeInnhold = (
                         periode={periode}
                         familiehendelsesdato={familiehendelsesdato}
                         handleUpdatePeriode={handleUpdatePeriode}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                        situasjon={situasjon}
                     />
                 );
             }
@@ -102,8 +109,11 @@ const renderPeriodeListeInnhold = (
                     erDeltUttak={erDeltUttak}
                     situasjon={situasjon}
                     erMorUfør={erMorUfør}
-                    setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
+                    setPeriodeErGyldig={setPeriodeErGyldig}
+                    termindato={termindato}
+                    morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                    antallBarn={antallBarn}
                 />
             );
         case Periodetype.Utsettelse:
@@ -120,6 +130,7 @@ const renderPeriodeListeInnhold = (
                     erMorUfør={erMorUfør}
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     arbeidsforhold={arbeidsforhold}
+                    situasjon={situasjon}
                 />
             );
         case Periodetype.Hull:
@@ -135,7 +146,13 @@ const renderPeriodeListeInnhold = (
                 />
             );
         case Periodetype.PeriodeUtenUttak:
-            return <PeriodeUtenUttak periode={periode} handleUpdatePeriode={handleUpdatePeriode} />;
+            return (
+                <PeriodeUtenUttak
+                    periode={periode}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    familiehendelsesdato={familiehendelsesdato}
+                />
+            );
         case Periodetype.Info:
             return (
                 periode.visPeriodeIPlan &&
@@ -169,6 +186,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     erEndringssøknad,
     setPeriodeErGyldig,
+    termindato,
+    antallBarn,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -188,6 +207,11 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                         navnPåForeldre={navnPåForeldre}
                         melding={melding}
                         annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
+                        familiehendelsesdato={familiehendelsesdato}
+                        termindato={termindato}
+                        situasjon={situasjon}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        erAleneOmOmsorg={erAleneOmOmsorg}
                     />
                 }
                 apen={isOpen}
@@ -214,7 +238,9 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erMorUfør,
                     søkerErFarEllerMedmorOgKunDeHarRett,
                     setPeriodeErGyldig,
-                    erEndringssøknad
+                    erEndringssøknad,
+                    termindato,
+                    antallBarn
                 )}
             </EkspanderbartpanelBase>
         </article>

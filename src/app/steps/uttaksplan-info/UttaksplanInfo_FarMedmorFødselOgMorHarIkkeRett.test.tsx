@@ -14,7 +14,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('skal fylle ut dekningsgrad med 80 prosent', async () => {
         render(<UttaksplanDerMorIkkeHarRettPåForeldrepenger />);
 
-        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         userEvent.click(screen.getByText('50 uker med 80 prosent foreldrepenger'));
@@ -28,7 +28,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('skal fylle ut dekningsgrad med 100 prosent', async () => {
         render(<UttaksplanDerMorIkkeHarRettPåForeldrepenger />);
 
-        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
@@ -41,7 +41,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('Hvis mor ufør, skal kunne sette ønsket dato for start', async () => {
         const utils = render(<UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør />);
 
-        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));

@@ -50,3 +50,21 @@ UttaksplanInfoFarMedmorFødselBeggeHarRett.args = {
     context,
     søkerinfo,
 };
+
+export const UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB = Template.bind({});
+UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: {
+                ...context.søknad.barn,
+
+                fødselsdatoer: ['2022-08-02'],
+            },
+        },
+    },
+    søkerinfo,
+};
