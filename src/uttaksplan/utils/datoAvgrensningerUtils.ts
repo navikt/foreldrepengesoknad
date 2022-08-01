@@ -4,9 +4,10 @@ import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/util
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import { DatepickerLimitations } from 'nav-datovelger';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { getFørsteUttaksdagPåEllerEtterFødsel, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
+import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
 
 export interface DatoAvgrensninger {
     fra: Avgrensninger;
@@ -20,14 +21,45 @@ export interface Avgrensninger {
     helgedagerIkkeTillatt: boolean;
 }
 
+export const getDatoavgrensningerForFarMedmorPeriodeRundtFødsel = (
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    ugyldigeTidsperioder: Tidsperiode[]
+): DatoAvgrensninger => {
+    const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
+    const maksDato = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+    return {
+        fra: {
+            minDato,
+            maksDato,
+            helgedagerIkkeTillatt: true,
+            ugyldigeTidsperioder,
+        },
+        til: {
+            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : minDato,
+            maksDato,
+            helgedagerIkkeTillatt: true,
+            ugyldigeTidsperioder,
+        },
+    };
+};
+
 export const getDatoavgrensningerForStønadskonto = (
     konto: StønadskontoType | undefined,
     familiehendelsesdato: Date,
     tidsperiode: Partial<TidsperiodeDate> | undefined,
-    ugyldigeTidsperioder: Tidsperiode[]
+    ugyldigeTidsperioder: Tidsperiode[],
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
 ): DatoAvgrensninger => {
     if (konto === undefined) {
-        return getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato, ugyldigeTidsperioder);
+        return getDatoavgrensningerForPeriodeUtenKonto(
+            familiehendelsesdato,
+            ugyldigeTidsperioder,
+            erFarEllerMedmor,
+            termindato
+        );
     }
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato);
@@ -51,8 +83,13 @@ export const getDatoavgrensningerForStønadskonto = (
     };
 };
 
-const getDatoavgrensningerForPeriodeUtenKonto = (familiehendelsesdato: Date, ugyldigeTidsperioder: Tidsperiode[]) => {
-    const minDato = getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato);
+const getDatoavgrensningerForPeriodeUtenKonto = (
+    familiehendelsesdato: Date,
+    ugyldigeTidsperioder: Tidsperiode[],
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
+) => {
+    const minDato = getFørsteMuligeUttaksdag(familiehendelsesdato, erFarEllerMedmor, termindato);
 
     return {
         fra: {
@@ -62,7 +99,7 @@ const getDatoavgrensningerForPeriodeUtenKonto = (familiehendelsesdato: Date, ugy
             helgedagerIkkeTillatt: true,
         },
         til: {
-            minDato: minDato,
+            minDato,
             maksDato: getSisteMuligeUttaksdag(familiehendelsesdato),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
@@ -116,6 +153,30 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date
             helgedagerIkkeTillatt: !!avgrensninger.weekendsNotSelectable,
             minDato: ISOStringToDate(avgrensninger.minDate)!,
             maksDato: ISOStringToDate(avgrensninger.maxDate)!,
+        },
+    };
+};
+
+export const getDatoavgrensningerForBareFarMedmorHarRettWLB = (
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    ugyldigeTidsperioder: Tidsperiode[]
+): DatoAvgrensninger => {
+    const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
+    const maksDato = getSisteMuligeUttaksdag(familiehendelsesdato);
+    return {
+        fra: {
+            minDato,
+            maksDato,
+            helgedagerIkkeTillatt: true,
+            ugyldigeTidsperioder,
+        },
+        til: {
+            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : minDato,
+            maksDato,
+            helgedagerIkkeTillatt: true,
+            ugyldigeTidsperioder,
         },
     };
 };

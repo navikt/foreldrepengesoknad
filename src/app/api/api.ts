@@ -73,10 +73,12 @@ const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
 };
 
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
+    const isSuspended = annenPartFnr !== undefined && erFarEllerMedmor ? false : true;
+
     const { data, error, requestStatus } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
-        isSuspended: annenPartFnr !== undefined && erFarEllerMedmor ? false : true,
+        isSuspended,
     });
 
     return {

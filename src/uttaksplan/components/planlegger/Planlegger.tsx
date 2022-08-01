@@ -1,5 +1,6 @@
 import { bemUtils, InfoBlock, intlUtils, Block, ActionLink } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import Barn from 'app/context/types/Barn';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -20,13 +21,13 @@ import './planlegger.less';
 interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
-    handleUpdatePeriode: (periode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
     stønadskontoer: TilgjengeligStønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
     handleDeletePeriode: (periodeId: string) => void;
-    handleAddPeriode: (nyPeriode: Periode) => void;
+    handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
@@ -37,6 +38,8 @@ interface Props {
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
+    termindato: Date | undefined;
+    barn: Barn;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -59,6 +62,8 @@ const Planlegger: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     erEndringssøknad,
     setSlettUttaksplanModalOpen,
+    termindato,
+    barn,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -86,10 +91,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.slettPlan.tittel" />
                                     </ActionLink>
                                 </div>
-                                <FamiliehendelsedatoDisplay
-                                    familiehendelsedato={familiehendelsesdato}
-                                    erAdopsjon={situasjon === 'adopsjon'}
-                                />
+                                <FamiliehendelsedatoDisplay familiehendelsedato={familiehendelsesdato} barn={barn} />
                             </div>
 
                             <Periodeliste
@@ -111,6 +113,8 @@ const Planlegger: FunctionComponent<Props> = ({
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 setPeriodeErGyldig={setPeriodeErGyldig}
                                 erEndringssøknad={erEndringssøknad}
+                                termindato={termindato}
+                                antallBarn={barn.antallBarn}
                             />
                         </section>
                     </Block>
@@ -135,6 +139,8 @@ const Planlegger: FunctionComponent<Props> = ({
                                 nesteLedigeUttaksdato={nesteLedigeUttaksdato}
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 erEndringssøknad={erEndringssøknad}
+                                termindato={termindato}
+                                antallBarn={barn.antallBarn}
                             />
                         </div>
                     )}

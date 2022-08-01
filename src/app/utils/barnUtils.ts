@@ -25,3 +25,11 @@ export const getRegistrertBarnOmDetFinnes = (
         ? registrerteBarn.find((regBarn) => regBarn.fnr === barn.fnr)
         : undefined;
 };
+
+export const getTermindato = (barn: Barn): Date | undefined => {
+    return isFødtBarn(barn) || isUfødtBarn(barn) ? barn.termindato : undefined;
+};
+
+export const getFødselsdato = (barn: Barn): Date | undefined => {
+    return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
+};

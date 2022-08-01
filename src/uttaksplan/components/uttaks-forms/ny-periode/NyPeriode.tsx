@@ -19,7 +19,7 @@ interface Props {
     setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;
     arbeidsforhold: Arbeidsforhold[];
     isUtsettelse: boolean;
-    handleAddPeriode: (nyPeriode: Periode) => void;
+    handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
@@ -30,6 +30,8 @@ interface Props {
     nesteLedigeUttaksdato: Date | undefined;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     erEndringssøknad: boolean;
+    termindato: Date | undefined;
+    antallBarn: number;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -51,6 +53,8 @@ const NyPeriode: FunctionComponent<Props> = ({
     nesteLedigeUttaksdato,
     søkerErFarEllerMedmorOgKunDeHarRett,
     erEndringssøknad,
+    termindato,
+    antallBarn,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -83,6 +87,9 @@ const NyPeriode: FunctionComponent<Props> = ({
                 erMorUfør={erMorUfør}
                 setPeriodeErGyldig={setPeriodeErGyldig}
                 erEndringssøknad={erEndringssøknad}
+                termindato={termindato}
+                morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
+                antallBarn={antallBarn}
             />
         </>
     ) : (
@@ -99,6 +106,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             erMorUfør={erMorUfør}
             søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
             arbeidsforhold={arbeidsforhold}
+            situasjon={situasjon}
         />
     );
 };

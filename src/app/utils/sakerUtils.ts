@@ -43,19 +43,28 @@ const erUrelevantAutomatiskOpprettetBehandling = (behandling: Behandling) => {
     return false;
 };
 
+const erHenlagtBehandling = (behandling: Behandling) => {
+    return (
+        behandling.status === BehandlingStatus.AVSLUTTET &&
+        (behandling.behandlingResultat === BehandlingResultatType.HENLAGT_FEILOPPRETTET ||
+            behandling.behandlingResultat === BehandlingResultatType.HENLAGT_SØKNAD_TRUKKET)
+    );
+};
+
 const harEnAvsluttetBehandling = (sak: Sak): boolean => {
     return sak.behandlinger
         ? sak.behandlinger
-              .filter((behandling: Behandling) => !erAvslåttBehandling(behandling))
-              .filter((behandling: Behandling) => !erUrelevantAutomatiskOpprettetBehandling(behandling))
-              .some((behandling: Behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
+              .filter((behandling) => !erAvslåttBehandling(behandling))
+              .filter((behandling) => !erHenlagtBehandling(behandling))
+              .filter((behandling) => !erUrelevantAutomatiskOpprettetBehandling(behandling))
+              .some((behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
         : false;
 };
 
 const harEnAktivBehandling = (sak: Sak): boolean => {
     return sak.behandlinger
         ? sak.behandlinger.some(
-              (behandling: Behandling) =>
+              (behandling) =>
                   behandling.status === BehandlingStatus.OPPRETTET || behandling.status === BehandlingStatus.UTREDES
           )
         : false;

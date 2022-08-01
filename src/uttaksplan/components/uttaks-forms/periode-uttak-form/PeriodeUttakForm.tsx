@@ -1,4 +1,4 @@
-import { bemUtils, Block } from '@navikt/fp-common';
+import { bemUtils, Block, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -17,26 +17,40 @@ import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpør
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKontoSpørsmål from '../spørsmål/hvilken-konto/HvilkenKontoSpørsmål';
+import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import OverføringsårsakSpørsmål from '../spørsmål/overføringsårsak/OverføringsårsakSpørsmål';
 import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
 import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGraderingSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { periodeUttakFormQuestionsConfig } from './periodeUttakFormQuestionsConfig';
+import {
+    periodeUttakFormQuestionsConfig,
+    skalViseInfoOmSamtidigUttakRundtFødsel as skalViseWLBInfoOmSamtidigUttakRundtFødsel,
+} from './periodeUttakFormQuestionsConfig';
 import {
     cleanPeriodeUttakFormData,
     getPeriodeUttakFormInitialValues,
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
-
-import './periodeUttakForm.less';
 import { FormattedMessage } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
+import { guid } from 'nav-frontend-js-utils';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import VeilederNormal from 'app/assets/VeilederNormal';
+import {
+    getFørsteUttaksdag2UkerFørFødsel,
+    getSisteUttaksdag6UkerEtterFødsel,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+} from 'app/utils/wlbUtils';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import dayjs from 'dayjs';
+
+import './periodeUttakForm.less';
 
 interface Props {
     periode: Periode;
@@ -51,14 +65,17 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erDeltUttak: boolean;
     situasjon: Situasjon;
-    handleUpdatePeriode: (periode: Periode) => void;
-    handleAddPeriode?: (nyPeriode: Periode) => void;
+    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
+    handleAddPeriode?: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     setNyPeriodeFormIsVisible?: Dispatch<SetStateAction<boolean>>;
     toggleIsOpen?: (id: string) => void;
     handleDeletePeriode?: (periodeId: string) => void;
     isNyPeriode?: boolean;
     erMorUfør: boolean;
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    termindato: Date | undefined;
+    morHarRett: boolean;
+    antallBarn: number;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -77,8 +94,18 @@ const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFar
 const getPeriodeType = (
     periodenGjelder: Forelder | '',
     erFarEllerMedmor: boolean,
-    konto: StønadskontoType | ''
+    konto: StønadskontoType | '',
+    familiehendelsedato: Date,
+    termindato: Date | undefined,
+    tidsperiode: TidsperiodeDate
 ): Periodetype => {
+    if (
+        erFarEllerMedmor &&
+        erUttakAvAnnenForeldersKvote(konto, erFarEllerMedmor) &&
+        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsedato, termindato)
+    ) {
+        return Periodetype.Overføring;
+    }
     if (periodenGjelder === '' || konto === '') {
         return Periodetype.Uttak;
     }
@@ -115,6 +142,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     erMorUfør,
     erEndringssøknad,
     setPeriodeErGyldig,
+    termindato,
+    morHarRett,
+    antallBarn,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -134,27 +164,72 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         values: PeriodeUttakFormData,
         visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
     ): PeriodeUttakFormData => {
-        return cleanPeriodeUttakFormData(values, visibility, erDeltUttak, forelder, erMorUfør);
+        return cleanPeriodeUttakFormData(
+            values,
+            visibility,
+            erDeltUttak,
+            forelder,
+            erMorUfør,
+            familiehendelsesdato,
+            erFarEllerMedmor
+        );
     };
 
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
     const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
 
+    const startDatoPeriodeRundtFødselFarMedmor =
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
+            ? getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato)
+            : undefined;
+    const sluttDatoPeriodeRundtFødselFarMedmor =
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
+            ? getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato)
+            : undefined;
+
+    const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
+
     return (
         <PeriodeUttakFormComponents.FormikWrapper
-            initialValues={getPeriodeUttakFormInitialValues(periode, erDeltUttak, forelder, erMorUfør)}
+            initialValues={getPeriodeUttakFormInitialValues(
+                periode,
+                erDeltUttak,
+                forelder,
+                erMorUfør,
+                familiehendelsesdato,
+                erFarEllerMedmor
+            )}
             enableReinitialize={false}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
                 handleUpdatePeriode(
                     mapPeriodeUttakFormToPeriode(
                         values,
                         periode.id,
-                        getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!)
-                    )
+                        getPeriodeType(
+                            values.hvemSkalTaUttak!,
+                            erFarEllerMedmor,
+                            values.konto!,
+                            familiehendelsesdato,
+                            termindato,
+                            { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                        ),
+                        familiehendelsesdato,
+                        erFarEllerMedmor,
+                        morHarRett,
+                        situasjon
+                    ),
+                    familiehendelsesdato
                 )
             }
             renderForm={({ setFieldValue, values, isValid }) => {
-                const periodetype = getPeriodeType(values.hvemSkalTaUttak!, erFarEllerMedmor, values.konto!);
+                const periodetype = getPeriodeType(
+                    values.hvemSkalTaUttak!,
+                    erFarEllerMedmor,
+                    values.konto!,
+                    familiehendelsesdato,
+                    termindato,
+                    { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                );
                 setPeriodeErGyldig(isValid);
 
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
@@ -168,8 +243,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         familiehendelsesdato,
                         periodetype,
                         situasjon,
+                        termindato,
+                        morHarRett,
+                        stønadskontoer,
+                        antallBarn,
                     },
-                    stønadskontoer,
                 });
 
                 return (
@@ -178,11 +256,17 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
+                                periode={periode}
                                 onBekreft={(values) => {
                                     setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
                                     setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                termindato={termindato}
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                morHarRett={morHarRett}
+                                situasjon={situasjon}
+                                erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
@@ -199,16 +283,43 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={[]}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
-                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
-                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
+                                        if (
+                                            dayjs(values.fom).isBefore(familiehendelsesdato, 'day') &&
+                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato, 'day')
+                                        ) {
+                                            setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                            setFieldValue(
+                                                PeriodeUttakFormField.tom,
+                                                Uttaksdagen(familiehendelsesdato).forrige()
+                                            );
+                                        } else {
+                                            setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                            setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
+                                        }
                                     }}
                                     changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        if (
+                                            dayjs(values.fom).isBefore(familiehendelsesdato) &&
+                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato)
+                                        ) {
+                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                            setFieldValue(
+                                                PeriodeUttakFormField.tom,
+                                                Uttaksdagen(familiehendelsesdato).forrige()
+                                            );
+                                        } else {
+                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                            setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        }
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
+                                    termindato={termindato}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    morHarRett={morHarRett}
+                                    situasjon={situasjon}
+                                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
@@ -224,6 +335,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     velgbareStønadskontoer={velgbareStønadskontoer}
                                     erOppholdsperiode={false}
                                     navnPåForeldre={navnPåForeldre}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    situasjon={situasjon}
+                                    erAleneOmOmsorg={erAleneOmOmsorg}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
@@ -239,7 +353,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
-                            <Block visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
                                 <ErMorForSykSpørsmål
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
                                     erMorForSyk={values.erMorForSyk}
@@ -247,14 +361,53 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     vedlegg={values.erMorForSykDokumentasjon}
                                 />
                             </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)}
+                            >
+                                <UttakRundtFødselÅrsakSpørsmål
+                                    fieldName={PeriodeUttakFormField.uttakRundtFødselÅrsak}
+                                    uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak}
+                                    navnMor={navnPåForeldre.mor}
+                                    vedlegg={values.erMorForSykDokumentasjon}
+                                />
+                            </Block>
+                            {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
+                                sluttDatoPeriodeRundtFødselFarMedmor !== undefined && (
+                                    <Block
+                                        padBottom="l"
+                                        visible={skalViseWLBInfoOmSamtidigUttakRundtFødsel(
+                                            values,
+                                            familiehendelsesdato,
+                                            erFarEllerMedmor,
+                                            erDeltUttak,
+                                            situasjon
+                                        )}
+                                    >
+                                        <Veilederpanel
+                                            fargetema="normal"
+                                            svg={<VeilederNormal transparentBackground={true} />}
+                                        >
+                                            <FormattedMessage
+                                                id="uttaksplan.samtidigUttakVeileder"
+                                                values={{
+                                                    fomDato: formaterDatoKompakt(startDatoPeriodeRundtFødselFarMedmor),
+                                                    tomDato: formaterDatoKompakt(sluttDatoPeriodeRundtFødselFarMedmor),
+                                                }}
+                                            />
+                                        </Veilederpanel>
+                                    </Block>
+                                )}
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
-                                    erFlerbarnssøknad={true}
+                                    erFlerbarnssøknad={erFlerbarnssøknad}
                                     navnPåForeldre={navnPåForeldre}
                                     navnPåAnnenForelder={navnPåAnnenForelder}
                                     samtidigUttakProsentVisible={visibility.isVisible(
                                         PeriodeUttakFormField.samtidigUttakProsent
                                     )}
+                                    familiehendelsesdato={familiehendelsesdato}
+                                    situasjon={situasjon}
                                 />
                             </Block>
                             <Block
@@ -314,7 +467,16 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             htmlType="button"
                                             onClick={() => {
                                                 handleAddPeriode!(
-                                                    mapPeriodeUttakFormToPeriode(values, periode.id, periodetype)
+                                                    mapPeriodeUttakFormToPeriode(
+                                                        values,
+                                                        guid(),
+                                                        periodetype,
+                                                        familiehendelsesdato,
+                                                        erFarEllerMedmor,
+                                                        morHarRett,
+                                                        situasjon
+                                                    ),
+                                                    familiehendelsesdato
                                                 );
                                                 setNyPeriodeFormIsVisible!(false);
                                             }}

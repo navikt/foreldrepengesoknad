@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
-import { Element } from 'nav-frontend-typografi';
 import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import Fieldset from 'app/components/fieldset/Fieldset';
 import AriaText from './AriaText';
@@ -117,15 +116,8 @@ class RangeInput extends React.Component<Props, State> {
 
         return (
             <div className={bemWrapper.block}>
-                <Fieldset
-                    legend={
-                        <>
-                            <Element>{label}</Element>
-                            <UtvidetInformasjon apneLabel={hjelpetekstApneLabel}>{hjelpetekst}</UtvidetInformasjon>
-                        </>
-                    }
-                    className={'uttakfordeler'}
-                >
+                <Fieldset legend={<>{label}</>} className={'uttakfordeler'}>
+                    <UtvidetInformasjon apneLabel={hjelpetekstApneLabel}>{hjelpetekst}</UtvidetInformasjon>
                     <div aria-live="polite">
                         {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>

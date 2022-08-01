@@ -1,14 +1,10 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import VeilederNormal from 'app/assets/VeilederNormal';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import MorErForSykDokumentasjonOpplastning from '../er-mor-for-syk-dokumentasjon/MorErForSykDokumentasjonOpplastning';
 
 interface Props {
     fieldName: PeriodeUttakFormField;
@@ -34,18 +30,7 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSy
                 />
             </Block>
             <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage id="uttaksplan.erMorForSykVeileder" values={{ navn: navnMor }} />
-                </Veilederpanel>
-            </Block>
-            <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>
-                <FormikFileUploader
-                    label="Last opp dokumentasjon for mors sykdom"
-                    name={PeriodeUttakFormField.erMorForSykDokumentasjon}
-                    attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                    skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                    attachments={vedlegg}
-                />
+                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} />
             </Block>
         </>
     );

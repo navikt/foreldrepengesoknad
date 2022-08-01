@@ -16,6 +16,7 @@ export default {
     brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
     familie: 'https://familie.nav.no/',
     graderingInfo: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#arbeid',
+    aktivitetsfriUttakInfo: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     hvordanSendeInntektsmelding:
         'https://www.nav.no/no/bedrift/tjenester-og-skjemaer/nav-og-altinn-tjenester/foreldrepenger-og-svangerskapspenger2',
     omLottOgHyre: 'https://www.skatteetaten.no/rettskilder/type/handboker/skatte-abc/2019/fiske/F-14.014/F-14.048/',

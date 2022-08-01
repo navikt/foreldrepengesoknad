@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 const { UttaksplanMedAleneomsorg, UttaksplanMedDeltUttakDerFarSøker, UttaksplanMedDeltUttakDerMorSøker } =
     composeStories(stories);
 
-const PERIODE_LENGDE_LABEL = 'Hvor lang periode med foreldrepenger har dere valgt?';
+const PERIODE_LENGDE_LABEL = 'Hvor lang periode med foreldrepenger ønsker du?';
 const GÅ_VIDERE_KNAPP = 'Gå videre';
 const VELG_DATO_DATOFELT = 'Velg dato';
 const JA = 'Ja';

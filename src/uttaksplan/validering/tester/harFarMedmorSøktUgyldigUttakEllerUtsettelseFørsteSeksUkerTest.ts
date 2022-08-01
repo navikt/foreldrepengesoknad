@@ -1,3 +1,4 @@
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { erPeriodeInnvilget } from 'uttaksplan/utils/periodeUtils';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
@@ -6,7 +7,8 @@ import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../utils/uttakValide
 export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (
     grunnlag: Søknadsinfo
 ): RegelTestresultat => {
-    if (grunnlag.søkerErFarEllerMedmor) {
+    const wlbReglerGjelder = andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato);
+    if (grunnlag.søkerErFarEllerMedmor && !wlbReglerGjelder) {
         const ugyldigePerioder = getUgyldigUttakFørsteSeksUkerForFarMedmor(
             grunnlag.perioder.filter((p) => !erPeriodeInnvilget(p)),
             grunnlag.familiehendelsesdato,
@@ -14,7 +16,9 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
             grunnlag.søkersituasjon.situasjon,
             grunnlag.annenForelder,
             grunnlag.søkerErAleneOmOmsorg,
-            grunnlag.søkerHarMidlertidigOmsorg
+            grunnlag.søkerHarMidlertidigOmsorg,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.termindato
         );
         const passerer = ugyldigePerioder.length === 0;
         return {

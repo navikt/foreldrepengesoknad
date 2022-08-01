@@ -19,6 +19,7 @@ import { getUttaksstatus, Uttaksstatus } from 'uttaksplan/utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import TilesList from './tilesList/TilesList';
 import './oversiktKvoter.less';
+import { Situasjon } from 'app/types/Situasjon';
 
 const bem = bemUtils('oversiktKvoter');
 
@@ -72,6 +73,9 @@ interface PropsPerKvote {
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     uttaksstatus: Uttaksstatus;
+    erFarEllerMedmor: boolean;
+    situasjon: Situasjon;
+    erAleneOmOmsorg: boolean;
 }
 
 const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
@@ -79,6 +83,9 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     navnPåForeldre,
     erEndringssøknad,
     uttaksstatus,
+    erFarEllerMedmor,
+    situasjon,
+    erAleneOmOmsorg,
 }) => {
     return (
         <div className={bem.element('perKvote')}>
@@ -99,6 +106,9 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
                         uttak={uttak}
                         navnPåForeldre={navnPåForeldre}
                         erEndringssøknad={erEndringssøknad}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        situasjon={situasjon}
+                        erAleneOmOmsorg={erAleneOmOmsorg}
                     />
                 ))}
             </TilesList>
@@ -149,6 +159,9 @@ const OversiktKvoter: FunctionComponent<Props> = ({
                 navnPåForeldre={navnPåForeldre}
                 erEndringssøknad={søknad.erEndringssøknad}
                 uttaksstatus={uttaksstatus}
+                erFarEllerMedmor={søkerErFarEllerMedmor}
+                situasjon={søknad.søkersituasjon.situasjon}
+                erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
             />
         </div>
     );

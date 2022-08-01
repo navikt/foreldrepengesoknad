@@ -1,5 +1,5 @@
 import React from 'react';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { IntlShape } from 'react-intl';
 import { isInfoPeriode, isUtsettelsePgaArbeid, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import links from 'app/links/links';

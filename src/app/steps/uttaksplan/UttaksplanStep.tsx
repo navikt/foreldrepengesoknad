@@ -21,7 +21,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -71,12 +71,12 @@ const UttaksplanStep = () => {
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
-    const harMorRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
+    const morHarRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
     const opprinneligPlan = eksisterendeSak?.uttaksplan;
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
-
+    const termindato = getTermindato(barn);
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
@@ -135,6 +135,8 @@ const UttaksplanStep = () => {
             barn,
             annenForelder,
             søkersituasjon,
+            farMedmorErAleneOmOmsorg,
+            morErAleneOmOmsorg,
             eksisterendeSak?.grunnlag.termindato
         )
     );
@@ -144,6 +146,8 @@ const UttaksplanStep = () => {
             barn,
             annenForelder,
             søkersituasjon,
+            farMedmorErAleneOmOmsorg,
+            morErAleneOmOmsorg,
             eksisterendeSak?.grunnlag.termindato
         )
     );
@@ -223,7 +227,7 @@ const UttaksplanStep = () => {
                 harMidlertidigOmsorg={harMidlertidigOmsorg}
                 situasjon={situasjon}
                 erMorUfør={erMorUfør}
-                harMorRett={harMorRett}
+                morHarRett={morHarRett}
                 søkersituasjon={søkersituasjon}
                 dekningsgrad={dekningsgrad}
                 antallBarn={antallBarn}
@@ -236,6 +240,8 @@ const UttaksplanStep = () => {
                 harKomplettUttaksplan={harKomplettUttaksplan}
                 opprinneligPlan={harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
                 handleSlettUttaksplan={handleSlettUttaksplan}
+                termindato={termindato}
+                barn={barn}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

@@ -4,20 +4,33 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isUtsettelsesperiode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
-import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
 import { Knapp } from 'nav-frontend-knapper';
 import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
-import { DatoAvgrensninger, getDatoavgrensningerForStønadskonto } from 'uttaksplan/utils/datoAvgrensningerUtils';
+import {
+    DatoAvgrensninger,
+    getDatoavgrensningerForBareFarMedmorHarRettWLB,
+    getDatoavgrensningerForFarMedmorPeriodeRundtFødsel as getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
+    getDatoavgrensningerForStønadskonto,
+} from 'uttaksplan/utils/datoAvgrensningerUtils';
 import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils';
+import { getFørsteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from 'uttaksplan/utils/uttaksdatoerUtils';
+import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from 'app/utils/wlbUtils';
+import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
     periode?: Periode;
     tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[] | undefined;
+    erFarEllerMedmor: boolean;
+    morHarRett: boolean;
     onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
     onCancel?: () => void;
     initialMonth?: Date;
+    termindato?: Date;
+    situasjon: Situasjon;
+    erFarMedmorOgHarAleneomsorg: boolean;
 }
 
 enum TidsperiodeFormFields {
@@ -35,20 +48,55 @@ const getDatoAvgrensninger = (
     fom: string | undefined,
     tom: string | undefined,
     tidsperiode: Partial<TidsperiodeDate>,
-    ugyldigeTidsperioder: Tidsperiode[] | undefined
+    ugyldigeTidsperioder: Tidsperiode[] | undefined,
+    termindato: Date | undefined,
+    erFarEllerMedmor: boolean,
+    morHarRett: boolean,
+    situasjon: Situasjon,
+    erFarMedmorOgHarAleneomsorg: boolean
 ): DatoAvgrensninger => {
     if (periode && ugyldigeTidsperioder && !isUtsettelsesperiode(periode)) {
+        if (
+            isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato) &&
+            andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+            situasjon === 'fødsel'
+        ) {
+            return getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB(
+                periode.tidsperiode,
+                familiehendelsesdato,
+                termindato,
+                ugyldigeTidsperioder
+            );
+        }
+        if (
+            isUttaksperiodeBareFarMedmorHarRett(periode, morHarRett) &&
+            andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+            situasjon === 'fødsel'
+        ) {
+            return getDatoavgrensningerForBareFarMedmorHarRettWLB(
+                periode.tidsperiode,
+                familiehendelsesdato,
+                termindato,
+                ugyldigeTidsperioder
+            );
+        }
         return getDatoavgrensningerForStønadskonto(
             isUttaksperiode(periode) ? periode.konto : undefined,
             familiehendelsesdato,
             mapTidsperiodeStringToTidsperiode({ fom, tom }),
-            ugyldigeTidsperioder
+            ugyldigeTidsperioder,
+            erFarEllerMedmor,
+            termindato
         );
     }
 
+    const førsteMuligeUttaksdag = erFarMedmorOgHarAleneomsorg
+        ? getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)
+        : getFørsteMuligeUttaksdag(familiehendelsesdato, erFarEllerMedmor, termindato);
+
     return {
         fra: {
-            minDato: familiehendelsesdato,
+            minDato: førsteMuligeUttaksdag,
             maksDato: tidsperiode
                 ? ISOStringToDate(tom)!
                 : dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
@@ -56,7 +104,7 @@ const getDatoAvgrensninger = (
             helgedagerIkkeTillatt: true,
         },
         til: {
-            minDato: tidsperiode ? ISOStringToDate(fom)! : familiehendelsesdato,
+            minDato: tidsperiode ? ISOStringToDate(fom)! : førsteMuligeUttaksdag,
             maksDato: dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
@@ -70,8 +118,13 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
     familiehendelsesdato,
     ugyldigeTidsperioder,
     initialMonth,
+    termindato,
+    erFarEllerMedmor,
+    morHarRett,
+    situasjon,
     onBekreft,
     onCancel,
+    erFarMedmorOgHarAleneomsorg,
 }) => {
     const intl = useIntl();
 
@@ -87,7 +140,12 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                     values.fom,
                     values.tom,
                     tidsperiode,
-                    ugyldigeTidsperioder
+                    ugyldigeTidsperioder,
+                    termindato,
+                    erFarEllerMedmor,
+                    morHarRett,
+                    situasjon,
+                    erFarMedmorOgHarAleneomsorg
                 );
 
                 return (

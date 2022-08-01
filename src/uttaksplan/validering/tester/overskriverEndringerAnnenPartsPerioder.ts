@@ -23,17 +23,29 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                 perioderSomOverlapper.push(periode);
             }
         });
-        const passerer =
-            perioderSomOverlapper.filter((p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak)).length === 0;
+
+        const perioderSomOverlapperUtenSamtidigUttak = perioderSomOverlapper.filter(
+            (p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak)
+        );
+
+        const passerer = perioderSomOverlapperUtenSamtidigUttak.length === 0;
         return {
             passerer,
-            info: perioderSomOverlapper.map((periode) => {
+            info: perioderSomOverlapperUtenSamtidigUttak.map((periode) => {
                 const regelInfo: RegelTestresultatInfo = {
                     periodeId: periode.id,
                     intlKey: 'uttaksplan.validering.advarsel.periodeOverskriverAnnenPartsPeriode',
                     renderAsHtml: true,
                     values: {
-                        periode: (intl: IntlShape) => getPeriodeTittel(intl, periode, grunnlag.navnPåForeldre),
+                        periode: (intl: IntlShape) =>
+                            getPeriodeTittel(
+                                intl,
+                                periode,
+                                grunnlag.navnPåForeldre,
+                                grunnlag.familiehendelsesdato,
+                                grunnlag.termindato,
+                                grunnlag.søkersituasjon.situasjon
+                            ),
                         tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: fornavnAnnenForelder,
                         forelders: (intl: IntlShape) => getNavnGenitivEierform(fornavnAnnenForelder, intl.locale),

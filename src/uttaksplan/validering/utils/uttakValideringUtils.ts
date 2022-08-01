@@ -11,6 +11,7 @@ import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { erPeriodeFørDato } from 'uttaksplan/utils/periodeUtils';
 import AnnenForelder from 'app/context/types/AnnenForelder';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
@@ -66,6 +67,8 @@ export const getUgyldigUttakMor = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     situasjon: Situasjon,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined,
     flerbarnsFødsel?: boolean,
     value?: string
 ): Periode[] => {
@@ -73,7 +76,11 @@ export const getUgyldigUttakMor = (
         return [];
     }
 
-    const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
+    const førsteUttaksdag = uttaksdatoer(
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        termindato
+    ).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
     const førsteUttaksdagEtterÅtteUker = Uttaksdagen(førsteUttaksdag).leggTil(40);
 
@@ -127,7 +134,7 @@ export const getUgyldigUttakMor = (
 
     let samtidigUttaksperioder: Uttaksperiode[] = [];
 
-    if (!flerbarnsFødsel && flerbarnsFødsel !== undefined) {
+    if (!flerbarnsFødsel && flerbarnsFødsel !== undefined && !andreAugust2022ReglerGjelder(familiehendelsesdato)) {
         samtidigUttaksperioder = Periodene(ugyldigPeriode)
             .getUttak()
             .filter((p) => p.forelder === Forelder.mor && p.ønskerSamtidigUttak);
@@ -185,13 +192,19 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     situasjon: Situasjon,
     annenForelder: AnnenForelder,
     erAleneOmOmsorg: boolean,
-    harMidlertidigOmsorg: boolean
+    harMidlertidigOmsorg: boolean,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined
 ): Periode[] => {
     if (situasjon === 'adopsjon' || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
         return [];
     }
 
-    const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
+    const førsteUttaksdag = uttaksdatoer(
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        termindato
+    ).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 
     const farsPerioderInnenforSeksFørsteUker = Periodene(perioder)

@@ -4,11 +4,14 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Forelder } from 'app/types/Forelder';
+import { Situasjon } from 'app/types/Situasjon';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { getMorsAktivitet, getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
 import { trimNumberValue } from 'app/utils/numberUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
+import dayjs from 'dayjs';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import {
@@ -25,10 +28,66 @@ import {
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'uttaksplan/utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+import {
+    erSamtidigUttakFarMedmorFørFødselWLB,
+    erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
+} from './periodeUttakFormQuestionsConfig';
 
-const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: boolean): PeriodeUttakFormData => {
-    const hvemSkalTaUttak = erDeltUttak ? '' : forelder;
-    const konto = erDeltUttak ? '' : erMorUfør ? '' : StønadskontoType.Foreldrepenger;
+const getInitialKonto = (
+    erDeltUttak: boolean,
+    erMorUfør: boolean,
+    periodenStarterFørFamdato: boolean,
+    erFarEllerMedmor: boolean
+) => {
+    if (erDeltUttak) {
+        if (periodenStarterFørFamdato && erFarEllerMedmor) {
+            return StønadskontoType.Fedrekvote;
+        }
+
+        return '';
+    }
+
+    if (erFarEllerMedmor && periodenStarterFørFamdato) {
+        return StønadskontoType.AktivitetsfriKvote;
+    }
+
+    if (erMorUfør) {
+        return '';
+    }
+
+    return StønadskontoType.Foreldrepenger;
+};
+
+const getHvemSkalTaUttak = (
+    erDeltUttak: boolean,
+    forelder: Forelder,
+    periodenStarterFørFamdato: boolean,
+    erFarEllerMedmor: boolean
+) => {
+    if (erDeltUttak) {
+        if (periodenStarterFørFamdato && erFarEllerMedmor) {
+            return Forelder.farMedmor;
+        }
+
+        return '';
+    }
+
+    return forelder;
+};
+
+const getInitialValues = (
+    erDeltUttak: boolean,
+    forelder: Forelder,
+    erMorUfør: boolean,
+    familiehendelsesdato: Date,
+    startdatoPeriode: Date | undefined,
+    erFarEllerMedmor: boolean
+): PeriodeUttakFormData => {
+    const periodenStarterFørFamdato = startdatoPeriode
+        ? dayjs(startdatoPeriode).isBefore(familiehendelsesdato, 'day')
+        : false;
+    const hvemSkalTaUttak = getHvemSkalTaUttak(erDeltUttak, forelder, periodenStarterFørFamdato, erFarEllerMedmor);
+    const konto = getInitialKonto(erDeltUttak, erMorUfør, periodenStarterFørFamdato, erFarEllerMedmor);
 
     return {
         [PeriodeUttakFormField.fom]: undefined,
@@ -44,6 +103,7 @@ const getInitialValues = (erDeltUttak: boolean, forelder: Forelder, erMorUfør: 
         [PeriodeUttakFormField.arbeidsformer]: '',
         [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.erMorForSykDokumentasjon]: [],
+        [PeriodeUttakFormField.uttakRundtFødselÅrsak]: '',
         [PeriodeUttakFormField.samtidigUttakProsent]: '',
         [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
         [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo.UNANSWERED,
@@ -55,9 +115,18 @@ export const cleanPeriodeUttakFormData = (
     visibility: QuestionVisibility<PeriodeUttakFormField, undefined>,
     erDeltUttak: boolean,
     forelder: Forelder,
-    erMorUfør: boolean
+    erMorUfør: boolean,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean
 ): PeriodeUttakFormData => {
-    const initialValues = getInitialValues(erDeltUttak, forelder, erMorUfør);
+    const initialValues = getInitialValues(
+        erDeltUttak,
+        forelder,
+        erMorUfør,
+        familiehendelsesdato,
+        values.fom,
+        erFarEllerMedmor
+    );
 
     const cleanedData: PeriodeUttakFormData = {
         fom: values.fom,
@@ -72,9 +141,14 @@ export const cleanPeriodeUttakFormData = (
         erMorForSyk: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
             ? values.erMorForSyk
             : initialValues.erMorForSyk,
-        erMorForSykDokumentasjon: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
-            ? values.erMorForSykDokumentasjon
-            : initialValues.erMorForSykDokumentasjon,
+        erMorForSykDokumentasjon:
+            visibility.isVisible(PeriodeUttakFormField.erMorForSyk) ||
+            values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk
+                ? values.erMorForSykDokumentasjon
+                : initialValues.erMorForSykDokumentasjon,
+        uttakRundtFødselÅrsak: visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)
+            ? values.uttakRundtFødselÅrsak
+            : initialValues.uttakRundtFødselÅrsak,
         arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : '',
         konto: values.konto,
         overføringsdokumentasjon: visibility.isVisible(PeriodeUttakFormField.overføringsdokumentasjon)
@@ -103,13 +177,36 @@ export const cleanPeriodeUttakFormData = (
     return cleanedData;
 };
 
+const getInitialÅrsakForUttakRundtFødsel = (
+    erMorForSyk: boolean | undefined,
+    ønskerSamtidigUttak: boolean | undefined
+): UttakRundtFødselÅrsak | undefined => {
+    if (erMorForSyk) {
+        return UttakRundtFødselÅrsak.morErForSyk;
+    }
+    if (ønskerSamtidigUttak) {
+        return UttakRundtFødselÅrsak.samtidigUttak;
+    }
+    return undefined;
+};
+
 export const getPeriodeUttakFormInitialValues = (
     periode: Periode,
     erDeltUttak: boolean,
     forelder: Forelder,
-    erMorUfør: boolean
+    erMorUfør: boolean,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean
 ): PeriodeUttakFormData => {
-    const initialValues = getInitialValues(erDeltUttak, forelder, erMorUfør);
+    const initialValues = getInitialValues(
+        erDeltUttak,
+        forelder,
+        erMorUfør,
+        familiehendelsesdato,
+        periode.tidsperiode.fom,
+        erFarEllerMedmor
+    );
+
     if (periode !== undefined) {
         if (isUttaksperiode(periode)) {
             return {
@@ -131,6 +228,9 @@ export const getPeriodeUttakFormInitialValues = (
                 skalHaGradering: convertBooleanOrUndefinedToYesOrNo(periode.gradert),
                 stillingsprosent: periode.stillingsprosent || '',
                 ønskerFlerbarnsdager: convertBooleanOrUndefinedToYesOrNo(periode.ønskerFlerbarnsdager),
+                uttakRundtFødselÅrsak:
+                    getInitialÅrsakForUttakRundtFødsel(periode.erMorForSyk, periode.ønskerSamtidigUttak) ||
+                    initialValues.uttakRundtFødselÅrsak,
             };
         }
 
@@ -194,6 +294,15 @@ const getErArbeidstaker = (arbeidsformer: Arbeidsform[]): boolean => {
     );
 };
 
+const getSamtidigUttaksProsentWLB = (
+    ønskerGradering: boolean | undefined,
+    dekningsgrad: string | undefined
+): string => {
+    return ønskerGradering && dekningsgrad !== undefined
+        ? (100 - parseFloat(trimNumberValue(dekningsgrad))).toString()
+        : '100';
+};
+
 const velgVedleggSomSkalBrukes = (
     aktivitetskravMorDokumentasjon: Attachment[],
     erMorForSykDokumentasjon: Attachment[]
@@ -205,18 +314,48 @@ const velgVedleggSomSkalBrukes = (
     return erMorForSykDokumentasjon;
 };
 
-const skalVedleggPåkreves = (morsAktivitetIPerioden: '' | MorsAktivitet | undefined, erMorForSyk: boolean): boolean => {
-    if (hasValue(morsAktivitetIPerioden) || erMorForSyk) {
+const skalVedleggPåkreves = (
+    morsAktivitetIPerioden: '' | MorsAktivitet | undefined,
+    erMorForSyk: boolean,
+    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | '' | undefined
+): boolean => {
+    if (
+        hasValue(morsAktivitetIPerioden) ||
+        erMorForSyk ||
+        (uttakRundtFødselÅrsak !== undefined && uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk)
+    ) {
         return true;
     }
 
     return false;
 };
 
+const getKontoVerdi = (
+    samtidigWLBUttakFørFødselFarMedmor: boolean,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    startDato: Date,
+    inputKonto: StønadskontoType,
+    familiehendelsesdato: Date
+): StønadskontoType => {
+    if (samtidigWLBUttakFørFødselFarMedmor) {
+        return StønadskontoType.Fedrekvote;
+    }
+    if (!erDeltUttak && erFarEllerMedmor && dayjs(startDato).isBefore(familiehendelsesdato, 'day')) {
+        return StønadskontoType.AktivitetsfriKvote;
+    }
+
+    return inputKonto;
+};
+
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
-    type: Periodetype
+    type: Periodetype,
+    familiehendelsesdato: Date,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    situasjon: Situasjon
 ): Periode => {
     if (type === Periodetype.Overføring) {
         const periode: Overføringsperiode = {
@@ -253,7 +392,20 @@ export const mapPeriodeUttakFormToPeriode = (
 
         return periode;
     }
-
+    const samtidigWLBUttakFørFødselFarMedmor = erSamtidigUttakFarMedmorFørFødselWLB(
+        values,
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        erDeltUttak,
+        situasjon
+    );
+    const samtidigWLBUttakFørFørsteSeksUkerFarMedmor = erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB(
+        values,
+        familiehendelsesdato,
+        erFarEllerMedmor,
+        erDeltUttak,
+        situasjon
+    );
     const attachmentType = hasValue(values.aktivitetskravMor)
         ? AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
         : AttachmentType.UTSETTELSE_SYKDOM;
@@ -267,10 +419,45 @@ export const mapPeriodeUttakFormToPeriode = (
         values.erMorForSykDokumentasjon!
     );
 
+    const morErForSyk =
+        hasValue(values.uttakRundtFødselÅrsak) && values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk
+            ? true
+            : convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk);
+
+    const erSamtidigUttak =
+        values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak || samtidigWLBUttakFørFødselFarMedmor
+            ? true
+            : convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak);
+
+    const samtidigUttakProsentInputVerdi = hasValue(values.samtidigUttakProsent)
+        ? trimNumberValue(values.samtidigUttakProsent!)
+        : undefined;
+
+    const samtidigUttakProsentVerdi =
+        values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak || samtidigWLBUttakFørFødselFarMedmor
+            ? getSamtidigUttaksProsentWLB(
+                  convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
+                  values.stillingsprosent
+              )
+            : samtidigUttakProsentInputVerdi;
+
+    const forelderVerdi = samtidigWLBUttakFørFørsteSeksUkerFarMedmor
+        ? Forelder.farMedmor
+        : (values.hvemSkalTaUttak as Forelder);
+
+    const kontoVerdi = getKontoVerdi(
+        samtidigWLBUttakFørFødselFarMedmor,
+        erFarEllerMedmor,
+        erDeltUttak,
+        values.fom!,
+        values.konto as StønadskontoType,
+        familiehendelsesdato
+    );
+
     const periode: Uttaksperiode = {
         id,
-        forelder: values.hvemSkalTaUttak as Forelder,
-        konto: values.konto as StønadskontoType,
+        forelder: forelderVerdi,
+        konto: kontoVerdi,
         tidsperiode: {
             fom: values.fom!,
             tom: values.tom!,
@@ -287,19 +474,18 @@ export const mapPeriodeUttakFormToPeriode = (
         erArbeidstaker: getErArbeidstaker(
             hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
         ),
-        erMorForSyk: convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk),
+        erMorForSyk: morErForSyk,
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
         harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
         orgnumre: getOrgnummer(hasValue(values.arbeidsformer) ? [values.arbeidsformer as Arbeidsform] : []),
         stillingsprosent: hasValue(values.stillingsprosent) ? trimNumberValue(values.stillingsprosent!) : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
-        ønskerSamtidigUttak: convertYesOrNoOrUndefinedToBoolean(values.samtidigUttak),
-        samtidigUttakProsent: hasValue(values.samtidigUttakProsent)
-            ? trimNumberValue(values.samtidigUttakProsent!)
-            : undefined,
+        ønskerSamtidigUttak: erSamtidigUttak,
+        samtidigUttakProsent: samtidigUttakProsentVerdi,
         vedlegg: skalVedleggPåkreves(
             values.aktivitetskravMor,
-            convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk) || false
+            convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk) || false,
+            values.uttakRundtFødselÅrsak
         )
             ? lagSendSenereDokumentNårIngenAndreFinnes(relevantVedlegg, attachmentType, skjemanummer)
             : [],

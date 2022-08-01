@@ -128,6 +128,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
                     },
                     bareFarMedmorHarRett: bareFarMedmorHarRett,
+                    termindato: undefined,
                 })
             ),
         ];
@@ -220,6 +221,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 FormKomponent={MorFarAdopsjonFormComponents}
                                 dekningsgradFeltNavn={MorFarAdopsjonFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
+                                erDeltUttak={erDeltUttak}
                             />
                         </Block>
                         <Block padBottom="l" visible={visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad)}>
@@ -251,10 +253,12 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             <FarMedmorsFørsteDag
                                 FormComponents={MorFarAdopsjonFormComponents}
                                 fieldName={MorFarAdopsjonFormField.søkersFørsteDag}
-                                familiehendelsesdato={familiehendelsesdato}
+                                familiehendelsesdato={familiehendelsesdatoDate!}
                                 setFieldValue={setFieldValue}
                                 morsSisteDag={ISOStringToDate(formValues.annenForeldersSisteDag)}
                                 navnMor={navnMor}
+                                termindato={undefined}
+                                situasjon={søkersituasjon.situasjon}
                             />
                         </Block>
                         <Block

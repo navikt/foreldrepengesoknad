@@ -9,9 +9,23 @@ export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: Søknadsinfo): 
             case Periodetype.Overføring:
             case Periodetype.Uttak:
             case Periodetype.Opphold:
-                return uttakTidsperiodeErGyldig(periode, grunnlag.familiehendelsesdato) === false;
+                return (
+                    uttakTidsperiodeErGyldig(
+                        periode,
+                        grunnlag.familiehendelsesdato,
+                        grunnlag.søkerErFarEllerMedmor,
+                        grunnlag.termindato
+                    ) === false
+                );
             case Periodetype.Utsettelse:
-                return utsettelseTidsperiodeErGyldig(periode, grunnlag.familiehendelsesdato) === false;
+                return (
+                    utsettelseTidsperiodeErGyldig(
+                        periode,
+                        grunnlag.familiehendelsesdato,
+                        grunnlag.søkerErFarEllerMedmor,
+                        grunnlag.termindato
+                    ) === false
+                );
         }
         return false;
     });

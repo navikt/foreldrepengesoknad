@@ -11,6 +11,8 @@ export const ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest: Reg
             grunnlag.perioder,
             grunnlag.familiehendelsesdato,
             grunnlag.søkersituasjon.situasjon,
+            grunnlag.søkerErFarEllerMedmor,
+            grunnlag.termindato,
             grunnlag.erFlerbarnssøknad,
             'mellomSyvOgÅtteUkerForMor'
         );

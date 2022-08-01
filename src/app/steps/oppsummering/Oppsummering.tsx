@@ -32,7 +32,7 @@ import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
@@ -71,6 +71,7 @@ const Oppsummering = () => {
         : undefined;
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
+    const termindato = getTermindato(søknad.barn);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger;
     const erklæringOmAnnenForelderInformert = erEndringssøknadOgAnnenForelderHarRett
@@ -162,27 +163,35 @@ const Oppsummering = () => {
                                     <Block padBottom="l">
                                         <Personalia søkerinfo={søkerinfo} />
                                     </Block>
-                                    <OppsummeringsPanel title="Om barnet">
-                                        <BarnOppsummering barn={barn} />
-                                    </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Den andre forelderen">
-                                        <AnnenForelderOppsummering
-                                            annenForelder={annenForelder}
-                                            søker={søker}
-                                            søkerrolle={søkersituasjon.rolle}
-                                            barn={barn}
-                                            farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
-                                        />
-                                    </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Utenlandsopphold">
-                                        <UtenlandsoppholdOppsummering
-                                            informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
-                                            barn={barn}
-                                        />
-                                    </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
-                                        <ArbeidsforholdOgAndreInntekterOppsummering />
-                                    </OppsummeringsPanel>
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Om barnet">
+                                            <BarnOppsummering barn={barn} />
+                                        </OppsummeringsPanel>
+                                    )}
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Den andre forelderen">
+                                            <AnnenForelderOppsummering
+                                                annenForelder={annenForelder}
+                                                søker={søker}
+                                                søkerrolle={søkersituasjon.rolle}
+                                                barn={barn}
+                                                farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
+                                            />
+                                        </OppsummeringsPanel>
+                                    )}
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Utenlandsopphold">
+                                            <UtenlandsoppholdOppsummering
+                                                informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
+                                                barn={barn}
+                                            />
+                                        </OppsummeringsPanel>
+                                    )}
+                                    {!erEndringssøknad && (
+                                        <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
+                                            <ArbeidsforholdOgAndreInntekterOppsummering />
+                                        </OppsummeringsPanel>
+                                    )}
                                     <OppsummeringsPanel title={intlUtils(intl, 'oppsummering.uttak')}>
                                         <UttaksplanOppsummering
                                             perioder={uttaksplan}
@@ -197,6 +206,10 @@ const Oppsummering = () => {
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
                                             }
+                                            familiehendelsesdato={familiehendelsesdato!}
+                                            termindato={termindato}
+                                            situasjon={søkersituasjon.situasjon}
+                                            erAleneOmOmsorg={erAleneOmOmsorg}
                                         />
                                     </OppsummeringsPanel>
                                 </div>

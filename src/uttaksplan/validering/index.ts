@@ -29,11 +29,20 @@ import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import { inneholderPerioderUtenAktivitetskrav } from './tester/inneholderPerioderUtenAktivitetskrav';
 import { inneholderUtsettelserUtenÅrsak } from './tester/inneholderUtsettelserUtenÅrsak';
+import { farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest } from './tester/farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest';
+import { harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest } from './tester/harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest';
+import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
+import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
+import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
+import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
+    'farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel' = 'farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel',
+    'harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUker' = 'harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUker',
+    'farMedmorHarSøktUttakRundtFødselUtenforGyldigPeriode' = 'farMedmorHarSøktUttakRundtFødselUtenforGyldigPeriode',
     'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
@@ -59,6 +68,10 @@ export enum UttaksplanRegelKey {
     'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato' = 'ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindato',
     'inneholderPerioderUtenAktivitetskrav' = 'inneholderPerioderUtenAktivitetskrav',
     'inneholderUtsettelserUtenÅrsak' = 'inneholderUtsettelserUtenÅrsak',
+    'farMedMorHarRettPåUttakRundtFødsel' = 'farMedMorHarRettPåUttakRundtFødsel',
+    'farMedmorHarRettPåForeldrepengerUtenAktivitetskrav' = 'farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest',
+    'farMedmorHarRettPåFlerbarnsdager' = 'farMedmorHarRettPåFlerbarnsdagerTest',
+    'inneholderUttaksperioderMedUbesvartGradering' = 'inneholderUttaksperioderMedUbesvartGradering',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -83,6 +96,16 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest,
+    },
+    {
+        key: UttaksplanRegelKey.farMedmorHarSøktUgyldigAntallDagerUttakRundtFødsel,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest,
+    },
+    {
+        key: UttaksplanRegelKey.harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUker,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest,
     },
     {
         key: UttaksplanRegelKey.uttaksmengdeForFarMedmorErForHøy,
@@ -154,6 +177,24 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         skjulesIPeriode: true,
     },
     {
+        key: UttaksplanRegelKey.farMedMorHarRettPåUttakRundtFødsel,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: farMedMorHarRettPåUttakRundtFødselTest,
+        skjulesIPeriode: true,
+    },
+    {
+        key: UttaksplanRegelKey.farMedmorHarRettPåForeldrepengerUtenAktivitetskrav,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest,
+        skjulesIPeriode: true,
+    },
+    {
+        key: UttaksplanRegelKey.farMedmorHarRettPåFlerbarnsdager,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: farMedmorHarRettPåFlerbarnsdagerTest,
+        skjulesIPeriode: true,
+    },
+    {
         key: UttaksplanRegelKey.inneholderTapteDager,
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderTapteDagerTest,
@@ -207,6 +248,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.inneholderPerioderUtenAktivitetskrav,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderPerioderUtenAktivitetskrav,
+    },
+    {
+        key: UttaksplanRegelKey.inneholderUttaksperioderMedUbesvartGradering,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: inneholderUttaksperioderMedUbesvartGradering,
     },
     {
         key: UttaksplanRegelKey.inneholderUtsettelserUtenÅrsak,

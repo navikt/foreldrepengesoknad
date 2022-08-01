@@ -91,7 +91,7 @@ const validateFromDateInRange = ({
     const error = validateDateInRange(intl, date, minDate, maxDate, true);
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.erHelgedag');
+        return intlUtils(intl, 'valideringsfeil.fraDatoErHelgedag');
     }
 
     if (error !== undefined) {
@@ -125,7 +125,7 @@ const validateToDateInRange = ({
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.erHelgedag');
+        return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
     }
 
     if (error !== undefined) {
