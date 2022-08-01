@@ -10,7 +10,7 @@ const getAxiosInstance = (fnr?: string) => {
         config.timeout = 60 * 1000;
 
         if (process.env.NODE_ENV !== 'development' && fnr) {
-            config.headers.fnr = fnr;
+            config.headers!.fnr = fnr;
         }
         return config;
     });
