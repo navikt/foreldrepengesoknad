@@ -43,7 +43,7 @@ const erMorForForSykSkalBesvares = (
         annenForelderKanIkkeOppgis ||
         søkerHarMidlertidigOmsorg ||
         årsakTilUttakRundtFødselSkalBesvares ||
-        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato) ||
+        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day') ||
         konto === StønadskontoType.AktivitetsfriKvote
     ) {
         return false;

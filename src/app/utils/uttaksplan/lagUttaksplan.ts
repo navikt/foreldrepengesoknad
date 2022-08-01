@@ -84,7 +84,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 ? Uttaksdagen(morSinSisteUttaksdagDate).neste()
                 : undefined;
             const relevantStartDatoForUttak = dayjs(dagEtterMorsSisteDag).isSameOrAfter(
-                dayjs(førsteUttaksdagEtterSeksUker)
+                dayjs(førsteUttaksdagEtterSeksUker),
+                'day'
             )
                 ? dagEtterMorsSisteDag
                 : førsteUttaksdagEtterSeksUker;

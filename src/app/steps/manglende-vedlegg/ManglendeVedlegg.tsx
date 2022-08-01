@@ -87,7 +87,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
 
     const erLikEllerMindreEnnFireUkerTilUttaketStarter =
         førsteUttaksEllerUttsettelsesPeriode !== undefined &&
-        dayjs(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(dayjs().add(4, 'weeks'));
+        dayjs(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(dayjs().add(4, 'weeks'), 'day');
 
     const manglendeVedleggTyper = Array.from(alleSendSenereVedlegg.values()).map((v) => v.type);
 

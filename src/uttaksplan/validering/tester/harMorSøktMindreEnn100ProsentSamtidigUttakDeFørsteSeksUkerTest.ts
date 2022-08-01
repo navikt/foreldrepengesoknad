@@ -13,7 +13,7 @@ export const harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest: R
         const perioderMedSamtidigUttakUnder100ProsentInnenFørsteSeksUker = grunnlag.perioder.filter(
             (p) =>
                 isUttaksperiode(p) &&
-                dayjs(p.tidsperiode.fom).isSameOrBefore(sisteUttaksdagEtterSeksUker) &&
+                dayjs(p.tidsperiode.fom).isSameOrBefore(sisteUttaksdagEtterSeksUker, 'day') &&
                 p.ønskerSamtidigUttak === true &&
                 p.samtidigUttakProsent !== undefined &&
                 parseInt(p.samtidigUttakProsent, 10) < 100

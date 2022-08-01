@@ -360,7 +360,7 @@ export const erGradering = (periode: Periode) => periode.type === Periodetype.Ut
 
 export const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
     (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
-    dayjs(periode.tidsperiode.fom).isBefore(dayjs().startOf('day').subtract(3, 'months'));
+    dayjs(periode.tidsperiode.fom).isBefore(dayjs().startOf('day').subtract(3, 'months'), 'day');
 
 export const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
     periode.årsak === UtsettelseÅrsakType.Sykdom ||

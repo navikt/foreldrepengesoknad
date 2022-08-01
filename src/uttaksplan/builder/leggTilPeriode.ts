@@ -127,8 +127,8 @@ export const leggTilPeriode = ({
     const nyPeriodeTomDate = nyPeriode.tidsperiode.tom;
 
     if (
-        dayjs(nyPeriodeFomDate).isBefore(familiehendelsesdato) &&
-        dayjs(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato)
+        dayjs(nyPeriodeFomDate).isBefore(familiehendelsesdato, 'day') &&
+        dayjs(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato, 'day')
     ) {
         // Nye perioder skal legges før eller etter famdato ikke begge deler
         return [...perioder];
@@ -179,14 +179,14 @@ export const leggTilPeriode = ({
         const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
         const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);
 
-        if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom)) {
+        if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom, 'day')) {
             const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(
                 nyPeriode.tidsperiode,
                 førstePeriode.tidsperiode
             );
 
-            if (nyPeriodeTom.isSameOrAfter(førstePeriode.tidsperiode.fom)) {
-                if (nyPeriodeFom.isBefore(familiehendelsesdato)) {
+            if (nyPeriodeTom.isSameOrAfter(førstePeriode.tidsperiode.fom, 'day')) {
+                if (nyPeriodeFom.isBefore(familiehendelsesdato, 'day')) {
                     // Kan ikke overlappe perioder før fødsel
                     return [...perioder];
                 }

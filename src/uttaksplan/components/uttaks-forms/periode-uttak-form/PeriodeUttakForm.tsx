@@ -299,8 +299,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     }}
                                     changeTidsperiode={(values) => {
                                         if (
-                                            dayjs(values.fom).isBefore(familiehendelsesdato) &&
-                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato)
+                                            dayjs(values.fom).isBefore(familiehendelsesdato, 'day') &&
+                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato, 'day')
                                         ) {
                                             setFieldValue(PeriodeUttakFormField.fom, values.fom);
                                             setFieldValue(

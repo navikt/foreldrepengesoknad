@@ -54,7 +54,7 @@ export const getKunArbeidsforholdForValgtTidsperiode = (
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
             if (a.tom === undefined) {
-                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.fom))) {
+                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.fom), 'day')) {
                     return true;
                 }
 

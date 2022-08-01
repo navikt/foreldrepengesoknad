@@ -262,10 +262,10 @@ class UttaksplanAutoBuilder {
                             ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent, op.samtidigUttakProsent)
                             : Dekningsgrad.HUNDRE_PROSENT,
                         tidsperiode: {
-                            fom: dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(op.tidsperiode.fom))
+                            fom: dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(op.tidsperiode.fom), 'day')
                                 ? p.tidsperiode.fom
                                 : op.tidsperiode.fom,
-                            tom: dayjs(p.tidsperiode.tom).isSameOrBefore(dayjs(op.tidsperiode.tom))
+                            tom: dayjs(p.tidsperiode.tom).isSameOrBefore(dayjs(op.tidsperiode.tom), 'day')
                                 ? p.tidsperiode.tom
                                 : op.tidsperiode.tom,
                         },
@@ -308,10 +308,10 @@ class UttaksplanAutoBuilder {
                             ? this.beregnSamtidigUttaksprosent(p.samtidigUttakProsent, op.samtidigUttakProsent)
                             : Dekningsgrad.HUNDRE_PROSENT,
                         tidsperiode: {
-                            fom: dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(op.tidsperiode.fom))
+                            fom: dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(op.tidsperiode.fom), 'day')
                                 ? p.tidsperiode.fom
                                 : op.tidsperiode.fom,
-                            tom: dayjs(p.tidsperiode.tom).isSameOrBefore(dayjs(op.tidsperiode.tom))
+                            tom: dayjs(p.tidsperiode.tom).isSameOrBefore(dayjs(op.tidsperiode.tom), 'day')
                                 ? p.tidsperiode.tom
                                 : op.tidsperiode.tom,
                         },
@@ -1047,7 +1047,7 @@ const getNyttPeriodehull = (
         }
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
-            if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker)) {
+            if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker, 'day')) {
                 return [getPeriodeHull(tidsperiode, årsak)];
             }
 

@@ -19,7 +19,7 @@ const overskridelseUttakRundtFødselAntallDager = (
 ): number => {
     const sisteUttak6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
     const perioderAvkortetTilÅSlutte6UkerEtterFødsel = perioderRundtFødsel.map((p) =>
-        dayjs(p.tidsperiode.tom).isAfter(dayjs(sisteUttak6UkerEtterFødsel))
+        dayjs(p.tidsperiode.tom).isAfter(dayjs(sisteUttak6UkerEtterFødsel), 'day')
             ? { ...p, tidsperiode: { fom: p.tidsperiode.fom, tom: sisteUttak6UkerEtterFødsel } }
             : p
     );

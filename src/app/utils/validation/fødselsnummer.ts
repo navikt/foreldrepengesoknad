@@ -25,5 +25,5 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
         return false;
     }
 
-    return fødselsdato.isBefore(dayjs().subtract(16, 'year'));
+    return fødselsdato.isBefore(dayjs().subtract(16, 'year'), 'day');
 };
