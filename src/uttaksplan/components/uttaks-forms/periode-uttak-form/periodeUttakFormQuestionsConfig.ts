@@ -33,7 +33,7 @@ export const erSamtidigUttakFarMedmorFørFødselWLB = (
         erDeltUttak &&
         situasjon === 'fødsel' &&
         hasValue(values.fom) &&
-        dayjs(values.fom).isBefore(familiehendelsesdat, 'day')
+        dayjs(values.fom).isBefore(familiehendelsesdato, 'day')
     );
 };
 
