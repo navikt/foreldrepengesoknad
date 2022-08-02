@@ -1,11 +1,9 @@
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { UttaksplanSkjemadata } from 'app/types/UttaksplanSkjemaData';
-import dayjs from 'dayjs';
-import { finnOgSettInnHull } from 'uttaksplan/builder/UttaksplanBuilder';
+import { finnOgSettInnHull } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { Periode } from 'uttaksplan/types/Periode';
-import { førsteOktober2021ReglerGjelder, ISOStringToDate } from '../dateUtils';
+import { ISOStringToDate } from '../dateUtils';
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
@@ -22,6 +20,7 @@ export interface LagUttaksplanParams {
     førsteUttaksdagEtterSeksUker: Date;
     søkerHarMidlertidigOmsorg: boolean;
     bareFarMedmorHarRett: boolean;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
     termindato: Date | undefined;
 }
 
@@ -35,20 +34,14 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         annenForelderErUfør,
         tilgjengeligeStønadskontoer,
         uttaksplanSkjema,
-        erEnkelEndringssøknad,
-        førsteUttaksdagEtterSeksUker,
-        søkerHarMidlertidigOmsorg,
         bareFarMedmorHarRett,
         termindato,
+        harAktivitetskravIPeriodeUtenUttak,
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
         return [];
     }
-
-    const erEndringssøknadUtenEksisterendeSak = erEndringssøknad && !erEnkelEndringssøknad;
-    const kunFarMedmorHarRett =
-        søkerErFarEllerMedmor && !erDeltUttak && førsteOktober2021ReglerGjelder(familiehendelsesdato);
     const erAdopsjon = situasjon === 'adopsjon';
 
     const {
@@ -80,24 +73,14 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 begrunnelseForUtsettelse,
                 termindato
             );
-            const dagEtterMorsSisteDag = morSinSisteUttaksdagDate
-                ? Uttaksdagen(morSinSisteUttaksdagDate).neste()
-                : undefined;
-            const relevantStartDatoForUttak = dayjs(dagEtterMorsSisteDag).isSameOrAfter(
-                dayjs(førsteUttaksdagEtterSeksUker),
-                'day'
-            )
-                ? dagEtterMorsSisteDag
-                : førsteUttaksdagEtterSeksUker;
 
             return finnOgSettInnHull(
                 forslag,
-                erEndringssøknadUtenEksisterendeSak,
-                søkerHarMidlertidigOmsorg,
-                kunFarMedmorHarRett,
+                harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
-                relevantStartDatoForUttak
+                søkerErFarEllerMedmor && !erDeltUttak,
+                søkerErFarEllerMedmor
             );
         } else {
             const forslag = ikkeDeltUttak(
@@ -111,28 +94,13 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 termindato
             );
 
-            const førsteUttaksdagEtterSeksUker = Uttaksdagen(
-                Uttaksdagen(familiehendelsesdato).denneEllerNeste()
-            ).leggTil(30);
-
-            let relevantStartDatoForUttak = familiehendelsesdato;
-
-            if (søkerErFarEllerMedmor) {
-                if (erAdopsjon) {
-                    relevantStartDatoForUttak = familiehendelsesdato;
-                }
-
-                relevantStartDatoForUttak = førsteUttaksdagEtterSeksUker;
-            }
-
             return finnOgSettInnHull(
                 forslag,
-                erEndringssøknadUtenEksisterendeSak,
-                søkerHarMidlertidigOmsorg,
-                kunFarMedmorHarRett,
+                harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
-                relevantStartDatoForUttak
+                søkerErFarEllerMedmor && !erDeltUttak,
+                søkerErFarEllerMedmor
             );
         }
     }

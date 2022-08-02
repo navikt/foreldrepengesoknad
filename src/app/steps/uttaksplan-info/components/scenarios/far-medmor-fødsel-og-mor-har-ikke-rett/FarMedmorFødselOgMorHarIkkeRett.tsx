@@ -44,6 +44,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 
 const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
     if (fødselsdato === undefined || termindato === undefined) {
@@ -123,6 +124,11 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     },
                     bareFarMedmorHarRett: true,
                     termindato,
+                    harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
+                        erDeltUttak: false,
+                        morHarRett: false,
+                        søkerErAleneOmOmsorg: false,
+                    }),
                 })
             ),
         ];
