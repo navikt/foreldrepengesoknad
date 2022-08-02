@@ -26,10 +26,11 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 // import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
-import UttaksplanbuilderNew from './builder/UttaksplanbuilderNew';
+import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import Barn from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -125,11 +126,15 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
-    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !erAleneOmOmsorg;
+    const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+        erDeltUttak,
+        morHarRett,
+        søkerErAleneOmOmsorg: erAleneOmOmsorg,
+    });
     const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter((p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan));
     const bareFarHarRett = !morHarRett;
 
-    const builder = UttaksplanbuilderNew(
+    const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,

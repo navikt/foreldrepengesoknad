@@ -143,7 +143,7 @@ const slettPeriodeOgBuild = (
     return nyePerioder;
 };
 
-const UttaksplanbuilderNew = (
+const Uttaksplanbuilder = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     harAktivitetskravIPeriodeUtenUttak: boolean,
@@ -286,4 +286,4 @@ const UttaksplanbuilderNew = (
     };
 };
 
-export default UttaksplanbuilderNew;
+export default Uttaksplanbuilder;
