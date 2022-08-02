@@ -41,13 +41,15 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 feltnavn={intlUtils(intl, 'oppsummering.uttak.årsak')}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {shouldPeriodeHaveAttachment(periode, søkerErFarEllerMedmor, annenForelder) && periodeErNyEllerEndret && (
-                <OppsummeringAvDokumentasjon
-                    vedlegg={(vedlegg || []).filter(
-                        (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                    )}
-                />
-            )}
+            {shouldPeriodeHaveAttachment(periode, søkerErFarEllerMedmor, annenForelder) &&
+                periodeErNyEllerEndret &&
+                periode.årsak !== UtsettelseÅrsakType.Fri && (
+                    <OppsummeringAvDokumentasjon
+                        vedlegg={(vedlegg || []).filter(
+                            (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                        )}
+                    />
+                )}
             {årsak === UtsettelseÅrsakType.Arbeid && (
                 <Feltoppsummering
                     feltnavn={intlUtils(intl, 'oppsummering.uttak.arbeidstaker.label')}
