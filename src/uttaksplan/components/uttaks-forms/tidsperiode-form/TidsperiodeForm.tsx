@@ -10,7 +10,7 @@ import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-comm
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
-    getDatoavgrensningerForFarMedmorPeriodeRundtFødsel as getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
+    getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
     getDatoavgrensningerForStønadskonto,
 } from 'uttaksplan/utils/datoAvgrensningerUtils';
 import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils';
@@ -62,7 +62,6 @@ const getDatoAvgrensninger = (
             situasjon === 'fødsel'
         ) {
             return getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB(
-                periode.tidsperiode,
                 familiehendelsesdato,
                 termindato,
                 ugyldigeTidsperioder
@@ -74,7 +73,6 @@ const getDatoAvgrensninger = (
             situasjon === 'fødsel'
         ) {
             return getDatoavgrensningerForBareFarMedmorHarRettWLB(
-                periode.tidsperiode,
                 familiehendelsesdato,
                 termindato,
                 ugyldigeTidsperioder

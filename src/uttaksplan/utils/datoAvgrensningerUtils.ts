@@ -21,8 +21,7 @@ export interface Avgrensninger {
     helgedagerIkkeTillatt: boolean;
 }
 
-export const getDatoavgrensningerForFarMedmorPeriodeRundtFødsel = (
-    tidsperiode: TidsperiodeDate,
+export const getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     ugyldigeTidsperioder: Tidsperiode[]
@@ -37,7 +36,7 @@ export const getDatoavgrensningerForFarMedmorPeriodeRundtFødsel = (
             ugyldigeTidsperioder,
         },
         til: {
-            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : minDato,
+            minDato,
             maksDato,
             helgedagerIkkeTillatt: true,
             ugyldigeTidsperioder,
@@ -77,7 +76,6 @@ export const getDatoavgrensningerForStønadskonto = (
         },
         til: {
             ...standardAvgrensninger,
-            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : standardAvgrensninger.minDato,
             ugyldigeTidsperioder,
         },
     };
@@ -158,7 +156,6 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date
 };
 
 export const getDatoavgrensningerForBareFarMedmorHarRettWLB = (
-    tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     ugyldigeTidsperioder: Tidsperiode[]
@@ -173,7 +170,7 @@ export const getDatoavgrensningerForBareFarMedmorHarRettWLB = (
             ugyldigeTidsperioder,
         },
         til: {
-            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : minDato,
+            minDato,
             maksDato,
             helgedagerIkkeTillatt: true,
             ugyldigeTidsperioder,
