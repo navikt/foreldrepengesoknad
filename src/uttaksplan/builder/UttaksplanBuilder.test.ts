@@ -1,7 +1,7 @@
 import { Forelder } from 'app/types/Forelder';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import UttaksplanbuilderNew from './UttaksplanbuilderNew';
+import Uttaksplanbuilder from './Uttaksplanbuilder';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
 const perioder: Periode[] = [
@@ -51,14 +51,9 @@ describe('Uttaksplanbuilder tester', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result = UttaksplanbuilderNew(
-            perioder,
-            new Date('2022-05-02'),
-            false,
-            false,
-            false,
-            false
-        ).leggTilPeriode(nyPeriode);
+        const result = Uttaksplanbuilder(perioder, new Date('2022-05-02'), false, false, false, false).leggTilPeriode(
+            nyPeriode
+        );
 
         expect(result.length).toBe(4);
         expect(result[2]).toEqual(nyPeriode);
@@ -75,7 +70,7 @@ describe('Uttaksplanbuilder tester', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result2 = UttaksplanbuilderNew(result, new Date('2022-05-02'), false, false, false, false).leggTilPeriode(
+        const result2 = Uttaksplanbuilder(result, new Date('2022-05-02'), false, false, false, false).leggTilPeriode(
             nyPeriode2
         );
 

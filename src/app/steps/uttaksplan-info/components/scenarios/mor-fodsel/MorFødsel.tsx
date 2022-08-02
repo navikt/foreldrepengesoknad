@@ -141,6 +141,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                     },
                     bareFarMedmorHarRett: false,
                     termindato,
+                    harAktivitetskravIPeriodeUtenUttak: false,
                 })
             ),
         ];

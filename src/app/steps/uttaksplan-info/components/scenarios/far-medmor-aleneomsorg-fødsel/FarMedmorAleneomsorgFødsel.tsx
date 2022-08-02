@@ -21,6 +21,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -97,6 +98,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                     },
                     bareFarMedmorHarRett: false,
                     termindato,
+                    harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
+                        erDeltUttak: false,
+                        morHarRett: false,
+                        søkerErAleneOmOmsorg: true,
+                    }),
                 })
             ),
         ];

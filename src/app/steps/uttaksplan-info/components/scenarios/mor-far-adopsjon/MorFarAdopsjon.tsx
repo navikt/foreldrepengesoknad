@@ -45,6 +45,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -129,6 +130,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     },
                     bareFarMedmorHarRett: bareFarMedmorHarRett,
                     termindato: undefined,
+                    harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
+                        erDeltUttak,
+                        morHarRett: !bareFarMedmorHarRett,
+                        søkerErAleneOmOmsorg,
+                    }),
                 })
             ),
         ];

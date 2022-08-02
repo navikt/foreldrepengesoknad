@@ -33,8 +33,9 @@ import {
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import UttaksplanbuilderNew from 'uttaksplan/builder/UttaksplanbuilderNew';
+import Uttaksplanbuilder from 'uttaksplan/builder/Uttaksplanbuilder';
 import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -60,8 +61,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const bareFarHarRett = !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
-    const harAktivitetskravIPeriodeUtenUttak =
-        !erDeltUttak && !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
+    const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+        erDeltUttak,
+        morHarRett: true,
+        søkerErAleneOmOmsorg: false,
+    });
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
@@ -89,11 +93,12 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             },
             bareFarMedmorHarRett: bareFarHarRett,
             termindato,
+            harAktivitetskravIPeriodeUtenUttak,
         });
         let uttaksplanMedAnnenPart;
         const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;
         if (eksisterendeSakAnnenPart && nyPeriode !== undefined) {
-            const builder = UttaksplanbuilderNew(
+            const builder = Uttaksplanbuilder(
                 uttaksplan,
                 familiehendelsedatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,
