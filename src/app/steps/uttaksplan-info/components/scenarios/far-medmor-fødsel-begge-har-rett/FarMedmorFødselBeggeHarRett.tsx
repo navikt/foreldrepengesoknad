@@ -107,7 +107,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     },
                     bareFarMedmorHarRett: false,
                     termindato,
-                    harAktivitetskravIPeriodeUtenUttak: true,
+                    harAktivitetskravIPeriodeUtenUttak: false,
                 })
             ),
         ];
