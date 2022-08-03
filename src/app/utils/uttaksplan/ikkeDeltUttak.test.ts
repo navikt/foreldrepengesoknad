@@ -34,7 +34,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             morErUfør,
             bareFarMedmorHarRett,
             terminato
-        );
+        ) as Uttaksperiode[];
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-09-30T00:00:00.000Z'));
