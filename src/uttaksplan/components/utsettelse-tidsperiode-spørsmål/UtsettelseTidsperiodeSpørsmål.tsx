@@ -6,7 +6,7 @@ import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 import dayjs from 'dayjs';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { isForeldrepengerFørFødselUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
 import { Situasjon } from 'app/types/Situasjon';
 
@@ -15,7 +15,7 @@ interface Props {
     tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[] | undefined;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
     visible: boolean;
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
@@ -35,7 +35,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
     erFarEllerMedmor,
     morHarRett,
     situasjon,
@@ -80,7 +80,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     periode={periode}
                     tidsperiode={tidsperiode}
                     ugyldigeTidsperioder={ugyldigeTidsperioder}
-                    utsettelserTidsperioder={utsettelserTidsperioder}
+                    utsettelserIPlan={utsettelserIPlan}
                     initialMonth={initialMonth}
                     erFarEllerMedmor={erFarEllerMedmor}
                     morHarRett={morHarRett}

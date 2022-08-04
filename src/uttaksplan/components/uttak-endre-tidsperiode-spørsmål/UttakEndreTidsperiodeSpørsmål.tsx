@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'nav-frontend-modal';
 import { useIntl } from 'react-intl';
-import { isForeldrepengerFørFødselUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import dayjs from 'dayjs';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
@@ -15,7 +15,7 @@ interface Props {
     tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[] | undefined;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
     visible: boolean;
     onAvbryt: () => void;
     onBekreft: (tidsperiode: TidsperiodeFormValues) => void;
@@ -36,7 +36,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
     termindato,
     erFarEllerMedmor,
     morHarRett,
@@ -78,7 +78,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     periode={periode}
                     tidsperiode={tidsperiode}
                     ugyldigeTidsperioder={ugyldigeTidsperioder}
-                    utsettelserTidsperioder={utsettelserTidsperioder}
+                    utsettelserIPlan={utsettelserIPlan}
                     initialMonth={initialMonth}
                     termindato={termindato}
                     erFarEllerMedmor={erFarEllerMedmor}

@@ -3,7 +3,7 @@ import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-commo
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isUtsettelsesperiode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isUtsettelsesperiode, isUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { andreAugust2022ReglerGjelder, dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
 import { Knapp } from 'nav-frontend-knapper';
 import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
@@ -23,7 +23,7 @@ interface Props {
     tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[] | undefined;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
     onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
@@ -116,7 +116,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
     initialMonth,
     termindato,
     erFarEllerMedmor,
@@ -170,7 +170,8 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             errorKey: 'valideringsfeil.fraOgMedDato.førTilDato',
                                             toDate: ISOStringToDate(values.tom),
                                             disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
-                                            utsettelserTidsperioder: utsettelserTidsperioder,
+                                            utsettelserIPlan: utsettelserIPlan,
+                                            periodeId: periode !== undefined ? periode.id : undefined,
                                         }),
                                     dayPickerProps: {
                                         initialMonth: initialMonth || familiehendelsesdato,
@@ -193,7 +194,8 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                                             fromDate: ISOStringToDate(values.fom),
                                             disableWeekend: datoAvgrensninger.til.helgedagerIkkeTillatt,
-                                            utsettelserTidsperioder: utsettelserTidsperioder,
+                                            utsettelserIPlan: utsettelserIPlan,
+                                            periodeId: periode !== undefined ? periode.id : undefined,
                                         }),
                                     dayPickerProps: {
                                         initialMonth: ISOStringToDate(values.fom),
