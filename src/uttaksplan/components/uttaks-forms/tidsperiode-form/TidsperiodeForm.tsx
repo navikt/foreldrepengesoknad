@@ -23,6 +23,7 @@ interface Props {
     tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
     ugyldigeTidsperioder: Tidsperiode[] | undefined;
+    utsettelserTidsperioder: TidsperiodeDate[];
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
     onBekreft: (tidsperiode: Partial<Tidsperiode>) => void;
@@ -115,6 +116,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
+    utsettelserTidsperioder,
     initialMonth,
     termindato,
     erFarEllerMedmor,
@@ -168,6 +170,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             errorKey: 'valideringsfeil.fraOgMedDato.førTilDato',
                                             toDate: ISOStringToDate(values.tom),
                                             disableWeekend: datoAvgrensninger.fra.helgedagerIkkeTillatt,
+                                            utsettelserTidsperioder: utsettelserTidsperioder,
                                         }),
                                     dayPickerProps: {
                                         initialMonth: initialMonth || familiehendelsesdato,
@@ -190,6 +193,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                                             fromDate: ISOStringToDate(values.fom),
                                             disableWeekend: datoAvgrensninger.til.helgedagerIkkeTillatt,
+                                            utsettelserTidsperioder: utsettelserTidsperioder,
                                         }),
                                     dayPickerProps: {
                                         initialMonth: ISOStringToDate(values.fom),

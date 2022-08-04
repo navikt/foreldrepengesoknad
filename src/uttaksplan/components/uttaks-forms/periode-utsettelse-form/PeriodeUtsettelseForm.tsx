@@ -1,4 +1,4 @@
-import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, hasValue, intlUtils, TidsperiodeDate, UtvidetInformasjon } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { Dispatch, FunctionComponent, useState } from 'react';
@@ -46,6 +46,7 @@ interface Props {
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     arbeidsforhold: Arbeidsforhold[];
     situasjon: Situasjon;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -64,6 +65,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     arbeidsforhold,
     situasjon,
+    utsettelserTidsperioder,
 }) => {
     const intl = useIntl();
     const { tidsperiode, id } = periode;
@@ -133,6 +135,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                utsettelserTidsperioder={utsettelserTidsperioder}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                                 situasjon={situasjon}
@@ -150,7 +153,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 <UtsettelseEndreTidsperiodeSpørsmål
                                     periode={periode}
                                     familiehendelsesdato={familiehendelsesdato}
-                                    ugyldigeTidsperioder={[]}
+                                    ugyldigeTidsperioder={undefined}
+                                    utsettelserTidsperioder={utsettelserTidsperioder}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
                                         setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));

@@ -629,6 +629,7 @@
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato": "Perioden må starte på eller etter {familiehendelsesdato}",
     "valideringsfeil.fraDatoErHelgedag": "Startdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
     "valideringsfeil.tilDatoErHelgedag": "Sluttdato kan ikkje vere på ein laurdag eller søndag, du må velje ein vekedag",
+    "valideringsfeil.overlapperEnUtsettelse": "Du har en utsettelse fra {fom} til {tom} som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",

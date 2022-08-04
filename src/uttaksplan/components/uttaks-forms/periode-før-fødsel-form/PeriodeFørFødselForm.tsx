@@ -1,4 +1,4 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Situasjon } from 'app/types/Situasjon';
@@ -25,6 +25,7 @@ interface Props {
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
     situasjon: Situasjon;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const PeriodeFørFødselForm: FunctionComponent<Props> = ({
@@ -34,6 +35,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
     erFarEllerMedmor,
     morHarRett,
     situasjon,
+    utsettelserTidsperioder,
 }) => {
     const { tidsperiode } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
@@ -75,6 +77,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeFørFødselFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                utsettelserTidsperioder={utsettelserTidsperioder}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
                                 situasjon={situasjon}
@@ -98,7 +101,8 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                 <UttakEndreTidsperiodeSpørsmål
                                     periode={periode}
                                     familiehendelsesdato={familiehendelsesdato}
-                                    ugyldigeTidsperioder={[]}
+                                    ugyldigeTidsperioder={undefined}
+                                    utsettelserTidsperioder={utsettelserTidsperioder}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
                                         setFieldValue(PeriodeFørFødselFormField.fom, values.fom);

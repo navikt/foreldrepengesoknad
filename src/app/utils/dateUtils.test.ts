@@ -28,6 +28,7 @@ import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } 
 import { guid } from 'nav-frontend-js-utils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import fns from './toggleUtils';
+import { TidsperiodeDate } from '@navikt/fp-common';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -46,6 +47,8 @@ describe('dateUtils', () => {
         expect(dato?.getTime()).toBe(new Date('2021-05-05').getTime());
     });
 
+    const utsettelserTidsperioder = [] as TidsperiodeDate[];
+
     describe('validateToDateInRange', () => {
         it('skal ikke gi feilmelding når dato er innenfor intervall', () => {
             const date = new Date('2021-05-10');
@@ -59,6 +62,7 @@ describe('dateUtils', () => {
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBeUndefined;
@@ -76,6 +80,7 @@ describe('dateUtils', () => {
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBe(
@@ -96,6 +101,7 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 fromDate,
                 disableWeekend: false,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Til og med dato må være en gyldig dato på formatet dd.mm.åååå');
@@ -115,9 +121,32 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
                 fromDate,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
+        });
+        it('skal gi feilmelding når til-dato overlapper en utsettelsesperiode', () => {
+            const date = new Date('2022-08-13');
+            const minDate = new Date('2020-05-05');
+            const maxDate = new Date('2023-05-11');
+            const fromDate = new Date('2020-05-11');
+            const utsettelserTidsperioder = [{ fom: new Date('2022-08-10'), tom: new Date('2022-08-15') }];
+
+            const dato = dateRangeValidation.validateToDateInRange({
+                intl,
+                date,
+                minDate,
+                maxDate,
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                fromDate,
+                disableWeekend: false,
+                utsettelserTidsperioder,
+            });
+
+            expect(dato).toBe(
+                'Du har en utsettelse fra 10.08.2022 til 15.08.2022 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.'
+            );
         });
     });
 
@@ -134,6 +163,7 @@ describe('dateUtils', () => {
                 maxDate,
                 disableWeekend: false,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBeUndefined;
@@ -151,6 +181,7 @@ describe('dateUtils', () => {
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBe(
@@ -171,6 +202,7 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 toDate,
                 disableWeekend: false,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Fra og med dato må være en gyldig dato på formatet dd.mm.åååå');
@@ -188,11 +220,37 @@ describe('dateUtils', () => {
                 minDate,
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                toDate,
                 disableWeekend: false,
+                toDate,
+                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
+        });
+        it('skal gi feilmelding når fra-dato overlapper en utsettelsesperiode', () => {
+            const date = new Date('2021-05-10');
+            const minDate = new Date('2020-05-05');
+            const maxDate = new Date('2023-05-11');
+            const toDate = new Date('2021-05-11');
+            const utsettelserTidsperioder = [
+                { fom: new Date('2021-04-10'), tom: new Date('2021-04-12') },
+                { fom: new Date('2021-05-01'), tom: new Date('2021-06-10') },
+            ];
+
+            const dato = dateRangeValidation.validateFromDateInRange({
+                intl,
+                date,
+                minDate,
+                maxDate,
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                toDate,
+                disableWeekend: false,
+                utsettelserTidsperioder,
+            });
+
+            expect(dato).toBe(
+                'Du har en utsettelse fra 01.05.2021 til 10.06.2021 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.'
+            );
         });
     });
 

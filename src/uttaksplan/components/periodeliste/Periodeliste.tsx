@@ -1,5 +1,5 @@
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, TidsperiodeDate } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
@@ -33,6 +33,7 @@ interface Props {
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -56,6 +57,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     erEndringssøknad,
     termindato,
     antallBarn,
+    utsettelserTidsperioder,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -97,6 +99,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     termindato={termindato}
                     antallBarn={antallBarn}
+                    utsettelserTidsperioder={utsettelserTidsperioder}
                 />
             ))}
         </div>

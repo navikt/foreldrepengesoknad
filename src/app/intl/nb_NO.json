@@ -629,6 +629,7 @@
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato": "Perioden må starte på eller etter {familiehendelsesdato}",
     "valideringsfeil.fraDatoErHelgedag": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
     "valideringsfeil.tilDatoErHelgedag": "Du kan ikke avslutte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
+    "valideringsfeil.overlapperEnUtsettelse": "Du har en utsettelse fra {fom} til {tom} som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noe gikk galt prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type",
