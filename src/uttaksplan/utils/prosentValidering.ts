@@ -27,7 +27,7 @@ export const prosentValideringSamtidigUttak = (intl: IntlShape) => (value: strin
 export const prosentValideringGradering = (intl: IntlShape) => (value: string) => {
     const stillingsprosent = getFloatFromString(value);
 
-    if (!hasValue(value)) {
+    if (!hasValue(value) || value.trim() === '') {
         return intlUtils(intl, 'uttaksplan.validering.stillingsprosent.required');
     }
 

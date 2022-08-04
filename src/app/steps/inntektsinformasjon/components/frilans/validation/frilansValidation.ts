@@ -6,7 +6,7 @@ import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 
 export const validateNavnPåOppdragsgiver = (intl: IntlShape, label: string) => (navn: string) => {
-    if (!hasValue(navn)) {
+    if (!hasValue(navn) || navn.trim() === '') {
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.påkrevd');
     }
 
