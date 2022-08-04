@@ -1,11 +1,11 @@
-import { Block, TidsperiodeDate } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Undertittel } from 'nav-frontend-typografi';
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import { FormattedMessage } from 'react-intl';
@@ -32,7 +32,7 @@ interface Props {
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -56,7 +56,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     erEndringssøknad,
     termindato,
     antallBarn,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -92,7 +92,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 termindato={termindato}
                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                 antallBarn={antallBarn}
-                utsettelserTidsperioder={utsettelserTidsperioder}
+                utsettelserIPlan={utsettelserIPlan}
             />
         </>
     ) : (
@@ -110,7 +110,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
             arbeidsforhold={arbeidsforhold}
             situasjon={situasjon}
-            utsettelserTidsperioder={utsettelserTidsperioder}
+            utsettelserIPlan={utsettelserIPlan}
         />
     );
 };

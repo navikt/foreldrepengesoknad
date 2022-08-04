@@ -1,4 +1,4 @@
-import { bemUtils, Block, hasValue, intlUtils, TidsperiodeDate, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { Dispatch, FunctionComponent, useState } from 'react';
@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
-import { Arbeidsform, Periode } from 'uttaksplan/types/Periode';
+import { Arbeidsform, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
@@ -46,7 +46,7 @@ interface Props {
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     arbeidsforhold: Arbeidsforhold[];
     situasjon: Situasjon;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -65,7 +65,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     arbeidsforhold,
     situasjon,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
 }) => {
     const intl = useIntl();
     const { tidsperiode, id } = periode;
@@ -135,7 +135,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
-                                utsettelserTidsperioder={utsettelserTidsperioder}
+                                utsettelserIPlan={utsettelserIPlan}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                                 situasjon={situasjon}
@@ -154,7 +154,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     periode={periode}
                                     familiehendelsesdato={familiehendelsesdato}
                                     ugyldigeTidsperioder={undefined}
-                                    utsettelserTidsperioder={utsettelserTidsperioder}
+                                    utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
                                         setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));

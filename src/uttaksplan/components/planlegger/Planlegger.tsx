@@ -1,4 +1,4 @@
-import { bemUtils, InfoBlock, intlUtils, Block, ActionLink, TidsperiodeDate } from '@navikt/fp-common';
+import { bemUtils, InfoBlock, intlUtils, Block, ActionLink } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
@@ -10,7 +10,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Periode } from 'uttaksplan/types/Periode';
+import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
@@ -40,7 +40,7 @@ interface Props {
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
     termindato: Date | undefined;
     barn: Barn;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -65,7 +65,7 @@ const Planlegger: FunctionComponent<Props> = ({
     setSlettUttaksplanModalOpen,
     termindato,
     barn,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -117,7 +117,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
-                                utsettelserTidsperioder={utsettelserTidsperioder}
+                                utsettelserIPlan={utsettelserIPlan}
                             />
                         </section>
                     </Block>
@@ -144,7 +144,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
-                                utsettelserTidsperioder={utsettelserTidsperioder}
+                                utsettelserIPlan={utsettelserIPlan}
                             />
                         </div>
                     )}

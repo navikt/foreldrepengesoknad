@@ -3,7 +3,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
 import { Forelder } from 'app/types/Forelder';
-import { isInfoPeriode, isUtsettelsesperiode, Periode, Uttaksperiode } from './types/Periode';
+import { isInfoPeriode, isUtsettelsesperiode, Periode, Utsettelsesperiode, Uttaksperiode } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
@@ -254,11 +254,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
-    const utsettelserTidsperioder = uttaksplan
-        .filter((p) => isUtsettelsesperiode(p))
-        .map((up) => {
-            return up.tidsperiode;
-        });
+    const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     return (
         <>
             <Block padBottom="l">
@@ -291,7 +287,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
                     termindato={termindato}
                     barn={barn}
-                    utsettelserTidsperioder={utsettelserTidsperioder}
+                    utsettelserIPlan={utsettelserIPlan}
                 />
             </Block>
             <Block padBottom="l">

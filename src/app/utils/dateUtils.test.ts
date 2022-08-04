@@ -28,7 +28,6 @@ import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } 
 import { guid } from 'nav-frontend-js-utils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import fns from './toggleUtils';
-import { TidsperiodeDate } from '@navikt/fp-common';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -47,7 +46,7 @@ describe('dateUtils', () => {
         expect(dato?.getTime()).toBe(new Date('2021-05-05').getTime());
     });
 
-    const utsettelserTidsperioder = [] as TidsperiodeDate[];
+    const periodeId = '0';
 
     describe('validateToDateInRange', () => {
         it('skal ikke gi feilmelding når dato er innenfor intervall', () => {
@@ -62,7 +61,6 @@ describe('dateUtils', () => {
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBeUndefined;
@@ -80,7 +78,6 @@ describe('dateUtils', () => {
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBe(
@@ -101,7 +98,6 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 fromDate,
                 disableWeekend: false,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Til og med dato må være en gyldig dato på formatet dd.mm.åååå');
@@ -121,7 +117,6 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
                 fromDate,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
@@ -131,9 +126,11 @@ describe('dateUtils', () => {
             const minDate = new Date('2020-05-05');
             const maxDate = new Date('2023-05-11');
             const fromDate = new Date('2020-05-11');
-            const utsettelserTidsperioder = [{ fom: new Date('2022-08-10'), tom: new Date('2022-08-15') }];
+            const utsettelserIPlan = [
+                { tidsperiode: { fom: new Date('2022-08-10'), tom: new Date('2022-08-15') }, id: '4' },
+            ] as Utsettelsesperiode[];
 
-            const dato = dateRangeValidation.validateToDateInRange({
+            const validering = dateRangeValidation.validateToDateInRange({
                 intl,
                 date,
                 minDate,
@@ -141,10 +138,11 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 fromDate,
                 disableWeekend: false,
-                utsettelserTidsperioder,
+                periodeId,
+                utsettelserIPlan,
             });
 
-            expect(dato).toBe(
+            expect(validering).toBe(
                 'Du har en utsettelse fra 10.08.2022 til 15.08.2022 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.'
             );
         });
@@ -163,7 +161,6 @@ describe('dateUtils', () => {
                 maxDate,
                 disableWeekend: false,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBeUndefined;
@@ -181,7 +178,6 @@ describe('dateUtils', () => {
                 maxDate,
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBe(
@@ -202,7 +198,6 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 toDate,
                 disableWeekend: false,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Fra og med dato må være en gyldig dato på formatet dd.mm.åååå');
@@ -222,7 +217,6 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 disableWeekend: false,
                 toDate,
-                utsettelserTidsperioder,
             });
 
             expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
@@ -232,12 +226,16 @@ describe('dateUtils', () => {
             const minDate = new Date('2020-05-05');
             const maxDate = new Date('2023-05-11');
             const toDate = new Date('2021-05-11');
-            const utsettelserTidsperioder = [
-                { fom: new Date('2021-04-10'), tom: new Date('2021-04-12') },
-                { fom: new Date('2021-05-01'), tom: new Date('2021-06-10') },
-            ];
+            const utsettelse1 = {
+                tidsperiode: { fom: new Date('2021-04-10'), tom: new Date('2021-04-12') },
+                id: '1',
+            } as Utsettelsesperiode;
+            const utsettelse2 = {
+                tidsperiode: { fom: new Date('2021-05-01'), tom: new Date('2021-06-10') },
+                id: '2',
+            } as Utsettelsesperiode;
 
-            const dato = dateRangeValidation.validateFromDateInRange({
+            const validering = dateRangeValidation.validateFromDateInRange({
                 intl,
                 date,
                 minDate,
@@ -245,12 +243,37 @@ describe('dateUtils', () => {
                 errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                 toDate,
                 disableWeekend: false,
-                utsettelserTidsperioder,
+                periodeId,
+                utsettelserIPlan: [utsettelse1, utsettelse2],
             });
 
-            expect(dato).toBe(
+            expect(validering).toBe(
                 'Du har en utsettelse fra 01.05.2021 til 10.06.2021 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.'
             );
+        });
+        it('skal ikke gi feilmelding om overlappende utsettelser når fra-dato settes på selve utsettelsen', () => {
+            const date = new Date('2021-05-10');
+            const minDate = new Date('2020-05-05');
+            const maxDate = new Date('2023-05-11');
+            const toDate = new Date('2021-05-11');
+
+            const utsettelseSomEndres = {
+                tidsperiode: { fom: new Date('2021-05-01'), tom: new Date('2021-06-10') },
+                id: '2',
+            } as Utsettelsesperiode;
+            const validering = dateRangeValidation.validateFromDateInRange({
+                intl,
+                date,
+                minDate,
+                maxDate,
+                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
+                toDate,
+                disableWeekend: false,
+                periodeId: utsettelseSomEndres.id,
+                utsettelserIPlan: [utsettelseSomEndres],
+            });
+
+            expect(validering).toBe(undefined);
         });
     });
 

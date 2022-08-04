@@ -10,7 +10,7 @@ import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getVelgbareStønadskontotyper } from 'uttaksplan/utils/stønadskontoerUtils';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
@@ -76,7 +76,7 @@ interface Props {
     termindato: Date | undefined;
     morHarRett: boolean;
     antallBarn: number;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -146,7 +146,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     termindato,
     morHarRett,
     antallBarn,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -264,7 +264,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
-                                utsettelserTidsperioder={utsettelserTidsperioder}
+                                utsettelserIPlan={utsettelserIPlan}
                                 termindato={termindato}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
@@ -284,7 +284,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     periode={periode}
                                     familiehendelsesdato={familiehendelsesdato}
                                     ugyldigeTidsperioder={undefined}
-                                    utsettelserTidsperioder={utsettelserTidsperioder}
+                                    utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
                                         if (

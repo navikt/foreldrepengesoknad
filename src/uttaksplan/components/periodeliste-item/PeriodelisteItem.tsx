@@ -1,4 +1,4 @@
-import { bemUtils, Block, TidsperiodeDate } from '@navikt/fp-common';
+import { bemUtils, Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -13,6 +13,7 @@ import {
     isInfoPeriode,
     Periode,
     Periodetype,
+    Utsettelsesperiode,
 } from 'uttaksplan/types/Periode';
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import VeilederMeldinger from 'uttaksplan/validering/veilederInfo/VeilederMeldinger';
@@ -51,7 +52,7 @@ interface Props {
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
-    utsettelserTidsperioder: TidsperiodeDate[];
+    utsettelserIPlan: Utsettelsesperiode[];
 }
 
 const renderPeriodeListeInnhold = (
@@ -75,7 +76,7 @@ const renderPeriodeListeInnhold = (
     erEndringssøknad: boolean,
     termindato: Date | undefined,
     antallBarn: number,
-    utsettelserTidsperioder: TidsperiodeDate[]
+    utsettelserIPlan: Utsettelsesperiode[]
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -90,7 +91,7 @@ const renderPeriodeListeInnhold = (
                         erFarEllerMedmor={erFarEllerMedmor}
                         morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                         situasjon={situasjon}
-                        utsettelserTidsperioder={utsettelserTidsperioder}
+                        utsettelserIPlan={utsettelserIPlan}
                     />
                 );
             }
@@ -117,7 +118,7 @@ const renderPeriodeListeInnhold = (
                     termindato={termindato}
                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                     antallBarn={antallBarn}
-                    utsettelserTidsperioder={utsettelserTidsperioder}
+                    utsettelserIPlan={utsettelserIPlan}
                 />
             );
         case Periodetype.Utsettelse:
@@ -135,7 +136,7 @@ const renderPeriodeListeInnhold = (
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     arbeidsforhold={arbeidsforhold}
                     situasjon={situasjon}
-                    utsettelserTidsperioder={utsettelserTidsperioder}
+                    utsettelserIPlan={utsettelserIPlan}
                 />
             );
         case Periodetype.Hull:
@@ -193,7 +194,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     termindato,
     antallBarn,
-    utsettelserTidsperioder,
+    utsettelserIPlan,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -247,7 +248,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erEndringssøknad,
                     termindato,
                     antallBarn,
-                    utsettelserTidsperioder
+                    utsettelserIPlan
                 )}
             </EkspanderbartpanelBase>
         </article>
