@@ -76,6 +76,7 @@ interface Props {
     termindato: Date | undefined;
     morHarRett: boolean;
     antallBarn: number;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -145,6 +146,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     termindato,
     morHarRett,
     antallBarn,
+    utsettelserTidsperioder,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -262,6 +264,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
+                                utsettelserTidsperioder={utsettelserTidsperioder}
                                 termindato={termindato}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 morHarRett={morHarRett}
@@ -280,7 +283,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <UttakEndreTidsperiodeSpørsmål
                                     periode={periode}
                                     familiehendelsesdato={familiehendelsesdato}
-                                    ugyldigeTidsperioder={[]}
+                                    ugyldigeTidsperioder={undefined}
+                                    utsettelserTidsperioder={utsettelserTidsperioder}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
                                         if (

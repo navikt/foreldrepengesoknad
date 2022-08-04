@@ -14,7 +14,8 @@ interface Props {
     periode: Periode;
     tidsperiode: TidsperiodeDate;
     familiehendelsesdato: Date;
-    ugyldigeTidsperioder: Tidsperiode[];
+    ugyldigeTidsperioder: Tidsperiode[] | undefined;
+    utsettelserTidsperioder: TidsperiodeDate[];
     visible: boolean;
     erFarEllerMedmor: boolean;
     morHarRett: boolean;
@@ -34,6 +35,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     tidsperiode,
     familiehendelsesdato,
     ugyldigeTidsperioder,
+    utsettelserTidsperioder,
     erFarEllerMedmor,
     morHarRett,
     situasjon,
@@ -78,6 +80,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                     periode={periode}
                     tidsperiode={tidsperiode}
                     ugyldigeTidsperioder={ugyldigeTidsperioder}
+                    utsettelserTidsperioder={utsettelserTidsperioder}
                     initialMonth={initialMonth}
                     erFarEllerMedmor={erFarEllerMedmor}
                     morHarRett={morHarRett}
