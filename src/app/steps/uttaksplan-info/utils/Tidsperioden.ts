@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Holiday } from 'date-holidays';
+import { HolidaysTypes } from 'date-holidays';
 import { getOffentligeFridager } from 'app/utils/fridagerUtils';
 import { formaterDatoUtenDag, dateIsSameOrBefore, dateIsSameOrAfter } from 'app/utils/dateUtils';
 import { Uttaksdagen } from './Uttaksdagen';
@@ -109,7 +109,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number 
     return antall;
 }
 
-function getUttaksdagerSomErFridager(tidsperiode: TidsperiodeDate): Holiday[] {
+function getUttaksdagerSomErFridager(tidsperiode: TidsperiodeDate): HolidaysTypes.Holiday[] {
     return isValidTidsperiode(tidsperiode)
         ? getOffentligeFridager(tidsperiode).filter((dag) => Uttaksdagen(new Date(dag.date)).erUttaksdag())
         : [];

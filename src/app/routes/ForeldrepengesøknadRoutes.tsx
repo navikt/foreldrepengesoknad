@@ -10,7 +10,7 @@ import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Route, useNavigate, Navigate, Routes } from 'react-router-dom';
 import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
 import SøknadRoutes from './routes';
@@ -61,12 +61,14 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale,
     const navigate = useNavigate();
     const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
     const erMyndig = state.søkerinfo.person.erMyndig;
+    const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
 
     useEffect(() => {
-        if (currentRoute && erMyndig && harGodkjentVilkår) {
+        if (currentRoute && erMyndig && harGodkjentVilkår && isFirstTimeLoadingApp) {
+            setIsFirstTimeLoadingApp(false);
             navigate(currentRoute);
         }
-    }, []);
+    }, [currentRoute, erMyndig, harGodkjentVilkår, navigate, isFirstTimeLoadingApp]);
 
     return (
         <Routes>

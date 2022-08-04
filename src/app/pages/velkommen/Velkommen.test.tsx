@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/pages/Velkommen.stories';
 import userEvent from '@testing-library/user-event';
@@ -59,9 +59,7 @@ describe('<Velkommen>', () => {
         expect(screen.getByText('Nei, jeg vil søke for ett nytt barn')).toBeInTheDocument();
         expect(screen.getByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')).toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(screen.getByText('Ja, jeg vil søke om endring'));
-        });
+        await userEvent.click(screen.getByText('Ja, jeg vil søke om endring'));
 
         expect(
             screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
@@ -72,9 +70,7 @@ describe('<Velkommen>', () => {
             )
         ).not.toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(screen.getByText('Nei, jeg vil søke for ett nytt barn'));
-        });
+        await userEvent.click(screen.getByText('Nei, jeg vil søke for ett nytt barn'));
 
         expect(
             screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
@@ -103,9 +99,7 @@ describe('<Velkommen>', () => {
                 screen.getByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
             ).toBeInTheDocument();
 
-            await waitFor(() => {
-                userEvent.click(screen.getByText('Ja, jeg vil søke om endring'));
-            });
+            await userEvent.click(screen.getByText('Ja, jeg vil søke om endring'));
 
             expect(
                 screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
@@ -116,9 +110,7 @@ describe('<Velkommen>', () => {
                 )
             ).not.toBeInTheDocument();
 
-            await waitFor(() => {
-                userEvent.click(screen.getByText('Nei, jeg vil søke for ett nytt barn'));
-            });
+            await userEvent.click(screen.getByText('Nei, jeg vil søke for ett nytt barn'));
 
             expect(
                 screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
@@ -156,8 +148,8 @@ describe('<Velkommen>', () => {
             expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
             expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
             expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
-            expect(screen.queryByText('Under behandling')).toBeInTheDocument();
-            expect(screen.queryByText('Foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText('Under behandling')).toBeInTheDocument();
+            expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
         }
     );
 });

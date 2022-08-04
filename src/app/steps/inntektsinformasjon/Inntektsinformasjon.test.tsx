@@ -30,13 +30,13 @@ describe('<Inntektsinformasjon>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         expect(screen.getByText(FRILANS_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText(NEI));
 
         expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[1]);
+        await userEvent.click(screen.getAllByText(NEI)[1]);
 
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[2]);
+        await userEvent.click(screen.getAllByText(NEI)[2]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -48,198 +48,198 @@ describe('<Inntektsinformasjon>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         expect(screen.getByText(FRILANS_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText(JA));
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
         const startetInput = screen.getByRole('textbox');
-        userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(startetInput);
+        await userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(startetInput);
 
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(JA)[1]);
 
         expect(
             await screen.findByText('Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?')
         ).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[2]);
+        await userEvent.click(screen.getAllByText(NEI)[2]);
 
         expect(await screen.findByText('Har du inntekt som fosterforelder?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[3]);
+        await userEvent.click(screen.getAllByText(NEI)[3]);
 
         expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[4]);
+        await userEvent.click(screen.getAllByText(NEI)[4]);
 
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[5]);
+        await userEvent.click(screen.getAllByText(NEI)[5]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser for nær venn', async () => {
-        const utils = render(<Default />);
+        render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         expect(screen.getByText(FRILANS_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText(JA));
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
         const startetInput = screen.getByRole('textbox');
-        userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(startetInput);
+        await userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(startetInput);
 
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(JA)[1]);
 
         expect(
             await screen.findByText('Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?')
         ).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[2]);
+        await userEvent.click(screen.getAllByText(JA)[2]);
 
         expect(await screen.findByText('Legg til oppdrag')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Legg til oppdrag'));
+        await userEvent.click(screen.getByText('Legg til oppdrag'));
 
-        const virksomhetInput = utils.getByLabelText('Navn på oppdragsgiver');
-        userEvent.type(virksomhetInput, 'Espens landhandel');
+        const virksomhetInput = screen.getByLabelText('Navn på oppdragsgiver');
+        await userEvent.type(virksomhetInput, 'Espens landhandel');
 
-        const fraOgMedInput = utils.getByLabelText('Fra og med');
-        userEvent.type(fraOgMedInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(fraOgMedInput);
+        const fraOgMedInput = screen.getByLabelText('Fra og med');
+        await userEvent.type(fraOgMedInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(fraOgMedInput);
 
         expect(await screen.findByText('Er oppdraget pågående?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[5]);
+        await userEvent.click(screen.getAllByText(NEI)[5]);
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
-        const tilOgMedInput = utils.getByLabelText('Til og med');
-        userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(tilOgMedInput);
+        const tilOgMedInput = screen.getByLabelText('Til og med');
+        await userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(tilOgMedInput);
 
         expect(await screen.findByText('Ok')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Ok'));
+        await userEvent.click(screen.getByText('Ok'));
 
         expect(await screen.findByText('Har du inntekt som fosterforelder?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[3]);
+        await userEvent.click(screen.getAllByText(NEI)[3]);
 
         expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[4]);
+        await userEvent.click(screen.getAllByText(NEI)[4]);
 
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[5]);
+        await userEvent.click(screen.getAllByText(NEI)[5]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal ikke ha arbeidsforhold men velger at en har jobbet som selvstendig næringsdrivende', async () => {
-        const utils = render(<Default />);
+        render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         expect(screen.getByText(FRILANS_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText(NEI));
 
         expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(JA)[1]);
 
         expect(await screen.findByText('Legg til virksomhet')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Legg til virksomhet'));
+        await userEvent.click(screen.getByText('Legg til virksomhet'));
 
         expect(await screen.findByText('Fiske')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Fiske'));
+        await userEvent.click(screen.getByText('Fiske'));
 
         expect(await screen.findByText('Hva heter virksomheten din?')).toBeInTheDocument();
-        const virksomhetInput = utils.getByLabelText('Hva heter virksomheten din?');
-        userEvent.type(virksomhetInput, 'Espens landhandel');
+        const virksomhetInput = screen.getByLabelText('Hva heter virksomheten din?');
+        await userEvent.type(virksomhetInput, 'Espens landhandel');
 
         expect(await screen.findByText('Er Espens landhandel registrert i Norge?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[3]);
+        await userEvent.click(screen.getAllByText(JA)[3]);
 
         expect(await screen.findByText('Hva er organisasjonsnummeret?')).toBeInTheDocument();
-        const orgnrInput = utils.getByLabelText('Hva er organisasjonsnummeret?');
-        userEvent.type(orgnrInput, '997519485');
+        const orgnrInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
+        await userEvent.type(orgnrInput, '997519485');
 
         expect(await screen.findByText('Når startet du Espens landhandel?')).toBeInTheDocument();
-        const startetInput = utils.getByLabelText('Når startet du Espens landhandel?');
-        userEvent.type(startetInput, '01.01.2021');
-        fireEvent.blur(startetInput);
+        const startetInput = screen.getByLabelText('Når startet du Espens landhandel?');
+        await userEvent.type(startetInput, '01.01.2021');
+        await fireEvent.blur(startetInput);
 
         expect(await screen.findByText('Er Espens landhandel pågående?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[4]);
+        await userEvent.click(screen.getAllByText(JA)[4]);
 
         expect(await screen.findByText(NÆRINGSRESULTAT_FØR_SKATT)).toBeInTheDocument();
-        const næringsresultatText = utils.getByLabelText(NÆRINGSRESULTAT_FØR_SKATT);
-        userEvent.type(næringsresultatText, '100000');
+        const næringsresultatText = screen.getByLabelText(NÆRINGSRESULTAT_FØR_SKATT);
+        await userEvent.type(næringsresultatText, '100000');
 
         expect(
             await screen.findByText('Har du begynt å jobbe i løpet av de 3 siste ferdigliknede årene?')
         ).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[5]);
+        await userEvent.click(screen.getAllByText(JA)[5]);
 
         expect(await screen.findByText('Oppgi dato for når du ble yrkesaktiv')).toBeInTheDocument();
-        const yrkesaktivDatoInput = utils.getByLabelText('Oppgi dato for når du ble yrkesaktiv');
-        userEvent.type(yrkesaktivDatoInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(yrkesaktivDatoInput);
+        const yrkesaktivDatoInput = screen.getByLabelText('Oppgi dato for når du ble yrkesaktiv');
+        await userEvent.type(yrkesaktivDatoInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(yrkesaktivDatoInput);
 
         expect(await screen.findByText('Har du regnskapsfører?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[6]);
+        await userEvent.click(screen.getAllByText(JA)[6]);
 
         expect(await screen.findByText('Regnskapsførers navn')).toBeInTheDocument();
-        const regnskapsførerNavnInput = utils.getByLabelText('Regnskapsførers navn');
-        userEvent.type(regnskapsførerNavnInput, 'Joakim Tester');
+        const regnskapsførerNavnInput = screen.getByLabelText('Regnskapsførers navn');
+        await userEvent.type(regnskapsførerNavnInput, 'Joakim Tester');
 
         expect(await screen.findByText('Regnskapsførers telefonnummer')).toBeInTheDocument();
-        const regnskapsførerTlfInput = utils.getByLabelText('Regnskapsførers telefonnummer');
-        userEvent.type(regnskapsførerTlfInput, '555934344');
+        const regnskapsførerTlfInput = screen.getByLabelText('Regnskapsførers telefonnummer');
+        await userEvent.type(regnskapsførerTlfInput, '555934344');
 
         expect(await screen.findByText('Er egnskapsfører er nær venn eller familie?')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[7]);
+        await userEvent.click(screen.getAllByText(JA)[7]);
 
         // Lukker dialog
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[2]);
+        await userEvent.click(screen.getAllByText(NEI)[2]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal ikke ha arbeidsforhold men velger at en har hatt andre inntektskilder (Sluttvederlag) de siste 10 månedene', async () => {
-        const utils = render(<Default />);
+        render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         expect(screen.getByText(FRILANS_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText(NEI));
 
         expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[1]);
+        await userEvent.click(screen.getAllByText(NEI)[1]);
 
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(JA)[2]);
+        await userEvent.click(screen.getAllByText(JA)[2]);
 
         expect(await screen.findByText('Legg til oppdrag')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Legg til oppdrag'));
+        await userEvent.click(screen.getByText('Legg til oppdrag'));
 
         expect(await screen.findByText('Sluttvederlag')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Sluttvederlag'));
+        await userEvent.click(screen.getByText('Sluttvederlag'));
 
         expect(await screen.findByText('Fra og med')).toBeInTheDocument();
-        const fraOgMedInput = utils.getByLabelText('Fra og med');
-        userEvent.type(fraOgMedInput, dayjs().subtract(4, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(fraOgMedInput);
+        const fraOgMedInput = screen.getByLabelText('Fra og med');
+        await userEvent.type(fraOgMedInput, dayjs().subtract(4, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(fraOgMedInput);
 
         expect(await screen.findByText('Pågående')).toBeInTheDocument();
-        userEvent.click(screen.getAllByText(NEI)[3]);
+        await userEvent.click(screen.getAllByText(NEI)[3]);
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
-        const tilOgMedInput = utils.getByLabelText('Til og med');
-        userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
-        fireEvent.blur(tilOgMedInput);
+        const tilOgMedInput = screen.getByLabelText('Til og med');
+        await userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
+        await fireEvent.blur(tilOgMedInput);
 
         expect(
             await screen.findByText(

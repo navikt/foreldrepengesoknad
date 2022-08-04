@@ -8,6 +8,7 @@ import { bemUtils } from '@navikt/fp-common';
 export interface Props {
     color: UttaksplanColor;
     stripes?: boolean;
+    children?: React.ReactNode;
 }
 
 const IconBox: React.FunctionComponent<Props> = ({ children, color, stripes }) => {
