@@ -24,7 +24,7 @@ export const validateDatoForAleneomsorg =
     };
 
 export const validateFornavn = (intl: IntlShape, label: string, kanIkkeOppgis?: boolean) => (fornavn: string) => {
-    if (!kanIkkeOppgis && !hasValue(fornavn)) {
+    if (!kanIkkeOppgis && (!hasValue(fornavn) || fornavn.trim() === '')) {
         return intlUtils(intl, 'valideringsfeil.annenForelder.fornavnPåkrevd');
     }
 
@@ -32,7 +32,7 @@ export const validateFornavn = (intl: IntlShape, label: string, kanIkkeOppgis?: 
 };
 
 export const validateEtternavn = (intl: IntlShape, label: string, kanIkkeOppgis?: boolean) => (etternavn: string) => {
-    if (!kanIkkeOppgis && !hasValue(etternavn)) {
+    if (!kanIkkeOppgis && (!hasValue(etternavn) || etternavn.trim() === '')) {
         return intlUtils(intl, 'valideringsfeil.annenForelder.etternavnPåkrevd');
     }
     return validateTextInputField(etternavn, label, intl);

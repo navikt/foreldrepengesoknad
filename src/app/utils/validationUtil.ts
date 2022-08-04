@@ -14,7 +14,7 @@ export const validateFødselsnummer =
     (intl: IntlShape, søkersFødselsnummer: string, erUtenlandskFnr?: boolean) =>
     (fnr: string): string | undefined => {
         if (erUtenlandskFnr) {
-            if (fnr === undefined || fnr === '') {
+            if (fnr === undefined || fnr.trim() === '') {
                 return intlUtils(intl, 'valideringsfeil.fødselsnummer.required');
             }
 
@@ -37,7 +37,7 @@ export const validateFødselsnummer =
     };
 
 export const validateRequiredField = (value: any, label: string, intl: IntlShape): SkjemaelementFeil => {
-    if (!hasValue(value)) {
+    if (!hasValue(value) || (typeof value === 'string' && value.trim() === '')) {
         return intlUtils(intl, 'valideringsfeil.inputfelt.required', { inputFeltLabel: label });
     }
     return undefined;
