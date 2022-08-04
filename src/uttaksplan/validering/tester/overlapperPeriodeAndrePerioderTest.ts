@@ -9,9 +9,9 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const { perioder, navnPåForeldre } = grunnlag;
-    const perioderUtenSamtidigUttakAnnenPart = perioder.filter((p) => isUttakAnnenPart(p) && !p.ønskerSamtidigUttak);
-    const perioderSomHarOverlapp = perioderUtenSamtidigUttakAnnenPart.filter(
-        (periode) => Periodene(perioderUtenSamtidigUttakAnnenPart).finnOverlappendePerioder(periode).length > 0
+    const perioderUtenUttakAnnenPart = perioder.filter((p) => !isUttakAnnenPart(p));
+    const perioderSomHarOverlapp = perioderUtenUttakAnnenPart.filter(
+        (periode) => Periodene(perioderUtenUttakAnnenPart).finnOverlappendePerioder(periode).length > 0
     );
 
     const passerer = perioderSomHarOverlapp.length === 0;
