@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useRef } from 'react';
 import { useFormikContext } from 'formik';
 import { PeriodeUttakFormData } from '../periode-uttak-form/periodeUttakFormConfig';
 import { PeriodeUtsettelseFormData } from '../periode-utsettelse-form/periodeUtsettelseFormConfig';
@@ -34,14 +34,14 @@ export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
     const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData>();
     const { isSubmitting, isValidating, values, submitForm, setValues } = formik;
     const cleanedValues = cleanup();
-    const [lastValues, updateLastValues] = useState(cleanedValues);
+    const ref = useRef(cleanedValues);
 
     useEffect(() => {
         if (!isSubmitting && !isValidating) {
-            const valuesEqualLastValues = JSON.stringify(jsonSort(lastValues)) === JSON.stringify(jsonSort(values));
+            const valuesEqualLastValues = JSON.stringify(jsonSort(ref.current)) === JSON.stringify(jsonSort(values));
 
             if (!valuesEqualLastValues) {
-                updateLastValues(values);
+                ref.current = values;
             }
 
             if (!valuesEqualLastValues) {
@@ -49,7 +49,7 @@ export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
                 setTimeout(() => submitForm(), 0);
             }
         }
-    }, [values, isSubmitting, isValidating, submitForm, lastValues, setValues, cleanedValues]);
+    }, [values, isSubmitting, isValidating, submitForm, setValues, cleanedValues]);
 
     return null;
 };

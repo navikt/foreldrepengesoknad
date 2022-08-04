@@ -107,7 +107,7 @@ const Oppsummering = () => {
                     }
                 });
         }
-    }, [dispatch, søkerinfo.person.fnr, isSubmitting]);
+    }, [dispatch, søkerinfo.person.fnr, isSubmitting, cleanedSøknad]);
 
     useEffect(() => {
         if (kvittering !== undefined) {

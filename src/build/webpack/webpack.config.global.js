@@ -3,8 +3,6 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
-const gitRevisionPlugin = new GitRevisionPlugin();
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 const webpackConfig = {
@@ -16,7 +14,6 @@ const webpackConfig = {
         filename: 'js/[name].js',
         publicPath: '/dist',
     },
-    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
         alias: {
@@ -33,6 +30,7 @@ const webpackConfig = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            { test: /\.css$/i, use: ['style-loader', 'css-loader'] },
             {
                 test: /\.less$/,
                 use: [
@@ -59,15 +57,10 @@ const webpackConfig = {
         new SpriteLoaderPlugin({
             plainSprite: true,
         }),
-
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb|nn|en/),
-        new webpack.DefinePlugin({
-            BUILD: {
-                VERSION: JSON.stringify(gitRevisionPlugin.version()),
-            },
-        }),
         new ESLintPlugin({
             extensions: ['js', 'jsx', 'ts', 'tsx'],
+            failOnWarning: false,
         }),
     ],
 };

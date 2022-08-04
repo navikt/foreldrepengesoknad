@@ -12,6 +12,7 @@ import '@formatjs/intl-numberformat/locale-data/nb';
     FEATURE_VIS_ALERTSTRIPE: 'on',
 };
 window.scrollTo = () => ({});
+global.IS_REACT_ACT_ENVIRONMENT = true;
 
 // jest.mock('react-intl', () => {
 //     const reactIntl = jest.requireActual('react-intl');

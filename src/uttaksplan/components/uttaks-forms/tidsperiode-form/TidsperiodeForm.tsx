@@ -1,12 +1,11 @@
 import React from 'react';
 import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-common';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isUtsettelsesperiode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import { andreAugust2022ReglerGjelder, dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
 import { Knapp } from 'nav-frontend-knapper';
-import { dateToISOString } from '@navikt/fp-common/node_modules/@navikt/sif-common-formik/lib';
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,

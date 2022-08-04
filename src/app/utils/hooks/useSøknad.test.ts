@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';

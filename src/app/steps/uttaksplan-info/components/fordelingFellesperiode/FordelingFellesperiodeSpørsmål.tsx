@@ -40,7 +40,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
 
     useEffect(() => {
         setFieldValue('fellesperiodeukerMor', fellesperiodeukerMor);
-    }, []);
+    }, [setFieldValue, fellesperiodeukerMor]);
 
     if (!valgtStønadskonto) {
         return null;
