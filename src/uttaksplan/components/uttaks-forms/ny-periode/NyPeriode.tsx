@@ -1,4 +1,4 @@
-import { Block } from '@navikt/fp-common';
+import { Block, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -32,6 +32,7 @@ interface Props {
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -55,6 +56,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     erEndringssøknad,
     termindato,
     antallBarn,
+    utsettelserTidsperioder,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -90,6 +92,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 termindato={termindato}
                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                 antallBarn={antallBarn}
+                utsettelserTidsperioder={utsettelserTidsperioder}
             />
         </>
     ) : (
@@ -107,6 +110,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
             arbeidsforhold={arbeidsforhold}
             situasjon={situasjon}
+            utsettelserTidsperioder={utsettelserTidsperioder}
         />
     );
 };

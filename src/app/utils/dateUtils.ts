@@ -6,7 +6,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import advanced from 'dayjs/plugin/advancedFormat';
 import { IntlShape } from 'react-intl';
-import { formatDateExtended, hasValue, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { formatDate, formatDateExtended, hasValue, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
@@ -71,6 +71,27 @@ const validateDateInRange = (
     return undefined;
 };
 
+const getMeldingOmOverlappendeUtsettelser = (
+    utsettelseTidsperioder: TidsperiodeDate[] | undefined,
+    dato: Date | undefined,
+    intl: IntlShape
+): string | undefined => {
+    if (dato === undefined || utsettelseTidsperioder === undefined) {
+        return undefined;
+    }
+    const overlappendeUtsettelsesPerioder = utsettelseTidsperioder.filter(
+        (up) => dayjs(dato).isSameOrAfter(up.fom, 'day') && dayjs(dato).isSameOrBefore(up.tom, 'day')
+    );
+    if (overlappendeUtsettelsesPerioder.length > 0) {
+        return intlUtils(intl, 'valideringsfeil.overlapperEnUtsettelse', {
+            fom: formatDate(overlappendeUtsettelsesPerioder[0].fom),
+            tom: formatDate(overlappendeUtsettelsesPerioder[0].tom),
+        });
+    }
+
+    return undefined;
+};
+
 const validateFromDateInRange = ({
     intl,
     date,
@@ -78,6 +99,7 @@ const validateFromDateInRange = ({
     maxDate,
     errorKey,
     disableWeekend,
+    utsettelserTidsperioder,
     toDate,
 }: {
     intl: IntlShape;
@@ -86,6 +108,7 @@ const validateFromDateInRange = ({
     maxDate: Date;
     errorKey: string;
     disableWeekend: boolean;
+    utsettelserTidsperioder?: TidsperiodeDate[];
     toDate?: Date;
 }): SkjemaelementFeil => {
     const error = validateDateInRange(intl, date, minDate, maxDate, true);
@@ -101,8 +124,7 @@ const validateFromDateInRange = ({
     if (toDate && dayjs(date).isAfter(toDate, 'day')) {
         return intlUtils(intl, errorKey);
     }
-
-    return undefined;
+    return getMeldingOmOverlappendeUtsettelser(utsettelserTidsperioder, date, intl);
 };
 
 const validateToDateInRange = ({
@@ -112,6 +134,7 @@ const validateToDateInRange = ({
     maxDate,
     errorKey,
     disableWeekend,
+    utsettelserTidsperioder,
     fromDate,
 }: {
     intl: IntlShape;
@@ -120,6 +143,7 @@ const validateToDateInRange = ({
     maxDate: Date;
     errorKey: string;
     disableWeekend: boolean;
+    utsettelserTidsperioder?: TidsperiodeDate[];
     fromDate?: Date;
 }): SkjemaelementFeil => {
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
@@ -136,7 +160,7 @@ const validateToDateInRange = ({
         return intlUtils(intl, errorKey);
     }
 
-    return undefined;
+    return getMeldingOmOverlappendeUtsettelser(utsettelserTidsperioder, date, intl);
 };
 
 export const dateRangeValidation = {

@@ -1,4 +1,4 @@
-import { bemUtils, InfoBlock, intlUtils, Block, ActionLink } from '@navikt/fp-common';
+import { bemUtils, InfoBlock, intlUtils, Block, ActionLink, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
@@ -40,6 +40,7 @@ interface Props {
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
     termindato: Date | undefined;
     barn: Barn;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -64,6 +65,7 @@ const Planlegger: FunctionComponent<Props> = ({
     setSlettUttaksplanModalOpen,
     termindato,
     barn,
+    utsettelserTidsperioder,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -115,6 +117,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
+                                utsettelserTidsperioder={utsettelserTidsperioder}
                             />
                         </section>
                     </Block>
@@ -141,6 +144,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
+                                utsettelserTidsperioder={utsettelserTidsperioder}
                             />
                         </div>
                     )}

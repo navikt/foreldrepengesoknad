@@ -1,4 +1,4 @@
-import { bemUtils, Block } from '@navikt/fp-common';
+import { bemUtils, Block, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -51,6 +51,7 @@ interface Props {
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
+    utsettelserTidsperioder: TidsperiodeDate[];
 }
 
 const renderPeriodeListeInnhold = (
@@ -73,7 +74,8 @@ const renderPeriodeListeInnhold = (
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>,
     erEndringssøknad: boolean,
     termindato: Date | undefined,
-    antallBarn: number
+    antallBarn: number,
+    utsettelserTidsperioder: TidsperiodeDate[]
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -88,6 +90,7 @@ const renderPeriodeListeInnhold = (
                         erFarEllerMedmor={erFarEllerMedmor}
                         morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                         situasjon={situasjon}
+                        utsettelserTidsperioder={utsettelserTidsperioder}
                     />
                 );
             }
@@ -114,6 +117,7 @@ const renderPeriodeListeInnhold = (
                     termindato={termindato}
                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                     antallBarn={antallBarn}
+                    utsettelserTidsperioder={utsettelserTidsperioder}
                 />
             );
         case Periodetype.Utsettelse:
@@ -131,6 +135,7 @@ const renderPeriodeListeInnhold = (
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                     arbeidsforhold={arbeidsforhold}
                     situasjon={situasjon}
+                    utsettelserTidsperioder={utsettelserTidsperioder}
                 />
             );
         case Periodetype.Hull:
@@ -188,6 +193,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     termindato,
     antallBarn,
+    utsettelserTidsperioder,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -240,7 +246,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     setPeriodeErGyldig,
                     erEndringssøknad,
                     termindato,
-                    antallBarn
+                    antallBarn,
+                    utsettelserTidsperioder
                 )}
             </EkspanderbartpanelBase>
         </article>
