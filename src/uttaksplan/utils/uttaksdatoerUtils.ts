@@ -71,8 +71,12 @@ export function getFørsteMuligeUttaksdag(
     erFarEllerMedmor: boolean,
     termindato: Date | undefined
 ): Date {
-    if (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)) {
-        return getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
+    if (erFarEllerMedmor) {
+        if (andreAugust2022ReglerGjelder(familiehendelsesdato)) {
+            return getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
+        } else {
+            return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+        }
     }
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
