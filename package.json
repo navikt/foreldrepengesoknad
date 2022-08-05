@@ -52,7 +52,7 @@
         "@storybook/theming": "^6.5.10",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.3.0",
-        "@testing-library/user-event": "^14.4.1",
+        "@testing-library/user-event": "^14.4.2",
         "@types/amplitude-js": "^8.16.2",
         "@types/bytes": "^3.1.1",
         "@types/history": "^5.0.0",
