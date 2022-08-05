@@ -8,6 +8,7 @@ interface Props {
     tittel: string;
     illustrasjoner?: React.ReactNode;
     infoboks?: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illustrasjoner, infoboks, children }) => {

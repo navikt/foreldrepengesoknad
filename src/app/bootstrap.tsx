@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Modal from 'nav-frontend-modal';
 import * as Sentry from '@sentry/browser';
 
@@ -20,11 +20,6 @@ if (!Intl.PluralRules) {
     require('@formatjs/intl-pluralrules/locale-data/nb');
 }
 
-Modal.setAppElement('#appContainer');
-const root = document.getElementById('app');
-
-initAmplitude();
-
 Sentry.init({
     dsn: 'https://8e90481464a4442db8c86bc31b9e41ad@sentry.gc.nav.no/11',
     release: (window as any).APP_VERSION,
@@ -32,4 +27,10 @@ Sentry.init({
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
 
-render(<AppContainer />, root);
+initAmplitude();
+
+Modal.setAppElement('#appContainer');
+const container = document.getElementById('app');
+const root = createRoot(container!);
+
+root.render(<AppContainer />);

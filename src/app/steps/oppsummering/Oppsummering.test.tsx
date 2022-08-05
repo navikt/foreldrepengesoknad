@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/oppsummering/Oppsummering.stories';
@@ -31,17 +31,17 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.queryByText(DU_MÅ_BEKREFTE_VILKÅRENE_FEILMELDING)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(SEND_INN_SØKNAD_KNAPP));
+        await userEvent.click(screen.getByText(SEND_INN_SØKNAD_KNAPP));
 
         expect(await screen.findByText(DU_MÅ_BEKREFTE_VILKÅRENE_FEILMELDING)).toBeInTheDocument();
 
-        userEvent.click(
+        await userEvent.click(
             screen.getByText(
                 'Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.'
             )
         );
 
-        expect(await screen.findByText(DU_MÅ_BEKREFTE_VILKÅRENE_FEILMELDING)).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByText(DU_MÅ_BEKREFTE_VILKÅRENE_FEILMELDING)).not.toBeInTheDocument());
     });
 
     it('skal vise informasjon om barnet men har ikke info om andre foreldre eller arbeidsforhold', async () => {
@@ -51,18 +51,18 @@ describe('<Oppsummering>', () => {
 
         expect(screen.queryByText('Søknaden gjelder')).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(OM_BARNET_PANEL));
+        await userEvent.click(screen.getByText(OM_BARNET_PANEL));
 
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('15.03.2021')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
 
         expect(screen.getByText('Jeg kan ikke oppgi den andre forelderen')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(ARBEIDSFORHOLD_OG_INNTEKTER_PANEL));
+        await userEvent.click(screen.getByText(ARBEIDSFORHOLD_OG_INNTEKTER_PANEL));
 
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
     });
@@ -72,7 +72,7 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
 
         expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
         expect(screen.getByText('Espen Utvikler')).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om at mor er ufør', async () => {
         render(<FarMedUførMor />);
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
-        userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
         expect(screen.getByText('Har Eline uføretrygd?')).toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
     });
@@ -97,7 +97,7 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(OM_BARNET_PANEL));
+        await userEvent.click(screen.getByText(OM_BARNET_PANEL));
 
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
@@ -114,7 +114,7 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(UTENLANDSOPPHOLD_PANEL));
+        await userEvent.click(screen.getByText(UTENLANDSOPPHOLD_PANEL));
 
         expect(screen.getByText('De siste 12 månedene har jeg')).toBeInTheDocument();
         expect(screen.getByText('Bodd i Sverige')).toBeInTheDocument();
@@ -131,7 +131,7 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(ARBEIDSFORHOLD_OG_INNTEKTER_PANEL));
+        await userEvent.click(screen.getByText(ARBEIDSFORHOLD_OG_INNTEKTER_PANEL));
 
         expect(screen.getByText('ORG.NR: 1')).toBeInTheDocument();
         expect(screen.getByText('80 prosent')).toBeInTheDocument();
@@ -154,7 +154,7 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om uttaksplan', async () => {
         render(<FarMedUførMor />);
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
-        userEvent.click(screen.getByText(UTTAKSPLAN_PANEL));
+        await userEvent.click(screen.getByText(UTTAKSPLAN_PANEL));
         expect(screen.getByText('Lengde med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();

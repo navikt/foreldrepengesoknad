@@ -8,6 +8,7 @@ interface Props {
     aktiv?: boolean;
     farge?: UttaksplanHexColor;
     diameter: string;
+    children?: React.ReactNode;
 }
 
 const Sirkelmaske: React.FunctionComponent<Props> = ({ farge, diameter, aktiv = true, children }) => {

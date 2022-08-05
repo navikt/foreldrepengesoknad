@@ -45,6 +45,8 @@ const Oppsummering = () => {
     const bem = bemUtils('oppsummering');
 
     const [submitError, setSubmitError] = useState(undefined);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [isSendingSøknad, setIsSendingSøknad] = useState(false);
     const {
         barn,
         annenForelder,
@@ -61,7 +63,6 @@ const Oppsummering = () => {
     const { person, arbeidsforhold } = søkerinfo;
     const { erAleneOmOmsorg } = søker;
     const søknad = useSøknad();
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const onAvbrytSøknad = useAvbrytSøknad();
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, søkerErFarEllerMedmor);
@@ -94,7 +95,8 @@ const Oppsummering = () => {
     );
 
     useEffect(() => {
-        if (isSubmitting) {
+        if (formSubmitted && !isSendingSøknad) {
+            setIsSendingSøknad(true);
             Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr)
                 .then((response) => {
                     dispatch(actionCreator.setKvittering(response.data));
@@ -107,11 +109,11 @@ const Oppsummering = () => {
                     }
                 });
         }
-    }, [dispatch, søkerinfo.person.fnr, isSubmitting]);
+    }, [dispatch, søkerinfo.person.fnr, formSubmitted, cleanedSøknad, isSendingSøknad]);
 
     useEffect(() => {
         if (kvittering !== undefined) {
-            setIsSubmitting(false);
+            setFormSubmitted(false);
             navigate(SøknadRoutes.SØKNAD_SENDT);
         }
     }, [kvittering, navigate]);
@@ -124,10 +126,10 @@ const Oppsummering = () => {
 
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
-        setIsSubmitting(true);
+        setFormSubmitted(true);
     };
 
-    const submitKnappTekst = isSubmitting
+    const submitKnappTekst = formSubmitted
         ? intlUtils(intl, 'oppsummering.senderInnSøknad')
         : intlUtils(intl, 'oppsummering.sendInnSøknad');
 
@@ -223,7 +225,7 @@ const Oppsummering = () => {
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    <Hovedknapp disabled={formSubmitted} spinner={formSubmitted}>
                                         {submitKnappTekst}
                                     </Hovedknapp>
                                 </div>
