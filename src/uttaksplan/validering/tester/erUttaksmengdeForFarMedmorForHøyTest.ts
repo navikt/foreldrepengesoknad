@@ -1,9 +1,9 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { beregnGjenståendeUttaksdager } from 'uttaksplan/utils/uttaksPlanStatus';
 import { Periode } from 'uttaksplan/types/Periode';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],

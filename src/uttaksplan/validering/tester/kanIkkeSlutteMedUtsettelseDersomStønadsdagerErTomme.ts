@@ -1,4 +1,4 @@
-import { RegelTestresultat } from 'shared/regler/regelTypes';
+import { RegelTestresultat } from '../utils/types/regelTypes';
 import { beregnGjenståendeUttaksdager } from 'uttaksplan/utils/uttaksPlanStatus';
 import { isUtsettelsesperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';

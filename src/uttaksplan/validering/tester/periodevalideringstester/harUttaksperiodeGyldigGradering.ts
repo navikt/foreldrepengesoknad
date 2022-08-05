@@ -1,5 +1,5 @@
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 import { gradertUttaksperiodeErUgyldig } from '../../utils/periodeValideringUtils';
 
 export const harUttaksperiodeGyldigGradering: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

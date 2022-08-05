@@ -1,7 +1,7 @@
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { isUtsettelsePgaArbeid } from 'uttaksplan/types/Periode';
 import { getSamletStillingsprosentForArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 
 export const harUtsettelsePgaArbeidMedDeltidUtenAvtale: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const utsettelserMedDeltidUtenAvtale = grunnlag.perioder

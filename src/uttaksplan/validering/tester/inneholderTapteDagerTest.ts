@@ -1,7 +1,7 @@
-import { RegelTestresultat } from 'shared/regler/regelTypes';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { isUttaksperiode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor } from '../utils/uttakValideringUtils';
 
