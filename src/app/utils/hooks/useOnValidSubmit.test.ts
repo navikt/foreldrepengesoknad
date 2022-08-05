@@ -1,9 +1,9 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useOnValidSubmit from './useOnValidSubmit';
 import { storeAppState } from '../submitUtils';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 const mockedNavigator = jest.fn();
 
@@ -60,17 +60,17 @@ describe('useOnValidSubmit', () => {
         const formVerdier = {};
         const submitHandler = (): any => [Promise.resolve()];
 
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useOnValidSubmit(submitHandler, SøknadRoutes.ANNEN_FORELDER, (state: ForeldrepengesøknadContextState) =>
                 storeAppState(state)
             )
         );
 
-        act(() => {
-            result.current.handleSubmit(formVerdier);
-        });
-
-        await waitForNextUpdate();
+        await waitFor(() =>
+            act(() => {
+                result.current.handleSubmit(formVerdier);
+            })
+        );
 
         expect(dispatchMock).toHaveBeenCalledTimes(2);
         setTimeout(() => expect(mockedNavigator).toHaveBeenCalledTimes(1), 0);
