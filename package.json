@@ -199,7 +199,7 @@
         "react-transition-group": "^4.4.5",
         "regenerator-runtime": "^0.13.9",
         "request": "^2.88.2",
-        "snyk": "^1.982.0"
+        "snyk": "^1.984.0"
     },
     "snyk": true
 }
