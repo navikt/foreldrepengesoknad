@@ -52,7 +52,7 @@ const webpackConfig = {
     plugins: [
         new CaseSensitivePathsPlugin(),
         new MiniCssExtractPlugin({
-            filename: 'css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]',
+            filename: 'css/[name].css?[fullhash]-[chunkhash]-[contenthash]-[name]',
         }),
         new SpriteLoaderPlugin({
             plainSprite: true,
