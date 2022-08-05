@@ -1,5 +1,5 @@
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { getUgyldigUttakMor } from '../utils/uttakValideringUtils';
 
 export const ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest: RegelTest = (

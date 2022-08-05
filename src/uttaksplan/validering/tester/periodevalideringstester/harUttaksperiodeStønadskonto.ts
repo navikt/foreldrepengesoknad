@@ -1,4 +1,4 @@
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 import { isUttaksperiode } from 'uttaksplan/types/Periode';
 import { Søknadsinfo } from 'uttaksplan/validering/utils/types/Søknadsinfo';
 

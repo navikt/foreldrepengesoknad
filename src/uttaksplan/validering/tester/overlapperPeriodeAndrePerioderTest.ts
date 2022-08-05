@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from 'shared/regler/regelTypes';
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 import { isUttakAnnenPart } from 'uttaksplan/types/Periode';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';

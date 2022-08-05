@@ -1,4 +1,4 @@
-import { RegelTestresultat } from 'shared/regler/regelTypes';
+import { RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const tilleggsopplysningerMaxLength = 1000;

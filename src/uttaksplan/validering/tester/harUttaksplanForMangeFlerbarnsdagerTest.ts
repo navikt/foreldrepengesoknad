@@ -1,5 +1,5 @@
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { uttaksplanHarForMangeFlerbarnsdager } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const harUttaksplanForMangeFlerbarnsdagerTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

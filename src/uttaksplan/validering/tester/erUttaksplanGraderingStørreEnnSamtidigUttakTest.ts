@@ -1,7 +1,7 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import { getFloatFromString } from 'app/utils/numberUtils';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const uttaksplanGraderingStørreEnnSamtidigUttak = (uttaksplan: Periode[]) => {
     const result = uttaksplan

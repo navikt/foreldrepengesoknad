@@ -1,5 +1,5 @@
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 import { starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel } from 'app/utils/wlbUtils';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { isUttaksperiode } from 'uttaksplan/types/Periode';

@@ -1,5 +1,5 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTestresultat } from 'shared/regler/regelTypes';
+import { RegelTestresultat } from '../utils/types/regelTypes';
 import { isUtsettelsesperiode } from 'uttaksplan/types/Periode';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';

@@ -1,5 +1,5 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { Periode } from 'uttaksplan/types/Periode';
 import {

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { RegelTestresultat, RegelTest } from 'shared/regler/regelTypes';
 import { isUtsettelsesperiode } from 'uttaksplan/types/Periode';
+import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
 
 export const erUtsettelseEtterFamiliehendelsesdato: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
