@@ -64,7 +64,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
 
-    const { annenForelder, søker, barn } = søknad;
+    const { annenForelder, søker, barn, søkersituasjon } = søknad;
     const { person } = søkerinfo;
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
@@ -75,13 +75,15 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const { dekningsgrad } = søknad;
+    const { rolle } = søkersituasjon;
     const dekningsgradGrunnlag = eksisterendeSak ? eksisterendeSak.grunnlag.dekningsgrad : undefined;
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
-        farMedmorErAleneOmOmsorg
+        farMedmorErAleneOmOmsorg,
+        rolle
     );
     const skalViseInfoOmMorsSak = hasValue(annenForelderNavn) && erFarEllerMedmor && erDeltUttak;
 

@@ -126,7 +126,8 @@ const UttaksplanStep = () => {
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
-        farMedmorErAleneOmOmsorg
+        farMedmorErAleneOmOmsorg,
+        rolle
     );
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
