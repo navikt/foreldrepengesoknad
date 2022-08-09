@@ -33,10 +33,10 @@ const configureDevServer = (decoratorFragments) => ({
     devMiddleware: {
         index: true,
         stats: 'minimal',
-        publicPath: path.resolve('/dist'),
+        publicPath: '/dist',
     },
     static: {
-        directory: path.resolve('/dist'),
+        directory: path.resolve(__dirname, '../../../dist/dev'),
         serveIndex: true,
         watch: true,
     },
