@@ -12,13 +12,15 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = true;
         const morErAleneOmOmsorg = false;
         const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'mor';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.farOgMor);
@@ -30,13 +32,35 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = true;
         const morErAleneOmOmsorg = true;
         const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'mor';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
+        );
+
+        expect(situasjon).toBe(ForeldreparSituasjon.morOgMedmor);
+    });
+
+    it('skal finne situasjon der det er delt uttak annen forelder har utelandsk fnr (ukjent kjønn) og medmor er søker', () => {
+        const søkerKjønn = 'K';
+        const annenForelderKjønn = undefined;
+        const erDeltUttak = true;
+        const morErAleneOmOmsorg = true;
+        const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'medmor';
+
+        const situasjon = getForeldreparSituasjon(
+            søkerKjønn,
+            annenForelderKjønn,
+            erDeltUttak,
+            morErAleneOmOmsorg,
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.morOgMedmor);
@@ -48,13 +72,15 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = true;
         const morErAleneOmOmsorg = true;
         const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'far';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.farOgFar);
@@ -66,13 +92,15 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = false;
         const morErAleneOmOmsorg = true;
         const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'mor';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.aleneomsorg);
@@ -84,13 +112,15 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = false;
         const morErAleneOmOmsorg = false;
         const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'mor';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.bareMor);
@@ -102,13 +132,15 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = false;
         const morErAleneOmOmsorg = false;
         const farMedmorErAleneOmOmsorg = true;
+        const rolle = 'far';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.aleneomsorg);
@@ -120,22 +152,45 @@ describe('foreldreparSituasjonUtils', () => {
         const erDeltUttak = false;
         const morErAleneOmOmsorg = false;
         const farMedmorErAleneOmOmsorg = false;
+        const rolle = 'far';
 
         const situasjon = getForeldreparSituasjon(
             søkerKjønn,
             annenForelderKjønn,
             erDeltUttak,
             morErAleneOmOmsorg,
-            farMedmorErAleneOmOmsorg
+            farMedmorErAleneOmOmsorg,
+            rolle
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.bareFar);
     });
+    it('skal finne situasjon der det ikke er delt uttak og søker er medmor som har aleneomsorg', () => {
+        const søkerKjønn = 'K';
+        const annenForelderKjønn = 'K';
+        const erDeltUttak = false;
+        const morErAleneOmOmsorg = false;
+        const farMedmorErAleneOmOmsorg = true;
+        const rolle = 'medmor';
+
+        const situasjon = getForeldreparSituasjon(
+            søkerKjønn,
+            annenForelderKjønn,
+            erDeltUttak,
+            morErAleneOmOmsorg,
+            farMedmorErAleneOmOmsorg,
+            rolle
+        );
+
+        expect(situasjon).toBe(ForeldreparSituasjon.aleneomsorgMedmor);
+    });
 
     it('skal ha 1 foreldre for aleneomsorg, bareFar og bareMor', () => {
         expect(getAntallForeldreISituasjon(ForeldreparSituasjon.aleneomsorg)).toBe(1);
+        expect(getAntallForeldreISituasjon(ForeldreparSituasjon.aleneomsorgMedmor)).toBe(1);
         expect(getAntallForeldreISituasjon(ForeldreparSituasjon.bareFar)).toBe(1);
         expect(getAntallForeldreISituasjon(ForeldreparSituasjon.bareMor)).toBe(1);
+        expect(getAntallForeldreISituasjon(ForeldreparSituasjon.bareMedmor)).toBe(1);
         expect(getAntallForeldreISituasjon(ForeldreparSituasjon.farOgFar)).toBe(2);
         expect(getAntallForeldreISituasjon(ForeldreparSituasjon.farOgMor)).toBe(2);
         expect(getAntallForeldreISituasjon(ForeldreparSituasjon.morOgMedmor)).toBe(2);
@@ -156,6 +211,11 @@ describe('foreldreparSituasjonUtils', () => {
             farMedmor: 'far1',
             variant: 'andreForelderHalvtSynlig',
         });
+        expect(getSituasjonForelderSvg(ForeldreparSituasjon.bareMedmor)).toEqual({
+            mor: 'mor1',
+            farMedmor: 'medmor2',
+            variant: 'førsteForelderHalvtSynlig',
+        });
         expect(getSituasjonForelderSvg(ForeldreparSituasjon.aleneomsorg)).toEqual({
             mor: 'mor2',
             farMedmor: 'far2',
@@ -168,6 +228,11 @@ describe('foreldreparSituasjonUtils', () => {
         expect(getSituasjonForelderSvg(ForeldreparSituasjon.farOgFar)).toEqual({
             mor: 'far3',
             farMedmor: 'far4',
+        });
+        expect(getSituasjonForelderSvg(ForeldreparSituasjon.aleneomsorgMedmor)).toEqual({
+            mor: 'mor2',
+            farMedmor: 'medmor2',
+            variant: 'foreldreSeparert',
         });
     });
 });

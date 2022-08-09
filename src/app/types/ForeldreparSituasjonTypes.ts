@@ -11,6 +11,8 @@ export enum ForeldreparSituasjon {
     bareFar = 'bareFar',
     bareMor = 'bareMor',
     aleneomsorg = 'aleneomsorg',
+    aleneomsorgMedmor = 'aleneomsorgMedmor',
     farOgFar = 'farOgFar',
     morOgMedmor = 'morOgMedmor',
+    bareMedmor = 'bareMedmor',
 }
