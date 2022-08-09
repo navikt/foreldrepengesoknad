@@ -14,12 +14,11 @@ const webpackConfig = {
         filename: 'js/[name].js',
         publicPath: '/dist',
     },
+    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
         alias: {
             app: path.resolve(__dirname, './../../app'),
-            common: path.resolve(__dirname, './../../common'),
-            shared: path.resolve(__dirname, './../../shared'),
             uttaksplan: path.resolve(__dirname, './../../uttaksplan'),
         },
     },
@@ -30,7 +29,6 @@ const webpackConfig = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
-            { test: /\.css$/i, use: ['style-loader', 'css-loader'] },
             {
                 test: /\.less$/,
                 use: [
@@ -53,6 +51,7 @@ const webpackConfig = {
         new CaseSensitivePathsPlugin(),
         new MiniCssExtractPlugin({
             filename: 'css/[name].css?[fullhash]-[chunkhash]-[contenthash]-[name]',
+            linkType: 'text/css',
         }),
         new SpriteLoaderPlugin({
             plainSprite: true,

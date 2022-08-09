@@ -11,14 +11,8 @@ webpackConfig.entry = {
 };
 
 const compiler = webpack(webpackConfig);
-const server = new WebpackDevServer(
-    configureDevServer({
-        NAV_SCRIPTS: '',
-        NAV_STYLES: '',
-        NAV_HEADING: '',
-        NAV_FOOTER: '',
-    }),
-    compiler
-);
+const server = new WebpackDevServer(configureDevServer({}), compiler);
 
-server.start(8080, '0.0.0.0', () => console.log('Started server on http://localhost:8080'));
+server.startCallback(() => {
+    console.log('Successfully started server on http://localhost:8080');
+});

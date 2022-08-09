@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const mustacheExpress = require('mustache-express');
 
 const configureDevServer = (decoratorFragments) => ({
@@ -26,15 +27,16 @@ const configureDevServer = (decoratorFragments) => ({
 
         return middlewares;
     },
-    liveReload: false,
-    hot: true,
+    client: {
+        logging: 'info',
+    },
     devMiddleware: {
         index: true,
         stats: 'minimal',
-        publicPath: '/dist',
+        publicPath: path.resolve('/dist'),
     },
     static: {
-        directory: '/dist',
+        directory: path.resolve('/dist'),
         serveIndex: true,
         watch: true,
     },
