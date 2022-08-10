@@ -13,13 +13,13 @@ interface Props {
     barn: Barn;
 }
 
-const getTekst = (barn: Barn, familiehendelsedato: Date): ReactNode => {
+const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): ReactNode => {
     if (!isAdoptertBarn(barn)) {
         if (isFødtBarn(barn)) {
             return (
                 <FormattedMessage
                     id="uttaksplan.familiehendelsesdato.født"
-                    values={{ dato: formaterDatoUtenDag(familiehendelsedato) }}
+                    values={{ antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }}
                 />
             );
         }
@@ -35,7 +35,7 @@ const getTekst = (barn: Barn, familiehendelsedato: Date): ReactNode => {
     return (
         <FormattedMessage
             id="uttaksplan.familiehendelsesdato.adopsjon"
-            values={{ dato: formaterDatoUtenDag(familiehendelsedato) }}
+            values={{ antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }}
         />
     );
 };
@@ -48,7 +48,7 @@ const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsed
             <div className={bem.element('hjerte')}>
                 <HjerteIkon fylt={true} title="Hjerte" />
             </div>
-            <Normaltekst>{getTekst(barn, familiehendelsedato)}</Normaltekst>
+            <Normaltekst>{getTekst(barn, familiehendelsedato, barn.antallBarn)}</Normaltekst>
         </div>
     );
 };
