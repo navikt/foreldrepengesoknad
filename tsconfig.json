@@ -3,7 +3,7 @@
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./src",
         "forceConsistentCasingInFileNames": true,
-        "jsx": "react-jsx",
+        "jsx": "react",
         "module": "ESNext",
         "moduleResolution": "node",
         "noImplicitAny": true,
