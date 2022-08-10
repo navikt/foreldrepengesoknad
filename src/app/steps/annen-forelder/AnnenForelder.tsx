@@ -12,7 +12,7 @@ import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
