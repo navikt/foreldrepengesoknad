@@ -1,4 +1,4 @@
-import { Block, intlUtils, Step } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -21,6 +21,9 @@ import RegistrertBarn from './components/RegistrertBarn';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -53,6 +56,13 @@ const OmBarnet: React.FunctionComponent = () => {
                     registrerteBarn,
                 });
 
+                const farMedmorSøkerPåTerminFørWLB =
+                    isFarEllerMedmor(søkersituasjon.rolle) &&
+                    convertYesOrNoOrUndefinedToBoolean(formValues.erBarnetFødt) === false &&
+                    hasValue(formValues.termindato) &&
+                    !andreAugust2022ReglerGjelder(ISOStringToDate(formValues.termindato)!);
+
+                const visGåVidereKnapp = visibility.areAllQuestionsAnswered() && !farMedmorSøkerPåTerminFørWLB;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -89,7 +99,7 @@ const OmBarnet: React.FunctionComponent = () => {
                             />
                             <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
-                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
+                            <Block visible={visGåVidereKnapp} textAlignCenter={true}>
                                 <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Hovedknapp>
