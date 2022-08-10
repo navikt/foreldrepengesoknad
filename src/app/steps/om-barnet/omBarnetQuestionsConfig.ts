@@ -157,8 +157,7 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
     [OmBarnetFormField.terminbekreftelse]: {
         isIncluded: ({ erBarnetFødt, arbeidsforhold, rolle, termindato }) =>
             erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato),
-        isAnswered: ({ rolle, termindato, terminbekreftelse }) =>
-            kanSøkePåTermin(rolle, termindato) && hasValue(terminbekreftelse),
+        isAnswered: ({ terminbekreftelse }) => hasValue(terminbekreftelse),
         visibilityFilter: ({ termindato }) => hasValue(termindato),
     },
     [OmBarnetFormField.terminbekreftelsedato]: {
