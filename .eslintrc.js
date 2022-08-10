@@ -7,7 +7,6 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:jest-dom/recommended',
         'plugin:testing-library/react',
-        'plugin:react/jsx-runtime',
     ],
     plugins: ['jest-dom', 'testing-library'],
     parserOptions: {
