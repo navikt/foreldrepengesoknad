@@ -145,9 +145,7 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
                 registrerteBarn,
                 adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED
             ) || erBarnetFødt === YesOrNo.NO,
-        isAnswered: ({ termindato, rolle, valgteBarn }) =>
-            (kanSøkePåTermin(rolle, termindato) && hasValue(termindato)) ||
-            (valgteBarn.length > 0 && hasValue(termindato)),
+        isAnswered: ({ termindato }) => hasValue(termindato),
         visibilityFilter: ({ fødselsdatoer, erBarnetFødt, antallBarn, valgteBarn }) => {
             return (
                 hasValue(fødselsdatoer[0]) ||
