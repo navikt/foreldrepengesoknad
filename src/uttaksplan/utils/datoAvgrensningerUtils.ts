@@ -24,7 +24,7 @@ export interface Avgrensninger {
 export const getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    ugyldigeTidsperioder: Tidsperiode[]
+    ugyldigeTidsperioder: Tidsperiode[] | undefined
 ): DatoAvgrensninger => {
     const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
     const maksDato = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
@@ -48,7 +48,7 @@ export const getDatoavgrensningerForStønadskonto = (
     konto: StønadskontoType | undefined,
     familiehendelsesdato: Date,
     tidsperiode: Partial<TidsperiodeDate> | undefined,
-    ugyldigeTidsperioder: Tidsperiode[],
+    ugyldigeTidsperioder: Tidsperiode[] | undefined,
     erFarEllerMedmor: boolean,
     termindato: Date | undefined
 ): DatoAvgrensninger => {
@@ -83,7 +83,7 @@ export const getDatoavgrensningerForStønadskonto = (
 
 const getDatoavgrensningerForPeriodeUtenKonto = (
     familiehendelsesdato: Date,
-    ugyldigeTidsperioder: Tidsperiode[],
+    ugyldigeTidsperioder: Tidsperiode[] | undefined,
     erFarEllerMedmor: boolean,
     termindato: Date | undefined
 ) => {
@@ -114,6 +114,7 @@ const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): 
 };
 
 const getDatoavgrensningerForForeldrepengerFørFødsel = (familiehendelsesdato: Date): DatoAvgrensninger => {
+    console.log('hei');
     const avgrensninger: DatepickerLimitations = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(
@@ -158,7 +159,7 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date
 export const getDatoavgrensningerForBareFarMedmorHarRettWLB = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    ugyldigeTidsperioder: Tidsperiode[]
+    ugyldigeTidsperioder: Tidsperiode[] | undefined
 ): DatoAvgrensninger => {
     const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
     const maksDato = getSisteMuligeUttaksdag(familiehendelsesdato);

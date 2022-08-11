@@ -1,3 +1,4 @@
+import { starterUttaksperiodeFørFødsel } from 'app/utils/wlbUtils';
 import {
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
@@ -152,9 +153,19 @@ const Uttaksplanbuilder = (
     erFarEllerMedmor: boolean,
     opprinneligPlan?: Periode[]
 ) => {
-    const fastePerioder = perioder.filter((p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p));
+    const fastePerioder = perioder.filter(
+        (p) =>
+            isUtsettelsesperiode(p) ||
+            isForeldrepengerFørFødselUttaksperiode(p) ||
+            starterUttaksperiodeFørFødsel(p, familiehendelsesdato)
+    );
     const bevegeligePerioder = resetTidsperioder(
-        perioder.filter((p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)),
+        perioder.filter(
+            (p) =>
+                !isUtsettelsesperiode(p) &&
+                !isForeldrepengerFørFødselUttaksperiode(p) &&
+                !starterUttaksperiodeFørFødsel(p, familiehendelsesdato)
+        ),
         familiehendelsesdato
     );
     let annenPartsUttak: Periode[] | undefined = undefined;
