@@ -20,7 +20,11 @@ export const slettPeriode = ({
     bareFarHarRett,
     erFarEllerMedmor,
 }: SlettPeriodeParams): Periode[] => {
-    const result: Periode[] = perioder.reduce((res, periode) => {
+    const result: Periode[] = perioder.reduce((res, periode, index) => {
+        if (index === 0 && periode.id === slettetPeriode.id) {
+            return res;
+        }
+
         if (periode.id === slettetPeriode.id) {
             res.push(
                 ...getPeriodeHullEllerPeriodeUtenUttak(
