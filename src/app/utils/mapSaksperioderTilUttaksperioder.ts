@@ -260,7 +260,7 @@ export const mapUttaksperiodeFromSaksperiode = (
         ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
         gradert,
         samtidigUttakProsent,
-        ønskerFlerbarnsdager: saksperiode.flerbarnsdager,
+        ønskerFlerbarnsdager: grunnlag.antallBarn > 1 ? saksperiode.flerbarnsdager : undefined,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert
             ? saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType))
