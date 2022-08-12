@@ -32,16 +32,18 @@ export const jsonSort = (json: any): string => {
 
 export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
     const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData>();
-    const { isSubmitting, isValidating, values, submitForm, setValues } = formik;
+    const { isSubmitting, isValidating, submitForm, setValues } = formik;
     const cleanedValues = cleanup();
     const ref = useRef(cleanedValues);
 
     useEffect(() => {
         if (!isSubmitting && !isValidating) {
-            const valuesEqualLastValues = JSON.stringify(jsonSort(ref.current)) === JSON.stringify(jsonSort(values));
+            const currentValuesJSONString = JSON.stringify(jsonSort(ref.current));
+            const previousValuesJSONString = JSON.stringify(jsonSort(cleanup()));
+            const valuesEqualLastValues = previousValuesJSONString === currentValuesJSONString;
 
             if (!valuesEqualLastValues) {
-                ref.current = values;
+                ref.current = cleanup();
             }
 
             if (!valuesEqualLastValues) {
@@ -49,7 +51,7 @@ export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
                 setTimeout(() => submitForm(), 0);
             }
         }
-    }, [values, isSubmitting, isValidating, submitForm, setValues, cleanedValues]);
+    }, [isSubmitting, isValidating, submitForm, setValues, cleanedValues, cleanup]);
 
     return null;
 };
