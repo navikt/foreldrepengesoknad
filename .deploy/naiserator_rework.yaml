@@ -45,8 +45,6 @@ spec:
       value: "https://foreldrepengesoknad-api.dev.nav.no"
     - name: FEATURE_VIS_PERIODER_SOM_SENDES_INN
       value: "on"
-    - name: FEATURE_TEST_WLB_REGLER
-      value: "on"
     - name: FAMILIE
       value: 'https://familie.dev.nav.no'
     - name: APP_VERSION

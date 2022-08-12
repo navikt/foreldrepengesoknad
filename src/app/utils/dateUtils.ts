@@ -15,8 +15,6 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import fn from './toggleUtils';
-import FeatureToggle from 'app/FeatureToggle';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -339,11 +337,6 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
 
 export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
-
-    //For testing av WLB regler i dev: WLB start-dato settes til 01.01.2022.
-    if (fn.isFeatureEnabled(FeatureToggle.testWLBRegler)) {
-        return dayjs(familiehendelsesdato).isSameOrAfter('2022-01-01', 'day');
-    }
 
     return (
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
