@@ -39,11 +39,11 @@ export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
     useEffect(() => {
         if (!isSubmitting && !isValidating) {
             const currentValuesJSONString = JSON.stringify(jsonSort(ref.current));
-            const previousValuesJSONString = JSON.stringify(jsonSort(cleanup()));
+            const previousValuesJSONString = JSON.stringify(jsonSort(cleanedValues));
             const valuesEqualLastValues = previousValuesJSONString === currentValuesJSONString;
 
             if (!valuesEqualLastValues) {
-                ref.current = cleanup();
+                ref.current = cleanedValues;
             }
 
             if (!valuesEqualLastValues) {
