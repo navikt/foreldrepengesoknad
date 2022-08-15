@@ -52,7 +52,7 @@ MedAnnenForelder.args = {
                 fornavn: 'Espen',
                 etternavn: 'Utvikler',
                 fnr: '1212121313',
-                harRettPåForeldrepenger: true,
+                harRettPåForeldrepengerINorge: true,
                 kanIkkeOppgis: false,
             },
         },
@@ -75,7 +75,8 @@ FarMedUførMor.args = {
                 fornavn: 'Eline',
                 etternavn: 'Utvikler',
                 fnr: '1515151616',
-                harRettPåForeldrepenger: false,
+                harRettPåForeldrepengerINorge: false,
+                harRettPåForeldrepengerIEØS: false,
                 kanIkkeOppgis: false,
                 erUfør: true,
             },
@@ -83,6 +84,53 @@ FarMedUførMor.args = {
                 begrunnelseForSenEndring: {
                     tekst: 'Utsettelsesgrunn',
                 },
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const FarMedMorSomHarRettIEØS = Template.bind({});
+FarMedMorSomHarRettIEØS.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+            søker: {
+                ...context.søknad.søker,
+                erAleneOmOmsorg: false,
+            },
+            annenForelder: {
+                fornavn: 'Anne',
+                etternavn: 'Forelder',
+                fnr: '1515151616',
+                harRettPåForeldrepengerINorge: false,
+                harRettPåForeldrepengerIEØS: true,
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const FarMedMorSomHarRettINorge = Template.bind({});
+FarMedMorSomHarRettINorge.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+            søker: {
+                ...context.søknad.søker,
+                erAleneOmOmsorg: false,
+            },
+            annenForelder: {
+                fornavn: 'Frida',
+                etternavn: 'Norsk',
+                fnr: '01010012345',
+                harRettPåForeldrepengerINorge: true,
+                kanIkkeOppgis: false,
             },
         },
     } as ForeldrepengesøknadContextState,

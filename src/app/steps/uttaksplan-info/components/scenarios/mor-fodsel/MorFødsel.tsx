@@ -86,7 +86,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
-    const harRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;
+    const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const navnFarMedmor = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
@@ -100,7 +100,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
@@ -159,7 +159,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFødselQuestionsConfig.getVisbility({
                     ...formValues,
-                    harRettPåForeldrepenger,
+                    harRettPåForeldrepengerINorge,
                     erAleneOmOmsorg,
                 });
 
@@ -210,7 +210,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                         <Block
                             visible={
                                 erAleneOmOmsorg === false &&
-                                harRettPåForeldrepenger &&
+                                harRettPåForeldrepengerINorge &&
                                 visibility.isAnswered(MorFødselFormField.dekningsgrad)
                             }
                         >

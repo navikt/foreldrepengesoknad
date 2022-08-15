@@ -73,14 +73,14 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepenger !== undefined
+        ? annenForelder.harRettPåForeldrepengerINorge !== undefined
         : false;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const bareFarMedmorHarRett =
         erFarEllerMedmor &&
         isAnnenForelderOppgitt(annenForelder) &&
         !søkerErAleneOmOmsorg &&
-        !annenForelder.harRettPåForeldrepenger;
+        !annenForelder.harRettPåForeldrepengerINorge;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
@@ -153,14 +153,14 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const erSøkerMor = !erFarEllerMedmor;
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const harAnnenForeldreRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;
+    const harAnnenForeldreRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
     const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
 
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
     const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
     const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);

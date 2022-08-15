@@ -315,7 +315,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fornavn: annenPart.navn.fornavn,
                     etternavn: annenPart.navn.etternavn,
                     erUfør: grunnlag.morErUfør,
-                    harRettPåForeldrepenger: grunnlag.morHarRett,
+                    harRettPåForeldrepengerINorge: grunnlag.morHarRett,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                 };
@@ -323,7 +323,7 @@ const getAnnenForelderFromSaksgrunnlag = (
             return {
                 fornavn: annenPart.navn.fornavn,
                 etternavn: annenPart.navn.etternavn,
-                harRettPåForeldrepenger: grunnlag.farMedmorHarRett,
+                harRettPåForeldrepengerINorge: grunnlag.farMedmorHarRett,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
             };
@@ -394,7 +394,7 @@ export const opprettSøknadFraEksisterendeSak = (
         fornavn: '',
         etternavn: '',
         fnr: '',
-        harRettPåForeldrepenger: false,
+        harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);

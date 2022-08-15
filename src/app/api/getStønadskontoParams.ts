@@ -15,19 +15,31 @@ const getFarHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
     }
 
     if (isAnnenForelderOppgitt(annenForelder)) {
-        return !!annenForelder.harRettPåForeldrepenger;
+        return !!annenForelder.harRettPåForeldrepengerINorge;
     }
 
     return false;
 };
 
-const getMorHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
     if (!erFarMedmor) {
         return true;
     }
 
     if (isAnnenForelderOppgitt(annenForelder)) {
-        return !!annenForelder.harRettPåForeldrepenger;
+        return !!annenForelder.harRettPåForeldrepengerINorge;
+    }
+
+    return false;
+};
+
+const getMorHarRettIEØS = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+    if (!erFarMedmor) {
+        return true;
+    }
+
+    if (isAnnenForelderOppgitt(annenForelder)) {
+        return !!annenForelder.harRettPåForeldrepengerIEØS;
     }
 
     return false;
@@ -58,7 +70,8 @@ const getStønadskontoParams = (
         startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
         farHarRett: getFarHarRett(erFarMedmor, annenForelder),
-        morHarRett: getMorHarRett(erFarMedmor, annenForelder),
+        morHarRettINorge: getMorHarRettINorge(erFarMedmor, annenForelder),
+        morHarRettIEØS: getMorHarRettIEØS(erFarMedmor, annenForelder),
         morHarAleneomsorg,
         farHarAleneomsorg,
         fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,

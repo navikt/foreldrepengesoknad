@@ -60,25 +60,38 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                         </Normaltekst>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
-                        title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepenger', {
+                        title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerINorge', {
                             navn: annenForelder.fornavn,
                         })}
                     >
                         <Normaltekst>
-                            <FormattedMessage id={annenForelder.harRettPåForeldrepenger ? 'ja' : 'nei'} />
+                            <FormattedMessage id={annenForelder.harRettPåForeldrepengerINorge ? 'ja' : 'nei'} />
                         </Normaltekst>
                     </OppsummeringsPunkt>
-                    {erFarEllerMedmor && (
+                    {erFarEllerMedmor && !annenForelder.harRettPåForeldrepengerINorge && (
                         <OppsummeringsPunkt
-                            title={intlUtils(intl, 'annenForelder.erMorUfør', {
+                            title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
                                 navn: annenForelder.fornavn,
                             })}
                         >
                             <Normaltekst>
-                                <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
+                                <FormattedMessage id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'} />
                             </Normaltekst>
                         </OppsummeringsPunkt>
                     )}
+                    {erFarEllerMedmor &&
+                        !annenForelder.harRettPåForeldrepengerINorge &&
+                        !annenForelder.harRettPåForeldrepengerIEØS && (
+                            <OppsummeringsPunkt
+                                title={intlUtils(intl, 'annenForelder.erMorUfør', {
+                                    navn: annenForelder.fornavn,
+                                })}
+                            >
+                                <Normaltekst>
+                                    <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
+                                </Normaltekst>
+                            </OppsummeringsPunkt>
+                        )}
                 </>
             )}
             {farMedmorErAleneOmOmsorg && erFarEllerMedmor && (

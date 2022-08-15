@@ -15,7 +15,8 @@ import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
-    morHarRett: boolean;
+    morHarRettINorge: boolean;
+    morHarRettIEØS: boolean;
     farHarRett: boolean;
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
     termindato: string | undefined;
@@ -159,7 +160,8 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const {
         antallBarn,
         farHarRett,
-        morHarRett,
+        morHarRettINorge,
+        morHarRettIEØS,
         dekningsgrad,
         fødselsdato,
         termindato,
@@ -176,7 +178,8 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
 
     const urlParams = {
         farHarRett,
-        morHarRett,
+        morHarRett: morHarRettINorge,
+        morMottarForeldrepengerIEØS: morHarRettIEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,

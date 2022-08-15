@@ -89,7 +89,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const annenForelderHarIkkeRett = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepenger === false
+        ? annenForelder.harRettPåForeldrepengerINorge === false
         : false;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
@@ -146,7 +146,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)

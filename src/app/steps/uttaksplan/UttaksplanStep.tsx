@@ -14,7 +14,7 @@ import {
     getFarMedmorErAleneOmOmsorg,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
-    getMorHarRettPåForeldrepenger,
+    getMorHarRettPåForeldrepengerINorge,
     getNavnPåForeldre,
 } from 'app/utils/personUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -60,7 +60,7 @@ const UttaksplanStep = () => {
     const { rolle } = søkersituasjon;
     const debouncedState = useDebounce(state, 3000);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
     const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
@@ -71,7 +71,7 @@ const UttaksplanStep = () => {
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
-    const morHarRett = getMorHarRettPåForeldrepenger(rolle, erFarEllerMedmor, annenForelder);
+    const morHarRett = getMorHarRettPåForeldrepengerINorge(rolle, erFarEllerMedmor, annenForelder);
     const opprinneligPlan = eksisterendeSak?.uttaksplan;
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg

@@ -7,7 +7,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
     it('should be required if søkerErFarEllerMedmor and !annenForelderHarRettPåFP && !ufør', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
-            harRettPåForeldrepenger: false,
+            harRettPåForeldrepengerINorge: false,
             erUfør: false,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
@@ -20,7 +20,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
     it('should not be required if !søkerErFarEllerMedmor && erUfør', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
-            harRettPåForeldrepenger: false,
+            harRettPåForeldrepengerINorge: false,
             erUfør: true,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
@@ -33,7 +33,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
     it('should not be required if annenForelderHarRettPåFP', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
-            harRettPåForeldrepenger: true,
+            harRettPåForeldrepengerINorge: true,
             erUfør: true,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(

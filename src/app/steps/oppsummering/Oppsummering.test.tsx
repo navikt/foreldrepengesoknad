@@ -8,6 +8,8 @@ const {
     Default,
     MedAnnenForelder,
     FarMedUførMor,
+    FarMedMorSomHarRettIEØS,
+    FarMedMorSomHarRettINorge,
     MedAdoptertBarn,
     MedUtenlandsopphold,
     MedArbeidsforholdOgAndreInntekter,
@@ -80,7 +82,8 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('1212121313')).toBeInTheDocument();
         expect(screen.getByText('Vi har')).toBeInTheDocument();
         expect(screen.getByText('Felles omsorg')).toBeInTheDocument();
-        expect(screen.getByText('Har Espen rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Har Espen rett til foreldrepenger i Norge')).toBeInTheDocument();
+        expect(screen.queryByText('Har Espen rett til foreldrepenger i EØS')).not.toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.queryByText('Har Espen uføretrygd?')).not.toBeInTheDocument();
     });
@@ -161,5 +164,21 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Utsettelse')).toBeInTheDocument();
         expect(screen.getByText('Begrunnelse for å søke om utsettelse')).toBeInTheDocument();
         expect(screen.getByText('Utsettelsesgrunn', { exact: false })).toBeInTheDocument();
+    });
+    it('skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
+        render(<FarMedMorSomHarRettIEØS />);
+        expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
+        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        expect(screen.getByText('Har Anne rett til foreldrepenger i Norge')).toBeInTheDocument();
+        expect(screen.getByText('Har Anne rett til foreldrepenger i et EØS land')).toBeInTheDocument();
+        expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
+    });
+    it('skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {
+        render(<FarMedMorSomHarRettINorge />);
+        expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
+        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        expect(screen.getByText('Har Frida rett til foreldrepenger i Norge')).toBeInTheDocument();
+        expect(screen.queryByText('Har Frida rett til foreldrepenger i et EØS land')).not.toBeInTheDocument();
+        expect(screen.queryByText('Har Frida uføretrygd')).not.toBeInTheDocument();
     });
 });

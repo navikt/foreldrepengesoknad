@@ -3,7 +3,7 @@ import { hasValue } from '@navikt/fp-common';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 
 interface MorFødselQuestionsPayload extends MorFødselFormData {
-    harRettPåForeldrepenger: boolean | undefined;
+    harRettPåForeldrepengerINorge: boolean | undefined;
     erAleneOmOmsorg: boolean | undefined;
 }
 
@@ -24,8 +24,8 @@ const MorFødselFormConfig: QuestionConfig<MorFødselQuestionsPayload, MorFødse
     },
     [MorFødselFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),
-        isIncluded: ({ harRettPåForeldrepenger, erAleneOmOmsorg }) =>
-            !!harRettPåForeldrepenger && erAleneOmOmsorg === false,
+        isIncluded: ({ harRettPåForeldrepengerINorge, erAleneOmOmsorg }) =>
+            !!harRettPåForeldrepengerINorge && erAleneOmOmsorg === false,
         visibilityFilter: ({ dekningsgrad, permisjonStartdato, skalIkkeHaUttakFørTermin }) =>
             hasValue(dekningsgrad) && (hasValue(permisjonStartdato) || skalIkkeHaUttakFørTermin === true),
     },

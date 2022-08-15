@@ -8,7 +8,8 @@ export interface AnnenForelderOppgitt extends Common {
     fnr: string;
     utenlandskFnr?: boolean;
     bostedsland?: string;
-    harRettPåForeldrepenger?: boolean;
+    harRettPåForeldrepengerINorge?: boolean;
+    harRettPåForeldrepengerIEØS?: boolean;
     erInformertOmSøknaden?: boolean;
     erForSyk?: boolean;
     erUfør?: boolean;

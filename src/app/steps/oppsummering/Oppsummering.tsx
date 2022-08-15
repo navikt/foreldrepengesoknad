@@ -74,7 +74,7 @@ const Oppsummering = () => {
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
     const termindato = getTermindato(søknad.barn);
     const erEndringssøknadOgAnnenForelderHarRett =
-        erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger;
+        erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
     const erklæringOmAnnenForelderInformert = erEndringssøknadOgAnnenForelderHarRett
         ? intlUtils(intl, 'oppsummering.harGodkjentOppsummering.endringssøknadMedAnnenForelder', {
               navnAnnenForelder: annenForelder.fornavn,
