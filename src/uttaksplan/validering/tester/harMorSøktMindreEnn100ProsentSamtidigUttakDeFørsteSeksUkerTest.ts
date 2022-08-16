@@ -3,7 +3,6 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import dayjs from 'dayjs';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { isUttaksperiode } from 'uttaksplan/types/Periode';
-import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
 
 export const harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest: RegelTest = (
     grunnlag: Søknadsinfo
