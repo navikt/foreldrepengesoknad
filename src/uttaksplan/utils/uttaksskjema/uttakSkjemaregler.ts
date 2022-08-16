@@ -110,7 +110,7 @@ export const getUttakSkjemaregler = (
             samtidigUttakSkalBesvares(
                 periodetype,
                 konto as StønadskontoType,
-                Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato),
+                Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato) && situasjon === 'fødsel',
                 periodetype === Periodetype.Uttak && konto === StønadskontoType.ForeldrepengerFørFødsel,
                 erAleneOmOmsorg,
                 erDeltUttak,
