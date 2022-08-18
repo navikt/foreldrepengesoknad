@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
 import dayjs from 'dayjs';
+import fns from '../../utils/toggleUtils';
 
 const { Default, SkalOppgiPersonalia, ForFar } = composeStories(stories);
 
@@ -195,7 +196,8 @@ describe('<AnnenForelder>', () => {
         expect(screen.getByText('Trykk her for å laste opp dokumentasjon om aleneomsorg')).toBeInTheDocument();
     });
 
-    it('skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
+    it('I DEV: skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
+        fns.isFeatureEnabled = jest.fn(() => true);
         render(<ForFar />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
@@ -218,6 +220,28 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(ER_ANNEN_FORELDER_UFØR)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(NEI)[3]);
+        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+    });
+    it('I PROD: skal søke som far og valget om mor har foreldrepenger i EØS skal ikke dukke opp', async () => {
+        fns.isFeatureEnabled = jest.fn(() => false);
+        render(<ForFar />);
+
+        expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
+
+        expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText(NEI));
+
+        expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText(NEI)[1]);
+
+        expect(screen.queryByText(HAR_MOR_RETT_TIL_FP_I_EØS_LABEL)).not.toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+
+        expect(await screen.findByText(ER_ANNEN_FORELDER_UFØR)).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(NEI)[2]);
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });

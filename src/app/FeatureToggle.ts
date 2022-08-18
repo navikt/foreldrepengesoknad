@@ -3,6 +3,7 @@ enum FeatureToggle {
     visFeilside = 'FEATURE_VIS_FEILSIDE',
     visAlertstripe = 'FEATURE_VIS_ALERTSTRIPE',
     brukSakerV2 = 'FEATURE_BRUK_SAKER_V2',
+    testEØSPraksisendring = 'FEATURE_TEST_EOS_PRAKSISENDRING',
     /** Nye features må også registreres i ./Environment */
 }
 

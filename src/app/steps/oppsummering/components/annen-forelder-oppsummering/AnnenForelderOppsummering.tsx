@@ -9,6 +9,8 @@ import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import fn from 'app/utils/toggleUtils';
+import FeatureToggle from 'app/FeatureToggle';
 
 interface Props {
     annenForelder: AnnenForelder;
@@ -68,20 +70,24 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                             <FormattedMessage id={annenForelder.harRettPåForeldrepengerINorge ? 'ja' : 'nei'} />
                         </Normaltekst>
                     </OppsummeringsPunkt>
-                    {erFarEllerMedmor && !annenForelder.harRettPåForeldrepengerINorge && (
-                        <OppsummeringsPunkt
-                            title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
-                                navn: annenForelder.fornavn,
-                            })}
-                        >
-                            <Normaltekst>
-                                <FormattedMessage id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'} />
-                            </Normaltekst>
-                        </OppsummeringsPunkt>
-                    )}
+                    {erFarEllerMedmor &&
+                        fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
+                        !annenForelder.harRettPåForeldrepengerINorge && (
+                            <OppsummeringsPunkt
+                                title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
+                                    navn: annenForelder.fornavn,
+                                })}
+                            >
+                                <Normaltekst>
+                                    <FormattedMessage id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'} />
+                                </Normaltekst>
+                            </OppsummeringsPunkt>
+                        )}
                     {erFarEllerMedmor &&
                         !annenForelder.harRettPåForeldrepengerINorge &&
-                        !annenForelder.harRettPåForeldrepengerIEØS && (
+                        (!fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) ||
+                            (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
+                                !annenForelder.harRettPåForeldrepengerIEØS)) && (
                             <OppsummeringsPunkt
                                 title={intlUtils(intl, 'annenForelder.erMorUfør', {
                                     navn: annenForelder.fornavn,

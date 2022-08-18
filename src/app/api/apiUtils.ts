@@ -34,6 +34,8 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import fn from 'app/utils/toggleUtils';
+import FeatureToggle from 'app/FeatureToggle';
 
 export interface AnnenForelderOppgittForInnsending
     extends Omit<AnnenForelder, 'erUfør' | 'harRettPåForeldrepengerINorge'> {
@@ -118,18 +120,25 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { erUfør, erForSyk, harRettPåForeldrepengerINorge, ...annenForelderRest } = annenForelder;
-        return erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge
-            ? {
-                  harMorUføretrygd: erUfør,
-                  harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
-                  erInformertOmSøknaden: true,
-                  ...annenForelderRest,
-              }
-            : {
-                  harMorUføretrygd: erUfør,
-                  harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
-                  ...annenForelderRest,
-              };
+        const cleanedAnnenForelder =
+            erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge
+                ? {
+                      harMorUføretrygd: erUfør,
+                      harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+                      erInformertOmSøknaden: true,
+                      ...annenForelderRest,
+                  }
+                : {
+                      harMorUføretrygd: erUfør,
+                      harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+                      ...annenForelderRest,
+                  };
+        if (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
+            return cleanedAnnenForelder;
+        } else {
+            const { harRettPåForeldrepengerIEØS, ...rest } = cleanedAnnenForelder;
+            return rest;
+        }
     }
     return annenForelder;
 };

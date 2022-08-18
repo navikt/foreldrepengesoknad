@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/oppsummering/Oppsummering.stories';
+import fns from '../../utils/toggleUtils';
 
 const {
     Default,
@@ -165,12 +166,22 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Begrunnelse for å søke om utsettelse')).toBeInTheDocument();
         expect(screen.getByText('Utsettelsesgrunn', { exact: false })).toBeInTheDocument();
     });
-    it('skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
+    it('I DEV: skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
+        fns.isFeatureEnabled = jest.fn(() => true);
         render(<FarMedMorSomHarRettIEØS />);
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
         await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
         expect(screen.getByText('Har Anne rett til foreldrepenger i Norge')).toBeInTheDocument();
         expect(screen.getByText('Har Anne rett til foreldrepenger i et EØS land')).toBeInTheDocument();
+        expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
+    });
+    it('I PROD: skal ikke vise informasjon foreldrepenger i EØS', async () => {
+        fns.isFeatureEnabled = jest.fn(() => false);
+        render(<FarMedMorSomHarRettIEØS />);
+        expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
+        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
+        expect(screen.getByText('Har Anne rett til foreldrepenger i Norge')).toBeInTheDocument();
+        expect(screen.queryByText('Har Anne rett til foreldrepenger i et EØS land')).not.toBeInTheDocument();
         expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
     });
     it('skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {
