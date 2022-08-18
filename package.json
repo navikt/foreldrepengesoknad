@@ -17,6 +17,7 @@
         "start-express": "node ./server.js",
         "dev-api": "node ./mock-api-server.js",
         "dev": "node ./src/build/scripts/start-dev-nodecorator.js",
+        "dev-vtp": "node ./src/build/scripts/start-dev-nodecorator-vtp.js",
         "start": "node ./src/build/scripts/start-dev.js",
         "jest": "jest --color --config ./jest/jest.config.js --maxWorkers 2",
         "jest-changed": "jest -o --color --config ./jest/jest.config.js --maxWorkers 2",
