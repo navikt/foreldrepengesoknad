@@ -11,7 +11,7 @@ webpackConfig.entry = {
 };
 
 const compiler = webpack(webpackConfig);
-const server = new WebpackDevServer(configureDevServer({}, false), compiler);
+const server = new WebpackDevServer(configureDevServer({}, true), compiler);
 
 server.startCallback(() => {
     console.log('Successfully started server on http://localhost:8080');

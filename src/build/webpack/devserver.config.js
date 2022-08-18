@@ -2,8 +2,14 @@ require('dotenv').config();
 const path = require('path');
 const mustacheExpress = require('mustache-express');
 
-const configureDevServer = (decoratorFragments) => ({
+const configureDevServer = (decoratorFragments, useVTP) => ({
     setupMiddlewares: (middlewares, devServer) => {
+        const REST_API_URL = useVTP
+            ? process.env.FORELDREPENGESOKNAD_API_URL_VTP
+            : process.env.FORELDREPENGESOKNAD_API_URL;
+        const LOGINSERVICE_URL = useVTP ? process.env.LOGINSERVICE_URL_VTP : process.env.LOGINSERVICE_URL;
+        const FP_UTTAK_SERVICE_URL = useVTP ? process.env.FP_UTTAK_SERVICE_URL_VTP : process.env.FP_UTTAK_SERVICE_URL;
+
         devServer.app.engine('html', mustacheExpress());
         devServer.app.set('views', `${__dirname}/../../../dist/dev`);
         devServer.app.set('view engine', 'mustache');
@@ -11,9 +17,9 @@ const configureDevServer = (decoratorFragments) => ({
             res.set('content-type', 'application/javascript');
             res.send(`window.appSettings = {
                 APP_VERSION: '${process.env.APP_VERSION}',
-                REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-                UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
-                LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
+                REST_API_URL: '${REST_API_URL}',
+                UTTAK_API_URL: '${FP_UTTAK_SERVICE_URL}',
+                LOGIN_URL: '${LOGINSERVICE_URL}',
                 FAMILIE: '${process.env.FAMILIE}',
                 FEATURE_VIS_PERIODER_SOM_SENDES_INN:  '${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}',
                 FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
