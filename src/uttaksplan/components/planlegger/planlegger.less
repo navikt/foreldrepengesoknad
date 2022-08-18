@@ -30,4 +30,15 @@
             color: white;
         }
     }
+
+    @media (max-width: @mobile-breakpoint) {
+        &__knapperad {
+            display: flex;
+            flex-direction: column;
+
+            :first-child {
+                margin-bottom: 1rem;
+            }
+        }
+    }
 }

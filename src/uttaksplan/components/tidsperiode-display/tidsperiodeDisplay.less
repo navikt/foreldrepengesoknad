@@ -1,5 +1,32 @@
+@import './../../styles/variables.less';
+
 .tidsperiodeDisplay {
     display: flex;
     justify-content: space-between;
     margin-top: 0.5rem;
+
+    &__dato-container {
+        display: flex;
+        justify-content: space-between;
+        width: 22rem;
+    }
+
+    &__dato {
+        display: flex;
+        justify-content: space-between;
+        width: 10rem;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        flex-direction: column;
+
+        &__dato-container {
+            margin-bottom: 1rem;
+        }
+
+        &__dato {
+            flex-direction: column;
+            width: 100%;
+        }
+    }
 }

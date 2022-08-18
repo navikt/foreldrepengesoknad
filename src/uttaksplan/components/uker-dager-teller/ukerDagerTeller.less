@@ -1,3 +1,5 @@
+@import './../../styles/variables.less';
+
 .ukerDagerTeller {
     display: flex;
 
@@ -6,5 +8,9 @@
     }
     .skjema__legend {
         font-weight: normal;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        flex-direction: column;
     }
 }
