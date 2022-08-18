@@ -115,7 +115,9 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
     konto: StønadskontoType,
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
+    erFlerbarnssøknad: boolean,
+    ønskerFlerbarnsdager: boolean | undefined
 ): boolean => {
     return (
         tidsperiode !== undefined &&
@@ -127,7 +129,12 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
         (konto === StønadskontoType.Fedrekvote ||
             konto === StønadskontoType.Foreldrepenger ||
             konto === StønadskontoType.AktivitetsfriKvote) &&
-        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato, termindato)
+        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            tidsperiode,
+            familiehendelsesdato,
+            termindato
+        ) &&
+        (!erFlerbarnssøknad || ønskerFlerbarnsdager === false)
     );
 };
 
