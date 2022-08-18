@@ -23,11 +23,34 @@
         top: 0.5rem;
     }
 
-    &__knapperad {
+    &__knapperad-legg-til {
         text-align: center;
 
         &:first-child button {
             margin-right: 1rem;
+        }
+    }
+
+    &__knapperad-endre {
+        text-align: center;
+        position: relative;
+
+        &:first-child button {
+            margin-right: 1rem;
+        }
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        &__knapperad-endre {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__slettPeriodeWrapper {
+            padding-top: 1rem;
+            position: relative;
+            right: 0;
+            top: 0;
         }
     }
 }

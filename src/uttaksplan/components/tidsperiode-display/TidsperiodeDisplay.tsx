@@ -24,12 +24,12 @@ const formaterTidsperiodeDato = (dato: Date | undefined) => {
 const renderTidsperiode = (tidsperiode: Partial<TidsperiodeDate> | undefined, intl: IntlShape) => {
     if (tidsperiode) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'space-between', width: '22rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
+            <div className={bem.element('dato-container')}>
+                <div className={bem.element('dato')}>
                     <Element>{`${intlUtils(intl, 'fraogmed')}:`}</Element>
                     <Normaltekst>{formaterTidsperiodeDato(tidsperiode.fom)}</Normaltekst>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '10rem' }}>
+                <div className={bem.element('dato')}>
                     <Element>{`${intlUtils(intl, 'tilogmed')}:`}</Element>
                     <Normaltekst>{formaterTidsperiodeDato(tidsperiode.tom)}</Normaltekst>
                 </div>
@@ -56,7 +56,7 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                         toggleVisTidsperiode();
                     }}
                 >
-                    Endre tidsrom
+                    <Normaltekst>Endre tidsrom</Normaltekst>
                 </Lenke>
             </div>
         </Block>

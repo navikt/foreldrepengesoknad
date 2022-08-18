@@ -441,7 +441,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     !isNyPeriode && handleDeletePeriode !== undefined && toggleIsOpen !== undefined
                                 }
                             >
-                                <div style={{ textAlign: 'center', position: 'relative' }}>
+                                <div className={bem.element('knapperad-endre')}>
                                     <Knapp htmlType="button" onClick={() => toggleIsOpen!(periode.id)}>
                                         <FormattedMessage id="uttaksplan.lukk" />
                                     </Knapp>
@@ -462,7 +462,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     handleAddPeriode !== undefined
                                 }
                             >
-                                <div className={bem.element('knapperad')}>
+                                <div className={bem.element('knapperad-legg-til')}>
                                     <Knapp htmlType="button" onClick={() => setNyPeriodeFormIsVisible!(false)}>
                                         <FormattedMessage id="uttaksplan.avbryt" />
                                     </Knapp>
