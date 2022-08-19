@@ -7,6 +7,7 @@ import {
     getSisteUttaksdag6UkerEtterFødsel,
     starterTidsperiodeEtter2UkerFørFødsel,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+    erFarMedmorSinWLBTidsperiodeRundtFødsel,
 } from './wlbUtils';
 
 describe('wlbUtils - getFørsteUttaksdag2UkerFørFødsel', () => {
@@ -248,6 +249,80 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             new Date('2022-05-27T00:00:00.000Z'),
             true,
             undefined
+        );
+        expect(result).toEqual(false);
+    });
+});
+describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
+    it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere true hvis far legger til uttak av fedrekvote rundt fødsel og det ikke er flerbarnsdager', () => {
+        const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            Periodetype.Uttak,
+            StønadskontoType.Fedrekvote,
+            true, //erFarEllerMedmor
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel',
+            false,
+            false
+        );
+        expect(result).toEqual(true);
+    });
+    it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere false hvis uttak av fedrekvote rundt fødsel er i en flerbarnssøknad og far ønsker å bruke flerbarnsdager', () => {
+        const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            Periodetype.Uttak,
+            StønadskontoType.Fedrekvote,
+            true, //erFarEllerMedmor
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel',
+            true,
+            true
+        );
+        expect(result).toEqual(false);
+    });
+    it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere false hvis søker er mor', () => {
+        const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            Periodetype.Uttak,
+            StønadskontoType.Fedrekvote,
+            false, //erFarEllerMedmor
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel',
+            false,
+            false
+        );
+        expect(result).toEqual(false);
+    });
+    it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere false hvis far bruker en annen kvote enn fedrekvote', () => {
+        const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
+            Periodetype.Uttak,
+            StønadskontoType.Fellesperiode,
+            true, //erFarEllerMedmor
+            new Date('2022-08-02T00:00:00.000Z'), //termindato
+            'fødsel',
+            false,
+            false
+        );
+        expect(result).toEqual(false);
+    });
+});
+describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB ikke gjelder', () => {
+    it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere false hvis WLB ikke gjelder pga tidlig familiehendelsesdato', () => {
+        const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
+            new Date('2022-08-01T00:00:00.000Z'), //familiehendelsesdato
+            Periodetype.Uttak,
+            StønadskontoType.Fedrekvote,
+            true, //erFarEllerMedmor
+            new Date('2022-08-01T00:00:00.000Z'), //termindato,
+            'fødsel',
+            false,
+            false
         );
         expect(result).toEqual(false);
     });

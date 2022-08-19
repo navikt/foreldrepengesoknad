@@ -153,7 +153,9 @@ export const getUttakSkjemaregler = (
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 termindato,
-                situasjon
+                situasjon,
+                erFlerbarnssøknad,
+                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
             );
         },
         overføringsårsakSkalBesvares: () => periodetype === Periodetype.Overføring,
