@@ -33,11 +33,7 @@ const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder)
     return false;
 };
 
-const getMorHarRettIEØS = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
-    if (!erFarMedmor) {
-        return true;
-    }
-
+const getAnnenPartHarRettIEØS = (annenForelder: AnnenForelder) => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         return !!annenForelder.harRettPåForeldrepengerIEØS;
     }
@@ -71,7 +67,7 @@ const getStønadskontoParams = (
         dekningsgrad: dekningsgrad,
         farHarRett: getFarHarRett(erFarMedmor, annenForelder),
         morHarRettINorge: getMorHarRettINorge(erFarMedmor, annenForelder),
-        morHarRettIEØS: getMorHarRettIEØS(erFarMedmor, annenForelder),
+        annenPartHarRettIEØS: getAnnenPartHarRettIEØS(annenForelder),
         morHarAleneomsorg,
         farHarAleneomsorg,
         fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,

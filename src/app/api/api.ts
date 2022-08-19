@@ -18,7 +18,7 @@ import FeatureToggle from 'app/FeatureToggle';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRettINorge: boolean;
-    morHarRettIEØS: boolean;
+    annenPartHarRettIEØS: boolean;
     farHarRett: boolean;
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
     termindato: string | undefined;
@@ -163,7 +163,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         antallBarn,
         farHarRett,
         morHarRettINorge,
-        morHarRettIEØS,
+        annenPartHarRettIEØS,
         dekningsgrad,
         fødselsdato,
         termindato,
@@ -181,7 +181,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const urlParams = {
         farHarRett,
         morHarRett: morHarRettINorge,
-        morMottarForeldrepengerIEØS: morHarRettIEØS,
+        annenPartHarRettPåForeldrepengerIEØS: annenPartHarRettIEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
@@ -199,7 +199,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     if (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
         urlParamsForInnsending = urlParams;
     } else {
-        const { morMottarForeldrepengerIEØS, ...rest } = urlParams;
+        const { annenPartHarRettPåForeldrepengerIEØS, ...rest } = urlParams;
         urlParamsForInnsending = rest;
     }
 

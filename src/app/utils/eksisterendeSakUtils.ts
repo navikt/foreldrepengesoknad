@@ -316,6 +316,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     etternavn: annenPart.navn.etternavn,
                     erUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge: grunnlag.morHarRett,
+                    harRettPåForeldrepengerIEØS: grunnlag.annenPartHarRettPåForeldrepengerIEØS,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                 };
@@ -324,6 +325,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 fornavn: annenPart.navn.fornavn,
                 etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepengerINorge: grunnlag.farMedmorHarRett,
+                harRettPåForeldrepengerIEØS: grunnlag.annenPartHarRettPåForeldrepengerIEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
             };

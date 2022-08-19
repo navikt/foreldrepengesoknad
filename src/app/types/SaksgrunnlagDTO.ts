@@ -10,6 +10,7 @@ export interface SaksgrunnlagDTO {
     morHarRett: boolean;
     omsorgsovertakelsesdato?: string;
     søkerErFarEllerMedmor: boolean;
-    termindato?: string;
     gjelderAnnenPart: boolean;
+    termindato?: string;
+    annenPartHarRettPåForeldrepengerIEØS?: boolean;
 }
