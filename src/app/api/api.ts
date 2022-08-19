@@ -18,7 +18,6 @@ import FeatureToggle from 'app/FeatureToggle';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRettINorge: boolean;
-    annenPartHarRettIEØS: boolean;
     farHarRett: boolean;
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
     termindato: string | undefined;
@@ -30,6 +29,7 @@ export interface TilgjengeligeStønadskontoerParams {
     minsterett: boolean;
     erMor: boolean;
     morHarUføretrygd: boolean;
+    annenPartHarRettPåForeldrepengerIEØS?: boolean;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -163,7 +163,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         antallBarn,
         farHarRett,
         morHarRettINorge,
-        annenPartHarRettIEØS,
+        annenPartHarRettPåForeldrepengerIEØS,
         dekningsgrad,
         fødselsdato,
         termindato,
@@ -181,7 +181,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const urlParams = {
         farHarRett,
         morHarRett: morHarRettINorge,
-        annenPartHarRettPåForeldrepengerIEØS: annenPartHarRettIEØS,
+        annenPartHarRettPåForeldrepengerIEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
