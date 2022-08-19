@@ -43,13 +43,11 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
                 konto,
                 søkerErFarEllerMedmor,
                 termindato,
-                situasjon
+                situasjon,
+                erFlerbarnssøknad,
+                ønskerFlerbarnsdager
             )
         ) {
-            if (erFlerbarnssøknad) {
-                return ønskerFlerbarnsdager === false;
-            }
-
             return true;
         }
         return false;
