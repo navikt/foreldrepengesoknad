@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'nav-frontend-modal';
 import * as Sentry from '@sentry/browser';
+import '@navikt/ds-css';
 
 import * as countries from 'i18n-iso-countries';
 import { initAmplitude } from './amplitude/amplitude';
