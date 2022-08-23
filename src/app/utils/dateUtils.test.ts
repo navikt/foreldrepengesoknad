@@ -27,7 +27,6 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { guid } from 'nav-frontend-js-utils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import fns from './toggleUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -585,7 +584,7 @@ describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
     });
 
     it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
-        fns.isFeatureEnabled = jest.fn(() => false);
+        jest.mock('./toggleUtils', () => jest.fn(() => false));
 
         //Sjekk at dagens dato er riktig satt
         expect(new Date()).toEqual(andreAugust2022Date);
@@ -594,7 +593,7 @@ describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
         expect(gjelderWLB).toEqual(false);
     });
     it('skal returnere at WLB regler i prod gjelder med familiehendelsesdato etter 2. august 2022', () => {
-        fns.isFeatureEnabled = jest.fn(() => false);
+        jest.mock('./toggleUtils', () => jest.fn(() => false));
         expect(new Date()).toEqual(andreAugust2022Date);
 
         const gjelderWLB = andreAugust2022ReglerGjelder(andreAugust2022Date);

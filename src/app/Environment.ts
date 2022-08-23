@@ -11,6 +11,7 @@ const Environment = () => {
         [FeatureToggle.visFeilside]: appSettings[FeatureToggle.visFeilside],
         [FeatureToggle.visAlertstripe]: appSettings[FeatureToggle.visAlertstripe],
         [FeatureToggle.visPerioderSomSendesInn]: appSettings[FeatureToggle.visPerioderSomSendesInn],
+        [FeatureToggle.brukSakerV2]: appSettings[FeatureToggle.brukSakerV2],
     };
 };
 
