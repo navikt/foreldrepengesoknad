@@ -103,11 +103,11 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: Søknadsinfo
         let infoTekstKey = undefined;
         if (!vekslerArbeidOgUttakTest) {
             infoTekstKey =
-                'uttaksplan.validering.info.burdeKanskjeSøkeGraderingPgaVekslendeUtsettelserPgaArbeidOgUttak';
+                'uttaksplan.validering.info.burdeKanskjeSøkeGradering.PgaVekslendeUtsettelserPgaArbeidOgUttak';
         }
 
         if (!veklserPerioderUtenUttakOgUttaktest) {
-            infoTekstKey = 'uttaksplan.validering.info.burdeKanskjeSøkeGraderingPgaVekslendePerioderUtenUttakOgUttak';
+            infoTekstKey = 'uttaksplan.validering.info.burdeKanskjeSøkeGradering.PgaVekslendePerioderUtenUttakOgUttak';
         }
 
         return {
