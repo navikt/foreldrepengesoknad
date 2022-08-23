@@ -46,6 +46,18 @@ const useSøkerinfo = () => {
     };
 };
 
+const useGetSakerV2 = (enabled: boolean) => {
+    const { data, error } = useRequest<any>('/innsyn/v2/saker', {
+        config: { withCredentials: true },
+        isSuspended: !enabled,
+    });
+
+    return {
+        sakerV2Data: data,
+        sakerV2Error: error,
+    };
+};
+
 const useGetSaker = (fnr: string | undefined) => {
     const { data, error } = useRequest<Sak[]>('/innsyn/saker', {
         fnr,
@@ -216,6 +228,7 @@ const Api = {
     useSøkerinfo,
     useGetEksisterendeSak,
     sendSøknad,
+    useGetSakerV2,
 };
 
 export default Api;
