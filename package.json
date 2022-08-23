@@ -143,7 +143,7 @@
         "@navikt/fp-common": "^6.0.3",
         "@navikt/sif-common-formik": "^23.1.0",
         "@navikt/sif-common-question-config": "^0.0.7",
-        "@sentry/browser": "^7.8.1",
+        "@sentry/browser": "^7.11.1",
         "@snyk/protect": "^1.990.0",
         "amplitude-js": "^8.19.0",
         "axios": "^0.27.2",
