@@ -24,11 +24,15 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker } = useSøknad();
+    const { søker, barn } = useSøknad();
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const [frilansoppdrag, setFrilansoppdrag] = useState(
         søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
@@ -87,7 +91,12 @@ const Inntektsinformasjon = () => {
                                 </Normaltekst>
                             </Block>
 
-                            <ArbeidsforholdInformasjon arbeidsforhold={arbeidsforhold} />
+                            <ArbeidsforholdInformasjon
+                                arbeidsforhold={getAktiveArbeidsforhold(
+                                    arbeidsforhold,
+                                    ISOStringToDate(familiehendelsesdato)
+                                )}
+                            />
 
                             <InfoTilFiskere />
 
