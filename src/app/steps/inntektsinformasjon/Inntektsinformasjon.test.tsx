@@ -255,6 +255,6 @@ describe('<Inntektsinformasjon>', () => {
         render(<HarArbeidsforhold />);
 
         expect(await screen.findByText('Auto Joachim Bilpleie')).toBeInTheDocument();
-        expect(screen.getByText('Taco Express')).toBeInTheDocument();
+        expect(screen.queryByText('Taco Express')).not.toBeInTheDocument();
     });
 });
