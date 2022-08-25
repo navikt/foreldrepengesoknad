@@ -349,6 +349,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     vedlegg={values.overføringsdokumentasjon}
                                     navnAnnenForelder={navnPåAnnenForelder!}
                                     erEndringssøknad={erEndringssøknad}
+                                    valgtOverføringsårsak={values.overføringsårsak}
                                 />
                             </Block>
                             <Block
