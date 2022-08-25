@@ -162,6 +162,7 @@ const UttaksplanStep = () => {
         const perioderForÅSendeInn = getPerioderSomSkalSendesInn(
             nyPlan,
             erEndringssøknad,
+            erFarEllerMedmor,
             opprinneligPlan,
             tidspunktForEndring
         );
