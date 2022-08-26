@@ -45,7 +45,7 @@ jobs:
 
             - name: Bygg, tag og push Docker image
               run: |
-                  docker build --pull --tag ${IMAGE_BASE}:${TAG} .
+                  docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest .
                   docker push ${IMAGE_BASE} --all-tags
 
             - name: Lukk gamle bygg-issues
