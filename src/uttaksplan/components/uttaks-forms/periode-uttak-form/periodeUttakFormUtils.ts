@@ -358,6 +358,16 @@ export const mapPeriodeUttakFormToPeriode = (
     situasjon: Situasjon
 ): Periode => {
     if (type === Periodetype.Overføring) {
+        const overføringTrengerDokumentasjon =
+            values.overføringsårsak !== OverføringÅrsakType.aleneomsorg &&
+            values.overføringsårsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
+        const vedlegg = overføringTrengerDokumentasjon
+            ? lagSendSenereDokumentNårIngenAndreFinnes(
+                  values.overføringsdokumentasjon!,
+                  AttachmentType.OVERFØRING_KVOTE,
+                  Skjemanummer.DOK_OVERFØRING_FOR_SYK
+              )
+            : undefined;
         const periode: Overføringsperiode = {
             id,
             type,
@@ -368,11 +378,7 @@ export const mapPeriodeUttakFormToPeriode = (
                 tom: values.tom!,
             },
             årsak: values.overføringsårsak as OverføringÅrsakType,
-            vedlegg: lagSendSenereDokumentNårIngenAndreFinnes(
-                values.overføringsdokumentasjon!,
-                AttachmentType.OVERFØRING_KVOTE,
-                Skjemanummer.DOK_OVERFØRING_FOR_SYK
-            ),
+            vedlegg,
         };
 
         return periode;
