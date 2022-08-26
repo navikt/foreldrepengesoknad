@@ -15,9 +15,15 @@ interface Props {
     vedlegg: Attachment[];
     navnAnnenForelder: string;
     erEndringssøknad: boolean;
+    valgtOverføringsårsak: OverføringÅrsakType | '';
 }
 
-const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnAnnenForelder, erEndringssøknad }) => {
+const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
+    vedlegg,
+    navnAnnenForelder,
+    erEndringssøknad,
+    valgtOverføringsårsak,
+}) => {
     const intl = useIntl();
 
     const radios = [
@@ -48,6 +54,11 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnA
         });
     }
 
+    const beOmDokumentasjon =
+        valgtOverføringsårsak !== '' &&
+        valgtOverføringsårsak !== OverføringÅrsakType.aleneomsorg &&
+        valgtOverføringsårsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
+
     return (
         <>
             <Block padBottom="l">
@@ -65,23 +76,27 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ vedlegg, navnA
                     }}
                 />
             </Block>
-            <Block padBottom="l">
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage
-                        id="uttaksplan.overføringsårsak.informasjonVedSykdomAnnenForelder"
-                        values={{ navnAnnenForelder }}
+            {beOmDokumentasjon && (
+                <Block padBottom="l">
+                    <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                        <FormattedMessage
+                            id="uttaksplan.overføringsårsak.informasjonVedSykdomAnnenForelder"
+                            values={{ navnAnnenForelder }}
+                        />
+                    </Veilederpanel>
+                </Block>
+            )}
+            {beOmDokumentasjon && (
+                <Block padBottom="l">
+                    <FormikFileUploader
+                        label={intlUtils(intl, 'uttaksplan.overføringsårsak.dokumentasjon')}
+                        name={PeriodeUttakFormField.overføringsdokumentasjon}
+                        attachments={vedlegg || []}
+                        attachmentType={AttachmentType.OVERFØRING_KVOTE}
+                        skjemanummer={Skjemanummer.DOK_OVERFØRING_FOR_SYK}
                     />
-                </Veilederpanel>
-            </Block>
-            <Block padBottom="l">
-                <FormikFileUploader
-                    label={intlUtils(intl, 'uttaksplan.overføringsårsak.dokumentasjon')}
-                    name={PeriodeUttakFormField.overføringsdokumentasjon}
-                    attachments={vedlegg || []}
-                    attachmentType={AttachmentType.OVERFØRING_KVOTE}
-                    skjemanummer={Skjemanummer.DOK_OVERFØRING_FOR_SYK}
-                />
-            </Block>
+                </Block>
+            )}
         </>
     );
 };
