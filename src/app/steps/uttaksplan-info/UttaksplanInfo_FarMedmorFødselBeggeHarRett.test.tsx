@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/uttaksplan-info/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett.stories';
@@ -34,12 +34,12 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
 
         const sisteDagInput = screen.getByLabelText('Når er dfg siste dag med foreldrepenger?');
         await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(sisteDagInput);
+        await userEvent.tab();
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
 
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
         await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(førsteDagInput);
+        await userEvent.tab();
         expect(await screen.findByText('Hvor mye fellesperiode skal du ha?')).toBeInTheDocument();
 
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -68,12 +68,12 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
 
         const sisteDagInput = screen.getByLabelText('Når er dfg siste dag med foreldrepenger?');
         await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(sisteDagInput);
+        await userEvent.tab();
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
 
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
         await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(førsteDagInput);
+        await userEvent.tab();
         expect(await screen.findByText('Hvor mye fellesperiode skal du ha?')).toBeInTheDocument();
 
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -110,7 +110,7 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
 
         const førsteDagInputFarMedmor = screen.getByLabelText('Når er din første dag med foreldrepenger?');
         await userEvent.type(førsteDagInputFarMedmor, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(førsteDagInputFarMedmor);
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 
