@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import userEvent from '@testing-library/user-event';
 import * as stories from 'stories/steps/om-barnet/OmBarnet.stories';
@@ -33,13 +33,13 @@ describe('<OmBarnet>', () => {
         const barnFødtInput = screen.getByLabelText('Når ble barnet født?');
         await userEvent.type(barnFødtInput, dayjs().format('DD.MM.YYYY'));
 
-        await fireEvent.blur(barnFødtInput);
+        await userEvent.tab();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
 
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
         await userEvent.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
 
-        await fireEvent.blur(termindatoInput);
+        await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
@@ -61,7 +61,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når er termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Når er termindatoen?');
         await userEvent.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(termindatoInput);
+        await userEvent.tab();
 
         expect(
             await screen.findByText(
@@ -73,7 +73,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når er terminbekreftelsen datert?')).toBeInTheDocument();
         const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
         await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(termindatoDatertInput);
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -91,7 +91,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
         await userEvent.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
-        await fireEvent.blur(termindatoInput);
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         MockDate.reset();
@@ -109,7 +109,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
         await userEvent.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
-        await fireEvent.blur(termindatoInput);
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         MockDate.reset();
@@ -124,7 +124,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Oppgi datoen for stebarnsadopsjon')).toBeInTheDocument();
         const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
         await userEvent.type(stebarnsadopsjonInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(stebarnsadopsjonInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ett barn'));
@@ -132,7 +132,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
         const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
         await userEvent.type(barnetFødtInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(barnetFødtInput);
+        await userEvent.tab();
 
         expect(
             await screen.findByText(
@@ -153,7 +153,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når overtar du omsorgen?')).toBeInTheDocument();
         const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
         await userEvent.type(overtaOmsorgDatoInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(overtaOmsorgDatoInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ett barn'));
@@ -161,7 +161,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
         const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
         await userEvent.type(barnetFødtInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(barnetFødtInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Adopterer du fra utlandet?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[1]);
@@ -169,7 +169,7 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når kommer barnet til Norge?')).toBeInTheDocument();
         const kommerTilNorgeDatoInput = screen.getByLabelText('Når kommer barnet til Norge?');
         await userEvent.type(kommerTilNorgeDatoInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(kommerTilNorgeDatoInput);
+        await userEvent.tab();
 
         expect(
             await screen.findByText(
@@ -194,7 +194,7 @@ describe('<OmBarnet>', () => {
             expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
             const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
             await userEvent.type(termindatoInput, dayjs(new Date('2021-03-01')).format('DD.MM.YYYY'));
-            await fireEvent.blur(termindatoInput);
+            await userEvent.tab();
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
             MockDate.reset();
         }
@@ -237,7 +237,7 @@ describe('<OmBarnet>', () => {
 
             const termindatoInput = screen.getByLabelText('Når er termindatoen?');
             await userEvent.type(termindatoInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
-            await fireEvent.blur(termindatoInput);
+            await userEvent.tab();
 
             expect(
                 await screen.findByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
@@ -268,7 +268,7 @@ describe('<OmBarnet>', () => {
 
             const termindatoInput = screen.getByLabelText('Når er termindatoen?');
             await userEvent.type(termindatoInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
-            await fireEvent.blur(termindatoInput);
+            await userEvent.tab();
             expect(
                 screen.queryByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
                     exact: false,
@@ -287,7 +287,7 @@ describe('<OmBarnet>', () => {
             expect(await screen.findByText('Når er terminbekreftelsen datert?')).toBeInTheDocument();
             const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
             await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
-            await fireEvent.blur(termindatoDatertInput);
+            await userEvent.tab();
 
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
             MockDate.reset();

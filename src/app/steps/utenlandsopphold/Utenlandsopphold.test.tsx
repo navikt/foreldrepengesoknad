@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/utenlandsopphold/Utenlandsopphold.stories';
@@ -32,7 +32,7 @@ describe('<Utenlandsopphold>', () => {
     });
 
     it('skal bo i utlandet helt eller delvis', async () => {
-        const utils = render(<Default />);
+        render(<Default />);
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
@@ -44,17 +44,17 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
-        const fraOgMedInput = utils.getByLabelText('Fra og med');
+        const fraOgMedInput = screen.getByLabelText('Fra og med');
         userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        fireEvent.blur(fraOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
-        const tilOgMedInput = utils.getByLabelText('Til og med');
+        const tilOgMedInput = screen.getByLabelText('Til og med');
         userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
-        fireEvent.blur(tilOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Hvilket land skal du bo i?')).toBeInTheDocument();
-        const hvilkeLandInput = utils.getByLabelText('Hvilket land skal du bo i?');
+        const hvilkeLandInput = screen.getByLabelText('Hvilket land skal du bo i?');
         userEvent.type(hvilkeLandInput, 'Aruba');
 
         expect(await screen.findByText('Ok')).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe('<Utenlandsopphold>', () => {
     });
 
     it('skal ha bodd i utlandet helt eller delvis', async () => {
-        const utils = render(<Default />);
+        render(<Default />);
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
@@ -84,17 +84,17 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
-        const fraOgMedInput = utils.getByLabelText('Fra og med');
+        const fraOgMedInput = screen.getByLabelText('Fra og med');
         userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        fireEvent.blur(fraOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
-        const tilOgMedInput = utils.getByLabelText('Til og med');
+        const tilOgMedInput = screen.getByLabelText('Til og med');
         userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
-        fireEvent.blur(tilOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Hvilket land bodde du i?')).toBeInTheDocument();
-        const hvilkeLandInput = utils.getByLabelText('Hvilket land bodde du i?');
+        const hvilkeLandInput = screen.getByLabelText('Hvilket land bodde du i?');
         userEvent.type(hvilkeLandInput, 'Aruba');
 
         expect(await screen.findByText('Ok')).toBeInTheDocument();

@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/inntektsinformasjon/Inntektsinformasjon.stories';
@@ -54,7 +54,7 @@ describe('<Inntektsinformasjon>', () => {
 
         const startetInput = screen.getByRole('textbox');
         await userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(startetInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[1]);
@@ -89,7 +89,7 @@ describe('<Inntektsinformasjon>', () => {
 
         const startetInput = screen.getByRole('textbox');
         await userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(startetInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[1]);
@@ -107,7 +107,7 @@ describe('<Inntektsinformasjon>', () => {
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMedInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(fraOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Er oppdraget pågående?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(NEI)[5]);
@@ -115,7 +115,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
         await userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(tilOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Ok')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ok'));
@@ -164,7 +164,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Når startet du Espens landhandel?')).toBeInTheDocument();
         const startetInput = screen.getByLabelText('Når startet du Espens landhandel?');
         await userEvent.type(startetInput, '01.01.2021');
-        await fireEvent.blur(startetInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Er Espens landhandel pågående?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[4]);
@@ -181,7 +181,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Oppgi dato for når du ble yrkesaktiv')).toBeInTheDocument();
         const yrkesaktivDatoInput = screen.getByLabelText('Oppgi dato for når du ble yrkesaktiv');
         await userEvent.type(yrkesaktivDatoInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(yrkesaktivDatoInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Har du regnskapsfører?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[6]);
@@ -231,7 +231,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Fra og med')).toBeInTheDocument();
         const fraOgMedInput = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMedInput, dayjs().subtract(4, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(fraOgMedInput);
+        await userEvent.tab();
 
         expect(await screen.findByText('Pågående')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(NEI)[3]);
@@ -239,7 +239,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
         await userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
-        await fireEvent.blur(tilOgMedInput);
+        await userEvent.tab();
 
         expect(
             await screen.findByText(

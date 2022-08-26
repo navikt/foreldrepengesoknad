@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
@@ -183,7 +183,7 @@ describe('<AnnenForelder>', () => {
 
         const datoAleneInput = screen.getByLabelText('Dato du ble alene om omsorgen');
         await userEvent.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(datoAleneInput);
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/uttaksplan-info/far-medmor-fødsel-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett.stories';
@@ -47,7 +47,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
         const startDagInput = screen.getByLabelText('Når ønsker du å starte perioden?');
         await userEvent.type(startDagInput, dayjs().format('DD.MM.YYYY'));
-        await fireEvent.blur(startDagInput);
+        await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });
