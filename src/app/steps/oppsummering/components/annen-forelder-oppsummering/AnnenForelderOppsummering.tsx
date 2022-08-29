@@ -9,8 +9,8 @@ import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import fn from 'app/utils/toggleUtils';
 import FeatureToggle from 'app/FeatureToggle';
+import { isFeatureEnabled } from 'app/utils/toggleUtils';
 
 interface Props {
     annenForelder: AnnenForelder;
@@ -71,7 +71,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                         </Normaltekst>
                     </OppsummeringsPunkt>
                     {erFarEllerMedmor &&
-                        fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
+                        isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
                         !annenForelder.harRettPåForeldrepengerINorge && (
                             <OppsummeringsPunkt
                                 title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
@@ -85,8 +85,8 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                         )}
                     {erFarEllerMedmor &&
                         !annenForelder.harRettPåForeldrepengerINorge &&
-                        (!fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) ||
-                            (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
+                        (!isFeatureEnabled(FeatureToggle.testEØSPraksisendring) ||
+                            (isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
                                 !annenForelder.harRettPåForeldrepengerIEØS)) && (
                             <OppsummeringsPunkt
                                 title={intlUtils(intl, 'annenForelder.erMorUfør', {

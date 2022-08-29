@@ -13,8 +13,8 @@ import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
-import fn from 'app/utils/toggleUtils';
 import FeatureToggle from 'app/FeatureToggle';
+import { isFeatureEnabled } from 'app/utils/toggleUtils';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRettINorge: boolean;
@@ -196,7 +196,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     };
 
     let urlParamsForInnsending;
-    if (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
+    if (isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
         urlParamsForInnsending = urlParams;
     } else {
         const { annenPartHarRettPåForeldrepengerIEØS, ...rest } = urlParams;

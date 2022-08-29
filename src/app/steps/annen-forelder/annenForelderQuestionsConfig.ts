@@ -4,7 +4,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { hasValue } from '@navikt/fp-common';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import fn from 'app/utils/toggleUtils';
+import { isFeatureEnabled } from 'app/utils/toggleUtils';
 import FeatureToggle from 'app/FeatureToggle';
 
 interface AnnenForelderQuestionsPayload extends AnnenForelderFormData {
@@ -78,7 +78,7 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         isAnswered: ({ harRettPåForeldrepengerIEØS }) => harRettPåForeldrepengerIEØS !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
         isIncluded: ({ harRettPåForeldrepengerINorge, søkerRolle }) =>
-            fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
+            isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
             harRettPåForeldrepengerINorge === YesOrNo.NO &&
             (søkerRolle === 'far' || søkerRolle === 'medmor'),
     },
@@ -94,8 +94,8 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, søkerRolle }) =>
             aleneOmOmsorg === YesOrNo.NO &&
             harRettPåForeldrepengerINorge === YesOrNo.NO &&
-            (!fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) ||
-                (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
+            (!isFeatureEnabled(FeatureToggle.testEØSPraksisendring) ||
+                (isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
                     harRettPåForeldrepengerIEØS === YesOrNo.NO)) &&
             isFarEllerMedmor(søkerRolle),
     },

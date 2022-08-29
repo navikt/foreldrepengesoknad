@@ -34,7 +34,7 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import fn from 'app/utils/toggleUtils';
+import { isFeatureEnabled } from 'app/utils/toggleUtils';
 import FeatureToggle from 'app/FeatureToggle';
 
 export interface AnnenForelderOppgittForInnsending
@@ -133,7 +133,7 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
                       harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
                       ...annenForelderRest,
                   };
-        if (fn.isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
+        if (isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
             return cleanedAnnenForelder;
         } else {
             const { harRettPåForeldrepengerIEØS, ...rest } = cleanedAnnenForelder;

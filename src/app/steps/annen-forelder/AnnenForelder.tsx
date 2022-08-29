@@ -242,11 +242,6 @@ const AnnenForelder = () => {
                                                 id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
                                                 values={{ navn: formValues.fornavn }}
                                             ></FormattedMessage>
-                                            <br />
-                                            <FormattedMessage
-                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"
-                                                values={{ navn: formValues.fornavn }}
-                                            ></FormattedMessage>
                                         </UtvidetInformasjon>
                                     }
                                     legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerIEØS', {

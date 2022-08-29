@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
 import dayjs from 'dayjs';
-import fns from '../../utils/toggleUtils';
 
+const toggleUtils = require('../../utils/toggleUtils');
 const { Default, SkalOppgiPersonalia, ForFar } = composeStories(stories);
 
 const GÅ_VIDERE_KNAPP = 'Gå videre';
@@ -15,12 +15,13 @@ const NEI = 'Nei';
 const INFO_TEKST = 'Dere kan avtale at LEALAUS tar ut foreldrepenger.';
 const HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL = 'Har LEALAUS rett til foreldrepenger i Norge?';
 const HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL = 'Har TALENTFULL rett til foreldrepenger i Norge?';
-const HAR_MOR_RETT_TIL_FP_I_EØS_LABEL = 'Har TALENTFULL rett til foreldrepenger i et EØS land?';
+const HAR_MOR_RETT_TIL_FP_I_EØS_LABEL = 'Har TALENTFULL arbeidet eller mottatt pengestøtte i et EØS-land';
 const ER_ANNEN_FORELDER_UFØR = 'Har TALENTFULL uføretrygd?';
 const HAR_DU_ORIENTERT_LABEL = 'Har du orientert LEALAUS om søknaden din?';
 const DU_MÅ_INFORMERE_INFO_TEKST = 'Du må orientere LEALAUS om søknaden, før du kan gå videre.';
 const NAVN_ANNEN_FORELDER_LABEL = 'Hva heter den andre forelderen?';
 const KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL = 'Jeg kan ikke oppgi navnet til den andre forelderen';
+const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
 
 describe('<AnnenForelder>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
@@ -197,7 +198,7 @@ describe('<AnnenForelder>', () => {
     });
 
     it('I DEV: skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
-        fns.isFeatureEnabled = jest.fn(() => true);
+        featureIsEnabledMock.mockImplementation(() => true);
         render(<ForFar />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
@@ -210,8 +211,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText(NEI)[1]);
-
-        expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_EØS_LABEL)).toBeInTheDocument();
+        expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText(JA)[2]);
@@ -223,7 +223,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
     it('I PROD: skal søke som far og valget om mor har foreldrepenger i EØS skal ikke dukke opp', async () => {
-        fns.isFeatureEnabled = jest.fn(() => false);
+        featureIsEnabledMock.mockImplementation(() => false);
         render(<ForFar />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
