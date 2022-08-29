@@ -140,7 +140,7 @@
         "@navikt/ds-react": "^1.0.2",
         "@navikt/fnrvalidator": "^1.3.0",
         "@navikt/fp-common": "^6.0.3",
-        "@navikt/sif-common-formik": "^23.1.0",
+        "@navikt/sif-common-formik": "^23.2.0",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@sentry/browser": "^7.11.1",
         "@snyk/protect": "^1.990.0",
