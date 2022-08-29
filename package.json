@@ -76,7 +76,7 @@
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "css-loader": "^6.7.1",
         "dotenv": "^16.0.1",
-        "dotenv-webpack": "^8.0.0",
+        "dotenv-webpack": "^8.0.1",
         "eslint": "^8.23.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-import-resolver-webpack": "^0.13.2",
