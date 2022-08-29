@@ -164,6 +164,7 @@ describe('vedleggUtils', () => {
             harGodkjentOppsummering: false,
             vedlegg: [],
             tilleggsopplysninger: undefined!,
+            ønskerJustertUttakVedFødsel: undefined,
         };
 
         const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
@@ -201,6 +202,7 @@ describe('vedleggUtils', () => {
             harGodkjentOppsummering: false,
             vedlegg: [],
             tilleggsopplysninger: undefined!,
+            ønskerJustertUttakVedFødsel: undefined,
         };
 
         const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);
@@ -244,6 +246,7 @@ describe('vedleggUtils', () => {
             harGodkjentOppsummering: false,
             vedlegg: [],
             tilleggsopplysninger: undefined!,
+            ønskerJustertUttakVedFødsel: undefined,
         };
 
         const søknadForInnsending = mapAttachmentsToSøknadForInnsending(søknad);

@@ -63,6 +63,7 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             begrunnelseForSenEndring: undefined!,
         },
         saksnummer: undefined,
+        ønskerJustertUttakVedFødsel: undefined,
     },
     søkerinfo: undefined!,
     saker: [],

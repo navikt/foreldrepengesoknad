@@ -47,6 +47,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
     SLETT_UTTAKSPLAN = 'slettUttaksplan',
     SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
+    SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL = 'setØnskerJustertUttakVedFødsel',
 }
 
 interface SetVelkommen {
@@ -327,6 +328,16 @@ const setUttaksplanSlettet = (uttaksplanHarBlittSlettet: boolean): SetUttaksplan
     uttaksplanHarBlittSlettet,
 });
 
+interface SetØnskerJustertUttakVedFødsel {
+    type: ForeldrepengesøknadContextActionKeys.SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL;
+    payload: boolean | undefined;
+}
+
+const setØnskerJustertUttakVedFødsel = (payload: boolean | undefined): SetØnskerJustertUttakVedFødsel => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -355,7 +366,8 @@ export type ForeldrepengesøknadContextAction =
     | SetUttaksplan
     | SetPerioderSomSkalSendesInn
     | SlettUttaksplan
-    | SetUttaksplanSlettet;
+    | SetUttaksplanSlettet
+    | SetØnskerJustertUttakVedFødsel;
 
 export default {
     setVelkommen,
@@ -386,4 +398,5 @@ export default {
     setPerioderSomSkalSendesInn,
     slettUttaksplan,
     setUttaksplanSlettet,
+    setØnskerJustertUttakVedFødsel,
 };

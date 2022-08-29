@@ -220,6 +220,14 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 harUttaksplanBlittSlettet: action.uttaksplanHarBlittSlettet,
             };
+        case ForeldrepengesøknadContextActionKeys.SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    ønskerJustertUttakVedFødsel: action.payload,
+                },
+            };
         default:
             return state;
     }

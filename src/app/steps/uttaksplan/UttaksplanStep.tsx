@@ -50,6 +50,9 @@ const UttaksplanStep = () => {
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
+    const [ønskerJustertUttakVedFødsel, setØnskerJustertUttakVedFødsel] = useState(
+        state.søknad.ønskerJustertUttakVedFødsel
+    );
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
@@ -83,6 +86,7 @@ const UttaksplanStep = () => {
         setSubmitIsClicked(true);
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
         return [
+            actionCreator.setØnskerJustertUttakVedFødsel(ønskerJustertUttakVedFødsel),
             actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),
             actionCreator.setEndringstidspunkt(endringstidspunkt),
             actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
@@ -265,6 +269,7 @@ const UttaksplanStep = () => {
                 handleSlettUttaksplan={handleSlettUttaksplan}
                 termindato={termindato}
                 barn={barn}
+                setØnskerJustertUttakVedFødsel={setØnskerJustertUttakVedFødsel}
             />
             <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
             {!uttaksplanErGyldig && submitIsClicked && (

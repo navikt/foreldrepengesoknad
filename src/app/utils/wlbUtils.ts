@@ -9,6 +9,7 @@ import { intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import { finnAntallDagerÅTrekke } from 'app/steps/uttaksplan-info/utils/uttaksPlanStatus';
 import { Situasjon } from 'app/types/Situasjon';
 import { IntlShape } from 'react-intl';
+import Barn, { isFødtBarn } from 'app/context/types/Barn';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 const ANTALL_DAGER_TO_UKER = 2 * 7;
@@ -106,6 +107,47 @@ export const getFarMedmorUttakRundtFødsel = (
     termindato: Date | undefined
 ): Periode[] => {
     return perioder.filter((p) => isUttaksperiodeFarMedmorPgaFødsel(p, familiehendelsesdato, termindato));
+};
+
+export const farMedMorHarKunEnPeriodeRundtFødselOgDenStarterPåTermin = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    periodetype: Periodetype,
+    konto: StønadskontoType,
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined,
+    situasjon: Situasjon,
+    erFlerbarnssøknad: boolean,
+    ønskerFlerbarnsdager: boolean | undefined,
+    barn: Barn
+) => {
+    if (
+        !erFarEllerMedmor ||
+        situasjon !== 'fødsel' ||
+        !andreAugust2022ReglerGjelder(familiehendelsesdato) ||
+        termindato === undefined ||
+        isFødtBarn(barn)
+    ) {
+        return false;
+    }
+    const perioderRundtFødsel = perioder.filter((p) =>
+        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(p.tidsperiode, familiehendelsesdato, termindato)
+    );
+    return (
+        perioderRundtFødsel.length === 1 &&
+        perioderRundtFødsel[0].tidsperiode.fom === familiehendelsesdato &&
+        erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            perioderRundtFødsel[0].tidsperiode,
+            familiehendelsesdato,
+            periodetype,
+            konto,
+            erFarEllerMedmor,
+            termindato,
+            situasjon,
+            erFlerbarnssøknad,
+            ønskerFlerbarnsdager
+        )
+    );
 };
 
 export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (

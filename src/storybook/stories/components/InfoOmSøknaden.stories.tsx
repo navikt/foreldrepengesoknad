@@ -43,6 +43,7 @@ const context = {
         harGodkjentOppsummering: false,
         vedlegg: [],
         tilleggsopplysninger: undefined!,
+        ønskerJustertUttakVedFødsel: undefined,
     },
     version: 4,
     currentRoute: '/soknad/uttaksplan-info',
