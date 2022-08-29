@@ -77,10 +77,8 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
         isAnswered: ({ harRettPåForeldrepengerIEØS }) => harRettPåForeldrepengerIEØS !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
-        isIncluded: ({ harRettPåForeldrepengerINorge, søkerRolle }) =>
-            isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
-            harRettPåForeldrepengerINorge === YesOrNo.NO &&
-            (søkerRolle === 'far' || søkerRolle === 'medmor'),
+        isIncluded: ({ harRettPåForeldrepengerINorge }) =>
+            isFeatureEnabled(FeatureToggle.testEØSPraksisendring) && harRettPåForeldrepengerINorge === YesOrNo.NO,
     },
     [AnnenForelderFormField.erInformertOmSøknaden]: {
         parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
