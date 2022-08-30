@@ -18,7 +18,7 @@ import { isFeatureEnabled } from 'app/utils/toggleUtils';
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRettINorge: boolean;
-    farHarRett: boolean;
+    farHarRettINorge: boolean;
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
     termindato: string | undefined;
     fødselsdato: string | undefined;
@@ -161,7 +161,7 @@ const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> =
 const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspended = false) => {
     const {
         antallBarn,
-        farHarRett,
+        farHarRettINorge,
         morHarRettINorge,
         annenPartHarRettPåForeldrepengerIEØS,
         dekningsgrad,
@@ -179,7 +179,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const fpUttakServiceDateFormat = 'YYYYMMDD';
 
     const urlParams = {
-        farHarRett,
+        farHarRett: farHarRettINorge,
         morHarRett: morHarRettINorge,
         annenPartHarRettPåForeldrepengerIEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,

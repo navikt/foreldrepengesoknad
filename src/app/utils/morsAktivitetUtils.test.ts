@@ -8,6 +8,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
             erUfør: false,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(

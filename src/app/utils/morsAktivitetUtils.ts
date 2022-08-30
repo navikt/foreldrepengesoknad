@@ -9,7 +9,7 @@ export const aktivitetskravMorUtil = {
         const reglerFørFørsteOkt2021 = dayjs(new Date()).isBefore(new Date('2021-10-01'), 'day');
         const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erUfør : undefined;
         const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
-            ? annenForelder.harRettPåForeldrepengerINorge
+            ? annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS
             : undefined;
 
         return !søkerErFarEllerMedmor ||

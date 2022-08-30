@@ -72,7 +72,9 @@ const Planlegger: FunctionComponent<Props> = ({
     const [isUtsettelse, setIsUtsettelse] = useState(false);
     const nesteLedigeUttaksdato = Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode();
     const annenForelderErOppgitMenHarIkkeRett =
-        isAnnenForelderOppgitt(annenForelder) && !annenForelder.harRettPåForeldrepengerINorge;
+        isAnnenForelderOppgitt(annenForelder) &&
+        !annenForelder.harRettPåForeldrepengerINorge &&
+        !annenForelder.harRettPåForeldrepengerIEØS;
     const søkerErFarEllerMedmorOgKunDeHarRett =
         erFarEllerMedmor && !erAleneOmOmsorg && annenForelderErOppgitMenHarIkkeRett;
 

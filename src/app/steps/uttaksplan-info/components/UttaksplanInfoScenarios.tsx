@@ -28,7 +28,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
-        ? !!annenForelder.harRettPåForeldrepengerINorge
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
         : false;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined

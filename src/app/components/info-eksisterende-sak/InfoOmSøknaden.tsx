@@ -70,7 +70,9 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
     const annenForelderNavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
+        : false;
     const erAleneOmOmsorg = søker.erAleneOmOmsorg;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);

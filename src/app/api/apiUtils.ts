@@ -177,22 +177,25 @@ const konverterRolle = (rolle: Søkerrolle): SøkerrolleInnsending => {
 const changeClientonlyKontotype = (
     periode: Periode,
     annenForelderHarRettPåForeldrepengerINorge: boolean,
+    annenForelderHarRettPåForeldrepengerIEØS: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmor: boolean,
-    familihendelsesdato: Date
+    familiehendelsesdato: Date
 ) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
-            periode.konto = !annenForelderHarRettPåForeldrepengerINorge
-                ? StønadskontoType.Foreldrepenger
-                : StønadskontoType.Fellesperiode;
+            periode.konto =
+                !annenForelderHarRettPåForeldrepengerINorge || !annenForelderHarRettPåForeldrepengerIEØS
+                    ? StønadskontoType.Foreldrepenger
+                    : StønadskontoType.Fellesperiode;
         }
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
             if (
                 søkerErFarEllerMedmor &&
                 !annenForelderHarRettPåForeldrepengerINorge &&
-                andreAugust2022ReglerGjelder(familihendelsesdato)
+                !annenForelderHarRettPåForeldrepengerIEØS &&
+                andreAugust2022ReglerGjelder(familiehendelsesdato)
             ) {
                 periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
             } else if (morErUfør) {
@@ -238,6 +241,7 @@ const cleanUttaksplan = (
                 ? changeClientonlyKontotype(
                       periode,
                       !!annenForelder.harRettPåForeldrepengerINorge,
+                      !!annenForelder.harRettPåForeldrepengerIEØS,
                       !!annenForelder.erUfør,
                       søkerErFarEllerMedmor,
                       familiehendelsesdato

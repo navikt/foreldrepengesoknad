@@ -51,7 +51,20 @@ export const getMorErAleneOmOmsorg = (
     return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
 };
 
-export const getMorHarRettPåForeldrepengerINorge = (
+export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
+    rolle: Søkerrolle,
+    søkerErFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder
+) => {
+    if (søkerErFarEllerMedmor === true && isAnnenForelderOppgitt(annenForelder)) {
+        return (
+            annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true
+        );
+    }
+    return rolle === 'mor';
+};
+
+export const getMorHarRettPåForeldrepengerIEØS = (
     rolle: Søkerrolle,
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder

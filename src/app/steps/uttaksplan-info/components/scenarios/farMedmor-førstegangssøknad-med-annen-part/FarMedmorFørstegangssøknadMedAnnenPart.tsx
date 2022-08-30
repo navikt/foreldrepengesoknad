@@ -32,19 +32,13 @@ import {
     FarMedmorFørstegangssøknadMedAnnenPartFormField,
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
-<<<<<<< HEAD
 import {
     getFarMedmorFørstegangssøknadMedAnnenPartInitialValues,
     leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan,
 } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
-=======
-import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import Uttaksplanbuilder from 'uttaksplan/builder/Uttaksplanbuilder';
-import { getMorHarRettPåForeldrepengerINorge } from 'app/utils/personUtils';
->>>>>>> bfd1c1f36 (TFP-5012: Starter implementering for bfhr, mor har rett på foreldrepenger i EØS.)
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'app/utils/personUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -67,7 +61,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const bareFarHarRett = !getMorHarRettPåForeldrepengerINorge(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
+    const bareFarHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
+        søkersituasjon.rolle,
+        erFarEllerMedmor,
+        annenForelder
+    );
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({

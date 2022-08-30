@@ -9,7 +9,7 @@ import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUti
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { TilgjengeligeStønadskontoerParams } from './api';
 
-const getFarHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
     if (erFarMedmor) {
         return true;
     }
@@ -65,7 +65,7 @@ const getStønadskontoParams = (
         antallBarn: barn.antallBarn.toString(),
         startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
-        farHarRett: getFarHarRett(erFarMedmor, annenForelder),
+        farHarRettINorge: getFarHarRettINorge(erFarMedmor, annenForelder),
         morHarRettINorge: getMorHarRettINorge(erFarMedmor, annenForelder),
         annenPartHarRettPåForeldrepengerIEØS: getAnnenPartHarRettIEØS(annenForelder),
         morHarAleneomsorg,
