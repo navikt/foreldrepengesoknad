@@ -164,7 +164,8 @@ const Uttaksplanbuilder = (
             (p) =>
                 !isUtsettelsesperiode(p) &&
                 !isForeldrepengerFørFødselUttaksperiode(p) &&
-                !starterUttaksperiodeFørFødsel(p, familiehendelsesdato)
+                !starterUttaksperiodeFørFødsel(p, familiehendelsesdato) &&
+                !isInfoPeriode(p)
         ),
         familiehendelsesdato
     );

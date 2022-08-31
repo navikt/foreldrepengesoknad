@@ -1,8 +1,9 @@
 import { Forelder } from 'app/types/Forelder';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { InfoPeriode, Periode, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import Uttaksplanbuilder from './Uttaksplanbuilder';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 
 const perioder: Periode[] = [
     {
@@ -100,6 +101,115 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
     },
 ];
 
+const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
+    {
+        id: '1',
+        type: Periodetype.Uttak,
+        tidsperiode: {
+            fom: new Date('2021-08-18'),
+            tom: new Date('2021-09-03'),
+        },
+        forelder: Forelder.mor,
+        konto: StønadskontoType.ForeldrepengerFørFødsel,
+    },
+    {
+        id: '2',
+        type: Periodetype.Utsettelse,
+        tidsperiode: {
+            fom: new Date('2021-09-06'),
+            tom: new Date('2021-09-10'),
+        },
+        forelder: Forelder.mor,
+    } as Utsettelsesperiode,
+    {
+        id: '3',
+        type: Periodetype.Uttak,
+        tidsperiode: {
+            fom: new Date('2021-09-13'),
+            tom: new Date('2021-12-10'),
+        },
+        forelder: Forelder.mor,
+        konto: StønadskontoType.Mødrekvote,
+    },
+    {
+        id: '4',
+        type: Periodetype.Utsettelse,
+        tidsperiode: {
+            fom: new Date('2021-12-13'),
+            tom: new Date('2021-12-31'),
+        },
+        forelder: Forelder.mor,
+    } as Utsettelsesperiode,
+    {
+        id: '5',
+        type: Periodetype.Uttak,
+        tidsperiode: {
+            fom: new Date('2022-01-03'),
+            tom: new Date('2022-01-07'),
+        },
+        forelder: Forelder.mor,
+        konto: StønadskontoType.Mødrekvote,
+    },
+    {
+        id: '6',
+        type: Periodetype.Uttak,
+        tidsperiode: {
+            fom: new Date('2022-01-10'),
+            tom: new Date('2022-04-29'),
+        },
+        forelder: Forelder.mor,
+        konto: StønadskontoType.Fellesperiode,
+    },
+    {
+        id: '7',
+        type: Periodetype.Info,
+        tidsperiode: {
+            fom: new Date('2022-05-02'),
+            tom: new Date('2022-05-10'),
+        },
+        infotype: PeriodeInfoType.utsettelseAnnenPart,
+        forelder: Forelder.farMedmor,
+        overskrives: true,
+        visPeriodeIPlan: true,
+    } as InfoPeriode,
+    {
+        id: '8',
+        type: Periodetype.Info,
+        tidsperiode: {
+            fom: new Date('2022-05-11'),
+            tom: new Date('2022-07-08'),
+        },
+        infotype: PeriodeInfoType.uttakAnnenPart,
+        forelder: Forelder.farMedmor,
+        overskrives: true,
+        visPeriodeIPlan: true,
+    } as InfoPeriode,
+    {
+        id: '9',
+        type: Periodetype.Info,
+        tidsperiode: {
+            fom: new Date('2022-07-11'),
+            tom: new Date('2022-07-29'),
+        },
+        infotype: PeriodeInfoType.utsettelseAnnenPart,
+        forelder: Forelder.farMedmor,
+        overskrives: true,
+        visPeriodeIPlan: true,
+    } as InfoPeriode,
+    {
+        id: '10',
+        type: Periodetype.Info,
+        tidsperiode: {
+            fom: new Date('2022-08-01'),
+            tom: new Date('2022-09-13'),
+        },
+        infotype: PeriodeInfoType.uttakAnnenPart,
+        forelder: Forelder.farMedmor,
+        overskrives: true,
+        visPeriodeIPlan: true,
+    } as InfoPeriode,
+];
+
 describe('Uttaksplanbuilder tester', () => {
     it('Å legge til en utsettelse skal ikke forskyve en annen utsettelse', () => {
         const nyPeriode: Periode = {
@@ -172,5 +282,39 @@ describe('Uttaksplanbuilder tester', () => {
         expect(result[6].tidsperiode.fom).toEqual(new Date('2022-09-26'));
         expect(result[6].tidsperiode.tom).toEqual(new Date('2022-10-25'));
         expect(result[7]).toEqual(nyPeriodeISluttenAvPlanen);
+    });
+    it('I en endringssøknad (med opprinelig plan), skal legge til utsettelse etter annen parts uttak når ingen overlap uten å påvirke de andre periodene', () => {
+        const originaleTidsperiodePerioder = perioderMedAnnenPartsUttakOgUtsettelserISlutten.map((periode) => {
+            return { ...periode.tidsperiode };
+        });
+        const nyUtsettelseISluttenAvPlanen: Periode = {
+            id: '11',
+            type: Periodetype.Utsettelse,
+            tidsperiode: {
+                fom: new Date('2022-09-14'),
+                tom: new Date('2022-09-16'),
+            },
+            forelder: Forelder.mor,
+        } as Utsettelsesperiode;
+        const result = Uttaksplanbuilder(
+            perioderMedAnnenPartsUttakOgUtsettelserISlutten,
+            new Date('2021-09-04'),
+            false,
+            false,
+            false,
+            false,
+            perioderMedAnnenPartsUttakOgUtsettelserISlutten
+        ).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
+
+        expect(result.length).toEqual(11);
+        perioderMedAnnenPartsUttakOgUtsettelserISlutten.forEach((p, index) => {
+            const resultPeriode = result[index] as Utsettelsesperiode | Uttaksperiode;
+            const opprinneligPeriode = p as Utsettelsesperiode | Uttaksperiode;
+            const opprinneligTidsperiode = originaleTidsperiodePerioder[index];
+            expect(resultPeriode.tidsperiode).toEqual(opprinneligTidsperiode);
+            expect(resultPeriode.type).toEqual(opprinneligPeriode.type);
+            expect(resultPeriode.forelder).toEqual(opprinneligPeriode.forelder);
+        });
+        expect(result[10]).toEqual(nyUtsettelseISluttenAvPlanen);
     });
 });
