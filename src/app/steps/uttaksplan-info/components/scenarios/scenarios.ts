@@ -33,7 +33,12 @@ export const getUttaksplanScenario = ({
         return 'farMedmorAleneomsorgFødselAdopsjon';
     }
 
-    if (erFarEllerMedmor && erFødsel && annenForelderHarRett && eksisterendeSakAnnenPart === undefined) {
+    if (
+        erFarEllerMedmor &&
+        erFødsel &&
+        annenForelderHarRett &&
+        (eksisterendeSakAnnenPart === undefined || eksisterendeSakAnnenPart.uttaksplan.length === 0)
+    ) {
         return 'farMedmorFødselBeggeHarRett';
     }
 
