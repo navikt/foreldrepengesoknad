@@ -36,6 +36,7 @@ import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farM
 import Uttaksplanbuilder from 'uttaksplan/builder/Uttaksplanbuilder';
 import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -66,6 +67,13 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         morHarRett: true,
         søkerErAleneOmOmsorg: false,
     });
+
+    const morsSisteUttaksdag =
+        eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan.length > 0
+            ? dateToISOString(
+                  eksisterendeSakAnnenPart.uttaksplan[eksisterendeSakAnnenPart.uttaksplan.length - 1].tidsperiode.tom
+              )
+            : undefined;
     const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
@@ -86,7 +94,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             søkerHarMidlertidigOmsorg: false,
             tilgjengeligeStønadskontoer: stønadskontoer,
             uttaksplanSkjema: {
-                morSinSisteUttaksdag: undefined,
+                morSinSisteUttaksdag: morsSisteUttaksdag,
                 farSinFørsteUttaksdag: values.permisjonStartdato,
                 antallDagerFellesperiodeFarMedmor: undefined,
                 antallUkerFellesperiodeFarMedmor: undefined,
