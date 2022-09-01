@@ -134,6 +134,10 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): S
         return StønadskontoType.Fellesperiode;
     }
 
+    if (årsak === OppholdÅrsakType.UttakForeldrepengerAnnenForelder) {
+        return StønadskontoType.Foreldrepenger;
+    }
+
     return StønadskontoType.ForeldrepengerFørFødsel;
 };
 
