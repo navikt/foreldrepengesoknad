@@ -32,8 +32,10 @@ import {
     FarMedmorFørstegangssøknadMedAnnenPartFormField,
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
-import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import Uttaksplanbuilder from 'uttaksplan/builder/Uttaksplanbuilder';
+import {
+    getFarMedmorFørstegangssøknadMedAnnenPartInitialValues,
+    leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan,
+} from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
@@ -106,15 +108,16 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         let uttaksplanMedAnnenPart;
         const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;
         if (eksisterendeSakAnnenPart && nyPeriode !== undefined) {
-            const builder = Uttaksplanbuilder(
+            uttaksplanMedAnnenPart = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
+                nyPeriode,
                 uttaksplan,
                 familiehendelsedatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
                 bareFarHarRett,
-                erFarEllerMedmor
+                erFarEllerMedmor,
+                eksisterendeSakAnnenPart.uttaksplan
             );
-            uttaksplanMedAnnenPart = builder.leggTilPeriode(nyPeriode);
         } else if (eksisterendeSakAnnenPart) {
             uttaksplanMedAnnenPart = eksisterendeSakAnnenPart.uttaksplan;
         } else {
