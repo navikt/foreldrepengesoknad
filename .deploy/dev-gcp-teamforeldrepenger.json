@@ -7,7 +7,6 @@
         "LOGINSERVICE_URL": "https://loginservice-testing.dev.nav.no/login",
         "FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.dev.nav.no",
         "FEATURE_VIS_PERIODER_SOM_SENDES_INN": "on",
-        "FEATURE_BRUK_SAKER_V2": "on",
         "FAMILIE": "https://familie.dev.nav.no"
     }
 }
