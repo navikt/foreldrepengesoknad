@@ -34,7 +34,7 @@ import {
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import {
     getFarMedmorFørstegangssøknadMedAnnenPartInitialValues,
-    leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan,
+    leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan,
 } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
@@ -106,10 +106,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             harAktivitetskravIPeriodeUtenUttak,
         });
         let uttaksplanMedAnnenPart;
-        const nyPeriode = farMedmorSinePerioder.length > 0 ? farMedmorSinePerioder[0] : undefined;
-        if (eksisterendeSakAnnenPart && nyPeriode !== undefined) {
-            uttaksplanMedAnnenPart = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
-                nyPeriode,
+
+        if (eksisterendeSakAnnenPart && farMedmorSinePerioder.length > 0) {
+            uttaksplanMedAnnenPart = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+                farMedmorSinePerioder,
                 uttaksplan,
                 familiehendelsedatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,

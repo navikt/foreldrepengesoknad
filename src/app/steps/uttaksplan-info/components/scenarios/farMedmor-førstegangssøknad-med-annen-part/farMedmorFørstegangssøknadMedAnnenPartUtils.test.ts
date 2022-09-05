@@ -2,7 +2,7 @@ import { Forelder } from 'app/types/Forelder';
 import { Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
+import { leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 
@@ -94,8 +94,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             forelder: Forelder.farMedmor,
             konto: StønadskontoType.Fedrekvote,
         } as Periode;
-        const nyPlan = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
-            farsNyePeriode,
+        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            [farsNyePeriode],
             morsPerioderFørWLB,
             familiehendelseDatoForMorsPerioderFørWLB,
             false,
@@ -122,8 +122,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             forelder: Forelder.farMedmor,
             konto: StønadskontoType.Fedrekvote,
         } as Periode;
-        const nyPlan = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
-            farsNyePeriode,
+        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            [farsNyePeriode],
             morsPerioderFørWLB,
             familiehendelseDatoForMorsPerioderFørWLB,
             false,
@@ -155,8 +155,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             ønskerSamtidigUttak: true,
         } as Uttaksperiode;
 
-        const nyPlan = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
-            farsNyePeriode,
+        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            [farsNyePeriode],
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
@@ -197,8 +197,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             konto: StønadskontoType.Fedrekvote,
         } as Uttaksperiode;
 
-        const nyPlan = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
-            farsNyePeriodeISluttenAvPlanen,
+        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            [farsNyePeriodeISluttenAvPlanen],
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
@@ -227,8 +227,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             ønskerSamtidigUttak: true,
         } as Uttaksperiode;
 
-        const nyPlan = leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan(
-            farNyPeriodeIMidtenAvMors6Uker,
+        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            [farNyPeriodeIMidtenAvMors6Uker],
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
@@ -266,5 +266,82 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         expect(morsPeriodeSplittetINyPlanDel3.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
 
         expect(nyPlan[5]).toEqual(morsPerioderEtterWLB[2]);
+    });
+    it('skal legge til fars periode som overlapper fødselsdatoen slik at de vises sammen med mors uttak', () => {
+        const farsNyePerioderRundtFødsel: Uttaksperiode[] = [
+            {
+                id: '4',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2022-08-01'),
+                    tom: new Date('2022-08-03'),
+                },
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fedrekvote,
+                samtidigUttakProsent: '100',
+                ønskerSamtidigUttak: true,
+            },
+            {
+                id: '5',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2022-08-04'),
+                    tom: new Date('2022-08-12'),
+                },
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fedrekvote,
+                samtidigUttakProsent: '100',
+                ønskerSamtidigUttak: true,
+            },
+        ];
+
+        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            farsNyePerioderRundtFødsel,
+            morsPerioderEtterWLB,
+            familiehendelseDatoForMorsPerioderEtterWLB,
+            false,
+            false,
+            false,
+            true,
+            morsPerioderEtterWLB
+        );
+        expect(nyPlan.length).toBe(7);
+        const morsPeriodeFørFødselDel1 = nyPlan[0] as UttakAnnenPartInfoPeriode;
+        expect(morsPeriodeFørFødselDel1.tidsperiode.fom).toEqual(morsPerioderEtterWLB[0].tidsperiode.fom);
+        expect(morsPeriodeFørFødselDel1.tidsperiode.tom).toEqual(new Date('2022-07-29'));
+        expect(morsPeriodeFørFødselDel1.type).toEqual(morsPerioderEtterWLB[0].type);
+        expect(morsPeriodeFørFødselDel1.infotype).toEqual(morsPerioderEtterWLB[0].infotype);
+        expect(morsPeriodeFørFødselDel1.forelder).toEqual(morsPerioderEtterWLB[0].forelder);
+        expect(morsPeriodeFørFødselDel1.årsak).toEqual(morsPerioderEtterWLB[0].årsak);
+
+        expect(nyPlan[1]).toEqual(farsNyePerioderRundtFødsel[0]);
+
+        const morsPeriodeFørFødselDel2 = nyPlan[2] as UttakAnnenPartInfoPeriode;
+        expect(morsPeriodeFørFødselDel2.tidsperiode.fom).toEqual(new Date('2022-08-01'));
+        expect(morsPeriodeFørFødselDel2.tidsperiode.tom).toEqual(morsPerioderEtterWLB[0].tidsperiode.tom);
+        expect(morsPeriodeFørFødselDel2.type).toEqual(morsPerioderEtterWLB[0].type);
+        expect(morsPeriodeFørFødselDel2.infotype).toEqual(morsPerioderEtterWLB[0].infotype);
+        expect(morsPeriodeFørFødselDel2.forelder).toEqual(morsPerioderEtterWLB[0].forelder);
+        expect(morsPeriodeFørFødselDel2.årsak).toEqual(morsPerioderEtterWLB[0].årsak);
+
+        expect(nyPlan[3]).toEqual(farsNyePerioderRundtFødsel[1]);
+
+        const morsPeriodeEtterFødselDel1 = nyPlan[4] as UttakAnnenPartInfoPeriode;
+        expect(morsPeriodeEtterFødselDel1.tidsperiode.fom).toEqual(morsPerioderEtterWLB[1].tidsperiode.fom);
+        expect(morsPeriodeEtterFødselDel1.tidsperiode.tom).toEqual(new Date('2022-08-12'));
+        expect(morsPeriodeEtterFødselDel1.type).toEqual(morsPerioderEtterWLB[1].type);
+        expect(morsPeriodeEtterFødselDel1.infotype).toEqual(morsPerioderEtterWLB[1].infotype);
+        expect(morsPeriodeEtterFødselDel1.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
+        expect(morsPeriodeEtterFødselDel1.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
+
+        const morsPeriodeEtterFødselDel2 = nyPlan[5] as UttakAnnenPartInfoPeriode;
+        expect(morsPeriodeEtterFødselDel2.tidsperiode.fom).toEqual(new Date('2022-08-15'));
+        expect(morsPeriodeEtterFødselDel2.tidsperiode.tom).toEqual(morsPerioderEtterWLB[1].tidsperiode.tom);
+        expect(morsPeriodeEtterFødselDel2.type).toEqual(morsPerioderEtterWLB[1].type);
+        expect(morsPeriodeEtterFødselDel2.infotype).toEqual(morsPerioderEtterWLB[1].infotype);
+        expect(morsPeriodeEtterFødselDel2.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
+        expect(morsPeriodeEtterFødselDel2.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
+
+        expect(nyPlan[6]).toEqual(morsPerioderEtterWLB[2]);
     });
 });

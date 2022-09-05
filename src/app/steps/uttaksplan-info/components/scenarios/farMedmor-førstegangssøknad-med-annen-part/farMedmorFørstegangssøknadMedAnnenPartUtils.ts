@@ -17,8 +17,8 @@ export const getFarMedmorFørstegangssøknadMedAnnenPartInitialValues = (
     };
 };
 
-export const leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan = (
-    farMedmorsPeriode: Periode,
+export const leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan = (
+    farMedmorsPerioder: Periode[],
     uttaksplan: Periode[],
     familiehendelsedato: Date,
     harAktivitetskravIPeriodeUtenUttak: boolean,
@@ -36,5 +36,9 @@ export const leggTilFarMedmorsPeriodeIEksisterendeSaksUttaksplan = (
         erFarEllerMedmor,
         eksisterendeSakUttaksplan
     );
-    return builder.leggTilPeriode(farMedmorsPeriode);
+    if (farMedmorsPerioder.length === 1) {
+        return builder.leggTilPeriode(farMedmorsPerioder[0]);
+    } else {
+        return builder.leggTilPerioder(farMedmorsPerioder);
+    }
 };
