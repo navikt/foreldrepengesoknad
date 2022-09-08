@@ -28,6 +28,22 @@ export const resetTidsperioder = (perioder: Periode[], familiehendelsesdato: Dat
             forrigePeriode = periode;
             return periode;
         }
+
+        if (isPeriodeUtenUttak(periode)) {
+            forrigePeriode = {
+                ...periode,
+                tidsperiode: {
+                    fom: Uttaksdagen(forrigePeriode.tidsperiode.tom).neste(),
+                    tom: periode.tidsperiode.tom,
+                },
+            };
+
+            return {
+                ...periode,
+                tidsperiode: { ...forrigePeriode.tidsperiode },
+            };
+        }
+
         forrigePeriode = {
             ...periode,
             tidsperiode: getTidsperiode(
