@@ -12,7 +12,6 @@ import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 're
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
-import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
 
@@ -93,7 +92,6 @@ const Planlegger: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.slettPlan.tittel" />
                                     </ActionLink>
                                 </div>
-                                <FamiliehendelsedatoDisplay familiehendelsedato={familiehendelsesdato} barn={barn} />
                             </div>
 
                             <Periodeliste
@@ -118,6 +116,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
                                 utsettelserIPlan={utsettelserIPlan}
+                                barn={barn}
                             />
                         </section>
                     </Block>

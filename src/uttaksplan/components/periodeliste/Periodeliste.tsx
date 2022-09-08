@@ -11,6 +11,9 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
 import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUtils';
+import dayjs from 'dayjs';
+import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
+import Barn from 'app/context/types/Barn';
 
 interface Props {
     uttaksplan: Periode[];
@@ -34,7 +37,12 @@ interface Props {
     termindato: Date | undefined;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
+    barn: Barn;
 }
+
+const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
+    return uttaksplan.findIndex((p) => dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato));
+};
 
 const Periodeliste: FunctionComponent<Props> = ({
     uttaksplan,
@@ -58,6 +66,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     termindato,
     antallBarn,
     utsettelserIPlan,
+    barn,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -70,38 +79,47 @@ const Periodeliste: FunctionComponent<Props> = ({
         }
     };
 
+    const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(uttaksplan, familiehendelsesdato);
+
     return (
         <div className={bem.block}>
-            {uttaksplan.map((p) => (
-                <PeriodelisteItem
-                    key={p.id}
-                    egenPeriode={!isInfoPeriode(p)}
-                    periode={p}
-                    isOpen={openPeriodeId === p.id}
-                    toggleIsOpen={toggleIsOpen}
-                    familiehendelsesdato={familiehendelsesdato}
-                    handleUpdatePeriode={handleUpdatePeriode}
-                    stønadskontoer={stønadskontoer}
-                    navnPåForeldre={navnPåForeldre}
-                    annenForelder={annenForelder}
-                    arbeidsforhold={arbeidsforhold}
-                    handleDeletePeriode={handleDeletePeriode}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    erFlerbarnssøknad={erFlerbarnssøknad}
-                    erAleneOmOmsorg={erAleneOmOmsorg}
-                    erDeltUttak={erDeltUttak}
-                    situasjon={situasjon}
-                    meldinger={meldingerPerPeriode[p.id]}
-                    erMorUfør={erMorUfør}
-                    annenForelderSamtidigUttakPeriode={getAnnenForelderSamtidigUttakPeriode(p, uttaksplan)}
-                    søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
-                    setPeriodeErGyldig={setPeriodeErGyldig}
-                    erEndringssøknad={erEndringssøknad}
-                    termindato={termindato}
-                    antallBarn={antallBarn}
-                    utsettelserIPlan={utsettelserIPlan}
-                />
-            ))}
+            {uttaksplan.map((p, index) => {
+                return (
+                    <>
+                        {indexOfFørstePeriodeEtterFødsel === index ? (
+                            <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
+                        ) : null}
+                        <PeriodelisteItem
+                            key={p.id}
+                            egenPeriode={!isInfoPeriode(p)}
+                            periode={p}
+                            isOpen={openPeriodeId === p.id}
+                            toggleIsOpen={toggleIsOpen}
+                            familiehendelsesdato={familiehendelsesdato}
+                            handleUpdatePeriode={handleUpdatePeriode}
+                            stønadskontoer={stønadskontoer}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelder={annenForelder}
+                            arbeidsforhold={arbeidsforhold}
+                            handleDeletePeriode={handleDeletePeriode}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            erFlerbarnssøknad={erFlerbarnssøknad}
+                            erAleneOmOmsorg={erAleneOmOmsorg}
+                            erDeltUttak={erDeltUttak}
+                            situasjon={situasjon}
+                            meldinger={meldingerPerPeriode[p.id]}
+                            erMorUfør={erMorUfør}
+                            annenForelderSamtidigUttakPeriode={getAnnenForelderSamtidigUttakPeriode(p, uttaksplan)}
+                            søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+                            setPeriodeErGyldig={setPeriodeErGyldig}
+                            erEndringssøknad={erEndringssøknad}
+                            termindato={termindato}
+                            antallBarn={antallBarn}
+                            utsettelserIPlan={utsettelserIPlan}
+                        />
+                    </>
+                );
+            })}
         </div>
     );
 };
