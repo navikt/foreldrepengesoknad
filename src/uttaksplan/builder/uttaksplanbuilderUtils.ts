@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
     isHull,
+    isInfoPeriode,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUttakAnnenPart,
@@ -29,7 +30,9 @@ export const resetTidsperioder = (perioder: Periode[], familiehendelsesdato: Dat
             return periode;
         }
 
-        if (isPeriodeUtenUttak(periode)) {
+        // Perioder av denne typen endrer fom dato, men beholder tom dato for å unngå at resten av planen forskyves
+        // til tidligere tidspunkt
+        if (isPeriodeUtenUttak(periode) || isInfoPeriode(periode)) {
             forrigePeriode = {
                 ...periode,
                 tidsperiode: {
