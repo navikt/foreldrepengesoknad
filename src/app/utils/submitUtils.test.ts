@@ -121,4 +121,50 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
         expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
         expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
     });
+    it('finnEndringerIUttaksplan - Skal returnere en utsettelsesperiode hvis opprinnelig plan hadde annen parts periode i slutten og søkerns siste periode ble slettet', () => {
+        const opprinneligPlanAnnenPartsPeriodePåSlutten = [
+            ...opprinneligPlan,
+            {
+                id: '4',
+                type: Periodetype.PeriodeUtenUttak,
+                tidsperiode: {
+                    fom: new Date('2022-10-02'),
+                    tom: new Date('2022-1-31'),
+                },
+                forelder: Forelder.mor,
+            },
+            {
+                id: '5',
+                type: Periodetype.Info,
+                tidsperiode: {
+                    fom: new Date('2022-11-01'),
+                    tom: new Date('2022-11-08'),
+                },
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fellesperiode,
+            },
+        ] as Periode[];
+        const endringstidspunkt = opprinneligPlan[2].tidsperiode.fom;
+        const nyPlanSlettetMorsSistePeriode = [
+            opprinneligPlanAnnenPartsPeriodePåSlutten[0],
+            opprinneligPlanAnnenPartsPeriodePåSlutten[1],
+            opprinneligPlanAnnenPartsPeriodePåSlutten[3],
+            opprinneligPlanAnnenPartsPeriodePåSlutten[4],
+        ];
+        const endringerIPlan = finnEndringerIUttaksplan(
+            opprinneligPlanAnnenPartsPeriodePåSlutten,
+            nyPlanSlettetMorsSistePeriode,
+            endringstidspunkt,
+            erFarEllerMedmor
+        );
+        expect(endringerIPlan.length).toEqual(1);
+        const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
+        expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(
+            opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.fom
+        );
+        expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.tom);
+        expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
+        expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
+        expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
+    });
 });
