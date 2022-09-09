@@ -52,20 +52,24 @@ export const finnEndringerIUttaksplan = (
     endringstidspunkt: Date,
     erFarEllerMedmor: boolean
 ): Periode[] => {
-    const nyPlanForInnsending = nyPlan.filter(
-        (p) =>
-            dateIsWithinRange(endringstidspunkt, p.tidsperiode.fom, p.tidsperiode.tom) ||
-            dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(endringstidspunkt), 'day')
-    );
+    const nyPlanForInnsending = nyPlan
+        .filter(
+            (p) =>
+                dateIsWithinRange(endringstidspunkt, p.tidsperiode.fom, p.tidsperiode.tom) ||
+                dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(endringstidspunkt), 'day')
+        )
+        .filter(erPeriodeSomSkalSendesInn);
 
     if (nyPlanForInnsending.length === 0 && opprinneligPlan.length > nyPlan.length) {
-        const førsteSlettedePeriode = opprinneligPlan[nyPlan.length];
+        const førsteSlettedePeriode = opprinneligPlan.find((p) =>
+            dayjs(p.tidsperiode.fom).isSame(endringstidspunkt, 'day')
+        );
         const utsettelseForSlettedePerioder = {
             id: guid(),
             type: Periodetype.Utsettelse,
             tidsperiode: {
-                fom: førsteSlettedePeriode.tidsperiode.fom,
-                tom: førsteSlettedePeriode.tidsperiode.tom,
+                fom: førsteSlettedePeriode!.tidsperiode.fom,
+                tom: førsteSlettedePeriode!.tidsperiode.tom,
             },
             årsak: UtsettelseÅrsakType.Fri,
             forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
@@ -87,7 +91,5 @@ const getEndretUttaksplanForInnsending = (
         return [];
     }
 
-    return finnEndringerIUttaksplan(opprinneligPlan, nyPlan, endringstidspunkt, erSøkerFarEllerMedmor).filter(
-        erPeriodeSomSkalSendesInn
-    );
+    return finnEndringerIUttaksplan(opprinneligPlan, nyPlan, endringstidspunkt, erSøkerFarEllerMedmor);
 };
