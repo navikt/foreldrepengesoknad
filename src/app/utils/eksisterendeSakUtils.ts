@@ -209,7 +209,7 @@ export const mapEksisterendeSakFromDTO = (
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
         .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erFarEllerMedmor, false);
+    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erFarEllerMedmor);
 
     return {
         erAnnenPartsSak,

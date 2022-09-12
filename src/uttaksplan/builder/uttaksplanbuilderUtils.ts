@@ -297,6 +297,10 @@ export const settInnAnnenPartsUttakOmNødvendig = (
         return perioder;
     }
 
+    if (perioder.length === 0) {
+        return annenPartsUttak;
+    }
+
     const result = perioder.reduce((res, p, currentIndex) => {
         if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
             const opprinneligePerioderAnnenPart = Periodene(annenPartsUttak).finnOverlappendePerioder(p);
@@ -344,7 +348,7 @@ export const settInnAnnenPartsUttakOmNødvendig = (
                 const sisteOpprinneligePeriode =
                     opprinneligePerioderAnnenPart.length > 1
                         ? opprinneligePerioderAnnenPart[opprinneligePerioderAnnenPart.length - 1]
-                        : undefined;
+                        : førsteOpprinneligePeriode;
 
                 if (dayjs(p.tidsperiode.fom).isBefore(førsteOpprinneligePeriode.tidsperiode.fom, 'day')) {
                     const nyPeriode: Periode = {
@@ -411,7 +415,7 @@ export const settInnAnnenPartsUttakOmNødvendig = (
                         ...p,
                         id: guid(),
                         tidsperiode: {
-                            fom: Uttaksdagen(sisteOpprinneligePeriode.tidsperiode.fom).neste(),
+                            fom: Uttaksdagen(sisteOpprinneligePeriode.tidsperiode.tom).neste(),
                             tom: p.tidsperiode.tom,
                         },
                     };
@@ -428,5 +432,9 @@ export const settInnAnnenPartsUttakOmNødvendig = (
         }
     }, [] as Periode[]);
 
-    return slåSammenLikePerioder(result, familiehendelsesdato);
+    const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
+    const annenPartsUttakSomStarterEtterSistePeriode = annenPartsUttak.filter((ap) =>
+        dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day')
+    );
+    return slåSammenLikePerioder([...result, ...annenPartsUttakSomStarterEtterSistePeriode], familiehendelsesdato);
 };
