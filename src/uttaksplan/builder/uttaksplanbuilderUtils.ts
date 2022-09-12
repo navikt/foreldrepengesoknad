@@ -352,7 +352,7 @@ export const settInnAnnenPartsUttakOmNødvendig = (
                         id: guid(),
                         tidsperiode: {
                             fom: p.tidsperiode.fom,
-                            tom: Uttaksdagen(førsteOpprinneligePeriode.tidsperiode.tom).forrige(),
+                            tom: Uttaksdagen(førsteOpprinneligePeriode.tidsperiode.fom).forrige(),
                         },
                     };
 
