@@ -471,8 +471,7 @@ const getPerioderSplittetOverFødsel = (perioder: Periode[], familiehendelsesdat
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    erFarEllerMedmor: boolean,
-    _erEndringsøknadUtenEkisterendeSak: boolean
+    erFarEllerMedmor: boolean
 ): Periode[] => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
@@ -495,9 +494,8 @@ const mapSaksperioderTilUttaksperioder = (
     const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
     const erAdopsjon = grunnlag.familiehendelseType === FamiliehendelseType.ADOPSJON;
 
-    const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter(
-        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
-    );
+    const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter((p) => !isInfoPeriode(p));
+
     const annenPartsUttak = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
     const harAktivitetskravIPeriodeUtenUttak =
         !grunnlag.erDeltUttak && kunFarMedmorHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
