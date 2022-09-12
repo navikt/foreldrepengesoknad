@@ -11,8 +11,9 @@ import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Route, useNavigate, Navigate, Routes } from 'react-router-dom';
+import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
 import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
+import isAvailable from './isAvailable';
 import SøknadRoutes from './routes';
 
 interface Props {
@@ -59,6 +60,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, erEndringssøknad: boo
 const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale, currentRoute }) => {
     const { state } = useForeldrepengesøknadContext();
     const navigate = useNavigate();
+    const location = useLocation();
     const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
     const erMyndig = state.søkerinfo.person.erMyndig;
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
@@ -66,9 +68,15 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale,
     useEffect(() => {
         if (currentRoute && erMyndig && harGodkjentVilkår && isFirstTimeLoadingApp) {
             setIsFirstTimeLoadingApp(false);
-            navigate(currentRoute);
+            if (isAvailable(currentRoute, state.søknad)) {
+                navigate(currentRoute);
+            } else {
+                if (location.pathname === SøknadRoutes.OPPSUMMERING) {
+                    navigate(SøknadRoutes.UTTAKSPLAN);
+                }
+            }
         }
-    }, [currentRoute, erMyndig, harGodkjentVilkår, navigate, isFirstTimeLoadingApp]);
+    }, [currentRoute, erMyndig, harGodkjentVilkår, navigate, isFirstTimeLoadingApp, state.søknad, location.pathname]);
 
     return (
         <Routes>
