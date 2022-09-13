@@ -1,4 +1,4 @@
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import dayjs from 'dayjs';
@@ -233,7 +233,7 @@ export const leggTilPeriode = ({
                 ];
             }
 
-            return [...perioder, nyPeriode];
+            return [...perioder, nyPeriode].sort(sorterPerioder);
         }
     }
 };

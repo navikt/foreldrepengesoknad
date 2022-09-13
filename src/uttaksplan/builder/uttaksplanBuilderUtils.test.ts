@@ -1,7 +1,7 @@
 import { Forelder } from 'app/types/Forelder';
 import { Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { settInnAnnenPartsUttakOmNødvendig, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
+import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 
 const perioder: Periode[] = [
@@ -138,7 +138,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
         ] as UttakAnnenPartInfoPeriode[];
 
-        const result = settInnAnnenPartsUttakOmNødvendig(morsPerioder, annenPartsUttakIMidten, new Date('2022-01-21'));
+        const result = settInnAnnenPartsUttak(morsPerioder, annenPartsUttakIMidten, new Date('2022-01-21'));
 
         expect(result.length).toBe(6);
         expect(result[0]).toEqual(morsPerioder[0]);
@@ -232,7 +232,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
         ] as UttakAnnenPartInfoPeriode[];
 
-        const result = settInnAnnenPartsUttakOmNødvendig(søkerensPerioder, annenPartsUttak, new Date('2022-01-21'));
+        const result = settInnAnnenPartsUttak(søkerensPerioder, annenPartsUttak, new Date('2022-01-21'));
 
         expect(result.length).toBe(8);
 
@@ -299,5 +299,183 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         expect(sistePeriode.konto).toEqual(søkerensPerioder[2].konto);
         expect(sistePeriode.forelder).toEqual(søkerensPerioder[2].forelder);
         expect(sistePeriode.samtidigUttakProsent).toEqual(søkerensPerioder[2].samtidigUttakProsent);
+    });
+    it('Skal returnere annen parts uttak hvis søkerens perioder er tomme men det finnes annen parts uttak (førstegangssøknad med annen parts uttak)', () => {
+        const kunAnnenPartsUttak = [
+            {
+                type: Periodetype.Info,
+                id: '0',
+                tidsperiode: {
+                    fom: new Date('2022-01-01'),
+                    tom: new Date('2022-02-04'),
+                },
+                forelder: Forelder.farMedmor,
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+            },
+        ] as UttakAnnenPartInfoPeriode[];
+
+        const result = settInnAnnenPartsUttak([], kunAnnenPartsUttak, new Date('2022-01-21'));
+        expect(result.length).toBe(1);
+        expect(result[0]).toEqual(kunAnnenPartsUttak[0]);
+    });
+    it('Hvis annen parts uttak overlapper delvis med en utsettelsesperiode (som ikke er fri utsettelse), skal delen til annen part som overlapper bli borte', () => {
+        const utsettelseSomOverlapperMedMidtenTilAnnenPart = {
+            type: Periodetype.Utsettelse,
+            id: '0',
+            tidsperiode: {
+                fom: new Date('2021-01-05'),
+                tom: new Date('2021-01-06'),
+            },
+            forelder: Forelder.farMedmor,
+            erArbeidstaker: true,
+        } as Periode;
+        const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode = [
+            {
+                type: Periodetype.Info,
+                id: '1',
+                tidsperiode: {
+                    fom: new Date('2021-01-04'),
+                    tom: new Date('2021-01-07'),
+                },
+                forelder: Forelder.farMedmor,
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+            },
+        ] as Periode[];
+
+        const result = settInnAnnenPartsUttak(
+            [utsettelseSomOverlapperMedMidtenTilAnnenPart],
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
+            new Date('2020-12-21')
+        );
+        expect(result.length).toBe(3);
+        expect(result[0].tidsperiode.fom).toEqual(
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom
+        );
+        expect(result[0].tidsperiode.tom).toEqual(new Date('2021-01-04'));
+        expect(result[0].type).toEqual(Periodetype.Info);
+        expect(result[1]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+        expect(result[2].tidsperiode.fom).toEqual(new Date('2021-01-07'));
+        expect(result[2].tidsperiode.tom).toEqual(
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.tom
+        );
+        expect(result[2].type).toEqual(Periodetype.Info);
+    });
+
+    it('Hvis en utsettelsesperiode (som ikke er fri utsettelse) overlapper annen parts uttak helt, returner kun utsettelsen', () => {
+        const utsettelseSomOverlapperMedMidtenTilAnnenPart = {
+            type: Periodetype.Utsettelse,
+            id: '0',
+            tidsperiode: {
+                fom: new Date('2021-01-04'),
+                tom: new Date('2021-01-07'),
+            },
+            forelder: Forelder.farMedmor,
+            erArbeidstaker: true,
+        } as Periode;
+        const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode = [
+            {
+                type: Periodetype.Info,
+                id: '1',
+                tidsperiode: {
+                    fom: new Date('2021-01-05'),
+                    tom: new Date('2021-01-05'),
+                },
+                forelder: Forelder.farMedmor,
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+            },
+        ] as Periode[];
+
+        const result = settInnAnnenPartsUttak(
+            [utsettelseSomOverlapperMedMidtenTilAnnenPart],
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
+            new Date('2020-12-21')
+        );
+        expect(result.length).toBe(1);
+        expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+    });
+
+    it('Hvis annen parts uttak overlapper starten av utsettelsesperioden (som ikke er fri utsettelse) returner kun delen som ikke overlapper', () => {
+        const utsettelseSomOverlapperMedMidtenTilAnnenPart = {
+            type: Periodetype.Utsettelse,
+            id: '0',
+            tidsperiode: {
+                fom: new Date('2021-01-04'),
+                tom: new Date('2021-01-07'),
+            },
+            forelder: Forelder.farMedmor,
+            erArbeidstaker: true,
+        } as Periode;
+        const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode = [
+            {
+                type: Periodetype.Info,
+                id: '1',
+                tidsperiode: {
+                    fom: new Date('2021-01-01'),
+                    tom: new Date('2021-01-04'),
+                },
+                forelder: Forelder.farMedmor,
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+            },
+        ] as Periode[];
+
+        const result = settInnAnnenPartsUttak(
+            [utsettelseSomOverlapperMedMidtenTilAnnenPart],
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
+            new Date('2020-12-21')
+        );
+        expect(result.length).toBe(2);
+        expect(result[0].tidsperiode.fom).toEqual(
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom
+        );
+        expect(result[0].tidsperiode.tom).toEqual(new Date('2021-01-01'));
+        expect(result[0].type).toEqual(Periodetype.Info);
+        expect(result[1]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+    });
+    it('Hvis annen parts uttak overlapper slutten av utsettelsesperioden (som ikke er fri utsettelse) returner kun delen som ikke overlapper som infoperiode', () => {
+        const utsettelseSomOverlapperMedMidtenTilAnnenPart = {
+            type: Periodetype.Utsettelse,
+            id: '0',
+            tidsperiode: {
+                fom: new Date('2021-01-04'),
+                tom: new Date('2021-01-07'),
+            },
+            forelder: Forelder.farMedmor,
+            erArbeidstaker: true,
+        } as Periode;
+        const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode = [
+            {
+                type: Periodetype.Info,
+                id: '1',
+                tidsperiode: {
+                    fom: new Date('2021-01-07'),
+                    tom: new Date('2021-01-08'),
+                },
+                forelder: Forelder.farMedmor,
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+            },
+        ] as Periode[];
+
+        const result = settInnAnnenPartsUttak(
+            [utsettelseSomOverlapperMedMidtenTilAnnenPart],
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
+            new Date('2020-12-21')
+        );
+        expect(result.length).toBe(2);
+        expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+        expect(result[1].tidsperiode.tom).toEqual(
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.tom
+        );
+        expect(result[1].tidsperiode.fom).toEqual(new Date('2021-01-08'));
+        expect(result[1].type).toEqual(Periodetype.Info);
     });
 });
