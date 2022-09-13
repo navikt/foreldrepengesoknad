@@ -30,7 +30,7 @@ import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } f
 import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
-import { finnOgSettInnHull, settInnAnnenPartsUttakOmNødvendig } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { tidperiodeGårOverFamiliehendelsesdato } from './wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
@@ -509,11 +509,7 @@ const mapSaksperioderTilUttaksperioder = (
     );
 
     return finnOgSettInnHull(
-        settInnAnnenPartsUttakOmNødvendig(
-            perioderUtenAnnenPartsSamtidigUttakMedHull,
-            annenPartsUttak,
-            familiehendelsesdato
-        ),
+        settInnAnnenPartsUttak(perioderUtenAnnenPartsSamtidigUttakMedHull, annenPartsUttak, familiehendelsesdato),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,

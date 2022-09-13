@@ -11,8 +11,7 @@ import { slettPeriode } from './slettPeriode';
 import {
     finnOgSettInnHull,
     fjernUnødvendigeHull,
-    resetTidsperioder,
-    settInnAnnenPartsUttakOmNødvendig,
+    settInnAnnenPartsUttak,
     slåSammenLikePerioder,
 } from './uttaksplanbuilderUtils';
 
@@ -54,7 +53,7 @@ const leggTilPeriodeOgBuild = (
 
     if (annenPartsUttak) {
         nyePerioder = finnOgSettInnHull(
-            settInnAnnenPartsUttakOmNødvendig(nyePerioder, annenPartsUttak, familiehendelsesdato),
+            settInnAnnenPartsUttak(nyePerioder, annenPartsUttak, familiehendelsesdato),
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
@@ -93,13 +92,14 @@ const oppdaterPeriodeOgBuild = (
 
     if (annenPartsUttak) {
         oppdatertePerioder = finnOgSettInnHull(
-            settInnAnnenPartsUttakOmNødvendig(oppdatertePerioder, annenPartsUttak, familiehendelsesdato),
+            oppdatertePerioder,
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor
         );
+        oppdatertePerioder = settInnAnnenPartsUttak(oppdatertePerioder, annenPartsUttak, familiehendelsesdato);
     }
 
     return oppdatertePerioder;
@@ -132,16 +132,54 @@ const slettPeriodeOgBuild = (
 
     if (annenPartsUttak) {
         nyePerioder = finnOgSettInnHull(
-            settInnAnnenPartsUttakOmNødvendig(nyePerioder, annenPartsUttak, familiehendelsesdato),
+            nyePerioder,
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor
         );
+        nyePerioder = settInnAnnenPartsUttak(nyePerioder, annenPartsUttak, familiehendelsesdato);
     }
 
     return nyePerioder;
+};
+
+const getFastePerioder = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
+    return perioder.filter(
+        (p) =>
+            isUtsettelsesperiode(p) ||
+            isForeldrepengerFørFødselUttaksperiode(p) ||
+            starterUttaksperiodeFørFødsel(p, familiehendelsesdato)
+    );
+};
+
+const getBevegeligePerioder = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    harAktivitetskravIPeriodeUtenUttak: boolean,
+    erAdopsjon: boolean,
+    bareFarHarRett: boolean,
+    erFarEllerMedmor: boolean
+): Periode[] => {
+    return finnOgSettInnHull(
+        perioder.filter(
+            (p) =>
+                !isUtsettelsesperiode(p) &&
+                !isForeldrepengerFørFødselUttaksperiode(p) &&
+                !starterUttaksperiodeFørFødsel(p, familiehendelsesdato) &&
+                !isInfoPeriode(p)
+        ),
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor
+    );
+};
+
+const getAnnenPartsUttak = (perioder: Periode[]): Periode[] => {
+    return perioder.filter((p) => isInfoPeriode(p));
 };
 
 const Uttaksplanbuilder = (
@@ -153,25 +191,27 @@ const Uttaksplanbuilder = (
     erFarEllerMedmor: boolean,
     opprinneligPlan?: Periode[]
 ) => {
-    const fastePerioder = perioder.filter(
-        (p) =>
-            isUtsettelsesperiode(p) ||
-            isForeldrepengerFørFødselUttaksperiode(p) ||
-            starterUttaksperiodeFørFødsel(p, familiehendelsesdato)
+    const perioderUtenAnnenPart = finnOgSettInnHull(
+        perioder.filter((p) => !isInfoPeriode(p)),
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor
     );
-    const bevegeligePerioder = resetTidsperioder(
-        perioder.filter(
-            (p) =>
-                !isUtsettelsesperiode(p) &&
-                !isForeldrepengerFørFødselUttaksperiode(p) &&
-                !starterUttaksperiodeFørFødsel(p, familiehendelsesdato)
-        ),
-        familiehendelsesdato
+    const fastePerioder = getFastePerioder(perioderUtenAnnenPart, familiehendelsesdato);
+    const bevegeligePerioder = getBevegeligePerioder(
+        perioderUtenAnnenPart,
+        familiehendelsesdato,
+        harAktivitetskravIPeriodeUtenUttak,
+        erAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor
     );
     let annenPartsUttak: Periode[] | undefined = undefined;
 
     if (opprinneligPlan) {
-        annenPartsUttak = opprinneligPlan.filter((p) => isInfoPeriode(p));
+        annenPartsUttak = getAnnenPartsUttak(opprinneligPlan);
     }
 
     return {
@@ -203,17 +243,15 @@ const Uttaksplanbuilder = (
                         annenPartsUttak
                     );
                 } else {
-                    const uttaksplanUtenAnnenPartsSamtidigUttak = resultat.filter(
-                        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
-                    );
-                    const nyFastePerioder = uttaksplanUtenAnnenPartsSamtidigUttak.filter(
-                        (p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p)
-                    );
-                    const nyBevegeligePerioder = resetTidsperioder(
-                        uttaksplanUtenAnnenPartsSamtidigUttak.filter(
-                            (p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)
-                        ),
-                        familiehendelsesdato
+                    const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
+                    const nyFastePerioder = getFastePerioder(resultat, familiehendelsesdato);
+                    const nyBevegeligePerioder = getBevegeligePerioder(
+                        resultat,
+                        familiehendelsesdato,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor
                     );
                     resultat = leggTilPeriodeOgBuild(
                         nyBevegeligePerioder,
@@ -224,7 +262,7 @@ const Uttaksplanbuilder = (
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak
+                        nyAnnenPartsUttak
                     );
                 }
             });
@@ -233,7 +271,7 @@ const Uttaksplanbuilder = (
         oppdaterPeriode: (endretPeriode: Periode) =>
             oppdaterPeriodeOgBuild(
                 endretPeriode,
-                perioder,
+                perioderUtenAnnenPart,
                 familiehendelsesdato,
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
@@ -247,7 +285,7 @@ const Uttaksplanbuilder = (
                 if (index === 0) {
                     resultat = oppdaterPeriodeOgBuild(
                         endretPeriode,
-                        perioder,
+                        perioderUtenAnnenPart,
                         familiehendelsesdato,
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
@@ -256,17 +294,15 @@ const Uttaksplanbuilder = (
                         annenPartsUttak
                     );
                 } else {
-                    const uttaksplanUtenAnnenPartsSamtidigUttak = resultat.filter(
-                        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
-                    );
-                    const nyFastePerioder = uttaksplanUtenAnnenPartsSamtidigUttak.filter(
-                        (p) => isUtsettelsesperiode(p) || isForeldrepengerFørFødselUttaksperiode(p)
-                    );
-                    const nyBevegeligePerioder = resetTidsperioder(
-                        uttaksplanUtenAnnenPartsSamtidigUttak.filter(
-                            (p) => !isUtsettelsesperiode(p) && !isForeldrepengerFørFødselUttaksperiode(p)
-                        ),
-                        familiehendelsesdato
+                    const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
+                    const nyFastePerioder = getFastePerioder(resultat, familiehendelsesdato);
+                    const nyBevegeligePerioder = getBevegeligePerioder(
+                        resultat,
+                        familiehendelsesdato,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor
                     );
                     resultat = leggTilPeriodeOgBuild(
                         nyBevegeligePerioder,
@@ -277,7 +313,7 @@ const Uttaksplanbuilder = (
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak
+                        nyAnnenPartsUttak
                     );
                 }
             });
@@ -285,7 +321,7 @@ const Uttaksplanbuilder = (
         },
         slettPeriode: (slettetPeriode: Periode) =>
             slettPeriodeOgBuild(
-                perioder,
+                perioderUtenAnnenPart,
                 slettetPeriode,
                 familiehendelsesdato,
                 harAktivitetskravIPeriodeUtenUttak,
