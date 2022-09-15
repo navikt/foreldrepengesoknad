@@ -6,7 +6,8 @@ export type UttaksplanInfoScenario =
     | 'farMedmorFødselMorHarIkkeRett'
     | 'farMedmorFørstegangssøknadMedAnnenPart'
     | 'morFarAdopsjon'
-    | 'morFødsel';
+    | 'morFødsel'
+    | 'morFarAnnenForelderHarRettIEØS';
 
 interface UttaksplanScenarioParams {
     erFødsel: boolean;
@@ -17,6 +18,7 @@ interface UttaksplanScenarioParams {
     erAdopsjon: boolean;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     annenForelderOppgittIkkeAleneOmOmsorg: boolean;
+    annenPartHarRettIEØS: boolean;
 }
 
 export const getUttaksplanScenario = ({
@@ -28,9 +30,13 @@ export const getUttaksplanScenario = ({
     eksisterendeSakAnnenPart,
     erAdopsjon,
     annenForelderOppgittIkkeAleneOmOmsorg,
+    annenPartHarRettIEØS,
 }: UttaksplanScenarioParams): UttaksplanInfoScenario => {
     if (erFødsel && erFarEllerMedmor && (søkerErAleneOmOmsorg || annenForelderKanIkkeOppgis)) {
         return 'farMedmorAleneomsorgFødselAdopsjon';
+    }
+    if (annenPartHarRettIEØS) {
+        return 'morFarAnnenForelderHarRettIEØS';
     }
 
     if (
@@ -48,6 +54,10 @@ export const getUttaksplanScenario = ({
 
     if (eksisterendeSakAnnenPart && erFarEllerMedmor) {
         return 'farMedmorFørstegangssøknadMedAnnenPart';
+    }
+
+    if (erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelderKanIkkeOppgis || søkerErAleneOmOmsorg)) {
+        return 'morFarAdopsjon';
     }
 
     if (erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelderKanIkkeOppgis || søkerErAleneOmOmsorg)) {

@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
+import MorFarAnnenForelderHarRettIEØS from './scenarios/mor-far-annen-part-har-rett-i-eøs/MorFarAnnenForelderHarRettIEØS';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
@@ -33,6 +34,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined
         : false;
+    const annenPartHarRettIEØS = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 
     const scenario = getUttaksplanScenario({
         erFødsel,
@@ -43,6 +45,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
         erAdopsjon,
         eksisterendeSakAnnenPart,
         annenForelderOppgittIkkeAleneOmOmsorg,
+        annenPartHarRettIEØS,
     });
 
     switch (scenario) {
@@ -86,6 +89,13 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
         case 'morFødsel':
             return (
                 <MorFødsel
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'morFarAnnenForelderHarRettIEØS':
+            return (
+                <MorFarAnnenForelderHarRettIEØS
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                 />
