@@ -30,7 +30,7 @@ import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } f
 import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
-import { finnOgSettInnHull, settInnAnnenPartsUttakOmNødvendig } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { tidperiodeGårOverFamiliehendelsesdato } from './wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
@@ -471,8 +471,7 @@ const getPerioderSplittetOverFødsel = (perioder: Periode[], familiehendelsesdat
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    erFarEllerMedmor: boolean,
-    _erEndringsøknadUtenEkisterendeSak: boolean
+    erFarEllerMedmor: boolean
 ): Periode[] => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
@@ -495,9 +494,8 @@ const mapSaksperioderTilUttaksperioder = (
     const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
     const erAdopsjon = grunnlag.familiehendelseType === FamiliehendelseType.ADOPSJON;
 
-    const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter(
-        (p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan)
-    );
+    const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter((p) => !isInfoPeriode(p));
+
     const annenPartsUttak = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
     const harAktivitetskravIPeriodeUtenUttak =
         !grunnlag.erDeltUttak && kunFarMedmorHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
@@ -511,11 +509,7 @@ const mapSaksperioderTilUttaksperioder = (
     );
 
     return finnOgSettInnHull(
-        settInnAnnenPartsUttakOmNødvendig(
-            perioderUtenAnnenPartsSamtidigUttakMedHull,
-            annenPartsUttak,
-            familiehendelsesdato
-        ),
+        settInnAnnenPartsUttak(perioderUtenAnnenPartsSamtidigUttakMedHull, annenPartsUttak, familiehendelsesdato),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,

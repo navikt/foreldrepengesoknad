@@ -295,6 +295,7 @@ describe('Uttaksplanbuilder tester', () => {
                 tom: new Date('2022-09-16'),
             },
             forelder: Forelder.mor,
+            årsak: UtsettelseÅrsakType.Arbeid,
         } as Utsettelsesperiode;
         const result = Uttaksplanbuilder(
             perioderMedAnnenPartsUttakOgUtsettelserISlutten,
