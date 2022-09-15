@@ -168,14 +168,14 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
 
         expect(nyPlan.length).toBe(5);
         expect(nyPlan[0]).toEqual(morsPerioderEtterWLB[0]);
-        expect(nyPlan[1]).toEqual(farsNyePeriode);
-        const morsPeriodeSplittetINyPlanDel1 = nyPlan[2] as UttakAnnenPartInfoPeriode;
+        const morsPeriodeSplittetINyPlanDel1 = nyPlan[1] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeSplittetINyPlanDel1.tidsperiode.fom).toEqual(morsPerioderEtterWLB[1].tidsperiode.fom);
         expect(morsPeriodeSplittetINyPlanDel1.tidsperiode.tom).toEqual(farsNyePeriode.tidsperiode.tom);
         expect(morsPeriodeSplittetINyPlanDel1.type).toEqual(morsPerioderEtterWLB[1].type);
         expect(morsPeriodeSplittetINyPlanDel1.infotype).toEqual(morsPerioderEtterWLB[1].infotype);
         expect(morsPeriodeSplittetINyPlanDel1.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
         expect(morsPeriodeSplittetINyPlanDel1.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
+        expect(nyPlan[2]).toEqual(farsNyePeriode);
         const morsPeriodeSplittetINyPlanDel2 = nyPlan[3] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeSplittetINyPlanDel2.tidsperiode.fom).toEqual(new Date('2022-08-18'));
         expect(morsPeriodeSplittetINyPlanDel2.tidsperiode.tom).toEqual(morsPerioderEtterWLB[1].tidsperiode.tom);
@@ -247,15 +247,15 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         expect(morsPeriodeSplittetINyPlanDel1.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
         expect(morsPeriodeSplittetINyPlanDel1.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
 
-        expect(nyPlan[2]).toEqual(farNyPeriodeIMidtenAvMors6Uker);
-
-        const morsPeriodeSplittetINyPlanDel2 = nyPlan[3] as UttakAnnenPartInfoPeriode;
+        const morsPeriodeSplittetINyPlanDel2 = nyPlan[2] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeSplittetINyPlanDel2.tidsperiode.fom).toEqual(farNyPeriodeIMidtenAvMors6Uker.tidsperiode.fom);
         expect(morsPeriodeSplittetINyPlanDel2.tidsperiode.tom).toEqual(farNyPeriodeIMidtenAvMors6Uker.tidsperiode.tom);
         expect(morsPeriodeSplittetINyPlanDel2.type).toEqual(morsPerioderEtterWLB[1].type);
         expect(morsPeriodeSplittetINyPlanDel2.infotype).toEqual(morsPerioderEtterWLB[1].infotype);
         expect(morsPeriodeSplittetINyPlanDel2.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
         expect(morsPeriodeSplittetINyPlanDel2.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
+
+        expect(nyPlan[3]).toEqual(farNyPeriodeIMidtenAvMors6Uker);
 
         const morsPeriodeSplittetINyPlanDel3 = nyPlan[4] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeSplittetINyPlanDel3.tidsperiode.fom).toEqual(new Date('2022-09-12'));
@@ -314,9 +314,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         expect(morsPeriodeFørFødselDel1.forelder).toEqual(morsPerioderEtterWLB[0].forelder);
         expect(morsPeriodeFørFødselDel1.årsak).toEqual(morsPerioderEtterWLB[0].årsak);
 
-        expect(nyPlan[1]).toEqual(farsNyePerioderRundtFødsel[0]);
-
-        const morsPeriodeFørFødselDel2 = nyPlan[2] as UttakAnnenPartInfoPeriode;
+        const morsPeriodeFørFødselDel2 = nyPlan[1] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeFørFødselDel2.tidsperiode.fom).toEqual(new Date('2022-08-01'));
         expect(morsPeriodeFørFødselDel2.tidsperiode.tom).toEqual(morsPerioderEtterWLB[0].tidsperiode.tom);
         expect(morsPeriodeFørFødselDel2.type).toEqual(morsPerioderEtterWLB[0].type);
@@ -324,15 +322,17 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         expect(morsPeriodeFørFødselDel2.forelder).toEqual(morsPerioderEtterWLB[0].forelder);
         expect(morsPeriodeFørFødselDel2.årsak).toEqual(morsPerioderEtterWLB[0].årsak);
 
-        expect(nyPlan[3]).toEqual(farsNyePerioderRundtFødsel[1]);
+        expect(nyPlan[2]).toEqual(farsNyePerioderRundtFødsel[0]);
 
-        const morsPeriodeEtterFødselDel1 = nyPlan[4] as UttakAnnenPartInfoPeriode;
+        const morsPeriodeEtterFødselDel1 = nyPlan[3] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeEtterFødselDel1.tidsperiode.fom).toEqual(morsPerioderEtterWLB[1].tidsperiode.fom);
         expect(morsPeriodeEtterFødselDel1.tidsperiode.tom).toEqual(new Date('2022-08-12'));
         expect(morsPeriodeEtterFødselDel1.type).toEqual(morsPerioderEtterWLB[1].type);
         expect(morsPeriodeEtterFødselDel1.infotype).toEqual(morsPerioderEtterWLB[1].infotype);
         expect(morsPeriodeEtterFødselDel1.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
         expect(morsPeriodeEtterFødselDel1.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
+
+        expect(nyPlan[4]).toEqual(farsNyePerioderRundtFødsel[1]);
 
         const morsPeriodeEtterFødselDel2 = nyPlan[5] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeEtterFødselDel2.tidsperiode.fom).toEqual(new Date('2022-08-15'));
