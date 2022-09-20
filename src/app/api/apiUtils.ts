@@ -119,24 +119,27 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
-        const { erUfør, erForSyk, harRettPåForeldrepengerINorge, ...annenForelderRest } = annenForelder;
+        const { erUfør, erForSyk, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, ...annenForelderRest } =
+            annenForelder;
         const cleanedAnnenForelder =
             erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge
                 ? {
                       harMorUføretrygd: erUfør,
                       harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+                      harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
                       erInformertOmSøknaden: true,
                       ...annenForelderRest,
                   }
                 : {
                       harMorUføretrygd: erUfør,
                       harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+                      harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
                       ...annenForelderRest,
                   };
         if (isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
             return cleanedAnnenForelder;
         } else {
-            const { harRettPåForeldrepengerIEØS, ...rest } = cleanedAnnenForelder;
+            const { harAnnenForelderTilsvarendeRettEØS, ...rest } = cleanedAnnenForelder;
             return rest;
         }
     }
@@ -177,24 +180,21 @@ const konverterRolle = (rolle: Søkerrolle): SøkerrolleInnsending => {
 const changeClientonlyKontotype = (
     periode: Periode,
     annenForelderHarRettPåForeldrepengerINorge: boolean,
-    annenForelderHarRettPåForeldrepengerIEØS: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: Date
 ) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
-            periode.konto =
-                !annenForelderHarRettPåForeldrepengerINorge || !annenForelderHarRettPåForeldrepengerIEØS
-                    ? StønadskontoType.Foreldrepenger
-                    : StønadskontoType.Fellesperiode;
+            periode.konto = !annenForelderHarRettPåForeldrepengerINorge
+                ? StønadskontoType.Foreldrepenger
+                : StønadskontoType.Fellesperiode;
         }
         if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
             periode.konto = StønadskontoType.Foreldrepenger;
             if (
                 søkerErFarEllerMedmor &&
                 !annenForelderHarRettPåForeldrepengerINorge &&
-                !annenForelderHarRettPåForeldrepengerIEØS &&
                 andreAugust2022ReglerGjelder(familiehendelsesdato)
             ) {
                 periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
@@ -241,7 +241,6 @@ const cleanUttaksplan = (
                 ? changeClientonlyKontotype(
                       periode,
                       !!annenForelder.harRettPåForeldrepengerINorge,
-                      !!annenForelder.harRettPåForeldrepengerIEØS,
                       !!annenForelder.erUfør,
                       søkerErFarEllerMedmor,
                       familiehendelsesdato
