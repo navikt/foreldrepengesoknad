@@ -29,7 +29,6 @@ import { formaterNavn } from 'app/utils/personUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederNormal from 'app/assets/VeilederNormal';
-import dayjs from 'dayjs';
 import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
@@ -45,19 +44,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-
-const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
-    if (fødselsdato === undefined || termindato === undefined) {
-        return false;
-    }
-
-    const fødselsdatoEtterEllerLikFørsteJuli = dayjs(fødselsdato).isSameOrAfter(dayjs(new Date('2019-07-01')), 'day');
-
-    return (
-        dayjs(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(dayjs(termindato), 'days') &&
-        fødselsdatoEtterEllerLikFørsteJuli
-    );
-};
+import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -158,8 +145,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         søkersituasjon.situasjon
     );
     const fødselsdato = getFødselsdato(barn);
-    const visInfoOmPrematuruker =
-        søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
+    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;

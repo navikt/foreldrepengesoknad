@@ -4,6 +4,7 @@ import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-med
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
 import MorFarAnnenForelderHarRettIEØS from './scenarios/mor-far-annen-part-har-rett-i-eøs/MorFarAnnenForelderHarRettIEØS';
+import MorFarFødselAnnenForelderHarRettIEØS from './scenarios/mor-far-fødsel-annen-part-har-rett-i-eøs/MorFarFødselAnnenForelderHarRettIEØS';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
@@ -89,6 +90,13 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
         case 'morFødsel':
             return (
                 <MorFødsel
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'morFarFødselAnnenForelderHarRettIEØS':
+            return (
+                <MorFarFødselAnnenForelderHarRettIEØS
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                 />

@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Veilederpanel from 'nav-frontend-veilederpanel';
@@ -37,19 +36,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-
-const skalViseInfoOmPrematuruker = (fødselsdato: Date | undefined, termindato: Date | undefined): boolean => {
-    if (fødselsdato === undefined || termindato === undefined) {
-        return false;
-    }
-
-    const fødselsdatoEtterEllerLikFørsteJuli = dayjs(fødselsdato).isSameOrAfter(dayjs(new Date('2019-07-01')), 'day');
-
-    return (
-        dayjs(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(dayjs(termindato), 'day') &&
-        fødselsdatoEtterEllerLikFørsteJuli
-    );
-};
+import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -78,8 +65,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
-    const visInfoOmPrematuruker =
-        søkersituasjon.situasjon === 'fødsel' ? skalViseInfoOmPrematuruker(fødselsdato, termindato) : false;
+    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;

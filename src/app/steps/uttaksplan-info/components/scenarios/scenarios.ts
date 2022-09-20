@@ -7,6 +7,7 @@ export type UttaksplanInfoScenario =
     | 'farMedmorFørstegangssøknadMedAnnenPart'
     | 'morFarAdopsjon'
     | 'morFødsel'
+    | 'morFarFødselAnnenForelderHarRettIEØS'
     | 'morFarAnnenForelderHarRettIEØS';
 
 interface UttaksplanScenarioParams {
@@ -36,7 +37,7 @@ export const getUttaksplanScenario = ({
         return 'farMedmorAleneomsorgFødselAdopsjon';
     }
     if (annenPartHarRettIEØS) {
-        return 'morFarAnnenForelderHarRettIEØS';
+        return erFødsel ? 'morFarFødselAnnenForelderHarRettIEØS' : 'morFarAnnenForelderHarRettIEØS';
     }
 
     if (

@@ -45,8 +45,8 @@ const Template: Story<UttaksplanInfoTestData> = (args) => {
     );
 };
 
-export const UttaksplanMorSøkerFarHarRettIEOS = Template.bind({});
-UttaksplanMorSøkerFarHarRettIEOS.args = {
+export const UttaksplanAdopsjonMorSøkerFarHarRettIEOS = Template.bind({});
+UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
     stønadskonto100,
     stønadskonto80,
     context: {
@@ -67,8 +67,8 @@ UttaksplanMorSøkerFarHarRettIEOS.args = {
     søkerinfo: søkerinfoMorSøker,
 };
 
-export const UttaksplanFarSøkerMorHarRettIEOS = Template.bind({});
-UttaksplanFarSøkerMorHarRettIEOS.args = {
+export const UttaksplanAdopsjonFarSøkerMorHarRettIEOS = Template.bind({});
+UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
     stønadskonto100,
     stønadskonto80,
     context: {
@@ -76,6 +76,72 @@ UttaksplanFarSøkerMorHarRettIEOS.args = {
         søknad: {
             ...contextFarSøkerAdopsjon.søknad,
 
+            annenForelder: {
+                fornavn: 'Mor',
+                etternavn: 'EØS',
+                fnr: '2222UUUUU',
+                harRettPåForeldrepengerINorge: false,
+                harRettPåForeldrepengerIEØS: true,
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: søkerinfoFarSøker,
+};
+
+export const UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger = Template.bind({});
+UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
+    stønadskonto100,
+    stønadskonto80,
+    context: {
+        ...contextFarSøkerAdopsjon,
+        søknad: {
+            ...contextFarSøkerAdopsjon.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+            barn: {
+                ...contextFarSøkerAdopsjon.søknad.barn,
+                fødselsdatoer: ['2022-06-14', '2022-06-14'],
+                antallBarn: 2,
+                adopsjonsdato: undefined,
+                adoptertIUtlandet: undefined,
+            },
+            annenForelder: {
+                fornavn: 'Mor',
+                etternavn: 'EØS',
+                fnr: '2222UUUUU',
+                harRettPåForeldrepengerINorge: false,
+                harRettPåForeldrepengerIEØS: true,
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: søkerinfoFarSøker,
+};
+
+export const UttaksplanFødselMorSøkerFarHarRettIEOSPrematur = Template.bind({});
+UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
+    stønadskonto100,
+    stønadskonto80,
+    context: {
+        ...contextMorSøkerAdopsjon,
+        søknad: {
+            ...contextMorSøkerAdopsjon.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'mor',
+            },
+            barn: {
+                ...contextMorSøkerAdopsjon.søknad.barn,
+                fødselsdatoer: ['2022-06-14'],
+                termindato: ['2022-08-14'],
+                antallBarn: 1,
+                adopsjonsdato: undefined,
+                adoptertIUtlandet: undefined,
+                type: 'født',
+            },
             annenForelder: {
                 fornavn: 'Mor',
                 etternavn: 'EØS',

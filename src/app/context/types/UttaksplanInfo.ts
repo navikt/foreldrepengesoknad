@@ -46,6 +46,12 @@ export interface MorFarAnnenForelderHarRettIEØSUttaksplanInfo extends Uttakspla
     dekningsgrad: string;
 }
 
+export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
+    permisjonStartdato: string;
+    skalIkkeHaUttakFørTermin: boolean | undefined;
+    dekningsgrad: string;
+}
+
 export const isFarMedmorFødselBeggeHarRettUttaksplanInfo = (
     uttaksplanInfo: UttaksplanInfo
 ): uttaksplanInfo is FarMedmorFødselBeggeHarRettUttaksplanInfo => {
