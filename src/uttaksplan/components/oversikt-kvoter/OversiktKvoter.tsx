@@ -25,7 +25,7 @@ const bem = bemUtils('oversiktKvoter');
 
 interface PropsPerForelder {
     brukteDagerPerForelder: BrukteDager;
-    erDeltUttak: boolean;
+    erDeltUttakINorge: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;
     navnPåForeldre: NavnPåForeldre;
     søkerErFarEllerMedmor: boolean;
@@ -33,7 +33,7 @@ interface PropsPerForelder {
 
 const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
     brukteDagerPerForelder,
-    erDeltUttak,
+    erDeltUttakINorge,
     foreldreparSituasjon,
     navnPåForeldre,
     søkerErFarEllerMedmor,
@@ -49,12 +49,12 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
                     {intlUtils(intl, 'uttaksplan.oversiktKvoter.tittel.foreldre')}
                 </Undertittel>
                 <TilesList columns={'flex'}>
-                    {(erDeltUttak || søkerErMor) && (
+                    {(erDeltUttakINorge || søkerErMor) && (
                         <Personkort ikon={<ForelderIkon forelder={svgInfo.mor} />} tittel={navnPåForeldre.mor}>
                             <strong>{getVarighetString(brukteDagerPerForelder.mor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}
-                    {(erDeltUttak || søkerErFarEllerMedmor) && (
+                    {(erDeltUttakINorge || søkerErFarEllerMedmor) && (
                         <Personkort
                             ikon={<ForelderIkon forelder={svgInfo.farMedmor} />}
                             tittel={navnPåForeldre.farMedmor}
@@ -122,6 +122,7 @@ interface Props {
     erDeltUttak: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;
     familiehendelsesdato: Date;
+    annenForelderHarRettINorge: boolean;
 }
 
 const OversiktKvoter: FunctionComponent<Props> = ({
@@ -130,6 +131,7 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     erDeltUttak,
     foreldreparSituasjon,
     familiehendelsesdato,
+    annenForelderHarRettINorge,
 }) => {
     const søker = useSøkerinfo();
     const søknad = useSøknad();
@@ -144,12 +146,12 @@ const OversiktKvoter: FunctionComponent<Props> = ({
         uttaksplan,
     });
     const brukteDagerPerForelder = getBrukteDager(tilgjengeligeStønadskontoer, uttaksplan, familiehendelsesdato);
-
+    const erDeltUttakINorge = erDeltUttak && annenForelderHarRettINorge;
     return (
         <div className={bem.block}>
             <OversiktPerForelder
                 brukteDagerPerForelder={brukteDagerPerForelder}
-                erDeltUttak={erDeltUttak}
+                erDeltUttakINorge={erDeltUttakINorge}
                 foreldreparSituasjon={foreldreparSituasjon}
                 navnPåForeldre={navnPåForeldre}
                 søkerErFarEllerMedmor={søkerErFarEllerMedmor}
