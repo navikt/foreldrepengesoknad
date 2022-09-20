@@ -8,7 +8,7 @@ export type UttaksplanInfoScenario =
     | 'morFarAdopsjon'
     | 'morFødsel'
     | 'morFarFødselAnnenForelderHarRettIEØS'
-    | 'morFarAnnenForelderHarRettIEØS';
+    | 'morFarAdopsjonAnnenForelderHarRettIEØS';
 
 interface UttaksplanScenarioParams {
     erFødsel: boolean;
@@ -37,7 +37,7 @@ export const getUttaksplanScenario = ({
         return 'farMedmorAleneomsorgFødselAdopsjon';
     }
     if (annenPartHarRettIEØS) {
-        return erFødsel ? 'morFarFødselAnnenForelderHarRettIEØS' : 'morFarAnnenForelderHarRettIEØS';
+        return erFødsel ? 'morFarFødselAnnenForelderHarRettIEØS' : 'morFarAdopsjonAnnenForelderHarRettIEØS';
     }
 
     if (

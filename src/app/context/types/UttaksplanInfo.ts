@@ -40,7 +40,7 @@ export interface FarMedmorFødselBeggeHarRettUttaksplanInfo extends UttaksplanIn
     antallDagerFellesperiode: string;
 }
 
-export interface MorFarAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
+export interface MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
     startdatoAdopsjonValg: AdopsjonStartdatoValg;
     søkersFørsteDag: string;
     dekningsgrad: string;

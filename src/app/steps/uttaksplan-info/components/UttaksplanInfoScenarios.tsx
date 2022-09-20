@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
-import MorFarAnnenForelderHarRettIEØS from './scenarios/mor-far-annen-part-har-rett-i-eøs/MorFarAnnenForelderHarRettIEØS';
+import MorFarAdopsjonAnnenForelderHarRettIEØS from './scenarios/mor-far-adopsjon-annen-part-har-rett-i-eøs/MorFarAdopsjonAnnenForelderHarRettIEØS';
 import MorFarFødselAnnenForelderHarRettIEØS from './scenarios/mor-far-fødsel-annen-part-har-rett-i-eøs/MorFarFødselAnnenForelderHarRettIEØS';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
@@ -101,9 +101,9 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                 />
             );
-        case 'morFarAnnenForelderHarRettIEØS':
+        case 'morFarAdopsjonAnnenForelderHarRettIEØS':
             return (
-                <MorFarAnnenForelderHarRettIEØS
+                <MorFarAdopsjonAnnenForelderHarRettIEØS
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                 />

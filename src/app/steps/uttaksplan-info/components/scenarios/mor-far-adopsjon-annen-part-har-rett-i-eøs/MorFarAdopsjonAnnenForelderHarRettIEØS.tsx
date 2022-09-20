@@ -21,7 +21,7 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
-import { MorFarAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
@@ -32,16 +32,16 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import StartdatoAdopsjon, { finnStartdatoAdopsjon } from '../mor-far-adopsjon/StartdatoAdopsjon';
-import { morFarAnnenForelderHarRettIEØSQuestionsConfig } from './morFarAnnenForelderHarRettIEØSQuestionsConfig';
+import { morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 import {
-    MorFarAnnenForelderHarRettIEØSFormComponents,
-    MorFarAnnenForelderHarRettIEØSFormData,
-    MorFarAnnenForelderHarRettIEØSFormField,
-} from './morFarAnnenForelderHarRettIEØSFormConfig';
+    MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents,
+    MorFarAdopsjonAnnenForelderHarRettIEØSFormData,
+    MorFarAdopsjonAnnenForelderHarRettIEØSFormField,
+} from './morFarAdopsjonAnnenForelderHarRettIEØSFormConfig';
 import {
-    getInitialMorFarAnnenForelderHarRettIEØSValues,
-    mapMorFarAnnenForelderHarRettIEØSFormToState,
-} from './morFarAnnenForelderHarRettIEØSUtils';
+    getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues,
+    mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState,
+} from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 
 interface Props {
@@ -49,7 +49,7 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
 }
 
-const MorFarAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
+const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
 }) => {
@@ -65,7 +65,7 @@ const MorFarAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
-    const lagretUttaksplanInfo = useUttaksplanInfo<MorFarAnnenForelderHarRettIEØSUttaksplanInfo>();
+    const lagretUttaksplanInfo = useUttaksplanInfo<MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo>();
     const erDeltUttak = true; //TODO: Er dette riktig?
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
@@ -86,8 +86,8 @@ const MorFarAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
-    const onValidSubmitHandler = (values: Partial<MorFarAnnenForelderHarRettIEØSFormData>) => {
-        const submissionValues = mapMorFarAnnenForelderHarRettIEØSFormToState(values);
+    const onValidSubmitHandler = (values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>) => {
+        const submissionValues = mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState(values);
         const barnAdopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
 
@@ -177,35 +177,37 @@ const MorFarAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
 
     return (
-        <MorFarAnnenForelderHarRettIEØSFormComponents.FormikWrapper
-            initialValues={getInitialMorFarAnnenForelderHarRettIEØSValues(lagretUttaksplanInfo, dekningsgrad)}
+        <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.FormikWrapper
+            initialValues={getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues(lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = morFarAnnenForelderHarRettIEØSQuestionsConfig.getVisbility({
+                const visibility = morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig.getVisbility({
                     ...formValues,
                     erFarEllerMedmor,
                     erFødsel,
                 });
 
                 return (
-                    <MorFarAnnenForelderHarRettIEØSFormComponents.Form
+                    <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.Form
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
                         <Block
                             padBottom="l"
-                            visible={visibility.isIncluded(MorFarAnnenForelderHarRettIEØSFormField.dekningsgrad)}
+                            visible={visibility.isIncluded(
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad
+                            )}
                         >
                             <DekningsgradSpørsmål
-                                FormKomponent={MorFarAnnenForelderHarRettIEØSFormComponents}
-                                dekningsgradFeltNavn={MorFarAnnenForelderHarRettIEØSFormField.dekningsgrad}
+                                FormKomponent={MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents}
+                                dekningsgradFeltNavn={MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad}
                                 tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                 erDeltUttak={erDeltUttakINorge}
                             />
                         </Block>
                         <Block
                             visible={visibility.isIncluded(
-                                MorFarAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg
                             )}
                         >
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
@@ -214,12 +216,12 @@ const MorFarAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block
                             padBottom="l"
                             visible={visibility.isIncluded(
-                                MorFarAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon
                             )}
                         >
                             <FarMedmorsFørsteDag
-                                FormComponents={MorFarAnnenForelderHarRettIEØSFormComponents}
-                                fieldName={MorFarAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon}
+                                FormComponents={MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents}
+                                fieldName={MorFarAdopsjonAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon}
                                 familiehendelsesdato={familiehendelsesdatoDate!}
                                 setFieldValue={setFieldValue}
                                 morsSisteDag={undefined}
@@ -283,11 +285,11 @@ const MorFarAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 {intlUtils(intl, 'søknad.gåVidere')}
                             </Hovedknapp>
                         </Block>
-                    </MorFarAnnenForelderHarRettIEØSFormComponents.Form>
+                    </MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.Form>
                 );
             }}
         />
     );
 };
 
-export default MorFarAnnenForelderHarRettIEØS;
+export default MorFarAdopsjonAnnenForelderHarRettIEØS;
