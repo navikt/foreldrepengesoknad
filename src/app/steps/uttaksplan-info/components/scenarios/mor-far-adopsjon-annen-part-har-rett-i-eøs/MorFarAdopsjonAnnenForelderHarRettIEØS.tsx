@@ -16,7 +16,7 @@ import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarF
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
-import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
+// import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
@@ -54,37 +54,16 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
-    const {
-        søkersituasjon,
-        annenForelder,
-        barn,
-        søker: { erAleneOmOmsorg },
-        dekningsgrad,
-        erEndringssøknad,
-    } = useSøknad();
+    const { søkersituasjon, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
     const lagretUttaksplanInfo = useUttaksplanInfo<MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo>();
-    const erDeltUttak = true; //TODO: Er dette riktig?
+    const erDeltUttak = true;
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
-    const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
-          annenForelder.harRettPåForeldrepengerIEØS !== undefined
-        : false;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const bareFarMedmorHarRett =
-        erFarEllerMedmor &&
-        isAnnenForelderOppgitt(annenForelder) &&
-        !søkerErAleneOmOmsorg &&
-        !annenForelder.harRettPåForeldrepengerINorge &&
-        !annenForelder.harRettPåForeldrepengerIEØS;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
-
-    const shouldRender =
-        erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>) => {
         const submissionValues = mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState(values);
@@ -93,10 +72,10 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,
-            undefined,
+            values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
             dateToISOString(ankomstdato),
-            values.søkersFørsteDag
+            undefined
         );
 
         return [
@@ -105,7 +84,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
             actionCreator.lagUttaksplanforslag(
                 lagUttaksplan({
-                    annenForelderErUfør: erMorUfør,
+                    annenForelderErUfør: false,
                     erDeltUttak,
                     erEndringssøknad,
                     erEnkelEndringssøknad: erEndringssøknad,
@@ -120,15 +99,16 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
                     uttaksplanSkjema: {
                         startdatoPermisjon: startdato,
-                        farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
+                        farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
                     },
-                    bareFarMedmorHarRett: bareFarMedmorHarRett,
+                    bareFarMedmorHarRett: false,
                     termindato: undefined,
                     harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
                         erDeltUttak,
-                        morHarRett: !bareFarMedmorHarRett,
-                        søkerErAleneOmOmsorg,
+                        morHarRett: true,
+                        søkerErAleneOmOmsorg: false,
                     }),
+                    annenForelderHarRettPåForeldrepengerIEØS: true,
                 })
             ),
         ];
@@ -140,33 +120,26 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
 
-    if (!shouldRender || !isAdoptertBarn(barn)) {
+    if (!erAdopsjon || !isAdoptertBarn(barn)) {
         return null;
     }
 
     const erSøkerMor = !erFarEllerMedmor;
-
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const harAnnenForeldreRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
-    const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
 
     const erDeltUttakINorge = false;
-
-    const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
-
     const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
-
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
     const ankomstdato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
     const antallBarn = barn.antallBarn;
     const latestDate =
         ankomstdato !== undefined && barn.adopsjonsdato !== undefined
-            ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato])) // todo - sjekk logikk her
+            ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato]))
             : barn.adopsjonsdato;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
@@ -174,17 +147,14 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer100DTO
     );
 
-    const erFødsel = søkersituasjon.situasjon === 'fødsel';
-
     return (
         <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.FormikWrapper
             initialValues={getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues(lagretUttaksplanInfo, dekningsgrad)}
             onSubmit={handleSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
+            renderForm={({ values: formValues }) => {
                 const visibility = morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig.getVisbility({
                     ...formValues,
                     erFarEllerMedmor,
-                    erFødsel,
                 });
 
                 return (
@@ -212,28 +182,11 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         >
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
                         </Block>
-
-                        <Block
-                            padBottom="l"
-                            visible={visibility.isIncluded(
-                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon
-                            )}
-                        >
-                            <FarMedmorsFørsteDag
-                                FormComponents={MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents}
-                                fieldName={MorFarAdopsjonAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon}
-                                familiehendelsesdato={familiehendelsesdatoDate!}
-                                setFieldValue={setFieldValue}
-                                morsSisteDag={undefined}
-                                navnMor={navnMor}
-                                termindato={undefined}
-                                situasjon={søkersituasjon.situasjon}
-                            />
-                        </Block>
                         <Block
                             padBottom="l"
                             visible={
-                                !erFødsel &&
+                                erAdopsjon &&
+                                isAdoptertBarn(barn) &&
                                 formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
                                 dayjs(latestDate).isBefore(
                                     dayjs(
@@ -242,7 +195,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                             undefined,
                                             dateToISOString(barn.adopsjonsdato),
                                             dateToISOString(ankomstdato),
-                                            formValues.søkersFørsteDag
+                                            undefined
                                         )
                                     ),
                                     'day'
@@ -260,25 +213,17 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 />
                             </Veilederpanel>
                         </Block>
-                        <Block visible={erAleneOmOmsorg === false && harAnnenForeldreRettPåForeldrepengerINorge}>
-                            <Block
-                                padBottom="l"
-                                visible={
-                                    antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined //&&
-                                    //formValues.harAnnenForelderSøktFP !== YesOrNo.YES
-                                }
-                            >
-                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                        values={{
-                                            uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
-                                        }}
-                                    />
-                                </Veilederpanel>
-                            </Block>
+                        <Block padBottom="l" visible={antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined}>
+                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                <FormattedMessage
+                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                    values={{
+                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                        navnFar: navnFarMedmor,
+                                        navnMor: navnMor,
+                                    }}
+                                />
+                            </Veilederpanel>
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                             <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>

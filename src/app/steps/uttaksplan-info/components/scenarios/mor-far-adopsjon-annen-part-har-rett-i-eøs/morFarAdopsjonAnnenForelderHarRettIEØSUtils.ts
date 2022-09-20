@@ -9,7 +9,7 @@ import {
 const initialMorFarAdopsjonAnnenForelderHarRettIEØSValues: MorFarAdopsjonAnnenForelderHarRettIEØSFormData = {
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad]: '',
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg]: undefined,
-    [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon]: '',
+    [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.annenStartdatoAdopsjon]: '',
 };
 export const mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState = (
     values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>
@@ -17,7 +17,7 @@ export const mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState = (
     return {
         dekningsgrad: values.dekningsgrad!,
         startdatoAdopsjonValg: values.startdatoAdopsjonValg!,
-        søkersFørsteDag: values.søkersFørsteDag!,
+        annenStartdatoAdopsjon: values.annenStartdatoAdopsjon!,
     };
 };
 export const getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues = (

@@ -4,10 +4,10 @@ import {
     MorFarAdopsjonAnnenForelderHarRettIEØSFormData,
     MorFarAdopsjonAnnenForelderHarRettIEØSFormField,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSFormConfig';
+import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 interface MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload
     extends MorFarAdopsjonAnnenForelderHarRettIEØSFormData {
     erFarEllerMedmor: boolean;
-    erFødsel: boolean;
 }
 const MorFarAdopsjonAnnenForelderHarRettIEØSFormConfig: QuestionConfig<
     MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload,
@@ -19,12 +19,12 @@ const MorFarAdopsjonAnnenForelderHarRettIEØSFormConfig: QuestionConfig<
     },
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg]: {
         isAnswered: ({ startdatoAdopsjonValg }) => hasValue(startdatoAdopsjonValg),
-        isIncluded: ({ erFødsel, dekningsgrad }) => !erFødsel && hasValue(dekningsgrad),
+        isIncluded: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
-    [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.søkersFørsteDagAdopsjon]: {
-        isAnswered: ({ søkersFørsteDag }) => hasValue(søkersFørsteDag),
-        isIncluded: ({ erFødsel, dekningsgrad, startdatoAdopsjonValg }) =>
-            !erFødsel && hasValue(dekningsgrad) && hasValue(startdatoAdopsjonValg),
+    [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.annenStartdatoAdopsjon]: {
+        isAnswered: ({ annenStartdatoAdopsjon }) => hasValue(annenStartdatoAdopsjon),
+        isIncluded: ({ dekningsgrad, startdatoAdopsjonValg }) =>
+            startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN && hasValue(dekningsgrad),
     },
 };
 export const morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig = Questions<

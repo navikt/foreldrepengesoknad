@@ -113,7 +113,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer:
                         tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
                     uttaksplanSkjema: {
-                        startdatoPermisjon: startdato,
+                        startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin ? undefined : startdato,
                         farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
                     },
                     bareFarMedmorHarRett: bareFarMedmorHarRett,
@@ -123,6 +123,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         morHarRett: !bareFarMedmorHarRett,
                         søkerErAleneOmOmsorg,
                     }),
+                    annenForelderHarRettPåForeldrepengerIEØS: true,
                 })
             ),
         ];

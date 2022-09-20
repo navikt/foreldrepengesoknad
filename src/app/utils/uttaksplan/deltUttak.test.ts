@@ -26,6 +26,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-08-08T00:00:00.000Z'),
             undefined,
+            undefined,
             new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(1);
@@ -46,6 +47,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-09-12T00:00:00.000Z'),
             undefined,
+            undefined,
             new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(1);
@@ -65,6 +67,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             undefined,
             undefined,
             new Date('2022-08-01T00:00:00.000Z'),
+            undefined,
             undefined,
             undefined //termindato
         );
@@ -87,6 +90,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-09-19T00:00:00.000Z'),
+            undefined,
             undefined,
             new Date('2022-08-08T00:00:00.000Z') //terminato
         );
@@ -139,6 +143,7 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-08-08T00:00:00.000Z'),
             undefined,
+            undefined,
             new Date('2022-08-08T00:00:00.000Z') //termindato
         );
         expect(perioder.length).toEqual(0);
@@ -156,6 +161,7 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             undefined,
             new Date('2022-12-27T00:00:00.000Z'),
             new Date('2022-12-28T00:00:00.000Z'),
+            undefined,
             undefined,
             new Date('2022-08-08T00:00:00.000Z') //termindato
         );

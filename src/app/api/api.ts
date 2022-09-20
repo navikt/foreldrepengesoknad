@@ -37,6 +37,7 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
+// const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -181,7 +182,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const urlParams = {
         farHarRett: farHarRettINorge,
         morHarRett: morHarRettINorge,
-        annenPartHarRettPåForeldrepengerIEØS,
+        harAnnenForelderTilsvarendeRettEØS: annenPartHarRettPåForeldrepengerIEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
@@ -199,7 +200,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     if (isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
         urlParamsForInnsending = urlParams;
     } else {
-        const { annenPartHarRettPåForeldrepengerIEØS, ...rest } = urlParams;
+        const { harAnnenForelderTilsvarendeRettEØS, ...rest } = urlParams;
         urlParamsForInnsending = rest;
     }
 

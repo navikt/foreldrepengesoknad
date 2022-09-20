@@ -42,8 +42,8 @@ export interface FarMedmorFødselBeggeHarRettUttaksplanInfo extends UttaksplanIn
 
 export interface MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
     startdatoAdopsjonValg: AdopsjonStartdatoValg;
-    søkersFørsteDag: string;
     dekningsgrad: string;
+    annenStartdatoAdopsjon: string | undefined;
 }
 
 export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {

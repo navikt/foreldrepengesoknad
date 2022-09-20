@@ -36,12 +36,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
             expect(await screen.findByText(NÅR_ØNSKER_DU_Å_STARTE)).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
-            expect(await screen.findByText(NÅR_FØRSTE_DAG)).toBeInTheDocument();
 
-            expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-            const førsteDagInput = screen.getByLabelText(NÅR_FØRSTE_DAG);
-            await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
-            await userEvent.tab();
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 
             //Skal ikke vise informasjon om dag/fellesperiode fordelingen mellom mor og far

@@ -91,6 +91,7 @@ const deltUttakAdopsjonSøktSist = (
             begrunnelseForUtsettelse,
             familiehendelsesdato,
             undefined,
+            undefined,
             'adopsjon'
         );
     } else {
@@ -102,6 +103,7 @@ const deltUttakAdopsjonSøktSist = (
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
             familiehendelsesdato,
+            undefined,
             undefined,
             'adopsjon'
         ).map((periode) => {
@@ -281,11 +283,13 @@ const deltUttakFødselFarMedmor = (
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
+    morHarRettPåForeldrepengerIEØS: boolean | undefined,
     situasjon = 'fødsel'
 ): Periode[] => {
     if (
         !andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-        dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag)
+        dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag) &&
+        !morHarRettPåForeldrepengerIEØS
     ) {
         return [];
     }
@@ -404,6 +408,7 @@ const deltUttakFødsel = (
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    annenForelderHarRettPåForeldrepengerIEØS: boolean | undefined,
     termindato?: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -421,7 +426,8 @@ const deltUttakFødsel = (
             farSinFørsteUttaksdag!,
             begrunnelseForUtsettelse,
             famDato,
-            termindato
+            termindato,
+            annenForelderHarRettPåForeldrepengerIEØS
         );
     }
 };
@@ -439,6 +445,7 @@ export const deltUttak = (
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    annenForelderHarRettPåForeldrepengerIEØS?: boolean | undefined,
     termindato?: Date | undefined
 ) => {
     if (situasjon === 'adopsjon') {
@@ -469,6 +476,7 @@ export const deltUttak = (
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
+            annenForelderHarRettPåForeldrepengerIEØS,
             termindato
         );
     }
