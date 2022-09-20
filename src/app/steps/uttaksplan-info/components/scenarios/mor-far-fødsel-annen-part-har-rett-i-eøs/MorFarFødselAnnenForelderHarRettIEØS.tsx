@@ -53,44 +53,24 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
-    const {
-        søkersituasjon,
-        annenForelder,
-        barn,
-        søker: { erAleneOmOmsorg },
-        dekningsgrad,
-        erEndringssøknad,
-    } = useSøknad();
+    const { søkersituasjon, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
     } = useSøkerinfo();
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const lagretUttaksplanInfo = useUttaksplanInfo<MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo>();
-    const erDeltUttak = true; //TODO: Er dette riktig?
+    const erDeltUttak = true;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
-    const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
-    const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
-          annenForelder.harRettPåForeldrepengerIEØS !== undefined
-        : false;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const bareFarMedmorHarRett =
-        erFarEllerMedmor &&
-        isAnnenForelderOppgitt(annenForelder) &&
-        !søkerErAleneOmOmsorg &&
-        !annenForelder.harRettPåForeldrepengerINorge &&
-        !annenForelder.harRettPåForeldrepengerIEØS;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
-    const shouldRender =
-        erFødsel && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
+    const shouldRender = erFødsel;
 
     const onValidSubmitHandler = (values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>) => {
         const submissionValues = mapMorFarFødselAnnenForelderHarRettIEØSFormToState(values);
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
-
         const startdato = hasValue(values.permisjonStartdato) ? values.permisjonStartdato : undefined;
 
         return [
@@ -99,7 +79,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
             actionCreator.lagUttaksplanforslag(
                 lagUttaksplan({
-                    annenForelderErUfør: erMorUfør,
+                    annenForelderErUfør: false,
                     erDeltUttak,
                     erEndringssøknad,
                     erEnkelEndringssøknad: erEndringssøknad,
@@ -116,12 +96,12 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin ? undefined : startdato,
                         farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
                     },
-                    bareFarMedmorHarRett: bareFarMedmorHarRett,
+                    bareFarMedmorHarRett: false,
                     termindato: undefined,
                     harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
                         erDeltUttak,
-                        morHarRett: !bareFarMedmorHarRett,
-                        søkerErAleneOmOmsorg,
+                        morHarRett: true,
+                        søkerErAleneOmOmsorg: false,
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
                 })
@@ -140,16 +120,13 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     }
 
     const erSøkerMor = !erFarEllerMedmor;
-
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
+
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
 
     const erDeltUttakINorge = false;
-
-    const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
     const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
@@ -242,7 +219,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block
                             padBottom="l"
                             visible={
-                                erAleneOmOmsorg === false &&
                                 visibility.isAnswered(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad) &&
                                 antallBarn > 1 &&
                                 (formValues.permisjonStartdato !== undefined ||
