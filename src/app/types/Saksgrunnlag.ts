@@ -17,5 +17,5 @@ export interface Saksgrunnlag {
     erBarnetFødt: boolean;
     familiehendelseDato: string;
     familiehendelseType: FamiliehendelseType;
-    annenPartHarRettPåForeldrepengerIEØS?: boolean;
+    harAnnenForelderTilsvarendeRettEØS?: boolean;
 }

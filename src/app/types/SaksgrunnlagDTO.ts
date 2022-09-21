@@ -12,5 +12,5 @@ export interface SaksgrunnlagDTO {
     søkerErFarEllerMedmor: boolean;
     gjelderAnnenPart: boolean;
     termindato?: string;
-    annenPartHarRettPåForeldrepengerIEØS?: boolean;
+    harAnnenForelderTilsvarendeRettEØS?: boolean;
 }
