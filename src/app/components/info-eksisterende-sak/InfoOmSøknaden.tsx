@@ -73,6 +73,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
         ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
         : false;
+    const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerINorge;
     const erAleneOmOmsorg = søker.erAleneOmOmsorg;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
@@ -93,7 +94,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
 
     const hvem = getHvem(
         intl,
-        erDeltUttak,
+        erDeltUttakINorge,
         annenForelderNavn,
         eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false
     );
@@ -128,7 +129,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     return (
         <Block padBottom="l" className={bem.block}>
             <InnholdMedIllustrasjon
-                tittel={intlUtils(intl, `eksisterendeSak.tittel.${erDeltUttak ? 'deltUttak' : 'aleneomsorg'}`)}
+                tittel={intlUtils(intl, `eksisterendeSak.tittel.${erDeltUttakINorge ? 'deltUttak' : 'aleneomsorg'}`)}
                 illustrasjoner={[
                     <SituasjonSirkel key="situasjon" situasjon={situasjon} valgtForelder={forelderVedAleneomsorg} />,
                     <UkerSirkel key="uker" uker={uker} />,
