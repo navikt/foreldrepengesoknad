@@ -60,22 +60,22 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     const morSinSisteUttaksdagDate = ISOStringToDate(morSinSisteUttaksdag);
     if (familiehendelsesdato) {
         if (erDeltUttak) {
-            const forslag = deltUttak(
+            const forslag = deltUttak({
                 situasjon,
-                familiehendelsesdato,
-                søkerErFarEllerMedmor,
+                famDato: familiehendelsesdato,
+                erFarEllerMedmor: søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
-                ISOStringToDate(startdatoPermisjon),
+                startdatoPermisjon: ISOStringToDate(startdatoPermisjon),
                 fellesperiodeukerMor,
                 harAnnenForelderSøktFP,
                 antallDagerFellesperiodeFarMedmor,
                 antallUkerFellesperiodeFarMedmor,
-                morSinSisteUttaksdagDate,
-                ISOStringToDate(farSinFørsteUttaksdag),
+                morSinSisteUttaksdag: morSinSisteUttaksdagDate,
+                farSinFørsteUttaksdag: ISOStringToDate(farSinFørsteUttaksdag),
                 begrunnelseForUtsettelse,
                 annenForelderHarRettPåForeldrepengerIEØS,
-                termindato
-            );
+                termindato,
+            });
 
             return finnOgSettInnHull(
                 forslag,

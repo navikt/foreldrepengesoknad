@@ -35,7 +35,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined
         : false;
-    const annenPartHarRettIEØS = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
+    const annenForelderHarRettIEØS =
+        isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 
     const scenario = getUttaksplanScenario({
         erFødsel,
@@ -46,7 +47,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
         erAdopsjon,
         eksisterendeSakAnnenPart,
         annenForelderOppgittIkkeAleneOmOmsorg,
-        annenPartHarRettIEØS,
+        annenForelderHarRettIEØS,
     });
 
     switch (scenario) {

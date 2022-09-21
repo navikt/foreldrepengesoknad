@@ -155,7 +155,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const erSøkerMor = !erFarEllerMedmor;
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const harAnnenForeldreRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
+    const harAnnenForelderRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
     const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
     const navnAnnenPart = oppgittAnnenForelder
@@ -192,7 +192,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
-                    harAnnenForeldreRettPåForeldrepengerINorge,
+                    harAnnenForelderRettPåForeldrepengerINorge,
                     erAleneOmOmsorg,
                 });
 
@@ -324,7 +324,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 />
                             </Veilederpanel>
                         </Block>
-                        <Block visible={erAleneOmOmsorg === false && harAnnenForeldreRettPåForeldrepengerINorge}>
+                        <Block visible={erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
                             <Block
                                 padBottom="l"
                                 visible={

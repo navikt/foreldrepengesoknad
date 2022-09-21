@@ -28,7 +28,7 @@ export interface TilgjengeligeStønadskontoerParams {
     minsterett: boolean;
     erMor: boolean;
     morHarUføretrygd: boolean;
-    annenPartHarRettPåForeldrepengerIEØS?: boolean;
+    harAnnenForelderTilsvarendeRettEØS: boolean;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -36,7 +36,6 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
-// const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -163,7 +162,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         antallBarn,
         farHarRettINorge,
         morHarRettINorge,
-        annenPartHarRettPåForeldrepengerIEØS,
+        harAnnenForelderTilsvarendeRettEØS,
         dekningsgrad,
         fødselsdato,
         termindato,
@@ -181,7 +180,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const urlParams = {
         farHarRett: farHarRettINorge,
         morHarRett: morHarRettINorge,
-        harAnnenForelderTilsvarendeRettEØS: annenPartHarRettPåForeldrepengerIEØS,
+        harAnnenForelderTilsvarendeRettEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,

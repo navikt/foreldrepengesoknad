@@ -14,7 +14,7 @@ function createEnvSettingsFile(settingsFilePath) {
                 FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
                 FEATURE_VIS_ALERTSTRIPE:  '${process.env.FEATURE_VIS_ALERTSTRIPE}',
                 FEATURE_BRUK_SAKER_V2:  '${process.env.FEATURE_BRUK_SAKER_V2}',
-                       };`
+            };`
         );
     });
 }

@@ -16,7 +16,6 @@ import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarF
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
-// import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';

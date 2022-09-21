@@ -5,22 +5,19 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 interface MorFarAdopsjonQuestionsPayload extends MorFarAdopsjonFormData {
-    harAnnenForeldreRettPåForeldrepengerINorge: boolean | undefined;
+    harAnnenForelderRettPåForeldrepengerINorge: boolean | undefined;
     erAleneOmOmsorg: boolean | undefined;
 }
 
 const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField> = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: {
         isAnswered: ({ harAnnenForelderSøktFP }) => harAnnenForelderSøktFP !== YesOrNo.UNANSWERED,
-        isIncluded: ({ harAnnenForeldreRettPåForeldrepengerINorge: harAnnenForeldreRettPåForeldrepenger }) =>
-            !!harAnnenForeldreRettPåForeldrepenger,
+        isIncluded: ({ harAnnenForelderRettPåForeldrepengerINorge }) => !!harAnnenForelderRettPåForeldrepengerINorge,
     },
     [MorFarAdopsjonFormField.dekningsgrad]: {
         isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: ({
-            harAnnenForelderSøktFP,
-            harAnnenForeldreRettPåForeldrepengerINorge: harAnnenForeldreRettPåForeldrepenger,
-        }) => harAnnenForelderSøktFP !== YesOrNo.UNANSWERED || !harAnnenForeldreRettPåForeldrepenger,
+        isIncluded: ({ harAnnenForelderSøktFP, harAnnenForelderRettPåForeldrepengerINorge }) =>
+            harAnnenForelderSøktFP !== YesOrNo.UNANSWERED || !harAnnenForelderRettPåForeldrepengerINorge,
     },
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: {
         isAnswered: ({ startdatoAdopsjonValg }) => hasValue(startdatoAdopsjonValg),
@@ -57,12 +54,12 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, M
         isIncluded: ({
             startdatoAdopsjonValg,
             harAnnenForelderSøktFP,
-            harAnnenForeldreRettPåForeldrepengerINorge,
+            harAnnenForelderRettPåForeldrepengerINorge,
             erAleneOmOmsorg,
         }) =>
             startdatoAdopsjonValg !== undefined &&
             harAnnenForelderSøktFP !== YesOrNo.YES &&
-            !!harAnnenForeldreRettPåForeldrepengerINorge &&
+            !!harAnnenForelderRettPåForeldrepengerINorge &&
             erAleneOmOmsorg === false,
     },
 };

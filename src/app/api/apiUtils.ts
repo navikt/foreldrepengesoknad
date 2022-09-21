@@ -120,7 +120,7 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
         const { erUfør, erForSyk, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, ...annenForelderRest } =
             annenForelder;
         const cleanedAnnenForelder =
-            erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge
+            erEndringssøknad && annenForelder.harRettPåForeldrepengerINorge
                 ? {
                       harMorUføretrygd: erUfør,
                       harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
