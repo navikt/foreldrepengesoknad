@@ -47,8 +47,6 @@ spec:
       value: "on"
     - name: FEATURE_BRUK_SAKER_V2
       value: "on"
-    - name: FEATURE_TEST_EOS_PRAKSISENDRING
-      value: "on"
     - name: FAMILIE
       value: 'https://familie.dev.nav.no'
     - name: APP_VERSION

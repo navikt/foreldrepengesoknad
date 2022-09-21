@@ -15,7 +15,6 @@ const {
     MedArbeidsforholdOgAndreInntekter,
 } = composeStories(stories);
 
-const toggleUtils = require('../../utils/toggleUtils');
 const OPPSUMMERING_HEADER =
     'Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.';
 const SEND_INN_SØKNAD_KNAPP = 'Send inn søknad';
@@ -25,7 +24,6 @@ const ANDRE_FORELDER_PANEL = 'Den andre forelderen';
 const UTENLANDSOPPHOLD_PANEL = 'Utenlandsopphold';
 const ARBEIDSFORHOLD_OG_INNTEKTER_PANEL = 'Arbeidsforhold og andre inntektskilder';
 const UTTAKSPLAN_PANEL = 'Din plan';
-const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
 
 describe('<Oppsummering>', () => {
     it('skal bekrefte vilkårene før innsending', async () => {
@@ -171,8 +169,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Begrunnelse for å søke om utsettelse')).toBeInTheDocument();
         expect(screen.getByText('Utsettelsesgrunn', { exact: false })).toBeInTheDocument();
     });
-    it('I DEV: skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
-        featureIsEnabledMock.mockImplementation(() => true);
+    it('Skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
         await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
@@ -182,19 +179,6 @@ describe('<Oppsummering>', () => {
                 'Har Anne arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?'
             )
         ).toBeInTheDocument();
-        expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
-    });
-    it('I PROD: skal ikke vise informasjon foreldrepenger i EØS', async () => {
-        featureIsEnabledMock.mockImplementation(() => false);
-        render(<FarMedMorSomHarRettIEØS />);
-        expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
-        await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
-        expect(screen.getByText('Har Anne rett til foreldrepenger i Norge')).toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                'Har Anne arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?'
-            )
-        ).not.toBeInTheDocument();
         expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
     });
     it('skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {

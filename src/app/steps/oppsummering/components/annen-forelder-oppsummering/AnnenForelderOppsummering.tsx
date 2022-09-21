@@ -9,8 +9,6 @@ import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import FeatureToggle from 'app/FeatureToggle';
-import { isFeatureEnabled } from 'app/utils/toggleUtils';
 
 interface Props {
     annenForelder: AnnenForelder;
@@ -70,34 +68,28 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                             <FormattedMessage id={annenForelder.harRettPåForeldrepengerINorge ? 'ja' : 'nei'} />
                         </Normaltekst>
                     </OppsummeringsPunkt>
-                    {erFarEllerMedmor &&
-                        isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
-                        !annenForelder.harRettPåForeldrepengerINorge && (
-                            <OppsummeringsPunkt
-                                title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
-                                    navn: annenForelder.fornavn,
-                                })}
-                            >
-                                <Normaltekst>
-                                    <FormattedMessage id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'} />
-                                </Normaltekst>
-                            </OppsummeringsPunkt>
-                        )}
-                    {erFarEllerMedmor &&
-                        !annenForelder.harRettPåForeldrepengerINorge &&
-                        (!isFeatureEnabled(FeatureToggle.testEØSPraksisendring) ||
-                            (isFeatureEnabled(FeatureToggle.testEØSPraksisendring) &&
-                                !annenForelder.harRettPåForeldrepengerIEØS)) && (
-                            <OppsummeringsPunkt
-                                title={intlUtils(intl, 'annenForelder.erMorUfør', {
-                                    navn: annenForelder.fornavn,
-                                })}
-                            >
-                                <Normaltekst>
-                                    <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
-                                </Normaltekst>
-                            </OppsummeringsPunkt>
-                        )}
+                    {!annenForelder.harRettPåForeldrepengerINorge && (
+                        <OppsummeringsPunkt
+                            title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
+                                navn: annenForelder.fornavn,
+                            })}
+                        >
+                            <Normaltekst>
+                                <FormattedMessage id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'} />
+                            </Normaltekst>
+                        </OppsummeringsPunkt>
+                    )}
+                    {!annenForelder.harRettPåForeldrepengerINorge && !annenForelder.harRettPåForeldrepengerIEØS && (
+                        <OppsummeringsPunkt
+                            title={intlUtils(intl, 'annenForelder.erMorUfør', {
+                                navn: annenForelder.fornavn,
+                            })}
+                        >
+                            <Normaltekst>
+                                <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
+                            </Normaltekst>
+                        </OppsummeringsPunkt>
+                    )}
                 </>
             )}
             {farMedmorErAleneOmOmsorg && erFarEllerMedmor && (

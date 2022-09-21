@@ -13,8 +13,7 @@ import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
-import FeatureToggle from 'app/FeatureToggle';
-import { isFeatureEnabled } from 'app/utils/toggleUtils';
+
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
     morHarRettINorge: boolean;
@@ -196,18 +195,10 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         morHarUføretrygd,
     };
 
-    let urlParamsForInnsending;
-    if (isFeatureEnabled(FeatureToggle.testEØSPraksisendring)) {
-        urlParamsForInnsending = urlParams;
-    } else {
-        const { harAnnenForelderTilsvarendeRettEØS, ...rest } = urlParams;
-        urlParamsForInnsending = rest;
-    }
-
     const { data, error } = useRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
         config: {
             timeout: 15 * 1000,
-            params: urlParamsForInnsending,
+            params: urlParams,
             withCredentials: false,
         },
         isSuspended,

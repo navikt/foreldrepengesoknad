@@ -12,7 +12,6 @@ const Environment = () => {
         [FeatureToggle.visAlertstripe]: appSettings[FeatureToggle.visAlertstripe],
         [FeatureToggle.visPerioderSomSendesInn]: appSettings[FeatureToggle.visPerioderSomSendesInn],
         [FeatureToggle.brukSakerV2]: appSettings[FeatureToggle.brukSakerV2],
-        [FeatureToggle.testEØSPraksisendring]: appSettings[FeatureToggle.testEØSPraksisendring],
     };
 };
 
