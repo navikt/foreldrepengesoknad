@@ -161,6 +161,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
     const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    const annenForelderHarRettIEØS =
+        isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 
     const handleCleanup = (
         values: PeriodeUttakFormData,
@@ -173,10 +175,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
             forelder,
             erMorUfør,
             familiehendelsesdato,
-            erFarEllerMedmor
+            erFarEllerMedmor,
+            annenForelderHarRettIEØS
         );
     };
-
+    const erDeltUttakINorge = erDeltUttak && !annenForelderHarRettIEØS;
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
     const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
 
@@ -199,7 +202,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 forelder,
                 erMorUfør,
                 familiehendelsesdato,
-                erFarEllerMedmor
+                erFarEllerMedmor,
+                annenForelderHarRettIEØS
             )}
             enableReinitialize={false}
             onSubmit={(values: Partial<PeriodeUttakFormData>) =>
@@ -239,7 +243,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     regelProps: {
                         annenForelder,
                         erAleneOmOmsorg,
-                        erDeltUttak,
+                        erDeltUttakINorge,
                         erFarEllerMedmor,
                         erFlerbarnssøknad,
                         familiehendelsesdato,

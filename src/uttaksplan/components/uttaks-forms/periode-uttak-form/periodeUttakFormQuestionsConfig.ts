@@ -159,7 +159,7 @@ const skalViseFlerbarnsdager = (values: PeriodeUttakFormData): boolean => {
 const skalViseKonto = (
     values: PeriodeUttakFormData,
     familiehendelsesdato: Date,
-    erDeltUttak: boolean,
+    erDeltUttakINorge: boolean,
     erFarEllerMedmor: boolean,
     situasjon: Situasjon
 ): boolean => {
@@ -168,7 +168,13 @@ const skalViseKonto = (
         return false;
     }
     if (
-        hvemSkalTaUttakSkalBesvares(tidsperiode, erDeltUttak, familiehendelsesdato, erFarEllerMedmor, situasjon) &&
+        hvemSkalTaUttakSkalBesvares(
+            tidsperiode,
+            erDeltUttakINorge,
+            familiehendelsesdato,
+            erFarEllerMedmor,
+            situasjon
+        ) &&
         !hasValue(values.hvemSkalTaUttak)
     ) {
         return false;
@@ -197,7 +203,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
             skalViseKonto(
                 values,
                 regelProps.familiehendelsesdato,
-                regelProps.erDeltUttak,
+                regelProps.erDeltUttakINorge,
                 regelProps.erFarEllerMedmor,
                 regelProps.situasjon
             ),
@@ -238,7 +244,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
                 getUttakSkjemaregler(values, regelProps),
                 values,
                 regelProps.familiehendelsesdato,
-                regelProps.erDeltUttak
+                regelProps.erDeltUttakINorge
             ),
     },
     [PeriodeUttakFormField.stillingsprosent]: {
