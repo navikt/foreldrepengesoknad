@@ -186,6 +186,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                                 navnMor={navnMor}
                                 termindato={termindato}
                                 situasjon={søkersituasjon.situasjon}
+                                morHarRettTilForeldrepengerIEØS={false}
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

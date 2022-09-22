@@ -270,6 +270,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 navnMor={navnMor}
                                 termindato={undefined}
                                 situasjon={søkersituasjon.situasjon}
+                                morHarRettTilForeldrepengerIEØS={false}
                             />
                         </Block>
                         <Block

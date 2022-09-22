@@ -55,9 +55,20 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): S
 
 const erEksisterendeSakErDeltUttak = (eksisterendeSak: EksisterendeSakDTO): boolean => {
     const {
-        grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett },
+        grunnlag: {
+            farMedmorErAleneOmOmsorg,
+            farMedmorHarRett,
+            morErAleneOmOmsorg,
+            morHarRett,
+            harAnnenForelderTilsvarendeRettEØS,
+        },
     } = eksisterendeSak;
-    if (farMedmorErAleneOmOmsorg || morErAleneOmOmsorg || farMedmorHarRett === false || morHarRett === false) {
+    if (
+        farMedmorErAleneOmOmsorg ||
+        morErAleneOmOmsorg ||
+        (farMedmorHarRett === false && harAnnenForelderTilsvarendeRettEØS === false) ||
+        (morHarRett === false && harAnnenForelderTilsvarendeRettEØS === false)
+    ) {
         return false;
     }
     return true;

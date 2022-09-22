@@ -214,6 +214,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 navnMor={navnMor}
                                 termindato={undefined}
                                 situasjon={søkersituasjon.situasjon}
+                                morHarRettTilForeldrepengerIEØS={true}
                             />
                         </Block>
                         <Block
