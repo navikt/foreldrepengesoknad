@@ -327,7 +327,6 @@ const getAnnenForelderFromSaksgrunnlag = (
                     etternavn: annenPart.navn.etternavn,
                     erUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge: grunnlag.morHarRett,
-                    harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                 };
@@ -336,7 +335,6 @@ const getAnnenForelderFromSaksgrunnlag = (
                 fornavn: annenPart.navn.fornavn,
                 etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepengerINorge: grunnlag.farMedmorHarRett,
-                harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
             };
@@ -424,7 +422,12 @@ export const opprettSøknadFraEksisterendeSak = (
     );
     const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
 
-    const annenForelder = annenForelderFraSak || annenForelderFraBarn || mockForelder;
+    const annenForelderBase = annenForelderFraSak || annenForelderFraBarn || mockForelder;
+
+    const annenForelder = {
+        ...annenForelderBase,
+        harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
+    };
 
     if (!barn || !rolle) {
         return undefined;
