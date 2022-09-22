@@ -46,7 +46,7 @@ spec:
     - name: FEATURE_VIS_PERIODER_SOM_SENDES_INN
       value: "on"
     - name: FEATURE_BRUK_SAKER_V2
-      value: "on"
+      value: "off"
     - name: FAMILIE
       value: 'https://familie.dev.nav.no'
     - name: APP_VERSION
