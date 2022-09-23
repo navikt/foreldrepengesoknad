@@ -22,7 +22,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { Periode } from 'uttaksplan/types/Periode';
+import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
@@ -99,6 +99,25 @@ const UttaksplanStep = () => {
         };
         dispatch(actionCreator.setTilleggsopplysninger(opplysninger));
     };
+
+    useEffect(() => {
+        const periodeAngittAvAnnenPart = opprinneligPlan?.find((p) => isUttaksperiode(p) && p.angittAvAnnenPart);
+
+        if (periodeAngittAvAnnenPart && endringstidspunkt === undefined) {
+            const tidspunktForEndring = periodeAngittAvAnnenPart.tidsperiode.fom;
+            dispatch(actionCreator.setEndringstidspunkt(tidspunktForEndring));
+
+            const perioderForÅSendeInn = getPerioderSomSkalSendesInn(
+                søknad.uttaksplan,
+                erEndringssøknad,
+                erFarEllerMedmor,
+                opprinneligPlan,
+                tidspunktForEndring
+            );
+            setPerioderSomSkalSendesInn(perioderForÅSendeInn);
+            dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
+        }
+    }, [opprinneligPlan, dispatch, endringstidspunkt, erFarEllerMedmor, søknad.uttaksplan, erEndringssøknad]);
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
