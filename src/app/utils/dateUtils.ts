@@ -12,7 +12,7 @@ import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { isUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
+import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 
@@ -420,14 +420,7 @@ export const getEndringstidspunkt = (
         }
     }
 
-    const oldestDate = getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
-    const førstePeriodeAngittAvAnnenPart = opprinneligPlan?.find((p) => isUttaksperiode(p) && p.angittAvAnnenPart);
-
-    if (oldestDate === undefined && førstePeriodeAngittAvAnnenPart) {
-        return førstePeriodeAngittAvAnnenPart.tidsperiode.fom;
-    }
-
-    return oldestDate;
+    return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
 };
 
 const getOldestDate = (
