@@ -20,9 +20,19 @@ import Kontostatus from './konto-status/Kontostatus';
 import TilesList from './tilesList/TilesList';
 import './oversiktKvoter.less';
 import { Situasjon } from 'app/types/Situasjon';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 
 const bem = bemUtils('oversiktKvoter');
 
+const filtrerBortAnnenPartsKonto = (
+    uttakskontoer: StønadskontoUttak[],
+    erFarEllerMedmor: boolean
+): StønadskontoUttak[] => {
+    return erFarEllerMedmor
+        ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)
+        : uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Fedrekvote);
+};
 interface PropsPerForelder {
     brukteDagerPerForelder: BrukteDager;
     erDeltUttakINorge: boolean;
@@ -69,7 +79,7 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
 };
 
 interface PropsPerKvote {
-    erDeltUttak: boolean;
+    erDeltUttakINorge: boolean;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     uttaksstatus: Uttaksstatus;
@@ -79,7 +89,7 @@ interface PropsPerKvote {
 }
 
 const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
-    erDeltUttak,
+    erDeltUttakINorge,
     navnPåForeldre,
     erEndringssøknad,
     uttaksstatus,
@@ -87,6 +97,9 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     situasjon,
     erAleneOmOmsorg,
 }) => {
+    const uttakÅVise = erDeltUttakINorge
+        ? uttaksstatus.uttak
+        : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
     return (
         <div className={bem.element('perKvote')}>
             <Undertittel tag="h2" className="blokk-xs">
@@ -96,11 +109,11 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
                             ? 'uttaksplan.oversiktKvoter.tittel.kontoer.brukteDager'
                             : 'uttaksplan.oversiktKvoter.tittel.kontoer.ikkeBrukteDager'
                     }
-                    values={{ antall: erDeltUttak ? 2 : 1 }}
+                    values={{ antall: erDeltUttakINorge ? 2 : 1 }}
                 />
             </Undertittel>
             <TilesList columns={2}>
-                {uttaksstatus.uttak.map((uttak, idx) => (
+                {uttakÅVise.map((uttak, idx) => (
                     <Kontostatus
                         key={idx}
                         uttak={uttak}
@@ -157,7 +170,7 @@ const OversiktKvoter: FunctionComponent<Props> = ({
                 søkerErFarEllerMedmor={søkerErFarEllerMedmor}
             />
             <OversiktPerKvote
-                erDeltUttak={erDeltUttak}
+                erDeltUttakINorge={erDeltUttakINorge}
                 navnPåForeldre={navnPåForeldre}
                 erEndringssøknad={søknad.erEndringssøknad}
                 uttaksstatus={uttaksstatus}
