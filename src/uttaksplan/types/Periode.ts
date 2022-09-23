@@ -54,6 +54,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     vedlegg?: Attachment[];
     ønskerFlerbarnsdager?: boolean;
     erMorForSyk?: boolean;
+    angittAvAnnenPart?: boolean;
 }
 
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;

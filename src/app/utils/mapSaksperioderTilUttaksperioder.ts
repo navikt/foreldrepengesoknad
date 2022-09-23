@@ -270,6 +270,7 @@ export const mapUttaksperiodeFromSaksperiode = (
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
         erMorForSyk: getErMorForSyk(erFarEllerMedmor, saksperiode, familiehendelseDato, kontoType),
+        angittAvAnnenPart: saksperiode.angittAvAnnenPart,
     };
 
     return uttaksperiode;
