@@ -13,7 +13,7 @@ import { getUttaksplanScenario } from './scenarios/scenarios';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import useSøknad from 'app/utils/hooks/useSøknad';
-
+import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
@@ -35,8 +35,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined
         : false;
-    const annenForelderHarRettIEØS =
-        isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
+    const annenForelderHarRettIEØS = harAnnenForelderRettIEØS(annenForelder);
 
     const scenario = getUttaksplanScenario({
         erFødsel,

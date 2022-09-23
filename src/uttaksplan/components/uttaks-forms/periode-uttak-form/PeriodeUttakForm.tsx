@@ -26,7 +26,7 @@ import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     periodeUttakFormQuestionsConfig,
-    skalViseInfoOmSamtidigUttakRundtFødsel as skalViseWLBInfoOmSamtidigUttakRundtFødsel,
+    skalViseWLBInfoOmSamtidigUttakRundtFødsel,
 } from './periodeUttakFormQuestionsConfig';
 import {
     cleanPeriodeUttakFormData,
@@ -87,8 +87,8 @@ const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forel
 
 const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFarEllerMedmor: boolean): boolean => {
     return (
-        (konto === StønadskontoType.Mødrekvote && søkerErFarEllerMedmor) ||
-        (konto === StønadskontoType.Fedrekvote && !søkerErFarEllerMedmor)
+        (konto === StønadskontoType.Mødrekvote && søkerErFarEllerMedmor === true) ||
+        (konto === StønadskontoType.Fedrekvote && søkerErFarEllerMedmor === false)
     );
 };
 

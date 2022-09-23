@@ -166,7 +166,12 @@ export const getUttakSkjemaregler = (
             );
         },
         overføringsårsakSkalBesvares: (): boolean => {
-            return overføringsårsakSkalBesvares(periodetype, erFarEllerMedmor, konto as StønadskontoType);
+            return overføringsårsakSkalBesvares(
+                periodetype,
+                erFarEllerMedmor,
+                konto as StønadskontoType,
+                annenForelder
+            );
         },
         uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => {
             return uttakRundtFødselÅrsakSpørsmålSkalBesvares(

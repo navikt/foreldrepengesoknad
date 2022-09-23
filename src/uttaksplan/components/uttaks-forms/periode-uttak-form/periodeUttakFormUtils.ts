@@ -69,8 +69,8 @@ const getHvemSkalTaUttak = (
         if ((periodenStarterFørFamdato || annenForelderHarRettIEØS) && erFarEllerMedmor) {
             return Forelder.farMedmor;
         }
-        if (annenForelderHarRettIEØS && erFarEllerMedmor) {
-            return Forelder.mor;
+        if (annenForelderHarRettIEØS) {
+            return erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
         }
 
         return '';
