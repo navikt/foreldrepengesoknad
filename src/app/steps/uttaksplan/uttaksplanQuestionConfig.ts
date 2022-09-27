@@ -4,10 +4,10 @@ import { Forelder } from 'app/types/Forelder';
 import dayjs from 'dayjs';
 import { Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { AutomatiskJusteringFormData, AutomatiskJusteringFormField } from './AutomatiskJusteringFormConfig';
+import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 
-export interface AutomatiskJusteringQuestionPayload extends AutomatiskJusteringFormData {
-    termindato: Date;
+export interface UttaksplanQuestionPayload extends UttaksplanFormData {
+    termindato: Date | undefined;
     perioderRundtFødsel: Uttaksperiode[];
 }
 const includeAutomatiskJusteringSpørsmål = (
@@ -28,17 +28,14 @@ const includeAutomatiskJusteringSpørsmål = (
     );
 };
 
-const AutomatiskJusteringFormConfig: QuestionConfig<AutomatiskJusteringQuestionPayload, AutomatiskJusteringFormField> =
-    {
-        [AutomatiskJusteringFormField.ønskerAutomatiskJustering]: {
-            isIncluded: ({ perioderRundtFødsel, termindato }) =>
-                includeAutomatiskJusteringSpørsmål(perioderRundtFødsel, termindato),
-            isAnswered: ({ ønskerAutomatiskJustering }) => ønskerAutomatiskJustering !== YesOrNo.UNANSWERED,
-        },
-    };
+const UttaksplanFormConfig: QuestionConfig<UttaksplanQuestionPayload, UttaksplanFormField> = {
+    [UttaksplanFormField.ønskerAutomatiskJustering]: {
+        isIncluded: ({ perioderRundtFødsel, termindato }) =>
+            includeAutomatiskJusteringSpørsmål(perioderRundtFødsel, termindato),
+        isAnswered: ({ ønskerAutomatiskJustering }) => ønskerAutomatiskJustering !== YesOrNo.UNANSWERED,
+    },
+};
 
-const automatiskJusteringQuestionsConfig = Questions<AutomatiskJusteringQuestionPayload, AutomatiskJusteringFormField>(
-    AutomatiskJusteringFormConfig
-);
+const uttaksplanQuestionsConfig = Questions<UttaksplanQuestionPayload, UttaksplanFormField>(UttaksplanFormConfig);
 
-export default automatiskJusteringQuestionsConfig;
+export default uttaksplanQuestionsConfig;

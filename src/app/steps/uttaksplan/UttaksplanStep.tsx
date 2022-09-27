@@ -22,7 +22,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isUttaksperiode, Periode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
@@ -40,6 +40,11 @@ import { getEndringstidspunkt, getMorsSisteDag, ISOStringToDate } from 'app/util
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormConfig';
+
+import { starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel } from 'app/utils/wlbUtils';
+import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
+import { getUttaksplanFormInitialValues, getVisAutomatiskJustering } from './UttaksplanFormUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -50,9 +55,6 @@ const UttaksplanStep = () => {
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
-    const [ønskerJustertUttakVedFødsel, setØnskerJustertUttakVedFødsel] = useState(
-        state.søknad.ønskerJustertUttakVedFødsel
-    );
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
@@ -72,6 +74,7 @@ const UttaksplanStep = () => {
     const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
     const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
     const antallBarn = barn.antallBarn;
@@ -86,7 +89,6 @@ const UttaksplanStep = () => {
         setSubmitIsClicked(true);
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
         return [
-            actionCreator.setØnskerJustertUttakVedFødsel(ønskerJustertUttakVedFødsel),
             actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),
             actionCreator.setEndringstidspunkt(endringstidspunkt),
             actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
@@ -216,83 +218,123 @@ const UttaksplanStep = () => {
         dispatch(actionCreator.setUttaksplanSlettet(true));
     };
 
+    const perioderRundtFødsel = søknad.uttaksplan.filter(
+        (p) =>
+            isUttaksperiode(p) &&
+            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p.tidsperiode,
+                familiehendelsesdatoDate!,
+                termindato
+            )
+    ) as Uttaksperiode[];
+
+    const bareFarHarRett = false; //TODO
+    const visAutomatiskJusteringForm = getVisAutomatiskJustering(
+        erFarEllerMedmor,
+        familiehendelsesdatoDate!,
+        situasjon,
+        perioderRundtFødsel,
+        barn,
+        termindato,
+        bareFarHarRett
+    );
+
     return (
-        <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            backLinkHref={erEndringssøknad ? undefined : getPreviousStepHref('uttaksplan')}
-            backLinkOnClick={
-                erEndringssøknad
-                    ? undefined
-                    : (_href, event) => {
-                          event.preventDefault();
-                          setGåTilbakeIsOpen(true);
-                      }
-            }
-            activeStepId="uttaksplan"
-            pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
-            stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
-            onCancel={onAvbrytSøknad}
-            onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig(intl)}
-            kompakt={true}
-        >
-            <Uttaksplan
-                foreldreSituasjon={foreldreSituasjon}
-                forelderVedAleneomsorg={forelderVedAleneomsorg}
-                erDeltUttak={erDeltUttak}
-                uttaksplan={søknad.uttaksplan}
-                familiehendelsesdato={familiehendelsesdato}
-                handleOnPlanChange={handleOnPlanChange}
-                stønadskontoer={valgteStønadskontoer}
-                navnPåForeldre={navnPåForeldre}
-                annenForelder={annenForelder}
-                arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, ISOStringToDate(familiehendelsesdato))}
-                erEndringssøknad={erEndringssøknad}
-                erFarEllerMedmor={erFarEllerMedmor}
-                erFlerbarnssøknad={erFlerbarnssøknad}
-                erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                harMidlertidigOmsorg={harMidlertidigOmsorg}
-                situasjon={situasjon}
-                erMorUfør={erMorUfør}
-                morHarRett={morHarRett}
-                søkersituasjon={søkersituasjon}
-                dekningsgrad={dekningsgrad}
-                antallBarn={antallBarn}
-                tilleggsopplysninger={tilleggsopplysninger}
-                setUttaksplanErGyldig={setUttaksplanErGyldig}
-                handleBegrunnelseChange={handleBegrunnelseChange}
-                eksisterendeSak={eksisterendeSak}
-                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                morsSisteDag={morsSisteDag}
-                harKomplettUttaksplan={harKomplettUttaksplan}
-                opprinneligPlan={harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
-                handleSlettUttaksplan={handleSlettUttaksplan}
-                termindato={termindato}
-                barn={barn}
-                setØnskerJustertUttakVedFødsel={setØnskerJustertUttakVedFødsel}
-            />
-            <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
-            {!uttaksplanErGyldig && submitIsClicked && (
-                <Block textAlignCenter={true} padBottom="l">
-                    <AlertStripe type="feil">
-                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
-                    </AlertStripe>
-                </Block>
-            )}
-            {erTomEndringssøknad && submitIsClicked && (
-                <Block textAlignCenter={true} padBottom="l">
-                    <AlertStripe type="feil">
-                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
-                    </AlertStripe>
-                </Block>
-            )}
-            <Block textAlignCenter={true} padBottom="l">
-                <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
-                    {intlUtils(intl, 'søknad.gåVidere')}
-                </Hovedknapp>
-            </Block>
-        </Step>
+        <UttaksplanFormComponents.FormikWrapper
+            initialValues={getUttaksplanFormInitialValues(state.søknad.ønskerJustertUttakVedFødsel)}
+            onSubmit={handleSubmit}
+            renderForm={({ values: formValues }) => {
+                const visibility = uttaksplanQuestionsConfig.getVisbility({
+                    ...formValues,
+                    termindato,
+                    perioderRundtFødsel,
+                });
+                const erAlleSpørsmålBesvart = visibility.areAllQuestionsAnswered();
+
+                return (
+                    <Step
+                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        backLinkHref={erEndringssøknad ? undefined : getPreviousStepHref('uttaksplan')}
+                        backLinkOnClick={
+                            erEndringssøknad
+                                ? undefined
+                                : (_href, event) => {
+                                      event.preventDefault();
+                                      setGåTilbakeIsOpen(true);
+                                  }
+                        }
+                        activeStepId="uttaksplan"
+                        pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
+                        stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
+                        onCancel={onAvbrytSøknad}
+                        onContinueLater={onFortsettSøknadSenere}
+                        steps={stepConfig(intl)}
+                        kompakt={true}
+                    >
+                        <Uttaksplan
+                            foreldreSituasjon={foreldreSituasjon}
+                            forelderVedAleneomsorg={forelderVedAleneomsorg}
+                            erDeltUttak={erDeltUttak}
+                            uttaksplan={søknad.uttaksplan}
+                            familiehendelsesdato={familiehendelsesdato}
+                            handleOnPlanChange={handleOnPlanChange}
+                            stønadskontoer={valgteStønadskontoer}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelder={annenForelder}
+                            arbeidsforhold={getAktiveArbeidsforhold(
+                                arbeidsforhold,
+                                ISOStringToDate(familiehendelsesdato)
+                            )}
+                            erEndringssøknad={erEndringssøknad}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            erFlerbarnssøknad={erFlerbarnssøknad}
+                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
+                            harMidlertidigOmsorg={harMidlertidigOmsorg}
+                            situasjon={situasjon}
+                            erMorUfør={erMorUfør}
+                            morHarRett={morHarRett}
+                            søkersituasjon={søkersituasjon}
+                            dekningsgrad={dekningsgrad}
+                            antallBarn={antallBarn}
+                            tilleggsopplysninger={tilleggsopplysninger}
+                            setUttaksplanErGyldig={setUttaksplanErGyldig}
+                            handleBegrunnelseChange={handleBegrunnelseChange}
+                            eksisterendeSak={eksisterendeSak}
+                            perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                            morsSisteDag={morsSisteDag}
+                            harKomplettUttaksplan={harKomplettUttaksplan}
+                            opprinneligPlan={harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
+                            handleSlettUttaksplan={handleSlettUttaksplan}
+                            termindato={termindato}
+                            barn={barn}
+                            visibility={visibility}
+                            visAutomatiskJusteringForm={visAutomatiskJusteringForm}
+                            perioderRundtFødsel={perioderRundtFødsel}
+                        />
+                        <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
+                        {!uttaksplanErGyldig && submitIsClicked && (
+                            <Block textAlignCenter={true} padBottom="l">
+                                <AlertStripe type="feil">
+                                    <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
+                                </AlertStripe>
+                            </Block>
+                        )}
+                        {erTomEndringssøknad && submitIsClicked && (
+                            <Block textAlignCenter={true} padBottom="l">
+                                <AlertStripe type="feil">
+                                    <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
+                                </AlertStripe>
+                            </Block>
+                        )}
+                        <Block visible={erAlleSpørsmålBesvart} textAlignCenter={true} padBottom="l">
+                            <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
+                                {intlUtils(intl, 'søknad.gåVidere')}
+                            </Hovedknapp>
+                        </Block>
+                    </Step>
+                );
+            }}
+        />
     );
 };
-
 export default UttaksplanStep;

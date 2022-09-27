@@ -3,14 +3,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
 import { Forelder } from 'app/types/Forelder';
-import {
-    isInfoPeriode,
-    isUtsettelsesperiode,
-    isUttaksperiode,
-    Periode,
-    Utsettelsesperiode,
-    Uttaksperiode,
-} from './types/Periode';
+import { isInfoPeriode, isUtsettelsesperiode, Periode, Utsettelsesperiode, Uttaksperiode } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -33,14 +26,12 @@ import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknade
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import Barn from 'app/context/types/Barn';
-import {
-    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-} from 'app/utils/wlbUtils';
+import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
-import { getVisAutomatiskJusteringForm } from './components/automatisk-justering-form/AutomatiskJusteringFormUtils';
+import AutomatiskJusteringSpørsmål from './components/automatisk-justering-spørsmål/AutomatiskJusteringSpørsmål';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -75,31 +66,10 @@ interface Props {
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
-    setØnskerJustertUttakVedFødsel: (ænskerJustertUttakVedFødsel: boolean) => void;
+    visibility: QuestionVisibility<UttaksplanFormField, undefined>;
+    visAutomatiskJusteringForm: boolean;
+    perioderRundtFødsel: Uttaksperiode[];
 }
-
-// const getRelevantStartdato = (
-//     familiehendelsesdato: Date,
-//     erFarEllerMedmor: boolean,
-//     erAdopsjon: boolean,
-//     morsSisteDag: Date | undefined
-// ) => {
-//     const førsteUttaksdagEtterSeksUker = Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30);
-
-//     if (erFarEllerMedmor) {
-//         if (morsSisteDag) {
-//             return Uttaksdagen(morsSisteDag).neste();
-//         }
-
-//         if (erAdopsjon) {
-//             return familiehendelsesdato;
-//         }
-
-//         return førsteUttaksdagEtterSeksUker;
-//     }
-
-//     return familiehendelsesdato;
-// };
 
 const Uttaksplan: FunctionComponent<Props> = ({
     foreldreSituasjon,
@@ -132,7 +102,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
     handleBegrunnelseChange,
     handleSlettUttaksplan,
     barn,
-    setØnskerJustertUttakVedFødsel,
+    visibility,
+    visAutomatiskJusteringForm,
+    perioderRundtFødsel,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -269,25 +241,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
-    const perioderRundtFødsel = uttaksplan.filter(
-        (p) =>
-            isUttaksperiode(p) &&
-            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-                p.tidsperiode,
-                familiehendelsesdatoDate,
-                termindato
-            )
-    ) as Uttaksperiode[];
-
-    const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
-        erFarEllerMedmor,
-        familiehendelsesdatoDate,
-        situasjon,
-        perioderRundtFødsel,
-        barn,
-        termindato,
-        bareFarHarRett
-    );
 
     return (
         <>
@@ -326,10 +279,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
             </Block>
             {visAutomatiskJusteringForm && (
                 <Block padBottom="l">
-                    <AutomatiskJusteringForm
+                    <AutomatiskJusteringSpørsmål
                         termindato={termindato!}
                         perioderRundtFødsel={perioderRundtFødsel}
-                        setØnskerJustertUttakVedFødsel={setØnskerJustertUttakVedFødsel}
+                        visibility={visibility}
                     />
                 </Block>
             )}
