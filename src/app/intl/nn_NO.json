@@ -443,6 +443,7 @@
     "oppsummering.uttak.årsak": "Årsak",
     "oppsummering.utsettelse.pga": "Utsetjing",
     "oppsummering.uttak.dekningsgrad.label": "Lengde med foreldrepengar",
+    "oppsummering.uttak.ønskerAutomatiskJustering.label": "Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?",
     "oppsummering.uttak.dekningsgrad.verdi100": "{antallUker} veker med 100 prosent foreldrepengar",
     "oppsummering.uttak.dekningsgrad.verdi80": "{antallUker} veker med 80 prosent foreldrepengar",
     "oppsummering.annenForelder.rettPåForeldrepengerINorge": "Har {navn} rett til foreldrepenger i Norge",

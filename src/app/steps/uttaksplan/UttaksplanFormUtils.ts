@@ -7,7 +7,7 @@ import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean 
 import { Periode } from 'uttaksplan/types/Periode';
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 
-export const getVisAutomatiskJustering = (
+export const getAutomatiskJusteringErMulig = (
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     situasjon: Situasjon,

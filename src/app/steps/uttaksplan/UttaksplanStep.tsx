@@ -44,7 +44,8 @@ import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormCon
 
 import { starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel } from 'app/utils/wlbUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
-import { getUttaksplanFormInitialValues, getVisAutomatiskJustering } from './UttaksplanFormUtils';
+import { getUttaksplanFormInitialValues, getAutomatiskJusteringErMulig } from './UttaksplanFormUtils';
+import dayjs from 'dayjs';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -133,10 +134,40 @@ const UttaksplanStep = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
 
+    const perioderRundtFødsel = søknad.uttaksplan.filter(
+        (p) =>
+            isUttaksperiode(p) &&
+            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p.tidsperiode,
+                familiehendelsesdatoDate!,
+                termindato
+            )
+    ) as Uttaksperiode[];
+
+    const bareFarHarRett = false; //TODO
+    const visAutomatiskJusteringForm = getAutomatiskJusteringErMulig(
+        erFarEllerMedmor,
+        familiehendelsesdatoDate!,
+        situasjon,
+        perioderRundtFødsel,
+        barn,
+        termindato,
+        bareFarHarRett
+    );
+
     //TODO: what's the type here?
     const clickHandler = (values: any) => {
         setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
+            if (
+                visAutomatiskJusteringForm &&
+                (perioderRundtFødsel.length > 1 ||
+                    (perioderRundtFødsel.length === 1 &&
+                        !dayjs(perioderRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day')))
+            ) {
+                dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
+            }
+
             handleSubmit(values);
         }
     };
@@ -217,27 +248,6 @@ const UttaksplanStep = () => {
         dispatch(actionCreator.slettUttaksplan());
         dispatch(actionCreator.setUttaksplanSlettet(true));
     };
-
-    const perioderRundtFødsel = søknad.uttaksplan.filter(
-        (p) =>
-            isUttaksperiode(p) &&
-            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-                p.tidsperiode,
-                familiehendelsesdatoDate!,
-                termindato
-            )
-    ) as Uttaksperiode[];
-
-    const bareFarHarRett = false; //TODO
-    const visAutomatiskJusteringForm = getVisAutomatiskJustering(
-        erFarEllerMedmor,
-        familiehendelsesdatoDate!,
-        situasjon,
-        perioderRundtFødsel,
-        barn,
-        termindato,
-        bareFarHarRett
-    );
 
     return (
         <UttaksplanFormComponents.FormikWrapper

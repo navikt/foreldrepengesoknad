@@ -2,7 +2,7 @@ import { intlUtils } from '@navikt/fp-common';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -26,11 +26,17 @@ interface Props {
     termindato: Date | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
+    ønskerJustertUttakVedFødsel: boolean | undefined;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
 }
 
-const UttaksplanOppsummering: React.FunctionComponent<Props> = ({ dekningsgrad, antallUkerUttaksplan, ...rest }) => {
+const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
+    dekningsgrad,
+    antallUkerUttaksplan,
+    ønskerJustertUttakVedFødsel,
+    ...rest
+}) => {
     const intl = useIntl();
 
     const dekningsgradTekst =
@@ -44,6 +50,13 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({ dekningsgrad, 
                 <Normaltekst>{dekningsgradTekst}</Normaltekst>
             </OppsummeringsPunkt>
             <UttaksplanOppsummeringsliste {...rest}></UttaksplanOppsummeringsliste>
+            {ønskerJustertUttakVedFødsel !== undefined && (
+                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.uttak.ønskerAutomatiskJustering.label')}>
+                    <Normaltekst>
+                        <FormattedMessage id={ønskerJustertUttakVedFødsel ? 'ja' : 'nei'} />
+                    </Normaltekst>
+                </OppsummeringsPunkt>
+            )}
         </>
     );
 };
