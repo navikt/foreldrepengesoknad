@@ -66,7 +66,7 @@ describe('<Velkommen>', () => {
         ).not.toBeInTheDocument();
         expect(
             screen.queryByText(
-                'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din.'
+                'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
             )
         ).not.toBeInTheDocument();
 
@@ -77,7 +77,7 @@ describe('<Velkommen>', () => {
         ).not.toBeInTheDocument();
         expect(
             screen.getByText(
-                'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din.'
+                'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
             )
         ).toBeInTheDocument();
     });
@@ -106,7 +106,7 @@ describe('<Velkommen>', () => {
             ).not.toBeInTheDocument();
             expect(
                 screen.queryByText(
-                    'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din.'
+                    'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
                 )
             ).not.toBeInTheDocument();
 
@@ -117,7 +117,7 @@ describe('<Velkommen>', () => {
             ).not.toBeInTheDocument();
             expect(
                 screen.getByText(
-                    'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din.'
+                    'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
                 )
             ).toBeInTheDocument();
         }
