@@ -29,12 +29,14 @@ interface Props {
     ønskerJustertUttakVedFødsel: boolean | undefined;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
+    automatiskJusteringErMulig: boolean;
 }
 
 const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
     dekningsgrad,
     antallUkerUttaksplan,
     ønskerJustertUttakVedFødsel,
+    automatiskJusteringErMulig,
     ...rest
 }) => {
     const intl = useIntl();
@@ -43,14 +45,16 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? intlUtils(intl, 'oppsummering.uttak.dekningsgrad.verdi100', { antallUker: antallUkerUttaksplan })
             : intlUtils(intl, 'oppsummering.uttak.dekningsgrad.verdi80', { antallUker: antallUkerUttaksplan });
-
     return (
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.uttak.dekningsgrad.label')}>
                 <Normaltekst>{dekningsgradTekst}</Normaltekst>
             </OppsummeringsPunkt>
-            <UttaksplanOppsummeringsliste {...rest}></UttaksplanOppsummeringsliste>
-            {ønskerJustertUttakVedFødsel !== undefined && (
+            <UttaksplanOppsummeringsliste
+                ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel}
+                {...rest}
+            ></UttaksplanOppsummeringsliste>
+            {automatiskJusteringErMulig && ønskerJustertUttakVedFødsel !== undefined && (
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.uttak.ønskerAutomatiskJustering.label')}>
                     <Normaltekst>
                         <FormattedMessage id={ønskerJustertUttakVedFødsel ? 'ja' : 'nei'} />

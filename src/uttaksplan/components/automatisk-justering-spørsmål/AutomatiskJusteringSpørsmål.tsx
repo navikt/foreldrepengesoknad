@@ -1,31 +1,34 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
 import dayjs from 'dayjs';
-import Veilederpanel from 'nav-frontend-veilederpanel';
+import AlertStripe from 'nav-frontend-alertstriper';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Uttaksperiode } from 'uttaksplan/types/Periode';
 
 interface Props {
     termindato: Date;
-    perioderRundtFødsel: Uttaksperiode[];
+    uttaksperioderRundtFødsel: Uttaksperiode[];
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
 }
-const AutomatiskJusteringSpørsmål: FunctionComponent<Props> = ({ termindato, perioderRundtFødsel, visibility }) => {
+const AutomatiskJusteringSpørsmål: FunctionComponent<Props> = ({
+    termindato,
+    uttaksperioderRundtFødsel,
+    visibility,
+}) => {
     const intl = useIntl();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const svarteJaMenFlerePerioderInnen6Uker =
-        state.søknad.ønskerJustertUttakVedFødsel && perioderRundtFødsel.length > 1;
+        state.søknad.ønskerJustertUttakVedFødsel && uttaksperioderRundtFødsel.length > 1;
     const svarteJaMenStarterIkkeLengerPåTermin =
         state.søknad.ønskerJustertUttakVedFødsel &&
-        perioderRundtFødsel.length === 1 &&
-        !dayjs(perioderRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day');
+        uttaksperioderRundtFødsel.length === 1 &&
+        !dayjs(uttaksperioderRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day');
     let infoTekstId = '';
     if (svarteJaMenFlerePerioderInnen6Uker) {
         infoTekstId = 'uttaksplan.automatiskJustering.info.hvisFlerePerioder';
@@ -40,12 +43,12 @@ const AutomatiskJusteringSpørsmål: FunctionComponent<Props> = ({ termindato, p
     };
 
     return (
-        <UttaksplanFormComponents.Form includeButtons={false}>
+        <div style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
             {infoTekstId !== '' && (
                 <Block padBottom="l">
-                    <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                    <AlertStripe type="info">
                         <FormattedMessage id={infoTekstId} />
-                    </Veilederpanel>
+                    </AlertStripe>
                 </Block>
             )}
             <Block visible={visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)} padBottom="l">
@@ -61,7 +64,7 @@ const AutomatiskJusteringSpørsmål: FunctionComponent<Props> = ({ termindato, p
                     afterOnChange={(value) => handleOnChange(value)}
                 />
             </Block>
-        </UttaksplanFormComponents.Form>
+        </div>
     );
 };
 

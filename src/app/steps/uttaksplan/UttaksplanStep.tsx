@@ -22,7 +22,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { isUttaksperiode, Periode, Uttaksperiode } from 'uttaksplan/types/Periode';
+import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
@@ -42,7 +42,7 @@ import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGå
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 
-import { starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel } from 'app/utils/wlbUtils';
+import { getUttaksperioderRundtFødsel } from 'app/utils/wlbUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { getUttaksplanFormInitialValues, getAutomatiskJusteringErMulig } from './UttaksplanFormUtils';
 import dayjs from 'dayjs';
@@ -134,25 +134,21 @@ const UttaksplanStep = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
 
-    const perioderRundtFødsel = søknad.uttaksplan.filter(
-        (p) =>
-            isUttaksperiode(p) &&
-            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-                p.tidsperiode,
-                familiehendelsesdatoDate!,
-                termindato
-            )
-    ) as Uttaksperiode[];
+    const uttaksperioderRundtFødsel = getUttaksperioderRundtFødsel(
+        søknad.uttaksplan,
+        familiehendelsesdatoDate!,
+        termindato
+    );
 
-    const bareFarHarRett = false; //TODO
+    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
     const visAutomatiskJusteringForm = getAutomatiskJusteringErMulig(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
         situasjon,
-        perioderRundtFødsel,
+        uttaksperioderRundtFødsel,
         barn,
         termindato,
-        bareFarHarRett
+        bareFarMedmorHarRett
     );
 
     //TODO: what's the type here?
@@ -161,9 +157,10 @@ const UttaksplanStep = () => {
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
             if (
                 visAutomatiskJusteringForm &&
-                (perioderRundtFødsel.length > 1 ||
-                    (perioderRundtFødsel.length === 1 &&
-                        !dayjs(perioderRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day')))
+                (uttaksperioderRundtFødsel.length === 0 ||
+                    uttaksperioderRundtFødsel.length > 1 ||
+                    (uttaksperioderRundtFødsel.length === 1 &&
+                        !dayjs(uttaksperioderRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day')))
             ) {
                 dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
             }
@@ -257,7 +254,7 @@ const UttaksplanStep = () => {
                 const visibility = uttaksplanQuestionsConfig.getVisbility({
                     ...formValues,
                     termindato,
-                    perioderRundtFødsel,
+                    uttaksperioderRundtFødsel,
                 });
                 const erAlleSpørsmålBesvart = visibility.areAllQuestionsAnswered();
 
@@ -319,7 +316,7 @@ const UttaksplanStep = () => {
                             barn={barn}
                             visibility={visibility}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                            perioderRundtFødsel={perioderRundtFødsel}
+                            uttaksperioderRundtFødsel={uttaksperioderRundtFødsel}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (

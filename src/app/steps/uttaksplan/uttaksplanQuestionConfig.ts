@@ -8,18 +8,18 @@ import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig'
 
 export interface UttaksplanQuestionPayload extends UttaksplanFormData {
     termindato: Date | undefined;
-    perioderRundtFødsel: Uttaksperiode[];
+    uttaksperioderRundtFødsel: Uttaksperiode[];
 }
 const includeAutomatiskJusteringSpørsmål = (
-    perioderRundtFødsel: Uttaksperiode[],
+    uttaksperioderRundtFødsel: Uttaksperiode[],
     termindato: Date | undefined
 ): boolean => {
-    if (perioderRundtFødsel.length === 0 || perioderRundtFødsel.length > 1 || termindato === undefined) {
+    if (uttaksperioderRundtFødsel.length === 0 || uttaksperioderRundtFødsel.length > 1 || termindato === undefined) {
         console.log(false);
         return false;
     }
 
-    const periodeRundtFødsel = perioderRundtFødsel[0] as Uttaksperiode;
+    const periodeRundtFødsel = uttaksperioderRundtFødsel[0] as Uttaksperiode;
     return (
         periodeRundtFødsel.forelder === Forelder.farMedmor &&
         periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
@@ -30,8 +30,8 @@ const includeAutomatiskJusteringSpørsmål = (
 
 const UttaksplanFormConfig: QuestionConfig<UttaksplanQuestionPayload, UttaksplanFormField> = {
     [UttaksplanFormField.ønskerAutomatiskJustering]: {
-        isIncluded: ({ perioderRundtFødsel, termindato }) =>
-            includeAutomatiskJusteringSpørsmål(perioderRundtFødsel, termindato),
+        isIncluded: ({ uttaksperioderRundtFødsel, termindato }) =>
+            includeAutomatiskJusteringSpørsmål(uttaksperioderRundtFødsel, termindato),
         isAnswered: ({ ønskerAutomatiskJustering }) => ønskerAutomatiskJustering !== YesOrNo.UNANSWERED,
     },
 };

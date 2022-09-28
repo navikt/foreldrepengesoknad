@@ -30,12 +30,19 @@ import { useNavigate } from 'react-router-dom';
 import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
+import {
+    getErSøkerFarEllerMedmor,
+    getFarMedmorErAleneOmOmsorg,
+    getMorHarRettPåForeldrepenger,
+    getNavnPåForeldre,
+} from 'app/utils/personUtils';
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
+import { getAutomatiskJusteringErMulig } from '../uttaksplan/UttaksplanFormUtils';
+import { getUttaksperioderRundtFødsel } from 'app/utils/wlbUtils';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -133,6 +140,26 @@ const Oppsummering = () => {
         ? intlUtils(intl, 'oppsummering.senderInnSøknad')
         : intlUtils(intl, 'oppsummering.sendInnSøknad');
 
+    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepenger(
+        søkersituasjon.rolle,
+        søkerErFarEllerMedmor,
+        annenForelder
+    );
+
+    const uttaksperioderRundtFødsel = getUttaksperioderRundtFødsel(
+        søknad.uttaksplan,
+        familiehendelsesdato!,
+        termindato
+    );
+    const automatiskJusteringErMulig = getAutomatiskJusteringErMulig(
+        søkerErFarEllerMedmor,
+        familiehendelsesdato!,
+        søknad.søkersituasjon.situasjon,
+        uttaksperioderRundtFødsel,
+        barn,
+        termindato,
+        bareFarMedmorHarRett
+    );
     return (
         <OppsummeringFormComponents.FormikWrapper
             initialValues={getInitialOppsummeringValues()}
@@ -213,6 +240,7 @@ const Oppsummering = () => {
                                             situasjon={søkersituasjon.situasjon}
                                             erAleneOmOmsorg={erAleneOmOmsorg}
                                             ønskerJustertUttakVedFødsel={søknad.ønskerJustertUttakVedFødsel}
+                                            automatiskJusteringErMulig={automatiskJusteringErMulig}
                                         />
                                     </OppsummeringsPanel>
                                 </div>

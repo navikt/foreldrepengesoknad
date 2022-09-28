@@ -4,14 +4,14 @@ import Barn, { isUfødtBarn } from 'app/context/types/Barn';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { Periode } from 'uttaksplan/types/Periode';
+import { Uttaksperiode } from 'uttaksplan/types/Periode';
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 
 export const getAutomatiskJusteringErMulig = (
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     situasjon: Situasjon,
-    perioderRundtFødsel: Periode[],
+    uttaksperioderRundtFødsel: Uttaksperiode[],
     barn: Barn,
     termindato: Date | undefined,
     bareFarHarRett: boolean
@@ -20,7 +20,7 @@ export const getAutomatiskJusteringErMulig = (
         erFarEllerMedmor &&
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         situasjon === 'fødsel' &&
-        perioderRundtFødsel.length !== 0 &&
+        uttaksperioderRundtFødsel.length !== 0 &&
         isUfødtBarn(barn) &&
         termindato !== undefined &&
         !bareFarHarRett

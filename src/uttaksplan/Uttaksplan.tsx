@@ -68,7 +68,7 @@ interface Props {
     handleSlettUttaksplan: () => void;
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
-    perioderRundtFødsel: Uttaksperiode[];
+    uttaksperioderRundtFødsel: Uttaksperiode[];
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -104,7 +104,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     barn,
     visibility,
     visAutomatiskJusteringForm,
-    perioderRundtFødsel,
+    uttaksperioderRundtFødsel,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -281,7 +281,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <AutomatiskJusteringSpørsmål
                         termindato={termindato!}
-                        perioderRundtFødsel={perioderRundtFødsel}
+                        uttaksperioderRundtFødsel={uttaksperioderRundtFødsel}
                         visibility={visibility}
                     />
                 </Block>
