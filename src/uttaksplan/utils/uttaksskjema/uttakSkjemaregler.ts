@@ -131,7 +131,8 @@ export const getUttakSkjemaregler = (
                 konto as StønadskontoType,
                 !morHarRett,
                 antallBarn,
-                erAleneOmOmsorg
+                erAleneOmOmsorg,
+                erDeltUttakINorge
             );
         },
         hvemSkalTaUttakSkalBesvares: (): boolean =>

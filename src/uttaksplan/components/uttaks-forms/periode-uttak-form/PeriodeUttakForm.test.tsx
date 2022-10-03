@@ -584,7 +584,9 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
         //Skal kunne legge til perioden.
         expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
     });
-    it('skal kun vise relevante spørsmål for far når det er to barn', async () => {
+});
+describe('PeriodeUttakForm - Far søker, 2 barn, mor har kun rett i EØS', () => {
+    it('skal kun vise relevante spørsmål for far når det er to barn og far legger til fedrekvote', async () => {
         render(<NyPeriodeForFarToBarnMorHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
@@ -599,12 +601,45 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
         expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
         await userEvent.click(screen.getByText(FARS_KVOTE));
 
-        //Skal bli spurt om å bruke flerbarnsdager
-        expect(await screen.findByText(FLERBARNSDAGER_SPM)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[0]);
+        //Skal ikke bli spurt om å bruke flerbarnsdager
+        expect(screen.queryByText(FLERBARNSDAGER_SPM)).not.toBeInTheDocument();
 
         //Skal ikke bli spurt om samtidig uttak med far i perioden
         expect(screen.queryByText(SAMTIDIG_UTTAK_SPM_MOR)).not.toBeInTheDocument();
+
+        //Skal kunne legge inn informasjon om delvis arbeid
+        expect(await screen.findByText(DELVIS_ARBEID_SPM)).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(NEI)[0]);
+
+        //Skal kunne legge til perioden.
+        expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
+    });
+    it('skal kun vise relevante spørsmål for far når det er to barn og far legger til fellesperiode', async () => {
+        render(<NyPeriodeForFarToBarnMorHarRettIEØS />);
+        const tomDagInput = screen.getByLabelText(TIL_OG_MED);
+        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+
+        //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
+        expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
+
+        //Skal kunne besvare hvilken konto han ønsker å ta ut i perioden
+        expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
+        expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
+        await userEvent.click(screen.getByText(FELLESPERIODE));
+
+        //Skal bli spurt om flerbarnsdager
+        expect(await screen.findByText(FLERBARNSDAGER_SPM)).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(NEI)[0]);
+
+        //Skal ikke bli spurt om samtidig uttak med mor i perioden
+        expect(screen.queryByText(SAMTIDIG_UTTAK_SPM_MOR)).not.toBeInTheDocument();
+
+        //Skal bli spurt om mors aktivitet
+        expect(await screen.findByText(AKTIVIET_MOR_SPM)).toBeInTheDocument();
+        const grunnInput = screen.getByLabelText(AKTIVIET_MOR_SPM, { exact: false });
+        await userEvent.selectOptions(grunnInput, ARBEID);
 
         //Skal kunne legge inn informasjon om delvis arbeid
         expect(await screen.findByText(DELVIS_ARBEID_SPM)).toBeInTheDocument();
@@ -612,5 +647,9 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
 
         //Skal kunne legge til perioden.
         expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
+
+        //Skal ikke bli spurt om mors aktivitet hvis svaer ja på bruk av flerbarnsdager
+        await userEvent.click(screen.getAllByText(JA)[0]);
+        expect(screen.queryByText(AKTIVIET_MOR_SPM)).not.toBeInTheDocument();
     });
 });

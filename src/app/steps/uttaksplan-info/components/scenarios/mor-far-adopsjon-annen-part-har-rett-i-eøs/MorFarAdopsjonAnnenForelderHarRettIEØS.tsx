@@ -215,7 +215,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block padBottom="l" visible={antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined}>
                             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
                                 <FormattedMessage
-                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                    id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
                                     values={{
                                         uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
                                         navnFar: navnFarMedmor,

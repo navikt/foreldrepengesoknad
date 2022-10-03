@@ -13,7 +13,8 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     stønadskontoType: StønadskontoType,
     bareFarHarRett: boolean,
     antallBarn: number,
-    erAleneOmOmsorg: boolean
+    erAleneOmOmsorg: boolean,
+    erDeltUttakINorge: boolean
 ): boolean => {
     if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
         return false;
@@ -28,6 +29,10 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
         antallBarn > 1 &&
         andreAugust2022ReglerGjelder(familiehendelsesdato)
     ) {
+        return false;
+    }
+
+    if (!erDeltUttakINorge && stønadskontoType !== StønadskontoType.Fellesperiode) {
         return false;
     }
 
