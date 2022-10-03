@@ -228,6 +228,11 @@ const foreldrepengesøknadReducer = (
                     ønskerJustertUttakVedFødsel: action.payload,
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING:
+            return {
+                ...state,
+                brukerSvarteJaPåAutoJustering: action.payload,
+            };
         default:
             return state;
     }

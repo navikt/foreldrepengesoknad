@@ -31,9 +31,10 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         endringstidspunkt: undefined,
         perioderSomSkalSendesInn: [],
         harUttaksplanBlittSlettet: false,
+        brukerSvarteJaPåAutoJustering: undefined,
     };
 
-    it('skal vise velkommen-side når denne ruten er valgt', () => {
+    it('skal vise velkommen-side når denne ruten er valgt', async () => {
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state,
             dispatch: () => jest.fn(),
@@ -51,11 +52,11 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             </BrowserRouter>
         );
 
-        expect(screen.queryByText('Hei, Espen!')).toBeInTheDocument();
-        expect(screen.queryByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
     });
 
-    it('skal vise om-barnet-side når denne ruten er valgt', () => {
+    it('skal vise om-barnet-side når denne ruten er valgt', async () => {
         jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state: {
                 ...state,
@@ -95,7 +96,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             </BrowserRouter>
         );
 
-        expect(screen.queryByText('Om barnet')).toBeInTheDocument();
-        expect(screen.queryByText('Er barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText('Om barnet')).toBeInTheDocument();
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
     });
 });

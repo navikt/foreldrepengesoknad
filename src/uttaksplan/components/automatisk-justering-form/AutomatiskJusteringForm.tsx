@@ -32,13 +32,13 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = forwardRef(
 
         const { dispatch, state } = useForeldrepengesøknadContext();
         const svarteJaMenFlerePerioderInnen6Uker =
-            state.søknad.ønskerJustertUttakVedFødsel && perioderMedUttakRundtFødsel.length > 1;
+            state.brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
         const svarteJaMenStarterIkkeLengerPåTermin =
-            state.søknad.ønskerJustertUttakVedFødsel &&
+            state.brukerSvarteJaPåAutoJustering &&
             perioderMedUttakRundtFødsel.length === 1 &&
             !dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day');
         const svarteJaMenEndretPeriodenPåTermin =
-            state.søknad.ønskerJustertUttakVedFødsel &&
+            state.brukerSvarteJaPåAutoJustering &&
             perioderMedUttakRundtFødsel.length === 1 &&
             dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day') &&
             ((isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
@@ -60,6 +60,7 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = forwardRef(
         const handleOnChange = (value: string) => {
             const ønskerJustertUttakVedFødsel = mapUttaksplanFormValueToState(value);
             dispatch(actionCreator.setØnskerJustertUttakVedFødsel(ønskerJustertUttakVedFødsel));
+            dispatch(actionCreator.setBrukerSvarteJaPåAutoJustering(ønskerJustertUttakVedFødsel));
         };
 
         return (
