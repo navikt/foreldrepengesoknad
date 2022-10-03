@@ -1,31 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import Barn, { isUfødtBarn } from 'app/context/types/Barn';
-import { Situasjon } from 'app/types/Situasjon';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { Uttaksperiode } from 'uttaksplan/types/Periode';
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
-
-export const getAutomatiskJusteringErMulig = (
-    erFarEllerMedmor: boolean,
-    familiehendelsesdato: Date,
-    situasjon: Situasjon,
-    uttaksperioderRundtFødsel: Uttaksperiode[],
-    barn: Barn,
-    termindato: Date | undefined,
-    bareFarHarRett: boolean
-) => {
-    return (
-        erFarEllerMedmor &&
-        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-        situasjon === 'fødsel' &&
-        uttaksperioderRundtFødsel.length !== 0 &&
-        isUfødtBarn(barn) &&
-        termindato !== undefined &&
-        !bareFarHarRett
-    );
-};
 
 export const cleanUttaksplanFormData = (
     values: UttaksplanFormData,
@@ -41,7 +17,6 @@ export const cleanUttaksplanFormData = (
 };
 
 export const mapUttaksplanFormToState = (values: Partial<UttaksplanFormData>): boolean | undefined => {
-    console.log('mapUttaksplanFormToState:', values.ønskerAutomatiskJustering);
     return convertYesOrNoOrUndefinedToBoolean(values.ønskerAutomatiskJustering);
 };
 

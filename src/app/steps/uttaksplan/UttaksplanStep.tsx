@@ -3,7 +3,7 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import AlertStripe from 'nav-frontend-alertstriper';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
@@ -42,10 +42,16 @@ import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGå
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 
-import { getUttaksperioderRundtFødsel } from 'app/utils/wlbUtils';
+import { getPerioderMedUttakRundtFødsel } from 'app/utils/wlbUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
-import { getUttaksplanFormInitialValues, getAutomatiskJusteringErMulig } from './UttaksplanFormUtils';
-import dayjs from 'dayjs';
+import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
+import { FormikValues } from 'formik';
+
+import {
+    getAutomatiskJusteringErMulig,
+    getKanAutomatiskJustereVedFødsel,
+    getKanPeriodenRundtFødselJusteres,
+} from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -86,6 +92,9 @@ const UttaksplanStep = () => {
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
+
+    const automatiskJusteringFormRef = useRef<FormikValues>(null);
+
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
@@ -134,7 +143,7 @@ const UttaksplanStep = () => {
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
 
-    const uttaksperioderRundtFødsel = getUttaksperioderRundtFødsel(
+    const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         søknad.uttaksplan,
         familiehendelsesdatoDate!,
         termindato
@@ -145,27 +154,38 @@ const UttaksplanStep = () => {
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
         situasjon,
-        uttaksperioderRundtFødsel,
+        perioderMedUttakRundtFødsel,
         barn,
         termindato,
         bareFarMedmorHarRett
     );
 
-    //TODO: what's the type here?
+    const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
+        if (visAutomatiskJusteringForm && !getKanAutomatiskJustereVedFødsel(perioderMedUttakRundtFødsel, termindato)) {
+            dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
+        }
+    };
+
+    const ønskerJustertUttakVedFødselErUbesvart = (ønskerAutomatiskJusteringSvar: boolean | undefined) => {
+        return (
+            visAutomatiskJusteringForm &&
+            perioderMedUttakRundtFødsel.length === 1 &&
+            getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0], termindato) &&
+            ønskerAutomatiskJusteringSvar == undefined
+        );
+    };
+
     const clickHandler = (values: any) => {
         setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
-            if (
-                visAutomatiskJusteringForm &&
-                (uttaksperioderRundtFødsel.length === 0 ||
-                    uttaksperioderRundtFødsel.length > 1 ||
-                    (uttaksperioderRundtFødsel.length === 1 &&
-                        !dayjs(uttaksperioderRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day')))
-            ) {
-                dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
+            if (automatiskJusteringFormRef.current) {
+                automatiskJusteringFormRef.current.handleSubmit();
             }
+            setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig();
 
-            handleSubmit(values);
+            if (!ønskerJustertUttakVedFødselErUbesvart(values.ønskerAutomatiskJustering)) {
+                handleSubmit(values);
+            }
         }
     };
 
@@ -254,9 +274,8 @@ const UttaksplanStep = () => {
                 const visibility = uttaksplanQuestionsConfig.getVisbility({
                     ...formValues,
                     termindato,
-                    uttaksperioderRundtFødsel,
+                    perioderMedUttakRundtFødsel,
                 });
-                const erAlleSpørsmålBesvart = visibility.areAllQuestionsAnswered();
 
                 return (
                     <Step
@@ -316,7 +335,8 @@ const UttaksplanStep = () => {
                             barn={barn}
                             visibility={visibility}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                            uttaksperioderRundtFødsel={uttaksperioderRundtFødsel}
+                            perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                            automatiskJusteringFormRef={automatiskJusteringFormRef}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (
@@ -333,7 +353,7 @@ const UttaksplanStep = () => {
                                 </AlertStripe>
                             </Block>
                         )}
-                        <Block visible={erAlleSpørsmålBesvart} textAlignCenter={true} padBottom="l">
+                        <Block textAlignCenter={true} padBottom="l">
                             <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
                             </Hovedknapp>

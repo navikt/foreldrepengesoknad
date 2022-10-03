@@ -41,8 +41,8 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
-import { getAutomatiskJusteringErMulig } from '../uttaksplan/UttaksplanFormUtils';
-import { getUttaksperioderRundtFødsel } from 'app/utils/wlbUtils';
+import { getPerioderMedUttakRundtFødsel } from 'app/utils/wlbUtils';
+import { getAutomatiskJusteringErMulig } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -146,7 +146,7 @@ const Oppsummering = () => {
         annenForelder
     );
 
-    const uttaksperioderRundtFødsel = getUttaksperioderRundtFødsel(
+    const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         søknad.uttaksplan,
         familiehendelsesdato!,
         termindato
@@ -155,7 +155,7 @@ const Oppsummering = () => {
         søkerErFarEllerMedmor,
         familiehendelsesdato!,
         søknad.søkersituasjon.situasjon,
-        uttaksperioderRundtFødsel,
+        perioderMedUttakRundtFødsel,
         barn,
         termindato,
         bareFarMedmorHarRett

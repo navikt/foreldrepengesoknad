@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, RefObject, useEffect, useState } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
@@ -29,9 +29,10 @@ import Barn from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import AutomatiskJusteringSpørsmål from './components/automatisk-justering-spørsmål/AutomatiskJusteringSpørsmål';
+import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
+import { FormikValues } from 'formik';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -68,7 +69,8 @@ interface Props {
     handleSlettUttaksplan: () => void;
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
-    uttaksperioderRundtFødsel: Uttaksperiode[];
+    perioderMedUttakRundtFødsel: Uttaksperiode[];
+    automatiskJusteringFormRef: RefObject<FormikValues>;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -104,7 +106,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     barn,
     visibility,
     visAutomatiskJusteringForm,
-    uttaksperioderRundtFødsel,
+    perioderMedUttakRundtFødsel,
+    automatiskJusteringFormRef,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -279,10 +282,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
             </Block>
             {visAutomatiskJusteringForm && (
                 <Block padBottom="l">
-                    <AutomatiskJusteringSpørsmål
+                    <AutomatiskJusteringForm
                         termindato={termindato!}
-                        uttaksperioderRundtFødsel={uttaksperioderRundtFødsel}
+                        perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                         visibility={visibility}
+                        automatiskJusteringFormRef={automatiskJusteringFormRef}
                     />
                 </Block>
             )}

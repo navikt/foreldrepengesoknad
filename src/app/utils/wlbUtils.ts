@@ -2,7 +2,7 @@ import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import dayjs from 'dayjs';
-import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
+import { isOverføringsperiode, isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { intlUtils, TidsperiodeDate } from '@navikt/fp-common';
@@ -224,14 +224,14 @@ export const tidperiodeGårOverFamiliehendelsesdato = (
     );
 };
 
-export const getUttaksperioderRundtFødsel = (
+export const getPerioderMedUttakRundtFødsel = (
     uttaksplan: Periode[],
     familiehendelsesdato: Date,
     termindato: Date | undefined
 ): Uttaksperiode[] => {
     return uttaksplan.filter(
         (p) =>
-            isUttaksperiode(p) &&
+            (isUttaksperiode(p) || isOverføringsperiode(p)) &&
             starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
                 p.tidsperiode,
                 familiehendelsesdato,
