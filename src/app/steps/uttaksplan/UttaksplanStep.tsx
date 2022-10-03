@@ -48,9 +48,8 @@ import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import { FormikValues } from 'formik';
 
 import {
-    getAutomatiskJusteringErMulig,
-    getKanAutomatiskJustereVedFødsel,
-    getKanPeriodenRundtFødselJusteres,
+    getVisAutomatiskJusteringForm,
+    getKanJustereAutomatiskVedFødsel,
 } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 
 const UttaksplanStep = () => {
@@ -150,7 +149,7 @@ const UttaksplanStep = () => {
     );
 
     const bareFarMedmorHarRett = !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
-    const visAutomatiskJusteringForm = getAutomatiskJusteringErMulig(
+    const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
         situasjon,
@@ -160,18 +159,17 @@ const UttaksplanStep = () => {
         bareFarMedmorHarRett
     );
 
+    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(perioderMedUttakRundtFødsel, termindato);
+
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
-        if (visAutomatiskJusteringForm && !getKanAutomatiskJustereVedFødsel(perioderMedUttakRundtFødsel, termindato)) {
+        if (visAutomatiskJusteringForm && !kanJustereAutomatiskVedFødsel) {
             dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
         }
     };
 
-    const ønskerJustertUttakVedFødselErUbesvart = (ønskerAutomatiskJusteringSvar: boolean | undefined) => {
+    const ønskerJustertUttakVedFødselErBesvart = (ønskerAutomatiskJusteringSvar: boolean | undefined) => {
         return (
-            visAutomatiskJusteringForm &&
-            perioderMedUttakRundtFødsel.length === 1 &&
-            getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0], termindato) &&
-            ønskerAutomatiskJusteringSvar == undefined
+            visAutomatiskJusteringForm && kanJustereAutomatiskVedFødsel && ønskerAutomatiskJusteringSvar !== undefined
         );
     };
 
@@ -183,7 +181,7 @@ const UttaksplanStep = () => {
             }
             setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig();
 
-            if (!ønskerJustertUttakVedFødselErUbesvart(values.ønskerAutomatiskJustering)) {
+            if (ønskerJustertUttakVedFødselErBesvart(values.ønskerAutomatiskJustering)) {
                 handleSubmit(values);
             }
         }

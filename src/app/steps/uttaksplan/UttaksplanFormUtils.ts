@@ -20,8 +20,7 @@ export const mapUttaksplanFormToState = (values: Partial<UttaksplanFormData>): b
     return convertYesOrNoOrUndefinedToBoolean(values.ønskerAutomatiskJustering);
 };
 
-export const mapUttaksplanFormValueToState = (values: string): boolean | undefined => {
-    const value = values as YesOrNo;
+export const mapUttaksplanFormValueToState = (value: YesOrNo): boolean | undefined => {
     return convertYesOrNoOrUndefinedToBoolean(value);
 };
 

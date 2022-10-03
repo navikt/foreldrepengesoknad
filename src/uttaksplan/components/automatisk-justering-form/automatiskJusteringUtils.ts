@@ -20,7 +20,7 @@ export const getKanPeriodenRundtFødselJusteres = (
     );
 };
 
-export const getKanAutomatiskJustereVedFødsel = (
+export const getKanJustereAutomatiskVedFødsel = (
     perioderMedUttakRundtFødsel: Periode[],
     termindato: Date | undefined
 ): boolean => {
@@ -30,7 +30,7 @@ export const getKanAutomatiskJustereVedFødsel = (
     );
 };
 
-export const getAutomatiskJusteringErMulig = (
+export const getVisAutomatiskJusteringForm = (
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     situasjon: Situasjon,

@@ -58,7 +58,7 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = forwardRef(
         }
 
         const handleOnChange = (value: string) => {
-            const ønskerJustertUttakVedFødsel = mapUttaksplanFormValueToState(value);
+            const ønskerJustertUttakVedFødsel = mapUttaksplanFormValueToState(value as YesOrNo);
             dispatch(actionCreator.setØnskerJustertUttakVedFødsel(ønskerJustertUttakVedFødsel));
             dispatch(actionCreator.setBrukerSvarteJaPåAutoJustering(ønskerJustertUttakVedFødsel));
         };
