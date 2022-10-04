@@ -62,11 +62,15 @@ const getHvemSkalTaUttak = (
     erDeltUttak: boolean,
     forelder: Forelder,
     periodenStarterFørFamdato: boolean,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    annenForelderHarRettIEØS: boolean
 ) => {
     if (erDeltUttak) {
-        if (periodenStarterFørFamdato && erFarEllerMedmor) {
+        if ((periodenStarterFørFamdato || annenForelderHarRettIEØS) && erFarEllerMedmor) {
             return Forelder.farMedmor;
+        }
+        if (annenForelderHarRettIEØS) {
+            return erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
         }
 
         return '';
@@ -81,12 +85,19 @@ const getInitialValues = (
     erMorUfør: boolean,
     familiehendelsesdato: Date,
     startdatoPeriode: Date | undefined,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    annenForelderHarRettIEØS: boolean
 ): PeriodeUttakFormData => {
     const periodenStarterFørFamdato = startdatoPeriode
         ? dayjs(startdatoPeriode).isBefore(familiehendelsesdato, 'day')
         : false;
-    const hvemSkalTaUttak = getHvemSkalTaUttak(erDeltUttak, forelder, periodenStarterFørFamdato, erFarEllerMedmor);
+    const hvemSkalTaUttak = getHvemSkalTaUttak(
+        erDeltUttak,
+        forelder,
+        periodenStarterFørFamdato,
+        erFarEllerMedmor,
+        annenForelderHarRettIEØS
+    );
     const konto = getInitialKonto(erDeltUttak, erMorUfør, periodenStarterFørFamdato, erFarEllerMedmor);
 
     return {
@@ -117,7 +128,8 @@ export const cleanPeriodeUttakFormData = (
     forelder: Forelder,
     erMorUfør: boolean,
     familiehendelsesdato: Date,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    annenForelderHarRettIEØS: boolean
 ): PeriodeUttakFormData => {
     const initialValues = getInitialValues(
         erDeltUttak,
@@ -125,7 +137,8 @@ export const cleanPeriodeUttakFormData = (
         erMorUfør,
         familiehendelsesdato,
         values.fom,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        annenForelderHarRettIEØS
     );
 
     const cleanedData: PeriodeUttakFormData = {
@@ -196,7 +209,8 @@ export const getPeriodeUttakFormInitialValues = (
     forelder: Forelder,
     erMorUfør: boolean,
     familiehendelsesdato: Date,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    annenForelderHarRettIEØS: boolean
 ): PeriodeUttakFormData => {
     const initialValues = getInitialValues(
         erDeltUttak,
@@ -204,7 +218,8 @@ export const getPeriodeUttakFormInitialValues = (
         erMorUfør,
         familiehendelsesdato,
         periode.tidsperiode.fom,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        annenForelderHarRettIEØS
     );
 
     if (periode !== undefined) {

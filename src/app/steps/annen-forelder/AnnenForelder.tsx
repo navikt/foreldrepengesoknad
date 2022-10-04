@@ -101,8 +101,8 @@ const AnnenForelder = () => {
 
                 const farErInformert =
                     convertYesOrNoOrUndefinedToBoolean(formValues.aleneOmOmsorg) ||
-                    !convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepenger) ||
-                    (convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepenger) &&
+                    !convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepengerINorge) ||
+                    (convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepengerINorge) &&
                         convertYesOrNoOrUndefinedToBoolean(formValues.erInformertOmSøknaden));
 
                 const kanGåVidereMedSøknaden = visibility.areAllQuestionsAnswered() && farErInformert;
@@ -198,29 +198,53 @@ const AnnenForelder = () => {
                             )}
                             <Block
                                 padBottom="l"
-                                visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepenger)}
+                                visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFormField.harRettPåForeldrepenger}
+                                    name={AnnenForelderFormField.harRettPåForeldrepengerINorge}
                                     description={
                                         <UtvidetInformasjon
                                             apneLabel={intlUtils(
                                                 intl,
-                                                'annenForelder.annenForelderRettPåForeldrepenger.veileder.apneLabel'
+                                                'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel'
                                             )}
                                         >
                                             <FormattedMessage
-                                                id="annenForelder.annenForelderRettPåForeldrepenger.veileder.del1"
+                                                id="annenForelder.harRettPåForeldrepengerINorge.veileder.del1"
                                                 values={{ navn: formValues.fornavn }}
                                             ></FormattedMessage>
                                             <br />
                                             <FormattedMessage
-                                                id="annenForelder.annenForelderRettPåForeldrepenger.veileder.del2"
+                                                id="annenForelder.harRettPåForeldrepengerINorge.veileder.del2"
                                                 values={{ navn: formValues.fornavn }}
                                             ></FormattedMessage>
                                         </UtvidetInformasjon>
                                     }
-                                    legend={intlUtils(intl, 'annenForelder.annenForelderRettPåForeldrepenger', {
+                                    legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerINorge', {
+                                        navn: formValues.fornavn,
+                                    })}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)}
+                            >
+                                <AnnenForelderFormComponents.YesOrNoQuestion
+                                    name={AnnenForelderFormField.harRettPåForeldrepengerIEØS}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(
+                                                intl,
+                                                'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel'
+                                            )}
+                                        >
+                                            <FormattedMessage
+                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
+                                                values={{ navn: formValues.fornavn }}
+                                            ></FormattedMessage>
+                                        </UtvidetInformasjon>
+                                    }
+                                    legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerIEØS', {
                                         navn: formValues.fornavn,
                                     })}
                                 />

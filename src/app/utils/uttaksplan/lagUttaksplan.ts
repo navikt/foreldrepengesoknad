@@ -22,6 +22,7 @@ export interface LagUttaksplanParams {
     bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     termindato: Date | undefined;
+    annenForelderHarRettPåForeldrepengerIEØS?: boolean;
 }
 
 export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
@@ -37,6 +38,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         bareFarMedmorHarRett,
         termindato,
         harAktivitetskravIPeriodeUtenUttak,
+        annenForelderHarRettPåForeldrepengerIEØS,
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
@@ -58,21 +60,22 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
     const morSinSisteUttaksdagDate = ISOStringToDate(morSinSisteUttaksdag);
     if (familiehendelsesdato) {
         if (erDeltUttak) {
-            const forslag = deltUttak(
+            const forslag = deltUttak({
                 situasjon,
-                familiehendelsesdato,
-                søkerErFarEllerMedmor,
+                famDato: familiehendelsesdato,
+                erFarEllerMedmor: søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
-                ISOStringToDate(startdatoPermisjon),
+                startdatoPermisjon: ISOStringToDate(startdatoPermisjon),
                 fellesperiodeukerMor,
                 harAnnenForelderSøktFP,
                 antallDagerFellesperiodeFarMedmor,
                 antallUkerFellesperiodeFarMedmor,
-                morSinSisteUttaksdagDate,
-                ISOStringToDate(farSinFørsteUttaksdag),
+                morSinSisteUttaksdag: morSinSisteUttaksdagDate,
+                farSinFørsteUttaksdag: ISOStringToDate(farSinFørsteUttaksdag),
                 begrunnelseForUtsettelse,
-                termindato
-            );
+                annenForelderHarRettPåForeldrepengerIEØS,
+                termindato,
+            });
 
             return finnOgSettInnHull(
                 forslag,

@@ -1,5 +1,5 @@
 import { intlUtils } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { shouldPeriodeHaveAttachment } from 'app/utils/manglendeVedleggUtils';
 import * as React from 'react';
@@ -44,9 +44,11 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
         arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnumre, registrerteArbeidsforhold).join('\r\n');
     }
 
+    const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
+
     return (
         <>
-            {ønskerSamtidigUttak !== undefined && (
+            {ønskerSamtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intlUtils(intl, 'oppsummering.uttak.samtidigUttak')}
                     verdi={ønskerSamtidigUttak ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}

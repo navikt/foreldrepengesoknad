@@ -6,7 +6,7 @@ import { Forelder } from 'app/types/Forelder';
 import { isInfoPeriode, isUtsettelsesperiode, Periode, Utsettelsesperiode, Uttaksperiode } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 // import { getUttaksstatusFunc } from './utils/uttaksstatus';
 import { Situasjon } from 'app/types/Situasjon';
@@ -133,6 +133,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     });
     const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter((p) => !(isInfoPeriode(p) && !p.visPeriodeIPlan));
     const bareFarHarRett = !morHarRett;
+    const annenForelderHarRettINorge =
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
@@ -297,6 +299,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     erDeltUttak={erDeltUttak}
                     foreldreparSituasjon={foreldreSituasjon}
                     familiehendelsesdato={familiehendelsesdatoDate}
+                    annenForelderHarRettINorge={annenForelderHarRettINorge}
                 />
             </Block>
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">

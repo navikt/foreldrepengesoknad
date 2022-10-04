@@ -73,14 +73,16 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepenger !== undefined
+        ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
+          annenForelder.harRettPåForeldrepengerIEØS !== undefined
         : false;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const bareFarMedmorHarRett =
         erFarEllerMedmor &&
         isAnnenForelderOppgitt(annenForelder) &&
         !søkerErAleneOmOmsorg &&
-        !annenForelder.harRettPåForeldrepenger;
+        !annenForelder.harRettPåForeldrepengerINorge &&
+        !annenForelder.harRettPåForeldrepengerIEØS;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
@@ -153,14 +155,17 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const erSøkerMor = !erFarEllerMedmor;
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const harAnnenForeldreRettPåForeldrepenger = !!oppgittAnnenForelder?.harRettPåForeldrepenger;
+    const harAnnenForelderRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
     const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
         : '';
 
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepenger : false;
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
+        : false;
+
     const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
     const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);
@@ -187,7 +192,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
-                    harAnnenForeldreRettPåForeldrepenger,
+                    harAnnenForelderRettPåForeldrepengerINorge,
                     erAleneOmOmsorg,
                 });
 
@@ -265,6 +270,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 navnMor={navnMor}
                                 termindato={undefined}
                                 situasjon={søkersituasjon.situasjon}
+                                morHarRettTilForeldrepengerIEØS={false}
                             />
                         </Block>
                         <Block
@@ -319,7 +325,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 />
                             </Veilederpanel>
                         </Block>
-                        <Block visible={erAleneOmOmsorg === false && harAnnenForeldreRettPåForeldrepenger}>
+                        <Block visible={erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
                             <Block
                                 padBottom="l"
                                 visible={

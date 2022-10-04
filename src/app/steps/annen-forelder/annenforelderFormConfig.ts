@@ -3,7 +3,8 @@ import { Attachment } from 'app/types/Attachment';
 
 export enum AnnenForelderFormField {
     kanIkkeOppgis = 'kanIkkeOppgis',
-    harRettPåForeldrepenger = 'harRettPåForeldrepenger',
+    harRettPåForeldrepengerINorge = 'harRettPåForeldrepengerINorge',
+    harRettPåForeldrepengerIEØS = 'harRettPåForeldrepengerIEØS',
     erInformertOmSøknaden = 'erInformertOmSøknaden',
     fornavn = 'fornavn',
     etternavn = 'etternavn',
@@ -18,7 +19,8 @@ export enum AnnenForelderFormField {
 
 export interface AnnenForelderFormData {
     [AnnenForelderFormField.kanIkkeOppgis]: boolean;
-    [AnnenForelderFormField.harRettPåForeldrepenger]: YesOrNo;
+    [AnnenForelderFormField.harRettPåForeldrepengerINorge]: YesOrNo;
+    [AnnenForelderFormField.harRettPåForeldrepengerIEØS]: YesOrNo;
     [AnnenForelderFormField.erInformertOmSøknaden]: YesOrNo;
     [AnnenForelderFormField.fornavn]: string;
     [AnnenForelderFormField.etternavn]: string;

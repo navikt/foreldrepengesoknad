@@ -36,9 +36,9 @@ import {
     getFarMedmorFørstegangssøknadMedAnnenPartInitialValues,
     leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan,
 } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import { getMorHarRettPåForeldrepenger } from 'app/utils/personUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'app/utils/personUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -61,7 +61,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const bareFarHarRett = !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
+    const bareFarHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
+        søkersituasjon.rolle,
+        erFarEllerMedmor,
+        annenForelder
+    );
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
@@ -182,6 +186,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                                 navnMor={navnMor}
                                 termindato={termindato}
                                 situasjon={søkersituasjon.situasjon}
+                                morHarRettTilForeldrepengerIEØS={false}
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>

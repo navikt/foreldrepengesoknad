@@ -14,7 +14,8 @@ import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFo
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,
-    [AnnenForelderFormField.harRettPåForeldrepenger]: YesOrNo.UNANSWERED,
+    [AnnenForelderFormField.harRettPåForeldrepengerINorge]: YesOrNo.UNANSWERED,
+    [AnnenForelderFormField.harRettPåForeldrepengerIEØS]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.erInformertOmSøknaden]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.fornavn]: '',
     [AnnenForelderFormField.etternavn]: '',
@@ -54,8 +55,11 @@ export const cleanAnnenForelderFormData = (
         etternavn: visibility.isVisible(AnnenForelderFormField.etternavn) ? values.etternavn : '',
         fnr: visibility.isVisible(AnnenForelderFormField.fnr) ? values.fnr : '',
         fornavn: visibility.isVisible(AnnenForelderFormField.fornavn) ? values.fornavn : '',
-        harRettPåForeldrepenger: visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepenger)
-            ? values.harRettPåForeldrepenger
+        harRettPåForeldrepengerINorge: visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge)
+            ? values.harRettPåForeldrepengerINorge
+            : YesOrNo.UNANSWERED,
+        harRettPåForeldrepengerIEØS: visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)
+            ? values.harRettPåForeldrepengerIEØS
             : YesOrNo.UNANSWERED,
         kanIkkeOppgis: visibility.isVisible(AnnenForelderFormField.kanIkkeOppgis) ? values.kanIkkeOppgis : false,
         utenlandskFnr: visibility.isVisible(AnnenForelderFormField.utenlandskFnr) ? values.utenlandskFnr : false,
@@ -83,7 +87,8 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
             utenlandskFnr: hasValue(values.utenlandskFnr) ? values.utenlandskFnr : undefined,
             erUfør: convertYesOrNoOrUndefinedToBoolean(values.erMorUfør),
             kanIkkeOppgis: values.kanIkkeOppgis,
-            harRettPåForeldrepenger: convertYesOrNoOrUndefinedToBoolean(values.harRettPåForeldrepenger),
+            harRettPåForeldrepengerINorge: convertYesOrNoOrUndefinedToBoolean(values.harRettPåForeldrepengerINorge),
+            harRettPåForeldrepengerIEØS: convertYesOrNoOrUndefinedToBoolean(values.harRettPåForeldrepengerIEØS),
             erInformertOmSøknaden: convertYesOrNoOrUndefinedToBoolean(values.erInformertOmSøknaden),
         };
     }
@@ -102,7 +107,10 @@ export const getAnnenForelderFormInitialValues = (
     if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
             ...initialAnnenForelderValues,
-            harRettPåForeldrepenger: convertBooleanOrUndefinedToYesOrNo(annenForelder.harRettPåForeldrepenger),
+            harRettPåForeldrepengerINorge: convertBooleanOrUndefinedToYesOrNo(
+                annenForelder.harRettPåForeldrepengerINorge
+            ),
+            harRettPåForeldrepengerIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harRettPåForeldrepengerIEØS),
             bostedsland: annenForelder.bostedsland || '',
             erInformertOmSøknaden: convertBooleanOrUndefinedToYesOrNo(annenForelder.erInformertOmSøknaden),
             erMorUfør: convertBooleanOrUndefinedToYesOrNo(annenForelder.erUfør),

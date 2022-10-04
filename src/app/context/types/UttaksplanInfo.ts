@@ -40,6 +40,18 @@ export interface FarMedmorFødselBeggeHarRettUttaksplanInfo extends UttaksplanIn
     antallDagerFellesperiode: string;
 }
 
+export interface MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
+    startdatoAdopsjonValg: AdopsjonStartdatoValg;
+    dekningsgrad: string;
+    annenStartdatoAdopsjon: string | undefined;
+}
+
+export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
+    permisjonStartdato: string;
+    skalIkkeHaUttakFørTermin: boolean | undefined;
+    dekningsgrad: string;
+}
+
 export const isFarMedmorFødselBeggeHarRettUttaksplanInfo = (
     uttaksplanInfo: UttaksplanInfo
 ): uttaksplanInfo is FarMedmorFødselBeggeHarRettUttaksplanInfo => {

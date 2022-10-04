@@ -220,7 +220,10 @@ export const mapUttaksperiodeFromSaksperiode = (
     const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
     const erFarEllerMedmorOgKunSøkerHarRett =
-        erFarEllerMedmor && !grunnlag.morHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
+        erFarEllerMedmor &&
+        !grunnlag.morHarRett &&
+        !grunnlag.farMedmorErAleneOmOmsorg &&
+        !grunnlag.harAnnenForelderTilsvarendeRettEØS;
 
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor, innvilgedePerioder);
@@ -492,7 +495,8 @@ const mapSaksperioderTilUttaksperioder = (
         familiehendelsesdato
     );
 
-    const kunFarMedmorHarRett = !grunnlag.morHarRett && grunnlag.farMedmorHarRett;
+    const kunFarMedmorHarRett =
+        !grunnlag.morHarRett && grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS;
     const erAdopsjon = grunnlag.familiehendelseType === FamiliehendelseType.ADOPSJON;
 
     const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter((p) => !isInfoPeriode(p));
