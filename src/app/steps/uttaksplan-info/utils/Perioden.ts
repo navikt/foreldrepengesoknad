@@ -1,10 +1,5 @@
 import dayjs from 'dayjs';
-import {
-    Periode,
-    Periodetype,
-    isForeldrepengerFørFødselUttaksperiode,
-    isUttaksperiode,
-} from 'uttaksplan/types/Periode';
+import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from 'uttaksplan/types/Periode';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
@@ -32,9 +27,6 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
 
 function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, inkluderUtsettelser = false) {
     if (p1.type !== p2.type) {
-        return false;
-    }
-    if (isUttaksperiode(p1) && p1.ønskerSamtidigUttak) {
         return false;
     }
     if (inkluderUtsettelser === false && (p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse)) {

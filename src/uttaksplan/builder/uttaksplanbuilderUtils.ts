@@ -21,7 +21,11 @@ import {
 } from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 
-export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
+export const slåSammenLikePerioder = (
+    perioder: Periode[],
+    familiehendelsesdato: Date,
+    annenPartsUttak?: Periode[]
+): Periode[] => {
     if (perioder.length <= 1) {
         return perioder;
     }
@@ -37,6 +41,29 @@ export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato
         }
         if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
             if (
+                annenPartsUttak &&
+                isUttaksperiode(periode) &&
+                periode.ønskerSamtidigUttak &&
+                isUttaksperiode(forrigePeriode) &&
+                forrigePeriode.ønskerSamtidigUttak
+            ) {
+                const overlappendePerioderAnnenPartForrigePeriode =
+                    Periodene(annenPartsUttak).finnOverlappendePerioder(forrigePeriode);
+                const overlappendePerioderAnnenPart = Periodene(annenPartsUttak).finnOverlappendePerioder(periode);
+
+                if (
+                    (overlappendePerioderAnnenPart.length === 0 &&
+                        overlappendePerioderAnnenPartForrigePeriode.length > 0) ||
+                    (overlappendePerioderAnnenPart.length > 0 &&
+                        overlappendePerioderAnnenPartForrigePeriode.length === 0)
+                ) {
+                    nyePerioder.push(forrigePeriode);
+                    forrigePeriode = periode;
+                    return;
+                }
+            }
+
+            if (
                 dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
                 dayjs(periode.tidsperiode.tom).isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
             ) {
@@ -44,6 +71,7 @@ export const slåSammenLikePerioder = (perioder: Periode[], familiehendelsesdato
                 forrigePeriode = periode;
                 return;
             }
+
             forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
             return;
         } else {
@@ -460,6 +488,7 @@ export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Per
 
     return slåSammenLikePerioder(
         [...annenPartsUttakSomSlutterFørFørstePeriode, ...result, ...annenPartsUttakSomStarterEtterSistePeriode],
-        familiehendelsesdato
+        familiehendelsesdato,
+        annenPartsUttak
     );
 };

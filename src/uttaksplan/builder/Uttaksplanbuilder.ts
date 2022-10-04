@@ -87,6 +87,7 @@ const oppdaterPeriodeOgBuild = (
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor,
+            annenPartsUttak,
         })
     );
 
@@ -102,7 +103,14 @@ const oppdaterPeriodeOgBuild = (
         oppdatertePerioder = settInnAnnenPartsUttak(oppdatertePerioder, annenPartsUttak, familiehendelsesdato);
     }
 
-    return oppdatertePerioder;
+    return finnOgSettInnHull(
+        oppdatertePerioder,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor
+    );
 };
 
 const slettPeriodeOgBuild = (
@@ -142,7 +150,14 @@ const slettPeriodeOgBuild = (
         nyePerioder = settInnAnnenPartsUttak(nyePerioder, annenPartsUttak, familiehendelsesdato);
     }
 
-    return nyePerioder;
+    return finnOgSettInnHull(
+        nyePerioder,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor
+    );
 };
 
 const getFastePerioder = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
