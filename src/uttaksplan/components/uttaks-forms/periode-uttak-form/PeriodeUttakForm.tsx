@@ -47,8 +47,6 @@ import {
     getSisteUttaksdag6UkerEtterFødsel,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from 'app/utils/wlbUtils';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import dayjs from 'dayjs';
 
 import './periodeUttakForm.less';
 
@@ -291,34 +289,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(values) => {
                                         toggleVisTidsperiode();
-                                        if (
-                                            dayjs(values.fom).isBefore(familiehendelsesdato, 'day') &&
-                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato, 'day')
-                                        ) {
-                                            setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
-                                            setFieldValue(
-                                                PeriodeUttakFormField.tom,
-                                                Uttaksdagen(familiehendelsesdato).forrige()
-                                            );
-                                        } else {
-                                            setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
-                                            setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
-                                        }
+                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
+                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
-                                        if (
-                                            dayjs(values.fom).isBefore(familiehendelsesdato, 'day') &&
-                                            dayjs(values.tom).isSameOrAfter(familiehendelsesdato, 'day')
-                                        ) {
-                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                            setFieldValue(
-                                                PeriodeUttakFormField.tom,
-                                                Uttaksdagen(familiehendelsesdato).forrige()
-                                            );
-                                        } else {
-                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                            setFieldValue(PeriodeUttakFormField.tom, values.tom);
-                                        }
+                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}
