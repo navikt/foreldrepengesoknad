@@ -145,7 +145,11 @@ const UttaksplanStep = () => {
         termindato
     );
 
-    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepenger(søkersituasjon.rolle, erFarEllerMedmor, annenForelder);
+    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
+        søkersituasjon.rolle,
+        erFarEllerMedmor,
+        annenForelder
+    );
     const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,

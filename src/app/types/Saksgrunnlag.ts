@@ -18,5 +18,5 @@ export interface Saksgrunnlag {
     familiehendelseDato: string;
     familiehendelseType: FamiliehendelseType;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
-    ønskerJusertUttakVedFødsel: boolean | undefined;
+    ønskerJustertUttakVedFødsel: boolean | undefined;
 }

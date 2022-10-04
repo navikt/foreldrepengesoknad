@@ -414,7 +414,9 @@ export const opprettSøknadFraEksisterendeSak = (
         fornavn: '',
         etternavn: '',
         fnr: '',
-        harRettPåForeldrepenger: grunnlag.søkerErFarEllerMedmor ? !!grunnlag.morHarRett : !!grunnlag.farMedmorHarRett,
+        harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
+            ? !!grunnlag.morHarRett
+            : !!grunnlag.farMedmorHarRett,
         kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
