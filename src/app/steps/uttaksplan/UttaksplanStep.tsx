@@ -45,12 +45,12 @@ import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormCon
 import { getPerioderMedUttakRundtFødsel } from 'app/utils/wlbUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
-import { FormikValues } from 'formik';
 
 import {
     getVisAutomatiskJusteringForm,
     getKanJustereAutomatiskVedFødsel,
 } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
+import { FormikValues } from 'formik';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -92,8 +92,6 @@ const UttaksplanStep = () => {
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
 
-    const automatiskJusteringFormRef = useRef<FormikValues>(null);
-
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
@@ -116,7 +114,6 @@ const UttaksplanStep = () => {
         };
         dispatch(actionCreator.setTilleggsopplysninger(opplysninger));
     };
-
     useEffect(() => {
         const periodeAngittAvAnnenPart = opprinneligPlan?.find((p) => isUttaksperiode(p) && p.angittAvAnnenPart);
 
@@ -173,12 +170,14 @@ const UttaksplanStep = () => {
         );
     };
 
+    const ref = useRef<FormikValues>(null);
     const clickHandler = (values: any) => {
         setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
-            if (automatiskJusteringFormRef.current) {
-                automatiskJusteringFormRef.current.handleSubmit();
+            if (ref.current) {
+                ref.current.handleSubmit();
             }
+
             setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig();
 
             if (ønskerJustertUttakVedFødselErBesvart(values.ønskerAutomatiskJustering)) {
@@ -268,6 +267,7 @@ const UttaksplanStep = () => {
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(state.søknad.ønskerJustertUttakVedFødsel)}
             onSubmit={handleSubmit}
+            innerRef={ref}
             renderForm={({ values: formValues }) => {
                 const visibility = uttaksplanQuestionsConfig.getVisbility({
                     ...formValues,
@@ -334,7 +334,6 @@ const UttaksplanStep = () => {
                             visibility={visibility}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
-                            automatiskJusteringFormRef={automatiskJusteringFormRef}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (

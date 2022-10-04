@@ -1,4 +1,4 @@
-import React, { FunctionComponent, RefObject, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
@@ -32,7 +32,6 @@ import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/utta
 import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
-import { FormikValues } from 'formik';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -70,7 +69,6 @@ interface Props {
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
-    automatiskJusteringFormRef: RefObject<FormikValues>;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -107,7 +105,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
     visibility,
     visAutomatiskJusteringForm,
     perioderMedUttakRundtFødsel,
-    automatiskJusteringFormRef,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -286,7 +283,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                         termindato={termindato!}
                         perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                         visibility={visibility}
-                        automatiskJusteringFormRef={automatiskJusteringFormRef}
                     />
                 </Block>
             )}
