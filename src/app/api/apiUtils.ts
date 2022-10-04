@@ -35,8 +35,10 @@ import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
-export interface AnnenForelderOppgittForInnsending extends Omit<AnnenForelder, 'erUfør'> {
+export interface AnnenForelderOppgittForInnsending
+    extends Omit<AnnenForelder, 'erUfør' | 'harRettPåForeldrepengerINorge'> {
     harMorUføretrygd?: boolean;
+    harRettPåForeldrepenger?: boolean;
 }
 
 export type AnnenForelderForInnsending = AnnenForelderIkkeOppgitt | AnnenForelderOppgittForInnsending;
@@ -115,10 +117,25 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
-        const { erUfør, erForSyk, ...annenForelderRest } = annenForelder;
-        return erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepenger
-            ? { harMorUføretrygd: erUfør, erInformertOmSøknaden: true, ...annenForelderRest }
-            : { harMorUføretrygd: erUfør, ...annenForelderRest };
+        const { erUfør, erForSyk, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, ...annenForelderRest } =
+            annenForelder;
+        const cleanedAnnenForelder =
+            erEndringssøknad && annenForelder.harRettPåForeldrepengerINorge
+                ? {
+                      harMorUføretrygd: erUfør,
+                      harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+                      harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
+                      erInformertOmSøknaden: true,
+                      ...annenForelderRest,
+                  }
+                : {
+                      harMorUføretrygd: erUfør,
+                      harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+                      harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
+                      ...annenForelderRest,
+                  };
+
+        return cleanedAnnenForelder;
     }
     return annenForelder;
 };
@@ -156,14 +173,14 @@ const konverterRolle = (rolle: Søkerrolle): SøkerrolleInnsending => {
 
 const changeClientonlyKontotype = (
     periode: Periode,
-    annenForelderHarRettPåForeldrepenger: boolean,
+    annenForelderHarRettPåForeldrepengerINorge: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmor: boolean,
-    familihendelsesdato: Date
+    familiehendelsesdato: Date
 ) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
-            periode.konto = !annenForelderHarRettPåForeldrepenger
+            periode.konto = !annenForelderHarRettPåForeldrepengerINorge
                 ? StønadskontoType.Foreldrepenger
                 : StønadskontoType.Fellesperiode;
         }
@@ -171,8 +188,8 @@ const changeClientonlyKontotype = (
             periode.konto = StønadskontoType.Foreldrepenger;
             if (
                 søkerErFarEllerMedmor &&
-                !annenForelderHarRettPåForeldrepenger &&
-                andreAugust2022ReglerGjelder(familihendelsesdato)
+                !annenForelderHarRettPåForeldrepengerINorge &&
+                andreAugust2022ReglerGjelder(familiehendelsesdato)
             ) {
                 periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
             } else if (morErUfør) {
@@ -217,7 +234,7 @@ const cleanUttaksplan = (
             annenForelder && isAnnenForelderOppgitt(annenForelder)
                 ? changeClientonlyKontotype(
                       periode,
-                      !!annenForelder.harRettPåForeldrepenger,
+                      !!annenForelder.harRettPåForeldrepengerINorge,
                       !!annenForelder.erUfør,
                       søkerErFarEllerMedmor,
                       familiehendelsesdato

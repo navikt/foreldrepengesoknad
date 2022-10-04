@@ -9,25 +9,33 @@ import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUti
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { TilgjengeligeStønadskontoerParams } from './api';
 
-const getFarHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
         return true;
     }
 
     if (isAnnenForelderOppgitt(annenForelder)) {
-        return !!annenForelder.harRettPåForeldrepenger;
+        return !!annenForelder.harRettPåForeldrepengerINorge;
     }
 
     return false;
 };
 
-const getMorHarRett = (erFarMedmor: boolean, annenForelder: AnnenForelder) => {
+const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (!erFarMedmor) {
         return true;
     }
 
     if (isAnnenForelderOppgitt(annenForelder)) {
-        return !!annenForelder.harRettPåForeldrepenger;
+        return !!annenForelder.harRettPåForeldrepengerINorge;
+    }
+
+    return false;
+};
+
+const getAnnenForelderHarRettIEØS = (annenForelder: AnnenForelder): boolean => {
+    if (isAnnenForelderOppgitt(annenForelder)) {
+        return !!annenForelder.harRettPåForeldrepengerIEØS;
     }
 
     return false;
@@ -57,8 +65,9 @@ const getStønadskontoParams = (
         antallBarn: barn.antallBarn.toString(),
         startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
-        farHarRett: getFarHarRett(erFarMedmor, annenForelder),
-        morHarRett: getMorHarRett(erFarMedmor, annenForelder),
+        farHarRettINorge: getFarHarRettINorge(erFarMedmor, annenForelder),
+        morHarRettINorge: getMorHarRettINorge(erFarMedmor, annenForelder),
+        harAnnenForelderTilsvarendeRettEØS: getAnnenForelderHarRettIEØS(annenForelder),
         morHarAleneomsorg,
         farHarAleneomsorg,
         fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
@@ -72,73 +81,3 @@ const getStønadskontoParams = (
 };
 
 export default getStønadskontoParams;
-
-// export const getStønadskontoParams = (
-//     søknadsinfo: Søknadsinfo,
-//     startdatoPermisjon: Date | undefined,
-//     barn: Barn,
-//     grunnlag?: Saksgrunnlag
-// ): GetTilgjengeligeStønadskontoerParams => {
-//     const {
-//         søknaden: { familiehendelsesdato, dekningsgrad, antallBarn, erFødsel, erBarnFødt, erEndringssøknad },
-//         mor,
-//         farMedmor,
-//     } = søknadsinfo;
-
-//     if (grunnlag && (skalKunneViseMorsUttaksplanForFarEllerMedmor(grunnlag, søknadsinfo) || erEndringssøknad)) {
-//         const params = {
-//             antallBarn: grunnlag.antallBarn,
-//             fødselsdato: undefined,
-//             termindato: undefined,
-//             omsorgsovertakelsesdato: undefined,
-//             dekningsgrad: grunnlag.dekningsgrad,
-//             morHarRett: grunnlag.morHarRett,
-//             morHarAleneomsorg: grunnlag.morErAleneOmOmsorg,
-//             farHarRett: grunnlag.farMedmorHarRett,
-//             farHarAleneomsorg: grunnlag.farMedmorErAleneOmOmsorg,
-//             startdatoUttak: startdatoPermisjon || ISOStringToDate(grunnlag.familieHendelseDato)!,
-//         };
-
-//         if (erFødsel) {
-//             if (erBarnFødt) {
-//                 return {
-//                     ...params,
-//                     termindato: ISOStringToDate(grunnlag.termindato),
-//                     fødselsdato: ISOStringToDate((barn as FødtBarn).fødselsdatoer[0]),
-//                 };
-//             } else {
-//                 return { ...params, termindato: ISOStringToDate((barn as UfødtBarn).termindato) };
-//             }
-//         } else {
-//             return { ...params, omsorgsovertakelsesdato: ISOStringToDate((barn as Adopsjonsbarn).adopsjonsdato) };
-//         }
-//     } else {
-//         const params = {
-//             antallBarn,
-//             fødselsdato: undefined,
-//             termindato: undefined,
-//             omsorgsovertakelsesdato: undefined,
-//             dekningsgrad:
-//                 dekningsgrad === Dekningsgrad.ÅTTI_PROSENT ? Dekningsgrad.ÅTTI_PROSENT : Dekningsgrad.HUNDRE_PROSENT,
-//             morHarRett: mor.harRett,
-//             morHarAleneomsorg: mor.erAleneOmOmsorg,
-//             farHarRett: farMedmor.harRett,
-//             farHarAleneomsorg: farMedmor.erAleneOmOmsorg,
-//             startdatoUttak: startdatoPermisjon || familiehendelsesdato,
-//         };
-
-//         if (erFødsel) {
-//             if (erBarnFødt) {
-//                 return {
-//                     ...params,
-//                     termindato: ISOStringToDate((barn as FødtBarn).termindato),
-//                     fødselsdato: ISOStringToDate((barn as FødtBarn).fødselsdatoer[0]),
-//                 };
-//             } else {
-//                 return { ...params, termindato: ISOStringToDate((barn as UfødtBarn).termindato) };
-//             }
-//         } else {
-//             return { ...params, omsorgsovertakelsesdato: ISOStringToDate((barn as Adopsjonsbarn).adopsjonsdato) };
-//         }
-//     }
-// };

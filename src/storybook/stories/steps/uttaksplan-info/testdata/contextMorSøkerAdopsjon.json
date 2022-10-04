@@ -4,7 +4,7 @@
         "harGodkjentVilkår": true,
         "søkersituasjon": {
             "situasjon": "adopsjon",
-            "rolle": "far"
+            "rolle": "mor"
         },
         "barn": {
             "antallBarn": 1,
@@ -17,7 +17,8 @@
             "kanIkkeOppgis": true
         },
         "søker": {
-            "språkkode": "nb"
+            "språkkode": "nb",
+            "erAleneOmOmsorg": false
         },
         "informasjonOmUtenlandsopphold": {
             "tidligereOpphold": [],

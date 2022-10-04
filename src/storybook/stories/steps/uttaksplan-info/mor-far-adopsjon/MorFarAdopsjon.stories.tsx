@@ -5,10 +5,10 @@ import MockAdapter from 'axios-mock-adapter/types';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import søkerinfoMorSøker from './testdata/søkerinfoMorSøker.json';
-import contextMorSøker from './testdata/contextMorSøker.json';
-import søkerinfoFarSøker from './testdata/søkerinfoFarSøker.json';
-import contextFarSøker from './testdata/contextFarSøker.json';
+import søkerinfoMorSøker from '../testdata/søkerinfoMorSøker.json';
+import contextMorSøkerAdopsjon from '../testdata/contextMorSøkerAdopsjon.json';
+import søkerinfoFarSøker from '../testdata/søkerinfoFarSøker.json';
+import contextFarSøkerAdopsjon from '../testdata/contextFarSøkerAdopsjon.json';
 import stønadskonto100 from './../testdata/stønadskonto100.json';
 import stønadskonto80 from './../testdata/stønadskonto80.json';
 import stønadskontoDeltUttak80 from './../testdata/stønadskontoDeltUttak80.json';
@@ -51,7 +51,7 @@ export const UttaksplanMedAleneomsorg = Template.bind({});
 UttaksplanMedAleneomsorg.args = {
     stønadskonto100,
     stønadskonto80,
-    context: contextMorSøker,
+    context: contextMorSøkerAdopsjon,
     søkerinfo: søkerinfoMorSøker,
 };
 
@@ -60,18 +60,18 @@ UttaksplanMedDeltUttakDerMorSøker.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     context: {
-        ...contextMorSøker,
+        ...contextMorSøkerAdopsjon,
         søknad: {
-            ...contextMorSøker.søknad,
+            ...contextMorSøkerAdopsjon.søknad,
             søker: {
-                ...contextMorSøker.søknad.søker,
+                ...contextMorSøkerAdopsjon.søknad.søker,
                 erAleneOmOmsorg: false,
             },
             annenForelder: {
                 fornavn: 'Espen',
                 etternavn: 'Utvikler',
                 fnr: '1212121313',
-                harRettPåForeldrepenger: true,
+                harRettPåForeldrepengerINorge: true,
                 kanIkkeOppgis: false,
             },
         },
@@ -84,18 +84,18 @@ UttaksplanMedDeltUttakDerFarSøker.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     context: {
-        ...contextFarSøker,
+        ...contextFarSøkerAdopsjon,
         søknad: {
-            ...contextFarSøker.søknad,
+            ...contextFarSøkerAdopsjon.søknad,
             søker: {
-                ...contextFarSøker.søknad.søker,
+                ...contextFarSøkerAdopsjon.søknad.søker,
                 erAleneOmOmsorg: false,
             },
             annenForelder: {
                 fornavn: 'TALENTFULL',
                 etternavn: 'MYGG',
                 fnr: '19047815714',
-                harRettPåForeldrepenger: true,
+                harRettPåForeldrepengerINorge: true,
                 kanIkkeOppgis: false,
             },
         },

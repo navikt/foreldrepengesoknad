@@ -20,12 +20,22 @@ import Kontostatus from './konto-status/Kontostatus';
 import TilesList from './tilesList/TilesList';
 import './oversiktKvoter.less';
 import { Situasjon } from 'app/types/Situasjon';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 
 const bem = bemUtils('oversiktKvoter');
 
+const filtrerBortAnnenPartsKonto = (
+    uttakskontoer: StønadskontoUttak[],
+    erFarEllerMedmor: boolean
+): StønadskontoUttak[] => {
+    return erFarEllerMedmor
+        ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)
+        : uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Fedrekvote);
+};
 interface PropsPerForelder {
     brukteDagerPerForelder: BrukteDager;
-    erDeltUttak: boolean;
+    erDeltUttakINorge: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;
     navnPåForeldre: NavnPåForeldre;
     søkerErFarEllerMedmor: boolean;
@@ -33,7 +43,7 @@ interface PropsPerForelder {
 
 const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
     brukteDagerPerForelder,
-    erDeltUttak,
+    erDeltUttakINorge,
     foreldreparSituasjon,
     navnPåForeldre,
     søkerErFarEllerMedmor,
@@ -49,12 +59,12 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
                     {intlUtils(intl, 'uttaksplan.oversiktKvoter.tittel.foreldre')}
                 </Undertittel>
                 <TilesList columns={'flex'}>
-                    {(erDeltUttak || søkerErMor) && (
+                    {(erDeltUttakINorge || søkerErMor) && (
                         <Personkort ikon={<ForelderIkon forelder={svgInfo.mor} />} tittel={navnPåForeldre.mor}>
                             <strong>{getVarighetString(brukteDagerPerForelder.mor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}
-                    {(erDeltUttak || søkerErFarEllerMedmor) && (
+                    {(erDeltUttakINorge || søkerErFarEllerMedmor) && (
                         <Personkort
                             ikon={<ForelderIkon forelder={svgInfo.farMedmor} />}
                             tittel={navnPåForeldre.farMedmor}
@@ -69,7 +79,7 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
 };
 
 interface PropsPerKvote {
-    erDeltUttak: boolean;
+    erDeltUttakINorge: boolean;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     uttaksstatus: Uttaksstatus;
@@ -79,7 +89,7 @@ interface PropsPerKvote {
 }
 
 const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
-    erDeltUttak,
+    erDeltUttakINorge,
     navnPåForeldre,
     erEndringssøknad,
     uttaksstatus,
@@ -87,6 +97,9 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     situasjon,
     erAleneOmOmsorg,
 }) => {
+    const uttakÅVise = erDeltUttakINorge
+        ? uttaksstatus.uttak
+        : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
     return (
         <div className={bem.element('perKvote')}>
             <Undertittel tag="h2" className="blokk-xs">
@@ -96,11 +109,11 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
                             ? 'uttaksplan.oversiktKvoter.tittel.kontoer.brukteDager'
                             : 'uttaksplan.oversiktKvoter.tittel.kontoer.ikkeBrukteDager'
                     }
-                    values={{ antall: erDeltUttak ? 2 : 1 }}
+                    values={{ antall: erDeltUttakINorge ? 2 : 1 }}
                 />
             </Undertittel>
             <TilesList columns={2}>
-                {uttaksstatus.uttak.map((uttak, idx) => (
+                {uttakÅVise.map((uttak, idx) => (
                     <Kontostatus
                         key={idx}
                         uttak={uttak}
@@ -122,6 +135,7 @@ interface Props {
     erDeltUttak: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;
     familiehendelsesdato: Date;
+    annenForelderHarRettINorge: boolean;
 }
 
 const OversiktKvoter: FunctionComponent<Props> = ({
@@ -130,6 +144,7 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     erDeltUttak,
     foreldreparSituasjon,
     familiehendelsesdato,
+    annenForelderHarRettINorge,
 }) => {
     const søker = useSøkerinfo();
     const søknad = useSøknad();
@@ -144,18 +159,18 @@ const OversiktKvoter: FunctionComponent<Props> = ({
         uttaksplan,
     });
     const brukteDagerPerForelder = getBrukteDager(tilgjengeligeStønadskontoer, uttaksplan, familiehendelsesdato);
-
+    const erDeltUttakINorge = erDeltUttak && annenForelderHarRettINorge;
     return (
         <div className={bem.block}>
             <OversiktPerForelder
                 brukteDagerPerForelder={brukteDagerPerForelder}
-                erDeltUttak={erDeltUttak}
+                erDeltUttakINorge={erDeltUttakINorge}
                 foreldreparSituasjon={foreldreparSituasjon}
                 navnPåForeldre={navnPåForeldre}
                 søkerErFarEllerMedmor={søkerErFarEllerMedmor}
             />
             <OversiktPerKvote
-                erDeltUttak={erDeltUttak}
+                erDeltUttakINorge={erDeltUttakINorge}
                 navnPåForeldre={navnPåForeldre}
                 erEndringssøknad={søknad.erEndringssøknad}
                 uttaksstatus={uttaksstatus}

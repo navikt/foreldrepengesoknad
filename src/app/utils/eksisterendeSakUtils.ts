@@ -55,9 +55,20 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): S
 
 const erEksisterendeSakErDeltUttak = (eksisterendeSak: EksisterendeSakDTO): boolean => {
     const {
-        grunnlag: { farMedmorErAleneOmOmsorg, farMedmorHarRett, morErAleneOmOmsorg, morHarRett },
+        grunnlag: {
+            farMedmorErAleneOmOmsorg,
+            farMedmorHarRett,
+            morErAleneOmOmsorg,
+            morHarRett,
+            harAnnenForelderTilsvarendeRettEØS,
+        },
     } = eksisterendeSak;
-    if (farMedmorErAleneOmOmsorg || morErAleneOmOmsorg || farMedmorHarRett === false || morHarRett === false) {
+    if (
+        farMedmorErAleneOmOmsorg ||
+        morErAleneOmOmsorg ||
+        (farMedmorHarRett === false && harAnnenForelderTilsvarendeRettEØS === false) ||
+        (morHarRett === false && harAnnenForelderTilsvarendeRettEØS === false)
+    ) {
         return false;
     }
     return true;
@@ -315,7 +326,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fornavn: annenPart.navn.fornavn,
                     etternavn: annenPart.navn.etternavn,
                     erUfør: grunnlag.morErUfør,
-                    harRettPåForeldrepenger: grunnlag.morHarRett,
+                    harRettPåForeldrepengerINorge: grunnlag.morHarRett,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                 };
@@ -323,7 +334,7 @@ const getAnnenForelderFromSaksgrunnlag = (
             return {
                 fornavn: annenPart.navn.fornavn,
                 etternavn: annenPart.navn.etternavn,
-                harRettPåForeldrepenger: grunnlag.farMedmorHarRett,
+                harRettPåForeldrepengerINorge: grunnlag.farMedmorHarRett,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
             };
@@ -394,7 +405,7 @@ export const opprettSøknadFraEksisterendeSak = (
         fornavn: '',
         etternavn: '',
         fnr: '',
-        harRettPåForeldrepenger: false,
+        harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
@@ -411,7 +422,12 @@ export const opprettSøknadFraEksisterendeSak = (
     );
     const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
 
-    const annenForelder = annenForelderFraSak || annenForelderFraBarn || mockForelder;
+    const annenForelderBase = annenForelderFraSak || annenForelderFraBarn || mockForelder;
+
+    const annenForelder = {
+        ...annenForelderBase,
+        harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
+    };
 
     if (!barn || !rolle) {
         return undefined;

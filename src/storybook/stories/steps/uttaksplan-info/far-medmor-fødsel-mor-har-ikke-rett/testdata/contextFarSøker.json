@@ -19,7 +19,8 @@
             "utenlandskFnr": false,
             "erUfør": false,
             "kanIkkeOppgis": false,
-            "harRettPåForeldrepenger": false
+            "harRettPåForeldrepengerINorge": false,
+            "harRettPåForeldrepengerIEØS": false
         },
         "søker": {
             "erAleneOmOmsorg": false,

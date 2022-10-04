@@ -91,6 +91,7 @@ const deltUttakAdopsjonSøktSist = (
             begrunnelseForUtsettelse,
             familiehendelsesdato,
             undefined,
+            undefined,
             'adopsjon'
         );
     } else {
@@ -102,6 +103,7 @@ const deltUttakAdopsjonSøktSist = (
             farSinFørsteUttaksdag,
             begrunnelseForUtsettelse,
             familiehendelsesdato,
+            undefined,
             undefined,
             'adopsjon'
         ).map((periode) => {
@@ -281,11 +283,13 @@ const deltUttakFødselFarMedmor = (
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
+    morHarRettPåForeldrepengerIEØS: boolean | undefined,
     situasjon = 'fødsel'
 ): Periode[] => {
     if (
         !andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-        dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag)
+        dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag) &&
+        !morHarRettPåForeldrepengerIEØS
     ) {
         return [];
     }
@@ -404,6 +408,7 @@ const deltUttakFødsel = (
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    annenForelderHarRettPåForeldrepengerIEØS: boolean | undefined,
     termindato?: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -421,55 +426,60 @@ const deltUttakFødsel = (
             farSinFørsteUttaksdag!,
             begrunnelseForUtsettelse,
             famDato,
-            termindato
+            termindato,
+            annenForelderHarRettPåForeldrepengerIEØS
         );
     }
 };
 
-export const deltUttak = (
-    situasjon: Situasjon,
-    famDato: Date,
-    erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
-    fellesperiodeukerMor: number | undefined,
-    harAnnenForelderSøktFP: boolean | undefined,
-    antallDagerFellesperiodeFarMedmor: number | undefined,
-    antallUkerFellesperiodeFarMedmor: number | undefined,
-    morSinSisteUttaksdag: Date | undefined,
-    farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
-    termindato?: Date | undefined
-) => {
-    if (situasjon === 'adopsjon') {
+export interface DeltUttakParams {
+    situasjon: Situasjon;
+    famDato: Date;
+    erFarEllerMedmor: boolean;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    startdatoPermisjon: Date | undefined;
+    fellesperiodeukerMor: number | undefined;
+    harAnnenForelderSøktFP: boolean | undefined;
+    antallDagerFellesperiodeFarMedmor: number | undefined;
+    antallUkerFellesperiodeFarMedmor: number | undefined;
+    morSinSisteUttaksdag: Date | undefined;
+    farSinFørsteUttaksdag: Date | undefined;
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined;
+    annenForelderHarRettPåForeldrepengerIEØS?: boolean | undefined;
+    termindato?: Date | undefined;
+}
+
+export const deltUttak = (params: DeltUttakParams) => {
+    if (params.situasjon === 'adopsjon') {
         return deltUttakAdopsjon(
-            famDato,
-            erFarEllerMedmor,
-            tilgjengeligeStønadskontoer,
-            startdatoPermisjon,
-            fellesperiodeukerMor,
-            harAnnenForelderSøktFP,
-            antallDagerFellesperiodeFarMedmor,
-            antallUkerFellesperiodeFarMedmor,
-            morSinSisteUttaksdag,
-            farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse
+            params.famDato,
+            params.erFarEllerMedmor,
+            params.tilgjengeligeStønadskontoer,
+            params.startdatoPermisjon,
+            params.fellesperiodeukerMor,
+            params.harAnnenForelderSøktFP,
+            params.antallDagerFellesperiodeFarMedmor,
+            params.antallUkerFellesperiodeFarMedmor,
+            params.morSinSisteUttaksdag,
+            params.farSinFørsteUttaksdag,
+            params.begrunnelseForUtsettelse
         );
     }
 
-    if (situasjon === 'fødsel') {
+    if (params.situasjon === 'fødsel') {
         return deltUttakFødsel(
-            famDato,
-            erFarEllerMedmor,
-            tilgjengeligeStønadskontoer,
-            startdatoPermisjon,
-            fellesperiodeukerMor,
-            antallDagerFellesperiodeFarMedmor,
-            antallUkerFellesperiodeFarMedmor,
-            morSinSisteUttaksdag,
-            farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse,
-            termindato
+            params.famDato,
+            params.erFarEllerMedmor,
+            params.tilgjengeligeStønadskontoer,
+            params.startdatoPermisjon,
+            params.fellesperiodeukerMor,
+            params.antallDagerFellesperiodeFarMedmor,
+            params.antallUkerFellesperiodeFarMedmor,
+            params.morSinSisteUttaksdag,
+            params.farSinFørsteUttaksdag,
+            params.begrunnelseForUtsettelse,
+            params.annenForelderHarRettPåForeldrepengerIEØS,
+            params.termindato
         );
     }
 

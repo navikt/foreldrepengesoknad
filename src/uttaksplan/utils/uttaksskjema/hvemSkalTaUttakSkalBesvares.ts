@@ -4,7 +4,7 @@ import { erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB } from 'uttaksplan/compo
 
 const hvemSkalTaUttakSkalBesvares = (
     tidsperiode: TidsperiodeDate,
-    erDeltUttak: boolean,
+    erDeltUttakINorge: boolean,
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     situasjon: Situasjon
@@ -15,14 +15,14 @@ const hvemSkalTaUttakSkalBesvares = (
                 { fom: tidsperiode.fom },
                 familiehendelsesdato,
                 erFarEllerMedmor,
-                erDeltUttak,
+                erDeltUttakINorge,
                 situasjon
             )
         ) {
             return false;
         }
     }
-    return erDeltUttak;
+    return erDeltUttakINorge;
 };
 
 export default hvemSkalTaUttakSkalBesvares;

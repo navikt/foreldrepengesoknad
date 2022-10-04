@@ -7,3 +7,7 @@ export const getErMorUfør = (annenForelder: AnnenForelder, erFarEllerMedmor: bo
 
     return false;
 };
+
+export const harAnnenForelderRettIEØS = (annenForelder: AnnenForelder): boolean => {
+    return isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
+};

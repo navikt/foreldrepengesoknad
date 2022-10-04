@@ -66,22 +66,31 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         visibilityFilter: ({ aleneOmOmsorg, datoForAleneomsorg }) =>
             aleneOmOmsorg === YesOrNo.YES || hasValue(datoForAleneomsorg),
     },
-    [AnnenForelderFormField.harRettPåForeldrepenger]: {
+    [AnnenForelderFormField.harRettPåForeldrepengerINorge]: {
         parentQuestion: AnnenForelderFormField.aleneOmOmsorg,
-        isAnswered: ({ harRettPåForeldrepenger }) => harRettPåForeldrepenger !== YesOrNo.UNANSWERED,
+        isAnswered: ({ harRettPåForeldrepengerINorge }) => harRettPåForeldrepengerINorge !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
     },
+    [AnnenForelderFormField.harRettPåForeldrepengerIEØS]: {
+        parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
+        isAnswered: ({ harRettPåForeldrepengerIEØS }) => harRettPåForeldrepengerIEØS !== YesOrNo.UNANSWERED,
+        visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
+        isIncluded: ({ harRettPåForeldrepengerINorge }) => harRettPåForeldrepengerINorge === YesOrNo.NO,
+    },
     [AnnenForelderFormField.erInformertOmSøknaden]: {
-        parentQuestion: AnnenForelderFormField.harRettPåForeldrepenger,
+        parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
         isAnswered: ({ erInformertOmSøknaden }) => erInformertOmSøknaden !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepenger }) =>
-            aleneOmOmsorg === YesOrNo.NO && harRettPåForeldrepenger === YesOrNo.YES,
+        visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepengerINorge }) =>
+            aleneOmOmsorg === YesOrNo.NO && harRettPåForeldrepengerINorge === YesOrNo.YES,
     },
     [AnnenForelderFormField.erMorUfør]: {
-        parentQuestion: AnnenForelderFormField.harRettPåForeldrepenger,
+        parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
         isAnswered: ({ erMorUfør }) => erMorUfør !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepenger, søkerRolle }) =>
-            aleneOmOmsorg === YesOrNo.NO && harRettPåForeldrepenger === YesOrNo.NO && isFarEllerMedmor(søkerRolle),
+        visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, søkerRolle }) =>
+            aleneOmOmsorg === YesOrNo.NO &&
+            harRettPåForeldrepengerINorge === YesOrNo.NO &&
+            harRettPåForeldrepengerIEØS === YesOrNo.NO &&
+            isFarEllerMedmor(søkerRolle),
     },
     [AnnenForelderFormField.datoForAleneomsorg]: {
         isAnswered: ({ datoForAleneomsorg }) => hasValue(datoForAleneomsorg),

@@ -13,10 +13,11 @@ import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
+
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
-    morHarRett: boolean;
-    farHarRett: boolean;
+    morHarRettINorge: boolean;
+    farHarRettINorge: boolean;
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
     termindato: string | undefined;
     fødselsdato: string | undefined;
@@ -27,6 +28,7 @@ export interface TilgjengeligeStønadskontoerParams {
     minsterett: boolean;
     erMor: boolean;
     morHarUføretrygd: boolean;
+    harAnnenForelderTilsvarendeRettEØS: boolean;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -158,8 +160,9 @@ const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> =
 const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspended = false) => {
     const {
         antallBarn,
-        farHarRett,
-        morHarRett,
+        farHarRettINorge,
+        morHarRettINorge,
+        harAnnenForelderTilsvarendeRettEØS,
         dekningsgrad,
         fødselsdato,
         termindato,
@@ -175,8 +178,9 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     const fpUttakServiceDateFormat = 'YYYYMMDD';
 
     const urlParams = {
-        farHarRett,
-        morHarRett,
+        farHarRett: farHarRettINorge,
+        morHarRett: morHarRettINorge,
+        harAnnenForelderTilsvarendeRettEØS,
         morHarAleneomsorg: morHarAleneomsorg || false,
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,

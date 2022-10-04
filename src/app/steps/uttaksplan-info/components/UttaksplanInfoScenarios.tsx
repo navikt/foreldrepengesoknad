@@ -3,6 +3,8 @@ import React, { FunctionComponent } from 'react';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
+import MorFarAdopsjonAnnenForelderHarRettIEØS from './scenarios/mor-far-adopsjon-annen-part-har-rett-i-eøs/MorFarAdopsjonAnnenForelderHarRettIEØS';
+import MorFarFødselAnnenForelderHarRettIEØS from './scenarios/mor-far-fødsel-annen-part-har-rett-i-eøs/MorFarFødselAnnenForelderHarRettIEØS';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
@@ -11,7 +13,7 @@ import { getUttaksplanScenario } from './scenarios/scenarios';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import useSøknad from 'app/utils/hooks/useSøknad';
-
+import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
@@ -28,11 +30,12 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
-        ? !!annenForelder.harRettPåForeldrepenger
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
         : false;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepenger !== undefined
+        ? annenForelder.harRettPåForeldrepengerINorge !== undefined
         : false;
+    const annenForelderHarRettIEØS = harAnnenForelderRettIEØS(annenForelder);
 
     const scenario = getUttaksplanScenario({
         erFødsel,
@@ -43,6 +46,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
         erAdopsjon,
         eksisterendeSakAnnenPart,
         annenForelderOppgittIkkeAleneOmOmsorg,
+        annenForelderHarRettIEØS,
     });
 
     switch (scenario) {
@@ -86,6 +90,20 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
         case 'morFødsel':
             return (
                 <MorFødsel
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'morFarFødselAnnenForelderHarRettIEØS':
+            return (
+                <MorFarFødselAnnenForelderHarRettIEØS
+                    tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
+                    tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                />
+            );
+        case 'morFarAdopsjonAnnenForelderHarRettIEØS':
+            return (
+                <MorFarAdopsjonAnnenForelderHarRettIEØS
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                 />

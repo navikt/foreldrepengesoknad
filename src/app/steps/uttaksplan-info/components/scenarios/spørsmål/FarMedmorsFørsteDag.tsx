@@ -18,6 +18,7 @@ interface Props {
     navnMor: string;
     termindato: Date | undefined;
     situasjon: Situasjon;
+    morHarRettTilForeldrepengerIEØS: boolean;
 }
 
 const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
@@ -29,6 +30,7 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
     navnMor,
     termindato,
     situasjon,
+    morHarRettTilForeldrepengerIEØS,
 }) => {
     const intl = useIntl();
     const maxDate = ISOStringToDate(
@@ -52,7 +54,7 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                     validate={validateStartdatoFarMedmor(intl, minDate!, maxDate!)}
                 />
             </Block>
-            {!andreAugust2022ReglerGjelder(familiehendelsesdato) && (
+            {!andreAugust2022ReglerGjelder(familiehendelsesdato) && !morHarRettTilForeldrepengerIEØS && (
                 <LenkeKnapp
                     text={
                         <FormattedMessage
