@@ -12,7 +12,7 @@ import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
+import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 
@@ -360,16 +360,20 @@ export const getEndringstidspunkt = (
         return undefined;
     }
 
+    const søkerensOpprinneligePlan =
+        opprinneligPlan === undefined ? undefined : opprinneligPlan.filter((p) => !isInfoPeriode(p));
+    const søkerensUpdatedPlan = updatedPlan.filter((p) => !isInfoPeriode(p));
+
     let endringstidspunktNyPlan: Date | undefined;
     let endringstidspunktOpprinneligPlan: Date | undefined;
-    if (opprinneligPlan) {
-        updatedPlan.forEach((periode, index) => {
+    if (søkerensOpprinneligePlan) {
+        søkerensUpdatedPlan.forEach((periode, index) => {
             if (endringstidspunktNyPlan) {
                 return endringstidspunktNyPlan;
             }
 
             const { fom } = periode.tidsperiode;
-            const opprinneligPeriodeMedSammeFom = opprinneligPlan.find((opprinneligPeriode) =>
+            const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
                 dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day')
             );
 
@@ -388,20 +392,20 @@ export const getEndringstidspunkt = (
                 endringstidspunktNyPlan = fom;
             }
 
-            if (opprinneligPeriodeMedSammeFom !== undefined && updatedPlan.length - 1 === index) {
+            if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
                 if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
                     endringstidspunktNyPlan = fom;
                 }
             }
         });
 
-        opprinneligPlan.forEach((periode) => {
+        søkerensOpprinneligePlan.forEach((periode) => {
             if (endringstidspunktOpprinneligPlan) {
                 return endringstidspunktOpprinneligPlan;
             }
 
             const { fom } = periode.tidsperiode;
-            const nyPeriodeMedSammeFom = updatedPlan.find((nyPeriode) =>
+            const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
                 dayjs(nyPeriode.tidsperiode.fom).isSame(fom, 'day')
             );
 
@@ -415,8 +419,8 @@ export const getEndringstidspunkt = (
         });
     } else {
         // Bruker har slettet opprinnelig plan, send med alt
-        if (updatedPlan.length > 0) {
-            return updatedPlan[0].tidsperiode.fom;
+        if (søkerensUpdatedPlan.length > 0) {
+            return søkerensUpdatedPlan[0].tidsperiode.fom;
         }
     }
 
