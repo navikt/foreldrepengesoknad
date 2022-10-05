@@ -20,6 +20,6 @@ describe('<AppContainer>', () => {
 
         render(<AppContainer />);
 
-        expect(screen.queryByText('Venter...')).toBeInTheDocument();
+        expect(screen.getByText('Venter...')).toBeInTheDocument();
     });
 });
