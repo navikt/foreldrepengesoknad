@@ -67,7 +67,7 @@ describe('PeriodeUttakForm - tidsrom input', () => {
         expect(await screen.findByText(FRA_OG_MED)).toBeInTheDocument();
         expect(await screen.findByText(TIL_OG_MED)).toBeInTheDocument();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(
             await screen.findByText('Til og med dato må være en gyldig dato på formatet dd.mm.åååå')
         ).toBeInTheDocument();
@@ -77,7 +77,7 @@ describe('PeriodeUttakForm - tidsrom input', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2021-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(
             await screen.findByText('Du må legge inn en fra og med dato som er før til og med datoen.')
         ).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(await screen.findByText(VARGHET_PÅ_PERIODEN)).toBeInTheDocument();
         expect(await screen.findByText(ANTALL_UKER)).toBeInTheDocument();
         expect(await screen.findByText(ANTALL_DAGER)).toBeInTheDocument();
@@ -140,7 +140,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
         expect(await screen.findByText(FRILANS)).toBeInTheDocument();
         expect(await screen.findByText(FRILANS)).toBeInTheDocument();
         expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
-        userEvent.click(screen.getByText(FABRIKK_AS));
+        await userEvent.click(screen.getByText(FABRIKK_AS));
 
         //Skal kunne legge til perioden.
         expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
@@ -153,7 +153,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(await screen.findByText(VARGHET_PÅ_PERIODEN)).toBeInTheDocument();
         expect(await screen.findByText(ANTALL_UKER)).toBeInTheDocument();
         expect(await screen.findByText(ANTALL_DAGER)).toBeInTheDocument();
@@ -198,7 +198,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
         expect(await screen.findByText(FRILANS)).toBeInTheDocument();
         expect(await screen.findByText(FRILANS)).toBeInTheDocument();
         expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
-        userEvent.click(screen.getByText(FABRIKK_AS));
+        await userEvent.click(screen.getByText(FABRIKK_AS));
 
         //Skal kunne legge til perioden.
         expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
@@ -211,7 +211,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -246,7 +246,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -276,7 +276,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-08-05')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -322,7 +322,7 @@ describe('PeriodeUttakForm - Far søker, aleneomsorg', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -354,7 +354,7 @@ describe('PeriodeUttakForm - Mor søker, aleneomsorg', () => {
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -383,7 +383,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -411,7 +411,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -444,7 +444,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -471,7 +471,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -499,7 +499,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -532,7 +532,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -561,7 +561,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-08-05')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -591,7 +591,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, mor har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
@@ -619,7 +619,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, mor har kun rett i EØS', () =>
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
         await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
-        userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
         //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
         expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
