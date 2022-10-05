@@ -88,6 +88,7 @@ export type EndringssøknadForInnsending = Pick<
     | 'dekningsgrad'
     | 'situasjon'
     | 'tilleggsopplysninger'
+    | 'ønskerJustertUttakVedFødsel'
 >;
 
 const cleanUttaksperiode = (uttaksPeriode: UttaksperiodeBase): UttaksPeriodeForInnsending => {
@@ -389,6 +390,7 @@ export const cleanEndringssøknad = (
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.søkersituasjon.situasjon,
         tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
+        ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
