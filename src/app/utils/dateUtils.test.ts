@@ -542,6 +542,94 @@ describe('dateUtils', () => {
 
             expect(endringstidspunkt).toBe(periodeSomDeltePeriode.tidsperiode!.fom);
         });
+        it('Hvis annen parts uttak finnes i planen, skal endringstidspunktet bli riktig når bruker legger til en ny periode på slutten.', () => {
+            const opprinneligPlanMedAnnenPart: Array<Partial<Periode>> = [
+                {
+                    id: '0',
+                    tidsperiode: {
+                        fom: new Date('2019-09-10T00:00:00.000Z'),
+                        tom: new Date('2019-09-30T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Uttak,
+                },
+                {
+                    id: '1',
+                    tidsperiode: {
+                        fom: new Date('2019-09-10T00:00:00.000Z'),
+                        tom: new Date('2019-09-30T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Info,
+                    overskrives: true,
+                },
+                {
+                    id: '96519825-01917-7239-1861-16148140669135',
+                    tidsperiode: {
+                        fom: new Date('2019-10-01T00:00:00.000Z'),
+                        tom: new Date('2020-01-13T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Uttak,
+                },
+            ];
+
+            const endretPlanMedAnnenPart = [
+                ...opprinneligPlanMedAnnenPart,
+                {
+                    id: '3105926427-6496-7446-7246-02332065872239',
+                    tidsperiode: {
+                        fom: new Date('2020-01-14T00:00:00.000Z'),
+                        tom: new Date('2020-05-04T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Uttak,
+                },
+            ];
+            const endringstidspunkt = getEndringstidspunkt(
+                opprinneligPlanMedAnnenPart as Periode[],
+                endretPlanMedAnnenPart as Periode[],
+                true
+            );
+
+            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3].tidsperiode!.fom);
+        });
+
+        it('Hvis annen parts uttak finnes i planen, bruker sletter opprinnelig plan og legger til ny periode i slutten, skal endringsdato være starten på den første av brukerens perioder i opprinnelig plan.', () => {
+            const opprinneligPlanMedAnnenPart: Array<Partial<Periode>> = [
+                {
+                    id: '1',
+                    tidsperiode: {
+                        fom: new Date('2019-09-10T00:00:00.000Z'),
+                        tom: new Date('2019-09-30T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Info,
+                    overskrives: true,
+                },
+                {
+                    id: '96519825-01917-7239-1861-16148140669135',
+                    tidsperiode: {
+                        fom: new Date('2019-10-01T00:00:00.000Z'),
+                        tom: new Date('2020-01-13T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Uttak,
+                },
+            ];
+
+            const nyPlan = [
+                {
+                    id: '3105926427-6496-7446-7246-02332065872239',
+                    tidsperiode: {
+                        fom: new Date('2020-01-14T00:00:00.000Z'),
+                        tom: new Date('2020-05-04T00:00:00.000Z'),
+                    },
+                    type: Periodetype.Uttak,
+                },
+            ];
+            const endringstidspunkt = getEndringstidspunkt(
+                opprinneligPlanMedAnnenPart as Periode[],
+                nyPlan as Periode[],
+                true
+            );
+
+            expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1].tidsperiode!.fom);
+        });
     });
 });
 
