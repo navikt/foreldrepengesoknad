@@ -451,7 +451,8 @@ const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
     if (
         saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
         saksperiode.utsettelsePeriodeType !== undefined &&
-        saksperiode.utsettelsePeriodeType === UtsettelseÅrsakTypeDTO.InstitusjonBarnet
+        saksperiode.utsettelsePeriodeType === UtsettelseÅrsakTypeDTO.InstitusjonBarnet &&
+        saksperiode.trekkDager > 0
     ) {
         return true;
     }
