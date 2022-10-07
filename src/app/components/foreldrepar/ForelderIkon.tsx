@@ -1,6 +1,6 @@
 import { ForeldreparForelder } from 'app/types/ForeldreparSituasjonTypes';
 import React from 'react';
-import FlexibleSvg from '../flexible-svg/FlexibleSVG';
+import { getForeldreparIkon } from './foreldreparUtils';
 
 interface Props {
     forelder: ForeldreparForelder;
@@ -8,8 +8,11 @@ interface Props {
 }
 
 const ForelderIkon: React.FunctionComponent<Props> = ({ forelder, width }) => {
-    const svg = require(`./assets/${forelder}.svg`).default;
     const scale = width ? width / 31 : 1;
-    return <FlexibleSvg className="forelderIkon" iconRef={svg} width={31 * scale} height={45 * scale} />;
+    const scaledWidth = 31 * scale;
+    const scaledHeight = 45 * scale;
+
+    return getForeldreparIkon(forelder, 'forelderIkon', scaledWidth, scaledHeight);
 };
+
 export default ForelderIkon;
