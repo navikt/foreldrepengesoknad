@@ -57,7 +57,7 @@
         "@types/amplitude-js": "^8.16.2",
         "@types/bytes": "^3.1.1",
         "@types/history": "^5.0.0",
-        "@types/jest": "^29.1.1",
+        "@types/jest": "^29.1.2",
         "@types/lodash": "^4.14.186",
         "@types/lodash.groupby": "^4.6.7",
         "@types/lodash.throttle": "^4.1.7",
