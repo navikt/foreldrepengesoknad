@@ -1,7 +1,6 @@
 import React from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import { ForeldreparForelder, ForeldreparIllustrasjonsvariant } from 'app/types/ForeldreparSituasjonTypes';
-// import FlexibleSvg from '../flexible-svg/FlexibleSVG';
 
 import './foreldrepar.less';
 import { getForeldreparIkon } from './foreldreparUtils';
@@ -40,18 +39,5 @@ const Foreldrepar: React.FunctionComponent<Props> = ({ forelder1, forelder2, var
         </div>
     );
 };
-
-// const Forelder = ({ className, svg, lessOpacity }: { className: string; svg: any; lessOpacity?: boolean }) => {
-//     const svgToRender = (
-//         <FlexibleSvg
-//             className={bem.classNames(className, bem.modifierConditional('halfOpacity', lessOpacity))}
-//             iconRef={svg}
-//             width={31}
-//             height={45}
-//         />
-//     );
-
-//     return svgToRender;
-// };
 
 export default Foreldrepar;
