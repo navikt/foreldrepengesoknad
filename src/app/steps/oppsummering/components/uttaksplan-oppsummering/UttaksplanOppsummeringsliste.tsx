@@ -23,9 +23,8 @@ import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeri
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
-import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
+import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor, uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
-import dayjs from 'dayjs';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -79,11 +78,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             fom: formatDate(tidsperiode.fom),
             tom: formatDate(tidsperiode.tom),
         });
-        if (
-            ønskerJustertUttakVedFødsel &&
-            termindato !== undefined &&
-            dayjs(tidsperiode.fom).isSame(termindato, 'day')
-        ) {
+        if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, tidsperiode.fom)) {
             const justeringTekst = intlUtils(intl, 'oppsummering.uttak.periodenBlirAutomatiskJustert');
             return justeringTekst.concat(formatertTidsperiode);
         }

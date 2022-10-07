@@ -197,3 +197,11 @@ export const getPerioderMedUttakRundtFødsel = (
             )
     ) as [];
 };
+
+export const uttaksperiodeKanJusteresVedFødsel = (
+    ønskerJustertUttakVedFødsel: boolean | undefined,
+    termindato: Date | undefined,
+    uttaksperiodeFom: Date
+) => {
+    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato);
+};
