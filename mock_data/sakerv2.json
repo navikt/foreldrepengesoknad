@@ -1,0 +1,50 @@
+{
+    "foreldrepenger": [
+        {
+            "saksnummer": "352009381",
+            "sakAvsluttet": false,
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": false,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BARE_SØKER_RETT",
+            "annenPart": {
+                "type": "person",
+                "fødselsnummer": "12048902861",
+                "fornavn": "Äcklig",
+                "etternavn": "Kake"
+            },
+            "familiehendelse": {
+                "fødselsdato": "2021-09-01",
+                "antallBarn": 2
+            },
+            "åpenBehandling": {
+                "tilstand": "UNDER_BEHANDLING",
+                "søknadsperioder": []
+            },
+            "barn": [
+                {
+                    "type": "person",
+                    "fødselsnummer": "01492163577",
+                    "fornavn": "Stolt",
+                    "etternavn": "Kiwi",
+                    "kjønn": "U",
+                    "fødselsdato": "2021-09-01"
+                },
+                {
+                    "type": "person",
+                    "fødselsnummer": "01492187433",
+                    "fornavn": "Venstre",
+                    "etternavn": "Lupe",
+                    "kjønn": "U",
+                    "fødselsdato": "2021-09-01"
+                }
+            ],
+            "dekningsgrad": "HUNDRE"
+        }
+    ],
+    "engangsstønad": [],
+    "svangerskapspenger": []
+}

@@ -32,8 +32,8 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     const { sakerData } = Api.useGetSaker(søkerinfoData ? søkerinfoData.søker.fnr : undefined);
     const { dispatch, state } = useForeldrepengesøknadContext();
 
-    if (newSakerEnabled) {
-        console.log(sakerV2Data);
+    if (newSakerEnabled && sakerV2Data) {
+        console.log(sakerV2Data.foreldrepenger);
     }
 
     useEffect(() => {
@@ -49,7 +49,11 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         if (sakerData) {
             dispatch(actionCreator.setSaker(sakerData));
         }
-    }, [dispatch, storageData, søkerinfoData, sakerData]);
+
+        if (sakerV2Data) {
+            dispatch(actionCreator.setSakerv2(sakerV2Data.foreldrepenger));
+        }
+    }, [dispatch, storageData, søkerinfoData, sakerData, sakerV2Data]);
 
     useEffect(() => {
         if (søkerinfoError) {

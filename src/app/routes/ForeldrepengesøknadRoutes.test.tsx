@@ -8,9 +8,10 @@ import { Søknad } from 'app/context/types/Søknad';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import IntlProvider from '../intl/IntlProvider';
 import Person from 'app/types/Person';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 describe('<ForeldrepengesøknadRoutes>', () => {
-    const state = {
+    const state: ForeldrepengesøknadContextState = {
         version: 4,
         currentRoute: SøknadRoutes.VELKOMMEN,
         søkerinfo: {
@@ -26,6 +27,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             },
         } as Søknad,
         saker: [],
+        sakerv2: [],
         kvittering: undefined!,
         antallUkerIUttaksplan: undefined!,
         endringstidspunkt: undefined,
@@ -80,6 +82,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     registrerteBarn: [],
                 } as Søkerinfo,
                 saker: [],
+                sakerv2: [],
             },
             dispatch: () => jest.fn(),
         }));

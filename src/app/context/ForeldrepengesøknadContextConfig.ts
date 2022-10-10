@@ -2,6 +2,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
+import { Sakv2 } from 'app/types/sakerv2/Sakv2';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
@@ -18,6 +19,7 @@ export interface ForeldrepengesøknadContextState {
     harAnnenPartEksisterendeSak?: boolean;
     annenPartEksisterendeSakSaksnummer?: string;
     saker: Sak[];
+    sakerv2: Sakv2[];
     uttaksplanInfo?: UttaksplanInfo;
     kvittering: Kvittering;
     eksisterendeSak?: EksisterendeSak;
@@ -68,6 +70,7 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     },
     søkerinfo: undefined!,
     saker: [],
+    sakerv2: [],
     uttaksplanInfo: undefined,
     antallUkerIUttaksplan: undefined!,
     kvittering: undefined!,

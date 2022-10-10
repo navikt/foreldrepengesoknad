@@ -13,6 +13,7 @@ import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
+import { SakerOppslag } from 'app/types/sakerv2/SakerOppslag';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -49,7 +50,7 @@ const useSøkerinfo = () => {
 };
 
 const useGetSakerV2 = (enabled: boolean) => {
-    const { data, error } = useRequest<any>('/innsyn/v2/saker', {
+    const { data, error } = useRequest<SakerOppslag>('/innsyn/v2/saker', {
         config: { withCredentials: true },
         isSuspended: !enabled,
     });

@@ -88,6 +88,11 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 saker: [...action.payload],
             };
+        case ForeldrepengesøknadContextActionKeys.SET_SAKER_V2:
+            return {
+                ...state,
+                sakerv2: [...action.payload],
+            };
         case ForeldrepengesøknadContextActionKeys.SET_SØKERINFO:
             return {
                 ...state,

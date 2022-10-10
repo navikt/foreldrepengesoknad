@@ -49,6 +49,7 @@ const context = {
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],
+    sakerv2: [],
     kvittering: undefined!,
     antallUkerIUttaksplan: undefined!,
     endringstidspunkt: undefined!,
