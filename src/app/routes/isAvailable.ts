@@ -7,7 +7,7 @@ const isAvailable = (route: SøknadRoutes, søknad: Søknad): boolean => {
         case SøknadRoutes.SØKERSITUASJON:
             return søknad.harGodkjentVilkår === true;
         case SøknadRoutes.OPPSUMMERING:
-            return uttaksplanInneholderPerioderUtenKonto(søknad.uttaksplan) === false;
+            return uttaksplanInneholderPerioderUtenKonto(søknad.uttaksplan) === false && søknad.uttaksplan.length > 0;
         default:
             return true;
     }
