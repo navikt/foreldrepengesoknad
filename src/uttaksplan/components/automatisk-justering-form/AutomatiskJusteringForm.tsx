@@ -15,9 +15,15 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 interface Props {
     termindato: Date;
     perioderMedUttakRundtFødsel: Periode[];
+    antallBarn: number;
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
 }
-const AutomatiskJusteringForm: FunctionComponent<Props> = ({ termindato, perioderMedUttakRundtFødsel, visibility }) => {
+const AutomatiskJusteringForm: FunctionComponent<Props> = ({
+    termindato,
+    perioderMedUttakRundtFødsel,
+    antallBarn,
+    visibility,
+}) => {
     const intl = useIntl();
 
     const { dispatch, state } = useForeldrepengesøknadContext();
@@ -66,7 +72,9 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({ termindato, periode
                 <Block visible={visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)} padBottom="l">
                     <UttaksplanFormComponents.YesOrNoQuestion
                         name={UttaksplanFormField.ønskerAutomatiskJustering}
-                        legend={intlUtils(intl, 'uttaksplan.automatiskJustering.spørsmål')}
+                        legend={intlUtils(intl, 'uttaksplan.automatiskJustering.spørsmål', {
+                            antallBarn,
+                        })}
                         validate={(value: YesOrNo) => {
                             if (value === YesOrNo.UNANSWERED) {
                                 return intlUtils(intl, 'uttaksplan.automatiskJustering.svar.påkrevd');

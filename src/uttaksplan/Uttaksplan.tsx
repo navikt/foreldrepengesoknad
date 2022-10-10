@@ -282,6 +282,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     <AutomatiskJusteringForm
                         termindato={termindato!}
                         perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                        antallBarn={barn.antallBarn}
                         visibility={visibility}
                     />
                 </Block>

@@ -26,6 +26,7 @@ interface Props {
     termindato: Date | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
+    antallBarn: number;
     ønskerJustertUttakVedFødsel: boolean | undefined;
     begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
@@ -35,6 +36,7 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
     dekningsgrad,
     antallUkerUttaksplan,
     ønskerJustertUttakVedFødsel,
+    antallBarn,
     ...rest
 }) => {
     const intl = useIntl();
@@ -53,7 +55,11 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
                 {...rest}
             ></UttaksplanOppsummeringsliste>
             {ønskerJustertUttakVedFødsel !== undefined && (
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.uttak.ønskerAutomatiskJustering.label')}>
+                <OppsummeringsPunkt
+                    title={intlUtils(intl, 'oppsummering.uttak.ønskerAutomatiskJustering.label', {
+                        antallBarn,
+                    })}
+                >
                     <Normaltekst>
                         <FormattedMessage id={ønskerJustertUttakVedFødsel ? 'ja' : 'nei'} />
                     </Normaltekst>
