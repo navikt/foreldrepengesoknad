@@ -23,6 +23,13 @@ const stønadskonto100BFHR = [
     { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
 ];
 
+const stønadskonto100BFHRToBarnFørWLB = [{ konto: StønadskontoType.Foreldrepenger, dager: 285 }];
+
+const stønadskonto100BFHRToBarnEtterWLB = [
+    { konto: StønadskontoType.Foreldrepenger, dager: 200 },
+    { konto: StønadskontoType.AktivitetsfriKvote, dager: 85 },
+];
+
 const stønadskonto100Aleneomsorg = [{ konto: StønadskontoType.Foreldrepenger, dager: 150 }];
 
 export default {
@@ -185,6 +192,46 @@ NyPeriodeForBareFarHarRett.args = {
     erDeltUttak: false,
     stønadskontoer: stønadskonto100BFHR,
     morHarRett: false,
+};
+
+export const NyPeriodeBFHRToBarnFørWLBMorIkkeUfør = Template.bind({});
+NyPeriodeBFHRToBarnFørWLBMorIkkeUfør.args = {
+    ...defaultInput,
+    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-01') } } as Periode,
+    familiehendelsesdato: new Date('2022-08-01'),
+    erFarEllerMedmor: true,
+    annenForelder: {
+        ...defaultInput.annenForelder,
+        fornavn: 'Vakker',
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+        erUfør: false,
+    },
+    antallBarn: 2,
+    erDeltUttak: false,
+    stønadskontoer: stønadskonto100BFHRToBarnFørWLB,
+    morHarRett: false,
+    erFlerbarnssøknad: true,
+};
+
+export const NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør = Template.bind({});
+NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør.args = {
+    ...defaultInput,
+    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-08') } } as Periode,
+    familiehendelsesdato: new Date('2022-08-05'),
+    erFarEllerMedmor: true,
+    annenForelder: {
+        ...defaultInput.annenForelder,
+        fornavn: 'Vakker',
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+        erUfør: false,
+    },
+    antallBarn: 2,
+    erDeltUttak: false,
+    stønadskontoer: stønadskonto100BFHRToBarnEtterWLB,
+    morHarRett: false,
+    erFlerbarnssøknad: true,
 };
 
 export const NyPeriodeForBareFarHarRettRundtFødsel = Template.bind({});

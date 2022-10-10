@@ -29,7 +29,6 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
         }
         return true;
     }
-    console.log(erDeltUttakINorge);
     if (!erDeltUttakINorge && stønadskontoType !== StønadskontoType.Fellesperiode) {
         return false;
     }
