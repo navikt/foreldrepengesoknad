@@ -14,7 +14,7 @@ jobs:
     kompiler:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v3.1.0
             - name: Cache node modules
               uses: actions/cache@v3.0.8
               with:

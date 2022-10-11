@@ -30,7 +30,7 @@ jobs:
         run: echo "IMAGE=$IMAGE_BASE:$(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $NF}')" >> $GITHUB_ENV
 
       - name: Sjekk ut kode
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
         with:
           ref: ${{ steps.issue_comment.outputs.sha }}
 
