@@ -267,6 +267,14 @@ const UttaksplanStep = () => {
         dispatch(actionCreator.setUttaksplanSlettet(true));
     };
 
+    const handleResetUttaksplan = () => {
+        if (state.eksisterendeSak) {
+            dispatch(actionCreator.setUttaksplan(state.eksisterendeSak.uttaksplan));
+            dispatch(actionCreator.setPerioderSomSkalSendesInn([]));
+            setPerioderSomSkalSendesInn([]);
+        }
+    };
+
     return (
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(state.søknad.ønskerJustertUttakVedFødsel)}
@@ -333,6 +341,7 @@ const UttaksplanStep = () => {
                             harKomplettUttaksplan={harKomplettUttaksplan}
                             opprinneligPlan={harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
                             handleSlettUttaksplan={handleSlettUttaksplan}
+                            handleResetUttaksplan={handleResetUttaksplan}
                             termindato={termindato}
                             barn={barn}
                             visibility={visibility}
