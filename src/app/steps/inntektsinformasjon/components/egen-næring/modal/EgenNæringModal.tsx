@@ -136,6 +136,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                 <EgenNæringModalFormComponents.Input
                                     name={EgenNæringModalFormField.navnPåNæringen}
                                     label={navnPåNæringLabel}
+                                    maxLength={100}
                                     validate={validateRequiredTextInputField(navnPåNæringLabel, intl)}
                                 />
                             </Block>
