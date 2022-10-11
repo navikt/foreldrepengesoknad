@@ -13,4 +13,5 @@ export interface SaksgrunnlagDTO {
     gjelderAnnenPart: boolean;
     termindato?: string;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
+    ønskerJustertUttakVedFødsel: boolean | undefined;
 }

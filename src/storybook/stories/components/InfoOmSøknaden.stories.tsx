@@ -43,6 +43,7 @@ const context = {
         harGodkjentOppsummering: false,
         vedlegg: [],
         tilleggsopplysninger: undefined!,
+        ønskerJustertUttakVedFødsel: undefined,
     },
     version: 4,
     currentRoute: '/soknad/uttaksplan-info',
@@ -53,6 +54,7 @@ const context = {
     endringstidspunkt: undefined!,
     perioderSomSkalSendesInn: [],
     harUttaksplanBlittSlettet: false,
+    brukerSvarteJaPåAutoJustering: undefined,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

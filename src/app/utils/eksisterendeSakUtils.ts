@@ -199,7 +199,14 @@ export const mapEksisterendeSakFromDTO = (
     }
 
     const {
-        grunnlag: { dekningsgrad, termindato, fødselsdato, omsorgsovertakelsesdato, ...restGrunnlag },
+        grunnlag: {
+            dekningsgrad,
+            termindato,
+            fødselsdato,
+            omsorgsovertakelsesdato,
+            ønskerJustertUttakVedFødsel,
+            ...restGrunnlag
+        },
         perioder,
     } = eksisterendeSak;
 
@@ -210,6 +217,7 @@ export const mapEksisterendeSakFromDTO = (
         dekningsgrad: dekningsgrad === 100 ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato),
         familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
+        ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
         termindato,
         fødselsdato,
         omsorgsovertakelsesdato,
@@ -394,7 +402,8 @@ export const opprettSøknadFraEksisterendeSak = (
     sak: Sak
 ): Partial<Søknad> | undefined => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
-    const { fødselsdato, dekningsgrad, familiehendelseType, søkerErFarEllerMedmor } = grunnlag;
+    const { fødselsdato, dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } =
+        grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
 
     if (!situasjon) {
@@ -405,7 +414,9 @@ export const opprettSøknadFraEksisterendeSak = (
         fornavn: '',
         etternavn: '',
         fnr: '',
-        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
+            ? !!grunnlag.morHarRett
+            : !!grunnlag.farMedmorHarRett,
         kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
@@ -445,6 +456,7 @@ export const opprettSøknadFraEksisterendeSak = (
         dekningsgrad,
         uttaksplan,
         saksnummer: sak.saksnummer,
+        ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
 
     return søknad;
