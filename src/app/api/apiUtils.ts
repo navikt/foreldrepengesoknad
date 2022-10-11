@@ -34,6 +34,8 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
+import { getTermindato } from 'app/utils/barnUtils';
 
 export interface AnnenForelderOppgittForInnsending
     extends Omit<AnnenForelder, 'erUfør' | 'harRettPåForeldrepengerINorge'> {
@@ -43,7 +45,11 @@ export interface AnnenForelderOppgittForInnsending
 
 export type AnnenForelderForInnsending = AnnenForelderIkkeOppgitt | AnnenForelderOppgittForInnsending;
 
-export type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'>;
+export interface JusterbarPeriodeForInnsending {
+    justeresVedFødsel?: boolean;
+}
+
+export type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'> & JusterbarPeriodeForInnsending;
 
 export type PeriodeForInnsending = Exclude<Periode, 'Uttaksperiode'> | UttaksPeriodeForInnsending;
 
@@ -88,7 +94,20 @@ export type EndringssøknadForInnsending = Pick<
     | 'dekningsgrad'
     | 'situasjon'
     | 'tilleggsopplysninger'
+    | 'ønskerJustertUttakVedFødsel'
 >;
+
+const getUttaksperiodeForInnsending = (
+    uttaksPeriode: UttaksperiodeBase,
+    ønskerJustertUttakVedFødsel: boolean | undefined,
+    termindato: Date | undefined
+): UttaksPeriodeForInnsending => {
+    const cleanedPeriode = changeGradertUttaksPeriode(cleanUttaksperiode(uttaksPeriode));
+    if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, uttaksPeriode.tidsperiode.fom)) {
+        return { ...cleanedPeriode, justeresVedFødsel: true };
+    }
+    return cleanedPeriode;
+};
 
 const cleanUttaksperiode = (uttaksPeriode: UttaksperiodeBase): UttaksPeriodeForInnsending => {
     const { erMorForSyk, ...periodeRest } = uttaksPeriode;
@@ -213,8 +232,8 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
     }
 };
 
-const changeGradertPeriode = (periode: Periode) => {
-    if (isUttaksperiode(periode) && periode.gradert) {
+const changeGradertUttaksPeriode = (periode: UttaksPeriodeForInnsending): UttaksPeriodeForInnsending => {
+    if (periode.gradert) {
         return { ...periode, ...getArbeidstakerFrilansSN(periode.arbeidsformer) };
     }
     return periode;
@@ -224,9 +243,11 @@ const cleanUttaksplan = (
     uttaksplan: Periode[],
     familiehendelsesdato: Date,
     søkerErFarEllerMedmor: boolean,
+    ønskerJustertUttakVedFødsel: boolean | undefined,
+    termindato: Date | undefined,
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date
-): Periode[] => {
+): PeriodeForInnsending[] => {
     const cleanedUttaksplan = uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
@@ -241,8 +262,11 @@ const cleanUttaksplan = (
                   )
                 : periode
         )
-        .map((periode) => (periode.type === Periodetype.Uttak ? cleanUttaksperiode(periode) : periode))
-        .map(changeGradertPeriode);
+        .map((periode) =>
+            periode.type === Periodetype.Uttak
+                ? getUttaksperiodeForInnsending(periode, ønskerJustertUttakVedFødsel, termindato)
+                : periode
+        );
 
     if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
         const periodeVedEndringstidspunkt = getPeriodeVedTidspunkt(cleanedUttaksplan, endringstidspunkt);
@@ -295,10 +319,13 @@ export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): Søk
     const søkerInnsending = cleanSøker(søker, søknad.søkersituasjon);
     const barnInnsending = cleanBarn(barn);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const termindato = getTermindato(søknad.barn);
     const uttaksplanInnsending = cleanUttaksplan(
         uttaksplan,
         familiehendelsesdato,
         søkerErFarEllerMedmor,
+        søknad.ønskerJustertUttakVedFødsel,
+        termindato,
         annenForelder
     );
     const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
@@ -335,7 +362,13 @@ export const getSøknadsdataForInnsending = (
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     if (søknad.erEndringssøknad) {
-        return cleanEndringssøknad(søknad, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
+        return cleanEndringssøknad(
+            søknad,
+            endringerIUttaksplan,
+            familiehendelsesdato,
+            søknad.ønskerJustertUttakVedFødsel,
+            endringstidspunkt
+        );
     } else {
         return cleanSøknad(søknad, familiehendelsesdato);
     }
@@ -368,9 +401,11 @@ export const cleanEndringssøknad = (
     søknad: Søknad,
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
+    ønskerJustertUttakVedFødsel: boolean | undefined,
     endringstidspunkt?: Date
 ): EndringssøknadForInnsending => {
     const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const termindato = getTermindato(søknad.barn);
     const cleanedSøknad: EndringssøknadForInnsending = {
         erEndringssøknad: true,
         saksnummer: søknad.saksnummer,
@@ -379,6 +414,8 @@ export const cleanEndringssøknad = (
             endringerIUttaksplan,
             familiehendelsesdato,
             søkerErFarEllerMedmor,
+            ønskerJustertUttakVedFødsel,
+            termindato,
             søknad.annenForelder,
             endringstidspunkt
         ),
@@ -389,6 +426,7 @@ export const cleanEndringssøknad = (
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.søkersituasjon.situasjon,
         tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
+        ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);

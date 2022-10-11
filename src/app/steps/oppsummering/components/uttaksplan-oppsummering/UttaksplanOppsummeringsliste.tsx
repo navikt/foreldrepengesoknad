@@ -23,7 +23,7 @@ import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeri
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
-import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
+import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor, uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
 
 interface UttaksplanOppsummeringslisteProps {
@@ -38,6 +38,7 @@ interface UttaksplanOppsummeringslisteProps {
     termindato: Date | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
+    ønskerJustertUttakVedFødsel: boolean | undefined;
 }
 
 const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslisteProps> = ({
@@ -52,6 +53,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     termindato,
     situasjon,
     erAleneOmOmsorg,
+    ønskerJustertUttakVedFødsel,
 }) => {
     const intl = useIntl();
 
@@ -71,11 +73,16 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         );
     };
 
-    const formatTidsperiode = (tidsperiode: TidsperiodeDate) => {
-        return intlUtils(intl, 'tidsintervall', {
+    const formatTidsperiode = (tidsperiode: TidsperiodeDate): string => {
+        const formatertTidsperiode = intlUtils(intl, 'tidsintervall', {
             fom: formatDate(tidsperiode.fom),
             tom: formatDate(tidsperiode.tom),
         });
+        if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, tidsperiode.fom)) {
+            const justeringTekst = intlUtils(intl, 'oppsummering.uttak.periodenBlirAutomatiskJustert');
+            return justeringTekst.concat(formatertTidsperiode);
+        }
+        return formatertTidsperiode;
     };
     const createOppsummeringslisteelementPropsForUttaksperiode = (
         periode: Uttaksperiode,

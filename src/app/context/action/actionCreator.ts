@@ -47,6 +47,8 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
     SLETT_UTTAKSPLAN = 'slettUttaksplan',
     SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
+    SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL = 'setØnskerJustertUttakVedFødsel',
+    SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING = 'setBrukerSvarteJaPAutoJustering',
 }
 
 interface SetVelkommen {
@@ -327,6 +329,26 @@ const setUttaksplanSlettet = (uttaksplanHarBlittSlettet: boolean): SetUttaksplan
     uttaksplanHarBlittSlettet,
 });
 
+interface SetØnskerJustertUttakVedFødsel {
+    type: ForeldrepengesøknadContextActionKeys.SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL;
+    payload: boolean | undefined;
+}
+
+const setØnskerJustertUttakVedFødsel = (payload: boolean | undefined): SetØnskerJustertUttakVedFødsel => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL,
+    payload,
+});
+
+interface SetBrukerSvarteJaPåAutoJustering {
+    type: ForeldrepengesøknadContextActionKeys.SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING;
+    payload: boolean | undefined;
+}
+
+const setBrukerSvarteJaPåAutoJustering = (payload: boolean | undefined): SetBrukerSvarteJaPåAutoJustering => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -355,7 +377,9 @@ export type ForeldrepengesøknadContextAction =
     | SetUttaksplan
     | SetPerioderSomSkalSendesInn
     | SlettUttaksplan
-    | SetUttaksplanSlettet;
+    | SetUttaksplanSlettet
+    | SetØnskerJustertUttakVedFødsel
+    | SetBrukerSvarteJaPåAutoJustering;
 
 export default {
     setVelkommen,
@@ -386,4 +410,6 @@ export default {
     setPerioderSomSkalSendesInn,
     slettUttaksplan,
     setUttaksplanSlettet,
+    setØnskerJustertUttakVedFødsel,
+    setBrukerSvarteJaPåAutoJustering: setBrukerSvarteJaPåAutoJustering,
 };

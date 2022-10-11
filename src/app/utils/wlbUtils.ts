@@ -2,7 +2,7 @@ import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import dayjs from 'dayjs';
-import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { isOverføringsperiode, isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { intlUtils, TidsperiodeDate } from '@navikt/fp-common';
@@ -180,4 +180,28 @@ export const tidperiodeGårOverFamiliehendelsesdato = (
         dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day') &&
         dayjs(tidsperiode.tom).isSameOrAfter(familiehendelsesdato, 'day')
     );
+};
+
+export const getPerioderMedUttakRundtFødsel = (
+    uttaksplan: Periode[],
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
+): Uttaksperiode[] => {
+    return uttaksplan.filter(
+        (p) =>
+            (isUttaksperiode(p) || isOverføringsperiode(p)) &&
+            starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p.tidsperiode,
+                familiehendelsesdato,
+                termindato
+            )
+    ) as [];
+};
+
+export const uttaksperiodeKanJusteresVedFødsel = (
+    ønskerJustertUttakVedFødsel: boolean | undefined,
+    termindato: Date | undefined,
+    uttaksperiodeFom: Date
+) => {
+    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato);
 };

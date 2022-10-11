@@ -114,7 +114,6 @@ const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): 
 };
 
 const getDatoavgrensningerForForeldrepengerFørFødsel = (familiehendelsesdato: Date): DatoAvgrensninger => {
-    console.log('hei');
     const avgrensninger: DatepickerLimitations = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(

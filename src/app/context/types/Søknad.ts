@@ -23,4 +23,5 @@ export interface Søknad {
     vedlegg: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
     saksnummer?: string;
+    ønskerJustertUttakVedFødsel: boolean | undefined;
 }

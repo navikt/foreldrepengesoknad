@@ -25,6 +25,7 @@ export interface ForeldrepengesøknadContextState {
     endringstidspunkt?: Date;
     perioderSomSkalSendesInn: Periode[];
     harUttaksplanBlittSlettet: boolean;
+    brukerSvarteJaPåAutoJustering: boolean | undefined;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -63,6 +64,7 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
             begrunnelseForSenEndring: undefined!,
         },
         saksnummer: undefined,
+        ønskerJustertUttakVedFødsel: undefined,
     },
     søkerinfo: undefined!,
     saker: [],
@@ -72,4 +74,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     endringstidspunkt: undefined,
     perioderSomSkalSendesInn: [],
     harUttaksplanBlittSlettet: false,
+    brukerSvarteJaPåAutoJustering: undefined,
 };

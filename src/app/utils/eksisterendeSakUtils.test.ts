@@ -14,6 +14,101 @@ jest.mock('nav-frontend-js-utils', () => ({
 }));
 
 describe('eksisterendeSakUtils', () => {
+    const eksisterendeSak = {
+        grunnlag: {
+            annenForelderErInformert: true,
+            antallBarn: 1,
+            dekningsgrad: 100,
+            farMedmorErAleneOmOmsorg: false,
+            farMedmorHarRett: true,
+            fødselsdato: '2021-01-01',
+            morErAleneOmOmsorg: false,
+            morErUfør: false,
+            morHarRett: true,
+            søkerErFarEllerMedmor: false,
+            termindato: '2021-01-02',
+        },
+        perioder: [
+            {
+                arbeidsgiverInfo: {
+                    id: '1',
+                    type: ArbeidsgiverInfoType.ORGANISASJON,
+                    navn: 'Auto Joakim',
+                },
+                arbeidstidprosent: 100,
+                flerbarnsdager: true,
+                gjelderAnnenPart: false,
+                graderingInnvilget: true,
+                morsAktivitet: MorsAktivitet.Arbeid,
+                oppholdAarsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                periode: {
+                    fom: '2021-01-01',
+                    tom: '2021-02-01',
+                },
+                periodeResultatType: PeriodeResultatType.IKKE_FASTSATT,
+                samtidigUttak: true,
+                stønadskontotype: StønadskontoType.Mødrekvote,
+                trekkDager: 1,
+                utbetalingsprosent: 100,
+                uttakArbeidType: UttakArbeidType.ANNET,
+            },
+        ],
+    } as EksisterendeSakDTO;
+
+    const forventetMappetEksisterendeSak = {
+        erAnnenPartsSak: true,
+        grunnlag: {
+            annenForelderErInformert: true,
+            antallBarn: 1,
+            dekningsgrad: '100',
+            erBarnetFødt: true,
+            erDeltUttak: true,
+            familiehendelseDato: '2021-01-01',
+            familiehendelseType: 'FODSL',
+            farMedmorErAleneOmOmsorg: false,
+            farMedmorHarRett: true,
+            fødselsdato: '2021-01-01',
+            morErAleneOmOmsorg: false,
+            morErUfør: false,
+            morHarRett: true,
+            omsorgsovertakelsesdato: undefined,
+            termindato: '2021-01-02',
+            søkerErFarEllerMedmor: false,
+            ønskerJustertUttakVedFødsel: undefined,
+        },
+        saksperioder: [
+            {
+                arbeidsgiverInfo: {
+                    id: '1',
+                    navn: 'Auto Joakim',
+                    type: 'ORGANISASJON',
+                },
+                arbeidstidprosent: 100,
+                flerbarnsdager: true,
+                gjelderAnnenPart: true,
+                graderingInnvilget: true,
+                guid: '1',
+                morsAktivitet: 'ARBEID',
+                oppholdAarsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
+                periode: {
+                    fom: '2021-01-01',
+                    tom: '2021-02-01',
+                },
+                periodeResultatType: 'IKKE_FASTSATT',
+                samtidigUttak: true,
+                stønadskontotype: 'MØDREKVOTE',
+                trekkDager: 1,
+                utbetalingsprosent: 100,
+                uttakArbeidType: ['ANNET'],
+            },
+        ],
+        uttaksplan: [],
+    };
+
+    const erFarEllerMedmor = true;
+    const erAnnenPartsSak = true;
+    const erIkkeAnnenPartsSak = false;
+
     afterAll(() => {
         jest.clearAllMocks();
     });
@@ -36,98 +131,58 @@ describe('eksisterendeSakUtils', () => {
     });
 
     it('skal mappe eksisternde sak fra dto til intern representasjon', () => {
-        const eksisterendeSak = {
-            grunnlag: {
-                annenForelderErInformert: true,
-                antallBarn: 1,
-                dekningsgrad: 100,
-                farMedmorErAleneOmOmsorg: false,
-                farMedmorHarRett: true,
-                fødselsdato: '2021-01-01',
-                morErAleneOmOmsorg: false,
-                morErUfør: false,
-                morHarRett: true,
-                søkerErFarEllerMedmor: false,
-                termindato: '2021-01-02',
-            },
-            perioder: [
-                {
-                    arbeidsgiverInfo: {
-                        id: '1',
-                        type: ArbeidsgiverInfoType.ORGANISASJON,
-                        navn: 'Auto Joakim',
-                    },
-                    arbeidstidprosent: 100,
-                    flerbarnsdager: true,
-                    gjelderAnnenPart: false,
-                    graderingInnvilget: true,
-                    morsAktivitet: MorsAktivitet.Arbeid,
-                    oppholdAarsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-                    periode: {
-                        fom: '2021-01-01',
-                        tom: '2021-02-01',
-                    },
-                    periodeResultatType: PeriodeResultatType.IKKE_FASTSATT,
-                    samtidigUttak: true,
-                    stønadskontotype: StønadskontoType.Mødrekvote,
-                    trekkDager: 1,
-                    utbetalingsprosent: 100,
-                    uttakArbeidType: UttakArbeidType.ANNET,
-                },
-            ],
-        } as EksisterendeSakDTO;
-        const erFarEllerMedmor = true;
-        const erAnnenPartsSak = true;
-
         const internRep = mapEksisterendeSakFromDTO(eksisterendeSak, erFarEllerMedmor, erAnnenPartsSak);
+        expect(internRep).toStrictEqual(forventetMappetEksisterendeSak);
+    });
 
-        expect(internRep).toStrictEqual({
-            erAnnenPartsSak: true,
+    it('hvis barnet er født, skal ikke mappe ønskerJustertUttakVedFødsel til true selv om den kommer inn som true', () => {
+        const eksisterendeSakMedØnsketJustering = {
+            ...eksisterendeSak,
+            grunnlag: { ...eksisterendeSak.grunnlag, ønskerJustertUttakVedFødsel: true },
+        };
+
+        const forventetResultat = {
+            ...forventetMappetEksisterendeSak,
+            erAnnenPartsSak: false,
             grunnlag: {
-                annenForelderErInformert: true,
-                antallBarn: 1,
-                dekningsgrad: '100',
-                erBarnetFødt: true,
-                erDeltUttak: true,
-                familiehendelseDato: '2021-01-01',
-                familiehendelseType: 'FODSL',
-                farMedmorErAleneOmOmsorg: false,
-                farMedmorHarRett: true,
-                fødselsdato: '2021-01-01',
-                morErAleneOmOmsorg: false,
-                morErUfør: false,
-                morHarRett: true,
-                omsorgsovertakelsesdato: undefined,
-                termindato: '2021-01-02',
-                søkerErFarEllerMedmor: false,
+                ...forventetMappetEksisterendeSak.grunnlag,
+                ønskerJustertUttakVedFødsel: undefined,
             },
-            saksperioder: [
-                {
-                    arbeidsgiverInfo: {
-                        id: '1',
-                        navn: 'Auto Joakim',
-                        type: 'ORGANISASJON',
-                    },
-                    arbeidstidprosent: 100,
-                    flerbarnsdager: true,
-                    gjelderAnnenPart: true,
-                    graderingInnvilget: true,
-                    guid: '1',
-                    morsAktivitet: 'ARBEID',
-                    oppholdAarsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
-                    periode: {
-                        fom: '2021-01-01',
-                        tom: '2021-02-01',
-                    },
-                    periodeResultatType: 'IKKE_FASTSATT',
-                    samtidigUttak: true,
-                    stønadskontotype: 'MØDREKVOTE',
-                    trekkDager: 1,
-                    utbetalingsprosent: 100,
-                    uttakArbeidType: ['ANNET'],
-                },
-            ],
-            uttaksplan: [],
-        });
+        };
+
+        const internRep = mapEksisterendeSakFromDTO(
+            eksisterendeSakMedØnsketJustering,
+            erFarEllerMedmor,
+            erIkkeAnnenPartsSak
+        );
+
+        expect(internRep).toStrictEqual(forventetResultat);
+    });
+    it('hvis barnet er født, skal mappe ønskerJustertUttakVedFødsel til true hvis den kommer inn som true', () => {
+        const eksisterendeSakMedØnsketJustering = {
+            ...eksisterendeSak,
+            grunnlag: { ...eksisterendeSak.grunnlag, ønskerJustertUttakVedFødsel: true, fødselsdato: undefined },
+        };
+
+        const forventetResultat = {
+            ...forventetMappetEksisterendeSak,
+            erAnnenPartsSak: false,
+            grunnlag: {
+                ...forventetMappetEksisterendeSak.grunnlag,
+                ønskerJustertUttakVedFødsel: true,
+                fødselsdato: undefined,
+                erBarnetFødt: false,
+                familiehendelseType: 'TERM',
+                familiehendelseDato: '2021-01-02',
+            },
+        };
+
+        const internRep = mapEksisterendeSakFromDTO(
+            eksisterendeSakMedØnsketJustering,
+            erFarEllerMedmor,
+            erIkkeAnnenPartsSak
+        );
+
+        expect(internRep).toStrictEqual(forventetResultat);
     });
 });

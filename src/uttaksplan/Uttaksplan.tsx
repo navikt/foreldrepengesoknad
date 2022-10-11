@@ -8,7 +8,6 @@ import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-// import { getUttaksstatusFunc } from './utils/uttaksstatus';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import { ISOStringToDate } from 'app/utils/dateUtils';
@@ -23,7 +22,6 @@ import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-// import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
@@ -31,6 +29,9 @@ import Barn from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
+import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -65,30 +66,10 @@ interface Props {
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
+    visibility: QuestionVisibility<UttaksplanFormField, undefined>;
+    visAutomatiskJusteringForm: boolean;
+    perioderMedUttakRundtFødsel: Uttaksperiode[];
 }
-
-// const getRelevantStartdato = (
-//     familiehendelsesdato: Date,
-//     erFarEllerMedmor: boolean,
-//     erAdopsjon: boolean,
-//     morsSisteDag: Date | undefined
-// ) => {
-//     const førsteUttaksdagEtterSeksUker = Uttaksdagen(Uttaksdagen(familiehendelsesdato).denneEllerNeste()).leggTil(30);
-
-//     if (erFarEllerMedmor) {
-//         if (morsSisteDag) {
-//             return Uttaksdagen(morsSisteDag).neste();
-//         }
-
-//         if (erAdopsjon) {
-//             return familiehendelsesdato;
-//         }
-
-//         return førsteUttaksdagEtterSeksUker;
-//     }
-
-//     return familiehendelsesdato;
-// };
 
 const Uttaksplan: FunctionComponent<Props> = ({
     foreldreSituasjon,
@@ -121,6 +102,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
     handleBegrunnelseChange,
     handleSlettUttaksplan,
     barn,
+    visibility,
+    visAutomatiskJusteringForm,
+    perioderMedUttakRundtFødsel,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -257,6 +241,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
+
     return (
         <>
             <Block padBottom="l">
@@ -292,6 +277,16 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     utsettelserIPlan={utsettelserIPlan}
                 />
             </Block>
+            {visAutomatiskJusteringForm && (
+                <Block padBottom="l">
+                    <AutomatiskJusteringForm
+                        termindato={termindato!}
+                        perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                        antallBarn={barn.antallBarn}
+                        visibility={visibility}
+                    />
+                </Block>
+            )}
             <Block padBottom="l">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}
