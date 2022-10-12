@@ -217,6 +217,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         tilleggsopplysninger: tilleggsopplysninger,
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,
+        barn: barn,
     });
 
     useEffect(() => {
