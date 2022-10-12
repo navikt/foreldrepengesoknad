@@ -24,7 +24,14 @@ import {
 import getIntlMock from 'utils-test/intl-test-helper';
 import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
-import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
+import {
+    Periode,
+    PeriodeHull,
+    Periodetype,
+    PeriodeUtenUttak,
+    Utsettelsesperiode,
+    Uttaksperiode,
+} from 'uttaksplan/types/Periode';
 import { guid } from 'nav-frontend-js-utils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
@@ -473,7 +480,7 @@ describe('dateUtils', () => {
             expect(endringstidspunkt).toBe(undefined);
         });
 
-        it('Skal finne endringstidspunkt gitt at det er endringer', () => {
+        it('Skal finne endringstidspunkt gitt at det er endringer (ny periode lagt til på slutten av planen)', () => {
             const gradertPeriode: Partial<Uttaksperiode> = {
                 id: guid(),
                 tidsperiode: {
@@ -488,6 +495,56 @@ describe('dateUtils', () => {
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
             expect(endringstidspunkt).toEqual(gradertPeriode.tidsperiode!.fom);
+        });
+
+        it('Skal returere starten på neste nye periode hvis en periode midt i planen er blir forkortet som førte til periode uten uttak', () => {
+            const forkortet_midtre_periode: Partial<Uttaksperiode> = {
+                ...opprinneligPlan[1],
+                tidsperiode: {
+                    fom: opprinneligPlan[1].tidsperiode!.fom,
+                    tom: new Date('2020-01-12T00:00:00.000Z'),
+                },
+            } as Uttaksperiode;
+            const ny_periode_uten_uttak: Partial<PeriodeUtenUttak> = {
+                id: '0',
+                tidsperiode: {
+                    fom: new Date('2020-01-13T00:00:00.000Z'),
+                    tom: new Date('2020-01-13T00:00:00.000Z'),
+                },
+                type: Periodetype.PeriodeUtenUttak,
+            };
+            const endretPlan = [
+                opprinneligPlan[0],
+                forkortet_midtre_periode,
+                ny_periode_uten_uttak,
+                opprinneligPlan[2],
+            ];
+
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+            expect(endringstidspunkt).toEqual(ny_periode_uten_uttak.tidsperiode!.fom);
+        });
+        it('Skal returnere uttaksdagen etter siste periode hvis en periode i slutten av planen er blir forkortet', () => {
+            const forkortet_siste_periode: Partial<Uttaksperiode> = {
+                ...opprinneligPlan[2],
+                tidsperiode: {
+                    fom: opprinneligPlan[2].tidsperiode!.fom,
+                    tom: new Date('2020-05-01T00:00:00.000Z'),
+                },
+            } as Uttaksperiode;
+            const endretPlan = [opprinneligPlan[0], opprinneligPlan[1], forkortet_siste_periode];
+
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+            expect(endringstidspunkt).toEqual(new Date('2020-05-04T00:00:00.000Z'));
+        });
+        it('Skal returere fom for siste periode hvis en periode i slutten av planen får endret type', () => {
+            const endret_siste_periode: Partial<Utsettelsesperiode> = {
+                ...opprinneligPlan[2],
+                type: Periodetype.Utsettelse,
+            } as Utsettelsesperiode;
+            const endretPlan = [opprinneligPlan[0], opprinneligPlan[1], endret_siste_periode];
+
+            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+            expect(endringstidspunkt).toEqual(endret_siste_periode.tidsperiode!.fom);
         });
 
         it('Hvis uttaksplanlogikken setter hull inn i planen skal det telle som en endring', () => {

@@ -17,6 +17,7 @@ import {
     Utsettelsesperiode,
 } from 'uttaksplan/types/Periode';
 import { dateIsWithinRange } from './dateUtils';
+import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 
 export const storeAppState = (state: ForeldrepengesøknadContextState): Promise<AxiosResponse<any>> => {
     return Api.storeAppState(state, state.søkerinfo.person.fnr);
@@ -46,6 +47,20 @@ export const getPerioderSomSkalSendesInn = (
     return nyPlan;
 };
 
+const sistePeriodeErKunBlittForkortetINyPlan = (opprinneligPlan: Periode[], nyPlan: Periode[]) => {
+    const sistePeriodeOpprinneligPlan = opprinneligPlan[opprinneligPlan.length - 1];
+    const sistePeriodeNyPlan = nyPlan[nyPlan.length - 1];
+    const a = Perioden(sistePeriodeOpprinneligPlan).erLik(sistePeriodeNyPlan, false, true);
+    const b = dayjs(sistePeriodeNyPlan.tidsperiode.fom).isSame(sistePeriodeOpprinneligPlan.tidsperiode.fom, 'day');
+    const c = dayjs(sistePeriodeNyPlan.tidsperiode.tom).isBefore(sistePeriodeOpprinneligPlan.tidsperiode.tom, 'day');
+    console.log(a, b, c);
+    return (
+        Perioden(sistePeriodeOpprinneligPlan).erLik(sistePeriodeNyPlan, false, true) &&
+        dayjs(sistePeriodeNyPlan.tidsperiode.fom).isSame(sistePeriodeOpprinneligPlan.tidsperiode.fom, 'day') &&
+        dayjs(sistePeriodeNyPlan.tidsperiode.tom).isBefore(sistePeriodeOpprinneligPlan.tidsperiode.tom, 'day')
+    );
+};
+
 export const finnEndringerIUttaksplan = (
     opprinneligPlan: Periode[],
     nyPlan: Periode[],
@@ -60,22 +75,34 @@ export const finnEndringerIUttaksplan = (
         )
         .filter(erPeriodeSomSkalSendesInn);
 
-    if (nyPlanForInnsending.length === 0 && opprinneligPlan.length > nyPlan.length) {
-        const førsteSlettedePeriode = opprinneligPlan.find((p) =>
-            dayjs(p.tidsperiode.fom).isSame(endringstidspunkt, 'day')
-        );
-        const utsettelseForSlettedePerioder = {
+    if (nyPlanForInnsending.length === 0) {
+        let friUtsettelseFom;
+        let friUtsettelseTom;
+        if (opprinneligPlan.length > nyPlan.length) {
+            const førsteSlettedePeriode = opprinneligPlan.find((p) =>
+                dayjs(p.tidsperiode.fom).isSame(endringstidspunkt, 'day')
+            );
+            friUtsettelseFom = førsteSlettedePeriode!.tidsperiode.fom;
+            friUtsettelseTom = førsteSlettedePeriode!.tidsperiode.tom;
+        } else if (sistePeriodeErKunBlittForkortetINyPlan(opprinneligPlan, nyPlan)) {
+            friUtsettelseFom = endringstidspunkt;
+            friUtsettelseTom = endringstidspunkt;
+        } else {
+            return nyPlanForInnsending;
+        }
+
+        const utsettelseForSlettetEllerForkortetPerioder = {
             id: guid(),
             type: Periodetype.Utsettelse,
             tidsperiode: {
-                fom: førsteSlettedePeriode!.tidsperiode.fom,
-                tom: førsteSlettedePeriode!.tidsperiode.tom,
+                fom: friUtsettelseFom,
+                tom: friUtsettelseTom,
             },
             årsak: UtsettelseÅrsakType.Fri,
             forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
             erArbeidstaker: false,
         } as Utsettelsesperiode;
-        return [utsettelseForSlettedePerioder];
+        return [utsettelseForSlettetEllerForkortetPerioder];
     } else {
         return nyPlanForInnsending;
     }

@@ -474,6 +474,7 @@ export const mapPeriodeUttakFormToPeriode = (
         values.konto as StønadskontoType,
         familiehendelsesdato
     );
+    // const arbeidsformer = hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : [];
 
     const periode: Uttaksperiode = {
         id,
@@ -492,6 +493,7 @@ export const mapPeriodeUttakFormToPeriode = (
             convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk)
         ),
 
+        // erArbeidstaker: arbeidsformer.length > 0 ? getErArbeidstaker(arbeidsformer) : undefined,
         erArbeidstaker: getErArbeidstaker(
             hasValue(values.arbeidsformer) ? getArbeidsform([values.arbeidsformer as Arbeidsform]) : []
         ),

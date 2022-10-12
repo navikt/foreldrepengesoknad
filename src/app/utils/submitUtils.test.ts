@@ -167,4 +167,32 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
         expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
         expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
     });
+    it('finnEndringerIUttaksplan - Skal returnere en utsettelsesperiode med fom og tom lik endringstidspunkt hvis det er kun siste perioden i planen som er blitt forkortet ', () => {
+        const nyPlanMeForkortetSistePeriode = [
+            opprinneligPlan[0],
+            opprinneligPlan[1],
+            {
+                ...opprinneligPlan[2],
+                tidsperiode: {
+                    fom: opprinneligPlan[2].tidsperiode.fom,
+                    tom: new Date('2022-09-26'),
+                },
+            },
+        ] as Periode[];
+        const endringstidspunkt = new Date('2022-09-27');
+
+        const endringerIPlan = finnEndringerIUttaksplan(
+            opprinneligPlan,
+            nyPlanMeForkortetSistePeriode,
+            endringstidspunkt,
+            erFarEllerMedmor
+        );
+        expect(endringerIPlan.length).toEqual(1);
+        const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
+        expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(endringstidspunkt);
+        expect(utsettelseSomSendesInn.tidsperiode.tom).toEqual(endringstidspunkt);
+        expect(utsettelseSomSendesInn.type).toEqual(Periodetype.Utsettelse);
+        expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
+        expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
+    });
 });

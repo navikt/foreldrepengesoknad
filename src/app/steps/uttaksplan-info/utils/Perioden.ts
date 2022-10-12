@@ -56,6 +56,7 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
     const sortedPeriode: any = {};
     Object.keys(rest)
         .sort()
+        .filter((key) => !Array.isArray(rest[key]) || (Array.isArray(rest[key]) && rest[key].length > 0))
         .filter((key) => rest[key] !== undefined)
         .forEach((key) => {
             sortedPeriode[key] = rest[key];

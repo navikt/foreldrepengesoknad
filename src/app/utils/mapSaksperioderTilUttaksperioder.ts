@@ -34,6 +34,7 @@ import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/ut
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { tidperiodeGårOverFamiliehendelsesdato } from './wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
+import { getErArbeidstaker } from 'uttaksplan/components/uttaks-forms/periode-utsettelse-form/periodeUtsettelseFormUtils';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -256,6 +257,9 @@ export const mapUttaksperiodeFromSaksperiode = (
 
     const familiehendelseDato = getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato);
     const kontoType = konto !== undefined ? konto : saksperiode.stønadskontotype;
+    const arbeidsformerUttak = gradert
+        ? saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType))
+        : undefined;
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
@@ -267,9 +271,8 @@ export const mapUttaksperiodeFromSaksperiode = (
         samtidigUttakProsent,
         ønskerFlerbarnsdager: grunnlag.antallBarn > 1 ? saksperiode.flerbarnsdager : undefined,
         stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
-        arbeidsformer: gradert
-            ? saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType))
-            : undefined,
+        arbeidsformer: arbeidsformerUttak,
+        erArbeidstaker: getErArbeidstaker(arbeidsformerUttak !== undefined ? arbeidsformerUttak : []),
         orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
         erMorForSyk: getErMorForSyk(erFarEllerMedmor, saksperiode, familiehendelseDato, kontoType),

@@ -372,7 +372,7 @@ export const getEndringstidspunkt = (
                 return endringstidspunktNyPlan;
             }
 
-            const { fom } = periode.tidsperiode;
+            const { fom, tom } = periode.tidsperiode;
             const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
                 dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day')
             );
@@ -393,7 +393,12 @@ export const getEndringstidspunkt = (
             }
 
             if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
-                if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
+                if (
+                    Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true) &&
+                    dayjs(opprinneligPeriodeMedSammeFom.tidsperiode.tom).isAfter(tom, 'day')
+                ) {
+                    endringstidspunktNyPlan = Uttaksdagen(tom).neste();
+                } else if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
                     endringstidspunktNyPlan = fom;
                 }
             }

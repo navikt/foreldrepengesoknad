@@ -66,7 +66,7 @@ const mapArbeidTilArbeidsform = (arbeidsform: ArbeidUnderUtsettelse) => {
     return Arbeidsform.arbeidstaker;
 };
 
-const getErArbeidstaker = (arbeidsformer: ArbeidUnderUtsettelse[]): boolean => {
+export const getErArbeidstaker = (arbeidsformer: ArbeidUnderUtsettelse[]): boolean => {
     return (
         arbeidsformer.filter((a) => a !== Arbeidsform.frilans && a !== Arbeidsform.selvstendignæringsdrivende).length >
         0
