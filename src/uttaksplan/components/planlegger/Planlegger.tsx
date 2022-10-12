@@ -37,6 +37,7 @@ interface Props {
     setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
     erEndringssøknad: boolean;
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
+    setResetUttaksplanModalOpen: (isOpen: boolean) => void;
     termindato: Date | undefined;
     barn: Barn;
     utsettelserIPlan: Utsettelsesperiode[];
@@ -62,6 +63,7 @@ const Planlegger: FunctionComponent<Props> = ({
     setPeriodeErGyldig,
     erEndringssøknad,
     setSlettUttaksplanModalOpen,
+    setResetUttaksplanModalOpen,
     termindato,
     barn,
     utsettelserIPlan,
@@ -87,6 +89,14 @@ const Planlegger: FunctionComponent<Props> = ({
                             <div className={bem.element('tittel')}>
                                 <div className={bem.element('tittelLinkWrapper')}>
                                     <Systemtittel>{intlUtils(intl, 'uttaksplan.dinPlan')}</Systemtittel>
+                                    {erEndringssøknad && (
+                                        <ActionLink
+                                            onClick={() => setResetUttaksplanModalOpen(true)}
+                                            className={bem.element('resetPlan')}
+                                        >
+                                            <FormattedMessage id="uttaksplan.resetPlan.tittel" />
+                                        </ActionLink>
+                                    )}
                                     <ActionLink
                                         onClick={() => setSlettUttaksplanModalOpen(true)}
                                         className={bem.element('slettPlan')}

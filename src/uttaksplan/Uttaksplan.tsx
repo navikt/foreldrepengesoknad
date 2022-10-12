@@ -32,6 +32,7 @@ import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/utta
 import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
+import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -66,6 +67,7 @@ interface Props {
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
+    handleResetUttaksplan: () => void;
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
@@ -101,6 +103,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     setUttaksplanErGyldig,
     handleBegrunnelseChange,
     handleSlettUttaksplan,
+    handleResetUttaksplan,
     barn,
     visibility,
     visAutomatiskJusteringForm,
@@ -110,6 +113,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
+    const [resetUttaksplanModalOpen, setResetUttaksplanModalOpen] = useState(false);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
         erDeltUttak,
         morHarRett,
@@ -237,6 +241,15 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleSlettUttaksplan();
     };
 
+    const handleResetUttaksplanModalClose = () => {
+        setResetUttaksplanModalOpen(false);
+    };
+
+    const handleResetUttaksplanModalBekreft = () => {
+        setResetUttaksplanModalOpen(false);
+        handleResetUttaksplan();
+    };
+
     //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
     const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
@@ -273,6 +286,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     setPeriodeErGyldig={setPeriodeErGyldig}
                     erEndringssøknad={erEndringssøknad}
                     setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
+                    setResetUttaksplanModalOpen={setResetUttaksplanModalOpen}
                     termindato={termindato}
                     barn={barn}
                     utsettelserIPlan={utsettelserIPlan}
@@ -323,6 +337,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 isOpen={slettUttaksplanModalOpen}
                 onClose={handleSlettUttaksplanModalClose}
                 handleSlettUttaksplanModalBekreft={handleSlettUttaksplanModalBekreft}
+            />
+            <ResetUttaksplanModal
+                isOpen={resetUttaksplanModalOpen}
+                onClose={handleResetUttaksplanModalClose}
+                handleResetUttaksplanModalBekreft={handleResetUttaksplanModalBekreft}
             />
         </>
     );
