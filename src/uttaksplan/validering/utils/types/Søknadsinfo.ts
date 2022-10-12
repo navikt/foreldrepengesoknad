@@ -1,4 +1,5 @@
 import AnnenForelder from 'app/context/types/AnnenForelder';
+import Barn from 'app/context/types/Barn';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -31,4 +32,5 @@ export interface Søknadsinfo {
     tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
+    barn: Barn;
 }
