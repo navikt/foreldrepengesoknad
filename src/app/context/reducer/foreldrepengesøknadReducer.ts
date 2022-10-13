@@ -212,7 +212,7 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 søknad: {
                     ...state.søknad,
-                    uttaksplan: [],
+                    uttaksplan: action.payload,
                 },
             };
         case ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_SLETTET:

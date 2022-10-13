@@ -9,12 +9,25 @@ import { FormattedMessage } from 'react-intl';
 
 interface Props {
     isOpen: boolean;
+    erEndringssøknad: boolean;
     onClose: () => void;
     handleSlettUttaksplanModalBekreft: () => void;
 }
 
-const SlettUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handleSlettUttaksplanModalBekreft }) => {
+const SlettUttaksplanModal: FunctionComponent<Props> = ({
+    isOpen,
+    erEndringssøknad,
+    onClose,
+    handleSlettUttaksplanModalBekreft,
+}) => {
     const bem = bemUtils('slettUttaksplanModal');
+
+    let innhold1Id = 'uttaksplan.slettPlan.innhold1.førstegangssøknad';
+    let innhold2Id = 'uttaksplan.slettPlan.innhold2.førstegangssøknad';
+    if (erEndringssøknad) {
+        innhold1Id = 'uttaksplan.slettPlan.innhold1.endringssøknad';
+        innhold2Id = 'uttaksplan.slettPlan.innhold2.endringssøknad';
+    }
 
     return (
         <Modal
@@ -27,10 +40,14 @@ const SlettUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
             <div className={bem.element('content')}>
                 <Block padBottom="l">
                     <Undertittel>
-                        <FormattedMessage id="uttaksplan.slettPlan.innhold1" />
+                        <FormattedMessage id="uttaksplan.slettPlan.modal.tittel" />
                     </Undertittel>
                     <Normaltekst>
-                        <FormattedMessage id="uttaksplan.slettPlan.innhold2" />
+                        <FormattedMessage id={innhold1Id} />
+                    </Normaltekst>
+                    <br />
+                    <Normaltekst>
+                        <FormattedMessage id={innhold2Id} />
                     </Normaltekst>
                 </Block>
                 <div className={bem.element('knappWrapper')}>

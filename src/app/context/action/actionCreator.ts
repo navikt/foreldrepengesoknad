@@ -313,10 +313,12 @@ const setSpråkkode = (payload: Locale): SetSpråkkode => ({
 
 interface SlettUttaksplan {
     type: ForeldrepengesøknadContextActionKeys.SLETT_UTTAKSPLAN;
+    payload: Periode[];
 }
 
-const slettUttaksplan = (): SlettUttaksplan => ({
+const slettUttaksplan = (payload: Periode[]): SlettUttaksplan => ({
     type: ForeldrepengesøknadContextActionKeys.SLETT_UTTAKSPLAN,
+    payload,
 });
 
 interface SetUttaksplanSlettet {

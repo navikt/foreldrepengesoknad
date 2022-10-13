@@ -22,7 +22,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
@@ -263,7 +263,10 @@ const UttaksplanStep = () => {
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
 
     const handleSlettUttaksplan = () => {
-        dispatch(actionCreator.slettUttaksplan());
+        const slettetPlanUtenomFpFørFødsel = søknad.uttaksplan.filter((periode) =>
+            isUttakAvForeldrepengerFørFødsel(periode)
+        );
+        dispatch(actionCreator.slettUttaksplan(slettetPlanUtenomFpFørFødsel));
         dispatch(actionCreator.setUttaksplanSlettet(true));
     };
 

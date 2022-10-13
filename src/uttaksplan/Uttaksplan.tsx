@@ -335,6 +335,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             )}
             <SlettUttaksplanModal
                 isOpen={slettUttaksplanModalOpen}
+                erEndringssøknad={erEndringssøknad}
                 onClose={handleSlettUttaksplanModalClose}
                 handleSlettUttaksplanModalBekreft={handleSlettUttaksplanModalBekreft}
             />
