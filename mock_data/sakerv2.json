@@ -3,21 +3,21 @@
         {
             "saksnummer": "352009381",
             "sakAvsluttet": false,
-            "kanSøkeOmEndring": false,
+            "kanSøkeOmEndring": true,
             "sakTilhørerMor": false,
-            "gjelderAdopsjon": false,
+            "gjelderAdopsjon": true,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BARE_SØKER_RETT",
             "annenPart": {
                 "type": "person",
-                "fødselsnummer": "12048902861",
+                "fnr": "12048902861",
                 "fornavn": "Äcklig",
                 "etternavn": "Kake"
             },
             "familiehendelse": {
-                "fødselsdato": "2021-09-01",
+                "omsorgsovertagelse": "2022-02-01",
                 "antallBarn": 2
             },
             "åpenBehandling": {
@@ -27,7 +27,7 @@
             "barn": [
                 {
                     "type": "person",
-                    "fødselsnummer": "01492163577",
+                    "fnr": "01492163577",
                     "fornavn": "Stolt",
                     "etternavn": "Kiwi",
                     "kjønn": "U",
@@ -35,13 +35,84 @@
                 },
                 {
                     "type": "person",
-                    "fødselsnummer": "01492187433",
+                    "fnr": "01492187433",
                     "fornavn": "Venstre",
                     "etternavn": "Lupe",
                     "kjønn": "U",
                     "fødselsdato": "2021-09-01"
                 }
             ],
+            "dekningsgrad": "HUNDRE"
+        },
+        {
+            "saksnummer": "352001654",
+            "sakAvsluttet": false,
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": false,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BARE_SØKER_RETT",
+            "annenPart": {
+                "type": "person",
+                "fnr": "12048902861",
+                "fornavn": "Äcklig",
+                "etternavn": "Kake"
+            },
+            "familiehendelse": {
+                "fødselsdato": "2021-09-01",
+                "antallBarn": 1
+            },
+            "åpenBehandling": {
+                "tilstand": "UNDER_BEHANDLING",
+                "søknadsperioder": []
+            },
+            "barn": [
+                {
+                    "type": "person",
+                    "fnr": "01492163577",
+                    "fornavn": "Sur",
+                    "etternavn": "Sitron",
+                    "kjønn": "U",
+                    "fødselsdato": "2021-09-01"
+                },
+                {
+                    "type": "person",
+                    "fnr": "01492187433",
+                    "fornavn": "Venstre",
+                    "etternavn": "Lupe",
+                    "kjønn": "U",
+                    "fødselsdato": "2021-09-01"
+                }
+            ],
+            "dekningsgrad": "HUNDRE"
+        },
+        {
+            "saksnummer": "3520178623",
+            "sakAvsluttet": false,
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": false,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BARE_SØKER_RETT",
+            "annenPart": {
+                "type": "person",
+                "fnr": "12048902861",
+                "fornavn": "Äcklig",
+                "etternavn": "Kake"
+            },
+            "familiehendelse": {
+                "termindato": "2023-01-17",
+                "antallBarn": 2
+            },
+            "åpenBehandling": {
+                "tilstand": "UNDER_BEHANDLING",
+                "søknadsperioder": []
+            },
+            "barn": [],
             "dekningsgrad": "HUNDRE"
         }
     ],

@@ -18,10 +18,10 @@ import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal'
 
 import './velkommen.less';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
-import Sak, { FagsakStatus } from 'app/types/Sak';
+import Sak from 'app/types/Sak';
+// import Sak, { FagsakStatus } from 'app/types/Sak';
 import SøknadRoutes from 'app/routes/routes';
-import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import SøknadStatus from './components/SøknadStatus';
+// import SøknadStatus from './components/SøknadStatus';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import Api from 'app/api/api';
@@ -29,11 +29,14 @@ import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
 import {
-    erSakFerdigbehandlet,
+    // erSakFerdigbehandlet,
     getSakUnderBehandling,
     getSisteForeldrepengeSak,
-    skalKunneSøkeOmEndring,
+    // skalKunneSøkeOmEndring,
 } from 'app/utils/sakerUtils';
+import BarnVelger from './components/barnVelger/BarnVelger';
+import dayjs from 'dayjs';
+import { getSelectableBarnOptions } from './velkommenUtils';
 
 interface Props {
     fornavn: string;
@@ -45,16 +48,16 @@ interface Props {
 
 const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr, onChangeLocale }) => {
     const sakTilBehandling = getSakUnderBehandling(saker);
-    const harSakTilBehandling = !!sakTilBehandling;
+    // const harSakTilBehandling = !!sakTilBehandling;
     const sak = sakTilBehandling || getSisteForeldrepengeSak(saker);
     const intl = useIntl();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
-    const kanSøkeOmEndring = sak !== undefined ? skalKunneSøkeOmEndring(sak) : false;
-    const sakErFerdigbehandlet = erSakFerdigbehandlet(sak);
-    const sakErAvsluttet = sak !== undefined ? sak.status === FagsakStatus.AVSLUTTET : false;
+    // const kanSøkeOmEndring = sak !== undefined ? skalKunneSøkeOmEndring(sak) : false;
+    // const sakErFerdigbehandlet = erSakFerdigbehandlet(sak);
+    // const sakErAvsluttet = sak !== undefined ? sak.status === FagsakStatus.AVSLUTTET : false;
     const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
 
     useEffect(() => {
@@ -64,7 +67,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     }, [dispatch, locale, state.søknad.søker.språkkode]);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        const vilSøkeOmEndring = !!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring);
+        const vilSøkeOmEndring = false; //TODO: map from selected child
 
         const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
@@ -97,15 +100,31 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
 
+    const selectableBarn = getSelectableBarnOptions(); //TODO
+    const sortedSelectableBarn = selectableBarn.sort(function (a, b) {
+        return dayjs(a.familiehendelsesdato).isBefore(b.familiehendelsesdato, 'd')
+            ? 1
+            : dayjs(a.familiehendelsesdato).isAfter(b.familiehendelsesdato, 'd')
+            ? -1
+            : 0;
+    });
     return (
         <VelkommenFormComponents.FormikWrapper
             initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
             onSubmit={handleSubmit}
-            renderForm={({ values }) => {
+            renderForm={({ values, setFieldValue }) => {
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,
-                    kanSøkeOmEndring,
+                    selectableBarn,
                 });
+                const valgtBarn = values.gjelderAnnetBarn === false ? values.valgteBarn : undefined;
+                let infoTekstForValgtBarn = undefined;
+                if (valgtBarn !== undefined) {
+                    infoTekstForValgtBarn =
+                        valgtBarn.kanSøkeOmEndring === true
+                            ? 'velkommen.info.endringssøknad'
+                            : 'uttaksplan.slettPlan.innhold1.førstegangssøknad';
+                }
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
                         <LanguageToggle
@@ -130,7 +149,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                             <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
                             </Innholdstittel>
-                            {sak && !sakErAvsluttet && (
+                            {/* {sak && !sakErAvsluttet && (
                                 <Block padBottom="l">
                                     <SøknadStatus
                                         sakOpprettetDato={new Date(sak.opprettet)}
@@ -141,7 +160,23 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                         visibility={visibility}
                                     />
                                 </Block>
-                            )}
+                            )} */}
+                            <Block padBottom="l" visible={visibility.isVisible(VelkommenFormField.valgteBarn)}>
+                                <BarnVelger
+                                    selectableBarn={sortedSelectableBarn}
+                                    visibility={visibility}
+                                    formValues={values}
+                                    setFieldValue={setFieldValue}
+                                />
+                            </Block>
+                            {/* <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
+                            >
+                                <div style={{ textAlign: 'center' }}>
+                                    <AlertStripe type="info">{infoTekstForValgtBarn}</AlertStripe>
+                                </div>
+                            </Block> */}
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
@@ -152,6 +187,9 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                     validate={validateHarForståttRettigheterOgPlikter(intl)}
                                 >
                                     <>
+                                        <Block padBottom="l" visible={infoTekstForValgtBarn !== undefined}>
+                                            <FormattedMessage id={infoTekstForValgtBarn} />
+                                        </Block>
                                         <Block padBottom="l">
                                             <FormattedMessage id="velkommen.samtykkeIntro.del1" />
                                         </Block>
@@ -161,7 +199,9 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                         <Block padBottom="l">
                                             <FormattedMessage id="velkommen.samtykkeIntro.del2" />
                                         </Block>
-                                        <FormattedMessage id="velkommen.samtykkeIntro.del3" />
+                                        <Block padBottom="l">
+                                            <FormattedMessage id="velkommen.samtykkeIntro.del3" />
+                                        </Block>
                                     </>
                                 </VelkommenFormComponents.ConfirmationCheckbox>
                             </Block>

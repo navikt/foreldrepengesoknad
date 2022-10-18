@@ -8,6 +8,15 @@ export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: st
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
 };
 
+export const formaterNavnPåFlereBarn = (fornavn: string[], etternavn: string, antallBarn: number) => {
+    if (antallBarn > 1) {
+        const fornavnene = fornavn.slice(0, -1).join(', ');
+        const sisteFornavn = fornavn[fornavn.length - 1];
+        return `${fornavnene} og ${sisteFornavn} ${etternavn}`;
+    }
+    return `${fornavn[0]} ${etternavn}`;
+};
+
 const navnSlutterPåSLyd = (navn: string): boolean => {
     const sisteBokstav = navn.charAt(navn.length - 1).toLowerCase();
     return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';

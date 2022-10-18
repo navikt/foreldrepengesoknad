@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 
 import { bemUtils, Block, InfoBlock, intlUtils } from '@navikt/fp-common';
-import { YesOrNo, UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
 import EtikettBase from 'nav-frontend-etiketter';
@@ -12,7 +12,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 
 import VeilederKompakt from 'app/assets/VeilederKompaktSvg';
 import BarnevognIkon from 'app/assets/BarnevognIkon';
-import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../velkommenFormConfig';
+import { VelkommenFormData, VelkommenFormField } from '../velkommenFormConfig';
 
 import './søknadStatus.less';
 import './wrapper.less';
@@ -72,8 +72,8 @@ const SøknadStatus: React.FunctionComponent<SøknadProps> = ({
     sakErFerdigbehandlet,
     kanSøkeOmEndring,
     harSakTilBehandling,
-    values,
-    visibility,
+    // values,
+    // visibility,
 }) => {
     const intl = useIntl();
 
@@ -106,31 +106,38 @@ const SøknadStatus: React.FunctionComponent<SøknadProps> = ({
                 sakErFerdigbehandlet={sakErFerdigbehandlet}
             ></SøknadStatusInfoBlokk>
 
-            <Block visible={visibility.isVisible(VelkommenFormField.vilSøkeOmEndring)} padBottom="l" margin="l">
+            <Block
+                // visible={visibility.isVisible(VelkommenFormField.vilSøkeOmEndring)}
+                padBottom="l"
+                margin="l"
+            >
                 <Block padBottom="l">
                     <Element>{intlUtils(intl, 'velkommen.spørsmål.søknadstype.harSak.spørsmål')}</Element>
                 </Block>
                 <Block padBottom="l">
-                    <VelkommenFormComponents.YesOrNoQuestion
-                        name={VelkommenFormField.vilSøkeOmEndring}
+                    {/* <VelkommenFormComponents.YesOrNoQuestion
+                        // name={VelkommenFormField.vilSøkeOmEndring}
                         labels={{
                             yes: intlUtils(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
                             no: intlUtils(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`),
                         }}
-                    />
+                    /> */}
                 </Block>
             </Block>
-            <Block visible={values.vilSøkeOmEndring === YesOrNo.NO} padBottom="l">
+            <Block
+                // visible={values.vilSøkeOmEndring === YesOrNo.NO}
+                padBottom="l"
+            >
                 <Veilederpanel kompakt svg={<VeilederKompakt svgProps />}>
                     {intlUtils(intl, `velkommen.intro.harSak.veileder`)}
                 </Veilederpanel>
             </Block>
             <Block
                 padBottom="l"
-                visible={
-                    visibility.isVisible(VelkommenFormField.vilSøkeOmEndring) &&
-                    values.vilSøkeOmEndring === YesOrNo.UNANSWERED
-                }
+                // visible={
+                //     visibility.isVisible(VelkommenFormField.vilSøkeOmEndring) &&
+                //     values.vilSøkeOmEndring === YesOrNo.UNANSWERED
+                // }
             >
                 <UnansweredQuestionsInfo>
                     <FormattedMessage id="steg.footer.spørsmålMåBesvares" />

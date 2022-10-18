@@ -45,7 +45,7 @@ export interface AdoptertAnnetBarn extends AdoptertBarn {
     ankomstdato?: Date;
 }
 
-type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn;
+export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn;
 
 export const isFødtBarn = (barn: Barn): barn is FødtBarn => {
     return barn.type === BarnType.FØDT;

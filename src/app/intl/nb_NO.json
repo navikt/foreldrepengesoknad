@@ -105,6 +105,7 @@
     "velkommen.intro.harSak.veileder": "Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.",
     "velkommen.intro.harSak.veileder.endring": "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling.",
     "velkommen.intro.harFørstegangssøknadUnderBehandling": "Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til behandling, og du må fylle ut hele søknaden på nytt.",
+    "velkommen.info.endringssøknad": "Her kan du endre søknaden din.",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
     "velkommen.sak.sistEndret": "Sist endret: {date}",
     "velkommen.sak.status.ferdigBehandlet": "Ferdig behandlet",
