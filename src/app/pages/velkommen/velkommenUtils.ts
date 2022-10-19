@@ -1,4 +1,5 @@
 import { BarnType } from 'app/context/types/Barn';
+import { FagsakStatus, SakType } from 'app/types/Sak';
 import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn } from './components/barnVelger/BarnVelger';
 
@@ -6,17 +7,22 @@ export const getSelectableBarnOptions = () => {
     return [
         {
             id: guid(),
-            key: '0',
-            type: BarnType.FØDT,
+            type: BarnType.ADOPTERT_ANNET_BARN,
             antallBarn: 1,
+            omsorgsovertagelse: new Date('2022-02-02'),
             familiehendelsesdato: new Date('2022-02-02'),
             fødselsdatoer: [new Date('2022-02-02')],
-            fornavn: ['Maria'],
-            mellomnavn: ['Anna'],
+            fornavn: ['Vakker'],
+            mellomnavn: ['Blå'],
             etternavn: 'Olsen',
             fnr: ['898989898989'],
-            saksnummer: '12123144141',
             kanSøkeOmEndring: true,
+            sak: {
+                type: SakType.FPSAK,
+                opprettet: '',
+                status: FagsakStatus.UNDER_BEHANDLING,
+                saksnummer: '12123144141',
+            },
         },
         {
             id: guid(),
@@ -25,19 +31,23 @@ export const getSelectableBarnOptions = () => {
             antallBarn: 1,
             familiehendelsesdato: new Date('2023-01-22'),
             termindato: [new Date('2023-01-22')],
-            saksnummer: '12123144999',
             kanSøkeOmEndring: false,
+            sak: {
+                type: SakType.FPSAK,
+                opprettet: '',
+                status: FagsakStatus.LOPENDE,
+                saksnummer: '12123144999',
+            },
         },
         {
             id: guid(),
             key: '2',
-            type: BarnType.ADOPTERT_ANNET_BARN,
+            type: BarnType.FØDT,
             antallBarn: 2,
-            fornavn: ['Henrik', 'Tone'],
+            fornavn: ['Stolt', 'Sterk'],
             etternavn: 'Olsen',
             familiehendelsesdato: new Date('2021-12-22'),
-            omsorgsovertagelse: new Date('2021-12-22'),
-            kanSøkeOmEndring: true,
+            fødselsdatoer: [new Date('2022-02-02')],
         },
     ] as SelectableBarn[];
 };

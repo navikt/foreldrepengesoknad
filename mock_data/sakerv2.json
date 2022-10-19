@@ -21,7 +21,7 @@
                 "antallBarn": 2
             },
             "åpenBehandling": {
-                "tilstand": "UNDER_BEHANDLING",
+                "tilstand": "LØPENDE",
                 "søknadsperioder": []
             },
             "barn": [
@@ -31,7 +31,7 @@
                     "fornavn": "Stolt",
                     "etternavn": "Kiwi",
                     "kjønn": "U",
-                    "fødselsdato": "2021-09-01"
+                    "fødselsdato": "2022-02-01"
                 },
                 {
                     "type": "person",
@@ -39,7 +39,7 @@
                     "fornavn": "Venstre",
                     "etternavn": "Lupe",
                     "kjønn": "U",
-                    "fødselsdato": "2021-09-01"
+                    "fødselsdato": "2022-02-01"
                 }
             ],
             "dekningsgrad": "HUNDRE"

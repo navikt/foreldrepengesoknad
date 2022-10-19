@@ -1,11 +1,14 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
 import { formaterNavnPåFlereBarn } from 'app/utils/personUtils';
 import React, { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { BarnType } from 'app/context/types/Barn';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { guid } from 'nav-frontend-js-utils';
+import './barnVelger.less';
+import SøknadStatusEtikett from '../SøknadStatus';
+import { erSakFerdigbehandlet } from 'app/utils/sakerUtils';
+import Sak from 'app/types/Sak';
 
 export interface SelectableBarn {
     id: string;
@@ -20,8 +23,8 @@ export interface SelectableBarn {
     mellomnavn?: string[];
     etternavn?: string;
     fnr?: string[];
-    saksnummer?: string;
     kanSøkeOmEndring?: boolean;
+    sak?: Sak;
 }
 
 interface Props {
@@ -31,57 +34,100 @@ interface Props {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
-const getUfødtBarnCheckbox = (barn: SelectableBarn, gjelderAnnetBarnErTrue: boolean): any => {
-    let labelTekst;
-    const terminTekst = formatDate(barn.familiehendelsesdato);
-    if (barn.antallBarn === 1) {
-        labelTekst = `Barn med termindato ${terminTekst}`;
-    } else if (barn.antallBarn === 2) {
-        labelTekst = `Tvillinger med termindato ${terminTekst}`;
-    } else {
-        labelTekst = `Flerlinger med termindato ${terminTekst}`;
-    }
+const getRadioForNyttBarn = (intl: IntlShape): any => {
     return {
-        key: guid(),
-        label: <b> {labelTekst}</b>,
-        value: barn, //TODO: Hva skal brukes her? Det eneste barna vil ha til felles er det? Eller heller lage id på alle barna?
-        subtext: barn.saksnummer ? `Saksnummer: ${barn.saksnummer}` : '',
-        autoComplete: 'off',
-        disabled: gjelderAnnetBarnErTrue,
+        label: (
+            <React.Fragment>
+                <b> {intlUtils(intl, 'omBarnet.gjelderAnnetBarn')}</b>
+            </React.Fragment>
+        ),
+        value: '0',
+        className: 'radioGroupButton',
     };
 };
 
-const getFødtAdoptertBarnCheckbox = (barn: SelectableBarn, gjelderAnnetBarnErTrue: boolean): any => {
+const getSakstatus = (sakErFerdigbehandlet: boolean) => {
+    return <SøknadStatusEtikett sakErFerdigbehandlet={sakErFerdigbehandlet}></SøknadStatusEtikett>;
+};
+
+const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
+    let labelTekst;
+    const sakErFerdigbehandlet = erSakFerdigbehandlet(barn.sak);
+    const saksStatus = barn.sak !== undefined ? getSakstatus(sakErFerdigbehandlet) : undefined;
+    const saksnummerTekst =
+        barn.sak !== undefined
+            ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
+            : '';
+    const harSak = barn.sak !== undefined;
+    if (barn.antallBarn === 1) {
+        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
+            termin: formatDate(barn.familiehendelsesdato),
+        });
+    } else if (barn.antallBarn === 2) {
+        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
+            termin: formatDate(barn.familiehendelsesdato),
+        });
+    } else {
+        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
+            termin: formatDate(barn.familiehendelsesdato),
+        });
+    }
+    return {
+        label: (
+            <React.Fragment>
+                <b> {labelTekst}</b>
+                {harSak && (
+                    <div>
+                        <p>{saksnummerTekst}</p>
+                        {saksStatus}
+                    </div>
+                )}
+            </React.Fragment>
+        ),
+        value: barn.id,
+        className: 'radioGroupButton',
+    };
+};
+
+const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     const navnTekst = formaterNavnPåFlereBarn(barn.fornavn!, barn.etternavn!, barn.antallBarn);
     const fødtDatoTekst = formatDate(barn.familiehendelsesdato);
-    const situasjonTekst = barn.type === BarnType.FØDT ? 'Født: ' : 'Omsorgsovertagelse: ';
-    const saksnummerTekst = barn.saksnummer ? `Saksnummer: ${barn.saksnummer}` : '';
+    const situasjonTekst =
+        barn.type === BarnType.FØDT
+            ? intlUtils(intl, 'velkommen.barnVelger.født')
+            : intlUtils(intl, 'velkommen.barnVelger.adopsjon');
+    const sakErFerdigbehandlet = erSakFerdigbehandlet(barn.sak);
+    const saksnummerTekst =
+        barn.sak !== undefined
+            ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
+            : '';
+    const saksStatus = barn.sak !== undefined ? getSakstatus(sakErFerdigbehandlet) : undefined;
     return {
-        key: guid(),
-        label: <b> {navnTekst}</b>,
-        value: barn, //TODO: Hva skal brukes her? Det eneste barna vil ha til felles er det?
-        subtext: (
+        label: (
             <React.Fragment>
+                <b>{navnTekst}</b>
                 <p>
                     {situasjonTekst} {fødtDatoTekst}
                 </p>
                 <p>{saksnummerTekst}</p>
+                {saksStatus !== undefined && saksStatus}
             </React.Fragment>
         ),
-        autoComplete: 'off',
-        disabled: gjelderAnnetBarnErTrue,
+        value: barn.id,
+        name: VelkommenFormField.valgteBarn,
+        className: 'radioGroupButton',
     };
 };
 
-const getCheckboxForBarn = (barn: SelectableBarn, gjelderAnnetBarnErTrue: boolean): any => {
+const getCheckboxForBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     const barnType = barn.type;
     switch (barnType) {
         case BarnType.FØDT:
         case BarnType.ADOPTERT_ANNET_BARN:
         case BarnType.ADOPTERT_STEBARN:
-            return getFødtAdoptertBarnCheckbox(barn, gjelderAnnetBarnErTrue);
+            return getRadioForFødtEllerAdoptertBarn(barn, intl);
         case BarnType.UFØDT:
-            return getUfødtBarnCheckbox(barn, gjelderAnnetBarnErTrue);
+            return getRadioForUfødtBarn(barn, intl);
         default:
             return undefined;
     }
@@ -93,25 +139,12 @@ const BarnVelger: FunctionComponent<Props> = (props: Props) => {
     return (
         <Block>
             <Block padBottom="l" visible={props.visibility.isVisible(VelkommenFormField.valgteBarn)}>
-                {/* <VelkommenFormComponents.CheckboxPanelGroup */}
-                <VelkommenFormComponents.RadioPanelGroup
+                <VelkommenFormComponents.RadioGroup
                     name={VelkommenFormField.valgteBarn}
-                    legend={intlUtils(intl, 'omBarnet.barnRegistrert')}
-                    radios={props.selectableBarn.map((barnet) =>
-                        getCheckboxForBarn(barnet, props.formValues.gjelderAnnetBarn)
-                    )}
-                    description={intlUtils(intl, 'velkommen.intro.harSak.del2')}
-                />
-            </Block>
-            <Block padBottom="l" visible={props.visibility.isVisible(VelkommenFormField.gjelderAnnetBarn)}>
-                <VelkommenFormComponents.Checkbox
-                    name={VelkommenFormField.gjelderAnnetBarn}
-                    label={intlUtils(intl, 'omBarnet.gjelderAnnetBarn')}
-                    onClick={() => {
-                        if (!props.formValues.gjelderAnnetBarn) {
-                            props.setFieldValue(VelkommenFormField.valgteBarn, []);
-                        }
-                    }}
+                    radios={props.selectableBarn
+                        .map((barnet) => getCheckboxForBarn(barnet, intl))
+                        .concat([getRadioForNyttBarn(intl)])}
+                    description={intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}
                 />
             </Block>
         </Block>

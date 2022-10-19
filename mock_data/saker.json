@@ -1,1 +1,42 @@
-[]
+[
+    {
+        "saksnummer": "352003813",
+        "status": "LOP",
+        "opprettet": "2022-04-08",
+        "annenPart": {
+            "fnr": "17048818226",
+            "aktørId": "2663592907476",
+            "navn": {
+                "fornavn": "Eksplosiv",
+                "etternavn": "Panjabi"
+            }
+        },
+        "behandlingTema": "-",
+        "behandlinger": [
+            {
+                "opprettetTidspunkt": "2022-01-24T10:16:07.668",
+                "endretTidspunkt": "2022-01-31T15:08:53.634",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "behandlingResultat": "IKKE_FASTSATT",
+                "behandlendeEnhet": "4849",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
+                "inntektsmeldinger": []
+            },
+            {
+                "opprettetTidspunkt": "2022-01-23T10:16:07.668",
+                "endretTidspunkt": "2022-01-31T15:08:53.634",
+                "status": "AVSLU",
+                "type": "FP",
+                "tema": "FORP_FODS",
+                "behandlingResultat": "MERGET_OG_HENLAGT",
+                "behandlendeEnhet": "4849",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
+                "inntektsmeldinger": []
+            }
+        ],
+        "mottattEndringssøknad": true,
+        "type": "FPSAK"
+    }
+]

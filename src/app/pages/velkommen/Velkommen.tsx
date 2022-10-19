@@ -29,7 +29,6 @@ import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
 import {
-    // erSakFerdigbehandlet,
     getSakUnderBehandling,
     getSisteForeldrepengeSak,
     // skalKunneSøkeOmEndring,
@@ -56,7 +55,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
     // const kanSøkeOmEndring = sak !== undefined ? skalKunneSøkeOmEndring(sak) : false;
-    // const sakErFerdigbehandlet = erSakFerdigbehandlet(sak);
     // const sakErAvsluttet = sak !== undefined ? sak.status === FagsakStatus.AVSLUTTET : false;
     const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
 
@@ -67,7 +65,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     }, [dispatch, locale, state.søknad.søker.språkkode]);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        const vilSøkeOmEndring = false; //TODO: map from selected child
+        const vilSøkeOmEndring = values.valgteBarn !== undefined && !!values.valgteBarn.kanSøkeOmEndring;
 
         const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
@@ -108,6 +106,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
             ? -1
             : 0;
     });
+
     return (
         <VelkommenFormComponents.FormikWrapper
             initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
@@ -117,14 +116,11 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                     ...values,
                     selectableBarn,
                 });
-                const valgtBarn = values.gjelderAnnetBarn === false ? values.valgteBarn : undefined;
-                let infoTekstForValgtBarn = undefined;
-                if (valgtBarn !== undefined) {
-                    infoTekstForValgtBarn =
-                        valgtBarn.kanSøkeOmEndring === true
-                            ? 'velkommen.info.endringssøknad'
-                            : 'uttaksplan.slettPlan.innhold1.førstegangssøknad';
-                }
+                const valgtBarn = values.valgteBarn;
+                const knapptekst =
+                    valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
+                        ? 'Begynn med søknad'
+                        : 'Endre søknad';
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
                         <LanguageToggle
@@ -149,18 +145,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                             <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
                             </Innholdstittel>
-                            {/* {sak && !sakErAvsluttet && (
-                                <Block padBottom="l">
-                                    <SøknadStatus
-                                        sakOpprettetDato={new Date(sak.opprettet)}
-                                        sakErFerdigbehandlet={sakErFerdigbehandlet}
-                                        kanSøkeOmEndring={kanSøkeOmEndring}
-                                        harSakTilBehandling={harSakTilBehandling}
-                                        values={values}
-                                        visibility={visibility}
-                                    />
-                                </Block>
-                            )} */}
                             <Block padBottom="l" visible={visibility.isVisible(VelkommenFormField.valgteBarn)}>
                                 <BarnVelger
                                     selectableBarn={sortedSelectableBarn}
@@ -169,14 +153,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                     setFieldValue={setFieldValue}
                                 />
                             </Block>
-                            {/* <Block
-                                padBottom="l"
-                                visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
-                            >
-                                <div style={{ textAlign: 'center' }}>
-                                    <AlertStripe type="info">{infoTekstForValgtBarn}</AlertStripe>
-                                </div>
-                            </Block> */}
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
@@ -187,9 +163,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                     validate={validateHarForståttRettigheterOgPlikter(intl)}
                                 >
                                     <>
-                                        <Block padBottom="l" visible={infoTekstForValgtBarn !== undefined}>
-                                            <FormattedMessage id={infoTekstForValgtBarn} />
-                                        </Block>
                                         <Block padBottom="l">
                                             <FormattedMessage id="velkommen.samtykkeIntro.del1" />
                                         </Block>
@@ -208,7 +181,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
                                     <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
-                                        Begynn med søknad
+                                        {knapptekst}
                                     </Hovedknapp>
                                 </div>
                             </Block>
