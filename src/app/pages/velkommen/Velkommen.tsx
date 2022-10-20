@@ -33,29 +33,29 @@ import {
     getSisteForeldrepengeSak,
     // skalKunneSøkeOmEndring,
 } from 'app/utils/sakerUtils';
-import BarnVelger from './components/barnVelger/BarnVelger';
+import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import dayjs from 'dayjs';
 import { getSelectableBarnOptions } from './velkommenUtils';
+import { Sakv2 } from 'app/types/sakerv2/Sakv2';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 interface Props {
     fornavn: string;
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
     saker: Sak[];
+    sakerV2: Sakv2[] | undefined;
     fnr: string;
 }
 
-const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr, onChangeLocale }) => {
+const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, sakerV2, fnr, onChangeLocale }) => {
     const sakTilBehandling = getSakUnderBehandling(saker);
-    // const harSakTilBehandling = !!sakTilBehandling;
     const sak = sakTilBehandling || getSisteForeldrepengeSak(saker);
     const intl = useIntl();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
-    // const kanSøkeOmEndring = sak !== undefined ? skalKunneSøkeOmEndring(sak) : false;
-    // const sakErAvsluttet = sak !== undefined ? sak.status === FagsakStatus.AVSLUTTET : false;
     const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
 
     useEffect(() => {
@@ -65,7 +65,11 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     }, [dispatch, locale, state.søknad.søker.språkkode]);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        const vilSøkeOmEndring = values.valgteBarn !== undefined && !!values.valgteBarn.kanSøkeOmEndring;
+        const valgteBarn =
+            values.valgteBarn !== SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
+                ? undefined
+                : selectableBarn.find((sb) => sb.id === values.valgteBarn);
+        const vilSøkeOmEndring = valgteBarn !== undefined && !!valgteBarn.kanSøkeOmEndring;
 
         const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
@@ -97,12 +101,12 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
         SøknadRoutes.SØKERSITUASJON,
         (state: ForeldrepengesøknadContextState) => storeAppState(state)
     );
-
-    const selectableBarn = getSelectableBarnOptions(); //TODO
+    const { registrerteBarn } = useSøkerinfo();
+    const selectableBarn = sakerV2 !== undefined ? getSelectableBarnOptions(sakerV2, registrerteBarn) : []; //TODO remove that saker2 can be undefined
     const sortedSelectableBarn = selectableBarn.sort(function (a, b) {
-        return dayjs(a.familiehendelsesdato).isBefore(b.familiehendelsesdato, 'd')
+        return dayjs(a.sortableDato).isBefore(b.sortableDato, 'd')
             ? 1
-            : dayjs(a.familiehendelsesdato).isAfter(b.familiehendelsesdato, 'd')
+            : dayjs(a.sortableDato).isAfter(b.sortableDato, 'd')
             ? -1
             : 0;
     });
@@ -116,11 +120,15 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                     ...values,
                     selectableBarn,
                 });
-                const valgtBarn = values.valgteBarn;
+                const valgtBarnId = values.valgteBarn;
+                const valgtBarn =
+                    valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
+                        ? undefined
+                        : selectableBarn.find((barn) => barn.id === valgtBarnId);
                 const knapptekst =
                     valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
-                        ? 'Begynn med søknad'
-                        : 'Endre søknad';
+                        ? intlUtils(intl, 'velkommen.endreSøknad')
+                        : intlUtils(intl, 'velkommen.begynnMedSøknad');
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
                         <LanguageToggle

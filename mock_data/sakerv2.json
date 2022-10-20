@@ -13,31 +13,27 @@
             "annenPart": {
                 "type": "person",
                 "fnr": "12048902861",
-                "fornavn": "Äcklig",
-                "etternavn": "Kake"
+                "fornavn": "Mor",
+                "etternavn": "Olsen"
             },
             "familiehendelse": {
                 "omsorgsovertagelse": "2022-02-01",
                 "antallBarn": 2
-            },
-            "åpenBehandling": {
-                "tilstand": "LØPENDE",
-                "søknadsperioder": []
             },
             "barn": [
                 {
                     "type": "person",
                     "fnr": "01492163577",
                     "fornavn": "Stolt",
-                    "etternavn": "Kiwi",
+                    "etternavn": "Olsen",
                     "kjønn": "U",
                     "fødselsdato": "2022-02-01"
                 },
                 {
                     "type": "person",
                     "fnr": "01492187433",
-                    "fornavn": "Venstre",
-                    "etternavn": "Lupe",
+                    "fornavn": "Sterk",
+                    "etternavn": "Olsen",
                     "kjønn": "U",
                     "fødselsdato": "2022-02-01"
                 }
@@ -57,12 +53,12 @@
             "annenPart": {
                 "type": "person",
                 "fnr": "12048902861",
-                "fornavn": "Äcklig",
-                "etternavn": "Kake"
+                "fornavn": "Mor",
+                "etternavn": "Olsen"
             },
             "familiehendelse": {
                 "fødselsdato": "2021-09-01",
-                "antallBarn": 1
+                "antallBarn": 2
             },
             "åpenBehandling": {
                 "tilstand": "UNDER_BEHANDLING",
@@ -80,8 +76,8 @@
                 {
                     "type": "person",
                     "fnr": "01492187433",
-                    "fornavn": "Venstre",
-                    "etternavn": "Lupe",
+                    "fornavn": "Søt",
+                    "etternavn": "Sitron",
                     "kjønn": "U",
                     "fødselsdato": "2021-09-01"
                 }
@@ -101,8 +97,8 @@
             "annenPart": {
                 "type": "person",
                 "fnr": "12048902861",
-                "fornavn": "Äcklig",
-                "etternavn": "Kake"
+                "fornavn": "mor",
+                "etternavn": "Olsen"
             },
             "familiehendelse": {
                 "termindato": "2023-01-17",
@@ -111,6 +107,29 @@
             "åpenBehandling": {
                 "tilstand": "UNDER_BEHANDLING",
                 "søknadsperioder": []
+            },
+            "barn": [],
+            "dekningsgrad": "HUNDRE"
+        },
+        {
+            "saksnummer": "1050189653",
+            "sakAvsluttet": true,
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": false,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BARE_SØKER_RETT",
+            "annenPart": {
+                "type": "person",
+                "fnr": "12048902861",
+                "fornavn": "Mor",
+                "etternavn": "Olsen"
+            },
+            "familiehendelse": {
+                "termindato": "2020-08-16",
+                "antallBarn": 2
             },
             "barn": [],
             "dekningsgrad": "HUNDRE"

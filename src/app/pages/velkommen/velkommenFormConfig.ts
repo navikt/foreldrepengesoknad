@@ -9,7 +9,7 @@ export enum VelkommenFormField {
 
 export interface VelkommenFormData {
     [VelkommenFormField.harForståttRettigheterOgPlikter]: boolean;
-    [VelkommenFormField.valgteBarn]: SelectableBarn | undefined;
+    [VelkommenFormField.valgteBarn]: string | undefined;
 }
 
 export const getInitialVelkommenValues = (harForståttRettigheterOgPlikter: boolean): VelkommenFormData => ({

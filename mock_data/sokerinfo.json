@@ -9,12 +9,103 @@
         "barn": [
             {
                 "fnr": "13062252647",
-                "fornavn": "Realistisk",
+                "fornavn": "Fantastisk",
                 "etternavn": "Lefse",
                 "kjønn": "K",
                 "fødselsdato": "2022-08-17",
                 "annenForelder": {
                     "fnr": "03088908065",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "13062258963",
+                "fornavn": "Rød",
+                "etternavn": "Melon",
+                "kjønn": "K",
+                "fødselsdato": "2021-03-19",
+                "annenForelder": {
+                    "fnr": "03088908065",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "130622511157",
+                "fornavn": "Glad",
+                "etternavn": "Tvilling",
+                "kjønn": "K",
+                "fødselsdato": "2021-02-22",
+                "annenForelder": {
+                    "fnr": "03088908065",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "130622511156",
+                "fornavn": "Pen",
+                "etternavn": "Tvilling",
+                "kjønn": "K",
+                "fødselsdato": "2021-02-22",
+                "annenForelder": {
+                    "fnr": "03088908065",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "130622511153",
+                "fornavn": "Blå",
+                "etternavn": "Trilling",
+                "kjønn": "K",
+                "fødselsdato": "2022-12-09",
+                "annenForelder": {
+                    "fnr": "03088908003",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "130622511154",
+                "fornavn": "Grønn",
+                "etternavn": "Trilling",
+                "kjønn": "K",
+                "fødselsdato": "2022-12-09",
+                "annenForelder": {
+                    "fnr": "03088908002",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "130622511155",
+                "fornavn": "Grå",
+                "etternavn": "Trilling",
+                "kjønn": "K",
+                "fødselsdato": "2022-12-08",
+                "annenForelder": {
+                    "fnr": "03088908001",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
+            },
+            {
+                "fnr": "130622516923",
+                "fornavn": "Gammelt",
+                "etternavn": "Barn Skal Ikke Vises",
+                "kjønn": "K",
+                "fødselsdato": "2018-12-08",
+                "annenForelder": {
+                    "fnr": "03088908001",
                     "fornavn": "Populær",
                     "etternavn": "Tørketrommel",
                     "fødselsdato": "1989-08-03"

@@ -15,9 +15,10 @@ export enum SakType {
     FPSAK = 'FPSAK',
 }
 
+//TODO: Fjern
 export enum FagsakStatus {
-    OPPRETTET = 'OPPR',
-    UNDER_BEHANDLING = 'UBEH',
-    LOPENDE = 'LOP',
-    AVSLUTTET = 'AVSLU',
+    OPPRETTET = 'OPPRETTET',
+    UNDER_BEHANDLING = 'UNDER_BEHANDLING',
+    LOPENDE = 'LØPENDE',
+    AVSLUTTET = 'AVSLUTTET',
 }

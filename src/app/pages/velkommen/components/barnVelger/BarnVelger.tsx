@@ -1,28 +1,40 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import { formaterNavnPåFlereBarn } from 'app/utils/personUtils';
+import { formateFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/personUtils';
 import React, { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { BarnType } from 'app/context/types/Barn';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import './barnVelger.less';
 import SøknadStatusEtikett from '../SøknadStatus';
 import { erSakFerdigbehandlet } from 'app/utils/sakerUtils';
 import Sak from 'app/types/Sak';
+import { Normaltekst } from 'nav-frontend-typografi';
+
+//Todo: use BarnType here?
+export enum SelectableBarnType {
+    FØDT = 'født',
+    UFØDT = 'ufødt',
+    ADOPTERT = 'adoptert',
+    IKKE_UTFYLT = 'ikkeUtfylt',
+}
+
+// interface SelectableBarnType extends Omit<BarnType, 'ADOPTERT_STEBAR' |  'ADOPTERT_ANNET_BARN'>
+
+export enum SelectableBarnOptions {
+    SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
+}
 
 export interface SelectableBarn {
     id: string;
-    key: string;
-    type: BarnType;
+    fnr: string[];
+    type: SelectableBarnType;
     antallBarn: number;
-    familiehendelsesdato: Date; //Hvis flere barn sett til eldste barnet
+    sortableDato: Date;
     termindato?: Date;
     fødselsdatoer?: Date[];
     omsorgsovertagelse?: Date;
     fornavn?: string[];
-    mellomnavn?: string[];
-    etternavn?: string;
-    fnr?: string[];
+    etternavn?: string[];
     kanSøkeOmEndring?: boolean;
     sak?: Sak;
 }
@@ -41,7 +53,7 @@ const getRadioForNyttBarn = (intl: IntlShape): any => {
                 <b> {intlUtils(intl, 'omBarnet.gjelderAnnetBarn')}</b>
             </React.Fragment>
         ),
-        value: '0',
+        value: SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN,
         className: 'radioGroupButton',
     };
 };
@@ -61,15 +73,15 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     const harSak = barn.sak !== undefined;
     if (barn.antallBarn === 1) {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
-            termin: formatDate(barn.familiehendelsesdato),
+            termin: formatDate(barn.termindato!),
         });
     } else if (barn.antallBarn === 2) {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
-            termin: formatDate(barn.familiehendelsesdato),
+            termin: formatDate(barn.termindato!),
         });
     } else {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
-            termin: formatDate(barn.familiehendelsesdato),
+            termin: formatDate(barn.termindato!),
         });
     }
     return {
@@ -91,9 +103,13 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
 
 const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     const navnTekst = formaterNavnPåFlereBarn(barn.fornavn!, barn.etternavn!, barn.antallBarn);
-    const fødtDatoTekst = formatDate(barn.familiehendelsesdato);
+    const fødselsdatoerTekst = formateFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
+    const fødtAdoptertDatoTekst =
+        barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT
+            ? fødselsdatoerTekst
+            : formatDate(barn.omsorgsovertagelse!);
     const situasjonTekst =
-        barn.type === BarnType.FØDT
+        barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT
             ? intlUtils(intl, 'velkommen.barnVelger.født')
             : intlUtils(intl, 'velkommen.barnVelger.adopsjon');
     const sakErFerdigbehandlet = erSakFerdigbehandlet(barn.sak);
@@ -107,7 +123,7 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
             <React.Fragment>
                 <b>{navnTekst}</b>
                 <p>
-                    {situasjonTekst} {fødtDatoTekst}
+                    {situasjonTekst} {fødtAdoptertDatoTekst}
                 </p>
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
@@ -122,11 +138,11 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
 const getCheckboxForBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     const barnType = barn.type;
     switch (barnType) {
-        case BarnType.FØDT:
-        case BarnType.ADOPTERT_ANNET_BARN:
-        case BarnType.ADOPTERT_STEBARN:
+        case SelectableBarnType.FØDT:
+        case SelectableBarnType.ADOPTERT:
+        case SelectableBarnType.IKKE_UTFYLT:
             return getRadioForFødtEllerAdoptertBarn(barn, intl);
-        case BarnType.UFØDT:
+        case SelectableBarnType.UFØDT:
             return getRadioForUfødtBarn(barn, intl);
         default:
             return undefined;
@@ -137,14 +153,16 @@ const BarnVelger: FunctionComponent<Props> = (props: Props) => {
     const intl = useIntl();
 
     return (
-        <Block>
-            <Block padBottom="l" visible={props.visibility.isVisible(VelkommenFormField.valgteBarn)}>
+        <Block visible={props.visibility.isVisible(VelkommenFormField.valgteBarn)}>
+            <Block padBottom="l">
+                <Normaltekst>{intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}</Normaltekst>
+            </Block>
+            <Block padBottom="l">
                 <VelkommenFormComponents.RadioGroup
                     name={VelkommenFormField.valgteBarn}
                     radios={props.selectableBarn
                         .map((barnet) => getCheckboxForBarn(barnet, intl))
                         .concat([getRadioForNyttBarn(intl)])}
-                    description={intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}
                 />
             </Block>
         </Block>
