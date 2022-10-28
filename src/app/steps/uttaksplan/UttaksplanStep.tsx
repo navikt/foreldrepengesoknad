@@ -21,13 +21,15 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes, getTermindato } from 'app/utils/barnUtils';
 import { isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import getStønadskontoParams, {
+    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
+} from 'app/api/getStønadskontoParams';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
@@ -51,6 +53,7 @@ import {
     getKanJustereAutomatiskVedFødsel,
 } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { FormikValues } from 'formik';
+import { RequestStatus } from 'app/types/RequestState';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -64,7 +67,7 @@ const UttaksplanStep = () => {
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
-    const { person, arbeidsforhold } = søkerinfo;
+    const { person, arbeidsforhold, registrerteBarn } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
@@ -206,6 +209,22 @@ const UttaksplanStep = () => {
         rolle
     );
 
+    const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetEksisterendeSakMedFnr(
+        søkerinfo.person.fnr,
+        erFarEllerMedmor,
+        registrertBarn?.annenForelder?.fnr
+    );
+
+    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        eksisterendeSak?.grunnlag.termindato,
+        eksisterendeSakAnnenPartData?.grunnlag.termindato
+    );
+
+    const eksisterendeSakAnnenPartRequestIsSuspended =
+        registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
+
     const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
             Dekningsgrad.HUNDRE_PROSENT,
@@ -214,8 +233,11 @@ const UttaksplanStep = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
-            eksisterendeSak?.grunnlag.termindato
-        )
+            saksgrunnlagsTermindato
+        ),
+        eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -225,8 +247,11 @@ const UttaksplanStep = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
-            eksisterendeSak?.grunnlag.termindato
-        )
+            saksgrunnlagsTermindato
+        ),
+        eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
