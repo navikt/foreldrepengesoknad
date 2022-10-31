@@ -1,7 +1,6 @@
 import { guid } from 'nav-frontend-js-utils';
 import dayjs from 'dayjs';
 import {
-    Arbeidsform,
     AvslåttPeriode,
     isInfoPeriode,
     isUttaksperiode,
@@ -17,23 +16,23 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { erUttaksdag, Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Saksperiode } from 'app/types/Saksperiode';
+import { SaksperiodeV2 } from 'app/types/Saksperiode';
 import { Forelder } from 'app/types/Forelder';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
+import { SaksgrunnlagV2 } from 'app/types/Saksgrunnlag';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato } from './dateUtils';
-import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
+import { UtsettelseÅrsakTypeDTOV2 } from 'app/types/UtsettelseÅrsakTypeDTO';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
 import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { tidperiodeGårOverFamiliehendelsesdato } from './wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
+import { PeriodeResultatÅrsakV2 } from 'uttaksplan/types/PeriodeResultatÅrsak';
+import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
+import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;
@@ -116,7 +115,14 @@ const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
     }
 };
 
-const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
+// const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
+//     if (saksperiode.gjelderAnnenPart) {
+//         return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+//     }
+//     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+// };
+
+const getForelderForPeriode = (saksperiode: SaksperiodeV2, søkerErFarEllerMedmor: boolean): Forelder => {
     if (saksperiode.gjelderAnnenPart) {
         return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
     }
@@ -124,30 +130,30 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
 };
 
 export const getUtsettelseÅrsakFromSaksperiode = (
-    årsak: UtsettelseÅrsakTypeDTO | undefined
+    årsak: UtsettelseÅrsakTypeDTOV2 | undefined
 ): UtsettelseÅrsakType | undefined => {
     switch (årsak) {
-        case UtsettelseÅrsakTypeDTO.Arbeid:
+        case UtsettelseÅrsakTypeDTOV2.Arbeid:
             return UtsettelseÅrsakType.Arbeid;
-        case UtsettelseÅrsakTypeDTO.Ferie:
+        case UtsettelseÅrsakTypeDTOV2.Ferie:
             return UtsettelseÅrsakType.Ferie;
-        case UtsettelseÅrsakTypeDTO.InstitusjonBarnet:
+        case UtsettelseÅrsakTypeDTOV2.InstitusjonBarnet:
             return UtsettelseÅrsakType.InstitusjonBarnet;
-        case UtsettelseÅrsakTypeDTO.InstitusjonSøker:
+        case UtsettelseÅrsakTypeDTOV2.InstitusjonSøker:
             return UtsettelseÅrsakType.InstitusjonSøker;
-        case UtsettelseÅrsakTypeDTO.Sykdom:
+        case UtsettelseÅrsakTypeDTOV2.Sykdom:
             return UtsettelseÅrsakType.Sykdom;
-        case UtsettelseÅrsakTypeDTO.HvØvelse:
+        case UtsettelseÅrsakTypeDTOV2.HvØvelse:
             return UtsettelseÅrsakType.HvØvelse;
-        case UtsettelseÅrsakTypeDTO.NavTiltak:
+        case UtsettelseÅrsakTypeDTOV2.NavTiltak:
             return UtsettelseÅrsakType.NavTiltak;
         default:
             return undefined;
     }
 };
 
-const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {
-    switch (saksperiode.stønadskontotype) {
+const getOppholdÅrsakFromSaksperiode = (saksperiode: SaksperiodeV2): OppholdÅrsakType | undefined => {
+    switch (saksperiode.kontoType) {
         case StønadskontoType.Fedrekvote:
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
         case StønadskontoType.Fellesperiode:
@@ -155,7 +161,7 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
         case StønadskontoType.Mødrekvote:
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
         case StønadskontoType.ForeldrepengerFørFødsel:
-            return OppholdÅrsakType.UttakForelderpengerFørFødsel;
+            return OppholdÅrsakType.UttakForelderpengerFørFødselAnnenForelder;
         case StønadskontoType.Foreldrepenger:
             return OppholdÅrsakType.UttakForeldrepengerAnnenForelder;
         default:
@@ -163,17 +169,33 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
     }
 };
 
-const beregnSamtidigUttaksProsent = (
+// const beregnSamtidigUttaksProsent = (
+//     egenProsent: number | undefined,
+//     andrePartsProsent: number | undefined,
+//     utbetalingsprosent: number
+// ): string | undefined => {
+//     if (egenProsent) {
+//         return egenProsent.toString();
+//     }
+
+//     if (andrePartsProsent) {
+//         return utbetalingsprosent.toString();
+//     }
+
+//     return undefined;
+// };
+
+const beregnSamtidigUttaksProsentV2 = (
     egenProsent: number | undefined,
     andrePartsProsent: number | undefined,
-    utbetalingsprosent: number
+    graderingsprosent: number | undefined
 ): string | undefined => {
     if (egenProsent) {
         return egenProsent.toString();
     }
 
     if (andrePartsProsent) {
-        return utbetalingsprosent.toString();
+        return graderingsprosent ? (100 - graderingsprosent).toString() : '100';
     }
 
     return undefined;
@@ -190,9 +212,13 @@ export const getKontotypeBareFarHarRett = (periodeResultatÅrsak: string): Støn
     }
 };
 
+export const getKontotypeBareFarHarRettV2 = (periodeTrekkerMinsterett: boolean): StønadskontoType => {
+    return periodeTrekkerMinsterett ? StønadskontoType.AktivitetsfriKvote : StønadskontoType.Foreldrepenger;
+};
+
 const getErMorForSyk = (
     erFarEllerMedmor: boolean,
-    saksperiode: Saksperiode,
+    saksperiode: SaksperiodeV2,
     familiehendelsesdato: string,
     konto: StønadskontoType
 ) => {
@@ -212,24 +238,27 @@ const getErMorForSyk = (
 };
 
 export const mapUttaksperiodeFromSaksperiode = (
-    saksperiode: Saksperiode,
-    grunnlag: Saksgrunnlag,
-    innvilgedePerioder: Saksperiode[],
-    erFarEllerMedmor: boolean
+    saksperiode: SaksperiodeV2,
+    grunnlag: SaksgrunnlagV2,
+    innvilgedePerioder: SaksperiodeV2[]
 ): Periode => {
-    const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
+    const gradert = saksperiode.gradering !== undefined && saksperiode.resultat.innvilget;
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
     const erFarEllerMedmorOgKunSøkerHarRett =
-        erFarEllerMedmor &&
+        grunnlag.søkerErFarEllerMedmor &&
         !grunnlag.morHarRett &&
         !grunnlag.farMedmorErAleneOmOmsorg &&
         !grunnlag.harAnnenForelderTilsvarendeRettEØS;
 
     if (saksperiode.gjelderAnnenPart) {
-        return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor, innvilgedePerioder);
+        return mapAnnenPartInfoPeriodeFromSaksperiodeV2(
+            saksperiode,
+            grunnlag.søkerErFarEllerMedmor,
+            innvilgedePerioder
+        );
     }
 
-    const annenPartSamtidigUttakPeriode: Saksperiode | undefined = innvilgedePerioder.find(
+    const annenPartSamtidigUttakPeriode: SaksperiodeV2 | undefined = innvilgedePerioder.find(
         (ip) =>
             Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) &&
             ip.guid !== saksperiode.guid
@@ -237,86 +266,77 @@ export const mapUttaksperiodeFromSaksperiode = (
     let samtidigUttakProsentAnnenPart;
 
     if (annenPartSamtidigUttakPeriode) {
-        samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
+        samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttak;
     }
 
-    const samtidigUttakProsent = beregnSamtidigUttaksProsent(
-        saksperiode.samtidigUttaksprosent,
+    const samtidigUttakProsent = beregnSamtidigUttaksProsentV2(
+        saksperiode.samtidigUttak,
         samtidigUttakProsentAnnenPart,
-        saksperiode.utbetalingsprosent
+        saksperiode.gradering?.arbeidstidprosent
     );
-
-    let konto;
-
-    if (erFarEllerMedmorOgKunSøkerHarRett) {
-        konto = getKontotypeBareFarHarRett(saksperiode.periodeResultatÅrsak);
-    }
 
     const { termindato, fødselsdato, omsorgsovertakelsesdato } = grunnlag;
 
     const familiehendelseDato = getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato);
-    const kontoType = konto !== undefined ? konto : saksperiode.stønadskontotype;
+    const kontoType = erFarEllerMedmorOgKunSøkerHarRett
+        ? getKontotypeBareFarHarRettV2(saksperiode.resultat.trekkerMinsterett)
+        : saksperiode.kontoType;
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
         konto: kontoType,
         tidsperiode: tidsperiodeDate,
-        forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
-        ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
+        forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
+        ønskerSamtidigUttak: saksperiode.samtidigUttak !== undefined,
         gradert,
         samtidigUttakProsent,
         ønskerFlerbarnsdager: grunnlag.antallBarn > 1 ? saksperiode.flerbarnsdager : undefined,
-        stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
+        stillingsprosent: gradert ? saksperiode.gradering!.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert
-            ? saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType))
+            ? [getArbeidsformFromUttakArbeidstype(saksperiode.gradering!.aktivitet.type)]
             : undefined,
-        orgnumre: gradert ? [saksperiode.arbeidsgiverInfo.id] : undefined,
+        orgnumre:
+            gradert && saksperiode.gradering!.aktivitet.arbeidsgiver
+                ? [saksperiode.gradering!.aktivitet.arbeidsgiver.id]
+                : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
-        erMorForSyk: getErMorForSyk(erFarEllerMedmor, saksperiode, familiehendelseDato, kontoType),
+        erMorForSyk: getErMorForSyk(grunnlag.søkerErFarEllerMedmor, saksperiode, familiehendelseDato, kontoType),
         angittAvAnnenPart: saksperiode.angittAvAnnenPart,
     };
 
     return uttaksperiode;
 };
 
-const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarEllerMedmor: boolean): Periode => {
-    if (saksperiode.gjelderAnnenPart) {
-        return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor);
-    }
+const mapUtsettelseperiodeFromSaksperiodeV2 = (saksperiode: SaksperiodeV2, erFarEllerMedmor: boolean): Periode => {
+    //TODO : Annen parts utsettelse
+    // if (saksperiode.gjelderAnnenPart) {
+    //     return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor);
+    // }
 
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
-        årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
+        årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelseÅrsak)!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         erArbeidstaker: false,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
     };
 
-    if (utsettelsesperiode.årsak === UtsettelseÅrsakType.Arbeid) {
-        const arbeidsformer = saksperiode.uttakArbeidType.map((arbType) => getArbeidsformFromUttakArbeidstype(arbType));
-        const orgnummer = saksperiode.arbeidsgiverInfo.id;
-
-        return {
-            ...utsettelsesperiode,
-            arbeidsformer,
-            orgnumre: arbeidsformer.includes(Arbeidsform.arbeidstaker) ? [orgnummer] : undefined,
-            erArbeidstaker: orgnummer ? true : false,
-        };
-    }
-
     return utsettelsesperiode;
 };
 
-const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEllerMedmor: boolean): AvslåttPeriode => {
+const mapInfoPeriodeFromAvslåttSaksperiode = (
+    saksperiode: SaksperiodeV2,
+    erFarEllerMedmor: boolean
+): AvslåttPeriode => {
     const avslåttPeriode: AvslåttPeriode = {
         id: guid(),
         type: Periodetype.Info,
         infotype: PeriodeInfoType.avslåttPeriode,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
-        avslåttPeriodeType: saksperiode.utsettelsePeriodeType ? Periodetype.Utsettelse : Periodetype.Uttak,
-        stønadskonto: saksperiode.stønadskontotype,
+        avslåttPeriodeType: saksperiode.utsettelseÅrsak !== undefined ? Periodetype.Utsettelse : Periodetype.Uttak,
+        stønadskonto: saksperiode.kontoType,
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
         visPeriodeIPlan: true,
@@ -324,23 +344,22 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
     return avslåttPeriode;
 };
 
-const mapAnnenPartInfoPeriodeFromSaksperiode = (
-    saksperiode: Saksperiode,
+const mapAnnenPartInfoPeriodeFromSaksperiodeV2 = (
+    saksperiode: SaksperiodeV2,
     erFarEllerMedmor: boolean,
-    innvilgedePerioder?: Saksperiode[]
+    innvilgedePerioder?: SaksperiodeV2[]
 ): UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode => {
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
 
-    if (saksperiode.utsettelsePeriodeType && saksperiode.periodeResultatType !== PeriodeResultatType.AVSLÅTT) {
+    if (saksperiode.utsettelseÅrsak !== undefined && saksperiode.resultat.innvilget === true) {
         return {
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
             id: guid(),
-            årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelsePeriodeType)!,
+            årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelseÅrsak)!,
             tidsperiode: tidsperiodeDate,
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,
-            resultatType: saksperiode.periodeResultatType,
             visPeriodeIPlan: true,
         };
     }
@@ -354,9 +373,8 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
                 ip.guid !== saksperiode.guid
         );
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
-    const gradert = saksperiode.graderingInnvilget !== undefined ? saksperiode.graderingInnvilget : false;
 
-    const annenPartSamtidigUttakPeriode: Saksperiode | undefined =
+    const annenPartSamtidigUttakPeriode: SaksperiodeV2 | undefined =
         innvilgedePerioder !== undefined
             ? innvilgedePerioder.find(
                   (ip) =>
@@ -368,13 +386,13 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     let samtidigUttakProsentAnnenPart;
 
     if (annenPartSamtidigUttakPeriode) {
-        samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttaksprosent;
+        samtidigUttakProsentAnnenPart = annenPartSamtidigUttakPeriode.samtidigUttak;
     }
 
-    const samtidigUttaksprosent = beregnSamtidigUttaksProsent(
-        saksperiode.samtidigUttaksprosent,
+    const samtidigUttakProsent = beregnSamtidigUttaksProsentV2(
+        saksperiode.samtidigUttak,
         samtidigUttakProsentAnnenPart,
-        saksperiode.utbetalingsprosent
+        saksperiode.gradering?.arbeidstidprosent
     );
 
     return {
@@ -385,79 +403,66 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         tidsperiode: tidsperiodeDate,
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
-        resultatType: saksperiode.periodeResultatType,
-        gradert,
-        ønskerSamtidigUttak: samtidigUttaksprosent !== undefined,
-        samtidigUttakProsent: samtidigUttaksprosent,
-        stillingsprosent: gradert ? saksperiode.arbeidstidprosent.toString() : undefined,
+        gradert: saksperiode.gradering !== undefined ? true : false,
+        ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
+        samtidigUttakProsent: samtidigUttakProsent,
+        stillingsprosent:
+            saksperiode.gradering !== undefined ? saksperiode.gradering.arbeidstidprosent.toString() : undefined,
         visPeriodeIPlan: skalVises,
     };
 };
 
-const mapOverføringsperiodeFromSaksperiode = (
-    saksperiode: Saksperiode,
+const mapOverføringsperiodeFromSaksperiodeV2 = (
+    saksperiode: SaksperiodeV2,
     erFarEllerMedmor: boolean
 ): Overføringsperiode => {
     return {
         id: guid(),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
-        konto: saksperiode.stønadskontotype,
+        konto: saksperiode.kontoType,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         type: Periodetype.Overføring,
-        årsak: saksperiode.overfoeringAarsak!,
+        årsak: saksperiode.overføringÅrsak!,
     };
 };
 
 const mapPeriodeFromSaksperiode = (
-    saksperiode: Saksperiode,
-    grunnlag: Saksgrunnlag,
-    innvilgedePerioder: Saksperiode[],
-    erFarEllerMedmor: boolean
+    saksperiode: SaksperiodeV2,
+    grunnlag: SaksgrunnlagV2,
+    innvilgedePerioder: SaksperiodeV2[]
 ): Periode => {
     if (saksperiode.gjelderAnnenPart) {
-        return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor, innvilgedePerioder);
+        return mapAnnenPartInfoPeriodeFromSaksperiodeV2(
+            saksperiode,
+            grunnlag.søkerErFarEllerMedmor,
+            innvilgedePerioder
+        );
     }
 
-    if (
-        saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
-        (!saksperiode.utbetalingsprosent || saksperiode.utbetalingsprosent === 0)
-    ) {
-        return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, erFarEllerMedmor);
+    if (!saksperiode.resultat.innvilget) {
+        return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag.søkerErFarEllerMedmor);
     }
 
-    if (
-        saksperiode.utsettelsePeriodeType !== undefined &&
-        (!saksperiode.utbetalingsprosent || saksperiode.utbetalingsprosent === 0)
-    ) {
-        return mapUtsettelseperiodeFromSaksperiode(saksperiode, erFarEllerMedmor);
+    if (saksperiode.utsettelseÅrsak !== undefined) {
+        return mapUtsettelseperiodeFromSaksperiodeV2(saksperiode, grunnlag.søkerErFarEllerMedmor);
     }
 
-    if (saksperiode.overfoeringAarsak !== undefined) {
-        return mapOverføringsperiodeFromSaksperiode(saksperiode, erFarEllerMedmor);
+    if (saksperiode.overføringÅrsak !== undefined) {
+        return mapOverføringsperiodeFromSaksperiodeV2(saksperiode, grunnlag.søkerErFarEllerMedmor);
     }
 
-    return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder, erFarEllerMedmor);
+    return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
 };
 
-const gyldigeSaksperioder = (saksperiode: Saksperiode): boolean => {
-    if (saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET) {
-        return true;
-    }
-
-    if (saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT && saksperiode.utbetalingsprosent > 0) {
-        return true;
-    }
+export const gyldigeSaksperioder = (saksperiode: SaksperiodeV2) => {
+    if (saksperiode.resultat.innvilget) return true;
 
     if (
-        saksperiode.periodeResultatType === PeriodeResultatType.AVSLÅTT &&
-        saksperiode.utsettelsePeriodeType !== undefined &&
-        saksperiode.utsettelsePeriodeType === UtsettelseÅrsakTypeDTO.InstitusjonBarnet &&
-        saksperiode.trekkDager > 0
+        saksperiode.resultat.årsak !== PeriodeResultatÅrsakV2.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
+        saksperiode.resultat.trekkerDager
     ) {
         return true;
     }
-
-    return false;
 };
 
 const getPerioderSplittetOverFødsel = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
@@ -473,14 +478,10 @@ const getPerioderSplittetOverFødsel = (perioder: Periode[], familiehendelsesdat
     return nyePerioder;
 };
 
-const mapSaksperioderTilUttaksperioder = (
-    saksperioder: Saksperiode[],
-    grunnlag: Saksgrunnlag,
-    erFarEllerMedmor: boolean
-): Periode[] => {
+const mapSaksperioderTilUttaksperioder = (saksperioder: SaksperiodeV2[], grunnlag: SaksgrunnlagV2): Periode[] => {
     const innvilgedePerioder = saksperioder.filter(gyldigeSaksperioder);
     const perioder = innvilgedePerioder.map((periode) =>
-        mapPeriodeFromSaksperiode(periode, grunnlag, innvilgedePerioder, erFarEllerMedmor)
+        mapPeriodeFromSaksperiode(periode, grunnlag, innvilgedePerioder)
     );
     const familiehendelsesdato = new Date(grunnlag.familiehendelseDato);
 
@@ -511,7 +512,7 @@ const mapSaksperioderTilUttaksperioder = (
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
-        erFarEllerMedmor
+        grunnlag.søkerErFarEllerMedmor
     );
 
     return finnOgSettInnHull(
@@ -520,7 +521,7 @@ const mapSaksperioderTilUttaksperioder = (
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
-        erFarEllerMedmor
+        grunnlag.søkerErFarEllerMedmor
     );
 };
 

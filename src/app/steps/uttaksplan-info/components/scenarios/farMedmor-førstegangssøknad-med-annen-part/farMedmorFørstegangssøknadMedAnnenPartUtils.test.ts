@@ -4,7 +4,6 @@ import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 
 const familiehendelseDatoForMorsPerioderFørWLB = new Date('2021-08-04');
 const familiehendelseDatoForMorsPerioderEtterWLB = new Date('2022-08-04');
@@ -18,7 +17,7 @@ const morsPerioderFørWLB: Periode[] = [
         },
         forelder: Forelder.mor,
         infotype: PeriodeInfoType.uttakAnnenPart,
-        årsak: OppholdÅrsakType.UttakForelderpengerFørFødsel,
+        årsak: OppholdÅrsakType.UttakForelderpengerFørFødselAnnenForelder,
         overskrives: true,
         visPeriodeIPlan: true,
     },
@@ -47,10 +46,9 @@ const morsPerioderEtterWLB: UttakAnnenPartInfoPeriode[] = [
         },
         forelder: Forelder.mor,
         infotype: PeriodeInfoType.uttakAnnenPart,
-        årsak: OppholdÅrsakType.UttakForelderpengerFørFødsel,
+        årsak: OppholdÅrsakType.UttakForelderpengerFørFødselAnnenForelder,
         overskrives: true,
         visPeriodeIPlan: true,
-        resultatType: PeriodeResultatType.INNVILGET,
     },
     {
         id: '2',
@@ -64,7 +62,6 @@ const morsPerioderEtterWLB: UttakAnnenPartInfoPeriode[] = [
         årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
         overskrives: true,
         visPeriodeIPlan: true,
-        resultatType: PeriodeResultatType.INNVILGET,
     },
     {
         id: '3',
@@ -78,7 +75,6 @@ const morsPerioderEtterWLB: UttakAnnenPartInfoPeriode[] = [
         årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
         overskrives: true,
         visPeriodeIPlan: true,
-        resultatType: PeriodeResultatType.INNVILGET,
     },
 ];
 

@@ -1,5 +1,5 @@
 import SøknadRoutes from 'app/routes/routes';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Sakv2 } from 'app/types/sakerv2/Sakv2';
@@ -22,7 +22,7 @@ export interface ForeldrepengesøknadContextState {
     sakerv2: Sakv2[];
     uttaksplanInfo?: UttaksplanInfo;
     kvittering: Kvittering;
-    eksisterendeSak?: EksisterendeSak;
+    eksisterendeSak?: EksisterendeSakV2;
     antallUkerIUttaksplan: number;
     endringstidspunkt?: Date;
     perioderSomSkalSendesInn: Periode[];

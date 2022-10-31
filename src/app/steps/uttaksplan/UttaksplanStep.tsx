@@ -3,7 +3,7 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import AlertStripe from 'nav-frontend-alertstriper';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
@@ -22,7 +22,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isUttakAnnenPart, isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
@@ -51,6 +51,11 @@ import {
     getKanJustereAutomatiskVedFødsel,
 } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { FormikValues } from 'formik';
+import { mapAnnenPartsVedtakIFørstegangssøknadFromDTO } from 'app/utils/eksisterendeSakUtils';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
+import { RequestStatus } from 'app/types/RequestState';
+import { Periodene } from '../uttaksplan-info/utils/Periodene';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -65,7 +70,16 @@ const UttaksplanStep = () => {
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
     const { person, arbeidsforhold } = søkerinfo;
-    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
+    const {
+        annenForelder,
+        søker,
+        barn,
+        søkersituasjon,
+        dekningsgrad,
+        erEndringssøknad,
+        tilleggsopplysninger,
+        uttaksplan,
+    } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
@@ -91,6 +105,83 @@ const UttaksplanStep = () => {
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
+    const annenForelderFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const erAdopsjon = situasjon === 'fødsel';
+
+    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
+        søkersituasjon.rolle,
+        erFarEllerMedmor,
+        annenForelder
+    );
+    // const barnFnr = isFødtBarn(barn) || isAdoptertBarn(barn) ? barn.fnr : undefined; //TODO: Må vi lagre barn.fnr i state?
+    const eksisterendeSakAnnenPartRequestIsSuspended =
+        annenForelderFnr !== undefined && familiehendelsesdato !== undefined ? false : true; //TODO: refaktorer - utledes også i api kallet
+
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
+        annenForelderFnr,
+        undefined, //barnFnr, //TODO Kan vi la være å bruke barn fnr her? Vil ikke lagre fnr i staten. Men vi agrer allerede annen parts fnr.
+        familiehendelsesdato
+    );
+
+    const eksisterendeVedtakAnnenPart = useMemo(
+        () =>
+            mapAnnenPartsVedtakIFørstegangssøknadFromDTO(
+                eksisterendeSakAnnenPartData,
+                barn,
+                erFarEllerMedmor,
+                familiehendelsesdato
+            ),
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato]
+    );
+    const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+        erDeltUttak,
+        morHarRett,
+        søkerErAleneOmOmsorg,
+    });
+
+    //Legg til annen parts perioder i planen til bruker
+    useEffect(() => {
+        if (erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined) {
+            //Sett ønskerSamtidigUttak på søkerens perioder hvis overlapper med annen parts samtidig uttak:
+            uttaksplan.forEach((p) => {
+                if (isUttaksperiode(p)) {
+                    const overlappendePerioderAnnenPart = Periodene(
+                        eksisterendeVedtakAnnenPart.uttaksplan
+                    ).finnOverlappendePerioder(p);
+
+                    if (
+                        overlappendePerioderAnnenPart.length !== 0 &&
+                        overlappendePerioderAnnenPart.find(
+                            (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
+                        )
+                    ) {
+                        p.ønskerSamtidigUttak = true;
+                    }
+                }
+            });
+
+            const uttaksplanMedAnnenPart = finnOgSettInnHull(
+                settInnAnnenPartsUttak(uttaksplan, eksisterendeVedtakAnnenPart.uttaksplan, familiehendelsesdatoDate!),
+                harAktivitetskravIPeriodeUtenUttak,
+                familiehendelsesdatoDate!,
+                erAdopsjon,
+                bareFarMedmorHarRett,
+                erFarEllerMedmor
+            );
+
+            dispatch(actionCreator.setUttaksplan(uttaksplanMedAnnenPart));
+        }
+    }, [
+        eksisterendeVedtakAnnenPart,
+        erEndringssøknad,
+        uttaksplan,
+        familiehendelsesdatoDate,
+        harAktivitetskravIPeriodeUtenUttak,
+        erAdopsjon,
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        dispatch,
+    ]);
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
@@ -145,11 +236,6 @@ const UttaksplanStep = () => {
         termindato
     );
 
-    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
-        søkersituasjon.rolle,
-        erFarEllerMedmor,
-        annenForelder
-    );
     const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
@@ -215,7 +301,10 @@ const UttaksplanStep = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             eksisterendeSak?.grunnlag.termindato
-        )
+        ),
+        eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -226,7 +315,10 @@ const UttaksplanStep = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             eksisterendeSak?.grunnlag.termindato
-        )
+        ),
+        eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {

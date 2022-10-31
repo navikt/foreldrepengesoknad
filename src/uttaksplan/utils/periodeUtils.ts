@@ -34,8 +34,7 @@ import dayjs from 'dayjs';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
 
@@ -254,15 +253,15 @@ export const erSentGradertUttak = (periode: Periode) =>
     !isDateTodayOrInTheFuture(dateToISOString(periode.tidsperiode.fom)) &&
     periode.gradert;
 
-export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
+export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSakV2): boolean => {
     if (eksisterendeSak === undefined) {
         return false;
     }
     const saksperiode = getSaksperiode(periode, eksisterendeSak);
-    return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
+    return saksperiode ? saksperiode.resultat.innvilget : false;
 };
 
-const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
+const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSakV2) => {
     return ekisterendeSak.saksperioder.find((saksperiode) =>
         erTidsperioderLike(convertTidsperiodeToTidsperiodeDate(saksperiode.periode), periode.tidsperiode)
     );

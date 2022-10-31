@@ -10,14 +10,17 @@ import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes, getTermindato } from 'app/utils/barnUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import actionCreator from 'app/context/action/actionCreator';
-import { mapEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
+import { mapAnnenPartsVedtakIFørstegangssøknadFromDTO } from 'app/utils/eksisterendeSakUtils';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import { isFødtBarn } from 'app/context/types/Barn';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -35,26 +38,37 @@ const UttaksplanInfo = () => {
     const eksisterendeSakAnnenPartRequestIsSuspended =
         registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
 
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetEksisterendeSakMedFnr(
-        søkerinfo.person.fnr,
-        erFarEllerMedmor,
-        registrertBarn?.annenForelder?.fnr
+    const annenPartFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const barnFødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
+        annenPartFnr,
+        barnFødselsdato,
+        familiehendelsesdato
     );
 
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
 
-    const eksisterendeSak = useMemo(
-        () => mapEksisterendeSakFromDTO(eksisterendeSakAnnenPartData, erFarEllerMedmor, true),
-        [eksisterendeSakAnnenPartData, erFarEllerMedmor]
+    const eksisterendeVedtakAnnenPart = useMemo(
+        () =>
+            mapAnnenPartsVedtakIFørstegangssøknadFromDTO(
+                eksisterendeSakAnnenPartData,
+                barn,
+                erFarEllerMedmor,
+                familiehendelsesdato
+            ),
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato]
     );
+    const termindato = dateToISOString(getTermindato(barn));
 
+    //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
-        if (eksisterendeSak !== undefined) {
-            dispatch(actionCreator.setUttaksplan(eksisterendeSak!.uttaksplan));
-            dispatch(actionCreator.setEksisterendeSak(eksisterendeSak));
+        if (eksisterendeVedtakAnnenPart !== undefined) {
+            dispatch(actionCreator.setUttaksplan(eksisterendeVedtakAnnenPart!.uttaksplan));
+            dispatch(actionCreator.setEksisterendeSak(eksisterendeVedtakAnnenPart));
         }
-    }, [eksisterendeSak, dispatch]);
+    }, [eksisterendeVedtakAnnenPart, dispatch]);
 
     useEffect(() => {
         dispatch(actionCreator.setUttaksplanSlettet(false));
@@ -69,7 +83,7 @@ const UttaksplanInfo = () => {
                 søkersituasjon,
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
-                eksisterendeSakAnnenPartData?.grunnlag.termindato
+                termindato
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
                 ? false
@@ -85,7 +99,7 @@ const UttaksplanInfo = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
-            eksisterendeSakAnnenPartData?.grunnlag.termindato
+            termindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended
             ? false
@@ -130,7 +144,7 @@ const UttaksplanInfo = () => {
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
-                eksisterendeSakAnnenPart={eksisterendeSak}
+                eksisterendeSakAnnenPart={eksisterendeVedtakAnnenPart}
             />
         </Step>
     );

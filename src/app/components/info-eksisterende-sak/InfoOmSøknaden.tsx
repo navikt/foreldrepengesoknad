@@ -3,7 +3,7 @@ import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
@@ -33,7 +33,7 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    eksisterendeSak: EksisterendeSak | undefined;
+    eksisterendeSak: EksisterendeSakV2 | undefined;
     erIUttaksplanenSteg: boolean;
 }
 

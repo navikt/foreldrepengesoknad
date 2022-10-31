@@ -14,7 +14,7 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import dayjs from 'dayjs';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 
 const context = {
     søknad: {
@@ -93,7 +93,7 @@ interface Props {
     context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
     erIUttaksplanenSteg: boolean;
-    ekisterendeSak?: EksisterendeSak;
+    ekisterendeSak?: EksisterendeSakV2;
 }
 
 const Template: Story<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = true, ekisterendeSak }) => {
@@ -180,6 +180,6 @@ InfoOmMorsSak.args = {
                 },
             } as Periode,
         ],
-    } as EksisterendeSak,
+    } as EksisterendeSakV2,
     erIUttaksplanenSteg: false,
 };

@@ -7,6 +7,7 @@ import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import { erEldreEnn3År } from 'app/utils/personUtils';
+import { AnnenPartV2 } from 'app/types/AnnenPart';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -47,7 +48,7 @@ const getSakStatus = (sakAvsluttet: boolean, sakÅpenBehandling: undefined | Åp
 const getSelectableBarnFraSak = (sak: Sakv2): SelectableBarn => {
     const barnFraSak = {
         id: guid(),
-        fnr: sak.barn.map((b) => b.fødselsnummer),
+        fnr: sak.barn.map((b) => b.fnr),
         type: getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse),
         antallBarn: sak.familiehendelse.antallBarn,
         omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertagelse),
@@ -62,6 +63,11 @@ const getSelectableBarnFraSak = (sak: Sakv2): SelectableBarn => {
             status: getSakStatus(sak.sakAvsluttet, sak.åpenBehandling),
             saksnummer: sak.saksnummer,
         },
+        annenForelder: {
+            fnr: sak.annenPart.fnr,
+            fornavn: sak.annenPart.fornavn,
+            etternavn: sak.annenPart.etternavn,
+        },
     };
     return {
         ...barnFraSak,
@@ -73,7 +79,10 @@ const getSelectableBarnFraSak = (sak: Sakv2): SelectableBarn => {
     };
 };
 
-const getSelectableBarnFraPDL = (registrertBarn: RegistrertBarn): SelectableBarn => {
+const getSelectableBarnFraPDL = (
+    registrertBarn: RegistrertBarn,
+    annenForelder: AnnenPartV2 | undefined
+): SelectableBarn => {
     return {
         id: guid(),
         type: SelectableBarnType.IKKE_UTFYLT,
@@ -83,12 +92,14 @@ const getSelectableBarnFraPDL = (registrertBarn: RegistrertBarn): SelectableBarn
         etternavn: [registrertBarn.etternavn],
         fnr: [registrertBarn.fnr],
         sortableDato: registrertBarn.fødselsdato,
+        annenForelder,
     };
 };
 
 const getSelectableFlerlingerFraPDL = (
     registrertBarn: RegistrertBarn,
-    barnFødtISammePeriode: RegistrertBarn[]
+    barnFødtISammePeriode: RegistrertBarn[],
+    annenForelder: AnnenPartV2 | undefined
 ): SelectableBarn => {
     const barnFødtISammePeriodeFødselsdatoer = barnFødtISammePeriode.map((b) => b.fødselsdato);
     const barnFødtISammePeriodeFornavn = barnFødtISammePeriode.map((b) => b.fornavn);
@@ -103,6 +114,7 @@ const getSelectableFlerlingerFraPDL = (
         etternavn: [registrertBarn.etternavn].concat(barnFødtISammePeriodeEtternavn),
         fnr: [registrertBarn.fnr].concat(barnFødtISammePeriodeFnr),
         sortableDato: registrertBarn.fødselsdato,
+        annenForelder,
     };
 };
 
@@ -110,23 +122,14 @@ const getSelectableBarnOptionsFromSaker = (sakerV2: Sakv2[]) => {
     return sakerV2.map((s) => getSelectableBarnFraSak(s));
 };
 
-const registrertBarnFunnetISaker = (
-    registrertBarn: RegistrertBarn,
-    barnFraSaker: SelectableBarn[]
-): SelectableBarn | undefined => {
-    return barnFraSaker.find(
-        (barn) => barn.fnr !== undefined && registrertBarn.fnr !== undefined && barn.fnr.includes(registrertBarn.fnr)
-    );
-};
-
 const getSelectableBarnOptionsFraPDL = (
     registrerteBarn: RegistrertBarn[],
     barnFraSaker: SelectableBarn[]
 ): SelectableBarn[] => {
-    const barnLagtTilFnr = [] as string[];
+    const barnSomErLagtTilFnr = barnFraSaker.map((b) => b.fnr).flat();
     const selectableBarnFraPDL = [] as SelectableBarn[];
     registrerteBarn.forEach((regBarn) => {
-        if (!barnLagtTilFnr.includes(regBarn.fnr) && !erEldreEnn3År(regBarn.fødselsdato)) {
+        if (!barnSomErLagtTilFnr.includes(regBarn.fnr) && !erEldreEnn3År(regBarn.fødselsdato)) {
             const dagenFørFødsel = dayjs(regBarn.fødselsdato).subtract(1, 'day');
             const dagenEtterFødsel = dayjs(regBarn.fødselsdato).add(1, 'day');
             const barnFødtISammePeriode = registrerteBarn.filter(
@@ -135,18 +138,28 @@ const getSelectableBarnOptionsFraPDL = (
                     dayjs(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
                     dayjs(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day')
             );
-            if (registrertBarnFunnetISaker(regBarn, barnFraSaker) === undefined) {
-                barnLagtTilFnr.push(regBarn.fnr);
-                if (barnFødtISammePeriode.length === 0) {
-                    const selectableBarn = getSelectableBarnFraPDL(regBarn);
-                    selectableBarnFraPDL.push(selectableBarn);
-                } else {
-                    const selectableFlerlinger = getSelectableFlerlingerFraPDL(regBarn, barnFødtISammePeriode);
-                    barnFødtISammePeriode.forEach((b) => {
-                        barnLagtTilFnr.push(b.fnr);
-                    });
-                    selectableBarnFraPDL.push(selectableFlerlinger);
-                }
+            barnSomErLagtTilFnr.push(regBarn.fnr);
+            const annenForelder =
+                regBarn.annenForelder !== undefined
+                    ? {
+                          fnr: regBarn.annenForelder.fnr,
+                          fornavn: regBarn.annenForelder.fornavn,
+                          etternavn: regBarn.annenForelder.etternavn,
+                      }
+                    : undefined;
+            if (barnFødtISammePeriode.length === 0) {
+                const selectableBarn = getSelectableBarnFraPDL(regBarn, annenForelder);
+                selectableBarnFraPDL.push(selectableBarn);
+            } else {
+                const selectableFlerlinger = getSelectableFlerlingerFraPDL(
+                    regBarn,
+                    barnFødtISammePeriode,
+                    annenForelder
+                );
+                barnFødtISammePeriode.forEach((b) => {
+                    barnSomErLagtTilFnr.push(b.fnr);
+                });
+                selectableBarnFraPDL.push(selectableFlerlinger);
             }
         }
     });
@@ -155,7 +168,6 @@ const getSelectableBarnOptionsFraPDL = (
 };
 
 export const getSelectableBarnOptions = (sakerV2: Sakv2[], registrerteBarn: RegistrertBarn[]) => {
-    //TODO: Må man kun filtrere på foreldrepenger saker eller er det allerede gjort?
     const åpneSaker = sakerV2.filter((sak) => !sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker);
     const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker);

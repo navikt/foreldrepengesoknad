@@ -6,7 +6,6 @@ import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
-import { PeriodeResultatType } from './PeriodeResultatType';
 import { StønadskontoType } from './StønadskontoType';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
@@ -113,7 +112,6 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     årsak: OppholdÅrsakType;
     forelder: Forelder;
     overskrives: true;
-    resultatType: PeriodeResultatType;
     visPeriodeIPlan: boolean;
     ønskerSamtidigUttak?: boolean;
     samtidigUttakProsent?: string;
@@ -127,7 +125,6 @@ export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     overskrives: true;
-    resultatType: PeriodeResultatType;
     visPeriodeIPlan: boolean;
 }
 

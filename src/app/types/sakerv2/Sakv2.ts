@@ -1,6 +1,6 @@
 import { FagsakStatus } from '../Sak';
 import { SaksperiodeDTO } from '../SaksperiodeDTO';
-import { DekningsgradV2 } from './Dekningsgradv2';
+import { DekningsgradV2DTO } from './Dekningsgradv2DTO';
 import { Familiehendelse } from './Familiehendelse';
 import { GjeldendeVedtak } from './GjeldendeVedtak';
 import { PersonV2 } from './Personv2';
@@ -13,7 +13,7 @@ export interface ÅpenBehandling {
 export interface Sakv2 {
     annenPart: PersonV2;
     barn: PersonV2[];
-    dekningsgrad: DekningsgradV2;
+    dekningsgrad: DekningsgradV2DTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak: GjeldendeVedtak;
     harAnnenForelderTilsvarendeRettEØS: boolean;

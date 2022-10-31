@@ -9,16 +9,14 @@ import SøknadStatusEtikett from '../SøknadStatus';
 import { erSakFerdigbehandlet } from 'app/utils/sakerUtils';
 import Sak from 'app/types/Sak';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { AnnenPartV2 } from 'app/types/AnnenPart';
 
-//Todo: use BarnType here?
 export enum SelectableBarnType {
     FØDT = 'født',
     UFØDT = 'ufødt',
     ADOPTERT = 'adoptert',
     IKKE_UTFYLT = 'ikkeUtfylt',
 }
-
-// interface SelectableBarnType extends Omit<BarnType, 'ADOPTERT_STEBAR' |  'ADOPTERT_ANNET_BARN'>
 
 export enum SelectableBarnOptions {
     SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
@@ -37,6 +35,7 @@ export interface SelectableBarn {
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
     sak?: Sak;
+    annenForelder?: AnnenPartV2;
 }
 
 interface Props {

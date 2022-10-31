@@ -4,6 +4,6 @@ export interface PersonV2 {
     etternavn: string;
     fornavn: string;
     fødselsdato: string;
-    fødselsnummer: string;
+    fnr: string;
     kjønn: Kjønn;
 }

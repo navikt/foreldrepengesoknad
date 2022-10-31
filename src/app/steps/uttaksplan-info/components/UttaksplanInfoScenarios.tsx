@@ -7,7 +7,7 @@ import MorFarAdopsjonAnnenForelderHarRettIEØS from './scenarios/mor-far-adopsjo
 import MorFarFødselAnnenForelderHarRettIEØS from './scenarios/mor-far-fødsel-annen-part-har-rett-i-eøs/MorFarFødselAnnenForelderHarRettIEØS';
 import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneomsorg-fødsel/FarMedmorAleneomsorgFødsel';
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 import FarMedmorFørstegangssøknadMedAnnenPart from './scenarios/farMedmor-førstegangssøknad-med-annen-part/FarMedmorFørstegangssøknadMedAnnenPart';
 import { getUttaksplanScenario } from './scenarios/scenarios';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
@@ -17,7 +17,7 @@ import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
-    eksisterendeSakAnnenPart: EksisterendeSak | undefined;
+    eksisterendeSakAnnenPart: EksisterendeSakV2 | undefined;
 }
 
 const UttaksplanInfoScenarios: FunctionComponent<Props> = ({

@@ -1,135 +1,71 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352009381",
+            "saksnummer": "352009416",
             "sakAvsluttet": false,
+            "sisteSøknadMottattDato": "2022-10-11",
             "kanSøkeOmEndring": true,
-            "sakTilhørerMor": false,
-            "gjelderAdopsjon": true,
-            "morUføretrygd": false,
-            "harAnnenForelderTilsvarendeRettEØS": false,
-            "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BARE_SØKER_RETT",
-            "annenPart": {
-                "type": "person",
-                "fnr": "12048902861",
-                "fornavn": "Mor",
-                "etternavn": "Olsen"
-            },
-            "familiehendelse": {
-                "omsorgsovertagelse": "2022-02-01",
-                "antallBarn": 2
-            },
-            "barn": [
-                {
-                    "type": "person",
-                    "fnr": "01492163577",
-                    "fornavn": "Stolt",
-                    "etternavn": "Olsen",
-                    "kjønn": "U",
-                    "fødselsdato": "2022-02-01"
-                },
-                {
-                    "type": "person",
-                    "fnr": "01492187433",
-                    "fornavn": "Sterk",
-                    "etternavn": "Olsen",
-                    "kjønn": "U",
-                    "fødselsdato": "2022-02-01"
-                }
-            ],
-            "dekningsgrad": "HUNDRE"
-        },
-        {
-            "saksnummer": "352001654",
-            "sakAvsluttet": false,
-            "kanSøkeOmEndring": false,
-            "sakTilhørerMor": false,
+            "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BARE_SØKER_RETT",
-            "annenPart": {
-                "type": "person",
-                "fnr": "12048902861",
-                "fornavn": "Mor",
-                "etternavn": "Olsen"
-            },
-            "familiehendelse": {
-                "fødselsdato": "2021-09-01",
-                "antallBarn": 2
-            },
-            "åpenBehandling": {
-                "tilstand": "UNDER_BEHANDLING",
-                "søknadsperioder": []
-            },
-            "barn": [
-                {
-                    "type": "person",
-                    "fnr": "01492163577",
-                    "fornavn": "Sur",
-                    "etternavn": "Sitron",
-                    "kjønn": "U",
-                    "fødselsdato": "2021-09-01"
-                },
-                {
-                    "type": "person",
-                    "fnr": "01492187433",
-                    "fornavn": "Søt",
-                    "etternavn": "Sitron",
-                    "kjønn": "U",
-                    "fødselsdato": "2021-09-01"
-                }
-            ],
-            "dekningsgrad": "HUNDRE"
-        },
-        {
-            "saksnummer": "3520178623",
-            "sakAvsluttet": false,
-            "kanSøkeOmEndring": false,
-            "sakTilhørerMor": false,
-            "gjelderAdopsjon": false,
-            "morUføretrygd": false,
-            "harAnnenForelderTilsvarendeRettEØS": false,
-            "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BARE_SØKER_RETT",
-            "annenPart": {
-                "type": "person",
-                "fnr": "12048902861",
-                "fornavn": "mor",
-                "etternavn": "Olsen"
-            },
-            "familiehendelse": {
-                "termindato": "2023-01-17",
-                "antallBarn": 2
-            },
-            "åpenBehandling": {
-                "tilstand": "UNDER_BEHANDLING",
-                "søknadsperioder": []
-            },
-            "barn": [],
-            "dekningsgrad": "HUNDRE"
-        },
-        {
-            "saksnummer": "1050189653",
-            "sakAvsluttet": true,
-            "kanSøkeOmEndring": false,
-            "sakTilhørerMor": false,
-            "gjelderAdopsjon": false,
-            "morUføretrygd": false,
-            "harAnnenForelderTilsvarendeRettEØS": false,
-            "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BARE_SØKER_RETT",
-            "annenPart": {
-                "type": "person",
-                "fnr": "12048902861",
-                "fornavn": "Mor",
-                "etternavn": "Olsen"
-            },
-            "familiehendelse": {
-                "termindato": "2020-08-16",
-                "antallBarn": 2
+            "rettighetType": "BEGGE_RETT",
+            "annenPart": { "type": "person", "fnr": "15118804322", "fornavn": "Vis", "etternavn": "Tyr" },
+            "familiehendelse": { "termindato": "2022-10-12", "antallBarn": 1 },
+            "gjeldendeVedtak": {
+                "perioder": [
+                    {
+                        "fom": "2022-09-21",
+                        "tom": "2022-10-11",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-10-12",
+                        "tom": "2022-11-22",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-11-23",
+                        "tom": "2022-12-13",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-12-28",
+                        "tom": "2023-01-30",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "gradering": {
+                            "arbeidstidprosent": 50,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": { "id": "947064649", "type": "ORGANISASJON" }
+                            }
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-01-31",
+                        "tom": "2023-02-20",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-02-21",
+                        "tom": "2023-02-27",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "gradering": { "arbeidstidprosent": 50, "aktivitet": { "type": "FRILANS" } },
+                        "flerbarnsdager": false
+                    }
+                ]
             },
             "barn": [],
             "dekningsgrad": "HUNDRE"

@@ -1,3 +1,5 @@
+import { SaksperiodeDTOV2 } from '../SaksperiodeDTO';
+
 export interface GjeldendeVedtak {
-    perioder: any[];
+    perioder: SaksperiodeDTOV2[];
 }

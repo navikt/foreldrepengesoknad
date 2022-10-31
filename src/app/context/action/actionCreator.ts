@@ -2,7 +2,7 @@ import { Locale } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { Sakv2 } from 'app/types/sakerv2/Sakv2';
@@ -265,10 +265,10 @@ const setSøknad = (payload: Søknad): SetSøknad => ({
 
 interface SetEksisterendeSak {
     type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK;
-    payload: EksisterendeSak | undefined;
+    payload: EksisterendeSakV2 | undefined;
 }
 
-const setEksisterendeSak = (payload: EksisterendeSak | undefined): SetEksisterendeSak => ({
+const setEksisterendeSak = (payload: EksisterendeSakV2 | undefined): SetEksisterendeSak => ({
     type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK,
     payload,
 });

@@ -1,4 +1,4 @@
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
 
 export type UttaksplanInfoScenario =
     | 'farMedmorAleneomsorgFødselAdopsjon'
@@ -17,7 +17,7 @@ interface UttaksplanScenarioParams {
     annenForelderKanIkkeOppgis: boolean;
     annenForelderHarRett: boolean;
     erAdopsjon: boolean;
-    eksisterendeSakAnnenPart: EksisterendeSak | undefined;
+    eksisterendeSakAnnenPart: EksisterendeSakV2 | undefined;
     annenForelderOppgittIkkeAleneOmOmsorg: boolean;
     annenForelderHarRettIEØS: boolean;
 }

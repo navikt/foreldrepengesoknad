@@ -3,7 +3,7 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Kvittering } from 'app/types/Kvittering';
 import Sak from 'app/types/Sak';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { useRequest } from 'app/utils/hooks/useRequest';
+import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
 import { AxiosResponse } from 'axios';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
@@ -14,6 +14,7 @@ import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/sakerv2/SakerOppslag';
+import { AnnenPartsVedtakDTO } from 'app/types/sakerv2/AnnenPartsVedtakDTO';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -41,7 +42,7 @@ const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
 const useSøkerinfo = () => {
-    const { data, error } = useRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
+    const { data, error } = useGetRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,
@@ -50,7 +51,7 @@ const useSøkerinfo = () => {
 };
 
 const useGetSakerV2 = (enabled: boolean) => {
-    const { data, error } = useRequest<SakerOppslag>('/innsyn/v2/saker', {
+    const { data, error } = useGetRequest<SakerOppslag>('/innsyn/v2/saker', {
         config: { withCredentials: true },
         isSuspended: !enabled,
     });
@@ -62,7 +63,7 @@ const useGetSakerV2 = (enabled: boolean) => {
 };
 
 const useGetSaker = (fnr: string | undefined) => {
-    const { data, error } = useRequest<Sak[]>('/innsyn/saker', {
+    const { data, error } = useGetRequest<Sak[]>('/innsyn/saker', {
         fnr,
         config: { withCredentials: true },
         isSuspended: fnr === undefined,
@@ -75,7 +76,7 @@ const useGetSaker = (fnr: string | undefined) => {
 };
 
 const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
-    const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
+    const { data, error } = useGetRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
         fnr,
         config: { withCredentials: true, params: { saksnummer } },
         isSuspended: saksnummer === undefined || fnr === undefined,
@@ -90,7 +91,7 @@ const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
 const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
     const isSuspended = annenPartFnr !== undefined && erFarEllerMedmor ? false : true;
 
-    const { data, error, requestStatus } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
+    const { data, error, requestStatus } = useGetRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
         fnr: søkerFnr,
         config: { params: { annenPart: annenPartFnr }, withCredentials: true },
         isSuspended,
@@ -103,8 +104,34 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolea
     };
 };
 
+const useGetAnnenPartsVedtak = (
+    annenPartFnr: string | undefined,
+    barnFnr: string | undefined,
+    familiehendelsesdato: string | undefined
+) => {
+    const isSuspended =
+        annenPartFnr !== undefined && (barnFnr !== undefined || familiehendelsesdato !== undefined) ? false : true;
+    const { data, error, requestStatus } = usePostRequest<AnnenPartsVedtakDTO>('/innsyn/v2/annenPartVedtak', {
+        config: {
+            params: {
+                annenPartFødselsnummer: annenPartFnr,
+                barnFødselsnummer: barnFnr,
+                familiehendelse: familiehendelsesdato,
+            },
+            withCredentials: true,
+        },
+        isSuspended,
+    });
+
+    return {
+        eksisterendeSakAnnenPartData: data,
+        eksisterendeSakAnnenPartError: error,
+        eksisterendeSakAnnenPartRequestStatus: requestStatus,
+    };
+};
+
 const useStoredAppState = () => {
-    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', {
+    const { data, error } = useGetRequest<ForeldrepengesøknadContextState>('/storage', {
         config: { transformResponse: storageParser, withCredentials: true },
     });
 
@@ -195,7 +222,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         morHarUføretrygd,
     };
 
-    const { data, error } = useRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
+    const { data, error } = useGetRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
         config: {
             timeout: 15 * 1000,
             params: urlParams,
@@ -229,6 +256,7 @@ const Api = {
     deleteStoredAppState,
     getStorageKvittering,
     useGetEksisterendeSakMedFnr,
+    useGetAnnenPartsVedtak,
     useStoredAppState,
     useSøkerinfo,
     useGetEksisterendeSak,

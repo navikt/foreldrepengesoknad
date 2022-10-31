@@ -3,7 +3,6 @@ import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
@@ -155,7 +154,6 @@ const periodeMedAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        resultatType: PeriodeResultatType.INNVILGET,
         årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
     },
     {
@@ -195,7 +193,6 @@ const perioderKunAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        resultatType: PeriodeResultatType.INNVILGET,
         årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
     },
 ];
