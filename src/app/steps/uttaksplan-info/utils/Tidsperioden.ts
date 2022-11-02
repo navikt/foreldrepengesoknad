@@ -28,7 +28,12 @@ export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
 });
 
 const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
-    return dayjs(t1.fom).isBetween(t2.fom, t2.tom, 'day', '[]') || dayjs(t1.tom).isBetween(t2.fom, t2.tom, 'day', '[]');
+    return (
+        dayjs(t1.fom).isBetween(t2.fom, t2.tom, 'day', '[]') ||
+        dayjs(t1.tom).isBetween(t2.fom, t2.tom, 'day', '[]') ||
+        dayjs(t2.fom).isBetween(t1.fom, t1.tom, 'day', '[]') ||
+        dayjs(t2.tom).isBetween(t1.fom, t1.tom, 'day', '[]')
+    );
 };
 
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
