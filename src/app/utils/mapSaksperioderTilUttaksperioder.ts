@@ -229,11 +229,16 @@ export const mapUttaksperiodeFromSaksperiode = (
         return mapAnnenPartInfoPeriodeFromSaksperiode(saksperiode, erFarEllerMedmor, innvilgedePerioder);
     }
 
-    const annenPartSamtidigUttakPeriode: Saksperiode | undefined = innvilgedePerioder.find(
-        (ip) =>
-            Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) &&
-            ip.guid !== saksperiode.guid
-    );
+    const annenPartSamtidigUttakPeriode: Saksperiode | undefined =
+        innvilgedePerioder !== undefined
+            ? innvilgedePerioder.find(
+                  (ip) =>
+                      (Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) ||
+                          Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).overlapper(tidsperiodeDate)) &&
+                      ip.guid !== saksperiode.guid
+              )
+            : undefined;
+
     let samtidigUttakProsentAnnenPart;
 
     if (annenPartSamtidigUttakPeriode) {
@@ -377,6 +382,9 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         saksperiode.utbetalingsprosent
     );
 
+    // if (annenPartSamtidigUttakPeriode && samtidigUttaksprosent) {
+    //     annenPartSamtidigUttakPeriode.samtidigUttak = true;
+    // }
     return {
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
