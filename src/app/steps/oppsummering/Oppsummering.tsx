@@ -97,6 +97,9 @@ const Oppsummering = () => {
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
             setIsSendingSøknad(true);
+            if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
+                throw new Error('Søknaden din inneholder ingen nye perioder.');
+            }
             Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr)
                 .then((response) => {
                     dispatch(actionCreator.setKvittering(response.data));
