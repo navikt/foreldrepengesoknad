@@ -131,7 +131,12 @@ const skalPeriodeSendesInn = (periode: Periode) => {
         return !periode.skalIkkeHaUttakFørTermin;
     }
 
-    return isNotPeriodetypeHull(periode) && isNotPeriodetypeInfo(periode) && isNotPeriodeUtenUttak(periode);
+    return (
+        isNotPeriodetypeHull(periode) &&
+        isNotPeriodetypeInfo(periode) &&
+        isNotPeriodeUtenUttak(periode) &&
+        !(isUttaksperiode(periode) && periode.konto === undefined)
+    );
 };
 
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
