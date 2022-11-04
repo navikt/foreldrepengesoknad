@@ -382,9 +382,6 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         saksperiode.utbetalingsprosent
     );
 
-    // if (annenPartSamtidigUttakPeriode && samtidigUttaksprosent) {
-    //     annenPartSamtidigUttakPeriode.samtidigUttak = true;
-    // }
     return {
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
