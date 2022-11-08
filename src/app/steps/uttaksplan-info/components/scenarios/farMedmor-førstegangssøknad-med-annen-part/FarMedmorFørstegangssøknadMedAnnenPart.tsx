@@ -32,13 +32,11 @@ import {
     FarMedmorFørstegangssøknadMedAnnenPartFormField,
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
-import {
-    getFarMedmorFørstegangssøknadMedAnnenPartInitialValues,
-    leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan,
-} from './farMedmorFørstegangssøknadMedAnnenPartUtils';
+import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'app/utils/personUtils';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -112,7 +110,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         let uttaksplanMedAnnenPart;
 
         if (eksisterendeSakAnnenPart && farMedmorSinePerioder.length > 0) {
-            uttaksplanMedAnnenPart = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+            uttaksplanMedAnnenPart = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
                 farMedmorSinePerioder,
                 uttaksplan,
                 familiehendelsedatoDate!,

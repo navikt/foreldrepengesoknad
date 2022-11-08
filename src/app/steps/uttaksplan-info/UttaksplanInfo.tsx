@@ -87,9 +87,7 @@ const UttaksplanInfo = () => {
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
                 ? false
-                : !!registrertBarn &&
-                      erFarEllerMedmor &&
-                      eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+                : !!registrertBarn && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(

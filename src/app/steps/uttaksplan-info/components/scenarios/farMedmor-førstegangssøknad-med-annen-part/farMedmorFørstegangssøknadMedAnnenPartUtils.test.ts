@@ -2,8 +2,8 @@ import { Forelder } from 'app/types/Forelder';
 import { Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 
 const familiehendelseDatoForMorsPerioderFørWLB = new Date('2021-08-04');
 const familiehendelseDatoForMorsPerioderEtterWLB = new Date('2022-08-04');
@@ -90,7 +90,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             forelder: Forelder.farMedmor,
             konto: StønadskontoType.Fedrekvote,
         } as Periode;
-        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+        const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             [farsNyePeriode],
             morsPerioderFørWLB,
             familiehendelseDatoForMorsPerioderFørWLB,
@@ -118,7 +118,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             forelder: Forelder.farMedmor,
             konto: StønadskontoType.Fedrekvote,
         } as Periode;
-        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+        const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             [farsNyePeriode],
             morsPerioderFørWLB,
             familiehendelseDatoForMorsPerioderFørWLB,
@@ -151,7 +151,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             ønskerSamtidigUttak: true,
         } as Uttaksperiode;
 
-        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+        const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             [farsNyePeriode],
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,
@@ -193,7 +193,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             konto: StønadskontoType.Fedrekvote,
         } as Uttaksperiode;
 
-        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+        const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             [farsNyePeriodeISluttenAvPlanen],
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,
@@ -223,7 +223,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             ønskerSamtidigUttak: true,
         } as Uttaksperiode;
 
-        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+        const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             [farNyPeriodeIMidtenAvMors6Uker],
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,
@@ -291,7 +291,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             },
         ];
 
-        const nyPlan = leggTilFarMedmorsPerioderIEksisterendeSaksUttaksplan(
+        const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             farsNyePerioderRundtFødsel,
             morsPerioderEtterWLB,
             familiehendelseDatoForMorsPerioderEtterWLB,

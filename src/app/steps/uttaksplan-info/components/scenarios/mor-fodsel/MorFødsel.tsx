@@ -37,15 +37,22 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
+import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { isUttakAnnenPart, isUttaksperiode } from 'uttaksplan/types/Periode';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+    eksisterendeSakFar: EksisterendeSakV2 | undefined;
 }
 
 const MorFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
+    eksisterendeSakFar,
 }) => {
     const intl = useIntl();
     const {
@@ -55,6 +62,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         søker: { erAleneOmOmsorg },
         dekningsgrad,
         erEndringssøknad,
+        uttaksplan,
     } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -84,6 +92,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
@@ -92,44 +101,82 @@ const MorFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO
     );
-
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
         const submissionValues = mapMorFødselFormToState(values);
+        const morSinePerioder = lagUttaksplan({
+            annenForelderErUfør: erMorUfør,
+            erDeltUttak,
+            erEndringssøknad,
+            erEnkelEndringssøknad: erEndringssøknad,
+            familiehendelsesdato: familiehendelsesdatoDate!,
+            førsteUttaksdagEtterSeksUker: Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(
+                30
+            ),
+            situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+            søkerErFarEllerMedmor: erFarEllerMedmor,
+            søkerHarMidlertidigOmsorg: false,
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            uttaksplanSkjema: {
+                fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
+                startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
+                    ? undefined
+                    : submissionValues.permisjonStartdato,
+                skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
+            },
+            bareFarMedmorHarRett: false,
+            termindato,
+            harAktivitetskravIPeriodeUtenUttak: false,
+        });
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
+        const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+            erDeltUttak,
+            morHarRett: true,
+            søkerErAleneOmOmsorg: false,
+        });
 
+        let uttaksplanMedAnnenPart;
+
+        if (eksisterendeSakFar && morSinePerioder.length > 0) {
+            //Sett ønskerSamtidigUttak på mors perioder hvis overlapper med annen parts samtidig uttak:
+            morSinePerioder.forEach((p) => {
+                if (isUttaksperiode(p)) {
+                    const overlappendePerioderAnnenPart = Periodene(
+                        eksisterendeSakFar.uttaksplan
+                    ).finnOverlappendePerioder(p);
+
+                    if (
+                        overlappendePerioderAnnenPart.length !== 0 &&
+                        overlappendePerioderAnnenPart.find(
+                            (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
+                        )
+                    ) {
+                        p.ønskerSamtidigUttak = true;
+                    }
+                }
+            });
+
+            uttaksplanMedAnnenPart = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+                morSinePerioder,
+                uttaksplan,
+                familiehendelsesdatoDate!,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon,
+                false,
+                false,
+                eksisterendeSakFar.uttaksplan
+            );
+        } else if (eksisterendeSakFar) {
+            uttaksplanMedAnnenPart = eksisterendeSakFar.uttaksplan;
+        } else {
+            uttaksplanMedAnnenPart = morSinePerioder;
+        }
         return [
             actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(submissionValues),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-            actionCreator.lagUttaksplanforslag(
-                lagUttaksplan({
-                    annenForelderErUfør: erMorUfør,
-                    erDeltUttak,
-                    erEndringssøknad,
-                    erEnkelEndringssøknad: erEndringssøknad,
-                    familiehendelsesdato: familiehendelsesdatoDate!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
-                    ).leggTil(30),
-                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
-                    søkerErFarEllerMedmor: erFarEllerMedmor,
-                    søkerHarMidlertidigOmsorg: false,
-                    tilgjengeligeStønadskontoer:
-                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
-                    uttaksplanSkjema: {
-                        fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
-                        startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
-                            ? undefined
-                            : submissionValues.permisjonStartdato,
-                        skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
-                    },
-                    bareFarMedmorHarRett: false,
-                    termindato,
-                    harAktivitetskravIPeriodeUtenUttak: false,
-                })
-            ),
+            actionCreator.lagUttaksplanforslag(uttaksplanMedAnnenPart),
         ];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
