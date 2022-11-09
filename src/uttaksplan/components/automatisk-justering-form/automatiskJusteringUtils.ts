@@ -1,4 +1,5 @@
 import Barn, { isUfødtBarn } from 'app/context/types/Barn';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
@@ -13,7 +14,7 @@ export const getKanPeriodenRundtFødselJusteres = (
     return (
         termindato !== undefined &&
         isUttaksperiode(periodeRundtFødsel) &&
-        dayjs(periodeRundtFødsel.tidsperiode.fom).isSame(termindato, 'day') &&
+        dayjs(periodeRundtFødsel.tidsperiode.fom).isSame(Uttaksdagen(termindato).denneEllerNeste(), 'day') &&
         periodeRundtFødsel.forelder === Forelder.farMedmor &&
         periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
         periodeRundtFødsel.ønskerSamtidigUttak === true
