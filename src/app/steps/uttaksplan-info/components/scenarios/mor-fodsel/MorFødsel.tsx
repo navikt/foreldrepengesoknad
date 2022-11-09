@@ -139,7 +139,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         let uttaksplanMedAnnenPart;
 
         if (eksisterendeSakFar && morSinePerioder.length > 0) {
-            //Sett ønskerSamtidigUttak på mors perioder hvis overlapper med annen parts samtidig uttak:
+            //Sett samtidigUttak på mors perioder hvis overlapper med annen parts samtidig uttak:
             morSinePerioder.forEach((p) => {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
@@ -153,6 +153,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                         )
                     ) {
                         p.ønskerSamtidigUttak = true;
+                        p.samtidigUttakProsent = '100';
                     }
                 }
             });

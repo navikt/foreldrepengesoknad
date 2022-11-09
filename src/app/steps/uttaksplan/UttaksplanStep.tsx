@@ -142,7 +142,7 @@ const UttaksplanStep = () => {
     //Legg til annen parts perioder i planen til bruker
     useEffect(() => {
         if (erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined) {
-            //Sett ønskerSamtidigUttak på søkerens perioder hvis overlapper med annen parts samtidig uttak:
+            //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
             uttaksplan.forEach((p) => {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
@@ -156,6 +156,7 @@ const UttaksplanStep = () => {
                         )
                     ) {
                         p.ønskerSamtidigUttak = true;
+                        p.samtidigUttakProsent = '100';
                     }
                 }
             });
