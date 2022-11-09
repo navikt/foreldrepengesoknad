@@ -36,6 +36,7 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -59,6 +60,7 @@ const Oppsummering = () => {
         erEndringssøknad,
     } = useSøknad();
 
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const søkerinfo = useSøkerinfo();
     const { person, arbeidsforhold } = søkerinfo;
     const { erAleneOmOmsorg } = søker;
@@ -154,7 +156,7 @@ const Oppsummering = () => {
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             stepTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={onAvbrytSøknad}
-                            onContinueLater={() => null}
+                            onContinueLater={onFortsettSøknadSenere}
                             steps={stepConfig(intl)}
                             kompakt={true}
                         >
