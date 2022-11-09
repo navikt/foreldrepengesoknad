@@ -241,16 +241,6 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                         <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del3" />
                     </Normaltekst>
                 </Block>
-                <Block padBottom="l">
-                    <Normaltekst>
-                        <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del4" />
-                    </Normaltekst>
-                </Block>
-                <Block padBottom="l">
-                    <Normaltekst>
-                        <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del5" />
-                    </Normaltekst>
-                </Block>
             </Veilederpanel>
         );
     }
