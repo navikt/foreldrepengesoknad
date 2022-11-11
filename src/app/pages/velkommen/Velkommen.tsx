@@ -21,7 +21,11 @@ import { validateHarForståttRettigheterOgPlikter } from './validation/velkommen
 import SøknadRoutes from 'app/routes/routes';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { mapEksisterendeSak2FromDTO, opprettSøknadFraEksisterendeSakV2 } from 'app/utils/eksisterendeSakUtils';
+import {
+    mapEksisterendeSak2FromDTO,
+    opprettSøknadFraEksisterendeSakV2,
+    opprettSøknadFraValgteBarn,
+} from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
 
@@ -88,6 +92,13 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, sakerV2, o
             actionsToDispatch.push(
                 actionCreator.setBrukerSvarteJaPåAutoJustering(eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel)
             );
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+        } else if (valgteBarn !== undefined) {
+            const søknad: Søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
+            actionsToDispatch.push(actionCreator.setSøknad(søknad));
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+        } else {
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
         }
 
         return actionsToDispatch;

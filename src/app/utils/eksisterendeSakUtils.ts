@@ -30,6 +30,7 @@ import { PersonV2 } from 'app/types/sakerv2/Personv2';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { AnnenPartsVedtakDTO } from 'app/types/sakerv2/AnnenPartsVedtakDTO';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -133,7 +134,6 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
     const fødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
     const termindato = isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined;
 
-    //TODO: Check if correct mapping
     const grunnlagForAnnenPart = {
         dekningsgrad:
             eksisterendeSakAnnenPart.dekningsgrad === DekningsgradV2DTO.HUNDRE_PROSENT
@@ -517,6 +517,38 @@ export const opprettSøknadFraEksisterendeSak = (
     return søknad;
 };
 
+const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn | undefined => {
+    return {
+        type: BarnType.IKKE_UTFYLT,
+        antallBarn: valgteBarn.fnr.length,
+        fødselsdatoer: valgteBarn.fødselsdatoer!,
+        fnr: valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+    };
+};
+
+const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForelder | undefined => {
+    if (valgteBarn.annenForelder !== undefined) {
+        return {
+            fornavn: valgteBarn.annenForelder.fornavn,
+            etternavn: valgteBarn.annenForelder.etternavn,
+            fnr: valgteBarn.annenForelder.fnr,
+            kanIkkeOppgis: false,
+        };
+    }
+    return undefined;
+};
+
+export const opprettSøknadFraValgteBarn = (valgteBarn: SelectableBarn): Partial<Søknad> | undefined => {
+    const barn = getBarnFromValgteBarn(valgteBarn);
+    const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
+    const søknad: Partial<Søknad> = {
+        barn,
+        annenForelder,
+        erEndringssøknad: false,
+    };
+
+    return søknad;
+};
 export const opprettSøknadFraEksisterendeSakV2 = (
     søkerinfo: Søkerinfo,
     eksisterendeSak: EksisterendeSakV2

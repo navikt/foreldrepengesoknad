@@ -29,6 +29,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_ANNENFORELDER = 'setAnnenForelder',
     SET_SØKERINFO = 'setSøkerinfo',
     SET_SØKER = 'setSøker',
+    SET_SØKNAD_GJELDER_ET_NYTT_BARN = 'setSøknadGjelderEtNyttBarn',
     SET_INFORMASJON_OM_UTENLANDSOPPHOLD = 'setInformasjonOmUtenlandsopphold',
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
     SET_SAKER = 'setSaker',
@@ -253,6 +254,16 @@ const setPerioderSomSkalSendesInn = (payload: Periode[]): SetPerioderSomSkalSend
     payload,
 });
 
+interface SetSøknadGjelderEtNyttBarn {
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD_GJELDER_ET_NYTT_BARN;
+    payload: boolean;
+}
+
+const setSøknadGjelderEtNyttBarn = (payload: boolean): SetSøknadGjelderEtNyttBarn => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD_GJELDER_ET_NYTT_BARN,
+    payload,
+});
+
 interface SetSøknad {
     type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD;
     payload: Søknad;
@@ -373,6 +384,7 @@ export type ForeldrepengesøknadContextAction =
     | SetAnnenForelder
     | SetSøkerinfo
     | SetSøker
+    | SetSøknadGjelderEtNyttBarn
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
     | SetSakerv2
@@ -417,6 +429,7 @@ export default {
     lagUttaksplanforslag,
     setUttaksplan,
     setSøknad,
+    setSøknadGjelderEtNyttBarn,
     setEksisterendeSak,
     setGodkjentOppsummering,
     setKvittering,

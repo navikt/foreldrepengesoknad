@@ -17,22 +17,27 @@ import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
-import RegistrertBarn from './components/RegistrertBarn';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { isUfødtBarn } from 'app/context/types/Barn';
+import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
+import { RegistrertBarn } from 'app/types/Person';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
     const { søkersituasjon, barn } = useSøknad();
     const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
-
+    const { state } = useForeldrepengesøknadContext();
+    const { søknadGjelderEtNyttBarn } = state;
     const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
-        const barn = mapOmBarnetFormDataToState(values, registrerteBarn, arbeidsforhold);
-        return [actionCreator.setOmBarnet(barn)];
+        const valgtBarn = !søknadGjelderEtNyttBarn ? barn : undefined;
+        const oppdatertBarn = mapOmBarnetFormDataToState(values, arbeidsforhold, valgtBarn, søkersituasjon.situasjon);
+        return [actionCreator.setOmBarnet(oppdatertBarn)];
     };
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
@@ -43,17 +48,27 @@ const OmBarnet: React.FunctionComponent = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
+    const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
+        if (!isUfødtBarn(barn) && barn.fnr && barn.fnr.length > 0) {
+            return barn.fnr.includes(regBarn.fnr);
+        }
+        return false;
+    };
+    const valgteRegistrerteBarn = !søknadGjelderEtNyttBarn
+        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b))
+        : undefined;
     return (
         <OmBarnetFormComponents.FormikWrapper
             initialValues={getOmBarnetInitialValues(barn, registrerteBarn, arbeidsforhold)}
             onSubmit={handleSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
+            renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
                     arbeidsforhold,
                     situasjon: søkersituasjon.situasjon,
                     rolle: søkersituasjon.rolle,
-                    registrerteBarn,
+                    valgteRegistrerteBarn,
+                    søknadGjelderEtNyttBarn,
                 });
 
                 const farMedmorSøkerPåTerminFørWLB =
@@ -80,12 +95,9 @@ const OmBarnet: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
-                            <RegistrertBarn
-                                registrerteBarn={registrerteBarn}
-                                visibility={visibility}
-                                formValues={formValues}
-                                setFieldValue={setFieldValue}
-                            />
+                            {valgteRegistrerteBarn !== undefined && (
+                                <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} />
+                            )}
                             <BarnFødtEllerAdoptert visibility={visibility} />
                             <AdopsjonAnnetBarn
                                 søkersituasjon={søkersituasjon}
@@ -98,7 +110,12 @@ const OmBarnet: React.FunctionComponent = () => {
                                 visibility={visibility}
                             />
                             <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
-                            <Fødsel søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
+                            <Fødsel
+                                søkersituasjon={søkersituasjon}
+                                formValues={formValues}
+                                visibility={visibility}
+                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                            />
                             <Block visible={visGåVidereKnapp} textAlignCenter={true}>
                                 <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}

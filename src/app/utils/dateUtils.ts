@@ -206,12 +206,10 @@ export const isDateInTheFuture = (date: string): boolean => {
     return false;
 };
 
-export const velgEldsteBarn = (registrerteBarn: RegistrertBarn[], valgteBarn: string[]) => {
-    const filteredBarn = registrerteBarn.filter((regBarn) => valgteBarn.includes(regBarn.fnr));
-
-    return filteredBarn.sort((a, b) =>
+export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): RegistrertBarn => {
+    return registrerteBarn.sort((a, b) =>
         isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1
-    )[filteredBarn.length - 1];
+    )[registrerteBarn.length - 1];
 };
 
 type VarighetFormat = 'full' | 'normal';

@@ -3,7 +3,7 @@ import {
     dateRangeValidation,
     isDateABeforeDateB,
     isDateInTheFuture,
-    velgEldsteBarn,
+    getEldsteRegistrerteBarn,
     getUkerOgDagerFromDager,
     getVarighetString,
     formaterDato,
@@ -328,10 +328,9 @@ describe('dateUtils', () => {
             kjønn: 'K',
         };
 
-        const registrerteBarn = [eldsteBarn, yngsteBarn];
-        const valgteBarn = [eldsteBarn.fnr, yngsteBarn.fnr];
+        const valgteRegistrerteBarn = [eldsteBarn, yngsteBarn];
 
-        const result = velgEldsteBarn(registrerteBarn, valgteBarn);
+        const result = getEldsteRegistrerteBarn(valgteRegistrerteBarn);
 
         expect(result.fnr).toBe(eldsteBarn.fnr);
     });

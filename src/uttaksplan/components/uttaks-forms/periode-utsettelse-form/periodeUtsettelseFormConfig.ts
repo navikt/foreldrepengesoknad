@@ -11,7 +11,7 @@ export enum PeriodeUtsettelseFormField {
     vedlegg = 'vedlegg',
     morsAktivitetIPeriodenDokumentasjon = 'morsAktivitetIPeriodenDokumentasjon',
     morsAktivitetIPerioden = 'morsAktivitetIPerioden',
-    arbeidsformer = 'arbeidsformer',
+    bekrefterArbeidIPerioden = 'bekrefterArbeidIPerioden',
 }
 
 export type ArbeidUnderUtsettelse = Arbeidsform | string;
@@ -23,7 +23,7 @@ export interface PeriodeUtsettelseFormData {
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: MorsAktivitet | '';
     [PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon]: Attachment[];
     [PeriodeUtsettelseFormField.vedlegg]: Attachment[];
-    [PeriodeUtsettelseFormField.arbeidsformer]: ArbeidUnderUtsettelse[] | undefined;
+    [PeriodeUtsettelseFormField.bekrefterArbeidIPerioden]: boolean | undefined;
 }
 
 export const PeriodeUtsettelseFormComponents = getTypedFormComponents<

@@ -13,9 +13,10 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
+    søknadGjelderEtNyttBarn: boolean;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
+const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility, søknadGjelderEtNyttBarn }) => {
     const { erBarnetFødt, antallBarn, fødselsdatoer } = formValues;
 
     const intl = useIntl();
@@ -24,7 +25,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
             ? 'omBarnet.fødselsdato.flereBarn'
             : 'omBarnet.fødselsdato';
 
-    if (søkersituasjon.situasjon === 'adopsjon' || erBarnetFødt !== YesOrNo.YES) {
+    if (søkersituasjon.situasjon === 'adopsjon' || (søknadGjelderEtNyttBarn && erBarnetFødt !== YesOrNo.YES)) {
         return null;
     }
 

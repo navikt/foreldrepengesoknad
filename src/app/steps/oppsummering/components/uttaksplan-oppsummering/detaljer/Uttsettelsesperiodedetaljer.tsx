@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl';
 import { PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from '../oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import { getArbeidsformTekst, getÅrsakTekst } from '../OppsummeringUtils';
+import { getÅrsakTekst } from '../OppsummeringUtils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
 import AnnenForelder from 'app/context/types/AnnenForelder';
@@ -22,18 +22,13 @@ interface UtsettelsesperiodedetaljerProps {
 
 const Utsettelsesperiodedetaljer: React.FunctionComponent<UtsettelsesperiodedetaljerProps> = ({
     periode,
-    registrerteArbeidsforhold,
     søkerErFarEllerMedmor,
     annenForelder,
     periodeErNyEllerEndret,
 }) => {
-    const { årsak, morsAktivitetIPerioden, orgnumre, arbeidsformer, vedlegg } = periode;
+    const { årsak, morsAktivitetIPerioden, vedlegg, bekrefterArbeidIPerioden } = periode;
     const intl = useIntl();
-
-    let arbeidsformTekst: string[] = [];
-    if (arbeidsformer) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnumre, registrerteArbeidsforhold);
-    }
+    const bekreftErIArbeidSvar = bekrefterArbeidIPerioden === true ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei');
 
     return (
         <>
@@ -52,8 +47,8 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 )}
             {årsak === UtsettelseÅrsakType.Arbeid && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.arbeidstaker.label')}
-                    verdi={arbeidsformTekst}
+                    feltnavn={intlUtils(intl, 'oppsummering.uttak.bekreft100ProsentIArbeid.label')}
+                    verdi={bekreftErIArbeidSvar}
                 />
             )}
             {shouldPeriodeHaveAttachment(periode, søkerErFarEllerMedmor, annenForelder) && morsAktivitetIPerioden && (

@@ -14,11 +14,18 @@ interface Common {
     dokumentasjonAvAleneomsorg?: Attachment[];
     datoForAleneomsorg?: Date;
 }
+
+export interface IkkeUtfyltTypeBarn extends Common {
+    type: BarnType.IKKE_UTFYLT;
+    fødselsdatoer: Date[];
+    fnr?: string[];
+}
+
 export interface FødtBarn extends Common {
     type: BarnType.FØDT;
     fødselsdatoer: Date[];
     termindato?: Date;
-    fnr?: string;
+    fnr?: string[];
 }
 
 export interface UfødtBarn extends Common {
@@ -33,6 +40,7 @@ export interface AdoptertBarn extends Common {
     adopsjonsdato: Date;
     fødselsdatoer: Date[];
     omsorgsovertakelse: Attachment[];
+    fnr?: string[];
 }
 
 export interface AdoptertStebarn extends AdoptertBarn {
@@ -45,7 +53,11 @@ export interface AdoptertAnnetBarn extends AdoptertBarn {
     ankomstdato?: Date;
 }
 
-export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn;
+export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
+
+export const isIkkeUtfyltTypeBarn = (barn: Barn): barn is IkkeUtfyltTypeBarn => {
+    return barn.type === BarnType.IKKE_UTFYLT;
+};
 
 export const isFødtBarn = (barn: Barn): barn is FødtBarn => {
     return barn.type === BarnType.FØDT;

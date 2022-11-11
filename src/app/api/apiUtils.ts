@@ -166,14 +166,14 @@ const cleanBarn = (barn: Barn): BarnForInnsending => {
         return barnRest;
     }
 
-    const { datoForAleneomsorg, type, ...barnRest } = barn;
     if (isAdoptertBarn(barn)) {
+        const { datoForAleneomsorg, type, fnr, ...barnRest } = barn;
         return {
             adopsjonAvEktefellesBarn: isAdoptertStebarn(barn),
             ...barnRest,
         };
     }
-
+    const { datoForAleneomsorg, type, ...barnRest } = barn;
     return barnRest;
 };
 

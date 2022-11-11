@@ -47,7 +47,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, for
                             value: '1',
                         },
                         {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.tvillinger'),
+                            label: intlUtils(intl, 'omBarnet.radiobutton.toBarn'),
                             value: '2',
                         },
                         {

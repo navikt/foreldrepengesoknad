@@ -56,6 +56,7 @@ import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/utta
 import { RequestStatus } from 'app/types/RequestState';
 import { Periodene } from '../uttaksplan-info/utils/Periodene';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import { isUfødtBarn } from 'app/context/types/Barn';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -113,13 +114,14 @@ const UttaksplanStep = () => {
         erFarEllerMedmor,
         annenForelder
     );
-    // const barnFnr = isFødtBarn(barn) || isAdoptertBarn(barn) ? barn.fnr : undefined; //TODO: Må vi lagre barn.fnr i state?
+
+    const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
         annenForelderFnr !== undefined && familiehendelsesdato !== undefined ? false : true; //TODO: refaktorer - utledes også i api kallet
 
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
         annenForelderFnr,
-        undefined, //barnFnr, //TODO Kan vi la være å bruke barn fnr her? Vil ikke lagre fnr i staten. Men vi agrer allerede annen parts fnr.
+        barnFnr,
         familiehendelsesdato
     );
 

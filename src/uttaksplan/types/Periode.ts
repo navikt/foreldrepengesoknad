@@ -64,10 +64,8 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
-    orgnumre?: string[];
     erArbeidstaker: boolean;
-    arbeidsformer?: Arbeidsform[];
-    harAvtaleOmFulltidForDeltidsstilling?: boolean;
+    bekrefterArbeidIPerioden?: boolean;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {

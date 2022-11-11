@@ -56,6 +56,7 @@ const context = {
     perioderSomSkalSendesInn: [],
     harUttaksplanBlittSlettet: false,
     brukerSvarteJaPåAutoJustering: undefined,
+    søknadGjelderEtNyttBarn: undefined!,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

@@ -2,7 +2,10 @@ import { hasValue } from '@navikt/fp-common';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Barn, {
+    AdoptertBarn,
     BarnType,
+    FødtBarn,
+    IkkeUtfyltTypeBarn,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
@@ -11,9 +14,10 @@ import Barn, {
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { RegistrertBarn } from 'app/types/Person';
+import { Situasjon } from 'app/types/Situasjon';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
-import { ISOStringToDate, velgEldsteBarn } from 'app/utils/dateUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
@@ -31,8 +35,6 @@ const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.terminbekreftelsedato]: '',
     [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
     [OmBarnetFormField.ankomstdato]: '',
-    [OmBarnetFormField.gjelderAnnetBarn]: false,
-    [OmBarnetFormField.valgteBarn]: [],
 });
 
 export const cleanupOmBarnetFormData = (
@@ -58,41 +60,73 @@ export const cleanupOmBarnetFormData = (
             ? values.adoptertIUtlandet
             : YesOrNo.UNANSWERED,
         ankomstdato: visibility.isVisible(OmBarnetFormField.ankomstdato) ? values.ankomstdato : '',
-        gjelderAnnetBarn: visibility.isVisible(OmBarnetFormField.gjelderAnnetBarn) ? values.gjelderAnnetBarn : false,
-        valgteBarn: visibility.isVisible(OmBarnetFormField.valgteBarn) ? values.valgteBarn : [],
     };
 
     return cleanedData;
 };
 
+export const mapOmDetValgteBarnetFormDataToState = (
+    valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
+    situasjon: Situasjon,
+    values: Partial<OmBarnetFormData>
+): Barn => {
+    if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
+        return {
+            ...valgtRegistrertBarn,
+            type: BarnType.FØDT,
+            termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
+        };
+    }
+
+    const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+        values.omsorgsovertakelse!,
+        AttachmentType.OMSORGSOVERTAKELSE,
+        Skjemanummer.OMSORGSOVERTAKELSESDATO
+    );
+
+    if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
+        return {
+            ...valgtRegistrertBarn,
+            type: BarnType.ADOPTERT_STEBARN,
+            adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
+            omsorgsovertakelse,
+        };
+    }
+
+    return {
+        ...valgtRegistrertBarn,
+        type: BarnType.ADOPTERT_ANNET_BARN,
+        adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
+        adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet)!,
+        ankomstdato: values.adoptertIUtlandet === YesOrNo.YES ? ISOStringToDate(values.ankomstdato) : undefined,
+        omsorgsovertakelse,
+    };
+};
+
 export const mapOmBarnetFormDataToState = (
     values: Partial<OmBarnetFormData>,
-    registrerteBarn: RegistrertBarn[],
-    arbeidsforhold: Arbeidsforhold[]
+    arbeidsforhold: Arbeidsforhold[],
+    valgtRegistrertBarn: Barn | undefined,
+    situasjon: Situasjon
 ): Barn => {
+    if (valgtRegistrertBarn !== undefined) {
+        return mapOmDetValgteBarnetFormDataToState(
+            valgtRegistrertBarn as FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
+            situasjon,
+            values
+        );
+    }
     const antallBarn =
         parseInt(values.antallBarn!, 10) < 3
             ? parseInt(values.antallBarn!, 10)
             : parseInt(values.antallBarnSelect!, 10);
-
-    if (!values.gjelderAnnetBarn && values.valgteBarn && values.valgteBarn.length > 0) {
-        const eldsteBarn = velgEldsteBarn(registrerteBarn, values.valgteBarn);
-
-        return {
-            type: BarnType.FØDT,
-            fødselsdatoer: [eldsteBarn.fødselsdato],
-            antallBarn: values.valgteBarn.length,
-            termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
-            fnr: eldsteBarn.fnr,
-        };
-    }
 
     if (values.erBarnetFødt === YesOrNo.YES) {
         return {
             type: BarnType.FØDT,
             fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
             antallBarn,
-            termindato: ISOStringToDate(values.termindato),
+            termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
         };
     }
 
@@ -169,7 +203,6 @@ export const getOmBarnetInitialValues = (
                 termindato: dateToISOString(barn.termindato),
                 antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
                 antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-                valgteBarn: [registrertBarn.fnr],
             };
         }
     }
@@ -182,7 +215,6 @@ export const getOmBarnetInitialValues = (
             termindato: dateToISOString(barn.termindato),
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-            gjelderAnnetBarn: true,
         };
     }
 
@@ -196,7 +228,6 @@ export const getOmBarnetInitialValues = (
                 termindato: dateToISOString(barn.termindato),
                 antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
                 antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-                gjelderAnnetBarn: true,
             };
         }
 
@@ -206,7 +237,6 @@ export const getOmBarnetInitialValues = (
             termindato: dateToISOString(barn.termindato),
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-            gjelderAnnetBarn: true,
         };
     }
 
