@@ -1,8 +1,7 @@
 import SøknadRoutes from 'app/routes/routes';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import Sak from 'app/types/Sak';
-import { Sakv2 } from 'app/types/sakerv2/Sakv2';
+import { Sak } from 'app/types/Sak';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
@@ -15,21 +14,20 @@ export interface ForeldrepengesøknadContextState {
     currentRoute: SøknadRoutes;
     søknad: Søknad;
     søkerinfo: Søkerinfo;
-    harEksisterendeSak?: boolean;
-    harAnnenPartEksisterendeSak?: boolean;
-    annenPartEksisterendeSakSaksnummer?: string;
     saker: Sak[];
-    sakerv2: Sakv2[];
-    uttaksplanInfo?: UttaksplanInfo;
     kvittering: Kvittering;
-    eksisterendeSak?: EksisterendeSakV2;
     antallUkerIUttaksplan: number;
-    endringstidspunkt?: Date;
     perioderSomSkalSendesInn: Periode[];
     harUttaksplanBlittSlettet: boolean;
     brukerSvarteJaPåAutoJustering: boolean | undefined;
     søknadGjelderEtNyttBarn: boolean;
     familieHendelseDatoNesteSak: Date | undefined;
+    harEksisterendeSak?: boolean;
+    harAnnenPartEksisterendeSak?: boolean;
+    annenPartEksisterendeSakSaksnummer?: string;
+    uttaksplanInfo?: UttaksplanInfo;
+    eksisterendeSak?: EksisterendeSak;
+    endringstidspunkt?: Date;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -72,7 +70,6 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     },
     søkerinfo: undefined!,
     saker: [],
-    sakerv2: [],
     uttaksplanInfo: undefined,
     antallUkerIUttaksplan: undefined!,
     kvittering: undefined!,

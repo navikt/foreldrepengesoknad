@@ -1,42 +1,120 @@
-[
-    {
-        "saksnummer": "352003813",
-        "status": "LOP",
-        "opprettet": "2022-04-08",
-        "annenPart": {
-            "fnr": "17048818226",
-            "aktørId": "2663592907476",
-            "navn": {
-                "fornavn": "Eksplosiv",
-                "etternavn": "Panjabi"
-            }
-        },
-        "behandlingTema": "-",
-        "behandlinger": [
-            {
-                "opprettetTidspunkt": "2022-01-24T10:16:07.668",
-                "endretTidspunkt": "2022-01-31T15:08:53.634",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "behandlingResultat": "IKKE_FASTSATT",
-                "behandlendeEnhet": "4849",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
-                "inntektsmeldinger": []
+{
+    "foreldrepenger": [
+        {
+            "saksnummer": "352009416",
+            "sakAvsluttet": false,
+            "sisteSøknadMottattDato": "2022-10-11",
+            "kanSøkeOmEndring": true,
+            "sakTilhørerMor": true,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BEGGE_RETT",
+            "annenPart": { "type": "person", "fnr": "15118804322", "fornavn": "Vis", "etternavn": "Tyr" },
+            "familiehendelse": { "fødselsdato": "2022-10-12", "antallBarn": 1 },
+            "gjeldendeVedtak": {
+                "perioder": [
+                    {
+                        "fom": "2022-09-21",
+                        "tom": "2022-10-11",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-10-12",
+                        "tom": "2022-11-22",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-11-23",
+                        "tom": "2022-12-13",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-12-28",
+                        "tom": "2023-01-30",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "gradering": {
+                            "arbeidstidprosent": 50,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": { "id": "947064649", "type": "ORGANISASJON" }
+                            }
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-01-31",
+                        "tom": "2023-02-20",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-02-21",
+                        "tom": "2023-02-27",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "gradering": { "arbeidstidprosent": 50, "aktivitet": { "type": "FRILANS" } },
+                        "flerbarnsdager": false
+                    }
+                ]
             },
-            {
-                "opprettetTidspunkt": "2022-01-23T10:16:07.668",
-                "endretTidspunkt": "2022-01-31T15:08:53.634",
-                "status": "AVSLU",
-                "type": "FP",
-                "tema": "FORP_FODS",
-                "behandlingResultat": "MERGET_OG_HENLAGT",
-                "behandlendeEnhet": "4849",
-                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Tromsø",
-                "inntektsmeldinger": []
-            }
-        ],
-        "mottattEndringssøknad": true,
-        "type": "FPSAK"
-    }
-]
+            "barn": [
+                {
+                    "type": "person",
+                    "fnr": "020222323022",
+                    "fornavn": "Blank",
+                    "mellomnavn": "Fin",
+                    "etternavn": "Skjerm",
+                    "kjønn": "M",
+                    "fødselsdato": "2022-10-12"
+                }
+            ],
+            "dekningsgrad": "HUNDRE"
+        },
+        {
+            "saksnummer": "352009417",
+            "sakAvsluttet": false,
+            "sisteSøknadMottattDato": "2022-10-11",
+            "kanSøkeOmEndring": true,
+            "sakTilhørerMor": true,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BEGGE_RETT",
+            "annenPart": { "type": "person", "fnr": "15118804322", "fornavn": "Vis", "etternavn": "Tyr" },
+            "familiehendelse": { "termindato": "2023-05-12", "antallBarn": 1 },
+            "gjeldendeVedtak": {
+                "perioder": [
+                    {
+                        "fom": "2022-04-21",
+                        "tom": "2022-05-11",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-05-12",
+                        "tom": "2022-06-22",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "flerbarnsdager": false
+                    }
+                ]
+            },
+            "barn": [],
+            "dekningsgrad": "HUNDRE"
+        }
+    ],
+    "engangsstønad": [],
+    "svangerskapspenger": []
+}

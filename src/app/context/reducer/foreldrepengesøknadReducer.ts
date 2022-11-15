@@ -71,7 +71,6 @@ const foreldrepengesøknadReducer = (
                 ...foreldrepengesøknadInitialState,
                 søkerinfo: state.søkerinfo,
                 saker: state.saker,
-                sakerv2: state.sakerv2,
             };
         case ForeldrepengesøknadContextActionKeys.UPDATE_CURRENT_ROUTE:
             return {
@@ -88,11 +87,6 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 saker: [...action.payload],
-            };
-        case ForeldrepengesøknadContextActionKeys.SET_SAKER_V2:
-            return {
-                ...state,
-                sakerv2: [...action.payload],
             };
         case ForeldrepengesøknadContextActionKeys.SET_SØKERINFO:
             return {

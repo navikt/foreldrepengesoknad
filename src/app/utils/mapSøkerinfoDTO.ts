@@ -54,7 +54,6 @@ const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn
                   etternavn: annenForelder.etternavn,
                   fnr: annenForelder.fnr,
                   fornavn: annenForelder.fornavn,
-                  fødselsdato: dayjs.utc(annenForelder.fødselsdato).toDate(),
               }
             : undefined;
 

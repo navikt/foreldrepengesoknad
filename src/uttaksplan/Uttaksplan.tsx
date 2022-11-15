@@ -21,7 +21,7 @@ import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/O
 import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
@@ -57,7 +57,7 @@ interface Props {
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
     tilleggsopplysninger: Tilleggsopplysninger;
-    eksisterendeSak: EksisterendeSakV2 | undefined;
+    eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
     morsSisteDag: Date | undefined;
     harKomplettUttaksplan: boolean;

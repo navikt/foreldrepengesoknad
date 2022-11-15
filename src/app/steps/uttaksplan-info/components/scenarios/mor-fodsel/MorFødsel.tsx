@@ -37,7 +37,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { isUttakAnnenPart, isUttaksperiode } from 'uttaksplan/types/Periode';
@@ -46,7 +46,7 @@ import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaks
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
-    eksisterendeSakFar: EksisterendeSakV2 | undefined;
+    eksisterendeSakFar: EksisterendeSak | undefined;
 }
 
 const MorFødsel: FunctionComponent<Props> = ({

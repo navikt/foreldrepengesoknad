@@ -28,7 +28,7 @@ import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import actionCreator from 'app/context/action/actionCreator';
@@ -47,7 +47,7 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
-    eksisterendeSakAnnenPart: EksisterendeSakV2 | undefined;
+    eksisterendeSakAnnenPart: EksisterendeSak | undefined;
 }
 
 const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> = ({

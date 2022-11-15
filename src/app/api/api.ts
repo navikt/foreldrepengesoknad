@@ -1,7 +1,6 @@
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Kvittering } from 'app/types/Kvittering';
-import Sak from 'app/types/Sak';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
 import { AxiosResponse } from 'axios';
@@ -9,12 +8,11 @@ import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
-import { SakerOppslag } from 'app/types/sakerv2/SakerOppslag';
-import { AnnenPartsVedtakDTO } from 'app/types/sakerv2/AnnenPartsVedtakDTO';
+import { SakerOppslag } from 'app/types/SakerOppslag';
+import { AnnenPartsVedtakDTO } from 'app/types/AnnenPartsVedtakDTO';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -39,7 +37,7 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
-// const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
+//const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -52,57 +50,14 @@ const useSøkerinfo = () => {
     };
 };
 
-const useGetSakerV2 = (enabled: boolean) => {
+const useGetSaker = () => {
     const { data, error } = useGetRequest<SakerOppslag>('/innsyn/v2/saker', {
         config: { withCredentials: true },
-        isSuspended: !enabled,
-    });
-
-    return {
-        sakerV2Data: data,
-        sakerV2Error: error,
-    };
-};
-
-const useGetSaker = (fnr: string | undefined) => {
-    const { data, error } = useGetRequest<Sak[]>('/innsyn/saker', {
-        fnr,
-        config: { withCredentials: true },
-        isSuspended: fnr === undefined,
     });
 
     return {
         sakerData: data,
         sakerError: error,
-    };
-};
-
-const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
-    const { data, error } = useGetRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
-        fnr,
-        config: { withCredentials: true, params: { saksnummer } },
-        isSuspended: saksnummer === undefined || fnr === undefined,
-    });
-
-    return {
-        eksisterendeSakData: data,
-        eksisterendeSakError: error,
-    };
-};
-
-const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
-    const isSuspended = annenPartFnr !== undefined && erFarEllerMedmor ? false : true;
-
-    const { data, error, requestStatus } = useGetRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
-        fnr: søkerFnr,
-        config: { params: { annenPart: annenPartFnr }, withCredentials: true },
-        isSuspended,
-    });
-
-    return {
-        eksisterendeSakAnnenPartData: data,
-        eksisterendeSakAnnenPartError: error,
-        eksisterendeSakAnnenPartRequestStatus: requestStatus,
     };
 };
 
@@ -225,7 +180,10 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         minsterett,
         erMor,
         morHarUføretrygd,
-        familieHendelseDatoNesteSak,
+        familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
+            familieHendelseDatoNesteSak,
+            fpUttakServiceDateFormat
+        ),
     };
 
     const { data, error } = useGetRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
@@ -256,18 +214,15 @@ function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsendin
 }
 
 const Api = {
-    useGetSaker,
     useGetUttakskontoer,
     storeAppState,
     deleteStoredAppState,
     getStorageKvittering,
-    useGetEksisterendeSakMedFnr,
     useGetAnnenPartsVedtak,
     useStoredAppState,
     useSøkerinfo,
-    useGetEksisterendeSak,
     sendSøknad,
-    useGetSakerV2,
+    useGetSaker,
 };
 
 export default Api;

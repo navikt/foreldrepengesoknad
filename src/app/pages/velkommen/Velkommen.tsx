@@ -23,7 +23,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import {
     mapEksisterendeSak2FromDTO,
-    opprettSøknadFraEksisterendeSakV2,
+    opprettSøknadFraEksisterendeSak,
     opprettSøknadFraValgteBarn,
 } from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -32,25 +32,25 @@ import { Søknad } from 'app/context/types/Søknad';
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import dayjs from 'dayjs';
 import { getFamilieHendelseDatoNesteSak, getSelectableBarnOptions } from './velkommenUtils';
-import { Sakv2 } from 'app/types/sakerv2/Sakv2';
+import { Sak } from 'app/types/Sak';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 interface Props {
     fornavn: string;
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
-    sakerV2: Sakv2[];
+    saker: Sak[];
     fnr: string;
 }
 
-const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, sakerV2, onChangeLocale }) => {
+const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onChangeLocale }) => {
     const intl = useIntl();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
     const { registrerteBarn } = useSøkerinfo();
-    const selectableBarn = getSelectableBarnOptions(sakerV2, registrerteBarn);
+    const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
     const sortedSelectableBarn = selectableBarn.sort(function (a, b) {
         return dayjs(a.sortableDato).isBefore(b.sortableDato, 'd')
             ? 1
@@ -73,7 +73,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, sakerV2, o
         const vilSøkeOmEndring = valgteBarn !== undefined && !!valgteBarn.kanSøkeOmEndring;
         const valgtEksisterendeSak =
             vilSøkeOmEndring && valgteBarn.sak !== undefined
-                ? sakerV2.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
+                ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
                 : undefined;
 
         const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
@@ -89,7 +89,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, sakerV2, o
         if (vilSøkeOmEndring && valgtEksisterendeSak) {
             const eksisterendeSak = mapEksisterendeSak2FromDTO(valgtEksisterendeSak, false);
 
-            const søknad: Søknad = opprettSøknadFraEksisterendeSakV2(state.søkerinfo, eksisterendeSak!) as Søknad;
+            const søknad: Søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));

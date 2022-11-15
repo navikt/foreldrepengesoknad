@@ -1,7 +1,7 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
-import Sak, { FagsakStatus, SakType } from 'app/types/Sak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { Sak } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
@@ -229,10 +229,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
     it('skal legge saker i state', () => {
         const sak = {
-            type: SakType.FPSAK,
-            status: FagsakStatus.AVSLUTTET,
             saksnummer: '1234',
-            opprettet: '2020-01-01',
         } as Sak;
         const payload = [sak];
 
@@ -281,7 +278,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         const payload = {
             erAnnenPartsSak: true,
             uttaksplan: [] as Periode[],
-        } as EksisterendeSakV2;
+        } as EksisterendeSak;
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
             type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK,

@@ -1,10 +1,8 @@
 // import { ArbeidsgiverInfoType } from 'app/types/ArbeidsgiverInfo';
-// import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 // import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 // import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
-// import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 // import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 
@@ -45,7 +43,6 @@ describe('eksisterendeSakUtils', () => {
     //                 fom: '2021-01-01',
     //                 tom: '2021-02-01',
     //             },
-    //             periodeResultatType: PeriodeResultatType.IKKE_FASTSATT,
     //             samtidigUttak: true,
     //             stønadskontotype: StønadskontoType.Mødrekvote,
     //             trekkDager: 1,
@@ -94,7 +91,6 @@ describe('eksisterendeSakUtils', () => {
     //                 fom: '2021-01-01',
     //                 tom: '2021-02-01',
     //             },
-    //             periodeResultatType: 'IKKE_FASTSATT',
     //             samtidigUttak: true,
     //             stønadskontotype: 'MØDREKVOTE',
     //             trekkDager: 1,

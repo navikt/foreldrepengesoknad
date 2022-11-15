@@ -4,16 +4,20 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { FormattedMessage } from 'react-intl';
 import { formaterNavn } from 'app/utils/personUtils';
-import { getAlderFraDato } from 'app/utils/dateUtils';
 import './registrertePersonalia.less';
 import { bemUtils, formatDate } from '@navikt/fp-common';
 
 interface Props {
     person: RegistrertAnnenForelder | RegistrertBarn;
-    visFødselsnummer: boolean;
+    fødselsnummerForVisning?: string;
+    fødselsdatoForVisning?: string;
 }
 
-const RegistrertePersonalia: React.FunctionComponent<Props> = ({ person, visFødselsnummer }: Props) => {
+const RegistrertePersonalia: React.FunctionComponent<Props> = ({
+    person,
+    fødselsnummerForVisning,
+    fødselsdatoForVisning,
+}: Props) => {
     const bem = bemUtils('registrertePersonalia');
 
     return (
@@ -21,19 +25,19 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({ person, visFød
             <Element className={bem.element('navn')}>
                 {formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
             </Element>
-            {visFødselsnummer && (
+            {fødselsnummerForVisning !== undefined && (
                 <Normaltekst>
                     <FormattedMessage
-                        id="annenForelder.registrertePersonalia.fødselsnummerOgÅr"
-                        values={{ fnr: person.fnr, år: getAlderFraDato(person.fødselsdato).år }}
+                        id="registrertePersonalia.fødselsnummer"
+                        values={{ fnr: fødselsnummerForVisning }}
                     />
                 </Normaltekst>
             )}
-            {!visFødselsnummer && (
+            {fødselsdatoForVisning !== undefined && (
                 <Normaltekst>
                     <FormattedMessage
-                        id="omBarnet.registrertePersonalia.fødselOgÅr"
-                        values={{ fødselsdato: formatDate(person.fødselsdato) }}
+                        id="registrertePersonalia.fødselsdato"
+                        values={{ fødselsdato: formatDate(fødselsdatoForVisning) }}
                     />
                 </Normaltekst>
             )}

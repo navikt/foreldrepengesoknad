@@ -140,7 +140,7 @@ const AnnenForelder = () => {
                                 <Block padBottom="l">
                                     <RegistrertePersonalia
                                         person={registrertBarn.annenForelder!}
-                                        visFødselsnummer={true}
+                                        fødselsnummerForVisning={registrertBarn.annenForelder!.fnr}
                                     />
                                 </Block>
                             )}

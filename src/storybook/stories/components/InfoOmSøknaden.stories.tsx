@@ -14,7 +14,7 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import dayjs from 'dayjs';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 
 const context = {
     søknad: {
@@ -49,7 +49,6 @@ const context = {
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],
-    sakerv2: [],
     kvittering: undefined!,
     antallUkerIUttaksplan: undefined!,
     endringstidspunkt: undefined!,
@@ -95,7 +94,7 @@ interface Props {
     context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
     erIUttaksplanenSteg: boolean;
-    ekisterendeSak?: EksisterendeSakV2;
+    ekisterendeSak?: EksisterendeSak;
 }
 
 const Template: Story<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = true, ekisterendeSak }) => {
@@ -182,6 +181,6 @@ InfoOmMorsSak.args = {
                 },
             } as Periode,
         ],
-    } as EksisterendeSakV2,
+    } as EksisterendeSak,
     erIUttaksplanenSteg: false,
 };

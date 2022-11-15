@@ -6,10 +6,10 @@ import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import './barnVelger.less';
 import SøknadStatusEtikett from '../SøknadStatus';
-import { erSakFerdigbehandlet } from 'app/utils/sakerUtils';
-import Sak from 'app/types/Sak';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { AnnenPartV2 } from 'app/types/AnnenPart';
+import { Sak } from 'app/types/Sak';
+import { RegistrertAnnenForelder } from 'app/types/Person';
+import { kanSøkeOmEndringPåBarnet } from '../../velkommenUtils';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -35,7 +35,7 @@ export interface SelectableBarn {
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
     sak?: Sak;
-    annenForelder?: AnnenPartV2;
+    annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
 }
 
@@ -64,8 +64,8 @@ const getSakstatus = (sakErFerdigbehandlet: boolean) => {
 
 const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     let labelTekst;
-    const sakErFerdigbehandlet = erSakFerdigbehandlet(barn.sak);
-    const saksStatus = barn.sak !== undefined ? getSakstatus(sakErFerdigbehandlet) : undefined;
+    const sakForBarnetErFerdigbehandlet = kanSøkeOmEndringPåBarnet(barn);
+    const saksStatus = barn.sak !== undefined ? getSakstatus(sakForBarnetErFerdigbehandlet) : undefined;
     const saksnummerTekst =
         barn.sak !== undefined
             ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
@@ -112,12 +112,12 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT
             ? intlUtils(intl, 'velkommen.barnVelger.født')
             : intlUtils(intl, 'velkommen.barnVelger.adopsjon');
-    const sakErFerdigbehandlet = erSakFerdigbehandlet(barn.sak);
+    const sakForBarnetErFerdigbehandlet = kanSøkeOmEndringPåBarnet(barn);
     const saksnummerTekst =
         barn.sak !== undefined
             ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
             : '';
-    const saksStatus = barn.sak !== undefined ? getSakstatus(sakErFerdigbehandlet) : undefined;
+    const saksStatus = barn.sak !== undefined ? getSakstatus(sakForBarnetErFerdigbehandlet) : undefined;
     return {
         label: (
             <React.Fragment>

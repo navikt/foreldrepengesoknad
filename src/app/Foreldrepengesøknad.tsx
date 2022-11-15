@@ -5,12 +5,10 @@ import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import actionCreator from './context/action/actionCreator';
 import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
-import FeatureToggle from './FeatureToggle';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
-import { isFeatureEnabled } from './utils/toggleUtils';
 
 interface Props {
     locale: Locale;
@@ -24,17 +22,10 @@ const renderSpinner = () => (
 );
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const newSakerEnabled = isFeatureEnabled(FeatureToggle.brukSakerV2);
-
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
-    const { sakerV2Data } = Api.useGetSakerV2(newSakerEnabled);
+    const { sakerData } = Api.useGetSaker();
     const { storageData } = Api.useStoredAppState();
-    const { sakerData } = Api.useGetSaker(søkerinfoData ? søkerinfoData.søker.fnr : undefined);
     const { dispatch, state } = useForeldrepengesøknadContext();
-
-    if (newSakerEnabled && sakerV2Data) {
-        console.log(sakerV2Data.foreldrepenger);
-    }
 
     useEffect(() => {
         if (storageData) {
@@ -47,13 +38,9 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         }
 
         if (sakerData) {
-            dispatch(actionCreator.setSaker(sakerData));
+            dispatch(actionCreator.setSaker(sakerData.foreldrepenger));
         }
-
-        if (sakerV2Data) {
-            dispatch(actionCreator.setSakerv2(sakerV2Data.foreldrepenger));
-        }
-    }, [dispatch, storageData, søkerinfoData, sakerData, sakerV2Data]);
+    }, [dispatch, storageData, søkerinfoData, sakerData]);
 
     useEffect(() => {
         if (søkerinfoError) {

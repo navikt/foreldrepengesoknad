@@ -86,8 +86,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({ fornavn, locale,
                     <Velkommen
                         fornavn={fornavn}
                         locale={locale}
-                        // saker={state.saker}
-                        sakerV2={state.sakerv2}
+                        saker={state.saker}
                         onChangeLocale={onChangeLocale}
                         fnr={state.søkerinfo.person.fnr}
                     />

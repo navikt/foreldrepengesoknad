@@ -27,7 +27,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             },
         } as Søknad,
         saker: [],
-        sakerv2: [],
         kvittering: undefined!,
         antallUkerIUttaksplan: undefined!,
         endringstidspunkt: undefined,
@@ -84,7 +83,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     registrerteBarn: [],
                 } as Søkerinfo,
                 saker: [],
-                sakerv2: [],
             },
             dispatch: () => jest.fn(),
         }));

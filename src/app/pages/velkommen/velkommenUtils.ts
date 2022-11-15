@@ -1,12 +1,10 @@
-import { SakType, FagsakStatus } from 'app/types/Sak';
-import { ÅpenBehandling, Sakv2 } from 'app/types/sakerv2/Sakv2';
+import { Sak } from 'app/types/Sak';
 import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
-import { Familiehendelse } from 'app/types/sakerv2/Familiehendelse';
-import { RegistrertBarn } from 'app/types/Person';
+import { Familiehendelse } from 'app/types/Familiehendelse';
+import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import { erEldreEnn3År } from 'app/utils/personUtils';
-import { AnnenPartV2 } from 'app/types/AnnenPart';
 import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
 
 export const getSortableBarnDato = (
@@ -35,34 +33,22 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return SelectableBarnType.UFØDT;
 };
 
-const getSakStatus = (sakAvsluttet: boolean, sakÅpenBehandling: undefined | ÅpenBehandling): FagsakStatus => {
-    if (sakAvsluttet) {
-        return FagsakStatus.AVSLUTTET;
-    }
-    if (sakÅpenBehandling === undefined) {
-        return FagsakStatus.LOPENDE;
-    }
-    return FagsakStatus.UNDER_BEHANDLING;
-};
-
-const getSelectableBarnFraSak = (sak: Sakv2): SelectableBarn => {
+const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
     const barnFraSak = {
         id: guid(),
         fnr: sak.barn.map((b) => b.fnr),
         type: getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse),
         antallBarn: sak.familiehendelse.antallBarn,
         omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertagelse),
-        fødselsdatoer: sak.barn.filter((ba) => ba !== undefined).map((b) => ISOStringToDate(b.fødselsdato)!),
+        fødselsdatoer: sak.barn.filter((ba) => ba !== undefined).map((b) => b.fødselsdato),
         termindato: ISOStringToDate(sak.familiehendelse.termindato),
         fornavn: sak.barn.map((b) => b.fornavn),
         etternavn: sak.barn.map((b) => b.etternavn),
         kanSøkeOmEndring: sak.kanSøkeOmEndring,
         sak: {
-            type: SakType.FPSAK,
-            opprettet: '',
-            status: getSakStatus(sak.sakAvsluttet, sak.åpenBehandling),
+            sakAvsluttet: sak.sakAvsluttet,
             saksnummer: sak.saksnummer,
-        },
+        } as Sak,
         annenForelder: {
             fnr: sak.annenPart.fnr,
             fornavn: sak.annenPart.fornavn,
@@ -88,7 +74,7 @@ const getSelectableBarnFraSak = (sak: Sakv2): SelectableBarn => {
 
 const getSelectableBarnFraPDL = (
     registrertBarn: RegistrertBarn,
-    annenForelder: AnnenPartV2 | undefined
+    annenForelder: RegistrertAnnenForelder | undefined
 ): SelectableBarn => {
     return {
         id: guid(),
@@ -106,7 +92,7 @@ const getSelectableBarnFraPDL = (
 const getSelectableFlerlingerFraPDL = (
     registrertBarn: RegistrertBarn,
     barnFødtISammePeriode: RegistrertBarn[],
-    annenForelder: AnnenPartV2 | undefined
+    annenForelder: RegistrertAnnenForelder | undefined
 ): SelectableBarn => {
     const barnFødtISammePeriodeFødselsdatoer = barnFødtISammePeriode.map((b) => b.fødselsdato);
     const barnFødtISammePeriodeFornavn = barnFødtISammePeriode.map((b) => b.fornavn);
@@ -125,8 +111,8 @@ const getSelectableFlerlingerFraPDL = (
     };
 };
 
-const getSelectableBarnOptionsFromSaker = (sakerV2: Sakv2[]) => {
-    return sakerV2.map((s) => getSelectableBarnFraSak(s));
+const getSelectableBarnOptionsFromSaker = (saker: Sak[]) => {
+    return saker.map((s) => getSelectableBarnFraSak(s));
 };
 
 const getSelectableBarnOptionsFraPDL = (
@@ -151,6 +137,7 @@ const getSelectableBarnOptionsFraPDL = (
                     ? {
                           fnr: regBarn.annenForelder.fnr,
                           fornavn: regBarn.annenForelder.fornavn,
+                          mellomnavn: regBarn.annenForelder.mellomnavn,
                           etternavn: regBarn.annenForelder.etternavn,
                       }
                     : undefined;
@@ -174,8 +161,8 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarnFraPDL;
 };
 
-export const getSelectableBarnOptions = (sakerV2: Sakv2[], registrerteBarn: RegistrertBarn[]) => {
-    const åpneSaker = sakerV2.filter((sak) => !sak.sakAvsluttet);
+export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
+    const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker);
     const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker);
     return barnFraSaker.concat(barnFraPDL);
@@ -193,4 +180,8 @@ export const getFamilieHendelseDatoNesteSak = (
     return barnMedSenereFamiliehendelsesdato !== undefined
         ? barnMedSenereFamiliehendelsesdato.familiehendelsesdato
         : undefined;
+};
+
+export const kanSøkeOmEndringPåBarnet = (barn: SelectableBarn): boolean => {
+    return barn.kanSøkeOmEndring === true;
 };

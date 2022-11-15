@@ -173,7 +173,7 @@
     "omBarnet.veileder.medMorEllerFarTermin": "Du kan dessverre ikkje søkje før barnet er født. Unntaket er om du tar ut foreldrepengar fordi mor er sjuk eller innlagd på sjukehus eller helseinstitusjon. Du må fylle ut søknaden på papir og sende han i posten.{ lenke }",
     "omBarnet.terminbekreftelse.lastOpp": "Trykk her for å laste opp dokumentasjon om terminbekreftelse",
     "omBarnet.papirsøknad.lenke": "Her finn du papirsøknaden",
-    "omBarnet.registrertePersonalia.fødselOgÅr": "Født: {fødselsdato}",
+    "registrertePersonalia.fødselOgÅr": "Født: {fødselsdato}",
     "annenForelder.aleneOmOmsorg": "Er du åleine om omsorga av barnet?",
     "annenForelder.aleneOmOmsorg.veileder": "Du har omsorga for barnet åleine, og du bur ikkje saman med den andre forelderen.",
     "annenForelder.aleneOmOmsorg.veileder.apneLabel": "Les meir om å vera åleine om omsorg for barnet",
@@ -217,7 +217,7 @@
     "annenForelder.harRettPåForeldrepengerIEØS.veileder.del3": "Dette gjeld òg dersom mor har fått engangsstønad. Er du usikker på om {navn} har foreldrepenger frå et EØS land må du spørja {navn}",
 
     "annenForelder.erAnnenForelderInformert.veileder": "Du må orientere {navn} om søknaden, før du kan gå videre.",
-    "annenForelder.registrertePersonalia.fødselsnummerOgÅr": "Fødselsnummer: {fnr} ({år} år)",
+    "registrertePersonalia.fødselsnummer": "Fødselsnummer: {fnr}",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi namnet på arbeidsgjevaren",
     "annenInntekt.spørsmål.land": "Kva land har du jobba i?",
     "uttaksplaninfo.veileder.informasjonTilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",

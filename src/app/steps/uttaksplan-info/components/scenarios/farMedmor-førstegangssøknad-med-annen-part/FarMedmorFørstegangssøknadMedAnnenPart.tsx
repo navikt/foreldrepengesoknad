@@ -7,7 +7,7 @@ import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/cont
 import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
@@ -41,7 +41,7 @@ import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaks
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
-    eksisterendeSakAnnenPart: EksisterendeSakV2 | undefined;
+    eksisterendeSakAnnenPart: EksisterendeSak | undefined;
 }
 
 const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({

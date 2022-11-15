@@ -80,19 +80,6 @@ const getSaker = function () {
     }
 };
 
-const getSakerv2 = function () {
-    const fileName = getFilePath('sakerv2.json');
-    if (!fs.existsSync(fileName)) {
-        return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
-            return {};
-        }
-    }
-};
-
 const getAnnenPartVedtak = function () {
     const fileName = getFilePath('annenPartVedtak.json');
     if (!fs.existsSync(fileName)) {
@@ -153,7 +140,6 @@ module.exports = {
     getStønadskontoer,
     getSoknadSendt,
     getSaker,
-    getSakerv2,
     getAnnenPartVedtak,
     getStorageKvittering,
     getUttaksplan,

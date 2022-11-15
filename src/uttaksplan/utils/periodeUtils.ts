@@ -34,7 +34,7 @@ import dayjs from 'dayjs';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
 
@@ -253,7 +253,7 @@ export const erSentGradertUttak = (periode: Periode) =>
     !isDateTodayOrInTheFuture(dateToISOString(periode.tidsperiode.fom)) &&
     periode.gradert;
 
-export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSakV2): boolean => {
+export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
     if (eksisterendeSak === undefined) {
         return false;
     }
@@ -261,7 +261,7 @@ export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: Eksistere
     return saksperiode ? saksperiode.resultat.innvilget : false;
 };
 
-const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSakV2) => {
+const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
     return ekisterendeSak.saksperioder.find((saksperiode) =>
         erTidsperioderLike(convertTidsperiodeToTidsperiodeDate(saksperiode.periode), periode.tidsperiode)
     );

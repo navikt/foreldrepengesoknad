@@ -2,10 +2,9 @@ import { Locale } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { EksisterendeSakV2 } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import Sak from 'app/types/Sak';
-import { Sakv2 } from 'app/types/sakerv2/Sakv2';
+import { Sak } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
@@ -33,7 +32,6 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_INFORMASJON_OM_UTENLANDSOPPHOLD = 'setInformasjonOmUtenlandsopphold',
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
     SET_SAKER = 'setSaker',
-    SET_SAKER_V2 = 'setSakerv2',
     SET_UTTAKSPLAN_INFO = 'setUttaksplanInfo',
     SET_DEKNINGSGRAD = 'setDekningsgrad',
     SET_VEDLEGG = 'setVedlegg',
@@ -175,16 +173,6 @@ const setSaker = (payload: Sak[]): SetSaker => ({
     payload,
 });
 
-interface SetSakerv2 {
-    type: ForeldrepengesøknadContextActionKeys.SET_SAKER_V2;
-    payload: Sakv2[];
-}
-
-const setSakerv2 = (payload: Sakv2[]): SetSakerv2 => ({
-    type: ForeldrepengesøknadContextActionKeys.SET_SAKER_V2,
-    payload,
-});
-
 interface SetUttaksplanInfo {
     type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_INFO;
     payload: UttaksplanInfo;
@@ -277,10 +265,10 @@ const setSøknad = (payload: Søknad): SetSøknad => ({
 
 interface SetEksisterendeSak {
     type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK;
-    payload: EksisterendeSakV2 | undefined;
+    payload: EksisterendeSak | undefined;
 }
 
-const setEksisterendeSak = (payload: EksisterendeSakV2 | undefined): SetEksisterendeSak => ({
+const setEksisterendeSak = (payload: EksisterendeSak | undefined): SetEksisterendeSak => ({
     type: ForeldrepengesøknadContextActionKeys.SET_EKSISTERENDE_SAK,
     payload,
 });
@@ -398,7 +386,6 @@ export type ForeldrepengesøknadContextAction =
     | SetSøknadGjelderEtNyttBarn
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
-    | SetSakerv2
     | SetUttaksplanInfo
     | SetTilleggsopplysninger
     | SetDekningsgrad
@@ -433,7 +420,6 @@ export default {
     setSøker,
     setInformasjonOmUtenlandsopphold,
     setSaker,
-    setSakerv2,
     setUttaksplanInfo,
     setTilleggsopplysninger,
     setDekningsgrad,

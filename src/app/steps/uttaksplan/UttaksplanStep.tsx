@@ -68,6 +68,7 @@ const UttaksplanStep = () => {
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
+    const [annenPartsUttakLagtTilIUttaksplan, setAnnenPartsUttakLagtTilIUttaksplan] = useState(false);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
@@ -145,7 +146,7 @@ const UttaksplanStep = () => {
 
     //Legg til annen parts perioder i planen til bruker
     useEffect(() => {
-        if (erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined) {
+        if (erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined && !annenPartsUttakLagtTilIUttaksplan) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
             uttaksplan.forEach((p) => {
                 if (isUttaksperiode(p)) {
@@ -175,6 +176,7 @@ const UttaksplanStep = () => {
             );
 
             dispatch(actionCreator.setUttaksplan(uttaksplanMedAnnenPart));
+            setAnnenPartsUttakLagtTilIUttaksplan(true);
         }
     }, [
         eksisterendeVedtakAnnenPart,
@@ -185,6 +187,8 @@ const UttaksplanStep = () => {
         erAdopsjon,
         bareFarMedmorHarRett,
         erFarEllerMedmor,
+        setAnnenPartsUttakLagtTilIUttaksplan,
+        annenPartsUttakLagtTilIUttaksplan,
         dispatch,
     ]);
 
