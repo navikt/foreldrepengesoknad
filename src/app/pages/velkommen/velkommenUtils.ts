@@ -3,11 +3,11 @@ import { ÅpenBehandling, Sakv2 } from 'app/types/sakerv2/Sakv2';
 import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { Familiehendelse } from 'app/types/sakerv2/Familiehendelse';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import { erEldreEnn3År } from 'app/utils/personUtils';
 import { AnnenPartV2 } from 'app/types/AnnenPart';
+import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -68,6 +68,13 @@ const getSelectableBarnFraSak = (sak: Sakv2): SelectableBarn => {
             fornavn: sak.annenPart.fornavn,
             etternavn: sak.annenPart.etternavn,
         },
+        familiehendelsesdato: ISOStringToDate(
+            getRelevantFamiliehendelseDato(
+                sak.familiehendelse.termindato,
+                sak.familiehendelse.fødselsdato,
+                sak.familiehendelse.omsorgsovertagelse
+            )
+        ),
     };
     return {
         ...barnFraSak,
@@ -172,4 +179,18 @@ export const getSelectableBarnOptions = (sakerV2: Sakv2[], registrerteBarn: Regi
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker);
     const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker);
     return barnFraSaker.concat(barnFraPDL);
+};
+
+export const getFamilieHendelseDatoNesteSak = (
+    valgteBarn: SelectableBarn,
+    selectableBarn: SelectableBarn[]
+): Date | undefined => {
+    const barnMedSenereFamiliehendelsesdato = selectableBarn
+        .filter(
+            (barn) => barn.sak !== undefined && barn.id !== valgteBarn.id && barn.familiehendelsesdato !== undefined
+        )
+        .find((barnMedSak) => dayjs(barnMedSak.familiehendelsesdato!).isAfter(valgteBarn.familiehendelsesdato!, 'day'));
+    return barnMedSenereFamiliehendelsesdato !== undefined
+        ? barnMedSenereFamiliehendelsesdato.familiehendelsesdato
+        : undefined;
 };

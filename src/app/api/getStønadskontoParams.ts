@@ -56,6 +56,7 @@ const getStønadskontoParams = (
     søkersituasjon: Søkersituasjon,
     farHarAleneomsorg: boolean,
     morHarAleneomsorg: boolean,
+    familieHendelseDatoNesteSak: string | undefined,
     oppgittTermindato?: string
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -77,6 +78,7 @@ const getStønadskontoParams = (
         minsterett: andreAugust2022ReglerGjelder(familiehendelsesdato!),
         erMor: !søkerErFarEllerMedmor,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
+        familieHendelseDatoNesteSak: familieHendelseDatoNesteSak,
     };
 };
 

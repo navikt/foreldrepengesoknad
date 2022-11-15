@@ -31,6 +31,7 @@ export interface TilgjengeligeStønadskontoerParams {
     erMor: boolean;
     morHarUføretrygd: boolean;
     harAnnenForelderTilsvarendeRettEØS: boolean;
+    familieHendelseDatoNesteSak: string | undefined;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -38,6 +39,7 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
+// const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -203,6 +205,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         minsterett,
         erMor,
         morHarUføretrygd,
+        familieHendelseDatoNesteSak,
     } = params;
 
     const fpUttakServiceDateFormat = 'YYYYMMDD';
@@ -222,6 +225,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         minsterett,
         erMor,
         morHarUføretrygd,
+        familieHendelseDatoNesteSak,
     };
 
     const { data, error } = useGetRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {

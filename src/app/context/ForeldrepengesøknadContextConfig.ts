@@ -29,6 +29,7 @@ export interface ForeldrepengesøknadContextState {
     harUttaksplanBlittSlettet: boolean;
     brukerSvarteJaPåAutoJustering: boolean | undefined;
     søknadGjelderEtNyttBarn: boolean;
+    familieHendelseDatoNesteSak: Date | undefined;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -80,4 +81,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     harUttaksplanBlittSlettet: false,
     brukerSvarteJaPåAutoJustering: undefined,
     søknadGjelderEtNyttBarn: undefined!,
+    familieHendelseDatoNesteSak: undefined,
 };

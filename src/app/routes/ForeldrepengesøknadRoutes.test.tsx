@@ -35,6 +35,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         harUttaksplanBlittSlettet: false,
         brukerSvarteJaPåAutoJustering: undefined,
         søknadGjelderEtNyttBarn: undefined!,
+        familieHendelseDatoNesteSak: undefined,
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', async () => {

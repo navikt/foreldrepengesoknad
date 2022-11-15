@@ -27,12 +27,13 @@ const UttaksplanInfo = () => {
 
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
-    const { dispatch } = useForeldrepengesøknadContext();
+    const { dispatch, state } = useForeldrepengesøknadContext();
 
     const { barn, annenForelder, søkersituasjon, søker } = søknad;
     const { registrerteBarn } = søkerinfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const { erAleneOmOmsorg } = søker;
+    const { familieHendelseDatoNesteSak } = state;
 
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
     const eksisterendeSakAnnenPartRequestIsSuspended =
@@ -83,6 +84,7 @@ const UttaksplanInfo = () => {
                 søkersituasjon,
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
+                dateToISOString(familieHendelseDatoNesteSak),
                 termindato
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
@@ -97,6 +99,7 @@ const UttaksplanInfo = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
+            dateToISOString(familieHendelseDatoNesteSak),
             termindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended

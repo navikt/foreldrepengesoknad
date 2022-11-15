@@ -57,6 +57,7 @@ import { RequestStatus } from 'app/types/RequestState';
 import { Periodene } from '../uttaksplan-info/utils/Periodene';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { isUfødtBarn } from 'app/context/types/Barn';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -84,6 +85,7 @@ const UttaksplanStep = () => {
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
+    const { familieHendelseDatoNesteSak } = state;
     const debouncedState = useDebounce(state, 3000);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
@@ -303,6 +305,7 @@ const UttaksplanStep = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
+            dateToISOString(familieHendelseDatoNesteSak),
             eksisterendeSak?.grunnlag.termindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended
@@ -317,6 +320,7 @@ const UttaksplanStep = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
+            dateToISOString(familieHendelseDatoNesteSak),
             eksisterendeSak?.grunnlag.termindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended

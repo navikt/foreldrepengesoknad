@@ -31,7 +31,7 @@ import { Søknad } from 'app/context/types/Søknad';
 
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import dayjs from 'dayjs';
-import { getSelectableBarnOptions } from './velkommenUtils';
+import { getFamilieHendelseDatoNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { Sakv2 } from 'app/types/sakerv2/Sakv2';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
@@ -80,6 +80,11 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, sakerV2, o
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
             actionCreator.setErEndringssøknad(vilSøkeOmEndring),
         ];
+
+        if (valgteBarn !== undefined) {
+            const familieHendelseDatoNesteSak = getFamilieHendelseDatoNesteSak(valgteBarn, selectableBarn);
+            actionsToDispatch.push(actionCreator.setFamiliehendelsesdatoNesteSak(familieHendelseDatoNesteSak));
+        }
 
         if (vilSøkeOmEndring && valgtEksisterendeSak) {
             const eksisterendeSak = mapEksisterendeSak2FromDTO(valgtEksisterendeSak, false);

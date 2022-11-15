@@ -57,6 +57,7 @@ const context = {
     harUttaksplanBlittSlettet: false,
     brukerSvarteJaPåAutoJustering: undefined,
     søknadGjelderEtNyttBarn: undefined!,
+    familieHendelseDatoNesteSak: undefined!,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

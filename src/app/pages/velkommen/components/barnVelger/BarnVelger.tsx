@@ -36,6 +36,7 @@ export interface SelectableBarn {
     kanSøkeOmEndring?: boolean;
     sak?: Sak;
     annenForelder?: AnnenPartV2;
+    familiehendelsesdato?: Date;
 }
 
 interface Props {

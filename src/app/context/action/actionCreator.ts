@@ -52,6 +52,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
     SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL = 'setØnskerJustertUttakVedFødsel',
     SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING = 'setBrukerSvarteJaPAutoJustering',
+    SET_FAMILIEHENDELSESDATO_NESTE_SAK = 'setFamiliehendelsesdatoNesteSak',
 }
 
 interface SetVelkommen {
@@ -374,6 +375,16 @@ const setBrukerSvarteJaPåAutoJustering = (payload: boolean | undefined): SetBru
     payload,
 });
 
+interface SetFamiliehendelsesdatoNesteSak {
+    type: ForeldrepengesøknadContextActionKeys.SET_FAMILIEHENDELSESDATO_NESTE_SAK;
+    payload: Date | undefined;
+}
+
+const setFamiliehendelsesdatoNesteSak = (payload: Date | undefined): SetFamiliehendelsesdatoNesteSak => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_FAMILIEHENDELSESDATO_NESTE_SAK,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -406,7 +417,8 @@ export type ForeldrepengesøknadContextAction =
     | SlettUttaksplan
     | SetUttaksplanSlettet
     | SetØnskerJustertUttakVedFødsel
-    | SetBrukerSvarteJaPåAutoJustering;
+    | SetBrukerSvarteJaPåAutoJustering
+    | SetFamiliehendelsesdatoNesteSak;
 
 export default {
     setVelkommen,
@@ -440,5 +452,6 @@ export default {
     slettUttaksplan,
     setUttaksplanSlettet,
     setØnskerJustertUttakVedFødsel,
-    setBrukerSvarteJaPåAutoJustering: setBrukerSvarteJaPåAutoJustering,
+    setBrukerSvarteJaPåAutoJustering,
+    setFamiliehendelsesdatoNesteSak,
 };
