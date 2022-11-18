@@ -28,6 +28,7 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { AnnenPartsVedtakDTO } from 'app/types/AnnenPartsVedtakDTO';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
+import Søkersituasjon from 'app/context/types/Søkersituasjon';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -352,9 +353,11 @@ const finnAnnenForelderPåFødselsdato = (
     }
 };
 
-const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn | undefined => {
+const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
+    const barnType =
+        valgteBarn.sak !== undefined && valgteBarn.sak.gjelderAdopsjon ? BarnType.IKKE_UTFYLT : BarnType.FØDT;
     return {
-        type: BarnType.IKKE_UTFYLT,
+        type: barnType,
         antallBarn: valgteBarn.fnr.length,
         fødselsdatoer: valgteBarn.fødselsdatoer!,
         fnr: valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
@@ -368,6 +371,12 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForeld
             etternavn: valgteBarn.annenForelder.etternavn,
             fnr: valgteBarn.annenForelder.fnr,
             kanIkkeOppgis: false,
+            erUfør:
+                valgteBarn.sak !== undefined
+                    ? !valgteBarn.sak.sakTilhørerMor && valgteBarn.sak.morUføretrygd
+                    : undefined,
+            harRettPåForeldrepengerIEØS:
+                valgteBarn.sak !== undefined ? valgteBarn.sak.harAnnenForelderTilsvarendeRettEØS : undefined,
         };
     }
     return undefined;
@@ -384,6 +393,26 @@ export const opprettSøknadFraValgteBarn = (valgteBarn: SelectableBarn): Partial
 
     return søknad;
 };
+
+export const opprettSøknadFraValgteBarnMedSak = (valgteBarn: SelectableBarn): Partial<Søknad> | undefined => {
+    const barn = getBarnFromValgteBarn(valgteBarn);
+    const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
+    const søknad: Partial<Søknad> = {
+        barn,
+        annenForelder,
+        erEndringssøknad: false,
+    };
+
+    if (valgteBarn.sak !== undefined) {
+        const søkersituasjon = {
+            situasjon: valgteBarn.sak.gjelderAdopsjon ? 'adopsjon' : 'fødsel',
+            rolle: valgteBarn.sak.sakTilhørerMor ? undefined : 'far',
+        } as Søkersituasjon;
+        søknad.søkersituasjon = søkersituasjon;
+    }
+    return søknad;
+};
+
 export const opprettSøknadFraEksisterendeSak = (
     søkerinfo: Søkerinfo,
     eksisterendeSak: EksisterendeSak

@@ -25,6 +25,7 @@ import {
     mapEksisterendeSak2FromDTO,
     opprettSøknadFraEksisterendeSak,
     opprettSøknadFraValgteBarn,
+    opprettSøknadFraValgteBarnMedSak,
 } from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
@@ -86,10 +87,16 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
             actionsToDispatch.push(actionCreator.setFamiliehendelsesdatoNesteSak(familieHendelseDatoNesteSak));
         }
 
-        if (vilSøkeOmEndring && valgtEksisterendeSak) {
+        const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
+        const nySøknadPåAlleredeSøktBarn =
+            valgteBarn !== undefined && valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false;
+        const nySøknadPåValgteRegistrerteBarn =
+            !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
+
+        if (endringssøknad) {
             const eksisterendeSak = mapEksisterendeSak2FromDTO(valgtEksisterendeSak, false);
 
-            const søknad: Søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!) as Søknad;
+            const søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
@@ -98,8 +105,12 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                 actionCreator.setBrukerSvarteJaPåAutoJustering(eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel)
             );
             actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
-        } else if (valgteBarn !== undefined) {
-            const søknad: Søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
+        } else if (nySøknadPåAlleredeSøktBarn) {
+            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn) as Søknad;
+            actionsToDispatch.push(actionCreator.setSøknad(søknad));
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
+        } else if (nySøknadPåValgteRegistrerteBarn) {
+            const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
             actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
         } else {

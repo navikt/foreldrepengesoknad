@@ -45,10 +45,7 @@ const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
         fornavn: sak.barn.map((b) => b.fornavn),
         etternavn: sak.barn.map((b) => b.etternavn),
         kanSøkeOmEndring: sak.kanSøkeOmEndring,
-        sak: {
-            sakAvsluttet: sak.sakAvsluttet,
-            saksnummer: sak.saksnummer,
-        } as Sak,
+        sak: sak,
         annenForelder: {
             fnr: sak.annenPart.fnr,
             fornavn: sak.annenPart.fornavn,
