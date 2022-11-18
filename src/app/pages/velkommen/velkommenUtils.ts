@@ -6,6 +6,7 @@ import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import { erEldreEnn3År } from 'app/utils/personUtils';
 import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
+import { BarnFraNesteSak, BarnType } from 'app/context/types/Barn';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -165,18 +166,31 @@ export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: Registre
     return barnFraSaker.concat(barnFraPDL);
 };
 
-export const getFamilieHendelseDatoNesteSak = (
+export const getBarnFraNesteSak = (
     valgteBarn: SelectableBarn,
     selectableBarn: SelectableBarn[]
-): Date | undefined => {
-    const barnMedSenereFamiliehendelsesdato = selectableBarn
+): BarnFraNesteSak | undefined => {
+    const nesteBarn = selectableBarn
         .filter(
             (barn) => barn.sak !== undefined && barn.id !== valgteBarn.id && barn.familiehendelsesdato !== undefined
         )
         .find((barnMedSak) => dayjs(barnMedSak.familiehendelsesdato!).isAfter(valgteBarn.familiehendelsesdato!, 'day'));
-    return barnMedSenereFamiliehendelsesdato !== undefined
-        ? barnMedSenereFamiliehendelsesdato.familiehendelsesdato
-        : undefined;
+    if (nesteBarn === undefined) {
+        return undefined;
+    }
+    let nesteBarnType: BarnType;
+    if (nesteBarn.fødselsdatoer !== undefined && nesteBarn.fødselsdatoer.length > 0) {
+        nesteBarnType = BarnType.FØDT;
+    } else if (nesteBarn.termindato !== undefined) {
+        nesteBarnType = BarnType.UFØDT;
+    } else {
+        nesteBarnType = BarnType.ADOPTERT_ANNET_BARN;
+    }
+    return {
+        type: nesteBarnType,
+        familiehendelsesdato: nesteBarn.familiehendelsesdato!,
+        antallBarn: nesteBarn.antallBarn,
+    };
 };
 
 export const kanSøkeOmEndringPåBarnet = (barn: SelectableBarn): boolean => {

@@ -13,7 +13,7 @@ import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/
 import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUtils';
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
-import Barn from 'app/context/types/Barn';
+import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 
 interface Props {
     uttaksplan: Periode[];
@@ -38,10 +38,23 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     barn: Barn;
+    barnFraNesteSak: BarnFraNesteSak | undefined;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
     return uttaksplan.findIndex((p) => dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato));
+};
+
+const getIndexOfSistePeriodeFørFamHendelseNesteBarn = (
+    uttaksplan: Periode[],
+    familiehendelsesdatoNesteBarn: Date | undefined
+) => {
+    if (familiehendelsesdatoNesteBarn !== undefined) {
+        return (
+            uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(familiehendelsesdatoNesteBarn, 'day')).length - 1
+        );
+    }
+    return undefined;
 };
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -67,6 +80,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     barn,
+    barnFraNesteSak,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -80,14 +94,21 @@ const Periodeliste: FunctionComponent<Props> = ({
     };
 
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(uttaksplan, familiehendelsesdato);
-
+    const indexOfSistePeriodeFørNesteBarn =
+        barnFraNesteSak !== undefined
+            ? getIndexOfSistePeriodeFørFamHendelseNesteBarn(uttaksplan, barnFraNesteSak?.familiehendelsesdato)
+            : undefined;
     return (
         <div className={bem.block}>
             {uttaksplan.map((p, index) => {
                 return (
                     <>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
-                            <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
+                            <FamiliehendelsedatoDisplay
+                                barn={barn}
+                                familiehendelsedato={familiehendelsesdato}
+                                gjelderNesteSak={false}
+                            />
                         ) : null}
                         <PeriodelisteItem
                             key={p.id}
@@ -117,6 +138,15 @@ const Periodeliste: FunctionComponent<Props> = ({
                             antallBarn={antallBarn}
                             utsettelserIPlan={utsettelserIPlan}
                         />
+                        {barnFraNesteSak !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn === index ? (
+                            <FamiliehendelsedatoDisplay
+                                familiehendelsedato={barnFraNesteSak!.familiehendelsesdato}
+                                barn={barnFraNesteSak}
+                                gjelderNesteSak={true}
+                            />
+                        ) : null}
                     </>
                 );
             })}

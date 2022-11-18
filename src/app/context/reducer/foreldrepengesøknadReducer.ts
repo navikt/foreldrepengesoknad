@@ -121,10 +121,10 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 eksisterendeSak: action.payload,
             };
-        case ForeldrepengesøknadContextActionKeys.SET_FAMILIEHENDELSESDATO_NESTE_SAK:
+        case ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK:
             return {
                 ...state,
-                familieHendelseDatoNesteSak: action.payload,
+                barnFraNesteSak: action.payload,
             };
         case ForeldrepengesøknadContextActionKeys.SET_VEDLEGG:
             //TODO Legg til håndtering av fleire vedlegg

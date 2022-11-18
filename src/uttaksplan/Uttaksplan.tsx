@@ -25,7 +25,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
-import Barn from 'app/context/types/Barn';
+import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
 import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
@@ -71,6 +71,7 @@ interface Props {
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
+    barnFraNesteSak: BarnFraNesteSak | undefined;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -108,6 +109,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     visibility,
     visAutomatiskJusteringForm,
     perioderMedUttakRundtFødsel,
+    barnFraNesteSak,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -290,6 +292,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     termindato={termindato}
                     barn={barn}
                     utsettelserIPlan={utsettelserIPlan}
+                    barnFraNesteSak={barnFraNesteSak}
                 />
             </Block>
             {visAutomatiskJusteringForm && (

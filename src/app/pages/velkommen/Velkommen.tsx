@@ -32,7 +32,7 @@ import { Søknad } from 'app/context/types/Søknad';
 
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import dayjs from 'dayjs';
-import { getFamilieHendelseDatoNesteSak, getSelectableBarnOptions } from './velkommenUtils';
+import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { Sak } from 'app/types/Sak';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
@@ -83,8 +83,8 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
         ];
 
         if (valgteBarn !== undefined) {
-            const familieHendelseDatoNesteSak = getFamilieHendelseDatoNesteSak(valgteBarn, selectableBarn);
-            actionsToDispatch.push(actionCreator.setFamiliehendelsesdatoNesteSak(familieHendelseDatoNesteSak));
+            const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
+            actionsToDispatch.push(actionCreator.setBarnFraNesteSak(barnFraNesteSak));
         }
 
         const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;

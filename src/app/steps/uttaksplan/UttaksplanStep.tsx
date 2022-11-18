@@ -86,7 +86,7 @@ const UttaksplanStep = () => {
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
-    const { familieHendelseDatoNesteSak } = state;
+    const { barnFraNesteSak } = state;
     const debouncedState = useDebounce(state, 3000);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
@@ -111,7 +111,8 @@ const UttaksplanStep = () => {
     const termindato = getTermindato(barn);
     const annenForelderFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const erAdopsjon = situasjon === 'fødsel';
-
+    const familieHendelseDatoNesteSak =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
         søkersituasjon.rolle,
         erFarEllerMedmor,
@@ -453,6 +454,7 @@ const UttaksplanStep = () => {
                             visibility={visibility}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                            barnFraNesteSak={barnFraNesteSak}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (

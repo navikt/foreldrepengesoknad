@@ -7,7 +7,7 @@ import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 import { AnnenForelderOppgitt } from '../types/AnnenForelder';
-import Barn from '../types/Barn';
+import Barn, { BarnFraNesteSak, BarnType } from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -334,6 +334,23 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual({
             ...foreldrepengesøknadInitialState,
             endringstidspunkt: payload,
+        });
+    });
+    it('skal sette barn fra neste sak i state', () => {
+        const payload = {
+            type: BarnType.UFØDT,
+            familiehendelsesdato: new Date('2023-05-01'),
+            antallBarn: 1,
+        } as BarnFraNesteSak;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            barnFraNesteSak: payload,
         });
     });
     it('skal sette perioderSomSkalSendes inn i state', () => {

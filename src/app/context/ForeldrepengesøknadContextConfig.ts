@@ -6,6 +6,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { Periode } from 'uttaksplan/types/Periode';
+import { BarnFraNesteSak } from './types/Barn';
 import { Søknad } from './types/Søknad';
 import UttaksplanInfo from './types/UttaksplanInfo';
 
@@ -21,13 +22,13 @@ export interface ForeldrepengesøknadContextState {
     harUttaksplanBlittSlettet: boolean;
     brukerSvarteJaPåAutoJustering: boolean | undefined;
     søknadGjelderEtNyttBarn: boolean;
-    familieHendelseDatoNesteSak: Date | undefined;
     harEksisterendeSak?: boolean;
     harAnnenPartEksisterendeSak?: boolean;
     annenPartEksisterendeSakSaksnummer?: string;
     uttaksplanInfo?: UttaksplanInfo;
     eksisterendeSak?: EksisterendeSak;
     endringstidspunkt?: Date;
+    barnFraNesteSak?: BarnFraNesteSak;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -78,5 +79,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     harUttaksplanBlittSlettet: false,
     brukerSvarteJaPåAutoJustering: undefined,
     søknadGjelderEtNyttBarn: undefined!,
-    familieHendelseDatoNesteSak: undefined,
+    barnFraNesteSak: undefined,
 };

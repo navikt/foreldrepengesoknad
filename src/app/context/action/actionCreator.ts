@@ -9,7 +9,7 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
-import Barn from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -50,7 +50,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
     SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL = 'setØnskerJustertUttakVedFødsel',
     SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING = 'setBrukerSvarteJaPAutoJustering',
-    SET_FAMILIEHENDELSESDATO_NESTE_SAK = 'setFamiliehendelsesdatoNesteSak',
+    SET_BARN_FRA_NESTE_SAK = 'setBarnFraNesteSak',
 }
 
 interface SetVelkommen {
@@ -363,13 +363,13 @@ const setBrukerSvarteJaPåAutoJustering = (payload: boolean | undefined): SetBru
     payload,
 });
 
-interface SetFamiliehendelsesdatoNesteSak {
-    type: ForeldrepengesøknadContextActionKeys.SET_FAMILIEHENDELSESDATO_NESTE_SAK;
-    payload: Date | undefined;
+interface SetBarnFraNesteSak {
+    type: ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK;
+    payload: BarnFraNesteSak | undefined;
 }
 
-const setFamiliehendelsesdatoNesteSak = (payload: Date | undefined): SetFamiliehendelsesdatoNesteSak => ({
-    type: ForeldrepengesøknadContextActionKeys.SET_FAMILIEHENDELSESDATO_NESTE_SAK,
+const setBarnFraNesteSak = (payload: BarnFraNesteSak | undefined): SetBarnFraNesteSak => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK,
     payload,
 });
 
@@ -405,7 +405,7 @@ export type ForeldrepengesøknadContextAction =
     | SetUttaksplanSlettet
     | SetØnskerJustertUttakVedFødsel
     | SetBrukerSvarteJaPåAutoJustering
-    | SetFamiliehendelsesdatoNesteSak;
+    | SetBarnFraNesteSak;
 
 export default {
     setVelkommen,
@@ -439,5 +439,5 @@ export default {
     setUttaksplanSlettet,
     setØnskerJustertUttakVedFødsel,
     setBrukerSvarteJaPåAutoJustering,
-    setFamiliehendelsesdatoNesteSak,
+    setBarnFraNesteSak,
 };

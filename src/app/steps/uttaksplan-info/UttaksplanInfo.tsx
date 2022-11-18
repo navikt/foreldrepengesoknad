@@ -33,8 +33,10 @@ const UttaksplanInfo = () => {
     const { registrerteBarn } = søkerinfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const { erAleneOmOmsorg } = søker;
-    const { familieHendelseDatoNesteSak } = state;
+    const { barnFraNesteSak } = state;
 
+    const familieHendelseDatoNesteSak =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
     const eksisterendeSakAnnenPartRequestIsSuspended =
         registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
