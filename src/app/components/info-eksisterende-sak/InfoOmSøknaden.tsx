@@ -18,7 +18,7 @@ import {
 } from 'app/utils/personUtils';
 import { InfoPeriode, isInfoPeriode, Periodetype } from 'uttaksplan/types/Periode';
 import InnholdMedIllustrasjon from '../innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import { formaterDato, getVarighetString, ISOStringToDate } from 'app/utils/dateUtils';
+import { formaterDato, getToTetteReglerGjelder, getVarighetString, ISOStringToDate } from 'app/utils/dateUtils';
 import links from 'app/links/links';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -30,6 +30,7 @@ import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 
 import './infoOmSøknaden.less';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -63,7 +64,8 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
-
+    const { state } = useForeldrepengesøknadContext();
+    const { barnFraNesteSak } = state;
     const { annenForelder, søker, barn, søkersituasjon } = søknad;
     const { person } = søkerinfo;
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
@@ -99,7 +101,10 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false
     );
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+    const familiehendelsedatoNesteBarn =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
+    const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
     const termindato = getTermindato(barn);
     let sisteInfoPeriode;
     if (eksisterendeSak) {
@@ -201,6 +206,24 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                         ) : undefined
                     }
                 ></InnholdMedIllustrasjon>
+            )}
+            {erToTette && familiehendelsedatoNesteBarn !== undefined && (
+                <Block padBottom="l">
+                    <Normaltekst>
+                        {
+                            'Du har en søknad om foreldrepenger for nytt barn med termindato 12.05.2023. Siden det er mindre enn 48 uker mellom barna, har du rett til 22 uker med foreldrepenger for [navnPåBarnet]. Disse kan du ta ut frem til [navnPåBarnet] er 3 år.'
+                        }
+                    </Normaltekst>
+                </Block>
+            )}
+            {!erToTette && familiehendelsedatoNesteBarn !== undefined && (
+                <Block padBottom="l">
+                    <Normaltekst>
+                        {
+                            'Du har en søknad om foreldrepenger for nytt barn med termindato 12.05.2023. Du kan legge til uttaksperioder frem til tre uker før termindatoen på dette barnet.'
+                        }
+                    </Normaltekst>
+                </Block>
             )}
             <Normaltekst>
                 <FormattedMessage

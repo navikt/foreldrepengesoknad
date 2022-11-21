@@ -170,11 +170,15 @@ export const getBarnFraNesteSak = (
     valgteBarn: SelectableBarn,
     selectableBarn: SelectableBarn[]
 ): BarnFraNesteSak | undefined => {
-    const nesteBarn = selectableBarn
-        .filter(
-            (barn) => barn.sak !== undefined && barn.id !== valgteBarn.id && barn.familiehendelsesdato !== undefined
-        )
-        .find((barnMedSak) => dayjs(barnMedSak.familiehendelsesdato!).isAfter(valgteBarn.familiehendelsesdato!, 'day'));
+    const allePåfølgendeBarn = selectableBarn.filter(
+        (barn) =>
+            barn.sak !== undefined &&
+            barn.id !== valgteBarn.id &&
+            barn.familiehendelsesdato !== undefined &&
+            dayjs(barn.familiehendelsesdato!).isAfter(valgteBarn.familiehendelsesdato!, 'day')
+    );
+
+    const nesteBarn = allePåfølgendeBarn.sort(sorterSelectableBarn)[allePåfølgendeBarn.length - 1];
     if (nesteBarn === undefined) {
         return undefined;
     }
@@ -196,3 +200,11 @@ export const getBarnFraNesteSak = (
 export const kanSøkeOmEndringPåBarnet = (barn: SelectableBarn): boolean => {
     return barn.kanSøkeOmEndring === true;
 };
+
+export function sorterSelectableBarn(b1: SelectableBarn, b2: SelectableBarn) {
+    return dayjs(b1.sortableDato).isBefore(b2.sortableDato, 'd')
+        ? 1
+        : dayjs(b1.sortableDato).isAfter(b2.sortableDato, 'd')
+        ? -1
+        : 0;
+}

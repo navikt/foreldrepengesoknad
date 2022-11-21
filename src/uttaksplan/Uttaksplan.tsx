@@ -10,7 +10,7 @@ import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenFo
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getToTetteReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -72,7 +72,7 @@ interface Props {
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
-    toTetteReglerGjelder: boolean;
+    familiehendelsesdatoNesteSak: Date | undefined;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -111,7 +111,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     visAutomatiskJusteringForm,
     perioderMedUttakRundtFødsel,
     barnFraNesteSak,
-    toTetteReglerGjelder,
+    familiehendelsesdatoNesteSak,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -127,6 +127,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const bareFarHarRett = !morHarRett;
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
+    const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
@@ -226,6 +227,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,
         barn: barn,
+        familiehendelsesdatoNesteSak: familiehendelsesdatoNesteSak,
     });
 
     useEffect(() => {

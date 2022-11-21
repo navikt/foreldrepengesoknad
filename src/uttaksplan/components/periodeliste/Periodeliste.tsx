@@ -14,6 +14,7 @@ import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUt
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
+// import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     uttaksplan: Periode[];
@@ -147,6 +148,16 @@ const Periodeliste: FunctionComponent<Props> = ({
                                 gjelderNesteSak={true}
                             />
                         ) : null}
+                        {/* {barnFraNesteSak !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn === index ? (
+                            <AlertStripe type="info">{'Termin for det neste barnet er 12. mai 2024'}</AlertStripe>
+                        ) : null} */}
+                        {/* {barnFraNesteSak !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn === index ? (
+                            <InfoBlock>{'Termin for det neste barnet er 12. mai 2024'}</InfoBlock>
+                        ) : null} */}
                     </>
                 );
             })}

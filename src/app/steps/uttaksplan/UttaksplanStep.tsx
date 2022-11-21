@@ -36,7 +36,7 @@ import { getPerioderSomSkalSendesInn, storeAppState } from 'app/utils/submitUtil
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getEndringstidspunkt, getMorsSisteDag, ISOStringToDate, getToTetteReglerGjelder } from 'app/utils/dateUtils';
+import { getEndringstidspunkt, getMorsSisteDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -113,7 +113,6 @@ const UttaksplanStep = () => {
     const erAdopsjon = situasjon === 'fødsel';
     const familieHendelseDatoNesteSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
-    const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familieHendelseDatoNesteSak);
 
     const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
         søkersituasjon.rolle,
@@ -457,7 +456,7 @@ const UttaksplanStep = () => {
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}
-                            toTetteReglerGjelder={toTetteReglerGjelder}
+                            familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (

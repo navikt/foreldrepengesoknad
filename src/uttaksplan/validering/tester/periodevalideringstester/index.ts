@@ -9,6 +9,7 @@ import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starter
 import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
 import { periodeDeFørsteSeksUkeneHarUlovligUttakBFHR } from './periodeDeFørsteSeksUkeneHarUlovligUttakBFHR';
 import { harBekreftet100ProsentArbeidIUtsettelsePgaArbeid } from './harBekreftet100ProsentArbeidIUtsettelsePgaArbeid';
+import { forSenUttakVedPåfølgendeBarn } from './forSenUttakVedPåfølgendeBarn';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
@@ -21,6 +22,7 @@ export enum PeriodeValiderRegelKey {
     'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel' = 'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel',
     'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR' = 'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR',
     'harBekreftet100ProsentArbeidIUtsettelsePgaArbeid' = 'harBekreftet100ProsentArbeidIUtsettelsePgaArbeid',
+    'forSenUttakVedPåfølgendeBarn' = 'forSenUttakVedPåfølgendeBarn',
 }
 
 /** Meldingene skal default kun vises inne i skjema */
@@ -81,6 +83,12 @@ const periodevalideringsregler: Regel[] = [
         key: PeriodeValiderRegelKey.harBekreftet100ProsentArbeidIUtsettelsePgaArbeid,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harBekreftet100ProsentArbeidIUtsettelsePgaArbeid,
+        skjulesIOppsummering: skjulIOppsummering,
+    },
+    {
+        key: PeriodeValiderRegelKey.forSenUttakVedPåfølgendeBarn,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: forSenUttakVedPåfølgendeBarn,
         skjulesIOppsummering: skjulIOppsummering,
     },
     //TODO: visibility.areAllQuestionsAnswered() burde sendes oppover fra periodeUttakFormQuestionsConfig/Legg til periode formen.

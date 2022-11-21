@@ -31,8 +31,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { Søknad } from 'app/context/types/Søknad';
 
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
-import dayjs from 'dayjs';
-import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
+import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarn } from './velkommenUtils';
 import { Sak } from 'app/types/Sak';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
@@ -52,13 +51,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
     const bem = bemUtils('velkommen');
     const { registrerteBarn } = useSøkerinfo();
     const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
-    const sortedSelectableBarn = selectableBarn.sort(function (a, b) {
-        return dayjs(a.sortableDato).isBefore(b.sortableDato, 'd')
-            ? 1
-            : dayjs(a.sortableDato).isAfter(b.sortableDato, 'd')
-            ? -1
-            : 0;
-    });
+    const sortedSelectableBarn = selectableBarn.sort(sorterSelectableBarn);
 
     useEffect(() => {
         if (state.søknad.søker.språkkode !== locale) {
@@ -83,7 +76,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
         ];
 
         if (valgteBarn !== undefined) {
-            const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
+            const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
             actionsToDispatch.push(actionCreator.setBarnFraNesteSak(barnFraNesteSak));
         }
 

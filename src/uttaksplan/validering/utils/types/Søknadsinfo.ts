@@ -33,4 +33,5 @@ export interface Søknadsinfo {
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;
+    familiehendelsesdatoNesteSak: Date | undefined;
 }
