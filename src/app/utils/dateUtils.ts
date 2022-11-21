@@ -342,6 +342,21 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
     );
 };
 
+export const getToTetteReglerGjelder = (
+    familiehendelsesdato: Date | undefined,
+    familiehendelsesdatoNesteBarn: Date | undefined
+): boolean => {
+    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
+        return false;
+    }
+    const familiehendelsePLus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
+        dayjs(familiehendelsePLus48Uker).isAfter(familiehendelsesdatoNesteBarn)
+    );
+};
+
 export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
     farSinFørsteUttaksdag: Date,
     morsSisteUttaksdag: Date

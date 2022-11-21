@@ -687,3 +687,30 @@ describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
         expect(gjelderWLB).toEqual(true);
     });
 });
+
+describe('To tette', () => {
+    it('Skal returnere at to tette reglene ikke gjelder hvis første barnet sin familihendelse dato er undefined', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene ikke gjelder hvis andre barnet sin familihendelse dato er undefined', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene ikke gjelder hvis første barnet er født før 2 august 2022', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene ikke gjelder hvis andre barnet er født før 2 august 2022', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene gjelder begge barna er født etter 2 august 2022', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene gjelder hvis det er mindre enn 48 uker mellom barna', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene ikke gjelder hvis det er mer enn 48 uker mellom barna', () => {
+        //TODO
+    });
+    it('Skal returnere at to tette reglene ikke gjelder hvis det er akkurat 48 uker mellom barna', () => {
+        //TODO
+    });
+});

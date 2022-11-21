@@ -72,6 +72,7 @@ interface Props {
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
+    toTetteReglerGjelder: boolean;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -110,6 +111,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     visAutomatiskJusteringForm,
     perioderMedUttakRundtFødsel,
     barnFraNesteSak,
+    toTetteReglerGjelder,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -313,6 +315,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     foreldreparSituasjon={foreldreSituasjon}
                     familiehendelsesdato={familiehendelsesdatoDate}
                     annenForelderHarRettINorge={annenForelderHarRettINorge}
+                    toTetteReglerGjelder={toTetteReglerGjelder}
                 />
             </Block>
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
