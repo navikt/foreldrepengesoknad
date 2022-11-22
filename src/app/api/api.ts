@@ -68,13 +68,13 @@ const useGetAnnenPartsVedtak = (
 ) => {
     const isSuspended =
         annenPartFnr !== undefined && (barnFnr !== undefined || familiehendelsesdato !== undefined) ? false : true;
-    const { data, error, requestStatus } = usePostRequest<AnnenPartsVedtakDTO>('/innsyn/v2/annenPartVedtak', {
+    const body = {
+        annenPartFødselsnummer: annenPartFnr,
+        barnFødselsnummer: barnFnr,
+        familiehendelse: familiehendelsesdato,
+    };
+    const { data, error, requestStatus } = usePostRequest<AnnenPartsVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
         config: {
-            params: {
-                annenPartFødselsnummer: annenPartFnr,
-                barnFødselsnummer: barnFnr,
-                familiehendelse: familiehendelsesdato,
-            },
             withCredentials: true,
         },
         isSuspended,

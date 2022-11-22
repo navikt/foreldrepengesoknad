@@ -45,7 +45,7 @@ export const useGetRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS
     return { data, error, requestStatus };
 };
 
-export const usePostRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS) => {
+export const usePostRequest = <T>(url: string, body: any, options: Options = DEFAULT_OPTIONS) => {
     const [data, setData] = useState<T>();
     const [error, setError] = useState<AxiosError<any> | null>(null);
     const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.UNFETCHED);
@@ -56,7 +56,7 @@ export const usePostRequest = <T>(url: string, options: Options = DEFAULT_OPTION
             setRequestStatus(RequestStatus.IN_PROGRESS);
 
             axiosInstance
-                .post(url, options.config)
+                .post(url, body, options.config)
                 .then((res) => {
                     res.data === '' ? setData(undefined) : setData(res.data);
                     setRequestStatus(RequestStatus.FINISHED);

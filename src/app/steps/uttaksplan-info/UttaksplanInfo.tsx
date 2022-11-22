@@ -43,10 +43,10 @@ const UttaksplanInfo = () => {
 
     const annenPartFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const barnFødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
+    const barnFnr = isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
         annenPartFnr,
-        barnFødselsdato,
+        barnFnr,
         familiehendelsesdato
     );
 
