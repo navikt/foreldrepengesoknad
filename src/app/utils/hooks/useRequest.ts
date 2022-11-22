@@ -70,7 +70,7 @@ export const usePostRequest = <T>(url: string, body: any, options: Options = DEF
                     setRequestStatus(RequestStatus.FINISHED);
                 });
         }
-    }, [options, url, axiosInstance, requestStatus]);
+    }, [options, url, axiosInstance, requestStatus, body]);
 
     return { data, error, requestStatus };
 };
