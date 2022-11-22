@@ -110,7 +110,7 @@ const getSelectableFlerlingerFraPDL = (
 };
 
 const getSelectableBarnOptionsFromSaker = (saker: Sak[]) => {
-    return saker.map((s) => getSelectableBarnFraSak(s));
+    return saker.filter((sak) => sak.barn.length > 0).map((sakMedBarn) => getSelectableBarnFraSak(sakMedBarn));
 };
 
 const getSelectableBarnOptionsFraPDL = (
