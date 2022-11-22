@@ -34,7 +34,18 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return SelectableBarnType.UFØDT;
 };
 
-const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
+const getAnnenForelderFraSak = (sak: Sak): RegistrertAnnenForelder | undefined => {
+    return sak.annenPart !== undefined
+        ? {
+              fnr: sak.annenPart.fnr,
+              fornavn: sak.annenPart.fornavn,
+              etternavn: sak.annenPart.etternavn,
+          }
+        : undefined;
+};
+
+const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
+    const annenForelderFraSak = getAnnenForelderFraSak(sak);
     const barnFraSak = {
         id: guid(),
         fnr: sak.barn.map((b) => b.fnr),
@@ -47,11 +58,7 @@ const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
         etternavn: sak.barn.map((b) => b.etternavn),
         kanSøkeOmEndring: sak.kanSøkeOmEndring,
         sak: sak,
-        annenForelder: {
-            fnr: sak.annenPart.fnr,
-            fornavn: sak.annenPart.fornavn,
-            etternavn: sak.annenPart.etternavn,
-        },
+        annenForelder: annenForelderFraSak,
         familiehendelsesdato: ISOStringToDate(
             getRelevantFamiliehendelseDato(
                 sak.familiehendelse.termindato,
@@ -68,6 +75,25 @@ const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
             barnFraSak.omsorgsovertagelse
         ),
     };
+};
+const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
+    if (sak.barn.length > 0) {
+        return getSelectableBarnFraSakMedBarn(sak);
+    } else {
+        const annenForelderFraSak = getAnnenForelderFraSak(sak);
+
+        return {
+            id: guid(),
+            type: SelectableBarnType.UFØDT,
+            antallBarn: sak.familiehendelse.antallBarn,
+            termindato: ISOStringToDate(sak.familiehendelse.termindato),
+            kanSøkeOmEndring: sak.kanSøkeOmEndring,
+            sak: sak,
+            annenForelder: annenForelderFraSak,
+            familiehendelsesdato: ISOStringToDate(sak.familiehendelse.termindato),
+            sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
+        };
+    }
 };
 
 const getSelectableBarnFraPDL = (
@@ -110,7 +136,9 @@ const getSelectableFlerlingerFraPDL = (
 };
 
 const getSelectableBarnOptionsFromSaker = (saker: Sak[]) => {
-    return saker.filter((sak) => sak.barn.length > 0).map((sakMedBarn) => getSelectableBarnFraSak(sakMedBarn));
+    return saker
+        .filter((sak) => sak.barn.length > 0 || sak.familiehendelse.termindato !== undefined)
+        .map((sakMedBarn) => getSelectableBarnFraSak(sakMedBarn));
 };
 
 const getSelectableBarnOptionsFraPDL = (

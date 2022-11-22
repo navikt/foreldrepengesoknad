@@ -354,14 +354,27 @@ const finnAnnenForelderPåFødselsdato = (
 };
 
 const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
-    const barnType =
-        valgteBarn.sak !== undefined && valgteBarn.sak.gjelderAdopsjon ? BarnType.IKKE_UTFYLT : BarnType.FØDT;
-    return {
-        type: barnType,
-        antallBarn: valgteBarn.fnr.length,
-        fødselsdatoer: valgteBarn.fødselsdatoer!,
-        fnr: valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
-    };
+    if (valgteBarn.fødselsdatoer !== undefined && valgteBarn.fødselsdatoer.length > 0) {
+        return {
+            type: BarnType.FØDT,
+            antallBarn: valgteBarn.antallBarn,
+            fødselsdatoer: valgteBarn.fødselsdatoer!,
+            fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+        };
+    } else if (valgteBarn.termindato !== undefined) {
+        return {
+            type: BarnType.UFØDT,
+            antallBarn: valgteBarn.antallBarn,
+            termindato: valgteBarn.termindato,
+        };
+    } else {
+        return {
+            type: BarnType.IKKE_UTFYLT,
+            antallBarn: valgteBarn.antallBarn,
+            fødselsdatoer: valgteBarn.fødselsdatoer!,
+            fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+        };
+    }
 };
 
 const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForelder | undefined => {

@@ -24,10 +24,10 @@ export enum SelectableBarnOptions {
 
 export interface SelectableBarn {
     id: string;
-    fnr: string[];
     type: SelectableBarnType;
     antallBarn: number;
     sortableDato: Date;
+    fnr?: string[];
     termindato?: Date;
     fødselsdatoer?: Date[];
     omsorgsovertagelse?: Date;
