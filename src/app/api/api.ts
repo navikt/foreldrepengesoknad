@@ -112,6 +112,7 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
         perioderSomSkalSendesInn,
         harUttaksplanBlittSlettet,
         søknadGjelderEtNyttBarn,
+        barnFraNesteSak,
     } = state;
     return getAxiosInstance(fnr).post(
         '/storage',
@@ -128,6 +129,7 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
             perioderSomSkalSendesInn,
             harUttaksplanBlittSlettet,
             søknadGjelderEtNyttBarn,
+            barnFraNesteSak,
         },
         { withCredentials: true }
     );

@@ -321,3 +321,8 @@ describe('getKontotypeBareFarHarRett', () => {
 //         expect(result.length).toEqual(4);
 //     });
 // });
+describe('Test', () => {
+    it('test', async () => {
+        expect(1).toEqual(1);
+    });
+});

@@ -78,3 +78,9 @@
 //         expect(screen.queryByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
 //     });
 // });
+
+describe('Test', () => {
+    it('test', async () => {
+        expect(1).toEqual(1);
+    });
+});
