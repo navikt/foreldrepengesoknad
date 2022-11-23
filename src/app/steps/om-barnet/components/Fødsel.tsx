@@ -52,7 +52,10 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     legend={intlUtils(intl, 'omBarnet.antallBarn.født')}
                 />
             </Block>
-            <Block padBottom="l" visible={antallBarn !== undefined && parseInt(antallBarn, 10) >= 3}>
+            <Block
+                padBottom="l"
+                visible={antallBarn !== undefined && søknadGjelderEtNyttBarn && parseInt(antallBarn, 10) >= 3}
+            >
                 <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
                     <option value="" />
                     <option value="3">3</option>

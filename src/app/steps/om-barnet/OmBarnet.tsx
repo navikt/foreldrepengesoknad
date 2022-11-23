@@ -103,11 +103,13 @@ const OmBarnet: React.FunctionComponent = () => {
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues}
                                 visibility={visibility}
+                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                             />
                             <AdopsjonEktefellesBarn
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues}
                                 visibility={visibility}
+                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                             />
                             <Termin søkersituasjon={søkersituasjon} formValues={formValues} visibility={visibility} />
                             <Fødsel

@@ -19,9 +19,15 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
+    søknadGjelderEtNyttBarn: boolean;
 }
 
-const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
+const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
+    søkersituasjon,
+    formValues,
+    visibility,
+    søknadGjelderEtNyttBarn,
+}) => {
     const intl = useIntl();
 
     if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== YesOrNo.YES) {
@@ -61,7 +67,11 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, for
             </Block>
             <Block
                 padBottom="l"
-                visible={formValues.antallBarn !== undefined && parseInt(formValues.antallBarn, 10) >= 3}
+                visible={
+                    formValues.antallBarn !== undefined &&
+                    søknadGjelderEtNyttBarn &&
+                    parseInt(formValues.antallBarn, 10) >= 3
+                }
             >
                 <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
                     <option value="" />
