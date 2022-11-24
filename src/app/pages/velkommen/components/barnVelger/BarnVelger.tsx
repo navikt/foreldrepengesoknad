@@ -64,8 +64,7 @@ const getSakstatus = (sakErFerdigbehandlet: boolean) => {
 
 const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     let labelTekst;
-    const sakForBarnetErFerdigbehandlet = kanSøkeOmEndringPåBarnet(barn);
-    const saksStatus = barn.sak !== undefined ? getSakstatus(sakForBarnetErFerdigbehandlet) : undefined;
+    const saksStatus = barn.sak !== undefined ? getSakstatus(barn.sak.åpenBehandling === undefined) : undefined;
     const saksnummerTekst =
         barn.sak !== undefined
             ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
