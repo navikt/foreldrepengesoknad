@@ -52,7 +52,9 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
         type: getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse),
         antallBarn: sak.familiehendelse.antallBarn,
         omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertagelse),
-        fødselsdatoer: sak.barn.filter((ba) => ba !== undefined).map((b) => b.fødselsdato),
+        fødselsdatoer: sak.barn
+            .filter((ba) => ba !== undefined && ba.fødselsdato !== undefined)
+            .map((b) => ISOStringToDate(b.fødselsdato)!),
         termindato: ISOStringToDate(sak.familiehendelse.termindato),
         fornavn: sak.barn.map((b) => b.fornavn),
         etternavn: sak.barn.map((b) => b.etternavn),

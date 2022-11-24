@@ -1,12 +1,13 @@
-import { RegistrertAnnenForelder, RegistrertBarn } from './Person';
+import { RegistrertAnnenForelder } from './Person';
 import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
 import { GjeldendeVedtak } from './GjeldendeVedtak';
 import { ÅpenBehandling } from './ÅpenBehandling';
+import { BarnFraSak } from './BarnFraSak';
 
 export interface Sak {
     annenPart: RegistrertAnnenForelder;
-    barn: RegistrertBarn[];
+    barn: BarnFraSak[];
     dekningsgrad: DekningsgradDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak: GjeldendeVedtak;

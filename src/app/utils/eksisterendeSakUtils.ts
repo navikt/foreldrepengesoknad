@@ -269,7 +269,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn 
                 return {
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
-                    fødselsdatoer: sak.barn.map((b) => b.fødselsdato),
+                    fødselsdatoer: sak.barn.map((b) => ISOStringToDate(b.fødselsdato)!),
                     termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
                 };
             }
@@ -285,7 +285,9 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn 
                 type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
-                fødselsdatoer: sak.barn.map((b) => b.fødselsdato),
+                fødselsdatoer: sak.barn
+                    .filter((b) => b.fødselsdato !== undefined)
+                    .map((barn) => ISOStringToDate(barn.fødselsdato)!),
                 omsorgsovertakelse: [],
             };
         default:
