@@ -10,9 +10,9 @@ export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: st
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
 };
 
-export const formaterNavnPåFlereBarn = (fornavn: string[], etternavn: string[], antallBarn: number): string => {
+export const formaterNavnPåFlereBarn = (fornavn: string[], etternavn: string[]): string => {
     const etterNavnet = etternavn[0];
-    if (antallBarn > 1) {
+    if (fornavn.length > 1) {
         const fornavnene = fornavn.slice(0, -1).join(', ');
         const sisteFornavn = fornavn[fornavn.length - 1];
         return `${fornavnene} og ${sisteFornavn} ${etterNavnet}`;

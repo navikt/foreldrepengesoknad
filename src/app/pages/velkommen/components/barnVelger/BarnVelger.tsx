@@ -102,7 +102,7 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
 };
 
 const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
-    const navnTekst = formaterNavnPåFlereBarn(barn.fornavn!, barn.etternavn!, barn.antallBarn);
+    const navnTekst = formaterNavnPåFlereBarn(barn.fornavn!, barn.etternavn!);
     const fødselsdatoerTekst = formateFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =
         barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT

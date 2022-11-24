@@ -117,20 +117,32 @@ const getSelectableFlerlingerFraPDL = (
     registrertBarn: RegistrertBarn,
     barnFødtISammePeriode: RegistrertBarn[],
     annenForelder: RegistrertAnnenForelder | undefined
-): SelectableBarn => {
-    const barnFødtISammePeriodeFødselsdatoer = barnFødtISammePeriode.map((b) => b.fødselsdato);
-    const barnFødtISammePeriodeFornavn = barnFødtISammePeriode.map((b) => b.fornavn);
-    const barnFødtISammePeriodeEtternavn = barnFødtISammePeriode.map((b) => b.etternavn);
-    const barnFødtISammePeriodeFnr = barnFødtISammePeriode.map((b) => b.fnr);
+): SelectableBarn | undefined => {
+    const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldst);
+    let barnaSomSkalVises;
+
+    const registrerteFlerlingerSomLever = alleBarna.filter((regbarn) => {
+        return regbarn.dødsdato === undefined;
+    });
+
+    if (registrerteFlerlingerSomLever.length === 0) {
+        if (!getDødeBarnetForMerEnn3MånederSiden(alleBarna[0])) {
+            barnaSomSkalVises = alleBarna;
+        } else {
+            return undefined;
+        }
+    } else {
+        barnaSomSkalVises = registrerteFlerlingerSomLever;
+    }
     return {
         id: guid(),
         type: SelectableBarnType.IKKE_UTFYLT,
-        antallBarn: barnFødtISammePeriode.length + 1,
-        fødselsdatoer: [registrertBarn.fødselsdato].concat(barnFødtISammePeriodeFødselsdatoer),
-        fornavn: [registrertBarn.fornavn].concat(barnFødtISammePeriodeFornavn),
-        etternavn: [registrertBarn.etternavn].concat(barnFødtISammePeriodeEtternavn),
-        fnr: [registrertBarn.fnr].concat(barnFødtISammePeriodeFnr),
-        sortableDato: registrertBarn.fødselsdato,
+        antallBarn: alleBarna.length,
+        fødselsdatoer: barnaSomSkalVises.map((b) => b.fødselsdato),
+        fornavn: barnaSomSkalVises.map((b) => b.fornavn),
+        etternavn: barnaSomSkalVises.map((b) => b.etternavn),
+        fnr: barnaSomSkalVises.map((b) => b.fnr),
+        sortableDato: alleBarna[0].fødselsdato,
         annenForelder,
     };
 };
@@ -139,6 +151,13 @@ const getSelectableBarnOptionsFromSaker = (saker: Sak[]) => {
     return saker
         .filter((sak) => sak.barn.length > 0 || sak.familiehendelse.termindato !== undefined)
         .map((sakMedBarn) => getSelectableBarnFraSak(sakMedBarn));
+};
+
+const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: RegistrertBarn) => {
+    const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
+    return (
+        registrerteBarn.dødsdato !== undefined && dayjs(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
+    );
 };
 
 const getSelectableBarnOptionsFraPDL = (
@@ -168,8 +187,10 @@ const getSelectableBarnOptionsFraPDL = (
                       }
                     : undefined;
             if (barnFødtISammePeriode.length === 0) {
-                const selectableBarn = getSelectableBarnFraPDL(regBarn, annenForelder);
-                selectableBarnFraPDL.push(selectableBarn);
+                if (!getDødeBarnetForMerEnn3MånederSiden(regBarn)) {
+                    const selectableBarn = getSelectableBarnFraPDL(regBarn, annenForelder);
+                    selectableBarnFraPDL.push(selectableBarn);
+                }
             } else {
                 const selectableFlerlinger = getSelectableFlerlingerFraPDL(
                     regBarn,
@@ -179,7 +200,9 @@ const getSelectableBarnOptionsFraPDL = (
                 barnFødtISammePeriode.forEach((b) => {
                     barnSomErLagtTilFnr.push(b.fnr);
                 });
-                selectableBarnFraPDL.push(selectableFlerlinger);
+                if (selectableFlerlinger !== undefined) {
+                    selectableBarnFraPDL.push(selectableFlerlinger);
+                }
             }
         }
     });
@@ -206,7 +229,7 @@ export const getBarnFraNesteSak = (
             dayjs(barn.familiehendelsesdato!).isAfter(valgteBarn.familiehendelsesdato!, 'day')
     );
 
-    const nesteBarn = allePåfølgendeBarn.sort(sorterSelectableBarn)[allePåfølgendeBarn.length - 1];
+    const nesteBarn = allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst)[allePåfølgendeBarn.length - 1];
     if (nesteBarn === undefined) {
         return undefined;
     }
@@ -229,7 +252,15 @@ export const kanSøkeOmEndringPåBarnet = (barn: SelectableBarn): boolean => {
     return barn.kanSøkeOmEndring === true;
 };
 
-export function sorterSelectableBarn(b1: SelectableBarn, b2: SelectableBarn) {
+export function sorterRegistrerteBarnEtterEldst(b1: RegistrertBarn, b2: RegistrertBarn) {
+    return dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')
+        ? 1
+        : dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')
+        ? -1
+        : 0;
+}
+
+export function sorterSelectableBarnEtterYngst(b1: SelectableBarn, b2: SelectableBarn) {
     return dayjs(b1.sortableDato).isBefore(b2.sortableDato, 'd')
         ? 1
         : dayjs(b1.sortableDato).isAfter(b2.sortableDato, 'd')

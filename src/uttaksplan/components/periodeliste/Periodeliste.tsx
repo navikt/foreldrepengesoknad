@@ -1,5 +1,5 @@
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, Block } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
@@ -14,7 +14,7 @@ import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUt
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
-// import AlertStripe from 'nav-frontend-alertstriper';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     uttaksplan: Periode[];
@@ -95,6 +95,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     };
 
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(uttaksplan, familiehendelsesdato);
+    console.log(barnFraNesteSak);
     const indexOfSistePeriodeFørNesteBarn =
         barnFraNesteSak !== undefined
             ? getIndexOfSistePeriodeFørFamHendelseNesteBarn(uttaksplan, barnFraNesteSak?.familiehendelsesdato)
@@ -139,7 +140,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                             antallBarn={antallBarn}
                             utsettelserIPlan={utsettelserIPlan}
                         />
-                        {barnFraNesteSak !== undefined &&
+                        {/* {barnFraNesteSak !== undefined &&
                         indexOfSistePeriodeFørNesteBarn !== undefined &&
                         indexOfSistePeriodeFørNesteBarn === index ? (
                             <FamiliehendelsedatoDisplay
@@ -147,17 +148,16 @@ const Periodeliste: FunctionComponent<Props> = ({
                                 barn={barnFraNesteSak}
                                 gjelderNesteSak={true}
                             />
+                        ) : null} */}
+                        {barnFraNesteSak !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn !== undefined &&
+                        indexOfSistePeriodeFørNesteBarn === index ? (
+                            <Block padBottom="s">
+                                <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
+                                    {'Ny stønadsperiode for neste barn starter 01.05.2023'}
+                                </AlertStripe>
+                            </Block>
                         ) : null}
-                        {/* {barnFraNesteSak !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn === index ? (
-                            <AlertStripe type="info">{'Termin for det neste barnet er 12. mai 2024'}</AlertStripe>
-                        ) : null} */}
-                        {/* {barnFraNesteSak !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn === index ? (
-                            <InfoBlock>{'Termin for det neste barnet er 12. mai 2024'}</InfoBlock>
-                        ) : null} */}
                     </>
                 );
             })}

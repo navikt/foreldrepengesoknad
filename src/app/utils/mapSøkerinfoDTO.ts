@@ -6,6 +6,7 @@ import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, Søkerin
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { ISOStringToDate } from './dateUtils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -64,6 +65,7 @@ const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn
             fødselsdato: dayjs.utc(barn.fødselsdato).toDate(),
             kjønn: barn.kjønn,
             annenForelder: oppgittAnnenForelder,
+            dødsdato: ISOStringToDate(barn.dødsdato),
         };
     });
 };

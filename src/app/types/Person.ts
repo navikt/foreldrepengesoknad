@@ -8,6 +8,7 @@ export interface PersonBase {
     etternavn: string;
     kjønn: Kjønn;
     fødselsdato: Date;
+    dødsdato?: Date;
 }
 
 interface Person extends PersonBase {
