@@ -73,6 +73,8 @@ interface Props {
     perioderMedUttakRundtFødsel: Uttaksperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
     familiehendelsesdatoNesteSak: Date | undefined;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
+    minsterettUkerToTette: number | undefined;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -112,6 +114,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     perioderMedUttakRundtFødsel,
     barnFraNesteSak,
     familiehendelsesdatoNesteSak,
+    førsteUttaksdagNesteBarnsSak,
+    minsterettUkerToTette,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -227,7 +231,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,
         barn: barn,
-        familiehendelsesdatoNesteSak: familiehendelsesdatoNesteSak,
+        familiehendelsesdatoNesteSak,
+        førsteUttaksdagNesteBarnsSak,
+        minsterettUkerToTette,
     });
 
     useEffect(() => {
@@ -269,6 +275,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     eksisterendeSak={eksisterendeSak}
                     erIUttaksplanenSteg={true}
                     tilgjengeligeStønadskontoer={stønadskontoer}
+                    minsterettUkerToTette={minsterettUkerToTette}
                 />
             </Block>
             <Block padBottom="l">

@@ -47,7 +47,8 @@ const UttaksplanInfo = () => {
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
         annenPartFnr,
         barnFnr,
-        familiehendelsesdato
+        familiehendelsesdato,
+        eksisterendeSakAnnenPartRequestIsSuspended
     );
 
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);

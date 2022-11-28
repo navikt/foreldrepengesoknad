@@ -7,7 +7,7 @@ import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 import { AnnenForelderOppgitt } from '../types/AnnenForelder';
-import Barn, { BarnFraNesteSak, BarnType } from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -338,9 +338,10 @@ describe('<foreldrepengesøknadReducer>', () => {
     });
     it('skal sette barn fra neste sak i state', () => {
         const payload = {
-            type: BarnType.UFØDT,
             familiehendelsesdato: new Date('2023-05-01'),
-            antallBarn: 1,
+            startdatoFørsteStønadsperiode: new Date('2023-04-12'),
+            fnr: ['123456789'],
+            annenForelderFnr: '1122334455',
         } as BarnFraNesteSak;
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {

@@ -86,7 +86,6 @@ interface PropsPerKvote {
     erFarEllerMedmor: boolean;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
-    toTetteReglerGjelder: boolean;
 }
 
 const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
@@ -97,12 +96,10 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     erFarEllerMedmor,
     situasjon,
     erAleneOmOmsorg,
-    toTetteReglerGjelder,
 }) => {
-    const uttakÅVise =
-        erDeltUttakINorge && !toTetteReglerGjelder
-            ? uttaksstatus.uttak
-            : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
+    const uttakÅVise = erDeltUttakINorge
+        ? uttaksstatus.uttak
+        : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
     return (
         <div className={bem.element('perKvote')}>
             <Undertittel tag="h2" className="blokk-xs">
@@ -149,7 +146,6 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     foreldreparSituasjon,
     familiehendelsesdato,
     annenForelderHarRettINorge,
-    toTetteReglerGjelder,
 }) => {
     const søker = useSøkerinfo();
     const søknad = useSøknad();
@@ -182,7 +178,6 @@ const OversiktKvoter: FunctionComponent<Props> = ({
                 erFarEllerMedmor={søkerErFarEllerMedmor}
                 situasjon={søknad.søkersituasjon.situasjon}
                 erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
-                toTetteReglerGjelder={toTetteReglerGjelder}
             />
         </div>
     );

@@ -37,6 +37,7 @@ export interface SelectableBarn {
     sak?: Sak;
     annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
+    startdatoFørsteStønadsperiode?: Date;
 }
 
 interface Props {

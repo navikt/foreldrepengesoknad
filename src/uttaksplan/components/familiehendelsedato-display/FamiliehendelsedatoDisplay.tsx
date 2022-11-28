@@ -1,5 +1,5 @@
 import { bemUtils } from '@navikt/fp-common';
-import Barn, { BarnFraNesteSak, isAdoptertBarn, isFødtBarn } from 'app/context/types/Barn';
+import Barn, { isAdoptertBarn, isFødtBarn } from 'app/context/types/Barn';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactNode } from 'react';
@@ -10,25 +10,15 @@ import './familiehendelsesdatoDisplay.less';
 
 interface Props {
     familiehendelsedato: Date;
-    barn: Barn | BarnFraNesteSak;
-    gjelderNesteSak: boolean;
+    barn: Barn;
 }
 
-const getTekst = (
-    barn: Barn | BarnFraNesteSak,
-    familiehendelsedato: Date,
-    antallBarn: number,
-    gjelderNesteSak: boolean
-): ReactNode => {
+const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): ReactNode => {
     if (!isAdoptertBarn(barn)) {
         if (isFødtBarn(barn)) {
             return (
                 <FormattedMessage
-                    id={
-                        gjelderNesteSak
-                            ? 'uttaksplan.familiehendelsesdato.nesteBarn.født'
-                            : 'uttaksplan.familiehendelsesdato.født'
-                    }
+                    id={'uttaksplan.familiehendelsesdato.født'}
                     values={{ antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }}
                 />
             );
@@ -36,33 +26,21 @@ const getTekst = (
 
         return (
             <FormattedMessage
-                id={
-                    gjelderNesteSak
-                        ? 'uttaksplan.familiehendelsesdato.nesteBarn.termin'
-                        : 'uttaksplan.familiehendelsesdato.termin'
-                }
-                values={
-                    gjelderNesteSak
-                        ? { antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }
-                        : { dato: formaterDatoUtenDag(familiehendelsedato) }
-                }
+                id={'uttaksplan.familiehendelsesdato.termin'}
+                values={{ dato: formaterDatoUtenDag(familiehendelsedato) }}
             />
         );
     }
 
     return (
         <FormattedMessage
-            id={
-                gjelderNesteSak
-                    ? 'uttaksplan.familiehendelsesdato.nesteBarn.adopsjon'
-                    : 'uttaksplan.familiehendelsesdato.adopsjon'
-            }
+            id={'uttaksplan.familiehendelsesdato.adopsjon'}
             values={{ antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }}
         />
     );
 };
 
-const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsedato, barn, gjelderNesteSak }) => {
+const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsedato, barn }) => {
     const bem = bemUtils('familiehendelsesdatoDisplay');
 
     return (
@@ -70,7 +48,7 @@ const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsed
             <div className={bem.element('hjerte')}>
                 <HjerteIkon fylt={true} title="Hjerte" />
             </div>
-            <Normaltekst>{getTekst(barn, familiehendelsedato, barn.antallBarn, gjelderNesteSak)}</Normaltekst>
+            <Normaltekst>{getTekst(barn, familiehendelsedato, barn.antallBarn)}</Normaltekst>
         </div>
     );
 };

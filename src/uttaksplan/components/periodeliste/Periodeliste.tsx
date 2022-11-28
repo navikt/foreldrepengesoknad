@@ -1,5 +1,5 @@
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { bemUtils, Block } from '@navikt/fp-common';
+import { bemUtils, Block, formatDate } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { FormattedMessage } from 'react-intl';
 
 interface Props {
     uttaksplan: Periode[];
@@ -46,14 +47,9 @@ const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehend
     return uttaksplan.findIndex((p) => dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato));
 };
 
-const getIndexOfSistePeriodeFørFamHendelseNesteBarn = (
-    uttaksplan: Periode[],
-    familiehendelsesdatoNesteBarn: Date | undefined
-) => {
-    if (familiehendelsesdatoNesteBarn !== undefined) {
-        return (
-            uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(familiehendelsesdatoNesteBarn, 'day')).length - 1
-        );
+const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: Date | undefined) => {
+    if (dato !== undefined) {
+        return uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length - 1;
     }
     return undefined;
 };
@@ -95,10 +91,9 @@ const Periodeliste: FunctionComponent<Props> = ({
     };
 
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(uttaksplan, familiehendelsesdato);
-    console.log(barnFraNesteSak);
-    const indexOfSistePeriodeFørNesteBarn =
+    const indexOfSistePeriodeFørNyStøndasperiodeNyttBarn =
         barnFraNesteSak !== undefined
-            ? getIndexOfSistePeriodeFørFamHendelseNesteBarn(uttaksplan, barnFraNesteSak?.familiehendelsesdato)
+            ? getIndexOfSistePeriodeFørDato(uttaksplan, barnFraNesteSak.startdatoFørsteStønadsperiode)
             : undefined;
     return (
         <div className={bem.block}>
@@ -106,11 +101,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                 return (
                     <>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
-                            <FamiliehendelsedatoDisplay
-                                barn={barn}
-                                familiehendelsedato={familiehendelsesdato}
-                                gjelderNesteSak={false}
-                            />
+                            <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
                         ) : null}
                         <PeriodelisteItem
                             key={p.id}
@@ -140,21 +131,19 @@ const Periodeliste: FunctionComponent<Props> = ({
                             antallBarn={antallBarn}
                             utsettelserIPlan={utsettelserIPlan}
                         />
-                        {/* {barnFraNesteSak !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn === index ? (
-                            <FamiliehendelsedatoDisplay
-                                familiehendelsedato={barnFraNesteSak!.familiehendelsesdato}
-                                barn={barnFraNesteSak}
-                                gjelderNesteSak={true}
-                            />
-                        ) : null} */}
                         {barnFraNesteSak !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn !== undefined &&
-                        indexOfSistePeriodeFørNesteBarn === index ? (
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (
                             <Block padBottom="s">
                                 <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
-                                    {'Ny stønadsperiode for neste barn starter 01.05.2023'}
+                                    <FormattedMessage
+                                        id="uttaksplan.periodeliste.info.nyStønadsperiodeNesteSak"
+                                        values={{
+                                            datoStønadsperiodeNyttBarn: formatDate(
+                                                barnFraNesteSak.startdatoFørsteStønadsperiode
+                                            ),
+                                        }}
+                                    />
                                 </AlertStripe>
                             </Block>
                         ) : null}

@@ -45,3 +45,10 @@ export const getAntallUkerFellesperiode = (kontoer: TilgjengeligStønadskonto[])
         .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fellesperiode)
         .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
 };
+
+export const getAntallUkerMinsterett = (minsteRettDager: number | undefined): number | undefined => {
+    if (minsteRettDager !== undefined) {
+        return minsteRettDager / 5;
+    }
+    return undefined;
+};

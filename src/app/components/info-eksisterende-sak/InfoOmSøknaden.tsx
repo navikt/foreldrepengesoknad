@@ -5,7 +5,7 @@ import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, formatDate, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Forelder } from 'app/types/Forelder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
@@ -36,6 +36,7 @@ interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     eksisterendeSak: EksisterendeSak | undefined;
     erIUttaksplanenSteg: boolean;
+    minsterettUkerToTette?: number;
 }
 
 const getHvem = (
@@ -59,6 +60,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer,
     eksisterendeSak,
     erIUttaksplanenSteg,
+    minsterettUkerToTette,
 }) => {
     const bem = bemUtils('infoOmSøknaden');
     const intl = useIntl();
@@ -105,6 +107,11 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
+    const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intlUtils(intl, 'uker')].join(' ');
+    const startStønadsperiodeNyttBarn =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const sisteUttaksdagDetteBarnet =
+        startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
     const termindato = getTermindato(barn);
     let sisteInfoPeriode;
     if (eksisterendeSak) {
@@ -207,21 +214,45 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     }
                 ></InnholdMedIllustrasjon>
             )}
-            {erToTette && familiehendelsedatoNesteBarn !== undefined && (
+            {erToTette && startStønadsperiodeNyttBarn !== undefined && (
                 <Block padBottom="l">
                     <Normaltekst>
-                        {
-                            'Du har en søknad om foreldrepenger for nytt barn med termindato 12.05.2023. Siden det er mindre enn 48 uker mellom barna, har du rett til 22 uker med foreldrepenger for [navnPåBarnet]. Disse kan du ta ut frem til [navnPåBarnet] er 3 år.'
-                        }
+                        <strong>
+                            <FormattedMessage
+                                id="infoOmSøknaden.toTette.finnesBarnMedNesteSak.tittel"
+                                values={{ antallUkerToTette: minsterettUkerToTette }}
+                            ></FormattedMessage>
+                        </strong>
+                    </Normaltekst>
+                    <Normaltekst>
+                        <FormattedMessage
+                            id="infoOmSøknaden.toTette.finnesBarnMedNesteSak"
+                            values={{
+                                startStønadsperiodeNyttBarn: formatDate(startStønadsperiodeNyttBarn),
+                                minsterettAntallUker: <strong>{minsterettToTetteAntallUkerTekst}</strong>,
+                            }}
+                        />
                     </Normaltekst>
                 </Block>
             )}
-            {!erToTette && familiehendelsedatoNesteBarn !== undefined && (
+            {!erToTette && startStønadsperiodeNyttBarn !== undefined && (
                 <Block padBottom="l">
                     <Normaltekst>
-                        {
-                            'Du har en søknad om foreldrepenger for nytt barn med termindato 12.05.2023. Du kan legge til uttaksperioder frem til tre uker før termindatoen på dette barnet.'
-                        }
+                        <strong>
+                            <FormattedMessage
+                                id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak.tittel"
+                                values={{ sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet) }}
+                            ></FormattedMessage>
+                        </strong>
+                    </Normaltekst>
+                    <Normaltekst>
+                        <FormattedMessage
+                            id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak"
+                            values={{
+                                startStønadsperiodeNyttBarn: formatDate(startStønadsperiodeNyttBarn),
+                                sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet),
+                            }}
+                        />
                     </Normaltekst>
                 </Block>
             )}

@@ -2,8 +2,7 @@ import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
 import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import dayjs from 'dayjs';
-import uttaksConstants from 'app/constants';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
+import { isUttakAnnenPart, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { formatDate } from '@navikt/fp-common';
 
 const periodeErForSenVedPåfølgendeBarn = (periode: Periode, førsteUttaksdagForPåfølgendeBarn: Date | undefined) => {
@@ -12,7 +11,8 @@ const periodeErForSenVedPåfølgendeBarn = (periode: Periode, førsteUttaksdagFo
         (periode.type === Periodetype.Uttak ||
             periode.type === Periodetype.Overføring ||
             periode.type === Periodetype.Utsettelse ||
-            periode.type === Periodetype.Opphold)
+            periode.type === Periodetype.Opphold ||
+            isUttakAnnenPart(periode))
     ) {
         return (
             dayjs(periode.tidsperiode.fom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn) ||
@@ -23,21 +23,19 @@ const periodeErForSenVedPåfølgendeBarn = (periode: Periode, førsteUttaksdagFo
 };
 
 export const forSenUttakVedPåfølgendeBarn: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const sisteDagFørFødselNesteBarn = grunnlag.familiehendelsesdatoNesteSak
-        ? Uttaksdagen(dayjs(grunnlag.familiehendelsesdatoNesteSak).toDate()).forrige()
-        : undefined;
-    if (sisteDagFørFødselNesteBarn === undefined) {
+    if (
+        grunnlag.familiehendelsesdatoNesteSak === undefined ||
+        grunnlag.førsteUttaksdagNesteBarnsSak === undefined ||
+        (grunnlag.minsterettUkerToTette && grunnlag.minsterettUkerToTette > 0)
+    ) {
         return {
             passerer: true,
         };
     }
-    const treUkerFørPåfølgendeBarn = Uttaksdagen(sisteDagFørFødselNesteBarn).trekkFra(
-        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1
-    );
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) =>
-        periodeErForSenVedPåfølgendeBarn(periode, treUkerFørPåfølgendeBarn)
+        periodeErForSenVedPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
     );
-    const sisteMuligeUttaksdag = Uttaksdagen(treUkerFørPåfølgendeBarn).trekkFra(1);
+    const sisteMuligeUttaksdag = Uttaksdagen(grunnlag.førsteUttaksdagNesteBarnsSak).trekkFra(1);
     return {
         passerer: perioderMedUgyldigTidsperiode.length === 0,
         info: perioderMedUgyldigTidsperiode.map((periode) => ({

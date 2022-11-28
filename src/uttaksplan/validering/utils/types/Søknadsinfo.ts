@@ -34,4 +34,6 @@ export interface Søknadsinfo {
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;
     familiehendelsesdatoNesteSak: Date | undefined;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
+    minsterettUkerToTette: number | undefined;
 }

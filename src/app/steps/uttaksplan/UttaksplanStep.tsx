@@ -51,13 +51,18 @@ import {
     getKanJustereAutomatiskVedFødsel,
 } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { FormikValues } from 'formik';
-import { mapAnnenPartsVedtakIFørstegangssøknadFromDTO } from 'app/utils/eksisterendeSakUtils';
+import {
+    getStartdatoFørstePeriodeAnnenPart,
+    mapAnnenPartsVedtakIFørstegangssøknadFromDTO,
+} from 'app/utils/eksisterendeSakUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { RequestStatus } from 'app/types/RequestState';
 import { Periodene } from '../uttaksplan-info/utils/Periodene';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { isUfødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
+import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -111,8 +116,15 @@ const UttaksplanStep = () => {
     const termindato = getTermindato(barn);
     const annenForelderFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const erAdopsjon = situasjon === 'fødsel';
+    const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
+    const førsteBarnFraNesteSakFnr =
+        barnFraNesteSak !== undefined && barnFraNesteSak.fnr !== undefined && barnFraNesteSak.fnr.length > 0
+            ? barnFraNesteSak.fnr[0]
+            : undefined;
     const familieHendelseDatoNesteSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const førsteUttaksdagNesteBarnsSak =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
         søkersituasjon.rolle,
@@ -122,12 +134,13 @@ const UttaksplanStep = () => {
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
-        annenForelderFnr !== undefined && familiehendelsesdato !== undefined ? false : true; //TODO: refaktorer - utledes også i api kallet
+        annenForelderFnr !== undefined && (barnFnr !== undefined || familiehendelsesdato !== undefined) ? false : true;
 
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
         annenForelderFnr,
         barnFnr,
-        familiehendelsesdato
+        familiehendelsesdato,
+        eksisterendeSakAnnenPartRequestIsSuspended
     );
 
     const eksisterendeVedtakAnnenPart = useMemo(
@@ -140,6 +153,41 @@ const UttaksplanStep = () => {
             ),
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato]
     );
+
+    const nesteBarnsSakAnnenPartRequestIsSuspended =
+        annenForelderFnrNesteSak !== undefined &&
+        (førsteBarnFraNesteSakFnr !== undefined || familieHendelseDatoNesteSak !== undefined) &&
+        (eksisterendeSakAnnenPartRequestIsSuspended || eksisterendeSakAnnenPartRequestStatus === RequestStatus.FINISHED)
+            ? false
+            : true;
+
+    const {
+        eksisterendeSakAnnenPartData: nesteSakAnnenPartData,
+        eksisterendeSakAnnenPartRequestStatus: nesteSakAnnenPartRequestStatus,
+    } = Api.useGetAnnenPartsVedtak(
+        annenForelderFnrNesteSak,
+        førsteBarnFraNesteSakFnr,
+        dateToISOString(familieHendelseDatoNesteSak),
+        nesteBarnsSakAnnenPartRequestIsSuspended
+    );
+
+    const førsteUttaksdagAnnenPart = getStartdatoFørstePeriodeAnnenPart(nesteSakAnnenPartData);
+
+    useEffect(() => {
+        if (
+            førsteUttaksdagAnnenPart !== undefined &&
+            state.barnFraNesteSak !== undefined &&
+            (dayjs(førsteUttaksdagAnnenPart).isBefore(state.barnFraNesteSak.startdatoFørsteStønadsperiode, 'd') ||
+                state.barnFraNesteSak.startdatoFørsteStønadsperiode === undefined)
+        ) {
+            const oppdatertBarnNesteSak = {
+                ...state.barnFraNesteSak,
+                startdatoFørsteStønadsperiode: førsteUttaksdagAnnenPart,
+            };
+            dispatch(actionCreator.setBarnFraNesteSak(oppdatertBarnNesteSak));
+        }
+    }, [førsteUttaksdagNesteBarnsSak, førsteUttaksdagAnnenPart, barnFraNesteSak, dispatch, state.barnFraNesteSak]);
+
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
         erDeltUttak,
         morHarRett,
@@ -314,9 +362,7 @@ const UttaksplanStep = () => {
             dateToISOString(familieHendelseDatoNesteSak),
             eksisterendeSak?.grunnlag.termindato
         ),
-        eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -329,9 +375,7 @@ const UttaksplanStep = () => {
             dateToISOString(familieHendelseDatoNesteSak),
             eksisterendeSak?.grunnlag.termindato
         ),
-        eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
@@ -360,6 +404,7 @@ const UttaksplanStep = () => {
     }
 
     const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
+    const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
 
     const valgteStønadskontoer =
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
@@ -457,6 +502,8 @@ const UttaksplanStep = () => {
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}
                             familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
+                            førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
+                            minsterettUkerToTette={minsterettUkerToTette}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (

@@ -37,7 +37,7 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
-//const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
+// const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -64,10 +64,9 @@ const useGetSaker = () => {
 const useGetAnnenPartsVedtak = (
     annenPartFnr: string | undefined,
     barnFnr: string | undefined,
-    familiehendelsesdato: string | undefined
+    familiehendelsesdato: string | undefined,
+    isSuspended: boolean
 ) => {
-    const isSuspended =
-        annenPartFnr !== undefined && (barnFnr !== undefined || familiehendelsesdato !== undefined) ? false : true;
     const body = {
         annenPartFødselsnummer: annenPartFnr,
         barnFødselsnummer: barnFnr,

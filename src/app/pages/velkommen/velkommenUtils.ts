@@ -6,7 +6,8 @@ import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import { erEldreEnn3År } from 'app/utils/personUtils';
 import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
-import { BarnFraNesteSak, BarnType } from 'app/context/types/Barn';
+import { BarnFraNesteSak } from 'app/context/types/Barn';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -68,6 +69,9 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
                 sak.familiehendelse.omsorgsovertagelse
             )
         ),
+        startdatoFørsteStønadsperiode: Uttaksdagen(
+            ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!
+        ).denneEllerNeste(),
     };
     return {
         ...barnFraSak,
@@ -94,6 +98,9 @@ const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
             annenForelder: annenForelderFraSak,
             familiehendelsesdato: ISOStringToDate(sak.familiehendelse.termindato),
             sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
+            startdatoFørsteStønadsperiode: Uttaksdagen(
+                ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!
+            ).denneEllerNeste(),
         };
     }
 };
@@ -235,18 +242,12 @@ export const getBarnFraNesteSak = (
     if (nesteBarn === undefined) {
         return undefined;
     }
-    let nesteBarnType: BarnType;
-    if (nesteBarn.fødselsdatoer !== undefined && nesteBarn.fødselsdatoer.length > 0) {
-        nesteBarnType = BarnType.FØDT;
-    } else if (nesteBarn.termindato !== undefined) {
-        nesteBarnType = BarnType.UFØDT;
-    } else {
-        nesteBarnType = BarnType.ADOPTERT_ANNET_BARN;
-    }
+
     return {
-        type: nesteBarnType,
         familiehendelsesdato: nesteBarn.familiehendelsesdato!,
-        antallBarn: nesteBarn.antallBarn,
+        startdatoFørsteStønadsperiode: nesteBarn.startdatoFørsteStønadsperiode!,
+        fnr: nesteBarn.fnr,
+        annenForelderFnr: nesteBarn.annenForelder !== undefined ? nesteBarn.annenForelder.fnr : undefined,
     };
 };
 

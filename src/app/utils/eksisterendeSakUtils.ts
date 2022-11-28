@@ -110,6 +110,20 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
+export const getStartdatoFørstePeriodeAnnenPart = (
+    annenPartsSak: AnnenPartsVedtakDTO | undefined | ''
+): Date | undefined => {
+    if (
+        annenPartsSak === undefined ||
+        annenPartsSak === '' ||
+        Object.keys(annenPartsSak).length === 0 ||
+        annenPartsSak.perioder.length === 0
+    ) {
+        return undefined;
+    }
+    return ISOStringToDate(annenPartsSak.perioder[0].fom);
+};
+
 export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
     eksisterendeSakAnnenPart: AnnenPartsVedtakDTO | undefined | '',
     barn: Barn,
