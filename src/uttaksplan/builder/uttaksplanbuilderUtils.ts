@@ -24,6 +24,7 @@ import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 export const slåSammenLikePerioder = (
     perioder: Periode[],
     familiehendelsesdato: Date,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
     annenPartsUttak?: Periode[]
 ): Periode[] => {
     if (perioder.length <= 1) {
@@ -64,8 +65,16 @@ export const slåSammenLikePerioder = (
             }
 
             if (
-                dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
-                dayjs(periode.tidsperiode.tom).isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
+                (dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
+                    dayjs(periode.tidsperiode.tom).isSameOrAfter(
+                        Uttaksdagen(familiehendelsesdato).denneEllerNeste()
+                    )) ||
+                (førsteUttaksdagNesteBarnsSak !== undefined &&
+                    dayjs(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
+                    dayjs(periode.tidsperiode.fom).isSameOrAfter(
+                        Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
+                        'day'
+                    ))
             ) {
                 nyePerioder.push(forrigePeriode);
                 forrigePeriode = periode;
@@ -282,7 +291,12 @@ const pushPeriodeHvisIkkeDuplikat = (perioder: Periode[], nyPeriode: Periode) =>
     return perioder;
 };
 
-export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Periode[], familiehendelsesdato: Date) => {
+export const settInnAnnenPartsUttak = (
+    perioder: Periode[],
+    annenPartsUttak: Periode[],
+    familiehendelsesdato: Date,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
+) => {
     if (annenPartsUttak.length === 0) {
         return perioder;
     }
@@ -489,6 +503,7 @@ export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Per
     return slåSammenLikePerioder(
         [...annenPartsUttakSomSlutterFørFørstePeriode, ...result, ...annenPartsUttakSomStarterEtterSistePeriode],
         familiehendelsesdato,
+        førsteUttaksdagNesteBarnsSak,
         annenPartsUttak
     );
 };

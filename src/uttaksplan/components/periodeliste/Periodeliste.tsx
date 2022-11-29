@@ -49,7 +49,7 @@ const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehend
 
 const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: Date | undefined) => {
     if (dato !== undefined) {
-        return uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length - 1;
+        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length - 1);
     }
     return undefined;
 };

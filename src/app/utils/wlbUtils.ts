@@ -4,7 +4,7 @@ import { Forelder } from 'app/types/Forelder';
 import dayjs from 'dayjs';
 import { isOverføringsperiode, isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { andreAugust2022ReglerGjelder } from './dateUtils';
+import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
 import { intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import { finnAntallDagerÅTrekke } from 'app/steps/uttaksplan-info/utils/uttaksPlanStatus';
 import { Situasjon } from 'app/types/Situasjon';
@@ -168,17 +168,7 @@ export const farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato = (
     return (
         (isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato) ||
             isUttaksperiodeBareFarMedmorHarRett(periode, morHarRett)) &&
-        tidperiodeGårOverFamiliehendelsesdato(periode.tidsperiode, familiehendelsesdato)
-    );
-};
-
-export const tidperiodeGårOverFamiliehendelsesdato = (
-    tidsperiode: TidsperiodeDate,
-    familiehendelsesdato: Date
-): boolean => {
-    return (
-        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day') &&
-        dayjs(tidsperiode.tom).isSameOrAfter(familiehendelsesdato, 'day')
+        tidperiodeOverlapperDato(periode.tidsperiode, familiehendelsesdato)
     );
 };
 

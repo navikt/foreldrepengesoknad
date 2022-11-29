@@ -42,6 +42,7 @@ import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import uttaksConstants from 'app/constants';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -53,6 +54,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
+    const { state } = useForeldrepengesøknadContext();
     const { søkersituasjon, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -65,6 +67,8 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const shouldRender = erFødsel;
 
@@ -104,6 +108,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg: false,
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
+                    førsteUttaksdagNesteBarnsSak,
                 })
             ),
         ];

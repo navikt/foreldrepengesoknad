@@ -22,7 +22,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import {
-    mapEksisterendeSak2FromDTO,
+    mapEksisterendeSakFromDTO,
     opprettSøknadFraEksisterendeSak,
     opprettSøknadFraValgteBarn,
     opprettSøknadFraValgteBarnMedSak,
@@ -74,11 +74,13 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
             actionCreator.setErEndringssøknad(vilSøkeOmEndring),
         ];
-
+        let barnFraNesteSak = undefined;
         if (valgteBarn !== undefined) {
-            const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
+            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
             actionsToDispatch.push(actionCreator.setBarnFraNesteSak(barnFraNesteSak));
         }
+        const førsteUttaksdagNesteBarnsSak =
+            barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
         const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
         const nySøknadPåAlleredeSøktBarn =
@@ -87,7 +89,11 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
             !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
 
         if (endringssøknad) {
-            const eksisterendeSak = mapEksisterendeSak2FromDTO(valgtEksisterendeSak, false);
+            const eksisterendeSak = mapEksisterendeSakFromDTO(
+                valgtEksisterendeSak,
+                false,
+                førsteUttaksdagNesteBarnsSak
+            );
 
             const søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!) as Søknad;
 

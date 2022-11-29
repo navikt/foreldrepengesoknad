@@ -2,6 +2,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
@@ -49,6 +50,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
 }) => {
+    const { state } = useForeldrepengesøknadContext();
     const { søkersituasjon, søker, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -65,7 +67,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer100DTO
     );
     const termindato = getTermindato(barn);
-
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const onValidSubmitHandler = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
             values,
@@ -103,6 +106,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         morHarRett: false,
                         søkerErAleneOmOmsorg: true,
                     }),
+                    førsteUttaksdagNesteBarnsSak,
                 })
             ),
         ];

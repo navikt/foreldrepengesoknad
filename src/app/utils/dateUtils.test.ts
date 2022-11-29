@@ -19,6 +19,8 @@ import {
     isDateToday,
     getEndringstidspunkt,
     andreAugust2022ReglerGjelder,
+    tidperiodeOverlapperDato,
+    getToTetteReglerGjelder,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
@@ -688,29 +690,57 @@ describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
     });
 });
 
-describe('To tette', () => {
-    it('Skal returnere at to tette reglene ikke gjelder hvis første barnet sin familihendelse dato er undefined', () => {
-        //TODO
+describe('To tette - WLB', () => {
+    it('Skal returnere at to tette regler ikke gjelder hvis første barnet sin familihendelse dato er undefined', () => {
+        const result = getToTetteReglerGjelder(undefined, new Date('2023-01-01'));
+        expect(result).toEqual(false);
     });
-    it('Skal returnere at to tette reglene ikke gjelder hvis andre barnet sin familihendelse dato er undefined', () => {
-        //TODO
+    it('Skal returnere at to tette regler ikke gjelder hvis det andre barnet sin familihendelse dato er undefined', () => {
+        const result = getToTetteReglerGjelder(new Date('2022-08-02'), undefined);
+        expect(result).toEqual(false);
     });
-    it('Skal returnere at to tette reglene ikke gjelder hvis første barnet er født før 2 august 2022', () => {
-        //TODO
+    it('Skal returnere at to tette regler ikke gjelder hvis første barnet er født før 2 august 2022', () => {
+        const result = getToTetteReglerGjelder(new Date('2022-08-01'), new Date('2022-08-02'));
+        expect(result).toEqual(false);
     });
-    it('Skal returnere at to tette reglene ikke gjelder hvis andre barnet er født før 2 august 2022', () => {
-        //TODO
+    it('Skal returnere at to tette regler ikke gjelder hvis andre barnet er født før 2 august 2022', () => {
+        const result = getToTetteReglerGjelder(new Date('2022-08-02'), new Date('2022-08-01'));
+        expect(result).toEqual(false);
     });
-    it('Skal returnere at to tette reglene gjelder begge barna er født etter 2 august 2022', () => {
-        //TODO
+
+    it('Skal returnere at to tette regler gjelder hvis begge barna er født etter 2 august 2022 og det er mindre enn 48 uker mellom barna', () => {
+        const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-03'));
+        expect(result).toEqual(true);
     });
-    it('Skal returnere at to tette reglene gjelder hvis det er mindre enn 48 uker mellom barna', () => {
-        //TODO
+    it('Skal returnere at to tette regler ikke gjelder hvis det er mer enn 48 uker mellom barna', () => {
+        const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-04'));
+        expect(result).toEqual(false);
     });
-    it('Skal returnere at to tette reglene ikke gjelder hvis det er mer enn 48 uker mellom barna', () => {
-        //TODO
+    it('Skal returnere at to tette regler ikke gjelder hvis det er akkurat 48 uker mellom barna', () => {
+        const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-05'));
+        expect(result).toEqual(false);
     });
-    it('Skal returnere at to tette reglene ikke gjelder hvis det er akkurat 48 uker mellom barna', () => {
-        //TODO
+});
+
+describe('tidperiodeOverlapperDato', () => {
+    it('Skal returnere at tidsperiode overlapper dato hvis starter før dato', () => {
+        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-30') };
+        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-21'));
+        expect(result).toEqual(true);
+    });
+    it('Skal returnere at tidsperiode ikke overlapper dato hvis starter samme dag som dato', () => {
+        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-30') };
+        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-20'));
+        expect(result).toEqual(false);
+    });
+    it('Skal returnere at tidsperiode overlapper dato hvis slutter på dato', () => {
+        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-30') };
+        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-30'));
+        expect(result).toEqual(true);
+    });
+    it('Skal returnere at tidsperiode ikke overlapper dato hvis slutter før dato', () => {
+        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-29') };
+        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-30'));
+        expect(result).toEqual(false);
     });
 });

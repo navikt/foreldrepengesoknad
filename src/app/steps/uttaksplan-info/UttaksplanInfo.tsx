@@ -37,6 +37,8 @@ const UttaksplanInfo = () => {
 
     const familieHendelseDatoNesteSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
     const eksisterendeSakAnnenPartRequestIsSuspended =
         registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
@@ -60,9 +62,10 @@ const UttaksplanInfo = () => {
                 eksisterendeSakAnnenPartData,
                 barn,
                 erFarEllerMedmor,
-                familiehendelsesdato
+                familiehendelsesdato,
+                førsteUttaksdagNesteBarnsSak
             ),
-        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato]
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
     );
     const termindato = dateToISOString(getTermindato(barn));
 

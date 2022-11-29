@@ -128,7 +128,8 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
     eksisterendeSakAnnenPart: AnnenPartsVedtakDTO | undefined | '',
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
-    familiehendelsesdato: string
+    familiehendelsesdato: string,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ): EksisterendeSak | undefined => {
     if (
         eksisterendeSakAnnenPart === undefined ||
@@ -170,7 +171,11 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
         barn: [], // barn brukes ikke videre her
     };
 
-    const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(saksperioderAnnenPart, grunnlagForAnnenPart);
+    const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
+        saksperioderAnnenPart,
+        grunnlagForAnnenPart,
+        førsteUttaksdagNesteBarnsSak
+    );
 
     return {
         saksnummer: '',
@@ -181,9 +186,10 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
     };
 };
 
-export const mapEksisterendeSak2FromDTO = (
+export const mapEksisterendeSakFromDTO = (
     eksisterendeSak: Sak | undefined | '',
-    erAnnenPartsSak: boolean
+    erAnnenPartsSak: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
         return undefined;
@@ -232,7 +238,7 @@ export const mapEksisterendeSak2FromDTO = (
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag);
+    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, førsteUttaksdagNesteBarnsSak);
 
     return {
         saksnummer: eksisterendeSak.saksnummer,

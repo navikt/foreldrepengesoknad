@@ -349,11 +349,11 @@ export const getToTetteReglerGjelder = (
     if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
         return false;
     }
-    const familiehendelsePLus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
     return (
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
-        dayjs(familiehendelsePLus48Uker).isAfter(familiehendelsesdatoNesteBarn)
+        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
     );
 };
 
@@ -473,3 +473,7 @@ export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Dat
 
 export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
     dayjs(date).isBetween(fom, tom, 'day', '[]');
+
+export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: Date): boolean => {
+    return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
+};

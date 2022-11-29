@@ -8,13 +8,18 @@ import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { guid } from 'nav-frontend-js-utils';
 import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { andreAugust2022ReglerGjelder, dateIsSameOrAfter, skalFarUtsetteEtterMorSinSisteUttaksdag } from '../dateUtils';
+import {
+    andreAugust2022ReglerGjelder,
+    dateIsSameOrAfter,
+    skalFarUtsetteEtterMorSinSisteUttaksdag,
+    tidperiodeOverlapperDato,
+} from '../dateUtils';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getLengdePåForeslåttWLBUttakFarMedmor,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '../wlbUtils';
-import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -22,7 +27,8 @@ const deltUttakAdopsjonSøktFørst = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined,
-    harAnnenForelderSøktFP: boolean | undefined
+    harAnnenForelderSøktFP: boolean | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ): Periode[] => {
     if (harAnnenForelderSøktFP !== true) {
         const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
@@ -47,7 +53,15 @@ const deltUttakAdopsjonSøktFørst = (
 
             currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
 
-            perioder.push(periodeMødrekvote);
+            if (
+                førsteUttaksdagNesteBarnsSak !== undefined &&
+                tidperiodeOverlapperDato(periodeMødrekvote.tidsperiode, førsteUttaksdagNesteBarnsSak)
+            ) {
+                const splittedePerioder = splittPeriodePåDato(periodeMødrekvote, førsteUttaksdagNesteBarnsSak);
+                splittedePerioder.forEach((periode) => perioder.push(periode));
+            } else {
+                perioder.push(periodeMødrekvote);
+            }
         }
 
         if (fellesperiodeukerMor !== undefined && fellesperiodeukerMor > 0) {
@@ -60,8 +74,15 @@ const deltUttakAdopsjonSøktFørst = (
                 ønskerSamtidigUttak: false,
                 gradert: false,
             };
-
-            perioder.push(periodeFellesperiode);
+            if (
+                førsteUttaksdagNesteBarnsSak !== undefined &&
+                tidperiodeOverlapperDato(periodeFellesperiode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+            ) {
+                const splittedePerioder = splittPeriodePåDato(periodeFellesperiode, førsteUttaksdagNesteBarnsSak);
+                splittedePerioder.forEach((periode) => perioder.push(periode));
+            } else {
+                perioder.push(periodeFellesperiode);
+            }
         }
 
         return perioder.sort(sorterPerioder);
@@ -78,7 +99,8 @@ const deltUttakAdopsjonSøktSist = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     if (erFarEllerMedmor) {
         // Oppfører seg identisk som fødselsscenario
@@ -92,6 +114,7 @@ const deltUttakAdopsjonSøktSist = (
             familiehendelsesdato,
             undefined,
             undefined,
+            førsteUttaksdagNesteBarnsSak,
             'adopsjon'
         );
     } else {
@@ -105,6 +128,7 @@ const deltUttakAdopsjonSøktSist = (
             familiehendelsesdato,
             undefined,
             undefined,
+            førsteUttaksdagNesteBarnsSak,
             'adopsjon'
         ).map((periode) => {
             if (
@@ -143,7 +167,8 @@ const deltUttakAdopsjon = (
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined
+    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     if (!harAnnenForelderSøktFP) {
         return deltUttakAdopsjonSøktFørst(
@@ -152,7 +177,8 @@ const deltUttakAdopsjon = (
             tilgjengeligeStønadskontoer,
             startdatoPermisjon,
             fellesperiodeukerMor,
-            harAnnenForelderSøktFP
+            harAnnenForelderSøktFP,
+            førsteUttaksdagNesteBarnsSak
         );
     } else {
         return deltUttakAdopsjonSøktSist(
@@ -163,7 +189,8 @@ const deltUttakAdopsjon = (
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag!,
             farSinFørsteUttaksdag!,
-            begrunnelseForUtsettelse
+            begrunnelseForUtsettelse,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 };
@@ -284,6 +311,7 @@ const deltUttakFødselFarMedmor = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     morHarRettPåForeldrepengerIEØS: boolean | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
     situasjon = 'fødsel'
 ): Periode[] => {
     if (
@@ -363,6 +391,12 @@ const deltUttakFødselFarMedmor = (
                 familiehendelsesdato
             );
             fedrekvotePerioder.forEach((periode) => perioder.push(periode));
+        } else if (
+            førsteUttaksdagNesteBarnsSak !== undefined &&
+            tidperiodeOverlapperDato(fedrekvotePeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        ) {
+            const fedrekvotePerioder = splittPeriodePåDato(fedrekvotePeriode, førsteUttaksdagNesteBarnsSak);
+            fedrekvotePerioder.forEach((periode) => perioder.push(periode));
         } else {
             perioder.push(fedrekvotePeriode);
         }
@@ -409,6 +443,7 @@ const deltUttakFødsel = (
     farSinFørsteUttaksdag: Date | undefined,
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     annenForelderHarRettPåForeldrepengerIEØS: boolean | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
     termindato?: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -427,7 +462,8 @@ const deltUttakFødsel = (
             begrunnelseForUtsettelse,
             famDato,
             termindato,
-            annenForelderHarRettPåForeldrepengerIEØS
+            annenForelderHarRettPåForeldrepengerIEØS,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 };
@@ -445,6 +481,7 @@ export interface DeltUttakParams {
     morSinSisteUttaksdag: Date | undefined;
     farSinFørsteUttaksdag: Date | undefined;
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
     annenForelderHarRettPåForeldrepengerIEØS?: boolean | undefined;
     termindato?: Date | undefined;
 }
@@ -462,7 +499,8 @@ export const deltUttak = (params: DeltUttakParams) => {
             params.antallUkerFellesperiodeFarMedmor,
             params.morSinSisteUttaksdag,
             params.farSinFørsteUttaksdag,
-            params.begrunnelseForUtsettelse
+            params.begrunnelseForUtsettelse,
+            params.førsteUttaksdagNesteBarnsSak
         );
     }
 
@@ -479,6 +517,7 @@ export const deltUttak = (params: DeltUttakParams) => {
             params.farSinFørsteUttaksdag,
             params.begrunnelseForUtsettelse,
             params.annenForelderHarRettPåForeldrepengerIEØS,
+            params.førsteUttaksdagNesteBarnsSak,
             params.termindato
         );
     }

@@ -98,7 +98,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             false,
             false,
             true,
-            morsPerioderFørWLB
+            morsPerioderFørWLB,
+            undefined
         );
 
         expect(nyPlan.length).toBe(3);
@@ -126,7 +127,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             false,
             false,
             true,
-            morsPerioderFørWLB
+            morsPerioderFørWLB,
+            undefined
         );
 
         expect(nyPlan.length).toBe(4);
@@ -159,7 +161,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            morsPerioderEtterWLB
+            morsPerioderEtterWLB,
+            undefined
         );
 
         expect(nyPlan.length).toBe(5);
@@ -201,7 +204,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            morsPerioderEtterWLB
+            morsPerioderEtterWLB,
+            undefined
         );
         expect(nyPlan.length).toBe(4);
         expect(nyPlan[0]).toEqual(morsPerioderEtterWLB[0]);
@@ -231,7 +235,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            morsPerioderEtterWLB
+            morsPerioderEtterWLB,
+            undefined
         );
         expect(nyPlan.length).toBe(6);
         expect(nyPlan[0]).toEqual(morsPerioderEtterWLB[0]);
@@ -299,7 +304,8 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            morsPerioderEtterWLB
+            morsPerioderEtterWLB,
+            undefined
         );
         expect(nyPlan.length).toBe(7);
         const morsPeriodeFørFødselDel1 = nyPlan[0] as UttakAnnenPartInfoPeriode;

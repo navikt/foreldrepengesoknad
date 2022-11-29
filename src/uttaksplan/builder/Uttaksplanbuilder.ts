@@ -24,7 +24,8 @@ const leggTilPeriodeOgBuild = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    annenPartsUttak: Periode[] | undefined
+    annenPartsUttak: Periode[] | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     let nyePerioder = slåSammenLikePerioder(
         leggTilPeriode({
@@ -36,7 +37,8 @@ const leggTilPeriodeOgBuild = (
             bareFarHarRett,
             erFarEllerMedmor,
         }),
-        familiehendelsesdato
+        familiehendelsesdato,
+        førsteUttaksdagNesteBarnsSak
     );
 
     fastePerioder.forEach((fastPeriode) => {
@@ -53,7 +55,7 @@ const leggTilPeriodeOgBuild = (
 
     if (annenPartsUttak) {
         nyePerioder = finnOgSettInnHull(
-            settInnAnnenPartsUttak(nyePerioder, annenPartsUttak, familiehendelsesdato),
+            settInnAnnenPartsUttak(nyePerioder, annenPartsUttak, familiehendelsesdato, førsteUttaksdagNesteBarnsSak),
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
             erAdopsjon,
@@ -73,7 +75,8 @@ const oppdaterPeriodeOgBuild = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    annenPartsUttak: Periode[] | undefined
+    annenPartsUttak: Periode[] | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
 
@@ -88,6 +91,7 @@ const oppdaterPeriodeOgBuild = (
             bareFarHarRett,
             erFarEllerMedmor,
             annenPartsUttak,
+            førsteUttaksdagNesteBarnsSak,
         })
     );
 
@@ -100,7 +104,12 @@ const oppdaterPeriodeOgBuild = (
             bareFarHarRett,
             erFarEllerMedmor
         );
-        oppdatertePerioder = settInnAnnenPartsUttak(oppdatertePerioder, annenPartsUttak, familiehendelsesdato);
+        oppdatertePerioder = settInnAnnenPartsUttak(
+            oppdatertePerioder,
+            annenPartsUttak,
+            familiehendelsesdato,
+            førsteUttaksdagNesteBarnsSak
+        );
     }
 
     return finnOgSettInnHull(
@@ -121,7 +130,8 @@ const slettPeriodeOgBuild = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    annenPartsUttak: Periode[] | undefined
+    annenPartsUttak: Periode[] | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     let nyePerioder = fjernUnødvendigeHull(
         slåSammenLikePerioder(
@@ -134,7 +144,8 @@ const slettPeriodeOgBuild = (
                 bareFarHarRett,
                 erFarEllerMedmor,
             }),
-            familiehendelsesdato
+            familiehendelsesdato,
+            førsteUttaksdagNesteBarnsSak
         )
     );
 
@@ -147,7 +158,12 @@ const slettPeriodeOgBuild = (
             bareFarHarRett,
             erFarEllerMedmor
         );
-        nyePerioder = settInnAnnenPartsUttak(nyePerioder, annenPartsUttak, familiehendelsesdato);
+        nyePerioder = settInnAnnenPartsUttak(
+            nyePerioder,
+            annenPartsUttak,
+            familiehendelsesdato,
+            førsteUttaksdagNesteBarnsSak
+        );
     }
 
     return finnOgSettInnHull(
@@ -204,6 +220,7 @@ const Uttaksplanbuilder = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
     opprinneligPlan?: Periode[]
 ) => {
     const perioderUtenAnnenPart = finnOgSettInnHull(
@@ -240,7 +257,8 @@ const Uttaksplanbuilder = (
                 erAdopsjon,
                 bareFarHarRett,
                 erFarEllerMedmor,
-                annenPartsUttak
+                annenPartsUttak,
+                førsteUttaksdagNesteBarnsSak
             ),
         leggTilPerioder: (nyePerioder: Periode[]) => {
             let resultat: Periode[] = [];
@@ -255,7 +273,8 @@ const Uttaksplanbuilder = (
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak
+                        annenPartsUttak,
+                        førsteUttaksdagNesteBarnsSak
                     );
                 } else {
                     const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
@@ -277,7 +296,8 @@ const Uttaksplanbuilder = (
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        nyAnnenPartsUttak
+                        nyAnnenPartsUttak,
+                        førsteUttaksdagNesteBarnsSak
                     );
                 }
             });
@@ -292,7 +312,8 @@ const Uttaksplanbuilder = (
                 erAdopsjon,
                 bareFarHarRett,
                 erFarEllerMedmor,
-                annenPartsUttak
+                annenPartsUttak,
+                førsteUttaksdagNesteBarnsSak
             ),
         oppdaterPerioder: (oppdatertePerioder: Periode[]) => {
             let resultat: Periode[] = [];
@@ -306,7 +327,8 @@ const Uttaksplanbuilder = (
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak
+                        annenPartsUttak,
+                        førsteUttaksdagNesteBarnsSak
                     );
                 } else {
                     const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
@@ -328,7 +350,8 @@ const Uttaksplanbuilder = (
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        nyAnnenPartsUttak
+                        nyAnnenPartsUttak,
+                        førsteUttaksdagNesteBarnsSak
                     );
                 }
             });
@@ -343,7 +366,8 @@ const Uttaksplanbuilder = (
                 erAdopsjon,
                 bareFarHarRett,
                 erFarEllerMedmor,
-                annenPartsUttak
+                annenPartsUttak,
+                førsteUttaksdagNesteBarnsSak
             ),
     };
 };

@@ -37,6 +37,7 @@ import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/utta
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'app/utils/personUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -50,6 +51,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     eksisterendeSakAnnenPart,
 }) => {
     const søknad = useSøknad();
+    const { state } = useForeldrepengesøknadContext();
     const intl = useIntl();
     const { barn, søkersituasjon, annenForelder, erEndringssøknad } = søknad;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -64,6 +66,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         erFarEllerMedmor,
         annenForelder
     );
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
@@ -106,6 +110,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             bareFarMedmorHarRett: bareFarHarRett,
             termindato,
             harAktivitetskravIPeriodeUtenUttak,
+            førsteUttaksdagNesteBarnsSak,
         });
         let uttaksplanMedAnnenPart;
 
@@ -118,7 +123,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 erAdopsjon,
                 bareFarHarRett,
                 erFarEllerMedmor,
-                eksisterendeSakAnnenPart.uttaksplan
+                eksisterendeSakAnnenPart.uttaksplan,
+                førsteUttaksdagNesteBarnsSak
             );
         } else if (eksisterendeSakAnnenPart) {
             uttaksplanMedAnnenPart = eksisterendeSakAnnenPart.uttaksplan;

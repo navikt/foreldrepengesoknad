@@ -9,7 +9,8 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    eksisterendeSakUttaksplan: Periode[]
+    eksisterendeSakUttaksplan: Periode[],
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ): Periode[] => {
     const builder = Uttaksplanbuilder(
         uttaksplan,
@@ -18,6 +19,7 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
         erAdopsjon,
         bareFarHarRett,
         erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
         eksisterendeSakUttaksplan
     );
     if (annenPartsPerioder.length === 1) {

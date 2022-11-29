@@ -46,6 +46,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -57,6 +58,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
+    const { state } = useForeldrepengesøknadContext();
     const {
         søkersituasjon,
         annenForelder,
@@ -85,6 +87,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         !annenForelder.harRettPåForeldrepengerIEØS;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
@@ -137,6 +141,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         morHarRett: !bareFarMedmorHarRett,
                         søkerErAleneOmOmsorg,
                     }),
+                    førsteUttaksdagNesteBarnsSak,
                 })
             ),
         ];

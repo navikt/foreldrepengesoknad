@@ -149,9 +149,10 @@ const UttaksplanStep = () => {
                 eksisterendeSakAnnenPartData,
                 barn,
                 erFarEllerMedmor,
-                familiehendelsesdato
+                familiehendelsesdato,
+                førsteUttaksdagNesteBarnsSak
             ),
-        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato]
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
     );
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
@@ -217,7 +218,12 @@ const UttaksplanStep = () => {
             });
 
             const uttaksplanMedAnnenPart = finnOgSettInnHull(
-                settInnAnnenPartsUttak(uttaksplan, eksisterendeVedtakAnnenPart.uttaksplan, familiehendelsesdatoDate!),
+                settInnAnnenPartsUttak(
+                    uttaksplan,
+                    eksisterendeVedtakAnnenPart.uttaksplan,
+                    familiehendelsesdatoDate!,
+                    førsteUttaksdagNesteBarnsSak
+                ),
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdatoDate!,
                 erAdopsjon,
@@ -240,6 +246,7 @@ const UttaksplanStep = () => {
         setAnnenPartsUttakLagtTilIUttaksplan,
         annenPartsUttakLagtTilIUttaksplan,
         dispatch,
+        førsteUttaksdagNesteBarnsSak,
     ]);
 
     const onValidSubmitHandler = () => {

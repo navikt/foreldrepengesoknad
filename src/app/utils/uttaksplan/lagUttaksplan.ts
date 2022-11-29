@@ -22,6 +22,7 @@ export interface LagUttaksplanParams {
     bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     termindato: Date | undefined;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
     annenForelderHarRettPåForeldrepengerIEØS?: boolean;
 }
 
@@ -39,6 +40,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         termindato,
         harAktivitetskravIPeriodeUtenUttak,
         annenForelderHarRettPåForeldrepengerIEØS,
+        førsteUttaksdagNesteBarnsSak,
     } = params;
 
     if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
@@ -75,6 +77,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 begrunnelseForUtsettelse,
                 annenForelderHarRettPåForeldrepengerIEØS,
                 termindato,
+                førsteUttaksdagNesteBarnsSak,
             });
 
             return finnOgSettInnHull(
@@ -94,7 +97,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 ISOStringToDate(startdatoPermisjon),
                 annenForelderErUfør,
                 bareFarMedmorHarRett,
-                termindato
+                termindato,
+                førsteUttaksdagNesteBarnsSak
             );
 
             return finnOgSettInnHull(

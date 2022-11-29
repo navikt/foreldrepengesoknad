@@ -33,7 +33,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             startdatoPermisjon,
             morErUfør,
             bareFarMedmorHarRett,
-            terminato
+            terminato,
+            undefined
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
@@ -53,7 +54,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             startDato1UkeFørFødsel,
             morErUfør,
             bareFarMedmorHarRett,
-            terminato
+            terminato,
+            undefined
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(3);
         expect(perioder[0].tidsperiode.fom).toEqual(startDato1UkeFørFødsel);
@@ -76,7 +78,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             startDato1DagFørFødsel,
             morErUfør,
             bareFarMedmorHarRett,
-            terminato
+            terminato,
+            undefined
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
@@ -96,7 +99,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             startDato1DagFørFødsel,
             morErUfør,
             bareFarMedmorHarRett,
-            terminato
+            terminato,
+            undefined
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(3);
         expect(perioder[0].tidsperiode.fom).toEqual(startDato1DagFørFødsel);
