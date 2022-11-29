@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
     isHull,
-    isInfoPeriode,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
@@ -320,7 +319,7 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
 };
 
 // Funksjon som gjør at alle perioder overlapper 1 til 1
-export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]): Periode[] => {
+export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]) => {
     const perioderTidsperioder: SplittetDatoType[] = perioder.reduce((res, p) => {
         res.push({ dato: p.tidsperiode.fom, erFom: true });
         res.push({ dato: p.tidsperiode.tom, erFom: false });
@@ -346,20 +345,23 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
         return d1.dato.getTime() - d2.dato.getTime();
     });
 
-    const mineOppsplittedePerioder: Periode[] = [];
-    const annenPartsOppsplittedePerioder: Periode[] = [];
+    const normaliserteEgnePerioder: Periode[] = [];
+    const normaliserteAnnenPartsPerioder: Periode[] = [];
 
     perioder.forEach((p) => {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
-        mineOppsplittedePerioder.push(...oppsplittetPeriode);
+        normaliserteEgnePerioder.push(...oppsplittetPeriode);
     });
 
     annenPartsUttak.forEach((p) => {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
-        annenPartsOppsplittedePerioder.push(...oppsplittetPeriode);
+        normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
     });
 
-    return mineOppsplittedePerioder.concat(annenPartsOppsplittedePerioder).sort(sorterPerioder);
+    return {
+        normaliserteEgnePerioder,
+        normaliserteAnnenPartsPerioder,
+    };
 };
 
 export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Periode[], familiehendelsesdato: Date) => {
@@ -371,9 +373,7 @@ export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Per
         return annenPartsUttak;
     }
 
-    const normalisertePerioder = normaliserPerioder(perioder, annenPartsUttak);
-    const normaliserteEgnePerioder = normalisertePerioder.filter((p) => !isInfoPeriode(p));
-    const normaliserteAnnenPartsPerioder = normalisertePerioder.filter((p) => isInfoPeriode(p));
+    const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(perioder, annenPartsUttak);
 
     const result = normaliserteEgnePerioder.reduce((res, p) => {
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
