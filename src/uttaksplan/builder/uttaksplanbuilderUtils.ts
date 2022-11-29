@@ -8,16 +8,15 @@ import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
     isHull,
+    isInfoPeriode,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
-    isUttakAnnenPart,
     isUttaksperiode,
     Periode,
     PeriodeHull,
     Periodetype,
     PeriodeUtenUttak,
-    UttakAnnenPartInfoPeriode,
 } from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 
@@ -274,12 +273,76 @@ export const finnOgSettInnHull = (
     return result;
 };
 
-const pushPeriodeHvisIkkeDuplikat = (perioder: Periode[], nyPeriode: Periode) => {
-    const duplikatPeriode = perioder.find((p) => Perioden(p).erLik(nyPeriode, true));
-    if (duplikatPeriode === undefined) {
-        perioder.push(nyPeriode);
-    }
-    return perioder;
+interface SplittetDatoType {
+    dato: Date;
+    erFom: boolean;
+}
+
+const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]) => {
+    const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
+        Tidsperioden(periode.tidsperiode).inneholderDato(datoWrapper.dato)
+    );
+    const oppsplittetPeriode: Periode[] = [];
+
+    datoerIPerioden.forEach((datoWrapper, index) => {
+        if (index === 0) {
+            oppsplittetPeriode.push({
+                ...periode,
+                tidsperiode: { fom: datoWrapper.dato, tom: undefined! },
+            });
+            return;
+        }
+
+        oppsplittetPeriode[index - 1].tidsperiode.tom = datoWrapper.erFom
+            ? Uttaksdagen(datoWrapper.dato).forrige()
+            : datoWrapper.dato;
+
+        if (index < datoerIPerioden.length - 1) {
+            oppsplittetPeriode.push({
+                ...periode,
+                id: guid(),
+                tidsperiode: {
+                    fom: datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste(),
+                    tom: undefined!,
+                },
+            });
+        }
+    });
+
+    return oppsplittetPeriode.filter((p) => isValidTidsperiode(p.tidsperiode));
+};
+
+// Funksjon som gjør at alle perioder overlapper 1 til 1
+export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]): Periode[] => {
+    const perioderTidsperioder: SplittetDatoType[] = perioder.reduce((res, p) => {
+        res.push({ dato: p.tidsperiode.fom, erFom: true });
+        res.push({ dato: p.tidsperiode.tom, erFom: false });
+        return res;
+    }, [] as SplittetDatoType[]);
+    const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
+        res.push({ dato: p.tidsperiode.fom, erFom: true });
+        res.push({ dato: p.tidsperiode.tom, erFom: false });
+        return res;
+    }, [] as SplittetDatoType[]);
+
+    const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
+        return d1.dato.getTime() - d2.dato.getTime();
+    });
+
+    const mineOppsplittedePerioder: Periode[] = [];
+    const annenPartsOppsplittedePerioder: Periode[] = [];
+
+    perioder.forEach((p) => {
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        mineOppsplittedePerioder.push(...oppsplittetPeriode);
+    });
+
+    annenPartsUttak.forEach((p) => {
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        annenPartsOppsplittedePerioder.push(...oppsplittetPeriode);
+    });
+
+    return mineOppsplittedePerioder.concat(annenPartsOppsplittedePerioder).sort(sorterPerioder);
 };
 
 export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Periode[], familiehendelsesdato: Date) => {
@@ -291,198 +354,50 @@ export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Per
         return annenPartsUttak;
     }
 
-    const result = perioder.reduce((res, p, currentIndex) => {
-        const overlappendePerioderAnnenPart = Periodene(annenPartsUttak).finnOverlappendePerioder(p);
+    const normalisertePerioder = normaliserPerioder(perioder, annenPartsUttak);
+    const normaliserteEgnePerioder = normalisertePerioder.filter((p) => !isInfoPeriode(p));
+    const normaliserteAnnenPartsPerioder = normalisertePerioder.filter((p) => isInfoPeriode(p));
+
+    const result = normaliserteEgnePerioder.reduce((res, p) => {
+        const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            pushPeriodeHvisIkkeDuplikat(res, p);
+            res.push(p);
 
             return res;
         }
 
         if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
-            overlappendePerioderAnnenPart.forEach((annenPartsPeriode) => {
-                const op: Periode = {
-                    ...annenPartsPeriode,
-                    id: guid(),
-                    tidsperiode: {
-                        fom: dayjs.max([dayjs(p.tidsperiode.fom), dayjs(annenPartsPeriode.tidsperiode.fom)]).toDate(),
-                        tom: dayjs.min([dayjs(p.tidsperiode.tom), dayjs(annenPartsPeriode.tidsperiode.tom)]).toDate(),
-                    },
-                };
+            const overlappendePeriode = overlappendePerioderAnnenPart[0];
 
-                if (currentIndex === 0 && dayjs(annenPartsPeriode.tidsperiode.fom).isBefore(p.tidsperiode.fom, 'day')) {
-                    const annenPartsPeriodeSomStarterUttaksplanen = {
-                        ...annenPartsPeriode,
-                        id: guid(),
-                        tidsperiode: {
-                            fom: annenPartsPeriode.tidsperiode.fom,
-                            tom: Uttaksdagen(op.tidsperiode.fom).forrige(),
-                        },
-                        visPeriodeIPlan: true,
-                    };
-                    pushPeriodeHvisIkkeDuplikat(res, annenPartsPeriodeSomStarterUttaksplanen);
-                }
-
-                if (isUttakAnnenPart(op) && op.ønskerSamtidigUttak) {
-                    const infoPeriode: UttakAnnenPartInfoPeriode = { ...op, visPeriodeIPlan: true };
-                    pushPeriodeHvisIkkeDuplikat(res, infoPeriode);
-                } else {
-                    pushPeriodeHvisIkkeDuplikat(res, op);
-                }
-
-                if (
-                    currentIndex === perioder.length - 1 &&
-                    dayjs(annenPartsPeriode.tidsperiode.tom).isAfter(p.tidsperiode.tom, 'day')
-                ) {
-                    const annenPartsPeriodeSomAvslutterUttaksplanen = {
-                        ...annenPartsPeriode,
-                        id: guid(),
-                        tidsperiode: {
-                            fom: Uttaksdagen(op.tidsperiode.tom).neste(),
-                            tom: annenPartsPeriode.tidsperiode.tom,
-                        },
-                        visPeriodeIPlan: true,
-                    };
-
-                    pushPeriodeHvisIkkeDuplikat(res, annenPartsPeriodeSomAvslutterUttaksplanen);
-                }
-            });
-
+            res.push({ ...overlappendePeriode, visPeriodeIPlan: true } as Periode);
             return res;
         }
 
         if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
-            const førsteOverlappendePeriodeAnnenPart = overlappendePerioderAnnenPart[0];
-            const sisteOverlappendePeriodeAnnenPart =
-                overlappendePerioderAnnenPart.length > 1
-                    ? overlappendePerioderAnnenPart[overlappendePerioderAnnenPart.length - 1]
-                    : førsteOverlappendePeriodeAnnenPart;
+            const overlappendePeriode = overlappendePerioderAnnenPart[0];
+            res.push(p);
 
-            if (dayjs(p.tidsperiode.fom).isBefore(førsteOverlappendePeriodeAnnenPart.tidsperiode.fom, 'day')) {
-                const nyPeriode: Periode = {
-                    ...p,
-                    id: guid(),
-                    tidsperiode: {
-                        fom: p.tidsperiode.fom,
-                        tom: Uttaksdagen(førsteOverlappendePeriodeAnnenPart.tidsperiode.fom).forrige(),
-                    },
-                };
-                pushPeriodeHvisIkkeDuplikat(res, nyPeriode);
-            }
-
-            overlappendePerioderAnnenPart.forEach((annenPartsPeriode, index) => {
-                const op = {
-                    ...annenPartsPeriode,
-                    id: guid(),
-                    tidsperiode: {
-                        fom: dayjs.max([dayjs(p.tidsperiode.fom), dayjs(annenPartsPeriode.tidsperiode.fom)]).toDate(),
-                        tom: dayjs.min([dayjs(p.tidsperiode.tom), dayjs(annenPartsPeriode.tidsperiode.tom)]).toDate(),
-                    },
-                    visPeriodeIPlan: false,
-                    ønskerSamtidigUttak: true,
-                };
-
-                const nyPeriode: Periode = {
-                    ...p,
-                    id: index === 0 ? p.id : guid(),
-                    tidsperiode: {
-                        ...op.tidsperiode,
-                    },
-                };
-
-                if (currentIndex === 0 && dayjs(annenPartsPeriode.tidsperiode.fom).isBefore(p.tidsperiode.fom, 'day')) {
-                    const annenPartsPeriodeSomStarterUttaksplanen = {
-                        ...annenPartsPeriode,
-                        id: guid(),
-                        tidsperiode: {
-                            fom: annenPartsPeriode.tidsperiode.fom,
-                            tom: Uttaksdagen(op.tidsperiode.fom).forrige(),
-                        },
-                        visPeriodeIPlan: true,
-                    };
-                    pushPeriodeHvisIkkeDuplikat(res, annenPartsPeriodeSomStarterUttaksplanen);
-                }
-
-                pushPeriodeHvisIkkeDuplikat(res, nyPeriode);
-                if (!isUtsettelseAnnenPart(op)) {
-                    pushPeriodeHvisIkkeDuplikat(res, op);
-                }
-
-                if (
-                    currentIndex === perioder.length - 1 &&
-                    dayjs(annenPartsPeriode.tidsperiode.tom).isAfter(p.tidsperiode.tom, 'day')
-                ) {
-                    const annenPartsPeriodeSomAvslutterUttaksplanen = {
-                        ...annenPartsPeriode,
-                        id: guid(),
-                        tidsperiode: {
-                            fom: Uttaksdagen(op.tidsperiode.tom).neste(),
-                            tom: annenPartsPeriode.tidsperiode.tom,
-                        },
-                        visPeriodeIPlan: true,
-                    };
-                    pushPeriodeHvisIkkeDuplikat(res, annenPartsPeriodeSomAvslutterUttaksplanen);
-                }
-            });
-
-            if (
-                sisteOverlappendePeriodeAnnenPart &&
-                dayjs(p.tidsperiode.tom).isAfter(sisteOverlappendePeriodeAnnenPart.tidsperiode.tom, 'day')
-            ) {
-                const nyPeriode: Periode = {
-                    ...p,
-                    id: guid(),
-                    tidsperiode: {
-                        fom: Uttaksdagen(sisteOverlappendePeriodeAnnenPart.tidsperiode.tom).neste(),
-                        tom: p.tidsperiode.tom,
-                    },
-                };
-                pushPeriodeHvisIkkeDuplikat(res, nyPeriode);
+            if (!isUtsettelseAnnenPart(overlappendePeriode)) {
+                res.push({ ...overlappendePeriode, visPeriodeIPlan: false, ønskerSamtidigUttak: true } as Periode);
             }
 
             return res;
         } else {
-            // Bli kvitt overlappende annen parts uttak
-            overlappendePerioderAnnenPart.forEach((opprinneligPeriode) => {
-                if (dayjs(opprinneligPeriode.tidsperiode.fom).isBefore(p.tidsperiode.fom)) {
-                    const op: Periode = {
-                        ...opprinneligPeriode,
-                        id: guid(),
-                        tidsperiode: {
-                            fom: opprinneligPeriode.tidsperiode.fom,
-                            tom: Uttaksdagen(p.tidsperiode.fom).forrige(),
-                        },
-                    };
-                    pushPeriodeHvisIkkeDuplikat(res, op);
-                }
-
-                if (dayjs(opprinneligPeriode.tidsperiode.tom).isAfter(p.tidsperiode.tom)) {
-                    const op: Periode = {
-                        ...opprinneligPeriode,
-                        id: guid(),
-                        tidsperiode: {
-                            fom: Uttaksdagen(p.tidsperiode.tom).neste(),
-                            tom: opprinneligPeriode.tidsperiode.tom,
-                        },
-                    };
-                    pushPeriodeHvisIkkeDuplikat(res, op);
-                }
-            });
-
-            pushPeriodeHvisIkkeDuplikat(res, p);
+            res.push(p);
             return res;
         }
     }, [] as Periode[]);
 
     result.sort(sorterPerioder);
+
     const førstePeriodeStartdato = perioder[0].tidsperiode.fom;
-    const annenPartsUttakSomSlutterFørFørstePeriode = annenPartsUttak.filter((ap) =>
+    const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day')
     );
 
     const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
-    const annenPartsUttakSomStarterEtterSistePeriode = annenPartsUttak.filter((ap) =>
+    const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day')
     );
 
