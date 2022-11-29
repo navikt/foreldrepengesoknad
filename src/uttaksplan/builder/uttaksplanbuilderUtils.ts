@@ -38,7 +38,10 @@ export const slåSammenLikePerioder = (
             forrigePeriode = periode;
             return;
         }
-        if (Perioden(forrigePeriode).erLik(periode) && Perioden(forrigePeriode).erSammenhengende(periode)) {
+        if (
+            Perioden(forrigePeriode).erLik(periode, false, true) &&
+            Perioden(forrigePeriode).erSammenhengende(periode)
+        ) {
             if (
                 annenPartsUttak &&
                 isUttaksperiode(periode) &&
@@ -284,6 +287,10 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
     );
     const oppsplittetPeriode: Periode[] = [];
 
+    if (datoerIPerioden.length === 2) {
+        return [periode];
+    }
+
     datoerIPerioden.forEach((datoWrapper, index) => {
         if (index === 0) {
             oppsplittetPeriode.push({
@@ -326,6 +333,16 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     }, [] as SplittetDatoType[]);
 
     const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
+        if (d1.dato.getTime() - d2.dato.getTime() === 0) {
+            if (!d1.erFom) {
+                return 1;
+            }
+
+            if (!d2.erFom) {
+                return -1;
+            }
+        }
+
         return d1.dato.getTime() - d2.dato.getTime();
     });
 

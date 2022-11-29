@@ -342,6 +342,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
+                overskrives: true,
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
             },
         ] as Periode[];
@@ -351,6 +352,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
             new Date('2020-12-21')
         );
+        console.log(result);
         expect(result.length).toBe(3);
         expect(result[0].tidsperiode.fom).toEqual(
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom
@@ -387,6 +389,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
+                overskrives: true,
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
             },
         ] as Periode[];
@@ -422,6 +425,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
+                overskrives: true,
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
             },
         ] as Periode[];
@@ -462,6 +466,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                overskrives: true,
             },
         ] as Periode[];
 
