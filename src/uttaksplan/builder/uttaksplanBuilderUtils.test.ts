@@ -352,7 +352,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
             new Date('2020-12-21')
         );
-        console.log(result);
         expect(result.length).toBe(3);
         expect(result[0].tidsperiode.fom).toEqual(
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom
