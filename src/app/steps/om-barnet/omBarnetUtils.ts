@@ -75,6 +75,8 @@ export const mapOmDetValgteBarnetFormDataToState = (
             ...valgtRegistrertBarn,
             type: BarnType.FØDT,
             termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
+            fødselsdatoer: valgtRegistrertBarn.fødselsdatoer,
+            antallBarn: valgtRegistrertBarn.antallBarn,
         };
     }
 

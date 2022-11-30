@@ -175,6 +175,7 @@
     "omBarnet.terminbekreftelse.lastOpp": "Trykk her for å laste opp dokumentasjon om terminbekreftelse",
     "omBarnet.papirsøknad.lenke": "Her finn du papirsøknaden",
     "registrertePersonalia.fødselsdato": "Født: {fødselsdato}",
+    "omBarnet.valgteBarn.tittel": "{antallBarn, plural, one {Barnet} other {Barna}} du søker for:",
     "annenForelder.aleneOmOmsorg": "Er du åleine om omsorga av barnet?",
     "annenForelder.aleneOmOmsorg.veileder": "Du har omsorga for barnet åleine, og du bur ikkje saman med den andre forelderen.",
     "annenForelder.aleneOmOmsorg.veileder.apneLabel": "Les meir om å vera åleine om omsorg for barnet",

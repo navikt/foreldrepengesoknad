@@ -83,6 +83,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     registrerteBarn: [],
                 } as Søkerinfo,
                 saker: [],
+                søknadGjelderEtNyttBarn: true,
             },
             dispatch: () => jest.fn(),
         }));
