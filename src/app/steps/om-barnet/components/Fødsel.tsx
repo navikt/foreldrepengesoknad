@@ -1,5 +1,5 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import dayjs from 'dayjs';
@@ -14,11 +14,20 @@ interface Props {
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
     søknadGjelderEtNyttBarn: boolean;
+    fødselsdatoBarnet: Date | undefined;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility, søknadGjelderEtNyttBarn }) => {
+const Fødsel: FunctionComponent<Props> = ({
+    søkersituasjon,
+    formValues,
+    visibility,
+    søknadGjelderEtNyttBarn,
+    fødselsdatoBarnet,
+}) => {
     const { erBarnetFødt, antallBarn, fødselsdatoer } = formValues;
 
+    const fødselsdatoBarnetString = fødselsdatoBarnet !== undefined ? dateToISOString(fødselsdatoBarnet) : '';
+    const fødselsdato = fødselsdatoer.length > 0 ? fødselsdatoer[0] : fødselsdatoBarnetString;
     const intl = useIntl();
     const intlIdFødsel =
         antallBarn !== undefined && parseInt(antallBarn, 10) > 1
@@ -87,10 +96,10 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
-                    minDate={dayjs(fødselsdatoer[0]).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(fødselsdatoer[0]).add(6, 'months').toDate()}
+                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
+                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}
-                    validate={validateTermindatoFødsel(fødselsdatoer[0], intl)}
+                    validate={validateTermindatoFødsel(fødselsdato, intl)}
                 />
             </Block>
         </>

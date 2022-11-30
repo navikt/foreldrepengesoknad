@@ -57,6 +57,8 @@ const OmBarnet: React.FunctionComponent = () => {
     const valgteRegistrerteBarn = !søknadGjelderEtNyttBarn
         ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b))
         : undefined;
+    const fødselsdatoBarnet =
+        barn !== undefined && !isUfødtBarn(barn) && barn.fødselsdatoer.length > 0 ? barn.fødselsdatoer[0] : undefined;
     return (
         <OmBarnetFormComponents.FormikWrapper
             initialValues={getOmBarnetInitialValues(barn, registrerteBarn, arbeidsforhold)}
@@ -117,6 +119,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 formValues={formValues}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                                fødselsdatoBarnet={fødselsdatoBarnet}
                             />
                             <Block visible={visGåVidereKnapp} textAlignCenter={true}>
                                 <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
