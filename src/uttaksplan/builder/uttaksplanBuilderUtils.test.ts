@@ -363,6 +363,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
+                overskrives: true,
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
             },
         ] as Periode[];
@@ -409,6 +410,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
+                overskrives: true,
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
             },
         ] as Periode[];
@@ -445,6 +447,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
+                overskrives: true,
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
             },
         ] as Periode[];
@@ -486,6 +489,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
                 årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                overskrives: true,
             },
         ] as Periode[];
 

@@ -112,6 +112,7 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
         harUttaksplanBlittSlettet,
         søknadGjelderEtNyttBarn,
         barnFraNesteSak,
+        brukerSvarteJaPåAutoJustering,
     } = state;
     return getAxiosInstance(fnr).post(
         '/storage',
@@ -129,6 +130,7 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
             harUttaksplanBlittSlettet,
             søknadGjelderEtNyttBarn,
             barnFraNesteSak,
+            brukerSvarteJaPåAutoJustering,
         },
         { withCredentials: true }
     );

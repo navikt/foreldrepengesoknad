@@ -17,12 +17,20 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
     return dateToISOString(barn.adopsjonsdato);
 };
 
+const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[], regBarnFødselsdato: Date) => {
+    return fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined;
+};
+
 export const getRegistrertBarnOmDetFinnes = (
     barn: Barn,
     registrerteBarn: RegistrertBarn[]
 ): RegistrertBarn | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
-        ? registrerteBarn.find((regBarn) => barn.fnr?.includes(regBarn.fnr))
+        ? registrerteBarn.find(
+              (regBarn) =>
+                  barn.fnr?.includes(regBarn.fnr) ||
+                  barnFødselsdatoLikSakFødselsdato(barn.fødselsdatoer, regBarn.fødselsdato)
+          )
         : undefined;
 };
 

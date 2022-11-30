@@ -2,6 +2,7 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import Barn, { BarnType, FødtBarn } from 'app/context/types/Barn';
 import { Søknad } from 'app/context/types/Søknad';
 import { Periode, PeriodeHull, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
     AnnenForelderOppgittForInnsending,
     cleanSøknad,
@@ -99,6 +100,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             id: '0',
             type: Periodetype.Uttak,
             erMorForSyk: true,
+            konto: StønadskontoType.Fellesperiode,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
         } as Uttaksperiode;
         const periodeHull = {
@@ -112,6 +114,18 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0].hasOwnProperty('erMorForSyk')).toBe(false);
         const { erMorForSyk, ...expectedPeriodeUttak } = periodeUttak;
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0]).toEqual(expectedPeriodeUttak);
+    });
+    it('skal fjerne periode uten konto', () => {
+        const periodeUttakUtenKonto = {
+            id: '0',
+            type: Periodetype.Uttak,
+            erMorForSyk: true,
+            tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
+        } as Uttaksperiode;
+
+        const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan, fødselsdato);
+        expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(0);
     });
 
     it('skal fjerne datoForAleneomsorg, type og fnr fra født barn objektet og beholde fødsel og termindato', () => {

@@ -49,6 +49,17 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
     return undefined;
 };
 
+export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+    termindatoSaksgrunnlag?: string,
+    termindatoSaksgrunnlagAnnenPart?: string
+) => {
+    if (termindatoSaksgrunnlagAnnenPart) {
+        return termindatoSaksgrunnlagAnnenPart;
+    }
+
+    return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : undefined;
+};
+
 const getStønadskontoParams = (
     dekningsgrad: Dekningsgrad,
     barn: Barn,
