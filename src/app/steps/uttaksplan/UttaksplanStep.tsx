@@ -404,7 +404,13 @@ const UttaksplanStep = () => {
         dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
     };
 
-    if (!stønadskontoer100 || !stønadskontoer80) {
+    if (
+        !stønadskontoer100 ||
+        !stønadskontoer80 ||
+        (eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
+            !eksisterendeSakAnnenPartRequestIsSuspended) ||
+        (nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED && !nesteBarnsSakAnnenPartRequestIsSuspended)
+    ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <NavFrontendSpinner type="XXL" />
