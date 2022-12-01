@@ -69,9 +69,10 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
                 sak.familiehendelse.omsorgsovertagelse
             )
         ),
-        startdatoFørsteStønadsperiode: Uttaksdagen(
-            ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!
-        ).denneEllerNeste(),
+        startdatoFørsteStønadsperiode:
+            sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
+                ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!).denneEllerNeste()
+                : undefined,
     };
     return {
         ...barnFraSak,
@@ -98,9 +99,10 @@ const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
             annenForelder: annenForelderFraSak,
             familiehendelsesdato: ISOStringToDate(sak.familiehendelse.termindato),
             sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
-            startdatoFørsteStønadsperiode: Uttaksdagen(
-                ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!
-            ).denneEllerNeste(),
+            startdatoFørsteStønadsperiode:
+                sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
+                    ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!).denneEllerNeste()
+                    : undefined,
         };
     }
 };
