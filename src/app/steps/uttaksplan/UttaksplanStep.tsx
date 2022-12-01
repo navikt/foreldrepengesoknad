@@ -78,16 +78,7 @@ const UttaksplanStep = () => {
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
     const { person, arbeidsforhold } = søkerinfo;
-    const {
-        annenForelder,
-        søker,
-        barn,
-        søkersituasjon,
-        dekningsgrad,
-        erEndringssøknad,
-        tilleggsopplysninger,
-        uttaksplan,
-    } = søknad;
+    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
@@ -197,9 +188,15 @@ const UttaksplanStep = () => {
 
     //Legg til annen parts perioder i planen til bruker
     useEffect(() => {
-        if (erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined && !annenPartsUttakLagtTilIUttaksplan) {
+        if (
+            erEndringssøknad &&
+            eksisterendeSak !== undefined &&
+            opprinneligPlan !== undefined &&
+            eksisterendeVedtakAnnenPart !== undefined &&
+            !annenPartsUttakLagtTilIUttaksplan
+        ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
-            uttaksplan.forEach((p) => {
+            opprinneligPlan.forEach((p) => {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
                         eksisterendeVedtakAnnenPart.uttaksplan
@@ -219,7 +216,7 @@ const UttaksplanStep = () => {
 
             const uttaksplanMedAnnenPart = finnOgSettInnHull(
                 settInnAnnenPartsUttak(
-                    uttaksplan,
+                    opprinneligPlan,
                     eksisterendeVedtakAnnenPart.uttaksplan,
                     familiehendelsesdatoDate!,
                     førsteUttaksdagNesteBarnsSak
@@ -230,14 +227,18 @@ const UttaksplanStep = () => {
                 bareFarMedmorHarRett,
                 erFarEllerMedmor
             );
-
+            const eksisterendeSakMedAnnenPartsPlan = {
+                ...eksisterendeSak,
+                uttaksplan: uttaksplanMedAnnenPart,
+            };
             dispatch(actionCreator.setUttaksplan(uttaksplanMedAnnenPart));
+            dispatch(actionCreator.setEksisterendeSak(eksisterendeSakMedAnnenPartsPlan));
             setAnnenPartsUttakLagtTilIUttaksplan(true);
         }
     }, [
         eksisterendeVedtakAnnenPart,
         erEndringssøknad,
-        uttaksplan,
+        opprinneligPlan,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
         erAdopsjon,
@@ -247,6 +248,7 @@ const UttaksplanStep = () => {
         annenPartsUttakLagtTilIUttaksplan,
         dispatch,
         førsteUttaksdagNesteBarnsSak,
+        eksisterendeSak,
     ]);
 
     const onValidSubmitHandler = () => {
