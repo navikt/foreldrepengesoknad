@@ -4,12 +4,12 @@ import React, { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import './barnVelger.less';
 import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
-import { kanSøkeOmEndringPåBarnet } from '../../velkommenUtils';
+
+import './barnVelger.less';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -50,9 +50,9 @@ interface Props {
 const getRadioForNyttBarn = (intl: IntlShape): any => {
     return {
         label: (
-            <React.Fragment>
+            <>
                 <b> {intlUtils(intl, 'omBarnet.gjelderAnnetBarn')}</b>
-            </React.Fragment>
+            </>
         ),
         value: SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN,
         className: 'radioGroupButton',
@@ -86,7 +86,7 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     }
     return {
         label: (
-            <React.Fragment>
+            <>
                 <b> {labelTekst}</b>
                 {harSak && (
                     <div>
@@ -94,7 +94,7 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
                         {saksStatus}
                     </div>
                 )}
-            </React.Fragment>
+            </>
         ),
         value: barn.id,
         className: 'radioGroupButton',
@@ -112,22 +112,22 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT
             ? intlUtils(intl, 'velkommen.barnVelger.født')
             : intlUtils(intl, 'velkommen.barnVelger.adopsjon');
-    const sakForBarnetErFerdigbehandlet = kanSøkeOmEndringPåBarnet(barn);
+
     const saksnummerTekst =
         barn.sak !== undefined
             ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
             : '';
-    const saksStatus = barn.sak !== undefined ? getSakstatus(sakForBarnetErFerdigbehandlet) : undefined;
+    const saksStatus = barn.sak !== undefined ? getSakstatus(barn.sak.åpenBehandling === undefined) : undefined;
     return {
         label: (
-            <React.Fragment>
+            <>
                 <b>{navnTekst}</b>
                 <p>
                     {situasjonTekst} {fødtAdoptertDatoTekst}
                 </p>
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
-            </React.Fragment>
+            </>
         ),
         value: barn.id,
         name: VelkommenFormField.valgteBarn,
