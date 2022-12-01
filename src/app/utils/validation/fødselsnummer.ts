@@ -1,17 +1,20 @@
 import dayjs from 'dayjs';
-const isValidFødselsnummer = require('is-valid-fodselsnummer');
+import validator from '@navikt/fnrvalidator';
 
-type FødselsnummerValidationResult = false | 'F' | 'D';
+type FødselsnummerValidationResult = false | 'fnr' | 'dnr' | 'hnr';
 export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
-    try {
-        return isValidFødselsnummer(fnr, true);
-    } catch (e) {
+    const result = validator.idnr(fnr);
+
+    if (result.status !== 'valid') {
         return false;
     }
+
+    return result.type;
 };
 
 export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: FødselsnummerValidationResult): boolean => {
-    const dato = isFødselsnummerValid === 'D' ? `${Number(fnr.substr(0, 1)) - 4}${fnr.substr(1, 1)}` : fnr.substr(0, 2);
+    const dato =
+        isFødselsnummerValid === 'dnr' ? `${Number(fnr.substr(0, 1)) - 4}${fnr.substr(1, 1)}` : fnr.substr(0, 2);
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
 

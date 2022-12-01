@@ -5,7 +5,7 @@ export interface OwnProps {
 }
 
 const PengerIkon = ({ size = 48 }: OwnProps) => (
-    <svg focusable="false" role="presentation" viewBox="0 0 48 48" width={size} height={size}>
+    <svg focusable="false" role="img" aria-hidden="true" viewBox="0 0 48 48" width={size} height={size}>
         <g fill="none" fillRule="evenodd">
             <path fill="#E3B0A8" d="M4 6h44v24H4z" />
             <path fill="#F1D8D4" d="M38.833 6h5.5v24h-5.5z" />

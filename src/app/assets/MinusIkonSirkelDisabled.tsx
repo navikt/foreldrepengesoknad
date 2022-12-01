@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MinusIkonSirkelDisabled = () => (
-    <svg focusable="false" role="presentation" width={24} height={24}>
+    <svg focusable="false" role="img" aria-hidden="true" width={24} height={24}>
         <g fill="none" fillRule="evenodd" stroke="#C6C2BF" strokeLinecap="round" strokeLinejoin="round">
             <path
                 fill="#E9E7E7"

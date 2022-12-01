@@ -27,11 +27,11 @@ export const validateFødselsnummer =
 
         const validFnrResult = isFødselsnummerFormatValid(fnr);
 
-        if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'F') {
+        if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'fnr') {
             return intlUtils(intl, 'valideringsfeil.fødselsnummer.underSeksten');
         }
 
-        return validFnrResult === 'F' || validFnrResult === 'D'
+        return validFnrResult === 'fnr' || validFnrResult === 'dnr' || validFnrResult === 'hnr'
             ? undefined
             : intlUtils(intl, 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer');
     };

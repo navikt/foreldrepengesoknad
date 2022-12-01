@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PlussIkonSirkelDisabled = () => (
-    <svg focusable="false" role="presentation" width={24} height={24}>
+    <svg focusable="false" role="img" aria-hidden="true" width={24} height={24}>
         <title>{'Icons/add/disabled'}</title>
         <g fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round" stroke="#C6C2BF">
             <path

@@ -3,7 +3,8 @@ import * as React from 'react';
 const BarnevognIkon = (props: any) => (
     <svg
         focusable="false"
-        role="presentation"
+        role="img"
+        aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="123"
         height="103"

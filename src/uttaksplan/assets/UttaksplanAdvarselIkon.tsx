@@ -14,7 +14,8 @@ const UttaksplanAdvarselIkon = (props: Props) => {
     return (
         <svg
             focusable="false"
-            role="presentation"
+            role="img"
+            aria-hidden="true"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             width={24}
             height={24}
