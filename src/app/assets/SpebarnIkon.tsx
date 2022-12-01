@@ -9,7 +9,8 @@ const SpebarnIkon = ({ size = 42 }) => {
     return (
         <svg
             focusable="false"
-            role="presentation"
+            role="img"
+            aria-hidden="true"
             viewBox="0 0 41 82"
             width={size}
             height={size ? size * ratio : undefined}

@@ -3,7 +3,7 @@ import * as React from 'react';
 const UtbetalingerIkon = (props: any) => {
     const { title, ...rest } = props;
     return (
-        <svg focusable="false" role="presentation" width={46} height={37} {...rest}>
+        <svg focusable="false" role="img" aria-hidden="true" width={46} height={37} {...rest}>
             <g transform="translate(0 -6)" fill="none" fillRule="evenodd">
                 <path fill="#E3B0A8" d="M3.538 6.708H46v23.048H3.538z" />
                 <path fill="#F1D8D4" d="M37.153 6.708h5.308v23.048h-5.308z" />

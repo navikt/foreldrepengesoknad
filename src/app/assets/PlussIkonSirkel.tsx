@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PlussIkonSirkel = () => (
-    <svg focusable="false" role="presentation" width={24} height={24}>
+    <svg focusable="false" role="img" aria-hidden="true" width={24} height={24}>
         <g fill="none" fillRule="evenodd">
             <path
                 fill="#0067C5"
