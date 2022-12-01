@@ -253,10 +253,6 @@ export const getBarnFraNesteSak = (
     };
 };
 
-export const kanSøkeOmEndringPåBarnet = (barn: SelectableBarn): boolean => {
-    return barn.kanSøkeOmEndring === true;
-};
-
 export function sorterRegistrerteBarnEtterEldst(b1: RegistrertBarn, b2: RegistrertBarn) {
     return dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')
         ? 1
