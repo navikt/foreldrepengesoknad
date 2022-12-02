@@ -12,7 +12,7 @@ import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
-import { AnnenPartsVedtakDTO } from 'app/types/AnnenPartsVedtakDTO';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -72,7 +72,7 @@ const useGetAnnenPartsVedtak = (
         barnFødselsnummer: barnFnr,
         familiehendelse: familiehendelsesdato,
     };
-    const { data, error, requestStatus } = usePostRequest<AnnenPartsVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
+    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
         config: {
             withCredentials: true,
         },

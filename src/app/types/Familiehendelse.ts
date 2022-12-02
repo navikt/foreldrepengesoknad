@@ -1,6 +1,6 @@
 export interface Familiehendelse {
     fødselsdato?: string;
     termindato?: string;
-    omsorgsovertagelse?: string;
+    omsorgsovertakelse?: string;
     antallBarn: number;
 }

@@ -52,7 +52,7 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
         fnr: sak.barn.map((b) => b.fnr),
         type: getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse),
         antallBarn: sak.familiehendelse.antallBarn,
-        omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertagelse),
+        omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertakelse),
         fødselsdatoer: sak.barn
             .filter((ba) => ba !== undefined && ba.fødselsdato !== undefined)
             .map((b) => ISOStringToDate(b.fødselsdato)!),
@@ -66,7 +66,7 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
             getRelevantFamiliehendelseDato(
                 sak.familiehendelse.termindato,
                 sak.familiehendelse.fødselsdato,
-                sak.familiehendelse.omsorgsovertagelse
+                sak.familiehendelse.omsorgsovertakelse
             )
         ),
         startdatoFørsteStønadsperiode:

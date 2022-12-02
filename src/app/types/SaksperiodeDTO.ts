@@ -1,10 +1,10 @@
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { GraderingDTO } from './GraderingDTO';
 import { PeriodeResultatDTO } from './PeriodeResultatDTO';
 import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
+import { OppholdÅrsakTypeDTO } from './OppholdÅrsakTypeDTO';
 
 export interface SaksperiodeDTO {
     fom: string;
@@ -13,7 +13,7 @@ export interface SaksperiodeDTO {
     kontoType: StønadskontoType;
     flerbarnsdager: boolean;
     gradering?: GraderingDTO;
-    oppholdÅrsak?: OppholdÅrsakType;
+    oppholdÅrsak?: OppholdÅrsakTypeDTO;
     utsettelseÅrsak?: UtsettelseÅrsakTypeDTO;
     overføringÅrsak?: OverføringÅrsakType;
     samtidigUttak?: number;

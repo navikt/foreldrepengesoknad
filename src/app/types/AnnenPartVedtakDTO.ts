@@ -1,7 +1,7 @@
 import { SaksperiodeDTO } from './SaksperiodeDTO';
 import { DekningsgradDTO } from './DekningsgradDTO';
 
-export interface AnnenPartsVedtakDTO {
+export interface AnnenPartVedtakDTO {
     perioder: SaksperiodeDTO[];
     dekningsgrad: DekningsgradDTO;
     termindato?: string;

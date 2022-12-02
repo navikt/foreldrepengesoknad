@@ -1,7 +1,7 @@
 import { SaksperiodeDTO } from './SaksperiodeDTO';
-import { TilstandÅpenBehandling } from './TilstandÅpenBehandling';
+import { BehandlingTilstand } from './BehandlingTilstand';
 
 export interface ÅpenBehandling {
-    tilstand: TilstandÅpenBehandling;
+    tilstand: BehandlingTilstand;
     søknadsperioder: SaksperiodeDTO[];
 }

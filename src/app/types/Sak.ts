@@ -4,6 +4,7 @@ import { Familiehendelse } from './Familiehendelse';
 import { GjeldendeVedtak } from './GjeldendeVedtak';
 import { ÅpenBehandling } from './ÅpenBehandling';
 import { BarnFraSak } from './BarnFraSak';
+import { RettighetType } from './RettighetType';
 
 export interface Sak {
     annenPart: RegistrertAnnenForelder;
@@ -15,10 +16,11 @@ export interface Sak {
     gjelderAdopsjon: boolean;
     kanSøkeOmEndring: boolean;
     morUføretrygd: boolean;
-    rettighetType: any;
+    rettighetType: RettighetType;
     sakAvsluttet: boolean;
     sakTilhørerMor: boolean;
     saksnummer: string;
     åpenBehandling: ÅpenBehandling;
     ønskerJustertUttakVedFødsel: boolean;
+    sisteSøknadMottattDato: string;
 }

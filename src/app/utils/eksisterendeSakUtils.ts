@@ -1,7 +1,7 @@
 import { guid } from 'nav-frontend-js-utils';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 import { Arbeidsform, isInfoPeriode } from 'uttaksplan/types/Periode';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import { OppholdÅrsakTypeDTO } from 'app/types/OppholdÅrsakTypeDTO';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Saksperiode } from 'app/types/Saksperiode';
 import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
@@ -25,7 +25,7 @@ import { Sak } from 'app/types/Sak';
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { RettighetType } from 'app/types/RettighetType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { AnnenPartsVedtakDTO } from 'app/types/AnnenPartsVedtakDTO';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -41,16 +41,14 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): StønadskontoType | undefined => {
     switch (årsak) {
-        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+        case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
             return StønadskontoType.Fedrekvote;
-        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+        case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
             return StønadskontoType.Fellesperiode;
-        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+        case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
             return StønadskontoType.Mødrekvote;
-        case OppholdÅrsakType.UttakForelderpengerFørFødselAnnenForelder:
-            return StønadskontoType.ForeldrepengerFørFødsel;
         default:
             return undefined;
     }
@@ -111,7 +109,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 };
 
 export const getStartdatoFørstePeriodeAnnenPart = (
-    annenPartsSak: AnnenPartsVedtakDTO | undefined | ''
+    annenPartsSak: AnnenPartVedtakDTO | undefined | ''
 ): Date | undefined => {
     if (
         annenPartsSak === undefined ||
@@ -125,7 +123,7 @@ export const getStartdatoFørstePeriodeAnnenPart = (
 };
 
 export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartsVedtakDTO | undefined | '',
+    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined | '',
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -197,7 +195,7 @@ export const mapEksisterendeSakFromDTO = (
 
     const {
         dekningsgrad,
-        familiehendelse: { fødselsdato, termindato, omsorgsovertagelse, antallBarn },
+        familiehendelse: { fødselsdato, termindato, omsorgsovertakelse, antallBarn },
         gjeldendeVedtak: { perioder },
         harAnnenForelderTilsvarendeRettEØS,
         morUføretrygd,
@@ -221,10 +219,10 @@ export const mapEksisterendeSakFromDTO = (
         søkerErFarEllerMedmor: erFarEllerMedmor,
         termindato,
         fødselsdato,
-        omsorgsovertakelsesdato: omsorgsovertagelse,
+        omsorgsovertakelsesdato: omsorgsovertakelse,
         erDeltUttak: rettighetType === RettighetType.BEGGE_RETT,
         erBarnetFødt: fødselsdato !== undefined,
-        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertagelse),
+        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelse),
         familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
         ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
         harAnnenForelderTilsvarendeRettEØS,

@@ -1,4 +1,4 @@
-export enum TilstandÅpenBehandling {
+export enum BehandlingTilstand {
     TIDLIG_SØKNAD = 'TIDLIG_SØKNAD',
     VENTER_PÅ_INNTEKTSMELDING = 'VENTER_PÅ_INNTEKTSMELDING',
     VENTER_PÅ_DOKUMENTASJON = 'VENTER_PÅ_DOKUMENTASJON',

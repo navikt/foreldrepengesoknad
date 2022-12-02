@@ -4,7 +4,7 @@ export enum UtsettelseÅrsakTypeDTO {
     Sykdom = 'SØKER_SYKDOM',
     InstitusjonSøker = 'SØKER_INNLAGT',
     InstitusjonBarnet = 'BARN_INNLAGT',
-    HvØvelse = 'HVØVELSE',
+    HvØvelse = 'HV_ØVELSE',
     NavTiltak = 'NAV_TILTAK',
     Fri = 'FRI',
 }
