@@ -443,6 +443,14 @@ const UttaksplanStep = () => {
         }
     };
 
+    if (!eksisterendeSakAnnenPartRequestIsSuspended && !eksisterendeSakAnnenPartData) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <NavFrontendSpinner type="XXL" />
+            </div>
+        );
+    }
+
     return (
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(state.søknad.ønskerJustertUttakVedFødsel)}

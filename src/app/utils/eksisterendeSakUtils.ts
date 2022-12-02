@@ -1,6 +1,6 @@
 import { guid } from 'nav-frontend-js-utils';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
-import { Arbeidsform } from 'uttaksplan/types/Periode';
+import { Arbeidsform, isInfoPeriode } from 'uttaksplan/types/Periode';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Saksperiode } from 'app/types/Saksperiode';
@@ -182,7 +182,7 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
         erAnnenPartsSak: true,
         grunnlag: grunnlagForAnnenPart,
         saksperioder: saksperioderAnnenPart,
-        uttaksplan: uttaksplanAnnenPart,
+        uttaksplan: uttaksplanAnnenPart.filter((p) => isInfoPeriode(p)),
     };
 };
 
