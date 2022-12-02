@@ -83,25 +83,61 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
         ),
     };
 };
-const getSelectableBarnFraSak = (sak: Sak): SelectableBarn => {
+const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
     if (sak.barn.length > 0) {
         return getSelectableBarnFraSakMedBarn(sak);
     } else {
+        const familiehendelseDato =
+            sak.familiehendelse.fødselsdato !== undefined
+                ? ISOStringToDate(sak.familiehendelse.fødselsdato)
+                : ISOStringToDate(sak.familiehendelse.termindato);
+        const fødselsdatoFraSak =
+            sak.familiehendelse.fødselsdato !== undefined
+                ? ISOStringToDate(sak.familiehendelse.fødselsdato)
+                : undefined;
+        const pdlBarnMedSammeFødselsdato =
+            fødselsdatoFraSak !== undefined && registrerteBarn.length > 0
+                ? registrerteBarn.filter(
+                      (barn) =>
+                          dayjs(barn.fødselsdato).isSameOrAfter(dayjs(fødselsdatoFraSak).subtract(1, 'day'), 'day') &&
+                          dayjs(barn.fødselsdato).isSameOrBefore(dayjs(fødselsdatoFraSak).add(1, 'day'), 'day')
+                  )
+                : undefined;
         const annenForelderFraSak = getAnnenForelderFraSak(sak);
-
+        const barnType =
+            sak.familiehendelse.fødselsdato !== undefined ? SelectableBarnType.FØDT : SelectableBarnType.UFØDT;
         return {
             id: guid(),
-            type: SelectableBarnType.UFØDT,
+            type: barnType,
             antallBarn: sak.familiehendelse.antallBarn,
-            termindato: ISOStringToDate(sak.familiehendelse.termindato),
+            termindato:
+                sak.familiehendelse.termindato !== undefined
+                    ? ISOStringToDate(sak.familiehendelse.termindato)
+                    : undefined,
             kanSøkeOmEndring: sak.kanSøkeOmEndring,
             sak: sak,
+            fødselsdatoer:
+                sak.familiehendelse.fødselsdato !== undefined
+                    ? Array(sak.familiehendelse.antallBarn).fill(ISOStringToDate(sak.familiehendelse.fødselsdato)!)
+                    : undefined,
             annenForelder: annenForelderFraSak,
-            familiehendelsesdato: ISOStringToDate(sak.familiehendelse.termindato),
+            familiehendelsesdato: familiehendelseDato,
             sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
             startdatoFørsteStønadsperiode:
                 sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
                     ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!).denneEllerNeste()
+                    : undefined,
+            fornavn:
+                pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
+                    ? pdlBarnMedSammeFødselsdato?.map((b) => b.fornavn)
+                    : undefined,
+            etternavn:
+                pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
+                    ? pdlBarnMedSammeFødselsdato?.map((b) => b.etternavn)
+                    : undefined,
+            fnr:
+                pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
+                    ? pdlBarnMedSammeFødselsdato?.map((b) => b.fnr)
                     : undefined,
         };
     }
@@ -158,10 +194,15 @@ const getSelectableFlerlingerFraPDL = (
     };
 };
 
-const getSelectableBarnOptionsFromSaker = (saker: Sak[]) => {
+const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
     return saker
-        .filter((sak) => sak.barn.length > 0 || sak.familiehendelse.termindato !== undefined)
-        .map((sakMedBarn) => getSelectableBarnFraSak(sakMedBarn));
+        .filter(
+            (sak) =>
+                sak.barn.length > 0 ||
+                sak.familiehendelse.termindato !== undefined ||
+                sak.familiehendelse.fødselsdato !== undefined
+        )
+        .map((sakMedBarn) => getSelectableBarnFraSak(sakMedBarn, registrerteBarn));
 };
 
 const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: RegistrertBarn) => {
@@ -223,7 +264,7 @@ const getSelectableBarnOptionsFraPDL = (
 
 export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
-    const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker);
+    const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
     const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker);
     return barnFraSaker.concat(barnFraPDL);
 };
