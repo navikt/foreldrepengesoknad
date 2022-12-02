@@ -120,17 +120,12 @@ const skalViseOmsorgsovertakelse = (
 
     if (søknadGjelderEtNyttBarn) {
         return (
-            (søknadGjelderEtNyttBarn &&
-                includeAdoptertIUtlandet(adopsjonAvEktefellesBarn, adopsjonsdato) &&
+            (includeAdoptertIUtlandet(adopsjonAvEktefellesBarn, adopsjonsdato) &&
                 adoptertIUtlandet !== YesOrNo.UNANSWERED) ||
-            (søknadGjelderEtNyttBarn &&
-                !includeAdoptertIUtlandet(adopsjonAvEktefellesBarn, adopsjonsdato) &&
+            (!includeAdoptertIUtlandet(adopsjonAvEktefellesBarn, adopsjonsdato) &&
                 fødselsdatoer !== undefined &&
                 hasValue(fødselsdatoer[0])) ||
-            (søknadGjelderEtNyttBarn &&
-                adopsjonAvEktefellesBarn === YesOrNo.YES &&
-                fødselsdatoer !== undefined &&
-                hasValue(fødselsdatoer[0]))
+            (adopsjonAvEktefellesBarn === YesOrNo.YES && fødselsdatoer !== undefined && hasValue(fødselsdatoer[0]))
         );
     } else {
         return (
