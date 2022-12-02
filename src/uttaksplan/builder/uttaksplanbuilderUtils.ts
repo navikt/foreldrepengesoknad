@@ -393,6 +393,15 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
+            if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
+                res.push({
+                    ...p,
+                    ønskerSamtidigUttak: false,
+                });
+
+                return res;
+            }
+
             res.push(p);
 
             return res;
