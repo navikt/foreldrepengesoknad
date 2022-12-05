@@ -34,5 +34,6 @@
         "uttaksplan": []
     },
     "version": 2,
-    "currentRoute": "/soknad/uttaksplan-info"
+    "currentRoute": "/soknad/uttaksplan-info",
+    "søknadGjelderEtNyttBarn": true
 }

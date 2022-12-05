@@ -20,7 +20,7 @@ export interface Sak {
     sakAvsluttet: boolean;
     sakTilhørerMor: boolean;
     saksnummer: string;
-    åpenBehandling: ÅpenBehandling;
     ønskerJustertUttakVedFødsel: boolean;
     sisteSøknadMottattDato: string;
+    åpenBehandling?: ÅpenBehandling;
 }

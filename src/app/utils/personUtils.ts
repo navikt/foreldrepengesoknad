@@ -34,6 +34,7 @@ export const formaterNavnPåFlereBarn = (
     }
     return `${fornavn[0]} ${etternavn}`;
 };
+
 export const formateFødselsdatoerPåFlereBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
