@@ -127,12 +127,13 @@ const UttaksplanStep = () => {
     const eksisterendeSakAnnenPartRequestIsSuspended =
         annenForelderFnr !== undefined && (barnFnr !== undefined || familiehendelsesdato !== undefined) ? false : true;
 
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
-        annenForelderFnr,
-        barnFnr,
-        familiehendelsesdato,
-        eksisterendeSakAnnenPartRequestIsSuspended
-    );
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
+        Api.useGetAnnenPartsVedtak(
+            annenForelderFnr,
+            barnFnr,
+            familiehendelsesdato,
+            eksisterendeSakAnnenPartRequestIsSuspended
+        );
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
@@ -155,6 +156,7 @@ const UttaksplanStep = () => {
 
     const {
         eksisterendeSakAnnenPartData: nesteSakAnnenPartData,
+        eksisterendeSakAnnenPartError: nesteSakAnnenPartError,
         eksisterendeSakAnnenPartRequestStatus: nesteSakAnnenPartRequestStatus,
     } = Api.useGetAnnenPartsVedtak(
         annenForelderFnrNesteSak,
@@ -361,19 +363,20 @@ const UttaksplanStep = () => {
         rolle
     );
 
-    const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            Dekningsgrad.HUNDRE_PROSENT,
-            barn,
-            annenForelder,
-            søkersituasjon,
-            farMedmorErAleneOmOmsorg,
-            morErAleneOmOmsorg,
-            dateToISOString(familieHendelseDatoNesteSak),
-            eksisterendeSak?.grunnlag.termindato
-        ),
-        nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
-    );
+    const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
+        Api.useGetUttakskontoer(
+            getStønadskontoParams(
+                Dekningsgrad.HUNDRE_PROSENT,
+                barn,
+                annenForelder,
+                søkersituasjon,
+                farMedmorErAleneOmOmsorg,
+                morErAleneOmOmsorg,
+                dateToISOString(familieHendelseDatoNesteSak),
+                eksisterendeSak?.grunnlag.termindato
+            ),
+            nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
             Dekningsgrad.ÅTTI_PROSENT,
@@ -412,6 +415,21 @@ const UttaksplanStep = () => {
             !eksisterendeSakAnnenPartRequestIsSuspended) ||
         (nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED && !nesteBarnsSakAnnenPartRequestIsSuspended)
     ) {
+        if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
+            );
+        }
+        if (eksisterendeSakAnnenPartError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp saken til annen forelder med følgende feilmelding: ${eksisterendeSakAnnenPartError.response.data.messages}`
+            );
+        }
+        if (nesteSakAnnenPartError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp annen forelders sak for det neste barnet med følgende feilmelding: ${nesteSakAnnenPartError.response.data.messages}`
+            );
+        }
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <NavFrontendSpinner type="XXL" />

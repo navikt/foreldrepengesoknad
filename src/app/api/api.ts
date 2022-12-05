@@ -13,6 +13,7 @@ import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { RequestStatus } from 'app/types/RequestState';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -79,6 +80,13 @@ const useGetAnnenPartsVedtak = (
         isSuspended,
     });
 
+    if (error && error.message.includes('Ugyldig ident')) {
+        return {
+            eksisterendeSakAnnenPartData: undefined,
+            eksisterendeSakAnnenPartError: undefined,
+            eksisterendeSakAnnenPartRequestStatus: RequestStatus.FINISHED,
+        };
+    }
     return {
         eksisterendeSakAnnenPartData: data,
         eksisterendeSakAnnenPartError: error,

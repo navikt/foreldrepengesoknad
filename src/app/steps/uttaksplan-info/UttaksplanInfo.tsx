@@ -46,12 +46,13 @@ const UttaksplanInfo = () => {
     const annenPartFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const barnFnr = isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetAnnenPartsVedtak(
-        annenPartFnr,
-        barnFnr,
-        familiehendelsesdato,
-        eksisterendeSakAnnenPartRequestIsSuspended
-    );
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
+        Api.useGetAnnenPartsVedtak(
+            annenPartFnr,
+            barnFnr,
+            familiehendelsesdato,
+            eksisterendeSakAnnenPartRequestIsSuspended
+        );
 
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
@@ -126,6 +127,11 @@ const UttaksplanInfo = () => {
         if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
             throw new Error(
                 `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
+            );
+        }
+        if (eksisterendeSakAnnenPartError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp saken til annen forelder med følgende feilmelding: ${eksisterendeSakAnnenPartError.response.data.messages}`
             );
         }
 
