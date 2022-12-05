@@ -377,7 +377,8 @@ export const settInnAnnenPartsUttak = (
     perioder: Periode[],
     annenPartsUttak: Periode[],
     familiehendelsesdato: Date,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    initiellMappingFraSaksperioder = false
 ) => {
     if (annenPartsUttak.length === 0) {
         return perioder;
@@ -393,7 +394,7 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
+            if (isUttaksperiode(p) && p.ønskerSamtidigUttak && initiellMappingFraSaksperioder) {
                 res.push({
                     ...p,
                     ønskerSamtidigUttak: false,

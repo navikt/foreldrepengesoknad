@@ -219,7 +219,8 @@ const UttaksplanStep = () => {
                     opprinneligPlan,
                     eksisterendeVedtakAnnenPart.uttaksplan,
                     familiehendelsesdatoDate!,
-                    førsteUttaksdagNesteBarnsSak
+                    førsteUttaksdagNesteBarnsSak,
+                    true
                 ),
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdatoDate!,
