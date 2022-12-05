@@ -8,9 +8,7 @@
         },
         "barn": {
             "type": "født",
-            "fødselsdatoer": [
-                "2021-03-15"
-            ],
+            "fødselsdatoer": ["2021-03-15"],
             "antallBarn": "1",
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
@@ -28,5 +26,6 @@
         "erEndringssøknad": false
     },
     "version": 2,
-    "currentRoute": "/soknad/uttaksplan-info"
+    "currentRoute": "/soknad/uttaksplan-info",
+    "søknadGjelderEtNyttBarn": true
 }
