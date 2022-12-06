@@ -317,10 +317,14 @@ export const getRelevantFamiliehendelseDato = (
     fødselsdato: string | undefined,
     omsorgsovertakelsesdato: string | undefined
 ): string => {
-    if (fødselsdato !== undefined) {
+    if (omsorgsovertakelsesdato !== undefined) {
+        return omsorgsovertakelsesdato;
+    } else if (fødselsdato !== undefined) {
         return fødselsdato;
+    } else if (termindato !== undefined) {
+        return termindato;
     } else {
-        return termindato !== undefined ? termindato : omsorgsovertakelsesdato!;
+        throw new Error('Mangler fødselsdato/termindato/adopsjonsdato for barnet.');
     }
 };
 

@@ -29,6 +29,7 @@ import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -54,16 +55,37 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO)
     }
 };
 
+const mapOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO | undefined): OppholdÅrsakType | undefined => {
+    switch (årsak) {
+        case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
+            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+        case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
+            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+        case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
+            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+        default:
+            return undefined;
+    }
+};
+
 const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolean): Saksperiode => {
     const { oppholdÅrsak } = p;
     const returnPeriode: Saksperiode = {
-        ...p,
         guid: guid(),
         periode: {
             fom: p.fom,
             tom: p.tom,
         },
         gjelderAnnenPart: erAnnenPartsSak,
+        resultat: p.resultat,
+        kontoType: p.kontoType,
+        flerbarnsdager: p.flerbarnsdager,
+        gradering: p.gradering,
+        utsettelseÅrsak: p.utsettelseÅrsak,
+        overføringÅrsak: p.overføringÅrsak,
+        samtidigUttak: p.samtidigUttak,
+        morsAktivitet: p.morsAktivitet,
+        oppholdÅrsak: mapOppholdÅrsakType(p.oppholdÅrsak),
     } as Saksperiode;
 
     if (oppholdÅrsak !== undefined && erAnnenPartsSak === false) {
