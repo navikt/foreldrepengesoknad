@@ -49,7 +49,7 @@ const OmBarnet: React.FunctionComponent = () => {
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
-        if (!isUfødtBarn(barn) && barn.fnr && barn.fnr.length > 0) {
+        if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
             return barn.fnr.includes(regBarn.fnr);
         }
         return false;

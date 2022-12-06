@@ -7,10 +7,9 @@
             "rolle": "mor"
         },
         "barn": {
+            "fnr": ["21091981146"],
             "type": "født",
-            "fødselsdatoer": [
-                "2021-03-15"
-            ],
+            "fødselsdatoer": ["2021-03-15"],
             "antallBarn": "1",
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
@@ -28,5 +27,6 @@
         "erEndringssøknad": false
     },
     "version": 2,
-    "currentRoute": "/soknad/uttaksplan-info"
+    "currentRoute": "/soknad/om-barnet",
+    "søknadGjelderEtNyttBarn": true
 }
