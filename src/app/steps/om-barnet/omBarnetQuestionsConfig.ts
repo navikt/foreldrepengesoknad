@@ -109,15 +109,6 @@ const skalViseOmsorgsovertakelse = (
     søknadGjelderEtNyttBarn: boolean,
     fødselsdatoer: string[] | undefined
 ) => {
-    console.log(
-        adopsjonAvEktefellesBarn,
-        adopsjonsdato,
-        adoptertIUtlandet,
-        ankomstdato,
-        søknadGjelderEtNyttBarn,
-        fødselsdatoer
-    );
-
     if (søknadGjelderEtNyttBarn) {
         return (
             (includeAdoptertIUtlandet(adopsjonAvEktefellesBarn, adopsjonsdato) &&
