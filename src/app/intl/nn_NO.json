@@ -78,6 +78,7 @@
     "velkommen.barnVelger.saksnummer": "Saksnummer: {saksnummer}",
     "velkommen.barnVelger.ufødtBarn.ettBarn": "Barn med termindato {termin}",
     "velkommen.barnVelger.fødtBarn.ettBarn": "Barn med fødselsdato {fødselsdato}",
+    "velkommen.barnVelger.adoptertBarn": "Barn adoptert {adopsjonsdato}",
     "velkommen.barnVelger.ufødtBarn.tvillinger": "Tvillinger med termindato {termin}",
     "velkommen.barnVelger.ufødtBarn.flerlinger": "Flerlinger med termindato {termin}",
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",

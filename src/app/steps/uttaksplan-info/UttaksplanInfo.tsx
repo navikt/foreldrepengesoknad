@@ -129,6 +129,11 @@ const UttaksplanInfo = () => {
                 `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
             );
         }
+        if (tilgjengeligeStønadskontoerError?.response?.status === 400) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data}`
+            );
+        }
         if (eksisterendeSakAnnenPartError?.response?.status === 500) {
             throw new Error(
                 `Vi klarte ikke å hente opp saken til annen forelder med følgende feilmelding: ${eksisterendeSakAnnenPartError.response.data.messages}`

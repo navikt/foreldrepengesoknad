@@ -80,6 +80,7 @@
     "velkommen.barnVelger.saksnummer": "Saksnummer: {saksnummer}",
     "velkommen.barnVelger.ufødtBarn.ettBarn": "Barn med termindato {termin}",
     "velkommen.barnVelger.fødtBarn.ettBarn": "Barn med fødselsdato {fødselsdato}",
+    "velkommen.barnVelger.adoptertBarn": "Barn adoptert {adopsjonsdato}",
     "velkommen.barnVelger.ufødtBarn.tvillinger": "Tvillinger med termindato {termin}",
     "velkommen.barnVelger.ufødtBarn.flerlinger": "Flerlinger med termindato {termin}",
     "velkommen.dinePlikter.listeElement.1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",

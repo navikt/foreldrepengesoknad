@@ -144,6 +144,7 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
     const fødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
     const termindato = isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined;
+    const adopsjonsdato = isAdoptertBarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined;
 
     const grunnlagForAnnenPart = {
         dekningsgrad:
@@ -159,11 +160,11 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
         søkerErFarEllerMedmor,
         termindato,
         fødselsdato,
-        omsorgsovertakelsesdato: isAdoptertBarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
+        omsorgsovertakelsesdato: adopsjonsdato,
         erDeltUttak: true,
         erBarnetFødt: fødselsdato !== undefined,
         familiehendelseDato: familiehendelsesdato,
-        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
+        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, adopsjonsdato),
         harAnnenForelderTilsvarendeRettEØS: false,
         ønskerJustertUttakVedFødsel: undefined,
         barn: [], // barn brukes ikke videre her
@@ -223,7 +224,7 @@ export const mapEksisterendeSakFromDTO = (
         erDeltUttak: rettighetType === RettighetType.BEGGE_RETT,
         erBarnetFødt: fødselsdato !== undefined,
         familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelse),
-        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
+        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, omsorgsovertakelse),
         ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
         harAnnenForelderTilsvarendeRettEØS,
         annenPart,

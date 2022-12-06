@@ -6,6 +6,7 @@ import Person from 'app/types/Person';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+import { formaterDato } from './dateUtils';
 
 export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
@@ -15,15 +16,24 @@ export const formaterNavnPåFlereBarn = (
     fornavn: string[] | undefined,
     etternavn: string[] | undefined,
     fødselsdatoer: Date[] | undefined,
+    omsorgsovertagelsesdato: Date | undefined,
     intl: IntlShape
 ): string => {
     if (fornavn === undefined || fornavn.length === 0 || etternavn === undefined || etternavn.length === 0) {
-        const fødselsdatoTekst = formateFødselsdatoerPåFlereBarn(fødselsdatoer);
-        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.ettBarn', {
-                  fødselsdato: fødselsdatoTekst,
-              })
-            : '';
+        if (omsorgsovertagelsesdato !== undefined) {
+            return fødselsdatoer !== undefined && fødselsdatoer.length > 0
+                ? intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
+                      adopsjonsdato: formaterDato(omsorgsovertagelsesdato),
+                  })
+                : '';
+        } else {
+            const fødselsdatoTekst = formateFødselsdatoerPåFlereBarn(fødselsdatoer);
+            return fødselsdatoer !== undefined && fødselsdatoer.length > 0
+                ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.ettBarn', {
+                      fødselsdato: fødselsdatoTekst,
+                  })
+                : '';
+        }
     }
 
     const etterNavnet = etternavn[0];

@@ -106,7 +106,7 @@ const UttaksplanStep = () => {
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
     const annenForelderFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const erAdopsjon = situasjon === 'fødsel';
+    const erAdopsjon = situasjon === 'adopsjon';
     const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
     const førsteBarnFraNesteSakFnr =
         barnFraNesteSak !== undefined && barnFraNesteSak.fnr !== undefined && barnFraNesteSak.fnr.length > 0
@@ -418,6 +418,11 @@ const UttaksplanStep = () => {
         if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
             throw new Error(
                 `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
+            );
+        }
+        if (tilgjengeligeStønadskontoerError?.response?.status === 400) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data}`
             );
         }
         if (eksisterendeSakAnnenPartError?.response?.status === 500) {
