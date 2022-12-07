@@ -185,7 +185,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                 >
                     <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                     <div className={bem.element('tittel')}>
-                        <Element tag="h2">
+                        <Element tag="h3">
                             {getPeriodeTittel(
                                 intl,
                                 periode,
