@@ -203,10 +203,23 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
         return null;
     }
 
+    const toggleFocusAndOpen = () => {
+        const headerButton = window.document.getElementById(periode.id);
+
+        if (headerButton) {
+            setTimeout(() => {
+                headerButton.focus();
+            }, 150);
+        }
+
+        toggleIsOpen(periode.id);
+    };
+
     return (
         <article className={bem.block}>
             <EkspanderbartpanelBase
                 className={classNames(bem.element('header'), egenPeriode ? undefined : bem.modifier('transparent'))}
+                id={periode.id}
                 tittel={
                     <PeriodelisteItemHeader
                         egenPeriode={egenPeriode}
@@ -234,7 +247,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     stønadskontoer,
                     navnPåForeldre,
                     annenForelder,
-                    toggleIsOpen,
+                    toggleFocusAndOpen,
                     arbeidsforhold,
                     handleDeletePeriode,
                     erFarEllerMedmor,
