@@ -149,7 +149,7 @@ export const getStartdatoFørstePeriodeAnnenPart = (
     return ISOStringToDate(annenPartsSak.perioder[0].fom);
 };
 
-export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
+export const mapAnnenPartsEksisterendeSakFromDTO = (
     eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined | '',
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
@@ -163,10 +163,10 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
     ) {
         return undefined;
     }
-
+    const erAnnenPartsSak = true;
     const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
         .map((p) => {
-            return mapSaksperiodeFromDTO(p, true);
+            return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
     const fødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
@@ -205,22 +205,21 @@ export const mapAnnenPartsVedtakIFørstegangssøknadFromDTO = (
 
     return {
         saksnummer: '',
-        erAnnenPartsSak: true,
+        erAnnenPartsSak,
         grunnlag: grunnlagForAnnenPart,
         saksperioder: saksperioderAnnenPart,
         uttaksplan: uttaksplanAnnenPart.filter((p) => isInfoPeriode(p)),
     };
 };
 
-export const mapEksisterendeSakFromDTO = (
+export const mapSøkerensEksisterendeSakFromDTO = (
     eksisterendeSak: Sak | undefined | '',
-    erAnnenPartsSak: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
         return undefined;
     }
-
+    const erAnnenPartsSak = false;
     const {
         dekningsgrad,
         familiehendelse: { fødselsdato, termindato, omsorgsovertakelse, antallBarn },

@@ -22,7 +22,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import {
-    mapEksisterendeSakFromDTO,
+    mapSøkerensEksisterendeSakFromDTO,
     opprettSøknadFraEksisterendeSak,
     opprettSøknadFraValgteBarn,
     opprettSøknadFraValgteBarnMedSak,
@@ -89,9 +89,8 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
             !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
 
         if (endringssøknad) {
-            const eksisterendeSak = mapEksisterendeSakFromDTO(
+            const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
-                false,
                 førsteUttaksdagNesteBarnsSak
             );
 

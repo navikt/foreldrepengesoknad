@@ -17,7 +17,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
-import { mapAnnenPartsVedtakIFørstegangssøknadFromDTO } from 'app/utils/eksisterendeSakUtils';
+import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isFødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
@@ -59,7 +59,7 @@ const UttaksplanInfo = () => {
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
-            mapAnnenPartsVedtakIFørstegangssøknadFromDTO(
+            mapAnnenPartsEksisterendeSakFromDTO(
                 eksisterendeSakAnnenPartData,
                 barn,
                 erFarEllerMedmor,

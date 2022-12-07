@@ -53,7 +53,7 @@ import {
 import { FormikValues } from 'formik';
 import {
     getStartdatoFørstePeriodeAnnenPart,
-    mapAnnenPartsVedtakIFørstegangssøknadFromDTO,
+    mapAnnenPartsEksisterendeSakFromDTO,
 } from 'app/utils/eksisterendeSakUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { RequestStatus } from 'app/types/RequestState';
@@ -137,7 +137,7 @@ const UttaksplanStep = () => {
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
-            mapAnnenPartsVedtakIFørstegangssøknadFromDTO(
+            mapAnnenPartsEksisterendeSakFromDTO(
                 eksisterendeSakAnnenPartData,
                 barn,
                 erFarEllerMedmor,

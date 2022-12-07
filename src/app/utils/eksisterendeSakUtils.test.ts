@@ -2,7 +2,7 @@ import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { Sak } from 'app/types/Sak';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
-import { getArbeidsformFromUttakArbeidstype, mapEksisterendeSakFromDTO } from './eksisterendeSakUtils';
+import { getArbeidsformFromUttakArbeidstype, mapSøkerensEksisterendeSakFromDTO } from './eksisterendeSakUtils';
 
 jest.mock('nav-frontend-js-utils', () => ({
     ...(jest.requireActual('nav-frontend-js-utils') as any),
@@ -392,7 +392,6 @@ describe('eksisterendeSakUtils', () => {
             fødselsdato: undefined,
         },
     };
-    const erIkkeAnnenPartsSak = false;
 
     afterAll(() => {
         jest.clearAllMocks();
@@ -417,37 +416,34 @@ describe('eksisterendeSakUtils', () => {
         });
     });
 
-    describe('mapEksisterendeSakFromDTO', () => {
+    describe('mapSøkerensEksisterendeSakFromDTO', () => {
         it('skal mappe eksisterende sak for mors søknad på termin fra dto til intern representasjon', () => {
-            const internRep = mapEksisterendeSakFromDTO(eksisterendeSakMorTermin, erIkkeAnnenPartsSak, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorTermin);
         });
         it('skal mappe eksisterende sak for mors søknad på adopsjon (aleneomsorg) fra dto til intern representasjon', () => {
-            const internRep = mapEksisterendeSakFromDTO(
-                eksisterendeSakMorAdopsjonBareMorHarRett,
-                erIkkeAnnenPartsSak,
-                undefined
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorAdopsjonBareMorHarRett, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett);
         });
 
         it('hvis barnet til far er født, skal ikke mappe ønskerJustertUttakVedFødsel til true selv om den kommer inn som true', () => {
-            const internRep = mapEksisterendeSakFromDTO(
-                eksisterendeSakMedØnsketJusteringFarFødsel,
-                erIkkeAnnenPartsSak,
-                undefined
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarFødsel, undefined);
 
             expect(internRep).toStrictEqual(forventetResultatFar);
         });
         it('hvis barnet til far ikke er født, skal mappe ønskerJustertUttakVedFødsel til true hvis den kommer inn som true', () => {
-            const internRep = mapEksisterendeSakFromDTO(
-                eksisterendeSakMedØnsketJusteringFarTermin,
-                erIkkeAnnenPartsSak,
-                undefined
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarTermin, undefined);
 
             expect(internRep).toStrictEqual(forventetResultatFarTermin);
         });
     });
+    // describe('mapSaksperiodeFromDTO', () => {
+    //     it('map søkerens uttaksperiode fra DTO', () => {});
+    //     it('map annen parts uttaksperiode fra DTO', () => {});
+    //     it('map søkerens utsettelsesoperiode fra DTO', () => {});
+    //     it('map annen parts utsettelsesoperiode fra DTO', () => {});
+    //     it('map søkerens overføringsperiode fra DTO', () => {});
+    //     it('map annen parts overføringsperiode fra DTO', () => {});
+    //     it('map avslått periode fra DTO', () => {});
+    // });
 });
