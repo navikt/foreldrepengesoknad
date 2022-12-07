@@ -7,7 +7,12 @@ import { Saksperiode } from 'app/types/Saksperiode';
 import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getFamiliehendelseType } from './getFamiliehendelseType';
-import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato, ISOStringToDate } from './dateUtils';
+import {
+    convertTidsperiodeToTidsperiodeDate,
+    getEldsteDato,
+    getRelevantFamiliehendelseDato,
+    ISOStringToDate,
+} from './dateUtils';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
@@ -307,10 +312,11 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn 
     switch (situasjon) {
         case 'fødsel':
             if (sak.fødselsdato) {
+                const eldsteBarnFødselsdato = getEldsteDato(sak.barn.map((b) => ISOStringToDate(b.fødselsdato)!));
                 return {
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
-                    fødselsdatoer: sak.barn.map((b) => ISOStringToDate(b.fødselsdato)!),
+                    fødselsdatoer: [eldsteBarnFødselsdato],
                     termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
                 };
             }
@@ -322,13 +328,14 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn 
                 terminbekreftelse: [],
             };
         case 'adopsjon':
+            const eldsteBarnFødselsdato = getEldsteDato(
+                sak.barn.filter((b) => b.fødselsdato !== undefined).map((barn) => ISOStringToDate(barn.fødselsdato)!)
+            );
             return {
                 type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
-                fødselsdatoer: sak.barn
-                    .filter((b) => b.fødselsdato !== undefined)
-                    .map((barn) => ISOStringToDate(barn.fødselsdato)!),
+                fødselsdatoer: [eldsteBarnFødselsdato],
                 omsorgsovertakelse: [],
             };
         default:
@@ -401,7 +408,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
         return {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: valgteBarn.fødselsdatoer!,
+            fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
             fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
         };
     } else if (valgteBarn.termindato !== undefined) {
@@ -414,7 +421,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
         return {
             type: BarnType.IKKE_UTFYLT,
             antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: valgteBarn.fødselsdatoer!,
+            fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
             fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
         };
     }

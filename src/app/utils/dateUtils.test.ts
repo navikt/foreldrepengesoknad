@@ -21,6 +21,7 @@ import {
     andreAugust2022ReglerGjelder,
     tidperiodeOverlapperDato,
     getToTetteReglerGjelder,
+    getEldsteDato,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
@@ -742,5 +743,19 @@ describe('tidperiodeOverlapperDato', () => {
         const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-29') };
         const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-30'));
         expect(result).toEqual(false);
+    });
+});
+
+describe('getEldsteDato', () => {
+    it('Skal returnere eldste dato riktig', () => {
+        const datoListe = [
+            new Date('2023-10-21'),
+            new Date('2023-11-21'),
+            new Date('2021-11-21'),
+            new Date('2021-11-20'),
+            new Date('2021-12-20'),
+        ];
+        const result = getEldsteDato(datoListe);
+        expect(result).toEqual(new Date('2021-11-20'));
     });
 });
