@@ -73,7 +73,7 @@ const Inntektsinformasjon = () => {
 
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
+                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         backLinkHref={getPreviousStepHref('inntektsinformasjon')}
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
