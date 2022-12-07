@@ -1,7 +1,7 @@
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { IntlShape } from 'react-intl';
-import { isInfoPeriode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isAvslåttPeriode, isInfoPeriode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import { getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
@@ -9,7 +9,9 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const eksisterendeUttaksplan =
-        grunnlag.eksisterendeSak !== undefined ? grunnlag.eksisterendeSak.uttaksplan : undefined;
+        grunnlag.eksisterendeSak !== undefined
+            ? grunnlag.eksisterendeSak.uttaksplan.filter((p) => !isAvslåttPeriode(p))
+            : undefined;
     const fornavnAnnenForelder = grunnlag.søkerErFarEllerMedmor
         ? grunnlag.navnPåForeldre.mor
         : grunnlag.navnPåForeldre.farMedmor;
