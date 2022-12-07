@@ -95,15 +95,15 @@
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2022-04-21",
-                        "tom": "2022-05-11",
+                        "fom": "2023-04-21",
+                        "tom": "2023-05-11",
                         "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": { "innvilget": true, "trekkerMinsterett": true },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2022-05-12",
-                        "tom": "2022-06-22",
+                        "fom": "2023-05-12",
+                        "tom": "2023-06-22",
                         "kontoType": "MØDREKVOTE",
                         "resultat": { "innvilget": true, "trekkerMinsterett": true },
                         "flerbarnsdager": false
