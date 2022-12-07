@@ -2,9 +2,9 @@ import React, { FunctionComponent, ReactNode } from 'react';
 
 import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
 import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 
 import './søknadSendtSectionHeader.less';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     title: ReactNode;
@@ -24,7 +24,7 @@ const SøknadSendtSectionHeader: FunctionComponent<Props> = ({ title, info, type
                     <SendSøknadIkon type={type} />
                 </div>
                 <div className={bem.element('content')}>
-                    <Element>{title}</Element>
+                    <Undertittel>{title}</Undertittel>
                     <UtvidetInformasjon apneLabel={infoApneLabel}>
                         <Normaltekst>{info}</Normaltekst>
                     </UtvidetInformasjon>
