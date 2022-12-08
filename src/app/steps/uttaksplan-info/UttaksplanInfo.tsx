@@ -98,7 +98,7 @@ const UttaksplanInfo = () => {
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
                 ? false
-                : !!registrertBarn && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+                : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -113,7 +113,7 @@ const UttaksplanInfo = () => {
         ),
         eksisterendeSakAnnenPartRequestIsSuspended
             ? false
-            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
