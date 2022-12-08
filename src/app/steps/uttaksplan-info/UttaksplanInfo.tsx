@@ -40,12 +40,10 @@ const UttaksplanInfo = () => {
     const førsteUttaksdagNesteBarnsSak =
         state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+    const annenForelderFnr =
+        annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
-        registrertBarn?.annenForelder?.fnr !== undefined &&
-        registrertBarn?.annenForelder?.fnr !== '' &&
-        erFarEllerMedmor
-            ? false
-            : true;
+        annenForelderFnr !== undefined && annenForelderFnr !== '' ? false : true;
 
     const annenPartFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
