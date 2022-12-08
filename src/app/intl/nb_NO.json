@@ -849,7 +849,7 @@
     "uttaksplan.oppholdsårsaktype.foreldernavn.mor.INSTITUSJONSOPPHOLD_BARNET": "{foreldernavn} har utsettelse fordi barnet er innlagt i helseinstitusjon",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER": "{foreldernavn} tar ut foreldrepenger før fødsel",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperioden",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FORELDREPENGER_ANNEN_FORELDER": "{foreldernavn} tar ut foreldrepenger",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flerbarnsuker",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
