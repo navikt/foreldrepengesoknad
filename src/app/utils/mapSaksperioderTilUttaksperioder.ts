@@ -424,12 +424,16 @@ const mapPeriodeFromSaksperiode = (
 export const gyldigeSaksperioder = (saksperiode: Saksperiode) => {
     if (saksperiode.resultat.innvilget) return true;
 
+    if (saksperiode.gjelderAnnenPart) {
+        return false;
+    }
     if (
         saksperiode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
-        saksperiode.resultat.trekkerDager
+        saksperiode.resultat.trekkerDager === true
     ) {
         return true;
     }
+    return false;
 };
 
 export const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
