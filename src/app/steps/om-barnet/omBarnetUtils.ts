@@ -205,6 +205,7 @@ export const getOmBarnetInitialValues = (
                 termindato: dateToISOString(barn.termindato),
                 antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
                 antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
+                erBarnetFødt: YesOrNo.YES,
             };
         }
     }
