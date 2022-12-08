@@ -3,14 +3,13 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import React, { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import actionCreator from 'app/context/action/actionCreator';
@@ -25,12 +24,10 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 const UttaksplanInfo = () => {
     const intl = useIntl();
 
-    const søkerinfo = useSøkerinfo();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
 
     const { barn, annenForelder, søkersituasjon, søker } = søknad;
-    const { registrerteBarn } = søkerinfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const { erAleneOmOmsorg } = søker;
     const { barnFraNesteSak } = state;
@@ -39,13 +36,10 @@ const UttaksplanInfo = () => {
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const førsteUttaksdagNesteBarnsSak =
         state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
-    const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
-    const annenForelderFnr =
-        annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const eksisterendeSakAnnenPartRequestIsSuspended =
-        annenForelderFnr !== undefined && annenForelderFnr !== '' ? false : true;
 
-    const annenPartFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const annenPartFnr =
+        annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const eksisterendeSakAnnenPartRequestIsSuspended = annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const barnFnr = isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
@@ -121,9 +115,7 @@ const UttaksplanInfo = () => {
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
-        (!!registrertBarn &&
-            erFarEllerMedmor &&
-            eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
+        (eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
             !eksisterendeSakAnnenPartRequestIsSuspended)
     ) {
         if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
