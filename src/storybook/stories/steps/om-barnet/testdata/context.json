@@ -26,7 +26,7 @@
         },
         "erEndringssøknad": false
     },
-    "version": 2,
+    "version": 4,
     "currentRoute": "/soknad/om-barnet",
     "søknadGjelderEtNyttBarn": true
 }

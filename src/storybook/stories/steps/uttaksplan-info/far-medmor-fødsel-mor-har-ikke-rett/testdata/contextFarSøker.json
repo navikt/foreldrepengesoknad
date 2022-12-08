@@ -33,7 +33,7 @@
         "erEndringssøknad": false,
         "uttaksplan": []
     },
-    "version": 2,
+    "version": 4,
     "currentRoute": "/soknad/uttaksplan-info",
     "søknadGjelderEtNyttBarn": true
 }
