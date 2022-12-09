@@ -111,11 +111,11 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
     );
     const fødselsdatoerTekst = formateFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =
-        barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT
+        barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
             ? fødselsdatoerTekst
             : formatDate(barn.omsorgsovertagelse!);
     const situasjonTekst =
-        barn.type === SelectableBarnType.FØDT || SelectableBarnType.IKKE_UTFYLT
+        barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
             ? intlUtils(intl, 'velkommen.barnVelger.født')
             : intlUtils(intl, 'velkommen.barnVelger.adopsjon');
 
