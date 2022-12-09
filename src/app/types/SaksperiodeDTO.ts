@@ -10,8 +10,8 @@ export interface SaksperiodeDTO {
     fom: string;
     tom: string;
     resultat: PeriodeResultatDTO;
-    kontoType: StønadskontoType;
-    flerbarnsdager: boolean;
+    flerbarnsdager?: boolean;
+    kontoType?: StønadskontoType;
     gradering?: GraderingDTO;
     oppholdÅrsak?: OppholdÅrsakTypeDTO;
     utsettelseÅrsak?: UtsettelseÅrsakTypeDTO;

@@ -73,7 +73,7 @@ const mapOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO | undefined): Opphold
     }
 };
 
-const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolean): Saksperiode => {
+export const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolean): Saksperiode => {
     const { oppholdÅrsak } = p;
     const returnPeriode: Saksperiode = {
         guid: guid(),
@@ -311,11 +311,10 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn 
     switch (situasjon) {
         case 'fødsel':
             if (sak.fødselsdato) {
-                const eldsteBarnFødselsdato = getEldsteDato(sak.barn.map((b) => ISOStringToDate(b.fødselsdato)!));
                 return {
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
-                    fødselsdatoer: [eldsteBarnFødselsdato],
+                    fødselsdatoer: [ISOStringToDate(sak.fødselsdato)!],
                     termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
                 };
             }
@@ -327,14 +326,11 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn 
                 terminbekreftelse: [],
             };
         case 'adopsjon':
-            const eldsteBarnFødselsdato = getEldsteDato(
-                sak.barn.filter((b) => b.fødselsdato !== undefined).map((barn) => ISOStringToDate(barn.fødselsdato)!)
-            );
             return {
                 type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
-                fødselsdatoer: [eldsteBarnFødselsdato],
+                fødselsdatoer: sak.fødselsdato !== undefined ? [ISOStringToDate(sak.fødselsdato)!] : [],
                 omsorgsovertakelse: [],
             };
         default:

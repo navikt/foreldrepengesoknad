@@ -98,7 +98,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    stønadskonto: StønadskontoType;
+    kontoType: StønadskontoType | undefined;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;

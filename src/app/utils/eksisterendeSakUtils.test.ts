@@ -1,8 +1,13 @@
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { Sak } from 'app/types/Sak';
+import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
-import { getArbeidsformFromUttakArbeidstype, mapSøkerensEksisterendeSakFromDTO } from './eksisterendeSakUtils';
+import {
+    getArbeidsformFromUttakArbeidstype,
+    mapSaksperiodeFromDTO,
+    mapSøkerensEksisterendeSakFromDTO,
+} from './eksisterendeSakUtils';
 
 jest.mock('nav-frontend-js-utils', () => ({
     ...(jest.requireActual('nav-frontend-js-utils') as any),
@@ -437,13 +442,199 @@ describe('eksisterendeSakUtils', () => {
             expect(internRep).toStrictEqual(forventetResultatFarTermin);
         });
     });
-    // describe('mapSaksperiodeFromDTO', () => {
-    //     it('map søkerens uttaksperiode fra DTO', () => {});
-    //     it('map annen parts uttaksperiode fra DTO', () => {});
-    //     it('map søkerens utsettelsesoperiode fra DTO', () => {});
-    //     it('map annen parts utsettelsesoperiode fra DTO', () => {});
-    //     it('map søkerens overføringsperiode fra DTO', () => {});
-    //     it('map annen parts overføringsperiode fra DTO', () => {});
-    //     it('map avslått periode fra DTO', () => {});
-    // });
+    describe('mapSaksperiodeFromDTO', () => {
+        const uttaksperiode = {
+            fom: '2022-12-07',
+            tom: '2022-12-07',
+            kontoType: 'MØDREKVOTE',
+            resultat: {
+                innvilget: true,
+                trekkerMinsterett: false,
+                trekkerDager: true,
+                årsak: 'ANNET',
+            },
+            morsAktivitet: 'ARBEID',
+            gradering: {
+                arbeidstidprosent: 55,
+                aktivitet: {
+                    type: 'FRILANS',
+                    arbeidsgiver: {
+                        id: 'string',
+                        type: 'PRIVAT',
+                    },
+                },
+            },
+            samtidigUttak: 50,
+            flerbarnsdager: true,
+        } as SaksperiodeDTO;
+        const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
+
+        const forventetMappetPeriodeSøker = {
+            ...uttaksperiodeRest,
+            gjelderAnnenPart: false,
+            guid: '1',
+            oppholdÅrsak: undefined,
+            overføringÅrsak: undefined,
+            periode: { fom: '2022-12-07', tom: '2022-12-07' },
+            utsettelseÅrsak: undefined,
+        };
+
+        const forventetMappetPeriodeAnnenPart = { ...forventetMappetPeriodeSøker, gjelderAnnenPart: true };
+
+        const utsettelsesperiode = {
+            fom: '2021-11-02',
+            tom: '2021-11-02',
+            resultat: {
+                innvilget: true,
+                trekkerMinsterett: false,
+                trekkerDager: true,
+                årsak: 'ANNET',
+            },
+            utsettelseÅrsak: 'HV_ØVELSE',
+        } as SaksperiodeDTO;
+        const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
+
+        const forventetMappetUtsettelseSøker = {
+            ...utsettelsesperiodeRest,
+            gjelderAnnenPart: false,
+            guid: '1',
+            oppholdÅrsak: undefined,
+            overføringÅrsak: undefined,
+            periode: { fom: '2021-11-02', tom: '2021-11-02' },
+            samtidigUttak: undefined,
+            flerbarnsdager: undefined,
+            gradering: undefined,
+            kontoType: undefined,
+            morsAktivitet: undefined,
+        };
+
+        const forventetMappetUtsettelseAnnenPart = { ...forventetMappetUtsettelseSøker, gjelderAnnenPart: true };
+
+        const overføringsperiode = {
+            fom: '2022-11-07',
+            tom: '2022-11-07',
+            kontoType: 'FEDREKVOTE',
+            resultat: {
+                innvilget: true,
+                trekkerMinsterett: false,
+                trekkerDager: true,
+                årsak: 'ANNET',
+            },
+            overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+        } as SaksperiodeDTO;
+        const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
+        const forventetMappetOverføringSøker = {
+            ...overføringsperiodeRest,
+            gjelderAnnenPart: false,
+            guid: '1',
+            oppholdÅrsak: undefined,
+            periode: { fom: '2022-11-07', tom: '2022-11-07' },
+            samtidigUttak: undefined,
+            flerbarnsdager: undefined,
+            gradering: undefined,
+            kontoType: 'FEDREKVOTE',
+            morsAktivitet: undefined,
+            utsettelseÅrsak: undefined,
+        };
+        const forventetMappetOverføringAnnenPart = { ...forventetMappetOverføringSøker, gjelderAnnenPart: true };
+
+        const oppholdsperiode = {
+            fom: '2022-08-05',
+            tom: '2022-08-05',
+            resultat: {
+                innvilget: true,
+                trekkerMinsterett: false,
+                trekkerDager: true,
+                årsak: 'ANNET',
+            },
+            oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
+        } as SaksperiodeDTO;
+        const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
+
+        const forventetMappetOppholdSøker = {
+            ...oppholdsperiodeRest,
+            gjelderAnnenPart: true,
+            guid: '1',
+            kontoType: 'MØDREKVOTE',
+            periode: { fom: '2022-08-05', tom: '2022-08-05' },
+            samtidigUttak: undefined,
+            flerbarnsdager: undefined,
+            gradering: undefined,
+            morsAktivitet: undefined,
+            utsettelseÅrsak: undefined,
+            oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
+            overføringÅrsak: undefined,
+        };
+
+        const forventetMappetOppholdAnnenPart = {
+            ...forventetMappetOppholdSøker,
+            gjelderAnnenPart: false,
+            angittAvAnnenPart: true,
+        };
+
+        const avslåttPeriode = {
+            fom: '2022-10-07',
+            tom: '2022-10-07',
+            kontoType: 'MØDREKVOTE',
+            resultat: {
+                innvilget: false,
+                trekkerMinsterett: false,
+                trekkerDager: true,
+                årsak: 'ANNET',
+            },
+        } as SaksperiodeDTO;
+
+        const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
+
+        const forventetMappetAvslåttPeriodeSøker = {
+            ...avslåttPeriodeRest,
+            gjelderAnnenPart: false,
+            flerbarnsdager: undefined,
+            gradering: undefined,
+            guid: '1',
+            periode: { fom: '2022-10-07', tom: '2022-10-07' },
+            morsAktivitet: undefined,
+            oppholdÅrsak: undefined,
+            overføringÅrsak: undefined,
+            samtidigUttak: undefined,
+            utsettelseÅrsak: undefined,
+        };
+
+        it('map søkerens uttaksperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(uttaksperiode, false);
+            expect(mappetPeriode).toStrictEqual(forventetMappetPeriodeSøker);
+        });
+        it('map annen parts uttaksperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(uttaksperiode, true);
+            expect(mappetPeriode).toStrictEqual(forventetMappetPeriodeAnnenPart);
+        });
+        it('map søkerens utsettelsesoperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(utsettelsesperiode, false);
+            expect(mappetPeriode).toStrictEqual(forventetMappetUtsettelseSøker);
+        });
+        it('map annen parts utsettelsesoperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(utsettelsesperiode, true);
+            expect(mappetPeriode).toStrictEqual(forventetMappetUtsettelseAnnenPart);
+        });
+        it('map søkerens overføringsperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(overføringsperiode, false);
+            expect(mappetPeriode).toStrictEqual(forventetMappetOverføringSøker);
+        });
+        it('map annen parts overføringsperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(overføringsperiode, true);
+            expect(mappetPeriode).toStrictEqual(forventetMappetOverføringAnnenPart);
+        });
+        it('map søkerens oppholdsperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(oppholdsperiode, false);
+            expect(mappetPeriode).toStrictEqual(forventetMappetOppholdSøker);
+        });
+        it('map annen parts oppholdsperiode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(oppholdsperiode, true);
+            expect(mappetPeriode).toStrictEqual(forventetMappetOppholdAnnenPart);
+        });
+        it('map søkerens avslåtte periode fra DTO', () => {
+            const mappetPeriode = mapSaksperiodeFromDTO(avslåttPeriode, false);
+            expect(mappetPeriode).toStrictEqual(forventetMappetAvslåttPeriodeSøker);
+        });
+    });
 });

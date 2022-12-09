@@ -194,7 +194,7 @@ const getErMorForSyk = (
     erFarEllerMedmor: boolean,
     saksperiode: Saksperiode,
     familiehendelsesdato: string,
-    konto: StønadskontoType
+    konto: StønadskontoType | undefined
 ) => {
     if (
         erFarEllerMedmor &&
@@ -259,7 +259,7 @@ export const mapUttaksperiodeFromSaksperiode = (
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
-        konto: kontoType,
+        konto: kontoType!,
         tidsperiode: tidsperiodeDate,
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: saksperiode.samtidigUttak !== undefined,
@@ -307,7 +307,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
         infotype: PeriodeInfoType.avslåttPeriode,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         avslåttPeriodeType: saksperiode.utsettelseÅrsak !== undefined ? Periodetype.Utsettelse : Periodetype.Uttak,
-        stønadskonto: saksperiode.kontoType,
+        kontoType: saksperiode.kontoType,
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
         visPeriodeIPlan: true,
@@ -390,7 +390,7 @@ const mapOverføringsperiodeFromSaksperiode = (
     return {
         id: guid(),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
-        konto: saksperiode.kontoType,
+        konto: saksperiode.kontoType!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         type: Periodetype.Overføring,
         årsak: saksperiode.overføringÅrsak!,
