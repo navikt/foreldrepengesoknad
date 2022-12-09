@@ -45,7 +45,7 @@ const context = {
         tilleggsopplysninger: undefined!,
         ønskerJustertUttakVedFødsel: undefined,
     },
-    version: 4,
+    version: 5,
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],

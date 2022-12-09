@@ -142,7 +142,7 @@ describe('<foreldrepengesøknadReducer>', () => {
     it('skal nullstille søknad og uttaksplanInfo når en avbryter', () => {
         const endretState = {
             ...foreldrepengesøknadInitialState,
-            version: 4,
+            version: 5,
             søknad: {
                 ...foreldrepengesøknadInitialState.søknad,
                 annenForelder: {
@@ -158,7 +158,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
         expect(resultState).toStrictEqual({
             ...foreldrepengesøknadInitialState,
-            version: 4,
+            version: 5,
         });
     });
 
@@ -178,7 +178,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
     it('skal legge lagret data i state', () => {
         const payload = {
-            version: 4,
+            version: 5,
         } as ForeldrepengesøknadContextState;
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {

@@ -12,7 +12,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 
 describe('<ForeldrepengesøknadRoutes>', () => {
     const state: ForeldrepengesøknadContextState = {
-        version: 4,
+        version: 5,
         currentRoute: SøknadRoutes.VELKOMMEN,
         søkerinfo: {
             arbeidsforhold: [],
