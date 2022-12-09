@@ -6,7 +6,6 @@ import { SøkerinfoDTO } from './types/SøkerinfoDTO';
 import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextState } from './context/ForeldrepengesøknadContextConfig';
 import IntlProvider from './intl/IntlProvider';
-import { SakerOppslag } from './types/SakerOppslag';
 
 describe('<Foreldrepengesøknad>', () => {
     afterEach(() => {
