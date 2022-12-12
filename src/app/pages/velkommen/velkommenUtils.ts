@@ -149,7 +149,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                     : undefined,
             fnr:
                 pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                    ? pdlBarnMedSammeFødselsdato?.map((b) => b.fnr)
+                    ? pdlBarnMedSammeFødselsdato.filter((barn) => barn.fnr !== undefined).map((b) => b.fnr)
                     : undefined,
         };
     }
