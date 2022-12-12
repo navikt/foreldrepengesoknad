@@ -718,6 +718,8 @@
     "uttaksplan.periodetype.info.utsettelse.SYKDOM": "{ navn } utsetjer på grunn av sjukdom",
     "uttaksplan.periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "{ navn } utsetjer på grunn av innleggelse i helseinstitusjon",
     "uttaksplan.periodetype.info.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "{ navn } utsetjer fordi barnet er innlagt i helseinstitusjon",
+    "uttaksplan.periodetype.info.utsettelse.HV_OVELSE": "{ navn } utsetter på grunn av øvelse eller tjeneste i Heimevernet",
+    "uttaksplan.periodetype.info.utsettelse.NAV_TILTAK": "{ navn } utsetter på grunn av NAV tiltak som utgjør 100% arbeid",
     "uttaksplan.periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "uttaksplan.periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
