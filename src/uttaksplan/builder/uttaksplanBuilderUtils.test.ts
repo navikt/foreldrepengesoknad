@@ -45,7 +45,7 @@ describe('uttaksplanbuilderUtils - slåSammenLikePerioder', () => {
     it('slåSammenLikePerioder - skal ikke slå sammen like perioder hvis det er en dag imellom de', () => {
         const perioder2 = [
             perioder[0],
-            { ...perioder[1], tidsperiode: { fom: new Date('2022-09-01'), tom: perioder[1].tidsperiode.tom } },
+            { ...perioder[1], tidsperiode: { fom: new Date('2022-09-02'), tom: perioder[1].tidsperiode.tom } },
         ];
         const result = slåSammenLikePerioder(perioder2, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
