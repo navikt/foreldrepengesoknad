@@ -243,6 +243,11 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 brukerSvarteJaPåAutoJustering: action.payload,
             };
+        case ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN:
+            return {
+                ...state,
+                annenPartsUttakErLagtTilIPlan: action.payload,
+            };
         default:
             return state;
     }

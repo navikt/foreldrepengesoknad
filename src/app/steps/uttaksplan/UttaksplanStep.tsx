@@ -73,10 +73,9 @@ const UttaksplanStep = () => {
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
-    const [annenPartsUttakLagtTilIUttaksplan, setAnnenPartsUttakLagtTilIUttaksplan] = useState(false);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
-    const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
+    const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet, annenPartsUttakErLagtTilIPlan } = state;
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
@@ -200,7 +199,7 @@ const UttaksplanStep = () => {
             eksisterendeSak !== undefined &&
             opprinneligPlan !== undefined &&
             eksisterendeVedtakAnnenPart !== undefined &&
-            !annenPartsUttakLagtTilIUttaksplan
+            !annenPartsUttakErLagtTilIPlan
         ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
             opprinneligPlan.forEach((p) => {
@@ -241,7 +240,7 @@ const UttaksplanStep = () => {
             };
             dispatch(actionCreator.setUttaksplan(uttaksplanMedAnnenPart));
             dispatch(actionCreator.setEksisterendeSak(eksisterendeSakMedAnnenPartsPlan));
-            setAnnenPartsUttakLagtTilIUttaksplan(true);
+            dispatch(actionCreator.setAnnenPartsUttakErLagtTilIPlan(true));
         }
     }, [
         eksisterendeVedtakAnnenPart,
@@ -252,11 +251,10 @@ const UttaksplanStep = () => {
         erAdopsjon,
         bareFarMedmorHarRett,
         erFarEllerMedmor,
-        setAnnenPartsUttakLagtTilIUttaksplan,
-        annenPartsUttakLagtTilIUttaksplan,
         dispatch,
         førsteUttaksdagNesteBarnsSak,
         eksisterendeSak,
+        annenPartsUttakErLagtTilIPlan,
     ]);
 
     const onValidSubmitHandler = () => {

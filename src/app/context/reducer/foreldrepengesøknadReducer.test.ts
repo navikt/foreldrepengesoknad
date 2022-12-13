@@ -384,4 +384,17 @@ describe('<foreldrepengesøknadReducer>', () => {
             perioderSomSkalSendesInn: payload,
         });
     });
+    it('skal sette annenPartsUttakErLagtTilIPlan i state', () => {
+        const payload = true;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            annenPartsUttakErLagtTilIPlan: payload,
+        });
+    });
 });

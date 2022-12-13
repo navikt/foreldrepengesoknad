@@ -29,6 +29,7 @@ export interface ForeldrepengesøknadContextState {
     eksisterendeSak?: EksisterendeSak;
     endringstidspunkt?: Date;
     barnFraNesteSak?: BarnFraNesteSak;
+    annenPartsUttakErLagtTilIPlan?: boolean;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
@@ -80,4 +81,5 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     brukerSvarteJaPåAutoJustering: undefined,
     søknadGjelderEtNyttBarn: undefined!,
     barnFraNesteSak: undefined,
+    annenPartsUttakErLagtTilIPlan: undefined,
 };
