@@ -1,116 +1,42 @@
 {
     "søker": {
-        "fnr": "10038909377",
-        "fornavn": "Skjør",
-        "etternavn": "Jeans",
+        "fnr": "21430354032",
+        "fornavn": "Hes",
+        "etternavn": "Mandagsbil",
         "kjønn": "K",
-        "fødselsdato": "1989-03-10",
+        "fødselsdato": "2003-03-21",
         "ikkeNordiskEøsLand": false,
+        "bankkonto": { "kontonummer": "", "banknavn": "" },
         "barn": [
             {
-                "fnr": "13062252647",
-                "fornavn": "Fantastisk",
-                "etternavn": "Lefse",
-                "kjønn": "K",
-                "fødselsdato": "2022-08-17",
+                "fnr": "05502251750",
+                "fornavn": "Oriental",
+                "etternavn": "Bokhylle",
+                "kjønn": "M",
+                "fødselsdato": "2022-10-05",
                 "annenForelder": {
-                    "fnr": "03088908065",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "13062258963",
-                "fornavn": "Rød",
-                "etternavn": "Melon",
-                "kjønn": "K",
-                "fødselsdato": "2021-03-19",
-                "annenForelder": {
-                    "fnr": "03088908065",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "130622511157",
-                "fornavn": "Glad",
-                "etternavn": "Tvilling",
-                "kjønn": "K",
-                "fødselsdato": "2021-02-22",
-                "annenForelder": {
-                    "fnr": "03088908065",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "130622511156",
-                "fornavn": "Pen",
-                "etternavn": "Tvilling",
-                "kjønn": "K",
-                "fødselsdato": "2021-02-22",
-                "annenForelder": {
-                    "fnr": "03088908065",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "130622511153",
-                "fornavn": "Blå",
-                "etternavn": "Trilling",
-                "kjønn": "K",
-                "fødselsdato": "2022-12-09",
-                "annenForelder": {
-                    "fnr": "03088908003",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "130622511154",
-                "fornavn": "Grønn",
-                "etternavn": "Trilling",
-                "kjønn": "K",
-                "fødselsdato": "2022-12-09",
-                "annenForelder": {
-                    "fnr": "03088908002",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "130622511155",
-                "fornavn": "Grå",
-                "etternavn": "Trilling",
-                "kjønn": "K",
-                "fødselsdato": "2022-12-08",
-                "annenForelder": {
-                    "fnr": "03088908001",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
-                }
-            },
-            {
-                "fnr": "130622516923",
-                "fornavn": "Gammelt",
-                "etternavn": "Barn Skal Ikke Vises",
-                "kjønn": "K",
-                "fødselsdato": "2018-12-08",
-                "annenForelder": {
-                    "fnr": "03088908001",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
+                    "fnr": "23518310526",
+                    "fornavn": "Glupsk",
+                    "etternavn": "Bly",
+                    "fødselsdato": "1983-11-23"
                 }
             }
         ]
-    }
+    },
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "896929119",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "SAUEFABRIKK",
+            "stillingsprosent": 100.0,
+            "fom": "2017-03-24"
+        },
+        {
+            "arbeidsgiverId": "896929119",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "SAUEFABRIKK",
+            "stillingsprosent": 100.0,
+            "fom": "2017-03-24"
+        }
+    ]
 }
