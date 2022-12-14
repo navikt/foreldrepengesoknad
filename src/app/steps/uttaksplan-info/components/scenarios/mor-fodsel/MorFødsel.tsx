@@ -39,8 +39,6 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { isUttakAnnenPart, isUttaksperiode } from 'uttaksplan/types/Periode';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
@@ -64,7 +62,6 @@ const MorFødsel: FunctionComponent<Props> = ({
         søker: { erAleneOmOmsorg },
         dekningsgrad,
         erEndringssøknad,
-        uttaksplan,
     } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -108,7 +105,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
         const submissionValues = mapMorFødselFormToState(values);
-        const morSinePerioder = lagUttaksplan({
+        const uttaksplanforslag = lagUttaksplan({
             annenForelderErUfør: erMorUfør,
             erDeltUttak,
             erEndringssøknad,
@@ -142,41 +139,21 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         let uttaksplanMedAnnenPart;
 
-        if (eksisterendeSakFar && morSinePerioder.length > 0) {
-            //Sett samtidigUttak på mors perioder hvis overlapper med annen parts samtidig uttak:
-            morSinePerioder.forEach((p) => {
-                if (isUttaksperiode(p)) {
-                    const overlappendePerioderAnnenPart = Periodene(
-                        eksisterendeSakFar.uttaksplan
-                    ).finnOverlappendePerioder(p);
-
-                    if (
-                        overlappendePerioderAnnenPart.length !== 0 &&
-                        overlappendePerioderAnnenPart.find(
-                            (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
-                        )
-                    ) {
-                        p.ønskerSamtidigUttak = true;
-                        p.samtidigUttakProsent = '100';
-                    }
-                }
-            });
-
+        if (eksisterendeSakFar && uttaksplanforslag.length > 0) {
             uttaksplanMedAnnenPart = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-                morSinePerioder,
-                uttaksplan,
+                eksisterendeSakFar.uttaksplan,
+                uttaksplanforslag,
                 familiehendelsesdatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
                 false,
                 false,
-                eksisterendeSakFar.uttaksplan,
                 førsteUttaksdagNesteBarnsSak
             );
         } else if (eksisterendeSakFar) {
             uttaksplanMedAnnenPart = eksisterendeSakFar.uttaksplan;
         } else {
-            uttaksplanMedAnnenPart = morSinePerioder;
+            uttaksplanMedAnnenPart = uttaksplanforslag;
         }
         return [
             actionCreator.setAntallUkerIUttaksplan(antallUker),

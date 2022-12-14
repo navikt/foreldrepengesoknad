@@ -195,7 +195,6 @@ const UttaksplanStep = () => {
     //Legg til annen parts perioder i planen til bruker
     useEffect(() => {
         if (
-            erEndringssøknad &&
             eksisterendeSak !== undefined &&
             opprinneligPlan !== undefined &&
             eksisterendeVedtakAnnenPart !== undefined &&
@@ -244,7 +243,6 @@ const UttaksplanStep = () => {
         }
     }, [
         eksisterendeVedtakAnnenPart,
-        erEndringssøknad,
         opprinneligPlan,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,
