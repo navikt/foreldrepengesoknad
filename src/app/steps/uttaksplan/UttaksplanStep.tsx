@@ -213,8 +213,10 @@ const UttaksplanStep = () => {
                             (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
                         )
                     ) {
-                        p.ønskerSamtidigUttak = true;
-                        p.samtidigUttakProsent = '100';
+                        if (!p.ønskerSamtidigUttak) {
+                            p.ønskerSamtidigUttak = true;
+                            p.samtidigUttakProsent = '100';
+                        }
                     }
                 }
             });
