@@ -57,7 +57,7 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
             .filter((ba) => ba !== undefined && ba.fødselsdato !== undefined)
             .map((b) => ISOStringToDate(b.fødselsdato)!),
         termindato: ISOStringToDate(sak.familiehendelse.termindato),
-        fornavn: sak.barn.map((b) => b.fornavn),
+        fornavn: sak.barn.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
         etternavn: sak.barn.map((b) => b.etternavn),
         kanSøkeOmEndring: sak.kanSøkeOmEndring,
         sak: sak,
@@ -141,7 +141,9 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                     : undefined,
             fornavn:
                 pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                    ? pdlBarnMedSammeFødselsdato?.map((b) => b.fornavn)
+                    ? pdlBarnMedSammeFødselsdato?.map((b) =>
+                          [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')
+                      )
                     : undefined,
             etternavn:
                 pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
@@ -159,12 +161,16 @@ const getSelectableBarnFraPDL = (
     registrertBarn: RegistrertBarn,
     annenForelder: RegistrertAnnenForelder | undefined
 ): SelectableBarn => {
+    const navn =
+        registrertBarn.mellomnavn !== undefined
+            ? [registrertBarn.fornavn, registrertBarn.mellomnavn].join(' ')
+            : registrertBarn.fornavn;
     return {
         id: guid(),
         type: SelectableBarnType.IKKE_UTFYLT,
         antallBarn: 1,
         fødselsdatoer: [registrertBarn.fødselsdato],
-        fornavn: [registrertBarn.fornavn],
+        fornavn: [navn],
         etternavn: [registrertBarn.etternavn],
         fnr: [registrertBarn.fnr],
         sortableDato: registrertBarn.fødselsdato,
@@ -198,7 +204,7 @@ const getSelectableFlerlingerFraPDL = (
         type: SelectableBarnType.IKKE_UTFYLT,
         antallBarn: alleBarna.length,
         fødselsdatoer: barnaSomSkalVises.map((b) => b.fødselsdato),
-        fornavn: barnaSomSkalVises.map((b) => b.fornavn),
+        fornavn: barnaSomSkalVises.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
         etternavn: barnaSomSkalVises.map((b) => b.etternavn),
         fnr: barnaSomSkalVises.map((b) => b.fnr),
         sortableDato: alleBarna[0].fødselsdato,
