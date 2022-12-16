@@ -1,5 +1,6 @@
-import Uttaksplanbuilder from 'uttaksplan/builder/Uttaksplanbuilder';
-import { Periode } from 'uttaksplan/types/Periode';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import { isUttakAnnenPart, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { Periodene } from './Periodene';
 
 export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     annenPartsPerioder: Periode[],
@@ -9,22 +10,36 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    eksisterendeSakUttaksplan: Periode[],
     førsteUttaksdagNesteBarnsSak: Date | undefined
 ): Periode[] => {
-    const builder = Uttaksplanbuilder(
-        uttaksplan,
-        familiehendelsedato,
-        harAktivitetskravIPeriodeUtenUttak,
-        erAdopsjon,
-        bareFarHarRett,
-        erFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak,
-        eksisterendeSakUttaksplan
-    );
-    if (annenPartsPerioder.length === 1) {
-        return builder.leggTilPeriode(annenPartsPerioder[0]);
-    } else {
-        return builder.leggTilPerioder(annenPartsPerioder);
+    uttaksplan.forEach((p) => {
+        if (isUttaksperiode(p)) {
+            const overlappendePerioderAnnenPart = Periodene(annenPartsPerioder).finnOverlappendePerioder(p);
+
+            if (
+                overlappendePerioderAnnenPart.length !== 0 &&
+                overlappendePerioderAnnenPart.find(
+                    (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
+                )
+            ) {
+                if (!p.ønskerSamtidigUttak) {
+                    p.ønskerSamtidigUttak = true;
+                    p.samtidigUttakProsent = '100';
+                }
+            }
+        }
+    });
+
+    if (annenPartsPerioder.length > 0) {
+        return finnOgSettInnHull(
+            settInnAnnenPartsUttak(uttaksplan, annenPartsPerioder, familiehendelsedato, førsteUttaksdagNesteBarnsSak),
+            harAktivitetskravIPeriodeUtenUttak,
+            familiehendelsedato,
+            erAdopsjon,
+            bareFarHarRett,
+            erFarEllerMedmor
+        );
     }
+
+    return uttaksplan;
 };

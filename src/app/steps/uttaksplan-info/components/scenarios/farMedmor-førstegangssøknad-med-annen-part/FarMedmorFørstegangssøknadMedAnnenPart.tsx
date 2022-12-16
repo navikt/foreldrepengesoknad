@@ -123,7 +123,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 erAdopsjon,
                 bareFarHarRett,
                 erFarEllerMedmor,
-                eksisterendeSakAnnenPart.uttaksplan,
                 førsteUttaksdagNesteBarnsSak
             );
         } else if (eksisterendeSakAnnenPart) {

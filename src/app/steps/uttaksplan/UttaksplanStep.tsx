@@ -195,7 +195,6 @@ const UttaksplanStep = () => {
     //Legg til annen parts perioder i planen til bruker
     useEffect(() => {
         if (
-            erEndringssøknad &&
             eksisterendeSak !== undefined &&
             opprinneligPlan !== undefined &&
             eksisterendeVedtakAnnenPart !== undefined &&
@@ -214,8 +213,10 @@ const UttaksplanStep = () => {
                             (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
                         )
                     ) {
-                        p.ønskerSamtidigUttak = true;
-                        p.samtidigUttakProsent = '100';
+                        if (!p.ønskerSamtidigUttak) {
+                            p.ønskerSamtidigUttak = true;
+                            p.samtidigUttakProsent = '100';
+                        }
                     }
                 }
             });
@@ -244,7 +245,6 @@ const UttaksplanStep = () => {
         }
     }, [
         eksisterendeVedtakAnnenPart,
-        erEndringssøknad,
         opprinneligPlan,
         familiehendelsesdatoDate,
         harAktivitetskravIPeriodeUtenUttak,

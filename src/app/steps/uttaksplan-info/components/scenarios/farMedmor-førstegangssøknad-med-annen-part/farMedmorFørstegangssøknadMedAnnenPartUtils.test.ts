@@ -91,14 +91,13 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             konto: StønadskontoType.Fedrekvote,
         } as Periode;
         const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            [farsNyePeriode],
             morsPerioderFørWLB,
+            [farsNyePeriode],
             familiehendelseDatoForMorsPerioderFørWLB,
             false,
             false,
             false,
             true,
-            morsPerioderFørWLB,
             undefined
         );
 
@@ -120,14 +119,13 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             konto: StønadskontoType.Fedrekvote,
         } as Periode;
         const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            [farsNyePeriode],
             morsPerioderFørWLB,
+            [farsNyePeriode],
             familiehendelseDatoForMorsPerioderFørWLB,
             false,
             false,
             false,
             true,
-            morsPerioderFørWLB,
             undefined
         );
 
@@ -161,14 +159,13 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         } as Uttaksperiode;
 
         const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            [farsNyePeriode],
             morsPerioderEtterWLB,
+            [farsNyePeriode],
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
             false,
             false,
             true,
-            morsPerioderEtterWLB,
             undefined
         );
 
@@ -204,14 +201,13 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         } as Uttaksperiode;
 
         const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            [farsNyePeriodeISluttenAvPlanen],
             morsPerioderEtterWLB,
+            [farsNyePeriodeISluttenAvPlanen],
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
             false,
             false,
             true,
-            morsPerioderEtterWLB,
             undefined
         );
         expect(nyPlan.length).toBe(4);
@@ -235,14 +231,13 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         } as Uttaksperiode;
 
         const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            [farNyPeriodeIMidtenAvMors6Uker],
             morsPerioderEtterWLB,
+            [farNyPeriodeIMidtenAvMors6Uker],
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
             false,
             false,
             true,
-            morsPerioderEtterWLB,
             undefined
         );
         expect(nyPlan.length).toBe(6);
@@ -304,14 +299,13 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         ];
 
         const nyPlan = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            farsNyePerioderRundtFødsel,
             morsPerioderEtterWLB,
+            farsNyePerioderRundtFødsel,
             familiehendelseDatoForMorsPerioderEtterWLB,
             false,
             false,
             false,
             true,
-            morsPerioderEtterWLB,
             undefined
         );
         expect(nyPlan.length).toBe(7);
