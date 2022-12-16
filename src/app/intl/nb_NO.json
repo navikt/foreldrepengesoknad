@@ -692,6 +692,7 @@
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode": "{navn} fellesperiode {prosent}%",
     "uttaksplan.periodetype.hull.tittel": "Tapte dager",
     "uttaksplan.periodetype.periodeUtenUttak.tittel": "Periode uten uttak",
+    "uttaksplan.periodetype.info.avslåttPeriode": "Avslått periode",
     "uttaksplan.periodetype.info.utsettelse.LOVBESTEMT_FERIE": "{ navn } utsetter på grunn av ferie",
     "uttaksplan.periodetype.info.utsettelse.ARBEID": "{ navn } utsetter på grunn av heltidsarbeid",
     "uttaksplan.periodetype.info.utsettelse.SYKDOM": "{ navn } utsetter på grunn av sykdom",
