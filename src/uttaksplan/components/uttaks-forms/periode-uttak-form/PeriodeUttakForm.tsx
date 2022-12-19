@@ -179,7 +179,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     };
     const erDeltUttakINorge = erDeltUttak && !annenForelderHarRettIEØS;
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
-    const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
+    const navnPåAnnenForelder =
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
+            ? annenForelder.fornavn
+            : 'Annen forelder';
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)

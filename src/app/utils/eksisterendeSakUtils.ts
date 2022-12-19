@@ -349,20 +349,28 @@ const getAnnenForelderFromSaksgrunnlag = (
         case 'adopsjon':
             if (erFarEllerMedmor) {
                 return {
-                    fornavn: annenPart.fornavn,
+                    fornavn:
+                        annenPart.fornavn !== undefined && annenPart.fornavn !== ''
+                            ? annenPart.fornavn
+                            : 'Annen forelder',
                     etternavn: annenPart.etternavn,
                     erUfør: grunnlag.morErUfør,
-                    harRettPåForeldrepengerINorge: grunnlag.morHarRett,
+                    harRettPåForeldrepengerINorge:
+                        !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
+                    harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 };
             }
             return {
-                fornavn: annenPart.fornavn,
+                fornavn:
+                    annenPart.fornavn !== undefined && annenPart.fornavn !== '' ? annenPart.fornavn : 'Annen forelder',
                 etternavn: annenPart.etternavn,
-                harRettPåForeldrepengerINorge: grunnlag.farMedmorHarRett,
+                harRettPåForeldrepengerINorge:
+                    !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
+                harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
             };
         default:
             return undefined;
@@ -387,8 +395,9 @@ const finnAnnenForelderPåFødselsdato = (
 
         if (annenForelder !== undefined) {
             const { fnr, etternavn, fornavn, mellomnavn } = annenForelder;
+            const fornavnAnnenForelder = fornavn !== undefined && fornavn !== '' ? fornavn : 'Annen forelder';
             const annenPart: RegistrertAnnenForelder = {
-                fornavn,
+                fornavn: fornavnAnnenForelder,
                 etternavn,
                 mellomnavn,
                 fnr,
@@ -484,12 +493,12 @@ export const opprettSøknadFraEksisterendeSak = (
     }
 
     const mockForelder: Partial<AnnenForelder> = {
-        fornavn: '',
+        fornavn: 'Annen forelder',
         etternavn: '',
         fnr: '',
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
-            ? !!grunnlag.morHarRett
-            : !!grunnlag.farMedmorHarRett,
+            ? !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
+            : !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
         kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);

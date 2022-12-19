@@ -144,7 +144,10 @@ export const getNavnPåForeldre = (
     erFarEllerMedmor: boolean
 ): NavnPåForeldre => {
     const navnSøker = person.fornavn;
-    const navnAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
+    const navnAnnenForelder =
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
+            ? annenForelder.fornavn
+            : 'Annen forelder';
     const navnMor = erFarEllerMedmor ? navnAnnenForelder : navnSøker;
     const navnFarMedmor = erFarEllerMedmor ? navnSøker : navnAnnenForelder;
 
