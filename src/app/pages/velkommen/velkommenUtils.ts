@@ -141,9 +141,9 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                     : undefined,
             fornavn:
                 pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                    ? pdlBarnMedSammeFødselsdato?.map((b) =>
-                          [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')
-                      )
+                    ? pdlBarnMedSammeFødselsdato
+                          ?.filter((b) => b.fornavn !== undefined && b.fornavn !== '')
+                          .map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' '))
                     : undefined,
             etternavn:
                 pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
@@ -170,7 +170,7 @@ const getSelectableBarnFraPDL = (
         type: SelectableBarnType.IKKE_UTFYLT,
         antallBarn: 1,
         fødselsdatoer: [registrertBarn.fødselsdato],
-        fornavn: [navn],
+        fornavn: navn !== undefined ? [navn] : undefined,
         etternavn: [registrertBarn.etternavn],
         fnr: [registrertBarn.fnr],
         sortableDato: registrertBarn.fødselsdato,
@@ -236,8 +236,19 @@ const getSelectableBarnOptionsFraPDL = (
     barnFraSaker: SelectableBarn[]
 ): SelectableBarn[] => {
     const barnSomErLagtTilFnr = barnFraSaker.map((b) => b.fnr).flat();
+    const barnFraSakerFødselsdato = barnFraSaker
+        .filter((barn) => barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0)
+        .map((b) => b.fødselsdatoer)
+        .flat();
     const selectableBarnFraPDL = [] as SelectableBarn[];
-    registrerteBarn.forEach((regBarn) => {
+    const registrerteBarnUtenDødeBarnMedSak = registrerteBarn.filter(
+        (b) =>
+            !(
+                b.dødsdato !== undefined &&
+                !!barnFraSakerFødselsdato.find((dato) => dayjs(dato).isSame(dayjs(b.fødselsdato), 'day'))
+            )
+    );
+    registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
         if (!barnSomErLagtTilFnr.includes(regBarn.fnr) && !erEldreEnn3År(regBarn.fødselsdato)) {
             const dagenFørFødsel = dayjs(regBarn.fødselsdato).subtract(1, 'day');
             const dagenEtterFødsel = dayjs(regBarn.fødselsdato).add(1, 'day');

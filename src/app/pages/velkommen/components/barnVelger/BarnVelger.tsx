@@ -102,7 +102,7 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
 };
 
 const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
-    const navnTekst = formaterNavnPåFlereBarn(
+    const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåFlereBarn(
         barn.fornavn,
         barn.etternavn,
         barn.fødselsdatoer,
@@ -127,10 +127,12 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
     return {
         label: (
             <>
-                <b>{navnTekst}</b>
-                <p>
-                    {situasjonTekst} {fødtAdoptertDatoTekst}
-                </p>
+                <b>{navnTekstEllerBarnMedUkjentNavnTekst}</b>
+                {barn.fornavn !== undefined && barn.fornavn.filter((n) => n !== undefined && n !== '').length > 0 && (
+                    <p>
+                        {situasjonTekst} {fødtAdoptertDatoTekst}
+                    </p>
+                )}
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
             </>
