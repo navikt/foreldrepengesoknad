@@ -1,4 +1,4 @@
-import { replaceInvisibleCharsWithSpace } from './stringUtils';
+import { capitalizeFirstLetter, replaceInvisibleCharsWithSpace } from './stringUtils';
 
 describe('stringUtils', () => {
     describe('replaceInvisibleCharsWithSpace', () => {
@@ -26,6 +26,23 @@ describe('stringUtils', () => {
         });
         it('returns empty string', () => {
             expect(replaceInvisibleCharsWithSpace('')).toEqual('');
+        });
+    });
+    describe('capitalizeFirstLetter', () => {
+        it('erstatter første bokstav med stor bokstav', () => {
+            expect(capitalizeFirstLetter('annen forelder')).toEqual('Annen forelder');
+        });
+        it('fungerer på string med lengde 1', () => {
+            expect(capitalizeFirstLetter('a')).toEqual('A');
+        });
+        it('fungerer på tom string', () => {
+            expect(capitalizeFirstLetter('')).toEqual('');
+        });
+        it('fungerer på string med kun space', () => {
+            expect(capitalizeFirstLetter(' ')).toEqual(' ');
+        });
+        it('fungerer på string med kun tall', () => {
+            expect(capitalizeFirstLetter('7')).toEqual('7');
         });
     });
 });

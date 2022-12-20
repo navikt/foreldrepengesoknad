@@ -67,7 +67,7 @@ const Oppsummering = () => {
     const søknad = useSøknad();
     const onAvbrytSøknad = useAvbrytSøknad();
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, søkerErFarEllerMedmor);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, søkerErFarEllerMedmor, intl);
     const antallUkerUttaksplan = state.antallUkerIUttaksplan;
     const begrunnelseForSenEndring = tilleggsopplysninger.begrunnelseForSenEndring
         ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)

@@ -35,6 +35,8 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import { intlUtils } from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -342,7 +344,8 @@ const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
     annenPart: RegistrertAnnenForelder,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    intl: IntlShape
 ): AnnenForelder | undefined => {
     switch (situasjon) {
         case 'fødsel':
@@ -352,7 +355,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fornavn:
                         annenPart.fornavn !== undefined && annenPart.fornavn !== ''
                             ? annenPart.fornavn
-                            : 'Annen forelder',
+                            : intlUtils(intl, 'annen.forelder'),
                     etternavn: annenPart.etternavn,
                     erUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge:
@@ -364,7 +367,9 @@ const getAnnenForelderFromSaksgrunnlag = (
             }
             return {
                 fornavn:
-                    annenPart.fornavn !== undefined && annenPart.fornavn !== '' ? annenPart.fornavn : 'Annen forelder',
+                    annenPart.fornavn !== undefined && annenPart.fornavn !== ''
+                        ? annenPart.fornavn
+                        : intlUtils(intl, 'annen.forelder'),
                 etternavn: annenPart.etternavn,
                 harRettPåForeldrepengerINorge:
                     !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -382,7 +387,8 @@ const finnAnnenForelderPåFødselsdato = (
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    intl: IntlShape
 ): AnnenForelder | undefined => {
     if (fødselsdato === undefined) {
         return undefined;
@@ -395,14 +401,15 @@ const finnAnnenForelderPåFødselsdato = (
 
         if (annenForelder !== undefined) {
             const { fnr, etternavn, fornavn, mellomnavn } = annenForelder;
-            const fornavnAnnenForelder = fornavn !== undefined && fornavn !== '' ? fornavn : 'Annen forelder';
+            const fornavnAnnenForelder =
+                fornavn !== undefined && fornavn !== '' ? fornavn : intlUtils(intl, 'annen.forelder');
             const annenPart: RegistrertAnnenForelder = {
                 fornavn: fornavnAnnenForelder,
                 etternavn,
                 mellomnavn,
                 fnr,
             };
-            return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, erFarEllerMedmor);
+            return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, erFarEllerMedmor, intl);
         }
     }
 };
@@ -482,7 +489,8 @@ export const opprettSøknadFraValgteBarnMedSak = (valgteBarn: SelectableBarn): P
 
 export const opprettSøknadFraEksisterendeSak = (
     søkerinfo: Søkerinfo,
-    eksisterendeSak: EksisterendeSak
+    eksisterendeSak: EksisterendeSak,
+    intl: IntlShape
 ): Partial<Søknad> | undefined => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
@@ -493,7 +501,7 @@ export const opprettSøknadFraEksisterendeSak = (
     }
 
     const mockForelder: Partial<AnnenForelder> = {
-        fornavn: 'Annen forelder',
+        fornavn: intlUtils(intl, 'annen.forelder'),
         etternavn: '',
         fnr: '',
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
@@ -509,7 +517,8 @@ export const opprettSøknadFraEksisterendeSak = (
                   situasjon,
                   grunnlag,
                   eksisterendeSak.grunnlag.annenPart,
-                  søkerErFarEllerMedmor
+                  søkerErFarEllerMedmor,
+                  intl
               )
             : undefined;
 
@@ -518,7 +527,8 @@ export const opprettSøknadFraEksisterendeSak = (
         ISOStringToDate(grunnlag.fødselsdato),
         grunnlag,
         situasjon,
-        søkerErFarEllerMedmor
+        søkerErFarEllerMedmor,
+        intl
     );
     const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
 

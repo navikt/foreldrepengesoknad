@@ -102,7 +102,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         annenForelderNavn,
         eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false
     );
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsedatoNesteBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));

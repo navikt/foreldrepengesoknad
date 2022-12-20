@@ -94,7 +94,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                 førsteUttaksdagNesteBarnsSak
             );
 
-            const søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!) as Søknad;
+            const søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!, intl) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));

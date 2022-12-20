@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { Overføringsperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
@@ -18,13 +18,13 @@ interface OverføringsperiodedetaljerProps {
 
 type Props = OverføringsperiodedetaljerProps;
 
-const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: StønadskontoType) => {
+const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: StønadskontoType, intl: IntlShape) => {
     if (konto === StønadskontoType.Fedrekvote) {
         return navnPåForeldre.farMedmor;
     } else if (konto === StønadskontoType.Mødrekvote) {
         return navnPåForeldre.mor;
     }
-    return 'Annen forelder ';
+    return intlUtils(intl, 'annen.forelder');
 };
 
 const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({
@@ -35,7 +35,7 @@ const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({
 }) => {
     const { vedlegg } = periode;
     const intl = useIntl();
-    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.konto);
+    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.konto, intl);
     return (
         <>
             <Feltoppsummering
