@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape } from 'react-intl';
 
 interface Props {
     uttaksplan: Periode[];
@@ -41,6 +41,7 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     barn: Barn;
     barnFraNesteSak: BarnFraNesteSak | undefined;
+    intl: IntlShape;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
@@ -78,6 +79,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     utsettelserIPlan,
     barn,
     barnFraNesteSak,
+    intl,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -130,6 +132,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                             termindato={termindato}
                             antallBarn={antallBarn}
                             utsettelserIPlan={utsettelserIPlan}
+                            intl={intl}
                         />
                         {barnFraNesteSak !== undefined &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&

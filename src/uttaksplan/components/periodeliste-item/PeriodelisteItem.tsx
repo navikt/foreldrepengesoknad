@@ -1,3 +1,4 @@
+import { IntlShape } from 'react-intl';
 import { bemUtils, Block } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -53,6 +54,7 @@ interface Props {
     termindato: Date | undefined;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
+    intl: IntlShape;
 }
 
 const renderPeriodeListeInnhold = (
@@ -76,7 +78,8 @@ const renderPeriodeListeInnhold = (
     erEndringssøknad: boolean,
     termindato: Date | undefined,
     antallBarn: number,
-    utsettelserIPlan: Utsettelsesperiode[]
+    utsettelserIPlan: Utsettelsesperiode[],
+    intl: IntlShape
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -119,6 +122,7 @@ const renderPeriodeListeInnhold = (
                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                     antallBarn={antallBarn}
                     utsettelserIPlan={utsettelserIPlan}
+                    intl={intl}
                 />
             );
         case Periodetype.Utsettelse:
@@ -195,6 +199,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     termindato,
     antallBarn,
     utsettelserIPlan,
+    intl,
 }) => {
     const bem = bemUtils('periodelisteItem');
     const melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -248,7 +253,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     erEndringssøknad,
                     termindato,
                     antallBarn,
-                    utsettelserIPlan
+                    utsettelserIPlan,
+                    intl
                 )}
             </EkspanderbartpanelBase>
         </article>

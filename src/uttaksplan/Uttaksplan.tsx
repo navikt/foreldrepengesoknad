@@ -340,6 +340,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     familiehendelsesdato={familiehendelsesdatoDate}
                     annenForelderHarRettINorge={annenForelderHarRettINorge}
                     toTetteReglerGjelder={toTetteReglerGjelder}
+                    intl={intl}
                 />
             </Block>
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">

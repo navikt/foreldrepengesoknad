@@ -132,6 +132,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 utsettelserIPlan={utsettelserIPlan}
                                 barn={barn}
                                 barnFraNesteSak={barnFraNesteSak}
+                                intl={intl}
                             />
                         </section>
                     </Block>
@@ -159,6 +160,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
                                 utsettelserIPlan={utsettelserIPlan}
+                                intl={intl}
                             />
                         </div>
                     )}

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { Undertittel } from 'nav-frontend-typografi';
 import Personkort from 'app/components/personkort/Personkort';
@@ -22,6 +22,7 @@ import './oversiktKvoter.less';
 import { Situasjon } from 'app/types/Situasjon';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
+import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 
 const bem = bemUtils('oversiktKvoter');
 
@@ -67,7 +68,7 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
                     {(erDeltUttakINorge || søkerErFarEllerMedmor) && (
                         <Personkort
                             ikon={<ForelderIkon forelder={svgInfo.farMedmor} />}
-                            tittel={navnPåForeldre.farMedmor}
+                            tittel={capitalizeFirstLetter(navnPåForeldre.farMedmor)}
                         >
                             <strong>{getVarighetString(brukteDagerPerForelder.farMedmor.dagerTotalt, intl)}</strong>
                         </Personkort>
@@ -137,6 +138,7 @@ interface Props {
     familiehendelsesdato: Date;
     annenForelderHarRettINorge: boolean;
     toTetteReglerGjelder: boolean;
+    intl: IntlShape;
 }
 
 const OversiktKvoter: FunctionComponent<Props> = ({
@@ -146,11 +148,12 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     foreldreparSituasjon,
     familiehendelsesdato,
     annenForelderHarRettINorge,
+    intl,
 }) => {
     const søker = useSøkerinfo();
     const søknad = useSøknad();
     const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søker.person, søknad.annenForelder, søkerErFarEllerMedmor);
+    const navnPåForeldre = getNavnPåForeldre(søker.person, søknad.annenForelder, søkerErFarEllerMedmor, intl);
     const uttaksstatus = getUttaksstatus({
         erDeltUttak: erDeltUttak,
         erEndringssøknad: søknad.erEndringssøknad,
