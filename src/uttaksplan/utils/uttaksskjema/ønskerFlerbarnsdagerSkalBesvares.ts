@@ -1,5 +1,6 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { slutterTidsperiodeInnen6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -30,6 +31,15 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
         return true;
     }
     if (!erDeltUttakINorge && stønadskontoType !== StønadskontoType.Fellesperiode) {
+        return false;
+    }
+    if (
+        søkerErFarEllerMedmor &&
+        !bareFarHarRett &&
+        !erAleneOmOmsorg &&
+        slutterTidsperiodeInnen6UkerEtterFødsel(tidsperiode, familiehendelsesdato) &&
+        stønadskontoType === StønadskontoType.Fedrekvote
+    ) {
         return false;
     }
 
