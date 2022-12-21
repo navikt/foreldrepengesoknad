@@ -334,11 +334,13 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
 
 // Funksjon som gjør at alle perioder overlapper 1 til 1
 export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]) => {
-    const perioderTidsperioder: SplittetDatoType[] = perioder.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true });
-        res.push({ dato: p.tidsperiode.tom, erFom: false });
-        return res;
-    }, [] as SplittetDatoType[]);
+    const perioderTidsperioder: SplittetDatoType[] = perioder
+        .filter((per) => isValidTidsperiode(per.tidsperiode))
+        .reduce((res, p) => {
+            res.push({ dato: p.tidsperiode.fom, erFom: true });
+            res.push({ dato: p.tidsperiode.tom, erFom: false });
+            return res;
+        }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
         res.push({ dato: p.tidsperiode.fom, erFom: true });
         res.push({ dato: p.tidsperiode.tom, erFom: false });

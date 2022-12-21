@@ -16,6 +16,7 @@ import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/Familiehe
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { FormattedMessage, IntlShape } from 'react-intl';
+import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 
 interface Props {
     uttaksplan: Periode[];
@@ -45,7 +46,9 @@ interface Props {
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
-    return uttaksplan.findIndex((p) => dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato));
+    return uttaksplan.findIndex(
+        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato)
+    );
 };
 
 const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: Date | undefined) => {
