@@ -317,7 +317,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                     ),
                                     'day'
                                 ) &&
-                                !isAdoptertStebarn(barn)
+                                !isAdoptertStebarn(barn) &&
+                                !erDeltUttak
                             }
                         >
                             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
