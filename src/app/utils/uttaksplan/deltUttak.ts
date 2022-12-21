@@ -130,7 +130,9 @@ const deltUttakAdopsjonSøktSist = (
             undefined,
             førsteUttaksdagNesteBarnsSak,
             'adopsjon'
-        ).map((periode) => {
+        );
+
+        const forslagGjortOmTilMor = forslag.map((periode) => {
             if (
                 isUttaksperiode(periode) &&
                 (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Fellesperiode)
@@ -138,7 +140,7 @@ const deltUttakAdopsjonSøktSist = (
                 if (periode.konto === StønadskontoType.Fedrekvote) {
                     return {
                         ...periode,
-                        kontoType: StønadskontoType.Mødrekvote,
+                        konto: StønadskontoType.Mødrekvote,
                         forelder: Forelder.mor,
                     };
                 } else {
@@ -152,7 +154,7 @@ const deltUttakAdopsjonSøktSist = (
             return periode;
         });
 
-        return forslag;
+        return forslagGjortOmTilMor;
     }
 };
 

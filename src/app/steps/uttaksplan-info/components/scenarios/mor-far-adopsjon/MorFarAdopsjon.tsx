@@ -261,7 +261,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             <MorsSisteDagSpørsmål
                                 FormComponents={MorFarAdopsjonFormComponents}
                                 fieldName={MorFarAdopsjonFormField.annenForeldersSisteDag}
-                                navnMor={navnMor}
+                                navnMor={navnAnnenPart}
                                 familiehendelsesdato={familiehendelsesdato}
                             />
                         </Block>

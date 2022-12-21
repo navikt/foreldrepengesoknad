@@ -229,8 +229,8 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        expect(await screen.findByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
-        const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
+        expect(await screen.findByText('siste dag med foreldrepenger?', { exact: false })).toBeInTheDocument();
+        const sisteDagInput = screen.getByLabelText('siste dag med foreldrepenger?', { exact: false });
         await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -242,8 +242,3 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });
-// describe('Test', () => {
-//     it('test', async () => {
-//         expect(1).toEqual(1);
-//     });
-// });
