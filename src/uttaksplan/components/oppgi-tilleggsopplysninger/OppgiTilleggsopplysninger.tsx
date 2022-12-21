@@ -27,7 +27,7 @@ const getLabel = (intl: IntlShape) => {
         <>
             <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
             <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
-                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
                     <Block margin="s">
                         <Element>
                             {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}
