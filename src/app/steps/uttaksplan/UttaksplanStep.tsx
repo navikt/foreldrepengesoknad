@@ -320,10 +320,15 @@ const UttaksplanStep = () => {
         bareFarMedmorHarRett
     );
 
-    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(perioderMedUttakRundtFødsel, termindato);
+    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(
+        perioderMedUttakRundtFødsel,
+        termindato,
+        erFarEllerMedmor,
+        barn
+    );
 
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
-        if (visAutomatiskJusteringForm && !kanJustereAutomatiskVedFødsel) {
+        if ((visAutomatiskJusteringForm || erEndringssøknad) && !kanJustereAutomatiskVedFødsel) {
             dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
         }
     };
