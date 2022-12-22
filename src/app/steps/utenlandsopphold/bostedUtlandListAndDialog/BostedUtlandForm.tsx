@@ -5,6 +5,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -84,8 +85,12 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     placeholder: 'dd.mm.åååå',
                                     minDate,
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
-                                    validate: (value) =>
-                                        dateRangeValidation.validateFromDateInRange({
+                                    validate: (value) => {
+                                        if (values.tom && values.fom && dayjs(values.tom).isSame(values.fom)) {
+                                            return 'Fra og med dato kan ikke være samme som til og med dato';
+                                        }
+
+                                        return dateRangeValidation.validateFromDateInRange({
                                             intl,
                                             date: ISOStringToDate(value),
                                             minDate,
@@ -93,7 +98,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                             errorKey: 'valideringsfeil.fraOgMedDato.førTilDato',
                                             toDate: ISOStringToDate(values.tom),
                                             disableWeekend: false,
-                                        }),
+                                        });
+                                    },
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
@@ -102,8 +108,12 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     placeholder: 'dd.mm.åååå',
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
-                                    validate: (value) =>
-                                        dateRangeValidation.validateToDateInRange({
+                                    validate: (value) => {
+                                        if (values.tom && values.fom && dayjs(values.tom).isSame(values.fom)) {
+                                            return 'Til og med dato kan ikke være samme som fra og med dato';
+                                        }
+
+                                        return dateRangeValidation.validateToDateInRange({
                                             intl,
                                             date: ISOStringToDate(value),
                                             minDate,
@@ -111,7 +121,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                             errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
                                             fromDate: ISOStringToDate(values.fom),
                                             disableWeekend: false,
-                                        }),
+                                        });
+                                    },
                                 }}
                             />
                         </Block>
