@@ -10,7 +10,6 @@ import { Situasjon } from 'app/types/Situasjon';
 import withIntlProvider from '../../decorators/withIntl';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import getIntlMock from 'utils-test/intl-test-helper';
 import { IntlShape } from 'react-intl';
 
 const stønadskonto100MorFar = [
@@ -66,8 +65,6 @@ interface Props {
     intl: IntlShape;
 }
 
-const intlMock = getIntlMock();
-
 const defaultInput = {
     periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-09-21') } } as Periode,
     erEndringssøknad: false,
@@ -114,7 +111,7 @@ const defaultInput = {
     antallBarn: 1,
     utsettelserIPlan: [],
     isNyPeriode: true,
-    intl: intlMock,
+    // intl: intlMock,
 };
 
 const Template: Story<Props> = (args) => {
