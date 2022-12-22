@@ -1,161 +1,189 @@
-// import React from 'react';
-// import { render, screen } from '@testing-library/react';
-// import { composeStories } from '@storybook/testing-react';
-// import * as stories from 'stories/pages/Velkommen.stories';
-// import userEvent from '@testing-library/user-event';
-// import Api from 'app/api/api';
-// import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/testing-react';
+import * as stories from 'stories/pages/Velkommen.stories';
+import { MemoryRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
-// const {
-//     Default,
-//     HarOpprettetFPSak,
-//     HarFPSakUnderBehandling,
-//     HarLøpendeFPSak,
-//     HarAvsluttetFPSak,
-//     HarFlereSaker,
-//     HarKunHenlagtBehandlingPåSak,
-//     HarKunSvpSak,
-//     HarSakUtenAvsluttetBehandling,
-// } = composeStories(stories);
-// const sakerUnderBehandling = [HarOpprettetFPSak, HarFPSakUnderBehandling];
-// const sakerSomSkalIkkeTriggeEndringsøknad = [HarKunHenlagtBehandlingPåSak, HarSakUtenAvsluttetBehandling];
+const {
+    Default,
+    HarOpprettetFPSakFødsel,
+    HarFPSakUnderBehandlingTermin,
+    HarEndringssøknadUnderBehandlingAdopsjon,
+    HarAvsluttetFPSak,
+    HarFlereSaker,
+    HarSakFødselUtenBarnSendtFraSak,
+    HarSakTerminUtenBarnSendtFraSak,
+    HarSakAdopsjonUtenBarnSendtFraSak,
+    HarSakFødselTvillinger,
+    HarSakFødselTrillinger,
+    HarSakFødselTvillingerUtenBarnSendtFraSak,
+    HarSakTerminTrillingerUtenBarnSendtFraSak,
+} = composeStories(stories);
 
-// describe('<Velkommen>', () => {
-//     beforeEach(() => {
-//         jest.spyOn(Api, 'useGetEksisterendeSak').mockImplementationOnce(() => ({
-//             eksisterendeSakData: undefined,
-//             eksisterendeSakError: null,
-//         }));
-//     });
+const BEGYNN_MED_SØKNAD = 'Begynn med søknad';
+const ENDRE_SØKNAD = 'Endre søknad';
+const SØKNADEN_MIN_GJELDER_ET_ANNET_BARN = 'Søknaden min gjelder et annet barn';
 
-//     it('skal vise velkommen-side uten sak informasjon', async () => {
-//         render(<Default />, { wrapper: MemoryRouter });
-//         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-//         expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
-//         expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
-//         expect(screen.queryByText('Under behandling')).not.toBeInTheDocument();
-//         expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
-//     });
+describe('<Velkommen>', () => {
+    it('skal vise velkommen-side uten sak informasjon', async () => {
+        render(<Default />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
+        expect(screen.getByText(BEGYNN_MED_SØKNAD)).toBeInTheDocument();
+        expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
+        expect(screen.queryByText('Under behandling')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
+    });
 
-//     it('skal vise velkommen-side med siste opprettede sak hvis har flere saker', async () => {
-//         render(<HarFlereSaker />, { wrapper: MemoryRouter });
-//         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//         expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
-//         expect(screen.getByText('Sist endret: 5', { exact: false })).toBeInTheDocument();
-//         expect(screen.getByText('Under behandling')).toBeInTheDocument();
-//     });
+    it('skal vise velkommen-side med sak på fødsel som kan endres', async () => {
+        render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+        expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
+        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+        expect(await screen.findByText(ENDRE_SØKNAD)).toBeInTheDocument();
+        expect(await screen.findByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+    });
 
-//     it('skal vise velkommen-side med løpende behandling sak status og mulighet for endring', async () => {
-//         render(<HarLøpendeFPSak />, { wrapper: MemoryRouter });
-//         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-//         expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
-//         expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
-//         expect(screen.getByText('Sist endret: 6', { exact: false })).toBeInTheDocument();
-//         expect(screen.getByText('Ferdig behandlet')).toBeInTheDocument();
-//         expect(screen.getByText('Ønsker du å endre på din nåværende foreldrepengeperiode?')).toBeInTheDocument();
-//         expect(screen.getByText('Ja, jeg vil søke om endring')).toBeInTheDocument();
-//         expect(screen.getByText('Nei, jeg vil søke for ett nytt barn')).toBeInTheDocument();
-//         expect(screen.getByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')).toBeInTheDocument();
+    it('skal måtte bekrefte at de har lest og forstått', async () => {
+        render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
+        expect(screen.queryByText('Du må bekrefte at du har lest og forstått dine plikter.')).not.toBeInTheDocument();
+        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+        await userEvent.click(screen.getByText(ENDRE_SØKNAD));
+        expect(await screen.findByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
+    });
 
-//         await userEvent.click(screen.getByText('Ja, jeg vil søke om endring'));
+    it('skal kunne søke på nytt barn', async () => {
+        render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
+        expect(await screen.findByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        await userEvent.click(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN));
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+        expect(await screen.findByText(BEGYNN_MED_SØKNAD)).toBeInTheDocument();
+    });
 
-//         expect(
-//             screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
-//         ).not.toBeInTheDocument();
-//         expect(
-//             screen.queryByText(
-//                 'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
-//             )
-//         ).not.toBeInTheDocument();
-
-//         await userEvent.click(screen.getByText('Nei, jeg vil søke for ett nytt barn'));
-
-//         expect(
-//             screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
-//         ).not.toBeInTheDocument();
-//         expect(
-//             screen.getByText(
-//                 'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
-//             )
-//         ).toBeInTheDocument();
-//     });
-
-//     it.each(sakerUnderBehandling)(
-//         'skal vise velkommen-side med løpende behandling sak status og mulighet for endring',
-//         async (Sak) => {
-//             render(<Sak />, { wrapper: MemoryRouter });
-//             expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//             expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-//             expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
-//             expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
-//             expect(screen.getByText('Sist endret: 6', { exact: false })).toBeInTheDocument();
-//             expect(screen.getByText('Under behandling')).toBeInTheDocument();
-//             expect(screen.getByText('Ønsker du å endre på din nåværende foreldrepengeperiode?')).toBeInTheDocument();
-//             expect(screen.getByText('Ja, jeg vil søke om endring')).toBeInTheDocument();
-//             expect(screen.getByText('Nei, jeg vil søke for ett nytt barn')).toBeInTheDocument();
-//             expect(
-//                 screen.getByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
-//             ).toBeInTheDocument();
-
-//             await userEvent.click(screen.getByText('Ja, jeg vil søke om endring'));
-
-//             expect(
-//                 screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
-//             ).not.toBeInTheDocument();
-//             expect(
-//                 screen.queryByText(
-//                     'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
-//                 )
-//             ).not.toBeInTheDocument();
-
-//             await userEvent.click(screen.getByText('Nei, jeg vil søke for ett nytt barn'));
-
-//             expect(
-//                 screen.queryByText('For å komme videre, må du svare på alle spørsmålene ovenfor.')
-//             ).not.toBeInTheDocument();
-//             expect(
-//                 screen.getByText(
-//                     'Når du søker om foreldrepenger for et nytt barn, mister du dager du har igjen fra den første foreldrepengeperioden din når den nye foreldrepengeperioden starter.'
-//                 )
-//             ).toBeInTheDocument();
-//         }
-//     );
-//     it('for avsluttet sak, skal vise velkommen-side med kun mulighet til å starte ny søknad', async () => {
-//         render(<HarAvsluttetFPSak />, { wrapper: MemoryRouter });
-//         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-//         expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
-//         expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
-//         expect(screen.queryByText('Under behandling')).not.toBeInTheDocument();
-//         expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
-//     });
-//     it('for saker med kun svangerskapspenger-behandlinger, skal vise velkommen-side med kun mulighet for å starte ny søknad', async () => {
-//         render(<HarKunSvpSak />, { wrapper: MemoryRouter });
-//         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-//         expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
-//         expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
-//         expect(screen.queryByText('Under behandling')).not.toBeInTheDocument();
-//         expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
-//     });
-//     it.each(sakerSomSkalIkkeTriggeEndringsøknad)(
-//         'for saker med kun henlagt behandling, eller ingen avsluttede behandlinger, skal vise velkommen-side med kun mulighet for å starte ny søknad',
-//         async (Sak) => {
-//             render(<Sak />, { wrapper: MemoryRouter });
-//             expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-//             expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-//             expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
-//             expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
-//             expect(screen.getByText('Under behandling')).toBeInTheDocument();
-//             expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
-//         }
-//     );
-// });
-
-describe('Test', () => {
-    it('test', async () => {
-        expect(1).toEqual(1);
+    it('skal vise velkommen-side med løpende behandling sak status og mulighet for endring', async () => {
+        render(<HarFPSakUnderBehandlingTermin />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
+        expect(await screen.findByText('Barn med termindato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Under behandling')).toBeInTheDocument();
+        expect(await screen.findByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(await screen.findByText(BEGYNN_MED_SØKNAD)).toBeInTheDocument();
+    });
+    it('skal vise velkommen-side med løpende behandling sak status og mulighet for endring', async () => {
+        render(<HarEndringssøknadUnderBehandlingAdopsjon />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
+        expect(await screen.findByText('Omsorgsovertagelse', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Under behandling')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+        expect(await screen.findByText(ENDRE_SØKNAD)).toBeInTheDocument();
+    });
+    it('skal ikke vise avsluttet sak', async () => {
+        render(<HarAvsluttetFPSak />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
+        expect(screen.getByText(BEGYNN_MED_SØKNAD)).toBeInTheDocument();
+        expect(screen.queryByText('Ferdig behandlet')).not.toBeInTheDocument();
+        expect(screen.queryByText('Under behandling')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
+    });
+    it('skal vise flere saker', async () => {
+        render(<HarFlereSaker />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(await screen.findByText('Barn med termindato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 555555')).toBeInTheDocument();
+        expect(await screen.findByText('Under behandling')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak på fødsel uten å ha mottat barn fra fpsak"', async () => {
+        render(<HarSakFødselUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak på adopsjon uten å ha mottat barn fra fpsak"', async () => {
+        render(<HarSakAdopsjonUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Barn adoptert', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak på termin uten å ha mottat barn fra fpsak"', async () => {
+        render(<HarSakTerminUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Barn med termindato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak med tvillinger med navn', async () => {
+        render(<HarSakFødselTvillinger />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Evig Lykkelig og Grønn Vår')).toBeInTheDocument();
+        expect(await screen.findByText('Født: ', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak med trillinger med navn', async () => {
+        render(<HarSakFødselTrillinger />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Evig Lykkelig, Grønn og Sommerlig Vår')).toBeInTheDocument();
+        expect(await screen.findByText('Født: ', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak med tvillinger uten å ha mottat barn fra fpsak', async () => {
+        render(<HarSakFødselTvillingerUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak med trillinger uten å ha mottat barn fra fpsak', async () => {
+        render(<HarSakTerminTrillingerUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Flerlinger med termindato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
     });
 });
+
+//TODO: Døde barn når det er avklart.
