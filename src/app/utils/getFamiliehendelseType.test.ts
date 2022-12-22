@@ -20,5 +20,4 @@ describe('getFamiliehendelseType', () => {
         const type = getFamiliehendelseType(undefined, undefined, adopsjonsdato);
         expect(type).toBe(FamiliehendelseType.ADOPSJON);
     });
-    //TODO: Test error
 });
