@@ -170,8 +170,3 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });
-// describe('Test', () => {
-//     it('test', async () => {
-//         expect(1).toEqual(1);
-//     });
-// });
