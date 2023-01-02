@@ -257,8 +257,9 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
         expect(morsPeriodeSplittetINyPlanDel2.infotype).toEqual(morsPerioderEtterWLB[1].infotype);
         expect(morsPeriodeSplittetINyPlanDel2.forelder).toEqual(morsPerioderEtterWLB[1].forelder);
         expect(morsPeriodeSplittetINyPlanDel2.årsak).toEqual(morsPerioderEtterWLB[1].årsak);
-
-        expect(nyPlan[3]).toEqual(farNyPeriodeIMidtenAvMors6Uker);
+        const { id, ...restNyPlan } = nyPlan[3];
+        const { id: id2, ...restFarNyPeriode } = farNyPeriodeIMidtenAvMors6Uker;
+        expect(restNyPlan).toEqual(restFarNyPeriode);
 
         const morsPeriodeSplittetINyPlanDel3 = nyPlan[4] as UttakAnnenPartInfoPeriode;
         expect(morsPeriodeSplittetINyPlanDel3.tidsperiode.fom).toEqual(new Date('2022-09-12'));

@@ -17,7 +17,11 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
         : grunnlag.navnPåForeldre.farMedmor;
     if (eksisterendeUttaksplan) {
         const perioderSomOverlapper: Periode[] = [];
-        grunnlag.perioderSomSkalSendesInn.forEach((periode) => {
+        const perioderForSjekk = grunnlag.erEndringssøknad
+            ? grunnlag.perioderSomSkalSendesInn
+            : grunnlag.perioder.filter((p) => !isInfoPeriode(p));
+
+        perioderForSjekk.forEach((periode) => {
             const overlapp = Periodene(eksisterendeUttaksplan.filter(isInfoPeriode)).finnOverlappendePerioder(periode);
             if (overlapp.length > 0) {
                 perioderSomOverlapper.push(periode);

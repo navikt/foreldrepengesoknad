@@ -1,4 +1,8 @@
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import {
+    finnOgSettInnHull,
+    normaliserPerioder,
+    settInnAnnenPartsUttak,
+} from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { isUttakAnnenPart, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import { Periodene } from './Periodene';
 
@@ -12,27 +16,37 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     erFarEllerMedmor: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined
 ): Periode[] => {
-    uttaksplan.forEach((p) => {
-        if (isUttaksperiode(p)) {
-            const overlappendePerioderAnnenPart = Periodene(annenPartsPerioder).finnOverlappendePerioder(p);
+    const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(
+        uttaksplan,
+        annenPartsPerioder
+    );
 
-            if (
-                overlappendePerioderAnnenPart.length !== 0 &&
-                overlappendePerioderAnnenPart.find(
-                    (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
-                )
-            ) {
-                if (!p.ønskerSamtidigUttak) {
-                    p.ønskerSamtidigUttak = true;
-                    p.samtidigUttakProsent = '100';
+    if (normaliserteAnnenPartsPerioder.length > 0) {
+        normaliserteEgnePerioder.forEach((p) => {
+            if (isUttaksperiode(p)) {
+                const overlappendePerioderAnnenPart =
+                    Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
+
+                if (
+                    overlappendePerioderAnnenPart.length !== 0 &&
+                    overlappendePerioderAnnenPart.find(
+                        (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
+                    )
+                ) {
+                    if (!p.ønskerSamtidigUttak) {
+                        p.ønskerSamtidigUttak = true;
+                        p.samtidigUttakProsent = '100';
+                    }
                 }
             }
-        }
-    });
-
-    if (annenPartsPerioder.length > 0) {
+        });
         return finnOgSettInnHull(
-            settInnAnnenPartsUttak(uttaksplan, annenPartsPerioder, familiehendelsedato, førsteUttaksdagNesteBarnsSak),
+            settInnAnnenPartsUttak(
+                normaliserteEgnePerioder,
+                normaliserteAnnenPartsPerioder,
+                familiehendelsedato,
+                førsteUttaksdagNesteBarnsSak
+            ),
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsedato,
             erAdopsjon,
