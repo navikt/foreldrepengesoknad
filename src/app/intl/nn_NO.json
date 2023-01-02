@@ -582,7 +582,7 @@
     "valideringsfeil.omBarnet.fødselsdato.duMåOppgi": "Du må oppgi fødselsdatoen",
     "valideringsfeil.omBarnet.fødselsdato.etterAdopsjonsdato": "Fødselsdatoen kan ikkje vere etter adopsjonsdatoen",
     "valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn15År3MndTilbake": "Du kan ikkje søke om foreldrepengar for barn som er eldre enn 15 år",
-    "valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3ÅrTilbake": "Du kan ikkje søkje om foreldrepengar for barn som er eldre enn 3 år.",
+    "valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake": "Du kan ikkje søkje om foreldrepengar for barn som er eldre enn 3 år og 3 månader.",
     "valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdatoen må vere i dag eller tidlegare",
     "valideringsfeil.omBarnet.fødselsdato.ugyldigDatoFormat": "Fødselsdato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.omBarnet.fødselsdato.måVæreFørAdopsjonsdato": "Fødselsdato må være før adopsjonsdato",

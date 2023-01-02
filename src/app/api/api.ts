@@ -38,7 +38,6 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
 };
 
 const uttakBaseUrl = Environment.UTTAK_API_URL;
-// const uttakBaseUrl = 'https://foreldrepengesoknad-api.dev.nav.no';
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 

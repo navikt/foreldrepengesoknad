@@ -4,7 +4,7 @@ import { SelectableBarn, SelectableBarnType } from './components/barnVelger/Barn
 import { Familiehendelse } from 'app/types/Familiehendelse';
 import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
-import { erEldreEnn3År } from 'app/utils/personUtils';
+import { erEldreEnn3ÅrOg3Måneder } from 'app/utils/personUtils';
 import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
 import { BarnFraNesteSak } from 'app/context/types/Barn';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
@@ -249,7 +249,7 @@ const getSelectableBarnOptionsFraPDL = (
             )
     );
     registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
-        if (!barnSomErLagtTilFnr.includes(regBarn.fnr) && !erEldreEnn3År(regBarn.fødselsdato)) {
+        if (!barnSomErLagtTilFnr.includes(regBarn.fnr) && !erEldreEnn3ÅrOg3Måneder(regBarn.fødselsdato)) {
             const dagenFørFødsel = dayjs(regBarn.fødselsdato).subtract(1, 'day');
             const dagenEtterFødsel = dayjs(regBarn.fødselsdato).add(1, 'day');
             const barnFødtISammePeriode = registrerteBarn.filter(

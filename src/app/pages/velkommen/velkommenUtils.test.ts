@@ -54,10 +54,10 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
         fnr: '123456788',
         kjønn: 'K',
     };
-    const barnMerEnn3År = {
+    const barnMerEnn3ÅrOg3Mnd = {
         fornavn: 'Blå',
         etternavn: 'Dinosaur',
-        fødselsdato: new Date('2019-12-21'),
+        fødselsdato: new Date('2019-09-21'),
         fnr: '123456788',
         kjønn: 'K',
     };
@@ -81,8 +81,8 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
         expect(result[0].fornavn).toEqual(['Grønn ', 'Blå ']);
         expect(result[0].fnr).toEqual(['123456789', '123456788']);
     });
-    it('skal ikke vise barna som er over 3 år gamle', async () => {
-        const result = getSelectableBarnOptions([], [barnMerEnn3År] as RegistrertBarn[]);
+    it('skal ikke vise barna som er over 3 år gamle og 3 måneder', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
         expect(result.length).toBe(0);
     });
     it('skal koble famhendelse fra sak for sak uten barn der barnet fra PDL matcher', async () => {
