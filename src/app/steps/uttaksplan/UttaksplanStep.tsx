@@ -104,7 +104,8 @@ const UttaksplanStep = () => {
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
-    const annenForelderFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const annenForelderFnr =
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false ? annenForelder.fnr : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
     const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
     const førsteBarnFraNesteSakFnr =
