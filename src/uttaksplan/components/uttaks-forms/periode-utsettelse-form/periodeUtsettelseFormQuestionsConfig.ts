@@ -25,10 +25,10 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
         isIncluded: () => true,
         visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
     },
-    [PeriodeUtsettelseFormField.arbeidsformer]: {
+    [PeriodeUtsettelseFormField.bekrefterArbeidIPerioden]: {
         isAnswered: ({ values }) =>
             values.årsak !== UtsettelseÅrsakType.Arbeid ||
-            (hasValue(values.arbeidsformer) && values.arbeidsformer !== undefined && values.arbeidsformer?.length > 0),
+            (hasValue(values.bekrefterArbeidIPerioden) && values.bekrefterArbeidIPerioden !== undefined),
         isIncluded: ({ values }) => hasValue(values.årsak) && values.årsak === UtsettelseÅrsakType.Arbeid,
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },

@@ -92,6 +92,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <MorFødsel
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    eksisterendeSakFar={eksisterendeSakAnnenPart}
                 />
             );
         case 'morFarFødselAnnenForelderHarRettIEØS':

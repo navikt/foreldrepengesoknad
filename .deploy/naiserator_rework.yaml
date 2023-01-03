@@ -47,6 +47,8 @@ spec:
       value: "on"
     - name: FEATURE_BRUK_SAKER_V2
       value: "off"
+    - name: FEATURE_WLB_GJELDER_FRA_FORSTE_JAN
+      value: "on"
     - name: FAMILIE
       value: 'https://familie.dev.nav.no'
     - name: APP_VERSION

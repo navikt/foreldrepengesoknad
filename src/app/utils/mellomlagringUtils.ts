@@ -19,5 +19,5 @@ export const shouldApplyStorage = (storedState: ForeldrepengesøknadContextState
         }
     }
 
-    return storedState.version === 4;
+    return storedState.version === 5;
 };

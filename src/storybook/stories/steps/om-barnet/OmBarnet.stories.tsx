@@ -12,6 +12,7 @@ import withRouter from '../../../decorators/withRouter';
 import withForeldrepengersøknadContext from '../../../decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
 import AxiosMock from '../../../utils/AxiosMock';
+import { BarnType } from 'app/context/types/Barn';
 
 export default {
     title: 'steps/OmBarnet',
@@ -98,6 +99,72 @@ ForAdopsjon.args = {
                 rolle: 'mor',
             },
         },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const RegistrertBarnFødselFar = Template.bind({});
+RegistrertBarnFødselFar.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+            barn: {
+                antallBarn: 1,
+                fnr: ['21091981146'],
+                fødselsdatoer: [new Date('2021-03-15')],
+                type: BarnType.FØDT,
+            },
+        },
+        søknadGjelderEtNyttBarn: false,
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const RegistrertBarnFødselMor = Template.bind({});
+RegistrertBarnFødselMor.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'mor',
+            },
+            barn: {
+                antallBarn: 2,
+                fnr: ['31091981146', '31091981147'],
+                fødselsdatoer: [new Date('2022-08-02'), new Date('2022-08-02')],
+                type: BarnType.FØDT,
+            },
+        },
+        søknadGjelderEtNyttBarn: false,
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const RegistrertBarnAdopsjonMor = Template.bind({});
+RegistrertBarnAdopsjonMor.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'adopsjon',
+                rolle: 'mor',
+            },
+            barn: {
+                antallBarn: 1,
+                fnr: ['21091981146'],
+                fødselsdatoer: [new Date('2021-03-15')],
+                type: BarnType.FØDT,
+            },
+        },
+        søknadGjelderEtNyttBarn: false,
     } as ForeldrepengesøknadContextState,
     søkerinfo,
 };

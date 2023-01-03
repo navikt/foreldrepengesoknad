@@ -65,7 +65,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                 />
             </Block>
             {formValues.hattInntektSomFrilans === YesOrNo.YES && (
-                <div style={{ backgroundColor: '#e9e7e7', marginBottom: '1rem', padding: '1rem' }}>
+                <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <Block
                         padBottom="l"
                         visible={visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)}

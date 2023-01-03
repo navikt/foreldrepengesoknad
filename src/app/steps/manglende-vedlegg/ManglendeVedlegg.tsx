@@ -160,7 +160,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                 getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder)
                                             )}
                                         >
-                                            <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                                            <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
                                                 <Normaltekst>
                                                     {intlUtils(
                                                         intl,

@@ -6,5 +6,4 @@ export enum ArbeidsgiverInfoType {
 export interface ArbeidsgiverInfo {
     id: string;
     type: ArbeidsgiverInfoType;
-    navn: string;
 }

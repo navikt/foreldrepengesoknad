@@ -10,7 +10,7 @@ import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenFo
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { getToTetteReglerGjelder, ISOStringToDate, tidperiodeOverlapperDato } from 'app/utils/dateUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -25,14 +25,14 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
-import Barn from 'app/context/types/Barn';
+import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
-import { splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -71,6 +71,10 @@ interface Props {
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
+    barnFraNesteSak: BarnFraNesteSak | undefined;
+    familiehendelsesdatoNesteSak: Date | undefined;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
+    minsterettUkerToTette: number | undefined;
 }
 
 const Uttaksplan: FunctionComponent<Props> = ({
@@ -108,6 +112,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
     visibility,
     visAutomatiskJusteringForm,
     perioderMedUttakRundtFødsel,
+    barnFraNesteSak,
+    familiehendelsesdatoNesteSak,
+    førsteUttaksdagNesteBarnsSak,
+    minsterettUkerToTette,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -123,6 +131,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const bareFarHarRett = !morHarRett;
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
+    const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
@@ -131,6 +140,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         situasjon === 'adopsjon',
         bareFarHarRett,
         erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
         opprinneligPlan
     );
 
@@ -159,6 +169,13 @@ const Uttaksplan: FunctionComponent<Props> = ({
             resultat = builder.oppdaterPerioder(perioder);
 
             handleOnPlanChange(resultat);
+        } else if (
+            førsteUttaksdagNesteBarnsSak !== undefined &&
+            tidperiodeOverlapperDato(oppdatertPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        ) {
+            const perioder = splittPeriodePåDato(oppdatertPeriode, førsteUttaksdagNesteBarnsSak);
+            resultat = builder.oppdaterPerioder(perioder);
+            handleOnPlanChange(resultat);
         } else {
             const result = builder.oppdaterPeriode(oppdatertPeriode);
 
@@ -183,6 +200,13 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
             resultat = builder.leggTilPerioder(perioder);
 
+            handleOnPlanChange(resultat);
+        } else if (
+            førsteUttaksdagNesteBarnsSak !== undefined &&
+            tidperiodeOverlapperDato(nyPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        ) {
+            const perioder = splittPeriodePåDato(nyPeriode, førsteUttaksdagNesteBarnsSak);
+            resultat = builder.leggTilPerioder(perioder);
             handleOnPlanChange(resultat);
         } else {
             resultat = builder.leggTilPeriode(nyPeriode);
@@ -222,6 +246,9 @@ const Uttaksplan: FunctionComponent<Props> = ({
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,
         barn: barn,
+        familiehendelsesdatoNesteSak,
+        førsteUttaksdagNesteBarnsSak,
+        minsterettUkerToTette,
     });
 
     useEffect(() => {
@@ -263,6 +290,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     eksisterendeSak={eksisterendeSak}
                     erIUttaksplanenSteg={true}
                     tilgjengeligeStønadskontoer={stønadskontoer}
+                    minsterettUkerToTette={minsterettUkerToTette}
                 />
             </Block>
             <Block padBottom="l">
@@ -290,6 +318,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     termindato={termindato}
                     barn={barn}
                     utsettelserIPlan={utsettelserIPlan}
+                    barnFraNesteSak={barnFraNesteSak}
                 />
             </Block>
             {visAutomatiskJusteringForm && (
@@ -310,6 +339,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     foreldreparSituasjon={foreldreSituasjon}
                     familiehendelsesdato={familiehendelsesdatoDate}
                     annenForelderHarRettINorge={annenForelderHarRettINorge}
+                    toTetteReglerGjelder={toTetteReglerGjelder}
+                    intl={intl}
                 />
             </Block>
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">

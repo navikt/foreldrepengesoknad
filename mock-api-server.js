@@ -32,11 +32,13 @@ router.get('/rest/storage', (_req, res) => {
     res.send(MockStorage.getSoknad());
 });
 
-router.get('/rest/innsyn/saker', (_req, res) => {
+router.get('/rest/innsyn/v2/saker', (_req, res) => {
     res.send(MockStorage.getSaker());
 });
 
-router.get('/rest/innsyn/v2/saker', (_req, res) => res.sendStatus(200));
+router.post('/rest/innsyn/v2/annenPartVedtak', (_req, res) => {
+    res.send(MockStorage.getAnnenPartVedtak());
+});
 
 router.get('/rest/innsyn/uttaksplan', (_req, res) => {
     res.send(MockStorage.getUttaksplan());

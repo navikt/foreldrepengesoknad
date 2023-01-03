@@ -43,6 +43,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -55,6 +56,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     tilgjengeligeStønadskontoer80DTO,
 }) => {
     const intl = useIntl();
+    const { state } = useForeldrepengesøknadContext();
     const { annenForelder, søkersituasjon, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const { person } = useSøkerinfo();
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -77,7 +79,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const termindato = getTermindato(barn);
-
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
         return [
@@ -108,6 +111,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     bareFarMedmorHarRett: false,
                     termindato,
                     harAktivitetskravIPeriodeUtenUttak: false,
+                    førsteUttaksdagNesteBarnsSak,
                 })
             ),
         ];

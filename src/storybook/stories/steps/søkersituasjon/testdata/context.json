@@ -7,6 +7,7 @@
             "situasjon": ""
         }
     },
-    "version": 2,
-    "currentRoute": "/soknad/uttaksplan-info"
+    "version": 4,
+    "currentRoute": "/soknad/uttaksplan-info",
+    "søknadGjelderEtNyttBarn": true
 }

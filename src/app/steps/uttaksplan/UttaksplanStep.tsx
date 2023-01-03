@@ -3,7 +3,7 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import AlertStripe from 'nav-frontend-alertstriper';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
@@ -21,15 +21,13 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
 import { Forelder } from 'app/types/Forelder';
-import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes, getTermindato } from 'app/utils/barnUtils';
-import { isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { isUttakAnnenPart, isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import getStønadskontoParams, {
-    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
-} from 'app/api/getStønadskontoParams';
+import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
@@ -53,7 +51,18 @@ import {
     getKanJustereAutomatiskVedFødsel,
 } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { FormikValues } from 'formik';
+import {
+    getStartdatoFørstePeriodeAnnenPart,
+    mapAnnenPartsEksisterendeSakFromDTO,
+} from 'app/utils/eksisterendeSakUtils';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { RequestStatus } from 'app/types/RequestState';
+import { Periodene } from '../uttaksplan-info/utils/Periodene';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
+import { isUfødtBarn } from 'app/context/types/Barn';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
+import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -66,12 +75,13 @@ const UttaksplanStep = () => {
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
-    const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet } = state;
-    const { person, arbeidsforhold, registrerteBarn } = søkerinfo;
+    const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet, annenPartsUttakErLagtTilIPlan } = state;
+    const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
+    const { barnFraNesteSak } = state;
     const debouncedState = useDebounce(state, 3000);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
@@ -85,7 +95,7 @@ const UttaksplanStep = () => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
@@ -94,6 +104,158 @@ const UttaksplanStep = () => {
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
     const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
+    const annenForelderFnr = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const erAdopsjon = situasjon === 'adopsjon';
+    const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
+    const førsteBarnFraNesteSakFnr =
+        barnFraNesteSak !== undefined && barnFraNesteSak.fnr !== undefined && barnFraNesteSak.fnr.length > 0
+            ? barnFraNesteSak.fnr[0]
+            : undefined;
+    const familieHendelseDatoNesteSak =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const førsteUttaksdagNesteBarnsSak =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+
+    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
+        søkersituasjon.rolle,
+        erFarEllerMedmor,
+        annenForelder
+    );
+
+    const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
+    const eksisterendeSakAnnenPartRequestIsSuspended =
+        annenForelderFnr !== undefined &&
+        annenForelderFnr !== '' &&
+        (barnFnr !== undefined || familiehendelsesdato !== undefined)
+            ? false
+            : true;
+
+    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
+        Api.useGetAnnenPartsVedtak(
+            annenForelderFnr,
+            barnFnr,
+            familiehendelsesdato,
+            eksisterendeSakAnnenPartRequestIsSuspended
+        );
+
+    const eksisterendeVedtakAnnenPart = useMemo(
+        () =>
+            mapAnnenPartsEksisterendeSakFromDTO(
+                eksisterendeSakAnnenPartData,
+                barn,
+                erFarEllerMedmor,
+                familiehendelsesdato,
+                førsteUttaksdagNesteBarnsSak
+            ),
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
+    );
+
+    const nesteBarnsSakAnnenPartRequestIsSuspended =
+        annenForelderFnrNesteSak !== undefined &&
+        annenForelderFnrNesteSak !== '' &&
+        (førsteBarnFraNesteSakFnr !== undefined || familieHendelseDatoNesteSak !== undefined) &&
+        (eksisterendeSakAnnenPartRequestIsSuspended || eksisterendeSakAnnenPartRequestStatus === RequestStatus.FINISHED)
+            ? false
+            : true;
+
+    const {
+        eksisterendeSakAnnenPartData: nesteSakAnnenPartData,
+        eksisterendeSakAnnenPartError: nesteSakAnnenPartError,
+        eksisterendeSakAnnenPartRequestStatus: nesteSakAnnenPartRequestStatus,
+    } = Api.useGetAnnenPartsVedtak(
+        annenForelderFnrNesteSak,
+        førsteBarnFraNesteSakFnr,
+        dateToISOString(familieHendelseDatoNesteSak),
+        nesteBarnsSakAnnenPartRequestIsSuspended
+    );
+
+    const førsteUttaksdagAnnenPart = getStartdatoFørstePeriodeAnnenPart(nesteSakAnnenPartData);
+
+    useEffect(() => {
+        if (
+            førsteUttaksdagAnnenPart !== undefined &&
+            state.barnFraNesteSak !== undefined &&
+            (dayjs(førsteUttaksdagAnnenPart).isBefore(state.barnFraNesteSak.startdatoFørsteStønadsperiode, 'd') ||
+                state.barnFraNesteSak.startdatoFørsteStønadsperiode === undefined)
+        ) {
+            const oppdatertBarnNesteSak = {
+                ...state.barnFraNesteSak,
+                startdatoFørsteStønadsperiode: førsteUttaksdagAnnenPart,
+            };
+            dispatch(actionCreator.setBarnFraNesteSak(oppdatertBarnNesteSak));
+        }
+    }, [førsteUttaksdagNesteBarnsSak, førsteUttaksdagAnnenPart, barnFraNesteSak, dispatch, state.barnFraNesteSak]);
+
+    const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+        erDeltUttak,
+        morHarRett,
+        søkerErAleneOmOmsorg,
+    });
+
+    //Legg til annen parts perioder i planen til bruker
+    useEffect(() => {
+        if (
+            eksisterendeSak !== undefined &&
+            opprinneligPlan !== undefined &&
+            eksisterendeVedtakAnnenPart !== undefined &&
+            !annenPartsUttakErLagtTilIPlan
+        ) {
+            //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
+            opprinneligPlan.forEach((p) => {
+                if (isUttaksperiode(p)) {
+                    const overlappendePerioderAnnenPart = Periodene(
+                        eksisterendeVedtakAnnenPart.uttaksplan
+                    ).finnOverlappendePerioder(p);
+
+                    if (
+                        overlappendePerioderAnnenPart.length !== 0 &&
+                        overlappendePerioderAnnenPart.find(
+                            (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
+                        )
+                    ) {
+                        if (!p.ønskerSamtidigUttak) {
+                            p.ønskerSamtidigUttak = true;
+                            p.samtidigUttakProsent = '100';
+                        }
+                    }
+                }
+            });
+
+            const uttaksplanMedAnnenPart = finnOgSettInnHull(
+                settInnAnnenPartsUttak(
+                    opprinneligPlan,
+                    eksisterendeVedtakAnnenPart.uttaksplan,
+                    familiehendelsesdatoDate!,
+                    førsteUttaksdagNesteBarnsSak,
+                    true
+                ),
+                harAktivitetskravIPeriodeUtenUttak,
+                familiehendelsesdatoDate!,
+                erAdopsjon,
+                bareFarMedmorHarRett,
+                erFarEllerMedmor
+            );
+            const eksisterendeSakMedAnnenPartsPlan = {
+                ...eksisterendeSak,
+                uttaksplan: uttaksplanMedAnnenPart,
+            };
+            dispatch(actionCreator.setUttaksplan(uttaksplanMedAnnenPart));
+            dispatch(actionCreator.setEksisterendeSak(eksisterendeSakMedAnnenPartsPlan));
+            dispatch(actionCreator.setAnnenPartsUttakErLagtTilIPlan(true));
+        }
+    }, [
+        eksisterendeVedtakAnnenPart,
+        opprinneligPlan,
+        familiehendelsesdatoDate,
+        harAktivitetskravIPeriodeUtenUttak,
+        erAdopsjon,
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        dispatch,
+        førsteUttaksdagNesteBarnsSak,
+        eksisterendeSak,
+        annenPartsUttakErLagtTilIPlan,
+    ]);
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
@@ -148,11 +310,6 @@ const UttaksplanStep = () => {
         termindato
     );
 
-    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
-        søkersituasjon.rolle,
-        erFarEllerMedmor,
-        annenForelder
-    );
     const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
@@ -163,10 +320,15 @@ const UttaksplanStep = () => {
         bareFarMedmorHarRett
     );
 
-    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(perioderMedUttakRundtFødsel, termindato);
+    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(
+        perioderMedUttakRundtFødsel,
+        termindato,
+        erFarEllerMedmor,
+        barn
+    );
 
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
-        if (visAutomatiskJusteringForm && !kanJustereAutomatiskVedFødsel) {
+        if ((visAutomatiskJusteringForm || erEndringssøknad) && !kanJustereAutomatiskVedFødsel) {
             dispatch(actionCreator.setØnskerJustertUttakVedFødsel(undefined));
         }
     };
@@ -209,36 +371,20 @@ const UttaksplanStep = () => {
         rolle
     );
 
-    const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
-
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartRequestStatus } = Api.useGetEksisterendeSakMedFnr(
-        søkerinfo.person.fnr,
-        erFarEllerMedmor,
-        registrertBarn?.annenForelder?.fnr
-    );
-
-    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
-        eksisterendeSak?.grunnlag.termindato,
-        eksisterendeSakAnnenPartData?.grunnlag.termindato
-    );
-
-    const eksisterendeSakAnnenPartRequestIsSuspended =
-        registrertBarn?.annenForelder?.fnr !== undefined && erFarEllerMedmor ? false : true;
-
-    const { tilgjengeligeStønadskontoerData: stønadskontoer100 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            Dekningsgrad.HUNDRE_PROSENT,
-            barn,
-            annenForelder,
-            søkersituasjon,
-            farMedmorErAleneOmOmsorg,
-            morErAleneOmOmsorg,
-            saksgrunnlagsTermindato
-        ),
-        eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
-    );
+    const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
+        Api.useGetUttakskontoer(
+            getStønadskontoParams(
+                Dekningsgrad.HUNDRE_PROSENT,
+                barn,
+                annenForelder,
+                søkersituasjon,
+                farMedmorErAleneOmOmsorg,
+                morErAleneOmOmsorg,
+                dateToISOString(familieHendelseDatoNesteSak),
+                eksisterendeSak?.grunnlag.termindato
+            ),
+            nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
             Dekningsgrad.ÅTTI_PROSENT,
@@ -247,11 +393,10 @@ const UttaksplanStep = () => {
             søkersituasjon,
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
-            saksgrunnlagsTermindato
+            dateToISOString(familieHendelseDatoNesteSak),
+            eksisterendeSak?.grunnlag.termindato
         ),
-        eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : !!registrertBarn && erFarEllerMedmor && eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
@@ -271,7 +416,33 @@ const UttaksplanStep = () => {
         dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
     };
 
-    if (!stønadskontoer100 || !stønadskontoer80) {
+    if (
+        !stønadskontoer100 ||
+        !stønadskontoer80 ||
+        (eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
+            !eksisterendeSakAnnenPartRequestIsSuspended) ||
+        (nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED && !nesteBarnsSakAnnenPartRequestIsSuspended)
+    ) {
+        if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
+            );
+        }
+        if (tilgjengeligeStønadskontoerError?.response?.status === 400) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data}`
+            );
+        }
+        if (eksisterendeSakAnnenPartError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp saken til annen forelder med følgende feilmelding: ${eksisterendeSakAnnenPartError.response.data.messages}`
+            );
+        }
+        if (nesteSakAnnenPartError?.response?.status === 500) {
+            throw new Error(
+                `Vi klarte ikke å hente opp annen forelders sak for det neste barnet med følgende feilmelding: ${nesteSakAnnenPartError.response.data.messages}`
+            );
+        }
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <NavFrontendSpinner type="XXL" />
@@ -280,6 +451,7 @@ const UttaksplanStep = () => {
     }
 
     const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
+    const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
 
     const valgteStønadskontoer =
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
@@ -375,6 +547,10 @@ const UttaksplanStep = () => {
                             visibility={visibility}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                            barnFraNesteSak={barnFraNesteSak}
+                            familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
+                            førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
+                            minsterettUkerToTette={minsterettUkerToTette}
                         />
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (

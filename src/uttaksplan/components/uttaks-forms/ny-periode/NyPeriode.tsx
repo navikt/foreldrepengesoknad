@@ -8,7 +8,7 @@ import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 're
 import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape } from 'react-intl';
 import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
@@ -33,6 +33,7 @@ interface Props {
     termindato: Date | undefined;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
+    intl: IntlShape;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -57,6 +58,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     termindato,
     antallBarn,
     utsettelserIPlan,
+    intl,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -93,6 +95,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                 antallBarn={antallBarn}
                 utsettelserIPlan={utsettelserIPlan}
+                intl={intl}
             />
         </>
     ) : (

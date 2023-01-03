@@ -5,10 +5,10 @@ import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { guid } from 'nav-frontend-js-utils';
-import { splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { andreAugust2022ReglerGjelder } from '../dateUtils';
+import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from '../dateUtils';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from '../wlbUtils';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
@@ -17,7 +17,8 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [];
@@ -35,7 +36,18 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
                 gradert: false,
                 harIkkeAktivitetskrav: true,
             };
-            perioder.push(aktivitetsFriPeriode);
+            if (
+                førsteUttaksdagNesteBarnsSak !== undefined &&
+                tidperiodeOverlapperDato(aktivitetsFriPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+            ) {
+                const splittetPeriode = splittPeriodePåDato(
+                    aktivitetsFriPeriode,
+                    førsteUttaksdagNesteBarnsSak
+                ) as Uttaksperiode[];
+                splittetPeriode.forEach((sp) => perioder.push(sp));
+            } else {
+                perioder.push(aktivitetsFriPeriode);
+            }
             startDatoNestePeriode = Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste();
         }
         const periode: Uttaksperiode = {
@@ -47,8 +59,15 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             vedlegg: [],
             gradert: false,
         };
-
-        perioder.push(periode);
+        if (
+            førsteUttaksdagNesteBarnsSak !== undefined &&
+            tidperiodeOverlapperDato(periode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        ) {
+            const splittetPeriode = splittPeriodePåDato(periode, førsteUttaksdagNesteBarnsSak) as Uttaksperiode[];
+            splittetPeriode.forEach((sp) => perioder.push(sp));
+        } else {
+            perioder.push(periode);
+        }
     } else {
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
@@ -61,7 +80,18 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             harIkkeAktivitetskrav: true,
         };
 
-        perioder.push(aktivitetsFriPeriode);
+        if (
+            førsteUttaksdagNesteBarnsSak !== undefined &&
+            tidperiodeOverlapperDato(aktivitetsFriPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        ) {
+            const splittetPeriode = splittPeriodePåDato(
+                aktivitetsFriPeriode,
+                førsteUttaksdagNesteBarnsSak
+            ) as Uttaksperiode[];
+            splittetPeriode.forEach((sp) => perioder.push(sp));
+        } else {
+            perioder.push(aktivitetsFriPeriode);
+        }
 
         const aktivitetskravPeriode: Uttaksperiode = {
             id: guid(),
@@ -76,7 +106,18 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             gradert: false,
         };
 
-        perioder.push(aktivitetskravPeriode);
+        if (
+            førsteUttaksdagNesteBarnsSak !== undefined &&
+            tidperiodeOverlapperDato(aktivitetskravPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        ) {
+            const splittetPeriode = splittPeriodePåDato(
+                aktivitetskravPeriode,
+                førsteUttaksdagNesteBarnsSak
+            ) as Uttaksperiode[];
+            splittetPeriode.forEach((sp) => perioder.push(sp));
+        } else {
+            perioder.push(aktivitetskravPeriode);
+        }
     }
 
     return perioder;
@@ -85,21 +126,26 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 const ikkeDeltUttakAdopsjonMor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined
+    startdatoPermisjon: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
-    const perioder: Uttaksperiode[] = [
-        {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.mor,
-            konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
-            vedlegg: [],
-            gradert: false,
-        },
-    ];
-    return perioder;
+    const periode: Uttaksperiode = {
+        id: guid(),
+        type: Periodetype.Uttak,
+        forelder: Forelder.mor,
+        konto: foreldrepengerKonto.konto,
+        tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
+        vedlegg: [],
+        gradert: false,
+    };
+    if (
+        førsteUttaksdagNesteBarnsSak !== undefined &&
+        tidperiodeOverlapperDato(periode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+    ) {
+        return splittPeriodePåDato(periode, førsteUttaksdagNesteBarnsSak);
+    }
+    return [periode];
 };
 
 const ikkeDeltUttakAdopsjon = (
@@ -109,10 +155,11 @@ const ikkeDeltUttakAdopsjon = (
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
-        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon);
+        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon, førsteUttaksdagNesteBarnsSak);
     } else {
         return ikkeDeltUttakAdopsjonFarMedmor(
             famDato,
@@ -120,7 +167,8 @@ const ikkeDeltUttakAdopsjon = (
             startdatoPermisjon,
             erMorUfør,
             aktivitetsfriKvote,
-            bareFarMedmorHarRett
+            bareFarMedmorHarRett,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 };
@@ -215,7 +263,8 @@ const ikkeDeltUttakFødselFarMedmor = (
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
     bareFarMedmorHarRett: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const morHarRett = false;
@@ -242,6 +291,12 @@ const ikkeDeltUttakFødselFarMedmor = (
                 )
             ) {
                 const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
+                aktivitetsFriePerioder.forEach((periode) => perioder.push(periode));
+            } else if (
+                førsteUttaksdagNesteBarnsSak !== undefined &&
+                tidperiodeOverlapperDato(aktivitetsFriPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+            ) {
+                const aktivitetsFriePerioder = splittPeriodePåDato(aktivitetsFriPeriode, førsteUttaksdagNesteBarnsSak);
                 aktivitetsFriePerioder.forEach((periode) => perioder.push(periode));
             } else {
                 perioder.push(aktivitetsFriPeriode);
@@ -313,7 +368,8 @@ const ikkeDeltUttakFødsel = (
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
     bareFarMedmorHarRett: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon, foreldrePengerFørFødselKonto!);
@@ -325,7 +381,8 @@ const ikkeDeltUttakFødsel = (
             erMorUfør,
             aktivitetsfriKvote,
             bareFarMedmorHarRett,
-            termindato
+            termindato,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 };
@@ -338,7 +395,8 @@ export const ikkeDeltUttak = (
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     bareFarMedmorHarRett: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Foreldrepenger
@@ -358,7 +416,8 @@ export const ikkeDeltUttak = (
             startdatoPermisjon,
             erMorUfør,
             aktivitetsfriKvote,
-            bareFarMedmorHarRett
+            bareFarMedmorHarRett,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 
@@ -372,7 +431,8 @@ export const ikkeDeltUttak = (
             erMorUfør,
             aktivitetsfriKvote,
             bareFarMedmorHarRett,
-            termindato
+            termindato,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 

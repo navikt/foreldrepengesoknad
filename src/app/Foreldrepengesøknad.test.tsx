@@ -34,7 +34,7 @@ describe('<Foreldrepengesøknad>', () => {
             </ForeldrepengesøknadContextProvider>
         );
 
-        expect(screen.queryByText('Venter...')).toBeInTheDocument();
+        expect(screen.getByText('Venter...')).toBeInTheDocument();
     });
 
     it('skal returnere første rute i app når en har ferdighentet data', () => {
@@ -59,7 +59,7 @@ describe('<Foreldrepengesøknad>', () => {
             storageError: null,
         };
         const sakerData = {
-            sakerData: [],
+            sakerData: { engangsstønad: [], foreldrepenger: [], svangerskapspenger: [] },
             sakerError: null,
         };
         jest.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
@@ -74,7 +74,7 @@ describe('<Foreldrepengesøknad>', () => {
             </ForeldrepengesøknadContextProvider>
         );
 
-        expect(screen.queryByText('Hei, Olga!')).toBeInTheDocument();
-        expect(screen.queryByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
+        expect(screen.getByText('Hei, Olga!')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
     });
 });

@@ -4,7 +4,7 @@ import { UttaksplanIkonProps } from 'uttaksplan/components/uttaksplan-ikon/Uttak
 const TerminIkon = (props: UttaksplanIkonProps) => {
     const { title, ...rest } = props;
     return (
-        <svg focusable="false" role="presentation" width={24} height={24} viewBox="0 0 24 24" {...rest}>
+        <svg focusable="false" role="img" aria-hidden="true" width={24} height={24} viewBox="0 0 24 24" {...rest}>
             <title>{props.title}</title>
             <path
                 fill="none"

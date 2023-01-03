@@ -1,4 +1,4 @@
-import Barn, { isUfødtBarn } from 'app/context/types/Barn';
+import Barn, { BarnType, isUfødtBarn } from 'app/context/types/Barn';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
@@ -23,9 +23,13 @@ export const getKanPeriodenRundtFødselJusteres = (
 
 export const getKanJustereAutomatiskVedFødsel = (
     perioderMedUttakRundtFødsel: Periode[],
-    termindato: Date | undefined
+    termindato: Date | undefined,
+    erFarEllerMedmor: boolean,
+    barn: Barn
 ): boolean => {
     return (
+        barn.type === BarnType.UFØDT &&
+        erFarEllerMedmor &&
         perioderMedUttakRundtFødsel.length === 1 &&
         getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0], termindato)
     );

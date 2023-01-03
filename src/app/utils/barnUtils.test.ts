@@ -40,7 +40,7 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: [new Date('2021-01-01')],
-            fnr: '123',
+            fnr: ['123'],
         } as Barn;
         const registrerteBarn = [
             {

@@ -5,10 +5,11 @@ import { erSamtidigUttakGyldig } from './erSamtidigUttakGyldig';
 import { erUtsettelseEtterFamiliehendelsesdato } from './erUtsettelseEtterFamiliehendelsesdato';
 // import { erAllePeriodeSkjemaspørsmålBesvart } from './erAllePeriodeSkjemaspørsmålBesvart';
 import { Regel, RegelAlvorlighet } from '../../utils/types/regelTypes';
-import { harUtsettelsePgaArbeidMedDeltidUtenAvtale } from './harUtsettelsePgaArbeidMedDeltidUtenAvtale';
 import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starterUttaksperiodeRundtFødselEtter2UkerFørFødsel';
 import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
 import { periodeDeFørsteSeksUkeneHarUlovligUttakBFHR } from './periodeDeFørsteSeksUkeneHarUlovligUttakBFHR';
+import { harBekreftet100ProsentArbeidIUtsettelsePgaArbeid } from './harBekreftet100ProsentArbeidIUtsettelsePgaArbeid';
+import { forSenUttakVedPåfølgendeBarn } from './forSenUttakVedPåfølgendeBarn';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
@@ -17,10 +18,11 @@ export enum PeriodeValiderRegelKey {
     'erSamtidigUttakGyldig' = 'erSamtidigUttakGyldig',
     'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato',
     // 'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart',
-    'harUtsettelsePgaArbeidMedDeltidUtenAvtale' = 'harUtsettelsePgaArbeidMedDeltidUtenAvtale',
     'starterUttaksperiodeRundtFødselEtter2UkerFørFødsel' = 'starterUttaksperiodeRundtFødselEtter2UkerFørFødsel',
     'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel' = 'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel',
     'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR' = 'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR',
+    'harBekreftet100ProsentArbeidIUtsettelsePgaArbeid' = 'harBekreftet100ProsentArbeidIUtsettelsePgaArbeid',
+    'forSenUttakVedPåfølgendeBarn' = 'forSenUttakVedPåfølgendeBarn',
 }
 
 /** Meldingene skal default kun vises inne i skjema */
@@ -77,6 +79,18 @@ const periodevalideringsregler: Regel[] = [
         test: erUtsettelseEtterFamiliehendelsesdato,
         skjulesIOppsummering: skjulIOppsummering,
     },
+    {
+        key: PeriodeValiderRegelKey.harBekreftet100ProsentArbeidIUtsettelsePgaArbeid,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: harBekreftet100ProsentArbeidIUtsettelsePgaArbeid,
+        skjulesIOppsummering: skjulIOppsummering,
+    },
+    {
+        key: PeriodeValiderRegelKey.forSenUttakVedPåfølgendeBarn,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: forSenUttakVedPåfølgendeBarn,
+        skjulesIOppsummering: skjulIOppsummering,
+    },
     //TODO: visibility.areAllQuestionsAnswered() burde sendes oppover fra periodeUttakFormQuestionsConfig/Legg til periode formen.
     // {
     //     key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
@@ -85,12 +99,6 @@ const periodevalideringsregler: Regel[] = [
     //     skjulesIOppsummering: skjulIOppsummering,
     //     avvikType: 'skjema',
     // },
-    {
-        key: PeriodeValiderRegelKey.harUtsettelsePgaArbeidMedDeltidUtenAvtale,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: harUtsettelsePgaArbeidMedDeltidUtenAvtale,
-        skjulesIOppsummering: false,
-    },
 ];
 
 export default periodevalideringsregler;

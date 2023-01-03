@@ -35,9 +35,9 @@ import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
+import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -116,9 +116,10 @@ export const getOppholdskontoNavn = (
     foreldernavn: string,
     erMor: boolean
 ) => {
+    const navn = capitalizeFirstLetter(foreldernavn);
     return erMor
-        ? intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
-        : intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
+        ? intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn: navn })
+        : intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn: navn });
 };
 
 export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
@@ -259,7 +260,7 @@ export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: Eksistere
         return false;
     }
     const saksperiode = getSaksperiode(periode, eksisterendeSak);
-    return saksperiode ? saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET : false;
+    return saksperiode ? saksperiode.resultat.innvilget : false;
 };
 
 const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {

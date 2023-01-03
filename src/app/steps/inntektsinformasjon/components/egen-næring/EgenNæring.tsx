@@ -74,7 +74,7 @@ const EgenNæring: FunctionComponent<Props> = ({
                 />
             </Block>
             {formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && (
-                <div style={{ backgroundColor: '#e9e7e7', marginBottom: '1rem', padding: '1rem' }}>
+                <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <EgenNæringModal
                         isOpen={isModalOpen}
                         title="Næringsinformasjon"

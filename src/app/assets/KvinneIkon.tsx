@@ -4,6 +4,8 @@ const KvinneIkon = () => (
     <svg
         width={40}
         height={40}
+        role="img"
+        aria-hidden="true"
         viewBox="0 0 32 32"
         display="block"
         version="1.1"

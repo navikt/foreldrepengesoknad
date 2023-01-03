@@ -9,7 +9,7 @@ const InfoTilFiskere = () => {
 
     return (
         <UtvidetInformasjon apneLabel={intlUtils(intl, 'inntektsinformasjon.infoTilFiskere.apneLabel')}>
-            <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+            <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
                 <Block padBottom="m">
                     <Normaltekst>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />

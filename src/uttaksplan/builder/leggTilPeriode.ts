@@ -54,6 +54,27 @@ const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): P
     }
 };
 
+export const splittPeriodePåDato = (periode: Periode, dato: Date): Periode[] => {
+    const periodeFørDato: Periode = {
+        ...periode,
+        tidsperiode: {
+            fom: periode.tidsperiode.fom,
+            tom: Uttaksdagen(dato).forrige(),
+        },
+    };
+
+    const periodeFraOgMedDato: Periode = {
+        ...periode,
+        id: guid(),
+        tidsperiode: {
+            fom: Uttaksdagen(periodeFørDato.tidsperiode.tom).neste(),
+            tom: periode.tidsperiode.tom,
+        },
+    };
+
+    return [periodeFørDato, periodeFraOgMedDato];
+};
+
 export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiode, famDato: Date): Uttaksperiode[] => {
     const periodeFørFamDato: Periode = {
         ...periode,

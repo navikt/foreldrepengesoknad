@@ -1,1 +1,69 @@
-[]
+{
+    "foreldrepenger": [
+        {
+            "saksnummer": "352010340",
+            "sakAvsluttet": false,
+            "kanSøkeOmEndring": true,
+            "sakTilhørerMor": true,
+            "gjelderAdopsjon": true,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "BEGGE_RETT",
+            "annenPart": { "type": "person", "fnr": "23518310526", "fornavn": "Glupsk", "etternavn": "Bly" },
+            "familiehendelse": { "fødselsdato": "2022-10-05", "antallBarn": 1, "omsorgsovertakelse": "2022-11-24" },
+            "gjeldendeVedtak": {
+                "perioder": [
+                    {
+                        "fom": "2022-11-24",
+                        "tom": "2022-12-11",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-03-20",
+                        "tom": "2023-03-31",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": false,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-04-01",
+                        "tom": "2023-05-03",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    }
+                ]
+            },
+            "barn": [
+                {
+                    "type": "person",
+                    "fnr": "05502251750",
+                    "fornavn": "Oriental",
+                    "etternavn": "Bokhylle",
+                    "fødselsdato": "2022-10-05"
+                }
+            ],
+            "dekningsgrad": "HUNDRE"
+        }
+    ],
+    "engangsstønad": [],
+    "svangerskapspenger": []
+}

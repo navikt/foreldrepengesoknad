@@ -45,7 +45,7 @@ const context = {
         tilleggsopplysninger: undefined!,
         ønskerJustertUttakVedFødsel: undefined,
     },
-    version: 4,
+    version: 5,
     currentRoute: '/soknad/uttaksplan-info',
     søkerinfo: {} as Søkerinfo,
     saker: [],
@@ -55,6 +55,9 @@ const context = {
     perioderSomSkalSendesInn: [],
     harUttaksplanBlittSlettet: false,
     brukerSvarteJaPåAutoJustering: undefined,
+    søknadGjelderEtNyttBarn: undefined!,
+    familieHendelseDatoNesteSak: undefined!,
+    annenPartsUttakErLagtTilIPlan: undefined,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {

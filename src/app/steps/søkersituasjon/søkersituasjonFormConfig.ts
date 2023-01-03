@@ -20,13 +20,12 @@ const initialSøkersituasjonValues: SøkersituasjonFormData = {
 };
 
 export const getInitialSøkerSituasjonValues = (stateValues: Søkersituasjon): SøkersituasjonFormData => {
-    if (stateValues && hasValue(stateValues.rolle) && hasValue(stateValues.situasjon)) {
+    if (stateValues) {
         return {
-            rolle: stateValues.rolle,
-            situasjon: stateValues.situasjon,
+            rolle: hasValue(stateValues.rolle) ? stateValues.rolle : initialSøkersituasjonValues.rolle,
+            situasjon: hasValue(stateValues.situasjon) ? stateValues.situasjon : initialSøkersituasjonValues.situasjon,
         };
     }
-
     return initialSøkersituasjonValues;
 };
 

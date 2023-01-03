@@ -4,12 +4,12 @@ import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import Sak from 'app/types/Sak';
+import { Sak } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
-import Barn from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -28,6 +28,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_ANNENFORELDER = 'setAnnenForelder',
     SET_SØKERINFO = 'setSøkerinfo',
     SET_SØKER = 'setSøker',
+    SET_SØKNAD_GJELDER_ET_NYTT_BARN = 'setSøknadGjelderEtNyttBarn',
     SET_INFORMASJON_OM_UTENLANDSOPPHOLD = 'setInformasjonOmUtenlandsopphold',
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
     SET_SAKER = 'setSaker',
@@ -49,6 +50,8 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
     SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL = 'setØnskerJustertUttakVedFødsel',
     SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING = 'setBrukerSvarteJaPAutoJustering',
+    SET_BARN_FRA_NESTE_SAK = 'setBarnFraNesteSak',
+    SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN = 'setAnnenPartsUttakErLagtTilIPlan',
 }
 
 interface SetVelkommen {
@@ -241,6 +244,16 @@ const setPerioderSomSkalSendesInn = (payload: Periode[]): SetPerioderSomSkalSend
     payload,
 });
 
+interface SetSøknadGjelderEtNyttBarn {
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD_GJELDER_ET_NYTT_BARN;
+    payload: boolean;
+}
+
+const setSøknadGjelderEtNyttBarn = (payload: boolean): SetSøknadGjelderEtNyttBarn => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD_GJELDER_ET_NYTT_BARN,
+    payload,
+});
+
 interface SetSøknad {
     type: ForeldrepengesøknadContextActionKeys.SET_SØKNAD;
     payload: Søknad;
@@ -351,6 +364,25 @@ const setBrukerSvarteJaPåAutoJustering = (payload: boolean | undefined): SetBru
     payload,
 });
 
+interface SetBarnFraNesteSak {
+    type: ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK;
+    payload: BarnFraNesteSak | undefined;
+}
+
+const setBarnFraNesteSak = (payload: BarnFraNesteSak | undefined): SetBarnFraNesteSak => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK,
+    payload,
+});
+
+interface SetAnnenPartsUttakErLagtTilIPlan {
+    type: ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN;
+    payload: boolean;
+}
+
+const setAnnenPartsUttakErLagtTilIPlan = (payload: boolean): SetAnnenPartsUttakErLagtTilIPlan => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN,
+    payload,
+});
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -361,6 +393,7 @@ export type ForeldrepengesøknadContextAction =
     | SetAnnenForelder
     | SetSøkerinfo
     | SetSøker
+    | SetSøknadGjelderEtNyttBarn
     | SetInformasjonOmUtenlandsopphold
     | SetSaker
     | SetUttaksplanInfo
@@ -381,7 +414,9 @@ export type ForeldrepengesøknadContextAction =
     | SlettUttaksplan
     | SetUttaksplanSlettet
     | SetØnskerJustertUttakVedFødsel
-    | SetBrukerSvarteJaPåAutoJustering;
+    | SetBrukerSvarteJaPåAutoJustering
+    | SetBarnFraNesteSak
+    | SetAnnenPartsUttakErLagtTilIPlan;
 
 export default {
     setVelkommen,
@@ -403,6 +438,7 @@ export default {
     lagUttaksplanforslag,
     setUttaksplan,
     setSøknad,
+    setSøknadGjelderEtNyttBarn,
     setEksisterendeSak,
     setGodkjentOppsummering,
     setKvittering,
@@ -413,5 +449,7 @@ export default {
     slettUttaksplan,
     setUttaksplanSlettet,
     setØnskerJustertUttakVedFødsel,
-    setBrukerSvarteJaPåAutoJustering: setBrukerSvarteJaPåAutoJustering,
+    setBrukerSvarteJaPåAutoJustering,
+    setBarnFraNesteSak,
+    setAnnenPartsUttakErLagtTilIPlan,
 };

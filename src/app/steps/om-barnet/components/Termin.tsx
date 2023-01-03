@@ -27,12 +27,13 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
+    søknadGjelderEtNyttBarn: boolean;
 }
 
-const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formValues }) => {
+const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formValues, søknadGjelderEtNyttBarn }) => {
     const intl = useIntl();
 
-    if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== YesOrNo.NO) {
+    if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== YesOrNo.NO || !søknadGjelderEtNyttBarn) {
         return null;
     }
 

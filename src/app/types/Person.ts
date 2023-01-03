@@ -8,6 +8,7 @@ export interface PersonBase {
     etternavn: string;
     kjønn: Kjønn;
     fødselsdato: Date;
+    dødsdato?: Date;
 }
 
 interface Person extends PersonBase {
@@ -20,8 +21,6 @@ export interface RegistrertBarn extends PersonBase {
     annenForelder?: RegistrertAnnenForelder;
 }
 
-export interface RegistrertAnnenForelder extends Omit<PersonBase, 'kjønn'> {
-    harOpplystOmSinPågåendeSak?: boolean;
-}
+export type RegistrertAnnenForelder = Omit<PersonBase, 'kjønn' | 'fødselsdato'>;
 
 export default Person;

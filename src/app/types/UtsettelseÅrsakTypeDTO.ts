@@ -1,10 +1,10 @@
 export enum UtsettelseÅrsakTypeDTO {
-    Ferie = 'FERIE',
+    Ferie = 'LOVBESTEMT_FERIE',
     Arbeid = 'ARBEID',
-    Sykdom = 'SYKDOM_SKADE',
+    Sykdom = 'SØKER_SYKDOM',
     InstitusjonSøker = 'SØKER_INNLAGT',
     InstitusjonBarnet = 'BARN_INNLAGT',
-    HvØvelse = 'HV_OVELSE',
+    HvØvelse = 'HV_ØVELSE',
     NavTiltak = 'NAV_TILTAK',
     Fri = 'FRI',
 }

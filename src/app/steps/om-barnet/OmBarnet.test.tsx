@@ -6,7 +6,8 @@ import * as stories from 'stories/steps/om-barnet/OmBarnet.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
-const { Default, ForAdopsjon, FarFødsel, MedmorFødsel } = composeStories(stories);
+const { Default, ForAdopsjon, FarFødsel, MedmorFødsel, RegistrertBarnFødselFar, RegistrertBarnFødselMor } =
+    composeStories(stories);
 const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
 
 const GÅ_VIDERE_KNAPP = 'Gå videre';
@@ -16,12 +17,6 @@ const NEI = 'Nei';
 describe('<OmBarnet>', () => {
     it('skal ha født ett barn', async () => {
         render(<Default />);
-
-        expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Søknaden min gjelder et annet barn'));
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText(JA));
@@ -45,12 +40,6 @@ describe('<OmBarnet>', () => {
 
     it('skal ikke ha født barn ennå', async () => {
         render(<Default />);
-
-        expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Søknaden min gjelder et annet barn'));
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText(NEI));
@@ -76,43 +65,6 @@ describe('<OmBarnet>', () => {
         await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-    });
-
-    it('mor skal bli spurt om termindato hvis hun velger registrert barn født innenfor de siste 12 ukene', async () => {
-        MockDate.set(new Date('2021-03-16'));
-
-        render(<Default />);
-        expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('KLØKTIG MIDTPUNKT'));
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
-        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await userEvent.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
-        await userEvent.tab();
-
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        MockDate.reset();
-    });
-
-    it('mor skal bli spurt om termindato hvis hun velger registrert barn født tidligere enn de siste 12 ukene', async () => {
-        MockDate.set(new Date('2021-06-16'));
-        render(<Default />);
-        expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('KLØKTIG MIDTPUNKT'));
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
-        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await userEvent.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
-        await userEvent.tab();
-
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        MockDate.reset();
     });
 
     it('skal søke stebarnsadopsjon for ett barn', async () => {
@@ -144,7 +96,7 @@ describe('<OmBarnet>', () => {
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal søke adopsjon men ikke stebarnsadopsjon for ett barn', async () => {
+    it('skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal ikke bli spurt om adopsjon fra utland hvis barnet er adoptert etter 1.10.2021', async () => {
         render(<ForAdopsjon />);
 
         expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
@@ -161,6 +113,38 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
         const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
         await userEvent.type(barnetFødtInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(screen.queryByText('Adopterer du fra utlandet?')).not.toBeInTheDocument();
+
+        expect(screen.queryByText('Når kommer barnet til Norge?')).not.toBeInTheDocument();
+
+        expect(
+            await screen.findByText(
+                'Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.'
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByText('Trykk her for å laste opp dokumentasjon om adopsjon')).toBeInTheDocument();
+
+        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+    });
+    it('skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal bli spurt om adopsjon er fra utland hvis barnet er adoptert før 1.10.2021', async () => {
+        render(<ForAdopsjon />);
+
+        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText(NEI));
+
+        expect(await screen.findByText('Når overtar du omsorgen?')).toBeInTheDocument();
+        const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
+        await userEvent.type(overtaOmsorgDatoInput, dayjs(new Date('2021-09-30')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
+        const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
+        await userEvent.type(barnetFødtInput, dayjs(new Date('2021-09-01')).format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Adopterer du fra utlandet?')).toBeInTheDocument();
@@ -182,51 +166,11 @@ describe('<OmBarnet>', () => {
     });
 
     it.each(farEllerMedMorSøker)(
-        'Far/medmor må oppgi termin hvis han velger registrert barn som er født de siste 12 ukene',
-        async (FarEllerMedMorSøker) => {
-            MockDate.set(new Date('2021-03-16'));
-            render(<FarEllerMedMorSøker />);
-
-            expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-            expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-            expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('KLØKTIG MIDTPUNKT'));
-            expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
-            const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-            await userEvent.type(termindatoInput, dayjs(new Date('2021-03-01')).format('DD.MM.YYYY'));
-            await userEvent.tab();
-            expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-            MockDate.reset();
-        }
-    );
-
-    it.each(farEllerMedMorSøker)(
-        'Far/medmor må ikke oppgi termin hvis han velger registrert barn som er født tidligere enn de siste 12 ukene',
-        async (FarEllerMedMorSøker) => {
-            MockDate.set(new Date('2021-06-16'));
-            render(<FarEllerMedMorSøker />);
-            expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-            expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-            expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-            expect(screen.getByText('Søknaden min gjelder et annet barn')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('KLØKTIG MIDTPUNKT'));
-            expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
-            expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-            MockDate.reset();
-        }
-    );
-
-    it.each(farEllerMedMorSøker)(
         'Far/medmor kan ikke søke på termin hvis WLB regler ikke gjelder',
         async (FarEllerMedMorSøker) => {
             MockDate.set(new Date('2022-08-01'));
             render(<FarEllerMedMorSøker />);
 
-            expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-            expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-            expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-
-            await userEvent.click(screen.getByText('Søknaden min gjelder et annet barn'));
             expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
             await userEvent.click(screen.getByText(NEI));
@@ -254,12 +198,6 @@ describe('<OmBarnet>', () => {
         async (FarEllerMedMorSøker) => {
             MockDate.set(new Date('2022-08-02'));
             render(<FarEllerMedMorSøker />);
-            expect(await screen.findByText('Barn registrert på deg:')).toBeInTheDocument();
-            expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-            expect(screen.getByText('15.03.2021')).toBeInTheDocument();
-
-            await userEvent.click(screen.getByText('Søknaden min gjelder et annet barn'));
-
             expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
             await userEvent.click(screen.getByText(NEI));
             expect(await screen.findByText('Hvor mange barn venter dere?')).toBeInTheDocument();
@@ -293,4 +231,62 @@ describe('<OmBarnet>', () => {
             MockDate.reset();
         }
     );
+
+    it('Det registrerte barnet skal vises og far/medmor må oppgi termin hvis han/hun velger registrert barn som er født innenfor de siste 12 ukene', async () => {
+        MockDate.set(new Date('2021-03-16'));
+        render(<RegistrertBarnFødselFar />);
+        expect(await screen.findByText('Barnet du søker for:')).toBeInTheDocument();
+        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
+        expect(screen.getByText('Født: 15.03.2021')).toBeInTheDocument();
+        expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, dayjs(new Date('2021-03-01')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        MockDate.reset();
+    });
+
+    it('Det registrerte barnet skal vises og far/medmor skal ikke måtte ikke oppgi termin hvis han velger registrert barn som er født tidligere enn de siste 12 ukene', async () => {
+        MockDate.set(new Date('2021-06-16'));
+        render(<RegistrertBarnFødselFar />);
+        expect(await screen.findByText('Barnet du søker for:')).toBeInTheDocument();
+        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
+        expect(screen.getByText('Født: 15.03.2021')).toBeInTheDocument();
+        expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        MockDate.reset();
+    });
+
+    it('Det registrerte barnet skal vises og mor skal bli spurt om termindato hvis hun velger registrert barn født innenfor de siste 12 ukene', async () => {
+        MockDate.set(new Date('2022-08-05'));
+        render(<RegistrertBarnFødselMor />);
+        expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
+        expect(screen.getByText('LYST MIDTPUNKT')).toBeInTheDocument();
+        expect(screen.getByText('SNILT MIDTPUNKT')).toBeInTheDocument();
+
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        MockDate.reset();
+    });
+
+    it('Begge de registrerte barna skal vises og mor skal bli spurt om termindato hvis hun velger to registrerte barn født tidligere enn de siste 12 ukene', async () => {
+        MockDate.set(new Date('2022-10-16'));
+        render(<RegistrertBarnFødselMor />);
+        expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
+        expect(screen.getByText('LYST MIDTPUNKT')).toBeInTheDocument();
+        expect(screen.getByText('SNILT MIDTPUNKT')).toBeInTheDocument();
+
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, dayjs(new Date('2022-08-01')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        MockDate.reset();
+    });
 });

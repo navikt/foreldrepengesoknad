@@ -42,6 +42,7 @@ import {
     mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -53,6 +54,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
 }) => {
     const intl = useIntl();
+    const { state } = useForeldrepengesøknadContext();
     const { søkersituasjon, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
     const {
         person: { fornavn, mellomnavn, etternavn },
@@ -63,6 +65,8 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>) => {
         const submissionValues = mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState(values);
@@ -108,6 +112,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg: false,
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
+                    førsteUttaksdagNesteBarnsSak,
                 })
             ),
         ];
@@ -199,7 +204,8 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                     ),
                                     'day'
                                 ) &&
-                                !isAdoptertStebarn(barn)
+                                !isAdoptertStebarn(barn) &&
+                                !erDeltUttak
                             }
                         >
                             <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>

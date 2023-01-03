@@ -22,6 +22,7 @@ import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
 export const slåSammenLikePerioder = (
     perioder: Periode[],
     familiehendelsesdato: Date,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
     annenPartsUttak?: Periode[]
 ): Periode[] => {
     if (perioder.length <= 1) {
@@ -65,15 +66,28 @@ export const slåSammenLikePerioder = (
             }
 
             if (
-                dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
-                dayjs(periode.tidsperiode.tom).isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())
+                (dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
+                    dayjs(periode.tidsperiode.tom).isSameOrAfter(
+                        Uttaksdagen(familiehendelsesdato).denneEllerNeste()
+                    )) ||
+                (førsteUttaksdagNesteBarnsSak !== undefined &&
+                    dayjs(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
+                    dayjs(periode.tidsperiode.fom).isSameOrAfter(
+                        Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
+                        'day'
+                    ))
             ) {
                 nyePerioder.push(forrigePeriode);
                 forrigePeriode = periode;
                 return;
             }
 
-            forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
+            const nyTidsperiode = {
+                fom: forrigePeriode.tidsperiode.fom,
+                tom: periode.tidsperiode.tom,
+            };
+
+            forrigePeriode.tidsperiode = { ...nyTidsperiode };
             return;
         } else {
             nyePerioder.push(forrigePeriode);
@@ -320,11 +334,13 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
 
 // Funksjon som gjør at alle perioder overlapper 1 til 1
 export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]) => {
-    const perioderTidsperioder: SplittetDatoType[] = perioder.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true });
-        res.push({ dato: p.tidsperiode.tom, erFom: false });
-        return res;
-    }, [] as SplittetDatoType[]);
+    const perioderTidsperioder: SplittetDatoType[] = perioder
+        .filter((per) => isValidTidsperiode(per.tidsperiode))
+        .reduce((res, p) => {
+            res.push({ dato: p.tidsperiode.fom, erFom: true });
+            res.push({ dato: p.tidsperiode.tom, erFom: false });
+            return res;
+        }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
         res.push({ dato: p.tidsperiode.fom, erFom: true });
         res.push({ dato: p.tidsperiode.tom, erFom: false });
@@ -364,7 +380,13 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     };
 };
 
-export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Periode[], familiehendelsesdato: Date) => {
+export const settInnAnnenPartsUttak = (
+    perioder: Periode[],
+    annenPartsUttak: Periode[],
+    familiehendelsesdato: Date,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    initiellMappingFraSaksperioder = false
+) => {
     if (annenPartsUttak.length === 0) {
         return perioder;
     }
@@ -379,6 +401,15 @@ export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Per
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
+            if (isUttaksperiode(p) && p.ønskerSamtidigUttak && initiellMappingFraSaksperioder) {
+                res.push({
+                    ...p,
+                    ønskerSamtidigUttak: false,
+                });
+
+                return res;
+            }
+
             res.push(p);
 
             return res;
@@ -421,6 +452,7 @@ export const settInnAnnenPartsUttak = (perioder: Periode[], annenPartsUttak: Per
     return slåSammenLikePerioder(
         [...annenPartsUttakSomSlutterFørFørstePeriode, ...result, ...annenPartsUttakSomStarterEtterSistePeriode],
         familiehendelsesdato,
+        førsteUttaksdagNesteBarnsSak,
         annenPartsUttak
     );
 };
