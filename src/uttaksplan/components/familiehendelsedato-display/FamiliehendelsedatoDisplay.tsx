@@ -18,7 +18,7 @@ const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): Re
         if (isFødtBarn(barn)) {
             return (
                 <FormattedMessage
-                    id={'uttaksplan.familiehendelsesdato.født'}
+                    id="uttaksplan.familiehendelsesdato.født"
                     values={{ antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }}
                 />
             );
@@ -26,7 +26,7 @@ const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): Re
 
         return (
             <FormattedMessage
-                id={'uttaksplan.familiehendelsesdato.termin'}
+                id="uttaksplan.familiehendelsesdato.termin"
                 values={{ dato: formaterDatoUtenDag(familiehendelsedato) }}
             />
         );
@@ -34,7 +34,7 @@ const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): Re
 
     return (
         <FormattedMessage
-            id={'uttaksplan.familiehendelsesdato.adopsjon'}
+            id="uttaksplan.familiehendelsesdato.adopsjon"
             values={{ antallBarn, dato: formaterDatoUtenDag(familiehendelsedato) }}
         />
     );
