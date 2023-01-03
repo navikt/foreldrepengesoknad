@@ -8,7 +8,7 @@ import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
-
+import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
 
 export enum SelectableBarnType {
@@ -168,6 +168,7 @@ const BarnVelger: FunctionComponent<Props> = (props: Props) => {
             <Block padBottom="l">
                 <VelkommenFormComponents.RadioGroup
                     name={VelkommenFormField.valgteBarn}
+                    validate={validateHarValgtEtBarn(intl)}
                     radios={props.selectableBarn
                         .map((barnet) => getCheckboxForBarn(barnet, intl))
                         .concat([getRadioForNyttBarn(intl)])}
