@@ -64,6 +64,17 @@ describe('<Velkommen>', () => {
         await userEvent.click(screen.getByText(ENDRE_SØKNAD));
         expect(await screen.findByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
     });
+    it('skal måtte velge et barn for å fortsette', async () => {
+        render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
+        expect(
+            screen.queryByText('For å komme videre, må du velge et av alternativene ovenfor.')
+        ).not.toBeInTheDocument();
+        await userEvent.click(screen.getByText(BEGYNN_MED_SØKNAD));
+        expect(
+            await screen.findByText('For å komme videre, må du velge et av alternativene ovenfor.')
+        ).toBeInTheDocument();
+    });
 
     it('skal kunne søke på nytt barn', async () => {
         render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
