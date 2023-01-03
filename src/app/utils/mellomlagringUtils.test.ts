@@ -13,14 +13,14 @@ describe('Test av mellomlagring', () => {
     });
 
     it('Burde bruke mellomlagrede data hvis versjon er lik current version', () => {
-        const result = shouldApplyStorage({ version: 4, søknad: {} } as ForeldrepengesøknadContextState);
+        const result = shouldApplyStorage({ version: 5, søknad: {} } as ForeldrepengesøknadContextState);
 
         expect(result).toBe(true);
     });
 
     it('Burde ikke bruke mellomlagrede data hvis currentRoute er en rute som ikke finnes for endringssøknad', () => {
         let result = shouldApplyStorage({
-            version: 4,
+            version: 5,
             currentRoute: SøknadRoutes.SØKERSITUASJON,
             søknad: {
                 erEndringssøknad: true,
@@ -30,7 +30,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: 4,
+            version: 5,
             currentRoute: SøknadRoutes.OM_BARNET,
             søknad: {
                 erEndringssøknad: true,
@@ -40,7 +40,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: 4,
+            version: 5,
             currentRoute: SøknadRoutes.ANNEN_FORELDER,
             søknad: {
                 erEndringssøknad: true,
@@ -50,7 +50,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: 4,
+            version: 5,
             currentRoute: SøknadRoutes.UTTAKSPLAN_INFO,
             søknad: {
                 erEndringssøknad: true,
@@ -60,7 +60,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: 4,
+            version: 5,
             currentRoute: SøknadRoutes.UTENLANDSOPPHOLD,
             søknad: {
                 erEndringssøknad: true,
@@ -70,7 +70,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: 4,
+            version: 5,
             currentRoute: SøknadRoutes.INNTEKTSINFORMASJON,
             søknad: {
                 erEndringssøknad: true,

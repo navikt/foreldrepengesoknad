@@ -1,4 +1,4 @@
-import { bemUtils, Block, TidsperiodeDate } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -33,7 +33,7 @@ import {
     getPeriodeUttakFormInitialValues,
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape } from 'react-intl';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
@@ -75,6 +75,7 @@ interface Props {
     morHarRett: boolean;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
+    intl: IntlShape;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -145,6 +146,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     morHarRett,
     antallBarn,
     utsettelserIPlan,
+    intl,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -179,7 +181,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     };
     const erDeltUttakINorge = erDeltUttak && !annenForelderHarRettIEØS;
     const velgbareStønadskontoer = getVelgbareStønadskontotyper(stønadskontoer);
-    const navnPåAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : undefined;
+    const navnPåAnnenForelder =
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
+            ? annenForelder.fornavn
+            : intlUtils(intl, 'annen.forelder');
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)

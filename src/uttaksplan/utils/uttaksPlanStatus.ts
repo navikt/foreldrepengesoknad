@@ -144,13 +144,15 @@ const getUttakFraAvslåttePerioder = (perioder: AvslåttPeriode[]): Uttaksperiod
         return [];
     }
 
-    return perioder.map(
-        (periode): Uttaksperiode => ({
-            type: Periodetype.Uttak,
-            konto: periode.stønadskonto,
-            tidsperiode: periode.tidsperiode,
-            id: periode.id,
-            forelder: periode.forelder,
-        })
-    );
+    return perioder
+        .filter((p) => p.avslåttPeriodeType === Periodetype.Uttak)
+        .map(
+            (periode): Uttaksperiode => ({
+                type: Periodetype.Uttak,
+                konto: periode.kontoType!,
+                tidsperiode: periode.tidsperiode,
+                id: periode.id,
+                forelder: periode.forelder,
+            })
+        );
 };

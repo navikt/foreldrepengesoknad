@@ -9,7 +9,10 @@ import {
     getNavnPåForeldre,
 } from './personUtils';
 
+import getIntlMock from 'utils-test/intl-test-helper';
+
 describe('personUtils', () => {
+    const intlMock = getIntlMock();
     it('skal formatere navn med mellomnavn', () => {
         const verdi = formaterNavn('Espen', 'Utvikler', 'Senior');
         expect(verdi).toBe('Espen Senior Utvikler');
@@ -106,7 +109,7 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const erFarEllerMedmor = true;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intlMock);
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');
@@ -122,7 +125,7 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const erFarEllerMedmor = false;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intlMock);
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');

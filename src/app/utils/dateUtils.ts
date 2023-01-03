@@ -15,6 +15,8 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import FeatureToggle from 'app/FeatureToggle';
+import { isFeatureEnabled } from './toggleUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -206,12 +208,16 @@ export const isDateInTheFuture = (date: string): boolean => {
     return false;
 };
 
-export const velgEldsteBarn = (registrerteBarn: RegistrertBarn[], valgteBarn: string[]) => {
-    const filteredBarn = registrerteBarn.filter((regBarn) => valgteBarn.includes(regBarn.fnr));
-
-    return filteredBarn.sort((a, b) =>
+export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): RegistrertBarn => {
+    return registrerteBarn.sort((a, b) =>
         isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1
-    )[filteredBarn.length - 1];
+    )[registrerteBarn.length - 1];
+};
+
+export const getEldsteDato = (dato: Date[]) => {
+    return dato.sort((a, b) => (isDateABeforeDateB(dateToISOString(a)!, dateToISOString(b)!) ? 1 : -1))[
+        dato.length - 1
+    ];
 };
 
 type VarighetFormat = 'full' | 'normal';
@@ -319,10 +325,14 @@ export const getRelevantFamiliehendelseDato = (
     fødselsdato: string | undefined,
     omsorgsovertakelsesdato: string | undefined
 ): string => {
-    if (fødselsdato !== undefined) {
+    if (omsorgsovertakelsesdato !== undefined) {
+        return omsorgsovertakelsesdato;
+    } else if (fødselsdato !== undefined) {
         return fødselsdato;
+    } else if (termindato !== undefined) {
+        return termindato;
     } else {
-        return termindato !== undefined ? termindato : omsorgsovertakelsesdato!;
+        throw new Error('Mangler fødselsdato/termindato/adopsjonsdato for barnet.');
     }
 };
 
@@ -337,10 +347,28 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
 
 export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
-
+    const førsteJanuar2022 = new Date('2022-01-01');
+    if (isFeatureEnabled(FeatureToggle.wlbGjelderFraFørsteJanuar2022)) {
+        return dayjs(familiehendelsesdato).isSameOrAfter(førsteJanuar2022, 'day');
+    }
     return (
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
         dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
+    );
+};
+
+export const getToTetteReglerGjelder = (
+    familiehendelsesdato: Date | undefined,
+    familiehendelsesdatoNesteBarn: Date | undefined
+): boolean => {
+    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
+        return false;
+    }
+    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
+        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
     );
 };
 
@@ -460,3 +488,7 @@ export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Dat
 
 export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
     dayjs(date).isBetween(fom, tom, 'day', '[]');
+
+export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: Date): boolean => {
+    return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
+};

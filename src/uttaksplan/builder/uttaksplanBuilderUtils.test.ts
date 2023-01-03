@@ -37,7 +37,7 @@ const perioder: Periode[] = [
 
 describe('uttaksplanbuilderUtils - slåSammenLikePerioder', () => {
     it('slåSammenLikePerioder - skal slå sammen like perioder riktig', () => {
-        const result = slåSammenLikePerioder(perioder, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(1);
         expect(result[0].tidsperiode.fom).toBe(perioder[0].tidsperiode.fom);
         expect(result[0].tidsperiode.tom).toBe(perioder[1].tidsperiode.tom);
@@ -45,44 +45,50 @@ describe('uttaksplanbuilderUtils - slåSammenLikePerioder', () => {
     it('slåSammenLikePerioder - skal ikke slå sammen like perioder hvis det er en dag imellom de', () => {
         const perioder2 = [
             perioder[0],
-            { ...perioder[1], tidsperiode: { fom: new Date('2022-09-01'), tom: perioder[1].tidsperiode.tom } },
+            { ...perioder[1], tidsperiode: { fom: new Date('2022-09-02'), tom: perioder[1].tidsperiode.tom } },
         ];
-        const result = slåSammenLikePerioder(perioder2, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder2, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellige foreldre', () => {
         const perioder3 = [perioder[0], { ...perioder[1], forelder: Forelder.mor }];
-        const result = slåSammenLikePerioder(perioder3, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder3, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig konto', () => {
         const perioder4 = [perioder[0], { ...perioder[1], konto: StønadskontoType.Fedrekvote }];
-        const result = slåSammenLikePerioder(perioder4, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder4, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig samtidig uttak verdi', () => {
         const perioder5 = [perioder[0], { ...perioder[1], samtidigUttak: true }];
-        const result = slåSammenLikePerioder(perioder5, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder5, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig gradering verdi', () => {
         const perioder6 = [perioder[0], { ...perioder[1], gradert: true }];
-        const result = slåSammenLikePerioder(perioder6, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder6, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig ønskerFlerbarnsdager verdi', () => {
         const perioder7 = [perioder[0], { ...perioder[1], ønskerFlerbarnsdager: true }];
-        const result = slåSammenLikePerioder(perioder7, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder7, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig erMorForSyk verdi', () => {
         const perioder8 = [perioder[0], { ...perioder[1], ønskerFlerbarnsdager: true }];
-        const result = slåSammenLikePerioder(perioder8, new Date('2022-07-21'));
+        const result = slåSammenLikePerioder(perioder8, new Date('2022-07-21'), undefined);
+        expect(result.length).toEqual(2);
+    });
+    it('slåSammenLikePerioder - skal ikke slå sammen perioder som overlapper førstePeriodeNesteSak', () => {
+        const fomFørstePeriodeNesteSak = new Date('2022-09-01');
+        const result = slåSammenLikePerioder(perioder, new Date('2022-06-21'), fomFørstePeriodeNesteSak);
         expect(result.length).toEqual(2);
     });
 });
 
 describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
+    const førsteUttaksdagNesteBarnsSak = undefined;
     it('Skal dele opp søkerens periode hvis annen parts periode er i midten av perioden', () => {
         const morsPerioder = [
             {
@@ -138,7 +144,12 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
         ] as UttakAnnenPartInfoPeriode[];
 
-        const result = settInnAnnenPartsUttak(morsPerioder, annenPartsUttakIMidten, new Date('2022-01-21'));
+        const result = settInnAnnenPartsUttak(
+            morsPerioder,
+            annenPartsUttakIMidten,
+            new Date('2022-01-21'),
+            førsteUttaksdagNesteBarnsSak
+        );
 
         expect(result.length).toBe(6);
         expect(result[0]).toEqual(morsPerioder[0]);
@@ -232,7 +243,12 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
         ] as UttakAnnenPartInfoPeriode[];
 
-        const result = settInnAnnenPartsUttak(søkerensPerioder, annenPartsUttak, new Date('2022-01-21'));
+        const result = settInnAnnenPartsUttak(
+            søkerensPerioder,
+            annenPartsUttak,
+            new Date('2022-01-21'),
+            førsteUttaksdagNesteBarnsSak
+        );
 
         expect(result.length).toBe(8);
 
@@ -316,7 +332,12 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
         ] as UttakAnnenPartInfoPeriode[];
 
-        const result = settInnAnnenPartsUttak([], kunAnnenPartsUttak, new Date('2022-01-21'));
+        const result = settInnAnnenPartsUttak(
+            [],
+            kunAnnenPartsUttak,
+            new Date('2022-01-21'),
+            førsteUttaksdagNesteBarnsSak
+        );
         expect(result.length).toBe(1);
         expect(result[0]).toEqual(kunAnnenPartsUttak[0]);
     });
@@ -350,7 +371,8 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const result = settInnAnnenPartsUttak(
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
-            new Date('2020-12-21')
+            new Date('2020-12-21'),
+            førsteUttaksdagNesteBarnsSak
         );
         expect(result.length).toBe(3);
         expect(result[0].tidsperiode.fom).toEqual(
@@ -396,7 +418,8 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const result = settInnAnnenPartsUttak(
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
-            new Date('2020-12-21')
+            new Date('2020-12-21'),
+            førsteUttaksdagNesteBarnsSak
         );
         expect(result.length).toBe(1);
         expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
@@ -432,7 +455,8 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const result = settInnAnnenPartsUttak(
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
-            new Date('2020-12-21')
+            new Date('2020-12-21'),
+            førsteUttaksdagNesteBarnsSak
         );
         expect(result.length).toBe(2);
         expect(result[0].tidsperiode.fom).toEqual(
@@ -472,7 +496,8 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const result = settInnAnnenPartsUttak(
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
-            new Date('2020-12-21')
+            new Date('2020-12-21'),
+            førsteUttaksdagNesteBarnsSak
         );
         expect(result.length).toBe(2);
         expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);

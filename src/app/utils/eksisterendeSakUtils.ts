@@ -1,31 +1,42 @@
 import { guid } from 'nav-frontend-js-utils';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
-import { Arbeidsform } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import { Arbeidsform, isInfoPeriode } from 'uttaksplan/types/Periode';
+import { OppholdÅrsakTypeDTO } from 'app/types/OppholdÅrsakTypeDTO';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Saksperiode } from 'app/types/Saksperiode';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getFamiliehendelseType } from './getFamiliehendelseType';
-import { convertTidsperiodeToTidsperiodeDate, getRelevantFamiliehendelseDato, ISOStringToDate } from './dateUtils';
-import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
+import {
+    convertTidsperiodeToTidsperiodeDate,
+    getEldsteDato,
+    getRelevantFamiliehendelseDato,
+    ISOStringToDate,
+} from './dateUtils';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
-import Sak from 'app/types/Sak';
 import { Søknad } from 'app/context/types/Søknad';
 import AnnenForelder from 'app/context/types/AnnenForelder';
-import { AnnenPart } from 'app/types/AnnenPart';
 import Søker from 'app/context/types/Søker';
-import Person, { RegistrertBarn } from 'app/types/Person';
+import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { Situasjon } from 'app/types/Situasjon';
 import dayjs from 'dayjs';
-import Barn, { BarnType } from 'app/context/types/Barn';
+import Barn, { BarnType, isAdoptertBarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
+import { Sak } from 'app/types/Sak';
+import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
+import { RettighetType } from 'app/types/RettighetType';
+import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
+import Søkersituasjon from 'app/context/types/Søkersituasjon';
+import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import { intlUtils } from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -38,67 +49,67 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): StønadskontoType | undefined => {
     switch (årsak) {
-        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+        case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
             return StønadskontoType.Fedrekvote;
-        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+        case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
             return StønadskontoType.Fellesperiode;
-        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+        case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
             return StønadskontoType.Mødrekvote;
-        case OppholdÅrsakType.UttakForelderpengerFørFødsel:
-            return StønadskontoType.ForeldrepengerFørFødsel;
         default:
             return undefined;
     }
 };
 
-const erEksisterendeSakErDeltUttak = (eksisterendeSak: EksisterendeSakDTO): boolean => {
-    const {
-        grunnlag: {
-            farMedmorErAleneOmOmsorg,
-            farMedmorHarRett,
-            morErAleneOmOmsorg,
-            morHarRett,
-            harAnnenForelderTilsvarendeRettEØS,
-        },
-    } = eksisterendeSak;
-    if (
-        farMedmorErAleneOmOmsorg ||
-        morErAleneOmOmsorg ||
-        (farMedmorHarRett === false && harAnnenForelderTilsvarendeRettEØS === false) ||
-        (morHarRett === false && harAnnenForelderTilsvarendeRettEØS === false)
-    ) {
-        return false;
+const mapOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO | undefined): OppholdÅrsakType | undefined => {
+    switch (årsak) {
+        case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
+            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+        case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
+            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+        case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
+            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+        default:
+            return undefined;
     }
-    return true;
 };
 
-const mapSaksperiodeFromDTO = (p: SaksperiodeDTO): Saksperiode => {
-    const { oppholdAarsak, gjelderAnnenPart, uttakArbeidType } = p;
-
+export const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolean): Saksperiode => {
+    const { oppholdÅrsak } = p;
     const returnPeriode: Saksperiode = {
-        ...p,
         guid: guid(),
-        uttakArbeidType: [uttakArbeidType as UttakArbeidType],
-    };
+        periode: {
+            fom: p.fom,
+            tom: p.tom,
+        },
+        gjelderAnnenPart: erAnnenPartsSak,
+        resultat: p.resultat,
+        kontoType: p.kontoType,
+        flerbarnsdager: p.flerbarnsdager,
+        gradering: p.gradering,
+        utsettelseÅrsak: p.utsettelseÅrsak,
+        overføringÅrsak: p.overføringÅrsak,
+        samtidigUttak: p.samtidigUttak,
+        morsAktivitet: p.morsAktivitet,
+        oppholdÅrsak: mapOppholdÅrsakType(p.oppholdÅrsak),
+    } as Saksperiode;
 
-    if (oppholdAarsak !== undefined && gjelderAnnenPart === false) {
+    if (oppholdÅrsak !== undefined && erAnnenPartsSak === false) {
         returnPeriode.gjelderAnnenPart = true;
-        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak)!;
+        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak)!;
     }
 
-    if (oppholdAarsak !== undefined && gjelderAnnenPart) {
+    if (oppholdÅrsak !== undefined && erAnnenPartsSak) {
         returnPeriode.gjelderAnnenPart = false;
         returnPeriode.angittAvAnnenPart = true;
-        returnPeriode.stønadskontotype = getStønadskontoTypeFromOppholdÅrsakType(oppholdAarsak)!;
+        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak)!;
     }
 
     return returnPeriode as Saksperiode;
 };
 
-const saksperiodeErInnvilget = (saksperiode: Saksperiode) =>
-    saksperiode.periodeResultatType === PeriodeResultatType.INNVILGET;
+const saksperiodeErInnvilget = (saksperiode: Saksperiode): boolean => saksperiode.resultat.innvilget;
 
 const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     periode: Saksperiode,
@@ -110,8 +121,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
             periode.guid !== periode2.guid &&
             Tidsperioden(convertTidsperiodeToTidsperiodeDate(periode.periode)).erLik(
                 convertTidsperiodeToTidsperiodeDate(periode2.periode)
-            ) &&
-            periode.gjelderAnnenPart === periode2.gjelderAnnenPart
+            )
     );
 
     if (likePerioder.length === 0) {
@@ -127,110 +137,138 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
-const reduceDuplikateSaksperioderGrunnetArbeidsforhold = (
-    resultatPerioder: Saksperiode[],
-    periode: Saksperiode,
-    _index: number,
-    saksperioder: Saksperiode[]
-) => {
-    if (inneholderDuplikatSaksperiode(saksperioder, periode)) {
-        if (periode.graderingInnvilget && periode.arbeidstidprosent > 0) {
-            resultatPerioder.push(periode);
-
-            return resultatPerioder;
-        }
-
-        if (!periode.graderingInnvilget && !inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
-            resultatPerioder.push(periode);
-
-            return resultatPerioder;
-        }
-
-        if (!periode.graderingInnvilget && inneholderDuplikatSaksperiode(resultatPerioder, periode)) {
-            const periodeSomOverlever = saksperioder.find(
-                (s) =>
-                    Tidsperioden(convertTidsperiodeToTidsperiodeDate(s.periode)).erLik(
-                        convertTidsperiodeToTidsperiodeDate(periode.periode)
-                    ) &&
-                    s.gjelderAnnenPart === periode.gjelderAnnenPart &&
-                    s.guid !== periode.guid
-            );
-            const arbeidsform = periode.uttakArbeidType[0];
-
-            if (arbeidsform !== undefined && periodeSomOverlever !== undefined) {
-                if (!periodeSomOverlever.uttakArbeidType.includes(arbeidsform)) {
-                    periodeSomOverlever.uttakArbeidType.push(arbeidsform);
-                }
-            }
-
-            return resultatPerioder;
-        }
-
-        return resultatPerioder;
+export const getStartdatoFørstePeriodeAnnenPart = (
+    annenPartsSak: AnnenPartVedtakDTO | undefined | ''
+): Date | undefined => {
+    if (
+        annenPartsSak === undefined ||
+        annenPartsSak === '' ||
+        Object.keys(annenPartsSak).length === 0 ||
+        annenPartsSak.perioder.length === 0
+    ) {
+        return undefined;
     }
-
-    resultatPerioder.push(periode);
-
-    return resultatPerioder;
+    return ISOStringToDate(annenPartsSak.perioder[0].fom);
 };
 
-const inneholderDuplikatSaksperiode = (saksperioder: Saksperiode[], saksperiode: Saksperiode): boolean => {
-    if (saksperioder.length === 0) {
-        return false;
+export const mapAnnenPartsEksisterendeSakFromDTO = (
+    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined | '',
+    barn: Barn,
+    søkerErFarEllerMedmor: boolean,
+    familiehendelsesdato: string,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
+): EksisterendeSak | undefined => {
+    if (
+        eksisterendeSakAnnenPart === undefined ||
+        eksisterendeSakAnnenPart === '' ||
+        Object.keys(eksisterendeSakAnnenPart).length === 0
+    ) {
+        return undefined;
     }
+    const erAnnenPartsSak = true;
+    const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
+        .map((p) => {
+            return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
+        })
+        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
+    const fødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
+    const termindato = isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined;
+    const adopsjonsdato = isAdoptertBarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined;
 
-    return saksperioder.some(
-        (s) =>
-            Tidsperioden(convertTidsperiodeToTidsperiodeDate(s.periode)).erLik(
-                convertTidsperiodeToTidsperiodeDate(saksperiode.periode)
-            ) &&
-            s.gjelderAnnenPart === saksperiode.gjelderAnnenPart &&
-            s.guid !== saksperiode.guid
+    const grunnlagForAnnenPart = {
+        dekningsgrad:
+            eksisterendeSakAnnenPart.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+                ? Dekningsgrad.HUNDRE_PROSENT
+                : Dekningsgrad.ÅTTI_PROSENT,
+        antallBarn: barn.antallBarn,
+        morErAleneOmOmsorg: false,
+        morErUfør: false,
+        morHarRett: true,
+        farMedmorErAleneOmOmsorg: false,
+        farMedmorHarRett: true,
+        søkerErFarEllerMedmor,
+        termindato,
+        fødselsdato,
+        omsorgsovertakelsesdato: adopsjonsdato,
+        erDeltUttak: true,
+        erBarnetFødt: fødselsdato !== undefined,
+        familiehendelseDato: familiehendelsesdato,
+        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, adopsjonsdato),
+        harAnnenForelderTilsvarendeRettEØS: false,
+        ønskerJustertUttakVedFødsel: undefined,
+        barn: [], // barn brukes ikke videre her
+    };
+
+    const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
+        saksperioderAnnenPart,
+        grunnlagForAnnenPart,
+        førsteUttaksdagNesteBarnsSak
     );
+
+    return {
+        saksnummer: '',
+        erAnnenPartsSak,
+        grunnlag: grunnlagForAnnenPart,
+        saksperioder: saksperioderAnnenPart,
+        uttaksplan: uttaksplanAnnenPart.filter((p) => isInfoPeriode(p)),
+    };
 };
 
-export const mapEksisterendeSakFromDTO = (
-    eksisterendeSak: EksisterendeSakDTO | undefined | '',
-    erFarEllerMedmor: boolean,
-    erAnnenPartsSak: boolean
+export const mapSøkerensEksisterendeSakFromDTO = (
+    eksisterendeSak: Sak | undefined | '',
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
         return undefined;
     }
-
+    const erAnnenPartsSak = false;
     const {
-        grunnlag: {
-            dekningsgrad,
-            termindato,
-            fødselsdato,
-            omsorgsovertakelsesdato,
-            ønskerJustertUttakVedFødsel,
-            ...restGrunnlag
-        },
-        perioder,
+        dekningsgrad,
+        familiehendelse: { fødselsdato, termindato, omsorgsovertakelse, antallBarn },
+        gjeldendeVedtak: { perioder },
+        harAnnenForelderTilsvarendeRettEØS,
+        morUføretrygd,
+        rettighetType,
+        sakTilhørerMor,
+        ønskerJustertUttakVedFødsel,
+        annenPart,
+        barn,
     } = eksisterendeSak;
 
+    const erFarEllerMedmor = !sakTilhørerMor;
     const grunnlag: Saksgrunnlag = {
-        ...restGrunnlag,
-        erDeltUttak: erEksisterendeSakErDeltUttak(eksisterendeSak),
-        erBarnetFødt: fødselsdato !== undefined,
-        dekningsgrad: dekningsgrad === 100 ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
-        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato),
-        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato),
-        ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
+        dekningsgrad:
+            dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
+        antallBarn: antallBarn,
+        morErAleneOmOmsorg: sakTilhørerMor && rettighetType === RettighetType.ALENEOMSORG,
+        morErUfør: morUføretrygd,
+        morHarRett: sakTilhørerMor || rettighetType === RettighetType.BEGGE_RETT,
+        farMedmorErAleneOmOmsorg: !sakTilhørerMor && rettighetType === RettighetType.ALENEOMSORG,
+        farMedmorHarRett: !sakTilhørerMor || rettighetType === RettighetType.BEGGE_RETT,
+        søkerErFarEllerMedmor: erFarEllerMedmor,
         termindato,
         fødselsdato,
-        omsorgsovertakelsesdato,
+        omsorgsovertakelsesdato: omsorgsovertakelse,
+        erDeltUttak: rettighetType === RettighetType.BEGGE_RETT,
+        erBarnetFødt: fødselsdato !== undefined,
+        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelse),
+        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, omsorgsovertakelse),
+        ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
+        harAnnenForelderTilsvarendeRettEØS,
+        annenPart,
+        barn,
     };
 
     const saksperioder = perioder
-        .map(mapSaksperiodeFromDTO)
-        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode)
-        .reduce(reduceDuplikateSaksperioderGrunnetArbeidsforhold, []);
+        .map((p) => {
+            return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
+        })
+        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, erFarEllerMedmor);
+    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, førsteUttaksdagNesteBarnsSak);
 
     return {
+        saksnummer: eksisterendeSak.saksnummer,
         erAnnenPartsSak,
         grunnlag,
         saksperioder,
@@ -271,32 +309,14 @@ const getSøkerrolleFromSaksgrunnlag = (
     }
 };
 
-const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søkerinfo: Søkerinfo): Barn | undefined => {
-    const nyesteBarn = søkerinfo.registrerteBarn.sort((a, b) =>
-        dayjs(b.fødselsdato).format('YYYY-MM-DD').localeCompare(dayjs(a.fødselsdato).format('YYYY-MM-DD'))
-    )[0];
-
-    let erBarnetFødt;
-    if (nyesteBarn === undefined) {
-        erBarnetFødt = sak.erBarnetFødt;
-    } else {
-        erBarnetFødt = dayjs(nyesteBarn.fødselsdato).isBetween(
-            dayjs(sak.familiehendelseDato).subtract(20, 'weeks'),
-            dayjs(sak.familiehendelseDato).add(6, 'weeks')
-        );
-    }
-
-    if (erBarnetFødt === undefined) {
-        return undefined;
-    }
-
+const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag): Barn | undefined => {
     switch (situasjon) {
         case 'fødsel':
             if (sak.fødselsdato) {
                 return {
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
-                    fødselsdatoer: [ISOStringToDate(sak.familiehendelseDato)!],
+                    fødselsdatoer: [ISOStringToDate(sak.fødselsdato)!],
                     termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
                 };
             }
@@ -304,15 +324,15 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søker
             return {
                 type: BarnType.UFØDT,
                 antallBarn: sak.antallBarn,
-                termindato: ISOStringToDate(sak.familiehendelseDato)!,
+                termindato: ISOStringToDate(sak.termindato)!,
                 terminbekreftelse: [],
             };
         case 'adopsjon':
             return {
                 type: BarnType.ADOPTERT_STEBARN,
-                adopsjonsdato: ISOStringToDate(sak.familiehendelseDato)!,
+                adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
-                fødselsdatoer: [ISOStringToDate(sak.familiehendelseDato)!],
+                fødselsdatoer: sak.fødselsdato !== undefined ? [ISOStringToDate(sak.fødselsdato)!] : [],
                 omsorgsovertakelse: [],
             };
         default:
@@ -323,47 +343,43 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, søker
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
-    annenPart: AnnenPart,
-    erFarEllerMedmor: boolean
+    annenPart: RegistrertAnnenForelder,
+    erFarEllerMedmor: boolean,
+    intl: IntlShape
 ): AnnenForelder | undefined => {
     switch (situasjon) {
         case 'fødsel':
         case 'adopsjon':
             if (erFarEllerMedmor) {
                 return {
-                    fornavn: annenPart.navn.fornavn,
-                    etternavn: annenPart.navn.etternavn,
+                    fornavn:
+                        annenPart.fornavn !== undefined && annenPart.fornavn !== ''
+                            ? annenPart.fornavn
+                            : intlUtils(intl, 'annen.forelder'),
+                    etternavn: annenPart.etternavn,
                     erUfør: grunnlag.morErUfør,
-                    harRettPåForeldrepengerINorge: grunnlag.morHarRett,
+                    harRettPåForeldrepengerINorge:
+                        !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
+                    harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 };
             }
             return {
-                fornavn: annenPart.navn.fornavn,
-                etternavn: annenPart.navn.etternavn,
-                harRettPåForeldrepengerINorge: grunnlag.farMedmorHarRett,
+                fornavn:
+                    annenPart.fornavn !== undefined && annenPart.fornavn !== ''
+                        ? annenPart.fornavn
+                        : intlUtils(intl, 'annen.forelder'),
+                etternavn: annenPart.etternavn,
+                harRettPåForeldrepengerINorge:
+                    !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
+                harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
             };
         default:
             return undefined;
     }
-};
-
-const kanSaksperiodeKonverteresTilPeriode = (periode: Saksperiode) => {
-    if (periode.flerbarnsdager === false) {
-        return true;
-    }
-    return false;
-};
-
-export const kanUttaksplanGjennskapesFraSak = (perioder: Saksperiode[]): boolean => {
-    const noenPerioderKanIkkeGjennskapes = perioder.some(
-        (periode) => kanSaksperiodeKonverteresTilPeriode(periode) === false
-    );
-
-    return noenPerioderKanIkkeGjennskapes === false;
 };
 
 const finnAnnenForelderPåFødselsdato = (
@@ -371,7 +387,8 @@ const finnAnnenForelderPåFødselsdato = (
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    intl: IntlShape
 ): AnnenForelder | undefined => {
     if (fødselsdato === undefined) {
         return undefined;
@@ -383,27 +400,100 @@ const finnAnnenForelderPåFødselsdato = (
         const annenForelder = barnMedGittFødselsdato.annenForelder;
 
         if (annenForelder !== undefined) {
-            const { fnr, etternavn, fornavn } = annenForelder;
-            const annenPart: Partial<AnnenPart> = {
-                navn: {
-                    fornavn,
-                    etternavn,
-                },
+            const { fnr, etternavn, fornavn, mellomnavn } = annenForelder;
+            const fornavnAnnenForelder =
+                fornavn !== undefined && fornavn !== '' ? fornavn : intlUtils(intl, 'annen.forelder');
+            const annenPart: RegistrertAnnenForelder = {
+                fornavn: fornavnAnnenForelder,
+                etternavn,
+                mellomnavn,
                 fnr,
             };
-            return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart as AnnenPart, erFarEllerMedmor);
+            return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, erFarEllerMedmor, intl);
         }
     }
+};
+
+const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
+    if (valgteBarn.fødselsdatoer !== undefined && valgteBarn.fødselsdatoer.length > 0) {
+        return {
+            type: BarnType.FØDT,
+            antallBarn: valgteBarn.antallBarn,
+            fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
+            fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+        };
+    } else if (valgteBarn.termindato !== undefined) {
+        return {
+            type: BarnType.UFØDT,
+            antallBarn: valgteBarn.antallBarn,
+            termindato: valgteBarn.termindato,
+        };
+    } else {
+        return {
+            type: BarnType.IKKE_UTFYLT,
+            antallBarn: valgteBarn.antallBarn,
+            fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
+            fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+        };
+    }
+};
+
+const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForelder | undefined => {
+    if (valgteBarn.annenForelder !== undefined) {
+        return {
+            fornavn: valgteBarn.annenForelder.fornavn,
+            etternavn: valgteBarn.annenForelder.etternavn,
+            fnr: valgteBarn.annenForelder.fnr,
+            kanIkkeOppgis: false,
+            erUfør:
+                valgteBarn.sak !== undefined
+                    ? !valgteBarn.sak.sakTilhørerMor && valgteBarn.sak.morUføretrygd
+                    : undefined,
+            harRettPåForeldrepengerIEØS:
+                valgteBarn.sak !== undefined ? valgteBarn.sak.harAnnenForelderTilsvarendeRettEØS : undefined,
+        };
+    }
+    return undefined;
+};
+
+export const opprettSøknadFraValgteBarn = (valgteBarn: SelectableBarn): Partial<Søknad> | undefined => {
+    const barn = getBarnFromValgteBarn(valgteBarn);
+    const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
+    const søknad: Partial<Søknad> = {
+        barn,
+        annenForelder,
+        erEndringssøknad: false,
+    };
+
+    return søknad;
+};
+
+export const opprettSøknadFraValgteBarnMedSak = (valgteBarn: SelectableBarn): Partial<Søknad> | undefined => {
+    const barn = getBarnFromValgteBarn(valgteBarn);
+    const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
+    const søknad: Partial<Søknad> = {
+        barn,
+        annenForelder,
+        erEndringssøknad: false,
+    };
+
+    if (valgteBarn.sak !== undefined) {
+        const søkersituasjon = {
+            situasjon: valgteBarn.sak.gjelderAdopsjon ? 'adopsjon' : 'fødsel',
+            rolle: valgteBarn.sak.sakTilhørerMor ? undefined : 'far',
+        } as Søkersituasjon;
+        søknad.søkersituasjon = søkersituasjon;
+    }
+    return søknad;
 };
 
 export const opprettSøknadFraEksisterendeSak = (
     søkerinfo: Søkerinfo,
     eksisterendeSak: EksisterendeSak,
-    sak: Sak
+    intl: IntlShape
 ): Partial<Søknad> | undefined => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
-    const { fødselsdato, dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } =
-        grunnlag;
+    const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
 
     if (!situasjon) {
@@ -411,25 +501,34 @@ export const opprettSøknadFraEksisterendeSak = (
     }
 
     const mockForelder: Partial<AnnenForelder> = {
-        fornavn: '',
+        fornavn: intlUtils(intl, 'annen.forelder'),
         etternavn: '',
         fnr: '',
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
-            ? !!grunnlag.morHarRett
-            : !!grunnlag.farMedmorHarRett,
+            ? !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
+            : !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
         kanIkkeOppgis: false,
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
-    const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, søkerinfo);
-    const annenForelderFraSak = sak.annenPart
-        ? getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, sak.annenPart, søkerErFarEllerMedmor)
-        : undefined;
+    const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
+    const annenForelderFraSak =
+        eksisterendeSak.grunnlag.annenPart !== undefined
+            ? getAnnenForelderFromSaksgrunnlag(
+                  situasjon,
+                  grunnlag,
+                  eksisterendeSak.grunnlag.annenPart,
+                  søkerErFarEllerMedmor,
+                  intl
+              )
+            : undefined;
+
     const annenForelderFraBarn = finnAnnenForelderPåFødselsdato(
         søkerinfo.registrerteBarn,
-        ISOStringToDate(fødselsdato),
+        ISOStringToDate(grunnlag.fødselsdato),
         grunnlag,
         situasjon,
-        søkerErFarEllerMedmor
+        søkerErFarEllerMedmor,
+        intl
     );
     const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
 
@@ -455,7 +554,7 @@ export const opprettSøknadFraEksisterendeSak = (
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,
-        saksnummer: sak.saksnummer,
+        saksnummer: eksisterendeSak.saksnummer,
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
 

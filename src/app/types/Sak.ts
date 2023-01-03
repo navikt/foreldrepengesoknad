@@ -1,23 +1,26 @@
-import { AnnenPart } from './AnnenPart';
-import Behandling from './Behandling';
+import { RegistrertAnnenForelder } from './Person';
+import { DekningsgradDTO } from './DekningsgradDTO';
+import { Familiehendelse } from './Familiehendelse';
+import { GjeldendeVedtak } from './GjeldendeVedtak';
+import { ÅpenBehandling } from './ÅpenBehandling';
+import { BarnFraSak } from './BarnFraSak';
+import { RettighetType } from './RettighetType';
 
-export default interface Sak {
-    type: SakType;
-    behandlinger?: Behandling[];
-    annenPart?: AnnenPart;
-    status?: FagsakStatus;
+export interface Sak {
+    annenPart: RegistrertAnnenForelder;
+    barn: BarnFraSak[];
+    dekningsgrad: DekningsgradDTO;
+    familiehendelse: Familiehendelse;
+    gjeldendeVedtak: GjeldendeVedtak;
+    harAnnenForelderTilsvarendeRettEØS: boolean;
+    gjelderAdopsjon: boolean;
+    kanSøkeOmEndring: boolean;
+    morUføretrygd: boolean;
+    rettighetType: RettighetType;
+    sakAvsluttet: boolean;
+    sakTilhørerMor: boolean;
     saksnummer: string;
-    opprettet: string;
-}
-
-export enum SakType {
-    SAK = 'SAK', // Indicates that sak is from infotrygd
-    FPSAK = 'FPSAK',
-}
-
-export enum FagsakStatus {
-    OPPRETTET = 'OPPR',
-    UNDER_BEHANDLING = 'UBEH',
-    LOPENDE = 'LOP',
-    AVSLUTTET = 'AVSLU',
+    ønskerJustertUttakVedFødsel: boolean;
+    sisteSøknadMottattDato: string;
+    åpenBehandling?: ÅpenBehandling;
 }

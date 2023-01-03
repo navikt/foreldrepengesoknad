@@ -1,4 +1,4 @@
-import { bemUtils, Block, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { Dispatch, FunctionComponent, useState } from 'react';
@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
-import { Arbeidsform, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
+import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
@@ -24,10 +24,7 @@ import { førsteOktober2021ReglerGjelder, ISOStringToDate } from 'app/utils/date
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Normaltekst } from 'nav-frontend-typografi';
-import { CheckboksPanelProps } from 'nav-frontend-skjema';
 import { guid } from 'nav-frontend-js-utils';
-import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
 import { Situasjon } from 'app/types/Situasjon';
 
 interface Props {
@@ -63,7 +60,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     navnPåForeldre,
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
-    arbeidsforhold,
     situasjon,
     utsettelserIPlan,
 }) => {
@@ -80,31 +76,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
 
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
-    };
-
-    const getArbeidUnderUtsettelseOptions = (arbeidsgivere: Arbeidsforhold[]): CheckboksPanelProps[] => {
-        const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsgivere, tidsperiode);
-
-        const defaultOptions: CheckboksPanelProps[] = [
-            {
-                label: 'Selvstendig næringsdrivende',
-                value: Arbeidsform.selvstendignæringsdrivende,
-            },
-            {
-                label: 'Frilans',
-                value: Arbeidsform.frilans,
-            },
-        ];
-        const eksisterendeArbeidsforhold: CheckboksPanelProps[] = [];
-
-        if (aktiveArbeidsforholdIPerioden.length > 0) {
-            aktiveArbeidsforholdIPerioden.forEach((arb) =>
-                eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` })
-            );
-        }
-        const unikeEksisterendeArbeidsforholdUnike = [...new Set(eksisterendeArbeidsforhold)];
-
-        return [...unikeEksisterendeArbeidsforholdUnike, ...defaultOptions];
     };
 
     return (
@@ -188,26 +159,15 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block
-                                visible={visibility.isVisible(PeriodeUtsettelseFormField.arbeidsformer)}
+                                visible={visibility.isVisible(PeriodeUtsettelseFormField.bekrefterArbeidIPerioden)}
                                 padBottom="l"
                             >
-                                <PeriodeUtsettelseFormComponents.CheckboxPanelGroup
-                                    name={PeriodeUtsettelseFormField.arbeidsformer}
-                                    legend={intlUtils(intl, 'uttaksplan.arbeidsformer')}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(intl, 'uttaksplan.arbeidsformer.lesMer.tittel')}
-                                        >
-                                            <Normaltekst>
-                                                <FormattedMessage id="uttaksplan.arbeidsformer.lesMer.innhold" />
-                                            </Normaltekst>
-                                        </UtvidetInformasjon>
-                                    }
-                                    useTwoColumns={true}
-                                    checkboxes={getArbeidUnderUtsettelseOptions(arbeidsforhold)}
+                                <PeriodeUtsettelseFormComponents.Checkbox
+                                    name={PeriodeUtsettelseFormField.bekrefterArbeidIPerioden}
+                                    label={intlUtils(intl, 'uttaksplan.bekrefterArbeidIPerioden')}
                                     validate={(value) => {
-                                        if (!hasValue(value) || value === undefined || value.length === 0) {
-                                            return intlUtils(intl, 'uttaksplan.validering.arbeidsformer');
+                                        if (!hasValue(value) || value === undefined || value === false) {
+                                            return intlUtils(intl, 'uttaksplan.validering.bekrefterArbeidIPerioden');
                                         }
                                     }}
                                 />

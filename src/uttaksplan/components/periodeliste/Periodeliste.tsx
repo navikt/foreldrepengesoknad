@@ -1,5 +1,5 @@
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, Block, formatDate } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
@@ -13,7 +13,10 @@ import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/
 import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUtils';
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
-import Barn from 'app/context/types/Barn';
+import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
+import AlertStripe from 'nav-frontend-alertstriper';
+import { FormattedMessage, IntlShape } from 'react-intl';
+import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 
 interface Props {
     uttaksplan: Periode[];
@@ -38,10 +41,21 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     barn: Barn;
+    barnFraNesteSak: BarnFraNesteSak | undefined;
+    intl: IntlShape;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
-    return uttaksplan.findIndex((p) => dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato));
+    return uttaksplan.findIndex(
+        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato)
+    );
+};
+
+const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: Date | undefined) => {
+    if (dato !== undefined) {
+        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length - 1);
+    }
+    return undefined;
 };
 
 const Periodeliste: FunctionComponent<Props> = ({
@@ -67,6 +81,8 @@ const Periodeliste: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     barn,
+    barnFraNesteSak,
+    intl,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -80,7 +96,10 @@ const Periodeliste: FunctionComponent<Props> = ({
     };
 
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(uttaksplan, familiehendelsesdato);
-
+    const indexOfSistePeriodeFørNyStøndasperiodeNyttBarn =
+        barnFraNesteSak !== undefined
+            ? getIndexOfSistePeriodeFørDato(uttaksplan, barnFraNesteSak.startdatoFørsteStønadsperiode)
+            : undefined;
     return (
         <div className={bem.block}>
             {uttaksplan.map((p, index) => {
@@ -116,7 +135,24 @@ const Periodeliste: FunctionComponent<Props> = ({
                             termindato={termindato}
                             antallBarn={antallBarn}
                             utsettelserIPlan={utsettelserIPlan}
+                            intl={intl}
                         />
+                        {barnFraNesteSak !== undefined &&
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (
+                            <Block padBottom="s">
+                                <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
+                                    <FormattedMessage
+                                        id="uttaksplan.periodeliste.info.nyStønadsperiodeNesteSak"
+                                        values={{
+                                            datoStønadsperiodeNyttBarn: formatDate(
+                                                barnFraNesteSak.startdatoFørsteStønadsperiode
+                                            ),
+                                        }}
+                                    />
+                                </AlertStripe>
+                            </Block>
+                        ) : null}
                     </>
                 );
             })}

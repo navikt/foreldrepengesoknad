@@ -1,6 +1,0 @@
-export enum PeriodeResultatType {
-    INNVILGET = 'INNVILGET',
-    AVSLÅTT = 'AVSLÅTT',
-    IKKE_FASTSATT = 'IKKE_FASTSATT',
-    MANUELL_BEHANDLING = 'MANUELL_BEHANDLING',
-}

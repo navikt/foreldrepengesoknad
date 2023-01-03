@@ -1,18 +1,19 @@
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Kvittering } from 'app/types/Kvittering';
-import Sak from 'app/types/Sak';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { useRequest } from 'app/utils/hooks/useRequest';
+import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
 import { AxiosResponse } from 'axios';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { EksisterendeSakDTO } from 'app/types/EksisterendeSakDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { hasValue } from '@navikt/fp-common';
+import { SakerOppslag } from 'app/types/SakerOppslag';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { RequestStatus } from 'app/types/RequestState';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -29,6 +30,7 @@ export interface TilgjengeligeStønadskontoerParams {
     erMor: boolean;
     morHarUføretrygd: boolean;
     harAnnenForelderTilsvarendeRettEØS: boolean;
+    familieHendelseDatoNesteSak: string | undefined;
 }
 
 const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
@@ -40,7 +42,7 @@ const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
 const useSøkerinfo = () => {
-    const { data, error } = useRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
+    const { data, error } = useGetRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,
@@ -48,23 +50,9 @@ const useSøkerinfo = () => {
     };
 };
 
-const useGetSakerV2 = (enabled: boolean) => {
-    const { data, error } = useRequest<any>('/innsyn/v2/saker', {
+const useGetSaker = () => {
+    const { data, error } = useGetRequest<SakerOppslag>('/innsyn/v2/saker', {
         config: { withCredentials: true },
-        isSuspended: !enabled,
-    });
-
-    return {
-        sakerV2Data: data,
-        sakerV2Error: error,
-    };
-};
-
-const useGetSaker = (fnr: string | undefined) => {
-    const { data, error } = useRequest<Sak[]>('/innsyn/saker', {
-        fnr,
-        config: { withCredentials: true },
-        isSuspended: fnr === undefined,
     });
 
     return {
@@ -73,28 +61,31 @@ const useGetSaker = (fnr: string | undefined) => {
     };
 };
 
-const useGetEksisterendeSak = (saksnummer: string | undefined, fnr: string) => {
-    const { data, error } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplan', {
-        fnr,
-        config: { withCredentials: true, params: { saksnummer } },
-        isSuspended: saksnummer === undefined || fnr === undefined,
-    });
-
-    return {
-        eksisterendeSakData: data,
-        eksisterendeSakError: error,
+const useGetAnnenPartsVedtak = (
+    annenPartFnr: string | undefined,
+    barnFnr: string | undefined,
+    familiehendelsesdato: string | undefined,
+    isSuspended: boolean
+) => {
+    const body = {
+        annenPartFødselsnummer: annenPartFnr,
+        barnFødselsnummer: barnFnr,
+        familiehendelse: familiehendelsesdato,
     };
-};
-
-const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolean, annenPartFnr: string | undefined) => {
-    const isSuspended = annenPartFnr !== undefined && erFarEllerMedmor ? false : true;
-
-    const { data, error, requestStatus } = useRequest<EksisterendeSakDTO>('/innsyn/uttaksplanannen', {
-        fnr: søkerFnr,
-        config: { params: { annenPart: annenPartFnr }, withCredentials: true },
+    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
+        config: {
+            withCredentials: true,
+        },
         isSuspended,
     });
 
+    if (error && error.message.includes('Ugyldig ident')) {
+        return {
+            eksisterendeSakAnnenPartData: undefined,
+            eksisterendeSakAnnenPartError: undefined,
+            eksisterendeSakAnnenPartRequestStatus: RequestStatus.FINISHED,
+        };
+    }
     return {
         eksisterendeSakAnnenPartData: data,
         eksisterendeSakAnnenPartError: error,
@@ -103,7 +94,7 @@ const useGetEksisterendeSakMedFnr = (søkerFnr: string, erFarEllerMedmor: boolea
 };
 
 const useStoredAppState = () => {
-    const { data, error } = useRequest<ForeldrepengesøknadContextState>('/storage', {
+    const { data, error } = useGetRequest<ForeldrepengesøknadContextState>('/storage', {
         config: { transformResponse: storageParser, withCredentials: true },
     });
 
@@ -126,7 +117,10 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
         harEksisterendeSak,
         perioderSomSkalSendesInn,
         harUttaksplanBlittSlettet,
+        søknadGjelderEtNyttBarn,
+        barnFraNesteSak,
         brukerSvarteJaPåAutoJustering,
+        annenPartsUttakErLagtTilIPlan,
     } = state;
     return getAxiosInstance(fnr).post(
         '/storage',
@@ -142,7 +136,10 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
             harEksisterendeSak,
             perioderSomSkalSendesInn,
             harUttaksplanBlittSlettet,
+            søknadGjelderEtNyttBarn,
+            barnFraNesteSak,
             brukerSvarteJaPåAutoJustering,
+            annenPartsUttakErLagtTilIPlan,
         },
         { withCredentials: true }
     );
@@ -175,6 +172,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         minsterett,
         erMor,
         morHarUføretrygd,
+        familieHendelseDatoNesteSak,
     } = params;
 
     const fpUttakServiceDateFormat = 'YYYYMMDD';
@@ -194,9 +192,13 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         minsterett,
         erMor,
         morHarUføretrygd,
+        familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
+            familieHendelseDatoNesteSak,
+            fpUttakServiceDateFormat
+        ),
     };
 
-    const { data, error } = useRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
+    const { data, error } = useGetRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
         config: {
             timeout: 15 * 1000,
             params: urlParams,
@@ -224,17 +226,15 @@ function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsendin
 }
 
 const Api = {
-    useGetSaker,
     useGetUttakskontoer,
     storeAppState,
     deleteStoredAppState,
     getStorageKvittering,
-    useGetEksisterendeSakMedFnr,
+    useGetAnnenPartsVedtak,
     useStoredAppState,
     useSøkerinfo,
-    useGetEksisterendeSak,
     sendSøknad,
-    useGetSakerV2,
+    useGetSaker,
 };
 
 export default Api;

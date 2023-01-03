@@ -1,6 +1,7 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
@@ -20,11 +21,15 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
             name={fieldName}
             radios={[
                 {
-                    label: erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
+                    label: erFarEllerMedmor
+                        ? capitalizeFirstLetter(navnPåForeldre.farMedmor)
+                        : capitalizeFirstLetter(navnPåForeldre.mor),
                     value: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
                 },
                 {
-                    label: erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                    label: erFarEllerMedmor
+                        ? capitalizeFirstLetter(navnPåForeldre.mor)
+                        : capitalizeFirstLetter(navnPåForeldre.farMedmor),
                     value: erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
                 },
             ]}

@@ -1,11 +1,12 @@
 import SøknadRoutes from 'app/routes/routes';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import Sak from 'app/types/Sak';
+import { Sak } from 'app/types/Sak';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { Periode } from 'uttaksplan/types/Periode';
+import { BarnFraNesteSak } from './types/Barn';
 import { Søknad } from './types/Søknad';
 import UttaksplanInfo from './types/UttaksplanInfo';
 
@@ -14,22 +15,25 @@ export interface ForeldrepengesøknadContextState {
     currentRoute: SøknadRoutes;
     søknad: Søknad;
     søkerinfo: Søkerinfo;
-    harEksisterendeSak?: boolean;
-    harAnnenPartEksisterendeSak?: boolean;
-    annenPartEksisterendeSakSaksnummer?: string;
     saker: Sak[];
-    uttaksplanInfo?: UttaksplanInfo;
     kvittering: Kvittering;
-    eksisterendeSak?: EksisterendeSak;
     antallUkerIUttaksplan: number;
-    endringstidspunkt?: Date;
     perioderSomSkalSendesInn: Periode[];
     harUttaksplanBlittSlettet: boolean;
     brukerSvarteJaPåAutoJustering: boolean | undefined;
+    søknadGjelderEtNyttBarn: boolean;
+    harEksisterendeSak?: boolean;
+    harAnnenPartEksisterendeSak?: boolean;
+    annenPartEksisterendeSakSaksnummer?: string;
+    uttaksplanInfo?: UttaksplanInfo;
+    eksisterendeSak?: EksisterendeSak;
+    endringstidspunkt?: Date;
+    barnFraNesteSak?: BarnFraNesteSak;
+    annenPartsUttakErLagtTilIPlan?: boolean;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {
-    version: 4,
+    version: 5,
     currentRoute: SøknadRoutes.VELKOMMEN,
     søknad: {
         type: 'foreldrepenger',
@@ -75,4 +79,7 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
     perioderSomSkalSendesInn: [],
     harUttaksplanBlittSlettet: false,
     brukerSvarteJaPåAutoJustering: undefined,
+    søknadGjelderEtNyttBarn: undefined!,
+    barnFraNesteSak: undefined,
+    annenPartsUttakErLagtTilIPlan: undefined,
 };

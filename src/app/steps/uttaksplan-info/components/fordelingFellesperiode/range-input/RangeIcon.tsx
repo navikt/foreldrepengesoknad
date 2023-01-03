@@ -32,7 +32,8 @@ export default class RangeIcon extends React.Component<RangeIconProps> {
         return (
             <svg
                 focusable="false"
-                role="presentation"
+                role="img"
+                aria-hidden="true"
                 width="24px"
                 height="24px"
                 viewBox="0 0 24 24"

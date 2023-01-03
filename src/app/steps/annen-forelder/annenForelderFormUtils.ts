@@ -99,12 +99,12 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
 };
 
 export const getAnnenForelderFormInitialValues = (
-    annenForelder: AnnenForelder,
+    annenForelder: AnnenForelder | undefined,
     barn: Barn,
     søker: Søker,
     registrertBarn: RegistrertBarn | undefined
 ): AnnenForelderFormData => {
-    if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
+    if (annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
             ...initialAnnenForelderValues,
             harRettPåForeldrepengerINorge: convertBooleanOrUndefinedToYesOrNo(
@@ -134,7 +134,7 @@ export const getAnnenForelderFormInitialValues = (
         };
     }
 
-    if (isAnnenForelderIkkeOppgitt(annenForelder)) {
+    if (annenForelder !== undefined && isAnnenForelderIkkeOppgitt(annenForelder)) {
         return {
             ...initialAnnenForelderValues,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const KalenderBakgrunnIkon = (props: any) => (
-    <svg focusable="false" role="presentation" width={48} height={42} {...props}>
+    <svg focusable="false" role="img" aria-hidden="true" width={48} height={42} {...props}>
         <g fill="none" fillRule="evenodd">
             <path d="M48 36a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V7h48v29z" fill="#FFF" stroke="#dfdfdf" strokeWidth="1" />
             <path

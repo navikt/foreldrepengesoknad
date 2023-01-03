@@ -15,7 +15,7 @@ const HvemKanDriveMedEgenNæring = () => {
                 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.apneLabel'
             )}
         >
-            <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+            <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
                 <Normaltekst>
                     <EksternUrl
                         tekst="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.tekst"

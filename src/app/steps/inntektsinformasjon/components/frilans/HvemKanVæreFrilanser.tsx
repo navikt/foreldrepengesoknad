@@ -12,7 +12,7 @@ const HvemKanVæreFrilanser = () => {
         <UtvidetInformasjon
             apneLabel={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd.apneLabel')}
         >
-            <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+            <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
                 <Normaltekst>
                     <FormattedMessage id="inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd.infoboksTekst.del1" />
                 </Normaltekst>

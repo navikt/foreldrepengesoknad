@@ -13,6 +13,10 @@ describe('<AppContainer>', () => {
             søkerinfoData: undefined,
             søkerinfoError: null,
         }));
+        jest.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
+            sakerData: undefined,
+            sakerError: null,
+        }));
         jest.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
             storageData: undefined,
             storageError: null,

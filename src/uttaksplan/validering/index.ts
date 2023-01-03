@@ -35,6 +35,7 @@ import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarR
 import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
 import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
 import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
+import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -72,6 +73,7 @@ export enum UttaksplanRegelKey {
     'farMedmorHarRettPåForeldrepengerUtenAktivitetskrav' = 'farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest',
     'farMedmorHarRettPåFlerbarnsdager' = 'farMedmorHarRettPåFlerbarnsdagerTest',
     'inneholderUttaksperioderMedUbesvartGradering' = 'inneholderUttaksperioderMedUbesvartGradering',
+    'overstigerMinsterettVedToTette' = 'overstigerMinsterettVedToTette',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -258,6 +260,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.inneholderUtsettelserUtenÅrsak,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUtsettelserUtenÅrsak,
+    },
+    {
+        key: UttaksplanRegelKey.overstigerMinsterettVedToTette,
+        alvorlighet: RegelAlvorlighet.INFO,
+        test: overstigerMinsterettVedToTette,
     },
 ];
 

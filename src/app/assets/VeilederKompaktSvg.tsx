@@ -7,7 +7,8 @@ export interface Props {
 
 const VeilederKompakt: React.FunctionComponent<Props> = ({ svgProps }) => (
     <svg
-        role="presentation"
+        role="img"
+        aria-hidden="true"
         focusable="false"
         viewBox="0 0 96 96"
         xmlnsXlink="http://www.w3.org/1999/xlink"

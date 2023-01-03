@@ -1,13 +1,13 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import Sak, { FagsakStatus, SakType } from 'app/types/Sak';
+import { Sak } from 'app/types/Sak';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 import { AnnenForelderOppgitt } from '../types/AnnenForelder';
-import Barn from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '../types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -142,7 +142,7 @@ describe('<foreldrepengesøknadReducer>', () => {
     it('skal nullstille søknad og uttaksplanInfo når en avbryter', () => {
         const endretState = {
             ...foreldrepengesøknadInitialState,
-            version: 4,
+            version: 5,
             søknad: {
                 ...foreldrepengesøknadInitialState.søknad,
                 annenForelder: {
@@ -158,7 +158,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
         expect(resultState).toStrictEqual({
             ...foreldrepengesøknadInitialState,
-            version: 4,
+            version: 5,
         });
     });
 
@@ -178,7 +178,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
     it('skal legge lagret data i state', () => {
         const payload = {
-            version: 4,
+            version: 5,
         } as ForeldrepengesøknadContextState;
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
@@ -229,10 +229,7 @@ describe('<foreldrepengesøknadReducer>', () => {
 
     it('skal legge saker i state', () => {
         const sak = {
-            type: SakType.FPSAK,
-            status: FagsakStatus.AVSLUTTET,
             saksnummer: '1234',
-            opprettet: '2020-01-01',
         } as Sak;
         const payload = [sak];
 
@@ -339,6 +336,24 @@ describe('<foreldrepengesøknadReducer>', () => {
             endringstidspunkt: payload,
         });
     });
+    it('skal sette barn fra neste sak i state', () => {
+        const payload = {
+            familiehendelsesdato: new Date('2023-05-01'),
+            startdatoFørsteStønadsperiode: new Date('2023-04-12'),
+            fnr: ['123456789'],
+            annenForelderFnr: '1122334455',
+        } as BarnFraNesteSak;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            barnFraNesteSak: payload,
+        });
+    });
     it('skal sette perioderSomSkalSendes inn i state', () => {
         const payload = [
             {
@@ -367,6 +382,19 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual({
             ...foreldrepengesøknadInitialState,
             perioderSomSkalSendesInn: payload,
+        });
+    });
+    it('skal sette annenPartsUttakErLagtTilIPlan i state', () => {
+        const payload = true;
+
+        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
+            type: ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN,
+            payload,
+        });
+
+        expect(resultState).toStrictEqual({
+            ...foreldrepengesøknadInitialState,
+            annenPartsUttakErLagtTilIPlan: payload,
         });
     });
 });

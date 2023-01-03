@@ -224,9 +224,15 @@ describe('Uttaksplanbuilder tester', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result = Uttaksplanbuilder(perioder, new Date('2022-05-02'), false, false, false, false).leggTilPeriode(
-            nyPeriode
-        );
+        const result = Uttaksplanbuilder(
+            perioder,
+            new Date('2022-05-02'),
+            false,
+            false,
+            false,
+            false,
+            undefined
+        ).leggTilPeriode(nyPeriode);
 
         expect(result.length).toBe(4);
         expect(result[2]).toEqual(nyPeriode);
@@ -243,9 +249,15 @@ describe('Uttaksplanbuilder tester', () => {
             årsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result2 = Uttaksplanbuilder(result, new Date('2022-05-02'), false, false, false, false).leggTilPeriode(
-            nyPeriode2
-        );
+        const result2 = Uttaksplanbuilder(
+            result,
+            new Date('2022-05-02'),
+            false,
+            false,
+            false,
+            false,
+            undefined
+        ).leggTilPeriode(nyPeriode2);
 
         expect(result2.length).toBe(7);
         expect(result2[2]).toEqual(nyPeriode2);
@@ -269,7 +281,8 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             false,
             false,
-            false
+            false,
+            undefined
         ).leggTilPeriode(nyPeriodeISluttenAvPlanen);
 
         expect(result.length).toEqual(8);
@@ -304,6 +317,7 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             false,
             false,
+            undefined,
             perioderMedAnnenPartsUttakOgUtsettelserISlutten
         ).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
 

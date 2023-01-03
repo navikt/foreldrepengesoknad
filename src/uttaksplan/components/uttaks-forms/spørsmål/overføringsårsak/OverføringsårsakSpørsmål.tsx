@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-
+import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 interface Props {
     vedlegg: Attachment[];
     navnAnnenForelder: string;
@@ -25,17 +25,17 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
     valgtOverføringsårsak,
 }) => {
     const intl = useIntl();
-
+    const navn = capitalizeFirstLetter(navnAnnenForelder);
     const radios = [
         {
             label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER', {
-                navnAnnenForelder,
+                navnAnnenForelder: navn,
             }),
             value: OverføringÅrsakType.institusjonsoppholdAnnenForelder,
         },
         {
             label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER', {
-                navnAnnenForelder,
+                navnAnnenForelder: navn,
             }),
             value: OverføringÅrsakType.sykdomAnnenForelder,
         },
@@ -48,7 +48,7 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
         });
         radios.push({
             label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER', {
-                navnAnnenForelder,
+                navnAnnenForelder: navn,
             }),
             value: OverføringÅrsakType.ikkeRettAnnenForelder,
         });

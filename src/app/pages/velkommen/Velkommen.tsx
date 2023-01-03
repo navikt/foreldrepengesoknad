@@ -18,22 +18,22 @@ import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal'
 
 import './velkommen.less';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
-import Sak, { FagsakStatus } from 'app/types/Sak';
 import SøknadRoutes from 'app/routes/routes';
-import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import SøknadStatus from './components/SøknadStatus';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import Api from 'app/api/api';
-import { mapEksisterendeSakFromDTO, opprettSøknadFraEksisterendeSak } from 'app/utils/eksisterendeSakUtils';
+import {
+    mapSøkerensEksisterendeSakFromDTO,
+    opprettSøknadFraEksisterendeSak,
+    opprettSøknadFraValgteBarn,
+    opprettSøknadFraValgteBarnMedSak,
+} from 'app/utils/eksisterendeSakUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Søknad } from 'app/context/types/Søknad';
-import {
-    erSakFerdigbehandlet,
-    getSakUnderBehandling,
-    getSisteForeldrepengeSak,
-    skalKunneSøkeOmEndring,
-} from 'app/utils/sakerUtils';
+
+import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
+import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
+import { Sak } from 'app/types/Sak';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 interface Props {
     fornavn: string;
@@ -43,19 +43,15 @@ interface Props {
     fnr: string;
 }
 
-const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr, onChangeLocale }) => {
-    const sakTilBehandling = getSakUnderBehandling(saker);
-    const harSakTilBehandling = !!sakTilBehandling;
-    const sak = sakTilBehandling || getSisteForeldrepengeSak(saker);
+const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onChangeLocale }) => {
     const intl = useIntl();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
-    const kanSøkeOmEndring = sak !== undefined ? skalKunneSøkeOmEndring(sak) : false;
-    const sakErFerdigbehandlet = erSakFerdigbehandlet(sak);
-    const sakErAvsluttet = sak !== undefined ? sak.status === FagsakStatus.AVSLUTTET : false;
-    const { eksisterendeSakData } = Api.useGetEksisterendeSak(sak?.saksnummer, fnr);
+    const { registrerteBarn } = useSøkerinfo();
+    const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
+    const sortedSelectableBarn = selectableBarn.sort(sorterSelectableBarnEtterYngst);
 
     useEffect(() => {
         if (state.søknad.søker.språkkode !== locale) {
@@ -64,21 +60,41 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
     }, [dispatch, locale, state.søknad.søker.språkkode]);
 
     const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
-        const vilSøkeOmEndring = !!convertYesOrNoOrUndefinedToBoolean(values.vilSøkeOmEndring);
+        const valgteBarn =
+            values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
+                ? undefined
+                : selectableBarn.find((sb) => sb.id === values.valgteBarn);
+        const vilSøkeOmEndring = valgteBarn !== undefined && !!valgteBarn.kanSøkeOmEndring;
+        const valgtEksisterendeSak =
+            vilSøkeOmEndring && valgteBarn.sak !== undefined
+                ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
+                : undefined;
 
         const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
             actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
             actionCreator.setErEndringssøknad(vilSøkeOmEndring),
         ];
+        let barnFraNesteSak = undefined;
+        if (valgteBarn !== undefined) {
+            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
+            actionsToDispatch.push(actionCreator.setBarnFraNesteSak(barnFraNesteSak));
+        }
+        const førsteUttaksdagNesteBarnsSak =
+            barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
-        if (eksisterendeSakData && sak && vilSøkeOmEndring) {
-            const eksisterendeSak = mapEksisterendeSakFromDTO(
-                eksisterendeSakData,
-                eksisterendeSakData.grunnlag.søkerErFarEllerMedmor,
-                false
+        const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
+        const nySøknadPåAlleredeSøktBarn =
+            valgteBarn !== undefined && valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false;
+        const nySøknadPåValgteRegistrerteBarn =
+            !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
+
+        if (endringssøknad) {
+            const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
+                valgtEksisterendeSak,
+                førsteUttaksdagNesteBarnsSak
             );
 
-            const søknad: Søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!, sak) as Søknad;
+            const søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!, intl) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
@@ -86,6 +102,17 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
             actionsToDispatch.push(
                 actionCreator.setBrukerSvarteJaPåAutoJustering(eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel)
             );
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+        } else if (nySøknadPåAlleredeSøktBarn) {
+            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn) as Søknad;
+            actionsToDispatch.push(actionCreator.setSøknad(søknad));
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
+        } else if (nySøknadPåValgteRegistrerteBarn) {
+            const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
+            actionsToDispatch.push(actionCreator.setSøknad(søknad));
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+        } else {
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
         }
 
         return actionsToDispatch;
@@ -101,11 +128,20 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
         <VelkommenFormComponents.FormikWrapper
             initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
             onSubmit={handleSubmit}
-            renderForm={({ values }) => {
+            renderForm={({ values, setFieldValue }) => {
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,
-                    kanSøkeOmEndring,
+                    selectableBarn,
                 });
+                const valgtBarnId = values.valgteBarn;
+                const valgtBarn =
+                    valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
+                        ? undefined
+                        : selectableBarn.find((barn) => barn.id === valgtBarnId);
+                const knapptekst =
+                    valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
+                        ? intlUtils(intl, 'velkommen.endreSøknad')
+                        : intlUtils(intl, 'velkommen.begynnMedSøknad');
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
                         <LanguageToggle
@@ -130,18 +166,14 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                             <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
                             </Innholdstittel>
-                            {sak && !sakErAvsluttet && (
-                                <Block padBottom="l">
-                                    <SøknadStatus
-                                        sakOpprettetDato={new Date(sak.opprettet)}
-                                        sakErFerdigbehandlet={sakErFerdigbehandlet}
-                                        kanSøkeOmEndring={kanSøkeOmEndring}
-                                        harSakTilBehandling={harSakTilBehandling}
-                                        values={values}
-                                        visibility={visibility}
-                                    />
-                                </Block>
-                            )}
+                            <Block padBottom="l" visible={visibility.isVisible(VelkommenFormField.valgteBarn)}>
+                                <BarnVelger
+                                    selectableBarn={sortedSelectableBarn}
+                                    visibility={visibility}
+                                    formValues={values}
+                                    setFieldValue={setFieldValue}
+                                />
+                            </Block>
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
@@ -161,14 +193,16 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, fnr
                                         <Block padBottom="l">
                                             <FormattedMessage id="velkommen.samtykkeIntro.del2" />
                                         </Block>
-                                        <FormattedMessage id="velkommen.samtykkeIntro.del3" />
+                                        <Block padBottom="l">
+                                            <FormattedMessage id="velkommen.samtykkeIntro.del3" />
+                                        </Block>
                                     </>
                                 </VelkommenFormComponents.ConfirmationCheckbox>
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
                                     <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
-                                        Begynn med søknad
+                                        {knapptekst}
                                     </Hovedknapp>
                                 </div>
                             </Block>

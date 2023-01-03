@@ -121,6 +121,11 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 eksisterendeSak: action.payload,
             };
+        case ForeldrepengesøknadContextActionKeys.SET_BARN_FRA_NESTE_SAK:
+            return {
+                ...state,
+                barnFraNesteSak: action.payload,
+            };
         case ForeldrepengesøknadContextActionKeys.SET_VEDLEGG:
             //TODO Legg til håndtering av fleire vedlegg
             return {
@@ -163,6 +168,11 @@ const foreldrepengesøknadReducer = (
                     ...state.søknad,
                     ...action.payload,
                 },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_SØKNAD_GJELDER_ET_NYTT_BARN:
+            return {
+                ...state,
+                søknadGjelderEtNyttBarn: action.payload,
             };
         case ForeldrepengesøknadContextActionKeys.SET_GODKJENT_OPPSUMMERING:
             return {
@@ -232,6 +242,11 @@ const foreldrepengesøknadReducer = (
             return {
                 ...state,
                 brukerSvarteJaPåAutoJustering: action.payload,
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN:
+            return {
+                ...state,
+                annenPartsUttakErLagtTilIPlan: action.payload,
             };
         default:
             return state;

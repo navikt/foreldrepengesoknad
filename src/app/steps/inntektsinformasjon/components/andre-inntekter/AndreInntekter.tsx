@@ -82,7 +82,7 @@ const AndreInntekter: FunctionComponent<Props> = ({
                 />
             </Block>
             {formValues.hattAndreInntekter === YesOrNo.YES && (
-                <div style={{ backgroundColor: '#e9e7e7', marginBottom: '1rem', padding: '1rem' }}>
+                <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <AndreInntekterModal
                         isOpen={isModalOpen}
                         contentLabel={intlUtils(intl, 'inntektsinformasjon.andreInntekterModal.contentLabel')}

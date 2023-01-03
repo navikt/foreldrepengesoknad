@@ -43,7 +43,7 @@ const getBarnMock = (datoForAleneomsorgInput: string | undefined) => {
         datoForAleneomsorg: datoForAleneomsorgInput,
         fødselsdatoer: [new Date('01-01-2022')],
         termindato: new Date('01-02-2022'),
-        fnr: '01010111111',
+        fnr: ['01010111111'],
     } as FødtBarn;
 };
 

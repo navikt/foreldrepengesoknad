@@ -30,7 +30,7 @@ import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAl
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
-import RegistrertePersonalia from './components/registrerte-personalia/RegistrertePersonalia';
+import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -136,9 +136,12 @@ const AnnenForelder = () => {
                                     />
                                 </Block>
                             )}
-                            {registrertBarn !== undefined && registrertBarn.annenForelder && (
+                            {!skalOppgiPersonalia && (
                                 <Block padBottom="l">
-                                    <RegistrertePersonalia person={registrertBarn.annenForelder} />
+                                    <RegistrertePersonalia
+                                        person={registrertBarn.annenForelder!}
+                                        fødselsnummerForVisning={registrertBarn.annenForelder!.fnr}
+                                    />
                                 </Block>
                             )}
                             <Block

@@ -8,11 +8,13 @@ describe('<stønadskontoUtils>', () => {
     const minsteretter0 = {
         [MinsterettType.farRundtFødsel]: 0,
         [MinsterettType.generellMinsterett]: 0,
+        [MinsterettType.toTette]: 0,
     };
 
     const minsteretter10_75 = {
         [MinsterettType.farRundtFødsel]: 10,
         [MinsterettType.generellMinsterett]: 75,
+        [MinsterettType.toTette]: 75,
     };
 
     const kontoer80 = {

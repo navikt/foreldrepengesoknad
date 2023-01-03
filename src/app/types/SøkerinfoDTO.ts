@@ -12,6 +12,7 @@ export interface SøkerinfoDTOPerson {
 
 export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
     annenForelder?: Omit<SøkerinfoDTOPerson, 'kjønn'>;
+    dødsdato?: string;
 }
 
 export interface SøkerinfoDTOSøker extends SøkerinfoDTOPerson {

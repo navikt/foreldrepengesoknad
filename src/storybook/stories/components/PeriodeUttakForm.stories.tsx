@@ -10,6 +10,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import withIntlProvider from '../../decorators/withIntl';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { IntlShape } from 'react-intl';
 
 const stønadskonto100MorFar = [
     { konto: StønadskontoType.Mødrekvote, dager: 75 },
@@ -61,6 +62,7 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     isNyPeriode: boolean;
+    intl: IntlShape;
 }
 
 const defaultInput = {
@@ -109,6 +111,7 @@ const defaultInput = {
     antallBarn: 1,
     utsettelserIPlan: [],
     isNyPeriode: true,
+    // intl: intlMock,
 };
 
 const Template: Story<Props> = (args) => {

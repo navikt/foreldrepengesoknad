@@ -1,6 +1,6 @@
 import { bemUtils, InfoBlock, intlUtils, Block, ActionLink } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Barn from 'app/context/types/Barn';
+import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
@@ -41,6 +41,7 @@ interface Props {
     termindato: Date | undefined;
     barn: Barn;
     utsettelserIPlan: Utsettelsesperiode[];
+    barnFraNesteSak: BarnFraNesteSak | undefined;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -67,6 +68,7 @@ const Planlegger: FunctionComponent<Props> = ({
     termindato,
     barn,
     utsettelserIPlan,
+    barnFraNesteSak,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -129,6 +131,8 @@ const Planlegger: FunctionComponent<Props> = ({
                                 antallBarn={barn.antallBarn}
                                 utsettelserIPlan={utsettelserIPlan}
                                 barn={barn}
+                                barnFraNesteSak={barnFraNesteSak}
+                                intl={intl}
                             />
                         </section>
                     </Block>
@@ -156,6 +160,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
                                 utsettelserIPlan={utsettelserIPlan}
+                                intl={intl}
                             />
                         </div>
                     )}

@@ -33,4 +33,7 @@ export interface Søknadsinfo {
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;
+    familiehendelsesdatoNesteSak: Date | undefined;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
+    minsterettUkerToTette: number | undefined;
 }

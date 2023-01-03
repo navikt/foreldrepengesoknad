@@ -3,6 +3,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
 import dayjs from 'dayjs';
@@ -25,18 +26,18 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
     visibility,
 }) => {
     const intl = useIntl();
-
+    const uttaksdagPåEllerEtterTermin = Uttaksdagen(termindato).denneEllerNeste();
     const { dispatch, state } = useForeldrepengesøknadContext();
     const svarteJaMenFlerePerioderInnen6Uker =
         state.brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
     const svarteJaMenStarterIkkeLengerPåTermin =
         state.brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        !dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day');
+        !dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
     const svarteJaMenEndretPeriodenPåTermin =
         state.brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(termindato, 'day') &&
+        dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
             (perioderMedUttakRundtFødsel[0].konto !== StønadskontoType.Fedrekvote ||
                 !perioderMedUttakRundtFødsel[0].ønskerSamtidigUttak)) ||

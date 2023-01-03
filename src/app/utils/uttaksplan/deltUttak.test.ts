@@ -27,7 +27,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             farSinFørsteUttaksdag: new Date('2022-08-08T00:00:00.000Z'),
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
-            termindato: new Date('2022-08-08T00:00:00.000Z'), //termindato
+            termindato: new Date('2022-08-08T00:00:00.000Z'),
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
@@ -48,7 +49,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             farSinFørsteUttaksdag: new Date('2022-09-12T00:00:00.000Z'),
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
-            termindato: new Date('2022-08-08T00:00:00.000Z'), //termindato
+            termindato: new Date('2022-08-08T00:00:00.000Z'),
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-12T00:00:00.000Z'));
@@ -70,6 +72,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
             termindato: undefined,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-01T00:00:00.000Z'));
@@ -92,7 +95,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             farSinFørsteUttaksdag: new Date('2022-09-19T00:00:00.000Z'),
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
-            termindato: new Date('2022-08-08T00:00:00.000Z'), //terminato
+            termindato: new Date('2022-08-08T00:00:00.000Z'),
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-19T00:00:00.000Z'));
@@ -114,6 +118,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
             termindato: undefined,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
@@ -145,7 +150,8 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             farSinFørsteUttaksdag: new Date('2022-08-08T00:00:00.000Z'),
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
-            termindato: new Date('2022-08-08T00:00:00.000Z'), //termindato
+            termindato: new Date('2022-08-08T00:00:00.000Z'),
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(0);
     });
@@ -164,7 +170,8 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             farSinFørsteUttaksdag: new Date('2022-12-28T00:00:00.000Z'),
             begrunnelseForUtsettelse: undefined,
             annenForelderHarRettPåForeldrepengerIEØS: undefined,
-            termindato: new Date('2022-08-08T00:00:00.000Z'), //termindato
+            termindato: new Date('2022-08-08T00:00:00.000Z'),
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
         expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-12-28T00:00:00.000Z'));

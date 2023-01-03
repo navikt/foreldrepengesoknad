@@ -13,9 +13,10 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
+    søknadGjelderEtNyttBarn: boolean;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility }) => {
+const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility, søknadGjelderEtNyttBarn }) => {
     const { erBarnetFødt, antallBarn, fødselsdatoer } = formValues;
 
     const intl = useIntl();
@@ -24,7 +25,11 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
             ? 'omBarnet.fødselsdato.flereBarn'
             : 'omBarnet.fødselsdato';
 
-    if (søkersituasjon.situasjon === 'adopsjon' || erBarnetFødt !== YesOrNo.YES) {
+    if (
+        søkersituasjon.situasjon === 'adopsjon' ||
+        (søknadGjelderEtNyttBarn && erBarnetFødt !== YesOrNo.YES) ||
+        !søknadGjelderEtNyttBarn
+    ) {
         return null;
     }
 
@@ -51,7 +56,10 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     legend={intlUtils(intl, 'omBarnet.antallBarn.født')}
                 />
             </Block>
-            <Block padBottom="l" visible={antallBarn !== undefined && parseInt(antallBarn, 10) >= 3}>
+            <Block
+                padBottom="l"
+                visible={antallBarn !== undefined && søknadGjelderEtNyttBarn && parseInt(antallBarn, 10) >= 3}
+            >
                 <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
                     <option value="" />
                     <option value="3">3</option>

@@ -37,17 +37,24 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+    eksisterendeSakFar: EksisterendeSak | undefined;
 }
 
 const MorFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
+    eksisterendeSakFar,
 }) => {
     const intl = useIntl();
+    const { state } = useForeldrepengesøknadContext();
     const {
         annenForelder,
         søkersituasjon,
@@ -69,7 +76,8 @@ const MorFødsel: FunctionComponent<Props> = ({
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;
-
+    const førsteUttaksdagNesteBarnsSak =
+        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
@@ -84,6 +92,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
@@ -92,44 +101,65 @@ const MorFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO
     );
-
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
         const submissionValues = mapMorFødselFormToState(values);
+        const uttaksplanforslag = lagUttaksplan({
+            annenForelderErUfør: erMorUfør,
+            erDeltUttak,
+            erEndringssøknad,
+            erEnkelEndringssøknad: erEndringssøknad,
+            familiehendelsesdato: familiehendelsesdatoDate!,
+            førsteUttaksdagEtterSeksUker: Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(
+                30
+            ),
+            situasjon: erFødsel ? 'fødsel' : 'adopsjon',
+            søkerErFarEllerMedmor: erFarEllerMedmor,
+            søkerHarMidlertidigOmsorg: false,
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            uttaksplanSkjema: {
+                fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
+                startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
+                    ? undefined
+                    : submissionValues.permisjonStartdato,
+                skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
+            },
+            bareFarMedmorHarRett: false,
+            termindato,
+            harAktivitetskravIPeriodeUtenUttak: false,
+            førsteUttaksdagNesteBarnsSak,
+        });
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
+        const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+            erDeltUttak,
+            morHarRett: true,
+            søkerErAleneOmOmsorg: false,
+        });
 
+        let uttaksplanMedAnnenPart;
+
+        if (eksisterendeSakFar && uttaksplanforslag.length > 0) {
+            uttaksplanMedAnnenPart = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+                eksisterendeSakFar.uttaksplan,
+                uttaksplanforslag,
+                familiehendelsesdatoDate!,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon,
+                false,
+                false,
+                førsteUttaksdagNesteBarnsSak
+            );
+        } else if (eksisterendeSakFar) {
+            uttaksplanMedAnnenPart = eksisterendeSakFar.uttaksplan;
+        } else {
+            uttaksplanMedAnnenPart = uttaksplanforslag;
+        }
         return [
             actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(submissionValues),
             actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-            actionCreator.lagUttaksplanforslag(
-                lagUttaksplan({
-                    annenForelderErUfør: erMorUfør,
-                    erDeltUttak,
-                    erEndringssøknad,
-                    erEnkelEndringssøknad: erEndringssøknad,
-                    familiehendelsesdato: familiehendelsesdatoDate!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
-                    ).leggTil(30),
-                    situasjon: erFødsel ? 'fødsel' : 'adopsjon',
-                    søkerErFarEllerMedmor: erFarEllerMedmor,
-                    søkerHarMidlertidigOmsorg: false,
-                    tilgjengeligeStønadskontoer:
-                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
-                    uttaksplanSkjema: {
-                        fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
-                        startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
-                            ? undefined
-                            : submissionValues.permisjonStartdato,
-                        skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
-                    },
-                    bareFarMedmorHarRett: false,
-                    termindato,
-                    harAktivitetskravIPeriodeUtenUttak: false,
-                })
-            ),
+            actionCreator.lagUttaksplanforslag(uttaksplanMedAnnenPart),
         ];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(

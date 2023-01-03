@@ -21,8 +21,9 @@ import withForeldrepengersøknadContext from '../../../../decorators/withForeldr
 import AxiosMock from '../../../../utils/AxiosMock';
 import ForeldrepengerStateMock from '../../../../utils/ForeldrepengerStateMock';
 import UttaksplanInfoTestData from '../uttaksplanInfoTestData';
+import { RequestStatus } from 'app/types/RequestState';
 
-const UTTAKSPLAN_ANNEN_URL = '/innsyn/uttaksplanannen';
+const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/uttak-url/konto';
 
 export default {
@@ -33,7 +34,7 @@ export default {
 
 const Template: Story<UttaksplanInfoTestData> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onGet(UTTAKSPLAN_ANNEN_URL).replyOnce(200, {});
+        apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };

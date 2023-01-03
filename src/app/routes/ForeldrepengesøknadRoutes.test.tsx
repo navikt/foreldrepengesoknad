@@ -8,10 +8,11 @@ import { Søknad } from 'app/context/types/Søknad';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import IntlProvider from '../intl/IntlProvider';
 import Person from 'app/types/Person';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
 describe('<ForeldrepengesøknadRoutes>', () => {
-    const state = {
-        version: 4,
+    const state: ForeldrepengesøknadContextState = {
+        version: 5,
         currentRoute: SøknadRoutes.VELKOMMEN,
         søkerinfo: {
             arbeidsforhold: [],
@@ -32,6 +33,8 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         perioderSomSkalSendesInn: [],
         harUttaksplanBlittSlettet: false,
         brukerSvarteJaPåAutoJustering: undefined,
+        søknadGjelderEtNyttBarn: undefined!,
+        barnFraNesteSak: undefined,
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', async () => {
@@ -80,6 +83,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                     registrerteBarn: [],
                 } as Søkerinfo,
                 saker: [],
+                søknadGjelderEtNyttBarn: true,
             },
             dispatch: () => jest.fn(),
         }));

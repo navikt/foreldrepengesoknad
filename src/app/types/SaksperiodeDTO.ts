@@ -1,30 +1,21 @@
-import { Tidsperiode } from '@navikt/fp-common';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
-import { PeriodeResultatType } from 'uttaksplan/types/PeriodeResultatType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { ArbeidsgiverInfo } from './ArbeidsgiverInfo';
+import { GraderingDTO } from './GraderingDTO';
+import { PeriodeResultatDTO } from './PeriodeResultatDTO';
 import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
+import { OppholdÅrsakTypeDTO } from './OppholdÅrsakTypeDTO';
 
 export interface SaksperiodeDTO {
-    angittAvAnnenPart?: boolean;
-    arbeidsgiverInfo: ArbeidsgiverInfo;
-    arbeidstidprosent: number;
-    flerbarnsdager: boolean;
-    gjelderAnnenPart: boolean;
-    graderingInnvilget: boolean;
+    fom: string;
+    tom: string;
+    resultat: PeriodeResultatDTO;
+    flerbarnsdager?: boolean;
+    kontoType?: StønadskontoType;
+    gradering?: GraderingDTO;
+    oppholdÅrsak?: OppholdÅrsakTypeDTO;
+    utsettelseÅrsak?: UtsettelseÅrsakTypeDTO;
+    overføringÅrsak?: OverføringÅrsakType;
+    samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
-    oppholdAarsak: OppholdÅrsakType;
-    overfoeringAarsak?: OverføringÅrsakType;
-    periode: Tidsperiode;
-    periodeResultatType: PeriodeResultatType;
-    samtidigUttak: boolean;
-    samtidigUttaksprosent?: number;
-    stønadskontotype: StønadskontoType;
-    trekkDager: number;
-    utbetalingsprosent: number;
-    uttakArbeidType: string;
-    utsettelsePeriodeType?: UtsettelseÅrsakTypeDTO;
-    periodeResultatÅrsak: string;
 }
