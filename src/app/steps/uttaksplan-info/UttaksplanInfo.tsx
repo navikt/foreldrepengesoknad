@@ -38,7 +38,9 @@ const UttaksplanInfo = () => {
         state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const annenPartFnr =
-        annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+        annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false
+            ? annenForelder.fnr
+            : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended = annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const barnFnr = isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
