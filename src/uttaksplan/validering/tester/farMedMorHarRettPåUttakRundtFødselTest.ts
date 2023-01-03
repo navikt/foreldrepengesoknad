@@ -10,6 +10,7 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
+import dayjs from 'dayjs';
 
 export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;
@@ -45,8 +46,12 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
     } else {
         dagerIgjenRundtFødsel = ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL;
     }
+    const erMerEnn3månederSidenFamiliehendelse = dayjs(new Date())
+        .subtract(3, 'month')
+        .isSameOrAfter(grunnlag.familiehendelsesdato, 'day');
+
     return {
-        passerer: dagerIgjenRundtFødsel <= 0,
+        passerer: dagerIgjenRundtFødsel <= 0 || erMerEnn3månederSidenFamiliehendelse,
         info: {
             intlKey: 'uttaksplan.validering.info.rettTilUttakRundtFødsel',
             values: {
