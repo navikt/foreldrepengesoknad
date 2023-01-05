@@ -105,7 +105,10 @@ export const getUttaksprosentFromStillingsprosent = (
         return samtidigUttakPst;
     }
     if (stillingsPst) {
-        return 100 - stillingsPst;
+        let prosent = (100 - stillingsPst) * 100;
+        prosent = Math.round(prosent) / 100;
+
+        return prosent;
     }
     return undefined;
 };
