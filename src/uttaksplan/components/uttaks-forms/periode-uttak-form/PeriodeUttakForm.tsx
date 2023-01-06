@@ -224,7 +224,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         ),
                         familiehendelsesdato,
                         erFarEllerMedmor,
-                        morHarRett,
+                        erDeltUttak,
                         situasjon
                     ),
                     familiehendelsesdato
@@ -463,7 +463,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                                         periodetype,
                                                         familiehendelsesdato,
                                                         erFarEllerMedmor,
-                                                        morHarRett,
+                                                        erDeltUttak,
                                                         situasjon
                                                     ),
                                                     familiehendelsesdato
