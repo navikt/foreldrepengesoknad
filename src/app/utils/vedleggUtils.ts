@@ -113,9 +113,18 @@ export const mapAttachmentsToSøknadForInnsending = (
     const vedlegg: Attachment[] = [];
     const søknadCopy = extractAttachments(søknad, vedlegg);
 
+    const vedleggWithoutDuplicates = vedlegg.reduce((result, current) => {
+        if (result.find((att) => att.id === current.id)) {
+            return result;
+        }
+
+        result.push(current);
+        return result;
+    }, [] as Attachment[]);
+
     return {
         ...søknadCopy,
-        vedlegg,
+        vedlegg: vedleggWithoutDuplicates,
     };
 };
 
