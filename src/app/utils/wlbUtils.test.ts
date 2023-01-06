@@ -262,25 +262,9 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             StønadskontoType.Fedrekvote,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel',
-            false,
-            false
+            'fødsel'
         );
         expect(result).toEqual(true);
-    });
-    it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere false hvis uttak av fedrekvote rundt fødsel er i en flerbarnssøknad og far ønsker å bruke flerbarnsdager', () => {
-        const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
-            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
-            true, //erFarEllerMedmor
-            new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel',
-            true,
-            true
-        );
-        expect(result).toEqual(false);
     });
     it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere false hvis søker er mor', () => {
         const result = erFarMedmorSinWLBTidsperiodeRundtFødsel(
@@ -290,9 +274,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             StønadskontoType.Fedrekvote,
             false, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel',
-            false,
-            false
+            'fødsel'
         );
         expect(result).toEqual(false);
     });
@@ -304,9 +286,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             StønadskontoType.Fellesperiode,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel',
-            false,
-            false
+            'fødsel'
         );
         expect(result).toEqual(false);
     });
@@ -320,9 +300,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB ikke gjelder', () 
             StønadskontoType.Fedrekvote,
             true, //erFarEllerMedmor
             new Date('2022-08-01T00:00:00.000Z'), //termindato,
-            'fødsel',
-            false,
-            false
+            'fødsel'
         );
         expect(result).toEqual(false);
     });

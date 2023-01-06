@@ -42,6 +42,13 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
             (perioderMedUttakRundtFødsel[0].konto !== StønadskontoType.Fedrekvote ||
                 !perioderMedUttakRundtFødsel[0].ønskerSamtidigUttak)) ||
             isOverføringsperiode(perioderMedUttakRundtFødsel[0]));
+    const svarteJaMenEndretPeriodenTilØnskerFlerbarnsdager =
+        state.brukerSvarteJaPåAutoJustering &&
+        perioderMedUttakRundtFødsel.length === 1 &&
+        dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
+        perioderMedUttakRundtFødsel[0].konto === StønadskontoType.Fedrekvote &&
+        perioderMedUttakRundtFødsel[0].ønskerFlerbarnsdager === true;
     let infoTekstId = '';
     if (svarteJaMenFlerePerioderInnen6Uker) {
         infoTekstId = 'uttaksplan.automatiskJustering.info.hvisFlerePerioder';
@@ -52,6 +59,9 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
 
     if (svarteJaMenEndretPeriodenPåTermin) {
         infoTekstId = 'uttaksplan.automatiskJustering.info.hvisEndretPeriodePåTermin';
+    }
+    if (svarteJaMenEndretPeriodenTilØnskerFlerbarnsdager) {
+        infoTekstId = 'uttaksplan.automatiskJustering.info.hvisEndretPeriodeTilØnskerFlerbarnsdager';
     }
 
     const handleOnChange = (value: string) => {

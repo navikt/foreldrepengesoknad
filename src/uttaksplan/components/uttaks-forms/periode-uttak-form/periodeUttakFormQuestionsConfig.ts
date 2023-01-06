@@ -1,4 +1,4 @@
-import { hasValue } from '@navikt/fp-common';
+import { hasValue, TidsperiodeDate } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder from 'app/context/types/AnnenForelder';
@@ -6,7 +6,7 @@ import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden
 import { Situasjon } from 'app/types/Situasjon';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
-import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
+import { erFarMedmorSinWLBTidsperiodeRundtFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import hvemSkalTaUttakSkalBesvares from 'uttaksplan/utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
@@ -16,6 +16,7 @@ import getUttakSkjemaregler, {
 } from 'uttaksplan/utils/uttaksskjema/uttakSkjemaregler';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
+import { Periodetype } from 'uttaksplan/types/Periode';
 interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;
@@ -87,7 +88,7 @@ const skalViseGradering = (
 
     if (
         regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel() &&
-        dayjs(values.fom).isSameOrAfter(familiehendelsesdato) &&
+        dayjs(values.fom).isSameOrAfter(familiehendelsesdato, 'd') &&
         (erDeltUttakINorge || harAnnenForelderRettIEØS(annenForelder)) &&
         !hasValue(values.uttakRundtFødselÅrsak)
     ) {
@@ -105,6 +106,7 @@ const skalViseGradering = (
     ) {
         return false;
     }
+
     return true;
 };
 
@@ -150,8 +152,32 @@ const skalViseSamtidigUttak = (regler: UttakSkjemaregler, values: PeriodeUttakFo
     return true;
 };
 
-const skalViseFlerbarnsdager = (values: PeriodeUttakFormData): boolean => {
+const skalViseFlerbarnsdager = (
+    values: PeriodeUttakFormData,
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date,
+    periodetype: Periodetype,
+    kontoValue: StønadskontoType | '',
+    erFarEllerMedmor: boolean,
+    termindato: Date | undefined,
+    situasjon: Situasjon
+): boolean => {
     if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
+        return false;
+    }
+    if (
+        kontoValue !== '' &&
+        erFarMedmorSinWLBTidsperiodeRundtFødsel(
+            tidsperiode,
+            familiehendelsesdato,
+            periodetype,
+            kontoValue,
+            erFarEllerMedmor,
+            termindato,
+            situasjon
+        ) &&
+        values.uttakRundtFødselÅrsak === ''
+    ) {
         return false;
     }
 
@@ -218,7 +244,17 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isAnswered: ({ values }) => values.ønskerFlerbarnsdager !== YesOrNo.UNANSWERED,
         isIncluded: ({ values, regelProps }) =>
             getUttakSkjemaregler(values, regelProps).ønskerFlerbarnsdagerSkalBesvares(),
-        visibilityFilter: ({ values }) => skalViseFlerbarnsdager(values),
+        visibilityFilter: ({ values, regelProps }) =>
+            skalViseFlerbarnsdager(
+                values,
+                { fom: values.fom!, tom: values.tom! },
+                regelProps.familiehendelsesdato,
+                regelProps.periodetype,
+                values.konto,
+                regelProps.erFarEllerMedmor,
+                regelProps.termindato,
+                regelProps.situasjon
+            ),
     },
     [PeriodeUttakFormField.erMorForSyk]: {
         isAnswered: ({ values }) => values.erMorForSyk !== YesOrNo.UNANSWERED,

@@ -243,7 +243,6 @@ const missingAttachmentForAktivitetskrav = (
             søknadsinfo.søkerHarMidlertidigOmsorg,
             periode.tidsperiode,
             søknadsinfo.familiehendelsesdato,
-            søknadsinfo.erFlerbarnssøknad,
             søknadsinfo.termindato,
             søknadsinfo.søkersituasjon.situasjon,
             søknadsinfo.stønadskontoer,

@@ -15,7 +15,6 @@ export const graderingSkalBesvares = (
 ): boolean => {
     const farMedmorSøkerDeFørsteSeksUkeneFørWLBOgMorErIkkeSyk =
         !andreAugust2022ReglerGjelder(familiehendelsesdato) && erFarMedmor && morErForSyk === false;
-
     const sisteUttaksdagInnenSeksUkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
     const bareFarHarRettSøkerAktivitetsKravKontoDeFørsteSeksUkeneOgMorErIkkeSyk =
         erFarMedmor &&
