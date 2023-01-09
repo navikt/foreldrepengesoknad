@@ -74,7 +74,7 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
                             </Normaltekst>
                         </UtvidetInformasjon>
                     }
-                    maxLength={4}
+                    maxLength={5}
                     validate={prosentValideringGradering(intl)}
                 />
             </Block>

@@ -72,7 +72,7 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
                 <PeriodeUttakFormComponents.NumberInput
                     name={PeriodeUttakFormField.samtidigUttakProsent}
                     label={intlUtils(intl, 'uttaksplan.samtidigUttakProsent')}
-                    maxLength={4}
+                    maxLength={5}
                     validate={prosentValideringSamtidigUttak(intl)}
                 />
             </Block>
