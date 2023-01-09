@@ -116,8 +116,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 
         if (eksisterendeSakAnnenPart && farMedmorSinePerioder.length > 0) {
             uttaksplanMedAnnenPart = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+                eksisterendeSakAnnenPart.uttaksplan,
                 farMedmorSinePerioder,
-                uttaksplan,
                 familiehendelsedatoDate!,
                 harAktivitetskravIPeriodeUtenUttak,
                 erAdopsjon,
