@@ -26,16 +26,17 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
             if (isUttaksperiode(p)) {
                 const overlappendePerioderAnnenPart =
                     Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
+                const overlappendePeriodeAnnenPart =
+                    overlappendePerioderAnnenPart.length > 0 ? overlappendePerioderAnnenPart[0] : undefined;
 
-                if (
-                    overlappendePerioderAnnenPart.length !== 0 &&
-                    overlappendePerioderAnnenPart.find(
-                        (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
-                    )
-                ) {
+                if (overlappendePeriodeAnnenPart !== undefined && isUttakAnnenPart(overlappendePeriodeAnnenPart)) {
                     if (!p.ønskerSamtidigUttak) {
                         p.ønskerSamtidigUttak = true;
                         p.samtidigUttakProsent = '100';
+                    }
+                    if (!overlappendePeriodeAnnenPart.ønskerSamtidigUttak) {
+                        overlappendePeriodeAnnenPart.ønskerSamtidigUttak = true;
+                        overlappendePeriodeAnnenPart.samtidigUttakProsent = '100';
                     }
                 }
             }
