@@ -84,7 +84,6 @@ export const getUttakSkjemaregler = (
                 false, // TODO Midlertidig omsorg,
                 tidsperiode,
                 familiehendelsesdato,
-                erFlerbarnssøknad,
                 termindato,
                 situasjon,
                 stønadskontoer,
@@ -117,7 +116,14 @@ export const getUttakSkjemaregler = (
                 erDeltUttakINorge,
                 false, // TODO Midlertidig omsorg,
                 convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
-                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
+                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
+                tidsperiode,
+                erFarEllerMedmor,
+                annenForelder.kanIkkeOppgis,
+                familiehendelsesdato,
+                termindato,
+                situasjon,
+                !morHarRett
             ),
         kontoSkalBesvares: (): boolean =>
             kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, erFarEllerMedmor),
@@ -132,7 +138,8 @@ export const getUttakSkjemaregler = (
                 !morHarRett,
                 antallBarn,
                 erAleneOmOmsorg,
-                erDeltUttakINorge
+                erDeltUttakINorge,
+                formValues.uttakRundtFødselÅrsak === '' ? undefined : formValues.uttakRundtFødselÅrsak
             );
         },
         hvemSkalTaUttakSkalBesvares: (): boolean =>
@@ -161,9 +168,7 @@ export const getUttakSkjemaregler = (
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 termindato,
-                situasjon,
-                erFlerbarnssøknad,
-                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager)
+                situasjon
             );
         },
         overføringsårsakSkalBesvares: (): boolean => {
@@ -180,10 +185,8 @@ export const getUttakSkjemaregler = (
                 konto as StønadskontoType,
                 tidsperiode,
                 erFarEllerMedmor,
-                erFlerbarnssøknad,
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
-                convertYesOrNoOrUndefinedToBoolean(formValues.ønskerFlerbarnsdager),
                 false, //TODO: midlertidig omsorg
                 familiehendelsesdato,
                 termindato,

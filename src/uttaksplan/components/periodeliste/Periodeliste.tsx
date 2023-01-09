@@ -96,6 +96,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     };
 
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(uttaksplan, familiehendelsesdato);
+    const erAllePerioderIPlanenFørFødsel = indexOfFørstePeriodeEtterFødsel === -1;
     const indexOfSistePeriodeFørNyStøndasperiodeNyttBarn =
         barnFraNesteSak !== undefined
             ? getIndexOfSistePeriodeFørDato(uttaksplan, barnFraNesteSak.startdatoFørsteStønadsperiode)
@@ -137,6 +138,10 @@ const Periodeliste: FunctionComponent<Props> = ({
                             utsettelserIPlan={utsettelserIPlan}
                             intl={intl}
                         />
+                        {erAllePerioderIPlanenFørFødsel && index === uttaksplan.length - 1 ? (
+                            <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
+                        ) : null}
+
                         {barnFraNesteSak !== undefined &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (

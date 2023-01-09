@@ -1,9 +1,9 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
-import { slutterTidsperiodeInnen6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 
 export const ønskerFlerbarnsdagerSkalBesvares = (
     periodetype: Periodetype,
@@ -15,13 +15,17 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     bareFarHarRett: boolean,
     antallBarn: number,
     erAleneOmOmsorg: boolean,
-    erDeltUttakINorge: boolean
+    erDeltUttakINorge: boolean,
+    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | undefined
 ): boolean => {
     if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
         return false;
     }
 
-    if (stønadskontoType === StønadskontoType.AktivitetsfriKvote) {
+    if (
+        stønadskontoType === StønadskontoType.AktivitetsfriKvote ||
+        uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk
+    ) {
         return false;
     }
     if (søkerErFarEllerMedmor && (bareFarHarRett || erAleneOmOmsorg) && antallBarn > 1) {
@@ -33,15 +37,5 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     if (!erDeltUttakINorge && stønadskontoType !== StønadskontoType.Fellesperiode) {
         return false;
     }
-    if (
-        søkerErFarEllerMedmor &&
-        !bareFarHarRett &&
-        !erAleneOmOmsorg &&
-        slutterTidsperiodeInnen6UkerEtterFødsel(tidsperiode, familiehendelsesdato) &&
-        stønadskontoType === StønadskontoType.Fedrekvote
-    ) {
-        return false;
-    }
-
     return periodetype === Periodetype.Uttak && erFlerbarnssøknad && søkerErFarEllerMedmor;
 };

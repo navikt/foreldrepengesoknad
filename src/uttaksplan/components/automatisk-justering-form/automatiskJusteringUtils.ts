@@ -17,7 +17,8 @@ export const getKanPeriodenRundtFødselJusteres = (
         dayjs(periodeRundtFødsel.tidsperiode.fom).isSame(Uttaksdagen(termindato).denneEllerNeste(), 'day') &&
         periodeRundtFødsel.forelder === Forelder.farMedmor &&
         periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
-        periodeRundtFødsel.ønskerSamtidigUttak === true
+        periodeRundtFødsel.ønskerSamtidigUttak === true &&
+        periodeRundtFødsel.ønskerFlerbarnsdager !== true
     );
 };
 
