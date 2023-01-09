@@ -6,15 +6,13 @@ import dayjs from 'dayjs';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
-const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
+export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     periodetype: Periodetype,
     konto: StønadskontoType,
     tidsperiode: TidsperiodeDate,
     søkerErFarEllerMedmor: boolean,
-    erFlerbarnssøknad: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
-    ønskerFlerbarnsdager: boolean | undefined,
     søkerHarMidlertidigOmsorg: boolean,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
@@ -43,16 +41,13 @@ const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
                 konto,
                 søkerErFarEllerMedmor,
                 termindato,
-                situasjon,
-                erFlerbarnssøknad,
-                ønskerFlerbarnsdager
+                situasjon
             )
         ) {
             return true;
         }
         return false;
     }
-
     return false;
 };
 

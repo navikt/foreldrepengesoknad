@@ -192,8 +192,12 @@ export const cleanPeriodeUttakFormData = (
 
 const getInitialÅrsakForUttakRundtFødsel = (
     erMorForSyk: boolean | undefined,
-    ønskerSamtidigUttak: boolean | undefined
+    ønskerSamtidigUttak: boolean | undefined,
+    erDeltUttak: boolean
 ): UttakRundtFødselÅrsak | undefined => {
+    if (!erDeltUttak) {
+        return undefined;
+    }
     if (erMorForSyk) {
         return UttakRundtFødselÅrsak.morErForSyk;
     }
@@ -244,7 +248,7 @@ export const getPeriodeUttakFormInitialValues = (
                 stillingsprosent: periode.stillingsprosent || '',
                 ønskerFlerbarnsdager: convertBooleanOrUndefinedToYesOrNo(periode.ønskerFlerbarnsdager),
                 uttakRundtFødselÅrsak:
-                    getInitialÅrsakForUttakRundtFødsel(periode.erMorForSyk, periode.ønskerSamtidigUttak) ||
+                    getInitialÅrsakForUttakRundtFødsel(periode.erMorForSyk, periode.ønskerSamtidigUttak, erDeltUttak) ||
                     initialValues.uttakRundtFødselÅrsak,
             };
         }

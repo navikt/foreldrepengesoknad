@@ -11,9 +11,7 @@ export const graderingSkalBesvaresPgaWLBUttakRundtFødsel = (
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    situasjon: Situasjon,
-    erFlerbarnssøknad: boolean,
-    ønskerFlerbarnsdager: boolean | undefined
+    situasjon: Situasjon
 ): boolean => {
     return erFarMedmorSinWLBTidsperiodeRundtFødsel(
         tidperiode,
@@ -22,8 +20,6 @@ export const graderingSkalBesvaresPgaWLBUttakRundtFødsel = (
         konto,
         erFarEllerMedmor,
         termindato,
-        situasjon,
-        erFlerbarnssøknad,
-        ønskerFlerbarnsdager
+        situasjon
     );
 };

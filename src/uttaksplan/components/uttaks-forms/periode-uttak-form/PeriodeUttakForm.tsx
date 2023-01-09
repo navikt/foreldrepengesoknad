@@ -224,7 +224,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         ),
                         familiehendelsesdato,
                         erFarEllerMedmor,
-                        morHarRett,
+                        erDeltUttak,
                         situasjon
                     ),
                     familiehendelsesdato
@@ -339,20 +339,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             </Block>
                             <Block
                                 padBottom="l"
-                                visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}
-                            >
-                                <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
-                            </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
-                                <ErMorForSykSpørsmål
-                                    fieldName={PeriodeUttakFormField.erMorForSyk}
-                                    erMorForSyk={values.erMorForSyk}
-                                    navnMor={navnPåForeldre.mor}
-                                    vedlegg={values.erMorForSykDokumentasjon}
-                                />
-                            </Block>
-                            <Block
-                                padBottom="l"
                                 visible={visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)}
                             >
                                 <UttakRundtFødselÅrsakSpørsmål
@@ -388,6 +374,20 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         </Veilederpanel>
                                     </Block>
                                 )}
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}
+                            >
+                                <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
+                            </Block>
+                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                                <ErMorForSykSpørsmål
+                                    fieldName={PeriodeUttakFormField.erMorForSyk}
+                                    erMorForSyk={values.erMorForSyk}
+                                    navnMor={navnPåForeldre.mor}
+                                    vedlegg={values.erMorForSykDokumentasjon}
+                                />
+                            </Block>
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
                                     erFlerbarnssøknad={erFlerbarnssøknad}
@@ -463,7 +463,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                                         periodetype,
                                                         familiehendelsesdato,
                                                         erFarEllerMedmor,
-                                                        morHarRett,
+                                                        erDeltUttak,
                                                         situasjon
                                                     ),
                                                     familiehendelsesdato

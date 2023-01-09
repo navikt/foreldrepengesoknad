@@ -18,10 +18,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -36,10 +34,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -54,10 +50,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fellesperiode,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -72,10 +66,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-09-14T00:00:00.000Z'), tom: new Date('2022-09-15T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -90,10 +82,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             false, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -102,34 +92,15 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
         );
         expect(result).toEqual(false);
     });
-    it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor ønsker å bruke flerbarnsdager', () => {
-        const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
-            Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
-            { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            true, //søkerErFarEllerMedmor
-            true, //erFlerbarnssøknad
-            false, //erAleneOmOmsorg
-            false, //annenForelderKanIkkeOppgis
-            true, //ønskerFlerbarnsdager
-            false, //søkerHarMidlertidigOmsorg
-            new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
-            new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel', //situasjon
-            false //bareFarMedmorHarRett
-        );
-        expect(result).toEqual(false);
-    });
+
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor har aleneomsorg', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            true, //erFlerbarnssøknad
             true, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -144,10 +115,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            true, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             true, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -162,10 +131,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
@@ -191,10 +158,8 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB ikke gjelder'
             StønadskontoType.Fedrekvote,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
-            false, //erFlerbarnssøknad
             false, //erAleneOmOmsorg
             false, //annenForelderKanIkkeOppgis
-            false, //ønskerFlerbarnsdager
             false, //søkerHarMidlertidigOmsorg
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato

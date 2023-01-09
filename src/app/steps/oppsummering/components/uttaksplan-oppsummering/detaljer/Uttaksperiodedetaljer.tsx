@@ -36,6 +36,7 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
         orgnumre,
         arbeidsformer,
         vedlegg,
+        ønskerFlerbarnsdager,
     } = periode;
     const intl = useIntl();
 
@@ -48,6 +49,12 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
 
     return (
         <>
+            {ønskerFlerbarnsdager !== undefined && erDeltUttakINorge && (
+                <Feltoppsummering
+                    feltnavn={intlUtils(intl, 'oppsummering.uttak.ønskerFlerbarnsdager')}
+                    verdi={ønskerFlerbarnsdager ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
+                />
+            )}
             {ønskerSamtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intlUtils(intl, 'oppsummering.uttak.samtidigUttak')}

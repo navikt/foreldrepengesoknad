@@ -141,6 +141,42 @@ NyPeriodeForFar1BarnDeltUttakINorge.args = {
     },
 };
 
+export const NyPeriodeFørFødselForFar1BarnDeltUttakINorge = Template.bind({});
+NyPeriodeFørFødselForFar1BarnDeltUttakINorge.args = {
+    ...defaultInput,
+    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-01') } } as Periode,
+    erFarEllerMedmor: true,
+    annenForelder: {
+        ...defaultInput.annenForelder,
+        fornavn: 'Vakker',
+    },
+};
+
+export const NyPeriodeForFar2BarnDeltUttakINorge = Template.bind({});
+NyPeriodeForFar2BarnDeltUttakINorge.args = {
+    ...defaultInput,
+    erFarEllerMedmor: true,
+    erFlerbarnssøknad: true,
+    antallBarn: 2,
+    annenForelder: {
+        ...defaultInput.annenForelder,
+        fornavn: 'Vakker',
+    },
+};
+
+export const NyPeriodeRundtFødselForFar2BarnDeltUttakINorge = Template.bind({});
+NyPeriodeRundtFødselForFar2BarnDeltUttakINorge.args = {
+    ...defaultInput,
+    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
+    erFarEllerMedmor: true,
+    antallBarn: 2,
+    erFlerbarnssøknad: true,
+    annenForelder: {
+        ...defaultInput.annenForelder,
+        fornavn: 'Vakker',
+    },
+};
+
 export const NyPeriodeForFarEttBarnMorHarRettIEØS = Template.bind({});
 NyPeriodeForFarEttBarnMorHarRettIEØS.args = {
     ...defaultInput,

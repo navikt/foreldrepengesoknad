@@ -34,6 +34,7 @@ import { harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest } from
 import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
 import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
 import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
+import { inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest } from './tester/inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest';
 import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
 import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
 
@@ -73,6 +74,7 @@ export enum UttaksplanRegelKey {
     'farMedmorHarRettPåForeldrepengerUtenAktivitetskrav' = 'farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest',
     'farMedmorHarRettPåFlerbarnsdager' = 'farMedmorHarRettPåFlerbarnsdagerTest',
     'inneholderUttaksperioderMedUbesvartGradering' = 'inneholderUttaksperioderMedUbesvartGradering',
+    'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest' = 'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest',
     'overstigerMinsterettVedToTette' = 'overstigerMinsterettVedToTette',
 }
 
@@ -255,6 +257,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.inneholderUttaksperioderMedUbesvartGradering,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksperioderMedUbesvartGradering,
+    },
+    {
+        key: UttaksplanRegelKey.inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest,
     },
     {
         key: UttaksplanRegelKey.inneholderUtsettelserUtenÅrsak,
