@@ -234,7 +234,8 @@ const UttaksplanStep = () => {
                 familiehendelsesdatoDate!,
                 erAdopsjon,
                 bareFarMedmorHarRett,
-                erFarEllerMedmor
+                erFarEllerMedmor,
+                førsteUttaksdagNesteBarnsSak
             );
             const eksisterendeSakMedAnnenPartsPlan = {
                 ...eksisterendeSak,

@@ -3,7 +3,11 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    tidperiodeOverlapperDato,
+} from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import {
@@ -18,6 +22,7 @@ import {
     PeriodeUtenUttak,
 } from 'uttaksplan/types/Periode';
 import { PeriodeHullÅrsak } from 'uttaksplan/types/PeriodeHullÅrsak';
+import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
     perioder: Periode[],
@@ -99,6 +104,21 @@ export const slåSammenLikePerioder = (
     return nyePerioder;
 };
 
+const getSplittetPeriodeOmNødvendig = (
+    nyHullPeriode: PeriodeHull | PeriodeUtenUttak,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
+): Array<PeriodeHull | PeriodeUtenUttak> => {
+    if (
+        førsteUttaksdagNesteBarnsSak !== undefined &&
+        tidperiodeOverlapperDato(nyHullPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+    ) {
+        return splittPeriodePåDato(nyHullPeriode, førsteUttaksdagNesteBarnsSak) as Array<
+            PeriodeHull | PeriodeUtenUttak
+        >;
+    }
+    return [nyHullPeriode];
+};
+
 export const getPeriodeHullEllerPeriodeUtenUttak = (
     tidsperiode: TidsperiodeDate,
     harAktivitetskravIPeriodeUtenUttak: boolean,
@@ -106,6 +126,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
     årsak: PeriodeHullÅrsak = PeriodeHullÅrsak.fridag
 ): Array<PeriodeHull | PeriodeUtenUttak> => {
     const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
@@ -126,11 +147,11 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)));
 
         if (harAktivitetskravIPeriodeUtenUttak && !farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene) {
-            return [getPeriodeHull(tidsperiode, årsak)];
+            return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, årsak), førsteUttaksdagNesteBarnsSak);
         }
 
         if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
-            return [getNyPeriodeUtenUttak(tidsperiode)];
+            return getSplittetPeriodeOmNødvendig(getNyPeriodeUtenUttak(tidsperiode), førsteUttaksdagNesteBarnsSak);
         }
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
@@ -179,10 +200,10 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
             return [periodeHull, periodeUtenUttak];
         }
 
-        return [getNyPeriodeUtenUttak(tidsperiode)];
+        return getSplittetPeriodeOmNødvendig(getNyPeriodeUtenUttak(tidsperiode), førsteUttaksdagNesteBarnsSak);
     }
 
-    return [getPeriodeHull(tidsperiode, årsak)];
+    return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, årsak), førsteUttaksdagNesteBarnsSak);
 };
 
 export const getPeriodeHull = (tidsperiode: TidsperiodeDate, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
@@ -244,7 +265,8 @@ export const finnOgSettInnHull = (
     familiehendelsesdato: Date,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ) => {
     if (perioder.length === 0) {
         return perioder;
@@ -278,7 +300,8 @@ export const finnOgSettInnHull = (
                     familiehendelsesdato,
                     erAdopsjon,
                     bareFarHarRett,
-                    erFarEllerMedmor
+                    erFarEllerMedmor,
+                    førsteUttaksdagNesteBarnsSak
                 )
             );
         }

@@ -52,7 +52,8 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
             familiehendelsedato,
             erAdopsjon,
             bareFarHarRett,
-            erFarEllerMedmor
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 

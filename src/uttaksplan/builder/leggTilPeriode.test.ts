@@ -218,6 +218,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -244,6 +245,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -268,6 +270,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result2.length).toEqual(6);
@@ -294,6 +297,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -318,6 +322,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result2.length).toEqual(6);
@@ -344,6 +349,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -368,6 +374,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result2.length).toEqual(6);
@@ -394,6 +401,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(1);
@@ -420,6 +428,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(4);
@@ -446,6 +455,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -473,6 +483,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(4);
@@ -499,6 +510,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -527,6 +539,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(4);
@@ -555,6 +568,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(3);
@@ -580,6 +594,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(2);
@@ -609,6 +624,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(2);
@@ -638,6 +654,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(2);
@@ -667,11 +684,43 @@ describe('Test av legg til periode i uttaksplan', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(6);
         expect(result[3]).toEqual(nyPeriode);
         expect(result[4].tidsperiode).toEqual({ fom: new Date('2022-08-11'), tom: new Date('2022-08-17') });
+    });
+
+    it('Hvis legger til ny periode en stund etter siste periode slik at det skapes periode uten uttak som overlapper med neste barns stønadsperiode start, skal periode uten uttak splittes.', () => {
+        const nyPeriode: Periode = {
+            id: '6',
+            type: Periodetype.Uttak,
+            tidsperiode: {
+                fom: new Date('2023-05-12'),
+                tom: new Date('2023-09-19'),
+            },
+            forelder: Forelder.mor,
+            konto: StønadskontoType.Fellesperiode,
+        };
+
+        const result = leggTilPeriode({
+            perioder: perioder,
+            nyPeriode,
+            familiehendelsesdato: new Date('2022-05-05'),
+            harAktivitetskravIPeriodeUtenUttak: false,
+            erAdopsjon: false,
+            bareFarHarRett: false,
+            erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: new Date('2023-03-21'),
+        });
+
+        expect(result.length).toEqual(6);
+        expect(result[3].tidsperiode).toEqual({ fom: new Date('2022-10-13'), tom: new Date('2023-03-20') });
+        expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[4].tidsperiode).toEqual({ fom: new Date('2023-03-21'), tom: new Date('2023-05-11') });
+        expect(result[4].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[5]).toEqual(nyPeriode);
     });
 });
 

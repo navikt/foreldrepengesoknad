@@ -9,6 +9,7 @@ interface SlettPeriodeParams {
     erAdopsjon: boolean;
     bareFarHarRett: boolean;
     erFarEllerMedmor: boolean;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
 }
 
 export const slettPeriode = ({
@@ -19,6 +20,7 @@ export const slettPeriode = ({
     erAdopsjon,
     bareFarHarRett,
     erFarEllerMedmor,
+    førsteUttaksdagNesteBarnsSak,
 }: SlettPeriodeParams): Periode[] => {
     const result: Periode[] = perioder.reduce((res, periode, index) => {
         if (index === 0 && periode.id === slettetPeriode.id) {
@@ -33,7 +35,8 @@ export const slettPeriode = ({
                     familiehendelsesdato,
                     erAdopsjon,
                     bareFarHarRett,
-                    erFarEllerMedmor
+                    erFarEllerMedmor,
+                    førsteUttaksdagNesteBarnsSak
                 )
             );
             return res;

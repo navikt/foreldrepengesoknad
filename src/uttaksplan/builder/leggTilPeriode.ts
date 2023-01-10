@@ -129,6 +129,7 @@ interface LeggTilPeriodeParams {
     erAdopsjon: boolean;
     bareFarHarRett: boolean;
     erFarEllerMedmor: boolean;
+    førsteUttaksdagNesteBarnsSak: Date | undefined;
 }
 
 export const leggTilPeriode = ({
@@ -139,6 +140,7 @@ export const leggTilPeriode = ({
     erAdopsjon,
     bareFarHarRett,
     erFarEllerMedmor,
+    førsteUttaksdagNesteBarnsSak,
 }: LeggTilPeriodeParams): Periode[] => {
     if (perioder.length === 0) {
         return [nyPeriode];
@@ -226,7 +228,8 @@ export const leggTilPeriode = ({
                         familiehendelsesdato,
                         erAdopsjon,
                         bareFarHarRett,
-                        erFarEllerMedmor
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak
                     ),
                     ...perioder,
                 ];
@@ -248,7 +251,8 @@ export const leggTilPeriode = ({
                         familiehendelsesdato,
                         erAdopsjon,
                         bareFarHarRett,
-                        erFarEllerMedmor
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak
                     ),
                     nyPeriode,
                 ];

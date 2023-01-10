@@ -102,6 +102,7 @@ describe('Test av slett periode', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(4);
@@ -122,6 +123,7 @@ describe('Test av slett periode', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -201,6 +203,7 @@ describe('Test av slett periode for far - etter WLB', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: true,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
@@ -222,6 +225,7 @@ describe('Test av slett periode for far - etter WLB', () => {
             erAdopsjon: false,
             bareFarHarRett: true,
             erFarEllerMedmor: true,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(6);
@@ -258,6 +262,7 @@ describe('Test av slett periode for far - før WLB', () => {
             erAdopsjon: false,
             bareFarHarRett: false,
             erFarEllerMedmor: true,
+            førsteUttaksdagNesteBarnsSak: undefined,
         });
 
         expect(result.length).toEqual(5);
