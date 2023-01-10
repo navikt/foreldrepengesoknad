@@ -36,6 +36,7 @@ const leggTilPeriodeOgBuild = (
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak,
         }),
         familiehendelsesdato,
         førsteUttaksdagNesteBarnsSak
@@ -50,6 +51,7 @@ const leggTilPeriodeOgBuild = (
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak,
         });
     });
 
@@ -60,7 +62,8 @@ const leggTilPeriodeOgBuild = (
             familiehendelsesdato,
             erAdopsjon,
             bareFarHarRett,
-            erFarEllerMedmor
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak
         );
     }
 
@@ -102,7 +105,8 @@ const oppdaterPeriodeOgBuild = (
             familiehendelsesdato,
             erAdopsjon,
             bareFarHarRett,
-            erFarEllerMedmor
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak
         );
         oppdatertePerioder = settInnAnnenPartsUttak(
             oppdatertePerioder,
@@ -118,7 +122,8 @@ const oppdaterPeriodeOgBuild = (
         familiehendelsesdato,
         erAdopsjon,
         bareFarHarRett,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
 };
 
@@ -143,6 +148,7 @@ const slettPeriodeOgBuild = (
                 erAdopsjon,
                 bareFarHarRett,
                 erFarEllerMedmor,
+                førsteUttaksdagNesteBarnsSak,
             }),
             familiehendelsesdato,
             førsteUttaksdagNesteBarnsSak
@@ -156,7 +162,8 @@ const slettPeriodeOgBuild = (
             familiehendelsesdato,
             erAdopsjon,
             bareFarHarRett,
-            erFarEllerMedmor
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak
         );
         nyePerioder = settInnAnnenPartsUttak(
             nyePerioder,
@@ -172,7 +179,8 @@ const slettPeriodeOgBuild = (
         familiehendelsesdato,
         erAdopsjon,
         bareFarHarRett,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
 };
 
@@ -191,7 +199,8 @@ const getBevegeligePerioder = (
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
+    førsteUttaksdagNesteBarnsSak: Date | undefined
 ): Periode[] => {
     return finnOgSettInnHull(
         perioder.filter(
@@ -205,7 +214,8 @@ const getBevegeligePerioder = (
         familiehendelsesdato,
         erAdopsjon,
         bareFarHarRett,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
 };
 
@@ -229,7 +239,8 @@ const Uttaksplanbuilder = (
         familiehendelsesdato,
         erAdopsjon,
         bareFarHarRett,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
     const fastePerioder = getFastePerioder(perioderUtenAnnenPart, familiehendelsesdato);
     const bevegeligePerioder = getBevegeligePerioder(
@@ -238,7 +249,8 @@ const Uttaksplanbuilder = (
         harAktivitetskravIPeriodeUtenUttak,
         erAdopsjon,
         bareFarHarRett,
-        erFarEllerMedmor
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
     let annenPartsUttak: Periode[] | undefined = undefined;
 
@@ -285,7 +297,8 @@ const Uttaksplanbuilder = (
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
                         bareFarHarRett,
-                        erFarEllerMedmor
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak
                     );
                     resultat = leggTilPeriodeOgBuild(
                         nyBevegeligePerioder,
@@ -339,7 +352,8 @@ const Uttaksplanbuilder = (
                         harAktivitetskravIPeriodeUtenUttak,
                         erAdopsjon,
                         bareFarHarRett,
-                        erFarEllerMedmor
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak
                     );
                     resultat = leggTilPeriodeOgBuild(
                         nyBevegeligePerioder,

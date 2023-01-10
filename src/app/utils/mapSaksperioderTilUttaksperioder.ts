@@ -502,7 +502,8 @@ const mapSaksperioderTilUttaksperioder = (
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
-        grunnlag.søkerErFarEllerMedmor
+        grunnlag.søkerErFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
 
     return finnOgSettInnHull(
@@ -516,7 +517,8 @@ const mapSaksperioderTilUttaksperioder = (
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
-        grunnlag.søkerErFarEllerMedmor
+        grunnlag.søkerErFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak
     );
 };
 

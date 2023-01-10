@@ -86,7 +86,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 familiehendelsesdato,
                 erAdopsjon,
                 søkerErFarEllerMedmor && !erDeltUttak,
-                søkerErFarEllerMedmor
+                søkerErFarEllerMedmor,
+                førsteUttaksdagNesteBarnsSak
             );
         } else {
             const forslag = ikkeDeltUttak(
@@ -107,7 +108,8 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 familiehendelsesdato,
                 erAdopsjon,
                 søkerErFarEllerMedmor && !erDeltUttak,
-                søkerErFarEllerMedmor
+                søkerErFarEllerMedmor,
+                førsteUttaksdagNesteBarnsSak
             );
         }
     }
