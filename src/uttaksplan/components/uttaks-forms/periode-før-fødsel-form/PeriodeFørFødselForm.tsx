@@ -54,7 +54,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
 
     return (
         <PeriodeFørFødselFormComponents.FormikWrapper
-            initialValues={getPeriodeFørFødselFormInitialValues(periode)}
+            initialValues={getPeriodeFørFødselFormInitialValues(periode, familiehendelsesdato)}
             onSubmit={(values) =>
                 handleUpdatePeriode(mapPeriodeFørFødselFormToPeriode(values, periode), familiehendelsesdato)
             }
