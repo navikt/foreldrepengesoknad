@@ -164,7 +164,7 @@ export const isUttakAvFellesperiode = (periode: Periode): periode is Uttaksperio
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Fellesperiode;
 };
 
-export const isUttakAvForeldrepengerFørFødsel = (periode: Periode): periode is Uttaksperiode => {
+export const isUttakAvForeldrepengerFørFødsel = (periode: Periode): periode is ForeldrepengerFørFødselUttaksperiode => {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 };
 

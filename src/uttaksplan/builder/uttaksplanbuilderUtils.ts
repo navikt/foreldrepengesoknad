@@ -290,6 +290,10 @@ export const finnOgSettInnHull = (
             return res;
         }
 
+        if (!erFarEllerMedmor && dayjs(tidsperiodeMellomPerioder.tom).isBefore(familiehendelsesdato, 'day')) {
+            return res;
+        }
+
         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
