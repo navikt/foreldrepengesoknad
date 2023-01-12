@@ -27,7 +27,9 @@ import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import getStønadskontoParams, {
+    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
+} from 'app/api/getStønadskontoParams';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
@@ -150,6 +152,11 @@ const UttaksplanStep = () => {
                 førsteUttaksdagNesteBarnsSak
             ),
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
+    );
+
+    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        eksisterendeSak?.grunnlag.termindato,
+        eksisterendeVedtakAnnenPart?.grunnlag.termindato
     );
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
@@ -384,7 +391,7 @@ const UttaksplanStep = () => {
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
-                eksisterendeSak?.grunnlag.termindato
+                saksgrunnlagsTermindato
             ),
             nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
         );
@@ -397,7 +404,7 @@ const UttaksplanStep = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
-            eksisterendeSak?.grunnlag.termindato
+            saksgrunnlagsTermindato
         ),
         nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
     );
