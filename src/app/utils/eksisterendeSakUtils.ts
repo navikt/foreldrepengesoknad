@@ -171,8 +171,13 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
+    let termindato = undefined;
+    if (eksisterendeSakAnnenPart.termindato !== undefined) {
+        termindato = eksisterendeSakAnnenPart.termindato;
+    } else if ((isFødtBarn(barn) || isUfødtBarn(barn)) && barn.termindato !== undefined) {
+        termindato = dateToISOString(barn.termindato);
+    }
     const fødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
-    const termindato = isUfødtBarn(barn) ? dateToISOString(barn.termindato) : undefined;
     const adopsjonsdato = isAdoptertBarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined;
 
     const grunnlagForAnnenPart = {

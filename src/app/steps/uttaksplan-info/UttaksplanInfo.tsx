@@ -6,10 +6,12 @@ import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
-import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import getStønadskontoParams, {
+    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
+} from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import actionCreator from 'app/context/action/actionCreator';
@@ -31,7 +33,7 @@ const UttaksplanInfo = () => {
     const { barn, annenForelder, søkersituasjon, søker } = søknad;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const { erAleneOmOmsorg } = søker;
-    const { barnFraNesteSak } = state;
+    const { barnFraNesteSak, eksisterendeSak } = state;
 
     const familieHendelseDatoNesteSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
@@ -67,7 +69,11 @@ const UttaksplanInfo = () => {
             ),
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
     );
-    const termindato = dateToISOString(getTermindato(barn));
+
+    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        eksisterendeSak?.grunnlag.termindato,
+        eksisterendeVedtakAnnenPart?.grunnlag.termindato
+    );
 
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
@@ -92,7 +98,7 @@ const UttaksplanInfo = () => {
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
-                termindato
+                saksgrunnlagsTermindato
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
                 ? false
@@ -107,7 +113,7 @@ const UttaksplanInfo = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
-            termindato
+            saksgrunnlagsTermindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended
             ? false
