@@ -23,7 +23,7 @@ const renderSpinner = () => (
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
-    const { sakerData } = Api.useGetSaker();
+    const { sakerData, sakerError } = Api.useGetSaker();
     const { storageData } = Api.useStoredAppState();
     const { dispatch, state } = useForeldrepengesøknadContext();
 
@@ -45,10 +45,15 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     useEffect(() => {
         if (søkerinfoError) {
             throw new Error(
-                'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.'
+                `Vi klarte ikke å hente informasjon om deg med følgende feilmelding: ${søkerinfoError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
-    }, [søkerinfoError]);
+        if (sakerError) {
+            throw new Error(
+                `Vi klarte ikke å hente informasjon om sakene dine med følgende feilmelding: ${sakerError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+            );
+        }
+    }, [søkerinfoError, sakerError]);
 
     if (!state.søkerinfo || !sakerData) {
         return renderSpinner();

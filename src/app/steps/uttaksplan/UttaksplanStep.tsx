@@ -418,6 +418,25 @@ const UttaksplanStep = () => {
         dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
     };
 
+    useEffect(() => {
+        if (tilgjengeligeStønadskontoerError) {
+            throw new Error(
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+            );
+        }
+        if (eksisterendeSakAnnenPartError) {
+            throw new Error(
+                `Vi klarte ikke å hente informasjon om saken til annen part  med følgende feilmelding: ${eksisterendeSakAnnenPartError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+            );
+        }
+
+        if (nesteSakAnnenPartError) {
+            throw new Error(
+                `Vi klarte ikke å hente informasjon om saken til annen part for neste barn med følgende feilmelding: ${nesteSakAnnenPartError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+            );
+        }
+    }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);
+
     if (
         !stønadskontoer100 ||
         !stønadskontoer80 ||
@@ -425,26 +444,6 @@ const UttaksplanStep = () => {
             !eksisterendeSakAnnenPartRequestIsSuspended) ||
         (nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED && !nesteBarnsSakAnnenPartRequestIsSuspended)
     ) {
-        if (tilgjengeligeStønadskontoerError?.response?.status === 500) {
-            throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data.messages}`
-            );
-        }
-        if (tilgjengeligeStønadskontoerError?.response?.status === 400) {
-            throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response.data}`
-            );
-        }
-        if (eksisterendeSakAnnenPartError?.response?.status === 500) {
-            throw new Error(
-                `Vi klarte ikke å hente opp saken til annen forelder med følgende feilmelding: ${eksisterendeSakAnnenPartError.response.data.messages}`
-            );
-        }
-        if (nesteSakAnnenPartError?.response?.status === 500) {
-            throw new Error(
-                `Vi klarte ikke å hente opp annen forelders sak for det neste barnet med følgende feilmelding: ${nesteSakAnnenPartError.response.data.messages}`
-            );
-        }
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <NavFrontendSpinner type="XXL" />
