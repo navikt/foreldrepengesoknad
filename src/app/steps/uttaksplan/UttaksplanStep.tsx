@@ -63,6 +63,7 @@ import { isUfødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
+import { getErrorMessage } from 'app/api/apiUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -420,19 +421,22 @@ const UttaksplanStep = () => {
 
     useEffect(() => {
         if (tilgjengeligeStønadskontoerError) {
+            const feilmelding = getErrorMessage(tilgjengeligeStønadskontoerError);
             throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${tilgjengeligeStønadskontoerError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
         if (eksisterendeSakAnnenPartError) {
+            const feilmelding = getErrorMessage(eksisterendeSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen part  med følgende feilmelding: ${eksisterendeSakAnnenPartError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen part  med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
 
         if (nesteSakAnnenPartError) {
+            const feilmelding = getErrorMessage(nesteSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen part for neste barn med følgende feilmelding: ${nesteSakAnnenPartError.response?.data.messages}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen part for neste barn med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);

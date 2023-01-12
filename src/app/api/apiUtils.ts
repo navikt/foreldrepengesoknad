@@ -36,6 +36,7 @@ import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'a
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
 import { getTermindato } from 'app/utils/barnUtils';
+import { AxiosError } from 'axios';
 
 export interface AnnenForelderOppgittForInnsending
     extends Omit<AnnenForelder, 'erUfør' | 'harRettPåForeldrepengerINorge'> {
@@ -443,6 +444,15 @@ const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): 
     const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
     if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
         return tilleggsopplysningerTilSaksbehandler;
+    }
+    return undefined;
+};
+
+export const getErrorMessage = (error: AxiosError<any>): string | undefined => {
+    if (error.response && error.response.data && error.response.data.message) {
+        return error.response.data.messages;
+    } else if (error.message) {
+        return error.message;
     }
     return undefined;
 };
