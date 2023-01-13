@@ -82,7 +82,7 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
         return {
             etternavn: hasValue(values.etternavn) ? replaceInvisibleCharsWithSpace(values.etternavn!) : undefined,
             fornavn: hasValue(values.fornavn) ? replaceInvisibleCharsWithSpace(values.fornavn!) : undefined,
-            fnr: hasValue(values.fnr) ? values.fnr : undefined,
+            fnr: hasValue(values.fnr) && values.fnr !== undefined ? values.fnr.trim() : undefined,
             bostedsland: hasValue(values.bostedsland) ? values.bostedsland : undefined,
             utenlandskFnr: hasValue(values.utenlandskFnr) ? values.utenlandskFnr : undefined,
             erUfør: convertYesOrNoOrUndefinedToBoolean(values.erMorUfør),
