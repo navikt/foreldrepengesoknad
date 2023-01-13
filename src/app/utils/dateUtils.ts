@@ -12,7 +12,14 @@ import { RegistrertBarn } from 'app/types/Person';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
+import {
+    isInfoPeriode,
+    isPeriodeUtenUttak,
+    isUtsettelsesperiode,
+    isUttaksperiode,
+    Periode,
+    Utsettelsesperiode,
+} from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import FeatureToggle from 'app/FeatureToggle';
@@ -424,6 +431,25 @@ export const getEndringstidspunkt = (
                 if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
                     endringstidspunktNyPlan = fom;
                 }
+            }
+
+            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak, finn første uttak/utsettelse etter endringstidspunktet
+            if (
+                endringstidspunktNyPlan &&
+                isPeriodeUtenUttak(periode) &&
+                dayjs(endringstidspunktNyPlan).isAfter(
+                    søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom
+                )
+            ) {
+                const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
+                    (p) =>
+                        (isUttaksperiode(p) || isUtsettelsesperiode(p)) &&
+                        dayjs(p.tidsperiode.fom).isAfter(endringstidspunktNyPlan)
+                );
+                endringstidspunktNyPlan =
+                    førsteUttakEllerUtsettelseEtterEndring !== undefined
+                        ? førsteUttakEllerUtsettelseEtterEndring.tidsperiode.fom
+                        : endringstidspunktNyPlan;
             }
         });
 
