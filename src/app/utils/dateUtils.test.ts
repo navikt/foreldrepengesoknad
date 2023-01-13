@@ -543,7 +543,7 @@ describe('dateUtils', () => {
             expect(endringstidspunkt).toEqual(gradertPeriode.tidsperiode!.fom);
         });
 
-        it('Hvis en ny periode legges til i slutten med en periode uten uttak i mellom den opprinnelige planen, skal starten på perioden uten uttak være endringstidspunktet', () => {
+        it('Hvis en ny periode legges til i slutten med en periode uten uttak i mellom den opprinnelige planen, skal starten på denne perioden være endringstidspunktet', () => {
             const endretPlan = [
                 ...opprinneligPlan,
                 {
@@ -565,7 +565,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(endretPlan[3].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(endretPlan[4].tidsperiode!.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er endret (f.eks gradert)', () => {
