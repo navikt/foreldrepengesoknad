@@ -249,7 +249,10 @@ const getSelectableBarnOptionsFraPDL = (
             )
     );
     registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
-        if (!barnSomErLagtTilFnr.includes(regBarn.fnr) && !erEldreEnn3ÅrOg3Måneder(regBarn.fødselsdato)) {
+        if (
+            !(regBarn.fnr !== undefined && barnSomErLagtTilFnr.includes(regBarn.fnr)) &&
+            !erEldreEnn3ÅrOg3Måneder(regBarn.fødselsdato)
+        ) {
             const dagenFørFødsel = dayjs(regBarn.fødselsdato).subtract(1, 'day');
             const dagenEtterFødsel = dayjs(regBarn.fødselsdato).add(1, 'day');
             const barnFødtISammePeriode = registrerteBarn.filter(
