@@ -65,7 +65,7 @@ import { isUfødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
-import { getErrorMessage } from 'app/api/apiUtils';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -430,22 +430,22 @@ const UttaksplanStep = () => {
 
     useEffect(() => {
         if (tilgjengeligeStønadskontoerError) {
-            const feilmelding = getErrorMessage(tilgjengeligeStønadskontoerError);
+            sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
             throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
         if (eksisterendeSakAnnenPartError) {
-            const feilmelding = getErrorMessage(eksisterendeSakAnnenPartError);
+            sendErrorMessageToSentry(eksisterendeSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen part  med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
 
         if (nesteSakAnnenPartError) {
-            const feilmelding = getErrorMessage(nesteSakAnnenPartError);
+            sendErrorMessageToSentry(nesteSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen part for neste barn med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);

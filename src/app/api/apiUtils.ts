@@ -37,7 +37,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
 import { getTermindato } from 'app/utils/barnUtils';
 import { AxiosError } from 'axios';
-
+import * as Sentry from '@sentry/browser';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<AnnenForelder, 'erUfør' | 'harRettPåForeldrepengerINorge'> {
     harMorUføretrygd?: boolean;
@@ -448,11 +448,19 @@ const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): 
     return undefined;
 };
 
-export const getErrorMessage = (error: AxiosError<any>): string | undefined => {
-    if (error.response && error.response.data && error.response.data.message) {
-        return error.response.data.messages;
-    } else if (error.message) {
-        return error.message;
+export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
+    const hideNumbersAndTrim = (tekst: string): string => {
+        return tekst.replace(/[0-9]/g, '*').slice(0, 250) + '...';
+    };
+
+    let errorString = '';
+    if (error.request && error.request.data && error.request.data.messages) {
+        errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
+    } else if (error.response && error.response.data && error.response.data.messages) {
+        errorString = errorString + hideNumbersAndTrim(error.response.data.messages);
     }
-    return undefined;
+    if (error.message) {
+        errorString = errorString + error.message;
+    }
+    Sentry.captureMessage(errorString);
 };

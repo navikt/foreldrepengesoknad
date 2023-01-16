@@ -22,7 +22,7 @@ import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUt
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isFødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
-import { getErrorMessage } from 'app/api/apiUtils';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -124,15 +124,15 @@ const UttaksplanInfo = () => {
 
     useEffect(() => {
         if (tilgjengeligeStønadskontoerError) {
-            const feilmelding = getErrorMessage(tilgjengeligeStønadskontoerError);
+            sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
             throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
         if (eksisterendeSakAnnenPartError) {
-            const feilmelding = getErrorMessage(eksisterendeSakAnnenPartError);
+            sendErrorMessageToSentry(eksisterendeSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen part med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError]);

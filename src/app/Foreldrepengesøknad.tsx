@@ -3,7 +3,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
-import { getErrorMessage } from './api/apiUtils';
+import { sendErrorMessageToSentry } from './api/apiUtils';
 import actionCreator from './context/action/actionCreator';
 import { useForeldrepengesøknadContext } from './context/hooks/useForeldrepengesøknadContext';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
@@ -45,15 +45,15 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     useEffect(() => {
         if (søkerinfoError) {
-            const feilmelding = getErrorMessage(søkerinfoError);
+            sendErrorMessageToSentry(søkerinfoError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om deg med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om deg med følgende feilmelding. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
         if (sakerError) {
-            const feilmelding = getErrorMessage(sakerError);
+            sendErrorMessageToSentry(sakerError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om sakene dine med følgende feilmelding: ${feilmelding}. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om sakene dine. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
     }, [søkerinfoError, sakerError]);
