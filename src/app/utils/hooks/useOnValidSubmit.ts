@@ -6,6 +6,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { redirectToLogin } from '../redirectToLogin';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 
 const useOnValidSubmit = <T>(
     submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
@@ -40,6 +41,7 @@ const useOnValidSubmit = <T>(
 
     useEffect(() => {
         if (submitError) {
+            sendErrorMessageToSentry(submitError);
             throw new Error(submitError);
         }
     }, [submitError]);

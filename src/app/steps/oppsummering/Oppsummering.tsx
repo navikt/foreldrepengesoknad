@@ -37,6 +37,7 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { sendErrorMessageToSentry } from '../../api/apiUtils';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -125,6 +126,7 @@ const Oppsummering = () => {
 
     useEffect(() => {
         if (submitError !== undefined) {
+            sendErrorMessageToSentry(submitError);
             throw new Error(submitError);
         }
     }, [submitError]);
