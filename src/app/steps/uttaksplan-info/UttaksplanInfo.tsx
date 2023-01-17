@@ -23,6 +23,8 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isFødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import SøknadRoutes from 'app/routes/routes';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -74,6 +76,8 @@ const UttaksplanInfo = () => {
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato
     );
+
+    useSaveLoadedRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {

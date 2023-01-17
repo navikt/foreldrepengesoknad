@@ -12,6 +12,8 @@ import withForeldrepengersøknadContext from '../../../decorators/withForeldrepe
 import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
 import { Næringstype } from 'app/context/types/Næring';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
+import AxiosMock from '../../../utils/AxiosMock';
+import MockAdapter from 'axios-mock-adapter/types';
 
 export default {
     title: 'steps/Oppsummering',
@@ -25,10 +27,15 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ context, søkerinfo }) => {
+    const restMock = (apiMock: MockAdapter) => {
+        apiMock.onPost('/storage').reply(200, undefined);
+    };
     return (
-        <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-            <Oppsummering />
-        </ForeldrepengerStateMock>
+        <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
+                <Oppsummering />
+            </ForeldrepengerStateMock>
+        </AxiosMock>
     );
 };
 

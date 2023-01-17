@@ -38,6 +38,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -96,6 +97,7 @@ const Oppsummering = () => {
             ),
         [søknad, state.perioderSomSkalSendesInn, familiehendelsesdato, state.endringstidspunkt]
     );
+    useSaveLoadedRoute(SøknadRoutes.OPPSUMMERING);
 
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
