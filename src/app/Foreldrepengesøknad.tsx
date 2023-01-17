@@ -47,7 +47,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         if (søkerinfoError) {
             sendErrorMessageToSentry(søkerinfoError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om deg med følgende feilmelding. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
             );
         }
         if (sakerError) {
