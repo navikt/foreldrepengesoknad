@@ -27,6 +27,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -47,6 +48,7 @@ const OmBarnet: React.FunctionComponent = () => {
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    useSaveLoadedRoute(SøknadRoutes.OM_BARNET);
 
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
         if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
