@@ -184,32 +184,27 @@ const getSelectableFlerlingerFraPDL = (
     annenForelder: RegistrertAnnenForelder | undefined
 ): SelectableBarn | undefined => {
     const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldst);
-    let barnaSomSkalVises;
 
-    const registrerteFlerlingerSomLever = alleBarna.filter((regbarn) => {
-        return regbarn.dødsdato === undefined;
+    const barnaSomSkalVises = alleBarna.filter((regbarn) => {
+        return regbarn.dødsdato === undefined || !getDødeBarnetForMerEnn3MånederSiden(regbarn);
     });
 
-    if (registrerteFlerlingerSomLever.length === 0) {
-        if (!getDødeBarnetForMerEnn3MånederSiden(alleBarna[0])) {
-            barnaSomSkalVises = alleBarna;
-        } else {
-            return undefined;
-        }
-    } else {
-        barnaSomSkalVises = registrerteFlerlingerSomLever;
+    if (barnaSomSkalVises.length > 0) {
+        return {
+            id: guid(),
+            type: SelectableBarnType.IKKE_UTFYLT,
+            antallBarn: alleBarna.length,
+            fødselsdatoer: barnaSomSkalVises.map((b) => b.fødselsdato),
+            fornavn: barnaSomSkalVises.map((b) =>
+                [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')
+            ),
+            etternavn: barnaSomSkalVises.map((b) => b.etternavn),
+            fnr: barnaSomSkalVises.map((b) => b.fnr),
+            sortableDato: alleBarna[0].fødselsdato,
+            annenForelder,
+        };
     }
-    return {
-        id: guid(),
-        type: SelectableBarnType.IKKE_UTFYLT,
-        antallBarn: alleBarna.length,
-        fødselsdatoer: barnaSomSkalVises.map((b) => b.fødselsdato),
-        fornavn: barnaSomSkalVises.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
-        etternavn: barnaSomSkalVises.map((b) => b.etternavn),
-        fnr: barnaSomSkalVises.map((b) => b.fnr),
-        sortableDato: alleBarna[0].fødselsdato,
-        annenForelder,
-    };
+    return undefined;
 };
 
 const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
