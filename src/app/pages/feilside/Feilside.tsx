@@ -10,6 +10,8 @@ import actionCreator from 'app/context/action/actionCreator';
 import Api from 'app/api/api';
 
 import './feilside.less';
+import { Navigate, Route } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
 
 export interface Props {
     containerId?: string;
@@ -58,6 +60,10 @@ const Feilside: React.FunctionComponent<Props> = ({
         window.location.href = 'http://localhost:8080';
     }, [dispatch, søkerinfo]);
 
+    const gåTilbakeTilGammelSøknadHandler = useCallback(() => {
+        return <Route path="*" element={<Navigate to={SøknadRoutes.UTTAKSPLAN} />} />;
+    }, []);
+
     useDocumentTitle(dokumenttittel);
 
     return (
@@ -91,6 +97,11 @@ const Feilside: React.FunctionComponent<Props> = ({
                 {søkerinfo !== undefined && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
+                    </div>
+                )}
+                {søkerinfo !== undefined && (
+                    <div className={bem.element('avbrytKnapp')}>
+                        <Hovedknapp onClick={gåTilbakeTilGammelSøknadHandler}>Gå tilbake til søknaden</Hovedknapp>
                     </div>
                 )}
             </div>
