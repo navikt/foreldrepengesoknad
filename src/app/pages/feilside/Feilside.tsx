@@ -10,7 +10,6 @@ import actionCreator from 'app/context/action/actionCreator';
 import Api from 'app/api/api';
 
 import './feilside.less';
-import { Navigate, Route } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 
 export interface Props {
@@ -61,8 +60,8 @@ const Feilside: React.FunctionComponent<Props> = ({
     }, [dispatch, søkerinfo]);
 
     const gåTilbakeTilGammelSøknadHandler = useCallback(() => {
-        return <Route path="*" element={<Navigate to={SøknadRoutes.UTTAKSPLAN} />} />;
-    }, []);
+        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
+    }, [dispatch]);
 
     useDocumentTitle(dokumenttittel);
 
