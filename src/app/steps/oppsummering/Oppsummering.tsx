@@ -110,6 +110,18 @@ const Oppsummering = () => {
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                         redirectToLogin();
+                    } else if (
+                        error.response &&
+                        error.response.status === 400 &&
+                        error.response.data !== undefined &&
+                        error.response.data.messages !== undefined &&
+                        error.reposnse.data.messages.includes(
+                            'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg'
+                        )
+                    ) {
+                        throw new Error(
+                            'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt.'
+                        );
                     } else {
                         setSubmitError(error);
                     }
