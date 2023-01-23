@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import Lenke from 'nav-frontend-lenker';
 import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
@@ -45,7 +45,6 @@ const Feilside: React.FunctionComponent<Props> = ({
     const bem = bemUtils('feilside');
     const { dispatch, state } = useForeldrepengesøknadContext();
     const { søkerinfo } = state;
-    const [_gåTilbakeErKlikket, setGåTilbakeErKlikket] = useState(false);
 
     const avbrytSøknadHandler = useCallback(async () => {
         if (!søkerinfo) {
@@ -66,7 +65,7 @@ const Feilside: React.FunctionComponent<Props> = ({
     const gåTilbakeTilGammelSøknadHandler = useCallback(() => {
         dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
         storeAppState(state);
-        setGåTilbakeErKlikket(true);
+        window.location.reload();
     }, [dispatch, state]);
 
     useDocumentTitle(dokumenttittel);
