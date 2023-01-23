@@ -11,6 +11,7 @@ import Api from 'app/api/api';
 
 import './feilside.less';
 import SøknadRoutes from 'app/routes/routes';
+import { storeAppState } from 'app/utils/submitUtils';
 
 export interface Props {
     containerId?: string;
@@ -26,6 +27,7 @@ export interface Props {
     };
     tittel: React.ReactNode;
     ingress: React.ReactNode;
+    feilPgaForMangeVedlegg: boolean;
     språkkode?: Locale;
     setLanguage?: (languageCode: string) => void;
 }
@@ -36,6 +38,7 @@ const Feilside: React.FunctionComponent<Props> = ({
     illustrasjon,
     tittel,
     ingress,
+    feilPgaForMangeVedlegg,
     språkkode,
     setLanguage,
 }) => {
@@ -61,7 +64,8 @@ const Feilside: React.FunctionComponent<Props> = ({
 
     const gåTilbakeTilGammelSøknadHandler = useCallback(() => {
         dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
-    }, [dispatch]);
+        storeAppState(state);
+    }, [dispatch, state]);
 
     useDocumentTitle(dokumenttittel);
 
@@ -93,12 +97,12 @@ const Feilside: React.FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>{ingress}</Normaltekst>
                 </Block>
-                {søkerinfo !== undefined && (
+                {søkerinfo !== undefined && !feilPgaForMangeVedlegg && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
                     </div>
                 )}
-                {søkerinfo !== undefined && (
+                {søkerinfo !== undefined && feilPgaForMangeVedlegg && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Hovedknapp onClick={gåTilbakeTilGammelSøknadHandler}>Gå tilbake til søknaden</Hovedknapp>
                     </div>

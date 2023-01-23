@@ -29,6 +29,8 @@ class ErrorBoundary extends React.Component<any, State> {
 
     render() {
         if (this.state.hasError) {
+            const feilPgaForMangeVedlegg =
+                !!this.state.error && !!this.state.error.message && this.state.error.message.includes('40 vedlegg');
             return (
                 <Feilside
                     dokumenttittel="NAV Foreldrepengesøknad"
@@ -42,6 +44,7 @@ class ErrorBoundary extends React.Component<any, State> {
                         },
                         lenke: { tekst: 'Her finner du en lenke til brukerstøtte', url: links.brukerstøtte },
                     }}
+                    feilPgaForMangeVedlegg={feilPgaForMangeVedlegg}
                 />
             );
         }
