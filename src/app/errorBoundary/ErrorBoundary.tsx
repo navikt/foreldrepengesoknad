@@ -31,11 +31,12 @@ class ErrorBoundary extends React.Component<any, State> {
         if (this.state.hasError) {
             const feilPgaForMangeVedlegg =
                 !!this.state.error && !!this.state.error.message && this.state.error.message.includes('40 vedlegg');
+            const feilsideTittel = feilPgaForMangeVedlegg ? 'Feil: for mange vedlegg' : 'Informasjon om feilen';
             return (
                 <Feilside
                     dokumenttittel="NAV Foreldrepengesøknad"
                     ingress={`${this.state.error?.message}`}
-                    tittel="Informasjon om feilen"
+                    tittel={feilsideTittel}
                     illustrasjon={{
                         tittel: 'Hei!',
                         tekst: 'Noe har gått galt med søknaden.',
