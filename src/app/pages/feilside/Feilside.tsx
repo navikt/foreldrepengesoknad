@@ -63,9 +63,8 @@ const Feilside: React.FunctionComponent<Props> = ({
     }, [dispatch, søkerinfo]);
 
     const gåTilbakeTilGammelSøknadHandler = useCallback(() => {
-        dispatch(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
-        storeAppState(state).then(() => window.location.reload());
-    }, [dispatch, state]);
+        window.location.reload();
+    }, []);
 
     useDocumentTitle(dokumenttittel);
 
