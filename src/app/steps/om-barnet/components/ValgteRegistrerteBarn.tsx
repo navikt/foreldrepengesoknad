@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Element } from 'nav-frontend-typografi';
+import { getDødeBarnetForMerEnn3MånederSiden, getErDødfødtBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 
 interface Props {
     valgteBarn: RegistrertBarn[];
@@ -27,7 +28,15 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const sorterteRegistrerteBarn = valgteBarn.sort(sorterRegistrerteBarn);
     const antallBarn = valgteBarn.length;
     const fødselsdato = valgteBarn[0].fødselsdato;
-
+    const barnaDødfødtForMindreEnn3MndSiden = valgteBarn.filter(
+        (b) => getErDødfødtBarn(b) && !getDødeBarnetForMerEnn3MånederSiden(b)
+    );
+    const minstEttAvBarnaErDødfødtForMindreEnn3MndSiden = barnaDødfødtForMindreEnn3MndSiden.length > 0;
+    const alleBarnaErDødfødtForMindreEnn3MndSiden = barnaDødfødtForMindreEnn3MndSiden.length === valgteBarn.length;
+    const barnForVisning =
+        antallBarn > 1 && !alleBarnaErDødfødtForMindreEnn3MndSiden
+            ? sorterteRegistrerteBarn.filter((b) => !getErDødfødtBarn(b))
+            : sorterteRegistrerteBarn;
     return (
         <>
             <Block padBottom="l">
@@ -37,14 +46,24 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                             <FormattedMessage id="omBarnet.valgteBarn.tittel" values={{ antallBarn }} />
                         </Element>
                     </Block>
-                    {sorterteRegistrerteBarn.map((valgtBarn: RegistrertBarn, index: number) => (
-                        <Block padBottom="l" key={index}>
+                    {!minstEttAvBarnaErDødfødtForMindreEnn3MndSiden ? (
+                        barnForVisning.map((valgtBarn: RegistrertBarn, index: number) => (
+                            <Block padBottom="l" key={index}>
+                                <RegistrertePersonalia
+                                    person={valgtBarn}
+                                    fødselsdatoForVisning={dateToISOString(valgtBarn.fødselsdato)}
+                                />
+                            </Block>
+                        ))
+                    ) : (
+                        <Block padBottom="l">
                             <RegistrertePersonalia
-                                person={valgtBarn}
-                                fødselsdatoForVisning={dateToISOString(valgtBarn.fødselsdato)}
+                                person={barnForVisning[0]}
+                                fødselsdatoForVisning={dateToISOString(barnForVisning[0].fødselsdato)}
+                                altTekstHvisUkjentNavn={getTekstForAntallBarn(valgteBarn.length, intl)}
                             />
                         </Block>
-                    ))}
+                    )}
                 </div>
             </Block>
             <Block visible={visibility.isVisible(OmBarnetFormField.termindato) && valgteBarn.length > 0}>

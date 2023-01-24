@@ -11,19 +11,23 @@ interface Props {
     person: RegistrertAnnenForelder | RegistrertBarn;
     fødselsnummerForVisning?: string;
     fødselsdatoForVisning?: string;
+    altTekstHvisUkjentNavn?: string;
 }
 
 const RegistrertePersonalia: React.FunctionComponent<Props> = ({
     person,
     fødselsnummerForVisning,
     fødselsdatoForVisning,
+    altTekstHvisUkjentNavn,
 }: Props) => {
     const bem = bemUtils('registrertePersonalia');
 
     return (
         <div className={bem.block}>
             <Element className={bem.element('navn')}>
-                {formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
+                {altTekstHvisUkjentNavn !== undefined
+                    ? altTekstHvisUkjentNavn
+                    : formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
             </Element>
             {fødselsnummerForVisning !== undefined && (
                 <Normaltekst>
