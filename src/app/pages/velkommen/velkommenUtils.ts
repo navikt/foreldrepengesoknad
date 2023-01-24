@@ -50,20 +50,25 @@ const getAnnenForelderFraSak = (sak: Sak): RegistrertAnnenForelder | undefined =
         : undefined;
 };
 
-const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
+const getSelectableBarnFraSakMedBarn = (sak: Sak, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
     const annenForelderFraSak = getAnnenForelderFraSak(sak);
+
+    const barnaSomSkalVises = sak.barn.filter((barn) => {
+        const barnetFraPDL = registrerteBarn.find((b) => b.fnr === barn.fnr);
+        return !!barnetFraPDL ? !getDødeBarnetForMerEnn3MånederSiden(barnetFraPDL) : true;
+    });
     const barnFraSak = {
         id: guid(),
-        fnr: sak.barn.map((b) => b.fnr),
+        fnr: barnaSomSkalVises.map((b) => b.fnr),
         type: getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse),
         antallBarn: sak.familiehendelse.antallBarn,
         omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertakelse),
-        fødselsdatoer: sak.barn
+        fødselsdatoer: barnaSomSkalVises
             .filter((ba) => ba !== undefined && ba.fødselsdato !== undefined)
             .map((b) => ISOStringToDate(b.fødselsdato)!),
         termindato: ISOStringToDate(sak.familiehendelse.termindato),
-        fornavn: sak.barn.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
-        etternavn: sak.barn.map((b) => b.etternavn),
+        fornavn: barnaSomSkalVises.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
+        etternavn: barnaSomSkalVises.map((b) => b.etternavn),
         kanSøkeOmEndring: sak.kanSøkeOmEndring,
         sak: sak,
         annenForelder: annenForelderFraSak,
@@ -90,7 +95,7 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak): SelectableBarn => {
 };
 const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
     if (sak.barn.length > 0) {
-        return getSelectableBarnFraSakMedBarn(sak);
+        return getSelectableBarnFraSakMedBarn(sak, registrerteBarn);
     } else {
         const fødselsdatoFraSak =
             sak.familiehendelse.fødselsdato !== undefined
