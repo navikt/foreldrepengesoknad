@@ -57,6 +57,24 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak, registrerteBarn: RegistrertBar
         const barnetFraPDL = registrerteBarn.find((b) => b.fnr === barn.fnr);
         return !!barnetFraPDL ? !getDødeBarnetForMerEnn3MånederSiden(barnetFraPDL) : true;
     });
+    let minstEtBarnErDødfødt = false;
+    if (
+        !sak.gjelderAdopsjon &&
+        !!sak.familiehendelse.fødselsdato &&
+        barnaSomSkalVises.length < sak.familiehendelse.antallBarn
+    )
+        minstEtBarnErDødfødt = !!registrerteBarn.find((regBarn) => {
+            if (
+                getErDødfødtBarn(regBarn) &&
+                !getDødeBarnetForMerEnn3MånederSiden(regBarn) &&
+                dayjs(sak.familiehendelse.fødselsdato).add(1, 'd').isSameOrAfter(regBarn.fødselsdato) &&
+                dayjs(sak.familiehendelse.fødselsdato).subtract(1, 'd').isSameOrBefore(regBarn.fødselsdato)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
     const barnFraSak = {
         id: guid(),
         fnr: barnaSomSkalVises.map((b) => b.fnr),
@@ -91,6 +109,7 @@ const getSelectableBarnFraSakMedBarn = (sak: Sak, registrerteBarn: RegistrertBar
             barnFraSak.termindato,
             barnFraSak.omsorgsovertagelse
         ),
+        minstEnErDødfødt: minstEtBarnErDødfødt,
     };
 };
 const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
