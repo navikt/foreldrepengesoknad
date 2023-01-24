@@ -131,15 +131,14 @@ const Oppsummering = () => {
             if (
                 error.response &&
                 error.response.status === 400 &&
-                error.response.data !== undefined &&
-                error.response.data !== null &&
-                error.response.data.messages !== undefined &&
+                error.response.data &&
+                error.response.data.messages &&
                 error.response.data.messages.includes(
                     'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg'
                 )
             ) {
                 throw new Error(
-                    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt.'
+                    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.'
                 );
             }
             throw new Error(submitError);

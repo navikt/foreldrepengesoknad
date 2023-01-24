@@ -10,8 +10,6 @@ import actionCreator from 'app/context/action/actionCreator';
 import Api from 'app/api/api';
 
 import './feilside.less';
-import SøknadRoutes from 'app/routes/routes';
-import { storeAppState } from 'app/utils/submitUtils';
 
 export interface Props {
     containerId?: string;
@@ -62,7 +60,7 @@ const Feilside: React.FunctionComponent<Props> = ({
         window.location.href = 'http://localhost:8080';
     }, [dispatch, søkerinfo]);
 
-    const gåTilbakeTilGammelSøknadHandler = useCallback(() => {
+    const gåTilbakeTilSøknadenHandler = useCallback(() => {
         window.location.reload();
     }, []);
 
@@ -103,7 +101,7 @@ const Feilside: React.FunctionComponent<Props> = ({
                 )}
                 {søkerinfo !== undefined && feilPgaForMangeVedlegg && (
                     <div className={bem.element('avbrytKnapp')}>
-                        <Hovedknapp onClick={gåTilbakeTilGammelSøknadHandler}>Gå tilbake til søknaden</Hovedknapp>
+                        <Hovedknapp onClick={gåTilbakeTilSøknadenHandler}>Gå tilbake til søknaden</Hovedknapp>
                     </div>
                 )}
             </div>
