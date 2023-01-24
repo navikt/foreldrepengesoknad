@@ -181,7 +181,7 @@ describe('<Velkommen>', () => {
         render(<HarSakFødselTvillingerUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Tvillinger med fødselsdato', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
