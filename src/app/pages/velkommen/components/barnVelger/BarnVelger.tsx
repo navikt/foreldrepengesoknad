@@ -131,11 +131,12 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         label: (
             <>
                 <b>{navnTekstEllerBarnMedUkjentNavnTekst}</b>
-                {barn.fornavn !== undefined && barn.fornavn.filter((n) => n !== undefined && n !== '').length > 0 && (
-                    <p>
-                        {situasjonTekst} {fødtAdoptertDatoTekst}
-                    </p>
-                )}
+                {barn.fornavn !== undefined &&
+                    barn.fornavn.filter((n) => n !== undefined && n.trim() !== '').length > 0 && (
+                        <p>
+                            {situasjonTekst} {fødtAdoptertDatoTekst}
+                        </p>
+                    )}
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
             </>
