@@ -13,7 +13,6 @@ import { RettighetType } from 'app/types/RettighetType';
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
-// import withRouter from '../../decorators/withRouter';
 
 export default {
     title: 'pages/Velkommen',
@@ -312,7 +311,10 @@ HarSakAdopsjonUtenBarnSendtFraSak.args = {
 export const HarSakFødselTvillinger = Template.bind({});
 HarSakFødselTvillinger.args = {
     saker: [sakMedTvillinger],
-    søkerinfo: søkerInfo,
+    søkerinfo: getSøkerinfoMedBarn([
+        { ...ettBarn, kjønn: 'K' } as SøkerinfoDTOBarn,
+        { ...annetBarnSammeDato, kjønn: 'K' } as SøkerinfoDTOBarn,
+    ]),
 };
 
 export const HarSakFødselTrillinger = Template.bind({});

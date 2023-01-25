@@ -164,11 +164,12 @@ describe('<Velkommen>', () => {
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
     });
-    it('skal greie å vise sak med tvillinger med navn', async () => {
+    it('skal greie å vise sak med tvillinger med navn og skal ikke vise barna dobbelt når de også kommer inn fra PDL', async () => {
         render(<HarSakFødselTvillinger />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
         expect(await screen.findByText('Evig Lykkelig og Grønn Vår')).toBeInTheDocument();
+        expect(screen.getAllByText('Evig Lykkelig og Grønn Vår').length).toEqual(1);
         expect(await screen.findByText('Født: ', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
