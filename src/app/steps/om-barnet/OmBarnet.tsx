@@ -27,7 +27,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();

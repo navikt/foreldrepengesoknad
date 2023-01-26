@@ -38,7 +38,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const Oppsummering = () => {
     const intl = useIntl();

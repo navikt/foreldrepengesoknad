@@ -7,15 +7,14 @@ import { redirectToLogin } from '../redirectToLogin';
 
 const useSaveLoadedRoute = (currentRoute: SøknadRoutes) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
-    const currentRouteIsInContext = state.currentRoute === currentRoute;
-    const [currentRouteIsSaved, setCurrentRouteIsSaved] = useState(currentRouteIsInContext);
+    const [currentIsSet, setCurrentIsSet] = useState(false);
 
     useEffect(() => {
-        if (!currentRouteIsSaved) {
+        if (!currentIsSet) {
             dispatch(actionCreator.updateCurrentRoute(currentRoute));
             storeAppState(state)
                 .then(() => {
-                    setCurrentRouteIsSaved(true);
+                    setCurrentIsSet(true);
                 })
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -23,7 +22,7 @@ const useSaveLoadedRoute = (currentRoute: SøknadRoutes) => {
                     }
                 });
         }
-    });
+    }, [currentRoute, dispatch, state, currentIsSet]);
 };
 
 export default useSaveLoadedRoute;

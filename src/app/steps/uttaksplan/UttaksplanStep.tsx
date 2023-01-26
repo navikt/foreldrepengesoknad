@@ -66,7 +66,7 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const UttaksplanStep = () => {
     const intl = useIntl();

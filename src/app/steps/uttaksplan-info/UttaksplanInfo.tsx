@@ -24,7 +24,7 @@ import { isFødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import SøknadRoutes from 'app/routes/routes';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();

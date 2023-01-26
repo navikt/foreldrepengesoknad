@@ -32,7 +32,7 @@ import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd 
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();

@@ -34,7 +34,7 @@ import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnV
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
 import { Sak } from 'app/types/Sak';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveCurrentRoute';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 interface Props {
     fornavn: string;
@@ -53,6 +53,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
     const { registrerteBarn } = useSøkerinfo();
     const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
     const sortedSelectableBarn = selectableBarn.sort(sorterSelectableBarnEtterYngst);
+
     useSaveLoadedRoute(SøknadRoutes.VELKOMMEN);
 
     useEffect(() => {
