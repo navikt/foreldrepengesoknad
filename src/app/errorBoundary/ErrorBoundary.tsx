@@ -2,6 +2,7 @@ import React from 'react';
 import * as Sentry from '@sentry/browser';
 import Feilside from 'app/pages/feilside/Feilside';
 import links from 'app/links/links';
+import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 
 interface State {
     eventId: string | null;
@@ -30,7 +31,9 @@ class ErrorBoundary extends React.Component<any, State> {
     render() {
         if (this.state.hasError) {
             const feilPgaForMangeVedlegg =
-                !!this.state.error && !!this.state.error.message && this.state.error.message.includes('40 vedlegg');
+                !!this.state.error &&
+                !!this.state.error.message &&
+                this.state.error.message === FOR_MANGE_VEDLEGG_ERROR;
             const feilsideTittel = feilPgaForMangeVedlegg ? 'Feil: for mange vedlegg' : 'Informasjon om feilen';
             return (
                 <Feilside
@@ -45,7 +48,7 @@ class ErrorBoundary extends React.Component<any, State> {
                         },
                         lenke: { tekst: 'Her finner du en lenke til brukerstøtte', url: links.brukerstøtte },
                     }}
-                    feilPgaForMangeVedlegg={feilPgaForMangeVedlegg}
+                    skalKunneGåTilbakeTilSøknad={feilPgaForMangeVedlegg}
                 />
             );
         }

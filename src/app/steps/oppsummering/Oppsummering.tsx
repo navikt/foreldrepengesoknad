@@ -24,7 +24,7 @@ import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-innte
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { getSøknadsdataForInnsending } from 'app/api/apiUtils';
+import { FOR_MANGE_VEDLEGG_ERROR, getSøknadsdataForInnsending } from 'app/api/apiUtils';
 import { useNavigate } from 'react-router-dom';
 
 import './oppsummering.less';
@@ -137,9 +137,7 @@ const Oppsummering = () => {
                     'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg'
                 )
             ) {
-                throw new Error(
-                    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.'
-                );
+                throw new Error(FOR_MANGE_VEDLEGG_ERROR);
             }
             throw new Error(submitError);
         }

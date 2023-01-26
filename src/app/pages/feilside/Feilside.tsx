@@ -25,7 +25,7 @@ export interface Props {
     };
     tittel: React.ReactNode;
     ingress: React.ReactNode;
-    feilPgaForMangeVedlegg: boolean;
+    skalKunneGåTilbakeTilSøknad: boolean;
     språkkode?: Locale;
     setLanguage?: (languageCode: string) => void;
 }
@@ -36,7 +36,7 @@ const Feilside: React.FunctionComponent<Props> = ({
     illustrasjon,
     tittel,
     ingress,
-    feilPgaForMangeVedlegg,
+    skalKunneGåTilbakeTilSøknad,
     språkkode,
     setLanguage,
 }) => {
@@ -94,12 +94,12 @@ const Feilside: React.FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>{ingress}</Normaltekst>
                 </Block>
-                {søkerinfo !== undefined && !feilPgaForMangeVedlegg && (
+                {søkerinfo !== undefined && !skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
                     </div>
                 )}
-                {søkerinfo !== undefined && feilPgaForMangeVedlegg && (
+                {søkerinfo !== undefined && skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Hovedknapp onClick={gåTilbakeTilSøknadenHandler}>Gå tilbake til søknaden</Hovedknapp>
                     </div>
