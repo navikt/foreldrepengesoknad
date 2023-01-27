@@ -382,6 +382,11 @@ const UttaksplanStep = () => {
         farMedmorErAleneOmOmsorg,
         rolle
     );
+    const kontoRequestIsSuspended =
+        (eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
+        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
         Api.useGetUttakskontoer(
@@ -395,7 +400,7 @@ const UttaksplanStep = () => {
                 dateToISOString(familieHendelseDatoNesteSak),
                 saksgrunnlagsTermindato
             ),
-            nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+            kontoRequestIsSuspended
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -408,7 +413,7 @@ const UttaksplanStep = () => {
             dateToISOString(familieHendelseDatoNesteSak),
             saksgrunnlagsTermindato
         ),
-        nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        kontoRequestIsSuspended
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
