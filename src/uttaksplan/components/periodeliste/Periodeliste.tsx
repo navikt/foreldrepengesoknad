@@ -53,7 +53,7 @@ const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehend
 
 const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: Date | undefined) => {
     if (dato !== undefined) {
-        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length - 1);
+        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length);
     }
     return undefined;
 };
@@ -109,6 +109,22 @@ const Periodeliste: FunctionComponent<Props> = ({
                         {indexOfFørstePeriodeEtterFødsel === index ? (
                             <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
                         ) : null}
+                        {barnFraNesteSak !== undefined &&
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (
+                            <Block padBottom="s">
+                                <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
+                                    <FormattedMessage
+                                        id="uttaksplan.periodeliste.info.nyStønadsperiodeNesteSak"
+                                        values={{
+                                            datoStønadsperiodeNyttBarn: formatDate(
+                                                barnFraNesteSak.startdatoFørsteStønadsperiode
+                                            ),
+                                        }}
+                                    />
+                                </AlertStripe>
+                            </Block>
+                        ) : null}
                         <PeriodelisteItem
                             key={p.id}
                             egenPeriode={!isInfoPeriode(p)}
@@ -141,10 +157,9 @@ const Periodeliste: FunctionComponent<Props> = ({
                         {erAllePerioderIPlanenFørFødsel && index === uttaksplan.length - 1 ? (
                             <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
                         ) : null}
-
                         {barnFraNesteSak !== undefined &&
-                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
-                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (
+                        index === uttaksplan.length - 1 &&
+                        indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === uttaksplan.length ? (
                             <Block padBottom="s">
                                 <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
                                     <FormattedMessage
