@@ -251,11 +251,15 @@ const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: Regist
 
 const getSelectableBarnOptionsFraPDL = (
     registrerteBarn: RegistrertBarn[],
-    barnFraSaker: SelectableBarn[]
+    barnFraSaker: SelectableBarn[],
+    avsluttedeSaker: Sak[]
 ): SelectableBarn[] => {
     //Må oppdatere dødfødte barn med falsk fnr for å kunne identifisere de som allerede er blitt lagt til i visningen
     const tempString = 'tempFnr';
-    const registrerteBarnMedFnr = registrerteBarn.map((b) =>
+    const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
+        (regBarn) => !avsluttedeSaker.find((sak) => sak.barn.find((sakBarn) => sakBarn.fnr === regBarn.fnr))
+    );
+    const registrerteBarnMedFnr = registrerteBarnUtenAvsluttedeSaker.map((b) =>
         b.fnr === undefined ? { ...b, fnr: tempString + guid().toString() } : b
     );
 
@@ -318,8 +322,9 @@ const getSelectableBarnOptionsFraPDL = (
 
 export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
+    const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
-    const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker);
+    const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker, avsluttedeSaker);
     return barnFraSaker.concat(barnFraPDL);
 };
 
