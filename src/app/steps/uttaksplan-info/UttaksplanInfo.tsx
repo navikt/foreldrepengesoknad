@@ -82,6 +82,16 @@ const UttaksplanInfo = () => {
         eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
     );
 
+    useEffect(() => {
+        if (erFarEllerMedmor && søknad.barn.antallBarn !== saksgrunnlagsAntallBarn) {
+            const søknadMedOppdatertAntallBarn = {
+                ...søknad,
+                barn: { ...søknad.barn, antallBarn: saksgrunnlagsAntallBarn },
+            };
+            dispatch(actionCreator.setSøknad(søknadMedOppdatertAntallBarn));
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, dispatch, søknad]);
+
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
         if (eksisterendeVedtakAnnenPart !== undefined) {
