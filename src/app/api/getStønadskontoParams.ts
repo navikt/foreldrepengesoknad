@@ -64,7 +64,7 @@ export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     erFarEllerMedmor: boolean,
     antallBarnSaksgrunnlag: number,
     antallBarnSaksgrunnlagAnnenPart?: number
-) => {
+): number => {
     if (erFarEllerMedmor && antallBarnSaksgrunnlagAnnenPart) {
         return antallBarnSaksgrunnlagAnnenPart;
     }

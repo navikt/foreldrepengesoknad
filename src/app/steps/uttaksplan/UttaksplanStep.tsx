@@ -166,6 +166,15 @@ const UttaksplanStep = () => {
         barn.antallBarn,
         eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
     );
+    useEffect(() => {
+        if (erFarEllerMedmor && søknad.barn.antallBarn !== saksgrunnlagsAntallBarn) {
+            const søknadMedOppdatertAntallBarn = {
+                ...søknad,
+                barn: { ...søknad.barn, antallBarn: saksgrunnlagsAntallBarn },
+            };
+            dispatch(actionCreator.setSøknad(søknadMedOppdatertAntallBarn));
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, dispatch, søknad]);
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
         annenForelderFnrNesteSak !== undefined &&
