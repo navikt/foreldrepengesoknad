@@ -7,6 +7,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams, {
+    getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -75,6 +76,12 @@ const UttaksplanInfo = () => {
         eksisterendeVedtakAnnenPart?.grunnlag.termindato
     );
 
+    const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
+        barn.antallBarn,
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
+    );
+
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
         if (eksisterendeVedtakAnnenPart !== undefined) {
@@ -98,6 +105,7 @@ const UttaksplanInfo = () => {
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
+                saksgrunnlagsAntallBarn,
                 saksgrunnlagsTermindato
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
@@ -113,6 +121,7 @@ const UttaksplanInfo = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
+            saksgrunnlagsAntallBarn,
             saksgrunnlagsTermindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended

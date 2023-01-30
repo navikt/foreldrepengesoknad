@@ -185,7 +185,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
             eksisterendeSakAnnenPart.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
                 ? Dekningsgrad.HUNDRE_PROSENT
                 : Dekningsgrad.ÅTTI_PROSENT,
-        antallBarn: barn.antallBarn,
+        antallBarn: !!eksisterendeSakAnnenPart.antallBarn ? eksisterendeSakAnnenPart.antallBarn : barn.antallBarn,
         morErAleneOmOmsorg: false,
         morErUfør: false,
         morHarRett: true,

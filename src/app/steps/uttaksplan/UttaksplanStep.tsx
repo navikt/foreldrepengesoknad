@@ -28,6 +28,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import Api from 'app/api/api';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import getStønadskontoParams, {
+    getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -159,6 +160,11 @@ const UttaksplanStep = () => {
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato
+    );
+    const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
+        barn.antallBarn,
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
     );
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
@@ -398,6 +404,7 @@ const UttaksplanStep = () => {
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
+                saksgrunnlagsAntallBarn,
                 saksgrunnlagsTermindato
             ),
             kontoRequestIsSuspended
@@ -411,6 +418,7 @@ const UttaksplanStep = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
+            saksgrunnlagsAntallBarn,
             saksgrunnlagsTermindato
         ),
         kontoRequestIsSuspended
