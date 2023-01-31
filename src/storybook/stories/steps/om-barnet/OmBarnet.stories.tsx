@@ -34,6 +34,7 @@ const Template: Story<Props> = ({ context, søkerinfo }) => {
                 location: '',
             }
         );
+        apiMock.onPost('/storage').reply(200, undefined);
     };
     return (
         <AxiosMock mock={restMock}>
