@@ -24,10 +24,12 @@ import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUti
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { isUfødtBarn } from 'app/context/types/Barn';
+import { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import dayjs from 'dayjs';
+import { getErDødfødtBarn, getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -56,8 +58,21 @@ const OmBarnet: React.FunctionComponent = () => {
         }
         return false;
     };
+
+    const familiehendelsesdato = barn ? ISOStringToDate(getFamiliehendelsedato(barn)) : undefined;
+
+    const dødfødteBarnMedSammeFødselsdato =
+        barn && isFødtBarn(barn)
+            ? registrerteBarn.filter(
+                  (barn: RegistrertBarn) =>
+                      getErDødfødtBarn(barn) &&
+                      dayjs(barn.fødselsdato).isSameOrAfter(dayjs(familiehendelsesdato).subtract(1, 'd')) &&
+                      dayjs(barn.fødselsdato).isSameOrBefore(dayjs(familiehendelsesdato).add(1, 'd'))
+              )
+            : [];
+
     const valgteRegistrerteBarn = !søknadGjelderEtNyttBarn
-        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b))
+        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteBarnMedSammeFødselsdato)
         : undefined;
     return (
         <OmBarnetFormComponents.FormikWrapper

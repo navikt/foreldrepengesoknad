@@ -5,7 +5,10 @@ import dayjs from 'dayjs';
 import { isUttakAnnenPart, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { formatDate } from '@navikt/fp-common';
 
-const periodeErForSenVedPåfølgendeBarn = (periode: Periode, førsteUttaksdagForPåfølgendeBarn: Date | undefined) => {
+export const laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn = (
+    periode: Periode,
+    førsteUttaksdagForPåfølgendeBarn: Date | undefined
+) => {
     if (
         førsteUttaksdagForPåfølgendeBarn !== undefined &&
         (periode.type === Periodetype.Uttak ||
@@ -15,8 +18,8 @@ const periodeErForSenVedPåfølgendeBarn = (periode: Periode, førsteUttaksdagFo
             isUttakAnnenPart(periode))
     ) {
         return (
-            dayjs(periode.tidsperiode.fom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn) ||
-            dayjs(periode.tidsperiode.tom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn)
+            dayjs(periode.tidsperiode.fom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn, 'd') ||
+            dayjs(periode.tidsperiode.tom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn, 'd')
         );
     }
     return false;
@@ -33,7 +36,7 @@ export const forSenUttakVedPåfølgendeBarn: RegelTest = (grunnlag: Søknadsinfo
         };
     }
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) =>
-        periodeErForSenVedPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
     );
     const sisteMuligeUttaksdag = Uttaksdagen(grunnlag.førsteUttaksdagNesteBarnsSak).trekkFra(1);
     return {

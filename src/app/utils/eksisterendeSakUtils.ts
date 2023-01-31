@@ -185,7 +185,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
             eksisterendeSakAnnenPart.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
                 ? Dekningsgrad.HUNDRE_PROSENT
                 : Dekningsgrad.ÅTTI_PROSENT,
-        antallBarn: barn.antallBarn,
+        antallBarn: !!eksisterendeSakAnnenPart.antallBarn ? eksisterendeSakAnnenPart.antallBarn : barn.antallBarn,
         morErAleneOmOmsorg: false,
         morErUfør: false,
         morHarRett: true,
@@ -425,7 +425,10 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
             fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
-            fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+            fnr:
+                valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
+                    ? valgteBarn.fnr.filter((fnr) => !!fnr)
+                    : undefined,
         };
     } else if (valgteBarn.termindato !== undefined) {
         return {
@@ -438,7 +441,10 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
             type: BarnType.IKKE_UTFYLT,
             antallBarn: valgteBarn.antallBarn,
             fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
-            fnr: valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0 ? valgteBarn.fnr : undefined,
+            fnr:
+                valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
+                    ? valgteBarn.fnr.filter((fnr) => !!fnr)
+                    : undefined,
         };
     }
 };

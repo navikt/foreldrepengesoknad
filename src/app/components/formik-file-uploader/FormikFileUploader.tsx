@@ -26,6 +26,8 @@ export interface Props {
 }
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
+const MAX_FIL_STØRRELSE_KB = 16777;
+const KILOBYTES_IN_BYTE = 0.0009765625;
 
 const mapFilerTilPendingVedlegg = (
     filer: File[],
@@ -44,19 +46,35 @@ const fileExtensionIsValid = (filename: string): boolean => {
     return VALID_EXTENSIONS.includes(`.${ext!.toLowerCase()}`);
 };
 
-const sjekkFiltypeVedlegg = (
+const fileSizeIsValid = (filesizeInB: number): boolean => {
+    const filesizeInKb = filesizeInB * KILOBYTES_IN_BYTE;
+    return filesizeInKb <= MAX_FIL_STØRRELSE_KB;
+};
+
+const sjekkVedlegg = (
     alleNyeVedlegg: Attachment[],
     setErrors: React.Dispatch<React.SetStateAction<string[]>>,
     intl: IntlShape
 ): Attachment[] => {
     return alleNyeVedlegg.filter((vedlegg) => {
-        const erGyldig = fileExtensionIsValid(vedlegg.filename);
-        if (!erGyldig) {
+        const erGyldigFiltype = fileExtensionIsValid(vedlegg.filename);
+        if (!erGyldigFiltype) {
             setErrors((oldState) =>
                 oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename }))
             );
         }
-        return erGyldig;
+        const erGyldigFilstørrelse = fileSizeIsValid(vedlegg.filesize);
+        if (!erGyldigFilstørrelse) {
+            setErrors((oldState) =>
+                oldState.concat(
+                    intlUtils(intl, 'vedlegg.feilmelding.ugyldig.størrelse', {
+                        filename: vedlegg.filename,
+                        maxStørrelse: MAX_FIL_STØRRELSE_KB,
+                    })
+                )
+            );
+        }
+        return erGyldigFiltype && erGyldigFilstørrelse;
     });
 };
 
@@ -107,7 +125,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                     acceptedExtensions={VALID_EXTENSIONS.join(', ')}
                     onFilesSelect={(files: File[], { push, replace, remove }: ArrayHelpers) => {
                         const alleNyeVedlegg = mapFilerTilPendingVedlegg(files, attachmentType, skjemanummer);
-                        const alleNyeGyldigeVedlegg = sjekkFiltypeVedlegg(alleNyeVedlegg, setErrors, intl);
+                        const alleNyeGyldigeVedlegg = sjekkVedlegg(alleNyeVedlegg, setErrors, intl);
                         alleNyeGyldigeVedlegg.forEach((nyttVedlegg) => push(nyttVedlegg));
                         lastOppVedlegg(alleNyeGyldigeVedlegg, replace, remove, setErrors, attachments.length, intl);
                     }}

@@ -71,6 +71,18 @@ const EgenNæring: FunctionComponent<Props> = ({
                     name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
                     legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd')}
                     description={<HvemKanDriveMedEgenNæring />}
+                    validate={(hattInntektSomNæringsdrivende) => {
+                        if (hattInntektSomNæringsdrivende === YesOrNo.YES) {
+                            if (egenNæringInformasjon.length === 0) {
+                                return intlUtils(
+                                    intl,
+                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet'
+                                );
+                            }
+                        }
+
+                        return undefined;
+                    }}
                 />
             </Block>
             {formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && (

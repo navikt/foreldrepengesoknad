@@ -4,6 +4,7 @@ import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/pages/Velkommen.stories';
 import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import MockDate from 'mockdate';
 
 const {
     Default,
@@ -19,6 +20,13 @@ const {
     HarSakFødselTrillinger,
     HarSakFødselTvillingerUtenBarnSendtFraSak,
     HarSakTerminTrillingerUtenBarnSendtFraSak,
+    HarIngenSakerOgEttBarn,
+    HarIngenSakerOgTvillinger,
+    HarIngenSakerOgEttDødtBarn,
+    HarIngenSakerOgToDødeTvillinger,
+    HarIngenSakerOgEtDødfødtBarn,
+    HarIngenSakerMedEnLevendeOgEnDødfødtTvilling,
+    HarIngenSakerMedEnLevendeOgEnDødTvilling,
 } = composeStories(stories);
 
 const BEGYNN_MED_SØKNAD = 'Begynn med søknad';
@@ -36,7 +44,6 @@ describe('<Velkommen>', () => {
         expect(screen.queryByText('Under behandling')).not.toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
     });
-
     it('skal vise velkommen-side med sak på fødsel som kan endres', async () => {
         render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
@@ -157,11 +164,12 @@ describe('<Velkommen>', () => {
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
     });
-    it('skal greie å vise sak med tvillinger med navn', async () => {
+    it('skal greie å vise sak med tvillinger med navn og skal ikke vise barna dobbelt når de også kommer inn fra PDL', async () => {
         render(<HarSakFødselTvillinger />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
         expect(await screen.findByText('Evig Lykkelig og Grønn Vår')).toBeInTheDocument();
+        expect(screen.getAllByText('Evig Lykkelig og Grønn Vår').length).toEqual(1);
         expect(await screen.findByText('Født: ', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
@@ -181,7 +189,7 @@ describe('<Velkommen>', () => {
         render(<HarSakFødselTvillingerUtenBarnSendtFraSak />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
-        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Tvillinger med fødselsdato', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
@@ -195,6 +203,139 @@ describe('<Velkommen>', () => {
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
     });
-});
+    it('skal vise ett barn fra PDL når ingen saker', async () => {
+        render(<HarIngenSakerOgEttBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal vise tvillinger fra PDL når ingen saker', async () => {
+        render(<HarIngenSakerOgTvillinger />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental og Vakker Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal vise ett barn fra PDL uten navn når barnet er dødfødt for mindre enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2022-10-25'));
+        render(<HarIngenSakerOgEtDødfødtBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise ett barn fra PDL når barnet er dødfødt for mer enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2023-01-22'));
+        render(<HarIngenSakerOgEtDødfødtBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.queryByText('Barn med fødselsdato', { exact: false })).not.toBeInTheDocument();
+        expect(screen.queryByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal vise ett barn fra PDL når barnet døde for mindre enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2022-10-23'));
+        render(<HarIngenSakerOgEttDødtBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
 
-//TODO: Døde barn når det er avklart.
+    it('skal ikke vise ett barn fra PDL når barnet døde for mer enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2023-01-23'));
+        render(<HarIngenSakerOgEttDødtBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.queryByText('Oriental Bokhylle')).not.toBeInTheDocument();
+        expect(screen.queryByText('Født:', { exact: false })).not.toBeInTheDocument();
+        expect(screen.queryByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal vise tvillinger fra PDL når begge barna døde for mindre enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2022-10-23'));
+        render(<HarIngenSakerOgToDødeTvillinger />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental og Vakker Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise tvillinger fra PDL når begge barna døde for mer enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2023-01-23'));
+        render(<HarIngenSakerOgToDødeTvillinger />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.queryByText('Oriental og Vakker Bokhylle')).not.toBeInTheDocument();
+        expect(screen.queryByText('Født:', { exact: false })).not.toBeInTheDocument();
+        expect(screen.queryByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal vise barnet fra PDL når barna døde for mindre enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2022-10-23'));
+        render(<HarIngenSakerOgEttDødtBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise barnet fra PDL når barnet døde for mer enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2023-01-23'));
+        render(<HarIngenSakerOgEttDødtBarn />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(screen.queryByText('Oriental Bokhylle')).not.toBeInTheDocument();
+        expect(screen.queryByText('Født:', { exact: false })).not.toBeInTheDocument();
+        expect(screen.queryByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+
+    it('skal vise tvillinger fra PDL når et av barna døde under fødsel for mindre enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2022-10-25'));
+        render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Tvillinger med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise den ene tvillinger fra PDL når den døde under fødsel for mer enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2023-01-25'));
+        render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental Bokhylle')).toBeInTheDocument();
+        expect(screen.queryByText('Tvillinger med fødselsdato', { exact: false })).not.toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal vise tvillinger fra PDL når et av barna døde for mindre enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2022-10-25'));
+        render(<HarIngenSakerMedEnLevendeOgEnDødTvilling />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental og Vakker Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise den ene tvillinger fra PDL når den døde for mer enn 3 mnd siden', async () => {
+        MockDate.set(new Date('2023-01-25'));
+        render(<HarIngenSakerMedEnLevendeOgEnDødTvilling />, { wrapper: MemoryRouter });
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Oriental Bokhylle')).toBeInTheDocument();
+        expect(await screen.findByText('Født:', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        MockDate.reset();
+    });
+});
