@@ -27,6 +27,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -63,6 +64,7 @@ const Inntektsinformasjon = () => {
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    useSaveLoadedRoute(SøknadRoutes.INNTEKTSINFORMASJON);
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper

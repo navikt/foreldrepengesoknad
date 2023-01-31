@@ -10,6 +10,8 @@ import withIntlProvider from '../../../decorators/withIntl';
 import withRouter from '../../../decorators/withRouter';
 import withForeldrepengersøknadContext from '../../../decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
+import MockAdapter from 'axios-mock-adapter/types';
+import AxiosMock from '../../../utils/AxiosMock';
 
 export default {
     title: 'steps/Søkersituasjon',
@@ -24,10 +26,15 @@ interface Props {
 }
 
 const Template: Story<Props> = ({ context, søkerinfo }) => {
+    const restMock = (apiMock: MockAdapter) => {
+        apiMock.onPost('/storage').reply(200, undefined);
+    };
     return (
-        <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-            <Søkersituasjon />
-        </ForeldrepengerStateMock>
+        <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
+                <Søkersituasjon />
+            </ForeldrepengerStateMock>
+        </AxiosMock>
     );
 };
 

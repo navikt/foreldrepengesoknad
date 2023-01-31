@@ -36,6 +36,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -86,6 +87,7 @@ const AnnenForelder = () => {
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onForstettSøknadSenere = useFortsettSøknadSenere();
+    useSaveLoadedRoute(SøknadRoutes.ANNEN_FORELDER);
 
     return (
         <AnnenForelderFormComponents.FormikWrapper

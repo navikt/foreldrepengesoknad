@@ -24,6 +24,8 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isFødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import SøknadRoutes from 'app/routes/routes';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -70,6 +72,8 @@ const UttaksplanInfo = () => {
             ),
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
     );
+
+    useSaveLoadedRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,

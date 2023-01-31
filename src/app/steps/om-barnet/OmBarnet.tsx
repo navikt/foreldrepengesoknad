@@ -27,6 +27,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import dayjs from 'dayjs';
 import { getErDødfødtBarn, getFamiliehendelsedato } from 'app/utils/barnUtils';
 
@@ -49,6 +50,7 @@ const OmBarnet: React.FunctionComponent = () => {
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    useSaveLoadedRoute(SøknadRoutes.OM_BARNET);
 
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
         if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
