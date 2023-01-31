@@ -1,42 +1,44 @@
 name: Bygg og deploy
 on:
-    push:
-        branches:
-            - '**'
-        paths-ignore:
-            - '**.md'
-            - '**.MD'
-            - '.gitignore'
-            - '.editorconfig'
-            - '.java-version'
-            - 'LICENCE'
-            - 'CODEOWNERS'
+  push:
+    branches:
+      - '**'
+    branches-ignore:
+      - 'uttaksplanbuilder-rework' # Kan legge til disse store feature branchene her
+    paths-ignore:
+      - '**.md'
+      - '**.MD'
+      - '.gitignore'
+      - '.editorconfig'
+      - '.java-version'
+      - 'LICENCE'
+      - 'CODEOWNERS'
 
 jobs:
-    build-app:
-        name: Build
-        uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-npm.yml@main
-        with:
-            node-version: '17.8.0'
-            build-image: ${{ github.ref_name == 'main' }} # default: true
-            push-image: ${{ github.ref_name == 'main' }} # default: false
-        secrets: inherit
+  build-app:
+    name: Build
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-npm.yml@main
+    with:
+      node-version: '17.8.0'
+      build-image: ${{ github.ref_name == 'main' }} # default: true
+      push-image: ${{ github.ref_name == 'main' }} # default: false
+    secrets: inherit
 
-    create-issue:
-        name: Issues
-        if: github.ref_name == 'main'
-        needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/issues.yml@main
-        with:
-            build-version: ${{ needs.build-app.outputs.build-version }}
-        secrets: inherit
+  create-issue:
+    name: Issues
+    if: github.ref_name == 'main'
+    needs: build-app
+    uses: navikt/fp-gha-workflows/.github/workflows/issues.yml@main
+    with:
+      build-version: ${{ needs.build-app.outputs.build-version }}
+    secrets: inherit
 
-    promote:
-        name: Deploy til dev-fss
-        if: github.ref_name == 'main'
-        needs: [ build-app, create-issue ]
-        uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
-        with:
-            issue-number: ${{ needs.create-issue.outputs.issue-number }}
-            cluster: dev-fss
-        secrets: inherit
+  promote:
+    name: Deploy til dev-fss
+    if: github.ref_name == 'main'
+    needs: [ build-app, create-issue ]
+    uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
+    with:
+      issue-number: ${{ needs.create-issue.outputs.issue-number }}
+      cluster: dev-fss
+    secrets: inherit
