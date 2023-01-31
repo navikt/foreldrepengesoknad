@@ -25,6 +25,7 @@ export interface Props {
     };
     tittel: React.ReactNode;
     ingress: React.ReactNode;
+    skalKunneGåTilbakeTilSøknad: boolean;
     språkkode?: Locale;
     setLanguage?: (languageCode: string) => void;
 }
@@ -35,6 +36,7 @@ const Feilside: React.FunctionComponent<Props> = ({
     illustrasjon,
     tittel,
     ingress,
+    skalKunneGåTilbakeTilSøknad,
     språkkode,
     setLanguage,
 }) => {
@@ -57,6 +59,10 @@ const Feilside: React.FunctionComponent<Props> = ({
         await Api.deleteStoredAppState(søkerinfo.person.fnr);
         window.location.href = 'http://localhost:8080';
     }, [dispatch, søkerinfo]);
+
+    const gåTilbakeTilSøknadenHandler = useCallback(() => {
+        window.location.reload();
+    }, []);
 
     useDocumentTitle(dokumenttittel);
 
@@ -88,9 +94,14 @@ const Feilside: React.FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Normaltekst>{ingress}</Normaltekst>
                 </Block>
-                {søkerinfo !== undefined && (
+                {søkerinfo !== undefined && !skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
+                    </div>
+                )}
+                {søkerinfo !== undefined && skalKunneGåTilbakeTilSøknad && (
+                    <div className={bem.element('avbrytKnapp')}>
+                        <Hovedknapp onClick={gåTilbakeTilSøknadenHandler}>Gå tilbake til søknaden</Hovedknapp>
                     </div>
                 )}
             </div>
