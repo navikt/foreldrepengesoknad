@@ -658,7 +658,7 @@
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.påkrevd": "Du må oppgi dato for start av perioden",
     "valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato": "Perioden må starte på eller etter {familiehendelsesdato}",
     "infoOmSøknaden.toTette.finnesBarnMedNesteSak": "Det starter en ny periode med foreldrepenger for nytt barn den {startStønadsperiodeNyttBarn}. Vanligvis vil dager du har igjen med foreldrepenger falle bort når perioden for nytt barn starter. Men siden dere fikk barn med kort tids mellomrom, beholder du en minste rettighet på {minsterettAntallUker} med foreldrepenger. Dager du har brukt før {startStønadsperiodeNyttBarn} trekkes fra disse ukene. Disse kan du ta ut frem til barnet er 3 år.",
-    "infoOmSøknaden.toTette.finnesBarnMedNesteSak.tittel": "Du kan ta ut opptil {antallUkerToTette} med foreldrepenger",
+    "infoOmSøknaden.toTette.finnesBarnMedNesteSak.tittel": "Du kan ta ut opptil {antallUkerToTette} uker med foreldrepenger",
     "infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak": "Det starter en ny periode med foreldrepenger for nytt barn den {startStønadsperiodeNyttBarn}. Du kan ikke ta ut foreldrepenger for barnet i denne søknaden etter {sisteUttaksdagDetteBarnet}. Hvis du har dager igjen etter denne datoen, vil du miste disse.",
     "infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak.tittel": "Siste mulige dag med foreldrepenger er {sisteUttaksdagDetteBarnet}",
     "valideringsfeil.fraDatoErHelgedag": "Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag",
