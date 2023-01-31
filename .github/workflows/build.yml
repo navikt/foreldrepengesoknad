@@ -31,11 +31,11 @@ jobs:
     secrets: inherit
 
   promote:
-    name: Deploy til dev-fss
+    name: Deploy til dev
     if: github.ref_name == 'main'
     needs: [ build-app, create-issue ]
     uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
     with:
       issue-number: ${{ needs.create-issue.outputs.issue-number }}
-      cluster: dev-fss
+      cluster: dev-gcp
     secrets: inherit
