@@ -2,6 +2,7 @@ import React from 'react';
 import * as Sentry from '@sentry/browser';
 import Feilside from 'app/pages/feilside/Feilside';
 import links from 'app/links/links';
+import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 
 interface State {
     eventId: string | null;
@@ -29,11 +30,16 @@ class ErrorBoundary extends React.Component<any, State> {
 
     render() {
         if (this.state.hasError) {
+            const feilPgaForMangeVedlegg =
+                !!this.state.error &&
+                !!this.state.error.message &&
+                this.state.error.message === FOR_MANGE_VEDLEGG_ERROR;
+            const feilsideTittel = feilPgaForMangeVedlegg ? 'Feil: for mange vedlegg' : 'Informasjon om feilen';
             return (
                 <Feilside
                     dokumenttittel="NAV Foreldrepengesøknad"
                     ingress={`${this.state.error?.message}`}
-                    tittel="Informasjon om feilen"
+                    tittel={feilsideTittel}
                     illustrasjon={{
                         tittel: 'Hei!',
                         tekst: 'Noe har gått galt med søknaden.',
@@ -42,6 +48,7 @@ class ErrorBoundary extends React.Component<any, State> {
                         },
                         lenke: { tekst: 'Her finner du en lenke til brukerstøtte', url: links.brukerstøtte },
                     }}
+                    skalKunneGåTilbakeTilSøknad={feilPgaForMangeVedlegg}
                 />
             );
         }

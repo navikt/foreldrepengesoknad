@@ -24,7 +24,7 @@ import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-innte
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { getSøknadsdataForInnsending } from 'app/api/apiUtils';
+import { FOR_MANGE_VEDLEGG_ERROR, getSøknadsdataForInnsending } from 'app/api/apiUtils';
 import { useNavigate } from 'react-router-dom';
 
 import './oppsummering.less';
@@ -47,7 +47,7 @@ const Oppsummering = () => {
     const { kvittering, eksisterendeSak } = state;
     const bem = bemUtils('oppsummering');
 
-    const [submitError, setSubmitError] = useState(undefined);
+    const [submitError, setSubmitError] = useState<any>(undefined);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
     const {
@@ -129,6 +129,17 @@ const Oppsummering = () => {
     useEffect(() => {
         if (submitError !== undefined) {
             sendErrorMessageToSentry(submitError);
+            if (
+                submitError.response &&
+                submitError.response.status === 400 &&
+                submitError.response.data &&
+                submitError.response.data.messages &&
+                submitError.response.data.messages.includes(
+                    'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg'
+                )
+            ) {
+                throw new Error(FOR_MANGE_VEDLEGG_ERROR);
+            }
             throw new Error(submitError);
         }
     }, [submitError]);

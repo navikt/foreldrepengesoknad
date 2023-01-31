@@ -29,6 +29,7 @@ const IkkeMyndig: FunctionComponent<Props> = ({ fornavn }) => {
                     url: links.papirsøknad,
                 },
             }}
+            skalKunneGåTilbakeTilSøknad={false}
         />
     );
 };

@@ -98,6 +98,9 @@ export type EndringssøknadForInnsending = Pick<
     | 'ønskerJustertUttakVedFødsel'
 >;
 
+export const FOR_MANGE_VEDLEGG_ERROR =
+    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.';
+
 const getUttaksperiodeForInnsending = (
     uttaksPeriode: UttaksperiodeBase,
     ønskerJustertUttakVedFødsel: boolean | undefined,
