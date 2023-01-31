@@ -1,30 +1,61 @@
 import { RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getBrukteDager } from 'uttaksplan/utils/brukteDagerUtils';
+import { laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn } from './periodevalideringstester/forSenUttakVedPåfølgendeBarn';
 
 export const overstigerMinsterettVedToTette = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const { familiehendelsesdato, perioder, stønadskontoer, søkerErFarEllerMedmor, minsterettUkerToTette } = grunnlag;
-    if (minsterettUkerToTette === undefined || minsterettUkerToTette === 0) {
+    const perioderEtterFørsteStønadsperiodeNyttBarn = perioder.filter((periode) =>
+        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+    );
+    if (
+        minsterettUkerToTette === undefined ||
+        minsterettUkerToTette === 0 ||
+        perioderEtterFørsteStønadsperiodeNyttBarn.length === 0
+    ) {
         return {
             passerer: true,
         };
     }
+    const perioderFørFørsteStønadsperiodeNyttBarn = perioder.filter(
+        (periode) => !laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+    );
     const minsterettMaxAntallUker = minsterettUkerToTette;
     const minsterettMaxAntallDager = minsterettMaxAntallUker * 5;
-    const brukteDagerPerForelder = getBrukteDager(stønadskontoer, perioder, familiehendelsesdato);
-    const uttaksdagerFremTilNå = søkerErFarEllerMedmor
-        ? brukteDagerPerForelder.farMedmor.dagerEgneKvoter + brukteDagerPerForelder.farMedmor.dagerFellesperiode
-        : brukteDagerPerForelder.mor.dagerEgneKvoter + brukteDagerPerForelder.mor.dagerFellesperiode;
 
-    const dagerForMye = uttaksdagerFremTilNå - minsterettMaxAntallDager;
+    const brukteDagerPerForelderFørFørsteStønadsdagNyttBarn = getBrukteDager(
+        stønadskontoer,
+        perioderFørFørsteStønadsperiodeNyttBarn,
+        familiehendelsesdato
+    );
+    const uttaksdagerFremTilNyttBarnStønadsdag = søkerErFarEllerMedmor
+        ? brukteDagerPerForelderFørFørsteStønadsdagNyttBarn.farMedmor.dagerEgneKvoter +
+          brukteDagerPerForelderFørFørsteStønadsdagNyttBarn.farMedmor.dagerFellesperiode
+        : brukteDagerPerForelderFørFørsteStønadsdagNyttBarn.mor.dagerEgneKvoter +
+          brukteDagerPerForelderFørFørsteStønadsdagNyttBarn.mor.dagerFellesperiode;
+
+    const dagerIgjenÅBrukePåMinsteretten = minsterettMaxAntallDager - uttaksdagerFremTilNyttBarnStønadsdag;
+
+    const brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn = getBrukteDager(
+        stønadskontoer,
+        perioderEtterFørsteStønadsperiodeNyttBarn,
+        familiehendelsesdato
+    );
+    const uttaksdagerEtterNyttBarnStønadsdag = søkerErFarEllerMedmor
+        ? brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn.farMedmor.dagerEgneKvoter +
+          brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn.farMedmor.dagerFellesperiode
+        : brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn.mor.dagerEgneKvoter +
+          brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn.mor.dagerFellesperiode;
+
+    const dagerIgjenAvMinsterett = dagerIgjenÅBrukePåMinsteretten - uttaksdagerEtterNyttBarnStønadsdag;
 
     return {
-        passerer: dagerForMye <= 0,
+        passerer: dagerIgjenAvMinsterett >= 0,
         info: {
             intlKey: 'uttaksplan.validering.info.overstigerMinsterettVedToTette',
             values: {
                 uker: minsterettMaxAntallUker,
-                forMyeUttak: dagerForMye,
+                forMyeUttak: Math.abs(dagerIgjenAvMinsterett),
             },
         },
     };
