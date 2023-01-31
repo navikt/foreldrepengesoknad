@@ -1,91 +1,41 @@
-name: Deployment pipeline q1
-
+name: Bygg og deploy
 on:
-    push:
-        branches:
-            - master
-env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    IMAGE_BASE: ghcr.io/${{ github.repository }}
+  push:
+    branches-ignore: # Kan legge til disse store feature branchene her
+      - 'uttaksplanbuilder-rework'
+    paths-ignore:
+      - '**.md'
+      - '**.MD'
+      - '.gitignore'
+      - '.editorconfig'
+      - 'LICENCE'
+      - 'CODEOWNERS'
 
 jobs:
-    kompiler:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
+  build-app:
+    name: Build
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-npm.yml@main
+    with:
+      node-version: '17.8.0'
+      build-image: ${{ github.ref_name == 'main' }} # default: true
+      push-image: ${{ github.ref_name == 'main' }} # default: false
+    secrets: inherit
 
-            - name: Hent tag
-              run: |
-                  echo 'TAG<<EOF' >> $GITHUB_ENV
-                  git log -1 --pretty=%ad --date=format:%Y%m%d%H%M%S-`echo $GITHUB_SHA | cut -c1-7`  >> $GITHUB_ENV
-                  echo 'EOF' >> $GITHUB_ENV
+  create-issue:
+    name: Issues
+    if: github.ref_name == 'main'
+    needs: build-app
+    uses: navikt/fp-gha-workflows/.github/workflows/issues.yml@main
+    with:
+      build-version: ${{ needs.build-app.outputs.build-version }}
+    secrets: inherit
 
-            - name: Cache node modules
-              uses: actions/cache@v3.0.8
-              with:
-                  path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-build-${{ env.cache-name }}-
-                      ${{ runner.os }}-build-
-                      ${{ runner.os }}-
-
-            - run: npm install --legacy-peer-deps
-            - run: npm run jest
-            - run: |
-                  npm run build
-                  echo "IMAGE=$IMAGE_BASE:$TAG" >> $GITHUB_ENV
-
-            - name: Login to GitHub Packages Docker Registry
-              uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9 # Use commit-sha1 instead of tag for security concerns
-              with:
-                  registry: ghcr.io
-                  username: ${{ github.actor }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Bygg, tag og push Docker image
-              run: |
-                  docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest .
-                  docker push ${IMAGE_BASE} --all-tags
-
-            - name: Lukk gamle bygg-issues
-              uses: actions/github-script@v6
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  script: |
-                      github.rest.issues.listForRepo({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        state: 'open',
-                        labels: ['bygg']
-                      }).then(response => {
-                        response.data.forEach(issue => {
-                          github.rest.issues.update({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            issue_number: issue.number,
-                            state: 'closed'
-                          });
-                        });
-                      });
-
-            - name: Opprett issue, trigg deploy til dev-gcp
-              if: success()
-              uses: actions/github-script@v6
-              with:
-                  github-token: ${{ secrets.NOTIFICATION }}
-                  script: |
-                      github.rest.issues.create( {
-                        owner: context.issue.owner,
-                        repo: context.issue.repo,
-                        labels: ['bygg'],
-                        title: 'Deploy av ${{ env.TAG }}',
-                        body: '${{ github.sha }}'})
-                      .then(response => {
-                              const issue = { owner: context.issue.owner,
-                              repo: context.issue.repo,
-                              issue_number: response.data.number }
-                              github.rest.issues.createComment({...issue,
-                                    title: 'Deploy av ${{ env.TAG }}',
-                                    body: '/promote dev-gcp'})
-                       });
+  promote:
+    name: Deploy til dev-fss
+    if: github.ref_name == 'main'
+    needs: [ build-app, create-issue ]
+    uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
+    with:
+      issue-number: ${{ needs.create-issue.outputs.issue-number }}
+      cluster: dev-fss
+    secrets: inherit

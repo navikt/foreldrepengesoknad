@@ -2,71 +2,12 @@ name: Promote
 on:
   repository_dispatch:
     types: [promote-command]
-env:
-  NAMESPACE: teamforeldrepenger
-  IMAGE_BASE: ghcr.io/${{ github.repository }}
-  CLUSTER: ${{ github.event.client_payload.slash_command.args.unnamed.arg1 }} # dev-fss eller prod-fss
 
 jobs:
   promote:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Henter informasjon fra issuet
-        id: issue_comment
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.rest.issues.get( {
-              owner: context.issue.owner,
-              repo: context.issue.repo,
-              issue_number: ${{ github.event.client_payload.github.payload.issue.number }} })
-            .then(response => {
-              core.setOutput('sha', response.data.body);
-              core.setOutput('title', response.data.title);
-            });
-
-      - name: Setter IMAGE som brukes i deploy filen
-        run: echo "IMAGE=$IMAGE_BASE:$(echo ${{ steps.issue_comment.outputs.title }} | awk '{print $NF}')" >> $GITHUB_ENV
-
-      - name: Sjekk ut kode
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.issue_comment.outputs.sha }}
-
-      - name: Promoter til cluster og namespace
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          PRINT_PAYLOAD: true
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: ${{ env.CLUSTER }}
-          RESOURCE: .deploy/naiserator.yaml
-          VARS: .deploy/${{ env.CLUSTER }}-${{ env.NAMESPACE }}.json
-
-      - name: Oppdater kommentar med deployment status ved feil
-        if: failure()
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const issue = { owner: context.issue.owner,
-                            repo: context.issue.repo,
-                            issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
-            github.rest.issues.createComment({...issue,
-                            body: 'promote til ${{ env.CLUSTER }} ${{ env.NAMESPACE }} feilet'})
-            github.rest.issues.addLabels({...issue,
-                            labels: ['deployment-failed']})
-
-      - name: Oppdater kommentar med deployment status
-        if: success()
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const issue = { owner: context.issue.owner,
-                            repo: context.issue.repo,
-                            issue_number: ${{ github.event.client_payload.github.payload.issue.number }} }
-            github.rest.issues.createComment({...issue,
-                            body: 'promote til ${{ env.CLUSTER }} ${{ env.NAMESPACE }} utført'})
-            github.rest.issues.addLabels({...issue,
-                            labels: ['deployment','${{ env.CLUSTER }}-${{ env.NAMESPACE }}']})
+    name: Deploy
+    uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
+    with:
+      issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+      cluster: ${{ github.event.client_payload.slash_command.args.unnamed.arg1 }}
+    secrets: inherit
