@@ -1,10 +1,8 @@
 name: Bygg og deploy
 on:
   push:
-    branches:
-      - '**'
-    branches-ignore:
-      - 'uttaksplanbuilder-rework' # Kan legge til disse store feature branchene her
+    branches-ignore: # Kan legge til disse store feature branchene her
+      - 'uttaksplanbuilder-rework'
     paths-ignore:
       - '**.md'
       - '**.MD'
