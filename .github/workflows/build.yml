@@ -17,8 +17,8 @@ jobs:
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-npm.yml@main
     with:
       node-version: '17.8.0'
-      build-image: ${{ github.ref_name == 'main' }} # default: true
-      push-image: ${{ github.ref_name == 'main' }} # default: false
+      build-image: ${{ github.ref_name == 'master' }} # default: true
+      push-image: ${{ github.ref_name == 'master' }} # default: false
     secrets: inherit
 
   create-issue:
