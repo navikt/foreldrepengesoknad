@@ -29,7 +29,7 @@ const IkkeMyndig: FunctionComponent<Props> = ({ fornavn }) => {
                     url: links.papirsøknad,
                 },
             }}
-            feilPgaForMangeVedlegg={false}
+            skalKunneGåTilbakeTilSøknad={false}
         />
     );
 };

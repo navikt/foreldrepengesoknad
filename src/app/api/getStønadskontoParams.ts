@@ -60,6 +60,18 @@ export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : undefined;
 };
 
+export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+    erFarEllerMedmor: boolean,
+    antallBarnSaksgrunnlag: number,
+    antallBarnSaksgrunnlagAnnenPart?: number
+): number => {
+    if (erFarEllerMedmor && antallBarnSaksgrunnlagAnnenPart) {
+        return antallBarnSaksgrunnlagAnnenPart;
+    }
+
+    return antallBarnSaksgrunnlag;
+};
+
 const getStønadskontoParams = (
     dekningsgrad: Dekningsgrad,
     barn: Barn,
@@ -68,13 +80,14 @@ const getStønadskontoParams = (
     farHarAleneomsorg: boolean,
     morHarAleneomsorg: boolean,
     familieHendelseDatoNesteSak: string | undefined,
+    antallBarn: number,
     oppgittTermindato?: string
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     return {
-        antallBarn: barn.antallBarn.toString(),
+        antallBarn: antallBarn.toString(),
         startdatoUttak: getFamiliehendelsedato(barn),
         dekningsgrad: dekningsgrad,
         farHarRettINorge: getFarHarRettINorge(erFarMedmor, annenForelder),

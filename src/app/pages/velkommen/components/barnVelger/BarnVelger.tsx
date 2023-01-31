@@ -1,5 +1,4 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import { formateFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/personUtils';
 import React, { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
@@ -10,6 +9,7 @@ import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
+import { formateFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -38,6 +38,7 @@ export interface SelectableBarn {
     annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;
+    minstEnErDødfødt?: boolean;
 }
 
 interface Props {
@@ -107,6 +108,8 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.etternavn,
         barn.fødselsdatoer,
         barn.omsorgsovertagelse,
+        barn.minstEnErDødfødt,
+        barn.antallBarn,
         intl
     );
     const fødselsdatoerTekst = formateFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
@@ -128,11 +131,12 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         label: (
             <>
                 <b>{navnTekstEllerBarnMedUkjentNavnTekst}</b>
-                {barn.fornavn !== undefined && barn.fornavn.filter((n) => n !== undefined && n !== '').length > 0 && (
-                    <p>
-                        {situasjonTekst} {fødtAdoptertDatoTekst}
-                    </p>
-                )}
+                {barn.fornavn !== undefined &&
+                    barn.fornavn.filter((n) => n !== undefined && n.trim() !== '').length > 0 && (
+                        <p>
+                            {situasjonTekst} {fødtAdoptertDatoTekst}
+                        </p>
+                    )}
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
             </>

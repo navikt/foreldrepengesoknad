@@ -7,6 +7,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams, {
+    getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
@@ -23,6 +24,8 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isFødtBarn } from 'app/context/types/Barn';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import SøknadRoutes from 'app/routes/routes';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -70,10 +73,28 @@ const UttaksplanInfo = () => {
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
     );
 
+    useSaveLoadedRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato
     );
+
+    const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
+        barn.antallBarn,
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
+    );
+
+    useEffect(() => {
+        if (erFarEllerMedmor && søknad.barn.antallBarn !== saksgrunnlagsAntallBarn) {
+            const søknadMedOppdatertAntallBarn = {
+                ...søknad,
+                barn: { ...søknad.barn, antallBarn: saksgrunnlagsAntallBarn },
+            };
+            dispatch(actionCreator.setSøknad(søknadMedOppdatertAntallBarn));
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, dispatch, søknad]);
 
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
@@ -98,6 +119,7 @@ const UttaksplanInfo = () => {
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
+                saksgrunnlagsAntallBarn,
                 saksgrunnlagsTermindato
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
@@ -113,6 +135,7 @@ const UttaksplanInfo = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
+            saksgrunnlagsAntallBarn,
             saksgrunnlagsTermindato
         ),
         eksisterendeSakAnnenPartRequestIsSuspended

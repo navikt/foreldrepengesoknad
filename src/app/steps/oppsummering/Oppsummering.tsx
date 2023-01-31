@@ -38,6 +38,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -46,7 +47,7 @@ const Oppsummering = () => {
     const { kvittering, eksisterendeSak } = state;
     const bem = bemUtils('oppsummering');
 
-    const [submitError, setSubmitError] = useState(undefined);
+    const [submitError, setSubmitError] = useState<any>(undefined);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
     const {
@@ -96,6 +97,7 @@ const Oppsummering = () => {
             ),
         [søknad, state.perioderSomSkalSendesInn, familiehendelsesdato, state.endringstidspunkt]
     );
+    useSaveLoadedRoute(SøknadRoutes.OPPSUMMERING);
 
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
@@ -127,13 +129,12 @@ const Oppsummering = () => {
     useEffect(() => {
         if (submitError !== undefined) {
             sendErrorMessageToSentry(submitError);
-            const error = submitError as any;
             if (
-                error.response &&
-                error.response.status === 400 &&
-                error.response.data &&
-                error.response.data.messages &&
-                error.response.data.messages.includes(
+                submitError.response &&
+                submitError.response.status === 400 &&
+                submitError.response.data &&
+                submitError.response.data.messages &&
+                submitError.response.data.messages.includes(
                     'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg'
                 )
             ) {

@@ -21,6 +21,7 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const Søkersituasjon = () => {
     const intl = useIntl();
@@ -40,6 +41,7 @@ const Søkersituasjon = () => {
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    useSaveLoadedRoute(SøknadRoutes.SØKERSITUASJON);
 
     return (
         <SøkersituasjonFormComponents.FormikWrapper

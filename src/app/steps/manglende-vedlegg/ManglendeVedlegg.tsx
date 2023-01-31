@@ -29,6 +29,7 @@ import { FieldArray } from 'formik';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
 
@@ -90,6 +91,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
         dayjs(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(dayjs().add(4, 'weeks'), 'day');
 
     const manglendeVedleggTyper = Array.from(alleSendSenereVedlegg.values()).map((v) => v.type);
+    useSaveLoadedRoute(SøknadRoutes.MANGLENDE_VEDLEGG);
 
     return (
         <ManglendeVedleggFormComponents.FormikWrapper

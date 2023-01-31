@@ -28,6 +28,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import Api from 'app/api/api';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import getStønadskontoParams, {
+    getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -66,6 +67,7 @@ import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -136,6 +138,8 @@ const UttaksplanStep = () => {
             ? false
             : true;
 
+    useSaveLoadedRoute(SøknadRoutes.UTTAKSPLAN);
+
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
         Api.useGetAnnenPartsVedtak(
             annenForelderFnr,
@@ -160,6 +164,20 @@ const UttaksplanStep = () => {
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato
     );
+    const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
+        barn.antallBarn,
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
+    );
+    useEffect(() => {
+        if (erFarEllerMedmor && søknad.barn.antallBarn !== saksgrunnlagsAntallBarn) {
+            const søknadMedOppdatertAntallBarn = {
+                ...søknad,
+                barn: { ...søknad.barn, antallBarn: saksgrunnlagsAntallBarn },
+            };
+            dispatch(actionCreator.setSøknad(søknadMedOppdatertAntallBarn));
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, dispatch, søknad]);
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
         annenForelderFnrNesteSak !== undefined &&
@@ -382,6 +400,11 @@ const UttaksplanStep = () => {
         farMedmorErAleneOmOmsorg,
         rolle
     );
+    const kontoRequestIsSuspended =
+        (eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
+        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
         Api.useGetUttakskontoer(
@@ -393,9 +416,10 @@ const UttaksplanStep = () => {
                 farMedmorErAleneOmOmsorg,
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
+                saksgrunnlagsAntallBarn,
                 saksgrunnlagsTermindato
             ),
-            nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+            kontoRequestIsSuspended
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -406,9 +430,10 @@ const UttaksplanStep = () => {
             farMedmorErAleneOmOmsorg,
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
+            saksgrunnlagsAntallBarn,
             saksgrunnlagsTermindato
         ),
-        nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+        kontoRequestIsSuspended
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
