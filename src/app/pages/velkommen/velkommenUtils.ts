@@ -182,6 +182,10 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                 pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
                     ? pdlBarnMedSammeFødselsdato.filter((barn) => barn.fnr !== undefined).map((b) => b.fnr)
                     : undefined,
+            minstEnErDødfødt:
+                pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
+                    ? !!pdlBarnMedSammeFødselsdato.find((barn) => getErDødfødtBarn(barn))
+                    : false,
         };
     }
 };
