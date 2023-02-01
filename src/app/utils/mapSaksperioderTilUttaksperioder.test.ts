@@ -549,11 +549,11 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         ] as Saksperiode[];
 
         const result = mapSaksperioderTilUttaksperioder(avslåttePerioderSøker, grunnlag, new Date('2023-01-03'));
-        expect(result.length).toEqual(2);
-        const periode1 = result[0] as Uttaksperiode;
+        expect(result.length).toEqual(4);
+        const periode1 = result[2] as Uttaksperiode;
         expect(periode1.tidsperiode.fom).toEqual(new Date('2022-12-30'));
         expect(periode1.tidsperiode.tom).toEqual(new Date('2023-01-02'));
-        const periode2 = result[1] as Uttaksperiode;
+        const periode2 = result[3] as Uttaksperiode;
         expect(periode2.tidsperiode.fom).toEqual(new Date('2023-01-03'));
         expect(periode2.tidsperiode.tom).toEqual(new Date('2023-01-05'));
     });
