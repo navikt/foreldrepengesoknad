@@ -357,6 +357,14 @@ describe('eksisterendeSakUtils', () => {
         uttaksplan: [
             {
                 id: '1',
+                tidsperiode: {
+                    fom: new Date('2022-10-31'),
+                    tom: new Date('2022-11-08'),
+                },
+                type: 'periodeUtenUttak',
+            },
+            {
+                id: '1',
                 type: 'uttak',
                 konto: 'FEDREKVOTE',
                 tidsperiode: {
