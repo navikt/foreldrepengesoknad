@@ -1,7 +1,11 @@
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import {
+    // ANTALL_UTTAKSDAGER_SEKS_UKER,
+    isValidTidsperiode,
+    Tidsperioden,
+} from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import {
     andreAugust2022ReglerGjelder,
@@ -273,6 +277,33 @@ export const finnOgSettInnHull = (
     }
 
     const result = perioder.reduce((res, periode, index) => {
+        if (index === 0 && erFarEllerMedmor) {
+            const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+            if (dayjs(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.tidsperiode.fom)) {
+                const tidsperiodeMellom6ukerEtterFødselOgPerioden: TidsperiodeDate = {
+                    fom: førsteUttaksdagFamiliehendelsesdato,
+                    tom: Uttaksdagen(periode.tidsperiode.fom).forrige(),
+                };
+                const uttaksdagerITidsperiode = Tidsperioden(
+                    tidsperiodeMellom6ukerEtterFødselOgPerioden
+                ).getAntallUttaksdager();
+
+                if (uttaksdagerITidsperiode > 0) {
+                    res.push(
+                        ...getPeriodeHullEllerPeriodeUtenUttak(
+                            tidsperiodeMellom6ukerEtterFødselOgPerioden,
+                            harAktivitetskravIPeriodeUtenUttak,
+                            familiehendelsesdato,
+                            erAdopsjon,
+                            bareFarHarRett,
+                            erFarEllerMedmor,
+                            førsteUttaksdagNesteBarnsSak
+                        )
+                    );
+                }
+            }
+        }
+
         res.push(periode);
 
         if (index === perioder.length - 1) {
