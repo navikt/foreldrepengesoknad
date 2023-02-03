@@ -10,7 +10,6 @@
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
-            "annenPart": { "type": "person", "fnr": "23518310526", "fornavn": "Glupsk", "etternavn": "Bly" },
             "familiehendelse": { "fødselsdato": "2022-10-05", "antallBarn": 1, "omsorgsovertakelse": "2022-11-24" },
             "gjeldendeVedtak": {
                 "perioder": [
