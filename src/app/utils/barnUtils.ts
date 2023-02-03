@@ -60,13 +60,8 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intlUtils(intl, 'barn');
 };
 
-export const getErDødfødtBarn = (barn: RegistrertBarn) => {
-    return (
-        barn.dødsdato &&
-        dayjs(barn.fødselsdato).isSame(barn.dødsdato, 'd') &&
-        barn.fornavn === undefined &&
-        barn.etternavn === undefined
-    );
+export const getLeverBarnet = (barn: RegistrertBarn) => {
+    return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
@@ -89,7 +84,7 @@ export const formaterNavnPåFlereBarn = (
     etternavn: string[] | undefined,
     fødselsdatoer: Date[] | undefined,
     omsorgsovertagelsesdato: Date | undefined,
-    enAvBarnaErDødfødt: boolean | undefined,
+    alleBarnaLever: boolean,
     antallBarn: number,
     intl: IntlShape
 ): string => {
@@ -98,14 +93,14 @@ export const formaterNavnPåFlereBarn = (
         fornavn.length === 0 ||
         etternavn === undefined ||
         etternavn.length === 0 ||
-        !!enAvBarnaErDødfødt
+        !alleBarnaLever
     ) {
         if (omsorgsovertagelsesdato !== undefined) {
             return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
                 adopsjonsdato: formatDate(omsorgsovertagelsesdato),
             });
         } else {
-            const fødselsdatoTekst = formateFødselsdatoerPåFlereBarn(fødselsdatoer);
+            const fødselsdatoTekst = formaterFødselsdatoerPåFlereBarn(fødselsdatoer);
             const barnTekst = getTekstForAntallBarn(antallBarn, intl);
 
             return fødselsdatoer !== undefined && fødselsdatoer.length > 0
@@ -126,7 +121,7 @@ export const formaterNavnPåFlereBarn = (
     return `${fornavn[0]} ${etternavn}`;
 };
 
-export const formateFødselsdatoerPåFlereBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåFlereBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }

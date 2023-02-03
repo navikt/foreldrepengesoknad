@@ -52,15 +52,6 @@
                     }
                 ]
             },
-            "barn": [
-                {
-                    "type": "person",
-                    "fnr": "05502251750",
-                    "fornavn": "Oriental",
-                    "etternavn": "Bokhylle",
-                    "fødselsdato": "2022-10-05"
-                }
-            ],
             "dekningsgrad": "HUNDRE"
         }
     ],
