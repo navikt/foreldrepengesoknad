@@ -5,7 +5,7 @@ import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { FormattedMessage } from 'react-intl';
 import { formaterNavn } from 'app/utils/personUtils';
 import './registrertePersonalia.less';
-import { bemUtils, formatDate } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-common';
 
 interface Props {
     person: RegistrertAnnenForelder | RegistrertBarn;
@@ -21,7 +21,6 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
     altTekstHvisUkjentNavn,
 }: Props) => {
     const bem = bemUtils('registrertePersonalia');
-
     return (
         <div className={bem.block}>
             <Element className={bem.element('navn')}>
@@ -41,7 +40,7 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
                 <Normaltekst>
                     <FormattedMessage
                         id="registrertePersonalia.fødselsdato"
-                        values={{ fødselsdato: formatDate(fødselsdatoForVisning) }}
+                        values={{ fødselsdato: fødselsdatoForVisning }}
                     />
                 </Normaltekst>
             )}

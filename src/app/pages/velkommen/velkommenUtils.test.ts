@@ -1,7 +1,7 @@
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { RegistrertBarn } from 'app/types/Person';
 import { RettighetType } from 'app/types/RettighetType';
-import { SelectableBarnType } from './components/barnVelger/BarnVelger';
+import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { Sak } from 'app/types/Sak';
 
@@ -110,6 +110,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
         sak: { saksnummer: '1' } as Sak,
         familiehendelsesdato: new Date('2022-06-01'),
         fnr: ['1234'],
+        alleBarnaLever: true,
     };
     it('skal returnere det første barnet etter barnet som er valgt', async () => {
         const alleBarna = [
@@ -142,7 +143,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 familiehendelsesdato: new Date('2024-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2024-03-15'),
             },
-        ];
+        ] as SelectableBarn[];
         const res = getBarnFraNesteSak(selectedBarn, alleBarna);
         expect(res?.fnr).toEqual(undefined);
         expect(res?.familiehendelsesdato).toEqual(new Date('2023-04-01'));
@@ -160,6 +161,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
+                alleBarnaLever: true,
             },
             {
                 id: '3',
@@ -169,6 +171,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 sak: { saksnummer: '3' } as Sak,
                 familiehendelsesdato: new Date('2021-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2021-03-15'),
+                alleBarnaLever: true,
             },
         ];
         const res = getBarnFraNesteSak(selectedBarn, alleBarna);

@@ -28,8 +28,8 @@ import { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import dayjs from 'dayjs';
-import { getErDødfødtBarn, getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -61,18 +61,18 @@ const OmBarnet: React.FunctionComponent = () => {
 
     const familiehendelsesdato = barn ? ISOStringToDate(getFamiliehendelsedato(barn)) : undefined;
 
-    const dødfødteBarnMedSammeFødselsdato =
+    const dødfødteUtenFnrMedSammeFødselsdato =
         barn && isFødtBarn(barn)
             ? registrerteBarn.filter(
                   (barn: RegistrertBarn) =>
-                      getErDødfødtBarn(barn) &&
+                      barn.fnr === undefined &&
                       dayjs(barn.fødselsdato).isSameOrAfter(dayjs(familiehendelsesdato).subtract(1, 'd')) &&
                       dayjs(barn.fødselsdato).isSameOrBefore(dayjs(familiehendelsesdato).add(1, 'd'))
               )
             : [];
 
     const valgteRegistrerteBarn = !søknadGjelderEtNyttBarn
-        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteBarnMedSammeFødselsdato)
+        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
         : undefined;
     return (
         <OmBarnetFormComponents.FormikWrapper
