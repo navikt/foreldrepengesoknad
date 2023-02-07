@@ -104,6 +104,8 @@ export const FOR_MANGE_VEDLEGG_ERROR =
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
+export const UKJENT_UUID = 'ukjent uuid';
+
 const getUttaksperiodeForInnsending = (
     uttaksPeriode: UttaksperiodeBase,
     ønskerJustertUttakVedFødsel: boolean | undefined,
@@ -455,12 +457,13 @@ const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): 
 };
 
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
-    const errorCallId = getCallId(error) + '. ';
+    const errorCallId = getErrorCallId(error) + '. ';
+    const errorTimestamp = getErrorTimestamp(error) + '. ';
     const hideNumbersAndTrim = (tekst: string): string => {
         return tekst.replace(/[0-9]/g, '*').slice(0, 250) + '...';
     };
 
-    let errorString = errorCallId;
+    let errorString = errorCallId + errorTimestamp;
     if (error.request && error.request.data && error.request.data.messages) {
         errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
     } else if (error.response && error.response.data && error.response.data.messages) {
@@ -472,8 +475,10 @@ export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
     Sentry.captureMessage(errorString);
 };
 
-export const getCallId = (error: AxiosError<any>): string => {
-    return error.response && error.response.data && error.response.data.uuid
-        ? error.response.data.uuid
-        : 'unknown uuid';
+export const getErrorCallId = (error: AxiosError<any>): string => {
+    return error.response && error.response.data && error.response.data.uuid ? error.response.data.uuid : UKJENT_UUID;
+};
+
+export const getErrorTimestamp = (error: AxiosError<any>): string => {
+    return error.response && error.response.data && error.response.data.timestamp ? error.response.data.timestamp : '';
 };
