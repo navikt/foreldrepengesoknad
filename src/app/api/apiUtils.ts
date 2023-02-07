@@ -101,6 +101,9 @@ export type EndringssøknadForInnsending = Pick<
 export const FOR_MANGE_VEDLEGG_ERROR =
     'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.';
 
+export const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+
 const getUttaksperiodeForInnsending = (
     uttaksPeriode: UttaksperiodeBase,
     ønskerJustertUttakVedFødsel: boolean | undefined,
@@ -452,11 +455,12 @@ const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): 
 };
 
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
+    const errorCallId = getCallId(error) + '. ';
     const hideNumbersAndTrim = (tekst: string): string => {
         return tekst.replace(/[0-9]/g, '*').slice(0, 250) + '...';
     };
 
-    let errorString = '';
+    let errorString = errorCallId;
     if (error.request && error.request.data && error.request.data.messages) {
         errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
     } else if (error.response && error.response.data && error.response.data.messages) {
@@ -466,4 +470,10 @@ export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
         errorString = errorString + error.message;
     }
     Sentry.captureMessage(errorString);
+};
+
+export const getCallId = (error: AxiosError<any>): string => {
+    return error.response && error.response.data && error.response.data.uuid
+        ? error.response.data.uuid
+        : 'unknown uuid';
 };
