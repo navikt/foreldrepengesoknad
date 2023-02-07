@@ -24,7 +24,7 @@ import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-innte
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
 import actionCreator from 'app/context/action/actionCreator';
-import { FOR_MANGE_VEDLEGG_ERROR, getSøknadsdataForInnsending } from 'app/api/apiUtils';
+import { FEIL_VED_INNSENDING, FOR_MANGE_VEDLEGG_ERROR, getCallId, getSøknadsdataForInnsending } from 'app/api/apiUtils';
 import { useNavigate } from 'react-router-dom';
 
 import './oppsummering.less';
@@ -140,7 +140,9 @@ const Oppsummering = () => {
             ) {
                 throw new Error(FOR_MANGE_VEDLEGG_ERROR);
             }
-            throw new Error(submitError);
+            sendErrorMessageToSentry(submitError);
+            const submitErrorCallId = getCallId(submitError);
+            throw new Error(FEIL_VED_INNSENDING + submitErrorCallId);
         }
     }, [submitError]);
 
