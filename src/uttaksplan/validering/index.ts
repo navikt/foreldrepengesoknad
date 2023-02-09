@@ -15,7 +15,6 @@ import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtset
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
 import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
-import { inneholderSeneGraderteUttakTest } from './tester/inneholderSeneGraderteUttakTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
@@ -58,7 +57,6 @@ export enum UttaksplanRegelKey {
     'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
     'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
-    'inneholderSeneGraderteUttak' = 'inneholderSeneGraderteUttakTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
@@ -175,12 +173,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         alvorlighet: RegelAlvorlighet.INFO,
         test: inneholderSenUtsettelsePgaArbeidTest,
         slåsSammenVedOppsummering: true,
-    },
-    {
-        key: UttaksplanRegelKey.inneholderSeneGraderteUttak,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSeneGraderteUttakTest,
-        skjulesIPeriode: true,
     },
     {
         key: UttaksplanRegelKey.farMedMorHarRettPåUttakRundtFødsel,
