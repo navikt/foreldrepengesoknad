@@ -24,7 +24,6 @@ import {
 } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
-    erGradering,
     erUtsettelse,
     erUtsettelseGrunnetPgaArbeid,
     erUtsettelsePgaSykdom,
@@ -363,10 +362,9 @@ export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): Sen
     const utsettelseArbeidKreverBegrunnelsePgaSøktSent = utsettelsesPerioder
         .filter(erUtsettelseTilbakeITid)
         .some(erUtsettelseGrunnetPgaArbeid);
-    const uttakArbeidKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erGradering);
     const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
 
-    if (utsettelseArbeidKreverBegrunnelsePgaSøktSent || uttakArbeidKreverBegrunnelsePgaSøktSent) {
+    if (utsettelseArbeidKreverBegrunnelsePgaSøktSent) {
         return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
     }
 
