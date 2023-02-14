@@ -26,7 +26,6 @@ import { Situasjon } from 'app/types/Situasjon';
 import dayjs from 'dayjs';
 import Barn, { BarnType, isAdoptertBarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
-import { Sak } from 'app/types/Sak';
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { RettighetType } from 'app/types/RettighetType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -37,6 +36,7 @@ import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
+import { SakDTO } from 'app/types/SakDTO';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -220,7 +220,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
-    eksisterendeSak: Sak | undefined | '',
+    eksisterendeSak: SakDTO | undefined | '',
     førsteUttaksdagNesteBarnsSak: Date | undefined
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
@@ -236,8 +236,8 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         rettighetType,
         sakTilhørerMor,
         ønskerJustertUttakVedFødsel,
-        annenPart,
-        barn,
+        // annenPart,
+        // barn,
     } = eksisterendeSak;
 
     const erFarEllerMedmor = !sakTilhørerMor;
@@ -260,8 +260,8 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, omsorgsovertakelse),
         ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
         harAnnenForelderTilsvarendeRettEØS,
-        annenPart,
-        barn,
+        // annenPart,
+        // barn,
     };
 
     const saksperioder = perioder
@@ -522,16 +522,6 @@ export const opprettSøknadFraEksisterendeSak = (
     };
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag);
-    const annenForelderFraSak =
-        eksisterendeSak.grunnlag.annenPart !== undefined
-            ? getAnnenForelderFromSaksgrunnlag(
-                  situasjon,
-                  grunnlag,
-                  eksisterendeSak.grunnlag.annenPart,
-                  søkerErFarEllerMedmor,
-                  intl
-              )
-            : undefined;
 
     const annenForelderFraBarn = finnAnnenForelderPåFødselsdato(
         søkerinfo.registrerteBarn,
@@ -543,7 +533,7 @@ export const opprettSøknadFraEksisterendeSak = (
     );
     const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
 
-    const annenForelderBase = annenForelderFraSak || annenForelderFraBarn || mockForelder;
+    const annenForelderBase = annenForelderFraBarn || mockForelder;
 
     const annenForelder = {
         ...annenForelderBase,

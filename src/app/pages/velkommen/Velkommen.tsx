@@ -32,15 +32,15 @@ import { Søknad } from 'app/context/types/Søknad';
 
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
-import { Sak } from 'app/types/Sak';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { SakDTO } from 'app/types/SakDTO';
 
 interface Props {
     fornavn: string;
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
-    saker: Sak[];
+    saker: SakDTO[];
     fnr: string;
 }
 

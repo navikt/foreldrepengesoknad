@@ -5,11 +5,11 @@ import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
 import { formaterFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
+import { SakDTO } from 'app/types/SakDTO';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -34,7 +34,7 @@ export interface SelectableBarn {
     fornavn?: string[];
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
-    sak?: Sak;
+    sak?: SakDTO;
     annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;

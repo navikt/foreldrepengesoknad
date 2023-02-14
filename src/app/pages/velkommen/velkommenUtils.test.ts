@@ -4,16 +4,11 @@ import { RettighetType } from 'app/types/RettighetType';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { Sak } from 'app/types/Sak';
+import { SakDTO } from 'app/types/SakDTO';
 
 const fødselsdato = '2022-01-01';
 const fødselsdatoDate = new Date(fødselsdato);
 const sak = {
-    annenPart: {
-        fnr: '123456',
-        fornavn: 'Gyldig',
-        etternavn: 'Kall',
-    },
-    barn: [{ type: 'person', fornavn: 'Grønn', etternavn: 'Dinosaur', fødselsdato: fødselsdato, fnr: '123456789' }],
     dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
     familiehendelse: {
         fødselsdato: fødselsdato,
@@ -31,7 +26,7 @@ const sak = {
     ønskerJustertUttakVedFødsel: false,
     sisteSøknadMottattDato: '2022-05-06',
     åpenBehandling: undefined,
-};
+} as SakDTO;
 
 describe('velkommenUtils - getSelectableBarnOptions', () => {
     const barnFraPDL = {
@@ -61,13 +56,13 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
         fnr: '123456788',
         kjønn: 'K',
     };
-    it('skal kun returnere ett barn hvis barn fra PDL og barn fra sak er samme', async () => {
+    it('skal kun returnere ett barn hvis barn fra PDL og sak har fødselsdato', async () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL] as RegistrertBarn[]);
         expect(result.length).toBe(1);
         expect(result[0].fornavn).toEqual(['Grønn ']);
         expect(result[0].fnr).toEqual(['123456789']);
     });
-    it('skal kun returnere to barn hvis barn fra PDL og barn fra sak ikke er samme', async () => {
+    it('skal kun returnere to barn hvis barn fra PDL og barn fra sak ikke har samme fødselsdato', async () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL2] as RegistrertBarn[]);
         expect(result.length).toBe(2);
         expect(result[0].fornavn).toEqual(['Grønn ']);
@@ -75,29 +70,51 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
         expect(result[1].fornavn).toEqual(['Svart']);
         expect(result[1].fnr).toEqual(['123456780']);
     });
-    it('skal kun ett valgt hvis to barn fra PDL er født innen en dag fra hverandre', async () => {
+    it('skal returnere kun ett valgt hvis to barn fra PDL er født innen en dag fra hverandre', async () => {
         const result = getSelectableBarnOptions([], [barnFraPDL, barnTvilling] as RegistrertBarn[]);
         expect(result.length).toBe(1);
         expect(result[0].fornavn).toEqual(['Grønn ', 'Blå ']);
         expect(result[0].fnr).toEqual(['123456789', '123456788']);
     });
-    it('skal ikke vise barna som er over 3 år gamle og 3 måneder', async () => {
+    it('skal ikke vise barna fra pdl som er over 3 år gamle og 3 måneder', async () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
         expect(result.length).toBe(0);
     });
-    it('skal koble famhendelse fra sak for sak uten barn der barnet fra PDL matcher', async () => {
-        const result = getSelectableBarnOptions([{ ...sak, barn: [] }], [barnFraPDL] as RegistrertBarn[]);
-        expect(result.length).toBe(1);
-        expect(result[0].fornavn).toEqual(['Grønn ']);
-        expect(result[0].fnr).toEqual(['123456789']);
+    it('skal ikke vise barna fra pdl som er døde for mer enn 3 måneder siden', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
     });
-    it('skal ikke koble famhendelse fra sak for sak uten barn der barnet fra ikke PDL matcher', async () => {
-        const result = getSelectableBarnOptions([{ ...sak, barn: [] }], [barnFraPDL2] as RegistrertBarn[]);
-        expect(result.length).toBe(2);
-        expect(result[0].fornavn).toEqual(undefined);
-        expect(result[0].fnr).toEqual(undefined);
-        expect(result[1].fornavn).toEqual(['Svart']);
-        expect(result[1].fnr).toEqual(['123456780']);
+    it('skal ikke vise barna fra pdl som er dødfødte for mer enn 3 måneder siden', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal  vise barna fra pdl som er døde for mer enn 3 måneder siden og har en sak', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal  vise barna fra pdl som er dødfødte for mer enn 3 måneder siden og har en sak', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal ikke vise tvillinger fra pdl hvis en er død for mer enn 3 måneder siden', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal ikke vise tvillinger fra pdl hvis en dødfødte for mer enn 3 måneder siden', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal vise tvillinger fra pdl hvis de har en sak og en er død for mer enn 3 måneder siden', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal vise tvillinger fra pdl hvis de har en sak og en er dødfødt for mer enn 3 måneder siden', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
+    });
+    it('skal ikke vise PDL barn som har avsluttet sak', async () => {
+        const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd] as RegistrertBarn[]);
+        expect(result.length).toBe(0);
     });
 });
 

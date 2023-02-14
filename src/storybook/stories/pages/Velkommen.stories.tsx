@@ -7,22 +7,22 @@ import Velkommen from 'app/pages/velkommen/Velkommen';
 import withIntlProvider from '../../decorators/withIntl';
 import ForeldrepengerStateMock from '../../utils/ForeldrepengerStateMock';
 import withForeldrepengersøknadContext from '../../decorators/withForeldrepengersøknadContext';
-import { BarnFraSak } from 'app/types/BarnFraSak';
-import { Sak } from 'app/types/Sak';
 import { RettighetType } from 'app/types/RettighetType';
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
+import { SakDTO } from 'app/types/SakDTO';
+import withRouter from '../../decorators/withRouter';
 
 export default {
     title: 'pages/Velkommen',
     component: Velkommen,
-    decorators: [withIntlProvider, withForeldrepengersøknadContext],
+    decorators: [withIntlProvider, withForeldrepengersøknadContext, withRouter],
 };
 
 interface Props {
     harGodkjentVilkår: boolean;
-    saker: Sak[];
+    saker: SakDTO[];
     søkerinfo: SøkerinfoDTO;
 }
 
@@ -51,7 +51,6 @@ const Template: Story<Props> = ({ harGodkjentVilkår, saker, søkerinfo }) => {
 
 interface SakInfo {
     kanSøkeOmEndring: boolean;
-    barn: BarnFraSak[];
     gjelderAdopsjon: boolean;
     antallBarn: number;
     sakErAvsluttet: boolean;
@@ -61,14 +60,8 @@ interface SakInfo {
     omsorgsovertakelse?: string;
 }
 
-const getSak = (sakinfo: SakInfo): Sak => {
+const getSak = (sakinfo: SakInfo): SakDTO => {
     return {
-        annenPart: {
-            fnr: '123456',
-            fornavn: 'Gyldig',
-            etternavn: 'Kall',
-        },
-        barn: sakinfo.barn,
         dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
         familiehendelse: {
             fødselsdato: sakinfo.fødselsdato,
@@ -125,6 +118,7 @@ const dødfødtBarn = { fødselsdato: '2022-10-21', dødsdato: '2022-10-21' } as
 const sakErIkkeAvsluttet = false;
 
 const dato = '2022-12-06';
+const datoAdopsjon = '2022-12-08';
 
 const ettBarn = {
     type: 'person',
@@ -133,14 +127,14 @@ const ettBarn = {
     mellomnavn: 'Lykkelig',
     etternavn: 'Vår',
     fødselsdato: dato,
-};
+    kjønn: 'M',
+} as SøkerinfoDTOBarn;
 
 const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '111111111112', fornavn: 'Grønn' };
 const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '111111111113', fornavn: 'Sommerlig' };
 
 const sakOpprettetFødsel = getSak({
     kanSøkeOmEndring: true,
-    barn: [ettBarn],
     gjelderAdopsjon: false,
     antallBarn: 1,
     sakErAvsluttet: sakErIkkeAvsluttet,
@@ -149,7 +143,6 @@ const sakOpprettetFødsel = getSak({
 
 const sakUnderBehandlingTermin = getSak({
     kanSøkeOmEndring: false,
-    barn: [],
     gjelderAdopsjon: false,
     antallBarn: 1,
     sakErAvsluttet: sakErIkkeAvsluttet,
@@ -158,16 +151,15 @@ const sakUnderBehandlingTermin = getSak({
 });
 const erEndringssøknadUnderBehandlingAdopsjon = getSak({
     kanSøkeOmEndring: true,
-    barn: [ettBarn],
     gjelderAdopsjon: true,
     antallBarn: 1,
     sakErAvsluttet: false,
-    omsorgsovertakelse: dato,
+    omsorgsovertakelse: datoAdopsjon,
+    fødselsdato: dato,
     åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
 });
 const sakAvsluttet = getSak({
     kanSøkeOmEndring: false,
-    barn: [ettBarn],
     gjelderAdopsjon: false,
     antallBarn: 1,
     sakErAvsluttet: true,
@@ -176,7 +168,6 @@ const sakAvsluttet = getSak({
 
 const sakUtenBarnFødsel = getSak({
     kanSøkeOmEndring: false,
-    barn: [],
     gjelderAdopsjon: false,
     antallBarn: 1,
     sakErAvsluttet: false,
@@ -185,25 +176,14 @@ const sakUtenBarnFødsel = getSak({
 
 const sakUtenBarnAdopsjon = getSak({
     kanSøkeOmEndring: false,
-    barn: [],
     gjelderAdopsjon: true,
     antallBarn: 1,
     sakErAvsluttet: false,
     omsorgsovertakelse: dato,
 });
 
-const sakUtenBarnTermin = getSak({
-    kanSøkeOmEndring: false,
-    barn: [],
-    gjelderAdopsjon: false,
-    antallBarn: 1,
-    sakErAvsluttet: false,
-    termindato: dato,
-});
-
 const sakUtenBarnTvillinger = getSak({
     kanSøkeOmEndring: false,
-    barn: [],
     gjelderAdopsjon: false,
     antallBarn: 2,
     sakErAvsluttet: false,
@@ -212,7 +192,6 @@ const sakUtenBarnTvillinger = getSak({
 
 const sakUtenBarnTrillingerTermin = getSak({
     kanSøkeOmEndring: false,
-    barn: [],
     gjelderAdopsjon: false,
     antallBarn: 3,
     sakErAvsluttet: false,
@@ -221,7 +200,6 @@ const sakUtenBarnTrillingerTermin = getSak({
 
 const sakMedTvillinger = getSak({
     kanSøkeOmEndring: false,
-    barn: [ettBarn, annetBarnSammeDato],
     gjelderAdopsjon: false,
     antallBarn: 2,
     sakErAvsluttet: false,
@@ -230,7 +208,6 @@ const sakMedTvillinger = getSak({
 
 const sakMedTrillinger = getSak({
     kanSøkeOmEndring: false,
-    barn: [ettBarn, annetBarnSammeDato, tredjeBarnSammeDato],
     gjelderAdopsjon: false,
     antallBarn: 3,
     sakErAvsluttet: false,
@@ -238,7 +215,7 @@ const sakMedTrillinger = getSak({
 });
 
 const flereSaker = [sakOpprettetFødsel, { ...sakUnderBehandlingTermin, saksnummer: '555555' }];
-const ingenSaker: Sak[] = [];
+const ingenSaker: SakDTO[] = [];
 
 export const Default = Template.bind({});
 Default.args = {
@@ -254,10 +231,10 @@ HarAlleredeLestOgForstått.args = {
     søkerinfo: søkerInfo,
 };
 
-export const HarOpprettetFPSakFødsel = Template.bind({});
-HarOpprettetFPSakFødsel.args = {
+export const HarOpprettetFPSakFødselMedBarnetIPDL = Template.bind({});
+HarOpprettetFPSakFødselMedBarnetIPDL.args = {
     saker: [sakOpprettetFødsel],
-    søkerinfo: søkerInfo,
+    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarFPSakUnderBehandlingTermin = Template.bind({});
@@ -266,44 +243,32 @@ HarFPSakUnderBehandlingTermin.args = {
     søkerinfo: søkerInfo,
 };
 
-export const HarEndringssøknadUnderBehandlingAdopsjon = Template.bind({});
-HarEndringssøknadUnderBehandlingAdopsjon.args = {
+export const HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL = Template.bind({});
+HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL.args = {
     saker: [erEndringssøknadUnderBehandlingAdopsjon],
-    søkerinfo: søkerInfo,
+    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarAvsluttetFPSak = Template.bind({});
 HarAvsluttetFPSak.args = {
     saker: [sakAvsluttet],
-    søkerinfo: søkerInfo,
+    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarFlereSaker = Template.bind({});
 HarFlereSaker.args = {
     saker: flereSaker,
-    søkerinfo: søkerInfo,
+    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
 };
 
-export const HarSakFødselUtenBarnSendtFraSak = Template.bind({});
-HarSakFødselUtenBarnSendtFraSak.args = {
+export const HarSakFødselUtenBarnIPDL = Template.bind({});
+HarSakFødselUtenBarnIPDL.args = {
     saker: [sakUtenBarnFødsel],
     søkerinfo: søkerInfo,
 };
 
-export const HarSakTerminUtenBarnSendtFraSak = Template.bind({});
-HarSakTerminUtenBarnSendtFraSak.args = {
-    saker: [sakUtenBarnTermin],
-    søkerinfo: søkerInfo,
-};
-
-export const HarSakTvillingerUtenBarnSendtFraSak = Template.bind({});
-HarSakTerminUtenBarnSendtFraSak.args = {
-    saker: [sakUtenBarnTermin],
-    søkerinfo: søkerInfo,
-};
-
-export const HarSakAdopsjonUtenBarnSendtFraSak = Template.bind({});
-HarSakAdopsjonUtenBarnSendtFraSak.args = {
+export const HarSakAdopsjonUtenBarnIPDL = Template.bind({});
+HarSakAdopsjonUtenBarnIPDL.args = {
     saker: [sakUtenBarnAdopsjon],
     søkerinfo: søkerInfo,
 };
@@ -311,16 +276,13 @@ HarSakAdopsjonUtenBarnSendtFraSak.args = {
 export const HarSakFødselTvillinger = Template.bind({});
 HarSakFødselTvillinger.args = {
     saker: [sakMedTvillinger],
-    søkerinfo: getSøkerinfoMedBarn([
-        { ...ettBarn, kjønn: 'K' } as SøkerinfoDTOBarn,
-        { ...annetBarnSammeDato, kjønn: 'K' } as SøkerinfoDTOBarn,
-    ]),
+    søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]),
 };
 
 export const HarSakFødselTrillinger = Template.bind({});
 HarSakFødselTrillinger.args = {
     saker: [sakMedTrillinger],
-    søkerinfo: søkerInfo,
+    søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
 };
 export const HarSakFødselTvillingerUtenBarnSendtFraSak = Template.bind({});
 HarSakFødselTvillingerUtenBarnSendtFraSak.args = {
