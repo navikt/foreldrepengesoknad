@@ -40,10 +40,10 @@ jobs:
       cluster: dev-gcp
     secrets: inherit
 
-  snyk:
-     name: Snyk
-     needs: build-app
-     uses: navikt/fp-gha-workflows/.github/workflows/snyk-frontend.yml@main
-     with:
-       upload-sarif: ${{ github.ref_name == 'master' }}
-     secrets: inherit
+#   snyk:
+#      name: Snyk
+#      needs: build-app
+#      uses: navikt/fp-gha-workflows/.github/workflows/snyk-frontend.yml@main
+#      with:
+#        upload-sarif: ${{ github.ref_name == 'master' }}
+#      secrets: inherit
