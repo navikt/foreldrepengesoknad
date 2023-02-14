@@ -9,17 +9,8 @@
         "bankkonto": { "kontonummer": "", "banknavn": "" },
         "barn": [
             {
-                "fnr": "05502251750",
-                "fornavn": "Oriental",
-                "etternavn": "Bokhylle",
-                "kjønn": "M",
-                "fødselsdato": "2022-10-05",
-                "annenForelder": {
-                    "fnr": "23518310526",
-                    "fornavn": "Glupsk",
-                    "etternavn": "Bly",
-                    "fødselsdato": "1983-11-23"
-                }
+                "fødselsdato": "2021-10-05",
+                "dødsdato": "2021-10-05"
             }
         ]
     },

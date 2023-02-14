@@ -1,7 +1,7 @@
-import { BarnFraSak } from './BarnFraSak';
+// import { BarnFraSak } from './BarnFraSak';
 import { Dekningsgrad } from './Dekningsgrad';
 import { FamiliehendelseType } from './FamiliehendelseType';
-import { RegistrertAnnenForelder } from './Person';
+// import { RegistrertAnnenForelder } from './Person';
 
 export interface Saksgrunnlag {
     dekningsgrad: Dekningsgrad;
@@ -21,6 +21,6 @@ export interface Saksgrunnlag {
     familiehendelseType: FamiliehendelseType;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
     ønskerJustertUttakVedFødsel: boolean | undefined;
-    barn: BarnFraSak[];
-    annenPart?: RegistrertAnnenForelder;
+    // barn: BarnFraSak[];
+    // annenPart?: RegistrertAnnenForelder;
 }

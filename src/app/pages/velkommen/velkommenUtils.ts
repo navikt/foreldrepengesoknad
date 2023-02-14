@@ -1,4 +1,4 @@
-import { Sak } from 'app/types/Sak';
+import { SakDTO } from 'app/types/SakDTO';
 import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { Familiehendelse } from 'app/types/Familiehendelse';
@@ -13,6 +13,7 @@ import {
     getDødeBarnetForMerEnn3MånederSiden,
     getLeverBarnet,
 } from 'app/utils/barnUtils';
+// import { getMockAnnenForelder } from 'app/utils/annenForelderUtils';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -40,17 +41,17 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return SelectableBarnType.UFØDT;
 };
 
-const getAnnenForelderFraSak = (sak: Sak): RegistrertAnnenForelder | undefined => {
-    return sak.annenPart !== undefined
-        ? {
-              fnr: sak.annenPart.fnr,
-              fornavn: sak.annenPart.fornavn,
-              etternavn: sak.annenPart.etternavn,
-          }
-        : undefined;
-};
+// const getAnnenForelderFraSak = (sak: SakDTO): RegistrertAnnenForelder | undefined => {
+//     return sak.annenPart !== undefined
+//         ? {
+//               fnr: sak.annenPart.fnr,
+//               fornavn: sak.annenPart.fornavn,
+//               etternavn: sak.annenPart.etternavn,
+//           }
+//         : undefined;
+// };
 
-const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
+const getSelectableBarnFraSak = (sak: SakDTO, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
     const pdlBarnMedSammeFødselsdato =
         fødselsdatoFraSak !== undefined && registrerteBarn.length > 0
@@ -61,7 +62,19 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
               )
             : undefined;
 
-    const annenForelderFraSak = getAnnenForelderFraSak(sak); //TODO: denne vil ikke lenger komme fra sak.
+    const annenForelderFraBarn = getAnnenForelderFraPDL(registrerteBarn[0]); // TODO || getMockAnnenForelder();
+    const unikeFnr: string[] = [];
+    const unikePDLBarnMedSammeFødselsdato =
+        pdlBarnMedSammeFødselsdato !== undefined
+            ? (pdlBarnMedSammeFødselsdato
+                  .map((barn) => {
+                      if (!unikeFnr.includes(barn.fnr)) {
+                          unikeFnr.push(barn.fnr);
+                          return barn;
+                      }
+                  })
+                  .filter((b) => b !== undefined) as RegistrertBarn[])
+            : undefined;
 
     const familiehendelseDato = ISOStringToDate(
         getRelevantFamiliehendelseDato(
@@ -71,7 +84,6 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
         )
     );
     const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse);
-
     return {
         id: guid(),
         type: barnType,
@@ -82,7 +94,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
         sak: sak,
         fødselsdatoer:
             fødselsdatoFraSak !== undefined ? Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak) : undefined,
-        annenForelder: annenForelderFraSak,
+        annenForelder: annenForelderFraBarn,
         familiehendelsesdato: familiehendelseDato,
         sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
         startdatoFørsteStønadsperiode:
@@ -90,22 +102,22 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                 ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!).denneEllerNeste()
                 : undefined,
         fornavn:
-            pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                ? pdlBarnMedSammeFødselsdato
-                      ?.filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
+            unikePDLBarnMedSammeFødselsdato !== undefined && unikePDLBarnMedSammeFødselsdato.length > 0
+                ? unikePDLBarnMedSammeFødselsdato
+                      .filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
                       .map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' '))
                 : undefined,
         etternavn:
-            pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                ? pdlBarnMedSammeFødselsdato?.map((b) => b.etternavn)
+            unikePDLBarnMedSammeFødselsdato !== undefined && unikePDLBarnMedSammeFødselsdato.length > 0
+                ? unikePDLBarnMedSammeFødselsdato.map((b) => b.etternavn)
                 : undefined,
         fnr:
-            pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                ? pdlBarnMedSammeFødselsdato.filter((barn) => barn.fnr !== undefined).map((b) => b.fnr)
+            unikePDLBarnMedSammeFødselsdato !== undefined && unikePDLBarnMedSammeFødselsdato.length > 0
+                ? unikePDLBarnMedSammeFødselsdato.filter((barn) => barn.fnr !== undefined).map((b) => b.fnr)
                 : undefined,
         alleBarnaLever:
-            pdlBarnMedSammeFødselsdato !== undefined && pdlBarnMedSammeFødselsdato.length > 0
-                ? pdlBarnMedSammeFødselsdato.every((barn) => getLeverBarnet(barn))
+            unikePDLBarnMedSammeFødselsdato !== undefined && unikePDLBarnMedSammeFødselsdato.length > 0
+                ? unikePDLBarnMedSammeFødselsdato.every((barn) => getLeverBarnet(barn))
                 : false,
     };
 };
@@ -161,7 +173,7 @@ const getSelectableFlerlingerFraPDL = (
     }
 };
 
-const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
+const getSelectableBarnOptionsFromSaker = (saker: SakDTO[], registrerteBarn: RegistrertBarn[]) => {
     return saker
         .filter(
             (sak) =>
@@ -187,12 +199,23 @@ const getAnnenForelderFraPDL = (registrertBarn: RegistrertBarn | undefined) => {
 const getSelectableBarnOptionsFraPDL = (
     registrerteBarn: RegistrertBarn[],
     barnFraSaker: SelectableBarn[],
-    avsluttedeSaker: Sak[]
+    avsluttedeSaker: SakDTO[]
 ): SelectableBarn[] => {
     //Må oppdatere dødfødte barn med falsk fnr for å kunne identifisere de som allerede er blitt lagt til i visningen
     const tempString = 'tempFnr';
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
-        (regBarn) => !avsluttedeSaker.find((sak) => sak.barn.find((sakBarn) => sakBarn.fnr === regBarn.fnr))
+        (regBarn) =>
+            !avsluttedeSaker.find(
+                (sak) =>
+                    dayjs(regBarn.fødselsdato).isSameOrAfter(
+                        dayjs(sak.familiehendelse.fødselsdato).subtract(1, 'day'),
+                        'day'
+                    ) &&
+                    dayjs(regBarn.fødselsdato).isSameOrBefore(
+                        dayjs(sak.familiehendelse.fødselsdato).add(1, 'day'),
+                        'day'
+                    )
+            )
     );
     const registrerteBarnMedFnr = registrerteBarnUtenAvsluttedeSaker.map((b) =>
         b.fnr === undefined ? { ...b, fnr: tempString + guid().toString() } : b
@@ -249,7 +272,7 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarn;
 };
 
-export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
+export const getSelectableBarnOptions = (saker: SakDTO[], registrerteBarn: RegistrertBarn[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
