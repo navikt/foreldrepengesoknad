@@ -163,12 +163,12 @@ const validateToDateInRange = ({
 }): SkjemaelementFeil => {
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
 
-    if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
-    }
-
     if (error !== undefined) {
         return error;
+    }
+
+    if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
+        return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
     }
 
     if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {

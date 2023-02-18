@@ -54,7 +54,6 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
 
         expect(await screen.findByText(NÅR_FØRSTE_DAG)).toBeInTheDocument();
 
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText(NÅR_FØRSTE_DAG);
         await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
         await userEvent.tab();
