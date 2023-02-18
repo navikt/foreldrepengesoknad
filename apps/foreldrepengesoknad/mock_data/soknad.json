@@ -1,0 +1,30 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "harGodkjentVilkår": true,
+        "søkersituasjon": {
+            "rolle": "",
+            "situasjon": ""
+        },
+        "annenForelder": {
+            "kanIkkeOppgis": false
+        },
+        "søker": {
+            "språkkode": "nb"
+        },
+        "informasjonOmUtenlandsopphold": {
+            "tidligereOpphold": [],
+            "senereOpphold": []
+        },
+        "erEndringssøknad": false,
+        "uttaksplan": [],
+        "harGodkjentOppsummering": false,
+        "vedlegg": [],
+        "tilleggsopplysninger": {}
+    },
+    "version": 5,
+    "currentRoute": "/soknad/sokersituasjon",
+    "perioderSomSkalSendesInn": [],
+    "harUttaksplanBlittSlettet": false,
+    "søknadGjelderEtNyttBarn": true
+}

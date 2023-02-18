@@ -1,0 +1,89 @@
+.buttonFocus() {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--navds-semantic-color-interaction-primary);
+}
+
+.languageToggle {
+    background-color: var(--navds-semantic-color-component-background-alternate);
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+
+    @media print {
+        display: none;
+    }
+
+    &__wrapper {
+        min-width: 280px;
+        position: relative;
+        outline: none;
+        display: flex;
+
+        &:hover {
+            background-color: #ffffff;
+        }
+    }
+
+    &__button {
+        width: 100%;
+        display: flex;
+        border: 1px solid #826ba1;
+        border-radius: 0.25rem;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 0.5rem 2rem 0.5rem 1rem;
+
+        &:focus {
+            border-color: transparent;
+            .buttonFocus();
+        }
+
+        &__flag {
+            height: 18px;
+            padding-right: 1rem;
+            width: 25%;
+        }
+
+        &__language {
+            width: 65%;
+        }
+    }
+
+    &__menu {
+        display: flex;
+        flex-wrap: nowrap;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            border-bottom: 1px solid #826ba1;
+            border-left: 1px solid #826ba1;
+            border-right: 1px solid #826ba1;
+            position: absolute;
+            width: 100%;
+            z-index: 100;
+            left: 0;
+            top: 100%;
+        }
+
+        ul li {
+            width: 100%;
+            list-style: none;
+        }
+
+        &__item {
+            display: flex;
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            outline: none;
+
+            &:hover {
+                .buttonFocus();
+            }
+
+            &:focus {
+                .buttonFocus();
+            }
+        }
+    }
+}
