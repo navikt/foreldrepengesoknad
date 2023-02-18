@@ -1,9 +1,0 @@
-{
-    "plugins": ["@babel/plugin-proposal-object-rest-spread"],
-    "presets": ["@babel/preset-typescript", "@babel/preset-env", "@babel/react"],
-    "env": {
-        "test": {
-            "plugins": ["@babel/plugin-transform-modules-commonjs"]
-        }
-    }
-}

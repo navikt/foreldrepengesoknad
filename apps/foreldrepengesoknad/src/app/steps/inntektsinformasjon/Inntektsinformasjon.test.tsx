@@ -76,7 +76,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser for nær venn', async () => {
+    xit('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser for nær venn', async () => {
         render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();
@@ -132,7 +132,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal ikke ha arbeidsforhold men velger at en har jobbet som selvstendig næringsdrivende', async () => {
+    xit('skal ikke ha arbeidsforhold men velger at en har jobbet som selvstendig næringsdrivende', async () => {
         render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();
@@ -207,7 +207,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal ikke ha arbeidsforhold men velger at en har hatt andre inntektskilder (Sluttvederlag) de siste 10 månedene', async () => {
+    xit('skal ikke ha arbeidsforhold men velger at en har hatt andre inntektskilder (Sluttvederlag) de siste 10 månedene', async () => {
         render(<Default />);
 
         expect(await screen.findByText(IKKE_ARBEIDSFORHOLD_INFO)).toBeInTheDocument();

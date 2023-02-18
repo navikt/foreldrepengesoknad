@@ -5,12 +5,12 @@
     "types": "lib/index.d.ts",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "preview": "vite preview",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build-lib": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
-        "clean-lib": "rimraf ./lib",
+        "clean-lib": "rm -rf ./lib",
         "postinstall": "patch-package",
         "compile-lib-script": "tsc -p tsconfig-build-lib.json",
         "copy-files-to-lib": "copyfiles -u 2 \"src/common/**/*.less\" lib/ && copyfiles -u 2 \"src/common/**/*.json\" lib/"

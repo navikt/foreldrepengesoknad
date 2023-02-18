@@ -42,6 +42,18 @@ module.exports = {
                 ],
             },
             {
+                test: /\.s[ac]ss$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    {
+                        loader: 'sass-loader',
+                    },
+                ],
+            },
+            {
                 test: /\.svg$/,
                 use: { loader: 'svg-sprite-loader', options: {} },
             }
@@ -57,7 +69,7 @@ module.exports = {
                 failOnWarning: false,
                 failOnError: false,
                 fix: true,
-                overrideConfigFile: path.resolve(__dirname, '../eslintrc.js'),
+                // overrideConfigFile: path.resolve(__dirname, '../../../eslintrc.js'),
                 lintDirtyModulesOnly: true,
             })
         );

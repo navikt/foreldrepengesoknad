@@ -166,6 +166,7 @@ importers:
       react-transition-group: ^4.4.5
       regenerator-runtime: ^0.13.9
       request: ^2.88.2
+      sass-loader: ^13.2.0
       snyk: ^1.1021.0
       storybook-formik: ^2.4.2
       style-loader: ^2.0.0
@@ -334,6 +335,7 @@ importers:
       prettier: 2.8.4
       pretty-quick: 3.1.3_prettier@2.8.4
       react-test-renderer: 18.2.0_react@18.2.0
+      sass-loader: 13.2.0_webpack@5.75.0
       storybook-formik: 2.4.2_mncecyipikcsyaxrjzlusj2br4
       style-loader: 2.0.0_webpack@5.75.0
       svg-sprite-loader: 6.0.11
@@ -14987,6 +14989,7 @@ packages:
   /nav-frontend-js-utils/1.0.20_react@18.2.0:
     resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
     peerDependencies:
+      lodash.throttle: ^4.1.1
       prop-types: ^15.5.10
       react: ^16.8.0 || ^17.0.0
     dependencies:
@@ -15230,7 +15233,6 @@ packages:
     dependencies:
       nav-frontend-core: 6.0.1
       nav-frontend-typografi-style: 2.0.2
-    dev: true
 
   /nav-frontend-stegindikator/2.0.3_njcfcvjljcp36blp2nzhftzu2y:
     resolution: {integrity: sha512-VpiclgRm3EJzuNb4LwJLT95cVqhCDgKf/bieTtFssEF/I8+ss/Tzpnf3ldE7/VetRLsYVHRe/UH+Ml4Q5LFHjw==}
@@ -15241,8 +15243,8 @@ packages:
       react: ^16.8.0 || ^17.0.0
     dependencies:
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
-      nav-frontend-stegindikator-style: 2.0.2_nlpjutdtaqhuauqe7p7mz3mizi
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
+      nav-frontend-stegindikator-style: 2.0.2_thuvqjcto3w7dyhhjmc63qsctq
       react: 18.2.0
     dev: false
 
@@ -17533,6 +17535,30 @@ packages:
       walker: 1.0.8
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /sass-loader/13.2.0_webpack@5.75.0:
+    resolution: {integrity: sha512-JWEp48djQA4nbZxmgC02/Wh0eroSUutulROUusYJO9P9zltRbNN80JCBHqRGzjd4cmZCa/r88xgfkjGD0TXsHg==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      fibers: '>= 3.1.0'
+      node-sass: ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+      sass: ^1.3.0
+      sass-embedded: '*'
+      webpack: ^5.0.0
+    peerDependenciesMeta:
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+    dependencies:
+      klona: 2.0.6
+      neo-async: 2.6.2
+      webpack: 5.75.0
     dev: true
 
   /sass/1.58.3:
