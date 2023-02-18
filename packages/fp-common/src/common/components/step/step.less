@@ -1,0 +1,32 @@
+.step {
+    padding-top: 1rem;
+    min-height: 3rem;
+    &__button {
+        display: block;
+        margin: 0 auto;
+    }
+
+    &__title {
+        text-align: center;
+    }
+
+    &__backLink {
+        position: relative;
+        @media (max-width: 768px) {
+            top: 1rem;
+        }
+    }
+
+    &__infoMessage {
+        margin-bottom: 1rem;
+    }
+
+    &__validationErrorSummary {
+        margin: 1rem auto 1rem auto;
+        max-width: 704px;
+
+        @media (max-width: 768px) {
+            margin: 0;
+        }
+    }
+}

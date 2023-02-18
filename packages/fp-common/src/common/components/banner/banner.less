@@ -1,0 +1,21 @@
+.banner {
+    background-color: #c1b5d0;
+    padding: 1rem;
+    text-align: center;
+
+    &--small {
+        min-height: 3.5rem;
+
+        @media screen and (max-width: 576px) {
+            min-height: 5.5rem;
+        }
+    }
+
+    &--large {
+        height: 12rem;
+    }
+
+    &--xlarge {
+        height: 16rem;
+    }
+}

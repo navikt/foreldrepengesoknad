@@ -1,0 +1,29 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "outputs": [
+                "dist/**"
+            ]
+        },
+        "dev": {
+            "persistent": true
+        },
+        "lint": {}
+    },
+    "globalEnv": [
+        "APPRES_CMS_URL",
+        "FORELDREPENGESOKNAD_API_URL",
+        "LOGINSERVICE_URL",
+        "FP_UTTAK_SERVICE_URL",
+        "FORELDREPENGESOKNAD_API_URL_VTP",
+        "LOGINSERVICE_URL_VTP",
+        "FP_UTTAK_SERVICE_URL_VTP",
+        "FAMILIE",
+        "FEATURE_VIS_FEILSIDE",
+        "FEATURE_VIS_ALERTSTRIPE",
+        "FEATURE_VIS_PERIODER_SOM_SENDES_INN",
+        "FEATURE_WLB_GJELDER_FRA_FORSTE_JAN",
+        "APP_VERSION"
+    ]
+}

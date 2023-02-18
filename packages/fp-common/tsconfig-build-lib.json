@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "outDir": "./lib",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": false,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "removeComments": true,
+        "strictNullChecks": true,
+        "noImplicitAny": false,
+        "declaration": true,
+        "moduleResolution": "node",
+        "noEmit": false,
+        "baseUrl": "./src/common",
+        "sourceMap": true
+    },
+    "include": ["src/common"],
+    "exclude": ["node_modules", "src/dev", "src/**/*.stories.tsx"]
+}
