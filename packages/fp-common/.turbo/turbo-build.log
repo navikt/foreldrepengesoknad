@@ -1,0 +1,18 @@
+
+> @navikt/fp-common@7.0.4 build C:\Programmering\foreldrepengesoknad\packages\fp-common
+> tsc && vite build
+
+[36mvite v3.2.5 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 1158 modules transformed.
+[31m[vite:css] Preprocessor dependency "sass" not found. Did you install it?[39m
+file: [36mC:/Programmering/foreldrepengesoknad/node_modules/.pnpm/@navikt+sif-common-formik-ds@0.6.4_lr5kb6ehyib45gefcdzsdabyi4/node_modules/@navikt/sif-common-formik-ds/lib/components/formik-date-interval-picker/dateIntervalPicker.scss[39m
+[31merror during build:
+Error: Preprocessor dependency "sass" not found. Did you install it?
+    at loadPreprocessor (file:///C:/Programmering/foreldrepengesoknad/node_modules/.pnpm/vite@3.2.5_lxiyzdpogvsuukhx3wcpsdczbq/node_modules/vite/dist/node/chunks/dep-5605cfa4.js:44488:19)
+    at scss (file:///C:/Programmering/foreldrepengesoknad/node_modules/.pnpm/vite@3.2.5_lxiyzdpogvsuukhx3wcpsdczbq/node_modules/vite/dist/node/chunks/dep-5605cfa4.js:44499:20)
+    at compileCSS (file:///C:/Programmering/foreldrepengesoknad/node_modules/.pnpm/vite@3.2.5_lxiyzdpogvsuukhx3wcpsdczbq/node_modules/vite/dist/node/chunks/dep-5605cfa4.js:44048:40)
+    at async Object.transform (file:///C:/Programmering/foreldrepengesoknad/node_modules/.pnpm/vite@3.2.5_lxiyzdpogvsuukhx3wcpsdczbq/node_modules/vite/dist/node/chunks/dep-5605cfa4.js:43616:55)
+    at async transform (file:///C:/Programmering/foreldrepengesoknad/node_modules/.pnpm/rollup@2.79.1/node_modules/rollup/dist/es/shared/rollup.js:21734:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Programmering/foreldrepengesoknad/node_modules/.pnpm/rollup@2.79.1/node_modules/rollup/dist/es/shared/rollup.js:21959:30)[39m
+ ELIFECYCLE  Command failed with exit code 1.
