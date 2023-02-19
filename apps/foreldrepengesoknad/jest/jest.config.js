@@ -18,8 +18,5 @@ module.exports = {
         '^.+\\.(ts|tsx|js)?$': 'babel-jest',
         '^.+.(css|less)$': 'jest-transform-stub',
     },
-    transformIgnorePatterns: [
-        '<rootDir>.*(node_modules)(?!.*nav.*).*$',
-        '<rootDir>.*(node_modules)(?!.*sif-common.*).*$',
-    ],
+    transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*sif-common.*).*$'],
 };
