@@ -121,7 +121,7 @@ describe('<OmBarnet>', () => {
 
         expect(
             await screen.findByText(
-                'Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.'
+                'Du må legge ved bekreftelse på datoen du overtok omsorgen for barnet, og adopsjonsbevilling hvis du har mottatt dette.'
             )
         ).toBeInTheDocument();
         expect(screen.getByText('Trykk her for å laste opp dokumentasjon om adopsjon')).toBeInTheDocument();
@@ -157,7 +157,7 @@ describe('<OmBarnet>', () => {
 
         expect(
             await screen.findByText(
-                'Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.'
+                'Du må legge ved bekreftelse på datoen du overtok omsorgen for barnet, og adopsjonsbevilling hvis du har mottatt dette.'
             )
         ).toBeInTheDocument();
         expect(screen.getByText('Trykk her for å laste opp dokumentasjon om adopsjon')).toBeInTheDocument();
