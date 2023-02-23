@@ -88,7 +88,7 @@ describe('<OmBarnet>', () => {
 
         expect(
             await screen.findByText(
-                'Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.'
+                'Du må legge ved bekreftelse på datoen du overtok omsorgen for barnet, og adopsjonsbevilling hvis du har mottatt dette.'
             )
         ).toBeInTheDocument();
         expect(screen.getByText('Trykk her for å laste opp dokumentasjon om adopsjon')).toBeInTheDocument();
