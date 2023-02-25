@@ -46,6 +46,18 @@ const webpackConfig = {
                 ],
             },
             {
+                test: /\.s[c|a]ss$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    {
+                        loader: 'sass-loader',
+                    },
+                ],
+            },
+            {
                 test: /\.svg$/,
                 use: [{ loader: 'svg-sprite-loader' }],
             },

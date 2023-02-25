@@ -1,7 +1,7 @@
 {
     "søknad": {
         "type": "foreldrepenger",
-        "harGodkjentVilkår": true,
+        "harGodkjentVilkår": false,
         "søkersituasjon": {
             "rolle": "",
             "situasjon": ""
@@ -23,8 +23,7 @@
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/sokersituasjon",
+    "currentRoute": "/",
     "perioderSomSkalSendesInn": [],
-    "harUttaksplanBlittSlettet": false,
-    "søknadGjelderEtNyttBarn": true
+    "harUttaksplanBlittSlettet": false
 }
