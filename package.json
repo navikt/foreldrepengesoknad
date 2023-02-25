@@ -4,6 +4,7 @@
     "scripts": {
         "dev": "turbo dev",
         "build": "turbo build",
+        "test": "turbo test",
         "fp": "pnpm --filter foreldrepengesoknad run dev",
         "storybook-common": "pnpm --filter @navikt/fp-common run storybook"
     },
