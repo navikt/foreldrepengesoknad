@@ -39,7 +39,7 @@ importers:
       '@storybook/theming': ^6.5.12
       '@testing-library/dom': ^9.0.0
       '@testing-library/jest-dom': ^5.16.5
-      '@testing-library/react': ^13.4.0
+      '@testing-library/react': ^14.0.0
       '@testing-library/user-event': ^14.4.3
       '@types/amplitude-js': ^8.16.2
       '@types/bytes': ^3.1.1
@@ -51,7 +51,7 @@ importers:
       '@types/react': ^18.0.21
       '@types/react-aria-menubutton': ^6.2.9
       '@types/react-collapse': ^5.0.1
-      '@types/react-dom': ^18.0.6
+      '@types/react-dom': ^18.0.11
       '@types/react-modal': ^3.13.1
       '@types/react-scroll': ^1.8.4
       '@types/react-transition-group': ^4.4.5
@@ -270,7 +270,7 @@ importers:
       '@storybook/theming': 6.5.16_biqbaboplfbrettd7655fr4n2y
       '@testing-library/dom': 9.0.0
       '@testing-library/jest-dom': 5.16.5
-      '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
+      '@testing-library/react': 14.0.0_biqbaboplfbrettd7655fr4n2y
       '@testing-library/user-event': 14.4.3_@testing-library+dom@9.0.0
       '@types/amplitude-js': 8.16.2
       '@types/bytes': 3.1.1
@@ -6567,15 +6567,15 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react/13.4.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-sXOGON+WNTh3MLE9rve97ftaZukN3oNf2KjDy7YTx6hcTO2uuLHuCGynMDhFwGw/jYf4OJ2Qk0i4i79qMNNkyw==}
-    engines: {node: '>=12'}
+  /@testing-library/react/14.0.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-S04gSNJbYE30TlIMLTzv6QCTzt9AqIF5y6s6SzVFILNcNvbV/jU96GeiTPillGQo+Ny64M/5PV7klNYYgv5Dfg==}
+    engines: {node: '>=14'}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
       '@babel/runtime': 7.21.0
-      '@testing-library/dom': 8.20.0
+      '@testing-library/dom': 9.0.0
       '@types/react-dom': 18.0.11
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
