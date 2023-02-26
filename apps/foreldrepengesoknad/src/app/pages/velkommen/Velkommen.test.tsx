@@ -45,6 +45,7 @@ describe('<Velkommen>', () => {
         expect(screen.queryByText('Foreldrepenger')).not.toBeInTheDocument();
     });
     it('skal vise velkommen-side med sak på fødsel som kan endres', async () => {
+        const user = userEvent.setup();
         render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(
@@ -57,36 +58,39 @@ describe('<Velkommen>', () => {
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
         expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
         expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
-        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+        await user.click(screen.getByText('Evig Lykkelig Vår'));
         expect(await screen.findByText(ENDRE_SØKNAD)).toBeInTheDocument();
         expect(await screen.findByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+        await user.click(screen.getByText('Evig Lykkelig Vår'));
     });
 
     it('skal måtte bekrefte at de har lest og forstått', async () => {
+        const user = userEvent.setup();
         render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har lest og forstått dine plikter.')).not.toBeInTheDocument();
-        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
-        await userEvent.click(screen.getByText(ENDRE_SØKNAD));
+        await user.click(screen.getByText('Evig Lykkelig Vår'));
+        await user.click(screen.getByText(ENDRE_SØKNAD));
         expect(await screen.findByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
     });
     it('skal måtte velge et barn for å fortsette', async () => {
+        const user = userEvent.setup();
         render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
         expect(
             screen.queryByText('For å komme videre, må du velge et av alternativene ovenfor.')
         ).not.toBeInTheDocument();
-        await userEvent.click(screen.getByText(BEGYNN_MED_SØKNAD));
+        await user.click(screen.getByText(BEGYNN_MED_SØKNAD));
         expect(
             await screen.findByText('For å komme videre, må du velge et av alternativene ovenfor.')
         ).toBeInTheDocument();
     });
 
     it('skal kunne søke på nytt barn', async () => {
+        const user = userEvent.setup();
         render(<HarOpprettetFPSakFødsel />, { wrapper: MemoryRouter });
         expect(await screen.findByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
-        await userEvent.click(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN));
+        await user.click(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN));
         expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
         expect(await screen.findByText(BEGYNN_MED_SØKNAD)).toBeInTheDocument();
     });
@@ -103,6 +107,7 @@ describe('<Velkommen>', () => {
         expect(await screen.findByText(BEGYNN_MED_SØKNAD)).toBeInTheDocument();
     });
     it('skal vise velkommen-side med løpende behandling sak status og mulighet for endring', async () => {
+        const user = userEvent.setup();
         render(<HarEndringssøknadUnderBehandlingAdopsjon />, { wrapper: MemoryRouter });
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
@@ -111,7 +116,7 @@ describe('<Velkommen>', () => {
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
         expect(await screen.findByText('Under behandling')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Evig Lykkelig Vår'));
+        await user.click(screen.getByText('Evig Lykkelig Vår'));
         expect(await screen.findByText(ENDRE_SØKNAD)).toBeInTheDocument();
     });
     it('skal ikke vise avsluttet sak', async () => {
