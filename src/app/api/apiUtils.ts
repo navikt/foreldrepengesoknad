@@ -39,9 +39,14 @@ import { getTermindato } from 'app/utils/barnUtils';
 import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/browser';
 export interface AnnenForelderOppgittForInnsending
-    extends Omit<AnnenForelder, 'erUfør' | 'harRettPåForeldrepengerINorge'> {
+    extends Omit<
+        AnnenForelder,
+        'erUfør' | 'harRettPåForeldrepengerINorge' | 'harOppholdtSegIEØS' | 'harRettPåForeldrepengerIEØS'
+    > {
     harMorUføretrygd?: boolean;
     harRettPåForeldrepenger?: boolean;
+    harAnnenForelderOppholdtSegIEØS?: boolean;
+    harAnnenForelderTilsvarendeRettEØS?: boolean;
 }
 
 export type AnnenForelderForInnsending = AnnenForelderIkkeOppgitt | AnnenForelderOppgittForInnsending;
@@ -150,25 +155,34 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
-        const { erUfør, erForSyk, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, ...annenForelderRest } =
-            annenForelder;
-        const cleanedAnnenForelder =
-            erEndringssøknad && annenForelder.harRettPåForeldrepengerINorge
-                ? {
-                      harMorUføretrygd: erUfør,
-                      harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
-                      harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
-                      erInformertOmSøknaden: true,
-                      ...annenForelderRest,
-                  }
-                : {
-                      harMorUføretrygd: erUfør,
-                      harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
-                      harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
-                      ...annenForelderRest,
-                  };
-
-        return cleanedAnnenForelder;
+        const {
+            erUfør,
+            erForSyk,
+            harRettPåForeldrepengerINorge,
+            harRettPåForeldrepengerIEØS,
+            harOppholdtSegIEØS,
+            ...annenForelderRest
+        } = annenForelder;
+        const cleanedAnnenForelder = {
+            harMorUføretrygd: erUfør,
+            harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
+            erInformertOmSøknaden: true,
+            ...annenForelderRest,
+        };
+        if (harRettPåForeldrepengerINorge) {
+            return cleanedAnnenForelder;
+        }
+        if (harOppholdtSegIEØS) {
+            return {
+                ...cleanedAnnenForelder,
+                harAnnenForelderOppholdtSegIEØS: harOppholdtSegIEØS,
+                harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS,
+            };
+        } else if (erEndringssøknad) {
+            return { ...cleanedAnnenForelder, harAnnenForelderTilsvarendeRettEØS: harRettPåForeldrepengerIEØS };
+        } else {
+            return { ...cleanedAnnenForelder, harAnnenForelderOppholdtSegIEØS: harOppholdtSegIEØS };
+        }
     }
     return annenForelder;
 };

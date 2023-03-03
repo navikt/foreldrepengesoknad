@@ -232,6 +232,30 @@ const AnnenForelder = () => {
                             </Block>
                             <Block
                                 padBottom="l"
+                                visible={visibility.isVisible(AnnenForelderFormField.harOppholdtSegIEØS)}
+                            >
+                                <AnnenForelderFormComponents.YesOrNoQuestion
+                                    name={AnnenForelderFormField.harOppholdtSegIEØS}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(
+                                                intl,
+                                                'annenForelder.harOppholdtSegIEØS.veileder.apneLabel'
+                                            )}
+                                        >
+                                            <FormattedMessage
+                                                id="annenForelder.harOppholdtSegIEØS.veileder"
+                                                values={{ navn: formValues.fornavn }}
+                                            ></FormattedMessage>
+                                        </UtvidetInformasjon>
+                                    }
+                                    legend={intlUtils(intl, 'annenForelder.harOppholdtSegIEØS', {
+                                        navn: formValues.fornavn,
+                                    })}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="l"
                                 visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
@@ -244,7 +268,7 @@ const AnnenForelder = () => {
                                             )}
                                         >
                                             <FormattedMessage
-                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
+                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder"
                                                 values={{ navn: formValues.fornavn }}
                                             ></FormattedMessage>
                                         </UtvidetInformasjon>
@@ -273,6 +297,15 @@ const AnnenForelder = () => {
                             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.erMorUfør}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}
+                                        >
+                                            {intlUtils(intl, 'annenForelder.erMorUfør.veileder', {
+                                                navn: formValues.fornavn,
+                                            })}
+                                        </UtvidetInformasjon>
+                                    }
                                     legend={intlUtils(intl, 'annenForelder.erMorUfør', {
                                         navn: formValues.fornavn,
                                     })}
