@@ -166,11 +166,10 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
         const cleanedAnnenForelder = {
             harMorUføretrygd: erUfør,
             harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
-            erInformertOmSøknaden: true,
             ...annenForelderRest,
         };
         if (harRettPåForeldrepengerINorge) {
-            return cleanedAnnenForelder;
+            return { ...cleanedAnnenForelder, erInformertOmSøknaden: true } as AnnenForelderOppgittForInnsending;
         }
         if (harOppholdtSegIEØS) {
             return {
