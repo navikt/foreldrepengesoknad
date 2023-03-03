@@ -209,6 +209,8 @@
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan": "Hvis dere startet foreldrepengeperioden 1. januar 2019 eller senere, vil {navn} se i søknaden sin når du skal ha foreldrepenger og eventuelle utsettelser.",
     "annenForelder.spørsmål.erAnnenForelderInformert": "Har du orientert {navn} om søknaden din?",
     "annenForelder.erMorUfør": "Har {navn} uføretrygd?",
+    "annenForelder.erMorUfør.veileder.apneLabel": "Les mer om uføretrygd",
+    "annenForelder.erMorUfør.veileder": "Du krysser ja hvis {navn} har uføretrygd fra folketrygden. Du krysser også ja hvis mor mottar uføretrygd fra et annet EØS-land.",
     "annenForelder.datoForAleneomsorg": "Dato du ble alene om omsorgen",
     "annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp": "Trykk her for å laste opp dokumentasjon om aleneomsorg",

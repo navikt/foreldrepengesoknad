@@ -297,6 +297,15 @@ const AnnenForelder = () => {
                             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.erMorUfør}
+                                    description={
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}
+                                        >
+                                            {intlUtils(intl, 'annenForelder.erMorUfør.veileder', {
+                                                navn: formValues.fornavn,
+                                            })}
+                                        </UtvidetInformasjon>
+                                    }
                                     legend={intlUtils(intl, 'annenForelder.erMorUfør', {
                                         navn: formValues.fornavn,
                                     })}
