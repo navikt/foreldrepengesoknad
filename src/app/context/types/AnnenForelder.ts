@@ -9,6 +9,7 @@ export interface AnnenForelderOppgitt extends Common {
     utenlandskFnr?: boolean;
     bostedsland?: string;
     harRettPåForeldrepengerINorge?: boolean;
+    harOppholdtSegIEØS?: boolean;
     harRettPåForeldrepengerIEØS?: boolean;
     erInformertOmSøknaden?: boolean;
     erForSyk?: boolean;

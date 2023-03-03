@@ -12,7 +12,11 @@ const JA = 'Ja';
 const NEI = 'Nei';
 const INFO_TEKST = 'Dere kan avtale at LEALAUS tar ut foreldrepenger.';
 const HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL = 'Har LEALAUS rett til foreldrepenger i Norge?';
+const HAR_FAR_HATT_OPPHOLD_I_EØS_LAND =
+    'Har LEALAUS oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?';
 const HAR_FAR_RETT_TIL_FP_I_EØS_LABEL = 'Har LEALAUS arbeidet eller mottatt pengestøtte i et EØS-land';
+const HAR_MOR_HATT_OPPHOLD_I_EØS_LAND =
+    'Har TALENTFULL oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?';
 const HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL = 'Har TALENTFULL rett til foreldrepenger i Norge?';
 const HAR_MOR_RETT_TIL_FP_I_EØS_LABEL = 'Har TALENTFULL arbeidet eller mottatt pengestøtte i et EØS-land';
 const ER_ANNEN_FORELDER_UFØR = 'Har TALENTFULL uføretrygd?';
@@ -37,7 +41,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
-    it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger', async () => {
+    it('skal fylle ut at en ikke har aleneomsorg for barnet, ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -50,9 +54,29 @@ describe('<AnnenForelder>', () => {
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(NEI)[1]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
-
+        expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(NEI)[2]);
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
+    });
+
+    it('skal fylle ut at en ikke har aleneomsorg for barnet, ikke rett til foreldrepenger i Norge, opphold men ikke optjening i EØS', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText(NEI));
+
+        expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(NEI)[1]);
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[2]);
+        expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(NEI)[3]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
@@ -199,26 +223,23 @@ describe('<AnnenForelder>', () => {
 
     it('Skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
         render(<ForFar />);
-
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
-
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-
         await userEvent.click(screen.getByText(NEI));
-
         expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-
         await userEvent.click(screen.getAllByText(NEI)[1]);
+        expect(await screen.findByText(HAR_MOR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[2]);
         expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText(JA)[2]);
+        await userEvent.click(screen.getAllByText(JA)[3]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[2]);
+        await userEvent.click(screen.getAllByText(NEI)[3]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(ER_ANNEN_FORELDER_UFØR)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[3]);
+        await userEvent.click(screen.getAllByText(NEI)[4]);
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });
