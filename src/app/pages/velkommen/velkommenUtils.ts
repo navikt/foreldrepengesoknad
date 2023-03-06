@@ -41,16 +41,6 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return SelectableBarnType.UFØDT;
 };
 
-// const getAnnenForelderFraSak = (sak: SakDTO): RegistrertAnnenForelder | undefined => {
-//     return sak.annenPart !== undefined
-//         ? {
-//               fnr: sak.annenPart.fnr,
-//               fornavn: sak.annenPart.fornavn,
-//               etternavn: sak.annenPart.etternavn,
-//           }
-//         : undefined;
-// };
-
 const getSelectableBarnFraSak = (sak: SakDTO, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
     const pdlBarnMedSammeFødselsdato =

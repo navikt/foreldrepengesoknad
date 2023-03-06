@@ -93,32 +93,35 @@ const getSak = (sakinfo: SakInfo): SakDTO => {
 const getSøkerinfoMedBarn = (barna: SøkerinfoDTOBarn[]): SøkerinfoDTO => {
     return { ...søkerInfo, søker: { ...søkerInfo.søker, barn: barna } };
 };
+
+const dato = '2022-12-06';
+const datoAdopsjon = '2022-12-08';
+
 const levendeBarn = {
     fnr: '05502251750',
     fornavn: 'Oriental',
     etternavn: 'Bokhylle',
-    fødselsdato: '2022-10-21',
+    fødselsdato: dato,
     kjønn: 'K',
 } as SøkerinfoDTOBarn;
+
 const dødtBarn = {
     ...levendeBarn,
-    dødsdato: '2022-10-22',
+    dødsdato: '2022-12-07',
 } as SøkerinfoDTOBarn;
+
 const levendeTvilling = {
     fnr: '05502251751',
     fornavn: 'Vakker',
     etternavn: 'Bokhylle',
-    fødselsdato: '2022-10-21',
+    fødselsdato: dato,
 } as SøkerinfoDTOBarn;
 
-const dødTvilling = { ...levendeTvilling, dødsdato: '2022-10-22' };
+const dødTvilling = { ...levendeTvilling, dødsdato: '2022-12-07' };
 
-const dødfødtBarn = { fødselsdato: '2022-10-21', dødsdato: '2022-10-21' } as SøkerinfoDTOBarn;
+const dødfødtBarn = { fødselsdato: dato, dødsdato: dato } as SøkerinfoDTOBarn;
 
 const sakErIkkeAvsluttet = false;
-
-const dato = '2022-12-06';
-const datoAdopsjon = '2022-12-08';
 
 const ettBarn = {
     type: 'person',
@@ -167,7 +170,7 @@ const sakAvsluttet = getSak({
 });
 
 const sakUtenBarnFødsel = getSak({
-    kanSøkeOmEndring: false,
+    kanSøkeOmEndring: true,
     gjelderAdopsjon: false,
     antallBarn: 1,
     sakErAvsluttet: false,
@@ -175,27 +178,11 @@ const sakUtenBarnFødsel = getSak({
 });
 
 const sakUtenBarnAdopsjon = getSak({
-    kanSøkeOmEndring: false,
+    kanSøkeOmEndring: true,
     gjelderAdopsjon: true,
     antallBarn: 1,
     sakErAvsluttet: false,
     omsorgsovertakelse: dato,
-});
-
-const sakUtenBarnTvillinger = getSak({
-    kanSøkeOmEndring: false,
-    gjelderAdopsjon: false,
-    antallBarn: 2,
-    sakErAvsluttet: false,
-    fødselsdato: dato,
-});
-
-const sakUtenBarnTrillingerTermin = getSak({
-    kanSøkeOmEndring: false,
-    gjelderAdopsjon: false,
-    antallBarn: 3,
-    sakErAvsluttet: false,
-    termindato: dato,
 });
 
 const sakMedTvillinger = getSak({
@@ -204,10 +191,11 @@ const sakMedTvillinger = getSak({
     antallBarn: 2,
     sakErAvsluttet: false,
     fødselsdato: dato,
+    åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
 });
 
 const sakMedTrillinger = getSak({
-    kanSøkeOmEndring: false,
+    kanSøkeOmEndring: true,
     gjelderAdopsjon: false,
     antallBarn: 3,
     sakErAvsluttet: false,
@@ -284,17 +272,6 @@ HarSakFødselTrillinger.args = {
     saker: [sakMedTrillinger],
     søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
 };
-export const HarSakFødselTvillingerUtenBarnSendtFraSak = Template.bind({});
-HarSakFødselTvillingerUtenBarnSendtFraSak.args = {
-    saker: [sakUtenBarnTvillinger],
-    søkerinfo: søkerInfo,
-};
-
-export const HarSakTerminTrillingerUtenBarnSendtFraSak = Template.bind({});
-HarSakTerminTrillingerUtenBarnSendtFraSak.args = {
-    saker: [sakUtenBarnTrillingerTermin],
-    søkerinfo: søkerInfo,
-};
 
 const søkerinfoMedEtLevendeBarn = getSøkerinfoMedBarn([levendeBarn]);
 const søkerinfoMedLevendeTvillinger = getSøkerinfoMedBarn([levendeBarn, levendeTvilling]);
@@ -350,4 +327,10 @@ export const HarIngenSakerMedEnLevendeOgEnDødTvilling = Template.bind({});
 HarIngenSakerMedEnLevendeOgEnDødTvilling.args = {
     saker: [],
     søkerinfo: søkerinfoMedEnLevendeOgEnDødTvilling,
+};
+
+export const HarSakerMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
+HarSakerMedEnLevendeOgEnDødfødtTvilling.args = {
+    saker: [sakMedTvillinger],
+    søkerinfo: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
 };
