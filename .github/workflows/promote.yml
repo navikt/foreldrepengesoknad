@@ -4,10 +4,26 @@ on:
     types: [promote-command]
 
 jobs:
-  promote:
-    name: Deploy
-    uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
+  promote-dev:
+    name: Deploy dev
+    if: contains(github.event.client_payload.slash_command.args.unnamed.all, 'dev')
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy-app.yml@main
     with:
       issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-      cluster: ${{ github.event.client_payload.slash_command.args.unnamed.arg1 }}
+      environment: dev
+      platform: gcp
+    secrets: inherit
+
+  promote-prod:
+    name: Deploy prod
+    needs: promote-dev
+    if: |
+      always() &&
+      contains(github.event.client_payload.slash_command.args.unnamed.all, 'prod') &&
+      !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy-app.yml@main
+    with:
+      issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+      environment: prod
+      platform: gcp
     secrets: inherit
