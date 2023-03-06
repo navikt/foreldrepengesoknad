@@ -14,6 +14,7 @@ const {
     HarFlereSaker,
     HarSakFødselUtenBarnIPDL,
     HarSakAdopsjonUtenBarnIPDL,
+    HarSakAdopsjonMedBarnIPDL,
     HarSakFødselTvillinger,
     HarSakFødselTrillinger,
     HarIngenSakerOgEttBarn,
@@ -23,8 +24,8 @@ const {
     HarIngenSakerOgToDødeTvillinger,
     HarIngenSakerMedEnLevendeOgEnDødfødtTvilling,
     HarIngenSakerMedEnLevendeOgEnDødTvilling,
-    HarSakerMedEnLevendeOgEnDødfødtTvilling,
-    // HarSakMedEttDødtfødtBarn,
+    HarSakMedEnLevendeOgEnDødfødtTvilling,
+    HarSakMedEtDødtBarn,
     // HarSakMedDødeTvillinger,
     // HarSakMedEtDødfødtBarn,
     // HarSakMedEnLevendeOgEnDødfødtTvilling,
@@ -153,11 +154,21 @@ describe('<Velkommen>', () => {
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
     });
-    it('skal greie å vise sak på adopsjon uten å ha mottat barn fra pdl"', async () => {
+    it('skal greie å vise sak på adopsjon uten å ha mottat barn fra pdl', async () => {
         render(<HarSakAdopsjonUtenBarnIPDL />);
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
         expect(await screen.findByText('Barn adoptert', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+    });
+    it('skal greie å vise sak på adopsjon med navn på barna hentet fra PDL', async () => {
+        render(<HarSakAdopsjonMedBarnIPDL />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();
+        expect(await screen.findByText('Evig Lykkelig Vår')).toBeInTheDocument();
+        expect(await screen.findByText('Omsorgsovertagelse:', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
         expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
@@ -280,8 +291,8 @@ describe('<Velkommen>', () => {
     });
 
     //Har saker der noen av barna er døde.
-    it('skal vise velkommen-side med sak på fødsel tvilinger der den ene er død. Navn skal ikke vises', async () => {
-        render(<HarSakerMedEnLevendeOgEnDødfødtTvilling />);
+    it('skal vise velkommen-side med sak på fødsel tvillinger der den ene er død. Navn skal ikke vises', async () => {
+        render(<HarSakMedEnLevendeOgEnDødfødtTvilling />);
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(
             await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
@@ -292,9 +303,37 @@ describe('<Velkommen>', () => {
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
         expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
     });
+    it('skal vise velkommen-side med sak på fødsel der barnet døde for mer enn 3 mnd siden. Navn skal ikke vises', async () => {
+        MockDate.set(new Date('2023-04-01'));
+        render(<HarSakMedEtDødtBarn />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal vise velkommen-side med sak på fødsel der barnet døde for mindre enn 3 mnd siden. Navn skal ikke vises', async () => {
+        MockDate.set(new Date('2022-12-10'));
+        render(<HarSakMedEtDødtBarn />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Barn med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.queryByText('Evig Lykkelig Vår')).not.toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+        MockDate.reset();
+    });
 });
 
 //TODO: Hvis leser inn sak og finner to like barn fra PDL (samme fnr), vis kun et barn.
-//TODO: Saker med døde og dødfødte barn, ett, to , tre, mindre enn 3 mnd, mer enn 3 mnd med sak.
 //TODO: Sak med barn på termin
 //TODO: Sak med barn adopsjon fra PDL.
