@@ -130,7 +130,7 @@ const UttaksplanStep = () => {
         annenForelder
     );
 
-    const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
+    const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
         annenForelderFnr !== undefined &&
         annenForelderFnr !== '' &&

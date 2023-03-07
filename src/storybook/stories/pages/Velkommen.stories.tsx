@@ -347,3 +347,9 @@ HarSakMedEtDødtBarn.args = {
     saker: [sakOpprettetFødsel],
     søkerinfo: søkerinfoMedEtDødtBarn,
 };
+
+export const HarSakAdopsjonMedEtDødtBarn = Template.bind({});
+HarSakAdopsjonMedEtDødtBarn.args = {
+    saker: [sakEttBarnAdopsjon],
+    søkerinfo: søkerinfoMedEtDødtBarn,
+};

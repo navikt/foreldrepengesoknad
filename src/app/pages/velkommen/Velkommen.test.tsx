@@ -26,10 +26,7 @@ const {
     HarIngenSakerMedEnLevendeOgEnDødTvilling,
     HarSakMedEnLevendeOgEnDødfødtTvilling,
     HarSakMedEtDødtBarn,
-    // HarSakMedDødeTvillinger,
-    // HarSakMedEtDødfødtBarn,
-    // HarSakMedEnLevendeOgEnDødfødtTvilling,
-    // HarSakMedEnLevendeOgEnDødTvilling,
+    HarSakAdopsjonMedEtDødtBarn,
 } = composeStories(stories);
 
 const BEGYNN_MED_SØKNAD = 'Begynn med søknad';
@@ -332,8 +329,17 @@ describe('<Velkommen>', () => {
         expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
         MockDate.reset();
     });
+    it('skal vise velkommen-side med sak på adopsjon der barnet døde. Navn skal ikke vises', async () => {
+        render(<HarSakAdopsjonMedEtDødtBarn />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Barn adoptert', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
+        expect(await screen.findByText('Ferdig behandlet')).toBeInTheDocument();
+        expect(screen.queryByText('Oriental Bokhylle')).not.toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+    });
 });
-
-//TODO: Hvis leser inn sak og finner to like barn fra PDL (samme fnr), vis kun et barn.
-//TODO: Sak med barn på termin
-//TODO: Sak med barn adopsjon fra PDL.

@@ -62,11 +62,11 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
         expect(result[0].fornavn).toEqual(['Grønn ']);
         expect(result[0].fnr).toEqual(['123456789']);
     });
-    it('skal kun returnere to barn hvis barn fra PDL og barn fra sak ikke har samme fødselsdato', async () => {
+    it('skal returnere to barn hvis barn fra PDL og barn ikke har samme fødselsdato som saken ', async () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL2] as RegistrertBarn[]);
         expect(result.length).toBe(2);
-        expect(result[0].fornavn).toEqual(['Grønn ']);
-        expect(result[0].fnr).toEqual(['123456789']);
+        expect(result[0].fornavn).toEqual(undefined);
+        expect(result[0].fnr).toEqual(undefined);
         expect(result[1].fornavn).toEqual(['Svart']);
         expect(result[1].fnr).toEqual(['123456780']);
     });
