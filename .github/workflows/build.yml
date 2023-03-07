@@ -32,7 +32,7 @@ jobs:
 
     promote:
         name: Deploy til dev
-        if: github.ref_name == 'master'
+        if: github.ref_name == 'master' || github.ref_name == 'turborepo-test'
         needs: [build-app, create-issue]
         uses: navikt/fp-gha-workflows/.github/workflows/promote.yml@main
         with:
