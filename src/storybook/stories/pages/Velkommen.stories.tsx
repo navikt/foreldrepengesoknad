@@ -87,6 +87,14 @@ const getSak = (sakinfo: SakInfo): SakDTO => {
                       søknadsperioder: [] as SaksperiodeDTO[],
                   }
                 : undefined,
+        annenPart: {
+            fnr: '123456789',
+        },
+        barn: [
+            {
+                fnr: '111',
+            },
+        ],
     };
 };
 
