@@ -9,8 +9,17 @@
         "bankkonto": { "kontonummer": "", "banknavn": "" },
         "barn": [
             {
-                "fødselsdato": "2021-10-05",
-                "dødsdato": "2021-10-05"
+                "fnr": "13062252647",
+                "fornavn": "Realistisk",
+                "etternavn": "Lefse",
+                "kjønn": "K",
+                "fødselsdato": "2022-10-05",
+                "annenForelder": {
+                    "fnr": "03088908065",
+                    "fornavn": "Populær",
+                    "etternavn": "Tørketrommel",
+                    "fødselsdato": "1989-08-03"
+                }
             }
         ]
     },

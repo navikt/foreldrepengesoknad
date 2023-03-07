@@ -6,8 +6,6 @@ import { RettighetType } from './RettighetType';
 import PersonFnrDTO from './PersonFnrDTO';
 
 export interface SakDTO {
-    annenPart: PersonFnrDTO;
-    barn: PersonFnrDTO[];
     dekningsgrad: DekningsgradDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak: GjeldendeVedtak;
@@ -22,4 +20,6 @@ export interface SakDTO {
     ønskerJustertUttakVedFødsel: boolean;
     sisteSøknadMottattDato: string;
     åpenBehandling?: ÅpenBehandling;
+    annenPart?: PersonFnrDTO;
+    barn?: PersonFnrDTO[];
 }

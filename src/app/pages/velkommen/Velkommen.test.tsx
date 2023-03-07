@@ -343,3 +343,8 @@ describe('<Velkommen>', () => {
         expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
     });
 });
+
+//Sak med barn fnr, der barnet lever
+//Sak med barn 2 fnr, der begge barna lever
+//Sak med 2 barn, kun ett fnr , så den ene er død
+//Sak med trillinger der en er død - sjekk teksten

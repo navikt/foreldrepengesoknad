@@ -19,7 +19,7 @@ import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { Søknad } from 'app/context/types/Søknad';
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import AnnenForelder, { AnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Søker from 'app/context/types/Søker';
 import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { Situasjon } from 'app/types/Situasjon';
@@ -445,7 +445,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
     }
 };
 
-const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForelder | undefined => {
+const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForelderOppgitt | undefined => {
     if (valgteBarn.annenForelder !== undefined) {
         return {
             fornavn: valgteBarn.annenForelder.fornavn,

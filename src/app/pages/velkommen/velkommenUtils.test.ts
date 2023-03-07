@@ -26,6 +26,8 @@ const sak = {
     ønskerJustertUttakVedFødsel: false,
     sisteSøknadMottattDato: '2022-05-06',
     åpenBehandling: undefined,
+    annenPart: { fnr: '123456789' },
+    barn: [{ fnr: '987654321' }],
 } as SakDTO;
 
 describe('velkommenUtils - getSelectableBarnOptions', () => {
