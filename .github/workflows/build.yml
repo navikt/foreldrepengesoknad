@@ -16,14 +16,14 @@ jobs:
         name: Build
         uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@main
         with:
-            build-image: ${{ github.ref_name == 'master' }} # default: true
-            push-image: ${{ github.ref_name == 'master' }} # default: false
+            build-image: true # default: true
+            push-image: true # default: false
             legacy-peer-deps: false
         secrets: inherit
 
     create-issue:
         name: Issues
-        if: github.ref_name == 'master'
+        if: true
         needs: build-app
         uses: navikt/fp-gha-workflows/.github/workflows/issues.yml@main
         with:
@@ -32,7 +32,7 @@ jobs:
 
     promote:
         name: Deploy til dev
-        if: github.ref_name == 'master' || github.ref_name == 'turborepo-test'
+        if: true
         needs: [build-app, create-issue]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app.yml@main
         with:
