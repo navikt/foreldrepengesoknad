@@ -1,14 +1,15 @@
-FROM node:17.8.0-alpine
+FROM node:18
 LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
-COPY dist ./dist
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
 
-COPY server.js .
-COPY node_modules ./node_modules
-COPY package.json .
-COPY src/build/scripts/decorator.js ./src/build/scripts/decorator.js
-COPY src/build/scripts/envSettings.js ./src/build/scripts/envSettings.js
+RUN pnpm install
+
+COPY . .
 
 EXPOSE 8080
-CMD ["npm", "run", "start-express"]
+
+CMD ["pnpm", "run", "fp-prod"]
