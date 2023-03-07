@@ -3,8 +3,11 @@ import { Familiehendelse } from './Familiehendelse';
 import { GjeldendeVedtak } from './GjeldendeVedtak';
 import { ÅpenBehandling } from './ÅpenBehandling';
 import { RettighetType } from './RettighetType';
+import PersonFnrDTO from './PersonFnrDTO';
 
 export interface SakDTO {
+    annenPart: PersonFnrDTO;
+    barn: PersonFnrDTO[];
     dekningsgrad: DekningsgradDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak: GjeldendeVedtak;

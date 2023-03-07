@@ -21,6 +21,4 @@ export interface Saksgrunnlag {
     familiehendelseType: FamiliehendelseType;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
     ønskerJustertUttakVedFødsel: boolean | undefined;
-    // barn: BarnFraSak[];
-    // annenPart?: RegistrertAnnenForelder;
 }

@@ -236,8 +236,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         rettighetType,
         sakTilhørerMor,
         ønskerJustertUttakVedFødsel,
-        // annenPart,
-        // barn,
     } = eksisterendeSak;
 
     const erFarEllerMedmor = !sakTilhørerMor;
@@ -260,8 +258,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, omsorgsovertakelse),
         ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
         harAnnenForelderTilsvarendeRettEØS,
-        // annenPart,
-        // barn,
     };
 
     const saksperioder = perioder
