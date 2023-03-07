@@ -76,7 +76,7 @@ const OmBarnet: React.FunctionComponent = () => {
         : undefined;
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(barn, registrerteBarn, arbeidsforhold)}
+            initialValues={getOmBarnetInitialValues(barn, arbeidsforhold)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({

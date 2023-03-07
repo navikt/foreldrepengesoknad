@@ -52,7 +52,8 @@ const getSelectableBarnFraSak = (sak: SakDTO, registrerteBarn: RegistrertBarn[])
               )
             : undefined;
 
-    const annenForelderFraBarn = getAnnenForelderFraPDL(registrerteBarn[0]); // TODO || getMockAnnenForelder();
+    const barnMedAnnenForelder = registrerteBarn.find((b) => b.annenForelder !== undefined);
+    const annenForelderFraBarn = getAnnenForelderFraPDL(barnMedAnnenForelder); // TODO || getMockAnnenForelder();
     const unikeFnr: string[] = [];
     const unikePDLBarnMedSammeFødselsdato =
         pdlBarnMedSammeFødselsdato !== undefined
@@ -191,8 +192,7 @@ const getSelectableBarnOptionsFraPDL = (
     barnFraSaker: SelectableBarn[],
     avsluttedeSaker: SakDTO[]
 ): SelectableBarn[] => {
-    //Må oppdatere dødfødte barn med falsk fnr for å kunne identifisere de som allerede er blitt lagt til i visningen
-    const tempString = 'tempFnr';
+    //Vi ønsker ikke å vise barn som har avsluttet sak
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
         (regBarn) =>
             !avsluttedeSaker.find(
@@ -207,10 +207,14 @@ const getSelectableBarnOptionsFraPDL = (
                     )
             )
     );
+
+    //Må oppdatere dødfødte barn med falsk fnr for å kunne identifisere de som allerede er blitt lagt til i visningen
+    const tempString = 'tempFnr';
     const registrerteBarnMedFnr = registrerteBarnUtenAvsluttedeSaker.map((b) =>
         b.fnr === undefined ? { ...b, fnr: tempString + guid().toString() } : b
     );
 
+    //Dødfødte barn har ikke fnr og må filtreres bort senere
     const fnrPåBarnSomErLagtTil = barnFraSaker.map((b) => b.fnr).flat();
     const fødselsdatoPåBarnFraSaker = barnFraSaker
         .filter((barn) => barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0)
@@ -218,7 +222,7 @@ const getSelectableBarnOptionsFraPDL = (
         .flat();
     const selectableBarnFraPDL = [] as SelectableBarn[];
 
-    //TODO: Trenger vi dette? test med en sak med ett dødt barn, både med og uten pdl.
+    //Fjerner dødfødte barn som har en sak
     const registrerteBarnUtenDødeBarnMedSak = registrerteBarnMedFnr.filter(
         (b) =>
             !(
@@ -234,7 +238,11 @@ const getSelectableBarnOptionsFraPDL = (
                 registrerteBarnMedFnr
             );
             fnrPåBarnSomErLagtTil.push(regBarn.fnr);
-            const annenForelder = getAnnenForelderFraPDL(regBarn);
+            const barnMedAnnenForelder =
+                regBarn.annenForelder !== undefined
+                    ? regBarn
+                    : barnFødtISammePeriode.find((b) => b.annenForelder !== undefined);
+            const annenForelder = getAnnenForelderFraPDL(barnMedAnnenForelder);
             if (barnFødtISammePeriode.length === 0) {
                 if (!getDødeBarnetForMerEnn3MånederSiden(regBarn)) {
                     const selectableBarn = getSelectableBarnFraPDL(regBarn, annenForelder);

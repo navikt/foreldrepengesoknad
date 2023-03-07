@@ -25,12 +25,12 @@ const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[] | undefined, 
         : false;
 };
 
-export const getRegistrertBarnOmDetFinnes = (
+export const getRegistrerteBarnOmDeFinnes = (
     barn: Barn,
     registrerteBarn: RegistrertBarn[]
-): RegistrertBarn | undefined => {
+): RegistrertBarn[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
-        ? registrerteBarn.find(
+        ? registrerteBarn.filter(
               (regBarn) =>
                   barn.fnr?.includes(regBarn.fnr) ||
                   barnFødselsdatoLikSakFødselsdato(barn.fødselsdatoer, regBarn.fødselsdato)
@@ -54,10 +54,14 @@ export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: Registrer
 };
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn > 1) {
-        return antallBarn > 2 ? intlUtils(intl, 'flerlinger') : intlUtils(intl, 'tvillinger');
+    if (antallBarn === 1) {
+        return intlUtils(intl, 'barn');
+    } else if (antallBarn === 2) {
+        return intlUtils(intl, 'tvillinger');
+    } else if (antallBarn === 3) {
+        return intlUtils(intl, 'trillinger');
     }
-    return intlUtils(intl, 'barn');
+    return intlUtils(intl, 'flerlinger');
 };
 
 export const getLeverBarnet = (barn: RegistrertBarn) => {

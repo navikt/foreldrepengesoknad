@@ -5,7 +5,7 @@ import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } fro
 import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import { AttachmentType } from 'app/types/AttachmentType';
-import { RegistrertBarn } from 'app/types/Person';
+import { RegistrertAnnenForelder } from 'app/types/Person';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
@@ -31,7 +31,7 @@ export const initialAnnenForelderValues: AnnenForelderFormData = {
 export const cleanAnnenForelderFormData = (
     values: AnnenForelderFormData,
     visibility: QuestionVisibility<AnnenForelderFormField, undefined>,
-    registrertBarn: RegistrertBarn | undefined
+    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined
 ): AnnenForelderFormData => {
     const cleanedData: AnnenForelderFormData = {
         aleneOmOmsorg: visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg)
@@ -65,12 +65,12 @@ export const cleanAnnenForelderFormData = (
         utenlandskFnr: visibility.isVisible(AnnenForelderFormField.utenlandskFnr) ? values.utenlandskFnr : false,
     };
 
-    if (!!registrertBarn && !!registrertBarn.annenForelder) {
+    if (annenForelderFraRegistrertBarn !== undefined) {
         return {
             ...cleanedData,
-            fornavn: registrertBarn.annenForelder.fornavn,
-            etternavn: registrertBarn.annenForelder.etternavn,
-            fnr: registrertBarn.annenForelder.fnr,
+            fornavn: annenForelderFraRegistrertBarn.fornavn,
+            etternavn: annenForelderFraRegistrertBarn.etternavn,
+            fnr: annenForelderFraRegistrertBarn.fnr,
         };
     }
 
@@ -102,7 +102,7 @@ export const getAnnenForelderFormInitialValues = (
     annenForelder: AnnenForelder | undefined,
     barn: Barn,
     søker: Søker,
-    registrertBarn: RegistrertBarn | undefined
+    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined
 ): AnnenForelderFormData => {
     if (annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
@@ -125,12 +125,12 @@ export const getAnnenForelderFormInitialValues = (
         };
     }
 
-    if (!!registrertBarn && !!registrertBarn.annenForelder) {
+    if (annenForelderFraRegistrertBarn !== undefined) {
         return {
             ...initialAnnenForelderValues,
-            fornavn: registrertBarn.annenForelder.fornavn,
-            etternavn: registrertBarn.annenForelder.etternavn,
-            fnr: registrertBarn.annenForelder.fnr,
+            fornavn: annenForelderFraRegistrertBarn.fornavn,
+            etternavn: annenForelderFraRegistrertBarn.etternavn,
+            fnr: annenForelderFraRegistrertBarn.fnr,
         };
     }
 

@@ -80,6 +80,10 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
             termin: formatDate(barn.termindato!),
         });
+    } else if (barn.antallBarn === 3) {
+        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.trillinger', {
+            termin: formatDate(barn.termindato!),
+        });
     } else {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
             termin: formatDate(barn.termindato!),

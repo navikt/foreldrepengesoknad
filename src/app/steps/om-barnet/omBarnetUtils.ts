@@ -13,10 +13,8 @@ import Barn, {
 } from 'app/context/types/Barn';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { AttachmentType } from 'app/types/AttachmentType';
-import { RegistrertBarn } from 'app/types/Person';
 import { Situasjon } from 'app/types/Situasjon';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import { getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
@@ -182,11 +180,7 @@ export const mapOmBarnetFormDataToState = (
     };
 };
 
-export const getOmBarnetInitialValues = (
-    barn: Barn,
-    registrerteBarn: RegistrertBarn[],
-    arbeidsforhold: Arbeidsforhold[]
-): OmBarnetFormData => {
+export const getOmBarnetInitialValues = (barn: Barn, arbeidsforhold: Arbeidsforhold[]): OmBarnetFormData => {
     const initialOmBarnetValues = getInitValues();
 
     if (!barn) {
@@ -194,21 +188,6 @@ export const getOmBarnetInitialValues = (
     }
 
     const erFlereEnnToBarn = barn.antallBarn > 2;
-
-    if (isFødtBarn(barn)) {
-        const registrertBarn = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
-
-        if (registrertBarn) {
-            return {
-                ...initialOmBarnetValues,
-                fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
-                termindato: dateToISOString(barn.termindato),
-                antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
-                antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-                erBarnetFødt: YesOrNo.YES,
-            };
-        }
-    }
 
     if (isFødtBarn(barn)) {
         return {
