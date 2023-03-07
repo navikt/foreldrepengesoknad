@@ -15,4 +15,4 @@ RUN pnpm run build
 
 EXPOSE 8080
 
-CMD ["pnpm", "run", "fp-vtp"]
+CMD ["pnpm", "run", "fp-prod"]
