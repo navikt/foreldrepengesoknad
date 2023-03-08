@@ -28,7 +28,7 @@ RUN pnpm fetch
 COPY . .
 
 RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    pnpm install --frozen-lockfile --offline \
+    pnpm install --frozen-lockfile --prefer-offline \
     && turbo test \
     && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
