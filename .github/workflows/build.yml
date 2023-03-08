@@ -24,7 +24,7 @@ jobs:
     promote-foreldrepengesoknad:
         name: Deploy til dev
         needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:latest
             environment: dev
