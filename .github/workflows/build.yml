@@ -21,29 +21,12 @@ jobs:
             legacy-peer-deps: false
         secrets: inherit
 
-    create-issue:
-        name: Issues
-        if: true
-        needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/issues.yml@main
-        with:
-            build-version: ${{ needs.build-app.outputs.build-version }}
-        secrets: inherit
-
-    promote:
+    promote-foreldrepengesoknad:
         name: Deploy til dev
-        if: true
-        needs: [build-app, create-issue]
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app.yml@main
+        needs: build-app
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            issue-number: ${{ needs.create-issue.outputs.issue-number }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:latest
             environment: dev
             platform: gcp
         secrets: inherit
-#   snyk:
-#      name: Snyk
-#      needs: build-app
-#      uses: navikt/fp-gha-workflows/.github/workflows/snyk-frontend.yml@main
-#      with:
-#        upload-sarif: ${{ github.ref_name == 'master' }}
-#      secrets: inherit
