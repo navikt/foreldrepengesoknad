@@ -27,11 +27,10 @@ RUN pnpm fetch
 
 COPY . .
 
-RUN --mount=type=cache,target=node_modules/  \
-    --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
+RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
     pnpm install --frozen-lockfile --offline \
     && turbo test \
-    && rm -rf apps/*/node_modules packages/*/node_modules
+    && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
 #########################################
 # FORELDREPENGESOKNAD
