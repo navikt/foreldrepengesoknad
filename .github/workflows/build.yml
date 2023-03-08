@@ -14,7 +14,7 @@ on:
 jobs:
     build-app:
         name: Build
-        uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@main
+        uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@turborepo
         with:
             build-image: true # default: true
             push-image: true # default: false
