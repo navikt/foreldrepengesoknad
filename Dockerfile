@@ -1,11 +1,12 @@
 FROM node:18.14.2
 LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
+ARG APP
 WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY pnpm-workspace.yaml ./
-COPY apps/foreldrepengesoknad/package.json ./apps/foreldrepengesoknad/package.json
+COPY apps/$APP/package.json ./apps/$APP/package.json
 COPY packages/fp-common/package.json ./packages/fp-common/package.json
 
 COPY . .
