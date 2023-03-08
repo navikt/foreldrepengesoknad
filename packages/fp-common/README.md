@@ -1,2 +1,3 @@
 # fp-common
-Felleskomponenter for foreldrepenger selvbetjening
+
+Felleskomponenter for foreldrepenger selvbetjening.
