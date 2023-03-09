@@ -6,6 +6,8 @@ RUN apk fix \
     && apk add --no-cache --update libc6-compat \
     && rm -rf /var/cache/apk/*
 
+ENV CACHE_BUSTER="whatever"
+
 #########################################
 # PNPM
 ######################################### 
