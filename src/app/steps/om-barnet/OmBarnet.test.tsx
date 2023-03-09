@@ -6,8 +6,15 @@ import * as stories from 'stories/steps/om-barnet/OmBarnet.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
-const { Default, ForAdopsjon, FarFødsel, MedmorFødsel, RegistrertBarnFødselFar, RegistrertBarnFødselMor } =
-    composeStories(stories);
+const {
+    Default,
+    ForAdopsjon,
+    FarFødsel,
+    MedmorFødsel,
+    RegistrertBarnFødselFar,
+    RegistrertBarnFødselMor,
+    RegistrertBarnTrillingerDerEnErDød,
+} = composeStories(stories);
 const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
 
 const GÅ_VIDERE_KNAPP = 'Gå videre';
@@ -287,6 +294,14 @@ describe('<OmBarnet>', () => {
         await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('Trillinger der en er død skal vises uten navn', async () => {
+        MockDate.set(new Date('2023-03-10'));
+        render(<RegistrertBarnTrillingerDerEnErDød />);
+        expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
+        expect(await screen.findByText('Trillinger', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Født', { exact: false })).toBeInTheDocument();
         MockDate.reset();
     });
 });

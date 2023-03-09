@@ -27,6 +27,9 @@ const {
     HarSakMedEnLevendeOgEnDødfødtTvilling,
     HarSakMedEtDødtBarn,
     HarSakAdopsjonMedEtDødtBarn,
+    HarSakMedOppgittBarnTvillingerAlleLever,
+    HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling,
+    HarSakMedTrillingerEnErDød,
 } = composeStories(stories);
 
 const BEGYNN_MED_SØKNAD = 'Begynn med søknad';
@@ -342,9 +345,36 @@ describe('<Velkommen>', () => {
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
         expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
     });
+    it('skal vise velkommen-side med sak på tvillinger som lever. Navn skal  vises', async () => {
+        render(<HarSakMedOppgittBarnTvillingerAlleLever />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Oriental og Vakker Bokhylle')).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+    });
+    it('skal vise velkommen-side med sak på tvillinger som der en er dødfødt. Navn skal ikkevises', async () => {
+        render(<HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Tvillinger med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+    });
+    it('skal vise velkommen-side med sak på trillinger som der en er død. Navn skal ikkevises', async () => {
+        render(<HarSakMedTrillingerEnErDød />);
+        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+        ).toBeInTheDocument();
+        expect(await screen.findByText('Trillinger med fødselsdato', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
+        expect(screen.queryByText(ENDRE_SØKNAD)).not.toBeInTheDocument();
+    });
 });
 
-//Sak med barn fnr, der barnet lever
-//Sak med barn 2 fnr, der begge barna lever
-//Sak med 2 barn, kun ett fnr , så den ene er død
-//Sak med trillinger der en er død - sjekk teksten
+//Sak med trillinger der en er død - sjekk teksten HarSakMedTrillingerEnErDød

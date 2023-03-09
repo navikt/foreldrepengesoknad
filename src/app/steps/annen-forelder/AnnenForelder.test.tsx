@@ -5,7 +5,13 @@ import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
 import dayjs from 'dayjs';
 
-const { Default, SkalOppgiPersonalia, ForFar } = composeStories(stories);
+const {
+    Default,
+    SkalOppgiPersonalia,
+    ForFar,
+    SkalOppgiPersonaliaNavnMangler,
+    SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike,
+} = composeStories(stories);
 const GÅ_VIDERE_KNAPP = 'Gå videre';
 const ALENE_OMSORG_LABEL = 'Er du alene om omsorgen av barnet?';
 const JA = 'Ja';
@@ -118,36 +124,45 @@ describe('<AnnenForelder>', () => {
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
-
-    it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
-        render(<SkalOppgiPersonalia />);
-
+    it('skal måtte oppgi navn og fornavn annen forelder', async () => {
+        render(<SkalOppgiPersonaliaNavnMangler />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
+    }),
+        it('skal måtte oppgi navn og fornavn annen forelder der fnr på annen forelder på saken og fnr annen forelder på barnet er ulike', async () => {
+            render(<SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike />);
+            expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
+            expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        }),
+        it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
+            render(<SkalOppgiPersonalia />);
 
-        const fornavnInput = screen.getByLabelText('Fornavn:');
-        await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavn:');
-        await userEvent.type(etternavnInput, 'Utvikler');
+            expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
+            expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+            expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
-        expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
+            const fornavnInput = screen.getByLabelText('Fornavn:');
+            await userEvent.type(fornavnInput, 'Espen');
+            const etternavnInput = screen.getByLabelText('Etternavn:');
+            await userEvent.type(etternavnInput, 'Utvikler');
 
-        const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
-        await userEvent.type(fødselsnrInput, '05057923424');
+            expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByRole('checkbox')[1]);
+            const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
+            await userEvent.type(fødselsnrInput, '05057923424');
 
-        expect(await screen.findByText('Hvor bor Espen?')).toBeInTheDocument();
+            await userEvent.click(screen.getAllByRole('checkbox')[1]);
 
-        const hvorBorSelect = screen.getByLabelText('Hvor bor Espen?');
-        await userEvent.selectOptions(hvorBorSelect, 'Oman');
+            expect(await screen.findByText('Hvor bor Espen?')).toBeInTheDocument();
 
-        expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await userEvent.click(screen.getByText(JA));
+            const hvorBorSelect = screen.getByLabelText('Hvor bor Espen?');
+            await userEvent.selectOptions(hvorBorSelect, 'Oman');
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-    });
+            expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
+            await userEvent.click(screen.getByText(JA));
+
+            expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        });
 
     it('skal oppgi personalia til den andre forelderen men ikke velge at han har utenlandsk fødselsnummer', async () => {
         render(<SkalOppgiPersonalia />);

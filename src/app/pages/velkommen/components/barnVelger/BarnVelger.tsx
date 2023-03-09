@@ -9,7 +9,6 @@ import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
 import { formaterFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
 import { SakDTO } from 'app/types/SakDTO';
-import { AnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -35,7 +34,6 @@ export interface SelectableBarn {
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
     sak?: SakDTO;
-    annenForelder?: AnnenForelderOppgitt;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;
     alleBarnaLever: boolean;

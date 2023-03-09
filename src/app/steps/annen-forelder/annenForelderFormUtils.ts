@@ -1,4 +1,4 @@
-import { hasValue } from '@navikt/fp-common';
+import { hasValue, intlUtils } from '@navikt/fp-common';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
@@ -10,6 +10,7 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
+import { IntlShape } from 'react-intl';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
@@ -102,7 +103,8 @@ export const getAnnenForelderFormInitialValues = (
     annenForelder: AnnenForelder | undefined,
     barn: Barn,
     søker: Søker,
-    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined
+    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
+    intl: IntlShape
 ): AnnenForelderFormData => {
     if (annenForelder !== undefined && isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
@@ -116,7 +118,7 @@ export const getAnnenForelderFormInitialValues = (
             erMorUfør: convertBooleanOrUndefinedToYesOrNo(annenForelder.erUfør),
             dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
             etternavn: annenForelder.etternavn,
-            fornavn: annenForelder.fornavn,
+            fornavn: annenForelder.fornavn === intlUtils(intl, 'annen.forelder') ? '' : annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,
             fnr: annenForelder.fnr,
             aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker.erAleneOmOmsorg),
