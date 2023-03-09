@@ -209,27 +209,51 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 annenForelderHarRettIEØS
             )}
             enableReinitialize={false}
-            onSubmit={(values: Partial<PeriodeUttakFormData>) =>
-                handleUpdatePeriode(
-                    mapPeriodeUttakFormToPeriode(
-                        values,
-                        periode.id,
-                        getPeriodeType(
-                            values.hvemSkalTaUttak!,
-                            erFarEllerMedmor,
-                            values.konto!,
-                            familiehendelsesdato,
-                            termindato,
-                            { fom: values.fom, tom: values.tom } as TidsperiodeDate
-                        ),
-                        familiehendelsesdato,
+            onSubmit={(values: Partial<PeriodeUttakFormData>) => {
+                if (isNyPeriode) {
+                    const periodetype = getPeriodeType(
+                        values.hvemSkalTaUttak!,
                         erFarEllerMedmor,
-                        erDeltUttak,
-                        situasjon
-                    ),
-                    familiehendelsesdato
-                )
-            }
+                        values.konto!,
+                        familiehendelsesdato,
+                        termindato,
+                        { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                    );
+                    setNyPeriodeFormIsVisible!(false);
+                    handleAddPeriode!(
+                        mapPeriodeUttakFormToPeriode(
+                            values,
+                            guid(),
+                            periodetype,
+                            familiehendelsesdato,
+                            erFarEllerMedmor,
+                            erDeltUttak,
+                            situasjon
+                        ),
+                        familiehendelsesdato
+                    );
+                } else {
+                    return handleUpdatePeriode(
+                        mapPeriodeUttakFormToPeriode(
+                            values,
+                            periode.id,
+                            getPeriodeType(
+                                values.hvemSkalTaUttak!,
+                                erFarEllerMedmor,
+                                values.konto!,
+                                familiehendelsesdato,
+                                termindato,
+                                { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                            ),
+                            familiehendelsesdato,
+                            erFarEllerMedmor,
+                            erDeltUttak,
+                            situasjon
+                        ),
+                        familiehendelsesdato
+                    );
+                }
+            }}
             renderForm={({ setFieldValue, values, isValid }) => {
                 const periodetype = getPeriodeType(
                     values.hvemSkalTaUttak!,
@@ -453,24 +477,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.avbryt" />
                                     </Knapp>
                                     {visibility.areAllQuestionsAnswered() ? (
-                                        <Hovedknapp
-                                            htmlType="button"
-                                            onClick={() => {
-                                                handleAddPeriode!(
-                                                    mapPeriodeUttakFormToPeriode(
-                                                        values,
-                                                        guid(),
-                                                        periodetype,
-                                                        familiehendelsesdato,
-                                                        erFarEllerMedmor,
-                                                        erDeltUttak,
-                                                        situasjon
-                                                    ),
-                                                    familiehendelsesdato
-                                                );
-                                                setNyPeriodeFormIsVisible!(false);
-                                            }}
-                                        >
+                                        <Hovedknapp>
                                             <FormattedMessage id="uttaksplan.leggTil" />
                                         </Hovedknapp>
                                     ) : null}
