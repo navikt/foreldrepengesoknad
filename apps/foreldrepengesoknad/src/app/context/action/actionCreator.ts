@@ -4,7 +4,7 @@ import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import { Sak } from 'app/types/Sak';
+import { SakDTO } from 'app/types/SakDTO';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
@@ -166,10 +166,10 @@ const setInformasjonOmUtenlandsopphold = (
 
 interface SetSaker {
     type: ForeldrepengesøknadContextActionKeys.SET_SAKER;
-    payload: Sak[];
+    payload: SakDTO[];
 }
 
-const setSaker = (payload: Sak[]): SetSaker => ({
+const setSaker = (payload: SakDTO[]): SetSaker => ({
     type: ForeldrepengesøknadContextActionKeys.SET_SAKER,
     payload,
 });

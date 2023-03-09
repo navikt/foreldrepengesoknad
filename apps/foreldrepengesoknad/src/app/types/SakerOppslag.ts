@@ -1,7 +1,7 @@
-import { Sak } from './Sak';
+import { SakDTO } from './SakDTO';
 
 export interface SakerOppslag {
     engangsstønad: any[];
-    foreldrepenger: Sak[];
+    foreldrepenger: SakDTO[];
     svangerskapspenger: any[];
 }

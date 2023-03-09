@@ -1,7 +1,7 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { Sak } from 'app/types/Sak';
+import { SakDTO } from 'app/types/SakDTO';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
@@ -230,7 +230,7 @@ describe('<foreldrepengesøknadReducer>', () => {
     it('skal legge saker i state', () => {
         const sak = {
             saksnummer: '1234',
-        } as Sak;
+        } as SakDTO;
         const payload = [sak];
 
         const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {

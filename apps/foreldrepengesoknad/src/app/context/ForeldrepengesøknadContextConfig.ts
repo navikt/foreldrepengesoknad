@@ -1,7 +1,7 @@
 import SøknadRoutes from 'app/routes/routes';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import { Sak } from 'app/types/Sak';
+import { SakDTO } from 'app/types/SakDTO';
 import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
@@ -15,7 +15,7 @@ export interface ForeldrepengesøknadContextState {
     currentRoute: SøknadRoutes;
     søknad: Søknad;
     søkerinfo: Søkerinfo;
-    saker: Sak[];
+    saker: SakDTO[];
     kvittering: Kvittering;
     antallUkerIUttaksplan: number;
     perioderSomSkalSendesInn: Periode[];

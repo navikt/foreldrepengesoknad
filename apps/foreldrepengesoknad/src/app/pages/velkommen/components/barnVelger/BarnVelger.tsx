@@ -5,11 +5,10 @@ import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Sak } from 'app/types/Sak';
-import { RegistrertAnnenForelder } from 'app/types/Person';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
-import { formateFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
+import { SakDTO } from 'app/types/SakDTO';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -34,11 +33,10 @@ export interface SelectableBarn {
     fornavn?: string[];
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
-    sak?: Sak;
-    annenForelder?: RegistrertAnnenForelder;
+    sak?: SakDTO;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;
-    minstEnErDødfødt?: boolean;
+    alleBarnaLever: boolean;
 }
 
 interface Props {
@@ -80,6 +78,10 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
             termin: formatDate(barn.termindato!),
         });
+    } else if (barn.antallBarn === 3) {
+        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.trillinger', {
+            termin: formatDate(barn.termindato!),
+        });
     } else {
         labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
             termin: formatDate(barn.termindato!),
@@ -108,11 +110,11 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.etternavn,
         barn.fødselsdatoer,
         barn.omsorgsovertagelse,
-        barn.minstEnErDødfødt,
+        barn.alleBarnaLever,
         barn.antallBarn,
         intl
     );
-    const fødselsdatoerTekst = formateFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
+    const fødselsdatoerTekst = formaterFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =
         barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
             ? fødselsdatoerTekst
@@ -131,12 +133,11 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         label: (
             <>
                 <b>{navnTekstEllerBarnMedUkjentNavnTekst}</b>
-                {barn.fornavn !== undefined &&
-                    barn.fornavn.filter((n) => n !== undefined && n.trim() !== '').length > 0 && (
-                        <p>
-                            {situasjonTekst} {fødtAdoptertDatoTekst}
-                        </p>
-                    )}
+                {barn.alleBarnaLever && (
+                    <p>
+                        {situasjonTekst} {fødtAdoptertDatoTekst}
+                    </p>
+                )}
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
             </>
