@@ -15,8 +15,7 @@ FROM base as pnpm
 ENV npm_config_package_import_method=clone-or-copy
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    npm install -g pnpm \
+RUN npm install -g pnpm \
     && pnpm install -g pnpm turbo \
     && npm uninstall -g pnpm
 
@@ -25,13 +24,11 @@ RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/sto
 ######################################### 
 FROM pnpm as build
 COPY pnpm-lock.yaml .
-RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    pnpm fetch
+RUN pnpm fetch
 
 COPY . .
 
-RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    pnpm install --frozen-lockfile --offline \
+RUN pnpm install --frozen-lockfile --offline \
     && turbo build \
     && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
@@ -41,8 +38,7 @@ RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/sto
 FROM pnpm as foreldrepengesoknad
 COPY --from=build  /usr/src/app ./
 
-RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    pnpm install --frozen-lockfile --prod --filter "foreldrepengesoknad..."
+RUN pnpm install --frozen-lockfile --prod --filter "foreldrepengesoknad..."
 
 CMD ["node", "./apps/foreldrepengesoknad/server.js"]
 
@@ -52,8 +48,7 @@ CMD ["node", "./apps/foreldrepengesoknad/server.js"]
 FROM pnpm as svangerskapspengesoknad
 COPY --from=build  /usr/src/app ./
 
-RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    pnpm install --frozen-lockfile --prod --filter "svangerskapspengesoknad..."
+RUN pnpm install --frozen-lockfile --prod --filter "svangerskapspengesoknad..."
 
 CMD ["node", "./apps/svangerskapspengesoknad/server.js"]
 
@@ -63,7 +58,6 @@ CMD ["node", "./apps/svangerskapspengesoknad/server.js"]
 FROM pnpm as engangsstonad
 COPY --from=build  /usr/src/app ./
 
-RUN --mount=type=cache,id=pnpm,sharing=locked,target=/root/.local/share/pnpm/store/v3 \
-    pnpm install --frozen-lockfile --prod --filter "engangsstonad..."
+RUN pnpm install --frozen-lockfile --prod --filter "engangsstonad..."
 
 CMD ["node", "./apps/engangsstonad/server.js"]
