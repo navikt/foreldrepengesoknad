@@ -60,6 +60,13 @@ interface SakInfo {
     omsorgsovertakelse?: string;
 }
 
+const getSakMedBarn = (sak: SakDTO, barnFnr: string[]): SakDTO => {
+    const barna = barnFnr.map((fnrBarn) => {
+        return { fnr: fnrBarn };
+    });
+    return { ...sak, barn: barna };
+};
+
 const getSak = (sakinfo: SakInfo): SakDTO => {
     return {
         dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
@@ -90,11 +97,6 @@ const getSak = (sakinfo: SakInfo): SakDTO => {
         annenPart: {
             fnr: '123456789',
         },
-        barn: [
-            {
-                fnr: '111',
-            },
-        ],
     };
 };
 
@@ -106,7 +108,7 @@ const dato = '2022-12-06';
 const datoAdopsjon = '2022-12-08';
 
 const levendeBarn = {
-    fnr: '05502251750',
+    fnr: '1',
     fornavn: 'Oriental',
     etternavn: 'Bokhylle',
     fødselsdato: dato,
@@ -119,7 +121,7 @@ const dødtBarn = {
 } as SøkerinfoDTOBarn;
 
 const levendeTvilling = {
-    fnr: '05502251751',
+    fnr: '2',
     fornavn: 'Vakker',
     etternavn: 'Bokhylle',
     fødselsdato: dato,
@@ -133,7 +135,7 @@ const sakErIkkeAvsluttet = false;
 
 const ettBarn = {
     type: 'person',
-    fnr: '11111111111',
+    fnr: '3',
     fornavn: 'Evig',
     mellomnavn: 'Lykkelig',
     etternavn: 'Vår',
@@ -141,8 +143,8 @@ const ettBarn = {
     kjønn: 'M',
 } as SøkerinfoDTOBarn;
 
-const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '111111111112', fornavn: 'Grønn' };
-const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '111111111113', fornavn: 'Sommerlig' };
+const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '4', fornavn: 'Grønn' };
+const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '5', fornavn: 'Sommerlig' };
 
 const sakOpprettetFødsel = getSak({
     kanSøkeOmEndring: true,
@@ -202,6 +204,10 @@ const sakMedTvillinger = getSak({
     fødselsdato: dato,
     åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
 });
+
+const sakMedTvillingerMedFnrPåSaken = getSakMedBarn(sakMedTvillinger, ['1', '2']);
+
+const sakMedTvillingerMedEnDødfødt = getSakMedBarn(sakMedTvillinger, ['1']);
 
 const sakMedTrillinger = getSak({
     kanSøkeOmEndring: true,
@@ -360,4 +366,22 @@ export const HarSakAdopsjonMedEtDødtBarn = Template.bind({});
 HarSakAdopsjonMedEtDødtBarn.args = {
     saker: [sakEttBarnAdopsjon],
     søkerinfo: søkerinfoMedEtDødtBarn,
+};
+
+export const HarSakMedOppgittBarnTvillingerAlleLever = Template.bind({});
+HarSakMedOppgittBarnTvillingerAlleLever.args = {
+    saker: [sakMedTvillingerMedFnrPåSaken],
+    søkerinfo: søkerinfoMedLevendeTvillinger,
+};
+
+export const HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
+HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling.args = {
+    saker: [sakMedTvillingerMedEnDødfødt],
+    søkerinfo: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
+};
+
+export const HarSakMedTrillingerEnErDød = Template.bind({});
+HarSakMedTrillingerEnErDød.args = {
+    saker: [sakMedTrillinger],
+    søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
 };

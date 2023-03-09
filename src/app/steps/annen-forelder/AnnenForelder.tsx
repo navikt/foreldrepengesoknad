@@ -37,6 +37,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -55,7 +56,9 @@ const AnnenForelder = () => {
             : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
     const annenForelderFraRegistrertBarn =
         registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
-    const skalOppgiPersonalia = annenForelderFraRegistrertBarn === undefined;
+    const skalOppgiPersonalia =
+        annenForelderFraRegistrertBarn === undefined ||
+        (isAnnenForelderOppgitt(annenForelder) && annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
 
     const onValidSubmitHandler = useCallback(
         (values: Partial<AnnenForelderFormData>) => {
@@ -100,7 +103,8 @@ const AnnenForelder = () => {
                 annenForelder,
                 barn,
                 søker,
-                annenForelderFraRegistrertBarn
+                annenForelderFraRegistrertBarn,
+                intl
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {

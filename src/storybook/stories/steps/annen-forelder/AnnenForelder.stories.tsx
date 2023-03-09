@@ -78,6 +78,47 @@ SkalOppgiPersonalia.args = {
     } as SøkerinfoDTO,
 };
 
+export const SkalOppgiPersonaliaNavnMangler = Template.bind({});
+SkalOppgiPersonaliaNavnMangler.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            annenForelder: {
+                fornavn: 'annen forelder',
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        søker: {
+            ...søkerinfo,
+            barn: [],
+        },
+    } as SøkerinfoDTO,
+};
+
+export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike = Template.bind({});
+SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            annenForelder: {
+                fornavn: 'Tom',
+                fnr: '123456789',
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        søker: {
+            ...søkerinfo,
+            barn: [{ fornavn: 'Ben', annenForelder: { fnr: '999999999' } }],
+        },
+    } as SøkerinfoDTO,
+};
+
 export const ForFar = Template.bind({});
 ForFar.args = {
     context: {

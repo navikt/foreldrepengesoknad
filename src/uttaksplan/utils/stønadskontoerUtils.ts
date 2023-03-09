@@ -74,7 +74,7 @@ export const getUttakAnnenPartStønadskontoNavn = (
                 ? 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode'
                 : 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak';
         return intlUtils(intl, intlTekst, {
-            navn,
+            navn: capitalizeFirstLetter(navn),
             prosent: samtidigUttakProsent,
         });
     }

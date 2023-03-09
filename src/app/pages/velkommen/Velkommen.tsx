@@ -50,7 +50,8 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
     const bem = bemUtils('velkommen');
-    const { registrerteBarn } = useSøkerinfo();
+    const søkerinfo = useSøkerinfo();
+    const { registrerteBarn } = søkerinfo;
     const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
     const sortedSelectableBarn = selectableBarn.sort(sorterSelectableBarnEtterYngst);
 
@@ -97,7 +98,13 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                 førsteUttaksdagNesteBarnsSak
             );
 
-            const søknad = opprettSøknadFraEksisterendeSak(state.søkerinfo, eksisterendeSak!, intl) as Søknad;
+            const søknad = opprettSøknadFraEksisterendeSak(
+                state.søkerinfo,
+                eksisterendeSak!,
+                intl,
+                valgtEksisterendeSak.annenPart,
+                valgteBarn.fnr
+            ) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
@@ -107,7 +114,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
             );
             actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
         } else if (nySøknadPåAlleredeSøktBarn) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn) as Søknad;
+            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søkerinfo) as Søknad;
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
             actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
         } else if (nySøknadPåValgteRegistrerteBarn) {
