@@ -16,7 +16,7 @@ jobs:
         name: Build
         uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@turborepo
         with:
-            push-image: github.ref_name == 'master' # default: false
+            push-image: ${{ github.ref_name == 'master' }} # default: false
         secrets: inherit
 
     promote-foreldrepengesoknad:
