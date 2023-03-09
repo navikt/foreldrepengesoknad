@@ -4,8 +4,8 @@ on:
         branches-ignore: # Kan legge til disse store feature branchene her
             - 'uttaksplanbuilder-rework'
         paths-ignore:
-            # - '**.md'
-            # - '**.MD'
+            - '**.md'
+            - '**.MD'
             - '.gitignore'
             - '.editorconfig'
             - 'LICENCE'
