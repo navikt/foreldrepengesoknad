@@ -277,7 +277,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleResetUttaksplan();
     };
 
-    //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her.
+    //TODO: trenges grupperAvvik i det hele tatt? Sendes inn som false her..
     const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 

@@ -72,6 +72,17 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                     )}
                     {!søker.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
                         <OppsummeringsPunkt
+                            title={intlUtils(intl, 'oppsummering.annenForelder.harOppholdtSegIEØS', {
+                                navn: annenForelder.fornavn,
+                            })}
+                        >
+                            <Normaltekst>
+                                <FormattedMessage id={annenForelder.harOppholdtSegIEØS ? 'ja' : 'nei'} />
+                            </Normaltekst>
+                        </OppsummeringsPunkt>
+                    )}
+                    {!søker.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
+                        <OppsummeringsPunkt
                             title={intlUtils(intl, 'oppsummering.annenForelder.rettPåForeldrepengerIEØS', {
                                 navn: annenForelder.fornavn,
                             })}

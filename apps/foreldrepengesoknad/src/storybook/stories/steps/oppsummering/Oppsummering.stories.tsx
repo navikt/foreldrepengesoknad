@@ -133,8 +133,34 @@ FarMedMorSomHarRettIEØS.args = {
                 fornavn: 'Anne',
                 etternavn: 'Forelder',
                 fnr: '1515151616',
+                harOppholdtSegIEØS: true,
                 harRettPåForeldrepengerINorge: false,
                 harRettPåForeldrepengerIEØS: true,
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo,
+};
+
+export const FarMedMorSomHaroppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
+FarMedMorSomHarRettIEØS.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+            søker: {
+                ...context.søknad.søker,
+                erAleneOmOmsorg: false,
+            },
+            annenForelder: {
+                fornavn: 'Anne',
+                etternavn: 'Forelder',
+                fnr: '1515151616',
+                harOppholdtSegIEØS: true,
+                harRettPåForeldrepengerINorge: false,
+                harRettPåForeldrepengerIEØS: false,
                 kanIkkeOppgis: false,
             },
         },

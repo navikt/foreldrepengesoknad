@@ -116,7 +116,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
                 <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse.stebarn" />
+                    <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse" />
                 </Veilederpanel>
             </Block>
             <Block visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
