@@ -15,6 +15,7 @@ import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFo
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,
     [AnnenForelderFormField.harRettPåForeldrepengerINorge]: YesOrNo.UNANSWERED,
+    [AnnenForelderFormField.harOppholdtSegIEØS]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.harRettPåForeldrepengerIEØS]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.erInformertOmSøknaden]: YesOrNo.UNANSWERED,
     [AnnenForelderFormField.fornavn]: '',
@@ -58,6 +59,9 @@ export const cleanAnnenForelderFormData = (
         harRettPåForeldrepengerINorge: visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge)
             ? values.harRettPåForeldrepengerINorge
             : YesOrNo.UNANSWERED,
+        harOppholdtSegIEØS: visibility.isVisible(AnnenForelderFormField.harOppholdtSegIEØS)
+            ? values.harOppholdtSegIEØS
+            : YesOrNo.UNANSWERED,
         harRettPåForeldrepengerIEØS: visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)
             ? values.harRettPåForeldrepengerIEØS
             : YesOrNo.UNANSWERED,
@@ -79,6 +83,10 @@ export const cleanAnnenForelderFormData = (
 
 export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormData>): AnnenForelder => {
     if (values.kanIkkeOppgis === false) {
+        const harOppholdtSegIEØS = convertYesOrNoOrUndefinedToBoolean(values.harOppholdtSegIEØS);
+        const harRettPåForeldrepengerIEØS = harOppholdtSegIEØS
+            ? convertYesOrNoOrUndefinedToBoolean(values.harRettPåForeldrepengerIEØS)
+            : false;
         return {
             etternavn: hasValue(values.etternavn) ? replaceInvisibleCharsWithSpace(values.etternavn!) : undefined,
             fornavn: hasValue(values.fornavn) ? replaceInvisibleCharsWithSpace(values.fornavn!) : undefined,
@@ -88,7 +96,8 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
             erUfør: convertYesOrNoOrUndefinedToBoolean(values.erMorUfør),
             kanIkkeOppgis: values.kanIkkeOppgis,
             harRettPåForeldrepengerINorge: convertYesOrNoOrUndefinedToBoolean(values.harRettPåForeldrepengerINorge),
-            harRettPåForeldrepengerIEØS: convertYesOrNoOrUndefinedToBoolean(values.harRettPåForeldrepengerIEØS),
+            harOppholdtSegIEØS,
+            harRettPåForeldrepengerIEØS,
             erInformertOmSøknaden: convertYesOrNoOrUndefinedToBoolean(values.erInformertOmSøknaden),
         };
     }
@@ -110,6 +119,7 @@ export const getAnnenForelderFormInitialValues = (
             harRettPåForeldrepengerINorge: convertBooleanOrUndefinedToYesOrNo(
                 annenForelder.harRettPåForeldrepengerINorge
             ),
+            harOppholdtSegIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harOppholdtSegIEØS),
             harRettPåForeldrepengerIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harRettPåForeldrepengerIEØS),
             bostedsland: annenForelder.bostedsland || '',
             erInformertOmSøknaden: convertBooleanOrUndefinedToYesOrNo(annenForelder.erInformertOmSøknaden),

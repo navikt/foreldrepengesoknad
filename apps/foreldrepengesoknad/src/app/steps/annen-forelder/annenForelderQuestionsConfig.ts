@@ -71,11 +71,17 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
         isAnswered: ({ harRettPåForeldrepengerINorge }) => harRettPåForeldrepengerINorge !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
     },
-    [AnnenForelderFormField.harRettPåForeldrepengerIEØS]: {
+    [AnnenForelderFormField.harOppholdtSegIEØS]: {
         parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
-        isAnswered: ({ harRettPåForeldrepengerIEØS }) => harRettPåForeldrepengerIEØS !== YesOrNo.UNANSWERED,
+        isAnswered: ({ harOppholdtSegIEØS }) => harOppholdtSegIEØS !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
         isIncluded: ({ harRettPåForeldrepengerINorge }) => harRettPåForeldrepengerINorge === YesOrNo.NO,
+    },
+    [AnnenForelderFormField.harRettPåForeldrepengerIEØS]: {
+        parentQuestion: AnnenForelderFormField.harOppholdtSegIEØS,
+        isAnswered: ({ harRettPåForeldrepengerIEØS }) => harRettPåForeldrepengerIEØS !== YesOrNo.UNANSWERED,
+        visibilityFilter: ({ aleneOmOmsorg }) => aleneOmOmsorg === YesOrNo.NO,
+        isIncluded: ({ harOppholdtSegIEØS }) => harOppholdtSegIEØS === YesOrNo.YES,
     },
     [AnnenForelderFormField.erInformertOmSøknaden]: {
         parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
@@ -86,10 +92,16 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
     [AnnenForelderFormField.erMorUfør]: {
         parentQuestion: AnnenForelderFormField.harRettPåForeldrepengerINorge,
         isAnswered: ({ erMorUfør }) => erMorUfør !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ aleneOmOmsorg, harRettPåForeldrepengerINorge, harRettPåForeldrepengerIEØS, søkerRolle }) =>
+        visibilityFilter: ({
+            aleneOmOmsorg,
+            harRettPåForeldrepengerINorge,
+            harRettPåForeldrepengerIEØS,
+            harOppholdtSegIEØS,
+            søkerRolle,
+        }) =>
             aleneOmOmsorg === YesOrNo.NO &&
             harRettPåForeldrepengerINorge === YesOrNo.NO &&
-            harRettPåForeldrepengerIEØS === YesOrNo.NO &&
+            (harOppholdtSegIEØS === YesOrNo.NO || harRettPåForeldrepengerIEØS === YesOrNo.NO) &&
             isFarEllerMedmor(søkerRolle),
     },
     [AnnenForelderFormField.datoForAleneomsorg]: {
