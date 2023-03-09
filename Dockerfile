@@ -29,7 +29,7 @@ RUN pnpm fetch
 COPY . .
 
 RUN pnpm install --frozen-lockfile --offline \
-    && turbo build \
+    && turbo test \
     && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
 #########################################
