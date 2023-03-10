@@ -10,7 +10,10 @@ COPY . .
 
 RUN mkdir -p /usr/src/build-deps \
     && cp ./package.json ./.npmrc ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/build-deps/ \
-    && cp --parents apps/*/package.json packages/*/package.json /usr/src/build-deps/
+    && mkdir -p /usr/src/build-deps/apps \
+    && mkdir -p /usr/src/build-deps/packages \
+    && cp --parents apps/*/package.json /usr/src/build-deps/apps/ \
+    && cp --parents packages/*/package.json /usr/src/build-deps/packages/
 
 #########################################
 # BUILD - Builds all node code
