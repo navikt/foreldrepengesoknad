@@ -50,26 +50,8 @@ RUN pnpm install --frozen-lockfile --prod
 COPY --from=build  /usr/src/app ./
 
 #########################################
-# FORELDREPENGESOKNAD
+# PROD IMAGES
 ######################################### 
-FROM prod-deps as foreldrepengesoknad
-CMD ["node", "./apps/foreldrepengesoknad/server.js"]
-
-#########################################
-# SVANGERSKAPSPENGESOKNAD
-######################################### 
-FROM prod-deps as svangerskapspengesoknad
-CMD ["node", "./apps/svangerskapspengesoknad/server.js"]
-
-#########################################
-# ENGANGSSTONAD
-######################################### 
-FROM prod-deps as engangsstonad
-CMD ["node", "./apps/engangsstonad/server.js"]
-
-#########################################
-# START SERVER
-######################################### 
-FROM prod-deps as test
+FROM prod-deps as prod
 ARG CMD
 CMD ["node", "${CMD}"]

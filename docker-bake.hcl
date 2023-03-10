@@ -18,7 +18,7 @@ target "base" {
 target "foreldrepengesoknad" {
     inherits=["base"]
     tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
-    target="test"
+    target="prod"
     args={
         CMD="./apps/foreldrepengesoknad/server.js"
     }
@@ -27,7 +27,7 @@ target "foreldrepengesoknad" {
 target "svangerskapspengesoknad" {
     inherits=["base"]
     tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG}"]
-    target="test"
+    target="prod"
     args={
         CMD="./apps/svangerskapspengesoknad/server.js"
     }
@@ -36,7 +36,7 @@ target "svangerskapspengesoknad" {
 target "engangsstonad" {
     inherits=["base"]
     tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG}"]
-    target="test"
+    target="prod"
     args={
         CMD="./apps/engangsstonad/server.js"
     }
