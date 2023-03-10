@@ -24,8 +24,6 @@
         "jest-changed": "jest -o --color --config ./jest/jest.config.js --maxWorkers 2",
         "jest-coverage": "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
-        "snyk-protect": "snyk-protect",
-        "prepare": "npm run snyk-protect",
         "storybook": "start-storybook -p 9001",
         "deploy-storybook": "build-storybook -o .static_storybook && storybook-to-ghpages --existing-output-dir=.static_storybook"
     },
@@ -203,6 +201,5 @@
         "regenerator-runtime": "^0.13.9",
         "request": "^2.88.2",
         "snyk": "^1.1021.0"
-    },
-    "snyk": true
+    }
 }
