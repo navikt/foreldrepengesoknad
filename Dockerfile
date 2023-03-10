@@ -45,6 +45,7 @@ RUN npm install -g pnpm \
 ######################################### 
 FROM pnpm as prod-deps
 COPY pnpm-lock.yaml .
+COPY package.json .
 RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=build  /usr/src/app ./
