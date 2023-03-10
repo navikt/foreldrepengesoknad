@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 #########################################
 # PREPARE DEPS FOR BUILD
 ######################################### 
@@ -35,8 +37,10 @@ RUN pnpm install --frozen-lockfile --offline
 
 COPY . .
 
-RUN --mount=type=cache,target=/run/turbo \
-    mkdir -p node_modules/.cache \
+# RUN --mount=type=cache,target=/run/turbo \
+RUN \
+    mkdir -p /run/turbo \
+    && mkdir -p node_modules/.cache \
     && rm -rf node_modules/.cache/turbo \
     && ln -s /run/turbo node_modules/.cache/turbo \
     && turbo test \
