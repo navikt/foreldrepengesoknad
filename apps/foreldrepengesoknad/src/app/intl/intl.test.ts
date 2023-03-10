@@ -10,6 +10,5 @@ describe('intl tests', () => {
 
         expect(missingKeysBokmål.length).toBe(0);
         expect(missingKeysNynorsk.length).toBe(0);
-        expect(true).toBe(true);
     });
 });
