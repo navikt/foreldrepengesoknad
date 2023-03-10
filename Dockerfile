@@ -44,7 +44,7 @@ RUN npm install -g pnpm \
 # NODE DEPENDENCIES
 ######################################### 
 FROM pnpm as prod-deps
-COPY pnpm-lock.yml .
+COPY pnpm-lock.yaml .
 RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=build  /usr/src/app ./
