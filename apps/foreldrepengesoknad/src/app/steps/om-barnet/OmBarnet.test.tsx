@@ -6,6 +6,10 @@ import * as stories from 'stories/steps/om-barnet/OmBarnet.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
+jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
+    return jest.fn();
+})
+
 const { Default, ForAdopsjon, FarFødsel, MedmorFødsel, RegistrertBarnFødselFar, RegistrertBarnFødselMor } =
     composeStories(stories);
 const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];

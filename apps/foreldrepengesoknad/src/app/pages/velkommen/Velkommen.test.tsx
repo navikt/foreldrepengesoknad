@@ -6,6 +6,10 @@ import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
 
+jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
+    return jest.fn();
+})
+
 const {
     Default,
     HarOpprettetFPSakFødsel,
