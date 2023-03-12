@@ -10,6 +10,10 @@ import IntlProvider from '../intl/IntlProvider';
 import Person from 'app/types/Person';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
+jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
+    return jest.fn();
+})
+
 describe('<ForeldrepengesøknadRoutes>', () => {
     const state: ForeldrepengesøknadContextState = {
         version: 5,
