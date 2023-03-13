@@ -22,7 +22,7 @@ target "foreldrepengesoknad" {
     tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
     target="prod"
     args={
-        CMD="./apps/foreldrepengesoknad/server.js"
+        CMD="foreldrepengesoknad"
     }
 }
 
@@ -31,7 +31,7 @@ target "svangerskapspengesoknad" {
     tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG}"]
     target="prod"
     args={
-        CMD="./apps/svangerskapspengesoknad/server.js"
+        CMD="svangerskapspengesoknad"
     }
 }
 
@@ -40,6 +40,6 @@ target "engangsstonad" {
     tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG}"]
     target="prod"
     args={
-        CMD="./apps/engangsstonad/server.js"
+        CMD="engangsstonad"
     }
 }
