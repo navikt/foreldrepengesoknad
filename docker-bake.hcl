@@ -19,7 +19,7 @@ target "base" {
 
 target "foreldrepengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/navikt/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
     target="prod"
     args={
         CMD="foreldrepengesoknad"
@@ -28,7 +28,7 @@ target "foreldrepengesoknad" {
 
 target "svangerskapspengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/navikt/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG}"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG}"]
     target="prod"
     args={
         CMD="svangerskapspengesoknad"
@@ -37,7 +37,7 @@ target "svangerskapspengesoknad" {
 
 target "engangsstonad" {
     inherits=["base"]
-    tags=["ghcr.io/navikt/${GITHUB_REPOSITORY}/engangsstonad:${TAG}"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG}"]
     target="prod"
     args={
         CMD="engangsstonad"
