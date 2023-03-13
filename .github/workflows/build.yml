@@ -24,7 +24,7 @@ jobs:
         needs: build-app
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         with:
-            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             environment: dev
             platform: gcp
         secrets: inherit
