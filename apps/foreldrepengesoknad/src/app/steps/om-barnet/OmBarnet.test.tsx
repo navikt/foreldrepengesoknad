@@ -315,7 +315,7 @@ describe('<OmBarnet>', () => {
         MockDate.set(new Date('2023-03-10'));
         render(<RegistrertBarnTrillingerDerEnErDød />);
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
-        expect(await screen.findByText('Trillinger født', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText('Trillinger', { exact: false })).toBeInTheDocument();
         MockDate.reset();
     });
 });
