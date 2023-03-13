@@ -23,7 +23,7 @@ target "base" {
 
 target "foreldrepengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG-PROD}"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG-AUTOTEST}", "${TAG-PROD}"]
     target="prod"
     args={
         CMD="foreldrepengesoknad"
@@ -32,7 +32,7 @@ target "foreldrepengesoknad" {
 
 target "svangerskapspengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG-PROD}"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG-AUTOTEST}", "${TAG-PROD}"]
     target="prod"
     args={
         CMD="svangerskapspengesoknad"
@@ -41,7 +41,7 @@ target "svangerskapspengesoknad" {
 
 target "engangsstonad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG-PROD}"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG-AUTOTEST}", "${TAG-PROD}"]
     target="prod"
     args={
         CMD="engangsstonad"
