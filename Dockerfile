@@ -81,4 +81,4 @@ COPY --from=build  /usr/src/app ./
 ######################################### 
 FROM prod-deps as prod
 ARG CMD
-CMD ["node", ${CMD}]
+CMD ["node", $CMD]
