@@ -36,7 +36,7 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
                     />
                 </Normaltekst>
             )}
-            {fødselsdatoForVisning !== undefined && (
+            {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
                 <Normaltekst>
                     <FormattedMessage
                         id="registrertePersonalia.fødselsdato"

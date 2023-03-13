@@ -64,35 +64,39 @@ const getSakstatus = (sakErFerdigbehandlet: boolean) => {
     return <SøknadStatusEtikett sakErFerdigbehandlet={sakErFerdigbehandlet}></SøknadStatusEtikett>;
 };
 
+const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: IntlShape): string => {
+    if (antallBarn === 1) {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
+            termin: formatDate(termindato),
+        });
+    } else if (antallBarn === 2) {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
+            termin: formatDate(termindato),
+        });
+    } else if (antallBarn === 3) {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.trillinger', {
+            termin: formatDate(termindato),
+        });
+    } else {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
+            termin: formatDate(termindato),
+        });
+    }
+};
+
 const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
-    let labelTekst;
+    const tittel = getTittelForUfødtBarn(barn.antallBarn, barn.termindato!, intl);
     const saksStatus = barn.sak !== undefined ? getSakstatus(barn.sak.åpenBehandling === undefined) : undefined;
     const saksnummerTekst =
         barn.sak !== undefined
             ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
             : '';
     const harSak = barn.sak !== undefined;
-    if (barn.antallBarn === 1) {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
-            termin: formatDate(barn.termindato!),
-        });
-    } else if (barn.antallBarn === 2) {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
-            termin: formatDate(barn.termindato!),
-        });
-    } else if (barn.antallBarn === 3) {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.trillinger', {
-            termin: formatDate(barn.termindato!),
-        });
-    } else {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
-            termin: formatDate(barn.termindato!),
-        });
-    }
+
     return {
         label: (
             <>
-                <b> {labelTekst}</b>
+                <b> {tittel}</b>
                 {harSak && (
                     <div>
                         <p>{saksnummerTekst}</p>

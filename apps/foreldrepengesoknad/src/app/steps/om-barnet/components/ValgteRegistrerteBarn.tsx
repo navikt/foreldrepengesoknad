@@ -9,7 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Element } from 'nav-frontend-typografi';
-import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTekstForAntallBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
 import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
 
 interface Props {
@@ -22,7 +22,8 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const antallBarn = valgteBarn.length;
     const alleBarnaLever = valgteBarn.every((b) => getLeverBarnet(b));
     const sortedBarn = valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
-    const formattertFødselsdato = formaterFødselsdatoerPåBarn(sortedBarn.map((b) => b.fødselsdato));
+    const fødselsdatoer = sortedBarn.map((b) => b.fødselsdato);
+    const formattertFødselsdato = formaterFødselsdatoerPåBarn(fødselsdatoer);
     return (
         <>
             <Block padBottom="l">
@@ -43,7 +44,12 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                             <RegistrertePersonalia
                                 person={sortedBarn[0]}
                                 fødselsdatoForVisning={formattertFødselsdato}
-                                altTekstHvisUkjentNavn={getTekstForAntallBarn(sortedBarn.length, intl)}
+                                altTekstHvisUkjentNavn={getTittelBarnNårNavnSkalIkkeVises(
+                                    undefined,
+                                    fødselsdatoer,
+                                    sortedBarn.length,
+                                    intl
+                                )}
                             />
                         </Block>
                     )}

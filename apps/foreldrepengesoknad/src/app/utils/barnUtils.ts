@@ -83,6 +83,29 @@ export const getAndreBarnFødtSammenMedBarnet = (
     );
 };
 
+export const getTittelBarnNårNavnSkalIkkeVises = (
+    omsorgsovertagelsesdato: Date | undefined,
+    fødselsdatoer: Date[] | undefined,
+    antallBarn: number,
+    intl: IntlShape
+): string => {
+    if (omsorgsovertagelsesdato !== undefined) {
+        return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
+            adopsjonsdato: formatDate(omsorgsovertagelsesdato),
+        });
+    } else {
+        const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
+        const barnTekst = getTekstForAntallBarn(antallBarn, intl);
+
+        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
+            ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.barn', {
+                  barnTekst,
+                  fødselsdato: fødselsdatoTekst,
+              })
+            : '';
+    }
+};
+
 export const formaterNavnPåFlereBarn = (
     fornavn: string[] | undefined,
     etternavn: string[] | undefined,
@@ -99,21 +122,7 @@ export const formaterNavnPåFlereBarn = (
         etternavn.length === 0 ||
         !alleBarnaLever
     ) {
-        if (omsorgsovertagelsesdato !== undefined) {
-            return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
-                adopsjonsdato: formatDate(omsorgsovertagelsesdato),
-            });
-        } else {
-            const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-            const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-
-            return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-                ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.barn', {
-                      barnTekst,
-                      fødselsdato: fødselsdatoTekst,
-                  })
-                : '';
-        }
+        return getTittelBarnNårNavnSkalIkkeVises(omsorgsovertagelsesdato, fødselsdatoer, antallBarn, intl);
     }
 
     const etterNavnet = etternavn[0];
