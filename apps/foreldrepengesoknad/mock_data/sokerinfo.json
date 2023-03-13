@@ -1,42 +1,38 @@
 {
     "søker": {
-        "fnr": "21430354032",
-        "fornavn": "Hes",
-        "etternavn": "Mandagsbil",
+        "fnr": "14089008469",
+        "fornavn": "Kognitiv",
+        "etternavn": "Postnummer",
         "kjønn": "K",
-        "fødselsdato": "2003-03-21",
+        "fødselsdato": "1990-08-14",
         "ikkeNordiskEøsLand": false,
-        "bankkonto": { "kontonummer": "", "banknavn": "" },
+        "bankkonto": {
+            "kontonummer": "",
+            "banknavn": ""
+        },
         "barn": [
             {
-                "fnr": "13062252647",
-                "fornavn": "Realistisk",
-                "etternavn": "Lefse",
+                "fnr": "020222323022",
+                "fornavn": "Underfundig",
+                "etternavn": "Hullemaskin",
                 "kjønn": "K",
-                "fødselsdato": "2022-10-05",
+                "fødselsdato": "2022-10-12",
                 "annenForelder": {
-                    "fnr": "03088908065",
-                    "fornavn": "Populær",
-                    "etternavn": "Tørketrommel",
-                    "fødselsdato": "1989-08-03"
+                    "fnr": "15818804322",
+                    "fornavn": "Komplett",
+                    "etternavn": "Almanakk",
+                    "fødselsdato": "1989-07-26"
                 }
             }
         ]
     },
     "arbeidsforhold": [
         {
-            "arbeidsgiverId": "896929119",
+            "arbeidsgiverId": "947064649",
             "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "SAUEFABRIKK",
-            "stillingsprosent": 100.0,
-            "fom": "2017-03-24"
-        },
-        {
-            "arbeidsgiverId": "896929119",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "SAUEFABRIKK",
-            "stillingsprosent": 100.0,
-            "fom": "2017-03-24"
+            "arbeidsgiverNavn": "SJOKKERENDE ELEKTRIKER",
+            "stillingsprosent": 100,
+            "fom": "2002-06-14"
         }
     ]
 }

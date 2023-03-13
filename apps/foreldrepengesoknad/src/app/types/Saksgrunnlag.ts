@@ -1,7 +1,5 @@
-// import { BarnFraSak } from './BarnFraSak';
 import { Dekningsgrad } from './Dekningsgrad';
 import { FamiliehendelseType } from './FamiliehendelseType';
-// import { RegistrertAnnenForelder } from './Person';
 
 export interface Saksgrunnlag {
     dekningsgrad: Dekningsgrad;

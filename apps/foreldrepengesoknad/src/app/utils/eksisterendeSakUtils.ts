@@ -396,7 +396,6 @@ const finnAnnenForelderForSaken = (
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
-    erFarEllerMedmor: boolean,
     intl: IntlShape,
     valgtBarnFnr: string[] | undefined,
     annenForeldersFnrFraSaken: string | undefined
@@ -413,22 +412,13 @@ const finnAnnenForelderForSaken = (
             : [];
 
     const barnet = barnMedGittFnr || barnMedGittFødselsdato.length > 0 ? barnMedGittFødselsdato[0] : undefined;
-    if (
-        barnet !== undefined &&
-        annenForeldersFnrFraSaken !== undefined &&
-        barnet.annenForelder?.fnr === annenForeldersFnrFraSaken
-    ) {
+    if (barnet !== undefined && barnet.annenForelder?.fnr === annenForeldersFnrFraSaken) {
         const annenForelder = barnet.annenForelder;
-        const { fnr, etternavn, fornavn, mellomnavn } = annenForelder;
+        const { fornavn } = annenForelder;
         const fornavnAnnenForelder =
             fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intlUtils(intl, 'annen.forelder');
-        const annenPart: RegistrertAnnenForelder = {
-            fornavn: fornavnAnnenForelder,
-            etternavn,
-            mellomnavn,
-            fnr,
-        };
-        return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, erFarEllerMedmor, intl);
+        const annenPart: RegistrertAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
+        return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 };
 
@@ -462,10 +452,24 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
     }
 };
 
+const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForelder | undefined => {
+    if (valgteBarn.annenForelder !== undefined) {
+        return {
+            fornavn: valgteBarn.annenForelder.fornavn,
+            etternavn: valgteBarn.annenForelder.etternavn,
+            fnr: valgteBarn.annenForelder.fnr,
+            kanIkkeOppgis: false,
+        };
+    }
+    return undefined;
+};
+
 export const opprettSøknadFraValgteBarn = (valgteBarn: SelectableBarn): Partial<Søknad> | undefined => {
     const barn = getBarnFromValgteBarn(valgteBarn);
+    const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
     const søknad: Partial<Søknad> = {
         barn,
+        annenForelder,
         erEndringssøknad: false,
     };
 
@@ -489,19 +493,19 @@ export const opprettAnnenForelderFraEksisterendeSak = (
             : !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
         harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
         kanIkkeOppgis: false,
+        erUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
     };
     const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
-    const annenForelderFraBarn = finnAnnenForelderForSaken(
+    const annenForelderFraSak = finnAnnenForelderForSaken(
         søkerinfo.registrerteBarn,
         ISOStringToDate(grunnlag.fødselsdato),
         grunnlag,
         situasjon,
-        grunnlag.søkerErFarEllerMedmor,
         intl,
         valgteBarnFnr,
         fnrAnnenForelderFraSak
     );
-    return annenForelderFraBarn || mockAnnenForelder;
+    return annenForelderFraSak || mockAnnenForelder;
 };
 
 export const opprettSøknadFraValgteBarnMedSak = (

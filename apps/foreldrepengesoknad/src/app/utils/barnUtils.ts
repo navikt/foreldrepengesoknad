@@ -104,7 +104,7 @@ export const formaterNavnPåFlereBarn = (
                 adopsjonsdato: formatDate(omsorgsovertagelsesdato),
             });
         } else {
-            const fødselsdatoTekst = formaterFødselsdatoerPåFlereBarn(fødselsdatoer);
+            const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
             const barnTekst = getTekstForAntallBarn(antallBarn, intl);
 
             return fødselsdatoer !== undefined && fødselsdatoer.length > 0
@@ -125,7 +125,7 @@ export const formaterNavnPåFlereBarn = (
     return `${fornavn[0]} ${etternavn}`;
 };
 
-export const formaterFødselsdatoerPåFlereBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }

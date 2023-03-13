@@ -2,7 +2,7 @@ import { SakDTO } from 'app/types/SakDTO';
 import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { Familiehendelse } from 'app/types/Familiehendelse';
-import { RegistrertBarn } from 'app/types/Person';
+import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import { erEldreEnn3ÅrOg3Måneder } from 'app/utils/personUtils';
 import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
@@ -104,7 +104,10 @@ const getSelectableBarnFraSak = (sak: SakDTO, registrerteBarn: RegistrertBarn[])
     };
 };
 
-const getSelectableBarnFraPDL = (registrertBarn: RegistrertBarn): SelectableBarn => {
+const getSelectableBarnFraPDL = (
+    registrertBarn: RegistrertBarn,
+    annenForelder: RegistrertAnnenForelder | undefined
+): SelectableBarn => {
     const navn =
         registrertBarn.mellomnavn !== undefined
             ? [registrertBarn.fornavn, registrertBarn.mellomnavn].join(' ')
@@ -119,12 +122,14 @@ const getSelectableBarnFraPDL = (registrertBarn: RegistrertBarn): SelectableBarn
         fnr: [registrertBarn.fnr],
         sortableDato: registrertBarn.fødselsdato,
         alleBarnaLever: getLeverBarnet(registrertBarn),
+        annenForelder,
     };
 };
 
 const getSelectableFlerlingerFraPDL = (
     registrertBarn: RegistrertBarn,
-    barnFødtISammePeriode: RegistrertBarn[]
+    barnFødtISammePeriode: RegistrertBarn[],
+    annenForelder: RegistrertAnnenForelder | undefined
 ): SelectableBarn | undefined => {
     const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldstOgNavn);
     const minstEttBarnDødeForMerEnn3MndSiden = !!alleBarna.find(
@@ -145,6 +150,7 @@ const getSelectableFlerlingerFraPDL = (
             fnr: alleBarna.map((b) => b.fnr),
             sortableDato: alleBarna[0].fødselsdato,
             alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
+            annenForelder,
         };
     }
 };
@@ -211,14 +217,27 @@ const getSelectableBarnOptionsFraPDL = (
                 regBarn.fødselsdato,
                 registrerteBarnMedFnr
             );
+            const annenForelder =
+                regBarn.annenForelder !== undefined
+                    ? {
+                          fnr: regBarn.annenForelder.fnr,
+                          fornavn: regBarn.annenForelder.fornavn,
+                          mellomnavn: regBarn.annenForelder.mellomnavn,
+                          etternavn: regBarn.annenForelder.etternavn,
+                      }
+                    : undefined;
             fnrPåBarnSomErLagtTil.push(regBarn.fnr);
             if (barnFødtISammePeriode.length === 0) {
                 if (!getDødeBarnetForMerEnn3MånederSiden(regBarn)) {
-                    const selectableBarn = getSelectableBarnFraPDL(regBarn);
+                    const selectableBarn = getSelectableBarnFraPDL(regBarn, annenForelder);
                     selectableBarnFraPDL.push(selectableBarn);
                 }
             } else {
-                const selectableFlerlinger = getSelectableFlerlingerFraPDL(regBarn, barnFødtISammePeriode);
+                const selectableFlerlinger = getSelectableFlerlingerFraPDL(
+                    regBarn,
+                    barnFødtISammePeriode,
+                    annenForelder
+                );
                 barnFødtISammePeriode.forEach((b) => {
                     fnrPåBarnSomErLagtTil.push(b.fnr);
                 });

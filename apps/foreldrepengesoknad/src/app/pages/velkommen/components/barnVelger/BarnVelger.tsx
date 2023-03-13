@@ -7,8 +7,9 @@ import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
-import { formaterFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, formaterNavnPåFlereBarn as formaterNavnPåBarn } from 'app/utils/barnUtils';
 import { SakDTO } from 'app/types/SakDTO';
+import { RegistrertAnnenForelder } from 'app/types/Person';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -34,6 +35,7 @@ export interface SelectableBarn {
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
     sak?: SakDTO;
+    annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;
     alleBarnaLever: boolean;
@@ -105,7 +107,7 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
 };
 
 const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
-    const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåFlereBarn(
+    const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåBarn(
         barn.fornavn,
         barn.etternavn,
         barn.fødselsdatoer,
@@ -114,7 +116,7 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.antallBarn,
         intl
     );
-    const fødselsdatoerTekst = formaterFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
+    const fødselsdatoerTekst = formaterFødselsdatoerPåBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =
         barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
             ? fødselsdatoerTekst

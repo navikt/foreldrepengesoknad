@@ -56,9 +56,12 @@ const AnnenForelder = () => {
             : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
     const annenForelderFraRegistrertBarn =
         registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
+
     const skalOppgiPersonalia =
         annenForelderFraRegistrertBarn === undefined ||
-        (isAnnenForelderOppgitt(annenForelder) && annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
+        (annenForelder !== undefined &&
+            isAnnenForelderOppgitt(annenForelder) &&
+            annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
 
     const onValidSubmitHandler = useCallback(
         (values: Partial<AnnenForelderFormData>) => {
