@@ -132,6 +132,7 @@ const UttaksplanStep = () => {
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
+        !søkerErAleneOmOmsorg &&
         annenForelderFnr !== undefined &&
         annenForelderFnr !== '' &&
         (barnFnr !== undefined || familiehendelsesdato !== undefined)
