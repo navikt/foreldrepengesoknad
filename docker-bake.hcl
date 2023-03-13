@@ -19,7 +19,7 @@ target "base" {
 
 target "foreldrepengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}", "testtag"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}", "ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:testtag"]
     target="prod"
     args={
         CMD="foreldrepengesoknad"
