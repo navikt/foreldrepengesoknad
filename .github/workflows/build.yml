@@ -30,5 +30,5 @@ jobs:
         # with:
         #     image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
         #     cluster: ${{ matrix.cluster }}}
-        secrets: inherit
+        # secrets: inherit
         
