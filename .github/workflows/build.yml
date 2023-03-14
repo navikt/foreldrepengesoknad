@@ -21,7 +21,6 @@ jobs:
 
     promote-foreldrepengesoknad:
         name: Deploy til ${{ matrix.cluster }}
-        if: ${{ github.ref_name == 'master' }}
         strategy:
             matrix:
                 cluster: [ dev-gcp ]
