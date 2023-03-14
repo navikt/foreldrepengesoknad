@@ -26,6 +26,7 @@ jobs:
         name: Deploy til ${{ matrix.cluster }}
         environment: ${{ matrix.cluster }}:teamforeldrepenger
         needs: build-app
+        runs-on: 'ubuntu-latest'
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         # with:
         #     image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
