@@ -22,7 +22,7 @@ jobs:
     promote-foreldrepengesoknad:
         strategy:
             matrix:
-                cluster: [ dev-gcp ]
+                cluster: [ dev-gcp, prod-gcp ]
         name: Deploy til ${{ matrix.cluster }}
         needs: build-app
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
