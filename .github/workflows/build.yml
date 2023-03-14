@@ -20,12 +20,12 @@ jobs:
         secrets: inherit
 
     promote-foreldrepengesoknad:
+        if: ${{ github.ref_name == 'master' }}
         strategy:
             matrix:
                 cluster: [ dev-gcp ]
         environment: ${{ matrix.cluster }}:teamforeldrepenger
         name: Deploy til ${{ matrix.cluster }}
-        if: ${{ github.ref_name == 'master' }}
         needs: build-app
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         with:
