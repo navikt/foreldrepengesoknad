@@ -8,7 +8,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåFlereBarn as formaterNavnPåBarn } from 'app/utils/barnUtils';
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
 
 export enum SelectableBarnType {
@@ -34,7 +34,7 @@ export interface SelectableBarn {
     fornavn?: string[];
     etternavn?: string[];
     kanSøkeOmEndring?: boolean;
-    sak?: SakDTO;
+    sak?: Sak;
     annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;

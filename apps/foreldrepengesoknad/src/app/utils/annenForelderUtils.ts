@@ -1,7 +1,7 @@
 import { intlUtils } from '@navikt/fp-common';
 import AnnenForelder, { AnnenForelderOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { RettighetType } from 'app/types/RettighetType';
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 import { IntlShape } from 'react-intl';
 
 export const getErMorUfør = (annenForelder: AnnenForelder, erFarEllerMedmor: boolean) => {
@@ -16,7 +16,7 @@ export const harAnnenForelderRettIEØS = (annenForelder: AnnenForelder): boolean
     return isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 };
 
-export const getMockAnnenForelder = (sak: SakDTO, intl: IntlShape): AnnenForelderOppgitt => {
+export const getMockAnnenForelder = (sak: Sak, intl: IntlShape): AnnenForelderOppgitt => {
     return {
         fornavn: intlUtils(intl, 'annen.forelder'),
         etternavn: '',

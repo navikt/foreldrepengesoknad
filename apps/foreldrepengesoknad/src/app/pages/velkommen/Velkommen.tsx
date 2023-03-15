@@ -34,13 +34,13 @@ import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnV
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 
 interface Props {
     fornavn: string;
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
-    saker: SakDTO[];
+    saker: Sak[];
     fnr: string;
 }
 

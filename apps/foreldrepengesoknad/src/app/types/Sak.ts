@@ -5,7 +5,7 @@ import { ÅpenBehandling } from './ÅpenBehandling';
 import { RettighetType } from './RettighetType';
 import PersonFnrDTO from './PersonFnrDTO';
 
-export interface SakDTO {
+export interface Sak {
     dekningsgrad: DekningsgradDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak: GjeldendeVedtak;

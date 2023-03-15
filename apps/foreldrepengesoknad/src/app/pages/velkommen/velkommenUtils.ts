@@ -1,4 +1,4 @@
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { Familiehendelse } from 'app/types/Familiehendelse';
@@ -50,7 +50,7 @@ export const getFødselsdatoErInnenEnDagFraDato = (fødselsdato: Date | undefine
     );
 };
 
-const getSelectableBarnFraSak = (sak: SakDTO, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
+const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): SelectableBarn => {
     const barnFnrFraSaken = sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
 
@@ -156,7 +156,7 @@ const getSelectableFlerlingerFraPDL = (
     };
 };
 
-const getSelectableBarnOptionsFromSaker = (saker: SakDTO[], registrerteBarn: RegistrertBarn[]) => {
+const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
     return saker
         .filter(
             (sak) =>
@@ -171,7 +171,7 @@ const getSelectableBarnOptionsFromSaker = (saker: SakDTO[], registrerteBarn: Reg
 const getSelectableBarnOptionsFraPDL = (
     registrerteBarn: RegistrertBarn[],
     barnFraSaker: SelectableBarn[],
-    avsluttedeSaker: SakDTO[]
+    avsluttedeSaker: Sak[]
 ): SelectableBarn[] => {
     //Vi ønsker ikke å vise barn som har avsluttet sak
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
@@ -247,7 +247,7 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarn;
 };
 
-export const getSelectableBarnOptions = (saker: SakDTO[], registrerteBarn: RegistrertBarn[]) => {
+export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);

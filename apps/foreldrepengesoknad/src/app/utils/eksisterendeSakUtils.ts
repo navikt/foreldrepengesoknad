@@ -35,7 +35,7 @@ import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 import PersonFnrDTO from 'app/types/PersonFnrDTO';
 import { getFødselsdatoErInnenEnDagFraDato } from 'app/pages/velkommen/velkommenUtils';
 
@@ -221,7 +221,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
-    eksisterendeSak: SakDTO | undefined | '',
+    eksisterendeSak: Sak | undefined | '',
     førsteUttaksdagNesteBarnsSak: Date | undefined
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
@@ -500,7 +500,6 @@ export const opprettAnnenForelderFraEksisterendeSak = (
         kanIkkeOppgis: false,
         erUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
     };
-
     const annenForelderFraSak = finnAnnenForelderForSaken(
         søkerinfo.registrerteBarn,
         ISOStringToDate(grunnlag.fødselsdato),

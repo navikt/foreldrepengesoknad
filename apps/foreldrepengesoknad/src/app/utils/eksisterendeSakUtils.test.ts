@@ -1,5 +1,5 @@
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
@@ -60,7 +60,7 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'HUNDRE',
-    } as SakDTO;
+    } as Sak;
 
     const forventetMappetEksisterendeSakMorTermin = {
         erAnnenPartsSak: false,
@@ -203,7 +203,7 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
-    } as SakDTO;
+    } as Sak;
 
     const forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett = {
         erAnnenPartsSak: false,
@@ -300,7 +300,7 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-    } as SakDTO;
+    } as Sak;
 
     const forventetResultatFar = {
         ...forventetMappetEksisterendeSakMorTermin,
@@ -379,7 +379,7 @@ describe('eksisterendeSakUtils', () => {
             ...eksisterendeSakMedØnsketJusteringFarFødsel.familiehendelse,
             fødselsdato: undefined,
         },
-    } as SakDTO;
+    } as Sak;
 
     const forventetResultatFarTermin = {
         ...forventetResultatFar,

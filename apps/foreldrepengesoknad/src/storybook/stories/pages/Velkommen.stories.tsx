@@ -11,7 +11,7 @@ import { RettighetType } from 'app/types/RettighetType';
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
-import { SakDTO } from 'app/types/SakDTO';
+import { Sak } from 'app/types/Sak';
 import withRouter from '../../decorators/withRouter';
 
 export default {
@@ -22,7 +22,7 @@ export default {
 
 interface Props {
     harGodkjentVilkår: boolean;
-    saker: SakDTO[];
+    saker: Sak[];
     søkerinfo: SøkerinfoDTO;
 }
 
@@ -60,14 +60,14 @@ interface SakInfo {
     omsorgsovertakelse?: string;
 }
 
-const getSakMedBarn = (sak: SakDTO, barnFnr: string[]): SakDTO => {
+const getSakMedBarn = (sak: Sak, barnFnr: string[]): Sak => {
     const barna = barnFnr.map((fnrBarn) => {
         return { fnr: fnrBarn };
     });
     return { ...sak, barn: barna };
 };
 
-const getSak = (sakinfo: SakInfo): SakDTO => {
+const getSak = (sakinfo: SakInfo): Sak => {
     return {
         dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
         familiehendelse: {
@@ -218,7 +218,7 @@ const sakMedTrillinger = getSak({
 });
 
 const flereSaker = [sakOpprettetFødsel, { ...sakUnderBehandlingTermin, saksnummer: '555555' }];
-const ingenSaker: SakDTO[] = [];
+const ingenSaker: Sak[] = [];
 
 export const Default = Template.bind({});
 Default.args = {
