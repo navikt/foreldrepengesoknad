@@ -149,7 +149,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
             </Block>
             <Block>
                 <UtvidetInformasjon apneLabel={intlUtils(intl, 'pictureScanninGuide.apneLabel')}>
-                    <PictureScanningGuide />
+                    <PictureScanningGuide backgroundColor='white' />
                 </UtvidetInformasjon>
             </Block>
         </>
