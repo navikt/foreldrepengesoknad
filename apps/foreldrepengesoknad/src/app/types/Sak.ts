@@ -1,14 +1,11 @@
-import { RegistrertAnnenForelder } from './Person';
 import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
 import { GjeldendeVedtak } from './GjeldendeVedtak';
 import { ÅpenBehandling } from './ÅpenBehandling';
-import { BarnFraSak } from './BarnFraSak';
 import { RettighetType } from './RettighetType';
+import PersonFnrDTO from './PersonFnrDTO';
 
 export interface Sak {
-    annenPart: RegistrertAnnenForelder;
-    barn: BarnFraSak[];
     dekningsgrad: DekningsgradDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak: GjeldendeVedtak;
@@ -23,4 +20,6 @@ export interface Sak {
     ønskerJustertUttakVedFødsel: boolean;
     sisteSøknadMottattDato: string;
     åpenBehandling?: ÅpenBehandling;
+    annenPart?: PersonFnrDTO;
+    barn?: PersonFnrDTO[];
 }

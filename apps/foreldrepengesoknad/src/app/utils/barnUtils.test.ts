@@ -1,4 +1,4 @@
-import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes } from './barnUtils';
+import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 import Barn, { BarnType } from 'app/context/types/Barn';
 import { RegistrertBarn } from 'app/types/Person';
 
@@ -49,9 +49,9 @@ describe('barnUtils', () => {
             },
         ] as RegistrertBarn[];
 
-        const registrert = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+        const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
-        expect(registrert).toEqual(registrerteBarn[0]);
+        expect(registrert).toBeUndefined;
     });
 
     it('skal ikke finne registrert barn når barn er ufødt', () => {
@@ -65,7 +65,7 @@ describe('barnUtils', () => {
             },
         ] as RegistrertBarn[];
 
-        const registrert = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+        const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
         expect(registrert).toBeUndefined();
     });
@@ -82,9 +82,9 @@ describe('barnUtils', () => {
             },
         ] as RegistrertBarn[];
 
-        const registrert = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+        const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
-        expect(registrert).toBeUndefined();
+        expect(registrert!.length).toEqual(0);
     });
 
     it('skal ikke finne registrert barn når ingen barn er registrert fra før', () => {
@@ -94,7 +94,7 @@ describe('barnUtils', () => {
         } as Barn;
         const registrerteBarn = [] as RegistrertBarn[];
 
-        const registrert = getRegistrertBarnOmDetFinnes(barn, registrerteBarn);
+        const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
         expect(registrert).toBeUndefined();
     });

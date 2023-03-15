@@ -28,8 +28,8 @@ import { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import dayjs from 'dayjs';
-import { getErDødfødtBarn, getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFødselsdatoErInnenEnDagFraDato } from 'app/pages/velkommen/velkommenUtils';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -61,22 +61,21 @@ const OmBarnet: React.FunctionComponent = () => {
 
     const familiehendelsesdato = barn ? ISOStringToDate(getFamiliehendelsedato(barn)) : undefined;
 
-    const dødfødteBarnMedSammeFødselsdato =
+    const dødfødteUtenFnrMedSammeFødselsdato =
         barn && isFødtBarn(barn)
             ? registrerteBarn.filter(
                   (barn: RegistrertBarn) =>
-                      getErDødfødtBarn(barn) &&
-                      dayjs(barn.fødselsdato).isSameOrAfter(dayjs(familiehendelsesdato).subtract(1, 'd')) &&
-                      dayjs(barn.fødselsdato).isSameOrBefore(dayjs(familiehendelsesdato).add(1, 'd'))
+                      barn.fnr === undefined &&
+                      getFødselsdatoErInnenEnDagFraDato(barn.fødselsdato, familiehendelsesdato)
               )
             : [];
 
     const valgteRegistrerteBarn = !søknadGjelderEtNyttBarn
-        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteBarnMedSammeFødselsdato)
+        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
         : undefined;
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(barn, registrerteBarn, arbeidsforhold)}
+            initialValues={getOmBarnetInitialValues(barn, arbeidsforhold)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({

@@ -5,7 +5,13 @@ import { composeStories } from '@storybook/testing-react';
 import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
 import dayjs from 'dayjs';
 
-const { Default, SkalOppgiPersonalia, ForFar } = composeStories(stories);
+const {
+    Default,
+    SkalOppgiPersonalia,
+    ForFar,
+    SkalOppgiPersonaliaNavnMangler,
+    SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike,
+} = composeStories(stories);
 const GÅ_VIDERE_KNAPP = 'Gå videre';
 const ALENE_OMSORG_LABEL = 'Er du alene om omsorgen av barnet?';
 const JA = 'Ja';
@@ -63,6 +69,7 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet, ikke rett til foreldrepenger i Norge, opphold men ikke optjening i EØS', async () => {
+        const user = userEvent.setup();
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -70,15 +77,15 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(NEI));
+        await user.click(screen.getByText(NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[1]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(JA)[2]);
+        await user.click(screen.getAllByText(JA)[2]);
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[3]);
+        await user.click(screen.getAllByText(NEI)[3]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
@@ -146,6 +153,18 @@ describe('<AnnenForelder>', () => {
         await user.click(screen.getByRole('checkbox'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+    });
+
+    it('skal måtte oppgi navn og fornavn annen forelder', async () => {
+        render(<SkalOppgiPersonaliaNavnMangler />);
+        expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+    });
+
+    it('skal måtte oppgi navn og fornavn annen forelder der fnr på annen forelder på saken og fnr annen forelder på barnet er ulike', async () => {
+        render(<SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike />);
+        expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
+        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
     });
 
     it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {

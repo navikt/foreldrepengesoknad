@@ -25,12 +25,12 @@ const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[] | undefined, 
         : false;
 };
 
-export const getRegistrertBarnOmDetFinnes = (
+export const getRegistrerteBarnOmDeFinnes = (
     barn: Barn,
     registrerteBarn: RegistrertBarn[]
-): RegistrertBarn | undefined => {
+): RegistrertBarn[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
-        ? registrerteBarn.find(
+        ? registrerteBarn.filter(
               (regBarn) =>
                   barn.fnr?.includes(regBarn.fnr) ||
                   barnFødselsdatoLikSakFødselsdato(barn.fødselsdatoer, regBarn.fødselsdato)
@@ -54,19 +54,18 @@ export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: Registrer
 };
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn > 1) {
-        return antallBarn > 2 ? intlUtils(intl, 'flerlinger') : intlUtils(intl, 'tvillinger');
+    if (antallBarn === 1) {
+        return intlUtils(intl, 'barn');
+    } else if (antallBarn === 2) {
+        return intlUtils(intl, 'tvillinger');
+    } else if (antallBarn === 3) {
+        return intlUtils(intl, 'trillinger');
     }
-    return intlUtils(intl, 'barn');
+    return intlUtils(intl, 'flerlinger');
 };
 
-export const getErDødfødtBarn = (barn: RegistrertBarn) => {
-    return (
-        barn.dødsdato &&
-        dayjs(barn.fødselsdato).isSame(barn.dødsdato, 'd') &&
-        barn.fornavn === undefined &&
-        barn.etternavn === undefined
-    );
+export const getLeverBarnet = (barn: RegistrertBarn) => {
+    return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
@@ -84,12 +83,35 @@ export const getAndreBarnFødtSammenMedBarnet = (
     );
 };
 
+export const getTittelBarnNårNavnSkalIkkeVises = (
+    omsorgsovertagelsesdato: Date | undefined,
+    fødselsdatoer: Date[] | undefined,
+    antallBarn: number,
+    intl: IntlShape
+): string => {
+    if (omsorgsovertagelsesdato !== undefined) {
+        return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
+            adopsjonsdato: formatDate(omsorgsovertagelsesdato),
+        });
+    } else {
+        const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
+        const barnTekst = getTekstForAntallBarn(antallBarn, intl);
+
+        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
+            ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.barn', {
+                  barnTekst,
+                  fødselsdato: fødselsdatoTekst,
+              })
+            : '';
+    }
+};
+
 export const formaterNavnPåFlereBarn = (
     fornavn: string[] | undefined,
     etternavn: string[] | undefined,
     fødselsdatoer: Date[] | undefined,
     omsorgsovertagelsesdato: Date | undefined,
-    enAvBarnaErDødfødt: boolean | undefined,
+    alleBarnaLever: boolean,
     antallBarn: number,
     intl: IntlShape
 ): string => {
@@ -98,23 +120,9 @@ export const formaterNavnPåFlereBarn = (
         fornavn.length === 0 ||
         etternavn === undefined ||
         etternavn.length === 0 ||
-        !!enAvBarnaErDødfødt
+        !alleBarnaLever
     ) {
-        if (omsorgsovertagelsesdato !== undefined) {
-            return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
-                adopsjonsdato: formatDate(omsorgsovertagelsesdato),
-            });
-        } else {
-            const fødselsdatoTekst = formateFødselsdatoerPåFlereBarn(fødselsdatoer);
-            const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-
-            return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-                ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.barn', {
-                      barnTekst,
-                      fødselsdato: fødselsdatoTekst,
-                  })
-                : '';
-        }
+        return getTittelBarnNårNavnSkalIkkeVises(omsorgsovertagelsesdato, fødselsdatoer, antallBarn, intl);
     }
 
     const etterNavnet = etternavn[0];
@@ -126,7 +134,7 @@ export const formaterNavnPåFlereBarn = (
     return `${fornavn[0]} ${etternavn}`;
 };
 
-export const formateFødselsdatoerPåFlereBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }

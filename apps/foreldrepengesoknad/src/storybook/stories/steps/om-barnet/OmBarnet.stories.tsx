@@ -3,6 +3,7 @@ import { Story } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import søkerinfo from './testdata/søkerinfo.json';
+import søkerinfoMedDødTrilling from './testdata/søkerinfoMedDødTrilling.json';
 import context from './testdata/context.json';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -168,4 +169,26 @@ RegistrertBarnAdopsjonMor.args = {
         søknadGjelderEtNyttBarn: false,
     } as ForeldrepengesøknadContextState,
     søkerinfo,
+};
+
+export const RegistrertBarnTrillingerDerEnErDød = Template.bind({});
+RegistrertBarnTrillingerDerEnErDød.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'mor',
+            },
+            barn: {
+                antallBarn: 3,
+                fnr: ['21091981146', '31091981147', '31091981148'],
+                fødselsdatoer: [new Date('2023-01-02')],
+                type: BarnType.FØDT,
+            },
+        },
+        søknadGjelderEtNyttBarn: false,
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: søkerinfoMedDødTrilling,
 };
