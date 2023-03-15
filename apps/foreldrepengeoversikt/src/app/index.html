@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="nb">
+    <head>
+        <title>Dine foreldrepenger</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Her finner du alt om din sak om foreldrepenger, svangerskapspenger eller engangssøknad. Du kan sende inn ny søknad eller ettersende vedlegg"
+        />
+        <meta property="og:title" content="Innsyn - www.nav.no" />
+        <meta
+            property="og:description"
+            content="Her finner du alt om din sak om foreldrepenger, svangerskapspenger eller engangssøknad. Du kan sende inn ny søknad eller ettersende vedlegg"
+        />
+        <script charset="UTF-8">
+            try {
+                window['adrum-start-time'] = new Date().getTime();
+                (function (config) {
+                    if (window.location.href.indexOf('foreldrepenger.nav.no') > -1) {
+                        config.adrumExtUrlHttps = 'https://jsagent.nav.no';
+                        config.beaconUrlHttps = 'https://eumgw.nav.no';
+                        config.appKey = 'EUM-AAB-AXR';
+                        config.xd = { enable: false };
+                    }
+                })(window['adrum-config'] || (window['adrum-config'] = {}));
+            } catch {}
+        </script>
+        <script src="https://jsagent.nav.no/adrum/adrum.js"></script>
+        {{{NAV_SCRIPTS}}} {{{NAV_STYLES}}} {{{NAV_MEGAMENU_RESOURCES}}}
+    </head>
+    <body>
+        {{{NAV_HEADING}}}
+        <div id="app" role="main"></div>
+        <div id="modalContent"></div>
+        <script type="text/javascript" src="/dist/settings.js"></script>
+        {{{NAV_FOOTER}}}
+    </body>
+</html>

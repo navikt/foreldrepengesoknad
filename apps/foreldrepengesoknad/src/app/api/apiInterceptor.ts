@@ -20,8 +20,6 @@ const getAxiosInstance = (fnr?: string) => {
             return response;
         },
         (response: AxiosError) => {
-            if (response.response && response.response.status === 409) {
-            }
             return Promise.reject(response);
         }
     );

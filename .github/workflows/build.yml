@@ -20,22 +20,46 @@ jobs:
         secrets: inherit
 
     promote-foreldrepengesoknad-dev:
-        name: Deploy til dev
+        name: Deploy foreldrepengesøknad til dev
         if: ${{ github.ref_name == 'master' }}
         needs: build-app
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
+            app: foreldrepengesoknad
         secrets: inherit
 
     promote-foreldrepengesoknad-prod:
-        name: Deploy til prod
+        name: Deploy foreldrepengesøknad til prod
         if: ${{ github.ref_name == 'master' }}
         needs: [promote-foreldrepengesoknad-dev, build-app]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
+            app: foreldrepengesoknad
+        secrets: inherit
+
+    promote-foreldrepengeoversikt-dev:
+        name: Deploy foreldrepengeoversikt til dev
+        if: ${{ github.ref_name == 'master' }}
+        needs: build-app
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        with:
+            image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
+            cluster: dev-gcp
+            app: foreldrepengeoversikt
+        secrets: inherit
+
+    promote-foreldrepengeoversikt-prod:
+        name: Deploy foreldrepengeoversikt til prod
+        if: ${{ github.ref_name == 'master' }}
+        needs: [promote-foreldrepengeoversikt-dev, build-app]
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        with:
+            image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
+            cluster: prod-gcp
+            app: foreldrepengeoversikt
         secrets: inherit
         
