@@ -271,7 +271,6 @@ describe('<Velkommen>', () => {
 
     it('skal vise tvillinger fra PDL uten navn når et av barna døde under fødsel for mindre enn 3 mnd siden', async () => {
         MockDate.set(new Date('2022-10-25'));
-        console.log('Date:', new Date());
         render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />);
         expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
         expect(screen.getByText('Velkommen til foreldrepengesøknaden')).toBeInTheDocument();

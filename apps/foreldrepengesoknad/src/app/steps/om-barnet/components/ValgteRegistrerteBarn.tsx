@@ -24,6 +24,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const sortedBarn = valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
     const fødselsdatoer = sortedBarn.map((b) => b.fødselsdato);
     const formattertFødselsdato = formaterFødselsdatoerPåBarn(fødselsdatoer);
+    const fødselsdato = sortedBarn[0].fødselsdato;
     return (
         <>
             <Block padBottom="l">
@@ -60,12 +61,12 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
                     dayPickerProps={{
-                        initialMonth: sortedBarn[0].fødselsdato,
+                        initialMonth: fødselsdato,
                     }}
-                    minDate={dayjs(sortedBarn[0].fødselsdato).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(sortedBarn[0].fødselsdato).add(6, 'months').toDate()}
+                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
+                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}
-                    validate={validateTermindatoFødsel(dateToISOString(sortedBarn[0].fødselsdato), intl)}
+                    validate={validateTermindatoFødsel(dateToISOString(fødselsdato), intl)}
                 />
             </Block>
         </>

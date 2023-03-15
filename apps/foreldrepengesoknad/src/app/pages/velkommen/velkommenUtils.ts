@@ -40,7 +40,10 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return SelectableBarnType.UFØDT;
 };
 
-export const getFødselsdatoErInnenEnDagFraDato = (fødselsdato: Date, dato: Date) => {
+export const getFødselsdatoErInnenEnDagFraDato = (fødselsdato: Date | undefined, dato: Date | undefined): boolean => {
+    if (fødselsdato === undefined || dato === undefined) {
+        return false;
+    }
     return (
         dayjs(fødselsdato).isSameOrAfter(dayjs(dato).subtract(1, 'day'), 'day') &&
         dayjs(fødselsdato).isSameOrBefore(dayjs(dato).add(1, 'day'), 'day')
@@ -139,20 +142,18 @@ const getSelectableFlerlingerFraPDL = (
         return undefined;
     }
 
-    if (alleBarna.length > 0) {
-        return {
-            id: guid(),
-            type: SelectableBarnType.IKKE_UTFYLT,
-            antallBarn: alleBarna.length,
-            fødselsdatoer: alleBarna.map((b) => b.fødselsdato),
-            fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
-            etternavn: alleBarna.map((b) => b.etternavn),
-            fnr: alleBarna.map((b) => b.fnr),
-            sortableDato: alleBarna[0].fødselsdato,
-            alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
-            annenForelder,
-        };
-    }
+    return {
+        id: guid(),
+        type: SelectableBarnType.IKKE_UTFYLT,
+        antallBarn: alleBarna.length,
+        fødselsdatoer: alleBarna.map((b) => b.fødselsdato),
+        fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
+        etternavn: alleBarna.map((b) => b.etternavn),
+        fnr: alleBarna.map((b) => b.fnr),
+        sortableDato: alleBarna[0].fødselsdato,
+        alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
+        annenForelder,
+    };
 };
 
 const getSelectableBarnOptionsFromSaker = (saker: SakDTO[], registrerteBarn: RegistrertBarn[]) => {
@@ -175,16 +176,8 @@ const getSelectableBarnOptionsFraPDL = (
     //Vi ønsker ikke å vise barn som har avsluttet sak
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
         (regBarn) =>
-            !avsluttedeSaker.find(
-                (sak) =>
-                    dayjs(regBarn.fødselsdato).isSameOrAfter(
-                        dayjs(sak.familiehendelse.fødselsdato).subtract(1, 'day'),
-                        'day'
-                    ) &&
-                    dayjs(regBarn.fødselsdato).isSameOrBefore(
-                        dayjs(sak.familiehendelse.fødselsdato).add(1, 'day'),
-                        'day'
-                    )
+            !avsluttedeSaker.find((sak) =>
+                getFødselsdatoErInnenEnDagFraDato(regBarn.fødselsdato, ISOStringToDate(sak.familiehendelse.fødselsdato))
             )
     );
 

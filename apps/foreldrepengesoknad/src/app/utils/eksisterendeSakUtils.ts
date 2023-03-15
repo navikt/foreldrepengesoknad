@@ -403,7 +403,10 @@ const finnAnnenForelderForSaken = (
     if ((valgtBarnFnr === undefined && fødselsdato === undefined) || !annenForeldersFnrFraSaken) {
         return undefined;
     }
-    const barnMedGittFnr = valgtBarnFnr !== undefined ? barn.find((b) => valgtBarnFnr.includes(b.fnr)) : undefined;
+    const barnMedGittFnr =
+        valgtBarnFnr !== undefined
+            ? barn.find((b) => valgtBarnFnr.includes(b.fnr) && b.annenForelder !== undefined)
+            : undefined;
     const barnMedGittFødselsdato =
         fødselsdato !== undefined
             ? barn.filter(
@@ -484,10 +487,12 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined
 ): AnnenForelder => {
+    const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
+
     const mockAnnenForelder = {
         fornavn: intlUtils(intl, 'annen.forelder'),
         etternavn: '',
-        fnr: annenPartFraSak && annenPartFraSak.fnr ? annenPartFraSak.fnr : '',
+        fnr: fnrAnnenForelderFraSak ? fnrAnnenForelderFraSak : '',
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
             ? !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
             : !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -495,7 +500,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
         kanIkkeOppgis: false,
         erUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
     };
-    const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
+
     const annenForelderFraSak = finnAnnenForelderForSaken(
         søkerinfo.registrerteBarn,
         ISOStringToDate(grunnlag.fødselsdato),
