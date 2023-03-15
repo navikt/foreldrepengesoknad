@@ -26,12 +26,6 @@ describe('eksisterendeSakUtils', () => {
         harAnnenForelderTilsvarendeRettEØS: false,
         ønskerJustertUttakVedFødsel: false,
         rettighetType: 'BEGGE_RETT',
-        annenPart: {
-            type: 'person',
-            fnr: '06057509994',
-            fornavn: 'Ändlös',
-            etternavn: 'Tunfisk',
-        },
         familiehendelse: {
             termindato: '2022-11-30',
             antallBarn: 1,
@@ -65,7 +59,6 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-        barn: [],
         dekningsgrad: 'HUNDRE',
     } as Sak;
 
@@ -90,8 +83,6 @@ describe('eksisterendeSakUtils', () => {
             søkerErFarEllerMedmor: false,
             ønskerJustertUttakVedFødsel: false,
             harAnnenForelderTilsvarendeRettEØS: false,
-            barn: [],
-            annenPart: { type: 'person', etternavn: 'Tunfisk', fornavn: 'Ändlös', fnr: '06057509994' },
         },
         saksperioder: [
             {
@@ -194,7 +185,6 @@ describe('eksisterendeSakUtils', () => {
         harAnnenForelderTilsvarendeRettEØS: false,
         ønskerJustertUttakVedFødsel: false,
         rettighetType: 'BARE_SØKER_RETT',
-        annenPart: { type: 'person', fnr: '07459332779', fornavn: 'Munter', etternavn: 'Tyggis' },
         familiehendelse: { fødselsdato: '2022-10-01', antallBarn: 2, omsorgsovertakelse: '2022-12-24' },
         gjeldendeVedtak: {
             perioder: [
@@ -212,16 +202,13 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-        barn: [],
         dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
     } as Sak;
 
     const forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett = {
         erAnnenPartsSak: false,
         grunnlag: {
-            annenPart: { type: 'person', etternavn: 'Tyggis', fornavn: 'Munter', fnr: '07459332779' },
             antallBarn: 2,
-            barn: [],
             dekningsgrad: '80',
             erBarnetFødt: true,
             erDeltUttak: false,

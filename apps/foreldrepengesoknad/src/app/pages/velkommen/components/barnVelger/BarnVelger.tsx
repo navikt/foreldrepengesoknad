@@ -5,11 +5,11 @@ import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Sak } from 'app/types/Sak';
-import { RegistrertAnnenForelder } from 'app/types/Person';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
-import { formateFødselsdatoerPåFlereBarn, formaterNavnPåFlereBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, formaterNavnPåFlereBarn as formaterNavnPåBarn } from 'app/utils/barnUtils';
+import { Sak } from 'app/types/Sak';
+import { RegistrertAnnenForelder } from 'app/types/Person';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -38,7 +38,7 @@ export interface SelectableBarn {
     annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;
-    minstEnErDødfødt?: boolean;
+    alleBarnaLever: boolean;
 }
 
 interface Props {
@@ -64,31 +64,39 @@ const getSakstatus = (sakErFerdigbehandlet: boolean) => {
     return <SøknadStatusEtikett sakErFerdigbehandlet={sakErFerdigbehandlet}></SøknadStatusEtikett>;
 };
 
+const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: IntlShape): string => {
+    if (antallBarn === 1) {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
+            termin: formatDate(termindato),
+        });
+    } else if (antallBarn === 2) {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
+            termin: formatDate(termindato),
+        });
+    } else if (antallBarn === 3) {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.trillinger', {
+            termin: formatDate(termindato),
+        });
+    } else {
+        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
+            termin: formatDate(termindato),
+        });
+    }
+};
+
 const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
-    let labelTekst;
+    const tittel = getTittelForUfødtBarn(barn.antallBarn, barn.termindato!, intl);
     const saksStatus = barn.sak !== undefined ? getSakstatus(barn.sak.åpenBehandling === undefined) : undefined;
     const saksnummerTekst =
         barn.sak !== undefined
             ? intlUtils(intl, 'velkommen.barnVelger.saksnummer', { saksnummer: barn.sak.saksnummer })
             : '';
     const harSak = barn.sak !== undefined;
-    if (barn.antallBarn === 1) {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
-            termin: formatDate(barn.termindato!),
-        });
-    } else if (barn.antallBarn === 2) {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
-            termin: formatDate(barn.termindato!),
-        });
-    } else {
-        labelTekst = intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
-            termin: formatDate(barn.termindato!),
-        });
-    }
+
     return {
         label: (
             <>
-                <b> {labelTekst}</b>
+                <b> {tittel}</b>
                 {harSak && (
                     <div>
                         <p>{saksnummerTekst}</p>
@@ -103,16 +111,16 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
 };
 
 const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
-    const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåFlereBarn(
+    const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåBarn(
         barn.fornavn,
         barn.etternavn,
         barn.fødselsdatoer,
         barn.omsorgsovertagelse,
-        barn.minstEnErDødfødt,
+        barn.alleBarnaLever,
         barn.antallBarn,
         intl
     );
-    const fødselsdatoerTekst = formateFødselsdatoerPåFlereBarn(barn.fødselsdatoer);
+    const fødselsdatoerTekst = formaterFødselsdatoerPåBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =
         barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
             ? fødselsdatoerTekst
@@ -131,12 +139,11 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         label: (
             <>
                 <b>{navnTekstEllerBarnMedUkjentNavnTekst}</b>
-                {barn.fornavn !== undefined &&
-                    barn.fornavn.filter((n) => n !== undefined && n.trim() !== '').length > 0 && (
-                        <p>
-                            {situasjonTekst} {fødtAdoptertDatoTekst}
-                        </p>
-                    )}
+                {barn.alleBarnaLever && (
+                    <p>
+                        {situasjonTekst} {fødtAdoptertDatoTekst}
+                    </p>
+                )}
                 <p>{saksnummerTekst}</p>
                 {saksStatus !== undefined && saksStatus}
             </>

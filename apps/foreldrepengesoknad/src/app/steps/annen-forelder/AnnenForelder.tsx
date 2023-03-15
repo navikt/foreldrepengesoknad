@@ -10,7 +10,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { getFamiliehendelsedato, getRegistrertBarnOmDetFinnes } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -37,6 +37,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -48,9 +49,19 @@ const AnnenForelder = () => {
     } = useSøknad();
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
     const søkerinfo = useSøkerinfo();
-    const registrertBarn = getRegistrertBarnOmDetFinnes(barn, søkerinfo.registrerteBarn);
+    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerinfo.registrerteBarn);
+    const registrertBarnMedAnnenForelder =
+        registrerteBarn === undefined || registrerteBarn.length === 0
+            ? undefined
+            : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
+    const annenForelderFraRegistrertBarn =
+        registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
+
     const skalOppgiPersonalia =
-        registrertBarn === undefined || (registrertBarn !== undefined && registrertBarn.annenForelder === undefined);
+        annenForelderFraRegistrertBarn === undefined ||
+        (annenForelder !== undefined &&
+            isAnnenForelderOppgitt(annenForelder) &&
+            annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
 
     const onValidSubmitHandler = useCallback(
         (values: Partial<AnnenForelderFormData>) => {
@@ -91,7 +102,13 @@ const AnnenForelder = () => {
 
     return (
         <AnnenForelderFormComponents.FormikWrapper
-            initialValues={getAnnenForelderFormInitialValues(annenForelder, barn, søker, registrertBarn)}
+            initialValues={getAnnenForelderFormInitialValues(
+                annenForelder,
+                barn,
+                søker,
+                annenForelderFraRegistrertBarn,
+                intl
+            )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderQuestionsConfig.getVisbility({
@@ -123,7 +140,9 @@ const AnnenForelder = () => {
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
-                            cleanup={(values) => cleanAnnenForelderFormData(values, visibility, registrertBarn)}
+                            cleanup={(values) =>
+                                cleanAnnenForelderFormData(values, visibility, annenForelderFraRegistrertBarn)
+                            }
                             includeValidationSummary={true}
                         >
                             {skalOppgiPersonalia && (
@@ -141,8 +160,8 @@ const AnnenForelder = () => {
                             {!skalOppgiPersonalia && (
                                 <Block padBottom="l">
                                     <RegistrertePersonalia
-                                        person={registrertBarn.annenForelder!}
-                                        fødselsnummerForVisning={registrertBarn.annenForelder!.fnr}
+                                        person={annenForelderFraRegistrertBarn}
+                                        fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
                                     />
                                 </Block>
                             )}

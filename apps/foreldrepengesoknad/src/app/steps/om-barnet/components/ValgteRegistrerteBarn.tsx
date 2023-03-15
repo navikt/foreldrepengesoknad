@@ -9,34 +9,22 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Element } from 'nav-frontend-typografi';
-import { getDødeBarnetForMerEnn3MånederSiden, getErDødfødtBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
+import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
 
 interface Props {
     valgteBarn: RegistrertBarn[];
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
 }
 
-const sorterRegistrerteBarn = (b1: RegistrertBarn, b2: RegistrertBarn): number => {
-    if (b1.fornavn === b2.fornavn) {
-        return 0;
-    }
-    return b1.fornavn < b2.fornavn ? -1 : 1;
-};
-
 const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, visibility }: Props) => {
     const intl = useIntl();
-    const sorterteRegistrerteBarn = valgteBarn.sort(sorterRegistrerteBarn);
     const antallBarn = valgteBarn.length;
+    const alleBarnaLever = valgteBarn.every((b) => getLeverBarnet(b));
+    valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
+    const fødselsdatoer = valgteBarn.map((b) => b.fødselsdato);
+    const formattertFødselsdato = formaterFødselsdatoerPåBarn(fødselsdatoer);
     const fødselsdato = valgteBarn[0].fødselsdato;
-    const barnaDødfødtForMindreEnn3MndSiden = valgteBarn.filter(
-        (b) => getErDødfødtBarn(b) && !getDødeBarnetForMerEnn3MånederSiden(b)
-    );
-    const minstEttAvBarnaErDødfødtForMindreEnn3MndSiden = barnaDødfødtForMindreEnn3MndSiden.length > 0;
-    const alleBarnaErDødfødtForMindreEnn3MndSiden = barnaDødfødtForMindreEnn3MndSiden.length === valgteBarn.length;
-    const barnForVisning =
-        antallBarn > 1 && !alleBarnaErDødfødtForMindreEnn3MndSiden
-            ? sorterteRegistrerteBarn.filter((b) => !getErDødfødtBarn(b))
-            : sorterteRegistrerteBarn;
     return (
         <>
             <Block padBottom="l">
@@ -46,21 +34,23 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                             <FormattedMessage id="omBarnet.valgteBarn.tittel" values={{ antallBarn }} />
                         </Element>
                     </Block>
-                    {!minstEttAvBarnaErDødfødtForMindreEnn3MndSiden ? (
-                        barnForVisning.map((valgtBarn: RegistrertBarn, index: number) => (
+                    {alleBarnaLever ? (
+                        valgteBarn.map((barn: RegistrertBarn, index: number) => (
                             <Block padBottom="l" key={index}>
-                                <RegistrertePersonalia
-                                    person={valgtBarn}
-                                    fødselsdatoForVisning={dateToISOString(valgtBarn.fødselsdato)}
-                                />
+                                <RegistrertePersonalia person={barn} fødselsdatoForVisning={formattertFødselsdato} />
                             </Block>
                         ))
                     ) : (
                         <Block padBottom="l">
                             <RegistrertePersonalia
-                                person={barnForVisning[0]}
-                                fødselsdatoForVisning={dateToISOString(barnForVisning[0].fødselsdato)}
-                                altTekstHvisUkjentNavn={getTekstForAntallBarn(valgteBarn.length, intl)}
+                                person={valgteBarn[0]}
+                                fødselsdatoForVisning={formattertFødselsdato}
+                                altTekstHvisUkjentNavn={getTittelBarnNårNavnSkalIkkeVises(
+                                    undefined,
+                                    fødselsdatoer,
+                                    valgteBarn.length,
+                                    intl
+                                )}
                             />
                         </Block>
                     )}
