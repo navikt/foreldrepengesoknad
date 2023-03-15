@@ -1,12 +1,11 @@
 import { BodyShort, Button, Link, Loader } from '@navikt/ds-react';
-import { Link as LinkInternal } from 'react-router-dom';
+import { Link as LinkInternal, useParams } from 'react-router-dom';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import { Sak } from 'app/types/Sak';
 import { EngangsstønadSak } from 'app/types/EngangsstønadSak';
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import DokumentHendelse from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
 import { ExternalLink } from '@navikt/ds-icons';
@@ -56,7 +55,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak }) => {
         : undefined;
 
     const alleHendelser = venteHendelser ? tidslinjeHendelser.concat(venteHendelser) : tidslinjeHendelser;
-    const sorterteHendelser = alleHendelser.sort(sorterTidslinjehendelser);
+    const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
 
     return (
         <div>

@@ -20,8 +20,8 @@ const HvaLeggerNAVVektPå: React.FunctionComponent = () => {
     return (
         <ReadMore header={intlUtils(intl, 'minidialog.hvaLeggerNAVVektPå.tilbakekreving.tittel')}>
             <ul className={bem.element('tekst')}>
-                {punktTekster.map((punkt, index) => (
-                    <li key={`${punkt}+${index}`}>
+                {punktTekster.map((punkt) => (
+                    <li key={`${punkt}`}>
                         <FormattedMessage id={punkt} />
                     </li>
                 ))}

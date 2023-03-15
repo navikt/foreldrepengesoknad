@@ -107,7 +107,7 @@ export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): 
 export const getTidligstBehandlingsDatoForTidligSøknad = (åpenBehandling: ÅpenBehandling): Date => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
     const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
-    return Uttaksdagen(førsteUttaksdagISaken!).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+    return Uttaksdagen(førsteUttaksdagISaken).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
 const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: Tidslinjehendelse[]): Date | undefined => {

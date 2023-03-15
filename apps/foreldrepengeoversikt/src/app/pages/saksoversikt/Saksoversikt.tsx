@@ -60,12 +60,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     <Oppgaver
                         minidialogerData={aktiveMinidialogerForSaken}
                         minidialogerError={minidialogerError}
-                        saksnummer={gjeldendeSak!.saksnummer}
+                        saksnummer={gjeldendeSak.saksnummer}
                     />
                 </ContentSection>
             )}
             <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
-                <Tidslinje sak={gjeldendeSak!} />
+                <Tidslinje sak={gjeldendeSak} />
             </ContentSection>
             <ContentSection padding="none">
                 <SeDokumenter />

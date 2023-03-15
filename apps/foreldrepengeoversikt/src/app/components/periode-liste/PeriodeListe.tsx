@@ -3,7 +3,7 @@ import * as React from 'react';
 import PeriodeListeItem from '../periode-liste-item/PeriodeListeItem';
 import { BodyShort } from '@navikt/ds-react';
 import './periode-liste.css';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, guid } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/utils/personUtils';
 
 interface Props {
@@ -28,10 +28,10 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
             <div className={bem.element('block')}>
                 {periodeListe &&
                     periodeListe.length > 0 &&
-                    periodeListe.map((periode, index) => {
+                    periodeListe.map((periode) => {
                         return (
                             <PeriodeListeItem
-                                key={index}
+                                key={guid()}
                                 periode={periode}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 erAleneOmOmsorg={erAleneOmOmsorg}

@@ -3,11 +3,10 @@ import { bemUtils } from '@navikt/fp-common';
 import { Attachment as AttachmentType } from 'app/types/Attachment';
 import { Button, Link, Loader } from '@navikt/ds-react';
 import { bytesString } from 'app/utils/attachmentUtils';
-import { FileSuccess } from '@navikt/ds-icons';
-import { Delete } from '@navikt/ds-icons';
+import { FileSuccess, Delete } from '@navikt/ds-icons';
+import classNames from 'classnames';
 
 import './attachment.css';
-import classNames from 'classnames';
 
 export interface Props {
     attachment: AttachmentType;

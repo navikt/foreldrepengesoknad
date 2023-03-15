@@ -18,8 +18,7 @@ import { getAlleYtelser } from 'app/utils/sakerUtils';
 import { getRelevanteSkjemanummer } from 'app/utils/skjemanummerUtils';
 import React, { useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { EttersendingFormComponents, EttersendingFormField, EttersendingFormData } from './ettersendFormConfig';
 
 import './ettersending-page.css';
