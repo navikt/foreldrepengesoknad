@@ -7,6 +7,8 @@ const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
 const compression = require('compression');
 
+server.disable('x-powered-by');
+
 server.use(compression());
 
 server.set('views', `${__dirname}/dist`);

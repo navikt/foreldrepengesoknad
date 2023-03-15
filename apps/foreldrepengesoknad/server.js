@@ -1,12 +1,13 @@
 const express = require('express');
 const server = express();
 server.use(express.json());
-
 const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
 var compression = require('compression');
+
+server.disable('x-powered-by');
 
 server.use(compression());
 
