@@ -5,16 +5,23 @@ import bemUtils from './../../utils/bemUtils';
 import intlHelper from './../../utils/intlUtils';
 import ScanningIkon from './../../assets/scanning-ikon/ScanningIkon';
 import { Heading, Link } from '@navikt/ds-react';
+import classNames from 'classnames';
 
 import './pictureScanningGuide.less';
 
-const PictureScanningGuide: React.FunctionComponent = () => {
+export interface PictureScanningGuideProps {
+    backgroundColor: 'white' | 'blue';
+}
+
+const PictureScanningGuide: React.FunctionComponent<PictureScanningGuideProps> = ({ backgroundColor = 'blue' }) => {
     const intl = useIntl();
     const svgIconHeight = 100;
     const bem = bemUtils('pictureScanningGuide');
 
     return (
-        <div className={bem.block}>
+        <div
+            className={classNames(bem.block, backgroundColor === 'blue' ? bem.modifier('blue') : bem.modifier('white'))}
+        >
             <Heading level="2" size="medium">
                 <FormattedMessage id="psg.innholdstittel" />
             </Heading>
