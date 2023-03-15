@@ -21,10 +21,10 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const intl = useIntl();
     const antallBarn = valgteBarn.length;
     const alleBarnaLever = valgteBarn.every((b) => getLeverBarnet(b));
-    const sortedBarn = valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
-    const fødselsdatoer = sortedBarn.map((b) => b.fødselsdato);
+    valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
+    const fødselsdatoer = valgteBarn.map((b) => b.fødselsdato);
     const formattertFødselsdato = formaterFødselsdatoerPåBarn(fødselsdatoer);
-    const fødselsdato = sortedBarn[0].fødselsdato;
+    const fødselsdato = valgteBarn[0].fødselsdato;
     return (
         <>
             <Block padBottom="l">
@@ -35,7 +35,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                         </Element>
                     </Block>
                     {alleBarnaLever ? (
-                        sortedBarn.map((barn: RegistrertBarn, index: number) => (
+                        valgteBarn.map((barn: RegistrertBarn, index: number) => (
                             <Block padBottom="l" key={index}>
                                 <RegistrertePersonalia person={barn} fødselsdatoForVisning={formattertFødselsdato} />
                             </Block>
@@ -43,12 +43,12 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     ) : (
                         <Block padBottom="l">
                             <RegistrertePersonalia
-                                person={sortedBarn[0]}
+                                person={valgteBarn[0]}
                                 fødselsdatoForVisning={formattertFødselsdato}
                                 altTekstHvisUkjentNavn={getTittelBarnNårNavnSkalIkkeVises(
                                     undefined,
                                     fødselsdatoer,
-                                    sortedBarn.length,
+                                    valgteBarn.length,
                                     intl
                                 )}
                             />

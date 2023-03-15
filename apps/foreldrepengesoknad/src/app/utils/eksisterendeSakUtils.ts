@@ -585,7 +585,7 @@ export const opprettSøknadFraEksisterendeSak = (
             rolle,
         },
         barn,
-        annenForelder: annenForelder as AnnenForelder,
+        annenForelder,
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,
