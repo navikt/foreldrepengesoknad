@@ -1,0 +1,21 @@
+.grupperte-dokumenter {
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.grupperte-dokumenter__header {
+    border-bottom: 1px solid var(--ac-accordion-header-border, var(--a-border-strong));
+}
+
+.grupperte-dokumenter__header-content {
+    display: flex;
+}
+
+.grupperte-dokumenter__ikon {
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+.grupperte-dokumenter__content {
+    border-bottom: none;
+}

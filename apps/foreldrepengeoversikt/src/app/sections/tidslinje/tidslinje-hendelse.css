@@ -1,0 +1,60 @@
+.tidslinje-hendelse {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5rem 0;
+    position: relative;
+}
+.tidslinje-hendelse__ikon svg {
+    position: relative;
+    z-index: 2;
+    background-color: white;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.tidslinje-hendelse:before {
+    content: '';
+    width: 0;
+    height: 100%;
+    position: absolute;
+    border: 1px solid var(--a-gray-600);
+    top: 0;
+    left: 27px;
+    z-index: 0;
+}
+
+.tidslinje-hendelse:first-child:before {
+    top: 24px;
+    border: 1px solid var(--a-gray-600);
+}
+
+.tidslinje-hendelse:last-child:before {
+    height: 27px;
+}
+
+.tidslinje-hendelse__ikon--completed {
+    color: var(--a-green-600);
+    width: 3.5rem;
+}
+
+.tidslinje-hendelse__ikon--warning {
+    color: var(--a-orange-400);
+    width: 3.5rem;
+}
+
+.tidslinje-hendelse__ikon--incomplete {
+    color: var(--a-gray-500);
+    width: 3.5rem;
+}
+
+.tidslinje-hendelse__mer_informasjon{
+    margin-bottom: 1rem; 
+}
+
+.tidslinje-hendelse__date {
+    color: var(--a-gray-500);
+}
+
+.tidslinje-hendelse__manglende_vedlegg{
+    margin-bottom: 1rem; 
+}

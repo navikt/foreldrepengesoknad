@@ -1,0 +1,79 @@
+.periode__box {
+    box-shadow: 0 2px 4px 0 var(--a-gray-200);
+    border-top: 1rem;
+    border-left: 0.5rem solid transparent;
+    border-radius: 0.35rem;
+    padding-right: 0.5rem;
+}
+
+.periode {
+    padding: 1rem;
+    margin: 0 -1rem 1rem -1rem;
+}
+
+.periode__ikon-blue{
+    background-color: var(--a-purple-400);
+    border-radius: 0.5rem;
+}
+
+.periode__ikon-purple {
+    background-color: var(--a-blue-400);
+    border-radius: 0.5rem;
+}
+
+.periode__ikon-blue-purple {
+    background-color: var(--a-blue-400);
+    border-radius: 0.5rem;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--a-blue-400),
+        var(--a-blue-400) 50%,
+        var(--a-purple-400)50%,
+        var(--a-purple-400) 100%
+    );
+}
+
+.periode__innhold {
+    display: grid;
+    grid-template-columns: 6% 64% 15% 15%;
+    align-items: center;
+    margin: 0;
+}
+.periode__innhold-tekst-periodetittel {
+    margin-left: 1rem;
+}
+
+.periode__innhold-tekst-date {
+    margin-left: 1rem;
+    text-align: center;
+}
+
+.periode__innhold-tekst > p {
+    margin-bottom: 0.25rem;
+}
+
+.periode__innhold-tekst > p {
+    margin-bottom: 0.25rem;
+}
+
+.periode__beskrivelse {
+    display: flex;
+}
+
+.periode--year {
+    color: var(--a-gray-500);
+}
+
+.periode--eierNavn {
+    font-style: italic;
+    padding-left: 0.15rem;
+}
+
+
+.periode--innvilget {
+    background-color: white;
+}
+
+.periode--ikke-innvilget{
+    background-color: var(--a-gray-100);
+}

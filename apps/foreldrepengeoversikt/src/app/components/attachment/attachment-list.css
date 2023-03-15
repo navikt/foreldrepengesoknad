@@ -1,0 +1,18 @@
+.attachmentList {
+    margin: 0;
+    padding: 0;
+}
+
+.attachmentList > li {
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    list-style-type: none;
+}
+
+.attachmentList > li:last-child {
+    margin-bottom: 0;
+}
+
+
+
+

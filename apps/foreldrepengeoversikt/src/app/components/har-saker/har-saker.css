@@ -1,0 +1,13 @@
+.har-saker {
+    margin-bottom: 4.5rem;
+}
+
+.har-saker__tittel {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.har-saker__tittel > :first-child {
+    margin-right: 1rem;
+}

@@ -1,0 +1,83 @@
+.kontaktOss {
+    background-color: var(--a-white);
+    padding: 2rem;
+}
+
+.kontaktOss__title {
+    margin-bottom: 1rem;
+}
+
+.kontaktOss__content {
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.kontaktOss__wrapper {
+    max-width: 704px;
+    margin: 0 auto;
+}
+
+.kontaktOss__content_left {
+    margin-bottom: 1rem;
+    float:left; 
+    display: block;
+    width: 31%;
+    padding: 0.5rem;
+}
+
+.kontaktOss__content_middle {
+    margin-bottom: 1rem;
+    float:left; 
+    display: block;
+    width: 31%;
+    padding: 0.5rem;
+}
+
+.kontaktOss__content_right {
+    margin-bottom: 1rem;
+    float:left; 
+    display: block;
+    width: 31%;
+    padding: 0.5rem;
+}
+
+.kontaktOss__content_text {
+    padding-top: 1rem;
+}
+
+
+.kontaktOss__linkTitle {
+    font-weight: bold;
+}
+
+.kontaktOss__link {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.kontaktOss__linkIcon{
+    margin-right: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .kontaktOss {
+        display: inline-block;
+    }
+
+    .kontaktOss__content {
+        display: inline-block;
+    }
+    .kontaktOss__content_left {
+        width: 100%;
+    }
+
+    .kontaktOss__content_middle{
+        width: 100%;
+    }
+
+    .kontaktOss__content_right {
+        width: 100%;
+    }
+}
+

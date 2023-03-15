@@ -1,0 +1,11 @@
+.periode-liste {
+    margin-bottom: 1rem;
+}
+
+.periode-liste__block {
+    margin-bottom: 2rem;
+}
+
+.periode-liste__title {
+    font-style: italic;
+}

@@ -1,0 +1,36 @@
+.content-section {
+    margin-bottom: 2rem;
+}
+
+.content-section--bg-white {
+    background-color: var(--a-white);
+}
+
+.content-section--bg-yellow {
+    background-color: var(--a-surface-warning-subtle);
+    border: 1px solid var(--a-surface-warning);
+}
+
+.content-section--padding-large {
+    padding: 2rem;
+}
+
+.content-section--padding-default {
+    padding: 1rem;
+}
+
+.content-section--padding-none {
+    padding: 0;
+}
+
+.content-section--corner-style-rounded {
+    border-radius: 0.5rem;
+}
+
+.content-section--corner-style-square {
+    border-radius: 0;
+}
+
+.content-section__heading {
+    margin-bottom: 1rem;
+}

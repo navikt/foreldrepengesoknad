@@ -11,7 +11,7 @@ variable "GITHUB_REPOSITORY" {
 }
 
 group "default" {
-    targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad"]
+    targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt"]
 }
 
 target "base" {
@@ -45,5 +45,14 @@ target "engangsstonad" {
     target="prod"
     args={
         CMD="engangsstonad"
+    }
+}
+
+target "foreldrepengeoversikt" {
+    inherits=["base"]
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG-PROD}"]
+    target="prod"
+    args={
+        CMD="foreldrepengeoversikt"
     }
 }

@@ -1,0 +1,37 @@
+.header {
+    background-color: var(--a-bg-default);
+    border-bottom: 4px solid var(--a-deepblue-200);
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.header__content {
+    display: flex;
+}
+
+.header__wrapper {
+    max-width: 704px;
+    margin: 0 auto;
+}
+
+.header__title-container {
+    margin-top: 6px;
+    padding-left: 2rem;
+}
+
+.header__text-with-bar {
+    display: flex;
+}
+
+.header__divider {
+    margin: 0 0.75rem;
+    color: var(--a-text-subtle);
+}
+
+.header__divider-text {
+    color: var(--a-text-subtle);
+}
+
+.header__tag {
+    margin-top: 1rem;
+}

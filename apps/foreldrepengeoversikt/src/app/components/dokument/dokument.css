@@ -1,0 +1,21 @@
+.dokument {
+    border-bottom: 1px solid var(--a-surface-neutral);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dokument__ikon {
+    color: var(--a-surface-action);
+    margin: 0 0.875rem;
+}
+
+.dokument__link-icon {
+    max-width: 32rem;
+}
+
+.dokument__content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.5fr 8fr 2fr 1fr;
+    align-items: center;
+}
