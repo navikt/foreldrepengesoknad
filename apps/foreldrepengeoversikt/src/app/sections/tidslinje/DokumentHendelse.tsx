@@ -2,12 +2,12 @@ import { Link } from '@navikt/ds-react';
 import React from 'react';
 import { FileContent } from '@navikt/ds-icons';
 import { bemUtils } from '@navikt/fp-common';
-import { Dokument as DokumentHendelse } from 'app/types/Dokument';
+import { Dokument } from 'app/types/Dokument';
 
 import './dokument-hendelse.css';
 
 interface Props {
-    dokument: DokumentHendelse;
+    dokument: Dokument;
 }
 
 const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument }) => {

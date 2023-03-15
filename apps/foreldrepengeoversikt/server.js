@@ -40,7 +40,7 @@ const startServer = (html) => {
         } else {
             next();
         }
-    })
+    });
 
     server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
     server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));

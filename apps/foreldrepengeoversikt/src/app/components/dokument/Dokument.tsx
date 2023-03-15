@@ -2,13 +2,13 @@ import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
 import { FileContent } from '@navikt/ds-icons';
 import { bemUtils, formatDateExtended } from '@navikt/fp-common';
-import { Dokument } from 'app/types/Dokument';
+import { Dokument as DokumentType } from 'app/types/Dokument';
 import DokumentAvsender from 'app/components/dokument-avsender/DokumentAvsender';
 
 import './dokument.css';
 
 interface Props {
-    dokument: Dokument;
+    dokument: DokumentType;
 }
 
 const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {

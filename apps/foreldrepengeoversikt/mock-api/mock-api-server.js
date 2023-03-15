@@ -7,6 +7,8 @@ const morgan = require('morgan');
 
 require('dotenv').config();
 
+app.disable('x-powered-by');
+
 const allowCrossDomain = function (req, res, next) {
     const corsWhiteList = ['http://localhost:8080', 'http://localhost:8880']; // 8080 dev server with decorator, 8880 dev server without decorator
 
@@ -77,7 +79,13 @@ router.get('/rest/innsyn/tidslinje', (req, res) => {
     res.send(MockStorage.getTidslinjeHendelser());
 });
 
-const vedleggUpload = multer({ dest: './dist/vedlegg/' });
+const vedleggUpload = multer({
+    dest: './dist/vedlegg/',
+    limits: {
+        fileSize: 8000000,
+    },
+});
+
 router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);

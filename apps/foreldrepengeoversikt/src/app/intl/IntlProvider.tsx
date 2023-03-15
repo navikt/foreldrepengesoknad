@@ -17,7 +17,7 @@ const getLanguageMessages = (_locale: Locale) => {
 
 const IntlProvider: React.FunctionComponent<Props> = ({ locale, children }) => {
     return (
-        <Provider locale={locale} messages={getLanguageMessages(locale) || {}}>
+        <Provider locale={locale} messages={getLanguageMessages(locale)}>
             {children}
         </Provider>
     );
