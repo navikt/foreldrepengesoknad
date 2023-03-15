@@ -81,4 +81,6 @@ COPY --from=build  /usr/src/app ./
 ######################################### 
 FROM prod-deps as prod
 ARG CMD
-CMD ["node", ${CMD}]
+ENV APP=$CMD
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
