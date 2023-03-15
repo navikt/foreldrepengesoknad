@@ -27,6 +27,7 @@ jobs:
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
+            app: foreldrepengesoknad
         secrets: inherit
 
     promote-foreldrepengesoknad-prod:
@@ -37,6 +38,7 @@ jobs:
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
+            app: foreldrepengesoknad
         secrets: inherit
 
     promote-foreldrepengeoversikt-dev:
@@ -47,6 +49,7 @@ jobs:
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
+            app: foreldrepengeoversikt
         secrets: inherit
 
     promote-foreldrepengeoversikt-prod:
@@ -57,5 +60,6 @@ jobs:
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
+            app: foreldrepengeoversikt
         secrets: inherit
         

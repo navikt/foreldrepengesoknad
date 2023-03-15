@@ -1,6 +1,9 @@
 {
+    "app": "foreldrepengesoknad",
     "dekoratoren": "www.nav.no",
-    "ingresses": ["https://foreldrepengesoknad.nav.no"],
+    "ingresses": [
+        "https://foreldrepengesoknad.nav.no"
+    ],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.nav.no/rest",
