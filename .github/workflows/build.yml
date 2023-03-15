@@ -32,7 +32,7 @@ jobs:
     promote-foreldrepengesoknad-prod:
         name: Deploy til prod
         if: ${{ github.ref_name == 'master' }}
-        needs: promote-foreldrepengesoknad-dev
+        needs: [promote-foreldrepengesoknad-dev, build-app]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
