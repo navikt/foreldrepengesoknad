@@ -1,0 +1,41 @@
+.snarveier {
+    background-color: var(--a-white);
+    padding: 2rem;
+}
+
+.snarveier__title {
+    margin-bottom: 1rem;
+}
+
+.snarveier__content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.snarveier__wrapper {
+    max-width: 704px;
+    margin: 0 auto;
+}
+
+.snarveier__linkPanel {
+    margin-bottom: 1rem;
+    background-color: var(--a-gray-100);
+    float:left; 
+    width: 49%; 
+    border-radius: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.snarveier__linkTitle {
+    font-size: large;
+}
+
+@media (max-width: 768px) {
+    
+    .snarveier__linkPanel {
+        width: 100%;
+    }
+ 
+}

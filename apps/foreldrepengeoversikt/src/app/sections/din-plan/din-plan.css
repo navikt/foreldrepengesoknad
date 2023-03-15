@@ -1,0 +1,13 @@
+.din-plan__ingress {
+    margin-bottom: 1rem;
+}
+
+.din-plan__header {
+    display: flex;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+}
+
+.din-plan__header-tekst {
+    width: 60%;
+}

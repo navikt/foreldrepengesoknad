@@ -1,0 +1,15 @@
+.sak-link {
+    margin-bottom: 1rem;
+    padding: 2.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.sak-link__content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sak-link__content > :first-child {
+    margin-right: 1.5rem;
+}

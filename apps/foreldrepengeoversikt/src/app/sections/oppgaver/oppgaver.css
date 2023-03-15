@@ -1,0 +1,16 @@
+
+.oppgaver__header {
+    display: flex;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+}
+
+.oppgaver__linkPanel {
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+.oppgaver__tekst {
+    margin-bottom: 1rem;
+}
+

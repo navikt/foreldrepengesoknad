@@ -1,0 +1,21 @@
+.oppgave-lenkepanel__linkPanel {
+    border-radius: 0.5rem;
+}
+
+.oppgave-lenkepanel__content {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+.oppgave-lenkepanel__title {
+    font-size: larger
+}
+
+
+.oppgave-lenkepanel__icon {
+    align-self: center;
+    margin-left: 0.5rem;
+    margin-right: 1.5rem;
+}
+

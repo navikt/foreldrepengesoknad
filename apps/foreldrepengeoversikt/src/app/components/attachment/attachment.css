@@ -1,0 +1,25 @@
+.attachment {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: var(--a-white);
+    border-radius: 0.5rem;
+}
+
+.attachment__spinner {
+    left: 1rem;
+    top: 1rem;
+}
+
+.attachment__filename {
+    padding-left: 1rem;
+    flex-grow: 1;
+}
+
+.attachment__delete-button {
+    justify-content: end;
+}
+
+.attachment--pending {
+    display: none;
+}

@@ -1,0 +1,22 @@
+.dokumenter-page__ettersend-knapp {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.dokumenter-page__ikke-alle-dokumenter {
+    margin-bottom: 2rem;
+}
+
+.dokumenter-page__dokumenter-liste {
+    background-color: var(--a-white);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.dokumenter-page__ettersend {
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+}

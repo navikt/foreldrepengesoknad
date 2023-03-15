@@ -1,0 +1,14 @@
+{
+    "app": "foreldrepengeoversikt",
+    "dekoratoren": "dekoratoren.dev.nav.no",
+    "ingresses": [
+        "https://foreldrepenger.dev.nav.no"
+    ],
+    "env": {
+        "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
+        "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
+        "LOGINSERVICE_URL": "https://loginservice-testing.dev.nav.no/login",
+        "FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.dev.nav.no",
+        "KLAGE_URL": "https://familie.nav.no"
+    }
+}
