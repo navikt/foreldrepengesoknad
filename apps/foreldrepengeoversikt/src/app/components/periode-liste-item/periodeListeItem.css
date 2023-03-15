@@ -22,7 +22,6 @@
 }
 
 .periode__ikon-blue-purple {
-    background-color: var(--a-blue-400);
     border-radius: 0.5rem;
     background: repeating-linear-gradient(
         -45deg,

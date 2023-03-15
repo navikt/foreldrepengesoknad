@@ -181,20 +181,11 @@ export const fyllInnHull = (periodeAcc: Periode[], periode: Periode, index: numb
             tom: finnForrigeMuligeUttaksdag(ISOStringToDate(nestePeriode.fom)!),
         };
 
-        const erEtter1Oktober2021 = dayjs(new Date()).isSameOrAfter(new Date('2021-10-01'), 'd');
-        if (erEtter1Oktober2021) {
-            periodeAcc.push({
-                fom: dateToISOString(tidsperiode.fom),
-                tom: dateToISOString(tidsperiode.tom),
-                resultat: {} as PeriodeResultat,
-            });
-        } else {
-            periodeAcc.push({
-                fom: dateToISOString(tidsperiode.fom),
-                tom: dateToISOString(tidsperiode.tom),
-                resultat: {} as PeriodeResultat,
-            });
-        }
+        periodeAcc.push({
+            fom: dateToISOString(tidsperiode.fom),
+            tom: dateToISOString(tidsperiode.tom),
+            resultat: {} as PeriodeResultat,
+        });
     }
     return periodeAcc;
 };
