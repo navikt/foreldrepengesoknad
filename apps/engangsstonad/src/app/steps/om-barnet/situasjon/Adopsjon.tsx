@@ -7,6 +7,7 @@ import { Kjønn } from 'app/types/domain/Person';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
+import { guid } from 'nav-frontend-js-utils';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -97,7 +98,7 @@ const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues,
                         render={() =>
                             [...Array(parseInt(formValues.antallBarn!, 10))].map((_, index) => {
                                 return (
-                                    <Block padBottom="l" key={`${index}`}>
+                                    <Block padBottom="l" key={guid()}>
                                         <OmBarnetFormComponents.DatePicker
                                             name={`${OmBarnetFormField.fødselsdatoer}.${index}` as OmBarnetFormField}
                                             label={

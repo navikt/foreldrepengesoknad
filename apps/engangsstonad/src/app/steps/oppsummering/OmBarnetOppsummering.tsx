@@ -9,6 +9,7 @@ import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Block, DisplayTextWithLabel, formatDate } from '@navikt/fp-common';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
+import { guid } from 'nav-frontend-js-utils';
 
 interface Props {
     barn: OmBarnetFormData;
@@ -51,7 +52,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
                     <Block margin="l" padBottom="l">
                         {barn.fødselsdatoer.map((_, index) => {
                             return (
-                                <div key={index}>
+                                <div key={guid()}>
                                     <Labeltekst>{formatDate(barn.fødselsdatoer![index])}</Labeltekst>
                                     <br />
                                 </div>

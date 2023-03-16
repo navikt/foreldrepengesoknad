@@ -1,9 +1,0 @@
-.idea
-node_modules
-dist
-.vscode
-*DS_Store
-*.log
-cypress/videos
-cypress/screenshots
-yarn.lock

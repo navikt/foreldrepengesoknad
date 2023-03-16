@@ -7,6 +7,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 
 const server = express();
+server.disable('x-powered-by');
 server.use(compression());
 
 server.set('views', `${__dirname}/dist`);
