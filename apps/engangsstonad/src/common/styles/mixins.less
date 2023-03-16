@@ -1,0 +1,37 @@
+@import './variables.less';
+
+.buttonFocus() {
+    outline: none;
+    box-shadow: 0 0 0 3px @orangeFocus;
+}
+
+.borderButton() {
+    border-radius: 4px;
+    background-color: @white;
+    border: 1px solid @navGra20;
+    transition: border-color 200ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    cursor: pointer;
+    &:hover {
+        border-color: @c-buttonBlue;
+    }
+    &:focus {
+        .buttonFocus();
+    }
+}
+
+.knappeLenke() {
+    position: relative;
+    border: none !important;
+    background: transparent;
+    padding: 0;
+    display: inline-block;
+    &:focus {
+        .buttonFocus();
+    }
+}
+
+.chromeSvgRenderFix() {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    transform: translateZ(0);
+}

@@ -1,0 +1,44 @@
+@import './../../styles/mixins.less';
+
+.søknadSendt {
+    .contentWrapper();
+    display: flex;
+    flex-direction: column;
+    max-width: 726px;
+    padding: 0 1rem;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+
+    &__foreldrepengerPanel {
+        background-color: #e0f5fb;
+    }
+
+    &__tittel {
+        overflow: hidden;
+        text-align: center;
+    }
+
+    &__tittel:after {
+        content: '';
+        display: inline-block;
+        height: 0.75rem;
+        vertical-align: bottom;
+        width: 100%;
+        margin-right: -100%;
+        padding-right: 0.5rem;
+        margin-left: 1rem;
+        border-top: 1px solid #c6c2bf;
+    }
+
+    &__tittel:before {
+        content: '';
+        display: inline-block;
+        height: 0.75rem;
+        vertical-align: bottom;
+        width: 100%;
+        margin-left: -100%;
+        padding-left: 0.5rem;
+        margin-right: 1rem;
+        border-top: 1px solid #c6c2bf;
+    }
+}

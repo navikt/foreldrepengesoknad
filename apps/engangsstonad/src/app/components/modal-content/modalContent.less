@@ -1,0 +1,33 @@
+.modalContent {
+    max-width: 500px;
+
+    &__header {
+        padding-top: 32px;
+        padding-bottom: 16px;
+        text-align: center;
+    }
+
+    &__paragraph {
+        padding-bottom: 10px;
+    }
+
+    ul {
+        margin-top: 0;
+    }
+
+    li {
+        padding-bottom: 8px;
+    }
+
+    &__subList {
+        list-style-type: none; 
+        margin-left: 15px;
+        padding-top: 8px;
+
+        li::before {
+            content: "-";
+            position: absolute;
+            margin-left: -15px;
+        }
+    }
+}

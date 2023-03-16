@@ -62,4 +62,25 @@ jobs:
             cluster: prod-gcp
             app: foreldrepengeoversikt
         secrets: inherit
-        
+
+    promote-engangsstonad-dev:
+        name: Deploy engangsstonad til dev
+        if: ${{ github.ref_name == 'master' }}
+        needs: build-app
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        with:
+            image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
+            cluster: dev-gcp
+            app: engangsstonad
+        secrets: inherit
+
+    promote-engangsstonad-prod:
+        name: Deploy engangsstonad til prod
+        if: ${{ github.ref_name == 'master' }}
+        needs: [promote-engangsstonad-dev, build-app]
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        with:
+            image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
+            cluster: prod-gcp
+            app: engangsstonad
+        secrets: inherit
