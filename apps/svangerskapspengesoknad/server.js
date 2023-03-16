@@ -8,6 +8,8 @@ const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
 var compression = require('compression');
 
+server.disable('x-powered-by');
+
 // Prometheus metrics
 const prometheus = require('prom-client');
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
