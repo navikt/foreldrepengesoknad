@@ -1,14 +1,13 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { ValidatorFailTextIntl } from 'common/lib/validation/types';
 
 export interface Props {
     feil?: any;
 }
 
-const renderFeil = (feil: any): JSX.Element => {
+const renderFeil = (feil: any, intl: IntlShape): JSX.Element => {
     let msg;
-    const intl = useIntl();
     if (typeof feil.feilmelding === 'string') {
         msg = feil.feilmelding;
     } else {
@@ -19,9 +18,10 @@ const renderFeil = (feil: any): JSX.Element => {
 };
 
 const SkjemaelementFeilmelding: React.FunctionComponent<Props> = ({ feil }) => {
+    const intl = useIntl();
     return (
         <div role="alert" aria-live="assertive">
-            {feil && renderFeil(feil)}
+            {feil && renderFeil(feil, intl)}
         </div>
     );
 };
