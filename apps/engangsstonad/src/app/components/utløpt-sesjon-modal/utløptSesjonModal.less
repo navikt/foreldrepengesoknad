@@ -1,0 +1,58 @@
+@import '../../styles/variables.less';
+
+@paddingTop: 4rem;
+
+.utløptSesjonModal {
+  border-radius: 0.5rem;
+  max-width: 600px;
+  overflow: visible;
+  padding: 1rem;
+  padding-top: @paddingTop;
+  width: 100%;
+
+  svg {
+    transform: translateY(calc(-120% - @paddingTop));
+    position: absolute;
+  }
+
+  section {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  &__valg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .knapp {
+      height: @button-height;
+      padding: 0 1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  @media (min-width: @mobile-breakpoint) {
+    padding: 2rem;
+    padding-top: @paddingTop;
+
+    &__valg {
+      flex-direction: row;
+
+      .knapp:not(:last-child) {
+        margin-bottom: 0;
+        margin-right: 1rem;
+      }
+    }
+  }
+}

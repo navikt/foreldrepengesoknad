@@ -1,0 +1,23 @@
+@import '../../styles/variables.less';
+
+a.knappelenke {
+  padding: 0 1rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: @button-height;
+  justify-content: center;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px #FFBD66;
+    border-radius: 3px;
+  }
+
+  span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
