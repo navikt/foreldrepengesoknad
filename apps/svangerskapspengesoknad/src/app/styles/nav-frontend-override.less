@@ -1,0 +1,131 @@
+@import './variabler.less';
+
+#app,
+.ReactModalPortal {
+    .knapp {
+        height: @button-height;
+    }
+
+    .skjema__legend {
+        margin-bottom: 0.5rem;
+    }
+
+    .inputPanel {
+        border-radius: 0.5rem;
+    }
+
+    .skjemaelement__label {
+        font-weight: bold;
+    }
+
+    .bekreftCheckboksPanel .skjemaelement__label {
+        font-weight: normal;
+    }
+
+    .infoboks__sirkel {
+        .sirkelknapp__ikon {
+            margin: 0;
+            line-height: 0;
+        }
+    }
+
+    .veilederinfo {
+        &--kompakt {
+            padding: 0;
+        }
+
+        &__innhold {
+            border-color: @foreldrepenger-lilla;
+            margin-left: -2.25rem;
+            padding-left: 3rem;
+
+            &--advarsel {
+                border-color: #ffd399;
+            }
+        }
+
+        &__veileder {
+            width: 4.5rem;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+
+            .veileder--undrende {
+                circle {
+                    fill: #ffd399;
+                }
+            }
+        }
+    }
+
+    .stegindikator {
+        &__steg {
+            margin-right: 1rem;
+
+            &:after {
+                background-color: lightgray;
+            }
+        }
+
+        &__steg-num {
+            box-shadow: 0 0 0 1px lightgray inset;
+        }
+
+        &__steg-inner {
+            &--aktiv {
+                .stegindikator__steg-num {
+                    background: #7e6d9e;
+                    transform: none;
+                }
+            }
+
+            &--ferdig {
+                .stegindikator__steg-num {
+                    background: lightgray;
+                }
+            }
+        }
+    }
+
+    .arbeidsforholdList {
+        margin: 0rem;
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+.skjemaelement {
+    margin-bottom: 0;
+
+    .skjemaelement__label {
+        font-weight: bold;
+    }
+
+    .skjemaelement__label {
+        font-weight: bold;
+    }
+
+    &--horisontal {
+        .skjemaelement__label {
+            font-weight: normal;
+        }
+    }
+
+    &--undersporsmal {
+        .skjemaelement__label {
+            font-weight: normal;
+        }
+    }
+}
+
+.skjema {
+    &__legend {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        margin-right: 2rem;
+    }
+}

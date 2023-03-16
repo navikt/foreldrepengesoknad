@@ -1,0 +1,48 @@
+@import '../../../node_modules/nav-frontend-core/less/core.less';
+@import './nav-frontend-override.less';
+@import '../../common/styles/mixins.less';
+
+.modal {
+    @appMaxWidth: 750px;
+    max-width: 42rem;
+    min-height: 24rem;
+    width: 100%;
+
+    form {
+        padding: 2rem 1rem 1rem 1rem;
+
+        @media screen and (max-width: @appMaxWidth) {
+            padding: 2rem 0 0 0;
+        }
+
+        .title {
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+    }
+}
+
+.grayInfoBox {
+    padding: 1rem;
+    background-color: #efefef;
+    border-radius: 0.25rem;
+
+    @media (max-width: @mobile-breakpoint) {
+        .grayBlockMobileFullWidth();
+    }
+
+    .typo-element {
+        margin-bottom: 0.25rem;
+    }
+
+    &__topRow {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 0.25rem;
+    }
+
+    &__stillingsprosent {
+        margin-left: auto !important;
+    }
+}

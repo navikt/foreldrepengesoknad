@@ -84,3 +84,25 @@ jobs:
             cluster: prod-gcp
             app: engangsstonad
         secrets: inherit
+
+    promote-svangerskapspengesoknad-dev:
+        name: Deploy svangerskapspengesoknad til dev
+        if: ${{ github.ref_name == 'master' }}
+        needs: build-app
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        with:
+            image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
+            cluster: dev-gcp
+            app: svangerskapspengesoknad
+        secrets: inherit
+
+    promote-svangerskapspengesoknad-prod:
+        name: Deploy svangerskapspengesoknad til prod
+        if: ${{ github.ref_name == 'master' }}
+        needs: [promote-svangerskapspengesoknad-dev, build-app]
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        with:
+            image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
+            cluster: prod-gcp
+            app: svangerskapspengesoknad
+        secrets: inherit
