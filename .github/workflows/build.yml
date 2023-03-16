@@ -63,7 +63,7 @@ jobs:
             app: foreldrepengeoversikt
         secrets: inherit
 
-        promote-engangsstonad-dev:
+    promote-engangsstonad-dev:
         name: Deploy engangsstonad til dev
         if: ${{ github.ref_name == 'master' }}
         needs: build-app
@@ -84,4 +84,3 @@ jobs:
             cluster: prod-gcp
             app: engangsstonad
         secrets: inherit
-        
