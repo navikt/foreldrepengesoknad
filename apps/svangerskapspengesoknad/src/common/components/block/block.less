@@ -1,0 +1,111 @@
+@import '../../../common/styles/variables.less';
+
+.block {
+    /** Motvirke at outline på elementer blir klippet på grunn av overflow:hidden */
+    @outlineSize: 8px;
+
+    &__collapse {
+        padding-left: @outlineSize;
+        padding-right: @outlineSize;
+        margin-left: -1 * @outlineSize;
+        margin-right: -1 * @outlineSize;
+    }
+
+    /** Variasjoner på luft under. --m er default */
+    &--xl {
+        padding-bottom: 5rem;
+    }
+
+    &--l {
+        padding-bottom: 2.5rem;
+    }
+
+    &--m {
+        padding-bottom: 2rem;
+    }
+
+    &--s {
+        padding-bottom: 1.5rem;
+    }
+
+    &--xs {
+        padding-bottom: 1rem;
+    }
+
+    &--xxs {
+        padding-bottom: 0.5rem;
+    }
+
+    /** Variasjoner på luft over. Default ingen */
+    &--top-xxl {
+        padding-top: 3.5rem;
+    }
+
+    &--top-xl {
+        padding-top: 2.5rem;
+    }
+
+    &--top-l {
+        padding-top: 2rem;
+    }
+
+    &--top-ml {
+        padding-top: 1.5rem;
+    }
+
+    &--top-m {
+        padding-top: 1.25rem;
+    }
+
+    &--top-s {
+        padding-top: 1rem;
+    }
+
+    &--top-xs {
+        padding-top: 0.5rem;
+    }
+
+    &--top-xxs {
+        padding-top: 0.25rem;
+    }
+
+    &--none {
+        // Hack på grunn av bug i ReactCollapse - den viser ikke noe dersom padding er 0
+        padding-bottom: 1px;
+        margin-bottom: -1px;
+    }
+
+    &--align-left {
+        text-align: left;
+    }
+
+    &--align-center {
+        text-align: center;
+    }
+
+    &--align-right {
+        text-align: right;
+    }
+
+    &--style-info {
+        border-radius: 0.5rem;
+        background-color: #e0f5fb;
+        padding: 1rem;
+    }
+
+    @media (max-width: @tablet-breakpoint) {
+        &--sm {
+            &--m {
+                margin-bottom: 2rem;
+            }
+
+            &--s {
+                margin-bottom: 1.5rem;
+            }
+
+            &--xs {
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}

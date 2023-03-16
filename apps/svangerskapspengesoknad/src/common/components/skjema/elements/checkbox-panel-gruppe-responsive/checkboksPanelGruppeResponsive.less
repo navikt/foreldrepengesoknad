@@ -1,0 +1,51 @@
+@import '../../../../styles/variables.less';
+
+.checkboksPanelGruppe--responsive {
+    @panelBottomMargin: 0.5rem;
+    @panelRightMargin: 1rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: -1 * @panelBottomMargin;
+    margin-right: -1 * @panelRightMargin;
+
+    .checkboksPanel {
+        margin: 0 @panelRightMargin @panelBottomMargin 0;
+
+        &__label {
+            flex-grow: 1;
+            flex-shrink: 0;
+        }
+    }
+
+    .checkboksPanelWrapper {
+        &--oneColumn {
+            flex-basis: 100% !important;
+            width: 100% !important;
+        }
+    }
+
+    @media screen and (max-width: 576px) {
+        display: block;
+    }
+
+    @media screen and (min-width: 577px) and (max-width: @tablet-breakpoint) {
+        .checkboksPanelWrapper {
+            flex-basis: 50%;
+            width: 50%;
+        }
+    }
+
+    @media screen and (min-width: (1 + @tablet-breakpoint)) {
+        .checkboksPanelWrapper {
+            flex-basis: 100% / 3;
+            width: 100% / 3;
+
+            &--twoColumns {
+                flex-basis: 50%;
+                width: 50%;
+            }
+
+        }
+    }
+}

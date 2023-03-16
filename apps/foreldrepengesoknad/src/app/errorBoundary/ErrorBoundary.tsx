@@ -5,7 +5,6 @@ import links from 'app/links/links';
 import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 
 interface State {
-    eventId: string | null;
     hasError: boolean;
     error: Error | null;
 }
@@ -13,7 +12,7 @@ interface State {
 class ErrorBoundary extends React.Component<any, State> {
     constructor(props: unknown) {
         super(props);
-        this.state = { eventId: null, hasError: false, error: null };
+        this.state = { hasError: false, error: null };
     }
 
     componentDidCatch(error: Error | null, errorInfo: any): void {
@@ -22,8 +21,7 @@ class ErrorBoundary extends React.Component<any, State> {
 
             Sentry.withScope((scope) => {
                 scope.setExtras(errorInfo);
-                const eventId = Sentry.captureException(error);
-                this.setState({ eventId });
+                Sentry.captureException(error);
             });
         }
     }
