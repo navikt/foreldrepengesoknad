@@ -11,7 +11,7 @@ type FormatDateOverloads = {
 export const formatDate: FormatDateOverloads = (dato: string | undefined): any => {
     if (dato) {
         const parsetDato = moment(dato);
-        return dato && parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
+        return parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
     }
     return dato;
 };
