@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "outDir": "build/dist",
+        "module": "ESNext",
+        "target": "ESNext",
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitReturns": false,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "resolveJsonModule": true,
+        "baseUrl": "./src",
+        "typeRoots": ["./node_modules/@types", "./src/@types"],
+        "paths": {
+            "app/*": ["app/*"],
+            "shared/*": ["app/components/shared/*"],
+            "assets/*": ["app/assets/*"],
+            "components/*": ["app/components/*"],
+            "connectedComponents/*": ["app/connected-components"],
+            "styles/*": ["app/styles/*"],
+            "util/*": ["app/util/*"],
+            "common/*": ["./common/*"],
+            "storage/*": ["./storage/*"],
+            "intl/*": ["app/intl/*"]
+        }
+    },
+    "exclude": ["node_modules", "build", "scripts", "config", "jest", "src/build", "src/config", "dist"]
+}

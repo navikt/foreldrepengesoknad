@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"shared/*": [
+				"src/app/components/shared/*"
+			],
+			"ducks/*": [
+				"src/app/components/ducks/*"
+			]
+		}
+	}
+}

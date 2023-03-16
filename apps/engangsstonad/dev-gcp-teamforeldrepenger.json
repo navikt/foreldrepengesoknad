@@ -1,0 +1,12 @@
+{
+    "ingresses": ["https://engangsstonad.dev.nav.no"],
+    "dekoratoren" : "dekoratoren.dev.nav.no",
+    "nav" : "www.nav.no",
+    "loginservice" : "loginservice.dev.nav.no",
+    "api" : "foreldrepengesoknad-api.dev.nav.no",
+    "env": {
+        "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
+        "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
+        "LOGINSERVICE_URL": "https://loginservice.dev.nav.no/login"
+    }
+}

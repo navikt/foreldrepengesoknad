@@ -2,7 +2,7 @@
     "app": "foreldrepengeoversikt",
     "dekoratoren": "www.nav.no",
     "ingresses": [
-        "https://foreldrepengesoknad.nav.no"
+        "https://foreldrepenger.nav.no"
     ],
     "env": {
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",

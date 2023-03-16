@@ -1,0 +1,26 @@
+@import 'variables';
+
+.buttonFocus() {
+    outline: none;
+    box-shadow: 0 0 0 3px @orangeFocus;
+}
+
+.chromeSvgRenderFix() {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    transform: translateZ(0);
+}
+
+.contentWrapper() {
+    max-width: 704px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    @media (max-width: @tablet-breakpoint) {
+        max-width: 100%;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        padding: 1rem;
+    }
+}
