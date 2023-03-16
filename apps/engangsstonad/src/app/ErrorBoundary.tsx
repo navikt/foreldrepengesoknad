@@ -6,7 +6,6 @@ interface Props {
 }
 
 interface State {
-    eventId: string | null;
     hasError: boolean;
     errorInfo: any;
 }
@@ -14,7 +13,7 @@ interface State {
 class ErrorBoundary extends React.Component<Props, State> {
     constructor(props: any) {
         super(props);
-        this.state = { eventId: null, hasError: false, errorInfo: null };
+        this.state = { hasError: false, errorInfo: null };
     }
 
     componentDidCatch(error: Error | null, errorInfo: any) {

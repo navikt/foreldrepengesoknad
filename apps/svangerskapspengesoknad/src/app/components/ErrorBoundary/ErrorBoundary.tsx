@@ -5,14 +5,9 @@ interface Props {
     children: ReactElement;
 }
 
-interface State {
-    eventId: string | null;
-}
-
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundary extends Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.state = { eventId: null };
     }
 
     componentDidCatch(error: Error | null, errorInfo: any) {

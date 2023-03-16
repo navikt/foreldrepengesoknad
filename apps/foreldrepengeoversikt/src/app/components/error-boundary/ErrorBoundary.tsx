@@ -3,14 +3,13 @@ import * as Sentry from '@sentry/browser';
 
 interface State {
     error: Error | null;
-    eventId: string | null;
     hasError: boolean;
 }
 
 class ErrorBoundary extends React.Component<any, State> {
     constructor(props: unknown) {
         super(props);
-        this.state = { eventId: null, hasError: false, error: null };
+        this.state = { hasError: false, error: null };
     }
 
     componentDidCatch(error: Error | null, errorInfo: any): void {
