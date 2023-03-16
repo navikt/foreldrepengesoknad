@@ -1,0 +1,17 @@
+.datoerInputLayout {
+    display: flex;
+    flex-wrap: nowrap;
+
+    &__fraDato {
+        padding-right: 1rem;
+    }
+
+    &--fullbredde {
+        .datoerInputLayout {
+            &__fraDato,
+            &__tilDato {
+                min-width: 40%;
+            }
+        }
+    }
+}

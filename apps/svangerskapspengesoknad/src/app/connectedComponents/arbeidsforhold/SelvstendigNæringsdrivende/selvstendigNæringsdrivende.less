@@ -1,0 +1,42 @@
+@import './../../../../common/styles/mixins';
+@import './../../../../common/styles/variables.less';
+
+.selvstendig-næringsdrivende {
+    max-width: 706px;
+}
+
+.selvstendigListElement {
+    padding: 1rem;
+    background-color: @blockLightGray;
+    border-radius: 0.25rem;
+
+    @media (max-width: @mobile-breakpoint) {
+        .grayBlockMobileFullWidth();
+    }
+
+    .typo-element {
+        margin-bottom: 0.5rem;
+    }
+
+    &__topRow,
+    &__bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__topRow {
+        margin-bottom: 0.25rem;
+    }
+
+    &__editButton {
+        .iconButton();
+        background: none;
+        max-height: 19px;
+        margin-left: auto !important;
+    }
+
+    &__deleteButton {
+        .deleteButton();
+    }
+}

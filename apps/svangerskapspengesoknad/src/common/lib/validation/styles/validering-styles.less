@@ -1,0 +1,33 @@
+@import '../../../../../node_modules/nav-frontend-core/less/_variabler';
+
+.feil-oppsummering-boks {
+    background-color: @redErrorLighten20;
+    display: none;
+    color: @white;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.feil-oppsummering-boks--visible {
+    display: block;
+}
+
+.feil-oppsummering-boks__liste {
+    line-height: 1.75rem;
+}
+
+.feil-oppsummering-boks__lenke {
+    color: white;
+    font-style: italic;
+    border-bottom: 1px solid @redErrorLighten60;
+
+    &:hover,
+    &--hover {
+        color: @navBlaLighten80;
+        border-bottom: 0;
+    }
+}
+.nav-datovelger {
+    background-color: rgb(243, 227, 227);
+    border-color: rgb(186, 58, 38);
+}
