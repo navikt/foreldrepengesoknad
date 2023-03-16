@@ -38,6 +38,7 @@
         "FEATURE_VIS_PERIODER_SOM_SENDES_INN",
         "FEATURE_WLB_GJELDER_FRA_FORSTE_JAN",
         "APP_VERSION",
-        "KLAGE_URL"
+        "KLAGE_URL",
+        "LOG_VALIDATION"
     ]
 }

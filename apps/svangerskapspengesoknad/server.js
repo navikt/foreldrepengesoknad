@@ -24,8 +24,6 @@ const httpRequestDurationMicroseconds = new prometheus.Histogram({
 
 server.use(compression());
 
-require('dotenv').config('./.env');
-
 server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
