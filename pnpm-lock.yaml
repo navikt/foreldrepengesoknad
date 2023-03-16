@@ -86,7 +86,7 @@ importers:
       jest-css-modules: ^2.1.0
       jest-environment-jsdom: ^29.4.3
       jest-transform-stub: ^2.0.0
-      jsdom: ^21.1.0
+      jsdom: ^21.1.1
       less: ^4.1.3
       less-loader: ^11.1.0
       lodash: ^4.17.21
@@ -195,6 +195,7 @@ importers:
       history: 5.3.0
       i18n-iso-countries: 7.5.0
       is-valid-fodselsnummer: 4.0.0
+      jsdom: 21.1.1
       lodash: 4.17.21
       moment: 2.29.4
       morgan: 1.10.0
@@ -304,7 +305,6 @@ importers:
       jest-css-modules: 2.1.0
       jest-environment-jsdom: 29.4.3
       jest-transform-stub: 2.0.0
-      jsdom: 21.1.1
       less: 4.1.3
       less-loader: 11.1.0_less@4.1.3+webpack@5.75.0
       mini-css-extract-plugin: 2.7.2_webpack@5.75.0
@@ -955,6 +955,7 @@ importers:
       case-sensitive-paths-webpack-plugin: ^2.4.0
       classnames: ^2.3.2
       common: ^0.2.5
+      compression: ^1.7.4
       css-loader: ^6.7.3
       date-holidays: ^3.18.0
       dayjs: ^1.11.7
@@ -1051,6 +1052,7 @@ importers:
       bytes: 3.1.2
       classnames: 2.3.2
       common: 0.2.5
+      compression: 1.7.4
       date-holidays: 3.19.0
       dayjs: 1.11.7
       express: 4.18.2
@@ -1068,7 +1070,7 @@ importers:
       nav-frontend-chevron: 1.0.30_gbuabyhgiuu3b5mimum62nuhga
       nav-frontend-chevron-style: 1.0.4
       nav-frontend-core: 6.0.1
-      nav-frontend-js-utils: 1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4
+      nav-frontend-js-utils: 1.0.20_ezpr25ogxma5h3cgnsha3voli4
       nav-frontend-knapper-style: 2.1.2_thuvqjcto3w7dyhhjmc63qsctq
       nav-frontend-lenkepanel: 2.0.2_nifajclkncnj7ftinxb67heed4
       nav-frontend-lenkepanel-style: 2.0.2_ysr2ylxa7isenfezaf6zzko6cm
@@ -13194,7 +13196,7 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       rrweb-cssom: 0.6.0
-    dev: true
+    dev: false
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
@@ -13314,7 +13316,7 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 3.0.0
       whatwg-url: 12.0.1
-    dev: true
+    dev: false
 
   /date-bengali-revised/2.0.2:
     resolution: {integrity: sha512-q9iDru4+TSA9k4zfm0CFHJj6nBsxP7AYgWC/qodK/i7oOIlj5K2z5IcQDtESfs/Qwqt/xJYaP86tkazd/vRptg==}
@@ -14717,7 +14719,7 @@ packages:
       debug: 3.2.7
       eslint: 8.36.0
       eslint-import-resolver-node: 0.3.7
-      eslint-import-resolver-webpack: 0.13.2_w42pkqsix7fbbniun6k4diz5ie
+      eslint-import-resolver-webpack: 0.13.2_mwlux5m7476toaxq5sjil2bfnq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -17065,7 +17067,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.76.2
+      webpack: 5.76.2_webpack-cli@5.0.1
     dev: true
 
   /htmlparser2-svelte/4.1.0:
@@ -19129,7 +19131,7 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
-    dev: true
+    dev: false
 
   /jsesc/0.5.0:
     resolution: {integrity: sha512-uZz5UnB7u4T9LvwmFqXii7pZSouaRPorGs5who1Ip7VO0wxanFvBL7GkM6dTHlgX+jhBApRetaWpnDabOeTcnA==}
@@ -20376,7 +20378,7 @@ packages:
       dayjs: 1.11.7
       focus-trap-react: 8.11.3_v2m5e27vhdewzwhryxwfaorcca
       nav-frontend-core: 6.0.1
-      nav-frontend-js-utils: 1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4
+      nav-frontend-js-utils: 1.0.20_ezpr25ogxma5h3cgnsha3voli4
       nav-frontend-skjema: 4.0.6_gxrtqczlkmihxmpyimkbow25ha
       nav-frontend-typografi: 4.0.2_jmxjbq6kjsmcymogyuwtlvt7te
       react: 18.2.0
@@ -20569,6 +20571,18 @@ packages:
   /nav-frontend-ikoner-assets/3.0.1:
     resolution: {integrity: sha512-rRzdUl7w02xcX0ZljE3cmkow4haEePNP1gPuWRSvQt5ybL2eiE573l3lgsd4PuPuQp1T4fYFqFlPWjkUwpXVqw==}
 
+  /nav-frontend-js-utils/1.0.20_ezpr25ogxma5h3cgnsha3voli4:
+    resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
+    peerDependencies:
+      lodash.throttle: ^4.1.1
+      prop-types: ^15.5.10
+      react: ^16.8.0 || ^17.0.0
+    dependencies:
+      lodash.throttle: 4.1.1
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /nav-frontend-js-utils/1.0.20_react@18.2.0:
     resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
     peerDependencies:
@@ -20576,17 +20590,6 @@ packages:
       react: ^16.8.0 || ^17.0.0
     dependencies:
       lodash.throttle: 4.1.1
-      react: 18.2.0
-    dev: false
-
-  /nav-frontend-js-utils/1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4:
-    resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
-    peerDependencies:
-      prop-types: ^15.5.10
-      react: ^16.8.0 || ^17.0.0
-    dependencies:
-      lodash.throttle: 4.1.1
-      prop-types: 15.8.1
       react: 18.2.0
     dev: false
 
@@ -20832,7 +20835,7 @@ packages:
     dependencies:
       '@navikt/fnrvalidator': 1.3.0
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4
+      nav-frontend-js-utils: 1.0.20_ezpr25ogxma5h3cgnsha3voli4
       nav-frontend-lenker: 2.0.2_tsvx5d7dgcjuotdzghfkznjpeq
       nav-frontend-skjema-style: 3.0.3_hnih4arta5r2sbmdkjitm5uhju
       nav-frontend-typografi: 4.0.2_jmxjbq6kjsmcymogyuwtlvt7te
@@ -23575,7 +23578,7 @@ packages:
 
   /rrweb-cssom/0.6.0:
     resolution: {integrity: sha512-APM0Gt1KoXBz0iIkkdB/kfvGOwC4UuJFeG/c+yV7wSc7q96cG/kJ0HiYCnzivD9SB53cLV1MlHFNfOuPaadYSw==}
-    dev: true
+    dev: false
 
   /rst-selector-parser/2.2.3:
     resolution: {integrity: sha512-nDG1rZeP6oFTLN6yNDV/uiAvs1+FS/KlrEwh7+y7dpuApDBy6bI2HTBcc0/V8lv9OTqfyD34eF7au2pm8aBbhA==}
@@ -24639,7 +24642,7 @@ packages:
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@5.0.1
     dev: true
 
   /style-loader/2.0.0_webpack@5.76.2:
@@ -24925,7 +24928,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.5
-      webpack: 5.76.2
+      webpack: 5.76.2_webpack-cli@5.0.1
     dev: true
 
   /terser/4.8.1:
@@ -25097,7 +25100,7 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       punycode: 2.3.0
-    dev: true
+    dev: false
 
   /traverse/0.6.7:
     resolution: {integrity: sha512-/y956gpUo9ZNCb99YjxG7OaslxZWHfCHAUUfshwqOXmxUIvqLjVO581BT+gM59+QV9tFe6/CGG53tsA1Y7RSdg==}
@@ -26701,7 +26704,7 @@ packages:
     dependencies:
       tr46: 4.1.1
       webidl-conversions: 7.0.0
-    dev: true
+    dev: false
 
   /whatwg-url/5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
