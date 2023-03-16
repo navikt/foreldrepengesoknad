@@ -6,7 +6,9 @@ const MockStorage = require('./mock-storage');
 
 require('dotenv').config();
 
-const allowCrossDomain = function(req, res, next) {
+app.disable('x-powered-by');
+
+const allowCrossDomain = function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -14,8 +16,8 @@ const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 };
-const delayAllResponses = function(millis) {
-    return function(req, res, next) {
+const delayAllResponses = function (millis) {
+    return function (req, res, next) {
         setTimeout(next, millis);
     };
 };
