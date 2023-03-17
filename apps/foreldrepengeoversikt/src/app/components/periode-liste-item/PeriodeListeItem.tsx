@@ -73,7 +73,9 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                 )}
                 {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
                 <div className={bem.element('innhold-tekst-periodetittel')}>
-                    <Heading size="small">{tittel}</Heading>
+                    <Heading size="small" level="4">
+                        {tittel}
+                    </Heading>
                     <div className={bem.element('beskrivelse')}>
                         <BodyShort size="small">{`${varighetString} -`}</BodyShort>
                         <BodyShort className={bem.modifier('eierNavn')} size="small">
