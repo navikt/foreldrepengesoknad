@@ -9,6 +9,7 @@ import { bemUtils } from '@navikt/fp-common';
 
 interface Props {
     person: RegistrertAnnenForelder | RegistrertBarn;
+    visEtternavn: boolean;
     fødselsnummerForVisning?: string;
     fødselsdatoForVisning?: string;
     altTekstHvisUkjentNavn?: string;
@@ -19,6 +20,7 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
     fødselsnummerForVisning,
     fødselsdatoForVisning,
     altTekstHvisUkjentNavn,
+    visEtternavn,
 }: Props) => {
     const bem = bemUtils('registrertePersonalia');
     return (
@@ -26,7 +28,7 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
             <Element className={bem.element('navn')}>
                 {altTekstHvisUkjentNavn !== undefined
                     ? altTekstHvisUkjentNavn
-                    : formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
+                    : formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
             </Element>
             {fødselsnummerForVisning !== undefined && (
                 <Normaltekst>

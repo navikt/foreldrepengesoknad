@@ -23,7 +23,6 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const alleBarnaLever = valgteBarn.every((b) => getLeverBarnet(b));
     valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
     const fødselsdatoer = valgteBarn.map((b) => b.fødselsdato);
-    const formattertFødselsdato = formaterFødselsdatoerPåBarn(fødselsdatoer);
     const fødselsdato = valgteBarn[0].fødselsdato;
     return (
         <>
@@ -37,20 +36,25 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     {alleBarnaLever ? (
                         valgteBarn.map((barn: RegistrertBarn, index: number) => (
                             <Block padBottom="l" key={index}>
-                                <RegistrertePersonalia person={barn} fødselsdatoForVisning={formattertFødselsdato} />
+                                <RegistrertePersonalia
+                                    person={barn}
+                                    fødselsdatoForVisning={formaterFødselsdatoerPåBarn([barn.fødselsdato])}
+                                    visEtternavn={false}
+                                />
                             </Block>
                         ))
                     ) : (
                         <Block padBottom="l">
                             <RegistrertePersonalia
                                 person={valgteBarn[0]}
-                                fødselsdatoForVisning={formattertFødselsdato}
+                                fødselsdatoForVisning={formaterFødselsdatoerPåBarn(fødselsdatoer)}
                                 altTekstHvisUkjentNavn={getTittelBarnNårNavnSkalIkkeVises(
                                     undefined,
                                     fødselsdatoer,
                                     valgteBarn.length,
                                     intl
                                 )}
+                                visEtternavn={false}
                             />
                         </Block>
                     )}

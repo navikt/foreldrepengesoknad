@@ -97,7 +97,6 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                       .filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
                       .map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' '))
                 : undefined,
-        etternavn: pdlBarn !== undefined && pdlBarn.length > 0 ? pdlBarn.map((b) => b.etternavn) : undefined,
         fnr:
             pdlBarn !== undefined && pdlBarn.length > 0
                 ? pdlBarn.filter((barn) => barn.fnr !== undefined).map((b) => b.fnr)
@@ -121,7 +120,6 @@ const getSelectableBarnFraPDL = (
         antallBarn: 1,
         fødselsdatoer: [registrertBarn.fødselsdato],
         fornavn: navn !== undefined ? [navn] : undefined,
-        etternavn: [registrertBarn.etternavn],
         fnr: [registrertBarn.fnr],
         sortableDato: registrertBarn.fødselsdato,
         alleBarnaLever: getLeverBarnet(registrertBarn),
@@ -148,7 +146,6 @@ const getSelectableFlerlingerFraPDL = (
         antallBarn: alleBarna.length,
         fødselsdatoer: alleBarna.map((b) => b.fødselsdato),
         fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
-        etternavn: alleBarna.map((b) => b.etternavn),
         fnr: alleBarna.map((b) => b.fnr),
         sortableDato: alleBarna[0].fødselsdato,
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
