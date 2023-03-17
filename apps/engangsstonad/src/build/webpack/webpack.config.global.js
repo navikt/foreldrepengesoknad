@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const webpackConfig = {
     entry: ['babel-polyfill', './src/app/bootstrap.tsx'],
@@ -16,24 +17,15 @@ const webpackConfig = {
             app: path.resolve(__dirname, './../../app/'),
             assets: path.resolve(__dirname, './../../app/assets/'),
             components: path.resolve(__dirname, './../../app/components/'),
-            containers: path.resolve(__dirname, './../../app/containers/'),
-            actions: path.resolve(__dirname, './../../app/redux/actions/'),
-            reducers: path.resolve(__dirname, './../../app/redux/reducers'),
             styles: path.resolve(__dirname, './../../app/styles/'),
             util: path.resolve(__dirname, './../../app/util/'),
             common: path.resolve(__dirname, './../../common/'),
-            storage: path.resolve(__dirname, './../../storage/'),
             intl: path.resolve(__dirname, './../../app/intl/'),
         },
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
     },
     module: {
         rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                loader: require.resolve('tslint-loader'),
-                enforce: 'pre',
-            },
             {
                 test: /\.(ts|tsx)$/,
                 use: 'ts-loader',
@@ -55,7 +47,6 @@ const webpackConfig = {
                         loader: MiniCssExtractPlugin.loader,
                     },
                     'css-loader',
-                    'postcss-loader',
                     {
                         loader: 'less-loader',
                     },
@@ -73,13 +64,17 @@ const webpackConfig = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]',
+            filename: 'css/[name].css?[fullhash]-[chunkhash]-[contenthash]-[name]',
         }),
         new SpriteLoaderPlugin({
             plainSprite: true,
         }),
         new webpack.DefinePlugin({
             __ENV__: JSON.stringify(process.env.NODE_ENV),
+        }),
+        new ESLintPlugin({
+            extensions: ['js', 'jsx', 'ts', 'tsx'],
+            failOnWarning: false,
         }),
     ],
 };

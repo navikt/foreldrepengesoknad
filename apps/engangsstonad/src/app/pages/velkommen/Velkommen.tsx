@@ -54,7 +54,7 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
     const onValidSubmit = (values: Partial<VelkommenFormData>) => {
         dispatch(
             actionCreator.setVelkommen({
-                harForståttRettigheterOgPlikter: values.harForståttRettigheterOgPlikter!!,
+                harForståttRettigheterOgPlikter: values.harForståttRettigheterOgPlikter!,
             })
         );
         navigate('/soknad/søkersituasjon');
@@ -176,7 +176,7 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                                     <a
                                         className="lenke"
                                         href="#"
-                                        onClick={(e) => setPersonopplysningerModalOpen(!PersonopplysningerModalOpen)}
+                                        onClick={() => setPersonopplysningerModalOpen(!PersonopplysningerModalOpen)}
                                     >
                                         <FormattedMessage id="velkommen.text.personopplysningene.link" />
                                     </a>

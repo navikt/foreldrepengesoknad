@@ -21,7 +21,7 @@ module.exports = {
         config.devtool = 'source-map';
 
         // Make whatever fine-grained changes you need
-        config.module.rules =  [
+        (config.module.rules = [
             {
                 test: /\.(ts|tsx)$/,
                 loader: require.resolve('tslint-loader'),
@@ -62,13 +62,12 @@ module.exports = {
                 test: /\.svg$/,
                 use: 'svg-sprite-loader',
             },
-        ],
-
-        config.plugins.push(
-            new MiniCssExtractPlugin({
-                filename: 'css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]',
-            }),
-        );
+        ]),
+            config.plugins.push(
+                new MiniCssExtractPlugin({
+                    filename: 'css/[name].css?[fullhash]-[chunkhash]-[contenthash]-[name]',
+                })
+            );
 
         config.resolve.extensions.push('.ts', '.tsx', '.less');
         config.resolve.alias = {

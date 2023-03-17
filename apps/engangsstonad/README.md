@@ -1,4 +1,4 @@
-# Selvbetjeningsløsning for søknad om engangsstønad.  
+# Selvbetjeningsløsning for søknad om engangsstønad.
 
 Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 [Engangsstønad](https://www.nav.no/no/Person/Familie/Venter+du+barn/engangsst%C3%B8nad-ved-f%C3%B8dsel-og-adopsjon).
@@ -9,12 +9,6 @@ For å kjøre opp appen i dev:
 
 1.  `npm install`.
 2.  `npm run start`.
-
-For å kjøre cypress-tester:
-
-1.  `npm install`.
-2.  Vent på `Build success` i terminalen.
-3.  Klikk på `Run all tests` i Cypress-popupen.
 
 # Henvendelser
 

@@ -141,7 +141,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                                         />
                                     </Block>
                                 )}
-                                <Adopsjon visibility={visibility} formValues={formValues} kjønn={person.kjønn} />
+                                <Adopsjon visibility={visibility} formValues={formValues} />
                                 <Født visibility={visibility} formValues={formValues} />
                                 <Termin visibility={visibility} formValues={formValues} />
 
