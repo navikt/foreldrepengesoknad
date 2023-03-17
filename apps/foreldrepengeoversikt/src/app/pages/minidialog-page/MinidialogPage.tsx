@@ -54,7 +54,9 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     return (
         <ContentSection>
             <Block padBottom="xl">
-                <Heading size="medium">{intlUtils(intl, 'miniDialog.tilbakekreving.undertittel')}</Heading>
+                <Heading size="medium" level="2">
+                    {intlUtils(intl, 'miniDialog.tilbakekreving.undertittel')}
+                </Heading>
             </Block>
             <MinidialogSkjema
                 sakstype={sakstype!}
