@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AxiosResponse, AxiosError } from 'axios';
 
-export const useRequest = <T>(request: Promise<AxiosResponse<any>>) => {
+export const useRequest = <T>(request: () => Promise<AxiosResponse<any, any>>) => {
     const [data, setData] = useState<T>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<AxiosError<any> | null>(null);
@@ -11,7 +11,7 @@ export const useRequest = <T>(request: Promise<AxiosResponse<any>>) => {
         const fetch = async () => {
             try {
                 setLoading(true);
-                const response = await request;
+                const response = await request();
                 if (!ignore) {
                     setData(response.data);
                 }
@@ -25,7 +25,7 @@ export const useRequest = <T>(request: Promise<AxiosResponse<any>>) => {
         return () => {
             ignore = true;
         };
-    }, []);
+    }, [request]);
 
     return { data, loading, error };
 };
