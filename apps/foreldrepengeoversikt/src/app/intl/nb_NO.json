@@ -1,6 +1,13 @@
 {
+    "barn": "Barn",
+    "tvillinger": "Tvillinger",
+    "trillinger": "Trillinger",
+    "flerlinger": "Flerlinger",
     "Ja": "Ja",
     "Nei": "Nei",
+    "barnHeader.terminBarn": "{barnTekst} med termin {termindato}",
+    "barnHeader.fødtBarn": "{barnTekst} født {fødselsdatoTekst}",
+    "barnHeader.adoptertBarn": "{barnTekst} adoptert {adopsjonsdato}",
     "gradering.prosent": "{stillingsprosent}%",
     "byttBrowser.ingress": "For at du skal få den beste brukeropplevelsen så anbefaler vi at du bruker en moderne nettleser som støtter moderne webstandarder, og som er betydelig sikrere.",
     "byttBrowser.tittel": "Vi ser du en utdatert nettleser.",

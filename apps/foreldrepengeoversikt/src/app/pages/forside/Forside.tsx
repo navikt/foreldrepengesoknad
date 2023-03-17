@@ -1,22 +1,21 @@
 import React from 'react';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
-import { getAlleYtelser, grupperSakerPåBarn } from 'app/utils/sakerUtils';
-import { SakOppslag } from 'app/types/SakOppslag';
 import { bemUtils } from '@navikt/fp-common';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
 
 import './forside.css';
+import { GruppertSak } from 'app/types/GruppertSak';
+import { Sak } from 'app/types/Sak';
 
 interface Props {
-    saker: SakOppslag;
+    alleYtelser: Sak[];
+    grupperteSaker: GruppertSak[];
 }
 
-const Forside: React.FunctionComponent<Props> = ({ saker }) => {
-    const grupperteSaker = grupperSakerPåBarn(saker);
+const Forside: React.FunctionComponent<Props> = ({ alleYtelser, grupperteSaker }) => {
     const bem = bemUtils('forside');
-    const alleYtelser = getAlleYtelser(saker);
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
 
     return (
