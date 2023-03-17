@@ -21,10 +21,10 @@ export const getSortableBarnDato = (
 ): Date => {
     //Dato som skal kun brukes til å sortere barna i visningen
     if (fødselsdatoer.length > 0) {
-        return fødselsdatoer![0];
+        return fødselsdatoer[0];
     }
     if (termindato !== undefined) {
-        return termindato!;
+        return termindato;
     }
 
     return omsorgsovertagelse!;
@@ -40,13 +40,13 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return SelectableBarnType.UFØDT;
 };
 
-export const getFødselsdatoErInnenEnDagFraDato = (fødselsdato: Date | undefined, dato: Date | undefined): boolean => {
-    if (fødselsdato === undefined || dato === undefined) {
+export const getErDatoInnenEnDagFraAnnenDato = (dato1: Date | undefined, dato2: Date | undefined): boolean => {
+    if (dato1 === undefined || dato2 === undefined) {
         return false;
     }
     return (
-        dayjs(fødselsdato).isSameOrAfter(dayjs(dato).subtract(1, 'day'), 'day') &&
-        dayjs(fødselsdato).isSameOrBefore(dayjs(dato).add(1, 'day'), 'day')
+        dayjs(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
+        dayjs(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
 };
 
@@ -61,7 +61,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
         fødselsdatoFraSak !== undefined
             ? registrerteBarn.filter(
                   (barn) =>
-                      getFødselsdatoErInnenEnDagFraDato(barn.fødselsdato, fødselsdatoFraSak) &&
+                      getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, fødselsdatoFraSak) &&
                       !pdlBarnMedSammeFnr.find((pdlBarn) => pdlBarn.fnr === barn.fnr)
               )
             : [];
@@ -97,7 +97,6 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
                       .filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
                       .map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' '))
                 : undefined,
-        etternavn: pdlBarn !== undefined && pdlBarn.length > 0 ? pdlBarn.map((b) => b.etternavn) : undefined,
         fnr:
             pdlBarn !== undefined && pdlBarn.length > 0
                 ? pdlBarn.filter((barn) => barn.fnr !== undefined).map((b) => b.fnr)
@@ -121,7 +120,6 @@ const getSelectableBarnFraPDL = (
         antallBarn: 1,
         fødselsdatoer: [registrertBarn.fødselsdato],
         fornavn: navn !== undefined ? [navn] : undefined,
-        etternavn: [registrertBarn.etternavn],
         fnr: [registrertBarn.fnr],
         sortableDato: registrertBarn.fødselsdato,
         alleBarnaLever: getLeverBarnet(registrertBarn),
@@ -148,7 +146,6 @@ const getSelectableFlerlingerFraPDL = (
         antallBarn: alleBarna.length,
         fødselsdatoer: alleBarna.map((b) => b.fødselsdato),
         fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
-        etternavn: alleBarna.map((b) => b.etternavn),
         fnr: alleBarna.map((b) => b.fnr),
         sortableDato: alleBarna[0].fødselsdato,
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
@@ -177,7 +174,7 @@ const getSelectableBarnOptionsFraPDL = (
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
         (regBarn) =>
             !avsluttedeSaker.find((sak) =>
-                getFødselsdatoErInnenEnDagFraDato(regBarn.fødselsdato, ISOStringToDate(sak.familiehendelse.fødselsdato))
+                getErDatoInnenEnDagFraAnnenDato(regBarn.fødselsdato, ISOStringToDate(sak.familiehendelse.fødselsdato))
             )
     );
 
@@ -264,10 +261,10 @@ export const getBarnFraNesteSak = (
             barn.sak !== undefined &&
             barn.id !== valgteBarn.id &&
             barn.familiehendelsesdato !== undefined &&
-            dayjs(barn.familiehendelsesdato!).isAfter(valgteBarn.familiehendelsesdato!, 'day')
+            dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato!, 'day')
     );
-
-    const nesteBarn = allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst)[allePåfølgendeBarn.length - 1];
+    allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst);
+    const nesteBarn = allePåfølgendeBarn[allePåfølgendeBarn.length - 1];
     if (nesteBarn === undefined) {
         return undefined;
     }

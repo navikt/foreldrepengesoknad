@@ -128,12 +128,12 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
 
     const navnAnnenPart = oppgittAnnenForelder
-        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
 
     const erDeltUttakINorge = false;
 
-    const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);
+    const navnSøker = formaterNavn(fornavn, etternavn, true, mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
     const antallBarn = barn.antallBarn;

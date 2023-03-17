@@ -141,9 +141,9 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const erDeltUttak = !annenForelderHarIkkeRett;
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)
-        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn)
+        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn, true)
         : '';
-    const navnFarMedmor = formaterNavn(fornavn, etternavn, mellomnavn);
+    const navnFarMedmor = formaterNavn(fornavn, etternavn, true, mellomnavn);
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
         familiehendelsesdatoDate!,
         termindato,

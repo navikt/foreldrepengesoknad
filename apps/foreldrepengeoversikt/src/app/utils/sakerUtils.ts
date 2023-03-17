@@ -250,7 +250,6 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
 
     if (type === 'adopsjon') {
         return intlUtils(intl, 'barnHeader.adoptertBarn', {
-            barnTekst,
             adopsjonsdato: formatDate(familiehendelsedato),
         });
     } else {

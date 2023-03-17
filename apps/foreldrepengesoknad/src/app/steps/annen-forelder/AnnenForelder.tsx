@@ -162,6 +162,7 @@ const AnnenForelder = () => {
                                     <RegistrertePersonalia
                                         person={annenForelderFraRegistrertBarn}
                                         fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
+                                        visEtternavn={true}
                                     />
                                 </Block>
                             )}
