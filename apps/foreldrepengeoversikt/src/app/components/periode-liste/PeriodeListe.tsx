@@ -1,7 +1,7 @@
 import { Periode } from 'app/types/Periode';
 import * as React from 'react';
 import PeriodeListeItem from '../periode-liste-item/PeriodeListeItem';
-import { BodyShort } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 import './periode-liste.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/utils/personUtils';
@@ -24,7 +24,9 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
     const bem = bemUtils('periode-liste');
     return (
         <>
-            <BodyShort className={bem.element('title')}>{tittel}</BodyShort>
+            <Heading size="xsmall" level="3" className={bem.element('title')}>
+                {tittel}
+            </Heading>
             <div className={bem.element('block')}>
                 {periodeListe &&
                     periodeListe.length > 0 &&
