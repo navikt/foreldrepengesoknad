@@ -106,32 +106,24 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     }
 };
 
-export const formaterNavnPåFlereBarn = (
+export const formaterNavnPåBarn = (
     fornavn: string[] | undefined,
-    etternavn: string[] | undefined,
     fødselsdatoer: Date[] | undefined,
     omsorgsovertagelsesdato: Date | undefined,
     alleBarnaLever: boolean,
     antallBarn: number,
     intl: IntlShape
 ): string => {
-    if (
-        fornavn === undefined ||
-        fornavn.length === 0 ||
-        etternavn === undefined ||
-        etternavn.length === 0 ||
-        !alleBarnaLever
-    ) {
+    if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
         return getTittelBarnNårNavnSkalIkkeVises(omsorgsovertagelsesdato, fødselsdatoer, antallBarn, intl);
     }
 
-    const etterNavnet = etternavn[0];
     if (fornavn.length > 1) {
         const fornavnene = fornavn.slice(0, -1).join(', ');
         const sisteFornavn = fornavn[fornavn.length - 1];
-        return `${fornavnene} og ${sisteFornavn} ${etterNavnet}`;
+        return `${fornavnene} og ${sisteFornavn}`;
     }
-    return `${fornavn[0]} ${etternavn}`;
+    return `${fornavn[0]}`;
 };
 
 export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {

@@ -141,6 +141,7 @@ const foreldrepengesøknadReducer = (
                 },
             };
         case ForeldrepengesøknadContextActionKeys.LAG_UTTAKSPLANFORSLAG:
+        case ForeldrepengesøknadContextActionKeys.SLETT_UTTAKSPLAN:
             return {
                 ...state,
                 søknad: {
@@ -215,14 +216,6 @@ const foreldrepengesøknadReducer = (
                         ...state.søknad.søker,
                         språkkode: action.payload,
                     },
-                },
-            };
-        case ForeldrepengesøknadContextActionKeys.SLETT_UTTAKSPLAN:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    uttaksplan: action.payload,
                 },
             };
         case ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_SLETTET:

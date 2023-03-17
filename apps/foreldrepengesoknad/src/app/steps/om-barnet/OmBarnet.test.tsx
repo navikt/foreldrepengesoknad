@@ -256,8 +256,8 @@ describe('<OmBarnet>', () => {
         const user = userEvent.setup();
         render(<RegistrertBarnFødselFar />);
         expect(await screen.findByText('Barnet du søker for:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('Født: 15.03.2021')).toBeInTheDocument();
+        expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
+        expect(screen.getByText('Født 15.03.2021')).toBeInTheDocument();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
         await user.type(termindatoInput, dayjs(new Date('2021-03-01')).format('DD.MM.YYYY'));
@@ -270,8 +270,8 @@ describe('<OmBarnet>', () => {
         MockDate.set(new Date('2021-06-16'));
         render(<RegistrertBarnFødselFar />);
         expect(await screen.findByText('Barnet du søker for:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('Født: 15.03.2021')).toBeInTheDocument();
+        expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
+        expect(screen.getByText('Født 15.03.2021')).toBeInTheDocument();
         expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         MockDate.reset();
@@ -282,8 +282,8 @@ describe('<OmBarnet>', () => {
         const user = userEvent.setup();
         render(<RegistrertBarnFødselMor />);
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
-        expect(screen.getByText('LYST MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('SNILT MIDTPUNKT')).toBeInTheDocument();
+        expect(screen.getByText('LYST')).toBeInTheDocument();
+        expect(screen.getByText('SNILT')).toBeInTheDocument();
 
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
@@ -299,8 +299,8 @@ describe('<OmBarnet>', () => {
         const user = userEvent.setup();
         render(<RegistrertBarnFødselMor />);
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
-        expect(screen.getByText('LYST MIDTPUNKT')).toBeInTheDocument();
-        expect(screen.getByText('SNILT MIDTPUNKT')).toBeInTheDocument();
+        expect(screen.getByText('LYST')).toBeInTheDocument();
+        expect(screen.getByText('SNILT')).toBeInTheDocument();
 
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();

@@ -540,7 +540,7 @@ describe('dateUtils', () => {
             const endretPlan = [...opprinneligPlan, gradertPeriode];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(gradertPeriode.tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(gradertPeriode.tidsperiode?.fom);
         });
 
         it('Hvis en ny periode legges til i slutten med en periode uten uttak i mellom den opprinnelige planen, skal starten på denne perioden være endringstidspunktet', () => {
@@ -565,7 +565,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(endretPlan[4].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(endretPlan[4].tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er endret (f.eks gradert)', () => {
@@ -576,7 +576,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper periode uten uttak', () => {
@@ -587,7 +587,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper hull', () => {
@@ -598,7 +598,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått senere sluttdato (blitt lenger)', () => {
@@ -615,7 +615,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått tidligere sluttdato (blitt kortere)', () => {
@@ -632,7 +632,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(endretPlan[2].tidsperiode!.fom);
+            expect(endringstidspunkt).toEqual(endretPlan[2].tidsperiode?.fom);
         });
 
         it('Hvis en periode med periode uten uttak foran får tidligere startdato, skal endringstidspunktet være lik den nye startdatoen.', () => {
@@ -790,7 +790,7 @@ describe('dateUtils', () => {
             const endretPlan = [hullPeriode, ...opprinneligPlan];
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
 
-            expect(endringstidspunkt).toBe(hullPeriode.tidsperiode!.fom);
+            expect(endringstidspunkt).toBe(hullPeriode.tidsperiode?.fom);
         });
 
         it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være fra delingen og fremover ikke ta med tidligere del av perioden', () => {
@@ -829,7 +829,7 @@ describe('dateUtils', () => {
             ];
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
 
-            expect(endringstidspunkt).toBe(periodeSomDeltePeriode.tidsperiode!.fom);
+            expect(endringstidspunkt).toBe(periodeSomDeltePeriode.tidsperiode?.fom);
         });
         it('Hvis annen parts uttak finnes i planen, skal endringstidspunktet bli riktig når bruker legger til en ny periode på slutten.', () => {
             const opprinneligPlanMedAnnenPart: Array<Partial<Periode>> = [
@@ -877,7 +877,7 @@ describe('dateUtils', () => {
                 true
             );
 
-            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3].tidsperiode!.fom);
+            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3].tidsperiode?.fom);
         });
 
         it('Hvis annen parts uttak finnes i planen, bruker sletter opprinnelig plan og legger til ny periode i slutten, skal endringsdato være starten på den første av brukerens perioder i opprinnelig plan.', () => {
@@ -917,7 +917,7 @@ describe('dateUtils', () => {
                 true
             );
 
-            expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1].tidsperiode!.fom);
+            expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1].tidsperiode?.fom);
         });
     });
 });

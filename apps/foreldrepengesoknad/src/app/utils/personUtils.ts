@@ -6,8 +6,11 @@ import { Søkerrolle } from 'app/types/Søkerrolle';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: string) => {
-    return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
+export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
+    if (visEtternavn) {
+        return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
+    }
+    return mellomnavn ? `${fornavn} ${mellomnavn}` : `${fornavn}`;
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {
