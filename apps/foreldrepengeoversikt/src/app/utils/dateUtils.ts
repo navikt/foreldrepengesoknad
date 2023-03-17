@@ -105,3 +105,13 @@ export const ISOStringToDate = (dateString: string | undefined): Date | undefine
     }
     return undefined;
 };
+
+export const getErDatoInnenEnDagFraAnnenDato = (dato1: Date | undefined, dato2: Date | undefined): boolean => {
+    if (dato1 === undefined || dato2 === undefined) {
+        return false;
+    }
+    return (
+        dayjs(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
+        dayjs(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
+    );
+};
