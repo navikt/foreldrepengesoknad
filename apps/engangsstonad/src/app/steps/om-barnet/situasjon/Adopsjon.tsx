@@ -3,7 +3,6 @@ import Veileder from '@navikt/fp-common/lib/components/veileder/Veileder';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { Kjønn } from 'app/types/domain/Person';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
@@ -21,10 +20,9 @@ import {
 interface Fødtprops {
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
-    kjønn: Kjønn;
 }
 
-const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues, kjønn }) => {
+const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues }) => {
     const intl = useIntl();
 
     if (formValues.adopsjonAvEktefellesBarn === YesOrNo.UNANSWERED) {
