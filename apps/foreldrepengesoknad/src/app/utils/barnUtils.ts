@@ -106,9 +106,9 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     }
 };
 
-export const formaterNavnPåFlereBarn = (
+export const formaterNavnPåBarn = (
     fornavn: string[] | undefined,
-    etternavn: string[] | undefined,
+    etternavn: string[] | undefined, //TODO: Fjern
     fødselsdatoer: Date[] | undefined,
     omsorgsovertagelsesdato: Date | undefined,
     alleBarnaLever: boolean,

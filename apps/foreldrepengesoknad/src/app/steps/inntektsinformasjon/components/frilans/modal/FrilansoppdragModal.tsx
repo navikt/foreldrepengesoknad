@@ -11,10 +11,9 @@ import {
     mapFrilansoppdragModalValuesToState,
 } from './frilansoppdragModalFormUtils';
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { Undertittel } from 'nav-frontend-typografi';
 import frilansoppdragModalQuestionsConfig from './frilansoppdragModalQuestionsConfig';
-import { FormattedMessage } from 'react-intl';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
 import {
     validateNavnPåOppdragsgiver,

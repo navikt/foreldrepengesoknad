@@ -7,7 +7,7 @@ import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
-import { formaterFødselsdatoerPåBarn, formaterNavnPåFlereBarn as formaterNavnPåBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn } from 'app/utils/barnUtils';
 import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
 
