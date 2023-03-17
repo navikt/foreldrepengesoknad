@@ -25,7 +25,17 @@
 
 .header__divider {
     margin: 0 0.75rem;
+    width: 0.5px;
     color: var(--a-text-subtle);
+    fill: var(--a-text-subtle);
+}
+
+.header--divider-long {
+    height: 48px;
+}
+
+.header--divider-short {
+    height: 24px;
 }
 
 .header__divider-text {

@@ -1,4 +1,5 @@
 import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
+import { Person } from 'app/types/Person';
 
 export interface NavnPåForeldre {
     farMedmor: string;
@@ -30,4 +31,8 @@ export const getNavnPåForeldre = (
         farMedmor: søkerErFarEllerMedmor ? navnPåSøker : navnAnnenForelder,
         mor: søkerErFarEllerMedmor ? navnAnnenForelder : navnPåSøker,
     };
+};
+
+export const getLeverPerson = (person: Person) => {
+    return !person.dødsdato;
 };
