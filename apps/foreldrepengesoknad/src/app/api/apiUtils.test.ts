@@ -72,14 +72,14 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const cleanedSøknad = cleanSøknad(søknadMedMorErUfør, fødselsdato);
 
     it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
-        expect(cleanedSøknad.annenForelder.hasOwnProperty('harMorUføretrygd')).toBe(true);
-        expect(cleanedSøknad.annenForelder.hasOwnProperty('erUfør')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'harMorUføretrygd')).toBe(true);
+        expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'erUfør')).toBe(false);
         const { harMorUføretrygd } = cleanedSøknad.annenForelder as AnnenForelderOppgittForInnsending;
         expect(harMorUføretrygd).toBe(true);
     });
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
-        expect(cleanedSøknad.annenForelder.hasOwnProperty('erForSyk')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'erForSyk')).toBe(false);
     });
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
@@ -92,7 +92,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const søknadMedAnnenForelderUtenUførInfo = getSøknadMock(annenForelderUtenUførInfo, barnMock, []);
         const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedAnnenForelderUtenUførInfo, fødselsdato);
-        expect(cleanedSøknadUtenUførInfo.annenForelder.hasOwnProperty('erUfør')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
     });
 
     it('skal fjerne info om erMorForSyk fra periodene men ikke endre resten av uttaksplanen', () => {
@@ -111,7 +111,9 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
         const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
-        expect(cleanedSøknadUtenUførInfo.uttaksplan[0].hasOwnProperty('erMorForSyk')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.uttaksplan[0], 'erMorForSyk')).toBe(
+            false
+        );
         const { erMorForSyk, ...expectedPeriodeUttak } = periodeUttak;
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0]).toEqual(expectedPeriodeUttak);
     });
@@ -130,9 +132,9 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal fjerne datoForAleneomsorg, type og fnr fra født barn objektet og beholde fødsel og termindato', () => {
         const barn = cleanedSøknad.barn as FødtBarn;
-        expect(barn.hasOwnProperty('datoForAleneomsorg')).toBe(false);
-        expect(barn.hasOwnProperty('type')).toBe(false);
-        expect(barn.hasOwnProperty('fnr')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(barn, 'datoForAleneomsorg')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(barn, 'type')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(barn, 'fnr')).toBe(false);
         expect(barn.fødselsdatoer).toEqual(barnMock.fødselsdatoer);
         expect(barn.termindato).toEqual(barnMock.termindato);
     });
@@ -150,7 +152,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     });
 
     it('skal ikke ha søkersituasjon objektet ved innsending', () => {
-        expect(cleanedSøknad.hasOwnProperty('søkersituasjon')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(cleanedSøknad, 'søkersituasjon')).toBe(false);
     });
 });
 

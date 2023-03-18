@@ -184,7 +184,7 @@ export const getPeriodeTittel = (
     erAleneOmOmsorg?: boolean
 ): string => {
     switch (periode.type) {
-        case Periodetype.Uttak:
+        case Periodetype.Uttak: {
             const tittelMedNavn = getStønadskontoNavn(
                 intl,
                 periode.konto,
@@ -213,6 +213,7 @@ export const getPeriodeTittel = (
             }
 
             return tittel;
+        }
         case Periodetype.PeriodeUtenUttak:
             return intlUtils(intl, 'uttaksplan.periodetype.periodeUtenUttak.tittel');
         case Periodetype.Overføring:

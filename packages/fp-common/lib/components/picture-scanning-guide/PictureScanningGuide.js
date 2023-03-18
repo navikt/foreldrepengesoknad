@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+const react_intl_1 = require("react-intl");
+const PictureScanningExample_1 = __importDefault(require("./PictureScanningExample"));
+const bemUtils_1 = __importDefault(require("./../../utils/bemUtils"));
+const intlUtils_1 = __importDefault(require("./../../utils/intlUtils"));
+const ScanningIkon_1 = __importDefault(require("./../../assets/scanning-ikon/ScanningIkon"));
+const ds_react_1 = require("@navikt/ds-react");
+const classnames_1 = __importDefault(require("classnames"));
+require("./pictureScanningGuide.less");
+const PictureScanningGuide = ({ backgroundColor = 'blue' }) => {
+    const intl = (0, react_intl_1.useIntl)();
+    const svgIconHeight = 100;
+    const bem = (0, bemUtils_1.default)('pictureScanningGuide');
+    return ((0, jsx_runtime_1.jsxs)("div", { className: (0, classnames_1.default)(bem.block, backgroundColor === 'blue' ? bem.modifier('blue') : bem.modifier('white')), children: [(0, jsx_runtime_1.jsx)(ds_react_1.Heading, { level: "2", size: "medium", children: (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { id: "psg.innholdstittel" }) }), (0, jsx_runtime_1.jsx)(ds_react_1.Heading, { size: "small", level: "3", className: bem.element('title'), children: (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { id: "psg.section1.tittel" }) }), (0, jsx_runtime_1.jsxs)("ul", { children: [(0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { tagName: "li", id: "psg.section1.liste.punkt1" }), (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { tagName: "li", id: "psg.section1.liste.punkt2", values: {
+                            i: (msg) => (0, jsx_runtime_1.jsx)("i", { children: msg }),
+                        } }), (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { tagName: "li", id: "psg.section1.liste.punkt3" })] }), (0, jsx_runtime_1.jsx)(ds_react_1.Heading, { size: "small", level: "3", className: bem.element('title'), children: (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { id: "psg.section2.tittel" }) }), (0, jsx_runtime_1.jsxs)("ul", { children: [(0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { tagName: "li", id: "psg.section2.liste.punkt1" }), (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { tagName: "li", id: "psg.section2.liste.punkt2" }), (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { tagName: "li", id: "psg.section2.liste.punkt3" })] }), (0, jsx_runtime_1.jsxs)("div", { className: bem.element('examples'), children: [(0, jsx_runtime_1.jsx)(ds_react_1.Heading, { size: "small", level: "3", className: bem.element('title'), children: (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { id: "psg.icon.heading" }) }), (0, jsx_runtime_1.jsxs)("div", { className: bem.element('body'), children: [(0, jsx_runtime_1.jsx)("div", { className: bem.element('cell'), children: (0, jsx_runtime_1.jsx)(PictureScanningExample_1.default, { image: (0, jsx_runtime_1.jsx)(ScanningIkon_1.default, { status: "good", height: svgIconHeight }), status: "suksess", statusText: (0, intlUtils_1.default)(intl, 'psg.good'), description: (0, intlUtils_1.default)(intl, 'psg.icon.label.good') }) }), (0, jsx_runtime_1.jsx)("div", { className: bem.element('cell'), children: (0, jsx_runtime_1.jsx)(PictureScanningExample_1.default, { image: (0, jsx_runtime_1.jsx)(ScanningIkon_1.default, { status: "keystone", height: svgIconHeight }), status: "feil", statusText: (0, intlUtils_1.default)(intl, 'psg.bad'), description: (0, intlUtils_1.default)(intl, 'psg.icon.label.keystone') }) }), (0, jsx_runtime_1.jsx)("div", { className: bem.element('cell'), children: (0, jsx_runtime_1.jsx)(PictureScanningExample_1.default, { image: (0, jsx_runtime_1.jsx)(ScanningIkon_1.default, { status: "horizontal", height: svgIconHeight }), status: "feil", statusText: (0, intlUtils_1.default)(intl, 'psg.bad'), description: (0, intlUtils_1.default)(intl, 'psg.icon.label.horizontal') }) }), (0, jsx_runtime_1.jsx)("div", { className: bem.element('cell'), children: (0, jsx_runtime_1.jsx)(PictureScanningExample_1.default, { image: (0, jsx_runtime_1.jsx)(ScanningIkon_1.default, { status: "shadow", height: svgIconHeight }), status: "feil", statusText: (0, intlUtils_1.default)(intl, 'psg.bad'), description: (0, intlUtils_1.default)(intl, 'psg.icon.label.shadow') }) })] }), (0, jsx_runtime_1.jsx)(ds_react_1.Link, { target: "_blank", href: (0, intlUtils_1.default)(intl, 'psg.lenkepanel.url'), children: (0, jsx_runtime_1.jsx)(react_intl_1.FormattedMessage, { id: "psg.lenkepanel.text" }) })] })] }));
+};
+exports.default = PictureScanningGuide;
+//# sourceMappingURL=PictureScanningGuide.js.map

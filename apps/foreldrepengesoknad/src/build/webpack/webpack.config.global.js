@@ -72,6 +72,7 @@ const webpackConfig = {
         new SpriteLoaderPlugin({
             plainSprite: true,
         }),
+        // eslint-disable-next-line no-useless-escape
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb|nn|en/),
         new ESLintPlugin({
             extensions: ['js', 'jsx', 'ts', 'tsx'],
