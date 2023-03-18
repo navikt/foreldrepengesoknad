@@ -49,6 +49,8 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         tom: dayjs(periode.tom).toDate(),
     });
     const navnSøker = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+    const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPeriodeEier = periode.gjelderAnnenPart ? navnAnnenForelder : navnSøker;
     const varighetString = getVarighetString(antallDagerIPeriode, intl);
     const visStønadskontoIkon =
         isUttaksperiode(periode) ||
@@ -79,7 +81,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                     <div className={bem.element('beskrivelse')}>
                         <BodyShort size="small">{`${varighetString} -`}</BodyShort>
                         <BodyShort className={bem.modifier('eierNavn')} size="small">
-                            {`${navnSøker}`}
+                            {`${navnPeriodeEier}`}
                         </BodyShort>
                     </div>
                 </div>

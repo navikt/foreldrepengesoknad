@@ -3,6 +3,7 @@ import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
+import { Periode } from 'app/types/Periode';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getNavnAnnenForelder } from 'app/utils/sakerUtils';
@@ -17,7 +18,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
     const sak = useGetSelectedSak();
 
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, sak);
-
+    const annenPartsPerioder = [] as Periode[]; //TODO - les in fra state?
     if (sak && sak.ytelse === Ytelse.FORELDREPENGER) {
         return (
             <ContentSection heading="Din plan" padding="large">
@@ -26,6 +27,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
                     visHelePlanen={true}
                     navnPåSøker={navnPåSøker}
                     navnAnnenForelder={navnAnnenForelder}
+                    annenPartsPerioder={annenPartsPerioder}
                 ></DinPlan>
             </ContentSection>
         );

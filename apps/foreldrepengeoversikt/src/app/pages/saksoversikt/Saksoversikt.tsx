@@ -1,4 +1,6 @@
+import { Loader } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
+import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
@@ -13,10 +15,10 @@ import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
-import { getAlleYtelser, getNavnAnnenForelder } from 'app/utils/sakerUtils';
+import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -53,6 +55,36 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
           )
         : undefined;
 
+    let familiehendelsesdato = undefined;
+    let annenPartFnr = undefined;
+    let annenPartVedtakIsSuspended = true;
+    // let navnPåAnnenPart = undefined;
+    // let kjønnPåAnnenPart = undefined;
+
+    if (gjeldendeSak.ytelse === Ytelse.FORELDREPENGER) {
+        familiehendelsesdato = getFamiliehendelseDato(gjeldendeSak.familiehendelse);
+        annenPartFnr = gjeldendeSak.annenPart?.fnr;
+        annenPartVedtakIsSuspended =
+            annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
+        // navnPåAnnenPart = gjeldendeSak.annenPart?.fornavn;
+        // kjønnPåAnnenPart = gjeldendeSak.annenPart ? getKjønnFromFnr(gjeldendeSak.annenPart.fnr) : undefined;
+    }
+    const { annenPartsVedakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(annenPartVedtakIsSuspended);
+
+    useEffect(() => {
+        if (annenPartsVedtakError) {
+            throw new Error('Vi klarte ikke å hente opp informasjon om den andre forelderen.');
+        }
+    }, [annenPartsVedtakError]);
+
+    if (!annenPartsVedakData) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <Loader type="XXL" />
+            </div>
+        );
+    }
+
     return (
         <div className={bem.block}>
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
@@ -77,6 +109,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                         visHelePlanen={false}
                         navnPåSøker={navnPåSøker}
                         navnAnnenForelder={navnAnnenForelder}
+                        annenPartsPerioder={annenPartsVedakData.perioder}
                     />
                 </ContentSection>
             )}

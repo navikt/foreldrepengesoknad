@@ -1,4 +1,4 @@
-import { intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import { guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import { Periode } from 'app/types/Periode';
 import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { StønadskontoType } from 'app/types/StønadskontoType';
@@ -11,6 +11,29 @@ import { isEqual } from 'lodash';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
+import { getTidsperiode, isValidTidsperiode, Tidsperioden } from './tidsperiodeUtils';
+import { Uttaksdagen } from './Uttaksdagen';
+
+export const Periodene = (perioder: Periode[]) => ({
+    sort: () => perioder.sort(sorterPerioder),
+});
+
+export function sorterPerioder(p1: Periode, p2: Periode) {
+    const t1 = getTidsperiode(p1);
+    const t2 = getTidsperiode(p2);
+    if (isValidTidsperiode(t1) === false || isValidTidsperiode(t2) === false) {
+        return isValidTidsperiode(t1) ? 1 : -1;
+    }
+    if (dayjs(t1.fom).isSame(t2.fom, 'day')) {
+        return 1;
+    }
+
+    if (Tidsperioden(t2).erOmsluttetAv(t1)) {
+        return 1;
+    }
+
+    return dayjs(t1.fom).isBefore(t2.fom, 'day') ? -1 : 1;
+}
 
 export const isUttaksperiode = (periode: Periode) => {
     return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
@@ -133,17 +156,17 @@ export const getCleanedPlanForVisning = (
     }
 };
 
-const finnForrigeMuligeUttaksdag = (dato: Date): Date => {
-    const dagenFør = dayjs(dato).subtract(1, 'day');
-    switch (dagenFør.isoWeekday()) {
-        case 6:
-            return dagenFør.subtract(1, 'day').toDate();
-        case 7:
-            return dagenFør.subtract(2, 'day').toDate();
-        default:
-            return dagenFør.toDate();
-    }
-};
+// const finnForrigeMuligeUttaksdag = (dato: Date): Date => {
+//     const dagenFør = dayjs(dato).subtract(1, 'day');
+//     switch (dagenFør.isoWeekday()) {
+//         case 6:
+//             return dagenFør.subtract(1, 'day').toDate();
+//         case 7:
+//             return dagenFør.subtract(2, 'day').toDate();
+//         default:
+//             return dagenFør.toDate();
+//     }
+// };
 
 const finnNesteMuligeUttaksdag = (dato: Date): Date => {
     const nesteDag = dayjs(dato).add(1, 'day');
@@ -169,26 +192,26 @@ export const erHullMellomPerioder = (periode: Periode, nestePeriode?: Periode) =
     );
 };
 
-export const fyllInnHull = (periodeAcc: Periode[], periode: Periode, index: number, periodene: Periode[]) => {
-    periodeAcc.push(periode);
-    const nestePeriode = periodene[index + 1];
-    if (
-        erHullMellomPerioder(periode, nestePeriode)
-        //    && !harAnnenForelderSamtidigUttakISammePeriode(periode, periodene) TODO
-    ) {
-        const tidsperiode = {
-            fom: finnNesteMuligeUttaksdag(ISOStringToDate(periode.tom)!),
-            tom: finnForrigeMuligeUttaksdag(ISOStringToDate(nestePeriode.fom)!),
-        };
+// export const fyllInnHull = (periodeAcc: Periode[], periode: Periode, index: number, periodene: Periode[]) => {
+//     periodeAcc.push(periode);
+//     const nestePeriode = periodene[index + 1];
+//     if (
+//         erHullMellomPerioder(periode, nestePeriode)
+//         //    && !harAnnenForelderSamtidigUttakISammePeriode(periode, periodene) TODO
+//     ) {
+//         const tidsperiode = {
+//             fom: finnNesteMuligeUttaksdag(ISOStringToDate(periode.tom)!),
+//             tom: finnForrigeMuligeUttaksdag(ISOStringToDate(nestePeriode.fom)!),
+//         };
 
-        periodeAcc.push({
-            fom: dateToISOString(tidsperiode.fom),
-            tom: dateToISOString(tidsperiode.tom),
-            resultat: {} as PeriodeResultat,
-        });
-    }
-    return periodeAcc;
-};
+//         periodeAcc.push({
+//             fom: tidsperiode.fom,
+//             tom: tidsperiode.tom,
+//             resultat: {} as PeriodeResultat,
+//         });
+//     }
+//     return periodeAcc;
+// };
 
 const isValidStillingsprosent = (pst: number | undefined): boolean => pst !== undefined && isNaN(pst) === false;
 
@@ -343,3 +366,114 @@ export const getPeriodeTittel = (
 };
 
 const periodeErInnvilget = (periode: Periode): boolean => periode.resultat && periode.resultat.innvilget;
+
+interface SplittetDatoType {
+    dato: Date;
+    erFom: boolean;
+}
+
+const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]) => {
+    const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
+        Tidsperioden(getTidsperiode(periode)).inneholderDato(datoWrapper.dato)
+    );
+    const oppsplittetPeriode: Periode[] = [];
+
+    if (datoerIPerioden.length === 2) {
+        return [periode];
+    }
+
+    datoerIPerioden.forEach((datoWrapper, index) => {
+        if (index === 0) {
+            oppsplittetPeriode.push({
+                ...periode,
+                fom: dateToISOString(datoWrapper.dato),
+                tom: undefined!,
+            });
+            return;
+        }
+
+        oppsplittetPeriode[index - 1].tom = datoWrapper.erFom
+            ? dateToISOString(Uttaksdagen(datoWrapper.dato).forrige())
+            : dateToISOString(datoWrapper.dato);
+
+        if (index < datoerIPerioden.length - 1) {
+            oppsplittetPeriode.push({
+                ...periode,
+                id: guid(),
+                fom: dateToISOString(datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste()),
+                tom: undefined!,
+            });
+        }
+    });
+
+    return oppsplittetPeriode.filter((p) => isValidTidsperiode(getTidsperiode(p)));
+};
+
+export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPerioder: Periode[]) => {
+    const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce((res, p) => {
+        res.push({ dato: ISOStringToDate(p.fom!)!, erFom: true });
+        res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
+        return res;
+    }, [] as SplittetDatoType[]);
+    const annenPartsUttakTidsperioder = annenPartsPerioder.reduce((res, p) => {
+        res.push({ dato: ISOStringToDate(p.fom)!, erFom: true });
+        res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
+        return res;
+    }, [] as SplittetDatoType[]);
+
+    const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
+        if (d1.dato.getTime() - d2.dato.getTime() === 0) {
+            if (!d1.erFom) {
+                return 1;
+            }
+
+            if (!d2.erFom) {
+                return -1;
+            }
+        }
+        return d1.dato.getTime() - d2.dato.getTime();
+    });
+    const normaliserteEgnePerioder: Periode[] = [];
+    const normaliserteAnnenPartsPerioder: Periode[] = [];
+
+    søkersPerioder.forEach((p) => {
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        normaliserteEgnePerioder.push(...oppsplittetPeriode);
+    });
+
+    annenPartsPerioder.forEach((p) => {
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        const medVisningInfo = oppsplittetPeriode.map((op) => {
+            const visIPlan =
+                !normaliserteEgnePerioder.find((p) => Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(op))) &&
+                p.samtidigUttak !== undefined; //TODO: Må vi ikke gjøre samme for søkerens perioder? Hvis ap søker samtididg men ikke ber om samtidig uttak, skal da søkerens uttak ikke vises?
+            return {
+                ...op,
+                visIPlan,
+            };
+        });
+        normaliserteAnnenPartsPerioder.push(...medVisningInfo);
+    });
+
+    return {
+        normaliserteEgnePerioder,
+        normaliserteAnnenPartsPerioder,
+    };
+};
+
+//TODO: hvordan vise oppholdsperioder til annen part, skal de vises som uttak for brukeren?
+export const getPerioderForVisning = (perioder: Periode[], erAnnenPartsPeriode: boolean): Periode[] => {
+    return perioder
+        .map((periode) => {
+            return {
+                ...periode,
+                gjelderAnnenPart: erAnnenPartsPeriode,
+                id: guid(),
+            };
+        })
+        .filter(
+            (p) =>
+                isValidTidsperiode(getTidsperiode(p)) &&
+                (isUttaksperiode(p) || isOverføringsperiode(p) || isUtsettelsesperiode(p))
+        );
+};

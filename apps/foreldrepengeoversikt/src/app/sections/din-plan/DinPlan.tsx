@@ -7,21 +7,32 @@ import {
     finnNåværendePerioder,
     finnTidligerePerioder,
     getCleanedPlanForVisning,
+    getPerioderForVisning,
+    normaliserPerioder,
+    Periodene,
 } from 'app/utils/periodeUtils';
 import { NavRoutes } from 'app/routes/routes';
 import './din-plan.css';
 import PeriodeOversikt from 'app/components/periode-oversikt/PeriodeOversikt';
 import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
 import { slåSammenLikePerioder } from 'app/utils/planUtils';
+import { Periode } from 'app/types/Periode';
 
 interface Props {
+    annenPartsPerioder: Periode[] | undefined;
     navnAnnenForelder: string;
     navnPåSøker: string;
     sak: Foreldrepengesak;
     visHelePlanen: boolean;
 }
 
-const DinPlan: React.FunctionComponent<Props> = ({ sak, visHelePlanen, navnPåSøker, navnAnnenForelder }) => {
+const DinPlan: React.FunctionComponent<Props> = ({
+    annenPartsPerioder,
+    sak,
+    visHelePlanen,
+    navnPåSøker,
+    navnAnnenForelder,
+}) => {
     const bem = bemUtils('din-plan');
 
     let vedtattUttaksplan = undefined;
@@ -34,10 +45,31 @@ const DinPlan: React.FunctionComponent<Props> = ({ sak, visHelePlanen, navnPåS�
         søktePerioder = slåSammenLikePerioder(sak.åpenBehandling.søknadsperioder);
     }
     const erUttaksplanVedtatt = vedtattUttaksplan ? true : false;
-
-    const planForVisning = erUttaksplanVedtatt ? vedtattUttaksplan : søktePerioder;
-    const filtrertPlan = getCleanedPlanForVisning(planForVisning, erUttaksplanVedtatt);
-    const planMedHull = filtrertPlan; //TODO fyllInnHull(filtrertPlan);
+    const annenPartsPerioderForVisning =
+        annenPartsPerioder !== undefined
+            ? getPerioderForVisning(
+                  annenPartsPerioder.filter((p) => p.resultat.innvilget === true),
+                  true
+              )
+            : undefined;
+    let annenPartsPlan: Periode[] = [];
+    let søkersPlan = erUttaksplanVedtatt ? vedtattUttaksplan : søktePerioder;
+    if (søkersPlan && annenPartsPerioderForVisning) {
+        const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(
+            søkersPlan,
+            annenPartsPerioderForVisning
+        );
+        søkersPlan = normaliserteEgnePerioder;
+        annenPartsPlan = normaliserteAnnenPartsPerioder;
+    }
+    const annenPartsPlanUtenOverlapp = annenPartsPlan ? annenPartsPlan.filter((p) => p.visIPlan) : [];
+    const annenPartsOverlappendePerioder = annenPartsPlan ? annenPartsPlan.filter((p) => !p.visIPlan) : [];
+    console.log('TODO: ', annenPartsOverlappendePerioder); //TODO send til DinPlan
+    const allePerioderForVisning = søkersPlan
+        ? Periodene(søkersPlan.concat(annenPartsPlanUtenOverlapp)).sort()
+        : annenPartsPlan;
+    const filtrertPlan = getCleanedPlanForVisning(allePerioderForVisning, erUttaksplanVedtatt);
+    const planMedHull = filtrertPlan; //TODO fyllInnHull(allePerioder);
     const tidligerePerioder = planMedHull ? finnTidligerePerioder(planMedHull) : undefined;
     const nåværendePerioder = planMedHull ? finnNåværendePerioder(planMedHull) : undefined;
     const fremtidligePerioder = planMedHull ? finnFremtidigePerioder(planMedHull) : undefined;
