@@ -58,16 +58,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     let familiehendelsesdato = undefined;
     let annenPartFnr = undefined;
     let annenPartVedtakIsSuspended = true;
-    // let navnPåAnnenPart = undefined;
-    // let kjønnPåAnnenPart = undefined;
 
     if (gjeldendeSak.ytelse === Ytelse.FORELDREPENGER) {
         familiehendelsesdato = getFamiliehendelseDato(gjeldendeSak.familiehendelse);
         annenPartFnr = gjeldendeSak.annenPart?.fnr;
         annenPartVedtakIsSuspended =
             annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
-        // navnPåAnnenPart = gjeldendeSak.annenPart?.fornavn;
-        // kjønnPåAnnenPart = gjeldendeSak.annenPart ? getKjønnFromFnr(gjeldendeSak.annenPart.fnr) : undefined;
     }
     const { annenPartsVedakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(annenPartVedtakIsSuspended);
 
