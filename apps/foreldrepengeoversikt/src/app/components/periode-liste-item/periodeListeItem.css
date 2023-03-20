@@ -64,6 +64,16 @@
     padding-left: 0.15rem;
 }
 
+.periode--eierNavnAnnenPart {
+    font-style: italic;
+    padding-left: 0.2rem;
+    color: var(--a-gray-700);
+}
+
+.periode--samtidigUttakAnnenPart {
+    font-weight: 600;
+    color: var(--a-gray-700);
+}
 
 .periode--innvilget {
     background-color: white;
@@ -72,3 +82,20 @@
 .periode--ikke-innvilget{
     background-color: var(--a-gray-100);
 }
+
+.periode__samtidig-uttak {
+    border: 0.1rem solid var(--a-gray-100);
+    border-radius: 0.35rem;
+    border-style: dotted;
+    margin-top: 0.75rem;
+    margin-left: 5%;
+    padding: 1.25rem;
+}
+
+.periode--bg-farMedmor {
+    border-left: 0.5rem solid var(--a-blue-400);
+}
+.periode--bg-mor {
+    border-left: 0.5rem solid var(--a-purple-400);
+}
+

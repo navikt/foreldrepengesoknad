@@ -63,50 +63,68 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
     const classNameInnvilget = isAvslåttPeriode(periode) ? bem.modifier('ikke-innvilget') : bem.modifier('innvilget');
     return (
         <div className={classNames(`${bem.block} ${bem.element('box')} ${classNameInnvilget}`)}>
-            <div className={bem.element('innhold')}>
-                {visStønadskontoIkon && (
-                    <StønadskontoIkon
-                        konto={periode.kontoType!}
-                        gradert={!!periode.gradering}
-                        navnPåForeldre={navnPåForeldre}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                        erAleneOmOmsorg={erAleneOmOmsorg}
-                        periodeResultat={periode.resultat}
-                        morsAktivitet={periode.morsAktivitet}
-                    />
-                )}
-                {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
-                <div className={bem.element('innhold-tekst-periodetittel')}>
-                    <Heading size="small" level="4">
-                        {tittel}
-                    </Heading>
-                    <div className={bem.element('beskrivelse')}>
-                        <BodyShort size="small">{`${varighetString} -`}</BodyShort>
-                        <BodyShort className={bem.modifier('eierNavn')} size="small">
-                            {`${navnPeriodeEier}`}
+            <div>
+                <div className={bem.element('innhold')}>
+                    {visStønadskontoIkon && (
+                        <StønadskontoIkon
+                            konto={periode.kontoType!}
+                            gradert={!!periode.gradering}
+                            navnPåForeldre={navnPåForeldre}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            erAleneOmOmsorg={erAleneOmOmsorg}
+                            periodeResultat={periode.resultat}
+                            morsAktivitet={periode.morsAktivitet}
+                        />
+                    )}
+                    {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
+                    <div className={bem.element('innhold-tekst-periodetittel')}>
+                        <Heading size="small" level="4">
+                            {tittel}
+                        </Heading>
+                        <div className={bem.element('beskrivelse')}>
+                            <BodyShort size="small">{`${varighetString} -`}</BodyShort>
+                            <BodyShort className={bem.modifier('eierNavn')} size="small">
+                                {`${navnPeriodeEier}`}
+                            </BodyShort>
+                        </div>
+                    </div>
+                    <div className={bem.element('innhold-tekst-date')}>
+                        <BodyShort size="small">
+                            {dayjs(fomDate).get('date')}. {måned3bokstaver(dayjs(fomDate))}.
+                        </BodyShort>
+                        <BodyShort size="small" className={bem.modifier('year')}>
+                            {dayjs(fomDate).get('year')}
+                        </BodyShort>
+                    </div>
+                    <div className={bem.element('innhold-tekst-date')}>
+                        <BodyShort size="small">
+                            {dayjs(tomDate).get('date')}. {måned3bokstaver(dayjs(tomDate))}.
+                        </BodyShort>
+                        <BodyShort size="small" className={bem.modifier('year')}>
+                            {dayjs(tomDate).get('year')}
                         </BodyShort>
                     </div>
                 </div>
-                <div className={bem.element('innhold-tekst-date')}>
-                    <BodyShort size="small">
-                        {dayjs(fomDate).get('date')}. {måned3bokstaver(dayjs(fomDate))}.
-                    </BodyShort>
-                    <BodyShort size="small" className={bem.modifier('year')}>
-                        {dayjs(fomDate).get('year')}
-                    </BodyShort>
-                </div>
-                <div className={bem.element('innhold-tekst-date')}>
-                    <BodyShort size="small">
-                        {dayjs(tomDate).get('date')}. {måned3bokstaver(dayjs(tomDate))}.
-                    </BodyShort>
-                    <BodyShort size="small" className={bem.modifier('year')}>
-                        {dayjs(tomDate).get('year')}
-                    </BodyShort>
-                </div>
-                {overlappendePeriodeAnnenPart && <div>OVERLAPPER!!!!</div>}
+                {overlappendePeriodeAnnenPart && (
+                    <div
+                        className={classNames(
+                            bem.element('samtidig-uttak'),
+                            bem.modifier(`bg-${erFarEllerMedmor ? 'mor' : 'farMedmor'}`)
+                        )}
+                    >
+                        <div className={bem.element('beskrivelse')}>
+                            <BodyShort size="small" className={bem.modifier('samtidigUttakAnnenPart')}>
+                                {'Samtidig uttak - '}
+                            </BodyShort>
+                            <BodyShort size="small" className={bem.modifier('eierNavnAnnenPart')}>
+                                {navnAnnenForelder}
+                            </BodyShort>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
-
+//color={getStønadskontoFarge(konto)}
 export default PeriodeListeItem;
