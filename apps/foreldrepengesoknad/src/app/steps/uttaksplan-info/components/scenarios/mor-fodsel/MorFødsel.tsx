@@ -130,7 +130,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             harAktivitetskravIPeriodeUtenUttak: false,
             førsteUttaksdagNesteBarnsSak,
         });
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
         const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
             erDeltUttak,
             morHarRett: true,
@@ -179,7 +179,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                     erAleneOmOmsorg,
                 });
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>

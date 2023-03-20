@@ -131,11 +131,11 @@ const renderOptions = (intl: IntlShape) => {
     return Object.keys(MorsAktivitet)
         .filter(
             (aktivitetsid) =>
-                MorsAktivitet[aktivitetsid] !== MorsAktivitet.Uføre &&
-                MorsAktivitet[aktivitetsid] !== MorsAktivitet.IkkeOppgitt
+                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.Uføre &&
+                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.IkkeOppgitt
         )
         .map((aktivitetsid) => (
-            <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
+            <option value={(MorsAktivitet as any)[aktivitetsid]} key={(MorsAktivitet as any)[aktivitetsid]}>
                 {intlUtils(intl, `uttaksplan.morsAktivitet.${aktivitetsid}`)}
             </option>
         ));

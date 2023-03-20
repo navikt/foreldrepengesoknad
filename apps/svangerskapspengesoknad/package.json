@@ -150,7 +150,7 @@
         "react-day-picker": "^7.4.8",
         "react-document-title": "^2.0.3",
         "react-dom": "^18.2.0",
-        "react-intl": "^6.2.10",
+        "react-intl": "^6.3.1",
         "react-modal": "^3.16.1",
         "react-motion": "^0.5.2",
         "react-redux": "^8.0.5",

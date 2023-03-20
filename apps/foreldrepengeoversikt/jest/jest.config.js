@@ -19,4 +19,5 @@ module.exports = {
     coverageReporters: ['text-summary'],
     preset: 'ts-jest/presets/js-with-babel',
     testMatch: null,
+    transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*sif-common.*).*$'],
 };
