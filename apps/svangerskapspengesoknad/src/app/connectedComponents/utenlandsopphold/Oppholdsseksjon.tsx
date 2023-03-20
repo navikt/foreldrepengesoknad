@@ -52,7 +52,7 @@ const Oppholdsspørsmål: FunctionComponent<Props> = (props) => {
     };
 
     const attributter = name.split('.');
-    const verdi = formik.values[attributter[0]][attributter[1]];
+    const verdi = (formik.values as any)[attributter[0]][attributter[1]];
     useEffect(() => {
         if (verdi === true) {
             formik.setFieldValue(land, []);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { FunctionComponent, useMemo } from 'react';
 import { Formik, FormikProps } from 'formik';
 import { FormattedMessage, useIntl } from 'react-intl';

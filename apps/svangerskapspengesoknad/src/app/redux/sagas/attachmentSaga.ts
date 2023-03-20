@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import AttachmentApi from '../../../common/storage/api/attachmentApi';
 import {
@@ -33,8 +34,7 @@ function* uploadAttachment(action: UploadAttachmentRequest): any {
             type: AttachmentActionTypes.UPLOAD_ATTACHMENT_FAILURE,
             payload: {
                 attachment,
-                // @ts-ignore Fiks
-                error,
+                error: error as AxiosError,
             },
         };
 
@@ -61,8 +61,7 @@ function* deleteAttachment(action: DeleteAttachmentRequest) {
             type: AttachmentActionTypes.DELETE_ATTACHMENT_FAILURE,
             payload: {
                 attachment,
-                // @ts-ignore Fiks
-                error,
+                error: error as AxiosError,
             },
         };
         yield put(failureAction);

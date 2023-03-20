@@ -1,0 +1,1 @@
+{"version":3,"file":"InfoBlock.js","sourceRoot":"","sources":["../../../src/common/components/info-block/InfoBlock.tsx"],"names":[],"mappings":";;;;;;AAAA,sEAA8C;AAG9C,4BAA0B;AAM1B,MAAM,SAAS,GAAsC,CAAC,EAAE,QAAQ,EAAE,EAAE,EAAE;IAClE,MAAM,GAAG,GAAG,IAAA,kBAAQ,EAAC,WAAW,CAAC,CAAC;IAElC,OAAO,gCAAK,SAAS,EAAE,GAAG,CAAC,KAAK,YAAG,QAAQ,GAAO,CAAC;AACvD,CAAC,CAAC;AAEF,kBAAe,SAAS,CAAC"}

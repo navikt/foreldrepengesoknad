@@ -171,7 +171,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     familiehendelsesdato: familiehendelsesdatoDate!,
                 });
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <FarMedmorFødselOgMorHarIkkeRettFormComponents.Form

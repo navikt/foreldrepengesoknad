@@ -39,6 +39,7 @@
         "FEATURE_WLB_GJELDER_FRA_FORSTE_JAN",
         "APP_VERSION",
         "KLAGE_URL",
-        "LOG_VALIDATION"
+        "LOG_VALIDATION",
+        "NODE_ENV"
     ]
 }

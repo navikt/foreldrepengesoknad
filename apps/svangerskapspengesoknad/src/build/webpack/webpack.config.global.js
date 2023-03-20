@@ -27,12 +27,12 @@ const webpackConfig = {
                 test: /\.(ts|tsx)$/,
                 use: [
                     {
-                      loader: 'ts-loader',
-                      options: {
-                        transpileOnly: false
-                      }
-                    }
-                  ],
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: false,
+                        },
+                    },
+                ],
                 exclude: /node_modules/,
             },
             {
@@ -59,6 +59,7 @@ const webpackConfig = {
         new SpriteLoaderPlugin({
             plainSprite: true,
         }),
+        // eslint-disable-next-line no-useless-escape
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb|nn|en/),
     ],
 };

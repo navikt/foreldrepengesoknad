@@ -116,6 +116,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
     const prepareTilrettelegging = () => {
         if (frilansInformasjon === undefined) {
             tilrettelegging = tilrettelegging.filter(
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Fiks
                 (til: UferdigTilrettelegging) => til.arbeidsforhold.type !== Arbeidsforholdstype.FRILANSER
             );
@@ -123,6 +124,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
 
         if (selvstendigNæringsdrivendeInformasjon === undefined) {
             tilrettelegging = tilrettelegging.filter(
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Fiks
                 (til: UferdigTilrettelegging) => til.arbeidsforhold.type !== Arbeidsforholdstype.SELVSTENDIG
             );

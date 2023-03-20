@@ -83,7 +83,7 @@ const extractAttachments = (søknad: unknown, foundAttachments: Attachment[]): a
         return søknad;
     }
 
-    const ret = {};
+    const ret: any = {};
 
     Object.keys(søknad).forEach((key: string) => {
         const value = søknad[key];

@@ -6,7 +6,6 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "strict": true,
-        "suppressImplicitAnyIndexErrors": true,
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "jsx": "react",

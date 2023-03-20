@@ -33,6 +33,7 @@ const Applikasjonsside: FunctionComponent<Props> = ({ visSpråkvelger, visTittel
             {visSpråkvelger && (
                 <LanguageToggle
                     language={språkkode}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore Fiks
                     toggleLanguage={(languageCode: Språkkode) => setSpråk(languageCode)}
                 />

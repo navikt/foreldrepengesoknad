@@ -57,8 +57,7 @@ const defaultBottomContentRenderer: RangeInputElementRenderer = (options: RangeI
 );
 
 class RangeInput extends React.Component<Props, State> {
-    // @ts-ignore Fiks
-    container: HTMLDivElement | null;
+    container: HTMLDivElement | null = null;
 
     constructor(props: Props) {
         super(props);

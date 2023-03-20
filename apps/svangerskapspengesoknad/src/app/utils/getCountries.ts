@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as countries from 'i18n-iso-countries';
 
 // prettier-ignore
