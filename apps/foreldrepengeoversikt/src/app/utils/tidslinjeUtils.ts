@@ -129,7 +129,7 @@ export const getTidslinjehendelserDetaljer = (
                     internalUrl: OversiktRoutes.ETTERSEND,
                     linkTittel: intlUtils(intl, 'tidslinje.VENT_DOKUMENTASJON.linkTittel'),
                 };
-            case TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY:
+            case TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY: {
                 const datoFørsteSøknad = getDatoForInnsendingAvFørsteSøknad(tidslinjeHendelserData);
                 return {
                     ...hendelse,
@@ -139,6 +139,7 @@ export const getTidslinjehendelserDetaljer = (
                           })
                         : intlUtils(intl, 'tidslinje.merInformasjon.FØRSTEGANGSSØKNAD_NY.ukjentDatoFørstSøknad'),
                 };
+            }
             default:
                 return hendelse;
         }

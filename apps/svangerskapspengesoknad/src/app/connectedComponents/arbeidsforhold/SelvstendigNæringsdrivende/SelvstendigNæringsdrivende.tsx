@@ -40,6 +40,7 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
 
     return (
         <Formik
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore Fiks
             initialValues={element}
             validate={validateSelvstendigNæringsdrivende()}

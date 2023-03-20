@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { IntlProvider as Provider } from 'react-intl';
 import { connect } from 'react-redux';

@@ -10,10 +10,10 @@ import { useIntl } from 'react-intl';
 interface OwnProps {
     name: string;
     label: string | React.ReactNode;
-    options: {
+    options: Array<{
         value: string;
         label: string;
-    }[];
+    }>;
 }
 
 type Props = OwnProps & Omit<CheckboxPanelgruppeResponsiveProps, 'onChange' | 'checkboxes' | 'legend'>;
