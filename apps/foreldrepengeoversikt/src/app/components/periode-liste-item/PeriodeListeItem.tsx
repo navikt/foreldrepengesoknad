@@ -29,6 +29,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
+    overlappendePeriodeAnnenPart?: Periode;
     periode: Periode;
 }
 
@@ -37,6 +38,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
     erAleneOmOmsorg,
     navnPåForeldre,
+    overlappendePeriodeAnnenPart,
 }) => {
     const bem = bemUtils('periode');
     const intl = useIntl();
@@ -101,6 +103,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         {dayjs(tomDate).get('year')}
                     </BodyShort>
                 </div>
+                {overlappendePeriodeAnnenPart && <div>OVERLAPPER!!!!</div>}
             </div>
         </div>
     );

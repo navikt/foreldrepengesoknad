@@ -8,6 +8,7 @@ import {
     finnTidligerePerioder,
     getCleanedPlanForVisning,
     getPerioderForVisning,
+    leggTilVisningsInfo,
     normaliserPerioder,
     Periodene,
 } from 'app/utils/periodeUtils';
@@ -60,11 +61,11 @@ const DinPlan: React.FunctionComponent<Props> = ({
             annenPartsPerioderForVisning
         );
         søkersPlan = normaliserteEgnePerioder;
-        annenPartsPlan = normaliserteAnnenPartsPerioder;
+        const annenPartsNormalisertPlan = normaliserteAnnenPartsPerioder;
+        annenPartsPlan = leggTilVisningsInfo(annenPartsNormalisertPlan, søkersPlan);
     }
     const annenPartsPlanUtenOverlapp = annenPartsPlan ? annenPartsPlan.filter((p) => p.visIPlan) : [];
     const annenPartsOverlappendePerioder = annenPartsPlan ? annenPartsPlan.filter((p) => !p.visIPlan) : [];
-    console.log('TODO: ', annenPartsOverlappendePerioder); //TODO send til DinPlan
     const allePerioderForVisning = søkersPlan
         ? Periodene(søkersPlan.concat(annenPartsPlanUtenOverlapp)).sort()
         : annenPartsPlan;
@@ -109,6 +110,7 @@ const DinPlan: React.FunctionComponent<Props> = ({
                 visHelePlanen={visHelePlanen}
                 navnPåSøker={navnPåSøker}
                 navnAnnenForelder={navnAnnenForelder}
+                overlappendePerioderAnnenPart={annenPartsOverlappendePerioder}
             />
         </>
     );

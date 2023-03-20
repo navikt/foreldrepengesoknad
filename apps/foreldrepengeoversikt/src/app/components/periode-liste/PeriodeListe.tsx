@@ -5,11 +5,13 @@ import { Heading } from '@navikt/ds-react';
 import './periode-liste.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/utils/personUtils';
+import { getTidsperiode, Tidsperioden } from 'app/utils/tidsperiodeUtils';
 
 interface Props {
     erAleneOmOmsorg: boolean;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
+    overlappendePerioderAnnenPart?: Periode[] | undefined;
     periodeListe: Periode[];
     tittel: string;
 }
@@ -20,6 +22,7 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
     navnPåForeldre,
     periodeListe = [],
     tittel,
+    overlappendePerioderAnnenPart: annenPartsOverlappendePerioder,
 }) => {
     const bem = bemUtils('periode-liste');
     return (
@@ -31,6 +34,11 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
                 {periodeListe &&
                     periodeListe.length > 0 &&
                     periodeListe.map((periode) => {
+                        const overlappendePeriodeAnnenPart = annenPartsOverlappendePerioder
+                            ? annenPartsOverlappendePerioder.find((p) =>
+                                  Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode))
+                              )
+                            : undefined;
                         return (
                             <PeriodeListeItem
                                 key={guid()}
@@ -38,6 +46,7 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
                                 navnPåForeldre={navnPåForeldre}
+                                overlappendePeriodeAnnenPart={overlappendePeriodeAnnenPart}
                             />
                         );
                     })}

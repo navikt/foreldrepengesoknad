@@ -443,22 +443,33 @@ export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPeriode
 
     annenPartsPerioder.forEach((p) => {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
-        const medVisningInfo = oppsplittetPeriode.map((op) => {
-            const visIPlan =
-                !normaliserteEgnePerioder.find((p) => Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(op))) &&
-                p.samtidigUttak !== undefined; //TODO: Må vi ikke gjøre samme for søkerens perioder? Hvis ap søker samtididg men ikke ber om samtidig uttak, skal da søkerens uttak ikke vises?
-            return {
-                ...op,
-                visIPlan,
-            };
-        });
-        normaliserteAnnenPartsPerioder.push(...medVisningInfo);
+        normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
     });
 
     return {
         normaliserteEgnePerioder,
         normaliserteAnnenPartsPerioder,
     };
+};
+
+export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPerioder: Periode[]): Periode[] => {
+    const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode) => {
+        const overlapperSøkerensSamtidigUttak =
+            periode.samtidigUttak !== undefined &&
+            søkerensPerioder.find(
+                (p) =>
+                    p.resultat.innvilget &&
+                    Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode)) &&
+                    p.samtidigUttak !== undefined
+            );
+        const visIPlan = !overlapperSøkerensSamtidigUttak;
+        //TODO: Må vi ikke gjøre samme for søkerens perioder? Hvis ap søker samtididg men ikke ber om samtidig uttak, skal da søkerens uttak ikke vises?
+        return {
+            ...periode,
+            visIPlan,
+        };
+    });
+    return annenPartsPerioderMedVisningsInfo;
 };
 
 //TODO: hvordan vise oppholdsperioder til annen part, skal de vises som uttak for brukeren?

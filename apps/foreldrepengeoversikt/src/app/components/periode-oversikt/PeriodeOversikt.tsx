@@ -16,6 +16,7 @@ interface Props {
     navnAnnenForelder: string;
     navnPåSøker: string;
     nåværendePerioder?: Periode[];
+    overlappendePerioderAnnenPart?: Periode[] | undefined;
     sak: Foreldrepengesak;
     tidligerePerioder?: Periode[];
     visHelePlanen: boolean;
@@ -29,6 +30,7 @@ const PeriodeOversikt: React.FunctionComponent<Props> = ({
     navnAnnenForelder,
     sak,
     visHelePlanen,
+    overlappendePerioderAnnenPart: annenPartsOverlappendePerioder,
 }) => {
     const intl = useIntl();
     const erFarEllerMedmor = !sak.sakTilhørerMor;
@@ -56,6 +58,7 @@ const PeriodeOversikt: React.FunctionComponent<Props> = ({
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                     erAleneOmOmsorg={erAleneOmOmsorg}
+                    overlappendePerioderAnnenPart={annenPartsOverlappendePerioder}
                 />
             )}
             {nåværendePerioder.length > 0 && (
@@ -65,6 +68,7 @@ const PeriodeOversikt: React.FunctionComponent<Props> = ({
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                     erAleneOmOmsorg={erAleneOmOmsorg}
+                    overlappendePerioderAnnenPart={annenPartsOverlappendePerioder}
                 />
             )}
             {fremtidigePerioder.length > 0 && (
@@ -74,6 +78,7 @@ const PeriodeOversikt: React.FunctionComponent<Props> = ({
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                     erAleneOmOmsorg={erAleneOmOmsorg}
+                    overlappendePerioderAnnenPart={annenPartsOverlappendePerioder}
                 />
             )}
             {!visHelePlanen && (
