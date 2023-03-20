@@ -7,7 +7,7 @@ import SøknadStatusEtikett from '../SøknadStatus';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import './barnVelger.less';
-import { formaterFødselsdatoerPåBarn, formaterNavnPåFlereBarn as formaterNavnPåBarn } from 'app/utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
 
@@ -32,7 +32,6 @@ export interface SelectableBarn {
     fødselsdatoer?: Date[];
     omsorgsovertagelse?: Date;
     fornavn?: string[];
-    etternavn?: string[];
     kanSøkeOmEndring?: boolean;
     sak?: Sak;
     annenForelder?: RegistrertAnnenForelder;
@@ -65,23 +64,11 @@ const getSakstatus = (sakErFerdigbehandlet: boolean) => {
 };
 
 const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: IntlShape): string => {
-    if (antallBarn === 1) {
-        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.ettBarn', {
-            termin: formatDate(termindato),
-        });
-    } else if (antallBarn === 2) {
-        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.tvillinger', {
-            termin: formatDate(termindato),
-        });
-    } else if (antallBarn === 3) {
-        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.trillinger', {
-            termin: formatDate(termindato),
-        });
-    } else {
-        return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn.flerlinger', {
-            termin: formatDate(termindato),
-        });
-    }
+    const barnTekst = getTekstForAntallBarn(antallBarn, intl);
+    return intlUtils(intl, 'velkommen.barnVelger.ufødtBarn', {
+        antallBarnTekst: barnTekst,
+        termin: formatDate(termindato),
+    });
 };
 
 const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
@@ -113,7 +100,6 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
 const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåBarn(
         barn.fornavn,
-        barn.etternavn,
         barn.fødselsdatoer,
         barn.omsorgsovertagelse,
         barn.alleBarnaLever,

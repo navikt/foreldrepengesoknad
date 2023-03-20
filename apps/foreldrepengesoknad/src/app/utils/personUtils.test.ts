@@ -14,12 +14,15 @@ import getIntlMock from 'utils-test/intl-test-helper';
 describe('personUtils', () => {
     const intlMock = getIntlMock();
     it('skal formatere navn med mellomnavn', () => {
-        const verdi = formaterNavn('Espen', 'Utvikler', 'Senior');
+        const verdi = formaterNavn('Espen', 'Utvikler', true, 'Senior');
         expect(verdi).toBe('Espen Senior Utvikler');
     });
-
+    it('skal formatere navn uten å vise fornavn', () => {
+        const verdi = formaterNavn('Espen', 'Utvikler', false, 'Senior');
+        expect(verdi).toBe('Espen Senior');
+    });
     it('skal formatere navn uten mellomnavn', () => {
-        const verdi = formaterNavn('Espen', 'Utvikler');
+        const verdi = formaterNavn('Espen', 'Utvikler', true);
         expect(verdi).toBe('Espen Utvikler');
     });
 

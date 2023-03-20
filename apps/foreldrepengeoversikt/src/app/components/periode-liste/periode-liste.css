@@ -8,4 +8,5 @@
 
 .periode-liste__title {
     font-style: italic;
+    font-weight: var(--a-font-weight-regular);
 }

@@ -116,7 +116,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
         } else if (nySøknadPåAlleredeSøktBarn) {
             const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søkerinfo) as Søknad;
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
-            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
+            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
         } else if (nySøknadPåValgteRegistrerteBarn) {
             const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
             actionsToDispatch.push(actionCreator.setSøknad(søknad));

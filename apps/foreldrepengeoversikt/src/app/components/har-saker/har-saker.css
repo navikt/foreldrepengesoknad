@@ -8,6 +8,10 @@
     margin-bottom: 1rem;
 }
 
+.har-saker__undertittel {
+    font-size: large;
+}
+
 .har-saker__tittel > :first-child {
     margin-right: 1rem;
 }

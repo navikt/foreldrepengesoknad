@@ -37,7 +37,7 @@ import { intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 import { Sak } from 'app/types/Sak';
 import PersonFnrDTO from 'app/types/PersonFnrDTO';
-import { getFødselsdatoErInnenEnDagFraDato } from 'app/pages/velkommen/velkommenUtils';
+import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -410,7 +410,7 @@ const finnAnnenForelderForSaken = (
     const barnMedGittFødselsdato =
         fødselsdato !== undefined
             ? barn.filter(
-                  (b) => getFødselsdatoErInnenEnDagFraDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined
+                  (b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined
               )
             : [];
 

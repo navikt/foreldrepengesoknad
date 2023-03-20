@@ -82,10 +82,10 @@ const MorFødsel: FunctionComponent<Props> = ({
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const navnFarMedmor = oppgittAnnenForelder
-        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
 
-    const navnMor = formaterNavn(fornavn, etternavn, mellomnavn);
+    const navnMor = formaterNavn(fornavn, etternavn, true, mellomnavn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(

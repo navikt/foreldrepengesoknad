@@ -164,7 +164,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
     const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
     const navnAnnenPart = oppgittAnnenForelder
-        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn)
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
@@ -173,7 +173,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
-    const navnSøker = formaterNavn(fornavn, etternavn, mellomnavn);
+    const navnSøker = formaterNavn(fornavn, etternavn, true, mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
 

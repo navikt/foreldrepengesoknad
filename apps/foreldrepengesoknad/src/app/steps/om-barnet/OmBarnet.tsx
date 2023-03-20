@@ -29,7 +29,7 @@ import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { RegistrertBarn } from 'app/types/Person';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getFødselsdatoErInnenEnDagFraDato } from 'app/pages/velkommen/velkommenUtils';
+import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -65,8 +65,7 @@ const OmBarnet: React.FunctionComponent = () => {
         barn && isFødtBarn(barn)
             ? registrerteBarn.filter(
                   (barn: RegistrertBarn) =>
-                      barn.fnr === undefined &&
-                      getFødselsdatoErInnenEnDagFraDato(barn.fødselsdato, familiehendelsesdato)
+                      barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato)
               )
             : [];
 

@@ -11,10 +11,7 @@
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "type": "person",
-                "fnr": "03506715317",
-                "fornavn": "Aritmetisk",
-                "etternavn": "Okse"
+                "fnr": "03506715317"
             },
             "familiehendelse": {
                 "fødselsdato": "2022-07-01",
@@ -87,11 +84,7 @@
             },
             "barn": [
                 {
-                    "type": "person",
-                    "fnr": "01472254177",
-                    "fornavn": "Magnífico",
-                    "etternavn": "Fattigmannskost",
-                    "fødselsdato": "2022-07-01"
+                    "fnr": "01472254177"
                 }
             ],
             "dekningsgrad": "HUNDRE"

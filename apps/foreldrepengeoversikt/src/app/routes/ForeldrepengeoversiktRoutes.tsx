@@ -13,7 +13,7 @@ import Opplysninger from 'app/pages/opplysninger/Opplysninger';
 import { SakOppslag } from 'app/types/SakOppslag';
 
 import './routes-wrapper.css';
-import { getAntallSaker } from 'app/utils/sakerUtils';
+import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
 import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
 import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
 import { AxiosError } from 'axios';
@@ -61,13 +61,14 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     }, [navigate, saker]);
 
     const minidialogerIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
-
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
+    const alleYtelser = getAlleYtelser(saker);
     return (
         <>
-            <Header minidialogerIds={minidialogerIds} />
+            <Header minidialogerIds={minidialogerIds} grupperteSaker={grupperteSaker} />
             <div className={bem.block}>
                 <Routes>
-                    <Route path="/" element={<Forside saker={saker} />} />
+                    <Route path="/" element={<Forside alleYtelser={alleYtelser} grupperteSaker={grupperteSaker} />} />
                     <Route path="/sak/:saksnummer" element={<SakComponent />}>
                         <Route
                             index
