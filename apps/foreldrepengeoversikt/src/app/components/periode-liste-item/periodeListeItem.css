@@ -36,8 +36,17 @@
     display: grid;
     grid-template-columns: 6% 64% 15% 15%;
     align-items: center;
+     margin: 0;
+}
+
+
+.periode__annen_part_innhold {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    align-items: center;
     margin: 0;
 }
+
 .periode__innhold-tekst-periodetittel {
     margin-left: 1rem;
 }
@@ -55,6 +64,11 @@
     display: flex;
 }
 
+.periode__beskrivelseAnnenPart {
+    display: flex;
+}
+
+
 .periode--year {
     color: var(--a-gray-500);
 }
@@ -62,6 +76,10 @@
 .periode--eierNavn {
     font-style: italic;
     padding-left: 0.15rem;
+}
+
+.periode--varighetAnnenPart {
+    font-style: italic;
 }
 
 .periode--eierNavnAnnenPart {
@@ -95,7 +113,22 @@
 .periode--bg-farMedmor {
     border-left: 0.5rem solid var(--a-blue-400);
 }
+
 .periode--bg-mor {
     border-left: 0.5rem solid var(--a-purple-400);
+}
+
+.periode--bg-søker {
+    background: white;
+}
+
+.periode--bg-annen-part {
+    background:   var(--a-gray-100);  
+}
+
+.periode__samtidigUttakInfo {
+    display: flex;
+    align-items: center;
+    margin: 0;
 }
 

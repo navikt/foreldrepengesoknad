@@ -62,7 +62,13 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
     const classNameInnvilget = isAvslåttPeriode(periode) ? bem.modifier('ikke-innvilget') : bem.modifier('innvilget');
     return (
-        <div className={classNames(`${bem.block} ${bem.element('box')} ${classNameInnvilget}`)}>
+        <div
+            className={classNames(
+                `${bem.block} ${bem.element('box')} ${
+                    periode.gjelderAnnenPart ? bem.modifier('bg-annen-part') : bem.modifier('bg-søker')
+                } ${classNameInnvilget}`
+            )}
+        >
             <div>
                 <div className={bem.element('innhold')}>
                     {visStønadskontoIkon && (
@@ -112,13 +118,16 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                             bem.modifier(`bg-${erFarEllerMedmor ? 'mor' : 'farMedmor'}`)
                         )}
                     >
-                        <div className={bem.element('beskrivelse')}>
+                        <div className={bem.element('annen_part_innhold')}>
                             <BodyShort size="small" className={bem.modifier('samtidigUttakAnnenPart')}>
-                                {'Samtidig uttak - '}
+                                {'Samtidig uttak'}
                             </BodyShort>
-                            <BodyShort size="small" className={bem.modifier('eierNavnAnnenPart')}>
-                                {navnAnnenForelder}
-                            </BodyShort>
+                            <div className={bem.element('beskrivelse')}>
+                                <BodyShort size="small">{`${varighetString} -`}</BodyShort>
+                                <BodyShort className={bem.modifier('eierNavn')} size="small">
+                                    {`${navnAnnenForelder}`}
+                                </BodyShort>
+                            </div>
                         </div>
                     </div>
                 )}

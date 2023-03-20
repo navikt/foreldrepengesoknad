@@ -454,14 +454,13 @@ export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPeriode
 
 export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPerioder: Periode[]): Periode[] => {
     const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode) => {
-        const overlapperSøkerensSamtidigUttak =
-            periode.samtidigUttak !== undefined &&
-            søkerensPerioder.find(
-                (p) =>
-                    p.resultat.innvilget &&
-                    Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode)) &&
-                    p.samtidigUttak !== undefined
+        const overlapperSøkerensSamtidigUttak = søkerensPerioder.find((p) => {
+            return (
+                p.resultat.innvilget &&
+                Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode)) &&
+                (periode.samtidigUttak !== undefined || p.samtidigUttak !== undefined)
             );
+        });
         const visIPlan = !overlapperSøkerensSamtidigUttak;
         //TODO: Må vi ikke gjøre samme for søkerens perioder? Hvis ap søker samtididg men ikke ber om samtidig uttak, skal da søkerens uttak ikke vises?
         return {

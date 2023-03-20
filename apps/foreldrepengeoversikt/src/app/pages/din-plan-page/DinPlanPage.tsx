@@ -19,6 +19,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
     const sak = useGetSelectedSak();
 
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, sak);
+    const planErVedtatt = sak?.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
     let annenPartFnr = undefined;
     let annenPartVedtakIsSuspended = true;
@@ -27,7 +28,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
         familiehendelsesdato = getFamiliehendelseDato(sak.familiehendelse);
         annenPartFnr = sak.annenPart?.fnr;
         annenPartVedtakIsSuspended =
-            annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
+            !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
     }
     const { annenPartsVedakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(annenPartVedtakIsSuspended);
 

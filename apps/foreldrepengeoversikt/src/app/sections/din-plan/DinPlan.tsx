@@ -61,8 +61,7 @@ const DinPlan: React.FunctionComponent<Props> = ({
             annenPartsPerioderForVisning
         );
         søkersPlan = normaliserteEgnePerioder;
-        const annenPartsNormalisertPlan = normaliserteAnnenPartsPerioder;
-        annenPartsPlan = leggTilVisningsInfo(annenPartsNormalisertPlan, søkersPlan);
+        annenPartsPlan = leggTilVisningsInfo(normaliserteAnnenPartsPerioder, søkersPlan);
     }
     const annenPartsPlanUtenOverlapp = annenPartsPlan ? annenPartsPlan.filter((p) => p.visIPlan) : [];
     const annenPartsOverlappendePerioder = annenPartsPlan ? annenPartsPlan.filter((p) => !p.visIPlan) : [];
