@@ -137,5 +137,6 @@ const mapStateToProps = (state: State) => {
     return { arbeidsforhold: søkerinfo.status === FetchStatus.SUCCESS ? søkerinfo.data.arbeidsforhold : undefined };
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Fiks
 export default connect(mapStateToProps)(Step);

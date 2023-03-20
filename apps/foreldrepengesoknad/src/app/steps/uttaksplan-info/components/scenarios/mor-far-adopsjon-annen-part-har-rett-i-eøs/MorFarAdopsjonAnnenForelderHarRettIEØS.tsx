@@ -71,7 +71,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>) => {
         const submissionValues = mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState(values);
         const barnAdopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
 
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,

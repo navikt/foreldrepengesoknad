@@ -19,7 +19,7 @@ export const jsonSort = (json: any): string => {
         } else if (isObject(o)) {
             return Object.keys(o)
                 .sort()
-                .reduce((a, k) => {
+                .reduce((a: any, k) => {
                     a[k] = sort(o[k]);
                     return a;
                 }, {});

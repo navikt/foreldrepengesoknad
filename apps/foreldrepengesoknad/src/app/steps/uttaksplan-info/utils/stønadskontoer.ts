@@ -13,7 +13,7 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
         )
         .map((kontoType) => kontoType.konto);
 
-export const getStønadskontoSortOrder = (konto: StønadskontoType): number => stønadskontoSortOrder[konto];
+export const getStønadskontoSortOrder = (konto: StønadskontoType): number => (stønadskontoSortOrder as any)[konto];
 
 export const stønadskontoSortOrder = {
     [StønadskontoType.ForeldrepengerFørFødsel]: 1,

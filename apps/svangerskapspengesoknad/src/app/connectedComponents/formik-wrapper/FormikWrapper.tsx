@@ -15,7 +15,7 @@ export const useIsValid = (values: any) => {
     const currentPath = parsePathFromLocation(location);
     const errors = validateSøknad(currentPath)(values);
     return Object.keys(errors).length === 0;
-}
+};
 
 interface Props {
     contentRenderer: (formikProps: CustomFormikProps) => ReactNode;
@@ -26,24 +26,28 @@ const FormikWrapper: FunctionComponent<Props> = ({ contentRenderer }) => {
 
     const currentPath = parsePathFromLocation(location);
 
-    const validate = useCallback((values: any) => {
-        const errors = validateSøknad(currentPath)(values);
-        logValidationErrors(currentPath, errors);
-        return errors;
-    }, [currentPath]);
+    const validate = useCallback(
+        (values: any) => {
+            const errors = validateSøknad(currentPath)(values);
+            logValidationErrors(currentPath, errors);
+            return errors;
+        },
+        [currentPath]
+    );
 
     const onSubmit = useCallback((_søknad: UferdigSøknad, { setSubmitting, setFormikState }: FormikBag) => {
         setSubmitting(false);
         setFormikState((f) => ({
             ...f,
             submitCount: 0,
-         }));
-    }, [])
+        }));
+    }, []);
 
     return (
         <Formik
             initialValues={initialSøknad}
             validate={validate}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore Fiks
             onSubmit={onSubmit}
         >

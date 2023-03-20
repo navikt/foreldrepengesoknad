@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { FunctionComponent } from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -340,7 +341,8 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                             />
                                         </Block>
                                         <Block margin="xs" visible={arr.length - 1 === ind}>
-                                            <Button variant="secondary"
+                                            <Button
+                                                variant="secondary"
                                                 onClick={() => arrayHelpers.push({ tilrettelagtArbeidFom: undefined })}
                                                 type="button"
                                                 size="small"
@@ -394,7 +396,8 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                             />
                                         </Block>
                                         <Block margin="xs" visible={arr.length - 1 === ind}>
-                                            <Button variant="secondary"
+                                            <Button
+                                                variant="secondary"
                                                 onClick={() =>
                                                     arrayHelpers.push({
                                                         stillingsprosent: undefined,
@@ -446,7 +449,8 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                             />
                                         </Block>
                                         <Block margin="xs" visible={arr.length - 1 === ind}>
-                                            <Button variant="secondary"
+                                            <Button
+                                                variant="secondary"
                                                 onClick={() => arrayHelpers.push({ slutteArbeidFom: undefined })}
                                                 type="button"
                                                 size="small"
