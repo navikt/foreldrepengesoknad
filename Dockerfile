@@ -6,14 +6,12 @@
 FROM --platform=$BUILDPLATFORM node:18.14.2 as prepare
 WORKDIR /usr/src/app
 
-COPY . .
+COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
+COPY packages packages
+COPY apps apps
 
-RUN mkdir -p /usr/src/build-deps \
-    && cp ./package.json ./.npmrc ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/build-deps/ \
-    && mkdir -p /usr/src/build-deps/apps \
-    && mkdir -p /usr/src/build-deps/packages \
-    && cp --parents apps/*/package.json /usr/src/build-deps/apps/ \
-    && cp --parents packages/*/package.json /usr/src/build-deps/packages/
+RUN find apps \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs rm -rf
+RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs rm -rf
 
 #########################################
 # BUILD - Builds all node code
@@ -34,7 +32,7 @@ RUN npm install -g pnpm \
 COPY pnpm-lock.yaml .
 RUN pnpm fetch
 
-COPY --from=prepare /usr/src/build-deps/* ./
+COPY --from=prepare /usr/src/app ./
 
 RUN pnpm install --frozen-lockfile --offline
 
@@ -70,7 +68,7 @@ RUN npm install -g pnpm \
 ######################################### 
 FROM pnpm as prod-deps
 
-COPY --from=prepare /usr/src/build-deps/* ./
+COPY --from=prepare /usr/src/app ./
 
 RUN pnpm install --frozen-lockfile --prod
 
