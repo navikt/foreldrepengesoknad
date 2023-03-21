@@ -8,7 +8,6 @@ describe('intl tests', () => {
         const keysNynorsk = Object.keys(nn).sort();
         const keysEnglish = Object.keys(en).sort();
 
-        expect(true).toBe(true);
         expect(keysBokmål).toMatchObject(keysNynorsk);
         expect(keysBokmål).toMatchObject(keysEnglish);
 
