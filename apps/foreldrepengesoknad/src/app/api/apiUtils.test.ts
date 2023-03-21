@@ -315,13 +315,13 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
 });
 
 describe('getPeriodeVedTidspunkt', () => {
-    it('returns correct periode that starts at tidspunkt', () => {
+    it('returns correct periode that overlaps at tidspunkt', () => {
         const periode = getPeriodeVedTidspunkt(uttaksplanMedAllePerioder, fraDato_2);
         expect(periode).toEqual(periode_2);
     });
 
-    it('returns undefined when no periode starts at tidspunkt', () => {
-        const periodeNotFound = getPeriodeVedTidspunkt(uttaksplanMedAllePerioder, tilDato_2);
+    it('returns undefined when no periode overlaps at tidspunkt', () => {
+        const periodeNotFound = getPeriodeVedTidspunkt(uttaksplanMedAllePerioder, new Date('2024-03-08'));
         expect(periodeNotFound).toBe(undefined);
     });
 });

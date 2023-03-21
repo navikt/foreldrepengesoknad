@@ -308,7 +308,7 @@ const cleanUttaksplan = (
 
 export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): Periode | undefined => {
     return uttaksplan.find((periode) =>
-        dayjs(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.fom, 'day', '[]')
+        dayjs(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]')
     );
 };
 
