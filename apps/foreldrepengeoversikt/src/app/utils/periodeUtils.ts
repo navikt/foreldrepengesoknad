@@ -454,24 +454,38 @@ export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPeriode
 
 export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPerioder: Periode[]): Periode[] => {
     const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode) => {
-        const overlapperSøkerensSamtidigUttak = søkerensPerioder.find((p) => {
-            return (
-                p.resultat.innvilget &&
-                Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode)) &&
-                (periode.samtidigUttak !== undefined || p.samtidigUttak !== undefined)
-            );
+        const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
+            return Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode));
         });
-        const visIPlan = !overlapperSøkerensSamtidigUttak;
-        //TODO: Må vi ikke gjøre samme for søkerens perioder? Hvis ap søker samtididg men ikke ber om samtidig uttak, skal da søkerens uttak ikke vises?
+        const erInnvilgetSamtidigUttak =
+            overlappendeSøkersPeriode && overlappendeSøkersPeriode.resultat.innvilget
+                ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
+                : false;
+        if (erInnvilgetSamtidigUttak) {
+            return {
+                ...periode,
+                visIPlan: false,
+            };
+        }
+        const overlapperMedSøkerensPeriodeSomTrekkerDager =
+            overlappendeSøkersPeriode &&
+            (overlappendeSøkersPeriode.resultat.innvilget || overlappendeSøkersPeriode.resultat.trekkerDager);
+
+        if (overlapperMedSøkerensPeriodeSomTrekkerDager) {
+            return {
+                ...periode,
+                visIPlan: false,
+            };
+        }
+
         return {
             ...periode,
-            visIPlan,
+            visIPlan: true,
         };
     });
     return annenPartsPerioderMedVisningsInfo;
 };
 
-//TODO: hvordan vise oppholdsperioder til annen part, skal de vises som uttak for brukeren?
 export const getPerioderForVisning = (perioder: Periode[], erAnnenPartsPeriode: boolean): Periode[] => {
     return perioder
         .map((periode) => {
@@ -486,4 +500,25 @@ export const getPerioderForVisning = (perioder: Periode[], erAnnenPartsPeriode: 
                 isValidTidsperiode(getTidsperiode(p)) &&
                 (isUttaksperiode(p) || isOverføringsperiode(p) || isUtsettelsesperiode(p))
         );
+};
+
+export const getOverlappendePeriodeTittel = (
+    søkerensPeriode: Periode,
+    overlappendePeriodeAnnenPart: Periode,
+    intl: IntlShape,
+    navnPåForeldre: NavnPåForeldre
+) => {
+    if (søkerensPeriode.utsettelseÅrsak) {
+        return getStønadskontoForelderNavn(
+            intl,
+            overlappendePeriodeAnnenPart.kontoType!,
+            navnPåForeldre,
+            overlappendePeriodeAnnenPart.resultat,
+            overlappendePeriodeAnnenPart.morsAktivitet
+        );
+    }
+    if (overlappendePeriodeAnnenPart.utsettelseÅrsak) {
+        return 'Utsettelse';
+    }
+    return 'Samtidig uttak';
 };

@@ -6,6 +6,7 @@ import './periode-liste.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/utils/personUtils';
 import { getTidsperiode, Tidsperioden } from 'app/utils/tidsperiodeUtils';
+import { isUttaksperiode } from 'app/utils/periodeUtils';
 
 interface Props {
     erAleneOmOmsorg: boolean;
@@ -34,11 +35,15 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
                 {periodeListe &&
                     periodeListe.length > 0 &&
                     periodeListe.map((periode) => {
-                        const overlappendePeriodeAnnenPart = annenPartsOverlappendePerioder
-                            ? annenPartsOverlappendePerioder.find((p) =>
-                                  Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode))
-                              )
-                            : undefined;
+                        const overlappendePeriodeAnnenPartForVisning =
+                            !periode.gjelderAnnenPart &&
+                            periode.resultat.innvilget &&
+                            isUttaksperiode(periode) &&
+                            annenPartsOverlappendePerioder
+                                ? annenPartsOverlappendePerioder.find((p) =>
+                                      Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode))
+                                  )
+                                : undefined;
                         return (
                             <PeriodeListeItem
                                 key={guid()}
@@ -46,7 +51,7 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
                                 navnPåForeldre={navnPåForeldre}
-                                overlappendePeriodeAnnenPart={overlappendePeriodeAnnenPart}
+                                overlappendePeriodeAnnenPart={overlappendePeriodeAnnenPartForVisning}
                             />
                         );
                     })}

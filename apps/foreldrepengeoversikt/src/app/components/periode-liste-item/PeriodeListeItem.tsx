@@ -10,6 +10,7 @@ import {
     måned3bokstaver,
 } from 'app/utils/dateUtils';
 import {
+    getOverlappendePeriodeTittel,
     getPeriodeTittel,
     isAvslåttPeriode,
     isOppholdsperiode,
@@ -120,7 +121,12 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                     >
                         <div className={bem.element('annen_part_innhold')}>
                             <BodyShort size="small" className={bem.modifier('samtidigUttakAnnenPart')}>
-                                {'Samtidig uttak'}
+                                {getOverlappendePeriodeTittel(
+                                    periode,
+                                    overlappendePeriodeAnnenPart,
+                                    intl,
+                                    navnPåForeldre
+                                )}
                             </BodyShort>
                             <div className={bem.element('beskrivelse')}>
                                 <BodyShort size="small">{`${varighetString} -`}</BodyShort>
