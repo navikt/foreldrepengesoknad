@@ -58,7 +58,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
 
     const onValidSubmitHandler = (values: Partial<ManglendeVedleggFormData>) => {
         values.vedlegg!.forEach((vedlegg, index) => {
-            if (!!vedlegg) {
+            if (vedlegg) {
                 const sti = lagSti(alleStierMedManglendeVedlegg[index].split('.'));
                 _.set(søknad, sti, vedlegg);
             }

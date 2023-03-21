@@ -82,7 +82,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const førsteUttaksdagNesteBarnsSak =
         state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const onValidSubmitHandler = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
         return [
             actionCreator.setAntallUkerIUttaksplan(antallUker),
             actionCreator.setUttaksplanInfo(mapFarMedmorFødselBeggeHarRettToState(values)),
@@ -132,7 +132,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     familiehendelsesdato: familiehendelsesdatoDate!,
                 });
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
                 const tilgjengeligeDager = valgtStønadskonto
                     ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
                     : undefined;

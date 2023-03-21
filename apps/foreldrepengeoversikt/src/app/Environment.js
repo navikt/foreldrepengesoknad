@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const Environment = () => {
     return {
         REST_API_URL: window.appSettings.REST_API_URL,

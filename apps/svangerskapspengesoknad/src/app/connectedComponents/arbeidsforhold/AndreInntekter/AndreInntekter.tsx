@@ -60,6 +60,7 @@ const AndreInntekter: FunctionComponent<Props> = (props) => {
 
     return (
         <Formik
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore Fiks
             initialValues={element}
             validate={validateAndreInntekter()}
@@ -203,10 +204,13 @@ const AndreInntekter: FunctionComponent<Props> = (props) => {
                             </Veilederinfo>
                         </Block>
                         <Knapperad stil="mobile-50-50">
-                            <Button variant="secondary"  onClick={onCancel} type='button'>
+                            <Button variant="secondary" onClick={onCancel} type="button">
                                 <FormattedMessage id="avbryt" />
                             </Button>
-                            <Button variant="primary"     disabled={!isValid || values.type === AnnenInntektType.MILITÆRTJENESTE}>
+                            <Button
+                                variant="primary"
+                                disabled={!isValid || values.type === AnnenInntektType.MILITÆRTJENESTE}
+                            >
                                 <FormattedMessage id={endre ? 'endre' : 'leggtil'} />
                             </Button>
                         </Knapperad>

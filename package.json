@@ -5,6 +5,7 @@
         "dev": "turbo dev",
         "build": "turbo build",
         "test": "turbo test",
+        "lint": "turbo lint",
         "fp": "pnpm --filter foreldrepengesoknad run dev",
         "fp-prod": "pnpm --filter foreldrepengesoknad run start",
         "storybook-common": "pnpm --filter @navikt/fp-common run storybook"

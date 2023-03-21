@@ -9,15 +9,16 @@ export const flattenErrors = (errors: FormikErrors<UferdigSøknad>, pathPrefix =
 
     for (const key of Object.keys(errors)) {
         const prefix = pathPrefix ? `${pathPrefix}.${key}` : key;
+        const value = (errors as any)[key];
 
-        if (typeof errors[key] === 'string') {
+        if (typeof value === 'string') {
             flattened.push({
                 name: prefix,
-                text: errors[key],
+                text: value,
             });
-        } else if (typeof errors[key] === 'object') {
-            if (errors[key].intlKey) {
-                const { intlKey, values } = errors[key];
+        } else if (typeof value === 'object') {
+            if (value.intlKey) {
+                const { intlKey, values } = value;
                 flattened.push({
                     name: prefix,
                     text: {
@@ -26,7 +27,7 @@ export const flattenErrors = (errors: FormikErrors<UferdigSøknad>, pathPrefix =
                     },
                 });
             } else {
-                flattened = flattened.concat(flattenErrors(errors[key], prefix));
+                flattened = flattened.concat(flattenErrors(value, prefix));
             }
         }
     }

@@ -141,7 +141,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(formValues);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <FarMedmorAleneomsorgFødselFormComponents.Form

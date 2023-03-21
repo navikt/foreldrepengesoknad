@@ -74,7 +74,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
     const onValidSubmitHandler = (values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>) => {
         const submissionValues = mapMorFarFødselAnnenForelderHarRettIEØSFormToState(values);
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad!]);
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
         const startdato = hasValue(values.permisjonStartdato) ? values.permisjonStartdato : undefined;
 
         return [

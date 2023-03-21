@@ -1,6 +1,0 @@
-dist
-node_modules
-.deploy
-.DS_Store
-.package.json
-.package-lock.json

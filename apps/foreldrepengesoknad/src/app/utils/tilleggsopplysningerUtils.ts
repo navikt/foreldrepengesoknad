@@ -20,7 +20,7 @@ export const beskrivTilleggsopplysning = (tilleggsopplysning: Tilleggsopplysning
     const beskrivelseMessageId = `tilleggsopplysning.begrunnelseForSenEndring`;
     const beskrivelseAvOpplysning = TIL_SAKSBEHANDLER[beskrivelseMessageId];
     const ekstraMessageId = `tilleggsopplysning.begrunnelseForSenEndring.${ekstraInformasjon}`;
-    const ekstraInfoTilSaksbehandling = TIL_SAKSBEHANDLER[ekstraMessageId];
+    const ekstraInfoTilSaksbehandling = (TIL_SAKSBEHANDLER as any)[ekstraMessageId];
 
     return {
         beskrivelse: beskrivelseAvOpplysning,

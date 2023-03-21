@@ -7,7 +7,7 @@ const configureDevServer = (decoratorFragments) => ({
         devServer.app.engine('html', mustacheExpress());
         devServer.app.set('views', `${__dirname}/../../../dist/dev`);
         devServer.app.set('view engine', 'mustache');
-        devServer.app.get(/^\/(?!.*dist).*$/, (req, res) => {
+        devServer.app.get(/^\/(?!.*dist).*$/, (_req, res) => {
             res.render(
                 'index.html',
                 Object.assign(
