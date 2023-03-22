@@ -5,7 +5,7 @@ import {
     UtenlandsoppholdFormData,
 } from 'app/steps/utenlandsopphold/utenlandsoppholdFormTypes';
 import { initialVelkommenValues, VelkommenFormData } from 'app/pages/velkommen/velkommenFormConfig';
-import { initialSøkersituasjonValues, SøkersituasjonFormData } from 'app/steps/søkersituasjon/søkersituasjonFormConfig';
+import { initialSøkersituasjonValues, SøkersituasjonFormData } from 'app/steps/sokersituasjon/søkersituasjonFormConfig';
 
 export interface EngangsstønadContextState {
     søknad: {

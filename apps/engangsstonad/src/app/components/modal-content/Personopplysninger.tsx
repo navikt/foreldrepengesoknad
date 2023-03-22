@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-const { Undertittel, Normaltekst, Element } = require('nav-frontend-typografi');
-import Lenke from 'nav-frontend-lenker';
+import { BodyShort, Heading, Link, Label } from '@navikt/ds-react';
 import { lenker } from 'util/lenker';
 import getMessage from 'common/util/i18nUtils';
 
@@ -9,100 +8,100 @@ const Personopplysninger = () => {
     const intl = useIntl();
     return (
         <div className="modalContent">
-            <Undertittel className="modalContent__header">
+            <Heading size="small" className="modalContent__header">
                 {getMessage(intl, 'personopplysninger.sectionheading')}
-            </Undertittel>
-            <Normaltekst className="blokk-xs">{getMessage(intl, 'personopplysninger.ingress.1')}</Normaltekst>
-            <Normaltekst className="blokk-xs">{getMessage(intl, 'personopplysninger.ingress.2')}</Normaltekst>
+            </Heading>
+            <BodyShort className="blokk-xs">{getMessage(intl, 'personopplysninger.ingress.1')}</BodyShort>
+            <BodyShort className="blokk-xs">{getMessage(intl, 'personopplysninger.ingress.2')}</BodyShort>
 
             <div className="blokk-xs">
-                <Element className="blokk-xs">
+                <Label className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.opplysningerViInnhenter')}
-                </Element>
-                <Normaltekst className="blokk-xs">
+                </Label>
+                <BodyShort className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.opplysningerViInnhenter.ingress')}
-                </Normaltekst>
+                </BodyShort>
                 <ul>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.1')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.1')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.2')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.2')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.3')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.3')}</BodyShort>
                     </li>
                 </ul>
-                <Normaltekst>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.utro')}</Normaltekst>
+                <BodyShort>{getMessage(intl, 'personopplysninger.opplysningerViInnhenter.utro')}</BodyShort>
             </div>
 
             <div>
-                <Element className="blokk-xs">
+                <Label className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.lagringAvOpplysninger')}
-                </Element>
-                <Normaltekst className="blokk-xs">
+                </Label>
+                <BodyShort className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.lagringAvOpplysninger.1')}
-                </Normaltekst>
-                <Normaltekst className="blokk-xs">
+                </BodyShort>
+                <BodyShort className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.lagringAvOpplysninger.2')}
-                </Normaltekst>
+                </BodyShort>
             </div>
 
             <div className="blokk-xs">
-                <Element className="blokk-xs">{getMessage(intl, 'personopplysninger.text.automatiskLagring')}</Element>
-                <Normaltekst className="blokk-xs">
+                <Label className="blokk-xs">{getMessage(intl, 'personopplysninger.text.automatiskLagring')}</Label>
+                <BodyShort className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.automatiskLagring.ingress')}
-                </Normaltekst>
+                </BodyShort>
                 <ul>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.automatiskLagring.1')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.automatiskLagring.1')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.automatiskLagring.2')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.automatiskLagring.2')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.automatiskLagring.3')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.automatiskLagring.3')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.automatiskLagring.4')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.automatiskLagring.4')}</BodyShort>
                     </li>
                 </ul>
             </div>
 
             <div className="blokk-xs">
-                <Element className="blokk-xs">{getMessage(intl, 'personopplysninger.text.svarPåSøknaden')}</Element>
-                <Normaltekst className="blokk-xs">
+                <Label className="blokk-xs">{getMessage(intl, 'personopplysninger.text.svarPåSøknaden')}</Label>
+                <BodyShort className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.svarPåSøknaden.ingress')}
-                </Normaltekst>
+                </BodyShort>
                 <ul>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.svarPåSøknaden.1')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.svarPåSøknaden.1')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.svarPåSøknaden.2')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.svarPåSøknaden.2')}</BodyShort>
                     </li>
                     <li>
-                        <Normaltekst>{getMessage(intl, 'personopplysninger.text.svarPåSøknaden.3')}</Normaltekst>
+                        <BodyShort>{getMessage(intl, 'personopplysninger.text.svarPåSøknaden.3')}</BodyShort>
                     </li>
                 </ul>
             </div>
 
             <div>
-                <Element className="blokk-xs">
+                <Label className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.personvernerklæringeniNAV')}
-                </Element>
-                <Normaltekst>
+                </Label>
+                <BodyShort>
                     <FormattedMessage
                         id="personopplysninger.text.personvernerklering"
                         values={{
                             link: (
-                                <Lenke href={lenker.personvernerklæring} target="_blank">
+                                <Link href={lenker.personvernerklæring} target="_blank">
                                     <FormattedMessage id="personopplysninger.text.personvernerklering.link" />
-                                </Lenke>
+                                </Link>
                             ),
                         }}
                     />
-                </Normaltekst>
+                </BodyShort>
             </div>
         </div>
     );

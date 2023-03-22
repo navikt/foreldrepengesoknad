@@ -1,7 +1,6 @@
 import { bemUtils, Block, intlUtils, Locale, Step } from '@navikt/fp-common';
-import Veileder from '@navikt/fp-common/lib/components/veileder/Veileder';
 import SøkersPersonalia from 'app/components/søkers-personalia/SøkersPersonalia';
-import Veilederpanel from 'nav-frontend-veilederpanel';
+import { Button, GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
@@ -12,9 +11,8 @@ import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
 import stepConfig, { getPreviousStepHref } from 'app/step-config/stepConfig';
 import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadContext';
 import { OppsummeringFormComponents, initialOppsummeringValues, OppsummeringFormField } from './oppsummeringFormConfig';
-import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import oppsummeringQuestionsConfig from './oppsummeringQuestionsConfig';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { EngangsstønadSøknadDto } from 'app/types/domain/EngangsstønadSøknad';
 import { mapStateForInnsending } from 'app/util/apiUtils';
 import Api from 'app/api/api';
@@ -71,6 +69,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
             initialValues={initialOppsummeringValues}
             onSubmit={() => sendSøknad()}
             renderForm={({ values: formValues }) => {
+                // @ts-ignore Fiks denne
                 const visibility = oppsummeringQuestionsConfig.getVisbility(formValues);
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
 
@@ -97,9 +96,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                                       )
                             }
                         >
-                            <Veilederpanel kompakt={true} svg={<Veileder />}>
+                            <GuidePanel>
                                 {intlUtils(intl, 'oppsummering.text.lesNoye')}
-                            </Veilederpanel>
+                            </GuidePanel>
                             <div className={bem.block}>
                                 <Block>
                                     <SøkersPersonalia
@@ -132,9 +131,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                             {allQuestionsAnswered && (
                                 <Block margin="xl">
                                     <div className={bem.element('sendSøknadKnapp')}>
-                                        <Hovedknapp disabled={isSending} spinner={isSending}>
+                                        <Button variant="secondary" disabled={isSending} loading={isSending}>
                                             {intlUtils(intl, 'oppsummering.button.sendSøknad')}
-                                        </Hovedknapp>
+                                        </Button>
                                     </div>
                                 </Block>
                             )}

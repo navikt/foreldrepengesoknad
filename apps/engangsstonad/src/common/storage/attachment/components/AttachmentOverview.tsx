@@ -7,9 +7,9 @@ import LabelText from '../../../components/labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from 'common/util/filesize';
 import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
-import { guid } from 'nav-frontend-js-utils';
 import { Attachment, AttachmentType, Skjemanummer } from 'common/storage/attachment/types/Attachment';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
+import guid from 'common/util/guid';
 
 interface Props {
     attachments: Attachment[];
@@ -107,10 +107,6 @@ const AttachmentOverview: React.FunctionComponent<Props> = ({
                         <>
                             <div>
                                 <AlertstripeWithCloseButton
-                                    lukknappProps={{
-                                        hvit: false,
-                                        type: 'button',
-                                    }}
                                     errorMessages={createErrorMessagesForFailedAttachments(
                                         attachments.filter(isAttachmentWithError)
                                     )}

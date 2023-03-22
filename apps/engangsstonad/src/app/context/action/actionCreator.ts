@@ -2,7 +2,7 @@ import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
 import Kvittering from 'app/types/services/Kvittering';
 import { UtenlandsoppholdFormData } from 'app/steps/utenlandsopphold/utenlandsoppholdFormTypes';
 import { VelkommenFormData } from 'app/pages/velkommen/velkommenFormConfig';
-import { SøkersituasjonFormData } from 'app/steps/søkersituasjon/søkersituasjonFormConfig';
+import { SøkersituasjonFormData } from 'app/steps/sokersituasjon/søkersituasjonFormConfig';
 
 export enum EngangsstønadContextActionKeys {
     'SET_SØKERSITUASJON' = 'setSøkersituasjon',

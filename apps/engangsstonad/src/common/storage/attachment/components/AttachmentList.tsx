@@ -15,8 +15,8 @@ const AttachmentList: React.FunctionComponent<Props> = (props) => {
     return (
         <ul className="attachmentList">
             <TransitionGroup>
-                {attachments.map((attachment) => (
-                    <CSSTransition classNames="transitionFade" timeout={500} key={attachment.id}>
+                {attachments.map((attachment, index) => (
+                    <CSSTransition classNames="transitionFade" timeout={500} key={index}>
                         <li>
                             <AttachmentComponent
                                 attachment={attachment}

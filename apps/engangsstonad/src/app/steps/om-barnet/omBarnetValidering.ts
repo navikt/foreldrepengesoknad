@@ -8,7 +8,7 @@ import {
     sisteMuligeDatoForOvertaOmsorg,
     intlUtils,
 } from '@navikt/fp-common';
-import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
+import datepickerUtils from '@navikt/sif-common-formik-ds/lib/components/formik-datepicker/datepickerUtils';
 import { IntlShape } from 'react-intl';
 
 export const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {

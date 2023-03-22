@@ -1,5 +1,5 @@
 import { UtenlandsoppholdFormData } from './utenlandsoppholdFormTypes';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export const utenlandsoppholdFormCleanup = (formValues: UtenlandsoppholdFormData): UtenlandsoppholdFormData => {
     const {

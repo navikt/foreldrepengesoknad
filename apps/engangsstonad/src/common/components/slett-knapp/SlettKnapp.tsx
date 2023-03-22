@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { KnappBaseProps } from 'nav-frontend-knapper';
 import { TrashcanIkon } from '@navikt/fp-common';
 
 import './slettKnapp.less';
 
-export interface SlettKnappProps extends KnappBaseProps {
+export interface SlettKnappProps {
     ariaLabel: string;
     onClick: () => void;
 }

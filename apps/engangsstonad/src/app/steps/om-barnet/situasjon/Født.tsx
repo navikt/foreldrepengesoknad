@@ -1,5 +1,5 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
@@ -25,7 +25,7 @@ const Født: React.FunctionComponent<Fødtprops> = ({ visibility, formValues }) 
             {visibility.isVisible(OmBarnetFormField.antallBarn) && (
                 <>
                     <Block margin="xl">
-                        <OmBarnetFormComponents.RadioPanelGroup
+                        <OmBarnetFormComponents.RadioGroup
                             name={OmBarnetFormField.antallBarn}
                             radios={[
                                 {
@@ -41,13 +41,12 @@ const Født: React.FunctionComponent<Fødtprops> = ({ visibility, formValues }) 
                                     value: '3',
                                 },
                             ]}
-                            useTwoColumns={true}
                             legend={getMessage(intl, 'omBarnet.text.antallBarn')}
                         />
                     </Block>
                     {formValues.antallBarn && parseInt(formValues.antallBarn, 10) >= 3 && (
                         <Block margin="xl">
-                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn}>
+                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn} label="test">
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>

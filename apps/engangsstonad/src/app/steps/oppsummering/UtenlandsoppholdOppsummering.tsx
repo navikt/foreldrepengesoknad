@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Element } from 'nav-frontend-typografi';
 import { useIntl } from 'react-intl';
 import { UtenlandsoppholdFormData } from 'app/steps/utenlandsopphold/utenlandsoppholdFormTypes';
 import dayjs from 'dayjs';
 import getMessage from 'common/util/i18nUtils';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import LandOppsummering from './LandOppsummering';
 import { Block, DisplayTextWithLabel } from '@navikt/fp-common';
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     barn: OmBarnetFormData;
@@ -41,9 +41,9 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({ barn, in
                 <DisplayTextWithLabel label={getMessage(intl, 'oppsummering.text.boddSisteTolv')} text="Norge" />
             ) : (
                 <div className="textWithLabel">
-                    <Element className="textWithLabel__label">
+                    <Label className="textWithLabel__label">
                         {getMessage(intl, 'oppsummering.text.boddSisteTolv')}
-                    </Element>
+                    </Label>
                     <LandOppsummering
                         utenlandsoppholdListe={informasjonOmUtenlandsopphold.utenlandsoppholdSiste12Mnd}
                     />
@@ -56,9 +56,9 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({ barn, in
                 />
             ) : (
                 <div className="textWithLabel">
-                    <Element className="textWithLabel__label">
+                    <Label className="textWithLabel__label">
                         {getMessage(intl, 'oppsummering.text.neste12mnd')}
-                    </Element>
+                    </Label>
                     <LandOppsummering
                         utenlandsoppholdListe={informasjonOmUtenlandsopphold.utenlandsoppholdNeste12Mnd}
                     />

@@ -1,4 +1,4 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { OmBarnetFormData } from './omBarnetFormConfig';
 
 export const cleanupOmBarnet = (formData: OmBarnetFormData): OmBarnetFormData => {
