@@ -1,5 +1,5 @@
 {
-    "app": "foreldrepengesoknad",
+    "app": "engangsstonad",
     "dekoratoren": "www.nav.no",
     "ingresses": [
         "https://engangsstonad.nav.no"
