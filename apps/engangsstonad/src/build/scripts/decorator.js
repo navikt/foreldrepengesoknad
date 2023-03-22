@@ -24,14 +24,8 @@ const getDecorator = () =>
                 };
                 resolve(data);
             } else {
-                try {
-                    console.log(error);
-                    console.log('Failed to get decorator. Exiting node.');
-                    process.exit(1);
-                } catch (err) {
-                    console.log(err);
-                    reject(err);
-                }
+                console.log('Failed to get decorator. Exiting node.');
+                process.exit(1);
             }
         };
 

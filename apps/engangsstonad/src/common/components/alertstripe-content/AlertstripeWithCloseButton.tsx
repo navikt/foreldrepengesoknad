@@ -1,45 +1,42 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import AlertStripe from 'nav-frontend-alertstriper';
-import Lukknapp, { LukknappProps } from 'nav-frontend-lukknapp';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { guid } from 'nav-frontend-js-utils';
+import { Alert, BodyShort, Button, Label } from '@navikt/ds-react';
 
 import BEMHelper from 'common/util/bem';
 
 import './alertstripeWithCloseButton.less';
+import guid from 'common/util/guid';
 
 interface AlertstripeContentProps {
-    lukknappProps: Omit<LukknappProps, 'children'>;
     onClose?: () => void;
     errorMessages: React.ReactNode[];
 }
 
-const AlertstripeWithCloseButton = ({ lukknappProps, onClose, errorMessages }: AlertstripeContentProps) => {
+const AlertstripeWithCloseButton = ({ onClose, errorMessages }: AlertstripeContentProps) => {
     const cls = BEMHelper('alertStripeContent');
     return (
-        <AlertStripe type="feil">
+        <Alert variant="error">
             <div className={cls.className}>
                 {errorMessages.length === 1 && (
-                    <Normaltekst className={cls.element('title')}>{errorMessages[0]}</Normaltekst>
+                    <BodyShort className={cls.element('title')}>{errorMessages[0]}</BodyShort>
                 )}
                 {errorMessages.length > 1 && (
                     <div className={cls.element('error-list')}>
-                        <Element className={cls.element('title')}>
+                        <Label className={cls.element('title')}>
                             <FormattedMessage id="vedlegg.feilmelding.tittel.flereFeil" />
-                        </Element>
+                        </Label>
                         <ul>
                             {errorMessages.map((message: React.ReactNode) => (
                                 <li className={cls.element('error-list-element')} key={guid()}>
-                                    <Normaltekst>{message}</Normaltekst>
+                                    <BodyShort>{message}</BodyShort>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 )}
-                {onClose && <Lukknapp className={cls.element('lukk-knapp')} {...lukknappProps} onClick={onClose} />}
+                {onClose && <Button variant="secondary" className={cls.element('lukk-knapp')} onClick={onClose} />}
             </div>
-        </AlertStripe>
+        </Alert>
     );
 };
 export default AlertstripeWithCloseButton;

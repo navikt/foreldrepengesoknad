@@ -10,7 +10,7 @@ import {
     UtvidetInformasjon,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
-import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import {
     UtenlandsoppholdFieldNames,
     UtenlandsoppholdFormComponents,
@@ -27,11 +27,12 @@ import { onAvbrytSøknad } from 'app/util/globalUtil';
 import getMessage from 'common/util/i18nUtils';
 import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd } from './utenlandsoppholdValidering';
 
-import './utenlandsopphold.less';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
 import { useNavigate } from 'react-router-dom';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
+
+import './utenlandsopphold.less';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -64,6 +65,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
             initialValues={initialValues}
             onSubmit={(values) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
+                // @ts-ignore Fiks denne
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (

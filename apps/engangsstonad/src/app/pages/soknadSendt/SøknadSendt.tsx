@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Lenke from 'nav-frontend-lenker';
 import { bemUtils, Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
-import { Ingress, Normaltekst, Element } from 'nav-frontend-typografi';
+import { BodyShort, Ingress, Label, Link } from '@navikt/ds-react';
 import KvitteringHeader from './components/KvitteringHeader';
 import StatusBoks from './components/StatusBoks';
 import Person from 'app/types/domain/Person';
@@ -51,30 +50,30 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person }) => {
                         {person.bankkonto && person.bankkonto.kontonummer ? (
                             <>
                                 <Block margin="none">
-                                    <Element>
+                                    <Label>
                                         <FormattedMessage id="søknadSendt.pengene.kontonummer" />
-                                    </Element>
+                                    </Label>
                                 </Block>
                                 <Block margin="s">
                                     <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
                                 </Block>
                                 <Block margin="none">
-                                    <Lenke href={lenker.brukerprofil}>
+                                    <Link href={lenker.brukerprofil}>
                                         <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
-                                    </Lenke>
+                                    </Link>
                                 </Block>
                             </>
                         ) : (
                             <>
                                 <Block margin="s">
-                                    <Normaltekst>
+                                    <BodyShort>
                                         <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
-                                    </Normaltekst>
+                                    </BodyShort>
                                 </Block>
                                 <Block margin="none">
-                                    <Lenke href={lenker.brukerprofil}>
+                                    <Link href={lenker.brukerprofil}>
                                         <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
-                                    </Lenke>
+                                    </Link>
                                 </Block>
                             </>
                         )}

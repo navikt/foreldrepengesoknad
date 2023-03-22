@@ -1,9 +1,8 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { BodyShort, Link } from '@navikt/ds-react';
 import getMessage from 'common/util/i18nUtils';
-import Lenke from 'nav-frontend-lenker';
 import { lenker } from 'util/lenker';
-import { Normaltekst } from 'nav-frontend-typografi';
 
 import './modalContent.less';
 
@@ -13,21 +12,21 @@ const Plikter = () => {
         <article className="modalContent">
             <ul>
                 <li>
-                    <Normaltekst>{getMessage(intl, 'rettigheter.text.2')}</Normaltekst>
+                    <BodyShort>{getMessage(intl, 'rettigheter.text.2')}</BodyShort>
                 </li>
                 <li>
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage
                             id="rettigheter.text.lestOgForstått"
                             values={{
                                 link: (
-                                    <Lenke href={lenker.plikter} target="_blank">
+                                    <Link href={lenker.plikter} target="_blank">
                                         <FormattedMessage id="rettigheter.text.lestOgForstått.link" />
-                                    </Lenke>
+                                    </Link>
                                 ),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </li>
             </ul>
         </article>

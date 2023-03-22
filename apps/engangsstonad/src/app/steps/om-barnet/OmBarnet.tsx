@@ -1,6 +1,7 @@
 import { bemUtils, Block, intlUtils, Step, useDocumentTitle } from '@navikt/fp-common';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { Button } from '@navikt/ds-react';
 import {
     OmBarnetFormComponents,
     OmBarnetFormField,
@@ -9,9 +10,8 @@ import {
 } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import getMessage from 'common/util/i18nUtils';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useNavigate } from 'react-router-dom';
-import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import stepConfig, { getPreviousStepHref } from 'app/step-config/stepConfig';
 import { cleanupOmBarnet } from './omBarnetUtils';
@@ -19,12 +19,13 @@ import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadCon
 import Født from './situasjon/Født';
 import Termin from './situasjon/Termin';
 
-import './omBarnet.less';
 import { onAvbrytSøknad } from 'app/util/globalUtil';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
 import Adopsjon from './situasjon/Adopsjon';
 import Person from 'app/types/domain/Person';
+
+import './omBarnet.less';
 
 interface Props {
     person: Person;
@@ -87,6 +88,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
             initialValues={initialValues}
             onSubmit={(values) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
+                // @ts-ignore Fiks denne
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
                     situasjon: søkersituasjonValues.situasjon!,
@@ -106,6 +108,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                     >
                         <OmBarnetFormComponents.Form
                             includeButtons={false}
+                            // @ts-ignore Fiks denne
                             cleanup={() => cleanupOmBarnet(formValues)}
                             noButtonsContentRenderer={
                                 allQuestionsAnswered
@@ -141,13 +144,26 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                                         />
                                     </Block>
                                 )}
-                                <Adopsjon visibility={visibility} formValues={formValues} />
-                                <Født visibility={visibility} formValues={formValues} />
-                                <Termin visibility={visibility} formValues={formValues} />
+                                <Adopsjon
+                                    visibility={visibility}
+                                    // @ts-ignore Fiks denne
+                                    formValues={formValues}
+                                    kjønn={person.kjønn}
+                                />
+                                <Født
+                                    visibility={visibility}
+                                    // @ts-ignore Fiks denne
+                                    formValues={formValues}
+                                />
+                                <Termin
+                                    visibility={visibility}
+                                    // @ts-ignore Fiks denne
+                                    formValues={formValues} 
+                                />
 
                                 {allQuestionsAnswered && (
                                     <Block margin="xl" textAlignCenter={true}>
-                                        <Hovedknapp>{getMessage(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                        <Button variant="secondary">{getMessage(intl, 'søknad.gåVidere')}</Button>
                                     </Block>
                                 )}
                             </div>
