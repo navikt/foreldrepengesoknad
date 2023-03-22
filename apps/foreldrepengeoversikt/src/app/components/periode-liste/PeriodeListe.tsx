@@ -12,7 +12,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    overlappendePerioderAnnenPart?: Periode[] | undefined;
+    overlappendePerioderAnnenPart: Periode[] | undefined;
     periodeListe: Periode[];
     tittel: string;
 }

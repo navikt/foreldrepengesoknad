@@ -16,7 +16,7 @@ interface Props {
     navnAnnenForelder: string;
     navnPåSøker: string;
     nåværendePerioder?: Periode[];
-    overlappendePerioderAnnenPart?: Periode[] | undefined;
+    overlappendePerioderAnnenPart: Periode[] | undefined;
     sak: Foreldrepengesak;
     tidligerePerioder?: Periode[];
     visHelePlanen: boolean;

@@ -93,11 +93,11 @@
     color: var(--a-gray-700);
 }
 
-.periode--innvilget {
+.periode--hvit {
     background-color: white;
 }
 
-.periode--ikke-innvilget{
+.periode--grå{
     background-color: var(--a-gray-100);
 }
 

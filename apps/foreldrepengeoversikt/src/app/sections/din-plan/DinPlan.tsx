@@ -69,10 +69,9 @@ const DinPlan: React.FunctionComponent<Props> = ({
         ? Periodene(søkersPlan.concat(annenPartsPlanUtenOverlapp)).sort()
         : annenPartsPlan;
     const filtrertPlan = getCleanedPlanForVisning(allePerioderForVisning, erUttaksplanVedtatt);
-    const planMedHull = filtrertPlan; //TODO fyllInnHull(allePerioder);
-    const tidligerePerioder = planMedHull ? finnTidligerePerioder(planMedHull) : undefined;
-    const nåværendePerioder = planMedHull ? finnNåværendePerioder(planMedHull) : undefined;
-    const fremtidligePerioder = planMedHull ? finnFremtidigePerioder(planMedHull) : undefined;
+    const tidligerePerioder = filtrertPlan ? finnTidligerePerioder(filtrertPlan) : undefined;
+    const nåværendePerioder = filtrertPlan ? finnNåværendePerioder(filtrertPlan) : undefined;
+    const fremtidligePerioder = filtrertPlan ? finnFremtidigePerioder(filtrertPlan) : undefined;
     const kunTidligerePerioderFinnes =
         (nåværendePerioder === undefined || nåværendePerioder.length === 0) &&
         (fremtidligePerioder === undefined || fremtidligePerioder.length === 0);

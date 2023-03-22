@@ -61,13 +61,12 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         isOppholdsperiode(periode) ||
         isAvslåttPeriode(periode);
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
-    const classNameInnvilget = isAvslåttPeriode(periode) ? bem.modifier('ikke-innvilget') : bem.modifier('innvilget');
     return (
         <div
             className={classNames(
                 `${bem.block} ${bem.element('box')} ${
-                    periode.gjelderAnnenPart ? bem.modifier('bg-annen-part') : bem.modifier('bg-søker')
-                } ${classNameInnvilget}`
+                    isAvslåttPeriode(periode) || periode.gjelderAnnenPart ? bem.modifier('grå') : bem.modifier('hvit')
+                }`
             )}
         >
             <div>

@@ -156,18 +156,6 @@ export const getCleanedPlanForVisning = (
     }
 };
 
-// const finnForrigeMuligeUttaksdag = (dato: Date): Date => {
-//     const dagenFør = dayjs(dato).subtract(1, 'day');
-//     switch (dagenFør.isoWeekday()) {
-//         case 6:
-//             return dagenFør.subtract(1, 'day').toDate();
-//         case 7:
-//             return dagenFør.subtract(2, 'day').toDate();
-//         default:
-//             return dagenFør.toDate();
-//     }
-// };
-
 const finnNesteMuligeUttaksdag = (dato: Date): Date => {
     const nesteDag = dayjs(dato).add(1, 'day');
     return nesteDag.isoWeekday() >= 6 ? nesteDag.add(1, 'weeks').startOf('isoWeek').toDate() : nesteDag.toDate();
@@ -191,27 +179,6 @@ export const erHullMellomPerioder = (periode: Periode, nestePeriode?: Periode) =
         dayjs(periodeTidsperiode.tom).isBefore(nestePeriodeTidsperiode.fom, 'd')
     );
 };
-
-// export const fyllInnHull = (periodeAcc: Periode[], periode: Periode, index: number, periodene: Periode[]) => {
-//     periodeAcc.push(periode);
-//     const nestePeriode = periodene[index + 1];
-//     if (
-//         erHullMellomPerioder(periode, nestePeriode)
-//         //    && !harAnnenForelderSamtidigUttakISammePeriode(periode, periodene) TODO
-//     ) {
-//         const tidsperiode = {
-//             fom: finnNesteMuligeUttaksdag(ISOStringToDate(periode.tom)!),
-//             tom: finnForrigeMuligeUttaksdag(ISOStringToDate(nestePeriode.fom)!),
-//         };
-
-//         periodeAcc.push({
-//             fom: tidsperiode.fom,
-//             tom: tidsperiode.tom,
-//             resultat: {} as PeriodeResultat,
-//         });
-//     }
-//     return periodeAcc;
-// };
 
 const isValidStillingsprosent = (pst: number | undefined): boolean => pst !== undefined && isNaN(pst) === false;
 
@@ -411,7 +378,7 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
 
 export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPerioder: Periode[]) => {
     const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce((res, p) => {
-        res.push({ dato: ISOStringToDate(p.fom!)!, erFom: true });
+        res.push({ dato: ISOStringToDate(p.fom)!, erFom: true });
         res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
