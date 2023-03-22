@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Normaltekst } from 'nav-frontend-typografi';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
 import ErrorBoundary from './ErrorBoundary';
-import ModalWrapper from 'nav-frontend-modal';
+import { BodyShort, Modal } from '@navikt/ds-react';
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
 
@@ -15,7 +14,7 @@ countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
 
-ModalWrapper.setAppElement('#app');
+Modal.setAppElement('#app');
 
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
@@ -33,8 +32,8 @@ const root = createRoot(container!);
 
 root.render(
     <ErrorBoundary>
-        <Normaltekst tag="div">
+        <BodyShort>
             <AppContainer />
-        </Normaltekst>
+        </BodyShort>
     </ErrorBoundary>
 );

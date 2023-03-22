@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { Element } from 'nav-frontend-typografi';
 import { useIntl } from 'react-intl';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 import AttachmentList from 'common/storage/attachment/components/AttachmentList';
 import getMessage from 'common/util/i18nUtils';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Block, DisplayTextWithLabel, formatDate } from '@navikt/fp-common';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import { guid } from 'nav-frontend-js-utils';
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     barn: OmBarnetFormData;
@@ -44,15 +43,15 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
                         text={formatDate(barn.adopsjonsdato!)}
                     />
 
-                    <Element className="textWithLabel__label">
+                    <Label className="textWithLabel__label">
                         {barn.fødselsdatoer.length > 1
                             ? getMessage(intl, 'oppsummering.text.medFødselsdatoer')
                             : getMessage(intl, 'oppsummering.text.medFødselsdato')}
-                    </Element>
+                    </Label>
                     <Block margin="l" padBottom="l">
                         {barn.fødselsdatoer.map((_, index) => {
                             return (
-                                <div key={guid()}>
+                                <div key={index}>
                                     <Labeltekst>{formatDate(barn.fødselsdatoer![index])}</Labeltekst>
                                     <br />
                                 </div>
@@ -63,9 +62,9 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
             )}
             {barn.adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED && (
                 <div className="oppsummering__attachments">
-                    <Element className="textWithLabel__label">
+                    <Label className="textWithLabel__label">
                         {getMessage(intl, 'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse')}
-                    </Element>
+                    </Label>
                     <AttachmentList
                         attachments={barn.omsorgsovertakelse.filter((a: Attachment) => !isAttachmentWithError(a))}
                     />
@@ -84,9 +83,9 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
                         text={formatDate(barn.termindato)}
                     />
                     <div className="oppsummering__attachments">
-                        <Element className="textWithLabel__label">
+                        <Label className="textWithLabel__label">
                             {getMessage(intl, 'oppsummering.text.vedlagtTerminbekreftelse')}
-                        </Element>
+                        </Label>
                         <AttachmentList
                             attachments={barn.terminbekreftelse.filter((a: Attachment) => !isAttachmentWithError(a))}
                         />

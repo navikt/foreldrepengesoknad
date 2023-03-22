@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { Attachment, AttachmentType, Skjemanummer } from 'common/storage/attachment/types/Attachment';
-import FormikFileInput from '@navikt/sif-common-formik/lib/components/formik-file-input/FormikFileInput';
+import FormikFileInput from '@navikt/sif-common-formik-ds/lib/components/formik-file-input/FormikFileInput';
 import { OmBarnetFormData, OmBarnetFormField } from 'app/steps/om-barnet/omBarnetFormConfig';
 import { isAttachmentWithError, mapFileToAttachment } from 'common/storage/attachment/components/util';
 import AttachmentApi from 'common/storage/api/attachmentApi';
@@ -100,13 +100,15 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({ attachments, name,
         <>
             <FormikFileInput
                 name={name}
-                acceptedExtensions={VALID_EXTENSIONS.join(', ')}
+                accept={VALID_EXTENSIONS.join(', ')}
                 onFilesSelect={async (files: File[], { push, replace, remove }: ArrayHelpers) => {
                     removeFn = remove;
                     const atts = files.map((file) => addPendingAttachmentToFieldArray(file, push));
                     await uploadAttachments([...(values as any)[name], ...atts], replace);
                 }}
                 onClick={onFileInputClick}
+                legend="test"
+                buttonLabel="test"
                 {...otherProps}
             />
             <Block margin="xl">

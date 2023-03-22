@@ -1,10 +1,9 @@
+import { Heading, Link } from '@navikt/ds-react';
 import { bemUtils, intlUtils, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Person from 'app/types/domain/Person';
 import { PageKeys } from 'app/types/PageKeys';
 import { lenker } from 'app/util/lenker';
-import Lenke from 'nav-frontend-lenker';
-import { Innholdstittel } from 'nav-frontend-typografi';
 import React from 'react';
 import { useIntl } from 'react-intl';
 
@@ -35,15 +34,15 @@ const Umyndig: React.FunctionComponent<Props> = ({ person }) => {
                     text: (
                         <div>
                             <div className={bem.element('info')}>{intlUtils(intl, 'velkommen.under18.bobletekst')}</div>
-                            <Lenke href={lenker.papirsøknad}>
+                            <Link href={lenker.papirsøknad}>
                                 {intlUtils(intl, 'velkommen.under18.boblelenketekst')}
-                            </Lenke>
+                            </Link>
                         </div>
                     ),
                 }}
             />
             <div className={bem.element('content')}>
-                <Innholdstittel>Søknad om Engangsstønad</Innholdstittel>
+                <Heading size="large">Søknad om Engangsstønad</Heading>
             </div>
         </div>
     );

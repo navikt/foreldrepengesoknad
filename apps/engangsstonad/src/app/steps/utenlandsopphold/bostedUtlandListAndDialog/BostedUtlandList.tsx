@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { getCountryName } from '@navikt/sif-common-formik';
+import { getCountryName } from '@navikt/sif-common-formik-ds';
 import { BostedUtland } from './types';
 import { ActionLink, bemUtils, formatDateExtended, ItemList } from '@navikt/fp-common';
 

@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum OppsummeringFormField {
     oppgittKorrekteOpplysninger = 'oppgittKorrekteOpplysninger',

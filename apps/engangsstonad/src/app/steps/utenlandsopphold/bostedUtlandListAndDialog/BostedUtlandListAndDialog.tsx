@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormikModalFormAndList, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import { FormikModalFormAndList, ModalFormAndListLabels } from '@navikt/sif-common-formik-ds';
 import BostedUtlandForm from './BostedUtlandForm';
 import BostedUtlandListe from './BostedUtlandList';
 import { BostedUtland } from './types';
@@ -42,6 +42,7 @@ function BostedUtlandListAndDialog<FieldNames>({
             listRenderer={({ items, onEdit, onDelete }) => (
                 <BostedUtlandListe bosteder={items} onEdit={onEdit} onDelete={onDelete} />
             )}
+            shouldCloseOnOverlayClick={true}
         />
     );
 }
