@@ -29,7 +29,7 @@ const renderSpinner = () => (
 );
 
 const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const { data, loading, error } = useRequest<Person>(Api.getPerson());
+    const { data, loading, error } = useRequest<Person>(Api.getPerson);
     const { state } = useEngangsstønadContext();
     const intl = useIntl();
 

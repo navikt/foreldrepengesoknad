@@ -23,7 +23,7 @@ const isArrayOfAttachments = (attachment: Attachment) => {
 const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>
     attachments.filter((a: Attachment) => !isAttachmentWithError(a));
 
-export const mapAttachments = (object: object): Attachment[] => {
+export const mapAttachments = (object: any): Attachment[] => {
     const foundAttachments = [] as Attachment[];
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {

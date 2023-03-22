@@ -22,7 +22,7 @@ interface Fødtprops {
     kjønn: Kjønn;
 }
 
-const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues, kjønn }) => {
+const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues }) => {
     const intl = useIntl();
 
     if (formValues.adopsjonAvEktefellesBarn === YesOrNo.UNANSWERED) {

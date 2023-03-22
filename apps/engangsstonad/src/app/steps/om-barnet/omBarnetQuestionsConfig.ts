@@ -22,7 +22,7 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
     [OmBarnetFormField.antallBarn]: {
         isIncluded: () => true,
         isAnswered: ({ antallBarn }) => hasValue(antallBarn),
-        visibilityFilter: ({ adopsjonAvEktefellesBarn, erBarnetFødt, søkerAdopsjonAlene, kjønn, adopsjonsdato }) =>
+        visibilityFilter: ({ adopsjonAvEktefellesBarn, erBarnetFødt, adopsjonsdato }) =>
             erBarnetFødt !== YesOrNo.UNANSWERED ||
             (adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED && hasValue(adopsjonsdato)),
     },

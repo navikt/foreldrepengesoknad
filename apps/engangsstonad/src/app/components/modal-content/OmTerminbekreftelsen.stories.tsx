@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Story } from '@storybook/react';
 import IntlProvider from 'intl/IntlProvider';
 
 import OmTerminbekreftelsen from './OmTerminbekreftelsen';

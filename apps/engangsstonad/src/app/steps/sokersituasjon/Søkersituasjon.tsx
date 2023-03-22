@@ -15,7 +15,7 @@ import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadCon
 import { cleanupSøkersituasjon } from './søkersituasjonUtils';
 import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import søkersituasjonQuestionsConfig from './søkersituasjonQuestionsConfig';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { onAvbrytSøknad } from 'app/util/globalUtil';
 
 const Søkersituasjon: React.FunctionComponent = () => {

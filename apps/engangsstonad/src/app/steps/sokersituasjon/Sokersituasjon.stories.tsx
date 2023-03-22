@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Story } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import EngangsstønadContextProvider from '../../context/EngangsstønadContext';
 import Søkersituasjon from './Søkersituasjon';

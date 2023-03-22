@@ -25,11 +25,6 @@ module.exports = {
         // Make whatever fine-grained changes you need
         config.module.rules =  [
             {
-                test: /\.(ts|tsx)$/,
-                loader: require.resolve('tslint-loader'),
-                enforce: 'pre',
-            },
-            {
                 test: /\.(js|ts|tsx)$/,
                 use: [{
                     loader: 'babel-loader',
