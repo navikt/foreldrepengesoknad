@@ -138,7 +138,7 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                                 <VelkommenFormComponents.ConfirmationCheckbox
                                     name={VelkommenFormField.harForståttRettigheterOgPlikter}
                                     label={intlUtils(intl, 'velkommen.text.samtykke')}
-                                    validate={(value: any) => {
+                                    validate={(value: boolean) => {
                                         let result;
                                         if (value !== true) {
                                             result = intlUtils(
