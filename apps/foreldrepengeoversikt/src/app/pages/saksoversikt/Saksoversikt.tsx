@@ -54,7 +54,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                   hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK
           )
         : undefined;
-
+    const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
     let annenPartFnr = undefined;
     let annenPartVedtakIsSuspended = true;
@@ -63,7 +63,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
         familiehendelsesdato = getFamiliehendelseDato(gjeldendeSak.familiehendelse);
         annenPartFnr = gjeldendeSak.annenPart?.fnr;
         annenPartVedtakIsSuspended =
-            annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
+            !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
     }
     const { annenPartsVedakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(annenPartVedtakIsSuspended);
 
