@@ -3,13 +3,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Ingress, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import {
     bemUtils,
-    // LanguageToggle,
+    LanguageToggle,
     intlUtils,
     Block,
     Locale,
     useDocumentTitle,
     Sidebanner,
-    // UtvidetInformasjon,
+    UtvidetInformasjon,
 } from '@navikt/fp-common';
 import Veiviser from 'components/veiviser/VeiviserSvg';
 import Veilederpanel from 'nav-frontend-veilederpanel';
@@ -26,7 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadContext';
 import Personopplysninger from 'app/components/modal-content/Personopplysninger';
 import Modal from 'nav-frontend-modal';
-// import Plikter from 'app/components/modal-content/Plikter';
+import Plikter from 'app/components/modal-content/Plikter';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 
 import './velkommen.less';
@@ -38,7 +38,7 @@ interface Props {
     locale: Locale;
 }
 
-const Velkommen: FunctionComponent<Props> = ({ fornavn }) => {
+const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }) => {
     const intl = useIntl();
     const bem = bemUtils('velkommen');
     const navigate = useNavigate();
@@ -65,15 +65,15 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn }) => {
     return (
         <VelkommenFormComponents.FormikWrapper
             initialValues={initialVelkommenValues}
-            onSubmit={(values) => onValidSubmit(values)}
+            onSubmit={(values: any) => onValidSubmit(values)}
             renderForm={() => {
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
-                        {/* <LanguageToggle
+                        <LanguageToggle
                             locale={locale}
                             availableLocales={['en', 'nb', 'nn']}
                             toggle={(l: Locale) => onChangeLocale(l)}
-                        /> */}
+                        />
                         <Sidebanner
                             dialog={{
                                 title: intlUtils(intl, 'velkommen.standard.bobletittel', { name: fornavn }),
@@ -138,7 +138,7 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn }) => {
                                 <VelkommenFormComponents.ConfirmationCheckbox
                                     name={VelkommenFormField.harForståttRettigheterOgPlikter}
                                     label={intlUtils(intl, 'velkommen.text.samtykke')}
-                                    validate={(value) => {
+                                    validate={(value: boolean) => {
                                         let result;
                                         if (value !== true) {
                                             result = intlUtils(
@@ -154,11 +154,11 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn }) => {
                                             <FormattedMessage id="velkommen.text.samtykkeIntro" />
                                         </Block>
                                         <Block>
-                                            {/* <UtvidetInformasjon
+                                            <UtvidetInformasjon
                                                 apneLabel={intlUtils(intl, 'velkommen.text.plikter.apneLabel')}
                                             >
                                                 <Plikter />
-                                            </UtvidetInformasjon> */}
+                                            </UtvidetInformasjon>
                                         </Block>
                                         <Normaltekst>
                                             <FormattedMessage id="velkommen.text.kunEnStønad" />
