@@ -8,8 +8,9 @@ import {
     Locale,
     useDocumentTitle,
     UtvidetInformasjon,
+    Sidebanner,
 } from '@navikt/fp-common';
-import { Alert, BodyShort, Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Heading, Ingress, Modal } from '@navikt/ds-react';
 import { lenker } from 'util/lenker';
 import {
     initialVelkommenValues,
@@ -33,7 +34,7 @@ interface Props {
     locale: Locale;
 }
 
-const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }) => {
     const intl = useIntl();
     const bem = bemUtils('velkommen');
     const navigate = useNavigate();
@@ -69,6 +70,21 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
                             availableLocales={['en', 'nb', 'nn']}
                             toggle={(l: Locale) => onChangeLocale(l)}
                         />
+                        <Sidebanner
+                            dialog={{
+                                title: intlUtils(intl, 'velkommen.standard.bobletittel', { name: fornavn }),
+                                text: (
+                                    <>
+                                        <Block padBottom="m">
+                                            <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
+                                        </Block>
+                                        <Block>
+                                            <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
+                                        </Block>
+                                    </>
+                                ),
+                            }}
+                        />
                         <div className={bem.block}>
                             <Block padBottom="xl">
                                 <div className={bem.element('tittel')}>
@@ -78,17 +94,9 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
                                 </div>
                             </Block>
                             <Block padBottom="xl">
-                                <GuidePanel poster>
+                                <Ingress>
                                     <FormattedMessage id="velkommen.standard.ingress" />
-                                    <ul>
-                                        <li>
-                                            <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
-                                        </li>
-                                    </ul>
-                                </GuidePanel>
+                                </Ingress>
                             </Block>
                             <Block padBottom="xl">
                                 <Alert variant="info">
