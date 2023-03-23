@@ -41,12 +41,15 @@ const Født: React.FunctionComponent<Fødtprops> = ({ visibility, formValues }) 
                                     value: '3',
                                 },
                             ]}
-                            legend={getMessage(intl, 'omBarnet.text.antallBarn')}
+                            legend={getMessage(intl, 'omBarnet.text.antallBarn.født')}
                         />
                     </Block>
                     {formValues.antallBarn && parseInt(formValues.antallBarn, 10) >= 3 && (
                         <Block margin="xl">
-                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn} label="test">
+                            <OmBarnetFormComponents.Select
+                                name={OmBarnetFormField.antallBarn}
+                                label={getMessage(intl, 'omBarnet.text.antallBarn.født')}
+                            >
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>

@@ -7,10 +7,9 @@ import {
     Block,
     Locale,
     useDocumentTitle,
-    Sidebanner,
     UtvidetInformasjon,
 } from '@navikt/fp-common';
-import { BodyShort, Button, GuidePanel, Heading, Ingress, Modal } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
 import { lenker } from 'util/lenker';
 import {
     initialVelkommenValues,
@@ -34,7 +33,7 @@ interface Props {
     locale: Locale;
 }
 
-const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }) => {
+const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
     const bem = bemUtils('velkommen');
     const navigate = useNavigate();
@@ -70,21 +69,6 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                             availableLocales={['en', 'nb', 'nn']}
                             toggle={(l: Locale) => onChangeLocale(l)}
                         />
-                        <Sidebanner
-                            dialog={{
-                                title: intlUtils(intl, 'velkommen.standard.bobletittel', { name: fornavn }),
-                                text: (
-                                    <>
-                                        <Block padBottom="m">
-                                            <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
-                                        </Block>
-                                        <Block>
-                                            <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
-                                        </Block>
-                                    </>
-                                ),
-                            }}
-                        />
                         <div className={bem.block}>
                             <Block padBottom="xl">
                                 <div className={bem.element('tittel')}>
@@ -94,41 +78,39 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                                 </div>
                             </Block>
                             <Block padBottom="xl">
-                                <Ingress>{intlUtils(intl, 'velkommen.standard.ingress')}</Ingress>
-                            </Block>
-                            <Block padBottom="xl">
-                                <GuidePanel>
-                                    <FormattedMessage id="velkommen.text.veiviser.del1" />
+                                <GuidePanel poster>
+                                    <FormattedMessage id="velkommen.standard.ingress" />
                                     <ul>
                                         <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt1" />
+                                            <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
                                         </li>
                                         <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt2" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt3" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt4" />
+                                            <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
                                         </li>
                                     </ul>
-                                    <FormattedMessage
-                                        id="velkommen.text.veiviser.lenke"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <a
-                                                    className="lenke"
-                                                    rel="noopener noreferrer"
-                                                    href={lenker.veiviser}
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </a>
-                                            ),
-                                        }}
-                                    />
                                 </GuidePanel>
+                            </Block>
+                            <Block padBottom="xl">
+                                <Alert variant="info">
+                                    <FormattedMessage id="velkommen.text.veiviser" />
+                                    <div className={bem.element('veiviserLenke')}>
+                                        <FormattedMessage
+                                            id="velkommen.text.veiviser.lenke"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href={lenker.veiviser}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </div>
+                                </Alert>
                             </Block>
                             <Block padBottom="xl">
                                 <VelkommenFormComponents.ConfirmationCheckbox
@@ -164,7 +146,7 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                             </Block>
                             <Block padBottom="xl">
                                 <div className={bem.element('startSøknadKnapp')}>
-                                    <Button variant="secondary">{intlUtils(intl, 'velkommen.button.startSøknad')}</Button>
+                                    <Button>{intlUtils(intl, 'velkommen.button.startSøknad')}</Button>
                                 </div>
                             </Block>
                             <Block>

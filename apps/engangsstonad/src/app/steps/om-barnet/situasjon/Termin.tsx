@@ -1,4 +1,3 @@
-import { GuidePanel } from '@navikt/ds-react';
 import { Block, intlUtils, PictureScanningGuide, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
@@ -42,7 +41,7 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
                                     value: '3',
                                 },
                             ]}
-                            legend={getMessage(intl, 'omBarnet.text.antallBarn')}
+                            legend={getMessage(intl, 'omBarnet.text.antallBarn.termin')}
                         />
                     </Block>
                     {formValues.antallBarn && parseInt(formValues.antallBarn, 10) >= 3 && (
@@ -75,18 +74,15 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
             {visibility.isVisible(OmBarnetFormField.terminbekreftelse) && (
                 <>
                     <Block margin="xl">
-                        <GuidePanel>
-                            {getMessage(intl, 'terminbekreftelsen.text.terminbekreftelsen')}
-                        </GuidePanel>
-                    </Block>
-                    <Block margin="xl">
                         <FormikFileUploader
                             attachments={formValues.terminbekreftelse || []}
                             label={getMessage(intl, 'vedlegg.lastoppknapp.label')}
+                            legend={getMessage(intl, 'vedlegg.terminbekreftelse')}
+                            description={getMessage(intl, 'terminbekreftelsen.text.terminbekreftelsen')}
                             name={OmBarnetFormField.terminbekreftelse}
                         />
                         <UtvidetInformasjon apneLabel={<FormattedMessage id="psg.åpneLabel" />}>
-                            <PictureScanningGuide backgroundColor='white' />
+                            <PictureScanningGuide backgroundColor="white" />
                         </UtvidetInformasjon>
                     </Block>
                 </>

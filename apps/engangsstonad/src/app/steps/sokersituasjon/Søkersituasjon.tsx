@@ -70,12 +70,12 @@ const Søkersituasjon: React.FunctionComponent = () => {
                                         name={SøkersituasjonFormField.situasjon}
                                         radios={[
                                             {
-                                                label: intlUtils(intl, 'søkersituasjon.radiobutton.adopsjon'),
-                                                value: 'adopsjon',
-                                            },
-                                            {
                                                 label: intlUtils(intl, 'søkersituasjon.radiobutton.fødsel'),
                                                 value: 'fødsel',
+                                            },
+                                            {
+                                                label: intlUtils(intl, 'søkersituasjon.radiobutton.adopsjon'),
+                                                value: 'adopsjon',
                                             },
                                         ]}
                                         legend={getMessage(intl, 'søkersituasjon.text.situasjon')}
@@ -83,7 +83,7 @@ const Søkersituasjon: React.FunctionComponent = () => {
                                 </Block>
                                 {allQuestionsAnswered && (
                                     <Block margin="xl" textAlignCenter={true}>
-                                        <Button variant="secondary">{getMessage(intl, 'søknad.gåVidere')}</Button>
+                                        <Button>{getMessage(intl, 'søknad.gåVidere')}</Button>
                                     </Block>
                                 )}
                             </div>

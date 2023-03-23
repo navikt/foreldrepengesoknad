@@ -96,9 +96,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                                       )
                             }
                         >
-                            <GuidePanel>
-                                {intlUtils(intl, 'oppsummering.text.lesNoye')}
-                            </GuidePanel>
+                            <GuidePanel>{intlUtils(intl, 'oppsummering.text.lesNoye')}</GuidePanel>
                             <div className={bem.block}>
                                 <Block>
                                     <SøkersPersonalia
@@ -111,7 +109,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                                         personnummer={person.fnr}
                                     />
                                 </Block>
-
                                 <Oppsummeringspunkt tittel={intlUtils(intl, 'søknad.omBarnet')}>
                                     <OmBarnetOppsummering barn={state.søknad.omBarnet} />
                                 </Oppsummeringspunkt>
@@ -131,7 +128,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                             {allQuestionsAnswered && (
                                 <Block margin="xl">
                                     <div className={bem.element('sendSøknadKnapp')}>
-                                        <Button variant="secondary" disabled={isSending} loading={isSending}>
+                                        <Button disabled={isSending} loading={isSending}>
                                             {intlUtils(intl, 'oppsummering.button.sendSøknad')}
                                         </Button>
                                     </div>

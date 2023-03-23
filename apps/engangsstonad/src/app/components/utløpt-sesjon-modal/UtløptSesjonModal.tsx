@@ -28,7 +28,7 @@ const UtløptSesjonModal: React.FunctionComponent<Props> = ({ erÅpen }) => {
         >
             <Modal.Content>
                 <AdvarselIkon />
-                <Heading size="medium" className="blokk-m">
+                <Heading size="medium" className="blokk-m">v
                     <FormattedMessage id="sesjonUtløpt.tittel" />
                 </Heading>
                 <BodyShort className="blokk-m">
@@ -38,7 +38,7 @@ const UtløptSesjonModal: React.FunctionComponent<Props> = ({ erÅpen }) => {
                     <Knappelenke href={lenker.nav}>
                         <FormattedMessage id="sesjonUtløpt.avslutt" />
                     </Knappelenke>
-                    <Button variant="secondary" onClick={() => redirectToLogin()}>
+                    <Button onClick={() => redirectToLogin()}>
                         <FormattedMessage id="sesjonUtløpt.fortsett" />
                     </Button>
                 </div>

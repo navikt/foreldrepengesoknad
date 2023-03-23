@@ -16,6 +16,8 @@ interface Props {
     attachments: Attachment[];
     name: OmBarnetFormField;
     label: string;
+    legend: string;
+    description?: string;
     validate?: any;
     onFileInputClick?: () => void;
 }
@@ -45,7 +47,15 @@ const fileExtensionIsValid = (filename: string): boolean => {
 
 let removeFn: FieldArrayRemoveFn;
 
-const FormikFileUploader: React.FunctionComponent<Props> = ({ attachments, name, onFileInputClick, ...otherProps }) => {
+const FormikFileUploader: React.FunctionComponent<Props> = ({
+    attachments,
+    name,
+    onFileInputClick,
+    label,
+    legend,
+    description,
+    ...otherProps
+}) => {
     const { values } = useFormikContext<OmBarnetFormData>();
 
     async function uploadAttachment(attachment: Attachment) {
@@ -107,8 +117,9 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({ attachments, name,
                     await uploadAttachments([...(values as any)[name], ...atts], replace);
                 }}
                 onClick={onFileInputClick}
-                legend="test"
-                buttonLabel="test"
+                legend={legend}
+                buttonLabel={label}
+                description={description}
                 {...otherProps}
             />
             <Block margin="xl">

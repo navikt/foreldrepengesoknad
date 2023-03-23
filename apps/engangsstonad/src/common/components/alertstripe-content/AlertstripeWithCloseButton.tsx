@@ -34,7 +34,7 @@ const AlertstripeWithCloseButton = ({ onClose, errorMessages }: AlertstripeConte
                         </ul>
                     </div>
                 )}
-                {onClose && <Button variant="secondary" className={cls.element('lukk-knapp')} onClick={onClose} />}
+                {onClose && <Button className={cls.element('lukk-knapp')} onClick={onClose} />}
             </div>
         </Alert>
     );

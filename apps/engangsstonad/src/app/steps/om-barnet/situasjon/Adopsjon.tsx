@@ -1,4 +1,3 @@
-import { GuidePanel } from '@navikt/ds-react';
 import { Block, intlUtils, PictureScanningGuide, UtvidetInformasjon } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
@@ -75,7 +74,10 @@ const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues 
 
                     {formValues.antallBarn && parseInt(formValues.antallBarn, 10) >= 3 && (
                         <Block margin="xl">
-                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn} label="test">
+                            <OmBarnetFormComponents.Select
+                                name={OmBarnetFormField.antallBarn}
+                                label={getMessage(intl, 'omBarnet.text.antallBarn.omsorgsovertakelse')}
+                            >
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
@@ -139,18 +141,15 @@ const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues 
             {visibility.isVisible(OmBarnetFormField.omsorgsovertakelse) && (
                 <>
                     <Block margin="xl">
-                        <GuidePanel>
-                            {getMessage(intl, 'omBarnet.adopsjon.veilederpanel.adopsjon.text')}
-                        </GuidePanel>
-                    </Block>
-                    <Block margin="xl">
                         <FormikFileUploader
                             attachments={formValues.omsorgsovertakelse || []}
                             label={getMessage(intl, 'vedlegg.lastoppknapp.label')}
+                            legend={getMessage(intl, 'vedlegg.adopsjon')}
                             name={OmBarnetFormField.omsorgsovertakelse}
+                            description={getMessage(intl, 'omBarnet.adopsjon.veilederpanel.adopsjon.text')}
                         />
                         <UtvidetInformasjon apneLabel={<FormattedMessage id="psg.åpneLabel" />}>
-                            <PictureScanningGuide backgroundColor='white' />
+                            <PictureScanningGuide backgroundColor="white" />
                         </UtvidetInformasjon>
                     </Block>
                 </>

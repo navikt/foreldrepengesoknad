@@ -136,10 +136,10 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                                     <Block>
                                         <OmBarnetFormComponents.YesOrNoQuestion
                                             name={OmBarnetFormField.erBarnetFødt}
-                                            legend={getMessage(intl, 'omBarnet.spørsmål.nårErBarnetFødt')}
+                                            legend={getMessage(intl, 'omBarnet.spørsmål.erBarnetFødt')}
                                             labels={{
-                                                no: getMessage(intl, 'omBarnet.radiobutton.fremtid'),
-                                                yes: getMessage(intl, 'omBarnet.radiobutton.fortid'),
+                                                no: getMessage(intl, 'omBarnet.radiobutton.nei'),
+                                                yes: getMessage(intl, 'omBarnet.radiobutton.ja'),
                                             }}
                                         />
                                     </Block>
@@ -158,12 +158,12 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                                 <Termin
                                     visibility={visibility}
                                     // @ts-ignore Fiks denne
-                                    formValues={formValues} 
+                                    formValues={formValues}
                                 />
 
                                 {allQuestionsAnswered && (
                                     <Block margin="xl" textAlignCenter={true}>
-                                        <Button variant="secondary">{getMessage(intl, 'søknad.gåVidere')}</Button>
+                                        <Button>{getMessage(intl, 'søknad.gåVidere')}</Button>
                                     </Block>
                                 )}
                             </div>
