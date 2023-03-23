@@ -38,54 +38,63 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({ barn, in
     return (
         <Block>
             {informasjonOmUtenlandsopphold.harBoddUtenforNorgeSiste12Mnd === YesOrNo.NO ? (
-                <DisplayTextWithLabel label={getMessage(intl, 'oppsummering.text.boddSisteTolv')} text="Norge" />
+                <Block padBottom="l">
+                    <DisplayTextWithLabel label={getMessage(intl, 'oppsummering.text.boddSisteTolv')} text="Norge" />
+                </Block>
             ) : (
-                <div className="textWithLabel">
+                <Block padBottom="l" className="textWithLabel">
                     <Label className="textWithLabel__label">
                         {getMessage(intl, 'oppsummering.text.boddSisteTolv')}
                     </Label>
                     <LandOppsummering
                         utenlandsoppholdListe={informasjonOmUtenlandsopphold.utenlandsoppholdSiste12Mnd}
                     />
-                </div>
+                </Block>
             )}
             {informasjonOmUtenlandsopphold.skalBoUtenforNorgeNeste12Mnd === YesOrNo.NO ? (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.text.neste12mnd')}
-                    text={getMessage(intl, 'medlemmskap.radiobutton.boNorge')}
-                />
+                <Block padBottom="l">
+                    <DisplayTextWithLabel
+                        label={getMessage(intl, 'oppsummering.text.neste12mnd')}
+                        text={getMessage(intl, 'medlemmskap.radiobutton.boNorge')}
+                    />
+                </Block>
             ) : (
-                <div className="textWithLabel">
-                    <Label className="textWithLabel__label">
-                        {getMessage(intl, 'oppsummering.text.neste12mnd')}
-                    </Label>
+                <Block padBottom="l" className="textWithLabel">
+                    <Label className="textWithLabel__label">{getMessage(intl, 'oppsummering.text.neste12mnd')}</Label>
                     <LandOppsummering
                         utenlandsoppholdListe={informasjonOmUtenlandsopphold.utenlandsoppholdNeste12Mnd}
                     />
-                </div>
+                </Block>
             )}
             {barn.erBarnetFødt === YesOrNo.NO && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.text.ogKommerPåFødselstidspunktet')}
-                    text={
-                        erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(barn.termindato!, informasjonOmUtenlandsopphold)
-                            ? getMessage(intl, 'medlemmskap.radiobutton.vareUtlandet')
-                            : getMessage(intl, 'medlemmskap.radiobutton.vareNorge')
-                    }
-                />
+                <Block padBottom="l">
+                    <DisplayTextWithLabel
+                        label={getMessage(intl, 'oppsummering.text.ogKommerPåFødselstidspunktet')}
+                        text={
+                            erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                barn.termindato!,
+                                informasjonOmUtenlandsopphold
+                            )
+                                ? getMessage(intl, 'medlemmskap.radiobutton.vareUtlandet')
+                                : getMessage(intl, 'medlemmskap.radiobutton.vareNorge')
+                        }
+                    />
+                </Block>
             )}
             {barn.erBarnetFødt === YesOrNo.YES && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.text.varPåFødselstidspunktet')}
-                    text={
-                        erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                            barn.fødselsdatoer[0],
-                            informasjonOmUtenlandsopphold
-                        )
-                            ? getMessage(intl, 'oppsummering.utenlandsopphold.iUtlandet')
-                            : getMessage(intl, 'oppsummering.utenlandsopphold.iNorge')
-                    }
-                />
+                <Block padBottom="l">
+                    <DisplayTextWithLabel
+                        label={getMessage(intl, 'oppsummering.text.varPåFødselstidspunktet')}
+                        text={
+                            erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                barn.fødselsdatoer[0],
+                                informasjonOmUtenlandsopphold
+                            )
+                                ? getMessage(intl, 'oppsummering.utenlandsopphold.iUtlandet')
+                                : getMessage(intl, 'oppsummering.utenlandsopphold.iNorge')
+                        }
+                    />
+                </Block>
             )}
         </Block>
     );
