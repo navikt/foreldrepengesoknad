@@ -202,7 +202,7 @@ export const getNavnAnnenForelder = (
 };
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn === 1) {
+    if (antallBarn === 1 || antallBarn === 0) {
         return intlUtils(intl, 'barn');
     } else if (antallBarn === 2) {
         return intlUtils(intl, 'tvillinger');
@@ -241,7 +241,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     type: Situasjon
 ): string => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-    if (antallBarn === 0 || type === 'termin') {
+    if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
         return intlUtils(intl, 'barnHeader.terminBarn', {
             barnTekst,
             termindato: formatDate(familiehendelsedato),
