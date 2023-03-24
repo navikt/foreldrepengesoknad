@@ -419,6 +419,33 @@ export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPeriode
     };
 };
 
+export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
+    annenPartsPerioder: Periode[],
+    søkerensPerioder: Periode[]
+): Periode[] => {
+    const filtrerteAnnenPartsPerioder = annenPartsPerioder.filter((periode) => {
+        if (!isUttaksperiode(periode)) {
+            return true;
+        }
+        const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
+            return Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode));
+        });
+
+        if (!overlappendeSøkersPeriode) {
+            return true;
+        }
+        const beholdUttaksSomOverlapperAnnenPartsPeriode =
+            overlappendeSøkersPeriode &&
+            overlappendeSøkersPeriode.resultat.innvilget &&
+            isUttaksperiode(overlappendeSøkersPeriode) &&
+            isUttaksperiode(periode)
+                ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
+                : true;
+        return beholdUttaksSomOverlapperAnnenPartsPeriode;
+    });
+    return filtrerteAnnenPartsPerioder;
+};
+
 export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPerioder: Periode[]): Periode[] => {
     const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode) => {
         const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {

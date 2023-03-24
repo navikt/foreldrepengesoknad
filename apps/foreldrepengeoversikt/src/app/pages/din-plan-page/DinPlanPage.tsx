@@ -38,7 +38,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
         }
     }, [annenPartsVedtakError]);
 
-    if (!annenPartsVedakData) {
+    if (!annenPartVedtakIsSuspended && !annenPartsVedakData) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -53,7 +53,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
                     visHelePlanen={true}
                     navnPåSøker={navnPåSøker}
                     navnAnnenForelder={navnAnnenForelder}
-                    annenPartsPerioder={annenPartsVedakData.perioder}
+                    annenPartsPerioder={annenPartsVedakData?.perioder}
                 ></DinPlan>
             </ContentSection>
         );

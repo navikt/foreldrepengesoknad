@@ -73,7 +73,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
         }
     }, [annenPartsVedtakError]);
 
-    if (!annenPartsVedakData) {
+    if (!annenPartVedtakIsSuspended && !annenPartsVedakData) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -105,7 +105,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                         visHelePlanen={false}
                         navnPåSøker={navnPåSøker}
                         navnAnnenForelder={navnAnnenForelder}
-                        annenPartsPerioder={annenPartsVedakData.perioder}
+                        annenPartsPerioder={annenPartsVedakData?.perioder}
                     />
                 </ContentSection>
             )}

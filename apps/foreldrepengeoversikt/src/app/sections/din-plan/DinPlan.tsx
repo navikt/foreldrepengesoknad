@@ -3,6 +3,7 @@ import { bemUtils } from '@navikt/fp-common';
 import React from 'react';
 import { Edit } from '@navikt/ds-icons';
 import {
+    filtrerAnnenPartsUttakNårIkkeSamtidigUttak,
     finnFremtidigePerioder,
     finnNåværendePerioder,
     finnTidligerePerioder,
@@ -49,7 +50,7 @@ const DinPlan: React.FunctionComponent<Props> = ({
     const annenPartsPerioderForVisning =
         annenPartsPerioder !== undefined
             ? getPerioderForVisning(
-                  annenPartsPerioder.filter((p) => p.resultat.innvilget === true),
+                  slåSammenLikePerioder(annenPartsPerioder).filter((p) => p.resultat.innvilget === true),
                   true
               )
             : undefined;
@@ -61,7 +62,11 @@ const DinPlan: React.FunctionComponent<Props> = ({
             annenPartsPerioderForVisning
         );
         søkersPlan = normaliserteEgnePerioder;
-        annenPartsPlan = leggTilVisningsInfo(normaliserteAnnenPartsPerioder, søkersPlan);
+        const filtrerteAnnenPartsPerioder = filtrerAnnenPartsUttakNårIkkeSamtidigUttak(
+            normaliserteAnnenPartsPerioder,
+            søkersPlan
+        );
+        annenPartsPlan = leggTilVisningsInfo(filtrerteAnnenPartsPerioder, søkersPlan);
     }
     const annenPartsPlanUtenOverlapp = annenPartsPlan ? annenPartsPlan.filter((p) => p.visIPlan) : [];
     const annenPartsOverlappendePerioder = annenPartsPlan ? annenPartsPlan.filter((p) => !p.visIPlan) : [];
