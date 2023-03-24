@@ -1,5 +1,4 @@
 import { bemUtils, Block, intlUtils, Locale, Step } from '@navikt/fp-common';
-import SøkersPersonalia from 'app/components/søkers-personalia/SøkersPersonalia';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -23,6 +22,7 @@ import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
 
 import './oppsummering.less';
+import OmDegOppsummering from './OmDegOppsummering';
 
 interface Props {
     person: Person;
@@ -98,17 +98,12 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                         >
                             <GuidePanel>{intlUtils(intl, 'oppsummering.text.lesNoye')}</GuidePanel>
                             <div className={bem.block}>
-                                <Block>
-                                    <SøkersPersonalia
-                                        kjønn={person.kjønn}
-                                        navn={fullNameFormat(
-                                            person.fornavn,
-                                            person.mellomnavn,
-                                            person.etternavn
-                                        ).toLowerCase()}
-                                        personnummer={person.fnr}
+                                <Oppsummeringspunkt tittel={intlUtils(intl, 'søknad.omDeg')}>
+                                    <OmDegOppsummering
+                                        søkerNavn={fullNameFormat(person.fornavn, person.mellomnavn, person.etternavn)}
+                                        søkerFnr={person.fnr}
                                     />
-                                </Block>
+                                </Oppsummeringspunkt>
                                 <Oppsummeringspunkt tittel={intlUtils(intl, 'søknad.omBarnet')}>
                                     <OmBarnetOppsummering barn={state.søknad.omBarnet} />
                                 </Oppsummeringspunkt>

@@ -8,15 +8,15 @@ interface Props {
 }
 
 const Oppsummeringspunkt = ({ tittel, children }: Props) => (
-    <Block margin="xl">
+    <Block>
         <Accordion>
             <Accordion.Item>
                 <Accordion.Header>
-                    <Heading size="small">{tittel}</Heading>
+                    <Heading level="2" size="small">
+                        {tittel}
+                    </Heading>
                 </Accordion.Header>
-                <Accordion.Content>
-                    {children}
-                </Accordion.Content>
+                <Accordion.Content>{children}</Accordion.Content>
             </Accordion.Item>
         </Accordion>
     </Block>

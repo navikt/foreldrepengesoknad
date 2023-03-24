@@ -7,7 +7,7 @@ import getMessage from 'common/util/i18nUtils';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Block, DisplayTextWithLabel, formatDate } from '@navikt/fp-common';
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyLong, Label } from '@navikt/ds-react';
 
 interface Props {
     barn: OmBarnetFormData;
@@ -45,20 +45,17 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
                             text={formatDate(barn.adopsjonsdato!)}
                         />
                     </Block>
-                    <Block>
+                    <Block padBottom="l">
                         <Label className="textWithLabel__label">
                             {barn.fødselsdatoer.length > 1
                                 ? getMessage(intl, 'oppsummering.text.medFødselsdatoer')
                                 : getMessage(intl, 'oppsummering.text.medFødselsdato')}
                         </Label>
-                    </Block>
-                    <Block margin="l">
                         {barn.fødselsdatoer.map((_, index) => {
                             return (
-                                <div key={index}>
-                                    <BodyShort>{formatDate(barn.fødselsdatoer![index])}</BodyShort>
-                                    <br />
-                                </div>
+                                <Block padBottom="s" key={index}>
+                                    <BodyLong>{formatDate(barn.fødselsdatoer![index])}</BodyLong>
+                                </Block>
                             );
                         })}
                     </Block>
