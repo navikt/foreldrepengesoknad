@@ -19,6 +19,7 @@ interface Props {
 
 const getIkonForAntallBarn = (antallBarn: number) => {
     switch (antallBarn) {
+        case 0:
         case 1:
             return <EtBarn />;
         case 2:
