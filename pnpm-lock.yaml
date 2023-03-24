@@ -99,7 +99,7 @@ importers:
       promise: ^8.3.0
       react: ^18.2.0
       react-aria-menubutton: ^7.0.0
-      react-day-picker: ^7.4.8
+      react-day-picker: ^8.6.0
       react-document-title: ^2.0.3
       react-dom: ^18.2.0
       react-intl: ^6.3.1
@@ -126,7 +126,7 @@ importers:
     dependencies:
       '@babel/plugin-proposal-object-rest-spread': 7.20.7_@babel+core@7.21.0
       '@navikt/ds-css': 2.6.0
-      '@navikt/ds-datepicker': 4.1.2_n4fr5mhjz5idvaunpzfc4myfga
+      '@navikt/ds-datepicker': 4.1.2_ccrom2k3i6et7abaomf2my6bv4
       '@navikt/ds-icons': 2.6.0_pmekkgnqduwlme35zpnqhenc34
       '@navikt/ds-react': 2.6.0_zula6vjvt3wdocc4mwcxqa6nzi
       '@navikt/fnrvalidator': 1.3.0
@@ -157,7 +157,7 @@ importers:
       promise: 8.3.0
       react: 18.2.0
       react-aria-menubutton: 7.0.3_react@18.2.0
-      react-day-picker: 7.4.10_react@18.2.0
+      react-day-picker: 8.6.0_react@18.2.0
       react-document-title: 2.0.3_react@18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-intl: 6.3.1_odn5rdmyrxuyfnlhepsb7fjnvi
@@ -4567,7 +4567,7 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-datepicker/4.1.2_n4fr5mhjz5idvaunpzfc4myfga:
+  /@navikt/ds-datepicker/4.1.2_ccrom2k3i6et7abaomf2my6bv4:
     resolution: {integrity: sha512-inpK8HxUzVwmfT088N6ZzVtInYIWTSm2JWI1MWAStZ7ti/+mfi1U6akzg7g1VW23anmPXb5wL2GncBX417oLcA==}
     peerDependencies:
       '@navikt/ds-css': 2.x
@@ -4584,7 +4584,7 @@ packages:
       dayjs: 1.11.7
       focus-trap-react: 10.1.0_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
-      react-day-picker: 7.4.10_react@18.2.0
+      react-day-picker: 8.6.0_react@18.2.0
     transitivePeerDependencies:
       - prop-types
       - react-dom
@@ -4766,7 +4766,7 @@ packages:
       react-intl: 6.x
     dependencies:
       '@navikt/ds-css': 2.6.0
-      '@navikt/ds-datepicker': 4.1.2_n4fr5mhjz5idvaunpzfc4myfga
+      '@navikt/ds-datepicker': 4.1.2_ccrom2k3i6et7abaomf2my6bv4
       '@navikt/ds-react': 2.6.0_zula6vjvt3wdocc4mwcxqa6nzi
       formik: 2.2.9_react@18.2.0
       i18n-iso-countries: 7.5.0
