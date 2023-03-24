@@ -15,13 +15,13 @@ describe('<AppContainer>', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Begynn med søknaden'));
+        await userEvent.click(screen.getByText('Start søknaden'));
 
         expect(await screen.findByText('Du må bekrefte at du har lest og forstått')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
 
-        await userEvent.click(screen.getByText('Begynn med søknaden'));
+        await userEvent.click(screen.getByText('Start søknaden'));
 
         expect(await screen.findByText('Din situasjon')).toBeInTheDocument();
 
