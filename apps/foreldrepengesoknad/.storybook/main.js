@@ -10,7 +10,7 @@ module.exports = {
         storyStoreV7: true,
     },
     stories: ['../src/storybook/stories/**/*.stories.tsx'],
-    addons: ['@storybook/addon-essentials', 'storybook-formik/register'],
+    addons: ['storybook-formik/register'],
     webpackFinal: async (config, { configType }) => {
         //Fjern default svg-loader
         config.module.rules = config.module.rules.map((data) => {
