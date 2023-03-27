@@ -9,7 +9,7 @@ module.exports = {
         storyStoreV7: true,
     },
     stories: ['../src/app/**/*.stories.tsx'],
-    addons: ['storybook-addon-react-router-v6', '@storybook/addon-essentials'],
+    addons: ['storybook-addon-react-router-v6'],
     webpackFinal: async (config, { configType }) => {
         //Fjern default svg-loader
         config.module.rules = config.module.rules.map((data) => {
