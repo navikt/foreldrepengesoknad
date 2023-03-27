@@ -5,15 +5,9 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         react({
-            include: '**/*.{jsx,tsx,js,ts}',
+            include: '**/*.{ts,tsx}',
         }),
     ],
-    build: {
-        outDir: '../../dist',
-        commonjsOptions: {
-            include: [/fp-common/],
-        },
-    },
     resolve: {
         alias: {
             app: path.resolve(__dirname, './src/app'),
@@ -21,6 +15,6 @@ export default defineConfig({
         },
     },
     optimizeDeps: {
-        include: ['fp-common'],
+        include: ['@navikt/fp-common'],
     },
 });
