@@ -123,7 +123,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                             {allQuestionsAnswered && (
                                 <Block margin="xl">
                                     <div className={bem.element('sendSøknadKnapp')}>
-                                        <Button disabled={isSending} loading={isSending}>
+                                        <Button type="submit" disabled={isSending} loading={isSending}>
                                             {intlUtils(intl, 'oppsummering.button.sendSøknad')}
                                         </Button>
                                     </div>

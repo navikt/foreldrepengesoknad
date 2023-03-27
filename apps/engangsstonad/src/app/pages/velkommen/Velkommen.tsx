@@ -154,7 +154,7 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                             </Block>
                             <Block padBottom="xl">
                                 <div className={bem.element('startSøknadKnapp')}>
-                                    <Button>{intlUtils(intl, 'velkommen.button.startSøknad')}</Button>
+                                    <Button type="submit">{intlUtils(intl, 'velkommen.button.startSøknad')}</Button>
                                 </div>
                             </Block>
                             <Block>

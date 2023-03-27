@@ -38,7 +38,7 @@ const UtløptSesjonModal: React.FunctionComponent<Props> = ({ erÅpen }) => {
                     <Knappelenke href={lenker.nav}>
                         <FormattedMessage id="sesjonUtløpt.avslutt" />
                     </Knappelenke>
-                    <Button onClick={() => redirectToLogin()}>
+                    <Button type="submit" onClick={() => redirectToLogin()}>
                         <FormattedMessage id="sesjonUtløpt.fortsett" />
                     </Button>
                 </div>
