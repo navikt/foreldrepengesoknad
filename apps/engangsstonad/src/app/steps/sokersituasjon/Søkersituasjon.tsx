@@ -83,7 +83,7 @@ const Søkersituasjon: React.FunctionComponent = () => {
                                 </Block>
                                 {allQuestionsAnswered && (
                                     <Block margin="xl" textAlignCenter={true}>
-                                        <Button>{getMessage(intl, 'søknad.gåVidere')}</Button>
+                                        <Button type="submit">{getMessage(intl, 'søknad.gåVidere')}</Button>
                                     </Block>
                                 )}
                             </div>
