@@ -10,7 +10,7 @@ import {
     UtvidetInformasjon,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
-import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import {
     UtenlandsoppholdFieldNames,
     UtenlandsoppholdFormComponents,
@@ -27,11 +27,13 @@ import { onAvbrytSøknad } from 'app/util/globalUtil';
 import getMessage from 'common/util/i18nUtils';
 import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd } from './utenlandsoppholdValidering';
 
-import './utenlandsopphold.less';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
 import { useNavigate } from 'react-router-dom';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
+
+import './utenlandsopphold.less';
+import { Button } from '@navikt/ds-react';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -64,6 +66,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
             initialValues={initialValues}
             onSubmit={(values) => onValidSubmit(values)}
             renderForm={({ values: formValues }) => {
+                // @ts-ignore Fiks denne
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues);
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (
@@ -78,9 +81,8 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         kompakt={true}
                     >
                         <UtenlandsoppholdFormComponents.Form
-                            includeButtons={allQuestionsAnswered}
+                            includeButtons={false}
                             includeValidationSummary={true}
-                            submitButtonLabel={getMessage(intl, 'søknad.gåVidere')}
                             cleanup={(values) => utenlandsoppholdFormCleanup(values)}
                             noButtonsContentRenderer={
                                 allQuestionsAnswered
@@ -94,20 +96,10 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         >
                             <div className={bem.block}>
                                 {visibility.isVisible(UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd) && (
-                                    <Block>
+                                    <Block padBottom="l">
                                         <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                             legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
                                             name={UtenlandsoppholdFieldNames.skalBoUtenforNorgeNeste12Mnd}
-                                            description={
-                                                <UtvidetInformasjon
-                                                    apneLabel={intlUtils(
-                                                        intl,
-                                                        'utenlandsopphold.neste12MånederInfotekst.apneLabel'
-                                                    )}
-                                                >
-                                                    {intlUtils(intl, 'utenlandsopphold.neste12MånederInfotekst')}
-                                                </UtvidetInformasjon>
-                                            }
                                             labels={{
                                                 no: intlUtils(
                                                     intl,
@@ -120,40 +112,41 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                             }}
                                             validate={validateYesOrNoIsAnswered}
                                         />
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(
+                                                intl,
+                                                'utenlandsopphold.neste12MånederInfotekst.apneLabel'
+                                            )}
+                                        >
+                                            {intlUtils(intl, 'utenlandsopphold.neste12MånederInfotekst')}
+                                        </UtvidetInformasjon>
+                                        {visibility.isVisible(
+                                            UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd
+                                        ) && (
+                                            <Block padBottom="l">
+                                                <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
+                                                    name={UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd}
+                                                    minDate={dateToday}
+                                                    maxDate={date1YearFromNow}
+                                                    labels={{
+                                                        addLabel: intlUtils(intl, 'utenlandsopphold.knapp.leggTilLand'),
+                                                        modalTitle: 'Utenlandsopphold neste 12 måneder',
+                                                    }}
+                                                    erFremtidigOpphold={true}
+                                                    validate={(value: BostedUtland[]) =>
+                                                        validateUtenlandsoppholdNeste12Mnd(value, intl)
+                                                    }
+                                                />
+                                            </Block>
+                                        )}
                                     </Block>
                                 )}
-                                {visibility.isVisible(UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd) && (
-                                    <Block margin="l">
-                                        <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
-                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd}
-                                            minDate={dateToday}
-                                            maxDate={date1YearFromNow}
-                                            labels={{
-                                                addLabel: intlUtils(intl, 'utenlandsopphold.knapp.leggTilLand'),
-                                                modalTitle: 'Utenlandsopphold neste 12 måneder',
-                                            }}
-                                            erFremtidigOpphold={true}
-                                            validate={(value: BostedUtland[]) =>
-                                                validateUtenlandsoppholdNeste12Mnd(value, intl)
-                                            }
-                                        />
-                                    </Block>
-                                )}
+
                                 {visibility.isVisible(UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd) && (
                                     <Block margin="xl">
                                         <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                             legend={intlUtils(intl, 'utenlandsopphold.siste12Måneder.spørsmål')}
                                             name={UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd}
-                                            description={
-                                                <UtvidetInformasjon
-                                                    apneLabel={intlUtils(
-                                                        intl,
-                                                        'utenlandsopphold.siste12MånederInfotekst.apneLabel'
-                                                    )}
-                                                >
-                                                    {intlUtils(intl, 'utenlandsopphold.siste12MånederInfotekst')}
-                                                </UtvidetInformasjon>
-                                            }
                                             labels={{
                                                 no: intlUtils(
                                                     intl,
@@ -166,23 +159,39 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                             }}
                                             validate={validateYesOrNoIsAnswered}
                                         />
+                                        <UtvidetInformasjon
+                                            apneLabel={intlUtils(
+                                                intl,
+                                                'utenlandsopphold.siste12MånederInfotekst.apneLabel'
+                                            )}
+                                        >
+                                            {intlUtils(intl, 'utenlandsopphold.siste12MånederInfotekst')}
+                                        </UtvidetInformasjon>
+                                        {visibility.isVisible(
+                                            UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd
+                                        ) && (
+                                            <Block padBottom="xl">
+                                                <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
+                                                    minDate={date1YearAgo}
+                                                    maxDate={dateToday}
+                                                    name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
+                                                    labels={{
+                                                        addLabel: intlUtils(intl, 'utenlandsopphold.knapp.leggTilLand'),
+                                                        modalTitle: 'Utenlandsopphold siste 12 måneder',
+                                                    }}
+                                                    erFremtidigOpphold={false}
+                                                    validate={(value: BostedUtland[]) =>
+                                                        validateUtenlandsoppholdSiste12Mnd(value, intl)
+                                                    }
+                                                />
+                                            </Block>
+                                        )}
                                     </Block>
                                 )}
-                                {visibility.isVisible(UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd) && (
-                                    <Block margin="l">
-                                        <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
-                                            minDate={date1YearAgo}
-                                            maxDate={dateToday}
-                                            name={UtenlandsoppholdFieldNames.utenlandsoppholdSiste12Mnd}
-                                            labels={{
-                                                addLabel: intlUtils(intl, 'utenlandsopphold.knapp.leggTilLand'),
-                                                modalTitle: 'Utenlandsopphold siste 12 måneder',
-                                            }}
-                                            erFremtidigOpphold={false}
-                                            validate={(value: BostedUtland[]) =>
-                                                validateUtenlandsoppholdSiste12Mnd(value, intl)
-                                            }
-                                        />
+
+                                {allQuestionsAnswered && (
+                                    <Block margin="xl" textAlignCenter={true}>
+                                        <Button>{getMessage(intl, 'søknad.gåVidere')}</Button>
                                     </Block>
                                 )}
                             </div>

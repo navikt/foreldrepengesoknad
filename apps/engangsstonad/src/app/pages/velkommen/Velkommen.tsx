@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Ingress, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import {
     bemUtils,
     LanguageToggle,
@@ -8,11 +7,10 @@ import {
     Block,
     Locale,
     useDocumentTitle,
-    Sidebanner,
     UtvidetInformasjon,
+    Sidebanner,
 } from '@navikt/fp-common';
-import Veiviser from 'components/veiviser/VeiviserSvg';
-import Veilederpanel from 'nav-frontend-veilederpanel';
+import { Alert, BodyShort, Button, Heading, Ingress, Modal } from '@navikt/ds-react';
 import { lenker } from 'util/lenker';
 import {
     initialVelkommenValues,
@@ -20,12 +18,10 @@ import {
     VelkommenFormData,
     VelkommenFormField,
 } from './velkommenFormConfig';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import actionCreator from 'app/context/action/actionCreator';
 import { useNavigate } from 'react-router-dom';
 import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadContext';
 import Personopplysninger from 'app/components/modal-content/Personopplysninger';
-import Modal from 'nav-frontend-modal';
 import Plikter from 'app/components/modal-content/Plikter';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 
@@ -92,47 +88,37 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                         <div className={bem.block}>
                             <Block padBottom="xl">
                                 <div className={bem.element('tittel')}>
-                                    <Innholdstittel>
+                                    <Heading size="large">
                                         {intlUtils(intl, 'velkommen.standard.velkommentittel')}
-                                    </Innholdstittel>
+                                    </Heading>
                                 </div>
                             </Block>
                             <Block padBottom="xl">
-                                <Ingress>{intlUtils(intl, 'velkommen.standard.ingress')}</Ingress>
+                                <Ingress>
+                                    <FormattedMessage id="velkommen.standard.ingress" />
+                                </Ingress>
                             </Block>
                             <Block padBottom="xl">
-                                <Veilederpanel kompakt={true} svg={<Veiviser />}>
-                                    <FormattedMessage id="velkommen.text.veiviser.del1" />
-                                    <ul>
-                                        <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt1" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt2" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt3" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="velkommen.text.veiviser.punkt4" />
-                                        </li>
-                                    </ul>
-                                    <FormattedMessage
-                                        id="velkommen.text.veiviser.lenke"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <a
-                                                    className="lenke"
-                                                    rel="noopener noreferrer"
-                                                    href={lenker.veiviser}
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </a>
-                                            ),
-                                        }}
-                                    />
-                                </Veilederpanel>
+                                <Alert variant="info">
+                                    <FormattedMessage id="velkommen.text.veiviser" />
+                                    <div className={bem.element('veiviserLenke')}>
+                                        <FormattedMessage
+                                            id="velkommen.text.veiviser.lenke"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href={lenker.veiviser}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </div>
+                                </Alert>
                             </Block>
                             <Block padBottom="xl">
                                 <VelkommenFormComponents.ConfirmationCheckbox
@@ -160,15 +146,15 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                                                 <Plikter />
                                             </UtvidetInformasjon>
                                         </Block>
-                                        <Normaltekst>
+                                        <BodyShort>
                                             <FormattedMessage id="velkommen.text.kunEnStønad" />
-                                        </Normaltekst>
+                                        </BodyShort>
                                     </>
                                 </VelkommenFormComponents.ConfirmationCheckbox>
                             </Block>
                             <Block padBottom="xl">
                                 <div className={bem.element('startSøknadKnapp')}>
-                                    <Hovedknapp>{intlUtils(intl, 'velkommen.button.startSøknad')}</Hovedknapp>
+                                    <Button>{intlUtils(intl, 'velkommen.button.startSøknad')}</Button>
                                 </div>
                             </Block>
                             <Block>
@@ -182,12 +168,14 @@ const Velkommen: FunctionComponent<Props> = ({ fornavn, locale, onChangeLocale }
                                     </a>
                                 </div>
                                 <Modal
-                                    isOpen={PersonopplysningerModalOpen}
+                                    open={PersonopplysningerModalOpen}
                                     closeButton={true}
-                                    onRequestClose={() => setPersonopplysningerModalOpen(!PersonopplysningerModalOpen)}
-                                    contentLabel="rettigheter og plikter"
+                                    onClose={() => setPersonopplysningerModalOpen(!PersonopplysningerModalOpen)}
+                                    aria-label="rettigheter og plikter"
                                 >
-                                    <Personopplysninger />
+                                    <Modal.Content>
+                                        <Personopplysninger />
+                                    </Modal.Content>
                                 </Modal>
                             </Block>
                         </div>

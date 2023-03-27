@@ -1,11 +1,9 @@
 import { Block, intlUtils, PictureScanningGuide, UtvidetInformasjon } from '@navikt/fp-common';
-import Veileder from '@navikt/fp-common/lib/components/veileder/Veileder';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
@@ -27,7 +25,7 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
             {visibility.isVisible(OmBarnetFormField.antallBarn) && (
                 <>
                     <Block margin="xl">
-                        <OmBarnetFormComponents.RadioPanelGroup
+                        <OmBarnetFormComponents.RadioGroup
                             name={OmBarnetFormField.antallBarn}
                             radios={[
                                 {
@@ -43,13 +41,12 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
                                     value: '3',
                                 },
                             ]}
-                            useTwoColumns={true}
-                            legend={getMessage(intl, 'omBarnet.text.antallBarn')}
+                            legend={getMessage(intl, 'omBarnet.text.antallBarn.termin')}
                         />
                     </Block>
                     {formValues.antallBarn && parseInt(formValues.antallBarn, 10) >= 3 && (
                         <Block margin="xl">
-                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn}>
+                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn} label="test">
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
@@ -77,14 +74,11 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
             {visibility.isVisible(OmBarnetFormField.terminbekreftelse) && (
                 <>
                     <Block margin="xl">
-                        <Veilederpanel kompakt={true} svg={<Veileder />}>
-                            {getMessage(intl, 'terminbekreftelsen.text.terminbekreftelsen')}
-                        </Veilederpanel>
-                    </Block>
-                    <Block margin="xl">
                         <FormikFileUploader
                             attachments={formValues.terminbekreftelse || []}
                             label={getMessage(intl, 'vedlegg.lastoppknapp.label')}
+                            legend={getMessage(intl, 'vedlegg.terminbekreftelse')}
+                            description={getMessage(intl, 'terminbekreftelsen.text.terminbekreftelsen')}
                             name={OmBarnetFormField.terminbekreftelse}
                         />
                         <UtvidetInformasjon apneLabel={<FormattedMessage id="psg.åpneLabel" />}>

@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { Element } from 'nav-frontend-typografi';
 import { useIntl } from 'react-intl';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 import AttachmentList from 'common/storage/attachment/components/AttachmentList';
 import getMessage from 'common/util/i18nUtils';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Block, DisplayTextWithLabel, formatDate } from '@navikt/fp-common';
-import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import { guid } from 'nav-frontend-js-utils';
+import { BodyLong, Label } from '@navikt/ds-react';
 
 interface Props {
     barn: OmBarnetFormData;
@@ -32,72 +30,80 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
     }
 
     return (
-        <Block>
-            <DisplayTextWithLabel
-                label={getMessage(intl, 'oppsummering.text.soknadenGjelder')}
-                text={antallBarnSummaryText}
-            />
+        <div>
+            <Block padBottom="l">
+                <DisplayTextWithLabel
+                    label={getMessage(intl, 'oppsummering.text.soknadenGjelder')}
+                    text={antallBarnSummaryText}
+                />
+            </Block>
             {barn.adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED && (
                 <div>
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.text.medAdopsjonsdato')}
-                        text={formatDate(barn.adopsjonsdato!)}
-                    />
-
-                    <Element className="textWithLabel__label">
-                        {barn.fødselsdatoer.length > 1
-                            ? getMessage(intl, 'oppsummering.text.medFødselsdatoer')
-                            : getMessage(intl, 'oppsummering.text.medFødselsdato')}
-                    </Element>
-                    <Block margin="l" padBottom="l">
+                    <Block padBottom="l">
+                        <DisplayTextWithLabel
+                            label={getMessage(intl, 'oppsummering.text.medAdopsjonsdato')}
+                            text={formatDate(barn.adopsjonsdato!)}
+                        />
+                    </Block>
+                    <Block padBottom="l">
+                        <Label className="textWithLabel__label">
+                            {barn.fødselsdatoer.length > 1
+                                ? getMessage(intl, 'oppsummering.text.medFødselsdatoer')
+                                : getMessage(intl, 'oppsummering.text.medFødselsdato')}
+                        </Label>
                         {barn.fødselsdatoer.map((_, index) => {
                             return (
-                                <div key={guid()}>
-                                    <Labeltekst>{formatDate(barn.fødselsdatoer![index])}</Labeltekst>
-                                    <br />
-                                </div>
+                                <Block padBottom="s" key={index}>
+                                    <BodyLong>{formatDate(barn.fødselsdatoer![index])}</BodyLong>
+                                </Block>
                             );
                         })}
                     </Block>
                 </div>
             )}
             {barn.adopsjonAvEktefellesBarn !== YesOrNo.UNANSWERED && (
-                <div className="oppsummering__attachments">
-                    <Element className="textWithLabel__label">
+                <Block padBottom="l" className="oppsummering__attachments">
+                    <Label className="textWithLabel__label">
                         {getMessage(intl, 'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse')}
-                    </Element>
+                    </Label>
                     <AttachmentList
                         attachments={barn.omsorgsovertakelse.filter((a: Attachment) => !isAttachmentWithError(a))}
                     />
-                </div>
+                </Block>
             )}
             {barn.erBarnetFødt === YesOrNo.YES && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.text.medFødselsdato')}
-                    text={formatDate(barn.fødselsdatoer[0])}
-                />
+                <Block padBottom="l">
+                    <DisplayTextWithLabel
+                        label={getMessage(intl, 'oppsummering.text.medFødselsdato')}
+                        text={formatDate(barn.fødselsdatoer[0])}
+                    />
+                </Block>
             )}
             {barn.erBarnetFødt === YesOrNo.NO && barn.termindato && barn.terminbekreftelsedato && (
                 <div>
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.text.medTermindato')}
-                        text={formatDate(barn.termindato)}
-                    />
-                    <div className="oppsummering__attachments">
-                        <Element className="textWithLabel__label">
+                    <Block padBottom="l">
+                        <DisplayTextWithLabel
+                            label={getMessage(intl, 'oppsummering.text.medTermindato')}
+                            text={formatDate(barn.termindato)}
+                        />
+                    </Block>
+                    <Block padBottom="l" className="oppsummering__attachments">
+                        <Label className="textWithLabel__label">
                             {getMessage(intl, 'oppsummering.text.vedlagtTerminbekreftelse')}
-                        </Element>
+                        </Label>
                         <AttachmentList
                             attachments={barn.terminbekreftelse.filter((a: Attachment) => !isAttachmentWithError(a))}
                         />
-                    </div>
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.text.somErDatert')}
-                        text={formatDate(barn.terminbekreftelsedato)}
-                    />
+                    </Block>
+                    <Block padBottom="l">
+                        <DisplayTextWithLabel
+                            label={getMessage(intl, 'oppsummering.text.somErDatert')}
+                            text={formatDate(barn.terminbekreftelsedato)}
+                        />
+                    </Block>
                 </div>
             )}
-        </Block>
+        </div>
     );
 };
 export default OmBarnetOppsummering;

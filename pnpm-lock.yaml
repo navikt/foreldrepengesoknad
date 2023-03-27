@@ -22,9 +22,9 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening': workspace:*
       '@navikt/fnrvalidator': ^1.1.3
       '@navikt/fp-common': workspace:*
-      '@navikt/sif-common-formik': ^23.3.0
       '@navikt/sif-common-formik-ds': ^0.12.1
       '@navikt/sif-common-question-config': ^0.0.7
+      '@pmmmwh/react-refresh-webpack-plugin': ^0.5.10
       '@sentry/browser': ^7.40.0
       '@storybook/addon-essentials': ^6.5.12
       '@storybook/addons': ^6.5.12
@@ -95,60 +95,23 @@ importers:
       multer: 1.4.5-lts.1
       mustache-express: ^1.3.2
       mustache-loader: ^1.4.3
-      nav-datovelger: ^12.6.0
-      nav-frontend-alertstriper: ^4.0.2
-      nav-frontend-alertstriper-style: ^3.0.2
-      nav-frontend-chevron: ^1.0.30
-      nav-frontend-chevron-style: ^1.0.4
-      nav-frontend-core: ^6.0.1
-      nav-frontend-ekspanderbartpanel: ^4.0.4
-      nav-frontend-ekspanderbartpanel-style: ^2.0.2
-      nav-frontend-etiketter: ^3.0.3
-      nav-frontend-etiketter-style: ^2.0.3
-      nav-frontend-hjelpetekst: ^3.1.3
-      nav-frontend-hjelpetekst-style: ^3.0.2
-      nav-frontend-ikoner-assets: ^3.0.1
-      nav-frontend-js-utils: ^1.0.20
-      nav-frontend-knapper: ^3.1.3
-      nav-frontend-knapper-style: ^2.1.2
-      nav-frontend-lenkepanel: ^2.0.2
-      nav-frontend-lenkepanel-style: ^2.0.2
-      nav-frontend-lenker: ^2.0.2
-      nav-frontend-lenker-style: ^2.0.2
-      nav-frontend-lukknapp: ^2.0.2
-      nav-frontend-lukknapp-style: ^2.0.2
-      nav-frontend-modal: ^2.0.2
-      nav-frontend-modal-style: ^2.0.2
-      nav-frontend-paneler: ^3.0.2
-      nav-frontend-paneler-style: ^2.0.2
-      nav-frontend-popover: ^2.0.4
-      nav-frontend-popover-style: ^2.0.2
-      nav-frontend-skjema: ^4.0.6
-      nav-frontend-skjema-style: ^3.0.3
-      nav-frontend-spinner: ^3.0.1
-      nav-frontend-spinner-style: ^1.0.2
-      nav-frontend-stegindikator: ^2.0.3
-      nav-frontend-stegindikator-style: ^2.0.2
-      nav-frontend-typografi: ^4.0.2
-      nav-frontend-typografi-style: ^2.0.2
-      nav-frontend-veileder: ^3.0.3
-      nav-frontend-veileder-style: ^3.0.2
-      nav-frontend-veilederpanel: ^2.0.3
-      nav-frontend-veilederpanel-style: 2.0.2
       postcss-loader: ^7.1.0
       promise: ^8.3.0
       react: ^18.2.0
       react-aria-menubutton: ^7.0.0
-      react-day-picker: ^7.4.8
+      react-day-picker: ^8.6.0
       react-document-title: ^2.0.3
       react-dom: ^18.2.0
       react-intl: ^6.3.1
       react-modal: ^3.16.1
+      react-refresh: ^0.14.0
+      react-responsive: ^9.0.2
       react-router-dom: ^6.9.0
       react-transition-group: ^4.4.5
       request: ^2.88.2
       sass: ^1.58.3
       sass-loader: ^13.0.2
+      storybook-addon-react-router-v6: ^0.2.1
       style-loader: ^3.3.1
       svg-sprite-loader: ^6.0.11
       terser-webpack-plugin: ^5.3.6
@@ -163,12 +126,11 @@ importers:
     dependencies:
       '@babel/plugin-proposal-object-rest-spread': 7.20.7_@babel+core@7.21.0
       '@navikt/ds-css': 2.6.0
-      '@navikt/ds-datepicker': 4.1.2_n4fr5mhjz5idvaunpzfc4myfga
+      '@navikt/ds-datepicker': 4.1.2_ccrom2k3i6et7abaomf2my6bv4
       '@navikt/ds-icons': 2.6.0_pmekkgnqduwlme35zpnqhenc34
       '@navikt/ds-react': 2.6.0_zula6vjvt3wdocc4mwcxqa6nzi
       '@navikt/fnrvalidator': 1.3.0
       '@navikt/fp-common': link:../../packages/fp-common
-      '@navikt/sif-common-formik': 23.4.0_2qtgxg5weau6kuevakz3p43rmi
       '@navikt/sif-common-formik-ds': 0.12.1_3eavip4sgoqhcdq6rchakidccu
       '@navikt/sif-common-question-config': 0.0.7
       '@sentry/browser': 7.43.0
@@ -192,54 +154,15 @@ importers:
       moment: 2.29.4
       morgan: 1.10.0
       mustache-express: 1.3.2
-      nav-datovelger: 12.6.0_gsdkmzllgzpacwh5mpgtxkgbie
-      nav-frontend-alertstriper: 4.0.2_yb6oyc4dwjk6d4bh22gbd4jbdm
-      nav-frontend-alertstriper-style: 3.0.2_s6p2rne7uf5fwj7dxxkkybjpde
-      nav-frontend-chevron: 1.0.30_d3u4umw2dcqcintizlfc4oy3pe
-      nav-frontend-chevron-style: 1.0.4
-      nav-frontend-core: 6.0.1
-      nav-frontend-ekspanderbartpanel: 4.0.4_h62qxog56qyj46winzcrdjw2hq
-      nav-frontend-ekspanderbartpanel-style: 2.0.2_pf56fh4zw5435bnoiwmc2t2ipe
-      nav-frontend-etiketter: 3.0.3_o4xq32dfmgjbr44wr5cx3gsslm
-      nav-frontend-etiketter-style: 2.0.3_nav-frontend-core@6.0.1
-      nav-frontend-hjelpetekst: 3.1.3_axjafpjtmqmje7fhojxbi7o7ye
-      nav-frontend-hjelpetekst-style: 3.0.2_thuvqjcto3w7dyhhjmc63qsctq
-      nav-frontend-ikoner-assets: 3.0.1
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
-      nav-frontend-knapper: 3.1.3_afskfcsmkrpayspdcpgbzs4xt4
-      nav-frontend-knapper-style: 2.1.2_thuvqjcto3w7dyhhjmc63qsctq
-      nav-frontend-lenkepanel: 2.0.2_i5kr34jpzodmhikh2apdktiuxe
-      nav-frontend-lenkepanel-style: 2.0.2_ysr2ylxa7isenfezaf6zzko6cm
-      nav-frontend-lenker: 2.0.2_u223ibl7n7kh765fa7s7oryoga
-      nav-frontend-lenker-style: 2.0.2_nav-frontend-core@6.0.1
-      nav-frontend-lukknapp: 2.0.2_fbdncuod4pfw3bxfl4kbcyamtq
-      nav-frontend-lukknapp-style: 2.0.2_nav-frontend-core@6.0.1
-      nav-frontend-modal: 2.0.2_zsewvn57oh6jimvspfjt4u3mgi
-      nav-frontend-modal-style: 2.0.2_azyuktwjvhfl7np7psvnjrcasa
-      nav-frontend-paneler: 3.0.2_64otohqbdyi64jquomrwupjkfy
-      nav-frontend-paneler-style: 2.0.2_nav-frontend-core@6.0.1
-      nav-frontend-popover: 2.0.4_3rfmxt5t4gcie3tjnmsxrkhmbi
-      nav-frontend-popover-style: 2.0.2_nav-frontend-core@6.0.1
-      nav-frontend-skjema: 4.0.6_ompfnw7oaizz5iwnvfabbxtry4
-      nav-frontend-skjema-style: 3.0.3_hnih4arta5r2sbmdkjitm5uhju
-      nav-frontend-spinner: 3.0.1_ibowqsfoimb5u5tvfpmzvtngum
-      nav-frontend-spinner-style: 1.0.2
-      nav-frontend-stegindikator: 2.0.3_njcfcvjljcp36blp2nzhftzu2y
-      nav-frontend-stegindikator-style: 2.0.2_thuvqjcto3w7dyhhjmc63qsctq
-      nav-frontend-typografi: 4.0.2_2q3jcvdwqtojzmpbtp62yt4khq
-      nav-frontend-typografi-style: 2.0.2
-      nav-frontend-veileder: 3.0.3_6yekfo4qebct6qk7ifgooddtuy
-      nav-frontend-veileder-style: 3.0.2_nav-frontend-core@6.0.1
-      nav-frontend-veilederpanel: 2.0.3_t35ljdqkvh3th7gsnu3s2loaty
-      nav-frontend-veilederpanel-style: 2.0.2_hnih4arta5r2sbmdkjitm5uhju
       promise: 8.3.0
       react: 18.2.0
       react-aria-menubutton: 7.0.3_react@18.2.0
-      react-day-picker: 7.4.10_react@18.2.0
+      react-day-picker: 8.6.0_react@18.2.0
       react-document-title: 2.0.3_react@18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-intl: 6.3.1_odn5rdmyrxuyfnlhepsb7fjnvi
       react-modal: 3.16.1_biqbaboplfbrettd7655fr4n2y
+      react-responsive: 9.0.2_react@18.2.0
       react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
       react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
       request: 2.88.2
@@ -249,6 +172,7 @@ importers:
       '@babel/preset-react': 7.18.6_@babel+core@7.21.0
       '@babel/preset-typescript': 7.21.0_@babel+core@7.21.0
       '@navikt/eslint-config-fp-selvbetjening': link:../../packages/eslint-config-custom
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_e764yt37rymiplqgpb7fiwcihu
       '@storybook/addon-essentials': 6.5.16_lfn723pk2wk5luymyavhxybg7u
       '@storybook/addons': 6.5.16_biqbaboplfbrettd7655fr4n2y
       '@storybook/builder-webpack5': 6.5.16_p7wmk3aaaqwzvpd23gannnnfui
@@ -299,8 +223,10 @@ importers:
       multer: 1.4.5-lts.1
       mustache-loader: 1.4.3_webpack@5.75.0
       postcss-loader: 7.1.0_webpack@5.75.0
+      react-refresh: 0.14.0
       sass: 1.58.3
       sass-loader: 13.2.0_sass@1.58.3+webpack@5.75.0
+      storybook-addon-react-router-v6: 0.2.2_75q7qgpascrya4gdge35j6xeai
       style-loader: 3.3.2_webpack@5.75.0
       svg-sprite-loader: 6.0.11
       terser-webpack-plugin: 5.3.6_webpack@5.75.0
@@ -730,7 +656,7 @@ importers:
       nav-frontend-grid: 2.0.2_6vw5qmkh7vhmnvvuhqj53mve6m
       nav-frontend-hjelpetekst: 3.1.3_axjafpjtmqmje7fhojxbi7o7ye
       nav-frontend-ikoner-assets: 3.0.1
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-knapper: 3.1.3_afskfcsmkrpayspdcpgbzs4xt4
       nav-frontend-lenkepanel: 2.0.2_i5kr34jpzodmhikh2apdktiuxe
       nav-frontend-lenker: 2.0.2_u223ibl7n7kh765fa7s7oryoga
@@ -1008,7 +934,7 @@ importers:
       nav-frontend-chevron: 1.0.30_gbuabyhgiuu3b5mimum62nuhga
       nav-frontend-chevron-style: 1.0.4
       nav-frontend-core: 6.0.1
-      nav-frontend-js-utils: 1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4
+      nav-frontend-js-utils: 1.0.20_ezpr25ogxma5h3cgnsha3voli4
       nav-frontend-knapper-style: 2.1.2_thuvqjcto3w7dyhhjmc63qsctq
       nav-frontend-lenkepanel: 2.0.2_nifajclkncnj7ftinxb67heed4
       nav-frontend-lenkepanel-style: 2.0.2_ysr2ylxa7isenfezaf6zzko6cm
@@ -4641,7 +4567,7 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-datepicker/4.1.2_n4fr5mhjz5idvaunpzfc4myfga:
+  /@navikt/ds-datepicker/4.1.2_ccrom2k3i6et7abaomf2my6bv4:
     resolution: {integrity: sha512-inpK8HxUzVwmfT088N6ZzVtInYIWTSm2JWI1MWAStZ7ti/+mfi1U6akzg7g1VW23anmPXb5wL2GncBX417oLcA==}
     peerDependencies:
       '@navikt/ds-css': 2.x
@@ -4658,7 +4584,7 @@ packages:
       dayjs: 1.11.7
       focus-trap-react: 10.1.0_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
-      react-day-picker: 7.4.10_react@18.2.0
+      react-day-picker: 8.6.0_react@18.2.0
     transitivePeerDependencies:
       - prop-types
       - react-dom
@@ -4840,7 +4766,7 @@ packages:
       react-intl: 6.x
     dependencies:
       '@navikt/ds-css': 2.6.0
-      '@navikt/ds-datepicker': 4.1.2_n4fr5mhjz5idvaunpzfc4myfga
+      '@navikt/ds-datepicker': 4.1.2_ccrom2k3i6et7abaomf2my6bv4
       '@navikt/ds-react': 2.6.0_zula6vjvt3wdocc4mwcxqa6nzi
       formik: 2.2.9_react@18.2.0
       i18n-iso-countries: 7.5.0
@@ -4903,10 +4829,10 @@ packages:
       nav-frontend-core: 6.0.1
       nav-frontend-hjelpetekst: 3.1.3_axjafpjtmqmje7fhojxbi7o7ye
       nav-frontend-ikoner-assets: 3.0.1
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-knapper: 3.1.3_afskfcsmkrpayspdcpgbzs4xt4
       nav-frontend-lenker: 2.0.2_u223ibl7n7kh765fa7s7oryoga
-      nav-frontend-modal: 2.0.2_zsewvn57oh6jimvspfjt4u3mgi
+      nav-frontend-modal: 2.0.2_gaojoyijc3gjbk52urh4dnsp5i
       nav-frontend-paneler: 3.0.2_64otohqbdyi64jquomrwupjkfy
       nav-frontend-popover: 2.0.4_3rfmxt5t4gcie3tjnmsxrkhmbi
       nav-frontend-skjema: 4.0.6_ompfnw7oaizz5iwnvfabbxtry4
@@ -5004,6 +4930,46 @@ packages:
       schema-utils: 3.1.1
       source-map: 0.7.4
       webpack: 5.76.2
+    dev: true
+
+  /@pmmmwh/react-refresh-webpack-plugin/0.5.10_e764yt37rymiplqgpb7fiwcihu:
+    resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      '@types/webpack': 4.x || 5.x
+      react-refresh: '>=0.10.0 <1.0.0'
+      sockjs-client: ^1.4.0
+      type-fest: '>=0.17.0 <4.0.0'
+      webpack: '>=4.43.0 <6.0.0'
+      webpack-dev-server: 3.x || 4.x
+      webpack-hot-middleware: 2.x
+      webpack-plugin-serve: 0.x || 1.x
+    peerDependenciesMeta:
+      '@types/webpack':
+        optional: true
+      sockjs-client:
+        optional: true
+      type-fest:
+        optional: true
+      webpack-dev-server:
+        optional: true
+      webpack-hot-middleware:
+        optional: true
+      webpack-plugin-serve:
+        optional: true
+    dependencies:
+      ansi-html-community: 0.0.8
+      common-path-prefix: 3.0.0
+      core-js-pure: 3.28.0
+      error-stack-parser: 2.1.4
+      find-up: 5.0.0
+      html-entities: 2.3.3
+      loader-utils: 2.0.4
+      react-refresh: 0.14.0
+      schema-utils: 3.1.1
+      source-map: 0.7.4
+      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack-dev-server: 4.11.1_rjsyjcrmk25kqsjzwkvj3a2evq
     dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin/0.5.10_ohmszkdsagq5o7l2u6ilvwngie:
@@ -18196,7 +18162,7 @@ packages:
       dayjs: 1.11.7
       focus-trap-react: 8.11.3_biqbaboplfbrettd7655fr4n2y
       nav-frontend-core: 6.0.1
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-skjema: 4.0.6_ompfnw7oaizz5iwnvfabbxtry4
       nav-frontend-typografi: 4.0.2_2q3jcvdwqtojzmpbtp62yt4khq
       react: 18.2.0
@@ -18222,7 +18188,7 @@ packages:
       dayjs: 1.11.7
       focus-trap-react: 8.11.3_v2m5e27vhdewzwhryxwfaorcca
       nav-frontend-core: 6.0.1
-      nav-frontend-js-utils: 1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4
+      nav-frontend-js-utils: 1.0.20_ezpr25ogxma5h3cgnsha3voli4
       nav-frontend-skjema: 4.0.6_gxrtqczlkmihxmpyimkbow25ha
       nav-frontend-typografi: 4.0.2_jmxjbq6kjsmcymogyuwtlvt7te
       react: 18.2.0
@@ -18321,25 +18287,9 @@ packages:
       '@types/react-collapse': 5.0.1
       classnames: 2.3.2
       nav-frontend-ekspanderbartpanel-style: 2.0.2_pf56fh4zw5435bnoiwmc2t2ipe
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       react: 18.2.0
       react-collapse: 5.1.1_react@18.2.0
-    dev: false
-
-  /nav-frontend-ekspanderbartpanel/4.0.4_h62qxog56qyj46winzcrdjw2hq:
-    resolution: {integrity: sha512-MNIhCAcHH0K6LMvmLAcqjSUAyH54dSZvDLgXE3UPtmAwlhgTIoHarB1nsoNHauoBvByLosR3pclrX4VY9Wc8Rw==}
-    peerDependencies:
-      '@types/react-collapse': ^5.0.0
-      classnames: ^2.2.5
-      nav-frontend-ekspanderbartpanel-style: ^2.0.0
-      nav-frontend-js-utils: ^1.0.19
-      react: ^16.8.0 || ^17.0.0
-      react-collapse: ^5.0.0
-    dependencies:
-      classnames: 2.3.2
-      nav-frontend-ekspanderbartpanel-style: 2.0.2_pf56fh4zw5435bnoiwmc2t2ipe
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
-      react: 18.2.0
     dev: false
 
   /nav-frontend-etiketter-style/2.0.3_nav-frontend-core@6.0.1:
@@ -18407,7 +18357,7 @@ packages:
       classnames: 2.3.2
       nav-frontend-hjelpetekst-style: 3.0.2_thuvqjcto3w7dyhhjmc63qsctq
       nav-frontend-ikoner-assets: 3.0.1
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-popover: 2.0.4_3rfmxt5t4gcie3tjnmsxrkhmbi
       react: 18.2.0
     dev: false
@@ -18415,9 +18365,10 @@ packages:
   /nav-frontend-ikoner-assets/3.0.1:
     resolution: {integrity: sha512-rRzdUl7w02xcX0ZljE3cmkow4haEePNP1gPuWRSvQt5ybL2eiE573l3lgsd4PuPuQp1T4fYFqFlPWjkUwpXVqw==}
 
-  /nav-frontend-js-utils/1.0.20_react@18.2.0:
+  /nav-frontend-js-utils/1.0.20_bnaq24lftdxaez3xjcv5glopji:
     resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
     peerDependencies:
+      lodash.throttle: ^4.1.1
       prop-types: ^15.5.10
       react: ^16.8.0 || ^17.0.0
     dependencies:
@@ -18425,14 +18376,26 @@ packages:
       react: 18.2.0
     dev: false
 
-  /nav-frontend-js-utils/1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4:
+  /nav-frontend-js-utils/1.0.20_ezpr25ogxma5h3cgnsha3voli4:
     resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
     peerDependencies:
+      lodash.throttle: ^4.1.1
       prop-types: ^15.5.10
       react: ^16.8.0 || ^17.0.0
     dependencies:
       lodash.throttle: 4.1.1
       prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /nav-frontend-js-utils/1.0.20_react@18.2.0:
+    resolution: {integrity: sha512-rCEbgtLmk/95TJeke3Njgm0lBJuBa0N8p8h5Oqhxjov529UjTT2Vx4XJzjQd7/ApgeCkdc5DB9GW5jGTEFoYTA==}
+    peerDependencies:
+      lodash.throttle: ^4.1.1
+      prop-types: ^15.5.10
+      react: ^16.8.0 || ^17.0.0
+    dependencies:
+      lodash.throttle: 4.1.1
       react: 18.2.0
     dev: false
 
@@ -18455,7 +18418,7 @@ packages:
       react: ^16.8.0 || ^17.0.0
     dependencies:
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-knapper-style: 2.1.2_thuvqjcto3w7dyhhjmc63qsctq
       react: 18.2.0
     dev: false
@@ -18586,24 +18549,6 @@ packages:
       react-modal: 3.16.1_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /nav-frontend-modal/2.0.2_zsewvn57oh6jimvspfjt4u3mgi:
-    resolution: {integrity: sha512-Ajm2OdNyS/JAjgK9xas0vNOUQ6iUudy6Fhx4w/RmMJY2TSGB23FKTL8+cgi/Th+PbeUkPvZDbDyB0nQf7db5Ug==}
-    peerDependencies:
-      '@types/react-modal': ^3.1.2
-      classnames: ^2.2.5
-      nav-frontend-lukknapp: ^2.0.0
-      nav-frontend-modal-style: ^2.0.0
-      prop-types: ^15.5.10
-      react: ^16.8.0 || ^17.0.0
-      react-modal: ^2.2.4 || ^3.3.1
-    dependencies:
-      classnames: 2.3.2
-      nav-frontend-lukknapp: 2.0.2_fbdncuod4pfw3bxfl4kbcyamtq
-      nav-frontend-modal-style: 2.0.2_azyuktwjvhfl7np7psvnjrcasa
-      react: 18.2.0
-      react-modal: 3.16.1_biqbaboplfbrettd7655fr4n2y
-    dev: false
-
   /nav-frontend-paneler-style/2.0.2_nav-frontend-core@6.0.1:
     resolution: {integrity: sha512-bb0Gc/XUPJqgEQKQd37Zj/xRq875zMmHhdn621xd2/BXVpO1f1Eu6V6IPhf4y0jqNlNrvDLDSh4DxHHHf/s9/A==}
     peerDependencies:
@@ -18647,7 +18592,7 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0
     dependencies:
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-popover-style: 2.0.2_nav-frontend-core@6.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -18678,7 +18623,7 @@ packages:
     dependencies:
       '@navikt/fnrvalidator': 1.3.0
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_sh5qlbywuemxd2y3xkrw2y2kr4
+      nav-frontend-js-utils: 1.0.20_ezpr25ogxma5h3cgnsha3voli4
       nav-frontend-lenker: 2.0.2_tsvx5d7dgcjuotdzghfkznjpeq
       nav-frontend-skjema-style: 3.0.3_hnih4arta5r2sbmdkjitm5uhju
       nav-frontend-typografi: 4.0.2_jmxjbq6kjsmcymogyuwtlvt7te
@@ -18700,7 +18645,7 @@ packages:
     dependencies:
       '@navikt/fnrvalidator': 1.3.0
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-lenker: 2.0.2_u223ibl7n7kh765fa7s7oryoga
       nav-frontend-skjema-style: 3.0.3_hnih4arta5r2sbmdkjitm5uhju
       nav-frontend-typografi: 4.0.2_2q3jcvdwqtojzmpbtp62yt4khq
@@ -18752,7 +18697,7 @@ packages:
       react: ^16.8.0 || ^17.0.0
     dependencies:
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-stegindikator-style: 2.0.2_thuvqjcto3w7dyhhjmc63qsctq
       react: 18.2.0
     dev: false
@@ -18811,7 +18756,7 @@ packages:
       react: ^16.8.0 || ^17.0.0
     dependencies:
       classnames: 2.3.2
-      nav-frontend-js-utils: 1.0.20_react@18.2.0
+      nav-frontend-js-utils: 1.0.20_bnaq24lftdxaez3xjcv5glopji
       nav-frontend-veileder-style: 3.0.2_nav-frontend-core@6.0.1
       react: 18.2.0
     dev: false
@@ -22026,6 +21971,32 @@ packages:
 
   /store2/2.14.2:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
+    dev: true
+
+  /storybook-addon-react-router-v6/0.2.2_75q7qgpascrya4gdge35j6xeai:
+    resolution: {integrity: sha512-u1kiyp1+kmqrnlbmH3vGYzhZprILiLyhnDqtkqHpGyY1bOdhyqim4xD5cBPIAS+9VAvNH4UXQzT90NIYdlNY7w==}
+    peerDependencies:
+      '@storybook/addons': ^6.4.0
+      '@storybook/api': ^6.4.0
+      '@storybook/components': ^6.4.0
+      '@storybook/core-events': ^6.4.0
+      '@storybook/theming': ^6.4.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-router: ^6.3.0
+      react-router-dom: ^6.3.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@storybook/addons': 6.5.16_biqbaboplfbrettd7655fr4n2y
+      '@storybook/theming': 6.5.16_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-inspector: 5.1.1_react@18.2.0
+      react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
     dev: true
 
   /storybook-addon-react-router-v6/0.3.1_75q7qgpascrya4gdge35j6xeai:

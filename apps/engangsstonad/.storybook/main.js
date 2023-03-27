@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
         storyStoreV7: true,
     },
     stories: ['../src/app/**/*.stories.tsx'],
+    addons: ["storybook-addon-react-router-v6"],
     webpackFinal: async (config, { configType }) => {
         //Fjern default svg-loader
         config.module.rules = config.module.rules.map((data) => {
@@ -21,20 +23,15 @@ module.exports = {
         config.devtool = 'source-map';
 
         // Make whatever fine-grained changes you need
-        (config.module.rules = [
+        config.module.rules =  [
             {
-                test: /\.(ts|tsx)$/,
-                loader: require.resolve('tslint-loader'),
-                enforce: 'pre',
-            },
-            {
-                test: /\.(ts|tsx)$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.js$/,
-                use: [{ loader: 'babel-loader' }],
+                test: /\.(js|ts|tsx)$/,
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        plugins: [require.resolve('react-refresh/babel')],
+                      },
+                }],
                 exclude: /node_modules/,
             },
             {
@@ -62,12 +59,16 @@ module.exports = {
                 test: /\.svg$/,
                 use: 'svg-sprite-loader',
             },
-        ]),
-            config.plugins.push(
-                new MiniCssExtractPlugin({
-                    filename: 'css/[name].css?[fullhash]-[chunkhash]-[contenthash]-[name]',
-                })
-            );
+        ],
+
+        config.plugins.push(
+            new MiniCssExtractPlugin({
+                filename: 'css/[name].css?[hash]-[chunkhash]-[contenthash]-[name]',
+            }),
+        );
+        config.plugins.push(
+            new ReactRefreshWebpackPlugin(),
+        );
 
         config.resolve.extensions.push('.ts', '.tsx', '.less');
         config.resolve.alias = {
@@ -76,13 +77,9 @@ module.exports = {
             uttaksplan: path.resolve(__dirname, './../src/uttaksplan'),
             assets: path.resolve(__dirname, './../src/app/assets/'),
             components: path.resolve(__dirname, './../src/app/components/'),
-            containers: path.resolve(__dirname, './../src/app/containers/'),
-            actions: path.resolve(__dirname, './../src/app/redux/actions/'),
-            reducers: path.resolve(__dirname, './../src/app/redux/reducers'),
             styles: path.resolve(__dirname, './../src/app/styles/'),
             util: path.resolve(__dirname, './../src/app/util/'),
             common: path.resolve(__dirname, './../src/common/'),
-            storage: path.resolve(__dirname, './../src/storage/'),
             intl: path.resolve(__dirname, './../src/app/intl/'),
         };
 
