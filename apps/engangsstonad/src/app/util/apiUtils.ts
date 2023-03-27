@@ -2,7 +2,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 import { EngangsstønadSøknadDto } from 'app/types/domain/EngangsstønadSøknad';
 import { EngangsstønadContextState } from 'app/context/EngangsstønadContextConfig';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { FodtBarn, UfodtBarn } from 'app/types/domain/Barn';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
 import { UtenlandsoppholdFormData } from 'app/steps/utenlandsopphold/utenlandsoppholdFormTypes';

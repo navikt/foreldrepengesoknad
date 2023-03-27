@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { bemUtils, Block } from '@navikt/fp-common';
 import CheckmarkIkon from '../assets/CheckmarkIkon';
 
 import './kvitteringSuksess.less';
+import { BodyShort, Heading } from '@navikt/ds-react';
 
 const KvitteringSuksess: React.FunctionComponent = () => {
     const bem = bemUtils('kvittering');
@@ -17,14 +17,14 @@ const KvitteringSuksess: React.FunctionComponent = () => {
                 </div>
                 <div className={bem.element('tekst')}>
                     <Block margin="s">
-                        <Undertittel>
+                        <Heading size="small">
                             <FormattedMessage id="søknadSendt.info.tittel" />
-                        </Undertittel>
+                        </Heading>
                     </Block>
                     <div>
-                        <Normaltekst>
+                        <BodyShort>
                             <FormattedMessage id="søknadSendt.info.innhold" />
-                        </Normaltekst>
+                        </BodyShort>
                     </div>
                 </div>
             </div>

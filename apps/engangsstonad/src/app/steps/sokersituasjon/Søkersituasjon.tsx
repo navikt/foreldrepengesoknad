@@ -2,6 +2,7 @@ import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
 import stepConfig from 'app/step-config/stepConfig';
 import getMessage from 'common/util/i18nUtils';
 import React from 'react';
+import { Button } from '@navikt/ds-react';
 import { useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import {
@@ -12,9 +13,8 @@ import {
 import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadContext';
 
 import { cleanupSøkersituasjon } from './søkersituasjonUtils';
-import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import søkersituasjonQuestionsConfig from './søkersituasjonQuestionsConfig';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useNavigate } from 'react-router-dom';
 import { onAvbrytSøknad } from 'app/util/globalUtil';
 
@@ -66,25 +66,24 @@ const Søkersituasjon: React.FunctionComponent = () => {
                         >
                             <div className={bem.block}>
                                 <Block margin="xl">
-                                    <SøkersituasjonFormComponents.RadioPanelGroup
+                                    <SøkersituasjonFormComponents.RadioGroup
                                         name={SøkersituasjonFormField.situasjon}
                                         radios={[
-                                            {
-                                                label: intlUtils(intl, 'søkersituasjon.radiobutton.adopsjon'),
-                                                value: 'adopsjon',
-                                            },
                                             {
                                                 label: intlUtils(intl, 'søkersituasjon.radiobutton.fødsel'),
                                                 value: 'fødsel',
                                             },
+                                            {
+                                                label: intlUtils(intl, 'søkersituasjon.radiobutton.adopsjon'),
+                                                value: 'adopsjon',
+                                            },
                                         ]}
-                                        useTwoColumns={true}
                                         legend={getMessage(intl, 'søkersituasjon.text.situasjon')}
                                     />
                                 </Block>
                                 {allQuestionsAnswered && (
                                     <Block margin="xl" textAlignCenter={true}>
-                                        <Hovedknapp>{getMessage(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                        <Button>{getMessage(intl, 'søknad.gåVidere')}</Button>
                                     </Block>
                                 )}
                             </div>

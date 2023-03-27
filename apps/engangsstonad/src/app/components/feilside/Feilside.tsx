@@ -1,9 +1,9 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
-import Lenke from 'nav-frontend-lenker';
-import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
+import { Link } from '@navikt/ds-icons';
 import { Språkkode } from 'intl/types';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
+import { Heading, Ingress } from '@navikt/ds-react';
 import { Locale, bemUtils, Block, LanguageToggle, Sidebanner } from '@navikt/fp-common';
 
 import './feilside.less';
@@ -52,9 +52,9 @@ const Feilside: React.FunctionComponent<Props> = ({
                             <>
                                 <Block padBottom="m">{illustrasjon.tekst}</Block>
                                 {illustrasjon.lenke && (
-                                    <Lenke className="intro-snakkelenke" href={illustrasjon.lenke.url}>
+                                    <Link  className="intro-snakkelenke" href={illustrasjon.lenke.url}>
                                         {illustrasjon.lenke.tekst}
-                                    </Lenke>
+                                    </Link >
                                 )}
                             </>
                         ),
@@ -64,7 +64,7 @@ const Feilside: React.FunctionComponent<Props> = ({
             <div id={containerId} className={bem.block}>
                 <div className="responsiveContainer">
                     <div className="blokk-s">
-                        <Innholdstittel>{tittel}</Innholdstittel>
+                        <Heading size="large">{tittel}</Heading>
                     </div>
                     <div className="blokk-l">
                         <Ingress>{ingress}</Ingress>

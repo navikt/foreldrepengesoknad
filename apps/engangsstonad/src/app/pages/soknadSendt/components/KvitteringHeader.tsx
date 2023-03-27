@@ -1,8 +1,7 @@
 import * as React from 'react';
-import Lenke from 'nav-frontend-lenker';
-import { Sidetittel, Element } from 'nav-frontend-typografi';
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
+import { Heading, Label, Link } from '@navikt/ds-react';
 import Person from 'app/types/domain/Person';
 import Kvittering from 'app/types/services/Kvittering';
 import { bemUtils, Block, VedleggIkon } from '@navikt/fp-common';
@@ -31,21 +30,21 @@ const KvitteringHeader: React.FunctionComponent<Props> = ({ søker, kvittering }
             </Block>
 
             <Block margin="l">
-                <Sidetittel tag="h1">
+                <Heading size="xlarge">
                     <FormattedMessage
                         id="søknadSendt.tittel"
                         values={{
                             navn: `${søker.fornavn} ${søker.etternavn}`,
                         }}
                     />
-                </Sidetittel>
+                </Heading>
             </Block>
 
             {pdf && (
                 <Block margin="l">
                     <div className={bem.element('vedleggWrapper')}>
                         <VedleggIkon className={bem.element('vedleggIkon')} width={20} height={20} />
-                        <Lenke
+                        <Link
                             className={bem.element('vedleggLink')}
                             href={'#'}
                             onClick={(e) => {
@@ -54,18 +53,18 @@ const KvitteringHeader: React.FunctionComponent<Props> = ({ søker, kvittering }
                             }}
                         >
                             <FormattedMessage id={'søknadSendt.pdf'} />
-                        </Lenke>
+                        </Link>
                     </div>
                 </Block>
             )}
 
             <Block margin="l">
                 <div className={bem.element('sendtInnTid')}>
-                    <Element>
+                    <Label>
                         <FormattedMessage id="søknadSendt.sendtInn" />
                         <span style={{ width: '0.25rem' }} />
                         {dayjs(mottattDato).format('D MMMM YYYY')}, kl. {dayjs(mottattDato).format('HH:mm')}
-                    </Element>
+                    </Label>
                 </div>
             </Block>
         </div>
