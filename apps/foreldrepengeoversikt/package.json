@@ -10,7 +10,7 @@
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "start-express": "node ./server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
-        "dev": "vite serve",
+        "dev": "NODE_ENV=development node ./server.cjs",
         "preview": "vite preview",
         "jest": "jest --config ./jest/jest.config.js --maxWorkers 2 --passWithNoTests",
         "jest-update-snapshot": "jest --config --updateSnapshot ./jest/jest.config.js",

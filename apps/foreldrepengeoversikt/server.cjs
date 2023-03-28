@@ -8,9 +8,19 @@ const compression = require('compression');
 
 server.disable('x-powered-by');
 
+const isDev = process.env.NODE_ENV === 'development';
+
+if (isDev) {
+    require('dotenv').config();
+}
+
 server.use(compression());
 
-server.set('views', `${__dirname}/dist`);
+if (isDev) {
+    server.set('views', `${__dirname}`);
+} else {
+    server.set('views', `${__dirname}/dist`);
+}
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
@@ -33,7 +43,7 @@ const renderApp = (decoratorFragments) =>
         });
     });
 
-const startServer = (html) => {
+const startServer = async (html) => {
     server.use((req, res, next) => {
         if (req.hostname === 'foreldrepengeplanlegger.nav.no' && !/^\/health/.test(req.path)) {
             console.log('Redirecter fra foreldrepengeplanlegger til produktsider');
@@ -43,24 +53,39 @@ const startServer = (html) => {
         }
     });
 
-    server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
-
-    server.get(['/dist/settings.js'], (req, res) => {
-        res.set('content-type', 'application/javascript');
-        res.send(`window.appSettings = {
-            REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-            LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
-            UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
-            APPRES_CMS_URL: '${process.env.APPRES_CMS_URL}',
-            KLAGE_URL: '${process.env.KLAGE_URL}'
-        };`);
-    });
-
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
-    server.get(/^\/(?!.*dist).*$/, (req, res) => {
-        res.send(html);
-    });
+
+    if (isDev) {
+        const fs = require('fs');
+        fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+
+        const vite = await require('vite').createServer({
+            root: __dirname,
+            server: {
+                middlewareMode: true,
+                port: 8080,
+                open: './index-decorated.html',
+            },
+        });
+
+        server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
+            const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
+            const fileExists = fs.existsSync(fullPath);
+
+            if (!fileExists && !req.url.startsWith('/@')) {
+                req.url = '/index-decorated.html';
+            }
+            next();
+        });
+
+        server.use(vite.middlewares);
+    } else {
+        server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
+        server.get(/^\/(?!.*dist).*$/, (req, res) => {
+            res.send(html);
+        });
+    }
 
     const port = process.env.PORT || 8080;
     server.listen(port, () => {
