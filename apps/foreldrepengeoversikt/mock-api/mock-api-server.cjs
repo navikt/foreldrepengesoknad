@@ -10,7 +10,7 @@ require('dotenv').config();
 app.disable('x-powered-by');
 
 const allowCrossDomain = function (req, res, next) {
-    const corsWhiteList = ['http://localhost:5173', 'http://localhost:8880']; // 8080 dev server with decorator, 8880 dev server without decorator
+    const corsWhiteList = ['http://localhost:5173', 'http://localhost:8080', 'http://localhost:8880']; // 8080 dev server with decorator, 8880 dev server without decorator
 
     if (corsWhiteList.includes(req.headers.origin)) {
         res.header('Access-Control-Allow-Origin', req.headers.origin);

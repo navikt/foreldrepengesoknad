@@ -17,6 +17,7 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
+console.log('svpsoknad');
 
 Modal.setAppElement('#app');
 
@@ -40,5 +41,5 @@ root.render(
                 </BodyShort>
             </IntlProvider>
         </Provider>
-    </ErrorBoundary>,
+    </ErrorBoundary>
 );

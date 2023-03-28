@@ -5,10 +5,10 @@
         "https://foreldrepenger.dev.nav.no"
     ],
     "env": {
-        "APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
-        "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
-        "LOGINSERVICE_URL": "https://loginservice-testing.dev.nav.no/login",
-        "FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.dev.nav.no",
-        "KLAGE_URL": "https://familie.nav.no"
+        "VITE_APPRES_CMS_URL": "https://dekoratoren.dev.nav.no",
+        "VITE_FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.dev.nav.no/rest",
+        "VITE_LOGINSERVICE_URL": "https://loginservice-testing.dev.nav.no/login",
+        "VITE_FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.dev.nav.no",
+        "VITE_KLAGE_URL": "https://familie.nav.no"
     }
 }

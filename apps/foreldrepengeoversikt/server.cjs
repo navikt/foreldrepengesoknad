@@ -4,7 +4,7 @@ server.use(express.json());
 const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
-const getDecorator = require('./src/build/scripts/decorator');
+const getDecorator = require('./src/build/scripts/decorator.cjs');
 const compression = require('compression');
 
 server.disable('x-powered-by');
@@ -44,19 +44,16 @@ const startServer = (html) => {
         }
     });
 
-    server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
-    server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
-
-    server.use('/dist/assets', express.static(path.resolve(__dirname, 'dist/assets')));
+    server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
 
     server.get(['/dist/settings.js'], (req, res) => {
         res.set('content-type', 'application/javascript');
         res.send(`window.appSettings = {
-            REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-            LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
-            UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
-            APPRES_CMS_URL: '${process.env.APPRES_CMS_URL}',
-            KLAGE_URL: '${process.env.KLAGE_URL}'
+            REST_API_URL: '${process.env.VITE_FORELDREPENGESOKNAD_API_URL}',
+            LOGIN_URL: '${process.env.VITE_LOGINSERVICE_URL}',
+            UTTAK_API_URL: '${process.env.VITE_FP_UTTAK_SERVICE_URL}',
+            APPRES_CMS_URL: '${process.env.VITE_APPRES_CMS_URL}',
+            KLAGE_URL: '${process.env.VITE_KLAGE_URL}'
         };`);
     });
 
