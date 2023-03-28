@@ -25,7 +25,7 @@
         "jest-coverage": "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
         "storybook": "start-storybook -p 9001 --quiet",
-        "deploy-storybook": "build-storybook -o .static_storybook && storybook-to-ghpages --existing-output-dir=.static_storybook"
+        "build-storybook": "build-storybook -o .storybook-static-build"
     },
     "keywords": [],
     "author": "NAV",

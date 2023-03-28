@@ -8,7 +8,7 @@
         "build": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "preview": "vite preview",
         "storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006 --quiet",
-        "build-storybook": "build-storybook",
+        "build-storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider build-storybook -o .storybook-static-build",
         "build-lib": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "clean-lib": "rm -rf ./lib",
         "postinstall": "patch-package",

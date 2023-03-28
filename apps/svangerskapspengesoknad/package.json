@@ -19,7 +19,7 @@
         "test": "jest --color",
         "tsc": "tsc  --pretty",
         "storybook": "start-storybook -p 9001 --quiet",
-        "deploy-storybook": "build-storybook -o .static_storybook && storybook-to-ghpages --existing-output-dir=.static_storybook"
+        "build-storybook": "build-storybook -o .storybook-static-build"
     },
     "author": "",
     "license": "ISC",

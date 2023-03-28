@@ -79,6 +79,7 @@ module.exports = {
             ...config.resolve.alias,
             app: path.resolve(__dirname, './../src/app'),
             uttaksplan: path.resolve(__dirname, './../src/uttaksplan'),
+            storybook: path.resolve(__dirname, './../src/storybook'),
         };
 
         // Return the altered config

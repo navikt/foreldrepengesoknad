@@ -15,7 +15,8 @@
         "jest-update-snapshot": "jest --config --updateSnapshot ./jest/jest.config.js",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js",
         "jest-coverage": "jest --config ./jest/jest.config.js --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.d.{ts,tsx}",
-        "storybook": "start-storybook -p 9001 --quiet"
+        "storybook": "start-storybook -p 9001 --quiet",
+        "build-storybook": "build-storybook -o .storybook-static-build"
     },
     "author": "NAV",
     "license": "MIT",

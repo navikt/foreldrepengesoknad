@@ -22,7 +22,7 @@
         "tsc": "tsc  --pretty",
         "lint": "eslint src/**",
         "storybook": "start-storybook -p 9001 --quiet",
-        "deploy-storybook": "build-storybook -o .static_storybook && storybook-to-ghpages --existing-output-dir=.static_storybook"
+        "build-storybook": "build-storybook -o .storybook-static-build"
     },
     "dependencies": {
         "@babel/plugin-proposal-object-rest-spread": "^7.12.1",

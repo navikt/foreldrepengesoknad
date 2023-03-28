@@ -8,9 +8,17 @@
         "lint": "turbo lint",
         "fp": "pnpm --filter foreldrepengesoknad run dev",
         "fp-prod": "pnpm --filter foreldrepengesoknad run start",
-        "storybook-common": "pnpm --filter @navikt/fp-common run storybook"
+        "storybook-common": "pnpm --filter @navikt/fp-common run storybook",
+        "storybook-deploy-clean-folder": "rm -rf ./.storybook-static-build",
+        "storybook-deploy-build-all": "turbo build-storybook",
+        "storybook-deploy-create-folder": "node scripts/create-storybook-index.js",
+        "storybook-deploy-to-github": "gh-pages -d .storybook-static-build",
+        "deploy-storybook": "pnpm storybook-deploy-clean-folder && pnpm storybook-deploy-build-all && pnpm storybook-deploy-create-folder &&  pnpm storybook-deploy-to-github"
     },
     "dependencies": {
+        "gh-pages": "5.0.0",
+        "glob": "7.1.3",
+        "shelljs": "0.8.5",
         "turbo": "^1.8.2"
     }
 }

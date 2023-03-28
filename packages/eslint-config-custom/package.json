@@ -2,6 +2,9 @@
     "name": "@navikt/eslint-config-fp-selvbetjening",
     "main": "index.js",
     "version": "1.0.0",
+    "scripts": {
+        "build-storybook": "node --version"
+    },
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",

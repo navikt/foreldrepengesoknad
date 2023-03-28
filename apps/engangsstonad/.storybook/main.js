@@ -2,6 +2,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const path = require('path');
 
+const isProduction = JSON.stringify(process.env.NODE_ENV) === '"production"';
+
 module.exports = {
     core: {
         builder: 'webpack5',
@@ -29,7 +31,7 @@ module.exports = {
                 use: [{
                     loader: 'babel-loader',
                     options: {
-                        plugins: [require.resolve('react-refresh/babel')],
+                        plugins: isProduction? [] : [require.resolve('react-refresh/babel')],
                       },
                 }],
                 exclude: /node_modules/,
