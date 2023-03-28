@@ -8,6 +8,9 @@ export default defineConfig({
             include: '**/*.{jsx,tsx}',
         }),
     ],
+    build: {
+        sourcemap: true,
+    },
     resolve: {
         alias: {
             app: path.resolve(__dirname, './src/app'),
@@ -16,5 +19,8 @@ export default defineConfig({
     },
     optimizeDeps: {
         include: ['@navikt/fp-common'],
+    },
+    server: {
+        port: 8080,
     },
 });
