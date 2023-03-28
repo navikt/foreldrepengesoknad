@@ -1,8 +1,8 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import withIntlProvider from '../../decorators/withIntl';
-import EksternUrl, { Props } from '../../../app/components/ekstern-url/EksternUrl';
+import withIntlProvider from 'storybook/decorators/withIntl';
+import EksternUrl, { Props } from './EksternUrl';
 
 export default {
     title: 'components/EksternUrl',

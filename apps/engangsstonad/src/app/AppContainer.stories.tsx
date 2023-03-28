@@ -33,7 +33,7 @@ const Template: Story<any> = () => {
     referanseId: '3959c880-83d2-4f01-b107-035fa7693758',
     leveranseStatus: 'PÅ_VENT',
     journalId: '439772941',
-});
+  });
 
   return (
     <AppContainer />

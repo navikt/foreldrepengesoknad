@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ByttBrowserModalImpl as ByttBrowserModal } from 'app/pages/byttBrowserModal/ByttBrowserModal';
-import withIntlProvider from '../../decorators/withIntl';
+import withIntlProvider from 'storybook/decorators/withIntl';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ByttBrowserModalImpl as ByttBrowserModal } from './ByttBrowserModal';
 
 export default {
     title: 'pages/ByttBrowserModal',

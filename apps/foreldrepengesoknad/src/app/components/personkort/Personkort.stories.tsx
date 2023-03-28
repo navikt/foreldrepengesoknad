@@ -1,8 +1,8 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import Personkort from 'app/components/personkort/Personkort';
 import CheckmarkIkon from 'app/assets/CheckmarkIkon';
+import Personkort from './Personkort';
 
 export default {
     title: 'components/Personkort',

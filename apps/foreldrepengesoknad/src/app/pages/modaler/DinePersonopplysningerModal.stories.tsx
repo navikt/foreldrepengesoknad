@@ -2,7 +2,7 @@ import React from 'react';
 import { Story } from '@storybook/react';
 
 import DinePersonopplysningerModal from 'app/pages/modaler/DinePersonopplysningerModal';
-import withIntlProvider from '../../decorators/withIntl';
+import withIntlProvider from 'storybook/decorators/withIntl';
 
 export default {
     title: 'pages/DinePersonopplysningerModal',

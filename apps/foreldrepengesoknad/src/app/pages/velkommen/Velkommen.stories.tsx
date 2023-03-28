@@ -3,16 +3,16 @@ import { Story } from '@storybook/react';
 
 import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import Velkommen from 'app/pages/velkommen/Velkommen';
-import withIntlProvider from '../../decorators/withIntl';
-import ForeldrepengerStateMock from '../../utils/ForeldrepengerStateMock';
-import withForeldrepengersøknadContext from '../../decorators/withForeldrepengersøknadContext';
+import withIntlProvider from 'storybook/decorators/withIntl';
+import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
+import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import { RettighetType } from 'app/types/RettighetType';
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import { Sak } from 'app/types/Sak';
-import withRouter from '../../decorators/withRouter';
+import withRouter from 'storybook/decorators/withRouter';
+import Velkommen from './Velkommen';
 
 export default {
     title: 'pages/Velkommen',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import Veileder from 'app/components/veileder/Veileder';
+import Veileder from './Veileder';
 
 export default {
     title: 'components/Veileder',

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import AttachmentList from 'app/components/attachment/AttachmentList';
 import { Attachment } from 'app/types/Attachment';
-import withIntlProvider from '../../decorators/withIntl';
+import withIntlProvider from 'storybook/decorators/withIntl';
+import AttachmentList from './AttachmentList';
 
 export default {
     title: 'components/AttachmentList',

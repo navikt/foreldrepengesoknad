@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import Sirkelmaske from '../../../app/components/sirkelmaske/Sirkelmaske';
+import Sirkelmaske from './Sirkelmaske';
 import PengerIkon from 'app/assets/PengerIkon';
 
 export default {

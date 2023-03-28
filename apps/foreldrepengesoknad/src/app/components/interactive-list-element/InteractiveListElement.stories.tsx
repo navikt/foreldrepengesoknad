@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
-import InteractiveListElement from '../../../app/components/interactive-list-element/InteractiveListElement';
+import InteractiveListElement from './InteractiveListElement';
 
 export default {
     title: 'components/InteractiveListElement',

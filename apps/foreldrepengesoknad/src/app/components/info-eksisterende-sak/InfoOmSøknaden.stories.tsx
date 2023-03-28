@@ -3,11 +3,10 @@ import { Story } from '@storybook/react';
 
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
-import withIntlProvider from '../../decorators/withIntl';
-import withRouter from '../../decorators/withRouter';
-import withForeldrepengersøknadContext from '../../decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from '../../utils/ForeldrepengerStateMock';
+import withIntlProvider from 'storybook/decorators/withIntl';
+import withRouter from 'storybook/decorators/withRouter';
+import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
+import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import Søker from 'app/context/types/Søker';
 import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { Søkerinfo } from 'app/types/Søkerinfo';
@@ -15,6 +14,7 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import dayjs from 'dayjs';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import InfoOmSøknaden from './InfoOmSøknaden';
 
 const context = {
     søknad: {
