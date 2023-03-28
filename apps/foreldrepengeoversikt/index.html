@@ -26,6 +26,7 @@
             } catch {}
         </script>
         <script src="https://jsagent.nav.no/adrum/adrum.js"></script>
+        <script type="text/json" id="nav:appSettings">{{{APP_SETTINGS}}}</script>
         {{{NAV_SCRIPTS}}} {{{NAV_STYLES}}} {{{NAV_MEGAMENU_RESOURCES}}}
     </head>
     <body>
@@ -33,7 +34,6 @@
         <div id="app" role="main"></div>
         <div id="modalContent"></div>
         <script type="module" src="/src/app/bootstrap.tsx"></script>
-        <script type="text/javascript" src="/dist/settings.js"></script>
         {{{NAV_FOOTER}}}
     </body>
 </html>
