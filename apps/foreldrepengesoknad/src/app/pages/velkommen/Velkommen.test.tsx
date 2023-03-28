@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/pages/Velkommen.stories';
+import * as stories from './Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
 

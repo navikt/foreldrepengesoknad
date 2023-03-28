@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/pages/ByttBrowserModal.stories';
+import * as stories from './ByttBrowserModal.stories';
 
 const { Default } = composeStories(stories);
 
