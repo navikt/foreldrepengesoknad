@@ -3,7 +3,6 @@ const server = express();
 server.use(express.json());
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator.cjs');
 const compression = require('compression');
 
