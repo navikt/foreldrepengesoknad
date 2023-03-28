@@ -43,11 +43,8 @@ const creatIndexHtml = () => {
 
   // Kopier storybook fra pakkene og inn i folder som skal deployes
   const origDir = process.cwd();
-  console.log(path.join(origDir, 'apps', '**/package.json'), {
-    ignore: '**/node_modules/**',
-  })
   const packages = glob
-    .sync(path.join(origDir, 'apps', '**/package.json'), {
+    .sync(path.join(origDir, 'apps', '**', 'package.json').split(path.sep).join("/"), {
       ignore: '**/node_modules/**',
     })
     .map(path.dirname)
