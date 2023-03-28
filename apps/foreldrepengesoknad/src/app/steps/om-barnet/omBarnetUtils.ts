@@ -66,16 +66,17 @@ export const cleanupOmBarnetFormData = (
 export const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
     situasjon: Situasjon,
-    values: Partial<OmBarnetFormData>
+    values: Partial<OmBarnetFormData>,
+    barnSøktOmFørMenIkkeRegistrert: boolean
 ): Barn => {
     if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
         return {
             ...valgtRegistrertBarn,
-            type: BarnType.FØDT,
+            type: barnSøktOmFørMenIkkeRegistrert ? BarnType.UFØDT : BarnType.FØDT,
             termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
             fødselsdatoer: valgtRegistrertBarn.fødselsdatoer,
             antallBarn: valgtRegistrertBarn.antallBarn,
-        };
+        } as Barn;
     }
 
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
@@ -107,13 +108,15 @@ export const mapOmBarnetFormDataToState = (
     values: Partial<OmBarnetFormData>,
     arbeidsforhold: Arbeidsforhold[],
     valgtRegistrertBarn: Barn | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
+    barnSøktOmFørMenIkkeRegistrert: boolean
 ): Barn => {
     if (valgtRegistrertBarn !== undefined) {
         return mapOmDetValgteBarnetFormDataToState(
             valgtRegistrertBarn as FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
             situasjon,
-            values
+            values,
+            barnSøktOmFørMenIkkeRegistrert
         );
     }
     const antallBarn =

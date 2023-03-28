@@ -9,8 +9,8 @@ module.exports = {
     features: {
         storyStoreV7: true,
     },
-    stories: ['../src/storybook/stories/**/*.stories.tsx'],
-    addons: ['@storybook/addon-essentials', 'storybook-formik/register'],
+    stories: ['../src/storybook/stories/**/*.stories.tsx', '../src/app/**/*.stories.@(ts|tsx)'],
+    addons: ['storybook-formik/register'],
     webpackFinal: async (config, { configType }) => {
         //Fjern default svg-loader
         config.module.rules = config.module.rules.map((data) => {
@@ -79,6 +79,7 @@ module.exports = {
             ...config.resolve.alias,
             app: path.resolve(__dirname, './../src/app'),
             uttaksplan: path.resolve(__dirname, './../src/uttaksplan'),
+            storybook: path.resolve(__dirname, './../src/storybook'),
         };
 
         // Return the altered config

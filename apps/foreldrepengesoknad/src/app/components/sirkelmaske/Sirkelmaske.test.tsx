@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/components/Sirkelmaske.stories';
+import * as stories from './Sirkelmaske.stories';
 
 const { InaktivSirkelmaske, AktivSirkelmaske } = composeStories(stories);
 

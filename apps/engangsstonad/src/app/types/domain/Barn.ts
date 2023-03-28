@@ -1,7 +1,7 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface Barn {
-    antallBarn?: number | undefined;
+    antallBarn?: number;
     erBarnetFødt?: boolean;
 }
 

@@ -57,7 +57,7 @@ describe('<Oppsummering>', () => {
         await userEvent.click(screen.getByText(OM_BARNET_PANEL));
 
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
-        expect(screen.getByText('ett barn')).toBeInTheDocument();
+        expect(screen.getByText('Ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('15.03.2021')).toBeInTheDocument();
 
@@ -126,7 +126,7 @@ describe('<Oppsummering>', () => {
         await userEvent.click(screen.getByText(OM_BARNET_PANEL));
 
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
-        expect(screen.getByText('ett barn')).toBeInTheDocument();
+        expect(screen.getByText('Ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('01.02.2001')).toBeInTheDocument();
         expect(screen.getByText('Gjelder søknaden stebarnsadopsjon?')).toBeInTheDocument();

@@ -1,13 +1,13 @@
 import React from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { getTypedFormComponents, ISOStringToDate, NavFrontendSkjemaFeil } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
+import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik-ds/lib';
 import getMessage from 'common/util/i18nUtils';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { dateRangeValidation } from '../utenlandsoppholdValidering';
+import { Heading } from '@navikt/ds-react';
 
-export const commonFieldErrorRenderer = (intl: IntlShape, error: any): NavFrontendSkjemaFeil => {
+export const commonFieldErrorRenderer = (intl: IntlShape, error: any): any => {
     if (typeof error === 'object' && error.key !== undefined) {
         return intl.formatMessage({ id: error.key }, error.values);
     }
@@ -82,9 +82,9 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
             renderForm={({ values }) => {
                 return (
                     <Form.Form onCancel={onCancel}>
-                        <Systemtittel tag="h1">
+                        <Heading size="medium">
                             <FormattedMessage id={'utenlandsopphold.leggTilUtenlandsopphold.tittel'} />
-                        </Systemtittel>
+                        </Heading>
                         <Block>
                             <Form.DateIntervalPicker
                                 legend={getMessage(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom')}

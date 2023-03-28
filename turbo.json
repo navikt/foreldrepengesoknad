@@ -22,7 +22,12 @@
         "dev": {
             "persistent": true
         },
-        "lint": {}
+        "lint": {},
+        "build-storybook": {
+            "dependsOn": [
+                "build"
+            ]
+        }
     },
     "globalEnv": [
         "APPRES_CMS_URL",

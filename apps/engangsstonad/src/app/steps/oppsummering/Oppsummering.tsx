@@ -1,7 +1,5 @@
 import { bemUtils, Block, intlUtils, Locale, Step } from '@navikt/fp-common';
-import Veileder from '@navikt/fp-common/lib/components/veileder/Veileder';
-import SøkersPersonalia from 'app/components/søkers-personalia/SøkersPersonalia';
-import Veilederpanel from 'nav-frontend-veilederpanel';
+import { Button, GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
@@ -12,9 +10,8 @@ import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
 import stepConfig, { getPreviousStepHref } from 'app/step-config/stepConfig';
 import { useEngangsstønadContext } from 'app/context/hooks/useEngangsstønadContext';
 import { OppsummeringFormComponents, initialOppsummeringValues, OppsummeringFormField } from './oppsummeringFormConfig';
-import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik/lib';
+import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import oppsummeringQuestionsConfig from './oppsummeringQuestionsConfig';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { EngangsstønadSøknadDto } from 'app/types/domain/EngangsstønadSøknad';
 import { mapStateForInnsending } from 'app/util/apiUtils';
 import Api from 'app/api/api';
@@ -25,6 +22,7 @@ import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
 
 import './oppsummering.less';
+import OmDegOppsummering from './OmDegOppsummering';
 
 interface Props {
     person: Person;
@@ -71,6 +69,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
             initialValues={initialOppsummeringValues}
             onSubmit={() => sendSøknad()}
             renderForm={({ values: formValues }) => {
+                // @ts-ignore Fiks denne
                 const visibility = oppsummeringQuestionsConfig.getVisbility(formValues);
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
 
@@ -97,22 +96,14 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                                       )
                             }
                         >
-                            <Veilederpanel kompakt={true} svg={<Veileder />}>
-                                {intlUtils(intl, 'oppsummering.text.lesNoye')}
-                            </Veilederpanel>
+                            <GuidePanel>{intlUtils(intl, 'oppsummering.text.lesNoye')}</GuidePanel>
                             <div className={bem.block}>
-                                <Block>
-                                    <SøkersPersonalia
-                                        kjønn={person.kjønn}
-                                        navn={fullNameFormat(
-                                            person.fornavn,
-                                            person.mellomnavn,
-                                            person.etternavn
-                                        ).toLowerCase()}
-                                        personnummer={person.fnr}
+                                <Oppsummeringspunkt tittel={intlUtils(intl, 'søknad.omDeg')}>
+                                    <OmDegOppsummering
+                                        søkerNavn={fullNameFormat(person.fornavn, person.mellomnavn, person.etternavn)}
+                                        søkerFnr={person.fnr}
                                     />
-                                </Block>
-
+                                </Oppsummeringspunkt>
                                 <Oppsummeringspunkt tittel={intlUtils(intl, 'søknad.omBarnet')}>
                                     <OmBarnetOppsummering barn={state.søknad.omBarnet} />
                                 </Oppsummeringspunkt>
@@ -132,9 +123,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                             {allQuestionsAnswered && (
                                 <Block margin="xl">
                                     <div className={bem.element('sendSøknadKnapp')}>
-                                        <Hovedknapp disabled={isSending} spinner={isSending}>
+                                        <Button type="submit" disabled={isSending} loading={isSending}>
                                             {intlUtils(intl, 'oppsummering.button.sendSøknad')}
-                                        </Hovedknapp>
+                                        </Button>
                                     </div>
                                 </Block>
                             )}

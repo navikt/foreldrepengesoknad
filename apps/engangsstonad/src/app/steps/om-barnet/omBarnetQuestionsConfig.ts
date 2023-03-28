@@ -1,5 +1,5 @@
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 
