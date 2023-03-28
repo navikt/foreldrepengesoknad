@@ -10,9 +10,8 @@ export interface Props {
     stripes?: boolean;
 }
 
-const IconBox: React.FunctionComponent<Props> = ({ children, color, stripes }) => {
+const IconBox: React.FunctionComponent<Props> = ({ children, color }) => {
     const bem = bemUtils('iconBox');
-    console.log(stripes);
     return <div className={classNames(bem.element('icon'), bem.modifier(`${color}`))}>{children}</div>;
 };
 
