@@ -46,13 +46,12 @@ const erPerioderLike = (periodeA: Periode, periodeB: Periode) => {
 const getPeriodeFootprint = (periode: Periode) => {
     const { fom, tom, ...rest } = periode;
     const sortedPeriode: any = {};
-    type RestKeyType = keyof typeof rest;
 
     Object.keys(rest)
         .sort()
-        .filter((key: RestKeyType) => rest[key] !== undefined)
-        .forEach((key: RestKeyType) => {
-            sortedPeriode[key] = rest[key];
+        .filter((key) => (rest as any)[key] !== undefined)
+        .forEach((key) => {
+            sortedPeriode[key] = (rest as any)[key];
         });
 
     return JSON.stringify({ ...sortedPeriode });

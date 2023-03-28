@@ -74,13 +74,13 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((sak) => sak.saksnummer === params.saksnummer);
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
-    const onSubmit = (values: EttersendingFormData) => {
+    const onSubmit = (values: Partial<EttersendingFormData>) => {
         setIsEttersending(true);
 
         const valuesToSend: EttersendingDto = {
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
-            vedlegg: values.vedlegg,
+            vedlegg: values.vedlegg!,
         };
 
         Api.sendEttersending(valuesToSend).then(() => {

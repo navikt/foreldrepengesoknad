@@ -4,11 +4,8 @@ import * as Sentry from '@sentry/browser';
 import '@navikt/ds-css';
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
-
-if (!Intl.PluralRules) {
-    require('@formatjs/intl-pluralrules/polyfill');
-    require('@formatjs/intl-pluralrules/locale-data/nb');
-}
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/nb';
 
 Sentry.init({
     dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',

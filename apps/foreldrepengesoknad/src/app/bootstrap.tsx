@@ -12,6 +12,7 @@ import './styles/app.less';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
+console.log('forpsok');
 
 require('../../node_modules/dayjs/locale/nb.js');
 require('../../node_modules/dayjs/locale/nn.js');
