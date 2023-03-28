@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import InnholdMedIllustrasjon from '../../../app/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
+import InnholdMedIllustrasjon from './InnholdMedIllustrasjon';
 import UkerSirkel from '../../../app/components/info-eksisterende-sak/illustrasjoner/uker-sirkel/UkerSirkel';
 
 export default {

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import withIntlProvider from '../../decorators/withIntl';
-import DinePlikter from '../../../app/components/dine-plikter/DinePlikter';
+import withIntlProvider from 'storybook/decorators/withIntl';
+import DinePlikter from './DinePlikter';
 
 export default {
     title: 'components/DinePlikter',

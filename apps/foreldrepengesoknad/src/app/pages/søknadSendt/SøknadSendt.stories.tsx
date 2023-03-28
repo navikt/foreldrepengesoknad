@@ -4,9 +4,9 @@ import { Story } from '@storybook/react';
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import SøknadSendt from 'app/pages/søknadSendt/SøknadSendt';
-import withIntlProvider from '../../decorators/withIntl';
-import ForeldrepengerStateMock from '../../utils/ForeldrepengerStateMock';
-import withForeldrepengersøknadContext from '../../decorators/withForeldrepengersøknadContext';
+import withIntlProvider from 'storybook/decorators/withIntl';
+import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
+import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 
 export default {
     title: 'pages/SøknadSendt',

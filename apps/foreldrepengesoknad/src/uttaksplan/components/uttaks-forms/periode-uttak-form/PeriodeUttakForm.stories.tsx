@@ -1,16 +1,16 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Story } from '@storybook/react';
-import PeriodeUttakForm from '../../../uttaksplan/components/uttaks-forms/periode-uttak-form/PeriodeUttakForm';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
-import withIntlProvider from '../../decorators/withIntl';
+import withIntlProvider from 'storybook/decorators/withIntl';
 import { Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { IntlShape } from 'react-intl';
+import PeriodeUttakForm from './PeriodeUttakForm';
 
 const stønadskonto100MorFar = [
     { konto: StønadskontoType.Mødrekvote, dager: 75 },

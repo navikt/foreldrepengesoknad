@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
+import LenkeKnapp from './LenkeKnapp';
 
 export default {
     title: 'components/LenkeKnapp',

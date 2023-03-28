@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import Foreldrepar from '../../../app/components/foreldrepar/Foreldrepar';
+import Foreldrepar from './Foreldrepar';
 
 export default {
     title: 'components/Foreldrepar',
