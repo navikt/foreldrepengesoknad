@@ -4,7 +4,7 @@ const request = require('request');
 const { JSDOM } = jsdom;
 
 const requestDecorator = (callback) => {
-    const baseUrl = process.env.VITE_APPRES_CMS_URL;
+    const baseUrl = process.env.APPRES_CMS_URL;
     return request(`${baseUrl}/`, callback);
 };
 
