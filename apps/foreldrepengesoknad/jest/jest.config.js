@@ -8,6 +8,7 @@ module.exports = {
         '^app/(.*)': '<rootDir>/src/app/$1',
         '^utils-test/(.*)': '<rootDir>/src/utils-test/$1',
         '^stories/(.*)': '<rootDir>/src/storybook/stories/$1',
+        '^storybook/(.*)': '<rootDir>/src/storybook/$1',
     },
     rootDir: '../',
     roots: ['<rootDir>/src/app/', '<rootDir>/src/uttaksplan'],
