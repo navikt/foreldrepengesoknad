@@ -9,7 +9,7 @@
         "jsx": "react",
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "module": "ESNext",
-        "moduleResolution": "bundler",
+        "moduleResolution": "node",
         "noEmit": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
