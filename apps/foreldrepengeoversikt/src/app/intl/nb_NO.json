@@ -139,5 +139,6 @@
     "tidslinje.VENT_TIDLIG_SØKNAD.linkTittel": "Arbeidsgiver kan lese mer om inntektsmelding her",
     "tidslinje.navVenterPå": "NAV venter på {dokumentasjon}",
     "periodeOversikt.ingenPerioder.visKunNåværendeOgNeste": "Du har ingen løpende perioder med foreldrepenger. Klikk på 'Se hele planen' for en oversikt over tidligere perioder med foreldrepenger.",
-    "periodeOversikt.ingenPerioder.visHelePlanen": "Du har ingen perioder med foreldrepenger. "
+    "periodeOversikt.ingenPerioder.visHelePlanen": "Du har ingen perioder med foreldrepenger. ",
+    "vedlegg.feilmelding.opplasting.feilet": "Opplasting av dokument feilet"
 }

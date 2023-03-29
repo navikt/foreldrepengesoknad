@@ -1,3 +1,4 @@
+import { BodyShort } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import { DokumentType } from 'app/types/DokumentType';
 import React from 'react';
@@ -23,7 +24,11 @@ const getAvsender = (type: DokumentType) => {
 const DokumentAvsender: React.FunctionComponent<Props> = ({ type }) => {
     const bem = bemUtils('dokument-avsender');
 
-    return <div className={bem.block}>{getAvsender(type)}</div>;
+    return (
+        <div className={bem.block}>
+            <BodyShort className={bem.element('text')}>{getAvsender(type)}</BodyShort>
+        </div>
+    );
 };
 
 export default DokumentAvsender;

@@ -1,5 +1,5 @@
 .dokument {
-    border-bottom: 1px solid var(--a-surface-neutral);
+    border-bottom: 2px solid var(--a-gray-300);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
 }
@@ -16,6 +16,6 @@
 .dokument__content {
     width: 100%;
     display: grid;
-    grid-template-columns: 0.5fr 8fr 2fr 1fr;
+    grid-template-columns: 0.5fr 8fr 7rem 7.5rem;
     align-items: center;
 }
