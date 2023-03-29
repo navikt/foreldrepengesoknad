@@ -194,7 +194,7 @@ describe('<Inntektsinformasjon>', () => {
         const regnskapsførerTlfInput = screen.getByLabelText('Regnskapsførers telefonnummer');
         await userEvent.type(regnskapsførerTlfInput, '555934344');
 
-        expect(await screen.findByText('Er egnskapsfører er nær venn eller familie?')).toBeInTheDocument();
+        expect(await screen.findByText('Er regnskapsfører nær venn eller familie?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[7]);
 
         // Lukker dialog
