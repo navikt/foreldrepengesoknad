@@ -365,7 +365,7 @@
     "inntektsinformasjon.egenNæringModal.harRegnskapsfører": "Har du regnskapsfører?",
     "inntektsinformasjon.egenNæringModal.regnskapsførerNavn": "Regnskapsførers navn",
     "inntektsinformasjon.egenNæringModal.regnskapsførerTlf": "Regnskapsførers telefonnummer",
-    "inntektsinformasjon.egenNæringModal.regnskapsførerNærVennEllerFamilie": "Er egnskapsfører er nær venn eller familie?",
+    "inntektsinformasjon.egenNæringModal.regnskapsførerNærVennEllerFamilie": "Er regnskapsfører nær venn eller familie?",
     "inntektsinformasjon.egenNæringModal.regnskapsførerVeileder": "Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre. Vi tar kontakt med deg hvis vi trenger flere opplysninger.",
     "inntektsinformasjon.andreInntekterModal.contentLabel": "Opplysninger om andre inntekter du har hatt",
     "inntektsinformasjon.andreInntekterModal.tittel": "Legg til inntektskilde",
