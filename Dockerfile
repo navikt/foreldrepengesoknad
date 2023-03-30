@@ -16,7 +16,7 @@ RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs
 #########################################
 # BUILD - Builds all node code
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.14.2-alpine as build
+FROM --platform=$BUILDPLATFORM node:18.15-alpine as build
 WORKDIR /usr/src/app
 
 RUN apk fix \
@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/run/turbo,id=turbo \
 #########################################
 # PNPM - Dependency of all images
 ######################################### 
-FROM node:18.14.2-alpine as pnpm
+FROM node:18.15-alpine as pnpm
 LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
