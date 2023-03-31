@@ -61,14 +61,14 @@ describe('omBarnetValidering', () => {
     it('skal feile fødsel & adopsjonsvalidering når adopsjonsdato er før fødselsdato', () => {
         const fødselsdato = '2021-01-01';
         const adopsjonsdato = '2020-12-12';
-        const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato!);
+        const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato);
         expect(resultat).toBe('Fødselsdato må være før adopsjonsdato');
     });
 
     it('skal feile fødsel & adopsjonsvalidering når barnet er over 15 år på adopsjonsdato', () => {
         const fødselsdato = '2004-01-01';
         const adopsjonsdato = '2020-12-12';
-        const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato!);
+        const resultat = validateFødselsdatoAdopsjon(intlMock)(fødselsdato, adopsjonsdato);
         expect(resultat).toBe('Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år');
     });
 

@@ -76,15 +76,6 @@ export const validateAdopsjonFødselDate = (
     if (etterDagensDato(dato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere');
     }
-    // if (!barnetErMerEnn15årPåSøknadsDato(dato, adopsjonsdato)) {
-    //     if (sisteDatoAdoptertBarnKanVæreFødt(dato, adopsjonsdato)) {
-    //         return intlUtils(intl, 'valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn15ÅrTilbake');
-    //     }
-    //     if (barnetErIkkeFødtFørAdopsjonsDato(dato, adopsjonsdato)) {
-    //         return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.barnetErIkkeFødtFørAdopsjonsDato');
-    //     }
-    //     return undefined;
-    // }
     return undefined;
 };
 

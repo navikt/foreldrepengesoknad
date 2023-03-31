@@ -52,7 +52,7 @@ const mapBarnForInnsending = (omBarnet: OmBarnetFormData): FodtBarn | UfodtBarn 
         ? {
               antallBarn: parseInt(omBarnet.antallBarn!, 10),
               erBarnetFødt: true,
-              fødselsdatoer: [dayjs.utc(omBarnet.fødselsdatoer![0]).toDate()],
+              fødselsdatoer: [dayjs.utc(omBarnet.fødselsdatoer[0]).toDate()],
           }
         : {
               antallBarn: parseInt(omBarnet.antallBarn!, 10),

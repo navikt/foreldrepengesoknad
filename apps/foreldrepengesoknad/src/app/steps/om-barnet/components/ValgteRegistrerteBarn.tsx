@@ -34,8 +34,8 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                         </Element>
                     </Block>
                     {alleBarnaLever ? (
-                        valgteBarn.map((barn: RegistrertBarn, index: number) => (
-                            <Block padBottom="l" key={index}>
+                        valgteBarn.map((barn: RegistrertBarn) => (
+                            <Block padBottom="l" key={barn.fnr}>
                                 <RegistrertePersonalia
                                     person={barn}
                                     fødselsdatoForVisning={formaterFødselsdatoerPåBarn([barn.fødselsdato])}

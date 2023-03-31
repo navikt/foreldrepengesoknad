@@ -3,7 +3,6 @@ import { harPeriodeGyldigTidsperiode } from './harPeriodeGyldigTidsperiode';
 import { harUttaksperiodeStønadskonto } from './harUttaksperiodeStønadskonto';
 import { erSamtidigUttakGyldig } from './erSamtidigUttakGyldig';
 import { erUtsettelseEtterFamiliehendelsesdato } from './erUtsettelseEtterFamiliehendelsesdato';
-// import { erAllePeriodeSkjemaspørsmålBesvart } from './erAllePeriodeSkjemaspørsmålBesvart';
 import { Regel, RegelAlvorlighet } from '../../utils/types/regelTypes';
 import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starterUttaksperiodeRundtFødselEtter2UkerFørFødsel';
 import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
@@ -17,7 +16,6 @@ export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarStønadskonto' = 'uttaksperiodeHarStønadskonto',
     'erSamtidigUttakGyldig' = 'erSamtidigUttakGyldig',
     'erUtsettelseEtterFamiliehendelsesdato' = 'erUtsettelseEtterFamiliehendelsesdato',
-    // 'erAllePeriodeSkjemaspørsmålBesvart' = 'erAllePeriodeSkjemaspørsmålBesvart',
     'starterUttaksperiodeRundtFødselEtter2UkerFørFødsel' = 'starterUttaksperiodeRundtFødselEtter2UkerFørFødsel',
     'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel' = 'slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel',
     'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR' = 'periodeDeFørsteSeksUkeneHarUlovligUttakBFHR',
@@ -91,14 +89,6 @@ const periodevalideringsregler: Regel[] = [
         test: forSenUttakVedPåfølgendeBarn,
         skjulesIOppsummering: skjulIOppsummering,
     },
-    //TODO: visibility.areAllQuestionsAnswered() burde sendes oppover fra periodeUttakFormQuestionsConfig/Legg til periode formen.
-    // {
-    //     key: PeriodeValiderRegelKey.erAllePeriodeSkjemaspørsmålBesvart,
-    //     alvorlighet: RegelAlvorlighet.FEIL,
-    //     test: erAllePeriodeSkjemaspørsmålBesvart,
-    //     skjulesIOppsummering: skjulIOppsummering,
-    //     avvikType: 'skjema',
-    // },
 ];
 
 export default periodevalideringsregler;

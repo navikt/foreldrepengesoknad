@@ -143,7 +143,7 @@ export const mapOmBarnetFormDataToState = (
         if (arbeidsforhold.length === 0) {
             return {
                 type: BarnType.UFØDT,
-                terminbekreftelse: terminbekreftelse!,
+                terminbekreftelse: terminbekreftelse,
                 terminbekreftelsedato: ISOStringToDate(values.terminbekreftelsedato),
                 antallBarn,
                 termindato: ISOStringToDate(values.termindato)!,
@@ -234,7 +234,7 @@ export const getOmBarnetInitialValues = (barn: Barn, arbeidsforhold: Arbeidsforh
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
             adoptertIUtlandet: convertBooleanOrUndefinedToYesOrNo(barn.adoptertIUtlandet),
-            omsorgsovertakelse: barn.omsorgsovertakelse!,
+            omsorgsovertakelse: barn.omsorgsovertakelse,
             ankomstdato: dateToISOString(barn.ankomstdato),
         };
     }

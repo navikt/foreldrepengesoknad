@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { bemUtils, intlUtils } from '@navikt/fp-common';
+import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import { Undertittel } from 'nav-frontend-typografi';
 import Personkort from 'app/components/personkort/Personkort';
 import ForelderIkon from 'app/components/foreldrepar/ForelderIkon';
@@ -114,9 +114,9 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
                 />
             </Undertittel>
             <TilesList columns={2}>
-                {uttakÅVise.map((uttak, idx) => (
+                {uttakÅVise.map((uttak) => (
                     <Kontostatus
-                        key={idx}
+                        key={guid()}
                         uttak={uttak}
                         navnPåForeldre={navnPåForeldre}
                         erEndringssøknad={erEndringssøknad}

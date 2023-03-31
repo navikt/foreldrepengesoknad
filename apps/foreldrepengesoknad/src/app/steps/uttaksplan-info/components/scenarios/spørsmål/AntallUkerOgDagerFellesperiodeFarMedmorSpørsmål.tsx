@@ -23,7 +23,7 @@ const getNumberFromStringInput = (input: string): number | undefined => {
     return input === undefined || input.trim().length === 0 ? 0 : getNumberFromNumberInputValue(input);
 };
 
-const leggTilUke = (currentAntall: string, max: number): string => {
+const leggTil = (currentAntall: string, max: number): string => {
     const number = getNumberFromStringInput(currentAntall);
 
     if (number === undefined || Math.round(number) !== number) {
@@ -37,35 +37,7 @@ const leggTilUke = (currentAntall: string, max: number): string => {
     return (number + 1).toString();
 };
 
-const trekkFraUke = (currentAntall: string, min: number): string => {
-    const number = getNumberFromStringInput(currentAntall);
-
-    if (number === undefined || number === 0 || Math.round(number) !== number) {
-        return currentAntall;
-    }
-
-    if (number - 1 < min) {
-        return min.toString();
-    }
-
-    return (number - 1).toString();
-};
-
-const leggTilDag = (currentAntall: string, max: number): string => {
-    const number = getNumberFromStringInput(currentAntall);
-
-    if (number === undefined || Math.round(number) !== number) {
-        return currentAntall;
-    }
-
-    if (number + 1 > max) {
-        return max.toString();
-    }
-
-    return (number + 1).toString();
-};
-
-const trekkFraDag = (currentAntall: string, min: number): string => {
+const trekkFra = (currentAntall: string, min: number): string => {
     const number = getNumberFromStringInput(currentAntall);
 
     if (number === undefined || number === 0 || Math.round(number) !== number) {
@@ -118,7 +90,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                                     ? true
                                     : false
                             }
-                            onClick={() => setFieldValue(ukerFieldName, trekkFraUke(antallUker, 0))}
+                            onClick={() => setFieldValue(ukerFieldName, trekkFra(antallUker, 0))}
                         />
                     </div>
                     <FormComponents.NumberInput
@@ -135,7 +107,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             ariaLabel="Øk antall uker med en uke"
                             ikon={<RangeIcon type="plus" />}
                             disabled={parseInt(antallUker, 10) >= ukerMedFellesperiode ? true : false}
-                            onClick={() => setFieldValue(ukerFieldName, leggTilUke(antallUker, ukerMedFellesperiode))}
+                            onClick={() => setFieldValue(ukerFieldName, leggTil(antallUker, ukerMedFellesperiode))}
                         />
                     </div>
                 </div>
@@ -145,7 +117,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Mink antall dager med en dag"
                             ikon={<RangeIcon type="minus" />}
-                            onClick={() => setFieldValue(dagerFieldName, trekkFraDag(antallDager, 0))}
+                            onClick={() => setFieldValue(dagerFieldName, trekkFra(antallDager, 0))}
                             disabled={
                                 antallDager === undefined ||
                                 parseInt(antallDager, 10) === 0 ||
@@ -168,7 +140,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                             stil="hvit"
                             ariaLabel="Øk antall dager med en dag"
                             ikon={<RangeIcon type="plus" />}
-                            onClick={() => setFieldValue(dagerFieldName, leggTilDag(antallDager, 4))}
+                            onClick={() => setFieldValue(dagerFieldName, leggTil(antallDager, 4))}
                             disabled={parseInt(antallDager, 10) === 4 ? true : false}
                         />
                     </div>

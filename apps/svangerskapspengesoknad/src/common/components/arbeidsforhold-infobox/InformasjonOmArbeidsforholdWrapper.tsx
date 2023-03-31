@@ -30,7 +30,7 @@ const InformasjonOmArbeidsforholdWrapper: React.FunctionComponent<Arbeidsforhold
             )}
             {harArbeidsforhold && (
                 <ul className="arbeidsforholdList">
-                    {arbeidsforhold!.map((arbeidsforholdElement: Arbeidsforhold) => (
+                    {arbeidsforhold.map((arbeidsforholdElement: Arbeidsforhold) => (
                         <li key={guid()}>
                             <ArbeidsforholdInfoBox
                                 key={arbeidsforholdElement.arbeidsgiverId}

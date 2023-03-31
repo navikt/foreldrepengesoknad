@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Formik, FormikProps } from 'formik';
-import _ from 'lodash';
 import { isValid } from 'i18n-iso-countries';
 
 import BEMHelper from 'common/util/bem';

@@ -479,7 +479,7 @@ const mapSaksperioderTilUttaksperioder = (
     );
 
     const sammenslåddePerioder: Periode[] = slåSammenLikePerioder(
-        splittedePerioder
+        [...splittedePerioder]
             .sort(sorterPerioder)
             .filter(harUttaksdager)
             .map(korrigerTidsperiodeTilGyldigUttaksdag)
