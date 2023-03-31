@@ -473,7 +473,7 @@ export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
     const errorCallId = getErrorCallId(error) + '. ';
     const errorTimestamp = getErrorTimestamp(error) + '. ';
     const hideNumbersAndTrim = (tekst: string): string => {
-        return tekst.replace(/[\d]/g, '*').slice(0, 250) + '...';
+        return tekst.replace(/\d/g, '*').slice(0, 250) + '...';
     };
 
     let errorString = errorCallId + errorTimestamp;
