@@ -78,7 +78,7 @@ const startServer = async (html) => {
             const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
             const fileExists = fs.existsSync(fullPath);
 
-            if (!fileExists && !req.url.startsWith('/@')) {
+            if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
                 req.url = '/index-decorated.html';
             }
             next();
