@@ -79,7 +79,8 @@ const OmBarnet: React.FunctionComponent = () => {
         !søknadGjelderEtNyttBarn && !isUfødtBarn(barn)
             ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
-    const barnSøktOmFørMenIkkeRegistrert = !søknadGjelderEtNyttBarn && valgteRegistrerteBarn === undefined;
+    const barnSøktOmFørMenIkkeRegistrert =
+        !søknadGjelderEtNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
 
     return (
         <OmBarnetFormComponents.FormikWrapper
@@ -119,7 +120,7 @@ const OmBarnet: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
-                            {valgteRegistrerteBarn !== undefined && (
+                            {valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0 && (
                                 <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} visibility={visibility} />
                             )}
                             <BarnFødtEllerAdoptert visibility={visibility} />
