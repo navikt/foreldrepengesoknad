@@ -6,7 +6,7 @@ import AttachmentList from 'common/storage/attachment/components/AttachmentList'
 import getMessage from 'common/util/i18nUtils';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Block, DisplayTextWithLabel, formatDate } from '@navikt/fp-common';
+import { Block, DisplayTextWithLabel, formatDate, guid } from '@navikt/fp-common';
 import { BodyLong, Label } from '@navikt/ds-react';
 
 interface Props {
@@ -53,8 +53,8 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
                         </Label>
                         {barn.fødselsdatoer.map((_, index) => {
                             return (
-                                <Block padBottom="s" key={index}>
-                                    <BodyLong>{formatDate(barn.fødselsdatoer![index])}</BodyLong>
+                                <Block padBottom="s" key={guid()}>
+                                    <BodyLong>{formatDate(barn.fødselsdatoer[index])}</BodyLong>
                                 </Block>
                             );
                         })}

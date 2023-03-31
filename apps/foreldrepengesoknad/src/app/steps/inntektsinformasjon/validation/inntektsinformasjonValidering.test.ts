@@ -15,7 +15,7 @@ describe('inntektsinformasjonValidering', () => {
     it('skal feile validering når oppstartsdato ikke er gyldig', () => {
         const oppstartsdato = '202-01-01';
 
-        const resultat = validateFrilansoppstartsDato(intlMock)(oppstartsdato!);
+        const resultat = validateFrilansoppstartsDato(intlMock)(oppstartsdato);
 
         expect(resultat).toBe(
             'Oppstartsdato for når du startet som frilans må være en gyldig dato på formatet dd.mm.åååå'

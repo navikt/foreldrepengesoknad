@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 const getFilePath = function (filnavn) {
-    var directories = ['./mock-api/', 'mock_data', filnavn];
+    const directories = ['./mock-api/', 'mock_data', filnavn];
     return directories.join(path.sep);
 };
 

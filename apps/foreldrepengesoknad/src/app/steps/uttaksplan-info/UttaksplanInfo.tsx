@@ -99,7 +99,7 @@ const UttaksplanInfo = () => {
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
         if (eksisterendeVedtakAnnenPart !== undefined) {
-            dispatch(actionCreator.setUttaksplan(eksisterendeVedtakAnnenPart!.uttaksplan));
+            dispatch(actionCreator.setUttaksplan(eksisterendeVedtakAnnenPart.uttaksplan));
             dispatch(actionCreator.setEksisterendeSak(eksisterendeVedtakAnnenPart));
             dispatch(actionCreator.setAnnenPartsUttakErLagtTilIPlan(true));
         }

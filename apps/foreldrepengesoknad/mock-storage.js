@@ -25,7 +25,7 @@ const getSoknad = function () {
 };
 
 const getFilePath = function (filnavn) {
-    var directories = ['.', 'mock_data', filnavn];
+    const directories = ['.', 'mock_data', filnavn];
     return directories.join(path.sep);
 };
 

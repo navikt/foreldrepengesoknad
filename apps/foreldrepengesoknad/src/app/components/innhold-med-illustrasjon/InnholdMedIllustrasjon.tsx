@@ -1,6 +1,6 @@
 import React from 'react';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, guid } from '@navikt/fp-common';
 
 import './innholdMedIllustrasjon.less';
 
@@ -35,7 +35,7 @@ const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illust
             {illustrasjoner && (
                 <div className={bem.element('illustrasjoner')} role="presentation" aria-hidden={true}>
                     {React.Children.map(illustrasjoner, (ill, index) => (
-                        <div className={bem.element('illustrasjon')} key={index}>
+                        <div className={bem.element('illustrasjon')} key={guid()}>
                             {ill}
                         </div>
                     ))}

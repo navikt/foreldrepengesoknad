@@ -216,13 +216,13 @@ export const isDateInTheFuture = (date: string): boolean => {
 };
 
 export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): RegistrertBarn => {
-    return registrerteBarn.sort((a, b) =>
+    return [...registrerteBarn].sort((a, b) =>
         isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1
     )[registrerteBarn.length - 1];
 };
 
 export const getEldsteDato = (dato: Date[]) => {
-    return dato.sort((a, b) => (isDateABeforeDateB(dateToISOString(a)!, dateToISOString(b)!) ? 1 : -1))[
+    return [...dato].sort((a, b) => (isDateABeforeDateB(dateToISOString(a)!, dateToISOString(b)!) ? 1 : -1))[
         dato.length - 1
     ];
 };

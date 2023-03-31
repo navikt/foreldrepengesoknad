@@ -32,7 +32,7 @@ const Avsnitt: React.FunctionComponent<{ id: string }> = ({ id }) => {
 type Props = DineRettigheterModalProps;
 const DinePersonopplysningerModal = (props: Props) => {
     const intl = useIntl();
-    //const { intl } = props;
+
     return (
         <Modal
             open={props.isOpen}
@@ -44,9 +44,9 @@ const DinePersonopplysningerModal = (props: Props) => {
             <Modal.Content>
                 <article className="velkommenModalContent velkommenModalContent--50">
                     <Block margin="s">
-                    <Heading size="medium" className="velkommenModalContent__header">
-                        {getMessage(intl, 'intro.dinePersonopplysninger.sectionheading')}
-                    </Heading>
+                        <Heading size="medium" className="velkommenModalContent__header">
+                            {getMessage(intl, 'intro.dinePersonopplysninger.sectionheading')}
+                        </Heading>
                     </Block>
                     <Block margin="s">
                         <BodyShort>

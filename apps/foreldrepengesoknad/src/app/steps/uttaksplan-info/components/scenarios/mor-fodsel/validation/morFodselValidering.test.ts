@@ -28,7 +28,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin
-        )(permisjonStartdato!);
+        )(permisjonStartdato);
 
         expect(resultat).toBe('Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag');
     });
@@ -42,7 +42,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin
-        )(permisjonStartdato!);
+        )(permisjonStartdato);
 
         expect(resultat).toBe('Startdatoen må være innen de 12 første ukene før termin eller fødsel');
     });
@@ -56,7 +56,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin
-        )(permisjonStartdato!);
+        )(permisjonStartdato);
 
         expect(resultat).toBeUndefined();
     });

@@ -14,14 +14,14 @@ const validateSøknad =
                 return validateIntro(values);
 
             case AppRoute.SØKNAD:
-                return validateUntilStep(route.step, values, route.subStep);
+                return validateUntilStep(values, route.step, route.subStep);
 
             default:
                 return {};
         }
     };
 
-const validateUntilStep = (step: StepID = StepID.INGEN, values: UferdigSøknad, subStep?: string): Søknadfeil => {
+const validateUntilStep = (values: UferdigSøknad, step: StepID = StepID.INGEN, subStep?: string): Søknadfeil => {
     switch (step) {
         case StepID.TERMIN:
             return {
@@ -30,20 +30,20 @@ const validateUntilStep = (step: StepID = StepID.INGEN, values: UferdigSøknad, 
             };
 
         case StepID.ARBEIDSFORHOLD:
-            return validateUntilStep(StepID.TERMIN, values);
+            return validateUntilStep(values, StepID.TERMIN);
 
         case StepID.TILRETTELEGGING:
             return {
-                ...validateUntilStep(StepID.ARBEIDSFORHOLD, values),
+                ...validateUntilStep(values, StepID.ARBEIDSFORHOLD),
                 ...validateTilrettelegging(values, subStep),
             };
 
         case StepID.UTENLANDSOPPHOLD:
-            return validateUntilStep(StepID.TILRETTELEGGING, values);
+            return validateUntilStep(values, StepID.TILRETTELEGGING);
 
         case StepID.OPPSUMMERING:
             return {
-                ...validateUntilStep(StepID.UTENLANDSOPPHOLD, values),
+                ...validateUntilStep(values, StepID.UTENLANDSOPPHOLD),
                 ...validateOppsummering(values),
             };
 
