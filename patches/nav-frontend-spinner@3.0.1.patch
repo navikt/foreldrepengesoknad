@@ -1,0 +1,13 @@
+diff --git a/lib/spinner.js b/lib/spinner.js
+index b43f4fbd1f8e076e6ecc3d453373a2d390d03d9d..d77f0dd23bd32d65f9b36341e8180707be04caec 100644
+--- a/lib/spinner.js
++++ b/lib/spinner.js
+@@ -37,7 +37,7 @@ const PT = __importStar(require("prop-types"));
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_ikoner_assets_1 = __importDefault(require("nav-frontend-ikoner-assets"));
+-require("nav-frontend-spinner-style");
++require("nav-frontend-spinner-style/src/spinner-style.less");
+ const cls = (className, storrelse) => classnames_1.default("spinner", className, {
+     [`spinner--${storrelse.toLowerCase()}`]: !!storrelse,
+ });

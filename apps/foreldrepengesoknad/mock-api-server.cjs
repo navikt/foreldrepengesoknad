@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const multer = require('multer');
-const MockStorage = require('./mock-storage');
+const MockStorage = require('./mock-storage.cjs');
 
 app.disable('x-powered-by');
 

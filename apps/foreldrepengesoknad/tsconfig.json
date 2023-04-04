@@ -1,26 +1,30 @@
 {
     "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "./src",
-        "forceConsistentCasingInFileNames": true,
+        "baseUrl": "src",
+        "composite": false,
+        "declaration": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
         "jsx": "react",
         "module": "ESNext",
         "moduleResolution": "node",
-        "noImplicitAny": true,
-        "noImplicitReturns": false,
-        "noImplicitThis": true,
+        "noEmit": true,
+        "noImplicitReturns": true,
         "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "paths": {
             "utils-test/*": ["./utils-test/*"],
             "uttaksplan/*": ["./uttaksplan/*"],
-            "stories/*": ["./storybook/stories/*"]
+            "stories/*": ["./storybook/stories/*"],
+            "app/*": ["./app/*"]
         },
-        "outDir": "build/dist",
+        "resolveJsonModule": true,
+        "rootDir": "src",
         "sourceMap": true,
-        "skipLibCheck": true,
         "strict": true,
         "target": "ESNext",
-        "typeRoots": ["./node_modules/@types", "./src/@types"]
+        "types": ["vite/client", "node", "jest", "@testing-library/jest-dom", "vitest/globals"],
+        "useDefineForClassFields": true
     },
     "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
     "exclude": ["src/common/**/*"]

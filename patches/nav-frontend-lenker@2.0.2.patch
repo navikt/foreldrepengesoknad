@@ -1,0 +1,13 @@
+diff --git a/lib/lenke.js b/lib/lenke.js
+index a49b33d911a13791eccd884cea83866a12be864f..0a2ee51db0cbf08c2c22ee399ad00f7e04a85f30 100644
+--- a/lib/lenke.js
++++ b/lib/lenke.js
+@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+-require("nav-frontend-lenker-style");
++require("nav-frontend-lenker-style/src/lenker-style.less");
+ const getRelFromTarget = (target) => {
+     if (!target ||
+         target.toLowerCase() === "_self" ||

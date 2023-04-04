@@ -1,0 +1,13 @@
+diff --git a/lib/veileder.js b/lib/veileder.js
+index 45e2a925cad21e7fb388065bcd37c1397510ecfb..2be5710d43aade5761b99374f7e34accf2ddeef9 100644
+--- a/lib/veileder.js
++++ b/lib/veileder.js
+@@ -38,7 +38,7 @@ const React = __importStar(require("react"));
+ const PT = __importStar(require("prop-types"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+-require("nav-frontend-veileder-style");
++require("nav-frontend-veileder-style/src/index.less");
+ const cls = (props) => (0, classnames_1.default)("nav-veileder", props.className, {
+     "nav-veileder--advarsel": props.type === "advarsel",
+     "nav-veileder--feilmelding": props.type === "feilmelding",

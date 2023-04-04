@@ -160,6 +160,8 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                                 'valideringsfeil.inntektsinformasjon.egenNæring.registrertINorge'
                                             );
                                         }
+
+                                        return undefined;
                                     }}
                                 />
                             </Block>

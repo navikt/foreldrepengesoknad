@@ -2,8 +2,8 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import søkerinfo from './testdata/søkerinfo.json';
-import context from './testdata/context.json';
+import _søkerinfo from './testdata/søkerinfo.json';
+import _context from './testdata/context.json';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
@@ -15,6 +15,9 @@ import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import AxiosMock from '../../../utils/AxiosMock';
+
+const søkerinfo = _søkerinfo as any;
+const context = _context as any;
 
 export default {
     title: 'steps/ManglendeVedlegg',

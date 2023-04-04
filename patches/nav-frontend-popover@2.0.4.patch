@@ -1,0 +1,13 @@
+diff --git a/lib/popover-base.js b/lib/popover-base.js
+index 745527d35579c7cf869821106d7e4193e0ca1059..389c9a82b2e8b8f38e76a7fe85a557c40e2cb07e 100644
+--- a/lib/popover-base.js
++++ b/lib/popover-base.js
+@@ -37,7 +37,7 @@ exports.PopoverOrientering = void 0;
+ /* eslint-disable jsx-a11y/no-static-element-interactions */
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+-require("nav-frontend-popover-style");
++require("nav-frontend-popover-style/src/popover-style.less");
+ // tslint:disable-next-line:max-line-length
+ var PopoverOrientering;
+ (function (PopoverOrientering) {

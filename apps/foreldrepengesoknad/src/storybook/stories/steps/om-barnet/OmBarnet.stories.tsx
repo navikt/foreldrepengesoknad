@@ -2,9 +2,9 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import søkerinfo from './testdata/søkerinfo.json';
-import søkerinfoMedDødTrilling from './testdata/søkerinfoMedDødTrilling.json';
-import context from './testdata/context.json';
+import _søkerinfo from './testdata/søkerinfo.json';
+import _søkerinfoMedDødTrilling from './testdata/søkerinfoMedDødTrilling.json';
+import _context from './testdata/context.json';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import OmBarnet from 'app/steps/om-barnet/OmBarnet';
@@ -14,6 +14,10 @@ import withForeldrepengersøknadContext from '../../../decorators/withForeldrepe
 import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
 import AxiosMock from '../../../utils/AxiosMock';
 import { BarnType } from 'app/context/types/Barn';
+
+const søkerinfo = _søkerinfo as any;
+const context = _context as any;
+const søkerinfoMedDødTrilling = _søkerinfoMedDødTrilling as any;
 
 export default {
     title: 'steps/OmBarnet',

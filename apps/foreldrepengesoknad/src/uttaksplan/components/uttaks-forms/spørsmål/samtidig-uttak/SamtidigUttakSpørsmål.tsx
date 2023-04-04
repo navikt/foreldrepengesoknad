@@ -49,6 +49,8 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
                         if (value === YesOrNo.UNANSWERED) {
                             return intlUtils(intl, 'uttaksplan.validering.samtidigUttak');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>

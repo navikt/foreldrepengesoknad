@@ -1,8 +1,8 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 import { Kjønn } from '@navikt/fp-common';
-import søkerinfo from './testdata/søkerinfo.json';
-import context from './testdata/context.json';
+import _søkerinfo from './testdata/søkerinfo.json';
+import _context from './testdata/context.json';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
@@ -12,6 +12,9 @@ import withForeldrepengersøknadContext from '../../../decorators/withForeldrepe
 import ForeldrepengerStateMock from '../../../utils/ForeldrepengerStateMock';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from '../../../utils/AxiosMock';
+
+const søkerinfo = _søkerinfo as any;
+const context = _context as any;
 
 export default {
     title: 'steps/Søkersituasjon',

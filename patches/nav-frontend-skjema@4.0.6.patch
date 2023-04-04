@@ -1,0 +1,260 @@
+diff --git a/lib/bekreft-checkboks-panel.js b/lib/bekreft-checkboks-panel.js
+index 0b89095079bd9ff41395ddff15325b176063d9a1..735e6c8384b296185066d453e6bbd634958ccd42 100644
+--- a/lib/bekreft-checkboks-panel.js
++++ b/lib/bekreft-checkboks-panel.js
+@@ -29,7 +29,7 @@ const PT = __importStar(require("prop-types"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const skjemaelement_feilmelding_1 = __importDefault(require("./skjemaelement-feilmelding"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class BekreftCheckboksPanel extends React.Component {
+     render() {
+         const { checked, onChange, label, inputProps, className, feil, } = this.props;
+diff --git a/lib/checkboks-panel-gruppe.js b/lib/checkboks-panel-gruppe.js
+index c0c7109ed0144892ef42e200ec57643915b33b28..32ed0483a9428f5971e6c8c8e52261563b207a8d 100644
+--- a/lib/checkboks-panel-gruppe.js
++++ b/lib/checkboks-panel-gruppe.js
+@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const PT = __importStar(require("prop-types"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const classnames_1 = __importDefault(require("classnames"));
+ class CheckboksPanelGruppe extends React.Component {
+diff --git a/lib/checkboks-panel.js b/lib/checkboks-panel.js
+index dea4165abb43cdfbc8f6362e07dbe18b79452c31..1d3931cfe2e5dd894d54053cbf1abb9f9669df46 100644
+--- a/lib/checkboks-panel.js
++++ b/lib/checkboks-panel.js
+@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const _1 = require(".");
+ class CheckboksPanel extends React.Component {
+     constructor(props) {
+diff --git a/lib/checkbox-gruppe.js b/lib/checkbox-gruppe.js
+index a512be11769beb748656b89514ab16d6498726f6..2dc5a18a91927bd86f83a2e1cf1ca015c2297fab 100644
+--- a/lib/checkbox-gruppe.js
++++ b/lib/checkbox-gruppe.js
+@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class CheckboxGruppe extends React.Component {
+     render() {
+         const _a = this.props, { children, className } = _a, other = __rest(_a, ["children", "className"]);
+diff --git a/lib/checkbox.js b/lib/checkbox.js
+index 57b6bd2591dcda244dea1fb855a30cc379c393f2..dc8e03cda6de7d1b6bed6b1054d234ce659f8b0c 100644
+--- a/lib/checkbox.js
++++ b/lib/checkbox.js
+@@ -40,7 +40,7 @@ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const skjemaelement_feilmelding_1 = __importDefault(require("./skjemaelement-feilmelding"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const cls = (className) => (0, classnames_1.default)("skjemaelement", className);
+ const inputCls = (harFeil) => (0, classnames_1.default)("skjemaelement__input checkboks", {
+     "skjemaelement__input--harFeil": harFeil,
+diff --git a/lib/feiloppsummering.js b/lib/feiloppsummering.js
+index 789a1965dbf08e68492307684aca99b499053ffd..48c98e6325b2aa3767331b24d6e757c8c6f064b3 100644
+--- a/lib/feiloppsummering.js
++++ b/lib/feiloppsummering.js
+@@ -37,7 +37,7 @@ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_typografi_1 = require("nav-frontend-typografi");
+ const nav_frontend_lenker_1 = __importDefault(require("nav-frontend-lenker"));
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class Feiloppsummering extends React.Component {
+     render() {
+         const _a = this.props, { children, className, innerRef, tittel, feil, customFeilRender } = _a, rest = __rest(_a, ["children", "className", "innerRef", "tittel", "feil", "customFeilRender"]);
+diff --git a/lib/fnr-input.js b/lib/fnr-input.js
+index 972494b5da91181584cfb44db8f8ccac9c967e57..a86f3eea1b7abcb882384c48c1d5e26f2e128abd 100644
+--- a/lib/fnr-input.js
++++ b/lib/fnr-input.js
+@@ -26,7 +26,7 @@ const React = __importStar(require("react"));
+ const fnrvalidator_1 = require("@navikt/fnrvalidator");
+ const input_1 = __importDefault(require("./input"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class FnrInput extends React.Component {
+     onChange(e) {
+         if (this.props.onValidate) {
+diff --git a/lib/input.js b/lib/input.js
+index e3a943c0d698a967ee0ae21768f824d488b726b0..a5bad7bfc1d50c439e6efbb3feffed1c6a582ef9 100644
+--- a/lib/input.js
++++ b/lib/input.js
+@@ -39,7 +39,7 @@ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const skjemaelement_feilmelding_1 = __importDefault(require("./skjemaelement-feilmelding"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const cls = (className) => (0, classnames_1.default)("skjemaelement", className);
+ const inputClass = (width, className, harFeil, mini) => (0, classnames_1.default)("skjemaelement__input", className, `input--${width.toLowerCase()}`, {
+     "skjemaelement__input--harFeil": harFeil,
+diff --git a/lib/label.js b/lib/label.js
+index 5648b836e002eb3b7181ed77843b422e62e0d470..ba8dde57f4ef5f8afcd0be47731a2bffd57ccab1 100644
+--- a/lib/label.js
++++ b/lib/label.js
+@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class Label extends React.Component {
+     render() {
+         const _a = this.props, { children, className } = _a, other = __rest(_a, ["children", "className"]);
+diff --git a/lib/radio-gruppe.js b/lib/radio-gruppe.js
+index 014acbfd4a970504612445a840b250f9a5d01598..39f7cbf8eee5ddfcd0f6f6190d8aef419b5d4078 100644
+--- a/lib/radio-gruppe.js
++++ b/lib/radio-gruppe.js
+@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class RadioGruppe extends React.Component {
+     render() {
+         const _a = this.props, { children, className } = _a, other = __rest(_a, ["children", "className"]);
+diff --git a/lib/radio-panel-gruppe.js b/lib/radio-panel-gruppe.js
+index 53d1acaf6670f27f8d006eb5e0375ecf8b49a5ca..41eae515e08f491f1dcd3880d544c8f6376106e6 100644
+--- a/lib/radio-panel-gruppe.js
++++ b/lib/radio-panel-gruppe.js
+@@ -38,7 +38,7 @@ const PT = __importStar(require("prop-types"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class RadioPanelGruppe extends React.Component {
+     render() {
+         const _a = this.props, { radios, name, legend, feil, checked, onChange, className } = _a, other = __rest(_a, ["radios", "name", "legend", "feil", "checked", "onChange", "className"]);
+diff --git a/lib/radio-panel.js b/lib/radio-panel.js
+index 3db1fd7640c2f2fca18f4e8752d745e48f21de92..8609a2c64d9b89d5d83b44c83b2cf0628d43b406 100644
+--- a/lib/radio-panel.js
++++ b/lib/radio-panel.js
+@@ -38,7 +38,7 @@ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class RadioPanel extends React.Component {
+     constructor(props) {
+         super(props);
+diff --git a/lib/radio.js b/lib/radio.js
+index e070b493fbd16d37044adada6817b15632fc7f21..c4c11454d4c6951bf85ae5c203878456e7c4f87e 100644
+--- a/lib/radio.js
++++ b/lib/radio.js
+@@ -37,7 +37,7 @@ const PT = __importStar(require("prop-types"));
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const _1 = require(".");
+ const cls = (className) => (0, classnames_1.default)("skjemaelement", className);
+ const inputCls = (harFeil) => (0, classnames_1.default)("skjemaelement__input radioknapp", {
+diff --git a/lib/select.js b/lib/select.js
+index 0d2159144e70f6b8398c646e0dad9d6fb6c304b7..3548c465e301d3bc9fff0ef70fa3d1832a0f1d3f 100644
+--- a/lib/select.js
++++ b/lib/select.js
+@@ -39,7 +39,7 @@ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const skjemaelement_feilmelding_1 = __importDefault(require("./skjemaelement-feilmelding"));
+ const _1 = require(".");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const cls = (className) => (0, classnames_1.default)("skjemaelement", className);
+ const inputCls = (harFeil) => (0, classnames_1.default)("skjemaelement__input", {
+     "skjemaelement__input--harFeil": harFeil,
+diff --git a/lib/skjema-gruppe.js b/lib/skjema-gruppe.js
+index 60b350ad5bf900fa3a8005aa5b7a485d405f82b6..5bc3c0195b71d0b73b591c04f5f11cd1aad8d473 100644
+--- a/lib/skjema-gruppe.js
++++ b/lib/skjema-gruppe.js
+@@ -39,7 +39,7 @@ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const skjemaelement_feilmelding_1 = __importDefault(require("./skjemaelement-feilmelding"));
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const cls = (className) => (0, classnames_1.default)("skjemagruppe", className);
+ exports.SkjemaGruppeFeilContext = React.createContext({});
+ /**
+diff --git a/lib/skjemaelement-feilmelding.js b/lib/skjemaelement-feilmelding.js
+index dbadd061efc6cfe5c2ae82ab61981ecdf01050b9..77cf742f45b0a101699dea4abc332542150498bc 100644
+--- a/lib/skjemaelement-feilmelding.js
++++ b/lib/skjemaelement-feilmelding.js
+@@ -32,7 +32,7 @@ var __rest = (this && this.__rest) || function (s, e) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const nav_frontend_typografi_1 = require("nav-frontend-typografi");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class SkjemaelementFeilmelding extends React.Component {
+     render() {
+         const _a = this.props, { children } = _a, other = __rest(_a, ["children"]);
+diff --git a/lib/textarea-controlled.js b/lib/textarea-controlled.js
+index fc35865540e700192b867d04d5492690dd4da6e0..ae09e77d5c013120e7c9579a596715c622fba2d8 100644
+--- a/lib/textarea-controlled.js
++++ b/lib/textarea-controlled.js
+@@ -37,7 +37,7 @@ const React = __importStar(require("react"));
+ const PT = __importStar(require("prop-types"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const textarea_1 = __importDefault(require("./textarea"));
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ class TextareaControlled extends React.Component {
+     constructor(props) {
+         super(props);
+diff --git a/lib/textarea.js b/lib/textarea.js
+index 40b2e73f7d088ff84e1a6d6226890e1e36a6beea..584dc0e03d73c439c6f1ee3f8a9a39880fd4d5d7 100644
+--- a/lib/textarea.js
++++ b/lib/textarea.js
+@@ -39,7 +39,7 @@ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const _1 = require(".");
+ const skjemaelement_feilmelding_1 = __importDefault(require("./skjemaelement-feilmelding"));
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const inputCls = (className, harFeil) => (0, classnames_1.default)(className, "skjemaelement__input textarea--medMeta", {
+     "skjemaelement__input--harFeil": harFeil,
+ });
+diff --git a/lib/toggle-gruppe.js b/lib/toggle-gruppe.js
+index 2cd3f98988d8300eb86d15a7e5544f3037fdebd0..3279d603198342f20b4b8ec25c96cbbc624439ea 100644
+--- a/lib/toggle-gruppe.js
++++ b/lib/toggle-gruppe.js
+@@ -24,7 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const PT = __importStar(require("prop-types"));
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const classnames_1 = __importDefault(require("classnames"));
+ class ToggleGruppe extends React.Component {
+     render() {
+diff --git a/lib/toggle-knapp.js b/lib/toggle-knapp.js
+index 3ade08c924de20b337998325c762edc74d5979c6..21b4d3a7418917a52a7fa8b194e9b491b4c120b1 100644
+--- a/lib/toggle-knapp.js
++++ b/lib/toggle-knapp.js
+@@ -25,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const React = __importStar(require("react"));
+ const PT = __importStar(require("prop-types"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+-require("nav-frontend-skjema-style");
++require("nav-frontend-skjema-style/src/index.less");
+ const classnames_1 = __importDefault(require("classnames"));
+ class ToggleKnapp extends React.Component {
+     render() {

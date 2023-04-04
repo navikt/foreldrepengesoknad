@@ -1,0 +1,13 @@
+diff --git a/lib/veilederpanel.js b/lib/veilederpanel.js
+index 26bad039edea2dbfe6699744ed3415e3d4274a14..5b58c6c39dafcd090f61408cdcd1ccc86dcbbe89 100644
+--- a/lib/veilederpanel.js
++++ b/lib/veilederpanel.js
+@@ -26,7 +26,7 @@ const React = __importStar(require("react"));
+ const PT = __importStar(require("prop-types"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_veileder_1 = __importStar(require("nav-frontend-veileder"));
+-require("nav-frontend-veilederpanel-style");
++require("nav-frontend-veilederpanel-style/src/index.less");
+ const veilederPanelCls = (props) => (0, classnames_1.default)("nav-veilederpanel", {
+     "nav-veilederpanel--kompakt": props.kompakt,
+     "nav-veilederpanel--plakat": props.type === "plakat",

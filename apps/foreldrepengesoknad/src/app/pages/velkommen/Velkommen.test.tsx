@@ -5,8 +5,8 @@ import * as stories from './Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
 
-jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
-    return jest.fn();
+vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
+    return vi.fn();
 });
 
 const {

@@ -1,0 +1,13 @@
+diff --git a/lib/hjelpetekst.js b/lib/hjelpetekst.js
+index 3c6dc15772d0703e58b7655f10975dfc32776ae2..48497fbbafb209a980c6c3179e02379b69cffcdc 100644
+--- a/lib/hjelpetekst.js
++++ b/lib/hjelpetekst.js
+@@ -38,7 +38,7 @@ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
+ const nav_frontend_ikoner_assets_1 = __importDefault(require("nav-frontend-ikoner-assets"));
+ const nav_frontend_popover_1 = __importStar(require("nav-frontend-popover"));
+-require("nav-frontend-hjelpetekst-style");
++require("nav-frontend-hjelpetekst-style/src/hjelpetekst-style.less");
+ class Hjelpetekst extends React.Component {
+     constructor(props) {
+         super(props);

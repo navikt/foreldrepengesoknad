@@ -3,14 +3,24 @@ const server = express();
 server.use(express.json());
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const getDecorator = require('./src/build/scripts/decorator');
+const getDecorator = require('./src/build/scripts/decorator.cjs');
 var compression = require('compression');
 
 server.disable('x-powered-by');
 
+const isDev = process.env.NODE_ENV === 'development';
+
+if (isDev) {
+    require('dotenv').config();
+}
+
 server.use(compression());
 
-server.set('views', `${__dirname}/dist`);
+if (isDev) {
+    server.set('views', `${__dirname}`);
+} else {
+    server.set('views', `${__dirname}/dist`);
+}
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
@@ -35,31 +45,45 @@ const renderApp = (decoratorFragments) =>
         });
     });
 
-const startServer = (html) => {
-    server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
-    server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
-
-    server.get(['/dist/settings.js'], (_req, res) => {
-        res.set('content-type', 'application/javascript');
-        res.send(`window.appSettings = {
-            APP_VERSION: '${process.env.APP_VERSION}',
-            REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-            UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
-            LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
-            FAMILIE: '${process.env.FAMILIE}',
-            FEATURE_VIS_PERIODER_SOM_SENDES_INN:  '${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}',
-            FEATURE_WLB_GJELDER_FRA_FORSTE_JAN:  '${process.env.FEATURE_WLB_GJELDER_FRA_FORSTE_JAN}',
-            FEATURE_VIS_FEILSIDE:  '${process.env.FEATURE_VIS_FEILSIDE}',
-            FEATURE_VIS_ALERTSTRIPE:  '${process.env.FEATURE_VIS_ALERTSTRIPE}',
-        };`);
-    });
-
+const startServer = async (html) => {
     server.get('/health/isAlive', (_req, res) => res.sendStatus(200));
     server.get('/health/isReady', (_req, res) => res.sendStatus(200));
 
-    server.get(/^\/(?!.*dist).*$/, (_req, res) => {
-        res.send(html);
-    });
+    if (isDev) {
+        const fs = require('fs');
+        fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+        const vedleggMockStore = './dist/vedlegg';
+
+        if (!fs.existsSync(vedleggMockStore)) {
+            fs.mkdirSync(vedleggMockStore);
+        }
+
+        const vite = await require('vite').createServer({
+            root: __dirname,
+            server: {
+                middlewareMode: true,
+                port: 8080,
+                open: './index-decorated.html',
+            },
+        });
+
+        server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
+            const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
+            const fileExists = fs.existsSync(fullPath);
+
+            if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
+                req.url = '/index-decorated.html';
+            }
+            next();
+        });
+
+        server.use(vite.middlewares);
+    } else {
+        server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
+        server.get(/^\/(?!.*dist).*$/, (_req, res) => {
+            res.send(html);
+        });
+    }
 
     const port = process.env.PORT || 8080;
     server.listen(port, () => {

@@ -30,6 +30,8 @@ export const getÅrsakDersomUgyldigStartdato = (
     } else if (førsteMuligeStartdato && dayjs(startdato).isBefore(førsteMuligeStartdato, 'day')) {
         return 'fortidlig';
     }
+
+    return undefined;
 };
 
 const VeilederStartdatoPermisjon: React.FunctionComponent<Props> = ({
