@@ -13,9 +13,9 @@ describe('useUttaksplanInfo', () => {
             } as UttaksplanInfo,
         } as ForeldrepengesøknadContextState;
 
-        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state,
-            dispatch: () => vi.fn(),
+            dispatch: () => jest.fn(),
         }));
 
         const { result } = renderHook(() => useUttaksplanInfo());

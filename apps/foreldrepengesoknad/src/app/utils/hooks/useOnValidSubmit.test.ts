@@ -5,16 +5,16 @@ import useOnValidSubmit from './useOnValidSubmit';
 import { storeAppState } from '../submitUtils';
 import { renderHook, waitFor } from '@testing-library/react';
 
-const mockedNavigator = vi.fn();
+const mockedNavigator = jest.fn();
 
-vi.mock('react-router-dom', () => ({
-    ...(vi.importActual('react-router-dom') as any),
+jest.mock('react-router-dom', () => ({
+    ...(jest.requireActual('react-router-dom') as any),
     useNavigate: () => mockedNavigator,
 }));
 
 describe('useOnValidSubmit', () => {
     it('skal returnere funksjon for å lagre data til state og så til server', () => {
-        const dispatchMock = vi.fn();
+        const dispatchMock = jest.fn();
         const state = {
             søkerinfo: {
                 person: {
@@ -23,7 +23,7 @@ describe('useOnValidSubmit', () => {
             },
         } as ForeldrepengesøknadContextState;
 
-        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state,
             dispatch: dispatchMock,
         }));
@@ -42,7 +42,7 @@ describe('useOnValidSubmit', () => {
     });
 
     it('skal returnere og så kjøre funksjon for å lagre data til state og så til server', async () => {
-        const dispatchMock = vi.fn();
+        const dispatchMock = jest.fn();
         const state = {
             søkerinfo: {
                 person: {
@@ -52,7 +52,7 @@ describe('useOnValidSubmit', () => {
             currentRoute: SøknadRoutes.UTTAKSPLAN_INFO,
         } as ForeldrepengesøknadContextState;
 
-        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state,
             dispatch: dispatchMock,
         }));

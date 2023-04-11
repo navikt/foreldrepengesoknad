@@ -5,19 +5,19 @@ import AppContainer from './AppContainer';
 
 describe('<AppContainer>', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        jest.clearAllMocks();
     });
 
     it('skal returnere spinner når data blir hentet', () => {
-        vi.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
+        jest.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
             søkerinfoData: undefined,
             søkerinfoError: null,
         }));
-        vi.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
+        jest.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
             sakerData: undefined,
             sakerError: null,
         }));
-        vi.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
+        jest.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
             storageData: undefined,
             storageError: null,
         }));

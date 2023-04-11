@@ -7,7 +7,7 @@ index 3c6dc15772d0703e58b7655f10975dfc32776ae2..48497fbbafb209a980c6c3179e02379b
  const nav_frontend_ikoner_assets_1 = __importDefault(require("nav-frontend-ikoner-assets"));
  const nav_frontend_popover_1 = __importStar(require("nav-frontend-popover"));
 -require("nav-frontend-hjelpetekst-style");
-+require("nav-frontend-hjelpetekst-style/src/hjelpetekst-style.less");
++require("nav-frontend-hjelpetekst-style/dist/main.css");
  class Hjelpetekst extends React.Component {
      constructor(props) {
          super(props);

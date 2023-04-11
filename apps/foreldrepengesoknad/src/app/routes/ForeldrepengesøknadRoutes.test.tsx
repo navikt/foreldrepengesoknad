@@ -10,8 +10,8 @@ import IntlProvider from '../intl/IntlProvider';
 import Person from 'app/types/Person';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 
-vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
-    return vi.fn();
+jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
+    return jest.fn();
 });
 
 describe('<ForeldrepengesøknadRoutes>', () => {
@@ -42,9 +42,9 @@ describe('<ForeldrepengesøknadRoutes>', () => {
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', async () => {
-        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state,
-            dispatch: () => vi.fn(),
+            dispatch: () => jest.fn(),
         }));
         render(
             <BrowserRouter>
@@ -64,7 +64,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
     });
 
     it('skal vise om-barnet-side når denne ruten er valgt', async () => {
-        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state: {
                 ...state,
                 currentRoute: SøknadRoutes.OM_BARNET,
@@ -89,7 +89,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                 saker: [],
                 søknadGjelderEtNyttBarn: true,
             },
-            dispatch: () => vi.fn(),
+            dispatch: () => jest.fn(),
         }));
         render(
             <BrowserRouter>

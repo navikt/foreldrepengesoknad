@@ -105,7 +105,7 @@ index 463c73f67f81696706bbff1fbd1160ba5abd2fa2..9c1648539427a326047dcb8d9a15cf14
 +const nav_frontend_ikoner_assets_1 = __importDefault(
 +  require("nav-frontend-ikoner-assets")
 +);
-+require("nav-frontend-alertstriper-style/src/index.less");
++require("nav-frontend-alertstriper-style/dist/main.css");
 +const cls = (type, form, className) =>
 +  (0, classnames_1.default)("alertstripe", className, {
      "alertstripe--info": type === "info",

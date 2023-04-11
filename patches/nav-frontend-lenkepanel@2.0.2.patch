@@ -7,7 +7,7 @@ index 8a7a74d30b07209e97316ca779da9fccf6525f0c..5d1562e7c6c477032e017fb0b59b274f
  const React = __importStar(require("react"));
  const classnames_1 = __importDefault(require("classnames"));
 -require("nav-frontend-lenkepanel-style");
-+require("nav-frontend-lenkepanel-style/src/index.less");
++require("nav-frontend-lenkepanel-style/dist/main.css");
  const cls = (className, border) => (0, classnames_1.default)("lenkepanel", className, {
      "lenkepanel--border": border,
  });
@@ -20,7 +20,7 @@ index b0e8a3fd23e2c6888df8fad0ec2664b508c6002c..6ea3ddcca994dfa3ea7bd39a54d14ed1
  const React = __importStar(require("react"));
  const nav_frontend_typografi_1 = __importDefault(require("nav-frontend-typografi"));
 -require("nav-frontend-lenkepanel-style");
-+require("nav-frontend-lenkepanel-style/src/index.less");
++require("nav-frontend-lenkepanel-style/dist/main.css");
  const Lenkepanel_base_1 = __importDefault(require("./Lenkepanel-base"));
  class Lenkepanel extends React.PureComponent {
      render() {

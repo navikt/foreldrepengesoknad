@@ -9,8 +9,8 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from './eksisterendeSakUtils';
 
-vi.mock('nav-frontend-js-utils', () => ({
-    ...(vi.importActual('nav-frontend-js-utils') as any),
+jest.mock('nav-frontend-js-utils', () => ({
+    ...(jest.requireActual('nav-frontend-js-utils') as any),
     guid: () => '1',
 }));
 
@@ -394,7 +394,7 @@ describe('eksisterendeSakUtils', () => {
     };
 
     afterAll(() => {
-        vi.clearAllMocks();
+        jest.clearAllMocks();
     });
 
     describe('getArbeidsformFromUttakArbeidstype', () => {

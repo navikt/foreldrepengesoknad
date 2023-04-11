@@ -7,7 +7,7 @@ index ad8d4b3cb9f6ad3e2772ffd3fb2ab9c9ddb70b5d..6a713b47b831febe70abb9beb2c4afc1
  const classnames_1 = __importDefault(require("classnames"));
  const react_collapse_1 = require("react-collapse");
 -require("nav-frontend-ekspanderbartpanel-style");
-+require("nav-frontend-ekspanderbartpanel-style/src/index.less");
++require("nav-frontend-ekspanderbartpanel-style/dist/main.css");
  const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
  const cls = (props) => (0, classnames_1.default)("ekspanderbartPanel", props.className, {
      "ekspanderbartPanel--lukket": !props.apen,
@@ -20,7 +20,7 @@ index f75e0a515a6e43cf67284567f3835984877db34d..b3588e5b70cbe57b5de0e87324a11924
  exports.EkspanderbartpanelBase = void 0;
  const React = __importStar(require("react"));
 -require("nav-frontend-ekspanderbartpanel-style");
-+require("nav-frontend-ekspanderbartpanel-style/src/index.less");
++require("nav-frontend-ekspanderbartpanel-style/dist/main.css");
  const ekspanderbartpanel_base_1 = __importDefault(require("./ekspanderbartpanel-base"));
  class Ekspanderbartpanel extends React.Component {
      constructor(props) {

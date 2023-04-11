@@ -7,7 +7,7 @@ index 919bb233027c2fb894a7a7bbe08d487966d2d70e..ca737a573922bdee5e9df02b1f06ff9d
  const classnames_1 = __importDefault(require("classnames"));
  const nav_frontend_typografi_1 = __importDefault(require("nav-frontend-typografi"));
 -require("nav-frontend-etiketter-style");
-+require("nav-frontend-etiketter-style/src/index.less");
++require("nav-frontend-etiketter-style/dist/main.css");
  const cls = (type, mini, className) => (0, classnames_1.default)("etikett", className, {
      "etikett--advarsel": type === "advarsel",
      "etikett--fokus": type === "fokus",

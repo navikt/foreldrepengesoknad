@@ -7,7 +7,7 @@ index 9f39f3c8fe69b733ca69152bd0971ff73f801798..6039810a319247a98f68e560b35d42dd
  const classnames_1 = __importDefault(require("classnames"));
  const nav_frontend_js_utils_1 = require("nav-frontend-js-utils");
 -require("nav-frontend-knapper-style");
-+require("nav-frontend-knapper-style/src/index.less");
++require("nav-frontend-knapper-style/dist/main.css");
  const cls = (props) => (0, classnames_1.default)("knapp", props.className, {
      "knapp--hoved": props.type === "hoved",
      "knapp--fare": props.type === "fare",

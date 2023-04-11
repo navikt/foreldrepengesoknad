@@ -7,7 +7,7 @@ index b43f4fbd1f8e076e6ecc3d453373a2d390d03d9d..d77f0dd23bd32d65f9b36341e8180707
  const classnames_1 = __importDefault(require("classnames"));
  const nav_frontend_ikoner_assets_1 = __importDefault(require("nav-frontend-ikoner-assets"));
 -require("nav-frontend-spinner-style");
-+require("nav-frontend-spinner-style/src/spinner-style.less");
++require("nav-frontend-spinner-style/dist/main.css");
  const cls = (className, storrelse) => classnames_1.default("spinner", className, {
      [`spinner--${storrelse.toLowerCase()}`]: !!storrelse,
  });

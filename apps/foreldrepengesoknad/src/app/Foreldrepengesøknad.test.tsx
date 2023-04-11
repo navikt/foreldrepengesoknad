@@ -9,19 +9,19 @@ import IntlProvider from './intl/IntlProvider';
 
 describe('<Foreldrepengesøknad>', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        jest.clearAllMocks();
     });
 
     it('skal returnere spinner når data blir hentet', () => {
-        vi.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
+        jest.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
             søkerinfoData: undefined,
             søkerinfoError: null,
         }));
-        vi.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
+        jest.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
             storageData: undefined,
             storageError: null,
         }));
-        vi.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
+        jest.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
             sakerData: undefined,
             sakerError: null,
         }));
@@ -62,9 +62,9 @@ describe('<Foreldrepengesøknad>', () => {
             sakerData: { engangsstønad: [], foreldrepenger: [], svangerskapspenger: [] },
             sakerError: null,
         };
-        vi.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
-        vi.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
-        vi.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
+        jest.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
+        jest.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
+        jest.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
 
         render(
             <ForeldrepengesøknadContextProvider>

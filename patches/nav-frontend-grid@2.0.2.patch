@@ -7,7 +7,7 @@ index 97c6411f4fcb1fd23e768ee52a556f7615689a95..ddeda541eb05ca9df3f63e3e80ada166
  const React = __importStar(require("react"));
  const classnames_1 = __importDefault(require("classnames"));
 -require("nav-frontend-grid-style");
-+require("nav-frontend-grid-style/src/index.less");
++require("nav-frontend-grid-style/dist/main.css");
  const cls = (className, xs, sm, md, lg) => (0, classnames_1.default)("col", className, {
      [`col-xs-${xs}`]: !!xs,
      [`col-sm-${sm}`]: !!sm,

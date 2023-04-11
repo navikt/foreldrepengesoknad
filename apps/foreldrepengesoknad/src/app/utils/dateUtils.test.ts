@@ -954,7 +954,7 @@ describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 
 
 describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 2022', () => {
     const toggleUtils = require('../utils/toggleUtils');
-    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
+    const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
 
     beforeAll(() => {
         MockDate.set(andreAugust2022);
@@ -996,7 +996,7 @@ describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 202
 
 describe('To tette - WLB i prod', () => {
     const toggleUtils = require('../utils/toggleUtils');
-    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
+    const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
     beforeAll(() => {
         featureIsEnabledMock.mockImplementation(() => false);
     });
@@ -1036,7 +1036,7 @@ describe('To tette - WLB i prod', () => {
 
 describe('To tette - WLB i dev', () => {
     const toggleUtils = require('../utils/toggleUtils');
-    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
+    const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
     beforeAll(() => {
         featureIsEnabledMock.mockImplementation(() => true);
     });

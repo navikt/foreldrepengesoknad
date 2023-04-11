@@ -7,7 +7,7 @@ index 671ed35aa582e5cb18e9fd7d0abf08e86be45b4b..cf4242f43199df27021df0a070994328
  const React = __importStar(require("react"));
  const classnames_1 = __importDefault(require("classnames"));
 -require("nav-frontend-typografi-style");
-+require("nav-frontend-typografi-style/src/index.less");
++require("nav-frontend-typografi-style/dist/main.css");
  exports.typeConfigMap = {
      sidetittel: {
          defaultTag: "h1",

@@ -7,7 +7,7 @@ index a49b33d911a13791eccd884cea83866a12be864f..0a2ee51db0cbf08c2c22ee399ad00f7e
  const React = __importStar(require("react"));
  const classnames_1 = __importDefault(require("classnames"));
 -require("nav-frontend-lenker-style");
-+require("nav-frontend-lenker-style/src/lenker-style.less");
++require("nav-frontend-lenker-style/dist/main.css");
  const getRelFromTarget = (target) => {
      if (!target ||
          target.toLowerCase() === "_self" ||

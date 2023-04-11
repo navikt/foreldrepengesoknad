@@ -7,7 +7,7 @@ index 745527d35579c7cf869821106d7e4193e0ca1059..389c9a82b2e8b8f38e76a7fe85a557c4
  const React = __importStar(require("react"));
  const classnames_1 = __importDefault(require("classnames"));
 -require("nav-frontend-popover-style");
-+require("nav-frontend-popover-style/src/popover-style.less");
++require("nav-frontend-popover-style/dist/main.css");
  // tslint:disable-next-line:max-line-length
  var PopoverOrientering;
  (function (PopoverOrientering) {

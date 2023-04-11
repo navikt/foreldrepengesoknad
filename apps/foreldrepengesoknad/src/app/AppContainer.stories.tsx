@@ -3,10 +3,10 @@ import { Story } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import søkerinfo from '../storybook/stories/app-container/mock_data/sokerinfo.json';
-import annenPartVedtak from '../../storybook/stories/app-container/mock_data/annenPartVedtak.json';
-import saker from '../../storybook/stories/app-container/mock_data/saker.json';
-import storageKvittering from '../../storybook/stories/app-container/mock_data/storage_kvittering.json';
-import stønadskontoer from '../../storybook/stories/app-container/mock_data/stønadskontoer.json';
+import annenPartVedtak from '../storybook/stories/app-container/mock_data/annenPartVedtak.json';
+import saker from '../storybook/stories/app-container/mock_data/saker.json';
+import storageKvittering from '../storybook/stories/app-container/mock_data/storage_kvittering.json';
+import stønadskontoer from '../storybook/stories/app-container/mock_data/stønadskontoer.json';
 
 import AppContainer from './AppContainer';
 import { AxiosInstance } from './api/apiInterceptor';

@@ -80,6 +80,8 @@ module.exports = {
             app: path.resolve(__dirname, './../src/app'),
             uttaksplan: path.resolve(__dirname, './../src/uttaksplan'),
             storybook: path.resolve(__dirname, './../src/storybook'),
+            stories: path.resolve(__dirname, './../src/storybook/stories'),
+            'utils-test': path.resolve(__dirname, './../src/utils-test'),
         };
 
         // Return the altered config

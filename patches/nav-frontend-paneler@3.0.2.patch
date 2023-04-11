@@ -7,7 +7,7 @@ index d0ebed3751e6ac9dc24e2c00b0a37786c0dcc3c6..56c86ec4e69c6b6786542fde0ca5dc56
  const React = __importStar(require("react"));
  const classnames_1 = __importDefault(require("classnames"));
 -require("nav-frontend-paneler-style");
-+require("nav-frontend-paneler-style/src/index.less");
++require("nav-frontend-paneler-style/dist/main.css");
  const cls = (className, border) => (0, classnames_1.default)("panel", className, {
      "panel--border": border,
  });
