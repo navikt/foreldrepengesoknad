@@ -29,24 +29,24 @@ RUN npm install -g pnpm \
     && pnpm install -g pnpm turbo \
     && npm uninstall -g pnpm
 
-COPY patches .
+COPY ./patches/ ./patches/
 
-COPY pnpm-lock.yaml .
-RUN pnpm fetch
+# COPY pnpm-lock.yaml .
+# RUN pnpm fetch
 
-COPY --from=prepare /usr/src/app ./
+# COPY --from=prepare /usr/src/app ./
 
-RUN pnpm install --frozen-lockfile --offline
+# RUN pnpm install --frozen-lockfile --offline
 
-COPY . .
+# COPY . .
 
-RUN --mount=type=cache,target=/run/turbo,id=turbo \
-    mkdir -p /run/turbo \
-    && mkdir -p node_modules/.cache \
-    && rm -rf node_modules/.cache/turbo \
-    && ln -s /run/turbo node_modules/.cache/turbo \
-    && turbo test \
-    && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
+# RUN --mount=type=cache,target=/run/turbo,id=turbo \
+#     mkdir -p /run/turbo \
+#     && mkdir -p node_modules/.cache \
+#     && rm -rf node_modules/.cache/turbo \
+#     && ln -s /run/turbo node_modules/.cache/turbo \
+#     && turbo test \
+#     && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
 #########################################
 # PNPM - Dependency of all images
