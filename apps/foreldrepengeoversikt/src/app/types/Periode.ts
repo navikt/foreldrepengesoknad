@@ -7,6 +7,7 @@ import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 import { MorsAktivitet } from './MorsAktivitet';
 
 export interface Periode {
+    id: string;
     fom: string;
     tom: string;
     resultat: PeriodeResultat;
@@ -19,6 +20,8 @@ export interface Periode {
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
     angittAvAnnenPart?: boolean;
+    gjelderAnnenPart?: boolean;
+    visIPlan?: boolean;
 }
 
 export enum PeriodeHullType {
