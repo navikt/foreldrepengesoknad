@@ -16,7 +16,7 @@
         "start-express": "node ./server.js",
         "upgrade": "npm-check --update",
         "jest": "jest --color",
-        "test": "jest --color",
+        "test": "jest --color --runInBand",
         "tsc": "tsc  --pretty",
         "storybook": "start-storybook -p 9001 --quiet",
         "build-storybook": "build-storybook -o .storybook-static-build"

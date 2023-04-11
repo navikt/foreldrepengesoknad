@@ -10,7 +10,7 @@
         "start-express": "node ./server.js",
         "dev-api": "node ./mock-api-server.cjs",
         "dev": "NODE_ENV=development node ./server.cjs",
-        "test": "pnpm jest --color --config ./jest/jest.config.cjs --maxWorkers 4",
+        "test": "pnpm jest --color --config ./jest/jest.config.cjs --runInBand",
         "vitest": "vitest",
         "storybook": "start-storybook -p 9001 --quiet",
         "build-storybook": "build-storybook -o .storybook-static-build"
