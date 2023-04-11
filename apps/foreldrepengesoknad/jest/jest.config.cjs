@@ -9,7 +9,6 @@ module.exports = {
         '^utils-test/(.*)': '<rootDir>/src/utils-test/$1',
         '^stories/(.*)': '<rootDir>/src/storybook/stories/$1',
         '^storybook/(.*)': '<rootDir>/src/storybook/$1',
-        'Environment.ts': '<rootDir>/jest/mocks/Environment.ts',
     },
     rootDir: '../',
     roots: ['<rootDir>/src/app/', '<rootDir>/src/uttaksplan'],
