@@ -1,3 +1,4 @@
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
@@ -29,7 +30,7 @@ const useGetSaker = () => {
 };
 
 const useGetAnnenPartsVedtak = (isSuspended: boolean) => {
-    const { data, error } = useRequest<any>('/innsyn/v2/annenPartVedtak', {
+    const { data, error } = useRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', {
         config: { withCredentials: true },
         isSuspended,
     });
