@@ -53,7 +53,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
     const søkerinfo = useSøkerinfo();
     const { registrerteBarn } = søkerinfo;
     const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
-    const sortedSelectableBarn = selectableBarn.sort(sorterSelectableBarnEtterYngst);
+    const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     useSaveLoadedRoute(SøknadRoutes.VELKOMMEN);
 

@@ -24,7 +24,7 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
                         {tittel}
                     </Link>
                 </div>
-                <BodyShort size="small">{formatDateExtended(mottatt)}</BodyShort>
+                <BodyShort>{formatDateExtended(mottatt)}</BodyShort>
                 <DokumentAvsender type={type} />
             </div>
         </div>

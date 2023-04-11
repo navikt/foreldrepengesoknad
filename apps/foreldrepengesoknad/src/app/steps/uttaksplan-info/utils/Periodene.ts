@@ -68,7 +68,7 @@ export const Periodene = (perioder: Periode[]) => ({
     finnDenForegåendePerioden: (periode: Periode) => finnForrigePeriode(perioder, periode),
     finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
-    sort: () => perioder.sort(sorterPerioder),
+    sort: () => [...perioder].sort(sorterPerioder),
     finnSisteInfoperiode: () => finnSisteInfoperiode(perioder),
 });
 
@@ -319,7 +319,7 @@ function getAntallFeriedager(perioder: Periode[], forelder?: Forelder): number {
     return getFerieUtsettelser(perioder)
         .filter((p) => (isValidTidsperiode(p.tidsperiode) && forelder ? p.forelder === forelder : true))
         .map((p) => Tidsperioden(p.tidsperiode).getAntallUttaksdager())
-        .reduce((tot = 0, curr) => tot + curr, 0);
+        .reduce((tot, curr) => tot + curr, 0);
 }
 
 function getPerioderMedFerieForForelder(perioder: Periode[], forelder: Forelder): Periode[] {

@@ -20,7 +20,6 @@ moment.locale('nb');
 class IntlProvider extends React.Component<any, StateProps> {
     constructor(props: StateProps) {
         super(props);
-        //addLocaleData([...nb, ...nn]);
     }
 
     render() {

@@ -8,7 +8,7 @@ import {
     sisteMuligeDatoForOvertaOmsorg,
     intlUtils,
 } from '@navikt/fp-common';
-import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
+import datepickerUtils from '@navikt/sif-common-formik-ds/lib/components/formik-datepicker/datepickerUtils';
 import { IntlShape } from 'react-intl';
 
 export const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {
@@ -76,15 +76,6 @@ export const validateAdopsjonFødselDate = (
     if (etterDagensDato(dato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere');
     }
-    // if (!barnetErMerEnn15årPåSøknadsDato(dato, adopsjonsdato)) {
-    //     if (sisteDatoAdoptertBarnKanVæreFødt(dato, adopsjonsdato)) {
-    //         return intlUtils(intl, 'valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn15ÅrTilbake');
-    //     }
-    //     if (barnetErIkkeFødtFørAdopsjonsDato(dato, adopsjonsdato)) {
-    //         return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.barnetErIkkeFødtFørAdopsjonsDato');
-    //     }
-    //     return undefined;
-    // }
     return undefined;
 };
 

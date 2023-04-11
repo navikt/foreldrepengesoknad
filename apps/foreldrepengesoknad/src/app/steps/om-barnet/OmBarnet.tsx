@@ -39,7 +39,13 @@ const OmBarnet: React.FunctionComponent = () => {
     const { søknadGjelderEtNyttBarn } = state;
     const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
         const valgtBarn = !søknadGjelderEtNyttBarn ? barn : undefined;
-        const oppdatertBarn = mapOmBarnetFormDataToState(values, arbeidsforhold, valgtBarn, søkersituasjon.situasjon);
+        const oppdatertBarn = mapOmBarnetFormDataToState(
+            values,
+            arbeidsforhold,
+            valgtBarn,
+            søkersituasjon.situasjon,
+            barnSøktOmFørMenIkkeRegistrert
+        );
         return [actionCreator.setOmBarnet(oppdatertBarn)];
     };
 
@@ -69,9 +75,13 @@ const OmBarnet: React.FunctionComponent = () => {
               )
             : [];
 
-    const valgteRegistrerteBarn = !søknadGjelderEtNyttBarn
-        ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
-        : undefined;
+    const valgteRegistrerteBarn =
+        !søknadGjelderEtNyttBarn && !isUfødtBarn(barn)
+            ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
+            : undefined;
+    const barnSøktOmFørMenIkkeRegistrert =
+        !søknadGjelderEtNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
+
     return (
         <OmBarnetFormComponents.FormikWrapper
             initialValues={getOmBarnetInitialValues(barn, arbeidsforhold)}
@@ -83,7 +93,7 @@ const OmBarnet: React.FunctionComponent = () => {
                     situasjon: søkersituasjon.situasjon,
                     rolle: søkersituasjon.rolle,
                     valgteRegistrerteBarn,
-                    søknadGjelderEtNyttBarn,
+                    søknadGjelderEtNyttBarn: barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn,
                 });
 
                 const farMedmorSøkerPåTerminFørWLB =
@@ -110,7 +120,7 @@ const OmBarnet: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
-                            {valgteRegistrerteBarn !== undefined && (
+                            {valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0 && (
                                 <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} visibility={visibility} />
                             )}
                             <BarnFødtEllerAdoptert visibility={visibility} />
@@ -130,7 +140,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues}
                                 visibility={visibility}
-                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn}
                             />
                             <Fødsel
                                 søkersituasjon={søkersituasjon}

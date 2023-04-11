@@ -1,4 +1,12 @@
 .dokument-avsender {
     padding: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dokument-avsender__text {
+    align-self: center;
     background-color: var(--a-gray-50);
+    border: 1px solid var(--a-gray-300);
+    padding: 0.25rem 0.5rem;
 }

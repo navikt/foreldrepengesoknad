@@ -8,9 +8,9 @@ import {
     getSisteUttaksdag6UkerEtterFødsel,
     gjelderWLBReglerFarMedmorRundtFødsel,
     slutterTidsperiodeInnen6UkerEtterFødsel,
+    ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
 } from 'app/utils/wlbUtils';
 import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 
 const overskridelseUttakRundtFødselAntallDager = (

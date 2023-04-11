@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
+import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { redirectToLogin } from '../redirectToLogin';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';

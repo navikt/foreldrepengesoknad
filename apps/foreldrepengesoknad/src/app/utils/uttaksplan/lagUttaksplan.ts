@@ -85,7 +85,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
-                søkerErFarEllerMedmor && !erDeltUttak,
+                false,
                 søkerErFarEllerMedmor,
                 førsteUttaksdagNesteBarnsSak
             );
@@ -107,7 +107,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
-                søkerErFarEllerMedmor && !erDeltUttak,
+                søkerErFarEllerMedmor,
                 søkerErFarEllerMedmor,
                 førsteUttaksdagNesteBarnsSak
             );

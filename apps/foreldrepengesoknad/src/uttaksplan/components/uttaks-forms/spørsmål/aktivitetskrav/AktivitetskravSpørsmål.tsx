@@ -63,7 +63,10 @@ const getVeilederTekst = (
                 </ul>
             </>
         );
-    } else if (morsAktivitetIPerioden === MorsAktivitet.Innlagt) {
+    } else if (
+        morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
+        morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+    ) {
         return (
             <Normaltekst>
                 <FormattedMessage
@@ -87,15 +90,6 @@ const getVeilederTekst = (
                 <FormattedMessage
                     id="uttaksplan.morsAktivitet.veileder.kvalifiseringsprogrammet"
                     values={{ navnMor: navnPåForeldre.mor }}
-                />
-            </Normaltekst>
-        );
-    } else if (morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp) {
-        return (
-            <Normaltekst>
-                <FormattedMessage
-                    id="uttaksplan.morsAktivitet.veileder.informasjonVedSykdomAnnenForelder"
-                    values={{ navn: navnPåForeldre.mor }}
                 />
             </Normaltekst>
         );

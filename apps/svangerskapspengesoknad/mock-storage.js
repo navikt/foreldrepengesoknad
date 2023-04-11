@@ -1,12 +1,12 @@
 const path = require('path');
 const fs = require('fs');
 
-const updateSoknad = function(soknadsdata) {
+const updateSoknad = function (soknadsdata) {
     const fileName = getFilePath('soknad.json');
     fs.writeFileSync(fileName, JSON.stringify(soknadsdata, null, 4));
 };
 
-const getSoknad = function() {
+const getSoknad = function () {
     const fileName = getFilePath('soknad.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -19,12 +19,12 @@ const getSoknad = function() {
     }
 };
 
-const getFilePath = function(filnavn) {
-    var directories = ['.', 'mock_data', filnavn];
+const getFilePath = function (filnavn) {
+    const directories = ['.', 'mock_data', filnavn];
     return directories.join(path.sep);
 };
 
-const getSokerInfo = function() {
+const getSokerInfo = function () {
     const fileName = getFilePath('sokerinfo.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -37,7 +37,7 @@ const getSokerInfo = function() {
     }
 };
 
-const getSoknadSendt = function() {
+const getSoknadSendt = function () {
     const fileName = getFilePath('soknad_sendt.json');
     if (!fs.existsSync(fileName)) {
         return {};

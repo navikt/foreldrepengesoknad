@@ -484,8 +484,8 @@ export interface DeltUttakParams {
     farSinFørsteUttaksdag: Date | undefined;
     begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
-    annenForelderHarRettPåForeldrepengerIEØS?: boolean | undefined;
-    termindato?: Date | undefined;
+    annenForelderHarRettPåForeldrepengerIEØS?: boolean;
+    termindato?: Date;
 }
 
 export const deltUttak = (params: DeltUttakParams) => {

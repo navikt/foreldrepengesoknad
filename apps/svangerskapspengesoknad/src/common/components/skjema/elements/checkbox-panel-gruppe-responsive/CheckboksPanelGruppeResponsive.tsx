@@ -5,7 +5,7 @@ import './checkboksPanelGruppeResponsive.less';
 import 'nav-frontend-skjema-style';
 
 interface ResponsiveProps {
-    columns?: undefined | 2 | 1;
+    columns: undefined | 2 | 1;
     disabled?: boolean;
 }
 

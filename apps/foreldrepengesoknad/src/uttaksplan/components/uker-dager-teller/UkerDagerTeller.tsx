@@ -3,11 +3,10 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 import { guid } from 'nav-frontend-js-utils';
 import Fieldset from 'app/components/fieldset/Fieldset';
-import { Block } from '@navikt/fp-common';
+import { Block, bemUtils } from '@navikt/fp-common';
 import NumberStepper, { Props as NumberStepperProps } from './../number-stepper/NumberStepper';
 
 import './ukerDagerTeller.less';
-import { bemUtils } from '@navikt/fp-common';
 
 export interface Props {
     ukeLegend: string;

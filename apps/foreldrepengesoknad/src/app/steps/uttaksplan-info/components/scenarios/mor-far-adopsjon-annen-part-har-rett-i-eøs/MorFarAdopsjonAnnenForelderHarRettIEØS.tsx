@@ -77,8 +77,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
-            dateToISOString(ankomstdato),
-            undefined
+            dateToISOString(ankomstdato)
         );
 
         return [
@@ -198,8 +197,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                             formValues.startdatoAdopsjonValg!,
                                             undefined,
                                             dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato),
-                                            undefined
+                                            dateToISOString(ankomstdato)
                                         )
                                     ),
                                     'day'

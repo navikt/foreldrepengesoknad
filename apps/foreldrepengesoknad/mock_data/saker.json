@@ -1,41 +1,46 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352009416",
+            "saksnummer": "352011594",
             "sakAvsluttet": false,
-            "sisteSøknadMottattDato": "2022-10-11",
-            "kanSøkeOmEndring": true,
-            "sakTilhørerMor": true,
-            "gjelderAdopsjon": false,
+            "sisteSøknadMottattDato": "2023-03-31",
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": false,
+            "gjelderAdopsjon": true,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
-            "familiehendelse": { "fødselsdato": "2022-10-12", "antallBarn": 1 },
-            "gjeldendeVedtak": {
-                "perioder": [
+            "annenPart": {
+                "type": "person",
+                "fnr": "05489305072",
+                "fornavn": "Sentral",
+                "etternavn": "Tangent"
+            },
+            "familiehendelse": {
+                "fødselsdato": "2023-02-01",
+                "antallBarn": 1,
+                "omsorgsovertakelse": "2023-04-10"
+            },
+            "åpenBehandling": {
+                "tilstand": "VENT_INNTEKTSMELDING",
+                "søknadsperioder": [
                     {
-                        "fom": "2022-09-21",
-                        "tom": "2022-10-11",
-                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
-                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "fom": "2023-04-10",
+                        "tom": "2023-07-21",
+                        "kontoType": "FEDREKVOTE",
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2022-10-12",
-                        "tom": "2022-11-22",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": { "innvilget": true, "trekkerMinsterett": true },
+                        "fom": "2023-07-24",
+                        "tom": "2023-09-15",
+                        "kontoType": "FELLESPERIODE",
+                        "morsAktivitet": "UTDANNING",
                         "flerbarnsdager": false
                     }
                 ]
             },
-            "barn": [
-                {
-                    "fnr": "020222323022"
-                }
-            ],
-            "annenPart": { "fnr": "15818804312" },
+            "barn": [],
             "dekningsgrad": "HUNDRE"
         }
     ],

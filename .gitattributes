@@ -1,0 +1,2 @@
+# Auto detect file types, if no further configs are given. Set end-of-line to LF.
+* text=auto eol=lf

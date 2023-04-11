@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
 const compression = require('compression');
 const morgan = require('morgan');

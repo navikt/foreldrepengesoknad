@@ -18,8 +18,8 @@ export interface BlockProps {
     margin?: BlockPadding;
     marginTop?: BlockPadding;
     hasChildBlocks?: boolean;
-    align?: undefined | 'left' | 'center' | 'right';
-    style?: 'info' | undefined;
+    align?: 'left' | 'center' | 'right';
+    style?: 'info';
     children: React.ReactNode;
 }
 

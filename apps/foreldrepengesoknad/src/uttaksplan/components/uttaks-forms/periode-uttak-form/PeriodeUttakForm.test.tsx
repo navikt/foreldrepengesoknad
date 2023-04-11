@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/components/PeriodeUttakForm.stories';
+import * as stories from './PeriodeUttakForm.stories';
 import dayjs from 'dayjs';
 
 const {

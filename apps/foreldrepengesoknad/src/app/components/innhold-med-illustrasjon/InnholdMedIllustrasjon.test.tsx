@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/components/InnholdMedIllustrasjon.stories';
+import * as stories from './InnholdMedIllustrasjon.stories';
 
 const { Default, MedIllustrasjon, MedIllustrasjonOgInfoboks } = composeStories(stories);
 

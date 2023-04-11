@@ -20,6 +20,7 @@ const webpackConfig = {
         alias: {
             app: path.resolve(__dirname, './../../app'),
             uttaksplan: path.resolve(__dirname, './../../uttaksplan'),
+            storybook: path.resolve(__dirname, './../../storybook'),
         },
     },
     module: {

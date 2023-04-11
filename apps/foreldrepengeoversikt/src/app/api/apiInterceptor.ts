@@ -3,7 +3,7 @@ import Environment from 'app/Environment';
 
 const apiBaseUrl = Environment.REST_API_URL;
 
-const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
+export const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
 
 const getAxiosInstance = (fnr?: string) => {
     AxiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {

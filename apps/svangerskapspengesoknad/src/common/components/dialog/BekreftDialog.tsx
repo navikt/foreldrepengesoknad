@@ -19,7 +19,7 @@ export interface Props {
     /** Label for avbryt-knapp. Default hentes fra intl: komponent.bekreftDialog.avbrytLabel */
     avbrytLabel?: string;
     /** Maks bredde */
-    størrelse?: undefined | '30';
+    størrelse: undefined | '30';
     children: ReactNode;
     isOpen: boolean;
     onRequestClose: () => void;
@@ -50,16 +50,25 @@ const BekreftDialog: FunctionComponent<Props> = ({
             <Modal.Content>
                 {isOpen && (
                     <>
-                        {tittel && <Heading size="medium" className="blokk-s">{tittel}</Heading>}
+                        {tittel && (
+                            <Heading size="medium" className="blokk-s">
+                                {tittel}
+                            </Heading>
+                        )}
                         <div className="blokk-m">{children}</div>
                         <Knapperad>
-                            <Button variant="primary" onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
+                            <Button
+                                variant="primary"
+                                onClick={() => onBekreft()}
+                                className="bekreftDialog__bekreftKnapp"
+                            >
                                 {bekreftLabel ||
                                     intl.formatMessage({
                                         id: 'komponent.bekreftDialog.bekreftLabel',
                                     })}
                             </Button>
-                            <Button variant="secondary"
+                            <Button
+                                variant="secondary"
                                 onClick={() => (onAvbryt ? onAvbryt() : onRequestClose())}
                                 className="bekreftDialog__avbrytKnapp"
                             >

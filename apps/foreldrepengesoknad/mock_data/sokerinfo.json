@@ -1,38 +1,23 @@
 {
     "søker": {
-        "fnr": "14089008469",
-        "fornavn": "Kognitiv",
-        "etternavn": "Postnummer",
-        "kjønn": "K",
-        "fødselsdato": "1990-08-14",
+        "fnr": "06499121154",
+        "fornavn": "Tapper",
+        "etternavn": "Konvolutt",
+        "kjønn": "M",
+        "fødselsdato": "1991-09-06",
         "ikkeNordiskEøsLand": false,
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
-        },
-        "barn": [
-            {
-                "fnr": "020222323022",
-                "fornavn": "Underfundig",
-                "etternavn": "Hullemaskin",
-                "kjønn": "K",
-                "fødselsdato": "2022-10-12",
-                "annenForelder": {
-                    "fnr": "15818804322",
-                    "fornavn": "Komplett",
-                    "etternavn": "Almanakk",
-                    "fødselsdato": "1989-07-26"
-                }
-            }
-        ]
+        }
     },
     "arbeidsforhold": [
         {
-            "arbeidsgiverId": "947064649",
+            "arbeidsgiverId": "896929119",
             "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "SJOKKERENDE ELEKTRIKER",
+            "arbeidsgiverNavn": "SAUEFABRIKK",
             "stillingsprosent": 100,
-            "fom": "2002-06-14"
+            "fom": "2018-03-01"
         }
     ]
 }

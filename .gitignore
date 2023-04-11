@@ -17,3 +17,6 @@ akseptansetest/20*/
 .static_storybook
 .dccache
 .turbo
+.storybook-static-build
+.env
+index-decorated.html

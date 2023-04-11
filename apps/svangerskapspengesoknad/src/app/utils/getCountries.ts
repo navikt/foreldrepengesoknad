@@ -21,7 +21,7 @@ export const getCountries = (visLandUtenforEøs: boolean, visNorge: boolean, loc
         return keepNorway && keepEøsCountry;
     };
 
-    return countryNames.sort(namesDescending).filter(applyFilters);
+    return [...countryNames].sort(namesDescending).filter(applyFilters);
 };
 
 export const getContryName = (countryList: Countries, contrycode: string): string | undefined => {

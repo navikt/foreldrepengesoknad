@@ -40,5 +40,12 @@
         "saksnummer": "352011079",
         "tittel": "Søknad om foreldrepenger ved fødsel",
         "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115874/624862989"
+    },
+    {
+        "type": "INNGÅENDE_DOKUMENT",
+        "mottatt": "2023-01-31T09:06:48",
+        "saksnummer": "352011079",
+        "tittel": "Bekreftelse på ventet fødselsdato",
+        "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115877/624862993"
     }
 ]

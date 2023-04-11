@@ -39,7 +39,7 @@ const AttachmentsUploaderPure: React.FunctionComponent<AttachmentsUploaderProps>
                 onFileDelete={handleOnFileDelete}
             />
             <UtvidetInformasjon apneLabel={<FormattedMessage id="psg.åpneLabel" />}>
-                <PictureScanningGuide backgroundColor="white" />
+                <PictureScanningGuide backgroundColor='white' />
             </UtvidetInformasjon>
         </>
     );

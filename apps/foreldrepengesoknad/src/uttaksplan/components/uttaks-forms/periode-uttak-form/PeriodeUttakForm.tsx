@@ -356,7 +356,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
                                 <OverføringsårsakSpørsmål
                                     vedlegg={values.overføringsdokumentasjon}
-                                    navnAnnenForelder={navnPåAnnenForelder!}
+                                    navnAnnenForelder={navnPåAnnenForelder}
                                     erEndringssøknad={erEndringssøknad}
                                     valgtOverføringsårsak={values.overføringsårsak}
                                 />

@@ -142,13 +142,6 @@ const foreldrepengesøknadReducer = (
             };
         case ForeldrepengesøknadContextActionKeys.LAG_UTTAKSPLANFORSLAG:
         case ForeldrepengesøknadContextActionKeys.SLETT_UTTAKSPLAN:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    uttaksplan: action.payload,
-                },
-            };
         case ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN:
             return {
                 ...state,
