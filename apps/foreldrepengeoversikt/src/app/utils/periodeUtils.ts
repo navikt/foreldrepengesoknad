@@ -15,7 +15,7 @@ import { getTidsperiode, isValidTidsperiode, Tidsperioden } from './tidsperiodeU
 import { Uttaksdagen } from './Uttaksdagen';
 
 export const Periodene = (perioder: Periode[]) => ({
-    sort: () => perioder.sort(sorterPerioder),
+    sort: () => [...perioder].sort(sorterPerioder),
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
