@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/steps/annen-forelder/AnnenForelder.stories';
 import dayjs from 'dayjs';
+import * as stories from './AnnenForelder.stories';
 
 const {
     Default,
