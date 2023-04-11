@@ -415,6 +415,7 @@ const finnAnnenForelderForSaken = (
             : [];
 
     const barnet = barnMedGittFnr || barnMedGittFødselsdato.length > 0 ? barnMedGittFødselsdato[0] : undefined;
+
     if (barnet !== undefined && barnet.annenForelder?.fnr === annenForeldersFnrFraSaken) {
         const annenForelder = barnet.annenForelder;
         const { fornavn } = annenForelder;
@@ -423,6 +424,8 @@ const finnAnnenForelderForSaken = (
         const annenPart: RegistrertAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
+
+    return undefined;
 };
 
 const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {

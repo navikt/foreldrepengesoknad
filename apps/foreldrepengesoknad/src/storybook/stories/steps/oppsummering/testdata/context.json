@@ -8,7 +8,9 @@
         },
         "barn": {
             "type": "født",
-            "fødselsdatoer": ["2021-03-15"],
+            "fødselsdatoer": [
+                "2021-03-15"
+            ],
             "antallBarn": 1,
             "datoForAleneomsorg": "",
             "dokumentasjonAvAleneomsorg": []
@@ -65,9 +67,20 @@
                 "gradert": false
             }
         ],
-        "tilleggsopplysninger": {}
+        "tilleggsopplysninger": {},
+        "dekningsgrad": 100,
+        "harGodkjentOppsummering": true,
+        "vedlegg": [],
+        "ønskerJustertUttakVedFødsel": false
     },
     "version": 4,
     "currentRoute": "/soknad/uttaksplan-info",
-    "søknadGjelderEtNyttBarn": true
+    "søknadGjelderEtNyttBarn": true,
+    "saker": [],
+    "søkerinfo": {},
+    "perioderSomSkalSendesInn": [],
+    "kvittering": {},
+    "antallUkerIUttaksplan": "undefined",
+    "harUttaksplanBlittSlettet": false,
+    "brukerSvarteJaPåAutoJustering": false
 }

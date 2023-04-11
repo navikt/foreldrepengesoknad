@@ -1,11 +1,13 @@
 import FeatureToggle from './FeatureToggle';
 
 const Environment = () => {
-    const appSettings = (window as any).appSettings;
+    const settingsNode = document.getElementById('nav:appSettings') as HTMLScriptElement;
+    const appSettings = JSON.parse(settingsNode.text);
+
     return {
-        REST_API_URL: appSettings.REST_API_URL,
-        UTTAK_API_URL: appSettings.UTTAK_API_URL,
-        LOGIN_URL: appSettings.LOGIN_URL,
+        REST_API_URL: appSettings.FORELDREPENGESOKNAD_API_URL,
+        UTTAK_API_URL: appSettings.FP_UTTAK_SERVICE_URL,
+        LOGIN_URL: appSettings.LOGINSERVICE_URL,
         APP_VERSION: appSettings.APP_VERSION,
         FAMILIE: appSettings.FAMILIE,
         [FeatureToggle.visFeilside]: appSettings[FeatureToggle.visFeilside],

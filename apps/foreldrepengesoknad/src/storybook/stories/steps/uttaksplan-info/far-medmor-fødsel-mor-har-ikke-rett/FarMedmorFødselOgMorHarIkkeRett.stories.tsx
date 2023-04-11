@@ -5,8 +5,8 @@ import MockAdapter from 'axios-mock-adapter/types';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import søkerinfoFarSøker from './testdata/søkerinfoFarSøker.json';
-import contextFarSøker from './testdata/contextFarSøker.json';
+import _søkerinfoFarSøker from './testdata/søkerinfoFarSøker.json';
+import _contextFarSøker from './testdata/contextFarSøker.json';
 import stønadskonto100MorHarIkkeRett from './../testdata/stønadskonto100MorHarIkkeRett.json';
 import stønadskonto80MorHarIkkeRett from './../testdata/stønadskonto80MorHarIkkeRett.json';
 import withIntl from '../../../../decorators/withIntl';
@@ -20,6 +20,9 @@ import { RequestStatus } from 'app/types/RequestState';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/uttak-url/konto';
+
+const contextFarSøker = _contextFarSøker as any;
+const søkerinfoFarSøker = _søkerinfoFarSøker as any;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselOgMorHarIkkeRett',

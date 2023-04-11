@@ -17,7 +17,7 @@
         "start-express": "node ./server.js",
         "dev-api": "node ./mock-api-server.js",
         "dev": "node ./src/build/scripts/start-dev.js",
-        "test": "jest --colors",
+        "test": "jest --colors --runInBand",
         "jest": "jest --colors",
         "tsc": "tsc  --pretty",
         "lint": "eslint src/**",

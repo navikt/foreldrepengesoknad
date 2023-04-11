@@ -404,7 +404,7 @@ export const getEndringstidspunkt = (
     if (søkerensOpprinneligePlan) {
         søkerensUpdatedPlan.forEach((periode, index) => {
             if (endringstidspunktNyPlan) {
-                return endringstidspunktNyPlan;
+                return;
             }
 
             const { fom } = periode.tidsperiode;
@@ -455,7 +455,7 @@ export const getEndringstidspunkt = (
 
         søkerensOpprinneligePlan.forEach((periode) => {
             if (endringstidspunktOpprinneligPlan) {
-                return endringstidspunktOpprinneligPlan;
+                return;
             }
 
             const { fom } = periode.tidsperiode;
@@ -510,6 +510,8 @@ export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Dat
     if (isFarMedmorFødselBeggeHarRettUttaksplanInfo(uttaksplanInfo)) {
         return ISOStringToDate(uttaksplanInfo.morsSisteDag);
     }
+
+    return undefined;
 };
 
 export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>

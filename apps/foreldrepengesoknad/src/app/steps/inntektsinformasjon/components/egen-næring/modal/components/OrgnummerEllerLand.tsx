@@ -30,6 +30,8 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.egenNæring.land');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>

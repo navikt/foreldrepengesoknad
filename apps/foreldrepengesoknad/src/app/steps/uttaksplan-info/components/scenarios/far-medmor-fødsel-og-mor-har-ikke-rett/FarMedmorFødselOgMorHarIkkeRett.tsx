@@ -58,7 +58,7 @@ const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): Date
     }));
 };
 
-interface Props {
+export interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
 }

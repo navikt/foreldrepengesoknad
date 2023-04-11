@@ -76,6 +76,8 @@ export const validateTermindato = (intl: IntlShape) => (termindato: string) => {
     if (!erIUke22Pluss3(termindato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22');
     }
+
+    return undefined;
 };
 
 export const validateTermindatoFødsel = (fødselsdato: string, intl: IntlShape) => (termindato: string) => {
@@ -93,6 +95,8 @@ export const validateTermindatoFødsel = (fødselsdato: string, intl: IntlShape)
     if (!dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.forLangtTilbakeITid');
     }
+
+    return undefined;
 };
 
 export const validateAdopsjonsdato = (intl: IntlShape) => (adopsjonsdato: string) => {
@@ -103,6 +107,8 @@ export const validateAdopsjonsdato = (intl: IntlShape) => (adopsjonsdato: string
     if (!isISODateString(adopsjonsdato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.adopsjonsdato.ugyldigDatoFormat');
     }
+
+    return undefined;
 };
 
 export const validateAnkomstdato = (intl: IntlShape) => (ankomstdato: string, fødselsdato: string) => {
@@ -117,6 +123,8 @@ export const validateAnkomstdato = (intl: IntlShape) => (ankomstdato: string, f�
     if (fødselsdato !== undefined && !dayjs(fødselsdato).isSameOrBefore(ankomstdato, 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.ankomstDato.førFødselsdato');
     }
+
+    return undefined;
 };
 
 export const validateTerminbekreftelse = (intl: IntlShape) => (terminbekreftelseDato: string) => {
@@ -131,4 +139,6 @@ export const validateTerminbekreftelse = (intl: IntlShape) => (terminbekreftelse
     if (dayjs().isBefore(dayjs(terminbekreftelseDato))) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid');
     }
+
+    return undefined;
 };

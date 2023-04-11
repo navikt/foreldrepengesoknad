@@ -38,6 +38,8 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
                 if (!hasValue(value)) {
                     return intlUtils(intl, 'uttaksplan.validering.hvemSkalHaUttak');
                 }
+
+                return undefined;
             }}
         />
     );

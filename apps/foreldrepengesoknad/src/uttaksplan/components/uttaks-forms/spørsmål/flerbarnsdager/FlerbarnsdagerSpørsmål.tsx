@@ -19,6 +19,8 @@ const FlerbarnsdagerSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
                 if (value === YesOrNo.UNANSWERED) {
                     return intlUtils(intl, 'uttaksplan.validering.flerbarnsdager');
                 }
+
+                return undefined;
             }}
         />
     );

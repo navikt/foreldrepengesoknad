@@ -60,6 +60,8 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
                         if (value === YesOrNo.UNANSWERED) {
                             return intlUtils(intl, 'uttaksplan.validering.skalHaGradering');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>
@@ -95,6 +97,8 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.arbeidsformer');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>

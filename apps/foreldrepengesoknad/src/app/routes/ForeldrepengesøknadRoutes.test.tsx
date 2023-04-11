@@ -12,7 +12,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 
 jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return jest.fn();
-})
+});
 
 describe('<ForeldrepengesøknadRoutes>', () => {
     const state: ForeldrepengesøknadContextState = {

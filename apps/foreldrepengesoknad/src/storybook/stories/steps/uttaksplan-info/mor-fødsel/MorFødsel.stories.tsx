@@ -5,8 +5,8 @@ import MockAdapter from 'axios-mock-adapter/types';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
-import søkerinfo from './testdata/søkerinfo.json';
-import context from './testdata/context.json';
+import _søkerinfo from './testdata/søkerinfo.json';
+import _context from './testdata/context.json';
 import stønadskonto100 from './../testdata/stønadskonto100.json';
 import stønadskonto80 from './../testdata/stønadskonto80.json';
 import stønadskontoPrematurUker100 from './../testdata/stønadskontoPrematurUker100.json';
@@ -25,6 +25,9 @@ import { RequestStatus } from 'app/types/RequestState';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/uttak-url/konto';
+
+const søkerinfo = _søkerinfo as any;
+const context = _context as any;
 
 export default {
     title: 'steps/uttaksplan-info/MorFødsel',
