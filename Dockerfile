@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
 COPY packages packages
 COPY apps apps
+COPY patches patches
 
 RUN find apps \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs rm -rf
 RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs rm -rf
@@ -29,14 +30,9 @@ RUN npm install -g pnpm \
     && pnpm install -g pnpm turbo \
     && npm uninstall -g pnpm
 
-# COMMENT
-
-COPY ./patches/ ./patches/
-
-COPY pnpm-lock.yaml .
-RUN pnpm fetch
-
 COPY --from=prepare /usr/src/app ./
+
+RUN pnpm fetch
 
 RUN pnpm install --frozen-lockfile --offline
 
