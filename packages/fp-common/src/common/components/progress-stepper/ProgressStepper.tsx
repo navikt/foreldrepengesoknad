@@ -2,7 +2,7 @@ import { BodyShort, Heading, Stepper } from '@navikt/ds-react';
 import Step, { StepperStepProps } from '@navikt/ds-react/esm/stepper/Step';
 import React, { useEffect, useRef, useState } from 'react';
 import { Back, Collapse, Expand } from '@navikt/ds-icons';
-import { guid } from 'common/utils/guid';
+import { guid } from './../../utils/guid';
 import './progressStepper.css';
 
 export interface ProgressStep extends Pick<StepperStepProps, 'completed'> {

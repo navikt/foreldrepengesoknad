@@ -128,7 +128,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('Ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
-        expect(screen.getByText('01.02.2001')).toBeInTheDocument();
+        expect(screen.getByText('01.01.2021')).toBeInTheDocument();
         expect(screen.getByText('Gjelder søknaden stebarnsadopsjon?')).toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.getByText('Adopsjonsdato')).toBeInTheDocument();
