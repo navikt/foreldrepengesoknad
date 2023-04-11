@@ -29,7 +29,7 @@ RUN npm install -g pnpm \
     && pnpm install -g pnpm turbo \
     && npm uninstall -g pnpm
 
-copy patches patches
+COPY patches .
 
 COPY pnpm-lock.yaml .
 RUN pnpm fetch
