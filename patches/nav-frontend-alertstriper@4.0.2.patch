@@ -1,0 +1,225 @@
+diff --git a/lib/alertstripe.js b/lib/alertstripe.js
+index 463c73f67f81696706bbff1fbd1160ba5abd2fa2..9c1648539427a326047dcb8d9a15cf1425748e66 100644
+--- a/lib/alertstripe.js
++++ b/lib/alertstripe.js
+@@ -1,91 +1,161 @@
+ "use strict";
+-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+-    if (k2 === undefined) k2 = k;
+-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+-}) : (function(o, m, k, k2) {
+-    if (k2 === undefined) k2 = k;
+-    o[k2] = m[k];
+-}));
+-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+-    Object.defineProperty(o, "default", { enumerable: true, value: v });
+-}) : function(o, v) {
+-    o["default"] = v;
+-});
+-var __importStar = (this && this.__importStar) || function (mod) {
++var __createBinding =
++  (this && this.__createBinding) ||
++  (Object.create
++    ? function (o, m, k, k2) {
++        if (k2 === undefined) k2 = k;
++        Object.defineProperty(o, k2, {
++          enumerable: true,
++          get: function () {
++            return m[k];
++          },
++        });
++      }
++    : function (o, m, k, k2) {
++        if (k2 === undefined) k2 = k;
++        o[k2] = m[k];
++      });
++var __setModuleDefault =
++  (this && this.__setModuleDefault) ||
++  (Object.create
++    ? function (o, v) {
++        Object.defineProperty(o, "default", { enumerable: true, value: v });
++      }
++    : function (o, v) {
++        o["default"] = v;
++      });
++var __importStar =
++  (this && this.__importStar) ||
++  function (mod) {
+     if (mod && mod.__esModule) return mod;
+     var result = {};
+-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
++    if (mod != null)
++      for (var k in mod)
++        if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
++          __createBinding(result, mod, k);
+     __setModuleDefault(result, mod);
+     return result;
+-};
+-var __rest = (this && this.__rest) || function (s, e) {
++  };
++var __rest =
++  (this && this.__rest) ||
++  function (s, e) {
+     var t = {};
+-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
++    for (var p in s)
++      if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+         t[p] = s[p];
+     if (s != null && typeof Object.getOwnPropertySymbols === "function")
+-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+-                t[p[i]] = s[p[i]];
+-        }
++      for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
++        if (
++          e.indexOf(p[i]) < 0 &&
++          Object.prototype.propertyIsEnumerable.call(s, p[i])
++        )
++          t[p[i]] = s[p[i]];
++      }
+     return t;
+-};
+-var __importDefault = (this && this.__importDefault) || function (mod) {
+-    return (mod && mod.__esModule) ? mod : { "default": mod };
+-};
++  };
++var __importDefault =
++  (this && this.__importDefault) ||
++  function (mod) {
++    return mod && mod.__esModule ? mod : { default: mod };
++  };
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.AlertStripeFeil = exports.AlertStripeAdvarsel = exports.AlertStripeSuksess = exports.AlertStripeInfo = void 0;
++exports.AlertStripeFeil =
++  exports.AlertStripeAdvarsel =
++  exports.AlertStripeSuksess =
++  exports.AlertStripeInfo =
++    void 0;
+ const PT = __importStar(require("prop-types"));
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const nav_frontend_typografi_1 = require("nav-frontend-typografi");
+-const nav_frontend_ikoner_assets_1 = __importDefault(require("nav-frontend-ikoner-assets"));
+-require("nav-frontend-alertstriper-style");
+-const cls = (type, form, className) => (0, classnames_1.default)("alertstripe", className, {
++const nav_frontend_ikoner_assets_1 = __importDefault(
++  require("nav-frontend-ikoner-assets")
++);
++require("nav-frontend-alertstriper-style/dist/main.css");
++const cls = (type, form, className) =>
++  (0, classnames_1.default)("alertstripe", className, {
+     "alertstripe--info": type === "info",
+     "alertstripe--suksess": type === "suksess",
+     "alertstripe--advarsel": type === "advarsel",
+     "alertstripe--feil": type === "feil",
+     "alertstripe--inline": form === "inline",
+-});
++  });
+ const ikonKind = (type) => {
+-    switch (type) {
+-        case "suksess":
+-            return "ok-sirkel-fyll";
+-        case "advarsel":
+-            return "advarsel-sirkel-fyll";
+-        case "feil":
+-            return "feil-sirkel-fyll";
+-        default:
+-            return "info-sirkel-fyll";
+-    }
++  switch (type) {
++    case "suksess":
++      return "ok-sirkel-fyll";
++    case "advarsel":
++      return "advarsel-sirkel-fyll";
++    case "feil":
++      return "feil-sirkel-fyll";
++    default:
++      return "info-sirkel-fyll";
++  }
+ };
+ class AlertStripe extends React.Component {
+-    render() {
+-        const _a = this.props, { type, form, size, className, children } = _a, props = __rest(_a, ["type", "form", "size", "className", "children"]);
+-        return (React.createElement("div", Object.assign({ className: cls(type, form, className) }, props),
+-            React.createElement("span", { className: "alertstripe__ikon" },
+-                React.createElement("span", { className: "sr-only" }, type),
+-                React.createElement(nav_frontend_ikoner_assets_1.default, { role: "img", "aria-label": `${type}-ikon`, kind: ikonKind(type), size: size })),
+-            React.createElement(nav_frontend_typografi_1.Normaltekst, { className: "alertstripe__tekst", tag: "div" }, children)));
+-    }
++  render() {
++    const _a = this.props,
++      { type, form, size, className, children } = _a,
++      props = __rest(_a, ["type", "form", "size", "className", "children"]);
++    return React.createElement(
++      "div",
++      Object.assign({ className: cls(type, form, className) }, props),
++      React.createElement(
++        "span",
++        { className: "alertstripe__ikon" },
++        React.createElement("span", { className: "sr-only" }, type),
++        React.createElement(nav_frontend_ikoner_assets_1.default, {
++          role: "img",
++          "aria-label": `${type}-ikon`,
++          kind: ikonKind(type),
++          size: size,
++        })
++      ),
++      React.createElement(
++        nav_frontend_typografi_1.Normaltekst,
++        { className: "alertstripe__tekst", tag: "div" },
++        children
++      )
++    );
++  }
+ }
+ AlertStripe.propTypes = {
+-    children: PT.node.isRequired,
+-    type: PT.oneOf(["info", "suksess", "advarsel", "feil"]).isRequired,
+-    size: PT.oneOfType([PT.string, PT.number]),
+-    className: PT.string,
++  children: PT.node.isRequired,
++  type: PT.oneOf(["info", "suksess", "advarsel", "feil"]).isRequired,
++  size: PT.oneOfType([PT.string, PT.number]),
++  className: PT.string,
+ };
+ AlertStripe.defaultProps = {
+-    className: undefined,
+-    size: "1.5em",
+-    form: "default",
++  className: undefined,
++  size: "1.5em",
++  form: "default",
+ };
+ exports.default = AlertStripe;
+ var info_alertstripe_1 = require("./info-alertstripe");
+-Object.defineProperty(exports, "AlertStripeInfo", { enumerable: true, get: function () { return __importDefault(info_alertstripe_1).default; } });
++Object.defineProperty(exports, "AlertStripeInfo", {
++  enumerable: true,
++  get: function () {
++    return __importDefault(info_alertstripe_1).default;
++  },
++});
+ var suksess_alertstripe_1 = require("./suksess-alertstripe");
+-Object.defineProperty(exports, "AlertStripeSuksess", { enumerable: true, get: function () { return __importDefault(suksess_alertstripe_1).default; } });
++Object.defineProperty(exports, "AlertStripeSuksess", {
++  enumerable: true,
++  get: function () {
++    return __importDefault(suksess_alertstripe_1).default;
++  },
++});
+ var advarsel_alertstripe_1 = require("./advarsel-alertstripe");
+-Object.defineProperty(exports, "AlertStripeAdvarsel", { enumerable: true, get: function () { return __importDefault(advarsel_alertstripe_1).default; } });
++Object.defineProperty(exports, "AlertStripeAdvarsel", {
++  enumerable: true,
++  get: function () {
++    return __importDefault(advarsel_alertstripe_1).default;
++  },
++});
+ var feil_alertstripe_1 = require("./feil-alertstripe");
+-Object.defineProperty(exports, "AlertStripeFeil", { enumerable: true, get: function () { return __importDefault(feil_alertstripe_1).default; } });
++Object.defineProperty(exports, "AlertStripeFeil", {
++  enumerable: true,
++  get: function () {
++    return __importDefault(feil_alertstripe_1).default;
++  },
++});

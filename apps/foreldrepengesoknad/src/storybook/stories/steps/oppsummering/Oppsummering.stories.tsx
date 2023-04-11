@@ -1,8 +1,8 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 
-import søkerinfo from './testdata/søkerinfo.json';
-import context from './testdata/context.json';
+import _søkerinfo from './testdata/søkerinfo.json';
+import _context from './testdata/context.json';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
@@ -14,12 +14,17 @@ import { Næringstype } from 'app/context/types/Næring';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import AxiosMock from '../../../utils/AxiosMock';
 import MockAdapter from 'axios-mock-adapter/types';
+import Barn from 'app/context/types/Barn';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 export default {
     title: 'steps/Oppsummering',
     component: Oppsummering,
     decorators: [withRouter, withIntlProvider, withForeldrepengersøknadContext],
 };
+
+const context = _context as unknown as ForeldrepengesøknadContextState;
+const søkerinfo = _søkerinfo as SøkerinfoDTO;
 
 interface Props {
     context: ForeldrepengesøknadContextState;
@@ -204,9 +209,11 @@ MedAdoptertBarn.args = {
             barn: {
                 type: 'adoptertStebarn',
                 antallBarn: 1,
-                adopsjonsdato: '2021-10-01',
-                fødselsdatoer: '2021-01-01',
-            },
+                adopsjonsdato: ISOStringToDate('2021-10-01'),
+                fødselsdatoer: [ISOStringToDate('2021-01-01')],
+                adoptertIUtlandet: false,
+                omsorgsovertakelse: [],
+            } as Barn,
         },
     } as ForeldrepengesøknadContextState,
     søkerinfo,
@@ -256,7 +263,7 @@ MedArbeidsforholdOgAndreInntekter.args = {
                 harJobbetSomFrilansSiste10Mnd: true,
                 frilansInformasjon: {
                     jobberFremdelesSomFrilans: true,
-                    oppstart: '2019-01-01',
+                    oppstart: ISOStringToDate('2019-01-01'),
                     harJobbetForNærVennEllerFamilieSiste10Mnd: false,
                     oppdragForNæreVennerEllerFamilieSiste10Mnd: [],
                 },
@@ -298,22 +305,22 @@ MedArbeidsforholdOgAndreInntekterJobbetForNærFamilie.args = {
                 harJobbetSomFrilansSiste10Mnd: true,
                 frilansInformasjon: {
                     jobberFremdelesSomFrilans: true,
-                    oppstart: '2019-01-01',
+                    oppstart: ISOStringToDate('2019-01-01'),
                     harJobbetForNærVennEllerFamilieSiste10Mnd: true,
                     oppdragForNæreVennerEllerFamilieSiste10Mnd: [
                         {
                             navnPåArbeidsgiver: 'Auto Joachim Bilpleie',
                             pågående: true,
                             tidsperiode: {
-                                fom: '2019-01-01',
+                                fom: ISOStringToDate('2019-01-01'),
                             },
                         },
                         {
                             navnPåArbeidsgiver: 'Taco Express',
                             pågående: false,
                             tidsperiode: {
-                                fom: '2018-01-01',
-                                tom: '2021-01-01',
+                                fom: ISOStringToDate('2018-01-01'),
+                                tom: ISOStringToDate('2021-01-01'),
                             },
                         },
                     ],
@@ -338,8 +345,8 @@ MedSelvstendigNæringsdrivende.args = {
                         navnPåNæringen: 'Fiske',
                         pågående: false,
                         tidsperiode: {
-                            fom: '2018-01-01',
-                            tom: '2021-01-01',
+                            fom: ISOStringToDate('2018-01-01'),
+                            tom: ISOStringToDate('2021-01-01'),
                         },
                         næringstyper: [Næringstype.FISKER],
                         organisasjonsnummer: '123',
@@ -348,14 +355,14 @@ MedSelvstendigNæringsdrivende.args = {
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         endringAvNæringsinntektInformasjon: {
-                            dato: '2019-01-01',
+                            dato: ISOStringToDate('2019-01-01'),
                             næringsinntektEtterEndring: 1000000,
                             forklaring: 'Jobbar beinhardt!',
                         },
                         harRegnskapsfører: true,
                         regnskapsfører: {
                             navn: 'Espen Utvikler',
-                            telefonnummer: 555904233,
+                            telefonnummer: '555904233',
                             erNærVennEllerFamilie: true,
                         },
                     },
@@ -380,11 +387,12 @@ MedSelvstendigNæringsdrivendeUtenDiverse.args = {
                         navnPåNæringen: 'Fiske',
                         pågående: false,
                         tidsperiode: {
-                            fom: '2018-01-01',
-                            tom: '2021-01-01',
+                            fom: ISOStringToDate('2018-01-01'),
+                            tom: ISOStringToDate('2021-01-01'),
                         },
                         næringstyper: [Næringstype.FISKER],
                         registrertILand: 'SE',
+                        registrertINorge: false,
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
                         harRegnskapsfører: false,

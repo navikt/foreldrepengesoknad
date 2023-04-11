@@ -5,10 +5,10 @@ import MockAdapter from 'axios-mock-adapter/types';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import søkerinfoMorSøker from '../testdata/søkerinfoMorSøker.json';
-import contextMorSøkerAdopsjon from '../testdata/contextMorSøkerAdopsjon.json';
-import søkerinfoFarSøker from '../testdata/søkerinfoFarSøker.json';
-import contextFarSøkerAdopsjon from '../testdata/contextFarSøkerAdopsjon.json';
+import _søkerinfoMorSøker from '../testdata/søkerinfoMorSøker.json';
+import _contextMorSøkerAdopsjon from '../testdata/contextMorSøkerAdopsjon.json';
+import _søkerinfoFarSøker from '../testdata/søkerinfoFarSøker.json';
+import _contextFarSøkerAdopsjon from '../testdata/contextFarSøkerAdopsjon.json';
 import stønadskonto100 from './../testdata/stønadskonto100.json';
 import stønadskonto80 from './../testdata/stønadskonto80.json';
 import stønadskontoDeltUttak80 from './../testdata/stønadskontoDeltUttak80.json';
@@ -23,6 +23,11 @@ import { RequestStatus } from 'app/types/RequestState';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/uttak-url/konto';
+
+const contextMorSøkerAdopsjon = _contextMorSøkerAdopsjon as any;
+const contextFarSøkerAdopsjon = _contextFarSøkerAdopsjon as any;
+const søkerinfoFarSøker = _søkerinfoFarSøker as any;
+const søkerinfoMorSøker = _søkerinfoMorSøker as any;
 
 export default {
     title: 'steps/uttaksplan-info/MorFarAdopsjon',

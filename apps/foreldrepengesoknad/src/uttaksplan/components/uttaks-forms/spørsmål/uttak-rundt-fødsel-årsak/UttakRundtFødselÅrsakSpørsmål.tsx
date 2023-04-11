@@ -44,6 +44,8 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.uttakRundtFødselFarMedmorWLB');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>

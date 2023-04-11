@@ -174,6 +174,8 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.aktivitetskrav');
                         }
+
+                        return undefined;
                     }}
                 >
                     <option value="" />

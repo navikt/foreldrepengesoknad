@@ -1,0 +1,13 @@
+diff --git a/lib/index.js b/lib/index.js
+index 2b6995e14691eb17250003989b7cf2a293e97f50..2e9080e3cf5cfaf788203f1054214be7c5011409 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -38,7 +38,7 @@ const PT = __importStar(require("prop-types"));
+ const classnames_1 = __importDefault(require("classnames"));
+ const react_modal_1 = __importDefault(require("react-modal"));
+ const nav_frontend_lukknapp_1 = __importDefault(require("nav-frontend-lukknapp"));
+-require("nav-frontend-modal-style");
++require("nav-frontend-modal-style/dist/main.css");
+ const cls = (className) => (0, classnames_1.default)("modal", className);
+ class ModalWrapper extends React.Component {
+     constructor(props) {

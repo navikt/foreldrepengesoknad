@@ -2,8 +2,8 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import søkerinfo from './testdata/søkerinfo.json';
-import context from './testdata/context.json';
+import _søkerinfo from './testdata/søkerinfo.json';
+import _context from './testdata/context.json';
 import stønadskontoDeltUttak80 from './../testdata/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from './../testdata/stønadskontoDeltUttak100.json';
 import UttaksplanInfo from '../../../../../app/steps/uttaksplan-info/UttaksplanInfo';
@@ -19,6 +19,9 @@ import { RequestStatus } from 'app/types/RequestState';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/uttak-url/konto';
+
+const søkerinfo = _søkerinfo as any;
+const context = _context as any;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselAleneomsorg',
