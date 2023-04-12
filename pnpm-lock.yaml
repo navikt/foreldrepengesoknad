@@ -1170,9 +1170,6 @@ importers:
       storybook:
         specifier: 7.0.3
         version: 7.0.3
-      storybook-formik:
-        specifier: ^2.4.2
-        version: 2.4.2(@types/react@18.0.35)(formik@2.2.9)(react-dom@18.2.0)(react@18.2.0)
       style-loader:
         specifier: ^3.3.2
         version: 3.3.2(webpack@5.78.0)
@@ -5725,10 +5722,6 @@ packages:
       '@babel/types': 7.21.4
     dev: true
 
-  /@types/base16@1.0.2:
-    resolution: {integrity: sha512-oYO/U4VD1DavwrKuCSQWdLG+5K22SLPem2OQaHmFcQuwHoVeGC+JGVRji2MUqZUAIQZHEonOeVfAX09hYiLsdg==}
-    dev: true
-
   /@types/body-parser@1.19.2:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
@@ -7299,10 +7292,6 @@ packages:
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  /base16@1.0.0:
-    resolution: {integrity: sha512-pNdYkNPiJUnEhnfXV56+sQy8+AaPcG3POZAUnwr4EeqCUZFz4u2PePbo3e5Gj4ziYPCWGUZT9RHisvJKnwFuBQ==}
-    dev: true
-
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
     dev: true
@@ -7943,6 +7932,7 @@ packages:
     dependencies:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
+    dev: false
 
   /color-support@1.1.3:
     resolution: {integrity: sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==}
@@ -7954,6 +7944,7 @@ packages:
     dependencies:
       color-convert: 1.9.3
       color-string: 1.9.1
+    dev: false
 
   /colorette@2.0.19:
     resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
@@ -8516,6 +8507,7 @@ packages:
   /deepmerge@2.2.1:
     resolution: {integrity: sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
@@ -10166,6 +10158,7 @@ packages:
       react-fast-compare: 2.0.4
       tiny-warning: 1.0.3
       tslib: 1.14.1
+    dev: false
 
   /forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
@@ -11134,6 +11127,7 @@ packages:
 
   /is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+    dev: false
 
   /is-bigint@1.0.4:
     resolution: {integrity: sha512-zB9CruMamjym81i2JZ3UMn54PKGsQzsJeo6xvN3HJJ4CAsQNB6iRutp2To77OfCNuoxspsIhzaPoO1zyCEhFOg==}
@@ -12520,13 +12514,10 @@ packages:
 
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash._reinterpolate@3.0.0:
     resolution: {integrity: sha512-xYHt68QRoYGjeeM/XOE1uJtvXQAgvszfBhjV4yvsQH0u2i9I6cI6c6/eG4Hh3UAOVn0y/xAXwmTzEay49Q//HA==}
-    dev: true
-
-  /lodash.curry@4.1.1:
-    resolution: {integrity: sha512-/u14pXGviLaweY5JI0IUzgzF2J6Ne8INyzAZjImcryjgkZ+ebruBxy2/JaOOkTqScddcYtakjhSaeemV8lR0tA==}
     dev: true
 
   /lodash.debounce@4.0.8:
@@ -14928,17 +14919,6 @@ packages:
       teeny-tap: 0.2.0
     dev: false
 
-  /react-base16-styling@0.8.2:
-    resolution: {integrity: sha512-5bxHCNKT/FfU9yMzNB/CaCQLGqZ/Nr4FnaIRJUTkwwPTRaCfYAP+/3opeQb61XvesmofJ4FloTSYW9aw1tMXqQ==}
-    dependencies:
-      '@types/base16': 1.0.2
-      '@types/lodash': 4.14.192
-      base16: 1.0.0
-      color: 3.2.1
-      csstype: 3.1.1
-      lodash.curry: 4.1.1
-    dev: true
-
   /react-collapse@5.1.1(react@18.2.0):
     resolution: {integrity: sha512-k6cd7csF1o9LBhQ4AGBIdxB60SUEUMQDAnL2z1YvYNr9KoKr+nDkhN6FK7uGaBd/rYrYfrMpzpmJEIeHRYogBw==}
     peerDependencies:
@@ -15046,6 +15026,7 @@ packages:
 
   /react-fast-compare@2.0.4:
     resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
+    dev: false
 
   /react-fast-compare@3.2.1:
     resolution: {integrity: sha512-xTYf9zFim2pEif/Fw16dBiXpe0hoy5PxcD8+OwBnTtNLfIm3g6WxhKNurY+6OmdH1u6Ta/W/Vl6vjbYP1MFnDg==}
@@ -15104,19 +15085,6 @@ packages:
 
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
-
-  /react-json-tree@0.15.2(@types/react@18.0.35)(react@18.2.0):
-    resolution: {integrity: sha512-Fi5BMgpZbqujagMQ4OavtK6k4RhaoU/zFoJeK331/UdsBEXKFs3VosfvOc1JS/oyB21I1MKu8bwMkOXODePBCg==}
-    peerDependencies:
-      '@types/react': ^16.3.0 || ^17.0.0
-      react: ^16.3.0 || ^17.0.0
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/react': 18.0.35
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-base16-styling: 0.8.2
-    dev: true
 
   /react-lifecycles-compat@3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
@@ -16079,6 +16047,7 @@ packages:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
     dependencies:
       is-arrayish: 0.3.2
+    dev: false
 
   /simple-update-notifier@1.1.0:
     resolution: {integrity: sha512-VpsrsJSUcJEseSbMHkrsrAVSdvVS5I96Qo1QAQ4FxQ9wXFcB+pjj7FB7/us9+GcgfW4ziHtYMc1J0PLczb55mg==}
@@ -16396,21 +16365,6 @@ packages:
       react-inspector: 5.1.1(react@18.2.0)
       react-router: 6.10.0(react@18.2.0)
       react-router-dom: 6.10.0(react-dom@18.2.0)(react@18.2.0)
-    dev: true
-
-  /storybook-formik@2.4.2(@types/react@18.0.35)(formik@2.2.9)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-bF0dcbDFquhhx+UI8Kbm1nEVbWJkpdqwlTRHmDojxiB9sZut8deC4qXWO3HcXfWYXdDi9AZ6Szdfg1bbiHvPCg==}
-    peerDependencies:
-      formik: ^1.0.0||^2.0.0
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      formik: 2.2.9(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-json-tree: 0.15.2(@types/react@18.0.35)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
     dev: true
 
   /storybook-i18n@2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react@18.2.0):
@@ -16899,6 +16853,7 @@ packages:
 
   /tiny-warning@1.0.3:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
+    dev: false
 
   /tinybench@2.4.0:
     resolution: {integrity: sha512-iyziEiyFxX4kyxSp+MtY1oCH/lvjH3PxFN8PGCDeqcZWAJ/i+9y+nL85w99PxVzrIvew/GSkSbDYtiGVa85Afg==}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import withFormik from 'storybook-formik';
 import { AttachmentType } from 'app/types/AttachmentType';
 import withIntlProvider from 'storybook/decorators/withIntl';
 import FormikFileUploader, { Props } from './FormikFileUploader';
@@ -10,7 +9,7 @@ import { Skjemanummer } from '../../../app/types/Skjemanummer';
 export default {
     title: 'components/FormikFileUploader',
     component: FormikFileUploader,
-    decorators: [withIntlProvider, withFormik],
+    decorators: [withIntlProvider],
 };
 
 const Template: Story<Props> = (args) => <FormikFileUploader {...args} />;
