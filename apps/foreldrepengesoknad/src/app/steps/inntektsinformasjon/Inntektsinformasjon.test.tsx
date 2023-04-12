@@ -3,8 +3,8 @@ import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/steps/inntektsinformasjon/Inntektsinformasjon.stories';
 import dayjs from 'dayjs';
+import * as stories from './Inntektsinformasjon.stories';
 
 const { Default, HarArbeidsforhold } = composeStories(stories);
 
