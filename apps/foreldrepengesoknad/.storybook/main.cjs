@@ -9,7 +9,7 @@ module.exports = {
     features: {
         storyStoreV7: true,
     },
-    stories: ['../src/storybook/stories/**/*.stories.tsx', '../src/app/**/*.stories.@(ts|tsx)'],
+    stories: ['../src/app/**/*.stories.@(ts|tsx)'],
     addons: ['storybook-formik/register'],
     webpackFinal: async (config, { configType }) => {
         //Fjern default svg-loader
