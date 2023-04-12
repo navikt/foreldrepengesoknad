@@ -28,11 +28,7 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
     return (
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}>
-                <Normaltekst>
-                    {næringstyper
-                        .map((næringstype) => intlUtils(intl, `næringstype.${næringstype.toLowerCase()}`))
-                        .join(', ')}
-                </Normaltekst>
+                <Normaltekst>{intlUtils(intl, `næringstype.${næringstyper[0].toLowerCase()}`)}</Normaltekst>
             </OppsummeringsPunkt>
             {organisasjonsnummer && (
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}>
