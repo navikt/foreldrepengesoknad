@@ -93,11 +93,11 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     <FormattedMessage id="inntektsinformasjon.egenNæringModal.tittel" />
                                 </Undertittel>
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.typer)}>
-                                <EgenNæringModalFormComponents.CheckboxPanelGroup
-                                    name={EgenNæringModalFormField.typer}
+                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.type)}>
+                                <EgenNæringModalFormComponents.RadioPanelGroup
+                                    name={EgenNæringModalFormField.type}
                                     legend={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringstype')}
-                                    checkboxes={[
+                                    radios={[
                                         {
                                             label: intlUtils(
                                                 intl,
