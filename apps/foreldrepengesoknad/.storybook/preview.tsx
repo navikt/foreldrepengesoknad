@@ -1,11 +1,5 @@
 import React from 'react';
-import '../src/app/styles/app.css';
-
-//TODO Dette bør ikkje ligga her
-window.appSettings = {
-    REST_API_URL: '',
-    UTTAK_API_URL: 'uttak-url',
-};
+import '../src/app/styles/app.less';
 
 export const decorators = [
     (Story) => (

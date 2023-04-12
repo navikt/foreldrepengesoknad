@@ -1,10 +1,5 @@
 import React from 'react';
-import '../src/app/styles/app.less';
-
-window.appSettings = {
-    REST_API_URL: '',
-    UTTAK_API_URL: 'uttak-url',
-};
+import '../src/app/styles/app.css';
 
 export const decorators = [
     (Story) => (
