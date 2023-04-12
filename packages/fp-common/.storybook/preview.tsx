@@ -1,5 +1,5 @@
 import '@navikt/ds-css';
-import { reactIntl } from './reactIntl.cjs';
+import { reactIntl } from './reactIntl.ts';
 
 export const parameters = {
     reactIntl,

@@ -6,11 +6,8 @@ module.exports = {
         '@storybook/addon-interactions',
         'storybook-react-intl',
     ],
-    framework: '@storybook/react',
-    core: {
-        builder: '@storybook/builder-vite',
-    },
-    features: {
-        storyStoreV7: true,
-    },
+    framework: {
+        name: '@storybook/react-vite',
+        options: {},
+      },
 };
