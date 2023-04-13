@@ -1,7 +1,6 @@
 import * as moment from 'moment';
 
-export const isValidISODate = (date: string) =>
-    !!(date && moment(date, moment.ISO_8601).isValid());
+export const isValidISODate = (date: string) => !!(date && moment(date, moment.ISO_8601).isValid());
 
 export const ISODateToMaskedInput = (dato: string) => {
     const parsetDato = moment(dato);
@@ -13,11 +12,10 @@ export const dateFormatIsValid = (date: string) => {
 };
 
 export const dateFormatsAreValid = (dates: string[]) => {
-    const hasInvalidDates = dates.some((currentDate: string) =>
-        !dateFormatIsValid(currentDate) || currentDate === undefined
+    const hasInvalidDates = dates.some(
+        (currentDate: string) => !dateFormatIsValid(currentDate) || currentDate === undefined
     );
     return !hasInvalidDates;
 };
 
-export const buildDateObject = (date?: string) =>
-    date !== undefined && isValidISODate(date) ? new Date(date) : date;
+export const buildDateObject = (date?: string) => (date !== undefined && isValidISODate(date) ? new Date(date) : date);

@@ -9,19 +9,19 @@ import '@navikt/ds-css';
 import '../../styles/globals.less';
 
 export default {
-  title: 'Søkersituasjon',
-  component: Søkersituasjon,
-  decorators: [withRouter],
+    title: 'Søkersituasjon',
+    component: Søkersituasjon,
+    decorators: [withRouter],
 };
 
 const Template: StoryFn<any> = () => {
-  return (
-    <EngangsstønadContextProvider>
-      <IntlProvider språkkode="nb">
-        <Søkersituasjon />
-      </IntlProvider>
-    </EngangsstønadContextProvider>
-  )
-  };
+    return (
+        <EngangsstønadContextProvider>
+            <IntlProvider språkkode="nb">
+                <Søkersituasjon />
+            </IntlProvider>
+        </EngangsstønadContextProvider>
+    );
+};
 
 export const VisSide = Template.bind({});

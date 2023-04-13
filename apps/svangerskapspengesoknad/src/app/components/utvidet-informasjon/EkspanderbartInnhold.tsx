@@ -15,12 +15,7 @@ export interface Props {
     animert?: boolean;
 }
 
-const EkspanderbartInnhold = ({
-    children,
-    animert = true,
-    erApen = false,
-    ariaLive = 'off',
-}: Props) => {
+const EkspanderbartInnhold = ({ children, animert = true, erApen = false, ariaLive = 'off' }: Props) => {
     const content = <div aria-live={ariaLive}>{erApen ? <div>{children}</div> : <div />}</div>;
     if (!animert) {
         return content;

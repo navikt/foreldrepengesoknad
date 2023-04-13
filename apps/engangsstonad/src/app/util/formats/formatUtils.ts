@@ -6,5 +6,5 @@ export const fullNameFormat = (fornavn: string, mellomnavn: string, etternavn: s
 };
 
 export default {
-    fullNameFormat
+    fullNameFormat,
 };
