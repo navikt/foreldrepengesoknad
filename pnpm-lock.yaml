@@ -635,6 +635,9 @@ importers:
       case-sensitive-paths-webpack-plugin:
         specifier: ^2.4.0
         version: 2.4.0
+      cross-env:
+        specifier: 7.0.3
+        version: 7.0.3
       css-loader:
         specifier: ^6.7.3
         version: 6.7.3(webpack@5.78.0)
