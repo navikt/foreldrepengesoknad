@@ -162,3 +162,127 @@ ForFar.args = {
         },
     },
 };
+
+export const MorUfødtBarn = Template.bind({});
+MorUfødtBarn.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: {
+                type: 'ufødt',
+                antallBarn: '1',
+                termindato: '2023-05-05',
+            },
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'mor',
+            },
+            annenForelder: {
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        ...søkerinfo,
+        søker: {
+            ...søkerinfo.søker,
+            barn: [],
+        },
+    } as SøkerinfoDTO,
+};
+
+export const MedmorUfødtBarn = Template.bind({});
+MedmorUfødtBarn.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: {
+                type: 'ufødt',
+                antallBarn: '1',
+                termindato: '2023-05-05',
+            },
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'medmor',
+            },
+            annenForelder: {
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        ...søkerinfo,
+        søker: {
+            ...søkerinfo.søker,
+            kjønn: 'K',
+            barn: [],
+        },
+    } as SøkerinfoDTO,
+};
+
+export const FarUfødtBarn = Template.bind({});
+FarUfødtBarn.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: {
+                type: 'ufødt',
+                antallBarn: '1',
+                termindato: '2023-05-05',
+            },
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+            annenForelder: {
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        ...søkerinfo,
+        søker: {
+            ...søkerinfo.søker,
+            fornavn: 'LEALAUS',
+            etternavn: 'BÆREPOSE',
+            kjønn: 'M',
+            barn: [],
+        },
+    } as SøkerinfoDTO,
+};
+
+export const FarGiftUfødtBarn = Template.bind({});
+FarGiftUfødtBarn.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            barn: {
+                type: 'ufødt',
+                antallBarn: '1',
+                termindato: '2023-05-05',
+            },
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'far',
+            },
+            annenForelder: {
+                kanIkkeOppgis: false,
+            },
+        },
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: {
+        ...søkerinfo,
+        søker: {
+            ...søkerinfo.søker,
+            fornavn: 'LEALAUS',
+            etternavn: 'BÆREPOSE',
+            kjønn: 'M',
+            barn: [],
+            sivilstand: 'GIFT',
+        },
+    } as SøkerinfoDTO,
+};
