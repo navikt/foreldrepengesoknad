@@ -27,7 +27,6 @@ const søkerinfo = {
         kjønn: 'K',
         fødselsdato: '1989-08-30',
         land: 'NO',
-        ikkeNordiskEøsLand: false,
         bankkonto: {
             kontonummer: '10824223373',
         },

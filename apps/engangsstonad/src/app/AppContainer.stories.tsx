@@ -21,7 +21,6 @@ const Template: StoryFn<any> = () => {
         etternavn: 'Ibsen',
         kjønn: 'K',
         fødselsdato: '1979-01-28',
-        ikkeNordiskEøsLand: true,
         bankkonto: {
             kontonummer: '49875234987',
             banknavn: 'Storebank',

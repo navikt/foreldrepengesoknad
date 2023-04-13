@@ -66,7 +66,6 @@ const søkerinfo = {
         etternavn: 'MYGG',
         kjønn: 'K',
         fødselsdato: '1978-04-19',
-        ikkeNordiskEøsLand: false,
         barn: [
             {
                 fnr: '21091981146',

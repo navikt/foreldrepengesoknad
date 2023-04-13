@@ -10,7 +10,6 @@ type Person = {
     adresse: string;
     kjønn: Kjønn;
     fødselsdato: string;
-    ikkeNordiskEøsLand: boolean;
     bankkonto?: Bankkonto;
 };
 
