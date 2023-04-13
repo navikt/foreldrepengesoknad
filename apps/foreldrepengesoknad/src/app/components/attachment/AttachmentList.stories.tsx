@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import { Attachment } from 'app/types/Attachment';
 import withIntlProvider from 'storybook/decorators/withIntl';
@@ -11,7 +11,7 @@ export default {
     decorators: [withIntlProvider],
 };
 
-const Template: Story<any> = (args) => <AttachmentList {...args} />;
+const Template: StoryFn<any> = (args) => <AttachmentList {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

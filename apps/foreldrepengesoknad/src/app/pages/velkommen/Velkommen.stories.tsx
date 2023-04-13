@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -38,7 +38,7 @@ const søkerInfo = {
     },
 } as SøkerinfoDTO;
 
-const Template: Story<Props> = ({ harGodkjentVilkår, saker, søkerinfo }) => {
+const Template: StoryFn<Props> = ({ harGodkjentVilkår, saker, søkerinfo }) => {
     return (
         <ForeldrepengerStateMock
             søknad={{ søknad: { harGodkjentVilkår, søker: { språkkode: 'nb' } } } as ForeldrepengesøknadContextState}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import Veileder from './Veileder';
 
@@ -15,7 +15,7 @@ export default {
     ],
 };
 
-const Template: Story<any> = (args) => <Veileder {...args} />;
+const Template: StoryFn<any> = (args) => <Veileder {...args} />;
 
 export const Default = Template.bind({});
 

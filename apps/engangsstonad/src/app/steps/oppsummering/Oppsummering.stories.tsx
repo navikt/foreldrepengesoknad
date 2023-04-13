@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import EngangsstønadContextProvider from '../../context/EngangsstønadContext';
 import Oppsummering from './Oppsummering';
@@ -14,7 +14,7 @@ export default {
   decorators: [withRouter],
 };
 
-const Template: Story<any> = () => {
+const Template: StoryFn<any> = () => {
   return (
     <EngangsstønadContextProvider>
       <IntlProvider språkkode="nb">

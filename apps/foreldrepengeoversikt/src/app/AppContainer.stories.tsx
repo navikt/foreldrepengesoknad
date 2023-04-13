@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import søkerinfo from '../../mock-api/mock_data/sokerinfo.json';
@@ -20,7 +20,7 @@ export default {
   component: AppContainer,
 };
 
-const Template: Story<any> = () => {
+const Template: StoryFn<any> = () => {
   const apiMock = new MockAdapter(AxiosInstance);
   apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
   apiMock.onGet('/innsyn/v2/saker').reply(200, saker);
