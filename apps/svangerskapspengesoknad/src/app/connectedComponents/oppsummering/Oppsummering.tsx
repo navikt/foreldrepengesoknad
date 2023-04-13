@@ -70,12 +70,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
 
     return (
         <Applikasjonsside visTittel={true}>
-            <FormikStep
-                step={step}
-                formikProps={formikProps}
-                showNesteknapp={true}
-                onValidFormSubmit={sendSøknad}
-            >
+            <FormikStep step={step} formikProps={formikProps} showNesteknapp={true} onValidFormSubmit={sendSøknad}>
                 <Block>
                     <Veilederinfo visVeileder={true} stil="kompakt" type="info">
                         <FormattedMessage id="oppsummering.veileder" />

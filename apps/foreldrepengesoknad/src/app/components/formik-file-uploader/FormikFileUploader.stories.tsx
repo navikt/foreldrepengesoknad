@@ -14,12 +14,12 @@ export default {
 };
 
 const Template: StoryFn<Props> = (args) => (
-  <Formik initialValues={{ }} onSubmit={() => undefined}>
-    <Form>
-      <FormikFileUploader {...args} />;
-    </Form>
-  </Formik>
-)
+    <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />;
+        </Form>
+    </Formik>
+);
 
 export const Default = Template.bind({});
 Default.args = {

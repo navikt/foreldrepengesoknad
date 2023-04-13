@@ -16,25 +16,23 @@ import { AxiosInstance } from './api/apiInterceptor';
 import '@navikt/ds-css';
 
 export default {
-  title: 'AppContainer',
-  component: AppContainer,
+    title: 'AppContainer',
+    component: AppContainer,
 };
 
 const Template: StoryFn<any> = () => {
-  const apiMock = new MockAdapter(AxiosInstance);
-  apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
-  apiMock.onGet('/innsyn/v2/saker').reply(200, saker);
-  apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartsVedtak);
-  apiMock.onGet('/dokument/alle').reply(200, dokumenter);
-  apiMock.onGet('/innsyn/tidslinje').reply(200, tidslinjeHendelser);
-  apiMock.onGet('/minidialog').reply(200, miniDialog);
-  apiMock.onGet('/historikk/vedlegg').reply(200, manglendeVedlegg);
+    const apiMock = new MockAdapter(AxiosInstance);
+    apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
+    apiMock.onGet('/innsyn/v2/saker').reply(200, saker);
+    apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartsVedtak);
+    apiMock.onGet('/dokument/alle').reply(200, dokumenter);
+    apiMock.onGet('/innsyn/tidslinje').reply(200, tidslinjeHendelser);
+    apiMock.onGet('/minidialog').reply(200, miniDialog);
+    apiMock.onGet('/historikk/vedlegg').reply(200, manglendeVedlegg);
 
-  apiMock.onPost('/soknad/ettersen').reply(200, {});
+    apiMock.onPost('/soknad/ettersen').reply(200, {});
 
-  return (
-    <AppContainer />
-  )
-  };
+    return <AppContainer />;
+};
 
 export const VisApp = Template.bind({});

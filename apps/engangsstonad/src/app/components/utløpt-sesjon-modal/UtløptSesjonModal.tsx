@@ -28,7 +28,8 @@ const UtløptSesjonModal: React.FunctionComponent<Props> = ({ erÅpen }) => {
         >
             <Modal.Content>
                 <AdvarselIkon />
-                <Heading size="medium" className="blokk-m">v
+                <Heading size="medium" className="blokk-m">
+                    v
                     <FormattedMessage id="sesjonUtløpt.tittel" />
                 </Heading>
                 <BodyShort className="blokk-m">

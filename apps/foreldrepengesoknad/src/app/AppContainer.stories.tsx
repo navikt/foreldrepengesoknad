@@ -20,18 +20,18 @@ export default {
 };
 
 const Template: Story = ({
-  søkerinfoData,
-  sakerData,
-  annenPartVedtakData,
-  stønadskontoerData,
-  storageKvitteringData,
+    søkerinfoData,
+    sakerData,
+    annenPartVedtakData,
+    stønadskontoerData,
+    storageKvitteringData,
 }) => {
-  const apiMock = new MockAdapter(AxiosInstance);
-  apiMock.onGet('/sokerinfo').reply(200, søkerinfoData);
-  apiMock.onGet('/innsyn/v2/saker').reply(200, sakerData);
-  apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartVedtakData);
-  apiMock.onGet('/uttak-url/konto').reply(200, stønadskontoerData);
-  apiMock.onGet('/storage/kvittering/foreldrepenger').reply(200, storageKvitteringData);
+    const apiMock = new MockAdapter(AxiosInstance);
+    apiMock.onGet('/sokerinfo').reply(200, søkerinfoData);
+    apiMock.onGet('/innsyn/v2/saker').reply(200, sakerData);
+    apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartVedtakData);
+    apiMock.onGet('/uttak-url/konto').reply(200, stønadskontoerData);
+    apiMock.onGet('/storage/kvittering/foreldrepenger').reply(200, storageKvitteringData);
 
     apiMock.onPost('/storage').reply(200, {});
     apiMock.onPost('/soknad').reply(200, {});
@@ -45,9 +45,9 @@ const Template: Story = ({
 // TODO Endre navn på story til noko funksjonelt fornuftig
 export const VisApp = Template.bind({});
 VisApp.args = {
-  søkerinfoData: søkerinfo,
-  sakerData: saker,
-  annenPartVedtakData: annenPartVedtak,
-  stønadskontoerData: stønadskontoer,
-  storageKvitteringData: storageKvittering,
+    søkerinfoData: søkerinfo,
+    sakerData: saker,
+    annenPartVedtakData: annenPartVedtak,
+    stønadskontoerData: stønadskontoer,
+    storageKvitteringData: storageKvittering,
 };
