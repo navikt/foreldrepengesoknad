@@ -3,7 +3,7 @@ import Step, { StepperStepProps } from '@navikt/ds-react/esm/stepper/Step';
 import React, { useEffect, useRef, useState } from 'react';
 import { Back, Collapse, Expand } from '@navikt/ds-icons';
 import { guid } from './../../utils/guid';
-import './progressStepper.css';
+import './progress-stepper.css';
 
 export interface ProgressStep extends Pick<StepperStepProps, 'completed'> {
     id: string;
@@ -28,7 +28,7 @@ const defaultLabels: Labels = {
     stepProgressLabelFunc: (currentStep, totalSteps) => `Steg ${currentStep} av ${totalSteps}`,
 };
 
-interface Props {
+export interface ProgressStepperProps {
     steps: ProgressStep[];
     currentStepIndex: number;
     labels?: Labels;
@@ -40,7 +40,7 @@ interface Props {
     onStepSelect?: (step: ProgressStep) => void;
 }
 
-const ProgressStepper: React.FunctionComponent<Props> = ({
+const ProgressStepper: React.FunctionComponent<ProgressStepperProps> = ({
     steps,
     currentStepIndex,
     allStepsHeader,
