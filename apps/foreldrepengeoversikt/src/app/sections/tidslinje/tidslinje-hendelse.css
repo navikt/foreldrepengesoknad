@@ -47,14 +47,14 @@
     width: 3.5rem;
 }
 
-.tidslinje-hendelse__mer_informasjon{
-    margin-bottom: 1rem; 
+.tidslinje-hendelse__mer_informasjon {
+    margin-bottom: 1rem;
 }
 
 .tidslinje-hendelse__date {
     color: var(--a-gray-500);
 }
 
-.tidslinje-hendelse__manglende_vedlegg{
-    margin-bottom: 1rem; 
+.tidslinje-hendelse__manglende_vedlegg {
+    margin-bottom: 1rem;
 }

@@ -36,9 +36,7 @@ const Personopplysninger = () => {
             </div>
 
             <div>
-                <Label className="blokk-xs">
-                    {getMessage(intl, 'personopplysninger.text.lagringAvOpplysninger')}
-                </Label>
+                <Label className="blokk-xs">{getMessage(intl, 'personopplysninger.text.lagringAvOpplysninger')}</Label>
                 <BodyShort className="blokk-xs">
                     {getMessage(intl, 'personopplysninger.text.lagringAvOpplysninger.1')}
                 </BodyShort>

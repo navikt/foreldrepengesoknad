@@ -52,9 +52,9 @@ const Feilside: React.FunctionComponent<Props> = ({
                             <>
                                 <Block padBottom="m">{illustrasjon.tekst}</Block>
                                 {illustrasjon.lenke && (
-                                    <Link  className="intro-snakkelenke" href={illustrasjon.lenke.url}>
+                                    <Link className="intro-snakkelenke" href={illustrasjon.lenke.url}>
                                         {illustrasjon.lenke.tekst}
-                                    </Link >
+                                    </Link>
                                 )}
                             </>
                         ),

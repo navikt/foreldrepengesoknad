@@ -9,19 +9,19 @@ import '@navikt/ds-css';
 import '../../styles/globals.less';
 
 export default {
-  title: 'Utenlandsopphold',
-  component: Utenlandsopphold,
-  decorators: [withRouter],
+    title: 'Utenlandsopphold',
+    component: Utenlandsopphold,
+    decorators: [withRouter],
 };
 
 const Template: StoryFn<any> = () => {
-  return (
-    <EngangsstønadContextProvider>
-      <IntlProvider språkkode="nb">
-        <Utenlandsopphold />
-      </IntlProvider>
-    </EngangsstønadContextProvider>
-  )
-  };
+    return (
+        <EngangsstønadContextProvider>
+            <IntlProvider språkkode="nb">
+                <Utenlandsopphold />
+            </IntlProvider>
+        </EngangsstønadContextProvider>
+    );
+};
 
 export const VisSide = Template.bind({});

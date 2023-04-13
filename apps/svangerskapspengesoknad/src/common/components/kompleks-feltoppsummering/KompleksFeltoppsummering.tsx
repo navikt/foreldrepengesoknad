@@ -11,7 +11,6 @@ const KompleksFeltoppsummering: React.FunctionComponent<Props> = ({ ledetekst, c
     <InnholdMedLedetekst className={`feltoppsummering ${className}`} ledetekst={ledetekst}>
         {children}
     </InnholdMedLedetekst>
-
 );
 
 export default KompleksFeltoppsummering;
