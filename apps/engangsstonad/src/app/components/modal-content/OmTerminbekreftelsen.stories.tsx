@@ -5,14 +5,14 @@ import IntlProvider from 'intl/IntlProvider';
 import OmTerminbekreftelsen from './OmTerminbekreftelsen';
 
 export default {
-  title: 'OmTerminbekreftelsen',
-  component: OmTerminbekreftelsen,
+    title: 'OmTerminbekreftelsen',
+    component: OmTerminbekreftelsen,
 };
 
 const Template: Story = () => (
-  <IntlProvider språkkode="nb">
-    <OmTerminbekreftelsen />
-  </IntlProvider>
+    <IntlProvider språkkode="nb">
+        <OmTerminbekreftelsen />
+    </IntlProvider>
 );
 
 export const VisInfo = Template.bind({});

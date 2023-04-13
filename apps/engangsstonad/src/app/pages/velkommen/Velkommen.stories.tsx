@@ -9,23 +9,19 @@ import '@navikt/ds-css';
 import '../../styles/globals.less';
 
 export default {
-  title: 'Velkommen',
-  component: Velkommen,
-  decorators: [withRouter],
+    title: 'Velkommen',
+    component: Velkommen,
+    decorators: [withRouter],
 };
 
 const Template: StoryFn<any> = () => {
-  return (
-    <EngangsstønadContextProvider>
-      <IntlProvider språkkode="nb">
-        <Velkommen 
-          fornavn="Espen Utvikler"
-          onChangeLocale={() => undefined}
-          locale="nb"
-        />
-      </IntlProvider>
-    </EngangsstønadContextProvider>
-  )
-  };
+    return (
+        <EngangsstønadContextProvider>
+            <IntlProvider språkkode="nb">
+                <Velkommen fornavn="Espen Utvikler" onChangeLocale={() => undefined} locale="nb" />
+            </IntlProvider>
+        </EngangsstønadContextProvider>
+    );
+};
 
 export const VisSide = Template.bind({});

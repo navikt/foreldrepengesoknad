@@ -6,6 +6,7 @@
     "scripts": {
         "build": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "build-storybook": "storybook build -o .storybook-static-build",
+        "prettier": "prettier --write src",
         "storybook": "storybook dev --quiet -p 6006",
         "build-lib": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "clean-lib": "rm -rf ./lib",

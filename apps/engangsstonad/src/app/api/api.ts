@@ -7,13 +7,11 @@ export const foreldrepengersoknadApi = axios.create({
     withCredentials: true,
 });
 
-foreldrepengersoknadApi.interceptors.request.use(
-    (config) => {
-        config.withCredentials = true;
-        config.timeout = 60 * 1000;
-        return config;
-    }
-);
+foreldrepengersoknadApi.interceptors.request.use((config) => {
+    config.withCredentials = true;
+    config.timeout = 60 * 1000;
+    return config;
+});
 
 foreldrepengersoknadApi.interceptors.response.use(
     (response: AxiosResponse) => {
@@ -26,7 +24,7 @@ foreldrepengersoknadApi.interceptors.response.use(
             error?.config?.url &&
             !error.config.url.includes('/soknad')
         ) {
-             redirectToLogin();
+            redirectToLogin();
         }
         return Promise.reject(error);
     }

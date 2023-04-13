@@ -21,6 +21,7 @@
         "jest": "jest --colors",
         "tsc": "tsc  --pretty",
         "lint": "eslint src/**",
+        "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001"
     },
