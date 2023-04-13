@@ -33,7 +33,6 @@ const søkerInfo = {
         etternavn: 'MYGG',
         kjønn: 'K',
         fødselsdato: '1978-04-19',
-        ikkeNordiskEøsLand: false,
         barn: [],
     },
 } as SøkerinfoDTO;
