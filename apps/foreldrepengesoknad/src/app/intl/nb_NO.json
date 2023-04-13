@@ -216,7 +216,7 @@
     "annenForelder.harRettPåForeldrepengerINorge": "Har {navn} rett til foreldrepenger i Norge?",
     "annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel": "Les mer om rett til foreldrepenger i Norge",
     "annenForelder.harRettPåForeldrepengerINorge.veileder.del1": "Du krysser ja dersom {navn} mottar, har mottatt eller skal motta foreldrepenger fra Norge.",
-    "annenForeldpnner.harRettPåForeldrepengerINorge.veileder.del2": "Du krysser nei dersom {navn} ikke mottar, har mottatt eller skal motta foreldrepenger fra Norge.",
+    "annenForelder.harRettPåForeldrepengerINorge.veileder.del2": "Du krysser nei dersom {navn} ikke mottar, har mottatt eller skal motta foreldrepenger fra Norge.",
     "annenForelder.harRettPåForeldrepengerINorge.veileder.del3": "Dette gjelder også dersom mor har mottatt engangsstønad. Er du usikker på om {navn} har foreldrepenger fra Norge må du spørre {navn}.",
     "annenForelder.harRettPåForeldrepengerIEØS": "Har {navn} arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?",
     "annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel": "Les mer om rett til foreldrepenger i EØS",
