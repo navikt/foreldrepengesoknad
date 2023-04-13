@@ -1,18 +1,16 @@
 import React from 'react';
 
 import throttle from 'lodash.throttle';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { injectIntl, IntlShape } from 'react-intl';
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'uttaksplan/validering/tester/erTilleggsopplysningerGyldigTest';
-import { Textarea } from 'nav-frontend-skjema';
 import { Attachment } from 'app/types/Attachment';
+import { BodyLong, Label, Textarea } from '@navikt/ds-react';
 
 interface OwnProps {
     begrunnelse?: string;
     vedlegg?: Attachment[];
     onBegrunnelseTekstChange: (begrunnelse: string) => void;
-    //onVedleggChange: (vedlegg: AttachmentType[]) => void;
     intl: IntlShape;
 }
 
@@ -25,34 +23,30 @@ interface State {
 const getLabel = (intl: IntlShape) => {
     return (
         <>
-            <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
+            <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.label')}</Label>
             <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
-                <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
+                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
                     <Block margin="s">
-                        <Element>
-                            {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}
-                        </Element>
-                        <Normaltekst>
-                            {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}
-                        </Normaltekst>
+                        <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}</Label>
+                        <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}</BodyLong>
                     </Block>
                     <Block margin="s">
-                        <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Element>
-                        <Normaltekst>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</Normaltekst>
+                        <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Label>
+                        <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</BodyLong>
                     </Block>
                     <Block margin="s">
-                        <Element>
+                        <Label>
                             {intlUtils(
                                 intl,
                                 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
                             )}
-                        </Element>
-                        <Normaltekst>
+                        </Label>
+                        <BodyLong>
                             {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering')}
-                        </Normaltekst>
+                        </BodyLong>
                     </Block>
-                    <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Element>
-                    <Normaltekst>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</Normaltekst>
+                    <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Label>
+                    <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</BodyLong>
                 </div>
             </UtvidetInformasjon>
         </>
@@ -90,7 +84,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
 
         return (
             <div className="blokk-m">
-                <Block margin="l">
+                <Block padBottom="l">
                     <Textarea
                         value={this.state.begrunnelse}
                         maxLength={tilleggsopplysningerMaxLength}

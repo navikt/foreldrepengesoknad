@@ -10,13 +10,10 @@ import {
     VelkommenFormData,
     VelkommenFormField,
     velkommenFormQuestions,
+    VelkommenQuestionsPayload,
 } from './velkommenFormConfig';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
-
-import './velkommen.less';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
 import SøknadRoutes from 'app/routes/routes';
 import { storeAppState } from 'app/utils/submitUtils';
@@ -35,6 +32,9 @@ import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtter
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Sak } from 'app/types/Sak';
+import { BodyShort, Button, Heading } from '@navikt/ds-react';
+
+import './velkommen.less';
 
 interface Props {
     fornavn: string;
@@ -142,7 +142,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,
                     selectableBarn,
-                });
+                } as VelkommenQuestionsPayload);
                 const valgtBarnId = values.valgteBarn;
                 const valgtBarn =
                     valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
@@ -173,14 +173,14 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                         />
 
                         <div className={bem.block}>
-                            <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
+                            <Heading size="large" className={`${bem.element('tittel')} blokk-s`}>
                                 {intlUtils(intl, 'velkommen.tittel')}
-                            </Innholdstittel>
+                            </Heading>
                             <Block padBottom="l" visible={visibility.isVisible(VelkommenFormField.valgteBarn)}>
                                 <BarnVelger
                                     selectableBarn={sortedSelectableBarn}
                                     visibility={visibility}
-                                    formValues={values}
+                                    formValues={values as VelkommenFormData}
                                     setFieldValue={setFieldValue}
                                 />
                             </Block>
@@ -211,12 +211,12 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    <Button variant="primary" disabled={isSubmitting} loading={isSubmitting}>
                                         {knapptekst}
-                                    </Hovedknapp>
+                                    </Button>
                                 </div>
                             </Block>
-                            <Normaltekst className={bem.element('personopplysningerLink')}>
+                            <BodyShort className={bem.element('personopplysningerLink')}>
                                 <a
                                     className="lenke"
                                     href="#"
@@ -227,7 +227,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                                 >
                                     <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                                 </a>
-                            </Normaltekst>
+                            </BodyShort>
                             <DinePersonopplysningerModal
                                 isOpen={isDinePersonopplysningerModalOpen}
                                 onRequestClose={() => setDinePersonopplysningerModalOpen(false)}

@@ -21,7 +21,6 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { isInfoPeriode } from 'uttaksplan/types/Periode';
@@ -34,10 +33,11 @@ import {
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'app/utils/personUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Button } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -164,7 +164,9 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(lagretUttaksplanInfo)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(formValues);
+                const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(
+                    formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData
+                );
                 const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
 
                 return (
@@ -193,9 +195,9 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
                 );

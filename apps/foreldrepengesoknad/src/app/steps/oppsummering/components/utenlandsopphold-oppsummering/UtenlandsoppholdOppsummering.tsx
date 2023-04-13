@@ -2,11 +2,11 @@ import { doesTidsperiodeContainDate, intlUtils } from '@navikt/fp-common';
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UtenlandsoppholdListe from './UtenlandsoppholdOppsummeringListe';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
@@ -53,7 +53,7 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge')}>
                 {informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ? (
-                    <Normaltekst>{intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')}</Normaltekst>
+                    <BodyShort>{intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')}</BodyShort>
                 ) : null}
 
                 <UtenlandsoppholdListe
@@ -64,7 +64,7 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
 
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge')}>
                 {informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ? (
-                    <Normaltekst>{intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')}</Normaltekst>
+                    <BodyShort>{intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')}</BodyShort>
                 ) : null}
 
                 <UtenlandsoppholdListe
@@ -80,9 +80,9 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
                         : intlUtils(intl, 'oppsummering.utenlandsopphold.erINorgePåFødselstidspunkt')
                 }
             >
-                <Normaltekst>
+                <BodyShort>
                     <FormattedMessage id={erINorgePåFamiliehendelsedato ? 'ja' : 'nei'} />
-                </Normaltekst>
+                </BodyShort>
             </OppsummeringsPunkt>
         </>
     );

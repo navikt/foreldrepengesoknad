@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { BodyShort, Label } from '@navikt/ds-react';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -25,29 +25,29 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                     <div className={bem.block}>
                         <div className={bem.element('topRow')}>
                             {arbforhold.arbeidsgiverIdType === 'orgnr' && (
-                                <Normaltekst>
+                                <BodyShort>
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.organisasjonsnummer', {
                                         organisasjonsnummer: arbforhold.arbeidsgiverId,
                                     })}
-                                </Normaltekst>
+                                </BodyShort>
                             )}
-                            <Normaltekst className={bem.element('stillingsprosent')}>
+                            <BodyShort className={bem.element('stillingsprosent')}>
                                 {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
                                     stillingsprosent: arbforhold.stillingsprosent,
                                 })}
-                            </Normaltekst>
+                            </BodyShort>
                         </div>
-                        <Element>
+                        <Label>
                             {arbforhold.arbeidsgiverIdType === 'orgnr'
                                 ? arbforhold.arbeidsgiverNavn
                                 : intlUtils(intl, 'arbeidsgiver')}
-                        </Element>
-                        <Normaltekst>
+                        </Label>
+                        <BodyShort>
                             {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.periode', {
                                 fom: formatDate(arbforhold.fom),
                                 tom: arbforhold.tom ? formatDate(arbforhold.tom) : intlUtils(intl, 'pågående'),
                             })}
-                        </Normaltekst>
+                        </BodyShort>
                     </div>
                 </li>
             ))}

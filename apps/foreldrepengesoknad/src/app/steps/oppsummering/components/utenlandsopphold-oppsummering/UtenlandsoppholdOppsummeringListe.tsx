@@ -1,11 +1,11 @@
 import { bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import { Normaltekst } from 'nav-frontend-typografi';
 import countries from 'i18n-iso-countries';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import './utenlandsoppholdOppsummeringListe.less';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     utenlandsopphold: Utenlandsopphold[];
@@ -24,7 +24,7 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
                         className={bem.element('listElement')}
                         key={`${opphold.land}${opphold.tidsperiode.fom}${opphold.tidsperiode.tom}`}
                     >
-                        <Normaltekst>
+                        <BodyShort>
                             {tidligereOpphold
                                 ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.utenlands', {
                                       land: countries.getName(opphold.land, 'nb'),
@@ -32,10 +32,10 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
                                 : intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.utenlands', {
                                       land: countries.getName(opphold.land, 'nb'),
                                   })}
-                        </Normaltekst>
-                        <Normaltekst>
+                        </BodyShort>
+                        <BodyShort>
                             {formatDate(opphold.tidsperiode.fom)} - {formatDate(opphold.tidsperiode.tom)}
-                        </Normaltekst>
+                        </BodyShort>
                     </li>
                 );
             })}

@@ -1,5 +1,4 @@
 import { IntlShape } from 'react-intl';
-import { guid } from 'nav-frontend-js-utils';
 import { flatten, isArray, uniqBy } from 'lodash';
 import {
     UttaksplanRegelTestresultat,
@@ -12,6 +11,7 @@ import {
     RegelAlvorlighet,
 } from './types/regelTypes';
 import { Validator } from './types/validatorTypes';
+import { guid } from '@navikt/fp-common';
 
 const getRegelIntlKey = (regel: Regel, intlRegelPrefix: string): string =>
     `${intlRegelPrefix}.${regel.alvorlighet}.${regel.key}`;

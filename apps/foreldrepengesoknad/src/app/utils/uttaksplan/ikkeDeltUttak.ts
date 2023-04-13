@@ -4,12 +4,12 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { guid } from 'nav-frontend-js-utils';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
 import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from '../dateUtils';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from '../wlbUtils';
+import { guid } from '@navikt/fp-common';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,

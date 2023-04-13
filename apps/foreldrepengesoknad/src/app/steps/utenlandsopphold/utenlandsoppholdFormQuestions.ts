@@ -1,6 +1,6 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { UtenlandsoppholdFormData, UtenlandsoppholdFieldNames } from './utenlandsoppholdFormTypes';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const UtenlandsoppholdFormConfig: QuestionConfig<UtenlandsoppholdFormData, UtenlandsoppholdFieldNames> = {
     [UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd]: {

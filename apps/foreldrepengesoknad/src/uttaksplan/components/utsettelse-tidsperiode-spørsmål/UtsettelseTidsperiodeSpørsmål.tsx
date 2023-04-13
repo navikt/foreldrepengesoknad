@@ -1,5 +1,4 @@
 import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
-import Modal from 'nav-frontend-modal';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
@@ -9,6 +8,7 @@ import { useIntl } from 'react-intl';
 import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
 import { Situasjon } from 'app/types/Situasjon';
+import { Modal } from '@navikt/ds-react';
 
 interface Props {
     periode: Periode;
@@ -73,7 +73,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Modal isOpen={visible} closeButton={true} onRequestClose={onAvbryt} contentLabel="Test">
+            <Modal open={visible} closeButton={true} onClose={onAvbryt} aria-label="Endre tidsperiode">
                 <TidsperiodeForm
                     familiehendelsesdato={familiehendelsesdato}
                     onBekreft={handleOnSubmit}

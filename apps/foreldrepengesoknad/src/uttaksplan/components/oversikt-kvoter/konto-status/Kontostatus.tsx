@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
 import { bemUtils } from '@navikt/fp-common';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { getVarighetString } from 'app/utils/dateUtils';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -10,6 +9,7 @@ import { getStønadskontoNavn } from 'uttaksplan/utils/stønadskontoerUtils';
 import StønadskontoIkon from 'uttaksplan/components/stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 import { Situasjon } from 'app/types/Situasjon';
+import { BodyShort } from '@navikt/ds-react';
 
 export interface Props {
     uttak: StønadskontoUttak;
@@ -40,7 +40,7 @@ const Kontostatus: FunctionComponent<Props> = ({
     const kontoErOvertrukket = uttak.dager < 0;
 
     return (
-        <Normaltekst className={bem.block} tag="div">
+        <BodyShort className={bem.block} as="div">
             <div className={bem.element('ikon')} aria-hidden={true} role="presentation">
                 <StønadskontoIkon
                     konto={uttak.konto}
@@ -61,7 +61,7 @@ const Kontostatus: FunctionComponent<Props> = ({
                     {kontoErOvertrukket ? `- ${varighetString}` : varighetString}
                 </strong>
             </div>
-        </Normaltekst>
+        </BodyShort>
     );
 };
 

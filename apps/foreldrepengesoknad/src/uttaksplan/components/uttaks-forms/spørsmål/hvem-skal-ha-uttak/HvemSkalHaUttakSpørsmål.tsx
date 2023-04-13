@@ -16,7 +16,7 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
     const intl = useIntl();
 
     return (
-        <PeriodeUttakFormComponents.RadioPanelGroup
+        <PeriodeUttakFormComponents.RadioGroup
             legend={intlUtils(intl, 'uttaksplan.hvemSkalHaUttak')}
             name={fieldName}
             radios={[
@@ -33,7 +33,6 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
                     value: erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
                 },
             ]}
-            useTwoColumns={true}
             validate={(value) => {
                 if (!hasValue(value)) {
                     return intlUtils(intl, 'uttaksplan.validering.hvemSkalHaUttak');

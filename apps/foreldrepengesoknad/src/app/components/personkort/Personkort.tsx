@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { bemUtils } from '@navikt/fp-common';
+import { BodyShort } from '@navikt/ds-react';
 
 import './personkort.less';
-import { bemUtils } from '@navikt/fp-common';
 
 interface Props {
     tittel?: string;
@@ -25,7 +25,7 @@ const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, in
         >
             {ikon && <div className={bem.element('ikon')}>{ikon}</div>}
             <div className={bem.element('innhold')}>
-                {tittel && <Normaltekst className="tittel">{tittel}</Normaltekst>}
+                {tittel && <BodyShort className="tittel">{tittel}</BodyShort>}
                 <div className={bem.element('tekst')}>{children}</div>
             </div>
         </div>

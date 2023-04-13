@@ -1,19 +1,17 @@
 import { Block, hasValue, intlUtils } from '@navikt/fp-common';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import links from 'app/links/links';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import { Normaltekst } from 'nav-frontend-typografi';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import { BodyShort, GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
@@ -33,12 +31,12 @@ const getVeilederTekst = (
 ) => {
     if (morsAktivitetIPerioden === MorsAktivitet.Arbeid) {
         return (
-            <Normaltekst>
+            <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.morsAktivitet.veileder.arbeid"
                     values={{ navnMor: getNavnGenitivEierform(navnPåForeldre.mor, intl.locale) }}
                 />
-            </Normaltekst>
+            </BodyShort>
         );
     } else if (morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning) {
         const listData = [
@@ -50,12 +48,12 @@ const getVeilederTekst = (
 
         return (
             <>
-                <Normaltekst>
+                <BodyShort>
                     <FormattedMessage
                         id="uttaksplan.morsAktivitet.veileder.arbeidOgUtdanning"
                         values={{ navnMor: navnPåForeldre.mor }}
                     />
-                </Normaltekst>
+                </BodyShort>
                 <ul>
                     {listData.map((listItem, index) => (
                         <li key={`arbeidOgUtdanning${index}`}>{listItem}</li>
@@ -68,30 +66,30 @@ const getVeilederTekst = (
         morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
     ) {
         return (
-            <Normaltekst>
+            <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.morsAktivitet.veileder.informasjonVedSykdomAnnenForelder"
                     values={{ navn: navnPåForeldre.mor }}
                 />
-            </Normaltekst>
+            </BodyShort>
         );
     } else if (morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet) {
         return (
-            <Normaltekst>
+            <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.morsAktivitet.veileder.introduksjonsprogrammet"
                     values={{ navnMor: navnPåForeldre.mor }}
                 />
-            </Normaltekst>
+            </BodyShort>
         );
     } else if (morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet) {
         return (
-            <Normaltekst>
+            <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.morsAktivitet.veileder.kvalifiseringsprogrammet"
                     values={{ navnMor: navnPåForeldre.mor }}
                 />
-            </Normaltekst>
+            </BodyShort>
         );
     } else if (morsAktivitetIPerioden === MorsAktivitet.Utdanning) {
         const listData = [
@@ -103,12 +101,12 @@ const getVeilederTekst = (
 
         return (
             <>
-                <Normaltekst>
+                <BodyShort>
                     <FormattedMessage
                         id="uttaksplan.morsAktivitet.veileder.utdanning"
                         values={{ navnMor: navnPåForeldre.mor }}
                     />
-                </Normaltekst>
+                </BodyShort>
                 <ul>
                     {listData.map((listItem, index) => (
                         <li key={`trengerhjelp${index}`}>{listItem}</li>
@@ -183,9 +181,9 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                 </FormComponents.Select>
             </Block>
             <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                <GuidePanel>
                     {getVeilederTekst(intl, aktivitetskravMorValue, navnPåForeldre)}
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage
                             id="uttaksplan.morsAktivitet.lesmer"
                             values={{
@@ -201,8 +199,8 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                                 ),
                             }}
                         />
-                    </Normaltekst>
-                </Veilederpanel>
+                    </BodyShort>
+                </GuidePanel>
             </Block>
             <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
                 <FormikFileUploader

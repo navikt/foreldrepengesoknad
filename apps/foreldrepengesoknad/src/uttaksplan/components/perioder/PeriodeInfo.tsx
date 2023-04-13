@@ -1,8 +1,8 @@
+import { BodyShort } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { isUttakAnnenPart, UtsettelseAnnenPartInfoPeriode, UttakAnnenPartInfoPeriode } from 'uttaksplan/types/Periode';
@@ -24,7 +24,7 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
     const intl = useIntl();
 
     return (
-        <Normaltekst>
+        <BodyShort>
             <strong>
                 <span>{formaterDatoKompakt(periode.tidsperiode.fom)}</span>
                 <span>&mdash;</span>
@@ -43,7 +43,7 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
                       getForelderNavn(periode.forelder, navnPåForeldre),
                       periode.forelder === Forelder.mor
                   )}
-        </Normaltekst>
+        </BodyShort>
     );
 };
 

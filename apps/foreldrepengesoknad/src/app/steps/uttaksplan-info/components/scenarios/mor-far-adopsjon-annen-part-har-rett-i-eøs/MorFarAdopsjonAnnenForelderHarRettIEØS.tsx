@@ -1,17 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -43,6 +39,9 @@ import {
 } from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Button, GuidePanel } from '@navikt/ds-react';
+import { MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -158,7 +157,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                 const visibility = morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig.getVisbility({
                     ...formValues,
                     erFarEllerMedmor,
-                });
+                } as MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload);
 
                 return (
                     <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.Form
@@ -206,7 +205,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 !erDeltUttak
                             }
                         >
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id={
                                         erAdoptertIUtlandet === false
@@ -214,10 +213,10 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                             : 'uttaksplaninfo.info.adoptertIUtlandet'
                                     }
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block padBottom="l" visible={antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined}>
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
                                     values={{
@@ -226,12 +225,12 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                         navnMor: navnMor,
                                     }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.Form>
                 );

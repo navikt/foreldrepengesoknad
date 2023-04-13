@@ -59,7 +59,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                 handleUpdatePeriode(mapPeriodeFørFødselFormToPeriode(values, periode), familiehendelsesdato)
             }
             renderForm={({ setFieldValue, values }) => {
-                const visibility = periodeFørFødselFormQuestionsConfig.getVisbility(values);
+                const visibility = periodeFørFødselFormQuestionsConfig.getVisbility(values as PeriodeFørFødselFormData);
 
                 return (
                     <>
@@ -85,7 +85,9 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeFørFødselFormComponents.Form includeButtons={false}>
-                            <SubmitListener cleanup={() => handleCleanup(values, visibility)} />
+                            <SubmitListener
+                                cleanup={() => handleCleanup(values as PeriodeFørFødselFormData, visibility)}
+                            />
 
                             <Block
                                 visible={

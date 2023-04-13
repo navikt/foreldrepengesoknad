@@ -6,7 +6,7 @@ import {
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
-interface FarMedmorFødselOgMorHarIkkeRettQuestionsPayload extends FarMedmorFødselOgMorHarIkkeRettFormData {
+export interface FarMedmorFødselOgMorHarIkkeRettQuestionsPayload extends FarMedmorFødselOgMorHarIkkeRettFormData {
     erMorUfør: boolean;
     familiehendelsesdato: Date;
 }

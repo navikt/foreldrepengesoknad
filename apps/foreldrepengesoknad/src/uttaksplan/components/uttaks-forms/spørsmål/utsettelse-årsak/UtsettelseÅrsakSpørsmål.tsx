@@ -1,12 +1,8 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import { RadioProps } from 'nav-frontend-skjema';
-import { Normaltekst } from 'nav-frontend-typografi';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
@@ -14,6 +10,8 @@ import {
     PeriodeUtsettelseFormComponents,
     PeriodeUtsettelseFormField,
 } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
+import { BodyShort, GuidePanel } from '@navikt/ds-react';
+import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 
 interface Props {
     periodenErKunHelligdager: boolean;
@@ -35,47 +33,39 @@ const getUtsettelseÅrsakOptions = (
     erMorUfør: boolean,
     søkerErFarEllerMedmorOgKunDeHarRett: boolean
 ) => {
-    const allRadios: RadioProps[] = [
+    const allRadios: FormikRadioProp[] = [
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.jegskalhaferie'),
             value: UtsettelseÅrsakType.Ferie,
             disabled: periodenErKunHelligdager === true,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.jegskaljobbeheltid'),
             value: UtsettelseÅrsakType.Arbeid,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.pgasykdom'),
             value: UtsettelseÅrsakType.Sykdom,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.institusjonBarn'),
             value: UtsettelseÅrsakType.InstitusjonBarnet,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.institusjonSøker'),
             value: UtsettelseÅrsakType.InstitusjonSøker,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.hv_øvelse'),
             value: UtsettelseÅrsakType.HvØvelse,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.navtiltak'),
             value: UtsettelseÅrsakType.NavTiltak,
-            name: 'utsettelseÅrsak',
         },
         {
             label: intlUtils(intl, 'uttaksplan.utsettelseårsak.fri'),
             value: UtsettelseÅrsakType.Fri,
-            name: 'utsettelseÅrsak',
         },
     ];
 
@@ -223,41 +213,39 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
 
     if (årsakOptions.length === 0) {
         return (
-            <Veilederpanel fargetema="normal" type="normal" svg={<VeilederNormal transparentBackground={true} />}>
+            <GuidePanel>
                 <Block padBottom="l">
-                    <Normaltekst>
+                    <BodyShort>
                         <b>
                             <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del1" />
                         </b>
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <Block padBottom="l">
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del2" />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <Block padBottom="l">
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id="uttaksplan.veileder.trengerIkkeUtsettelse.del3" />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
-            </Veilederpanel>
+            </GuidePanel>
         );
     }
 
     return (
         <>
             <Block padBottom="l">
-                <PeriodeUtsettelseFormComponents.RadioPanelGroup
+                <PeriodeUtsettelseFormComponents.RadioGroup
+                    legend="Velg årsak for utsettelse"
                     name={PeriodeUtsettelseFormField.årsak}
                     radios={årsakOptions}
-                    useTwoColumns={true}
                 />
             </Block>
             <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    {getVeilederTekst(utsettelseårsak)}
-                </Veilederpanel>
+                <GuidePanel>{getVeilederTekst(utsettelseårsak)}</GuidePanel>
             </Block>
             <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
                 <FormikFileUploader

@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import { guid } from 'nav-frontend-js-utils';
 import preventDoubleTapZoom from '../preventDoubleTapZoom';
 import AriaText from '../AriaText';
 import './sirkelknapp.less';
+import { guid } from '@navikt/fp-common';
 
 export type Stil = 'hvit' | 'bla' | 'info';
 

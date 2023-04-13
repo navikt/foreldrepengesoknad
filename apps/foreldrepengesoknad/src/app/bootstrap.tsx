@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import Modal from 'nav-frontend-modal';
 import * as Sentry from '@sentry/browser';
 import '@navikt/ds-css';
 
@@ -28,7 +27,6 @@ Sentry.init({
 
 initAmplitude();
 
-Modal.setAppElement('#appContainer');
 const container = document.getElementById('app');
 const root = createRoot(container!);
 

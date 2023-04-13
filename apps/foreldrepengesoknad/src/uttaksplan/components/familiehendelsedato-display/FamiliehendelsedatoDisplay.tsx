@@ -1,12 +1,12 @@
 import { bemUtils } from '@navikt/fp-common';
 import Barn, { isAdoptertBarn, isFødtBarn } from 'app/context/types/Barn';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import HjerteIkon from 'uttaksplan/assets/HjerteIkon';
 
 import './familiehendelsesdatoDisplay.less';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     familiehendelsedato: Date;
@@ -48,7 +48,7 @@ const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsed
             <div className={bem.element('hjerte')}>
                 <HjerteIkon fylt={true} title="Hjerte" />
             </div>
-            <Normaltekst>{getTekst(barn, familiehendelsedato, barn.antallBarn)}</Normaltekst>
+            <BodyShort>{getTekst(barn, familiehendelsedato, barn.antallBarn)}</BodyShort>
         </div>
     );
 };

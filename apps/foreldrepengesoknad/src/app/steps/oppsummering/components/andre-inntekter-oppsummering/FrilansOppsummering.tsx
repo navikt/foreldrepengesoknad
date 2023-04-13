@@ -1,10 +1,10 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import InntekterTabell from './InntekterTabell';
+import { BodyShort } from '@navikt/ds-react';
 
 const FrilansOppsummering: FunctionComponent = () => {
     const intl = useIntl();
@@ -15,7 +15,7 @@ const FrilansOppsummering: FunctionComponent = () => {
     if (!frilansInformasjon || !harJobbetSomFrilansSiste10Mnd) {
         return (
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.tittel')}>
-                <Normaltekst>{intlUtils(intl, 'oppsummering.frilans.ikkeFrilans')}</Normaltekst>
+                <BodyShort>{intlUtils(intl, 'oppsummering.frilans.ikkeFrilans')}</BodyShort>
             </OppsummeringsPunkt>
         );
     }
@@ -31,24 +31,24 @@ const FrilansOppsummering: FunctionComponent = () => {
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.tittel')} />
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.oppstartsdato')}>
-                <Normaltekst>{formatDate(oppstart)}</Normaltekst>
+                <BodyShort>{formatDate(oppstart)}</BodyShort>
             </OppsummeringsPunkt>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.fremdelesFrilans')}>
-                <Normaltekst>{jobberFremdelesSomFrilans ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}</Normaltekst>
+                <BodyShort>{jobberFremdelesSomFrilans ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}</BodyShort>
             </OppsummeringsPunkt>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.driverFosterhjem')}>
-                <Normaltekst>{driverFosterhjem ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}</Normaltekst>
+                <BodyShort>{driverFosterhjem ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}</BodyShort>
             </OppsummeringsPunkt>
             <OppsummeringsPunkt
                 title={intlUtils(intl, 'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd')}
             >
                 <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin="none">
-                    <Normaltekst>
+                    <BodyShort>
                         {intlUtils(
                             intl,
                             'oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
                         )}
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin="none">
                     <InntekterTabell

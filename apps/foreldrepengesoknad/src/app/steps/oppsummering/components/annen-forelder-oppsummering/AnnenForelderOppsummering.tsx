@@ -4,11 +4,11 @@ import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     annenForelder: AnnenForelder;
@@ -37,10 +37,10 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
             {isAnnenForelderOppgitt(annenForelder) && (
                 <>
                     <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.annenForelder.navn')}>
-                        <Normaltekst>{`${annenForelder.fornavn} ${annenForelder.etternavn}`}</Normaltekst>
+                        <BodyShort>{`${annenForelder.fornavn} ${annenForelder.etternavn}`}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.annenForelder.fnr')}>
-                        <Normaltekst>{annenForelder.fnr}</Normaltekst>
+                        <BodyShort>{annenForelder.fnr}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={
@@ -49,7 +49,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                                 : intlUtils(intl, 'oppsummering.annenForelder.aleneOmOmsorg.tittel')
                         }
                     >
-                        <Normaltekst>
+                        <BodyShort>
                             <FormattedMessage
                                 id={
                                     !søker.erAleneOmOmsorg
@@ -57,7 +57,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                                         : 'oppsummering.annenForelder.aleneOmOmsorg.tekst'
                                 }
                             />
-                        </Normaltekst>
+                        </BodyShort>
                     </OppsummeringsPunkt>
                     {!søker.erAleneOmOmsorg && (
                         <OppsummeringsPunkt
@@ -65,9 +65,9 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                                 navn: annenForelder.fornavn,
                             })}
                         >
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id={annenForelder.harRettPåForeldrepengerINorge ? 'ja' : 'nei'} />
-                            </Normaltekst>
+                            </BodyShort>
                         </OppsummeringsPunkt>
                     )}
                     {!søker.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
@@ -76,9 +76,9 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                                 navn: annenForelder.fornavn,
                             })}
                         >
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id={annenForelder.harOppholdtSegIEØS ? 'ja' : 'nei'} />
-                            </Normaltekst>
+                            </BodyShort>
                         </OppsummeringsPunkt>
                     )}
                     {!søker.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
@@ -87,9 +87,9 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                                 navn: annenForelder.fornavn,
                             })}
                         >
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'} />
-                            </Normaltekst>
+                            </BodyShort>
                         </OppsummeringsPunkt>
                     )}
                     {erFarEllerMedmor &&
@@ -101,9 +101,9 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                                     navn: annenForelder.fornavn,
                                 })}
                             >
-                                <Normaltekst>
+                                <BodyShort>
                                     <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
-                                </Normaltekst>
+                                </BodyShort>
                             </OppsummeringsPunkt>
                         )}
                 </>

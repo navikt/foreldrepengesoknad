@@ -1,10 +1,10 @@
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     MorFarFødselAnnenForelderHarRettIEØSFormField,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
 } from './morFarFødselAnnenForelderHarRettIEØSFormConfig';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const initialMorFarFødselAnnenForelderHarRettIEØSValues: MorFarFødselAnnenForelderHarRettIEØSFormData = {
     [MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad]: '',

@@ -1,4 +1,3 @@
-import { guid } from 'nav-frontend-js-utils';
 import dayjs from 'dayjs';
 import {
     AvslåttPeriode,
@@ -35,6 +34,7 @@ import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { splittUttaksperiodePåFamiliehendelsesdato, splittPeriodePåDato } from 'uttaksplan/builder/leggTilPeriode';
 import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import { guid } from '@navikt/fp-common';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;

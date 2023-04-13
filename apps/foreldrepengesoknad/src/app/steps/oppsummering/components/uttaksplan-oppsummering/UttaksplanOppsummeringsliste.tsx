@@ -90,7 +90,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: getUttaksperiodeNavn(periode),
-            venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
             content: (
                 <Uttaksperiodedetaljer
@@ -116,7 +115,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
                 termindato,
                 situasjon
             ),
-            venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
         };
     };
@@ -127,7 +125,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: intlUtils(intl, 'oppsummering.utsettelse.pga'),
-            venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
             content: (
                 <Utsettelsesperiodedetaljer
@@ -150,7 +147,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             venstrestiltTekst: intlUtils(intl, 'oppsummering.overtakelse.pga', {
                 konto: kontonavn,
             }),
-            venstrestiltTag: 'h3',
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
             content: (
                 <Overføringsperiodedetaljer
@@ -168,7 +164,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: begrunnelse.beskrivelse,
-            venstrestiltTag: 'h3',
             høyrestiltTekst: '',
             content: (
                 <>

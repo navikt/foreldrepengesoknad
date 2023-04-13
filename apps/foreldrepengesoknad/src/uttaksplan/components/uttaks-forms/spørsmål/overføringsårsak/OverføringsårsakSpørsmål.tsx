@@ -1,16 +1,15 @@
 import { intlUtils, Block, hasValue } from '@navikt/fp-common';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
+import { GuidePanel } from '@navikt/ds-react';
 interface Props {
     vedlegg: Attachment[];
     navnAnnenForelder: string;
@@ -62,13 +61,12 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
     return (
         <>
             <Block padBottom="l">
-                <PeriodeUttakFormComponents.RadioPanelGroup
+                <PeriodeUttakFormComponents.RadioGroup
                     name={PeriodeUttakFormField.overføringsårsak}
                     legend={intlUtils(intl, 'uttaksplan.overføringsårsak', {
                         navnAnnenForelder: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
                     })}
                     radios={radios}
-                    useTwoColumns={true}
                     validate={(value) => {
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.overføringsårsak');
@@ -80,12 +78,12 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
             </Block>
             {beOmDokumentasjon && (
                 <Block padBottom="l">
-                    <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                    <GuidePanel>
                         <FormattedMessage
                             id="uttaksplan.overføringsårsak.informasjonVedSykdomAnnenForelder"
                             values={{ navnAnnenForelder }}
                         />
-                    </Veilederpanel>
+                    </GuidePanel>
                 </Block>
             )}
             {beOmDokumentasjon && (

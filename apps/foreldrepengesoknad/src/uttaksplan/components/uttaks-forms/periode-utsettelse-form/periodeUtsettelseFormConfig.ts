@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { Attachment } from 'app/types/Attachment';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
@@ -28,6 +28,5 @@ export interface PeriodeUtsettelseFormData {
 
 export const PeriodeUtsettelseFormComponents = getTypedFormComponents<
     PeriodeUtsettelseFormField,
-    PeriodeUtsettelseFormData,
-    string
+    PeriodeUtsettelseFormData
 >();

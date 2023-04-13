@@ -1,8 +1,6 @@
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import React, { FunctionComponent } from 'react';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { Block, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -22,7 +20,9 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import farMedmorFødselBeggeHarRettQuestionsConfig from './farMedmorFødselBeggeHarRettQuestionsConfig';
+import farMedmorFødselBeggeHarRettQuestionsConfig, {
+    FarMedmorFødselBeggeHarRettFormPayload,
+} from './farMedmorFødselBeggeHarRettQuestionsConfig';
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
@@ -30,7 +30,6 @@ import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { Forelder } from 'app/types/Forelder';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -44,6 +43,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Button, GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -130,7 +130,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                 const visibility = farMedmorFødselBeggeHarRettQuestionsConfig.getVisbility({
                     ...formValues,
                     familiehendelsesdato: familiehendelsesdatoDate!,
-                });
+                } as FarMedmorFødselBeggeHarRettFormPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
                 const tilgjengeligeDager = valgtStønadskonto
@@ -143,7 +143,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         includeValidationSummary={true}
                     >
                         <Block padBottom="l">
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonTilAnnenForelder"
                                     values={{
@@ -152,7 +152,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                             : '',
                                     }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block padBottom="l">
                             <DekningsgradSpørsmål
@@ -181,12 +181,12 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 !andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesdato)!)
                             }
                         >
-                            <Veilederpanel svg={<VeilederNormal transparentBackground={true} />}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.farMedmor.infoOmTidsromMellomMorsSisteDagOgFarsFørsteDag"
                                     values={{ navnMor }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block
                             padBottom="l"
@@ -226,17 +226,17 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                     FormComponents={FarMedmorFødselBeggeHarRettFormComponents}
                                     ukerFieldName={FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode}
                                     dagerFieldName={FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode}
-                                    antallDager={formValues.antallDagerFellesperiode}
-                                    antallUker={formValues.antallUkerFellesperiode}
+                                    antallDager={formValues.antallDagerFellesperiode!}
+                                    antallUker={formValues.antallUkerFellesperiode!}
                                     setFieldValue={setFieldValue}
                                     ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
                                 />
                             )}
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </FarMedmorFødselBeggeHarRettFormComponents.Form>
                 );

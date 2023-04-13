@@ -9,8 +9,8 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from './eksisterendeSakUtils';
 
-jest.mock('nav-frontend-js-utils', () => ({
-    ...(jest.requireActual('nav-frontend-js-utils') as any),
+jest.mock('@navikt/fp-common', () => ({
+    ...(jest.requireActual('@navikt/fp-common') as any),
     guid: () => '1',
 }));
 

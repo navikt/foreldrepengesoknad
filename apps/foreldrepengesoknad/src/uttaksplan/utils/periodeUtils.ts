@@ -22,7 +22,6 @@ import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { erTidsperioderLike, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getFloatFromString } from 'app/utils/numberUtils';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import {
     convertTidsperiodeToTidsperiodeDate,
@@ -38,6 +37,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {

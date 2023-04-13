@@ -2,12 +2,10 @@ import React, { FunctionComponent } from 'react';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { EgenNæringModalFormComponents, EgenNæringModalFormField } from '../egenNæringModalFormConfig';
 import { Block, intlUtils } from '@navikt/fp-common';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { validateNumber } from '../validation/egenNæringValidation';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
+import { BodyShort, GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     visibility: QuestionVisibility<EgenNæringModalFormField, undefined>;
@@ -26,7 +24,7 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.navnRegnskapsfører)}>
-                <EgenNæringModalFormComponents.Input
+                <EgenNæringModalFormComponents.TextField
                     name={EgenNæringModalFormField.navnRegnskapsfører}
                     label={regnskapsførerNavnLabel}
                     validate={validateRequiredTextInputField(regnskapsførerNavnLabel, intl)}
@@ -55,11 +53,11 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
                 padBottom="l"
                 visible={visibility.isVisible(EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie)}
             >
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                    <Normaltekst>
+                <GuidePanel>
+                    <BodyShort>
                         <FormattedMessage id="inntektsinformasjon.egenNæringModal.regnskapsførerVeileder" />
-                    </Normaltekst>
-                </Veilederpanel>
+                    </BodyShort>
+                </GuidePanel>
             </Block>
         </>
     );

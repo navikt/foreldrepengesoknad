@@ -1,5 +1,4 @@
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { RegistrertBarn } from 'app/types/Person';
@@ -14,6 +13,7 @@ import {
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     situasjon: Situasjon;

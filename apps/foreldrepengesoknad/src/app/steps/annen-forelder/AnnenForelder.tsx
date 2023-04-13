@@ -1,5 +1,4 @@
 import { Block, hasValue, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
@@ -11,7 +10,6 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -24,7 +22,7 @@ import {
     getAnnenForelderFormInitialValues,
     mapAnnenForelderFormToState,
 } from './annenForelderFormUtils';
-import { annenForelderQuestionsConfig } from './annenForelderQuestionsConfig';
+import { annenForelderQuestionsConfig, AnnenForelderQuestionsPayload } from './annenForelderQuestionsConfig';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './components/AvtaleAtFarTarUtForeldrepengerVeileder';
 import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAleneomsorgVeileder';
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
@@ -38,6 +36,8 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import { Button } from '@navikt/ds-react';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -116,7 +116,7 @@ const AnnenForelder = () => {
                     skalOppgiPersonalia,
                     søkerRolle: rolle,
                     gjelderStebarnsadopsjon: isAdoptertStebarn(barn) ? true : false,
-                });
+                } as AnnenForelderQuestionsPayload);
 
                 const farErInformert =
                     convertYesOrNoOrUndefinedToBoolean(formValues.aleneOmOmsorg) ||
@@ -332,9 +332,9 @@ const AnnenForelder = () => {
                                 />
                             </Block>
                             <Block visible={kanGåVidereMedSøknaden} textAlignCenter={true}>
-                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                <Button variant="primary" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
-                                </Hovedknapp>
+                                </Button>
                             </Block>
                         </AnnenForelderFormComponents.Form>
                     </Step>

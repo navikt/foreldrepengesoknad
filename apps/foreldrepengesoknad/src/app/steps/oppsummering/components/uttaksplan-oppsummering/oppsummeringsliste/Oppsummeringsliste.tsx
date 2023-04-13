@@ -1,13 +1,12 @@
 import classNames from 'classnames';
-import { guid } from 'nav-frontend-js-utils';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import * as React from 'react';
 import List from './list/List';
+import { BodyShort, Label } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 export interface OppsummeringslisteelementProps {
     venstrestiltTekst: string;
     høyrestiltTekst: string;
-    venstrestiltTag?: string;
     content?: React.ReactNode;
     kompakt?: boolean;
 }
@@ -32,7 +31,6 @@ const Oppsummeringsliste: React.FunctionComponent<OppsummeringslisteProps> = (pr
 
 const Oppsummeringslisteelement: React.FunctionComponent<OppsummeringslisteelementProps> = ({
     venstrestiltTekst,
-    venstrestiltTag = 'h4',
     høyrestiltTekst,
     content,
     kompakt,
@@ -43,9 +41,9 @@ const Oppsummeringslisteelement: React.FunctionComponent<Oppsummeringslisteeleme
         })}
     >
         <div className="oppsummeringsliste__element__heading">
-            <Element tag={venstrestiltTag}>{venstrestiltTekst}</Element>
+            <Label as="h4">{venstrestiltTekst}</Label>
             <div className="høyrestiltTekst">
-                <Normaltekst>{høyrestiltTekst}</Normaltekst>
+                <BodyShort>{høyrestiltTekst}</BodyShort>
             </div>
         </div>
         {content && <div className="oppsummeringsliste__element__content">{content}</div>}

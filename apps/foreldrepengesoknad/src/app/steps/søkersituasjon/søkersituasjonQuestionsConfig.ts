@@ -2,7 +2,7 @@ import { hasValue, Kjønn } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { SøkersituasjonFormData, SøkersituasjonFormField } from './søkersituasjonFormConfig';
 
-interface SøkersituasjonQuestionsPayload extends SøkersituasjonFormData {
+export interface SøkersituasjonQuestionsPayload extends SøkersituasjonFormData {
     søkerKjønn: Kjønn;
 }
 

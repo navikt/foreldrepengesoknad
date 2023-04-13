@@ -2,7 +2,6 @@ import React from 'react';
 import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { bemUtils, Block, formatDate, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
@@ -27,10 +26,11 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
-
-import './infoOmSøknaden.less';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { BodyShort } from '@navikt/ds-react';
+
+import './infoOmSøknaden.less';
 
 interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -148,7 +148,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                 ]}
             >
                 <Block padBottom="l">
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.html"
                             values={{
@@ -157,10 +157,10 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 navn: hvem,
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 {skalViseInfoOmMorsSak && hasValue(annenForelderNavn) && nesteMuligeUttaksdagEtterAnnenPart && (
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
                             values={{
@@ -169,7 +169,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 b: (msg: any) => <b>{msg}</b>,
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 )}
 
                 {skalViseInfoOmMorsSak &&
@@ -216,15 +216,15 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
             )}
             {erToTette && startStønadsperiodeNyttBarn !== undefined && (
                 <Block padBottom="l">
-                    <Normaltekst>
+                    <BodyShort>
                         <strong>
                             <FormattedMessage
                                 id="infoOmSøknaden.toTette.finnesBarnMedNesteSak.tittel"
                                 values={{ antallUkerToTette: minsterettUkerToTette }}
                             ></FormattedMessage>
                         </strong>
-                    </Normaltekst>
-                    <Normaltekst>
+                    </BodyShort>
+                    <BodyShort>
                         <FormattedMessage
                             id="infoOmSøknaden.toTette.finnesBarnMedNesteSak"
                             values={{
@@ -232,20 +232,20 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 minsterettAntallUker: <strong>{minsterettToTetteAntallUkerTekst}</strong>,
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
             )}
             {!erToTette && startStønadsperiodeNyttBarn !== undefined && (
                 <Block padBottom="l">
-                    <Normaltekst>
+                    <BodyShort>
                         <strong>
                             <FormattedMessage
                                 id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak.tittel"
                                 values={{ sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet) }}
                             ></FormattedMessage>
                         </strong>
-                    </Normaltekst>
-                    <Normaltekst>
+                    </BodyShort>
+                    <BodyShort>
                         <FormattedMessage
                             id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak"
                             values={{
@@ -253,10 +253,10 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
             )}
-            <Normaltekst>
+            <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.informasjon.lesMer"
                     values={{
@@ -267,7 +267,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                         ),
                     }}
                 />
-            </Normaltekst>
+            </BodyShort>
         </Block>
     );
 };

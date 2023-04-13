@@ -1,12 +1,12 @@
 import { intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { isISODateString } from 'nav-datovelger';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import uttaksConstants from 'app/constants';
 import { Uttaksdagen } from '../../../../utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from '../../../../utils/uttaksplanDatoavgrensninger';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { isISODateString } from '@navikt/ds-datepicker';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const validateErStartdatoFørTermindato =
     (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean) => (permisjonStartdato: string) => {

@@ -1,13 +1,13 @@
 import React from 'react';
 
 import withIntlProvider from 'storybook/decorators/withIntl';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ByttBrowserModalImpl as ByttBrowserModal } from './ByttBrowserModal';
+import { Meta, StoryFn } from '@storybook/react';
+import ByttBrowserModal from './ByttBrowserModal';
 
 export default {
     title: 'pages/ByttBrowserModal',
     component: ByttBrowserModal,
     decorators: [withIntlProvider],
-} as ComponentMeta<typeof ByttBrowserModal>;
+} as Meta;
 
-export const Default: ComponentStory<typeof ByttBrowserModal> = () => <ByttBrowserModal skalEndreNettleser />;
+export const Default: StoryFn<typeof ByttBrowserModal> = () => <ByttBrowserModal skalEndreNettleser={true} />;

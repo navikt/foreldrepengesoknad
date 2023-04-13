@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Lenke from 'nav-frontend-lenker';
-import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 
 import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';
@@ -12,16 +10,16 @@ import { openPdfPreview } from 'app/utils/pdfUtils';
 import links from 'app/links/links';
 import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 import dayjs from 'dayjs';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import SøknadSendtTittel from './components/SøknadSendtTittel';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Periode } from 'uttaksplan/types/Periode';
-
-import './søknadSendt.less';
 import { formaterDato } from 'app/utils/dateUtils';
 import { finnSendSenereVedlegg } from 'app/steps/manglende-vedlegg/util';
+import { BodyShort, Ingress, Link, Loader } from '@navikt/ds-react';
+
+import './søknadSendt.less';
 
 const getBehandlingsFrist = (uttaksplan: Periode[]): string => {
     const førsteUttaksdag = dayjs(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak()).subtract(
@@ -61,7 +59,7 @@ const SøknadSendt = () => {
     if (!kvittering) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <NavFrontendSpinner type="XXL" />
+                <Loader size="2xlarge" />
             </div>
         );
     }
@@ -85,7 +83,7 @@ const SøknadSendt = () => {
                                 info={intlUtils(intl, 'søknadSendt.når.infoBox')}
                                 infoApneLabel={intlUtils(intl, 'søknadSendt.når.infoBox.apneLabel')}
                             >
-                                <Normaltekst>{behandlingsFrist}</Normaltekst>
+                                <BodyShort>{behandlingsFrist}</BodyShort>
                             </SøknadSendtSectionHeader>
                         </Block>
 
@@ -98,21 +96,21 @@ const SøknadSendt = () => {
                                     infoApneLabel={intlUtils(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox.apneLabel')}
                                 >
                                     <Block padBottom="l">
-                                        <Normaltekst>
+                                        <BodyShort>
                                             <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del1'} />
-                                        </Normaltekst>
+                                        </BodyShort>
                                     </Block>
-                                    <Normaltekst>
-                                        <Lenke
+                                    <BodyShort>
+                                        <Link
                                             href={'#'}
-                                            onClick={(e) => {
+                                            onClick={(e: any) => {
                                                 e.preventDefault();
                                                 openPdfPreview(kvittering.infoskrivPdf);
                                             }}
                                         >
                                             <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del2'} />
-                                        </Lenke>
-                                    </Normaltekst>
+                                        </Link>
+                                    </BodyShort>
                                 </SøknadSendtSectionHeader>
                             </Block>
                         )}
@@ -127,34 +125,34 @@ const SøknadSendt = () => {
                                 {person.bankkonto && person.bankkonto.kontonummer ? (
                                     <>
                                         <Block padBottom="l">
-                                            <Normaltekst>
+                                            <BodyShort>
                                                 <FormattedMessage id="søknadSendt.pengene.kontonummer" />
-                                            </Normaltekst>
+                                            </BodyShort>
                                         </Block>
                                         <Block padBottom="l">
                                             <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
                                         </Block>
                                         <Block padBottom="l">
-                                            <Normaltekst>
-                                                <Lenke href={links.brukerprofil}>
+                                            <BodyShort>
+                                                <Link href={links.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
-                                                </Lenke>
-                                            </Normaltekst>
+                                                </Link>
+                                            </BodyShort>
                                         </Block>
                                     </>
                                 ) : (
                                     <>
                                         <Block padBottom="l">
-                                            <Normaltekst>
+                                            <BodyShort>
                                                 <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
-                                            </Normaltekst>
+                                            </BodyShort>
                                         </Block>
                                         <Block padBottom="l">
-                                            <Normaltekst>
-                                                <Lenke href={links.brukerprofil}>
+                                            <BodyShort>
+                                                <Link href={links.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
-                                                </Lenke>
-                                            </Normaltekst>
+                                                </Link>
+                                            </BodyShort>
                                         </Block>
                                     </>
                                 )}

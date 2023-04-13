@@ -1,7 +1,6 @@
 import { Block, hasValue, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -15,7 +14,7 @@ import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
 import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
-import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
+import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -30,6 +29,7 @@ import { RegistrertBarn } from 'app/types/Person';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { Button } from '@navikt/ds-react';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -94,7 +94,7 @@ const OmBarnet: React.FunctionComponent = () => {
                     rolle: søkersituasjon.rolle,
                     valgteRegistrerteBarn,
                     søknadGjelderEtNyttBarn: barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn,
-                });
+                } as OmBarnetQuestionPayload);
 
                 const farMedmorSøkerPåTerminFørWLB =
                     isFarEllerMedmor(søkersituasjon.rolle) &&
@@ -126,32 +126,32 @@ const OmBarnet: React.FunctionComponent = () => {
                             <BarnFødtEllerAdoptert visibility={visibility} />
                             <AdopsjonAnnetBarn
                                 søkersituasjon={søkersituasjon}
-                                formValues={formValues}
+                                formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                             />
                             <AdopsjonEktefellesBarn
                                 søkersituasjon={søkersituasjon}
-                                formValues={formValues}
+                                formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                             />
                             <Termin
                                 søkersituasjon={søkersituasjon}
-                                formValues={formValues}
+                                formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn}
                             />
                             <Fødsel
                                 søkersituasjon={søkersituasjon}
-                                formValues={formValues}
+                                formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                             />
                             <Block visible={visGåVidereKnapp} textAlignCenter={true}>
-                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                <Button disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
-                                </Hovedknapp>
+                                </Button>
                             </Block>
                         </OmBarnetFormComponents.Form>
                     </Step>

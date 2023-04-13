@@ -1,4 +1,4 @@
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum InntektsinformasjonFormField {
     hattInntektSomFrilans = 'hattInntektSomFrilans',
@@ -22,6 +22,5 @@ export interface InntektsinformasjonFormData {
 
 export const InntektsinformasjonFormComponents = getTypedFormComponents<
     InntektsinformasjonFormField,
-    InntektsinformasjonFormData,
-    string
+    InntektsinformasjonFormData
 >();

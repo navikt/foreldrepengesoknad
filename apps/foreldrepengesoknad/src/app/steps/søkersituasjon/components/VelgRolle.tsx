@@ -16,7 +16,7 @@ const VelgRolle: FunctionComponent<Props> = ({ kjønn }) => {
 
     return (
         <Block margin="xl">
-            <SøkersituasjonFormComponents.RadioPanelGroup
+            <SøkersituasjonFormComponents.RadioGroup
                 name={SøkersituasjonFormField.rolle}
                 radios={[
                     {
@@ -28,7 +28,6 @@ const VelgRolle: FunctionComponent<Props> = ({ kjønn }) => {
                         value: 'medmor',
                     },
                 ]}
-                useTwoColumns={true}
                 legend={intlUtils(intl, 'søkersituasjon.text.rolle')}
             />
         </Block>

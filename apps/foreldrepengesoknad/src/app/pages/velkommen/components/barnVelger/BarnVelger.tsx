@@ -4,12 +4,13 @@ import { IntlShape, useIntl } from 'react-intl';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import SøknadStatusEtikett from '../SøknadStatus';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
-import './barnVelger.less';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
+import { BodyShort } from '@navikt/ds-react';
+
+import './barnVelger.less';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -160,10 +161,11 @@ const BarnVelger: FunctionComponent<Props> = (props: Props) => {
     return (
         <Block visible={props.visibility.isVisible(VelkommenFormField.valgteBarn)}>
             <Block padBottom="l">
-                <Normaltekst>{intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}</Normaltekst>
+                <BodyShort>{intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}</BodyShort>
             </Block>
             <Block padBottom="l">
                 <VelkommenFormComponents.RadioGroup
+                    legend="Velg barnet søknaden gjelder for"
                     name={VelkommenFormField.valgteBarn}
                     validate={validateHarValgtEtBarn(intl)}
                     radios={props.selectableBarn

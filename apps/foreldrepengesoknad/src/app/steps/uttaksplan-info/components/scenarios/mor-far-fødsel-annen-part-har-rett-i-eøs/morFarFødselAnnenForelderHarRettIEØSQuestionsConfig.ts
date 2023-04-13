@@ -4,9 +4,11 @@ import {
     MorFarFødselAnnenForelderHarRettIEØSFormData,
     MorFarFødselAnnenForelderHarRettIEØSFormField,
 } from './morFarFødselAnnenForelderHarRettIEØSFormConfig';
-interface MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload extends MorFarFødselAnnenForelderHarRettIEØSFormData {
+export interface MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload
+    extends MorFarFødselAnnenForelderHarRettIEØSFormData {
     erFarEllerMedmor: boolean;
 }
+
 const MorFarFødselAnnenForelderHarRettIEØSFormConfig: QuestionConfig<
     MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
     MorFarFødselAnnenForelderHarRettIEØSFormField
@@ -20,6 +22,7 @@ const MorFarFødselAnnenForelderHarRettIEØSFormConfig: QuestionConfig<
         isIncluded: ({ dekningsgrad }) => hasValue(dekningsgrad),
     },
 };
+
 export const morFarFødselAnnenForelderHarRettIEØSQuestionsConfig = Questions<
     MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
     MorFarFødselAnnenForelderHarRettIEØSFormField

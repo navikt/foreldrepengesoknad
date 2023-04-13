@@ -1,8 +1,6 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring } from 'app/context/types/Næring';
-import { Knapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -13,6 +11,8 @@ import {
 import EgenNæringListe from './EgenNæringListe';
 import HvemKanDriveMedEgenNæring from './HvemKanDriveMedEgenNæring';
 import EgenNæringModal from './modal/EgenNæringModal';
+import { Button } from '@navikt/ds-react';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     egenNæringInformasjon: Næring[];
@@ -102,9 +102,9 @@ const EgenNæring: FunctionComponent<Props> = ({
                             selectNæring={selectNæring}
                         />
                     </Block>
-                    <Knapp htmlType="button" onClick={handleOnLeggTil}>
+                    <Button onClick={handleOnLeggTil}>
                         <FormattedMessage id="inntektsinformasjon.leggTilVirksomhet" />
-                    </Knapp>
+                    </Button>
                 </div>
             )}
         </>

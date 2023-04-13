@@ -71,7 +71,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
                         disabled={skalIkkeHaUttakFørTermin}
                         maxDate={maksDato}
                         dayPickerProps={{
-                            initialMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate,
+                            defaultMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate,
                         }}
                         validate={validateErStartdatoFørTermindato(
                             intl,

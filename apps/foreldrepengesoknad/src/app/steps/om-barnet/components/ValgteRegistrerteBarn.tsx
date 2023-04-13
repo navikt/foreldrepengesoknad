@@ -2,15 +2,15 @@ import * as React from 'react';
 import { RegistrertBarn } from 'app/types/Person';
 import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { OmBarnetFormComponents, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Element } from 'nav-frontend-typografi';
 import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
 import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
+import { Label } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     valgteBarn: RegistrertBarn[];
@@ -29,9 +29,9 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
             <Block padBottom="l">
                 <div>
                     <Block padBottom="s">
-                        <Element>
+                        <Label>
                             <FormattedMessage id="omBarnet.valgteBarn.tittel" values={{ antallBarn }} />
-                        </Element>
+                        </Label>
                     </Block>
                     {alleBarnaLever ? (
                         valgteBarn.map((barn: RegistrertBarn) => (
@@ -65,7 +65,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
                     dayPickerProps={{
-                        initialMonth: fødselsdato,
+                        defaultMonth: fødselsdato,
                     }}
                     minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
                     maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}

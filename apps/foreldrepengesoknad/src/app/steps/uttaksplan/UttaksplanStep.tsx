@@ -2,10 +2,8 @@ import { Block, intlUtils, Step } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import AlertStripe from 'nav-frontend-alertstriper';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import Uttaksplan from 'uttaksplan/Uttaksplan';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -31,7 +29,6 @@ import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
@@ -46,7 +43,7 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 
 import { getPerioderMedUttakRundtFødsel } from 'app/utils/wlbUtils';
-import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
+import uttaksplanQuestionsConfig, { UttaksplanQuestionPayload } from './uttaksplanQuestionConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 
 import {
@@ -63,11 +60,12 @@ import { RequestStatus } from 'app/types/RequestState';
 import { Periodene } from '../uttaksplan-info/utils/Periodene';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { isUfødtBarn } from 'app/context/types/Barn';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { Alert, Button, Loader } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -485,7 +483,7 @@ const UttaksplanStep = () => {
     ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <NavFrontendSpinner type="XXL" />
+                <Loader size="2xlarge" />
             </div>
         );
     }
@@ -525,7 +523,7 @@ const UttaksplanStep = () => {
                     ...formValues,
                     termindato,
                     perioderMedUttakRundtFødsel,
-                });
+                } as UttaksplanQuestionPayload);
 
                 return (
                     <Step
@@ -595,22 +593,22 @@ const UttaksplanStep = () => {
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (
                             <Block textAlignCenter={true} padBottom="l">
-                                <AlertStripe type="feil">
+                                <Alert variant="error">
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
-                                </AlertStripe>
+                                </Alert>
                             </Block>
                         )}
                         {erTomEndringssøknad && submitIsClicked && (
                             <Block textAlignCenter={true} padBottom="l">
-                                <AlertStripe type="feil">
+                                <Alert variant="error">
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
-                                </AlertStripe>
+                                </Alert>
                             </Block>
                         )}
                         <Block textAlignCenter={true} padBottom="l">
-                            <Hovedknapp onClick={clickHandler} disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button onClick={clickHandler} disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </Step>
                 );

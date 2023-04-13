@@ -5,7 +5,7 @@ import {
     MorFarAdopsjonAnnenForelderHarRettIEØSFormField,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSFormConfig';
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
-interface MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload
+export interface MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload
     extends MorFarAdopsjonAnnenForelderHarRettIEØSFormData {
     erFarEllerMedmor: boolean;
 }

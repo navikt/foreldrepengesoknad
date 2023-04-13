@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
-import EtikettBase from 'nav-frontend-etiketter';
+import { Tag } from '@navikt/ds-react';
 
 import './søknadStatus.less';
 import './wrapper.less';
@@ -12,14 +12,14 @@ interface Props {
 
 const SøknadStatusEtikett: React.FunctionComponent<Props> = ({ sakErFerdigbehandlet }) => {
     const intl = useIntl();
-    const etikettType = sakErFerdigbehandlet ? 'suksess' : 'fokus';
+    const etikettType = sakErFerdigbehandlet ? 'success' : 'warning';
     const statusTekst = sakErFerdigbehandlet
         ? 'velkommen.sak.status.ferdigBehandlet'
         : 'velkommen.sak.status.underBehandling';
     return (
-        <EtikettBase className="blokk-xxxs" type={etikettType}>
+        <Tag className="blokk-xxxs" variant={etikettType}>
             {intlUtils(intl, statusTekst)}
-        </EtikettBase>
+        </Tag>
     );
 };
 

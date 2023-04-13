@@ -1,5 +1,5 @@
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactElement } from 'react';
+import { BodyShort, Label } from '@navikt/ds-react';
 
 import './inntekterTabell.less';
 
@@ -18,9 +18,9 @@ const InntekterTabell: FunctionComponent<Props> = ({ list }) => {
             {list.map((l) => (
                 <li key={l.key} className="oppsummeringsliste__element">
                     <div className="oppsummeringsliste__element__heading">
-                        <Element>{l.headerVenstre}</Element>
+                        <Label>{l.headerVenstre}</Label>
                         <div className="høyrestiltTekst">
-                            <Normaltekst>{l.headerHøyre}</Normaltekst>
+                            <BodyShort>{l.headerHøyre}</BodyShort>
                         </div>
                     </div>
                     {l.content && <div className="oppsummeringsliste__element__content">{l.content}</div>}

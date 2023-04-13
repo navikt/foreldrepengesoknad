@@ -1,8 +1,8 @@
 import { initialUtenlandsoppholdFormData, UtenlandsoppholdFormData } from './utenlandsoppholdFormTypes';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const mapUtenlandsoppholdTilBostedUtland = (opphold: Utenlandsopphold): BostedUtland => ({
     fom: opphold.tidsperiode.fom,

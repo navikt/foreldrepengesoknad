@@ -1,9 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import Modal from 'nav-frontend-modal';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { bemUtils, Block } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
+import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 import './resetUttaksplanModal.less';
 
@@ -19,27 +17,27 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
     return (
         <Modal
             className={bem.block}
-            isOpen={isOpen}
+            open={isOpen}
             closeButton={true}
-            onRequestClose={onClose}
-            contentLabel="Tilbakestill uttaksplanen din"
+            onClose={onClose}
+            aria-label="Tilbakestill uttaksplanen din"
         >
             <div className={bem.element('content')}>
                 <Block padBottom="l">
-                    <Undertittel>
+                    <Heading size="small">
                         <FormattedMessage id="uttaksplan.resetPlan.innhold1" />
-                    </Undertittel>
-                    <Normaltekst>
+                    </Heading>
+                    <BodyShort>
                         <FormattedMessage id="uttaksplan.resetPlan.innhold2" />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <div className={bem.element('knappWrapper')}>
-                    <Hovedknapp htmlType="button" onClick={handleResetUttaksplanModalBekreft}>
+                    <Button onClick={handleResetUttaksplanModalBekreft}>
                         <FormattedMessage id="uttaksplan.resetPlan.slett" />
-                    </Hovedknapp>
-                    <Knapp onClick={onClose}>
+                    </Button>
+                    <Button variant="secondary" onClick={onClose}>
                         <FormattedMessage id="uttaksplan.resetPlan.avbryt" />
-                    </Knapp>
+                    </Button>
                 </div>
             </div>
         </Modal>

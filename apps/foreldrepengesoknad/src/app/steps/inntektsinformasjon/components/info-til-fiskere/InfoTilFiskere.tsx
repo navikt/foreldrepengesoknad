@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import links from 'app/links/links';
+import { BodyLong, Label } from '@navikt/ds-react';
 
 const InfoTilFiskere = () => {
     const intl = useIntl();
@@ -11,20 +11,20 @@ const InfoTilFiskere = () => {
         <UtvidetInformasjon apneLabel={intlUtils(intl, 'inntektsinformasjon.infoTilFiskere.apneLabel')}>
             <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
-                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.hyre" />
-                </Element>
+                </Label>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del2" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del3"
                             values={{
@@ -40,18 +40,18 @@ const InfoTilFiskere = () => {
                                 ),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
-                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lott" />
-                </Element>
+                </Label>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del4" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del5"
                             values={{
@@ -62,36 +62,36 @@ const InfoTilFiskere = () => {
                                 ),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
-                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.egenBåt" />
-                </Element>
+                </Label>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del6" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
-                <Element tag="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lottOgHyre" />
-                </Element>
+                </Label>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del7" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del8" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
                 <Block padBottom="m">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del9" />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
                 <Block margin="none">
-                    <Normaltekst>
+                    <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del5"
                             values={{
@@ -102,7 +102,7 @@ const InfoTilFiskere = () => {
                                 ),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyLong>
                 </Block>
             </div>
         </UtvidetInformasjon>
