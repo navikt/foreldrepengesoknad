@@ -38,6 +38,11 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
+import AlertStripe from 'nav-frontend-alertstriper';
+import links from 'app/links/links';
+import { isUfødtBarn } from 'app/context/types/Barn';
+import { getKjønnFromFnrString } from 'app/utils/personUtils';
+import { Sivilstand } from 'app/types/Sivilstand';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -62,6 +67,17 @@ const AnnenForelder = () => {
         (annenForelder !== undefined &&
             isAnnenForelderOppgitt(annenForelder) &&
             annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
+    const søkerErFar = rolle === 'far';
+    const søkerErMor = rolle === 'mor';
+    const søkerErIkkeGift = søkerinfo.person.sivilstand !== Sivilstand.GIFT;
+    const barnetErIkkeFødt = isUfødtBarn(barn);
+    let tekstOmFarskapsportalId = '';
+    if (søkerErFar && barnetErIkkeFødt) {
+        tekstOmFarskapsportalId = 'annenForelder.tekstOmFarskapsportal.far.del1';
+    }
+    if (søkerErMor && barnetErIkkeFødt) {
+        tekstOmFarskapsportalId = 'annenForelder.tekstOmFarskapsportal.mor.del1';
+    }
 
     const onValidSubmitHandler = useCallback(
         (values: Partial<AnnenForelderFormData>) => {
@@ -117,7 +133,14 @@ const AnnenForelder = () => {
                     søkerRolle: rolle,
                     gjelderStebarnsadopsjon: isAdoptertStebarn(barn) ? true : false,
                 });
-
+                const annenForelderHarRett = formValues.harRettPåForeldrepengerINorge === YesOrNo.YES;
+                const fnrFraAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+                const oppgittFnr = formValues.fnr;
+                const annenForelderFnr = fnrFraAnnenForelder || oppgittFnr;
+                const annenForelderErFarEllerUtenlandsk =
+                    (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') ||
+                    formValues.utenlandskFnr;
+                const annenForelderHarRettErBesvart = formValues.harRettPåForeldrepengerINorge !== YesOrNo.UNANSWERED;
                 const farErInformert =
                     convertYesOrNoOrUndefinedToBoolean(formValues.aleneOmOmsorg) ||
                     !convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepengerINorge) ||
@@ -125,7 +148,11 @@ const AnnenForelder = () => {
                         convertYesOrNoOrUndefinedToBoolean(formValues.erInformertOmSøknaden));
 
                 const kanGåVidereMedSøknaden = visibility.areAllQuestionsAnswered() && farErInformert;
-
+                const visInfoboksOmFarskapsportal =
+                    ((søkerErFar && annenForelderHarRettErBesvart) ||
+                        (søkerErMor && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
+                    barnetErIkkeFødt &&
+                    søkerErIkkeGift;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -249,6 +276,38 @@ const AnnenForelder = () => {
                                         navn: formValues.fornavn,
                                     })}
                                 />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={
+                                    visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge) &&
+                                    visInfoboksOmFarskapsportal
+                                }
+                            >
+                                <AlertStripe type="info">
+                                    <Block padBottom="l">
+                                        <FormattedMessage
+                                            id={tekstOmFarskapsportalId}
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        href={links.farskapsportal}
+                                                        className="lenke"
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </Block>
+                                    <Block>
+                                        <FormattedMessage
+                                            id={intlUtils(intl, 'annenForelder.tekstOmFarskapsportal.morOgFar.del2')}
+                                        />
+                                    </Block>
+                                </AlertStripe>
                             </Block>
                             <Block
                                 padBottom="l"
