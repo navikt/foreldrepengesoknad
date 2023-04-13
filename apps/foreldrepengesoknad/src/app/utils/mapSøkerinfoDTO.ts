@@ -40,6 +40,7 @@ const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person 
         ikkeNordiskEøsLand: personDTO.ikkeNordiskEøsLand,
         kjønn: personDTO.kjønn,
         bankkonto: personDTO.bankkonto,
+        sivilstand: personDTO.sivilstand,
     };
 };
 
