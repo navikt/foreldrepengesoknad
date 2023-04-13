@@ -37,37 +37,47 @@ const generateHTML = (packages) => `
 
 const DEPLOY_FOLDER = '../.storybook-static-build';
 
+const copyFiles = (subPackage) => {
+  shell.cd(subPackage);
+  if (!fs.existsSync('package.json') || !fs.existsSync('.storybook-static-build')) {
+    return null;
+  }
+
+  const packagesJson = JSON.parse(
+    fs.readFileSync(path.resolve('package.json'), 'utf8'),
+  );
+
+  const packageDestFolder = path.join(__dirname, DEPLOY_FOLDER, packagesJson.name);
+  shell.mkdir(packageDestFolder);
+  shell.cp('-r', path.join(subPackage, '.storybook-static-build', '*'), packageDestFolder);
+
+  return packagesJson;
+}
+
 const creatIndexHtml = () => {
   // Lag folder-struktur for innholdet som skal deployes
   shell.mkdir(path.join(__dirname, DEPLOY_FOLDER));
+  shell.mkdir(path.join(__dirname, DEPLOY_FOLDER, '@navikt'));
 
   // Kopier storybook fra pakkene og inn i folder som skal deployes
   const origDir = process.cwd();
-  const packages = glob
+  const packagesApps = glob
     .sync(path.join(origDir, 'apps', '**', 'package.json').split(path.sep).join("/"), {
       ignore: '**/node_modules/**',
     })
     .map(path.dirname)
-    .map((subPackage) => {
-      shell.cd(subPackage);
-      if (!fs.existsSync('package.json') || !fs.existsSync('.storybook-static-build')) {
-        return null;
-      }
-
-      const packagesJson = JSON.parse(
-        fs.readFileSync(path.resolve('package.json'), 'utf8'),
-      );
-
-      const packageDestFolder = path.join(__dirname, DEPLOY_FOLDER, packagesJson.name);
-      shell.mkdir(packageDestFolder);
-      shell.cp('-r', path.join(subPackage, '.storybook-static-build', '*'), packageDestFolder);
-
-      return packagesJson;
+    .map(copyFiles)
+    .filter((subPackage) => subPackage);
+  const packagesPackages = glob
+    .sync(path.join(origDir, 'packages', '**', 'package.json').split(path.sep).join("/"), {
+      ignore: '**/node_modules/**',
     })
+    .map(path.dirname)
+    .map(copyFiles)
     .filter((subPackage) => subPackage);
 
   // Lag index-fil
-  const index = generateHTML(packages);
+  const index = generateHTML(packagesApps.concat(packagesPackages));
   fs.writeFileSync(path.join(__dirname, DEPLOY_FOLDER, 'index.html'), index);
 
   // Kopier css fil til folder som skal deployes

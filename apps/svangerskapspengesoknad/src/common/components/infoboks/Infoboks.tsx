@@ -3,7 +3,7 @@ import Sirkelknapp, { Stil } from 'common/components/sirkelknapp/Sirkelknapp';
 import LukkInfoIkon from 'common/components/ikoner/LukkInfoIkon';
 import InfoIkon from 'common/components/ikoner/InfoIkon';
 import { Collapse } from 'react-collapse';
-const classNames = require('classnames');
+import classNames from 'classnames';
 import getMessage from 'common/util/i18nUtils';
 import { useIntl } from 'react-intl';
 
