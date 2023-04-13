@@ -26,7 +26,7 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = '/undefined/konto';
+const STØNADSKONTO_URL = '/uttak-url/konto';
 
 const søkerinfo = _søkerinfo as any;
 const context = _context as any;
