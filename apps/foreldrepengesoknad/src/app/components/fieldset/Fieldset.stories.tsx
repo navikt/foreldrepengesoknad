@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import React from 'react';
 
 import Fieldset from './Fieldset';
@@ -6,9 +6,9 @@ import Fieldset from './Fieldset';
 export default {
     title: 'components/Fieldset',
     component: Fieldset,
-} as ComponentMeta<typeof Fieldset>;
+};
 
-export const Default: ComponentStory<typeof Fieldset> = () => (
+export const Default: StoryFn<typeof Fieldset> = () => (
     <Fieldset legend="Dette er header">
         <div>Dette er innhold</div>
     </Fieldset>

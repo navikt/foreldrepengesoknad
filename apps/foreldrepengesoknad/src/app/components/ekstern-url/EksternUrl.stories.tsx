@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import withIntlProvider from 'storybook/decorators/withIntl';
 import EksternUrl, { Props } from './EksternUrl';
@@ -10,7 +10,7 @@ export default {
     decorators: [withIntlProvider],
 };
 
-const Template: Story<Props> = (args) => <EksternUrl {...args} />;
+const Template: StoryFn<Props> = (args) => <EksternUrl {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import InnholdMedIllustrasjon from './InnholdMedIllustrasjon';
 import UkerSirkel from '../../../app/components/info-eksisterende-sak/illustrasjoner/uker-sirkel/UkerSirkel';
 
@@ -8,7 +8,7 @@ export default {
     component: InnholdMedIllustrasjon,
 };
 
-const Template: Story<any> = (args) => <InnholdMedIllustrasjon {...args} />;
+const Template: StoryFn<any> = (args) => <InnholdMedIllustrasjon {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

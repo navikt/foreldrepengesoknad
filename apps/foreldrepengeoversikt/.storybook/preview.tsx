@@ -1,4 +1,5 @@
 import React from 'react';
+import '@navikt/ds-css';
 import '../src/app/styles/app.css';
 
 const scriptTag = document.createElement('script');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -36,7 +36,7 @@ export default {
     decorators: [withRouter, withIntl, withForeldrepengersøknadContext],
 };
 
-const Template: Story<UttaksplanInfoTestData> = (args) => {
+const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);

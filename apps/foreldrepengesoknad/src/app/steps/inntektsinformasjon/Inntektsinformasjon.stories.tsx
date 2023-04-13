@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
@@ -27,7 +27,7 @@ interface Props {
     søkerinfo: SøkerinfoDTO;
 }
 
-const Template: Story<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
             200,

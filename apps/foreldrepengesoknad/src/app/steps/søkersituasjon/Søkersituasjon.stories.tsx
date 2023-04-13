@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { Kjønn } from '@navikt/fp-common';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -28,7 +28,7 @@ interface Props {
     kjønn: Kjønn;
 }
 
-const Template: Story<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage').reply(200, undefined);
     };

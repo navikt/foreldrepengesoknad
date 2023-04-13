@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -98,7 +98,7 @@ interface Props {
     ekisterendeSak?: EksisterendeSak;
 }
 
-const Template: Story<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = true, ekisterendeSak }) => {
+const Template: StoryFn<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = true, ekisterendeSak }) => {
     return (
         <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
             <InfoOmSøknaden
