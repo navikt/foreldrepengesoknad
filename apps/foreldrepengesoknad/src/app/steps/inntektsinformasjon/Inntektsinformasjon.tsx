@@ -131,7 +131,7 @@ const Inntektsinformasjon = () => {
                             </Block>
 
                             <Block textAlignCenter={true} visible={visibility.areAllQuestionsAnswered()}>
-                                <Button disabled={isSubmitting} loading={isSubmitting}>
+                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Button>
                             </Block>

@@ -175,7 +175,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Button disabled={isSubmitting} loading={isSubmitting}>
+                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Button>
                             </Block>

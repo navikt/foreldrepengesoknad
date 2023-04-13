@@ -606,7 +606,7 @@ const UttaksplanStep = () => {
                             </Block>
                         )}
                         <Block textAlignCenter={true} padBottom="l">
-                            <Button onClick={clickHandler} disabled={isSubmitting} loading={isSubmitting}>
+                            <Button type="submit" onClick={clickHandler} disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
                             </Button>
                         </Block>

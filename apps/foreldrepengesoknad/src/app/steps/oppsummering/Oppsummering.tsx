@@ -256,7 +256,7 @@ const Oppsummering = () => {
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Button disabled={formSubmitted} loading={formSubmitted}>
+                                    <Button type="submit" disabled={formSubmitted} loading={formSubmitted}>
                                         {submitKnappTekst}
                                     </Button>
                                 </div>

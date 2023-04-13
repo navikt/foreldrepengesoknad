@@ -87,7 +87,7 @@ const Søkersituasjon = () => {
                                 </Block>
                                 {allQuestionsAnswered && (
                                     <Block textAlignCenter={true} margin="l">
-                                        <Button disabled={isSubmitting} loading={isSubmitting}>
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                             {intlUtils(intl, 'søknad.gåVidere')}
                                         </Button>
                                     </Block>

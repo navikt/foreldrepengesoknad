@@ -332,7 +332,7 @@ const AnnenForelder = () => {
                                 />
                             </Block>
                             <Block visible={kanGåVidereMedSøknaden} textAlignCenter={true}>
-                                <Button variant="primary" disabled={isSubmitting} loading={isSubmitting}>
+                                <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Button>
                             </Block>

@@ -149,7 +149,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                             />
                             <Block visible={visGåVidereKnapp} textAlignCenter={true}>
-                                <Button disabled={isSubmitting} loading={isSubmitting}>
+                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
                                 </Button>
                             </Block>
