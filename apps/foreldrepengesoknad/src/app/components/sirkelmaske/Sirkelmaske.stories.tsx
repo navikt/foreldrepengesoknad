@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import Sirkelmaske from './Sirkelmaske';
 import PengerIkon from 'app/assets/PengerIkon';
 
@@ -8,7 +8,7 @@ export default {
     component: Sirkelmaske,
 };
 
-const Template: Story<any> = (args) => (
+const Template: StoryFn<any> = (args) => (
     <Sirkelmaske {...args}>
         <PengerIkon size={48} />
     </Sirkelmaske>

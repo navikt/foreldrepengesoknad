@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import LenkeKnapp from './LenkeKnapp';
 
@@ -8,7 +8,7 @@ export default {
     component: LenkeKnapp,
 };
 
-const Template: Story<any> = (args) => <LenkeKnapp {...args} />;
+const Template: StoryFn<any> = (args) => <LenkeKnapp {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

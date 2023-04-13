@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import { Attachment as AttachmentType } from 'app/types/Attachment';
 import withIntlProvider from 'storybook/decorators/withIntl';
@@ -11,7 +11,7 @@ export default {
     decorators: [withIntlProvider],
 };
 
-const Template: Story<Props> = (args) => <Attachment {...args} />;
+const Template: StoryFn<Props> = (args) => <Attachment {...args} />;
 
 export const PendingVedleggUtenUrl = Template.bind({});
 PendingVedleggUtenUrl.args = {

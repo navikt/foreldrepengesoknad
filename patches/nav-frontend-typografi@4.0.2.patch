@@ -1,0 +1,13 @@
+diff --git a/lib/index.js b/lib/index.js
+index 671ed35aa582e5cb18e9fd7d0abf08e86be45b4b..cf4242f43199df27021df0a0709943283808383d 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -37,7 +37,7 @@ exports.UndertekstBold = exports.Undertekst = exports.Normaltekst = exports.Feil
+ const PT = __importStar(require("prop-types"));
+ const React = __importStar(require("react"));
+ const classnames_1 = __importDefault(require("classnames"));
+-require("nav-frontend-typografi-style");
++require("nav-frontend-typografi-style/dist/main.css");
+ exports.typeConfigMap = {
+     sidetittel: {
+         defaultTag: "h1",

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
-import søkerinfo from '../../mock-api/mock_data/sokerinfo.json';
-import saker from '../../mock-api/mock_data/saker.json';
-import dokumenter from '../../mock-api/mock_data/dokumenter.json';
-import annenPartsVedtak from '../../mock-api/mock_data/annenPartsVedtak.json';
-import tidslinjeHendelser from '../../mock-api/mock_data/tidslinjeHendelser.json';
-import miniDialog from '../../mock-api/mock_data/miniDialog.json';
-import manglendeVedlegg from '../../mock-api/mock_data/manglendeVedlegg.json';
+import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfo.json';
+import saker from 'storybook/storyData/saker/saker.json';
+import dokumenter from 'storybook/storyData/dokumenter/dokumenter.json';
+import annenPartsVedtak from 'storybook/storyData/annenPartVedtak/annenPartVedtak.json';
+import tidslinjeHendelser from 'storybook/storyData/tidslinjeHendelser/tidslinjeHendelser.json';
+import miniDialog from 'storybook/storyData/miniDialog/miniDialog.json';
+import manglendeVedlegg from 'storybook/storyData/manglendeVedlegg/manglendeVedlegg.json';
 
 import AppContainer from './AppContainer';
 import { AxiosInstance } from './api/apiInterceptor';
@@ -20,7 +20,7 @@ export default {
   component: AppContainer,
 };
 
-const Template: Story<any> = () => {
+const Template: StoryFn<any> = () => {
   const apiMock = new MockAdapter(AxiosInstance);
   apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
   apiMock.onGet('/innsyn/v2/saker').reply(200, saker);

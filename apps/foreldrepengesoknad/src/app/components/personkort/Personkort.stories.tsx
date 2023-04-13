@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import CheckmarkIkon from 'app/assets/CheckmarkIkon';
 import Personkort from './Personkort';
@@ -9,7 +9,7 @@ export default {
     component: Personkort,
 };
 
-const Template: Story<any> = (args) => <Personkort {...args} />;
+const Template: StoryFn<any> = (args) => <Personkort {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

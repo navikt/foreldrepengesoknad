@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import ErrorBoundary from 'app/components/ErrorBoundary/ErrorBoundary';
 import { Provider } from 'react-redux';
@@ -87,7 +87,7 @@ export default {
   decorators: [withRouter],
 };
 
-const Template: Story<any> = () => {
+const Template: StoryFn<any> = () => {
     const apiMock = new MockAdapter(getAxiosInstance());
     apiMock.onGet('/sokerinfo').reply(200,søkerinfo);
 

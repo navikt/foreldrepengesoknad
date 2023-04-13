@@ -90,6 +90,8 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
                             if (value === YesOrNo.UNANSWERED) {
                                 return intlUtils(intl, 'uttaksplan.automatiskJustering.svar.påkrevd');
                             }
+
+                            return undefined;
                         }}
                         afterOnChange={(value) => handleOnChange(value)}
                     />

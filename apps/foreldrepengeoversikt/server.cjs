@@ -87,7 +87,7 @@ const startServer = async (html) => {
         server.use(vite.middlewares);
     } else {
         server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
-        server.get(/^\/(?!.*dist).*$/, (req, res) => {
+        server.get(/^\/(?!.*dist).*$/, (_req, res) => {
             res.send(html);
         });
     }

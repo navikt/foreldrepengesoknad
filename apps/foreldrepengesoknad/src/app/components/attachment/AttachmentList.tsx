@@ -5,7 +5,7 @@ import { Attachment } from 'app/types/Attachment';
 import './attachment.less';
 import { guid } from '@navikt/fp-common';
 
-interface Props {
+export interface Props {
     attachments: Attachment[];
     showFileSize?: boolean;
     onDelete?: (file: Attachment) => void;

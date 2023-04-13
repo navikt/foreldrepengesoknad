@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/steps/oppsummering/Oppsummering.stories';
+import * as stories from './Oppsummering.stories';
 
 const {
     Default,
@@ -128,7 +128,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('Ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
-        expect(screen.getByText('01.02.2001')).toBeInTheDocument();
+        expect(screen.getByText('01.01.2021')).toBeInTheDocument();
         expect(screen.getByText('Gjelder søknaden stebarnsadopsjon?')).toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.getByText('Adopsjonsdato')).toBeInTheDocument();

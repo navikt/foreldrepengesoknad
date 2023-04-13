@@ -26,6 +26,8 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSy
                         if (value === YesOrNo.UNANSWERED) {
                             return intlUtils(intl, 'uttaksplan.validering.erMorForSyk');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>

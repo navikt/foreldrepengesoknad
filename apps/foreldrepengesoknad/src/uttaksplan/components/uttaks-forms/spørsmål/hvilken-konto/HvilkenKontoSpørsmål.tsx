@@ -58,6 +58,8 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
                 if (!hasValue(value)) {
                     return intlUtils(intl, 'uttaksplan.validering.hvilkenKonto');
                 }
+
+                return undefined;
             }}
         />
     );

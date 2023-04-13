@@ -19,7 +19,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { sakerData, sakerError } = Api.useGetSaker();
-    const { annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(true);
     const { minidialogData, minidialogError } = Api.useGetMinidialog();
 
     useEffect(() => {
@@ -34,11 +33,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 'Vi opplever problemer med å hente informasjon om din sak. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.'
             );
         }
-
-        if (annenPartsVedtakError) {
-            throw new Error('Vi klarte ikke å hente opp informasjon om den andre forelderen.');
-        }
-    }, [søkerinfoError, sakerError, annenPartsVedtakError]);
+    }, [søkerinfoError, sakerError]);
 
     const saker = useMemo(() => {
         if (sakerData) {

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Periode, Utsettelsesperiode, Periodetype } from 'uttaksplan/types/Periode';
@@ -113,7 +113,7 @@ const defaultInput = {
     // intl: intlMock,
 };
 
-const Template: Story<Props> = (args) => {
+const Template: StoryFn<Props> = (args) => {
     return <PeriodeUttakForm {...args} />;
 };
 

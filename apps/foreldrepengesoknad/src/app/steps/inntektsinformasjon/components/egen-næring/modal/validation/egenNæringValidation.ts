@@ -111,4 +111,6 @@ export const validateNumber = (intl: IntlShape, errorKey: string) => (value: str
     if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
         return intlUtils(intl, errorKey);
     }
+
+    return undefined;
 };

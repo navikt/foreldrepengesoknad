@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import userEvent from '@testing-library/user-event';
-import * as stories from 'stories/steps/om-barnet/OmBarnet.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
+import * as stories from './OmBarnet.stories';
 
 jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return jest.fn();

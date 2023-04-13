@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import AppContainer from './AppContainer';
@@ -13,7 +13,7 @@ export default {
   component: AppContainer,
 };
 
-const Template: Story<any> = () => {
+const Template: StoryFn<any> = () => {
     const apiMock = new MockAdapter(foreldrepengersoknadApi);
     apiMock.onGet('/personinfo').reply(200, {
       fnr: '11111111111',

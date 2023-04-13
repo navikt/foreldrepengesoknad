@@ -169,6 +169,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         if (!hasValue(value) || value === undefined || value === false) {
                                             return intlUtils(intl, 'uttaksplan.validering.bekrefterArbeidIPerioden');
                                         }
+
+                                        return undefined;
                                     }}
                                 />
                             </Block>

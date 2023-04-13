@@ -2,15 +2,16 @@ import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import getAxiosInstance from './apiInterceptor';
-import { useRequest } from './useRequest';
+import { usePostRequest, useGetRequest } from './useRequest';
 
 const useSøkerinfo = () => {
-    const { data, error } = useRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
+    const { data, error } = useGetRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,
@@ -19,7 +20,7 @@ const useSøkerinfo = () => {
 };
 
 const useGetSaker = () => {
-    const { data, error } = useRequest<SakOppslagDTO>('/innsyn/v2/saker', {
+    const { data, error } = useGetRequest<SakOppslagDTO>('/innsyn/v2/saker', {
         config: { withCredentials: true },
     });
 
@@ -29,20 +30,40 @@ const useGetSaker = () => {
     };
 };
 
-const useGetAnnenPartsVedtak = (isSuspended: boolean) => {
-    const { data, error } = useRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', {
-        config: { withCredentials: true },
+const useGetAnnenPartsVedtak = (
+    annenPartFnr: string | undefined,
+    barnFnr: string | undefined,
+    familiehendelsesdato: string | undefined,
+    isSuspended: boolean
+) => {
+    const body = {
+        annenPartFødselsnummer: annenPartFnr,
+        barnFødselsnummer: barnFnr,
+        familiehendelse: familiehendelsesdato,
+    };
+    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
+        config: {
+            withCredentials: true,
+        },
         isSuspended,
     });
 
+    if (error && error.message.includes('Ugyldig ident')) {
+        return {
+            annenPartsVedtakData: undefined,
+            annenPartsVedtakError: undefined,
+            annenPartsVedtakRequestStatus: RequestStatus.FINISHED,
+        };
+    }
     return {
-        annenPartsVedakData: data,
+        annenPartsVedtakData: data,
         annenPartsVedtakError: error,
+        annenPartsVedtakRequestStatus: requestStatus,
     };
 };
 
 const useGetDokumenter = (fnr: string) => {
-    const { data, error, requestStatus } = useRequest<Dokument[]>(
+    const { data, error, requestStatus } = useGetRequest<Dokument[]>(
         '/dokument/alle',
         {
             config: { withCredentials: true },
@@ -58,7 +79,7 @@ const useGetDokumenter = (fnr: string) => {
 };
 
 const useGetTidslinjeHendelser = (saksnr: string) => {
-    const { data, error } = useRequest<Tidslinjehendelse[]>('/innsyn/tidslinje', {
+    const { data, error } = useGetRequest<Tidslinjehendelse[]>('/innsyn/tidslinje', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
     });
 
@@ -69,7 +90,7 @@ const useGetTidslinjeHendelser = (saksnr: string) => {
 };
 
 const useGetMinidialog = () => {
-    const { data, error } = useRequest<MinidialogInnslag[]>('/minidialog', {
+    const { data, error } = useGetRequest<MinidialogInnslag[]>('/minidialog', {
         config: { withCredentials: true },
     });
 
@@ -80,7 +101,7 @@ const useGetMinidialog = () => {
 };
 
 const useGetManglendeVedlegg = (saksnr: string) => {
-    const { data, error } = useRequest<Skjemanummer[]>('/historikk/vedlegg', {
+    const { data, error } = useGetRequest<Skjemanummer[]>('/historikk/vedlegg', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
     });
 

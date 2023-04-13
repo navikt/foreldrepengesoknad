@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/steps/utenlandsopphold/Utenlandsopphold.stories';
+import * as stories from './Utenlandsopphold.stories';
 
 const { Default } = composeStories(stories);
 

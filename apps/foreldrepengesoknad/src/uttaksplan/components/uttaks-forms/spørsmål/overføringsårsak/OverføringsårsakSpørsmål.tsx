@@ -73,6 +73,8 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.overføringsårsak');
                         }
+
+                        return undefined;
                     }}
                 />
             </Block>

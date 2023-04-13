@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
@@ -22,7 +22,7 @@ interface Props {
     arbeidsforhold: SøkerinfoDTOArbeidsforhold[];
 }
 
-const Template: Story<Props> = ({ bankkonto, arbeidsforhold }) => {
+const Template: StoryFn<Props> = ({ bankkonto, arbeidsforhold }) => {
     return (
         <ForeldrepengerStateMock
             søknad={{ kvittering: {} } as ForeldrepengesøknadContextState}

@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 
 export const initialEgenNæringModalValues: EgenNæringModalFormData = {
-    [EgenNæringModalFormField.typer]: [],
+    [EgenNæringModalFormField.type]: undefined,
     [EgenNæringModalFormField.navnPåNæringen]: '',
     [EgenNæringModalFormField.registrertINorge]: YesOrNo.UNANSWERED,
     [EgenNæringModalFormField.orgnr]: '',
@@ -34,7 +34,7 @@ export const cleanupEgenNæringForm = (
     visibility: QuestionVisibility<EgenNæringModalFormField, undefined>
 ): EgenNæringModalFormData => {
     return {
-        typer: visibility.isVisible(EgenNæringModalFormField.typer) ? values.typer : [],
+        type: visibility.isVisible(EgenNæringModalFormField.type) ? values.type : undefined,
         navnPåNæringen: visibility.isVisible(EgenNæringModalFormField.navnPåNæringen)
             ? values.navnPåNæringen
             : initialEgenNæringModalValues.navnPåNæringen,
@@ -99,7 +99,7 @@ export const getInitialEgenNæringModalValues = (næring: Næring | undefined): 
 
     return {
         ...initialEgenNæringModalValues,
-        typer: næring.næringstyper,
+        type: næring.næringstyper.length > 0 ? næring.næringstyper[0] : undefined,
         navnPåNæringen: næring.navnPåNæringen,
         registrertINorge: convertBooleanOrUndefinedToYesOrNo(næring.registrertINorge),
         land: næring.registrertILand || '',
@@ -154,7 +154,7 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
     }
 
     return {
-        næringstyper: values.typer!,
+        næringstyper: [values.type!],
         navnPåNæringen: values.navnPåNæringen!,
         registrertINorge: convertYesOrNoOrUndefinedToBoolean(values.registrertINorge)!,
         organisasjonsnummer: hasValue(values.orgnr) ? values.orgnr : undefined,
