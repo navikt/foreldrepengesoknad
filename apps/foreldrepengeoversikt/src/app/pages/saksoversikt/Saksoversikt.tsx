@@ -18,7 +18,7 @@ import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -57,23 +57,29 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
     let annenPartFnr = undefined;
+    let barnFnr = undefined;
     let annenPartVedtakIsSuspended = true;
 
     if (gjeldendeSak.ytelse === Ytelse.FORELDREPENGER) {
         familiehendelsesdato = getFamiliehendelseDato(gjeldendeSak.familiehendelse);
         annenPartFnr = gjeldendeSak.annenPart?.fnr;
+
+        const barnFraSak =
+            gjeldendeSak.barn && gjeldendeSak.barn.length > 0
+                ? gjeldendeSak.barn.find((barn) => barn.fnr !== undefined)
+                : undefined;
+        barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
         annenPartVedtakIsSuspended =
             !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
     }
-    const { annenPartsVedakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(annenPartVedtakIsSuspended);
+    const { annenPartsVedtakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(
+        annenPartFnr,
+        barnFnr,
+        familiehendelsesdato,
+        annenPartVedtakIsSuspended
+    );
 
-    useEffect(() => {
-        if (annenPartsVedtakError) {
-            throw new Error('Vi klarte ikke å hente opp informasjon om den andre forelderen.');
-        }
-    }, [annenPartsVedtakError]);
-
-    if (!annenPartVedtakIsSuspended && !annenPartsVedakData) {
+    if (!annenPartVedtakIsSuspended && !annenPartsVedtakData && !annenPartsVedtakError) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -105,7 +111,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                         visHelePlanen={false}
                         navnPåSøker={navnPåSøker}
                         navnAnnenForelder={navnAnnenForelder}
-                        annenPartsPerioder={annenPartsVedakData?.perioder}
+                        annenPartsPerioder={annenPartsVedtakData?.perioder}
                     />
                 </ContentSection>
             )}
