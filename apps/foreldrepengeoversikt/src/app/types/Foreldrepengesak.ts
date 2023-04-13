@@ -1,7 +1,7 @@
 import { Dekningsgrad } from './Dekningsgrad';
 import { Familiehendelse } from './Familiehendelse';
 import { Periode } from './Periode';
-import { Person } from './Person';
+import PersonFnrDTO from './PersonFnrDTO';
 import { RettighetType } from './RettighetType';
 import { Ytelse } from './Ytelse';
 import { ÅpenBehandling } from './ÅpenBehandling';
@@ -17,12 +17,12 @@ export interface ForeldrepengesakDTO {
     harAnnenForelderTilsvarendeRettEØS: boolean;
     ønskerJustertUttakVedFødsel: boolean;
     rettighetType: RettighetType;
-    annenPart: Person;
+    annenPart: PersonFnrDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak?: {
         perioder: Periode[];
     };
-    barn: Person[];
+    barn: PersonFnrDTO[];
     dekningsgrad: Dekningsgrad;
     åpenBehandling?: ÅpenBehandling;
 }
