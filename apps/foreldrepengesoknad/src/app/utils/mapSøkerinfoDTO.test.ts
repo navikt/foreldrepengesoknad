@@ -11,7 +11,6 @@ describe('mapSøkerinfoDTO', () => {
                 fornavn: 'Espen',
                 etternavn: 'Utvikler',
                 fnr: '08088620241',
-                ikkeNordiskEøsLand: false,
                 kjønn: 'M' as Kjønn,
                 bankkonto: {
                     kontonummer: '123',
@@ -49,7 +48,6 @@ describe('mapSøkerinfoDTO', () => {
                 fornavn: 'Espen',
                 fnr: '08088620241',
                 fødselsdato: ISOStringToDate('2000-01-01'),
-                ikkeNordiskEøsLand: false,
                 kjønn: 'M' as Kjønn,
                 bankkonto: {
                     kontonummer: '123',

@@ -5,7 +5,6 @@
         "etternavn": "Mandagsbil",
         "kjønn": "K",
         "fødselsdato": "2003-03-21",
-        "ikkeNordiskEøsLand": false,
         "bankkonto": { "kontonummer": "", "banknavn": "" },
         "barn": [
             {

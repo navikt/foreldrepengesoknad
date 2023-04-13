@@ -5,7 +5,6 @@
         "etternavn": "Bokstav",
         "kjønn": "K",
         "fødselsdato": "2003-03-26",
-        "ikkeNordiskEøsLand": false,
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""

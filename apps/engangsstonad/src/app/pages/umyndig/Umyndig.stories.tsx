@@ -9,34 +9,33 @@ import '@navikt/ds-css';
 import '../../styles/globals.less';
 
 export default {
-  title: 'Umyndig',
-  component: Umyndig,
-  decorators: [withRouter],
+    title: 'Umyndig',
+    component: Umyndig,
+    decorators: [withRouter],
 };
 
 const Template: StoryFn<any> = () => {
-  return (
-    <EngangsstønadContextProvider>
-      <IntlProvider språkkode="nb">
-        <Umyndig 
-          person={{
-            fnr: '11111111111',
-            fornavn: 'Henrikke',
-            etternavn: 'Ibsen',
-            mellomnavn: '',
-            kjønn: 'K',
-            fødselsdato: '1979-01-28',
-            ikkeNordiskEøsLand: true,
-            bankkonto: {
-                kontonummer: '49875234987',
-                banknavn: 'Storebank',
-            },
-            adresse: '123 Oslo'
-          }}
-        />
-      </IntlProvider>
-    </EngangsstønadContextProvider>
-  )
-  };
+    return (
+        <EngangsstønadContextProvider>
+            <IntlProvider språkkode="nb">
+                <Umyndig
+                    person={{
+                        fnr: '11111111111',
+                        fornavn: 'Henrikke',
+                        etternavn: 'Ibsen',
+                        mellomnavn: '',
+                        kjønn: 'K',
+                        fødselsdato: '1979-01-28',
+                        bankkonto: {
+                            kontonummer: '49875234987',
+                            banknavn: 'Storebank',
+                        },
+                        adresse: '123 Oslo',
+                    }}
+                />
+            </IntlProvider>
+        </EngangsstønadContextProvider>
+    );
+};
 
 export const VisSide = Template.bind({});
