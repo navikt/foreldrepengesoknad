@@ -3,7 +3,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
-import Barn, { isAdoptertStebarn } from 'app/context/types/Barn';
+import Barn, { isAdoptertStebarn, isUfødtBarn } from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -40,7 +40,6 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import AlertStripe from 'nav-frontend-alertstriper';
 import links from 'app/links/links';
-import { isUfødtBarn } from 'app/context/types/Barn';
 import { getKjønnFromFnrString } from 'app/utils/personUtils';
 import { Sivilstand } from 'app/types/Sivilstand';
 
