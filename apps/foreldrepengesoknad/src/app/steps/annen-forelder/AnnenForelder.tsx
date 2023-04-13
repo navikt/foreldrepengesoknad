@@ -304,7 +304,7 @@ const AnnenForelder = () => {
                                     </Block>
                                     <Block>
                                         <FormattedMessage
-                                            id={intlUtils(intl, 'annenForelder.tekstOmFarskapsportal.morOgFar.del2')}
+                                            id={intlUtils(intl, 'annenForelder.tekstOmFarskapsportal.mor.far.del2')}
                                         />
                                     </Block>
                                 </AlertStripe>
