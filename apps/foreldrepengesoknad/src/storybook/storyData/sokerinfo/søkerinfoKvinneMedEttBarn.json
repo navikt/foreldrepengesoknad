@@ -19,6 +19,15 @@
                 "etternavn": "MIDTPUNKT",
                 "kjønn": "M"
             }
+        ],
+        "arbeidsforhold": [
+            {
+                "arbeidsgiverId": "896929119",
+                "arbeidsgiverIdType": "orgnr",
+                "arbeidsgiverNavn": "SAUEFABRIKK",
+                "stillingsprosent": 100,
+                "fom": "2018-03-01"
+            }
         ]
     }
 }

@@ -2,6 +2,7 @@ import { Kjønn } from '@navikt/fp-common';
 import mapSøkerinfoDTOToSøkerinfo from './mapSøkerinfoDTO';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ISOStringToDate } from './dateUtils';
+import { Sivilstand } from 'app/types/Sivilstand';
 
 describe('mapSøkerinfoDTO', () => {
     it('skal konvertere dto til app-format', () => {
@@ -16,6 +17,7 @@ describe('mapSøkerinfoDTO', () => {
                     kontonummer: '123',
                     banknavn: 'DNB',
                 },
+                sivilstand: Sivilstand.UGIFT,
             },
             arbeidsforhold: [
                 {
@@ -53,6 +55,7 @@ describe('mapSøkerinfoDTO', () => {
                     kontonummer: '123',
                     banknavn: 'DNB',
                 },
+                sivilstand: Sivilstand.UGIFT,
             },
             registrerteBarn: [],
         });

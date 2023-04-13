@@ -39,6 +39,7 @@ const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person 
         fødselsdato: dayjs.utc(personDTO.fødselsdato).toDate(),
         kjønn: personDTO.kjønn,
         bankkonto: personDTO.bankkonto,
+        sivilstand: personDTO.sivilstand,
     };
 };
 

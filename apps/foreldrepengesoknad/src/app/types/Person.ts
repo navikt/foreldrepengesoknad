@@ -1,5 +1,6 @@
 import { Kjønn } from '@navikt/fp-common';
 import Bankkonto from './Bankkonto';
+import { Sivilstand } from './Sivilstand';
 
 export interface PersonBase {
     fnr: string;
@@ -9,6 +10,7 @@ export interface PersonBase {
     kjønn: Kjønn;
     fødselsdato: Date;
     dødsdato?: Date;
+    sivilstand?: Sivilstand;
 }
 
 interface Person extends PersonBase {

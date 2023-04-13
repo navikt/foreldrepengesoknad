@@ -8,7 +8,8 @@
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
-        }
+        },
+        "sivilstand": "UGIFT"
     },
     "arbeidsforhold": [
         {
