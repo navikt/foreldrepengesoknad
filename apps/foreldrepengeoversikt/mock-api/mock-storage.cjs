@@ -28,7 +28,7 @@ const getDokumenter = function () {
 };
 
 const getAnnenPartsVedtak = function () {
-    return getFileContent('annenPartsVedtak.json');
+    return getFileContent('annenPartVedtak.json');
 };
 
 const getSaker = function () {
