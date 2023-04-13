@@ -76,6 +76,12 @@ const creatIndexHtml = () => {
     path.join(__dirname, DEPLOY_FOLDER, 'monorepo-index.css'),
   );
 
+  // For å støtte filer med '_' (Skip Jekyll-prosessering)
+  shell.cp(
+    path.join(__dirname, '.nojekyll'),
+    path.join(__dirname, DEPLOY_FOLDER, '.nojekyll'),
+  );
+
   console.log('Done copying files');
 };
 

@@ -12,7 +12,7 @@
         "storybook-deploy-clean-folder": "rm -rf ./.storybook-static-build",
         "storybook-deploy-build-all": "turbo build-storybook",
         "storybook-deploy-create-folder": "node scripts/create-storybook-index.js",
-        "storybook-deploy-to-github": "gh-pages -d .storybook-static-build",
+        "storybook-deploy-to-github": "gh-pages -d .storybook-static-build -t true",
         "deploy-storybook": "pnpm storybook-deploy-clean-folder && pnpm storybook-deploy-build-all && pnpm storybook-deploy-create-folder &&  pnpm storybook-deploy-to-github"
     },
     "dependencies": {
