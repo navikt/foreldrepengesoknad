@@ -33,7 +33,7 @@ const Template: Story = ({
   apiMock.onGet('/uttak-url/konto').reply(200, stønadskontoerData);
   apiMock.onGet('/storage/kvittering/foreldrepenger').reply(200, storageKvitteringData);
 
-    apiMock.onPost('/storage').reply(200, {});
+  apiMock.onPost('/storage').reply(200, {});
     apiMock.onPost('/soknad').reply(200, {});
     apiMock.onPost('/sendSøknadUrl').reply(200, {});
 
