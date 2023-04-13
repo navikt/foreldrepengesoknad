@@ -16,7 +16,8 @@
         "noUnusedParameters": true,
         "paths": {
             "app/*": ["app/*"],
-            "assets/*": ["assets/*"]
+            "assets/*": ["assets/*"],
+            "storybook/*": ["storybook/*"]
         },
         "resolveJsonModule": true,
         "rootDir": "src",
