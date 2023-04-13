@@ -9,13 +9,11 @@
 }
 
 .oppgave-lenkepanel__title {
-    font-size: larger
+    font-size: larger;
 }
-
 
 .oppgave-lenkepanel__icon {
     align-self: center;
     margin-left: 0.5rem;
     margin-right: 1.5rem;
 }
-

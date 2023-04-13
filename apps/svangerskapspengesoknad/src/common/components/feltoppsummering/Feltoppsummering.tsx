@@ -10,10 +10,7 @@ interface Props {
 }
 
 const Feltoppsummering: React.FunctionComponent<Props> = ({ feltnavn, verdi }) => (
-    <InnholdMedLedetekst
-        className="feltoppsummering"
-        ledetekst={feltnavn}
-    >
+    <InnholdMedLedetekst className="feltoppsummering" ledetekst={feltnavn}>
         <Label className="feltoppsummering__verdi">{verdi}</Label>
     </InnholdMedLedetekst>
 );

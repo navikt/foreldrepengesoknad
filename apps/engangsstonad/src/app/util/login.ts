@@ -1,4 +1,3 @@
-
 export const redirectToLogin = () => {
     redirect((window as any).LOGIN_URL + '?redirect=' + window.location.origin);
 };

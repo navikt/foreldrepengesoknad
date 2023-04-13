@@ -52,12 +52,8 @@ const Intro: FunctionComponent<Props> = ({ søkerinfo, formik }) => {
         <Applikasjonsside visSpråkvelger={true}>
             <Block marginTop="xs">
                 <GuidePanel poster className={cls.block}>
-                    <Heading size="small">
-                        {getMessage(intl, 'intro.bobletittel', { name: søker.fornavn })}
-                    </Heading>
-                    <BodyShort>
-                        {getMessage(intl, 'intro.bobletekst')}
-                    </BodyShort>
+                    <Heading size="small">{getMessage(intl, 'intro.bobletittel', { name: søker.fornavn })}</Heading>
+                    <BodyShort>{getMessage(intl, 'intro.bobletekst')}</BodyShort>
                 </GuidePanel>
             </Block>
             <form className={cls.block} onSubmit={formik.handleSubmit}>

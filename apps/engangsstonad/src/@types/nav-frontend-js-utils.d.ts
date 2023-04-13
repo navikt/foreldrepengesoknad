@@ -1,3 +1,3 @@
 declare module 'nav-frontend-js-utils' {
-	export function guid(): string;
+    export function guid(): string;
 }

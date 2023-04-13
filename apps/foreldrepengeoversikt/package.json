@@ -8,6 +8,7 @@
         "build": "vite build",
         "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
+        "prettier": "prettier --write src",
         "start-express": "node ./server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "cross-env NODE_ENV=development node ./server.cjs",

@@ -4,8 +4,7 @@
     border-radius: 0.5rem;
 }
 
-
-.iconBox--purple{
+.iconBox--purple {
     background-color: var(--a-purple-400);
 }
 
@@ -22,7 +21,7 @@
         -45deg,
         var(--a-blue-400),
         var(--a-blue-400) 50%,
-        var(--a-purple-400)50%,
+        var(--a-purple-400) 50%,
         var(--a-purple-400) 100%
     );
 }
@@ -30,4 +29,3 @@
 .iconBox--gray {
     background-color: var(--a-gray-400);
 }
-
