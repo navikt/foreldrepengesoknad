@@ -46,6 +46,9 @@
         }
     },
     "lint-staged": {
+        "apps/**/*.{ts,tsx,js,jsx}": "eslint --cache --fix",
+        "apps/**/*.css": "stylelint --fix",
+        "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx}": "eslint --cache --fix",
         "packages/**/*.css": "stylelint --fix",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
