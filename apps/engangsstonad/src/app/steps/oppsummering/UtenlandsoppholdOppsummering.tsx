@@ -6,7 +6,7 @@ import getMessage from 'common/util/i18nUtils';
 import { OmBarnetFormData } from 'app/steps/om-barnet/omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import LandOppsummering from './LandOppsummering';
-import { Block, DisplayTextWithLabel } from '@navikt/fp-common';
+import { Block, DisplayTextWithLabel, intlUtils } from '@navikt/fp-common';
 import { Label } from '@navikt/ds-react';
 
 interface Props {
@@ -39,7 +39,10 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({ barn, in
         <Block>
             {informasjonOmUtenlandsopphold.harBoddUtenforNorgeSiste12Mnd === YesOrNo.NO ? (
                 <Block padBottom="l">
-                    <DisplayTextWithLabel label={getMessage(intl, 'oppsummering.text.boddSisteTolv')} text="Norge" />
+                    <DisplayTextWithLabel
+                        label={getMessage(intl, 'oppsummering.text.boddSisteTolv')}
+                        text={intlUtils(intl, 'norge')}
+                    />
                 </Block>
             ) : (
                 <Block padBottom="l" className="textWithLabel">

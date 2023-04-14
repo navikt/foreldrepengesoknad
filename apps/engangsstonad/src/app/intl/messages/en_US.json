@@ -1,4 +1,5 @@
 {
+    "norge": "Norway",
     "intro.generellFeil.brukerstøtte": "Contact support here",
     "intro.generellFeil.ingress": "Unfortunately, something went wrong. Please try again later. If there are still errors please contact support.",
     "intro.generellFeil.tittel": "Oops,",
@@ -149,8 +150,8 @@
     "utenlandsopphold.neste12Måneder.spørsmål": "Where are you going to live for the next 12 months?",
     "utenlandsopphold.neste12MånederInfotekst": "You answer to live abroad in whole or in part only if you plan to stay permanently in a country other than Norway. Short trips abroad in connection with, for example, holidays are not included.",
     "utenlandsopphold.neste12MånederInfotekst.apneLabel": "Read more about future stays abroad",
-    "utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge": "only live in Norway.",
-    "utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet": "stay abroad in whole or in part",
+    "utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge": "Only live in Norway.",
+    "utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet": "Stay abroad in whole or in part",
     "utenlandsopphold.siste12Måneder.spørsmål": "Where have you lived in the last 12 months?",
     "utenlandsopphold.siste12MånederInfotekst": "You answer lived abroad in whole or in part only if you have resided in a country other than Norway. Short trips abroad in connection with, for example, holidays are not included.",
     "utenlandsopphold.siste12MånederInfotekst.apneLabel": "Read more about previous stays abroad",
