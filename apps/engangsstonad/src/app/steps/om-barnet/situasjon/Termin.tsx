@@ -46,7 +46,10 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
                     </Block>
                     {formValues.antallBarn && parseInt(formValues.antallBarn, 10) >= 3 && (
                         <Block margin="xl">
-                            <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarn} label="test">
+                            <OmBarnetFormComponents.Select
+                                name={OmBarnetFormField.antallBarn}
+                                label={intlUtils(intl, 'omBarnet.text.antallBarn.termin')}
+                            >
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
