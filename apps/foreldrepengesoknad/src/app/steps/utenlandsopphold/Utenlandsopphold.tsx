@@ -6,7 +6,6 @@ import {
     dateToday,
     intlUtils,
     Step,
-    UtvidetInformasjon,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
 import {
@@ -14,7 +13,7 @@ import {
     UtenlandsoppholdFormComponents,
     UtenlandsoppholdFormData,
 } from './utenlandsoppholdFormTypes';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -32,7 +31,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { Button } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, ExpansionCard, Heading, Link } from '@navikt/ds-react';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -79,16 +78,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
                                     name={UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'utenlandsopphold.neste12MånederInfotekst.apneLabel'
-                                            )}
-                                        >
-                                            {intlUtils(intl, 'utenlandsopphold.neste12MånederInfotekst')}
-                                        </UtvidetInformasjon>
-                                    }
+                                    description={intlUtils(intl, 'utenlandsopphold.neste12MånederInfotekst')}
                                     labels={{
                                         yes: intlUtils(
                                             intl,
@@ -130,16 +120,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.siste12Måneder.spørsmål')}
                                     name={UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'utenlandsopphold.siste12MånederInfotekst.apneLabel'
-                                            )}
-                                        >
-                                            {intlUtils(intl, 'utenlandsopphold.siste12MånederInfotekst')}
-                                        </UtvidetInformasjon>
-                                    }
+                                    description={intlUtils(intl, 'utenlandsopphold.siste12MånederInfotekst')}
                                     labels={{
                                         yes: intlUtils(
                                             intl,
@@ -173,6 +154,61 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     erFremtidigOpphold={false}
                                     validate={validateUtenlandsoppholdSiste12Mnd(intl)}
                                 />
+                            </Block>
+                            <Block padBottom="xl">
+                                <ExpansionCard aria-label="Informasjon om utenlandsopphold">
+                                    <ExpansionCard.Header>
+                                        <ExpansionCard.Title>
+                                            <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.header.tittel" />
+                                        </ExpansionCard.Title>
+                                        <BodyLong>
+                                            <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.header.ingress" />
+                                        </BodyLong>
+                                    </ExpansionCard.Header>
+                                    <ExpansionCard.Content>
+                                        <Block padBottom="l">
+                                            <BodyLong>
+                                                <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.seksjon1" />
+                                            </BodyLong>
+                                        </Block>
+                                        <Block padBottom="l">
+                                            <BodyLong>
+                                                <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.seksjon2" />
+                                            </BodyLong>
+                                        </Block>
+                                        <Block padBottom="xl">
+                                            <BodyLong>
+                                                <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.seksjon3" />
+                                            </BodyLong>
+                                        </Block>
+                                        <Block padBottom="l">
+                                            <Heading as="h4" size="medium">
+                                                <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.undertittel" />
+                                            </Heading>
+                                        </Block>
+                                        <Block padBottom="l">
+                                            <BodyLong>
+                                                <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.seksjon4" />
+                                            </BodyLong>
+                                        </Block>
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="utenlandsopphold.oppholdOgStøtte.seksjon5"
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <Link
+                                                            href="https://nav.no/foreldrepenger#utland"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </Link>
+                                                    ),
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    </ExpansionCard.Content>
+                                </ExpansionCard>
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                                 <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
