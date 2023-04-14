@@ -6,7 +6,6 @@ import {
     dateToday,
     intlUtils,
     Step,
-    UtvidetInformasjon,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
 import {
@@ -79,16 +78,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
                                     name={UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'utenlandsopphold.neste12MånederInfotekst.apneLabel'
-                                            )}
-                                        >
-                                            {intlUtils(intl, 'utenlandsopphold.neste12MånederInfotekst')}
-                                        </UtvidetInformasjon>
-                                    }
+                                    description={intlUtils(intl, 'utenlandsopphold.neste12MånederInfotekst')}
                                     labels={{
                                         yes: intlUtils(
                                             intl,
@@ -130,16 +120,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.siste12Måneder.spørsmål')}
                                     name={UtenlandsoppholdFieldNames.harBoddINorgeSiste12Mnd}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'utenlandsopphold.siste12MånederInfotekst.apneLabel'
-                                            )}
-                                        >
-                                            {intlUtils(intl, 'utenlandsopphold.siste12MånederInfotekst')}
-                                        </UtvidetInformasjon>
-                                    }
+                                    description={intlUtils(intl, 'utenlandsopphold.siste12MånederInfotekst')}
                                     labels={{
                                         yes: intlUtils(
                                             intl,

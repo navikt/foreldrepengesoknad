@@ -1,14 +1,16 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 
 import InteractiveListElement from './InteractiveListElement';
 
-export default {
+const defaultExport: Meta = {
     title: 'components/InteractiveListElement',
     component: InteractiveListElement,
-} as ComponentMeta<typeof InteractiveListElement>;
+};
 
-export const Default: ComponentStory<typeof InteractiveListElement> = () => (
+export default defaultExport;
+
+export const Default: StoryFn<typeof InteractiveListElement> = () => (
     <InteractiveListElement
         title="Dette er en tittel"
         text="Dette er en tekst"
@@ -20,7 +22,7 @@ export const Default: ComponentStory<typeof InteractiveListElement> = () => (
     />
 );
 
-export const ManglendeDokumentasjon: ComponentStory<typeof InteractiveListElement> = () => (
+export const ManglendeDokumentasjon: StoryFn<typeof InteractiveListElement> = () => (
     <InteractiveListElement
         title="Dette er en tittel"
         text="Dette er en tekst"
