@@ -15,6 +15,7 @@ export default {
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
     brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
     familie: 'https://familie.nav.no/',
+    foreldrepenger: 'https://www.nav.no/foreldrepenger',
     graderingInfo: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#arbeid',
     aktivitetsfriUttakInfo: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     hvordanSendeInntektsmelding:

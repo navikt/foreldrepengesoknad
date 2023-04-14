@@ -1,4 +1,4 @@
-import { bemUtils, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, intlUtils } from '@navikt/fp-common';
 import links from 'app/links/links';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -11,29 +11,27 @@ const DinePlikter = () => {
     const bem = bemUtils('dinePlikter');
 
     return (
-        <UtvidetInformasjon apneLabel="Les om dine plikter">
-            <article className="velkommenDinePlikter">
-                <ul className={bem.block}>
-                    <li>
-                        <BodyLong>{intlUtils(intl, 'velkommen.dinePlikter.listeElement.1')}</BodyLong>
-                    </li>
-                    <li>
-                        <BodyLong>
-                            <FormattedMessage
-                                id="velkommen.dinePlikter.listeElement.2"
-                                values={{
-                                    link: (
-                                        <Link href={links.rettOgPlikt} target="_blank">
-                                            <FormattedMessage id="velkommen.dinePlikter.listeElement.2.link" />
-                                        </Link>
-                                    ),
-                                }}
-                            />
-                        </BodyLong>
-                    </li>
-                </ul>
-            </article>
-        </UtvidetInformasjon>
+        <div className="velkommenDinePlikter">
+            <ul className={bem.block}>
+                <li>
+                    <BodyLong>{intlUtils(intl, 'velkommen.dinePlikter.listeElement.1')}</BodyLong>
+                </li>
+                <li>
+                    <BodyLong>
+                        <FormattedMessage
+                            id="velkommen.dinePlikter.listeElement.2"
+                            values={{
+                                link: (
+                                    <Link href={links.rettOgPlikt} target="_blank">
+                                        <FormattedMessage id="velkommen.dinePlikter.listeElement.2.link" />
+                                    </Link>
+                                ),
+                            }}
+                        />
+                    </BodyLong>
+                </li>
+            </ul>
+        </div>
     );
 };
 

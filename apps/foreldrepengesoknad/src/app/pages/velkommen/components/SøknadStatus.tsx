@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
-import { Tag } from '@navikt/ds-react';
+import { BodyShort, Tag } from '@navikt/ds-react';
 
 import './søknadStatus.less';
 import './wrapper.less';
@@ -18,7 +18,7 @@ const SøknadStatusEtikett: React.FunctionComponent<Props> = ({ sakErFerdigbehan
         : 'velkommen.sak.status.underBehandling';
     return (
         <Tag className="blokk-xxxs" variant={etikettType}>
-            {intlUtils(intl, statusTekst)}
+            <BodyShort size="small">{intlUtils(intl, statusTekst)} </BodyShort>
         </Tag>
     );
 };
