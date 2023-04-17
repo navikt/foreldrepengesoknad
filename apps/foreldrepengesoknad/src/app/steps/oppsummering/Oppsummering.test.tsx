@@ -20,7 +20,7 @@ const OPPSUMMERING_HEADER =
     'Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.';
 const SEND_INN_SØKNAD_KNAPP = 'Send inn søknad';
 const DU_MÅ_BEKREFTE_VILKÅRENE_FEILMELDING = 'Du må bekrefte at du har gjort deg kjent med vilkårene.';
-const OM_BARNET_PANEL = 'Om barnet';
+const OM_BARNET_PANEL = 'Barnet';
 const ANDRE_FORELDER_PANEL = 'Den andre forelderen';
 const UTENLANDSOPPHOLD_PANEL = 'Utenlandsopphold';
 const ARBEIDSFORHOLD_OG_INNTEKTER_PANEL = 'Arbeidsforhold og andre inntektskilder';

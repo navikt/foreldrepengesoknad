@@ -104,7 +104,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             </BrowserRouter>
         );
 
-        expect(await screen.findByText('Om barnet')).toBeInTheDocument();
+        expect(await screen.findByText('Barnet')).toBeInTheDocument();
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
     });
 });

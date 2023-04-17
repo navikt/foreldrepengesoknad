@@ -195,7 +195,7 @@ const Oppsummering = () => {
                                         <Personalia søkerinfo={søkerinfo} />
                                     </Block>
                                     {!erEndringssøknad && (
-                                        <OppsummeringsPanel title="Om barnet">
+                                        <OppsummeringsPanel title="Barnet">
                                             <BarnOppsummering barn={barn} />
                                         </OppsummeringsPanel>
                                     )}

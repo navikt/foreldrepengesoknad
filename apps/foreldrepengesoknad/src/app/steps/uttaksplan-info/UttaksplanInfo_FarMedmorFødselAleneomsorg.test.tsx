@@ -11,7 +11,7 @@ const GÅ_VIDERE_KNAPP = 'Gå videre';
 describe('<UttaksplanInfo_FarMedmorFødselAleneomsorg>', () => {
     it('skal ved aleneomrsorg der far/medmor søker vise riktig dato på omsorgsovertakelse', async () => {
         render(<UttaksplanInfoFarMedmorFødselAleneomsorg />);
-        expect(await screen.findByText('Om perioden din med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText('Perioden din med foreldrepenger')).toBeInTheDocument();
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
