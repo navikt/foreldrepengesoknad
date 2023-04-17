@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
+import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { BodyShort, Label } from '@navikt/ds-react';
 
@@ -24,6 +24,18 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                 <li key={arbforhold.arbeidsgiverId}>
                     <div className={bem.block}>
                         <div className={bem.element('topRow')}>
+                            <Label>
+                                {arbforhold.arbeidsgiverIdType === 'orgnr'
+                                    ? arbforhold.arbeidsgiverNavn
+                                    : intlUtils(intl, 'arbeidsgiver')}
+                            </Label>
+                            <BodyShort className={bem.element('stillingsprosent')}>
+                                {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
+                                    stillingsprosent: arbforhold.stillingsprosent,
+                                })}
+                            </BodyShort>
+                        </div>
+                        <Block padBottom="m">
                             {arbforhold.arbeidsgiverIdType === 'orgnr' && (
                                 <BodyShort>
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.organisasjonsnummer', {
@@ -31,17 +43,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                                     })}
                                 </BodyShort>
                             )}
-                            <BodyShort className={bem.element('stillingsprosent')}>
-                                {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
-                                    stillingsprosent: arbforhold.stillingsprosent,
-                                })}
-                            </BodyShort>
-                        </div>
-                        <Label>
-                            {arbforhold.arbeidsgiverIdType === 'orgnr'
-                                ? arbforhold.arbeidsgiverNavn
-                                : intlUtils(intl, 'arbeidsgiver')}
-                        </Label>
+                        </Block>
                         <BodyShort>
                             {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.periode', {
                                 fom: formatDate(arbforhold.fom),

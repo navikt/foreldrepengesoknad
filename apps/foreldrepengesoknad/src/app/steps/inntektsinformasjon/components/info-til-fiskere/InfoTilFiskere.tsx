@@ -1,16 +1,22 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { FormattedMessage } from 'react-intl';
+import { Block } from '@navikt/fp-common';
 import links from 'app/links/links';
-import { BodyLong, Label } from '@navikt/ds-react';
+import { BodyLong, ExpansionCard, Label } from '@navikt/ds-react';
 
 const InfoTilFiskere = () => {
-    const intl = useIntl();
-
     return (
-        <UtvidetInformasjon apneLabel={intlUtils(intl, 'inntektsinformasjon.infoTilFiskere.apneLabel')}>
-            <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
-                <Block padBottom="m">
+        <ExpansionCard aria-label="Info til fiskere">
+            <ExpansionCard.Header>
+                <ExpansionCard.Title as="h2">
+                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.tittel" />
+                </ExpansionCard.Title>
+                <ExpansionCard.Description>
+                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.description" />
+                </ExpansionCard.Description>
+            </ExpansionCard.Header>
+            <ExpansionCard.Content>
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
                     </BodyLong>
@@ -18,12 +24,12 @@ const InfoTilFiskere = () => {
                 <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.hyre" />
                 </Label>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del2" />
                     </BodyLong>
                 </Block>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del3"
@@ -45,12 +51,12 @@ const InfoTilFiskere = () => {
                 <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lott" />
                 </Label>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del4" />
                     </BodyLong>
                 </Block>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del5"
@@ -67,7 +73,7 @@ const InfoTilFiskere = () => {
                 <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.egenBåt" />
                 </Label>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del6" />
                     </BodyLong>
@@ -75,17 +81,17 @@ const InfoTilFiskere = () => {
                 <Label as="h3" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lottOgHyre" />
                 </Label>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del7" />
                     </BodyLong>
                 </Block>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del8" />
                     </BodyLong>
                 </Block>
-                <Block padBottom="m">
+                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del9" />
                     </BodyLong>
@@ -104,8 +110,8 @@ const InfoTilFiskere = () => {
                         />
                     </BodyLong>
                 </Block>
-            </div>
-        </UtvidetInformasjon>
+            </ExpansionCard.Content>
+        </ExpansionCard>
     );
 };
 

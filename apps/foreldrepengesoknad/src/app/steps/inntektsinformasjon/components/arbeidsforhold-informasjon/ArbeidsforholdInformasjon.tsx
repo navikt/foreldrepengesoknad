@@ -16,14 +16,14 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
     return (
         <>
             <Label>Dine arbeidsforhold</Label>
+            <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
+            <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             <UtvidetInformasjon apneLabel="Les mer om dine arbeidsforhold">
                 <BodyShort>
                     Er det feil eller mangler i informasjonen om dine arbeidsforhold? Da må du be din arbeidsgiver
                     oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.
                 </BodyShort>
             </UtvidetInformasjon>
-            <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
-            <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
         </>
     );
 };

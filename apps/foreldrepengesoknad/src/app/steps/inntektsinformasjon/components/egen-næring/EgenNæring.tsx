@@ -70,7 +70,6 @@ const EgenNæring: FunctionComponent<Props> = ({
                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                     name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
                     legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd')}
-                    description={<HvemKanDriveMedEgenNæring />}
                     validate={(hattInntektSomNæringsdrivende) => {
                         if (hattInntektSomNæringsdrivende === YesOrNo.YES) {
                             if (egenNæringInformasjon.length === 0) {
@@ -85,6 +84,7 @@ const EgenNæring: FunctionComponent<Props> = ({
                     }}
                 />
             </Block>
+            <HvemKanDriveMedEgenNæring />
             {formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && (
                 <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <EgenNæringModal

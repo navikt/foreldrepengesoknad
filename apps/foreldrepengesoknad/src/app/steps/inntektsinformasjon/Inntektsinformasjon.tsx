@@ -26,7 +26,7 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { BodyShort, Button, Label } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -88,7 +88,6 @@ const Inntektsinformasjon = () => {
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">
-                                <Label>Utbetalinger fra NAV</Label>
                                 <BodyShort>
                                     Hvis du får utbetalinger fra NAV, trenger du ikke å opplyse om det i søknaden
                                 </BodyShort>
@@ -100,8 +99,6 @@ const Inntektsinformasjon = () => {
                                     ISOStringToDate(familiehendelsesdato)
                                 )}
                             />
-
-                            <InfoTilFiskere />
 
                             <Block padBottom="l">
                                 <Frilans
@@ -128,6 +125,10 @@ const Inntektsinformasjon = () => {
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />
+                            </Block>
+
+                            <Block padBottom="l">
+                                <InfoTilFiskere />
                             </Block>
 
                             <Block textAlignCenter={true} visible={visibility.areAllQuestionsAnswered()}>
