@@ -32,7 +32,7 @@ import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtter
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Sak } from 'app/types/Sak';
-import { Alert, BodyShort, Button, GuidePanel, Heading, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 
 import './velkommen.less';
 import links from 'app/links/links';
@@ -217,13 +217,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
                                         </Block>
                                         <Block padBottom="m">
                                             <DinePlikter />
-                                        </Block>
-                                        <Block padBottom="l">
-                                            <ReadMore
-                                                header={intlUtils(intl, 'velkommen.samtykkeIntro.del2.apneLabel')}
-                                            >
-                                                <FormattedMessage id="velkommen.samtykkeIntro.del2" />
-                                            </ReadMore>
                                         </Block>
                                     </>
                                 </VelkommenFormComponents.ConfirmationCheckbox>
