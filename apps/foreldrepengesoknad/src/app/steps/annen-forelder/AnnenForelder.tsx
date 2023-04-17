@@ -41,7 +41,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import AlertStripe from 'nav-frontend-alertstriper';
 import links from 'app/links/links';
 import { getKjønnFromFnrString } from 'app/utils/personUtils';
-import { Sivilstand } from 'app/types/Sivilstand';
+import { SivilstandType } from 'app/types/SivilstandType';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -68,7 +68,8 @@ const AnnenForelder = () => {
             annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
     const søkerErFar = rolle === 'far';
     const søkerErMor = rolle === 'mor';
-    const søkerErIkkeGift = søkerinfo.person.sivilstand !== Sivilstand.GIFT;
+    const søkerErIkkeGift =
+        søkerinfo.person.sivilstand === undefined || søkerinfo.person.sivilstand.type !== SivilstandType.GIFT;
     const barnetErIkkeFødt = isUfødtBarn(barn);
     let tekstOmFarskapsportalId = '';
     if (søkerErFar && barnetErIkkeFødt) {
