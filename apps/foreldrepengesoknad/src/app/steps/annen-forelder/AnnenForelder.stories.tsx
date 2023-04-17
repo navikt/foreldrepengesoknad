@@ -282,7 +282,7 @@ FarGiftUfødtBarn.args = {
             etternavn: 'BÆREPOSE',
             kjønn: 'M',
             barn: [],
-            sivilstand: 'GIFT',
+            sivilstand: { type: 'GIFT' },
         },
     } as SøkerinfoDTO,
 };
