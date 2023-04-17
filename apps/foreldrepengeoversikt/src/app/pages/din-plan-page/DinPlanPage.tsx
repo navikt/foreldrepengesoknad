@@ -5,6 +5,7 @@ import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
+import { RequestStatus } from 'app/types/RequestStatus';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
@@ -34,14 +35,18 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
         annenPartVedtakIsSuspended =
             !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
     }
-    const { annenPartsVedtakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(
+    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
         annenPartFnr,
         barnFnr,
         familiehendelsesdato,
         annenPartVedtakIsSuspended
     );
 
-    if (!annenPartVedtakIsSuspended && !annenPartsVedtakData && !annenPartsVedtakError) {
+    if (
+        !annenPartVedtakIsSuspended &&
+        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
+        !annenPartsVedtakError
+    ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />

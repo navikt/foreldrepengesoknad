@@ -23,6 +23,7 @@ import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import './saksoversikt.css';
+import { RequestStatus } from 'app/types/RequestStatus';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -72,14 +73,18 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
         annenPartVedtakIsSuspended =
             !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
     }
-    const { annenPartsVedtakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(
+    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
         annenPartFnr,
         barnFnr,
         familiehendelsesdato,
         annenPartVedtakIsSuspended
     );
 
-    if (!annenPartVedtakIsSuspended && !annenPartsVedtakData && !annenPartsVedtakError) {
+    if (
+        !annenPartVedtakIsSuspended &&
+        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
+        !annenPartsVedtakError
+    ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
