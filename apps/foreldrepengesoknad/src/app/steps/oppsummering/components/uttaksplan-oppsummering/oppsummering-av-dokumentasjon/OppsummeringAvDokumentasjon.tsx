@@ -35,7 +35,7 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
             ledetekst={ledetekst || intlUtils(intl, 'vedlagtdokumentasjon')}
         >
             {vedlegg && vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
-                renderListOfAttachmentPreviewLinks()
+                <div>{renderListOfAttachmentPreviewLinks()}</div>
             ) : (
                 <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
             )}

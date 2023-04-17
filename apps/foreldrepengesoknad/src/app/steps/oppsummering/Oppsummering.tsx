@@ -191,9 +191,9 @@ const Oppsummering = () => {
                             </Block>
                             <Block padBottom="l">
                                 <div className={bem.block}>
-                                    <Block padBottom="l">
+                                    <OppsummeringsPanel title="Deg">
                                         <Personalia søkerinfo={søkerinfo} />
-                                    </Block>
+                                    </OppsummeringsPanel>
                                     {!erEndringssøknad && (
                                         <OppsummeringsPanel title="Barnet">
                                             <BarnOppsummering barn={barn} />
