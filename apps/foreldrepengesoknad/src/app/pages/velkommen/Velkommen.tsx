@@ -161,8 +161,8 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
                             toggle={(l: Locale) => onChangeLocale(l)}
                         />
                         <div className={bem.block}>
-                            <Block padBottom="l">
-                                <Heading size="large" className={`${bem.element('tittel')} blokk-s`}>
+                            <Block>
+                                <Heading size="xlarge" className={`${bem.element('tittel')}`}>
                                     {intlUtils(intl, 'velkommen.tittel')}
                                 </Heading>
                             </Block>
