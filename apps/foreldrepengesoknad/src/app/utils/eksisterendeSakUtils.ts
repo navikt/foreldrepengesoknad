@@ -467,7 +467,10 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: SelectableBarn): AnnenForeld
             kanIkkeOppgis: false,
         };
     }
-    return undefined;
+
+    return {
+        kanIkkeOppgis: false,
+    };
 };
 
 export const opprettSøknadFraValgteBarn = (valgteBarn: SelectableBarn): Partial<Søknad> | undefined => {
