@@ -201,7 +201,10 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                     </div>
                     <div className={bem.element('advarsel')}>
                         {melding && (
-                            <span role="presentation">
+                            <span
+                                role="presentation"
+                                className={bem.modifier(`color-${getIkonForVeilederMelding(melding)}`)}
+                            >
                                 <UttaksplanIkon
                                     ikon={getIkonForVeilederMelding(melding)}
                                     title={melding.contentIntlKey}

@@ -84,7 +84,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
 
         return (
             <div className="blokk-m">
-                <Block padBottom="l">
+                <Block margin="l">
                     <Textarea
                         value={this.state.begrunnelse}
                         maxLength={tilleggsopplysningerMaxLength}

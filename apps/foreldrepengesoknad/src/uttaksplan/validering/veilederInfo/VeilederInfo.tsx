@@ -13,13 +13,13 @@ interface Props {
 
 const VeilederInfo: React.FunctionComponent<Props> = ({ messages, skjulMeldingIkon = false, ariaTittel }) => {
     return (
-        <GuidePanel>
+        <GuidePanel poster>
             {ariaTittel && (
                 <AriaText tag="h2">
                     <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />
                 </AriaText>
             )}
-            <VeilederMeldinger meldinger={messages} stil="transparent" skjulMeldingIkon={skjulMeldingIkon} />
+            <VeilederMeldinger meldinger={messages} stil="default" skjulMeldingIkon={skjulMeldingIkon} />
         </GuidePanel>
     );
 };

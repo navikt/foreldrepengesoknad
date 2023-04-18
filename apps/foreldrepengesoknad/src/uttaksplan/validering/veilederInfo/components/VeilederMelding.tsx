@@ -44,7 +44,7 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
     const content = (
         <>
             {message.titleIntlKey !== undefined && (
-                <Label>
+                <Label as="div">
                     <FormattedMessage id={message.titleIntlKey} />
                 </Label>
             )}
@@ -54,7 +54,9 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
     return skjulMeldingIkon ? (
         <div>{content}</div>
     ) : (
-        <Alert variant={getAlertStripeTypeFromMessageType(message)}>{content}</Alert>
+        <Alert variant={getAlertStripeTypeFromMessageType(message)} inline>
+            {content}
+        </Alert>
     );
 };
 

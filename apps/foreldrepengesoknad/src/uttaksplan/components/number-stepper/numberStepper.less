@@ -1,9 +1,37 @@
 .numberStepper {
     display: flex;
     align-items: center;
+
     &__input {
-        width: 4rem;
-        margin: 0 0.5rem;
-        text-align: center;
+        width: 50%;
+        > input {
+            appearance: none;
+            border-radius: 4px;
+            padding: var(--navds-spacing-2);
+            background-color: var(--navds-textarea-color-background);
+            border-radius: var(--navds-border-radius-medium);
+            border: 1px solid var(--navds-textarea-color-border);
+            resize: none;
+            width: 100%;
+            display: block;
+            color: var(--navds-text-field-color-text);
+        }
+
+        > input:hover {
+            border-color: var(--navds-textarea-color-border-hover);
+        }
+
+        > input:focus {
+            outline: none;
+            box-shadow: var(--navds-shadow-focus);
+        }
+    }
+
+    &__decrease {
+        margin-right: 1rem;
+    }
+
+    &__increase {
+        margin-left: 1rem;
     }
 }
