@@ -5,8 +5,8 @@ import { ÅpenBehandling } from './ÅpenBehandling';
 export interface SvangerskapspengeSakDTO {
     saksnummer: string;
     sakAvsluttet: boolean;
-    gjelderAdopsjon: boolean;
-    familiehendelse: Familiehendelse;
+    gjelderAdopsjon?: boolean;
+    familiehendelse?: Familiehendelse;
     åpenBehandling?: ÅpenBehandling;
 }
 
