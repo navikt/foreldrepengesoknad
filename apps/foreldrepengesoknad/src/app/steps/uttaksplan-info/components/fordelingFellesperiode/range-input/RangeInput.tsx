@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import { bemUtils, guid, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, guid } from '@navikt/fp-common';
 import Fieldset from 'app/components/fieldset/Fieldset';
 import AriaText from './AriaText';
 import RangeStepper from './RangeStepper';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 import './rangeInput.less';
 
 export interface RangeInputElementRendererOptions {
@@ -117,7 +117,6 @@ class RangeInput extends React.Component<Props, State> {
         return (
             <div className={bemWrapper.block}>
                 <Fieldset legend={<>{label}</>} className={'uttakfordeler'}>
-                    <UtvidetInformasjon apneLabel={hjelpetekstApneLabel}>{hjelpetekst}</UtvidetInformasjon>
                     <div aria-live="polite">
                         {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>
@@ -167,6 +166,7 @@ class RangeInput extends React.Component<Props, State> {
                         {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
                     </div>
                     {bottomRenderer({ value, min, max })}
+                    <ReadMore header={hjelpetekstApneLabel}>{hjelpetekst}</ReadMore>
                 </Fieldset>
             </div>
         );
