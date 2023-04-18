@@ -117,7 +117,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
                     <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse" />
                 </GuidePanel>
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
                 <FormikFileUploader
                     label={intlUtils(intl, 'omBarnet.adopsjon.vedlegg')}
                     name={OmBarnetFormField.omsorgsovertakelse}

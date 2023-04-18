@@ -1,12 +1,4 @@
-import {
-    attenUkerTreDager,
-    date21DaysAgo,
-    Block,
-    dateToday,
-    hasValue,
-    intlUtils,
-    UtvidetInformasjon,
-} from '@navikt/fp-common';
+import { attenUkerTreDager, date21DaysAgo, Block, dateToday, hasValue, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -20,7 +12,7 @@ import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../
 import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { GuidePanel, Link } from '@navikt/ds-react';
+import { GuidePanel, Link, ReadMore } from '@navikt/ds-react';
 interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
@@ -83,20 +75,20 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     <option value="9">9</option>
                 </OmBarnetFormComponents.Select>
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+            <Block padBottom="s" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.termin')}
                     placeholder={'dd.mm.åååå'}
-                    description={
-                        <UtvidetInformasjon apneLabel={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
-                            {intlUtils(intl, intlTermindatoInfotekst)}
-                        </UtvidetInformasjon>
-                    }
                     minDate={date21DaysAgo}
                     maxDate={attenUkerTreDager}
                     validate={validateTermindato(intl)}
                 />
+            </Block>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+                <ReadMore header={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
+                    {intlUtils(intl, intlTermindatoInfotekst)}
+                </ReadMore>
             </Block>
 
             {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato) && (
