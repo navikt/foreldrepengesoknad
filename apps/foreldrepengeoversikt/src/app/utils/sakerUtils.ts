@@ -35,7 +35,7 @@ const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
         erForeldrepengesak && registrerteBarn ? registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr)) : [];
-    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
+    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse!.fødselsdato);
     const pdlBarnMedSammeFødselsdato =
         fødselsdatoFraSak !== undefined && registrerteBarn
             ? registrerteBarn.filter(
@@ -70,28 +70,32 @@ export const grupperSakerPåBarn = (registrerteBarn: Person[] | undefined, saker
     const alleSaker = getAlleYtelser(saker);
 
     return alleSaker.reduce((result, sak) => {
-        const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
-        const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
+        if (sak.familiehendelse) {
+            const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
+            const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
 
-        if (relevantSak) {
-            relevantSak.saker.push(sak);
-        }
+            if (relevantSak) {
+                relevantSak.saker.push(sak);
+            }
 
-        if (relevantSak && result.includes(relevantSak)) {
-            return result;
+            if (relevantSak && result.includes(relevantSak)) {
+                return result;
+            } else {
+                const type = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon!);
+                const gruppertSak: GruppertSak = {
+                    antallBarn: sak.familiehendelse.antallBarn,
+                    familiehendelsedato,
+                    saker: [sak],
+                    type,
+                    ytelse: sak.ytelse,
+                    barn: type !== 'termin' ? getBarnGrupperingFraSak(sak, registrerteBarn) : undefined,
+                };
+
+                result.push(gruppertSak);
+
+                return result;
+            }
         } else {
-            const type = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
-            const gruppertSak: GruppertSak = {
-                antallBarn: sak.familiehendelse.antallBarn,
-                familiehendelsedato,
-                saker: [sak],
-                type,
-                ytelse: sak.ytelse,
-                barn: type !== 'termin' ? getBarnGrupperingFraSak(sak, registrerteBarn) : undefined,
-            };
-
-            result.push(gruppertSak);
-
             return result;
         }
     }, [] as GruppertSak[]);
@@ -160,7 +164,7 @@ const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) 
     return undefined;
 };
 
-export const utledFamiliesituasjon = (familiehendelse: Familiehendelse, gjelderAdopsjon: boolean) => {
+export const utledFamiliesituasjon = (familiehendelse: Familiehendelse, gjelderAdopsjon: boolean | undefined) => {
     if (gjelderAdopsjon) {
         return 'adopsjon';
     }
@@ -192,7 +196,7 @@ export const getNavnAnnenForelder = (
     søkerinfo: SøkerinfoDTO,
     sak: Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak | undefined
 ) => {
-    const fødselsdatoFraSak = sak ? sak.familiehendelse.fødselsdato : undefined;
+    const fødselsdatoFraSak = sak && sak.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
         søkerinfo.søker.barn && fødselsdatoFraSak
             ? søkerinfo.søker.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))

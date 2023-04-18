@@ -107,6 +107,10 @@ const renderHeaderContent = (
     }
 
     if (selectedRoute === OversiktRoutes.SAKSOVERSIKT && sak) {
+        if (!sak.familiehendelse) {
+            return <div>Sak avslått</div>;
+        }
+
         const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
         const familiehendelsedato = ISOStringToDate(getFamiliehendelseDato(sak.familiehendelse));
         const barnTittel = getSakTittel(
