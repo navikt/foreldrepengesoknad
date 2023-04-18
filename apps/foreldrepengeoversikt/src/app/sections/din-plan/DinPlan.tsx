@@ -50,7 +50,7 @@ const DinPlan: React.FunctionComponent<Props> = ({
     const annenPartsPerioderForVisning =
         annenPartsPerioder !== undefined
             ? getPerioderForVisning(
-                  slåSammenLikePerioder(annenPartsPerioder).filter((p) => p.resultat.innvilget === true),
+                  slåSammenLikePerioder(annenPartsPerioder).filter((p) => p.resultat && p.resultat.innvilget === true),
                   true
               )
             : undefined;
