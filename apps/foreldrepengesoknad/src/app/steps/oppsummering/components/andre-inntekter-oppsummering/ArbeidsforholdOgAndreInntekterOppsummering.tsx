@@ -12,13 +12,21 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { barn } = useSøknad();
+    const { barn, søkersituasjon } = useSøknad();
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const aktiveArbeidsForhold = getAktiveArbeidsforhold(arbeidsforhold, ISOStringToDate(familiehendelsesdato));
+    const aktiveArbeidsForhold = getAktiveArbeidsforhold(
+        arbeidsforhold,
+        erAdopsjon,
+        erFarEllerMedmor,
+        ISOStringToDate(familiehendelsesdato)
+    );
     const harArbeidsforhold = aktiveArbeidsForhold !== undefined && aktiveArbeidsForhold.length > 0;
 
     return (

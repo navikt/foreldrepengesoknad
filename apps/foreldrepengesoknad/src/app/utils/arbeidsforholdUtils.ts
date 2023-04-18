@@ -3,6 +3,8 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { dateIsBetween } from './dateUtils';
+import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'uttaksplan/utils/uttaksdatoerUtils';
 
 const getArbeidsforholdFromOrgnummer = (
     orgnummer: string,
@@ -23,7 +25,30 @@ export const getSamletStillingsprosentForArbeidsforhold = (
         }, 0);
 };
 
-export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], fraDato?: Date): Arbeidsforhold[] => {
+export const getFraDatoForAktiveArbeidsforhold = (
+    erAdopsjon: boolean,
+    erFarEllerMedmor: boolean,
+    familiehendelsesdato: Date | undefined
+): Date | undefined => {
+    if (familiehendelsesdato === undefined) {
+        return undefined;
+    }
+    if (erAdopsjon) {
+        return familiehendelsesdato;
+    }
+    if (erFarEllerMedmor) {
+        return getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, undefined);
+    }
+    return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
+};
+
+export const getAktiveArbeidsforhold = (
+    arbeidsforhold: Arbeidsforhold[],
+    erAdopsjon: boolean,
+    erFarEllerMedmor: boolean,
+    familiehendelsesdato?: Date
+): Arbeidsforhold[] => {
+    const fraDato = getFraDatoForAktiveArbeidsforhold(erAdopsjon, erFarEllerMedmor, familiehendelsesdato);
     return arbeidsforhold.filter(
         (a) =>
             a.tom === undefined ||

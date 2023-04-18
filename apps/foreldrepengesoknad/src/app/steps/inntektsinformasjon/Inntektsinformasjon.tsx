@@ -28,13 +28,15 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn } = useSøknad();
+    const { søker, barn, søkersituasjon } = useSøknad();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const [frilansoppdrag, setFrilansoppdrag] = useState(
         søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
     );
@@ -96,6 +98,8 @@ const Inntektsinformasjon = () => {
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(
                                     arbeidsforhold,
+                                    erAdopsjon,
+                                    erFarEllerMedmor,
                                     ISOStringToDate(familiehendelsesdato)
                                 )}
                             />
