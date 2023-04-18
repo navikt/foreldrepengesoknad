@@ -67,24 +67,26 @@ const EgenNæring: FunctionComponent<Props> = ({
                 padBottom="l"
                 visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)}
             >
-                <InntektsinformasjonFormComponents.YesOrNoQuestion
-                    name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
-                    legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd')}
-                    validate={(hattInntektSomNæringsdrivende) => {
-                        if (hattInntektSomNæringsdrivende === YesOrNo.YES) {
-                            if (egenNæringInformasjon.length === 0) {
-                                return intlUtils(
-                                    intl,
-                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet'
-                                );
+                <Block padBottom="l">
+                    <InntektsinformasjonFormComponents.YesOrNoQuestion
+                        name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
+                        legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd')}
+                        validate={(hattInntektSomNæringsdrivende) => {
+                            if (hattInntektSomNæringsdrivende === YesOrNo.YES) {
+                                if (egenNæringInformasjon.length === 0) {
+                                    return intlUtils(
+                                        intl,
+                                        'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet'
+                                    );
+                                }
                             }
-                        }
 
-                        return undefined;
-                    }}
-                />
+                            return undefined;
+                        }}
+                    />
+                </Block>
+                <HvemKanDriveMedEgenNæring />
             </Block>
-            <HvemKanDriveMedEgenNæring />
             {formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && (
                 <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <EgenNæringModal
