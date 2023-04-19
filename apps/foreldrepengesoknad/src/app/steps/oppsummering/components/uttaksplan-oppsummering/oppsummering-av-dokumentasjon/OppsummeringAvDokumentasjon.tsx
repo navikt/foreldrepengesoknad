@@ -37,7 +37,9 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
             {vedlegg && vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
                 <div>{renderListOfAttachmentPreviewLinks()}</div>
             ) : (
-                <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
+                <div>
+                    <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
+                </div>
             )}
         </KompleksFeltoppsummering>
     );
