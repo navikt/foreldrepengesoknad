@@ -63,12 +63,26 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     const minidialogerIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
     const alleYtelser = getAlleYtelser(saker);
+    const avslåttSvangerskapspengesak =
+        grupperteSaker.length === 0 && alleYtelser.length === 1 && saker.svangerskapspenger.length === 1
+            ? saker.svangerskapspenger[0]
+            : undefined;
+
     return (
         <>
             <Header minidialogerIds={minidialogerIds} grupperteSaker={grupperteSaker} />
             <div className={bem.block}>
                 <Routes>
-                    <Route path="/" element={<Forside alleYtelser={alleYtelser} grupperteSaker={grupperteSaker} />} />
+                    <Route
+                        path="/"
+                        element={
+                            <Forside
+                                alleYtelser={alleYtelser}
+                                grupperteSaker={grupperteSaker}
+                                avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
+                            />
+                        }
+                    />
                     <Route path="/sak/:saksnummer" element={<SakComponent />}>
                         <Route
                             index
