@@ -67,7 +67,7 @@ const NyPeriode: FunctionComponent<Props> = ({
 
     return !isUtsettelse ? (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <Heading size="small">
                     <FormattedMessage id="uttaksplan.nyPeriode.tittel" />
                 </Heading>

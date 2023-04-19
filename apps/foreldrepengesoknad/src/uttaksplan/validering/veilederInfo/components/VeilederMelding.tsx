@@ -40,7 +40,7 @@ export const getIkonForVeilederMelding = (melding: VeilederMessage): UttaksplanI
     }
 };
 
-const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
+const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean, stil: VeilederMeldingStil) => {
     const content = (
         <>
             {message.titleIntlKey !== undefined && (
@@ -54,7 +54,7 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
     return skjulMeldingIkon ? (
         <div>{content}</div>
     ) : (
-        <Alert variant={getAlertStripeTypeFromMessageType(message)} inline>
+        <Alert variant={getAlertStripeTypeFromMessageType(message)} inline={stil === 'transparent'}>
             {content}
         </Alert>
     );
@@ -69,7 +69,7 @@ const VeilederMelding: React.FunctionComponent<VeilederpanelInnholdContentProps>
     return (
         <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (
-                renderAlert(message, skjulMeldingIkon)
+                renderAlert(message, skjulMeldingIkon, stil)
             ) : (
                 <div className="veilederMelding__padding">
                     <FormattedMessage id={message.contentIntlKey} values={message.values} />

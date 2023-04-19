@@ -19,7 +19,7 @@ const VeilederInfo: React.FunctionComponent<Props> = ({ messages, skjulMeldingIk
                     <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />
                 </AriaText>
             )}
-            <VeilederMeldinger meldinger={messages} stil="default" skjulMeldingIkon={skjulMeldingIkon} />
+            <VeilederMeldinger meldinger={messages} stil="transparent" skjulMeldingIkon={skjulMeldingIkon} />
         </GuidePanel>
     );
 };

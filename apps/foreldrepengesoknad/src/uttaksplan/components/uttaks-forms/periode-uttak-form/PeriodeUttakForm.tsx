@@ -283,7 +283,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
+                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -308,7 +308,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 />
                             )}
 
-                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
+                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                                 <TidsperiodeDisplay
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}
@@ -337,14 +337,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
                                 <HvemSkalHaUttakSpørsmål
                                     fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
                                     erFarEllerMedmor={false}
                                     navnPåForeldre={navnPåForeldre}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
                                 <HvilkenKontoSpørsmål
                                     fieldName={PeriodeUttakFormField.konto}
                                     velgbareStønadskontoer={velgbareStønadskontoer}
@@ -355,7 +355,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     erAleneOmOmsorg={erAleneOmOmsorg}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}
+                            >
                                 <OverføringsårsakSpørsmål
                                     vedlegg={values.overføringsdokumentasjon!}
                                     navnAnnenForelder={navnPåAnnenForelder}
@@ -364,7 +367,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)}
                             >
                                 <UttakRundtFødselÅrsakSpørsmål
@@ -377,7 +380,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
                                 sluttDatoPeriodeRundtFødselFarMedmor !== undefined && (
                                     <Block
-                                        padBottom="l"
+                                        padBottom="xl"
                                         visible={skalViseWLBInfoOmSamtidigUttakRundtFødsel(
                                             values as PeriodeUttakFormData,
                                             familiehendelsesdato,
@@ -398,12 +401,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     </Block>
                                 )}
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}
                             >
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
                                 <ErMorForSykSpørsmål
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
                                     erMorForSyk={values.erMorForSyk!}
@@ -411,7 +414,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     vedlegg={values.erMorForSykDokumentasjon!}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
                                     erFlerbarnssøknad={erFlerbarnssøknad}
                                     navnPåForeldre={navnPåForeldre}
@@ -424,7 +427,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(PeriodeUttakFormField.aktivitetskravMor)}
                             >
                                 <AktivitetskravSpørsmål
@@ -436,7 +439,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     vedleggFieldName={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
                                 <SkalHaGraderingSpørsmål
                                     graderingsprosentVisible={visibility.isVisible(
                                         PeriodeUttakFormField.stillingsprosent

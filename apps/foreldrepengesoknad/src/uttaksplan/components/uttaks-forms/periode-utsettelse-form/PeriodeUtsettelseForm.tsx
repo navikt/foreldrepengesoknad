@@ -104,7 +104,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
 
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="l">
+                        <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="xl">
                             <TidsperiodeForm
                                 tidsperiode={tidsperiode}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -125,7 +125,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 cleanup={() => cleanupPeriodeUtsettelseFormData(values as PeriodeUtsettelseFormData)}
                             />
 
-                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="l">
+                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="xl">
                                 <TidsperiodeDisplay
                                     tidsperiode={tidsperiode}
                                     toggleVisTidsperiode={toggleVisTidsperiode}
@@ -153,7 +153,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
-                            <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="l">
+                            <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="xl">
                                 <UtsettelseÅrsakSpørsmål
                                     periodenErKunHelligdager={periodenErKunHelligdager}
                                     skalViseGamleUtsettelseÅrsaker={skalViseGamleUtsettelseÅrsaker}
@@ -169,7 +169,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             </Block>
                             <Block
                                 visible={visibility.isVisible(PeriodeUtsettelseFormField.bekrefterArbeidIPerioden)}
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <PeriodeUtsettelseFormComponents.Checkbox
                                     name={PeriodeUtsettelseFormField.bekrefterArbeidIPerioden}
@@ -185,7 +185,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             </Block>
                             <Block
                                 visible={visibility.isVisible(PeriodeUtsettelseFormField.morsAktivitetIPerioden)}
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <AktivitetskravSpørsmål
                                     aktivitetskravMorValue={values.morsAktivitetIPerioden!}

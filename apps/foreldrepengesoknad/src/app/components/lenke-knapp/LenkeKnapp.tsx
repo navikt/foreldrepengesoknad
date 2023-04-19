@@ -1,5 +1,5 @@
 import React from 'react';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Link } from '@navikt/ds-react';
 
 import './lenkeKnapp.less';
 
@@ -10,7 +10,8 @@ interface Props {
 
 const LenkeKnapp: React.FunctionComponent<Props> = ({ text, onClick }) => {
     return (
-        <button
+        <Link
+            as="button"
             className="lenkeKnapp lenke"
             onClick={(e) => {
                 e.preventDefault();
@@ -18,7 +19,7 @@ const LenkeKnapp: React.FunctionComponent<Props> = ({ text, onClick }) => {
             }}
         >
             <BodyShort>{text}</BodyShort>
-        </button>
+        </Link>
     );
 };
 

@@ -1,5 +1,5 @@
-import { bemUtils, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
-import { Label } from '@navikt/ds-react';
+import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { Label, ReadMore } from '@navikt/ds-react';
 import { getNumberFromNumberInputValue, TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -69,9 +69,6 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                     <FormattedMessage id="uttaksplaninfo.fellesperiode.tittel" />
                 </Label>
             </legend>
-            <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplaninfo.fellesperiode.apneLabel')}>
-                <FormattedMessage id="uttaksplaninfo.fellesperiode.lesMerInfo" />
-            </UtvidetInformasjon>
             <div className={bem.block}>
                 <div className={bem.element('stepper')}>
                     <div className={bem.element('icon')}>
@@ -142,6 +139,11 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                     </div>
                 </div>
             </div>
+            <Block margin="m">
+                <ReadMore header={intlUtils(intl, 'uttaksplaninfo.fellesperiode.apneLabel')}>
+                    <FormattedMessage id="uttaksplaninfo.fellesperiode.lesMerInfo" />
+                </ReadMore>
+            </Block>
         </>
     );
 };

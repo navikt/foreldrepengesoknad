@@ -2,10 +2,10 @@ import React from 'react';
 
 import throttle from 'lodash.throttle';
 import { injectIntl, IntlShape } from 'react-intl';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'uttaksplan/validering/tester/erTilleggsopplysningerGyldigTest';
 import { Attachment } from 'app/types/Attachment';
-import { BodyLong, Label, Textarea } from '@navikt/ds-react';
+import { BodyLong, Label, ReadMore, Textarea } from '@navikt/ds-react';
 
 interface OwnProps {
     begrunnelse?: string;
@@ -24,31 +24,6 @@ const getLabel = (intl: IntlShape) => {
     return (
         <>
             <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.label')}</Label>
-            <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
-                <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
-                    <Block margin="s">
-                        <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}</Label>
-                        <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}</BodyLong>
-                    </Block>
-                    <Block margin="s">
-                        <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Label>
-                        <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</BodyLong>
-                    </Block>
-                    <Block margin="s">
-                        <Label>
-                            {intlUtils(
-                                intl,
-                                'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
-                            )}
-                        </Label>
-                        <BodyLong>
-                            {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering')}
-                        </BodyLong>
-                    </Block>
-                    <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Label>
-                    <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</BodyLong>
-                </div>
-            </UtvidetInformasjon>
         </>
     );
 };
@@ -92,6 +67,35 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
                         label={getLabel(intl)}
                         onChange={this.handleBegrunnelseChange}
                     />
+                    <ReadMore header={intlUtils(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
+                        <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                            <Block margin="s">
+                                <Label>
+                                    {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}
+                                </Label>
+                                <BodyLong>
+                                    {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}
+                                </BodyLong>
+                            </Block>
+                            <Block margin="s">
+                                <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Label>
+                                <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</BodyLong>
+                            </Block>
+                            <Block margin="s">
+                                <Label>
+                                    {intlUtils(
+                                        intl,
+                                        'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
+                                    )}
+                                </Label>
+                                <BodyLong>
+                                    {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering')}
+                                </BodyLong>
+                            </Block>
+                            <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Label>
+                            <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</BodyLong>
+                        </div>
+                    </ReadMore>
                 </Block>
             </div>
         );

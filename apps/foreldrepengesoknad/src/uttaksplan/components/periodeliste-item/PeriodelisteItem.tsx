@@ -242,7 +242,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     </Accordion.Header>
                     <Accordion.Content>
                         <Block visible={meldinger.length > 0}>
-                            <VeilederMeldinger meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')} />
+                            <VeilederMeldinger stil="default" meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')} />
                         </Block>
                         {renderPeriodeListeInnhold(
                             periode,
