@@ -26,9 +26,6 @@ export default defineConfig({
     optimizeDeps: {
         include: ['@navikt/fp-common'],
     },
-    server: {
-        port: 8080,
-    },
     test: {
         globals: true,
         environment: 'jsdom',
