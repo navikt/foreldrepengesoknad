@@ -108,7 +108,18 @@ const renderHeaderContent = (
 
     if (selectedRoute === OversiktRoutes.SAKSOVERSIKT && sak) {
         if (!sak.familiehendelse) {
-            return <div>Sak avslått</div>;
+            return (
+                <div className={bem.element('content')}>
+                    <TåteflaskeBaby />
+                    <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', marginBottom: '1rem' }}>
+                        <Heading size="xlarge">{getSaksoversiktHeading(sak.ytelse)}</Heading>
+                        <div className={bem.element('text-with-bar')}>
+                            <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
+                        </div>
+                        <StatusTag sak={sak} className={bem.element('tag')} />
+                    </div>
+                </div>
+            );
         }
 
         const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
