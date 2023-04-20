@@ -31,6 +31,7 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 import './infoOmSøknaden.less';
+import classNames from 'classnames';
 
 interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -139,7 +140,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         eksisterendeSak.uttaksplan.filter((p) => p.type !== Periodetype.Info);
 
     return (
-        <Block padBottom="xl" className={bem.block}>
+        <Block padBottom="xl" className={classNames(`${bem.block}`)}>
             <InnholdMedIllustrasjon
                 tittel={intlUtils(intl, `eksisterendeSak.tittel.${erDeltUttakINorge ? 'deltUttak' : 'aleneomsorg'}`)}
                 illustrasjoner={[
@@ -148,7 +149,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                 ]}
             >
                 <Block padBottom="xl">
-                    <BodyShort>
+                    <BodyShort className={bem.element('infoTekst')}>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.html"
                             values={{
@@ -160,7 +161,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     </BodyShort>
                 </Block>
                 {skalViseInfoOmMorsSak && hasValue(annenForelderNavn) && nesteMuligeUttaksdagEtterAnnenPart && (
-                    <BodyShort>
+                    <BodyShort className={bem.element('infoTekst')}>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
                             values={{
