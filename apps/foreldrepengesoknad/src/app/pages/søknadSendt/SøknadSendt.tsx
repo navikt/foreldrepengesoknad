@@ -70,13 +70,13 @@ const SøknadSendt = () => {
             <div className={bem.block}>
                 <KvitteringHeader søker={person} kvittering={kvittering} />
 
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <KvitteringSuksess missingAttachments={missingAttachments} />
                 </Block>
 
                 {!erEndringssøknad && (
                     <>
-                        <Block padBottom="l">
+                        <Block padBottom="xl">
                             <SøknadSendtSectionHeader
                                 title={intlUtils(intl, 'søknadSendt.når.tittel')}
                                 type="kalender"
@@ -88,14 +88,14 @@ const SøknadSendt = () => {
                         </Block>
 
                         {arbeidsforhold && arbeidsforhold.length > 0 && (
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <SøknadSendtSectionHeader
                                     title={intlUtils(intl, 'søknadSendt.infoFraArbeidsgiver.tittel')}
                                     type="koffert"
                                     info={intlUtils(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}
                                     infoApneLabel={intlUtils(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox.apneLabel')}
                                 >
-                                    <Block padBottom="l">
+                                    <Block padBottom="xl">
                                         <BodyShort>
                                             <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del1'} />
                                         </BodyShort>
@@ -115,7 +115,7 @@ const SøknadSendt = () => {
                             </Block>
                         )}
 
-                        <Block padBottom="l">
+                        <Block padBottom="xl">
                             <SøknadSendtSectionHeader
                                 title={intlUtils(intl, 'søknadSendt.pengene.tittel')}
                                 type="cash"
@@ -124,15 +124,15 @@ const SøknadSendt = () => {
                             >
                                 {person.bankkonto && person.bankkonto.kontonummer ? (
                                     <>
-                                        <Block padBottom="l">
+                                        <Block padBottom="xl">
                                             <BodyShort>
                                                 <FormattedMessage id="søknadSendt.pengene.kontonummer" />
                                             </BodyShort>
                                         </Block>
-                                        <Block padBottom="l">
+                                        <Block padBottom="xl">
                                             <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
                                         </Block>
-                                        <Block padBottom="l">
+                                        <Block padBottom="xl">
                                             <BodyShort>
                                                 <Link href={links.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
@@ -142,7 +142,7 @@ const SøknadSendt = () => {
                                     </>
                                 ) : (
                                     <>
-                                        <Block padBottom="l">
+                                        <Block padBottom="xl">
                                             <BodyShort>
                                                 <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
                                             </BodyShort>

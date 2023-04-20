@@ -4,7 +4,7 @@ import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { bemUtils, Block, formatDate, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, formatDate, hasValue, intlUtils } from '@navikt/fp-common';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Forelder } from 'app/types/Forelder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
@@ -201,7 +201,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     infoboks={
                         erIUttaksplanenSteg === false ? (
                             <>
-                                <UtvidetInformasjon apneLabel="Se perioder oppgitt av annen forelder">
+                                <ReadMore header="Se perioder oppgitt av annen forelder">
                                     Periodene med foreldrepenger oppgitt av annen forelder
                                     <InfoEksisterendePerioder
                                         oppgittePerioder={søkersPerioder}
@@ -210,7 +210,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                         termindato={termindato}
                                         situasjon={søknad.søkersituasjon.situasjon}
                                     />
-                                </UtvidetInformasjon>
+                                </ReadMore>
                             </>
                         ) : undefined
                     }

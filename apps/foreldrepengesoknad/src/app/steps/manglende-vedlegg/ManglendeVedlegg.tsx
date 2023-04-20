@@ -1,4 +1,4 @@
-import { Block, formatDate, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, formatDate, intlUtils, Step } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import _ from 'lodash';
 import React from 'react';
@@ -26,7 +26,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { BodyShort, Button, GuidePanel, Label } from '@navikt/ds-react';
+import { BodyShort, Button, GuidePanel, Label, ReadMore } from '@navikt/ds-react';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
 
@@ -152,8 +152,8 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                 getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder)
                                             )}
                                         </Label>
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
+                                        <ReadMore
+                                            header={intlUtils(
                                                 intl,
                                                 `manglendeVedlegg.apneLabel.${sendSenereVedlegg.type}`,
                                                 getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder)
@@ -171,7 +171,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                     )}
                                                 </BodyShort>
                                             </div>
-                                        </UtvidetInformasjon>
+                                        </ReadMore>
                                         {periode?.tidsperiode && periode?.type && (
                                             <Block margin="l">
                                                 <BodyShort>

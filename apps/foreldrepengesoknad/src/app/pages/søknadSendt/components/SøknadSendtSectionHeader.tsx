@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 
 import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
-import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { bemUtils } from '@navikt/fp-common';
+import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 
 import './søknadSendtSectionHeader.less';
 
@@ -25,9 +25,9 @@ const SøknadSendtSectionHeader: FunctionComponent<Props> = ({ title, info, type
                 </div>
                 <div className={bem.element('content')}>
                     <Heading size="small">{title}</Heading>
-                    <UtvidetInformasjon apneLabel={infoApneLabel}>
+                    <ReadMore header={infoApneLabel}>
                         <BodyShort>{info}</BodyShort>
-                    </UtvidetInformasjon>
+                    </ReadMore>
                     {children}
                 </div>
             </div>

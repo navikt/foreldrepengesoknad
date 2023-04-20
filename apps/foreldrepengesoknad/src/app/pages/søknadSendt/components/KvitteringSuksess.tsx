@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MissingAttachment } from 'app/types/MissingAttachment';
-import { AdvarselIkon, bemUtils, Block, guid, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { AdvarselIkon, bemUtils, Block, guid, intlUtils } from '@navikt/fp-common';
 import CheckmarkIkon from 'app/assets/CheckmarkIkon';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 
 import './kvitteringSuksess.less';
 
@@ -61,13 +61,11 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
                                     ))}
                                 </ul>
 
-                                <UtvidetInformasjon
-                                    apneLabel={intlUtils(intl, 'søknadSendt.info.missingAttachment.lesMer')}
-                                >
+                                <ReadMore header={intlUtils(intl, 'søknadSendt.info.missingAttachment.lesMer')}>
                                     <BodyShort>
                                         <FormattedMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
                                     </BodyShort>
-                                </UtvidetInformasjon>
+                                </ReadMore>
                             </>
                         )}
                     </div>

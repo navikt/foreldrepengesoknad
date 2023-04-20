@@ -1,4 +1,4 @@
-import { intlUtils, Block, UtvidetInformasjon, hasValue, TidsperiodeDate } from '@navikt/fp-common';
+import { intlUtils, Block, hasValue, TidsperiodeDate } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
 import React, { FunctionComponent } from 'react';
@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
 import { prosentValideringGradering } from 'uttaksplan/utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
@@ -66,31 +66,24 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
                 />
             </Block>
             <Block padBottom="l" visible={graderingsprosentVisible}>
-                <PeriodeUttakFormComponents.NumberInput
-                    name={PeriodeUttakFormField.stillingsprosent}
-                    label={intlUtils(intl, 'uttaksplan.stillingsprosent')}
-                    description={
-                        <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplan.stillingsprosent.lesMer.tittel')}>
-                            <BodyShort>
-                                <FormattedMessage id="uttaksplan.stillingsprosent.lesMer.innhold" />
-                            </BodyShort>
-                        </UtvidetInformasjon>
-                    }
-                    maxLength={5}
-                    validate={prosentValideringGradering(intl)}
-                />
+                <Block padBottom="s">
+                    <PeriodeUttakFormComponents.NumberInput
+                        name={PeriodeUttakFormField.stillingsprosent}
+                        label={intlUtils(intl, 'uttaksplan.stillingsprosent')}
+                        maxLength={5}
+                        validate={prosentValideringGradering(intl)}
+                    />
+                </Block>
+                <ReadMore header={intlUtils(intl, 'uttaksplan.stillingsprosent.lesMer.tittel')}>
+                    <BodyShort>
+                        <FormattedMessage id="uttaksplan.stillingsprosent.lesMer.innhold" />
+                    </BodyShort>
+                </ReadMore>
             </Block>
             <Block visible={graderingsprosentVisible}>
                 <PeriodeUttakFormComponents.RadioGroup
                     name={PeriodeUttakFormField.arbeidsformer}
                     legend={intlUtils(intl, 'uttaksplan.arbeidsformer')}
-                    description={
-                        <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplan.arbeidsformer.lesMer.tittel')}>
-                            <BodyShort>
-                                <FormattedMessage id="uttaksplan.arbeidsformer.lesMer.innhold" />
-                            </BodyShort>
-                        </UtvidetInformasjon>
-                    }
                     radios={getArbeidsOptions(arbeidsforhold, tidsperiode)}
                     validate={(value) => {
                         if (!hasValue(value)) {
@@ -100,6 +93,11 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
                         return undefined;
                     }}
                 />
+                <ReadMore header={intlUtils(intl, 'uttaksplan.arbeidsformer.lesMer.tittel')}>
+                    <BodyShort>
+                        <FormattedMessage id="uttaksplan.arbeidsformer.lesMer.innhold" />
+                    </BodyShort>
+                </ReadMore>
             </Block>
         </>
     );

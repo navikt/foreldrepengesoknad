@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { bemUtils, Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     EgenNæringModalFormComponents,
@@ -25,7 +25,7 @@ import {
 } from './validation/egenNæringValidation';
 import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Modal, ReadMore } from '@navikt/ds-react';
 
 import './egenNæringModal.less';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -212,23 +212,21 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                 <EgenNæringModalFormComponents.NumberInput
                                     name={EgenNæringModalFormField.næringsresultat}
                                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringsinntekt')}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel'
-                                            )}
-                                        >
-                                            <BodyShort>
-                                                <FormattedMessage id="inntektsinformasjon.egenNæringModal.næringsinntekt.info" />
-                                            </BodyShort>
-                                        </UtvidetInformasjon>
-                                    }
                                     validate={validateNumber(
                                         intl,
                                         'valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat'
                                     )}
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel'
+                                    )}
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="inntektsinformasjon.egenNæringModal.næringsinntekt.info" />
+                                    </BodyShort>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="l"
@@ -244,19 +242,17 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         intl,
                                         'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År'
                                     )}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel'
-                                            )}
-                                        >
-                                            <BodyShort>
-                                                <FormattedMessage id="inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info" />
-                                            </BodyShort>
-                                        </UtvidetInformasjon>
-                                    }
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel'
+                                    )}
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info" />
+                                    </BodyShort>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="l"
