@@ -86,7 +86,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     ]}
                 />
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}

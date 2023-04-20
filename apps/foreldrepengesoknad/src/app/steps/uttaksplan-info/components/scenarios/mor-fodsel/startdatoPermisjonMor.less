@@ -1,3 +1,5 @@
+@import './../../../../../styles/variables.less';
+
 .datoInput {
     display: flex;
     align-items: baseline;
@@ -5,5 +7,13 @@
         align-self: center;
         margin-left: -1rem;
         padding-top: 1.6rem;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        &__postfix {
+            align-self: center;
+            margin-left: 1rem;
+            padding-top: 3rem;
+        }
     }
 }

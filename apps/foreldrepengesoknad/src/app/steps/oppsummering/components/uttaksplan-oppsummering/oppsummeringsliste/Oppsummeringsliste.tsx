@@ -3,6 +3,7 @@ import * as React from 'react';
 import List from './list/List';
 import { BodyShort, Label } from '@navikt/ds-react';
 import { guid } from '@navikt/fp-common';
+import './oppsummeringsliste.less';
 
 export interface OppsummeringslisteelementProps {
     venstrestiltTekst: string;

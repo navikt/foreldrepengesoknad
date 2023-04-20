@@ -1,3 +1,5 @@
+@import './../../../../../styles/variables.less';
+
 .oppsummeringsliste {
     list-style-type: none;
     padding-left: 0;
@@ -16,6 +18,9 @@
             justify-content: space-between;
 
             .høyrestiltTekst {
+                @media (max-width: @mobile-breakpoint) {
+                    padding-left: 0.5rem;
+                }
                 font-weight: normal;
             }
         }

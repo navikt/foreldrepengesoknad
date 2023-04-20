@@ -60,7 +60,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     )}
                 </div>
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.termindato) && valgteBarn.length > 0}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato) && valgteBarn.length > 0}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}

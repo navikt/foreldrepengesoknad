@@ -57,7 +57,6 @@
     &__samtidig-uttak {
         align-items: center;
         display: grid;
-        width: 100%;
         grid-template-columns: 20fr 1fr 1fr 2fr;
         margin-left: 2rem;
         padding-left: 1rem;
@@ -133,11 +132,12 @@
         }
 
         &__beskrivelse {
+            padding-left: 0;
             order: 2;
         }
 
         &__tidsrom {
-            padding-left: 1rem;
+            padding-left: 0;
             padding-bottom: 1rem;
             order: 3;
         }
@@ -156,7 +156,7 @@
         &__dato-container {
             order: 3;
         }
-
+        
         &__dato {
             padding-left: 1rem;
             padding-bottom: 1rem;
@@ -168,12 +168,24 @@
             text-align: left;
             padding-right: 1rem;
             display: flex;
+            flex-direction: column;
             &__mnd {
                 padding-left: 0.25rem;
                 letter-spacing: normal;
                 color: inherit;
             }
         }
+
+        &__samtidig-uttak {
+            margin-left: 0rem;
+            margin-right: 0rem;
+            grid-template-columns: 1fr;
+        }
+
+        &__samtidig-uttak-mor > div:first-child, &__samtidig-uttak-far > div:first-child{
+            margin-top: 1rem;
+        }
+
 
         &__ikon {
             display: none;
