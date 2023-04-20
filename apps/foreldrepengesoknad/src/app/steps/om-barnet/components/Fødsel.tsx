@@ -35,7 +35,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
 
     return (
         <>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
                 <OmBarnetFormComponents.RadioGroup
                     name={OmBarnetFormField.antallBarn}
                     radios={[
@@ -56,7 +56,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                 />
             </Block>
             <Block
-                padBottom="l"
+                padBottom="xl"
                 visible={antallBarn !== undefined && søknadGjelderEtNyttBarn && parseInt(antallBarn, 10) >= 3}
             >
                 <OmBarnetFormComponents.Select label="Antall barn" name={OmBarnetFormField.antallBarnSelect}>
@@ -70,7 +70,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     <option value="9">9</option>
                 </OmBarnetFormComponents.Select>
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
                 <FieldArray
                     name={OmBarnetFormField.fødselsdatoer}
                     render={() => [

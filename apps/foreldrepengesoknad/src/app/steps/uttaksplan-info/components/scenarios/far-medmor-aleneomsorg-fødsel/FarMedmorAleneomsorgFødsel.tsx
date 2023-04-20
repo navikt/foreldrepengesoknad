@@ -151,7 +151,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         includeValidationSummary={true}
                     >
                         <Block
-                            padBottom="xxl"
+                            padBottom="xl"
                             visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.dekningsgrad)}
                         >
                             <DekningsgradSpørsmål
@@ -177,7 +177,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             )}
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(
                                 FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse
                             )}
@@ -198,7 +198,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.startdatoUttak)}
                         >
                             <FarMedmorAleneomsorgFødselFormComponents.DatePicker

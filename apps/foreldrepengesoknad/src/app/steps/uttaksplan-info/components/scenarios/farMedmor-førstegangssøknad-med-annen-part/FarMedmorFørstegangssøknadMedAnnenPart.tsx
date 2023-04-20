@@ -174,14 +174,14 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block padBottom="l">
+                        <Block padBottom="xl">
                             <InfoOmSøknaden
                                 eksisterendeSak={eksisterendeSakAnnenPart}
                                 erIUttaksplanenSteg={false}
                                 tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
                             />
                         </Block>
-                        <Block padBottom="l">
+                        <Block padBottom="xl">
                             <FarMedmorsFørsteDag
                                 FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
                                 fieldName={FarMedmorFørstegangssøknadMedAnnenPartFormField.permisjonStartdato}

@@ -62,8 +62,9 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                     name={InntektsinformasjonFormField.hattInntektSomFrilans}
                     legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd')}
                 />
+                <HvemKanVæreFrilanser />
             </Block>
-            <HvemKanVæreFrilanser />
+
             {formValues.hattInntektSomFrilans === YesOrNo.YES && (
                 <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <Block

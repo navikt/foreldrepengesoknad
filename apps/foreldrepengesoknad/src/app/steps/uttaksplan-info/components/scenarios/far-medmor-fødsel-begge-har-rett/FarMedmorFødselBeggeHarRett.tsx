@@ -142,7 +142,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block padBottom="l">
+                        <Block padBottom="xl">
                             <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonTilAnnenForelder"
@@ -162,7 +162,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 erDeltUttak={true}
                             />
                         </Block>
-                        <Block visible={formValues.dekningsgrad !== ''}>
+                        <Block padBottom="xl" visible={formValues.dekningsgrad !== ''}>
                             {tilgjengeligeDager && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={true}
@@ -174,7 +174,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             )}
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 erFarEllerMedmor &&
                                 formValues.dekningsgrad !== '' &&
@@ -189,7 +189,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             </GuidePanel>
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(FarMedmorFødselBeggeHarRettFormField.morsSisteDag)}
                         >
                             <MorsSisteDagSpørsmål
@@ -200,7 +200,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag)}
                         >
                             <FarMedmorsFørsteDag
@@ -216,7 +216,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(
                                 FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode
                             )}

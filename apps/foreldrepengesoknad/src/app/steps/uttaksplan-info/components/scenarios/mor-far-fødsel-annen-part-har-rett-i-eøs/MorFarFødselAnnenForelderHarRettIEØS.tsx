@@ -170,7 +170,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         includeValidationSummary={true}
                     >
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad)}
                         >
                             <DekningsgradSpørsmål
@@ -180,7 +180,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttakINorge}
                             />
                         </Block>
-                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
+                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                             <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"
@@ -203,7 +203,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 erFarEllerMedmor &&
                                 visibility.isIncluded(MorFarFødselAnnenForelderHarRettIEØSFormField.permisjonStartdato)
@@ -222,7 +222,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 visibility.isAnswered(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad) &&
                                 antallBarn > 1 &&

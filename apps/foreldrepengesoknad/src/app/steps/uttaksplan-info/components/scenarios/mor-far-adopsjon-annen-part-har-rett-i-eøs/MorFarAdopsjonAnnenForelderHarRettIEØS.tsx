@@ -165,7 +165,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         includeValidationSummary={true}
                     >
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(
                                 MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad
                             )}
@@ -185,7 +185,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 erAdopsjon &&
                                 isAdoptertBarn(barn) &&
@@ -215,7 +215,10 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 />
                             </GuidePanel>
                         </Block>
-                        <Block padBottom="l" visible={antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined}>
+                        <Block
+                            padBottom="xl"
+                            visible={antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined}
+                        >
                             <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"

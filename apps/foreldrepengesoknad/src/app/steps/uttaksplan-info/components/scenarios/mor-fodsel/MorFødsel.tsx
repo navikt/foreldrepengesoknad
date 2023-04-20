@@ -189,7 +189,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttak}
                             />
                         </Block>
-                        <Block padBottom="l" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
+                        <Block padBottom="xl" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={erDeltUttak}
@@ -204,7 +204,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             )}
                         </Block>
-                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
+                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                             <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"
@@ -229,7 +229,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                             }
                         >
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={
                                     antallBarn > 1 &&
                                     (formValues.permisjonStartdato !== undefined ||
@@ -248,7 +248,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 </GuidePanel>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
                             >
                                 <FordelingFellesperiodeSpørsmål

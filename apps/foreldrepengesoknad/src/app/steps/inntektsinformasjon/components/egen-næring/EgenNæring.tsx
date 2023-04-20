@@ -63,10 +63,7 @@ const EgenNæring: FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block
-                padBottom="l"
-                visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)}
-            >
+            <Block visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)}>
                 <Block padBottom="l">
                     <InntektsinformasjonFormComponents.YesOrNoQuestion
                         name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
@@ -84,8 +81,8 @@ const EgenNæring: FunctionComponent<Props> = ({
                             return undefined;
                         }}
                     />
+                    <HvemKanDriveMedEgenNæring />
                 </Block>
-                <HvemKanDriveMedEgenNæring />
             </Block>
             {formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && (
                 <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>

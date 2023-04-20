@@ -26,7 +26,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const fødselsdato = valgteBarn[0].fødselsdato;
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <div>
                     <Block padBottom="s">
                         <Label>
@@ -35,7 +35,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     </Block>
                     {alleBarnaLever ? (
                         valgteBarn.map((barn: RegistrertBarn) => (
-                            <Block padBottom="l" key={barn.fnr}>
+                            <Block padBottom="s" key={barn.fnr}>
                                 <RegistrertePersonalia
                                     person={barn}
                                     fødselsdatoForVisning={formaterFødselsdatoerPåBarn([barn.fødselsdato])}
@@ -44,7 +44,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                             </Block>
                         ))
                     ) : (
-                        <Block padBottom="l">
+                        <Block padBottom="s">
                             <RegistrertePersonalia
                                 person={valgteBarn[0]}
                                 fødselsdatoForVisning={formaterFødselsdatoerPåBarn(fødselsdatoer)}

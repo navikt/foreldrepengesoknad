@@ -330,7 +330,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     />
                 </Block>
             )}
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}
                     uttaksplan={uttaksplan}

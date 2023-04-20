@@ -14,7 +14,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
     return (
-        <Block padBottom="l">
+        <Block padBottom="xl">
             <Label>Dine arbeidsforhold</Label>
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />

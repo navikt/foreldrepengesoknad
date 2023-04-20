@@ -208,7 +208,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                 return (
                     <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(MorFarAdopsjonFormField.harAnnenForelderSøktFP)}
                         >
                             <MorFarAdopsjonFormComponents.YesOrNoQuestion
@@ -219,7 +219,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             />
                         </Block>
                         {formValues.harAnnenForelderSøktFP === YesOrNo.YES && (
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <GuidePanel>
                                     <FormattedMessage
                                         id="uttaksplaninfo.informasjon.tilAnnenForelder"
@@ -230,7 +230,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 </GuidePanel>
                             </Block>
                         )}
-                        <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.dekningsgrad)}>
+                        <Block padBottom="xl" visible={visibility.isIncluded(MorFarAdopsjonFormField.dekningsgrad)}>
                             <DekningsgradSpørsmål
                                 FormKomponent={MorFarAdopsjonFormComponents}
                                 dekningsgradFeltNavn={MorFarAdopsjonFormField.dekningsgrad}
@@ -238,7 +238,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttak}
                             />
                         </Block>
-                        <Block padBottom="l" visible={visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad)}>
+                        <Block padBottom="xl" visible={visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad)}>
                             {tilgjengeligeDager && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={erDeltUttak}
@@ -253,7 +253,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(MorFarAdopsjonFormField.annenForeldersSisteDag)}
                         >
                             <MorsSisteDagSpørsmål
@@ -263,7 +263,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 familiehendelsesdato={familiehendelsesdato}
                             />
                         </Block>
-                        <Block padBottom="l" visible={visibility.isIncluded(MorFarAdopsjonFormField.søkersFørsteDag)}>
+                        <Block padBottom="xl" visible={visibility.isIncluded(MorFarAdopsjonFormField.søkersFørsteDag)}>
                             <FarMedmorsFørsteDag
                                 FormComponents={MorFarAdopsjonFormComponents}
                                 fieldName={MorFarAdopsjonFormField.søkersFørsteDag}
@@ -277,7 +277,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 visibility.isAnswered(MorFarAdopsjonFormField.søkersFørsteDag) &&
                                 !dateIsSameOrAfter(
@@ -300,7 +300,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             )}
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
                                 dayjs(latestDate).isBefore(
@@ -331,7 +331,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         </Block>
                         <Block visible={erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={
                                     antallBarn > 1 &&
                                     formValues.startdatoAdopsjonValg !== undefined &&
@@ -350,7 +350,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 </GuidePanel>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isIncluded(MorFarAdopsjonFormField.fellesperiodeukerMor)}
                             >
                                 <FordelingFellesperiodeSpørsmål

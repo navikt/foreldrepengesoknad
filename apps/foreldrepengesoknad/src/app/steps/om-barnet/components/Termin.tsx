@@ -40,7 +40,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
         : 'omBarnet.termindato.infotekst';
     return (
         <>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
                 <OmBarnetFormComponents.RadioGroup
                     name={OmBarnetFormField.antallBarn}
                     radios={[
@@ -61,7 +61,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                 />
             </Block>
             <Block
-                padBottom="l"
+                padBottom="xl"
                 visible={formValues.antallBarn !== undefined && parseInt(formValues.antallBarn, 10) >= 3}
             >
                 <OmBarnetFormComponents.Select label="Antall barn" name={OmBarnetFormField.antallBarnSelect}>
@@ -85,14 +85,14 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     validate={validateTermindato(intl)}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
                 <ReadMore header={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
                     {intlUtils(intl, intlTermindatoInfotekst)}
                 </ReadMore>
             </Block>
 
             {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato) && (
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <GuidePanel>
                         <FormattedMessage
                             id="omBarnet.veileder.medMorEllerFarTermin"
@@ -108,12 +108,12 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                 </Block>
             )}
 
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
                 <GuidePanel>
                     <FormattedMessage id={intlTerminbekreftelseId} />
                 </GuidePanel>
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
                 <FormikFileUploader
                     label={intlUtils(intl, 'omBarnet.terminbekreftelse.lastOpp')}
                     name={OmBarnetFormField.terminbekreftelse}
@@ -122,7 +122,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelsedato)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelsedato)}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.terminbekreftelsedato}
                     label={intlUtils(intl, 'omBarnet.terminbekreftelseDato')}

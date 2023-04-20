@@ -158,7 +158,7 @@ const AnnenForelder = () => {
                                 </Block>
                             )}
                             {!skalOppgiPersonalia && (
-                                <Block padBottom="l">
+                                <Block padBottom="xl">
                                     <RegistrertePersonalia
                                         person={annenForelderFraRegistrertBarn}
                                         fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
@@ -170,7 +170,7 @@ const AnnenForelder = () => {
                                 visible={
                                     visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg) || !skalOppgiPersonalia
                                 }
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.aleneOmOmsorg}
@@ -187,7 +187,7 @@ const AnnenForelder = () => {
 
                             {!formValues.kanIkkeOppgis && (
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(AnnenForelderFormField.datoForAleneomsorg)}
                                 >
                                     <Block>
@@ -215,7 +215,7 @@ const AnnenForelder = () => {
                                 </Block>
                             )}
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
@@ -242,7 +242,7 @@ const AnnenForelder = () => {
                                 </ReadMore>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.harOppholdtSegIEØS)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
@@ -261,7 +261,7 @@ const AnnenForelder = () => {
                                 </ReadMore>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
@@ -283,7 +283,7 @@ const AnnenForelder = () => {
                                 </ReadMore>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.erInformertOmSøknaden)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
@@ -298,7 +298,7 @@ const AnnenForelder = () => {
                                 />
                             </Block>
 
-                            <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.erMorUfør}
                                     legend={intlUtils(intl, 'annenForelder.erMorUfør', {

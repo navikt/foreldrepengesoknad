@@ -32,7 +32,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     const etternavnLabel = intlUtils(intl, 'annenForelder.spørsmål.etternavn');
     return (
         <div className={bem.block}>
-            <div className={bem.block}>
+            <Block padBottom="xl">
                 <legend>
                     <Label>{intlUtils(intl, 'annenForelder.spørsmål.navn')}</Label>
                 </legend>
@@ -64,7 +64,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
                         }
                     />
                 </Block>
-            </div>
+            </Block>
             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.fnr)}>
                 <AnnenForelderFormComponents.TextField
                     name={AnnenForelderFormField.fnr}

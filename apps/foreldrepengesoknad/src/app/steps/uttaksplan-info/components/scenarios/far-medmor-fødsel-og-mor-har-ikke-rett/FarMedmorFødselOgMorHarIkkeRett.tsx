@@ -191,7 +191,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isAnswered(FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad)}
                         >
                             {valgtStønadskonto && (
@@ -208,7 +208,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 />
                             )}
                         </Block>
-                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
+                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                             <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"
@@ -220,7 +220,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             </GuidePanel>
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato)}
                         >
                             <FarMedmorFødselOgMorHarIkkeRettFormComponents.DatePicker

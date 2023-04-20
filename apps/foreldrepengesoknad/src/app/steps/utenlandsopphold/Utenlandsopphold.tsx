@@ -73,7 +73,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block
                                 visible={visibility.isVisible(UtenlandsoppholdFieldNames.skalBoINorgeNeste12Mnd)}
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
@@ -98,7 +98,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(UtenlandsoppholdFieldNames.utenlandsoppholdNeste12Mnd)}
                             >
                                 <BostedUtlandListAndDialog<UtenlandsoppholdFieldNames>
