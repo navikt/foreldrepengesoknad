@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import EngangsstønadContextProvider from '../../context/EngangsstønadContext';
 import Velkommen from './Velkommen';
@@ -9,23 +9,19 @@ import '@navikt/ds-css';
 import '../../styles/globals.less';
 
 export default {
-  title: 'Velkommen',
-  component: Velkommen,
-  decorators: [withRouter],
+    title: 'Velkommen',
+    component: Velkommen,
+    decorators: [withRouter],
 };
 
-const Template: Story<any> = () => {
-  return (
-    <EngangsstønadContextProvider>
-      <IntlProvider språkkode="nb">
-        <Velkommen 
-          fornavn="Espen Utvikler"
-          onChangeLocale={() => undefined}
-          locale="nb"
-        />
-      </IntlProvider>
-    </EngangsstønadContextProvider>
-  )
-  };
+const Template: StoryFn<any> = () => {
+    return (
+        <EngangsstønadContextProvider>
+            <IntlProvider språkkode="nb">
+                <Velkommen fornavn="Espen Utvikler" onChangeLocale={() => undefined} locale="nb" />
+            </IntlProvider>
+        </EngangsstønadContextProvider>
+    );
+};
 
 export const VisSide = Template.bind({});

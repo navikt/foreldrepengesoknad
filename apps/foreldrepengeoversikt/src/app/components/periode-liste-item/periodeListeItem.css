@@ -11,7 +11,7 @@
     margin: 0 -1rem 1rem -1rem;
 }
 
-.periode__ikon-blue{
+.periode__ikon-blue {
     background-color: var(--a-purple-400);
     border-radius: 0.5rem;
 }
@@ -27,7 +27,7 @@
         -45deg,
         var(--a-blue-400),
         var(--a-blue-400) 50%,
-        var(--a-purple-400)50%,
+        var(--a-purple-400) 50%,
         var(--a-purple-400) 100%
     );
 }
@@ -36,9 +36,8 @@
     display: grid;
     grid-template-columns: 6% 64% 15% 15%;
     align-items: center;
-     margin: 0;
+    margin: 0;
 }
-
 
 .periode__annen_part_innhold {
     display: grid;
@@ -68,7 +67,6 @@
     display: flex;
 }
 
-
 .periode--year {
     color: var(--a-gray-500);
 }
@@ -97,7 +95,7 @@
     background-color: white;
 }
 
-.periode--grå{
+.periode--grå {
     background-color: var(--a-gray-100);
 }
 
@@ -123,7 +121,7 @@
 }
 
 .periode--bg-annen-part {
-    background:   var(--a-gray-100);  
+    background: var(--a-gray-100);
 }
 
 .periode__samtidigUttakInfo {
@@ -131,4 +129,3 @@
     align-items: center;
     margin: 0;
 }
-

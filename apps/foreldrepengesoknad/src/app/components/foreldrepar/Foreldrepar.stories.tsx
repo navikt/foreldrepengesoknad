@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import Foreldrepar from './Foreldrepar';
 
 export default {
@@ -7,7 +7,7 @@ export default {
     component: Foreldrepar,
 };
 
-const Template: Story<any> = (args) => <Foreldrepar {...args} />;
+const Template: StoryFn<any> = (args) => <Foreldrepar {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

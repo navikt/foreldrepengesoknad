@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import DinePersonopplysningerModal from 'app/pages/modaler/DinePersonopplysningerModal';
 import withIntlProvider from 'storybook/decorators/withIntl';
@@ -10,7 +10,7 @@ export default {
     decorators: [withIntlProvider],
 };
 
-const Template: Story<any> = (args) => <DinePersonopplysningerModal {...args} />;
+const Template: StoryFn<any> = (args) => <DinePersonopplysningerModal {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

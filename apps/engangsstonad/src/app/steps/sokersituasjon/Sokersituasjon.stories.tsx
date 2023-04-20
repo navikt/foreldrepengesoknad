@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import EngangsstønadContextProvider from '../../context/EngangsstønadContext';
 import Søkersituasjon from './Søkersituasjon';
@@ -9,19 +9,19 @@ import '@navikt/ds-css';
 import '../../styles/globals.less';
 
 export default {
-  title: 'Søkersituasjon',
-  component: Søkersituasjon,
-  decorators: [withRouter],
+    title: 'Søkersituasjon',
+    component: Søkersituasjon,
+    decorators: [withRouter],
 };
 
-const Template: Story<any> = () => {
-  return (
-    <EngangsstønadContextProvider>
-      <IntlProvider språkkode="nb">
-        <Søkersituasjon />
-      </IntlProvider>
-    </EngangsstønadContextProvider>
-  )
-  };
+const Template: StoryFn<any> = () => {
+    return (
+        <EngangsstønadContextProvider>
+            <IntlProvider språkkode="nb">
+                <Søkersituasjon />
+            </IntlProvider>
+        </EngangsstønadContextProvider>
+    );
+};
 
 export const VisSide = Template.bind({});

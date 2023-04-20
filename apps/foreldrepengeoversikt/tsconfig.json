@@ -16,10 +16,12 @@
         "noUnusedParameters": true,
         "paths": {
             "app/*": ["app/*"],
-            "assets/*": ["assets/*"]
+            "assets/*": ["assets/*"],
+            "storybook/*": ["storybook/*"]
         },
         "resolveJsonModule": true,
         "rootDir": "src",
+        "skipLibCheck": true,
         "sourceMap": true,
         "strict": true,
         "target": "ESNext",

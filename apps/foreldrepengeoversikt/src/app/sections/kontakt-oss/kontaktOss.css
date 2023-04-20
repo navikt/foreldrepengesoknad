@@ -10,7 +10,6 @@
 .kontaktOss__content {
     display: flex;
     justify-content: space-between;
-    
 }
 
 .kontaktOss__wrapper {
@@ -20,7 +19,7 @@
 
 .kontaktOss__content_left {
     margin-bottom: 1rem;
-    float:left; 
+    float: left;
     display: block;
     width: 31%;
     padding: 0.5rem;
@@ -28,7 +27,7 @@
 
 .kontaktOss__content_middle {
     margin-bottom: 1rem;
-    float:left; 
+    float: left;
     display: block;
     width: 31%;
     padding: 0.5rem;
@@ -36,7 +35,7 @@
 
 .kontaktOss__content_right {
     margin-bottom: 1rem;
-    float:left; 
+    float: left;
     display: block;
     width: 31%;
     padding: 0.5rem;
@@ -45,7 +44,6 @@
 .kontaktOss__content_text {
     padding-top: 1rem;
 }
-
 
 .kontaktOss__linkTitle {
     font-weight: bold;
@@ -56,7 +54,7 @@
     margin-bottom: 1rem;
 }
 
-.kontaktOss__linkIcon{
+.kontaktOss__linkIcon {
     margin-right: 0.25rem;
 }
 
@@ -72,7 +70,7 @@
         width: 100%;
     }
 
-    .kontaktOss__content_middle{
+    .kontaktOss__content_middle {
         width: 100%;
     }
 
@@ -80,4 +78,3 @@
         width: 100%;
     }
 }
-

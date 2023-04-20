@@ -1,4 +1,5 @@
 {
+    "norge": "Norge",
     "intro.generellFeil.brukerstøtte": "Kontakt brukerstøtte her",
     "intro.generellFeil.ingress": "Noe gikk dessverre galt. Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil kontakt brukerstøtte.",
     "intro.generellFeil.tittel": "Oops,",
@@ -6,8 +7,8 @@
     "invalidFormatErrorKey.fødselsdato": "Fødseldato må være en gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.termindato": "Termindato må være en gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.terminBekreftelsedato": "TerminBekreftelsedato må være en gyldig dato på formatet dd.mm.åååå",
-    "medlemmskap.radiobutton.boNorge": "kun bo i Norge",
-    "medlemmskap.radiobutton.vareNorge": "vera i Noreg",
+    "medlemmskap.radiobutton.boNorge": "Kun bo i Norge",
+    "medlemmskap.radiobutton.vareNorge": "Være i Norge",
     "omBarnet.adopsjon.spørsmål.adoptertFraUtland": "Adopterer du fra utlandet?",
     "omBarnet.adopsjon.spørsmål.adoptererDuAlene": "Adopterer du alene?",
     "omBarnet.adopsjon.spørsmål.antallBarnAdoptert": "Hvor mange barn adopterer du?",

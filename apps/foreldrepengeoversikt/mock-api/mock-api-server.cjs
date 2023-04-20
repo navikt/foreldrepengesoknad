@@ -41,7 +41,7 @@ router.get(['/rest/dokument/alle'], (req, res) => {
     res.send(MockStorage.getDokumenter());
 });
 
-router.get(['/rest/innsyn/v2/annenPartVedtak'], (req, res) => {
+router.post(['/rest/innsyn/v2/annenPartVedtak'], (req, res) => {
     res.send(MockStorage.getAnnenPartsVedtak());
 });
 

@@ -96,7 +96,7 @@ export const gyldigePerioderForVisning = (periode: Periode, erPlanVedtatt: boole
     if (!erPlanVedtatt) {
         return true;
     }
-    if (periode.resultat.innvilget) return true;
+    if (periode.resultat && periode.resultat.innvilget) return true;
 
     if (
         periode.resultat &&
@@ -436,6 +436,7 @@ export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
         }
         const beholdUttaksSomOverlapperAnnenPartsPeriode =
             overlappendeSøkersPeriode &&
+            overlappendeSøkersPeriode.resultat &&
             overlappendeSøkersPeriode.resultat.innvilget &&
             isUttaksperiode(overlappendeSøkersPeriode) &&
             isUttaksperiode(periode)
@@ -452,7 +453,9 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
             return Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode));
         });
         const erInnvilgetSamtidigUttak =
-            overlappendeSøkersPeriode && overlappendeSøkersPeriode.resultat.innvilget
+            overlappendeSøkersPeriode &&
+            overlappendeSøkersPeriode.resultat &&
+            overlappendeSøkersPeriode.resultat.innvilget
                 ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
                 : false;
         if (erInnvilgetSamtidigUttak) {
@@ -463,6 +466,7 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
         }
         const overlapperMedSøkerensPeriodeSomTrekkerDager =
             overlappendeSøkersPeriode &&
+            overlappendeSøkersPeriode.resultat &&
             (overlappendeSøkersPeriode.resultat.innvilget || overlappendeSøkersPeriode.resultat.trekkerDager);
 
         if (overlapperMedSøkerensPeriodeSomTrekkerDager) {

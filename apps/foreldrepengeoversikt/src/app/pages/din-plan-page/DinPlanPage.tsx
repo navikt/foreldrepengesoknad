@@ -5,10 +5,11 @@ import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
+import { RequestStatus } from 'app/types/RequestStatus';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
-import React, { useEffect } from 'react';
+import React from 'react';
 interface Props {
     navnPåSøker: string;
     søkerinfo: SøkerinfoDTO;
@@ -22,23 +23,30 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
     const planErVedtatt = sak?.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
     let annenPartFnr = undefined;
+    let barnFnr = undefined;
     let annenPartVedtakIsSuspended = true;
 
     if (sak && sak.ytelse === Ytelse.FORELDREPENGER) {
         familiehendelsesdato = getFamiliehendelseDato(sak.familiehendelse);
         annenPartFnr = sak.annenPart?.fnr;
+        const barnFraSak =
+            sak.barn && sak.barn.length > 0 ? sak.barn.find((barn) => barn.fnr !== undefined) : undefined;
+        barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
         annenPartVedtakIsSuspended =
             !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
     }
-    const { annenPartsVedakData, annenPartsVedtakError } = Api.useGetAnnenPartsVedtak(annenPartVedtakIsSuspended);
+    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
+        annenPartFnr,
+        barnFnr,
+        familiehendelsesdato,
+        annenPartVedtakIsSuspended
+    );
 
-    useEffect(() => {
-        if (annenPartsVedtakError) {
-            throw new Error('Vi klarte ikke å hente opp informasjon om den andre forelderen.');
-        }
-    }, [annenPartsVedtakError]);
-
-    if (!annenPartVedtakIsSuspended && !annenPartsVedakData) {
+    if (
+        !annenPartVedtakIsSuspended &&
+        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
+        !annenPartsVedtakError
+    ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -53,7 +61,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
                     visHelePlanen={true}
                     navnPåSøker={navnPåSøker}
                     navnAnnenForelder={navnAnnenForelder}
-                    annenPartsPerioder={annenPartsVedakData?.perioder}
+                    annenPartsPerioder={annenPartsVedtakData?.perioder}
                 ></DinPlan>
             </ContentSection>
         );

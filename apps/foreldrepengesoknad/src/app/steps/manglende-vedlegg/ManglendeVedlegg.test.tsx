@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from 'stories/steps/manglende-vedlegg/ManglendeVedlegg.stories';
+import * as stories from './ManglendeVedlegg.stories';
 
 const { Default, ManglerVedleggForUlikePerioder } = composeStories(stories);
 

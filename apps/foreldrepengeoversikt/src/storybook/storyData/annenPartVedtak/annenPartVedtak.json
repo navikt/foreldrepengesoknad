@@ -1,0 +1,18 @@
+{
+    "perioder": [
+        {
+            "fom": "2023-03-12",
+            "tom": "2023-03-26",
+            "kontoType": "FEDREKVOTE",
+            "samtidigUttak": 100,
+            "resultat": {
+                "innvilget": true,
+                "trekkerMinsterett": false,
+                "trekkerDager": true,
+                "årsak": "ANNET"
+            }
+        }
+    ],
+    "termindato": "2022-08-17",
+    "dekningsgrad": "HUNDRE"
+}

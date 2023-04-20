@@ -117,7 +117,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                             <Block margin="xl">
                                 <OppsummeringFormComponents.ConfirmationCheckbox
                                     name={OppsummeringFormField.oppgittKorrekteOpplysninger}
-                                    label="De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad."
+                                    label={intlUtils(intl, 'oppsummering.text.samtykke')}
                                 />
                             </Block>
                             {allQuestionsAnswered && (

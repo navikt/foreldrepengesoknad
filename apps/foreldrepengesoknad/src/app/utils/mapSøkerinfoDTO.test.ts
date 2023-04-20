@@ -2,6 +2,7 @@ import { Kjønn } from '@navikt/fp-common';
 import mapSøkerinfoDTOToSøkerinfo from './mapSøkerinfoDTO';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ISOStringToDate } from './dateUtils';
+import { SivilstandType } from 'app/types/SivilstandType';
 
 describe('mapSøkerinfoDTO', () => {
     it('skal konvertere dto til app-format', () => {
@@ -11,12 +12,12 @@ describe('mapSøkerinfoDTO', () => {
                 fornavn: 'Espen',
                 etternavn: 'Utvikler',
                 fnr: '08088620241',
-                ikkeNordiskEøsLand: false,
                 kjønn: 'M' as Kjønn,
                 bankkonto: {
                     kontonummer: '123',
                     banknavn: 'DNB',
                 },
+                sivilstand: { type: SivilstandType.UGIFT },
             },
             arbeidsforhold: [
                 {
@@ -49,12 +50,12 @@ describe('mapSøkerinfoDTO', () => {
                 fornavn: 'Espen',
                 fnr: '08088620241',
                 fødselsdato: ISOStringToDate('2000-01-01'),
-                ikkeNordiskEøsLand: false,
                 kjønn: 'M' as Kjønn,
                 bankkonto: {
                     kontonummer: '123',
                     banknavn: 'DNB',
                 },
+                sivilstand: { type: SivilstandType.UGIFT },
             },
             registrerteBarn: [],
         });

@@ -21,8 +21,8 @@
 .snarveier__linkPanel {
     margin-bottom: 1rem;
     background-color: var(--a-gray-100);
-    float:left; 
-    width: 49%; 
+    float: left;
+    width: 49%;
     border-radius: 0.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -33,9 +33,7 @@
 }
 
 @media (max-width: 768px) {
-    
     .snarveier__linkPanel {
         width: 100%;
     }
- 
 }

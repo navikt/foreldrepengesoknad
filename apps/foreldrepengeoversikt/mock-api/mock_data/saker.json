@@ -101,10 +101,7 @@
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "type": "person",
-                "fnr": "03506715317",
-                "fornavn": "Aritmetisk",
-                "etternavn": "Okse"
+                "fnr": "03506715317"
             },
             "familiehendelse": {
                 "fødselsdato": "2023-01-10",

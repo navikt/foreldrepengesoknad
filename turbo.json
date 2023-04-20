@@ -27,6 +27,11 @@
             "dependsOn": [
                 "build"
             ]
+        },
+        "prettier": {
+            "dependsOn": [
+                "build"
+            ]
         }
     },
     "globalEnv": [

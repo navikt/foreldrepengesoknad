@@ -6,4 +6,4 @@ export default {
     component: PictureScanningGuide,
 } as ComponentMeta<typeof PictureScanningGuide>;
 
-export const Default: Story = (args) => <PictureScanningGuide {...args} />;
+export const Default: Story = (args) => <PictureScanningGuide {...args} backgroundColor="white" />;

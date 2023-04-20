@@ -557,6 +557,8 @@ const UttaksplanStep = () => {
                             annenForelder={annenForelder}
                             arbeidsforhold={getAktiveArbeidsforhold(
                                 arbeidsforhold,
+                                erAdopsjon,
+                                erFarEllerMedmor,
                                 ISOStringToDate(familiehendelsesdato)
                             )}
                             erEndringssøknad={erEndringssøknad}

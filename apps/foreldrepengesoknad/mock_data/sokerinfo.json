@@ -5,11 +5,11 @@
         "etternavn": "Konvolutt",
         "kjønn": "M",
         "fødselsdato": "1991-09-06",
-        "ikkeNordiskEøsLand": false,
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
-        }
+        },
+        "sivilstand": { "type": "UGIFT" }
     },
     "arbeidsforhold": [
         {

@@ -21,7 +21,6 @@ export interface PersonBase {
 
 export interface Person extends PersonBase {
     land: string;
-    ikkeNordiskEøsLand: boolean;
     erMyndig: boolean;
     bankkonto?: Bankkonto;
 }

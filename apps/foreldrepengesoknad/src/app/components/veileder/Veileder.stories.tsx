@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import Veileder from './Veileder';
 
@@ -7,7 +7,7 @@ export default {
     title: 'components/Veileder',
     component: Veileder,
     decorators: [
-        (Story: Story) => (
+        (Story: StoryFn) => (
             <div style={{ margin: 'auto', width: '10em' }}>
                 <Story />
             </div>
@@ -15,7 +15,7 @@ export default {
     ],
 };
 
-const Template: Story<any> = (args) => <Veileder {...args} />;
+const Template: StoryFn<any> = (args) => <Veileder {...args} />;
 
 export const Default = Template.bind({});
 

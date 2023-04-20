@@ -1,1 +1,1 @@
-declare module 'storybook-addon-react-router-v6'
+declare module 'storybook-addon-react-router-v6';
