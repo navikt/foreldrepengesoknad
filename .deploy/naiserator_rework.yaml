@@ -26,6 +26,7 @@ spec:
       enabled: false
       path: /internal/actuator/prometheus
   ingresses:
+    - "https://foreldrepengesoknad-rework.intern.dev.nav.no"
     - "https://foreldrepengesoknad-rework.dev.nav.no"
   resources:
     limits:
@@ -36,13 +37,13 @@ spec:
       memory: 256Mi
   env:
     - name: APPRES_CMS_URL
-      value: "https://dekoratoren.dev.nav.no"
+      value: "https://dekoratoren.intern.dev.nav.no"
     - name: FORELDREPENGESOKNAD_API_URL
-      value: "https://foreldrepengesoknad-api.dev.nav.no/rest"
+      value: "https://foreldrepengesoknad-api.intern.dev.nav.no/rest"
     - name: LOGINSERVICE_URL
       value: "https://loginservice-testing.dev.nav.no/login"
     - name: FP_UTTAK_SERVICE_URL
-      value: "https://foreldrepengesoknad-api.dev.nav.no"
+      value: "https://foreldrepengesoknad-api.intern.dev.nav.no"
     - name: FEATURE_VIS_PERIODER_SOM_SENDES_INN
       value: "on"
     - name: FEATURE_BRUK_SAKER_V2

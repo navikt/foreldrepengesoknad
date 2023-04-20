@@ -9,7 +9,7 @@ scriptTag.type = 'test/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     REST_API_URL: 'http://localhost:8888/rest',
-    UTTAK_API_URL: 'https://foreldrepengesoknad-api.nav.no',
+    UTTAK_API_URL: 'https://foreldrepengesoknad-api.intern.dev.nav.no',
     LOGIN_URL: 'http://localhost:8888/local/cookie',
     APP_VERSION: 'dev',
     FAMILIE: 'https://familie.dev.nav.no',
