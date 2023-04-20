@@ -28,7 +28,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 import './infoOmSøknaden.less';
 
@@ -139,7 +139,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         eksisterendeSak.uttaksplan.filter((p) => p.type !== Periodetype.Info);
 
     return (
-        <Block padBottom="l" className={bem.block}>
+        <Block padBottom="xl" className={bem.block}>
             <InnholdMedIllustrasjon
                 tittel={intlUtils(intl, `eksisterendeSak.tittel.${erDeltUttakINorge ? 'deltUttak' : 'aleneomsorg'}`)}
                 illustrasjoner={[
@@ -147,7 +147,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     <UkerSirkel key="uker" uker={uker} />,
                 ]}
             >
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <BodyShort>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.html"
@@ -176,20 +176,22 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     hasValue(annenForelderNavn) &&
                     infoperioder !== undefined &&
                     infoperioder.length > 0 && (
-                        <UtvidetInformasjon
-                            apneLabel={intlUtils(intl, visPlanTekst, {
-                                navn: navnGenitivEierform,
-                            })}
-                        >
-                            <InfoEksisterendePerioder
-                                oppgittePerioder={infoperioder}
-                                navnForOverskrift={annenForelderNavn}
-                                navnPåForeldre={navnPåForeldre}
-                                familiehendelsesdato={familiehendelsesdato!}
-                                termindato={termindato}
-                                situasjon={søknad.søkersituasjon.situasjon}
-                            />
-                        </UtvidetInformasjon>
+                        <Block padBottom="l">
+                            <ReadMore
+                                header={intlUtils(intl, visPlanTekst, {
+                                    navn: navnGenitivEierform,
+                                })}
+                            >
+                                <InfoEksisterendePerioder
+                                    oppgittePerioder={infoperioder}
+                                    navnForOverskrift={annenForelderNavn}
+                                    navnPåForeldre={navnPåForeldre}
+                                    familiehendelsesdato={familiehendelsesdato!}
+                                    termindato={termindato}
+                                    situasjon={søknad.søkersituasjon.situasjon}
+                                />
+                            </ReadMore>
+                        </Block>
                     )}
             </InnholdMedIllustrasjon>
             {skalViseInfoOmMorsSak && søkersPerioder !== undefined && søkersPerioder.length > 0 && (
@@ -215,7 +217,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                 ></InnholdMedIllustrasjon>
             )}
             {erToTette && startStønadsperiodeNyttBarn !== undefined && (
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <BodyShort>
                         <strong>
                             <FormattedMessage
@@ -236,7 +238,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                 </Block>
             )}
             {!erToTette && startStønadsperiodeNyttBarn !== undefined && (
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <BodyShort>
                         <strong>
                             <FormattedMessage

@@ -50,8 +50,8 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                         <li key={guid()}>
                             <div className={bem.element('listInfo')}>
                                 <Label className={bem.element('listInfoPeriode')}>
-                                    {formaterDato(periode.tidsperiode.fom, dateFormat)} -{' '}
-                                    {formaterDato(periode.tidsperiode.tom, dateFormat)}:
+                                    <div>{formaterDato(periode.tidsperiode.fom, dateFormat)} -</div>
+                                    <div>{formaterDato(periode.tidsperiode.tom, dateFormat)}:</div>
                                 </Label>
                                 <BodyShort>
                                     {getPeriodeTittel(
