@@ -1,5 +1,5 @@
 import { ForeldreparForelder } from 'app/types/ForeldreparSituasjonTypes';
-import React from 'react';
+
 import { getForeldreparIkon } from './foreldreparUtils';
 
 interface Props {

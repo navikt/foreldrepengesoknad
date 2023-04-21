@@ -1,6 +1,6 @@
 import { bemUtils, Block, intlUtils, LanguageToggle, Locale } from '@navikt/fp-common';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';

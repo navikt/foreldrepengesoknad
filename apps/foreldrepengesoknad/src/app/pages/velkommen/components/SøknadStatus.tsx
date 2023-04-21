@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
 import { BodyShort, Tag } from '@navikt/ds-react';

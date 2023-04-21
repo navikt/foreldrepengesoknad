@@ -1,14 +1,10 @@
 import bemUtils from '../../utils/bemUtils';
 import React from 'react';
-import SpeechBubble from './SpeechBubble';
-
-import Veileder, { VeilederProps } from '../veileder/Veileder';
-
 import './sidebanner.less';
+import { BodyShort, GuidePanel, Heading } from '@navikt/ds-react';
 
 export interface SidebannerProps {
     dialog?: Dialog;
-    veileder?: VeilederProps;
 }
 
 interface Dialog {
@@ -16,16 +12,20 @@ interface Dialog {
     text: string | React.ReactNode;
 }
 
-const Sidebanner: React.FunctionComponent<SidebannerProps> = ({ dialog, veileder }) => {
+const Sidebanner: React.FunctionComponent<SidebannerProps> = ({ dialog }) => {
     const bem = bemUtils('sidebanner');
     return (
         <div className={bem.block}>
             {dialog && (
                 <div className={bem.element('speechbubble')}>
-                    <SpeechBubble title={dialog.title} text={dialog.text} />
+                    <GuidePanel poster>
+                        <Heading size="small" level="2">
+                            {dialog.title}
+                        </Heading>
+                        <BodyShort>{dialog.text}</BodyShort>
+                    </GuidePanel>
                 </div>
             )}
-            <Veileder {...veileder} />
         </div>
     );
 };

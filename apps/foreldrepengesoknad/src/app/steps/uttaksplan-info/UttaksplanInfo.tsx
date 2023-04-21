@@ -1,6 +1,6 @@
 import { intlUtils, Step } from '@navikt/fp-common';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';

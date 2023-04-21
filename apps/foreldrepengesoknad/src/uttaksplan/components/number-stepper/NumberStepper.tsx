@@ -1,4 +1,3 @@
-import React from 'react';
 import StepperKnapp from './StepperKnapp';
 import { bemUtils } from '@navikt/fp-common';
 

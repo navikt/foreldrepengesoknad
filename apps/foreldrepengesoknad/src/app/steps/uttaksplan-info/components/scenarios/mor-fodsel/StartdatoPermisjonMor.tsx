@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { Block, intlUtils, bemUtils } from '@navikt/fp-common';

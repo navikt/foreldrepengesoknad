@@ -6,7 +6,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import classNames from 'classnames';
-import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import {
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -242,7 +242,10 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                     </Accordion.Header>
                     <Accordion.Content>
                         <Block visible={meldinger.length > 0}>
-                            <VeilederMeldinger stil="default" meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')} />
+                            <VeilederMeldinger
+                                stil="default"
+                                meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')}
+                            />
                         </Block>
                         {renderPeriodeListeInnhold(
                             periode,

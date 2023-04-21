@@ -1,7 +1,7 @@
 import { bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import countries from 'i18n-iso-countries';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import './utenlandsoppholdOppsummeringListe.less';

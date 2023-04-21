@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import UtbetalingerIkon from 'app/assets/CashIkon';
 import KalenderIkon from 'app/assets/KalenderIkon';
 import KoffertIkon from 'app/assets/KoffertIkon';

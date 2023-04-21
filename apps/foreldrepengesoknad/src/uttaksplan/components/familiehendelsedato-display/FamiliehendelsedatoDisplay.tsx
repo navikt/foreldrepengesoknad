@@ -1,7 +1,7 @@
 import { bemUtils } from '@navikt/fp-common';
 import Barn, { isAdoptertBarn, isFødtBarn } from 'app/context/types/Barn';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
-import React, { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import HjerteIkon from 'uttaksplan/assets/HjerteIkon';
 

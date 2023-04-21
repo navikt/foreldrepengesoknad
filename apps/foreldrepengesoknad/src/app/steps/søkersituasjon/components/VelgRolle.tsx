@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Block, intlUtils, Kjønn } from '@navikt/fp-common';
 import { SøkersituasjonFormComponents, SøkersituasjonFormField } from '../søkersituasjonFormConfig';
 import { useIntl } from 'react-intl';

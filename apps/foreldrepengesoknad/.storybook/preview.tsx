@@ -1,4 +1,3 @@
-import React from 'react';
 import '../src/app/styles/app.less';
 
 const scriptTag = document.createElement('script');

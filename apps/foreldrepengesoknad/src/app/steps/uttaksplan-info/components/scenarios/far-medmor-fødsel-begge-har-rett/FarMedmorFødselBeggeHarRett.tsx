@@ -1,6 +1,6 @@
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { Block, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';

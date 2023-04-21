@@ -1,4 +1,3 @@
-import React from 'react';
 import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';

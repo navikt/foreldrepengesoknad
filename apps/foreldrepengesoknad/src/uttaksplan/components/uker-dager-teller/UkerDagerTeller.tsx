@@ -1,4 +1,3 @@
-import React from 'react';
 import { Label } from '@navikt/ds-react';
 import Fieldset from 'app/components/fieldset/Fieldset';
 import { Block, bemUtils, guid } from '@navikt/fp-common';

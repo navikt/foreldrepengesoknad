@@ -1,7 +1,7 @@
 import { Block, formatDate, intlUtils, Step } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import _ from 'lodash';
-import React from 'react';
+
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';

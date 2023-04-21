@@ -10,7 +10,7 @@ import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
 import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
 import isAvailable from './isAvailable';

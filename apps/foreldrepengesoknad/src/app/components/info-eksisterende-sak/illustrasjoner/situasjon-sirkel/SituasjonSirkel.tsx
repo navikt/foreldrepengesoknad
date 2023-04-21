@@ -1,4 +1,3 @@
-import React from 'react';
 import { Forelder } from 'app/types/Forelder';
 import { bemUtils } from '@navikt/fp-common';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';

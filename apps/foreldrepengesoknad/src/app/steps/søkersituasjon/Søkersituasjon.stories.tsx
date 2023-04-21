@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 import { Kjønn } from '@navikt/fp-common';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';

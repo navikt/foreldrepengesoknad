@@ -1,5 +1,5 @@
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';

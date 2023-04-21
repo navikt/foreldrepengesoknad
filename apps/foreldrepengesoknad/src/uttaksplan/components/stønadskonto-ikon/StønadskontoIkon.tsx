@@ -1,7 +1,7 @@
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getStønadskontoFarge } from 'uttaksplan/utils/styleUtils';

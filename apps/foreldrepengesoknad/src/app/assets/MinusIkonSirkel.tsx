@@ -1,5 +1,3 @@
-import React from 'react';
-
 const MinusIkonSirkel = () => (
     <svg focusable="false" role="img" aria-hidden="true" width={24} height={24}>
         <g fill="none" fillRule="evenodd">

@@ -7,7 +7,7 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateAdopsjonsdato, validateFødselsdatoAdopsjon } from '../validation/omBarnetValidering';

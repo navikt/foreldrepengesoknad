@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { StoryFn } from '@storybook/react';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';

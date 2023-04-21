@@ -5,6 +5,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
+        'plugin:react/jsx-runtime',
     ],
     plugins: ['@typescript-eslint', 'jest-dom', 'testing-library'],
     parser: '@typescript-eslint/parser',

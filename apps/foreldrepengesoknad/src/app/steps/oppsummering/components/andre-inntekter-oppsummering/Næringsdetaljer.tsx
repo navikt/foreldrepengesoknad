@@ -1,7 +1,7 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
 import { Næring } from 'app/context/types/Næring';
 import * as countries from 'i18n-iso-countries';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import { BodyShort } from '@navikt/ds-react';

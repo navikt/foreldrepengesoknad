@@ -1,7 +1,7 @@
 import { intlUtils, Block, hasValue, TidsperiodeDate } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsform } from 'uttaksplan/types/Periode';
 import { prosentValideringGradering } from 'uttaksplan/utils/prosentValidering';

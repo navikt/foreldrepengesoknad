@@ -1,4 +1,3 @@
-import React from 'react';
 import RangeIcon from 'uttaksplan/assets/RangeIcon';
 import Sirkelknapp from '../sirkelknapp/Sirkelknapp';
 

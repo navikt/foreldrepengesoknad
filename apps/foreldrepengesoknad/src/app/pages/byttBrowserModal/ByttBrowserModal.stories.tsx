@@ -1,5 +1,3 @@
-import React from 'react';
-
 import withIntlProvider from 'storybook/decorators/withIntl';
 import { StoryFn } from '@storybook/react';
 import ByttBrowserModal from './ByttBrowserModal';

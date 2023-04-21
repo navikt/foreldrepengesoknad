@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import links from 'app/links/links';
 import { bemUtils, Block } from '@navikt/fp-common';

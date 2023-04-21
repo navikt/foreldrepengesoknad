@@ -3,7 +3,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateFødselsdato, validateTermindatoFødsel } from '../validation/omBarnetValidering';

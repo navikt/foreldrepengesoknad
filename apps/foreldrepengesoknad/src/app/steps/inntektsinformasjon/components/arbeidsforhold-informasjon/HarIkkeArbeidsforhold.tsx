@@ -1,6 +1,6 @@
 import { Label } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 interface Props {

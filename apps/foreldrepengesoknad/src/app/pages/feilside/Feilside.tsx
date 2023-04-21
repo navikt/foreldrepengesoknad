@@ -1,12 +1,10 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
-import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
 import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import actionCreator from 'app/context/action/actionCreator';
 import Api from 'app/api/api';
-
 import './feilside.less';
 
 export interface Props {
@@ -19,7 +17,6 @@ export interface Props {
             url: string;
             tekst: string;
         };
-        veileder?: VeilederProps;
     };
     tittel: React.ReactNode;
     ingress: React.ReactNode;
@@ -71,7 +68,6 @@ const Feilside: React.FunctionComponent<Props> = ({
             )}
             {illustrasjon && (
                 <Sidebanner
-                    veileder={illustrasjon.veileder}
                     dialog={{
                         title: illustrasjon.tittel,
                         text: (

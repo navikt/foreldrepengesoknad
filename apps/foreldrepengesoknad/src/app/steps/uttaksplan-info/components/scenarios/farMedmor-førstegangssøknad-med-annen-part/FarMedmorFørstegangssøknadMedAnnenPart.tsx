@@ -21,7 +21,7 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { isInfoPeriode } from 'uttaksplan/types/Periode';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';

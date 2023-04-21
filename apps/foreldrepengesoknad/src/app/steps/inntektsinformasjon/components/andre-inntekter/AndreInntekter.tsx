@@ -1,7 +1,7 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     InntektsinformasjonFormComponents,

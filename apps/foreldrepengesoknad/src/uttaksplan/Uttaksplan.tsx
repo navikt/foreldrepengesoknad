@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';

@@ -1,7 +1,7 @@
 import React from 'react';
 import bemUtils from './../../utils/bemUtils';
 import Page from './Page';
-import StepIndicator, { StepIndicatorStep } from '../step-indicator/StepIndicator';
+import { StepIndicatorStep } from '../step-indicator/StepIndicator';
 import StepBanner from '../step-banner/StepBanner';
 import Block from '../block/Block';
 import BackLink from '../back-link/BackLink';
@@ -50,7 +50,7 @@ const Step: React.FunctionComponent<StepProps> = ({
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId);
     const bem = bemUtils('step');
-
+    console.log(kompakt); //TODO
     return (
         <Page
             className={bem.block}
@@ -74,16 +74,12 @@ const Step: React.FunctionComponent<StepProps> = ({
                             {stepTitle}
                         </Heading>
                     </Block>
-                    <div role="presentation" aria-hidden={true}>
+                    {/* <div role="presentation" aria-hidden={true}>
                         <StepIndicator kompakt={kompakt} steps={steps} activeStep={currentStepIndex} />
-                    </div>
+                    </div> */}
+                    <div>HEI</div>
                     {backLinkHref && (
-                        <BackLink
-                            href={backLinkHref}
-                            ariaLabel={previousStepTitle}
-                            className={bem.element('backLink')}
-                            onClick={backLinkOnClick}
-                        />
+                        <BackLink href={backLinkHref} ariaLabel={previousStepTitle} onClick={backLinkOnClick} />
                     )}
                 </>
             )}
