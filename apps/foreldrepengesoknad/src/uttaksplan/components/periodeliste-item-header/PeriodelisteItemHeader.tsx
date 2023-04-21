@@ -3,7 +3,6 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { getUkerOgDagerFromDager, måned, måned3bokstaver, år } from 'app/utils/dateUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import {
     isForeldrepengerFørFødselUttaksperiode,
@@ -18,14 +17,15 @@ import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
 import { getForelderNavn, getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { getValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-
-import './periodelisteItemHeader.less';
 import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
 import { getIkonForVeilederMelding } from 'uttaksplan/validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from 'uttaksplan/validering/veilederInfo/types';
 import UttaksplanAdvarselIkon from 'uttaksplan/assets/UttaksplanAdvarselIkon';
 import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
+import { BodyShort, Label } from '@navikt/ds-react';
+
+import './periodelisteItemHeader.less';
 
 interface Props {
     egenPeriode: boolean;
@@ -124,21 +124,20 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     return (
         <div className={bem.element('dagmnd')}>
             <span className={bem.element('dagmnd__dato')}>
-                <Normaltekst>
+                <BodyShort>
                     {d.get('date')}. {måned3bokstaver(d)}.
-                </Normaltekst>
+                </BodyShort>
             </span>
             {visÅr && (
-                <Normaltekst tag="span" className={bem.element('dagmnd__mnd')}>
+                <BodyShort as="span" className={bem.element('dagmnd__mnd')}>
                     <abbr title={`${måned(d)} ${år(d)}`}>{år(d)}</abbr>
-                </Normaltekst>
+                </BodyShort>
             )}
         </div>
     );
 };
 
 const PeriodelisteItemHeader: FunctionComponent<Props> = ({
-    egenPeriode,
     periode,
     navnPåForeldre,
     melding,
@@ -177,15 +176,10 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     return (
         <div>
             <div className={bem.block}>
-                <div
-                    className={classNames(
-                        bem.element('content'),
-                        egenPeriode ? bem.modifier('egenPeriode') : bem.modifier('annenPart')
-                    )}
-                >
+                <div className={bem.element('content')}>
                     <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                     <div className={bem.element('tittel')}>
-                        <Element tag="h3">
+                        <Label as="h3">
                             {getPeriodeTittel(
                                 intl,
                                 periode,
@@ -196,12 +190,15 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                                 erFarEllerMedmor,
                                 erAleneOmOmsorg
                             )}
-                        </Element>
-                        <Normaltekst>{varighetString}</Normaltekst>
+                        </Label>
+                        <BodyShort>{varighetString}</BodyShort>
                     </div>
                     <div className={bem.element('advarsel')}>
                         {melding && (
-                            <span role="presentation">
+                            <span
+                                role="presentation"
+                                className={bem.modifier(`color-${getIkonForVeilederMelding(melding)}`)}
+                            >
                                 <UttaksplanIkon
                                     ikon={getIkonForVeilederMelding(melding)}
                                     title={melding.contentIntlKey}
@@ -226,9 +223,9 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                     })}
                 >
                     <div>
-                        <Element>
+                        <Label>
                             <FormattedMessage id="oppsummering.morsAktivitet.SamtidigUttak" />
-                        </Element>
+                        </Label>
                     </div>
                     <div className={bem.element('beskrivelse')}>
                         <em className={bem.element('beskrivelse__tekst')}>

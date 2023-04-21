@@ -24,7 +24,6 @@ import {
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import dayjs from 'dayjs';
-import { guid } from 'nav-frontend-js-utils';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { Forelder } from 'app/types/Forelder';
@@ -38,6 +37,7 @@ import { uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
 import { getTermindato } from 'app/utils/barnUtils';
 import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/browser';
+import { guid } from '@navikt/fp-common';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,

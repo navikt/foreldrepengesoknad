@@ -13,6 +13,7 @@ describe('<FormikFileUploader>', () => {
             <Formik initialValues={{}} onSubmit={() => undefined}>
                 <IntlProvider locale="nb">
                     <FormikFileUploader
+                        legend="test"
                         attachments={[]}
                         name="test"
                         label="label"
@@ -46,6 +47,7 @@ describe('<FormikFileUploader>', () => {
             <Formik initialValues={{}} onSubmit={() => undefined}>
                 <IntlProvider locale="nb">
                     <FormikFileUploader
+                        legend="test"
                         attachments={vedlegg}
                         name="test"
                         label="label"

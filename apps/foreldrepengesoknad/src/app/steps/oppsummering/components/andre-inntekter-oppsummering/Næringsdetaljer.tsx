@@ -1,10 +1,10 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
 import { Næring } from 'app/context/types/Næring';
 import * as countries from 'i18n-iso-countries';
-import { Normaltekst } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     næring: Næring;
@@ -28,16 +28,16 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
     return (
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}>
-                <Normaltekst>{intlUtils(intl, `næringstype.${næringstyper[0].toLowerCase()}`)}</Normaltekst>
+                <BodyShort>{intlUtils(intl, `næringstype.${næringstyper[0].toLowerCase()}`)}</BodyShort>
             </OppsummeringsPunkt>
             {organisasjonsnummer && (
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}>
-                    <Normaltekst>{organisasjonsnummer}</Normaltekst>
+                    <BodyShort>{organisasjonsnummer}</BodyShort>
                 </OppsummeringsPunkt>
             )}
             {næringsinntekt && (
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}>
-                    <Normaltekst>{næringsinntekt}</Normaltekst>
+                    <BodyShort>{næringsinntekt}</BodyShort>
                 </OppsummeringsPunkt>
             )}
             {registrertINorge ||
@@ -45,20 +45,18 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                     <OppsummeringsPunkt
                         title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}
                     >
-                        <Normaltekst>
-                            {registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}
-                        </Normaltekst>
+                        <BodyShort>{registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}</BodyShort>
                     </OppsummeringsPunkt>
                 ))}
             {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene && (
                 <OppsummeringsPunkt
                     title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År')}
                 >
-                    <Normaltekst>
+                    <BodyShort>
                         {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                             ? intlUtils(intl, 'ja')
                             : intlUtils(intl, 'nei')}
-                    </Normaltekst>
+                    </BodyShort>
                 </OppsummeringsPunkt>
             )}
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
@@ -69,15 +67,15 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                             'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt'
                         )}
                     >
-                        <Normaltekst>{formatDate(endringAvNæringsinntektInformasjon!.dato)}</Normaltekst>
+                        <BodyShort>{formatDate(endringAvNæringsinntektInformasjon!.dato)}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}
                     >
-                        <Normaltekst>{endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}</Normaltekst>
+                        <BodyShort>{endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}>
-                        <Normaltekst>{endringAvNæringsinntektInformasjon!.forklaring}</Normaltekst>
+                        <BodyShort>{endringAvNæringsinntektInformasjon!.forklaring}</BodyShort>
                     </OppsummeringsPunkt>
                 </>
             )}
@@ -86,12 +84,12 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                     <OppsummeringsPunkt
                         title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}
                     >
-                        <Normaltekst>{regnskapsfører.navn}</Normaltekst>
+                        <BodyShort>{regnskapsfører.navn}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}
                     >
-                        <Normaltekst>{regnskapsfører.telefonnummer}</Normaltekst>
+                        <BodyShort>{regnskapsfører.telefonnummer}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={intlUtils(
@@ -99,17 +97,17 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                             'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie'
                         )}
                     >
-                        <Normaltekst>
+                        <BodyShort>
                             {regnskapsfører.erNærVennEllerFamilie ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
-                        </Normaltekst>
+                        </BodyShort>
                     </OppsummeringsPunkt>
                 </>
             )}
             {harRegnskapsfører === false && (
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsfører')}>
-                    <Normaltekst>
+                    <BodyShort>
                         {intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører')}
-                    </Normaltekst>
+                    </BodyShort>
                 </OppsummeringsPunkt>
             )}
         </>

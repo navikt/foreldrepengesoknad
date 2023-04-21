@@ -1,8 +1,7 @@
 import React from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
 import { IntlShape, useIntl } from 'react-intl';
 import { formatDate, Block, intlUtils, TidsperiodeDate, bemUtils } from '@navikt/fp-common';
+import { BodyShort, Label, Link } from '@navikt/ds-react';
 
 import './tidsperiodeDisplay.less';
 
@@ -26,12 +25,12 @@ const renderTidsperiode = (tidsperiode: Partial<TidsperiodeDate> | undefined, in
         return (
             <div className={bem.element('dato-container')}>
                 <div className={bem.element('dato')}>
-                    <Element>{`${intlUtils(intl, 'fraogmed')}:`}</Element>
-                    <Normaltekst>{formaterTidsperiodeDato(tidsperiode.fom)}</Normaltekst>
+                    <Label>{`${intlUtils(intl, 'fraogmed')}:`}</Label>
+                    <BodyShort>{formaterTidsperiodeDato(tidsperiode.fom)}</BodyShort>
                 </div>
                 <div className={bem.element('dato')}>
-                    <Element>{`${intlUtils(intl, 'tilogmed')}:`}</Element>
-                    <Normaltekst>{formaterTidsperiodeDato(tidsperiode.tom)}</Normaltekst>
+                    <Label>{`${intlUtils(intl, 'tilogmed')}:`}</Label>
+                    <BodyShort>{formaterTidsperiodeDato(tidsperiode.tom)}</BodyShort>
                 </div>
             </div>
         );
@@ -45,10 +44,10 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
 
     return (
         <Block padBottom="l">
-            <Element>Tidsrom</Element>
+            <Label>Tidsrom</Label>
             <div className={bem.block}>
                 {renderTidsperiode(tidsperiode, intl)}
-                <Lenke
+                <Link
                     href="#"
                     onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
                         e.preventDefault();
@@ -56,8 +55,8 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                         toggleVisTidsperiode();
                     }}
                 >
-                    <Normaltekst>Endre tidsrom</Normaltekst>
-                </Lenke>
+                    <BodyShort>Endre tidsrom</BodyShort>
+                </Link>
             </div>
         </Block>
     );

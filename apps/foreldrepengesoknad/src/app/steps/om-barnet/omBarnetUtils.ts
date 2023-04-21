@@ -1,5 +1,4 @@
 import { hasValue } from '@navikt/fp-common';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Barn, {
     AdoptertBarn,
@@ -19,6 +18,7 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,

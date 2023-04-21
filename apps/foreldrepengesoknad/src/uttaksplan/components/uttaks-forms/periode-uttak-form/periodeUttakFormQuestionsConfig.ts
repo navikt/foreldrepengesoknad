@@ -1,5 +1,4 @@
 import { hasValue, TidsperiodeDate } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
@@ -17,7 +16,8 @@ import getUttakSkjemaregler, {
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
 import { Periodetype } from 'uttaksplan/types/Periode';
-interface PeriodeUttakFormQuestionsPayload {
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;
 }

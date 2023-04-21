@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import { guid } from 'nav-frontend-js-utils';
-import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, guid } from '@navikt/fp-common';
 import Fieldset from 'app/components/fieldset/Fieldset';
 import AriaText from './AriaText';
 import RangeStepper from './RangeStepper';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 import './rangeInput.less';
 
 export interface RangeInputElementRendererOptions {
@@ -51,7 +51,7 @@ const defaultValueLabelRenderer: RangeInputElementRenderer = (options: RangeInpu
 
 const defaultBottomContentRenderer: RangeInputElementRenderer = (options: RangeInputElementRendererOptions) => (
     <div className="rangeInput__bottomContent">
-        <span className="typo-normaltekst">{options.max - options.min}</span>
+        <BodyShort>{options.max - options.min}</BodyShort>
     </div>
 );
 
@@ -117,7 +117,6 @@ class RangeInput extends React.Component<Props, State> {
         return (
             <div className={bemWrapper.block}>
                 <Fieldset legend={<>{label}</>} className={'uttakfordeler'}>
-                    <UtvidetInformasjon apneLabel={hjelpetekstApneLabel}>{hjelpetekst}</UtvidetInformasjon>
                     <div aria-live="polite">
                         {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>
@@ -144,7 +143,6 @@ class RangeInput extends React.Component<Props, State> {
                                 {...rest}
                                 id={id}
                                 aria-labelledby={ariaLabelId}
-                                className="nav-frontend-range-input"
                                 type="range"
                                 onChange={(e) => onChange(parseInt(e.target.value, 10))}
                             />
@@ -168,6 +166,7 @@ class RangeInput extends React.Component<Props, State> {
                         {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
                     </div>
                     {bottomRenderer({ value, min, max })}
+                    <ReadMore header={hjelpetekstApneLabel}>{hjelpetekst}</ReadMore>
                 </Fieldset>
             </div>
         );

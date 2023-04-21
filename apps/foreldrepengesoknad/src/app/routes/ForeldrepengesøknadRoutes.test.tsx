@@ -59,8 +59,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             </BrowserRouter>
         );
 
-        expect(await screen.findByText('Hei, Espen!')).toBeInTheDocument();
-        expect(await screen.findByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
     });
 
     it('skal vise om-barnet-side når denne ruten er valgt', async () => {
@@ -104,7 +103,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
             </BrowserRouter>
         );
 
-        expect(await screen.findByText('Om barnet')).toBeInTheDocument();
+        expect(await screen.findByText('Barnet')).toBeInTheDocument();
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
     });
 });

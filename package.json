@@ -25,27 +25,6 @@
         "shelljs": "0.8.5",
         "turbo": "^1.8.6"
     },
-    "pnpm": {
-        "patchedDependencies": {
-            "nav-frontend-alertstriper@4.0.2": "patches/nav-frontend-alertstriper@4.0.2.patch",
-            "nav-frontend-ekspanderbartpanel@4.0.4": "patches/nav-frontend-ekspanderbartpanel@4.0.4.patch",
-            "nav-frontend-etiketter@3.0.3": "patches/nav-frontend-etiketter@3.0.3.patch",
-            "nav-frontend-grid@2.0.2": "patches/nav-frontend-grid@2.0.2.patch",
-            "nav-frontend-hjelpetekst@3.1.3": "patches/nav-frontend-hjelpetekst@3.1.3.patch",
-            "nav-frontend-knapper@3.1.3": "patches/nav-frontend-knapper@3.1.3.patch",
-            "nav-frontend-lenkepanel@2.0.2": "patches/nav-frontend-lenkepanel@2.0.2.patch",
-            "nav-frontend-lenker@2.0.2": "patches/nav-frontend-lenker@2.0.2.patch",
-            "nav-frontend-lukknapp@2.0.2": "patches/nav-frontend-lukknapp@2.0.2.patch",
-            "nav-frontend-modal@2.0.2": "patches/nav-frontend-modal@2.0.2.patch",
-            "nav-frontend-paneler@3.0.2": "patches/nav-frontend-paneler@3.0.2.patch",
-            "nav-frontend-popover@2.0.4": "patches/nav-frontend-popover@2.0.4.patch",
-            "nav-frontend-skjema@4.0.6": "patches/nav-frontend-skjema@4.0.6.patch",
-            "nav-frontend-spinner@3.0.1": "patches/nav-frontend-spinner@3.0.1.patch",
-            "nav-frontend-typografi@4.0.2": "patches/nav-frontend-typografi@4.0.2.patch",
-            "nav-frontend-veileder@3.0.3": "patches/nav-frontend-veileder@3.0.3.patch",
-            "nav-frontend-veilederpanel@2.0.3": "patches/nav-frontend-veilederpanel@2.0.3.patch"
-        }
-    },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"

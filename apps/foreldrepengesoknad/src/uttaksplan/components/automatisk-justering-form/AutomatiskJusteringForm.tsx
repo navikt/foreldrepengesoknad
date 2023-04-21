@@ -1,5 +1,6 @@
+import { Alert } from '@navikt/ds-react';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -7,7 +8,6 @@ import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
 import dayjs from 'dayjs';
-import AlertStripe from 'nav-frontend-alertstriper';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isOverføringsperiode, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
@@ -75,9 +75,9 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
             <div style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
                 {infoTekstId !== '' && (
                     <Block padBottom="l">
-                        <AlertStripe type="info">
+                        <Alert variant="info">
                             <FormattedMessage id={infoTekstId} />
-                        </AlertStripe>
+                        </Alert>
                     </Block>
                 )}
                 <Block visible={visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)} padBottom="l">

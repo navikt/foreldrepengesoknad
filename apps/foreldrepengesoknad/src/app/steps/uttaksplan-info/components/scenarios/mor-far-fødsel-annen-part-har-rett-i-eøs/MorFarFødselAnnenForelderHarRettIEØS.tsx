@@ -1,15 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, hasValue, intlUtils } from '@navikt/fp-common';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { ISOStringToDate } from 'app/utils/dateUtils';
@@ -43,6 +40,8 @@ import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import uttaksConstants from 'app/constants';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Button, GuidePanel } from '@navikt/ds-react';
+import { MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload } from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -163,7 +162,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                 const visibility = morFarFødselAnnenForelderHarRettIEØSQuestionsConfig.getVisbility({
                     ...formValues,
                     erFarEllerMedmor,
-                });
+                } as MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload);
 
                 return (
                     <MorFarFødselAnnenForelderHarRettIEØSFormComponents.Form
@@ -171,7 +170,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         includeValidationSummary={true}
                     >
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad)}
                         >
                             <DekningsgradSpørsmål
@@ -181,8 +180,8 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttakINorge}
                             />
                         </Block>
-                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"
                                     values={{
@@ -190,7 +189,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                         antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
                                     }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block
                             visible={
@@ -199,12 +198,12 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             }
                         >
                             <StartdatoPermisjonMor
-                                permisjonStartdato={formValues.permisjonStartdato}
+                                permisjonStartdato={formValues.permisjonStartdato!}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 erFarEllerMedmor &&
                                 visibility.isIncluded(MorFarFødselAnnenForelderHarRettIEØSFormField.permisjonStartdato)
@@ -223,7 +222,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={
                                 visibility.isAnswered(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad) &&
                                 antallBarn > 1 &&
@@ -231,7 +230,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                     formValues.skalIkkeHaUttakFørTermin === true)
                             }
                         >
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
                                     values={{
@@ -240,12 +239,12 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                         navnMor: navnMor,
                                     }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </MorFarFødselAnnenForelderHarRettIEØSFormComponents.Form>
                 );

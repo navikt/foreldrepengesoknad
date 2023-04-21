@@ -26,10 +26,10 @@ import {
 
 import getIntlMock from 'utils-test/intl-test-helper';
 import { RegistrertBarn } from 'app/types/Person';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { guid } from 'nav-frontend-js-utils';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import { guid } from '@navikt/fp-common';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();

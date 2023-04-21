@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import 'regenerator-runtime/runtime';
+import { Modal } from '@navikt/ds-react';
 import '@formatjs/intl-datetimeformat/polyfill-force';
 import '@formatjs/intl-datetimeformat/locale-data/nb';
 import '@formatjs/intl-numberformat/polyfill-force';
@@ -19,3 +20,7 @@ jest.mock('./../src/app/Environment.ts', () => ({
 
 window.scrollTo = () => ({});
 global.IS_REACT_ACT_ENVIRONMENT = true;
+
+if (Modal.setAppElement) {
+    Modal.setAppElement('body');
+}

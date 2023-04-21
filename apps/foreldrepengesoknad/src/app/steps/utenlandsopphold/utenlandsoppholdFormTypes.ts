@@ -1,5 +1,5 @@
+import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
-import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 
 export enum UtenlandsoppholdFieldNames {
     harBoddINorgeSiste12Mnd = 'harBoddINorgeSiste12Mnd',
@@ -24,6 +24,5 @@ export const initialUtenlandsoppholdFormData: UtenlandsoppholdFormData = {
 
 export const UtenlandsoppholdFormComponents = getTypedFormComponents<
     UtenlandsoppholdFieldNames,
-    UtenlandsoppholdFormData,
-    string
+    UtenlandsoppholdFormData
 >();

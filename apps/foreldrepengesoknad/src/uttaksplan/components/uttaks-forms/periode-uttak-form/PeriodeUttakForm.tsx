@@ -1,11 +1,10 @@
-import { bemUtils, Block, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import { bemUtils, Block, guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
@@ -26,6 +25,7 @@ import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     periodeUttakFormQuestionsConfig,
+    PeriodeUttakFormQuestionsPayload,
     skalViseWLBInfoOmSamtidigUttakRundtFødsel,
 } from './periodeUttakFormQuestionsConfig';
 import {
@@ -39,9 +39,6 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import { guid } from 'nav-frontend-js-utils';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import {
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
@@ -49,6 +46,7 @@ import {
 } from 'app/utils/wlbUtils';
 
 import './periodeUttakForm.less';
+import { Button, GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     periode: Periode;
@@ -281,11 +279,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         stønadskontoer,
                         antallBarn,
                     },
-                });
+                } as PeriodeUttakFormQuestionsPayload);
 
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
+                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -304,9 +302,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeUttakFormComponents.Form includeButtons={false}>
-                            {!isNyPeriode && <SubmitListener cleanup={() => handleCleanup(values, visibility)} />}
+                            {!isNyPeriode && (
+                                <SubmitListener
+                                    cleanup={() => handleCleanup(values as PeriodeUttakFormData, visibility)}
+                                />
+                            )}
 
-                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="l">
+                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                                 <TidsperiodeDisplay
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}
@@ -335,14 +337,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.hvemSkalTaUttak)}>
                                 <HvemSkalHaUttakSpørsmål
                                     fieldName={PeriodeUttakFormField.hvemSkalTaUttak}
                                     erFarEllerMedmor={false}
                                     navnPåForeldre={navnPåForeldre}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
                                 <HvilkenKontoSpørsmål
                                     fieldName={PeriodeUttakFormField.konto}
                                     velgbareStønadskontoer={velgbareStønadskontoer}
@@ -353,41 +355,41 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     erAleneOmOmsorg={erAleneOmOmsorg}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}
+                            >
                                 <OverføringsårsakSpørsmål
-                                    vedlegg={values.overføringsdokumentasjon}
+                                    vedlegg={values.overføringsdokumentasjon!}
                                     navnAnnenForelder={navnPåAnnenForelder}
                                     erEndringssøknad={erEndringssøknad}
-                                    valgtOverføringsårsak={values.overføringsårsak}
+                                    valgtOverføringsårsak={values.overføringsårsak!}
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)}
                             >
                                 <UttakRundtFødselÅrsakSpørsmål
                                     fieldName={PeriodeUttakFormField.uttakRundtFødselÅrsak}
-                                    uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak}
+                                    uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak!}
                                     navnMor={navnPåForeldre.mor}
-                                    vedlegg={values.erMorForSykDokumentasjon}
+                                    vedlegg={values.erMorForSykDokumentasjon!}
                                 />
                             </Block>
                             {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
                                 sluttDatoPeriodeRundtFødselFarMedmor !== undefined && (
                                     <Block
-                                        padBottom="l"
+                                        padBottom="xl"
                                         visible={skalViseWLBInfoOmSamtidigUttakRundtFødsel(
-                                            values,
+                                            values as PeriodeUttakFormData,
                                             familiehendelsesdato,
                                             erFarEllerMedmor,
                                             erDeltUttak,
                                             situasjon
                                         )}
                                     >
-                                        <Veilederpanel
-                                            fargetema="normal"
-                                            svg={<VeilederNormal transparentBackground={true} />}
-                                        >
+                                        <GuidePanel>
                                             <FormattedMessage
                                                 id="uttaksplan.samtidigUttakVeileder"
                                                 values={{
@@ -395,24 +397,24 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                                     tomDato: formaterDatoKompakt(sluttDatoPeriodeRundtFødselFarMedmor),
                                                 }}
                                             />
-                                        </Veilederpanel>
+                                        </GuidePanel>
                                     </Block>
                                 )}
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(PeriodeUttakFormField.ønskerFlerbarnsdager)}
                             >
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
                                 <ErMorForSykSpørsmål
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
-                                    erMorForSyk={values.erMorForSyk}
+                                    erMorForSyk={values.erMorForSyk!}
                                     navnMor={navnPåForeldre.mor}
-                                    vedlegg={values.erMorForSykDokumentasjon}
+                                    vedlegg={values.erMorForSykDokumentasjon!}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål
                                     erFlerbarnssøknad={erFlerbarnssøknad}
                                     navnPåForeldre={navnPåForeldre}
@@ -425,19 +427,19 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(PeriodeUttakFormField.aktivitetskravMor)}
                             >
                                 <AktivitetskravSpørsmål
                                     fieldName={PeriodeUttakFormField.aktivitetskravMor}
                                     navnPåForeldre={navnPåForeldre}
-                                    aktivitetskravMorValue={values.aktivitetskravMor}
-                                    aktivitetskravVedlegg={values.aktivitetskravMorDokumentasjon}
+                                    aktivitetskravMorValue={values.aktivitetskravMor!}
+                                    aktivitetskravVedlegg={values.aktivitetskravMorDokumentasjon!}
                                     FormComponents={PeriodeUttakFormComponents}
                                     vedleggFieldName={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
                                 <SkalHaGraderingSpørsmål
                                     graderingsprosentVisible={visibility.isVisible(
                                         PeriodeUttakFormField.stillingsprosent
@@ -452,9 +454,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 }
                             >
                                 <div className={bem.element('knapperad-endre')}>
-                                    <Knapp htmlType="button" onClick={() => toggleIsOpen!(periode.id)}>
+                                    <Button type="button" variant="secondary" onClick={() => toggleIsOpen!(periode.id)}>
                                         <FormattedMessage id="uttaksplan.lukk" />
-                                    </Knapp>
+                                    </Button>
                                     <div className={bem.element('slettPeriodeWrapper')}>
                                         <LinkButton
                                             onClick={() => handleDeletePeriode!(periode.id)}
@@ -473,13 +475,17 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 }
                             >
                                 <div className={bem.element('knapperad-legg-til')}>
-                                    <Knapp htmlType="button" onClick={() => setNyPeriodeFormIsVisible!(false)}>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={() => setNyPeriodeFormIsVisible!(false)}
+                                    >
                                         <FormattedMessage id="uttaksplan.avbryt" />
-                                    </Knapp>
+                                    </Button>
                                     {visibility.areAllQuestionsAnswered() ? (
-                                        <Hovedknapp>
+                                        <Button type="submit">
                                             <FormattedMessage id="uttaksplan.leggTil" />
-                                        </Hovedknapp>
+                                        </Button>
                                     ) : null}
                                 </div>
                             </Block>

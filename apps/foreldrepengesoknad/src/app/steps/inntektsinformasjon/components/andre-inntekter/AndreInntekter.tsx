@@ -1,8 +1,6 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
-import { Knapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -12,6 +10,8 @@ import {
 } from '../../inntektsinformasjonFormConfig';
 import AndreInntekterListe from './AndreInntekterListe';
 import AndreInntekterModal from './modal/AndreInntekterModal';
+import { Button } from '@navikt/ds-react';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     andreInntekterInformasjon: AnnenInntekt[];
@@ -98,9 +98,9 @@ const AndreInntekter: FunctionComponent<Props> = ({
                             selectAnnenInntekt={selectAnnenInntekt}
                         />
                     </Block>
-                    <Knapp htmlType="button" onClick={handleOnLeggTil}>
+                    <Button onClick={handleOnLeggTil}>
                         <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
-                    </Knapp>
+                    </Button>
                 </div>
             )}
         </>

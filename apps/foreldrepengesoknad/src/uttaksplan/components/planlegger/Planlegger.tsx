@@ -6,8 +6,6 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Knapp } from 'nav-frontend-knapper';
-import { Systemtittel } from 'nav-frontend-typografi';
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
@@ -16,6 +14,7 @@ import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
 
 import './planlegger.less';
+import { Button, Heading } from '@navikt/ds-react';
 
 interface Props {
     uttaksplan: Periode[];
@@ -90,7 +89,7 @@ const Planlegger: FunctionComponent<Props> = ({
                         <section>
                             <div className={bem.element('tittel')}>
                                 <div className={bem.element('tittelLinkWrapper')}>
-                                    <Systemtittel>{intlUtils(intl, 'uttaksplan.dinPlan')}</Systemtittel>
+                                    <Heading size="medium">{intlUtils(intl, 'uttaksplan.dinPlan')}</Heading>
                                     {erEndringssøknad && (
                                         <ActionLink
                                             onClick={() => setResetUttaksplanModalOpen(true)}
@@ -169,22 +168,24 @@ const Planlegger: FunctionComponent<Props> = ({
             {!nyPeriodeFormIsVisible && (
                 <Block padBottom="l">
                     <div className={bem.element('knapperad')}>
-                        <Knapp
+                        <Button
+                            variant="secondary"
                             onClick={() => {
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(false);
                             }}
                         >
                             Legg til ny periode
-                        </Knapp>
-                        <Knapp
+                        </Button>
+                        <Button
+                            variant="secondary"
                             onClick={() => {
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(true);
                             }}
                         >
                             Legg til utsettelse
-                        </Knapp>
+                        </Button>
                     </div>
                 </Block>
             )}

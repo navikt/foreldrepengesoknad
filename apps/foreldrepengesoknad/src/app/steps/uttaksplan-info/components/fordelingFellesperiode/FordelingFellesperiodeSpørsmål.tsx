@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import Lenke from 'nav-frontend-lenker';
-import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import { Block, intlUtils } from '@navikt/fp-common';
 import lenker from 'app/links/links';
 import RangeInput from './range-input/RangeInput';
-
-import './fordelingFellesperiodeSpørsmål.less';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
 } from '../../utils/stønadskontoer';
+import { BodyShort, Ingress, Link } from '@navikt/ds-react';
+
+import './fordelingFellesperiodeSpørsmål.less';
 
 export interface OwnProps {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
@@ -62,12 +61,12 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
         <RangeInput
             label={intlUtils(intl, 'uttaksplaninfo.spørsmål.fordeling')}
             hjelpetekst={
-                <Normaltekst tag="div">
+                <BodyShort as="div">
                     <Block padBottom="l">{infotekst}</Block>
-                    <Lenke href={lenker.nav_aktivitetskrav} target="_blank">
+                    <Link href={lenker.nav_aktivitetskrav} target="_blank">
                         <FormattedMessage id="uttaksplaninfo.fordeling.veiledning.lenketekst" />
-                    </Lenke>
-                </Normaltekst>
+                    </Link>
+                </BodyShort>
             }
             hjelpetekstApneLabel={intlUtils(intl, 'uttaksplaninfo.fordeling.veiledning.lenketekst.apneLabel')}
             ariaLabelText={intlUtils(intl, 'uttaksplaninfo.spørsmål.fordeling')}
@@ -90,7 +89,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
                 )
             }
             valueLabelRenderer={(options) => (
-                <Ingress tag="p" className="m-text-center fordelingFellesperiode--valgtVerdi">
+                <Ingress as="p" className="m-text-center fordelingFellesperiode--valgtVerdi">
                     <FormattedMessage
                         id="uttaksplaninfo.fordeling.valgtVerdi"
                         values={{
@@ -103,12 +102,12 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
             )}
             valueLabelPlacement="above"
             bottomContentRenderer={(options) => (
-                <Normaltekst className="m-text-center fordelingFellesperiode--bottomContent">
+                <BodyShort className="m-text-center fordelingFellesperiode--bottomContent">
                     <FormattedMessage
                         id="uttaksplaninfo.fordeling.annenForeldersFellesperiode"
                         values={{ annenForeldersNavn, antallUker: options.max - options.value }}
                     />
-                </Normaltekst>
+                </BodyShort>
             )}
         />
     );

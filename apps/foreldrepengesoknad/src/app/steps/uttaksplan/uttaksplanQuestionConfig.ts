@@ -1,8 +1,8 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { getKanPeriodenRundtFødselJusteres } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { Periode } from 'uttaksplan/types/Periode';
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export interface UttaksplanQuestionPayload extends UttaksplanFormData {
     termindato: Date | undefined;

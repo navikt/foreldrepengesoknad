@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
-import { Undertittel } from 'nav-frontend-typografi';
 import Personkort from 'app/components/personkort/Personkort';
 import ForelderIkon from 'app/components/foreldrepar/ForelderIkon';
 import { getVarighetString } from 'app/utils/dateUtils';
@@ -23,6 +22,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { StønadskontoUttak } from 'uttaksplan/types/StønadskontoUttak';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
+import { Heading } from '@navikt/ds-react';
 
 const bem = bemUtils('oversiktKvoter');
 
@@ -56,9 +56,9 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
     return (
         <div className={bem.block}>
             <div className={bem.element('perForelder')}>
-                <Undertittel tag="h2" className="blokk-xs">
+                <Heading size="small" as="h2" className="blokk-xs">
                     {intlUtils(intl, 'uttaksplan.oversiktKvoter.tittel.foreldre')}
-                </Undertittel>
+                </Heading>
                 <TilesList columns={'flex'}>
                     {(erDeltUttakINorge || søkerErMor) && (
                         <Personkort ikon={<ForelderIkon forelder={svgInfo.mor} />} tittel={navnPåForeldre.mor}>
@@ -103,7 +103,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
         : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
     return (
         <div className={bem.element('perKvote')}>
-            <Undertittel tag="h2" className="blokk-xs">
+            <Heading size="small" as="h2" className="blokk-xs">
                 <FormattedMessage
                     id={
                         uttaksstatus.gjelderDagerBrukt
@@ -112,7 +112,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
                     }
                     values={{ antall: erDeltUttakINorge ? 2 : 1 }}
                 />
-            </Undertittel>
+            </Heading>
             <TilesList columns={2}>
                 {uttakÅVise.map((uttak) => (
                     <Kontostatus

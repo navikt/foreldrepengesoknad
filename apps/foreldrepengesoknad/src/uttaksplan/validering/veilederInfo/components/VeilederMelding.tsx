@@ -1,12 +1,11 @@
 import React from 'react';
 import { VeilederMessage } from '../types';
 import { FormattedMessage } from 'react-intl';
-import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
-import { Element } from 'nav-frontend-typografi';
-
-import './veilederMelding.less';
 import { bemUtils } from '@navikt/fp-common';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplan-ikon/UttaksplanIkon';
+import { Alert, Label } from '@navikt/ds-react';
+
+import './veilederMelding.less';
 
 export type VeilederMeldingStil = 'transparent' | 'default';
 
@@ -16,15 +15,17 @@ interface VeilederpanelInnholdContentProps {
     skjulMeldingIkon?: boolean;
 }
 
-const getAlertStripeTypeFromMessageType = (message: VeilederMessage): AlertStripeType => {
+type AlertType = 'error' | 'warning' | 'info' | 'success';
+
+const getAlertStripeTypeFromMessageType = (message: VeilederMessage): AlertType => {
     switch (message.type) {
         case 'normal':
         case 'info':
             return 'info';
         case 'advarsel':
-            return 'advarsel';
+            return 'warning';
         case 'feil':
-            return 'feil';
+            return 'error';
     }
 };
 
@@ -39,13 +40,13 @@ export const getIkonForVeilederMelding = (melding: VeilederMessage): UttaksplanI
     }
 };
 
-const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
+const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean, stil: VeilederMeldingStil) => {
     const content = (
         <>
             {message.titleIntlKey !== undefined && (
-                <Element>
+                <Label as="div">
                     <FormattedMessage id={message.titleIntlKey} />
-                </Element>
+                </Label>
             )}
             <FormattedMessage id={message.contentIntlKey} values={message.values} />
         </>
@@ -53,7 +54,9 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean) => {
     return skjulMeldingIkon ? (
         <div>{content}</div>
     ) : (
-        <AlertStripe type={getAlertStripeTypeFromMessageType(message)}>{content}</AlertStripe>
+        <Alert variant={getAlertStripeTypeFromMessageType(message)} inline={stil === 'transparent'}>
+            {content}
+        </Alert>
     );
 };
 
@@ -66,7 +69,7 @@ const VeilederMelding: React.FunctionComponent<VeilederpanelInnholdContentProps>
     return (
         <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (
-                renderAlert(message, skjulMeldingIkon)
+                renderAlert(message, skjulMeldingIkon, stil)
             ) : (
                 <div className="veilederMelding__padding">
                     <FormattedMessage id={message.contentIntlKey} values={message.values} />

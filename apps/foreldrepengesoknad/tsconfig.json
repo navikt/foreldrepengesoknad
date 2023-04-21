@@ -20,6 +20,7 @@
         },
         "resolveJsonModule": true,
         "rootDir": "src",
+        "skipLibCheck": true,
         "sourceMap": true,
         "strict": true,
         "target": "ESNext",
@@ -27,5 +28,5 @@
         "useDefineForClassFields": true
     },
     "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
-    "exclude": ["src/common/**/*"]
+    "exclude": ["src/common/**/*", "node_modules"]
 }

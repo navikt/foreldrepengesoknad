@@ -1,7 +1,4 @@
 import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
-import VeilederNormal from 'app/assets/VeilederNormal';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { useEffect, useMemo, useState } from 'react';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -33,7 +30,6 @@ import {
 } from 'app/api/apiUtils';
 import { useNavigate } from 'react-router-dom';
 
-import './oppsummering.less';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
@@ -45,6 +41,9 @@ import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+
+import './oppsummering.less';
+import { Button, GuidePanel } from '@navikt/ds-react';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -186,17 +185,17 @@ const Oppsummering = () => {
                             kompakt={true}
                         >
                             <Block padBottom="l">
-                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                <GuidePanel>
                                     <FormattedMessage id="oppsummering.veileder" />
-                                </Veilederpanel>
+                                </GuidePanel>
                             </Block>
                             <Block padBottom="l">
                                 <div className={bem.block}>
-                                    <Block padBottom="l">
+                                    <OppsummeringsPanel title="Deg">
                                         <Personalia søkerinfo={søkerinfo} />
-                                    </Block>
+                                    </OppsummeringsPanel>
                                     {!erEndringssøknad && (
-                                        <OppsummeringsPanel title="Om barnet">
+                                        <OppsummeringsPanel title="Barnet">
                                             <BarnOppsummering barn={barn} />
                                         </OppsummeringsPanel>
                                     )}
@@ -257,9 +256,9 @@ const Oppsummering = () => {
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Hovedknapp disabled={formSubmitted} spinner={formSubmitted}>
+                                    <Button type="submit" disabled={formSubmitted} loading={formSubmitted}>
                                         {submitKnappTekst}
-                                    </Hovedknapp>
+                                    </Button>
                                 </div>
                             </Block>
                         </Step>

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import Modal from 'nav-frontend-modal';
-import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { BodyShort, Heading, Ingress, Modal } from '@navikt/ds-react';
 
 import './dinePersonopplysningerModal.less';
 
@@ -19,20 +18,20 @@ const DinePersonopplysningerModal = (props: Props) => {
 
     return (
         <Modal
-            isOpen={props.isOpen}
-            onRequestClose={() => props.onRequestClose()}
+            open={props.isOpen}
+            onClose={() => props.onRequestClose()}
             closeButton={true}
             className={bem.block}
-            contentLabel={intlUtils(intl, 'velkommen.dinePersonopplysninger.sectionheading')}
+            aria-label={intlUtils(intl, 'velkommen.dinePersonopplysninger.sectionheading')}
         >
             <article className="velkommenModalContent velkommenModalContent--50">
                 <Block padBottom="s">
-                    <Systemtittel tag="h1" className="velkommenModalContent__header">
+                    <Heading size="medium" as="h1" className="velkommenModalContent__header">
                         {intlUtils(intl, 'velkommen.dinePersonopplysninger.sectionheading')}
-                    </Systemtittel>
+                    </Heading>
                 </Block>
                 <Block padBottom="s">
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage
                             id="velkommen.dinePersonopplysninger.behandling.html"
                             values={{
@@ -48,73 +47,73 @@ const DinePersonopplysningerModal = (props: Props) => {
                                 ),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <Block padBottom="s">
                     <Ingress>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.tittel" />
                     </Ingress>
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del1" />
-                    </Normaltekst>
+                    </BodyShort>
                     <ul>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt1" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt2" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt3" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt4" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                     </ul>
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del2" />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <Block padBottom="s">
                     <Ingress>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.tittel" />
                     </Ingress>
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
-                    </Normaltekst>
+                    </BodyShort>
                     <ul>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                     </ul>
                 </Block>
@@ -122,32 +121,32 @@ const DinePersonopplysningerModal = (props: Props) => {
                     <Ingress>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel" />
                     </Ingress>
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
-                    </Normaltekst>
+                    </BodyShort>
                     <ul>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                         <li>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
-                            </Normaltekst>
+                            </BodyShort>
                         </li>
                     </ul>
                 </Block>
                 <Block padBottom="s">
-                    <Ingress tag="h2">
+                    <Ingress as="h2">
                         <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.tittel" />
                     </Ingress>
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage
                             id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.html"
                             values={{
@@ -163,7 +162,7 @@ const DinePersonopplysningerModal = (props: Props) => {
                                 ),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
             </article>
         </Modal>

@@ -1,5 +1,5 @@
+import { Label } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
-import { Element } from 'nav-frontend-typografi';
 import React, { FunctionComponent, ReactNode } from 'react';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 const OppsummeringsPunkt: FunctionComponent<Props> = ({ title, visible, children }) => {
     return (
         <Block padBottom="l" visible={visible}>
-            <Element>{title}</Element>
+            <Label>{title}</Label>
             {children}
         </Block>
     );

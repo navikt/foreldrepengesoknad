@@ -1,7 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import Modal from 'nav-frontend-modal';
-import { bemUtils, Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     EgenNæringModalFormComponents,
@@ -17,9 +15,6 @@ import { Næring, Næringstype } from 'app/context/types/Næring';
 import egenNæringModalQuestionsConfig from './egenNæringModalQuestionsConfig';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import Regnskapsfører from './components/Regnskapsfører';
-import { Hovedknapp } from 'nav-frontend-knapper';
-
-import './egenNæringModal.less';
 import {
     validateEgenNæringFom,
     validateEgenNæringTom,
@@ -30,7 +25,10 @@ import {
 } from './validation/egenNæringValidation';
 import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { BodyShort, Button, Heading, Modal, ReadMore } from '@navikt/ds-react';
+
+import './egenNæringModal.less';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     isOpen: boolean;
@@ -69,9 +67,9 @@ const EgenNæringModal: FunctionComponent<Props> = ({
 
     return (
         <Modal
-            isOpen={isOpen}
-            contentLabel={title}
-            onRequestClose={onRequestClose}
+            open={isOpen}
+            aria-label={title}
+            onClose={onRequestClose}
             closeButton={true}
             shouldCloseOnOverlayClick={false}
             className={bem.block}
@@ -80,7 +78,9 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                 initialValues={getInitialEgenNæringModalValues(selectedNæring)}
                 onSubmit={(values: Partial<EgenNæringModalFormData>) => onValidSubmit(values)}
                 renderForm={({ values: formValues }) => {
-                    const visibility = egenNæringModalQuestionsConfig.getVisbility(formValues);
+                    const visibility = egenNæringModalQuestionsConfig.getVisbility(
+                        formValues as EgenNæringModalFormData
+                    );
 
                     return (
                         <EgenNæringModalFormComponents.Form
@@ -89,12 +89,12 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                             includeValidationSummary={true}
                         >
                             <Block padBottom="l">
-                                <Undertittel className={bem.element('tittel')}>
+                                <Heading size="small" className={bem.element('tittel')}>
                                     <FormattedMessage id="inntektsinformasjon.egenNæringModal.tittel" />
-                                </Undertittel>
+                                </Heading>
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.type)}>
-                                <EgenNæringModalFormComponents.RadioPanelGroup
+                                <EgenNæringModalFormComponents.RadioGroup
                                     name={EgenNæringModalFormField.type}
                                     legend={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringstype')}
                                     radios={[
@@ -133,7 +133,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                 padBottom="l"
                                 visible={visibility.isVisible(EgenNæringModalFormField.navnPåNæringen)}
                             >
-                                <EgenNæringModalFormComponents.Input
+                                <EgenNæringModalFormComponents.TextField
                                     name={EgenNæringModalFormField.navnPåNæringen}
                                     label={navnPåNæringLabel}
                                     maxLength={100}
@@ -175,7 +175,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
-                                    validate={validateEgenNæringFom(intl, formValues.tom)}
+                                    validate={validateEgenNæringFom(intl, formValues.tom!)}
                                     maxDate={dayjs().toDate()}
                                 />
                             </Block>
@@ -200,7 +200,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
-                                    validate={validateEgenNæringTom(intl, formValues.fom)}
+                                    validate={validateEgenNæringTom(intl, formValues.fom!)}
                                     maxDate={dayjs().toDate()}
                                     minDate={dayjs(formValues.fom).toDate()}
                                 />
@@ -212,23 +212,21 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                 <EgenNæringModalFormComponents.NumberInput
                                     name={EgenNæringModalFormField.næringsresultat}
                                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringsinntekt')}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel'
-                                            )}
-                                        >
-                                            <Normaltekst>
-                                                <FormattedMessage id="inntektsinformasjon.egenNæringModal.næringsinntekt.info" />
-                                            </Normaltekst>
-                                        </UtvidetInformasjon>
-                                    }
                                     validate={validateNumber(
                                         intl,
                                         'valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat'
                                     )}
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel'
+                                    )}
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="inntektsinformasjon.egenNæringModal.næringsinntekt.info" />
+                                    </BodyShort>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="l"
@@ -244,19 +242,17 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         intl,
                                         'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År'
                                     )}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel'
-                                            )}
-                                        >
-                                            <Normaltekst>
-                                                <FormattedMessage id="inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info" />
-                                            </Normaltekst>
-                                        </UtvidetInformasjon>
-                                    }
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel'
+                                    )}
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info" />
+                                    </BodyShort>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="l"
@@ -329,7 +325,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                             </Block>
                             <Regnskapsfører visibility={visibility} />
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Button>{intlUtils(intl, 'søknad.gåVidere')}</Button>
                             </Block>
                         </EgenNæringModalFormComponents.Form>
                     );

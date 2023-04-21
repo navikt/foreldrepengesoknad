@@ -1,7 +1,5 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -9,7 +7,6 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
@@ -18,6 +15,8 @@ import {
     validateAnkomstdato,
     validateFødselsdatoAdopsjon,
 } from '../validation/omBarnetValidering';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -40,7 +39,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <OmBarnetFormComponents.DatePicker
                     label={intlUtils(intl, 'omBarnet.adopsjonsdato.annetBarn')}
                     name={OmBarnetFormField.adopsjonsdato}
@@ -48,8 +47,8 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     placeholder={'dd.mm.åååå'}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
-                <OmBarnetFormComponents.RadioPanelGroup
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
+                <OmBarnetFormComponents.RadioGroup
                     name={OmBarnetFormField.antallBarn}
                     radios={[
                         {
@@ -65,19 +64,18 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                             value: '3',
                         },
                     ]}
-                    useTwoColumns={true}
                     legend={intlUtils(intl, 'omBarnet.antallBarn.adopsjon.født')}
                 />
             </Block>
             <Block
-                padBottom="l"
+                padBottom="xl"
                 visible={
                     formValues.antallBarn !== undefined &&
                     søknadGjelderEtNyttBarn &&
                     parseInt(formValues.antallBarn, 10) >= 3
                 }
             >
-                <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
+                <OmBarnetFormComponents.Select label="Antall barn" name={OmBarnetFormField.antallBarnSelect}>
                     <option value="" />
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -88,13 +86,13 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     <option value="9">9</option>
                 </OmBarnetFormComponents.Select>
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
                 <FieldArray
                     name={OmBarnetFormField.fødselsdatoer}
                     render={() =>
                         [...Array(parseInt(formValues.antallBarn!, 10))].map((_, index) => {
                             return (
-                                <Block key={index} padBottom="l">
+                                <Block key={index} padBottom="xl">
                                     <OmBarnetFormComponents.DatePicker
                                         key={`${OmBarnetFormField.fødselsdatoer}.${index}`}
                                         name={
@@ -119,13 +117,13 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     }
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.adoptertIUtlandet)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.adoptertIUtlandet)}>
                 <OmBarnetFormComponents.YesOrNoQuestion
                     name={OmBarnetFormField.adoptertIUtlandet}
                     legend={intlUtils(intl, 'omBarnet.adopteresFraUtlandet')}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.ankomstdato)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.ankomstdato)}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.ankomstdato}
                     label={intlUtils(intl, 'omBarnet.ankomstDato')}
@@ -135,13 +133,14 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     placeholder={'dd.mm.åååå'}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+                <GuidePanel>
                     <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse" />
-                </Veilederpanel>
+                </GuidePanel>
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
                 <FormikFileUploader
+                    legend="Dokumentasjon om adopsjon"
                     label={intlUtils(intl, 'omBarnet.adopsjon.vedlegg')}
                     name={OmBarnetFormField.omsorgsovertakelse}
                     attachments={formValues.omsorgsovertakelse || []}

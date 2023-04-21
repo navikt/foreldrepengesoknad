@@ -6,7 +6,6 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import classNames from 'classnames';
-import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import {
     isAvslåttPeriode,
@@ -27,6 +26,7 @@ import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/Perio
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
 
 import './periodelisteItem.less';
+import { Accordion } from '@navikt/ds-react';
 
 interface Props {
     egenPeriode: boolean;
@@ -221,55 +221,56 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     };
 
     return (
-        <article className={bem.block}>
-            <EkspanderbartpanelBase
-                className={classNames(bem.element('header'), egenPeriode ? undefined : bem.modifier('transparent'))}
-                id={periode.id}
-                tittel={
-                    <PeriodelisteItemHeader
-                        egenPeriode={egenPeriode}
-                        periode={periode}
-                        navnPåForeldre={navnPåForeldre}
-                        melding={melding}
-                        annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
-                        familiehendelsesdato={familiehendelsesdato}
-                        termindato={termindato}
-                        situasjon={situasjon}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                        erAleneOmOmsorg={erAleneOmOmsorg}
-                    />
-                }
-                apen={isOpen}
-                onClick={() => toggleIsOpen(periode.id)}
-            >
-                <Block visible={meldinger.length > 0}>
-                    <VeilederMeldinger meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')} />
-                </Block>
-                {renderPeriodeListeInnhold(
-                    periode,
-                    familiehendelsesdato,
-                    handleUpdatePeriode,
-                    stønadskontoer,
-                    navnPåForeldre,
-                    annenForelder,
-                    toggleFocusAndOpen,
-                    arbeidsforhold,
-                    handleDeletePeriode,
-                    erFarEllerMedmor,
-                    erFlerbarnssøknad,
-                    erAleneOmOmsorg,
-                    erDeltUttak,
-                    situasjon,
-                    erMorUfør,
-                    søkerErFarEllerMedmorOgKunDeHarRett,
-                    setPeriodeErGyldig,
-                    erEndringssøknad,
-                    termindato,
-                    antallBarn,
-                    utsettelserIPlan,
-                    intl
-                )}
-            </EkspanderbartpanelBase>
+        <article
+            className={classNames(bem.block, egenPeriode ? bem.modifier('egenPeriode') : bem.modifier('transparent'))}
+        >
+            <Accordion>
+                <Accordion.Item open={isOpen}>
+                    <Accordion.Header onClick={() => toggleIsOpen(periode.id)} className={bem.element('header')}>
+                        <PeriodelisteItemHeader
+                            egenPeriode={egenPeriode}
+                            periode={periode}
+                            navnPåForeldre={navnPåForeldre}
+                            melding={melding}
+                            annenForelderSamtidigUttakPeriode={annenForelderSamtidigUttakPeriode}
+                            familiehendelsesdato={familiehendelsesdato}
+                            termindato={termindato}
+                            situasjon={situasjon}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            erAleneOmOmsorg={erAleneOmOmsorg}
+                        />
+                    </Accordion.Header>
+                    <Accordion.Content>
+                        <Block visible={meldinger.length > 0}>
+                            <VeilederMeldinger stil="default" meldinger={meldinger.filter((m) => m.avvikType !== 'skjema')} />
+                        </Block>
+                        {renderPeriodeListeInnhold(
+                            periode,
+                            familiehendelsesdato,
+                            handleUpdatePeriode,
+                            stønadskontoer,
+                            navnPåForeldre,
+                            annenForelder,
+                            toggleFocusAndOpen,
+                            arbeidsforhold,
+                            handleDeletePeriode,
+                            erFarEllerMedmor,
+                            erFlerbarnssøknad,
+                            erAleneOmOmsorg,
+                            erDeltUttak,
+                            situasjon,
+                            erMorUfør,
+                            søkerErFarEllerMedmorOgKunDeHarRett,
+                            setPeriodeErGyldig,
+                            erEndringssøknad,
+                            termindato,
+                            antallBarn,
+                            utsettelserIPlan,
+                            intl
+                        )}
+                    </Accordion.Content>
+                </Accordion.Item>
+            </Accordion>
         </article>
     );
 };

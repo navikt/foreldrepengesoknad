@@ -8,7 +8,7 @@ import {
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
 
-interface FarMedmorFødselBeggeHarRettFormPayload extends FarMedmorFødselBeggeHarRettFormData {
+export interface FarMedmorFødselBeggeHarRettFormPayload extends FarMedmorFødselBeggeHarRettFormData {
     familiehendelsesdato: Date;
 }
 const includeFellesperiodeSpørsmål = (farMedmorsFørsteDag: string, familiehendelsesdato: Date) => {

@@ -1,5 +1,4 @@
 import { Locale } from '@navikt/fp-common';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
@@ -10,6 +9,7 @@ import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
+import { Loader } from '@navikt/ds-react';
 
 interface Props {
     locale: Locale;
@@ -18,7 +18,7 @@ interface Props {
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <NavFrontendSpinner type="XXL" />
+        <Loader size="2xlarge" />
     </div>
 );
 

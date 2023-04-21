@@ -1,4 +1,4 @@
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 export enum MorFarAdopsjonFormField {
@@ -25,8 +25,4 @@ export interface MorFarAdopsjonFormData {
     [MorFarAdopsjonFormField.fellesperiodeukerMor]: number | undefined;
 }
 
-export const MorFarAdopsjonFormComponents = getTypedFormComponents<
-    MorFarAdopsjonFormField,
-    MorFarAdopsjonFormData,
-    string
->();
+export const MorFarAdopsjonFormComponents = getTypedFormComponents<MorFarAdopsjonFormField, MorFarAdopsjonFormData>();

@@ -1,4 +1,4 @@
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { Attachment } from 'app/types/Attachment';
 
 export enum OmBarnetFormField {
@@ -32,4 +32,4 @@ export interface OmBarnetFormData {
     [OmBarnetFormField.ankomstdato]: string;
 }
 
-export const OmBarnetFormComponents = getTypedFormComponents<OmBarnetFormField, OmBarnetFormData, string>();
+export const OmBarnetFormComponents = getTypedFormComponents<OmBarnetFormField, OmBarnetFormData>();

@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MissingAttachment } from 'app/types/MissingAttachment';
-import { guid } from 'nav-frontend-js-utils';
-import { AdvarselIkon, bemUtils, Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { AdvarselIkon, bemUtils, Block, guid, intlUtils } from '@navikt/fp-common';
 import CheckmarkIkon from 'app/assets/CheckmarkIkon';
+import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 
 import './kvitteringSuksess.less';
 
@@ -28,7 +27,7 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
                 <div className={bem.element('ikon')}>{isMissingAttachments ? <AdvarselIkon /> : <CheckmarkIkon />}</div>
                 <div className={bem.element('tekst')}>
                     <Block padBottom="l">
-                        <Undertittel>
+                        <Heading size="small">
                             <FormattedMessage
                                 id={
                                     isMissingAttachments
@@ -36,10 +35,10 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
                                         : 'søknadSendt.info.tittel'
                                 }
                             />
-                        </Undertittel>
+                        </Heading>
                     </Block>
                     <div>
-                        <Normaltekst>
+                        <BodyShort>
                             <FormattedMessage
                                 id={
                                     isMissingAttachments
@@ -47,28 +46,26 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
                                         : 'søknadSendt.info.innhold'
                                 }
                             />
-                        </Normaltekst>
+                        </BodyShort>
                         {isMissingAttachments && (
                             <>
                                 <ul>
                                     {missingAttachments.map((a) => (
                                         <li key={guid()}>
-                                            <Normaltekst>
+                                            <BodyShort>
                                                 <FormattedMessage
                                                     id={`søknadSendt.info.missingAttachment.${a.skjemanummer}`}
                                                 />
-                                            </Normaltekst>
+                                            </BodyShort>
                                         </li>
                                     ))}
                                 </ul>
 
-                                <UtvidetInformasjon
-                                    apneLabel={intlUtils(intl, 'søknadSendt.info.missingAttachment.lesMer')}
-                                >
-                                    <Normaltekst>
+                                <ReadMore header={intlUtils(intl, 'søknadSendt.info.missingAttachment.lesMer')}>
+                                    <BodyShort>
                                         <FormattedMessage id="søknadSendt.info.missingAttachment.lesMer.content" />
-                                    </Normaltekst>
-                                </UtvidetInformasjon>
+                                    </BodyShort>
+                                </ReadMore>
                             </>
                         )}
                     </div>

@@ -1,16 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Veilederpanel from 'nav-frontend-veilederpanel';
+import { GuidePanel } from '@navikt/ds-react';
 
 import './annenForelderVeileder.less';
-import VeilederNormal from 'app/assets/VeilederNormal';
 
 const FarDokumentasjonAleneomsorgVeileder: React.FunctionComponent = () => {
     return (
         <div className="annenForelderVeileder">
-            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+            <GuidePanel>
                 <FormattedMessage id="annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder" />
-            </Veilederpanel>
+            </GuidePanel>
         </div>
     );
 };

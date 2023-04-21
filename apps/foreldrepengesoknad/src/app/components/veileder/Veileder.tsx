@@ -20,7 +20,7 @@ interface OwnProps {
     className?: string;
 }
 
-type Props = VeilederProps & OwnProps;
+export type Props = VeilederProps & OwnProps;
 
 const Veileder = (props: Props) => {
     const { className, farge = 'lilla', ansikt = 'glad', stil = 'normal', height = '184', ...rest } = props;

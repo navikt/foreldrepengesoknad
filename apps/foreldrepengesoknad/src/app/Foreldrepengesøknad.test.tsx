@@ -34,7 +34,7 @@ describe('<Foreldrepengesøknad>', () => {
             </ForeldrepengesøknadContextProvider>
         );
 
-        expect(screen.getByText('Venter...')).toBeInTheDocument();
+        expect(screen.getByText('venter...')).toBeInTheDocument();
     });
 
     it('skal returnere første rute i app når en har ferdighentet data', () => {
@@ -74,7 +74,6 @@ describe('<Foreldrepengesøknad>', () => {
             </ForeldrepengesøknadContextProvider>
         );
 
-        expect(screen.getByText('Hei, Olga!')).toBeInTheDocument();
-        expect(screen.getByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
+        expect(screen.getByText('Søknad om foreldrepenger')).toBeInTheDocument();
     });
 });

@@ -6,7 +6,6 @@ import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { AxiosResponse } from 'axios';
 
 import dayjs from 'dayjs';
-import { guid } from 'nav-frontend-js-utils';
 import {
     isOppholdsperiode,
     isOverføringsperiode,
@@ -17,6 +16,7 @@ import {
     Utsettelsesperiode,
 } from 'uttaksplan/types/Periode';
 import { dateIsWithinRange } from './dateUtils';
+import { guid } from '@navikt/fp-common';
 
 export const storeAppState = (state: ForeldrepengesøknadContextState): Promise<AxiosResponse<any>> => {
     return Api.storeAppState(state, state.søkerinfo.person.fnr);

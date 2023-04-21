@@ -1,10 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import EtikettBase from 'nav-frontend-etiketter';
-import { LenkepanelBase } from 'nav-frontend-lenkepanel';
-import { Undertittel, Ingress, Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import links from 'app/links/links';
 import { bemUtils, Block } from '@navikt/fp-common';
+import { BodyShort, Heading, Ingress, LinkPanel, Tag } from '@navikt/ds-react';
 
 import './statusBoks.less';
 
@@ -18,32 +16,32 @@ const StatusBoks: FunctionComponent<Props> = ({ saksNr }) => {
     return (
         <Block>
             <Block padBottom="l">
-                <Systemtittel>
+                <Heading size="medium">
                     <FormattedMessage id="søknadSendt.status.tittel" />
-                </Systemtittel>
+                </Heading>
             </Block>
-            <LenkepanelBase href={links.innsyn} border={true} className="statusBoks__lenkepanel">
+            <LinkPanel href={links.innsyn} border={true} className="statusBoks__lenkepanel">
                 <div className={bem.block}>
                     <div className={bem.element('left')}>
                         <Block padBottom="l">
-                            <Undertittel tag="h3">
+                            <Heading size="small" as="h3">
                                 <FormattedMessage id="søknadSendt.status.undertittel" />
-                            </Undertittel>
+                            </Heading>
                         </Block>
-                        <EtikettBase type="fokus">
+                        <Tag variant="warning">
                             <FormattedMessage id="søknadSendt.status.status" />
-                        </EtikettBase>
+                        </Tag>
                     </div>
                     {saksNr && (
                         <div className={bem.element('right')}>
-                            <Normaltekst>
+                            <BodyShort>
                                 <FormattedMessage id="søknadSendt.status.saksnummer" />
-                            </Normaltekst>
+                            </BodyShort>
                             <Ingress>{saksNr}</Ingress>
                         </div>
                     )}
                 </div>
-            </LenkepanelBase>
+            </LinkPanel>
         </Block>
     );
 };

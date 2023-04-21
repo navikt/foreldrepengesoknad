@@ -2,10 +2,9 @@ import React from 'react';
 import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { bemUtils, Block, formatDate, hasValue, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { bemUtils, Block, formatDate, hasValue, intlUtils } from '@navikt/fp-common';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { Forelder } from 'app/types/Forelder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
@@ -27,10 +26,12 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
-
-import './infoOmSøknaden.less';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
+
+import './infoOmSøknaden.less';
+import classNames from 'classnames';
 
 interface Props {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -139,7 +140,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         eksisterendeSak.uttaksplan.filter((p) => p.type !== Periodetype.Info);
 
     return (
-        <Block padBottom="l" className={bem.block}>
+        <Block padBottom="xl" className={classNames(`${bem.block}`)}>
             <InnholdMedIllustrasjon
                 tittel={intlUtils(intl, `eksisterendeSak.tittel.${erDeltUttakINorge ? 'deltUttak' : 'aleneomsorg'}`)}
                 illustrasjoner={[
@@ -147,8 +148,8 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     <UkerSirkel key="uker" uker={uker} />,
                 ]}
             >
-                <Block padBottom="l">
-                    <Normaltekst>
+                <Block padBottom="xl">
+                    <BodyShort className={bem.element('infoTekst')}>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.html"
                             values={{
@@ -157,10 +158,10 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 navn: hvem,
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 {skalViseInfoOmMorsSak && hasValue(annenForelderNavn) && nesteMuligeUttaksdagEtterAnnenPart && (
-                    <Normaltekst>
+                    <BodyShort className={bem.element('infoTekst')}>
                         <FormattedMessage
                             id="eksisterendeSak.tekst.nesteMuligeUttaksdato"
                             values={{
@@ -169,27 +170,29 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 b: (msg: any) => <b>{msg}</b>,
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 )}
 
                 {skalViseInfoOmMorsSak &&
                     hasValue(annenForelderNavn) &&
                     infoperioder !== undefined &&
                     infoperioder.length > 0 && (
-                        <UtvidetInformasjon
-                            apneLabel={intlUtils(intl, visPlanTekst, {
-                                navn: navnGenitivEierform,
-                            })}
-                        >
-                            <InfoEksisterendePerioder
-                                oppgittePerioder={infoperioder}
-                                navnForOverskrift={annenForelderNavn}
-                                navnPåForeldre={navnPåForeldre}
-                                familiehendelsesdato={familiehendelsesdato!}
-                                termindato={termindato}
-                                situasjon={søknad.søkersituasjon.situasjon}
-                            />
-                        </UtvidetInformasjon>
+                        <Block padBottom="l">
+                            <ReadMore
+                                header={intlUtils(intl, visPlanTekst, {
+                                    navn: navnGenitivEierform,
+                                })}
+                            >
+                                <InfoEksisterendePerioder
+                                    oppgittePerioder={infoperioder}
+                                    navnForOverskrift={annenForelderNavn}
+                                    navnPåForeldre={navnPåForeldre}
+                                    familiehendelsesdato={familiehendelsesdato!}
+                                    termindato={termindato}
+                                    situasjon={søknad.søkersituasjon.situasjon}
+                                />
+                            </ReadMore>
+                        </Block>
                     )}
             </InnholdMedIllustrasjon>
             {skalViseInfoOmMorsSak && søkersPerioder !== undefined && søkersPerioder.length > 0 && (
@@ -199,7 +202,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                     infoboks={
                         erIUttaksplanenSteg === false ? (
                             <>
-                                <UtvidetInformasjon apneLabel="Se perioder oppgitt av annen forelder">
+                                <ReadMore header="Se perioder oppgitt av annen forelder">
                                     Periodene med foreldrepenger oppgitt av annen forelder
                                     <InfoEksisterendePerioder
                                         oppgittePerioder={søkersPerioder}
@@ -208,23 +211,23 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                         termindato={termindato}
                                         situasjon={søknad.søkersituasjon.situasjon}
                                     />
-                                </UtvidetInformasjon>
+                                </ReadMore>
                             </>
                         ) : undefined
                     }
                 ></InnholdMedIllustrasjon>
             )}
             {erToTette && startStønadsperiodeNyttBarn !== undefined && (
-                <Block padBottom="l">
-                    <Normaltekst>
+                <Block padBottom="xl">
+                    <BodyShort>
                         <strong>
                             <FormattedMessage
                                 id="infoOmSøknaden.toTette.finnesBarnMedNesteSak.tittel"
                                 values={{ antallUkerToTette: minsterettUkerToTette }}
                             ></FormattedMessage>
                         </strong>
-                    </Normaltekst>
-                    <Normaltekst>
+                    </BodyShort>
+                    <BodyShort>
                         <FormattedMessage
                             id="infoOmSøknaden.toTette.finnesBarnMedNesteSak"
                             values={{
@@ -232,20 +235,20 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 minsterettAntallUker: <strong>{minsterettToTetteAntallUkerTekst}</strong>,
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
             )}
             {!erToTette && startStønadsperiodeNyttBarn !== undefined && (
-                <Block padBottom="l">
-                    <Normaltekst>
+                <Block padBottom="xl">
+                    <BodyShort>
                         <strong>
                             <FormattedMessage
                                 id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak.tittel"
                                 values={{ sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet) }}
                             ></FormattedMessage>
                         </strong>
-                    </Normaltekst>
-                    <Normaltekst>
+                    </BodyShort>
+                    <BodyShort>
                         <FormattedMessage
                             id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak"
                             values={{
@@ -253,10 +256,10 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                 sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet),
                             }}
                         />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
             )}
-            <Normaltekst>
+            <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.informasjon.lesMer"
                     values={{
@@ -267,7 +270,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                         ),
                     }}
                 />
-            </Normaltekst>
+            </BodyShort>
         </Block>
     );
 };

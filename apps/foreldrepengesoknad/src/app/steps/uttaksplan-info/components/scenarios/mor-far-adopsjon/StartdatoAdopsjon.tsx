@@ -4,14 +4,14 @@ import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { isAdoptertAnnetBarn, isAdoptertBarn } from 'app/context/types/Barn';
-import { DateRange } from '@navikt/sif-common-formik/lib';
 import { formaterDatoUtenDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import { DatepickerDateRange } from 'nav-datovelger';
 import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/morFarAdopsjonValidering';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 import { assertUnreachable } from 'app/utils/globalUtil';
+import { DatepickerDateRange } from '@navikt/ds-datepicker';
+import { DateRange } from '@navikt/sif-common-formik-ds/lib';
 
 export const finnStartdatoAdopsjon = (
     startdatoAdopsjonValg: AdopsjonStartdatoValg,
@@ -85,11 +85,10 @@ const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon })
     return (
         <>
             <Block padBottom="l">
-                <MorFarAdopsjonFormComponents.RadioPanelGroup
+                <MorFarAdopsjonFormComponents.RadioGroup
                     name={MorFarAdopsjonFormField.startdatoAdopsjonValg}
                     radios={radios}
                     legend={intlUtils(intl, 'uttaksplaninfo.startdatoAdopsjon.spørsmål')}
-                    useTwoColumns={true}
                 />
             </Block>
             <Block padBottom="l" visible={valgtStartdatoAdopsjon === AdopsjonStartdatoValg.ANNEN}>

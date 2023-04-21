@@ -1,4 +1,3 @@
-import { guid } from 'nav-frontend-js-utils';
 import { UttakArbeidType } from 'app/types/UttakArbeidType';
 import { Arbeidsform, isInfoPeriode } from 'uttaksplan/types/Periode';
 import { OppholdÅrsakTypeDTO } from 'app/types/OppholdÅrsakTypeDTO';
@@ -29,15 +28,15 @@ import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
 import { RettighetType } from 'app/types/RettighetType';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
-import { intlUtils } from '@navikt/fp-common';
+import { guid, intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 import { Sak } from 'app/types/Sak';
 import PersonFnrDTO from 'app/types/PersonFnrDTO';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {

@@ -1,8 +1,6 @@
 @import './../../styles/variables.less';
-@import './../../../../node_modules/nav-frontend-lenker-style/src/lenker-mixins.less';
 
 .linkButton {
-    .lenke-mixin();
     display: inline-block;
     text-align: left;
     border: none;
@@ -15,15 +13,6 @@
         &:focus {
             color: white;
             text-decoration: none;
-        }
-    }
-}
-
-.alertstripe {
-    .linkButton {
-        color: @navMorkGra;
-        &:focus {
-            color: white;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Element } from 'nav-frontend-typografi';
+import { Label } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
@@ -14,7 +14,7 @@ const Fieldset: React.FunctionComponent<Props> = ({ legend, className, children 
             style={{ display: 'flex', flexDirection: 'column', border: 'none', padding: '0', margin: '0' }}
         >
             <legend style={{ margin: '0 0 0.5rem 0' }}>
-                <Element>{legend}</Element>
+                <Label>{legend}</Label>
             </legend>
             {children}
         </fieldset>

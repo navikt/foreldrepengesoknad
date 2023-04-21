@@ -3,13 +3,13 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Undertittel } from 'nav-frontend-typografi';
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { Situasjon } from 'app/types/Situasjon';
+import { Heading } from '@navikt/ds-react';
 
 interface Props {
     familiehendelsesdato: Date;
@@ -67,10 +67,10 @@ const NyPeriode: FunctionComponent<Props> = ({
 
     return !isUtsettelse ? (
         <>
-            <Block padBottom="l">
-                <Undertittel>
+            <Block padBottom="xl">
+                <Heading size="small">
                     <FormattedMessage id="uttaksplan.nyPeriode.tittel" />
-                </Undertittel>
+                </Heading>
             </Block>
             <PeriodeUttakForm
                 periode={periode}

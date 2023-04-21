@@ -1,5 +1,5 @@
-import { Normaltekst } from 'nav-frontend-typografi';
 import React from 'react';
+import { BodyShort, Link } from '@navikt/ds-react';
 
 import './lenkeKnapp.less';
 
@@ -10,15 +10,16 @@ interface Props {
 
 const LenkeKnapp: React.FunctionComponent<Props> = ({ text, onClick }) => {
     return (
-        <button
+        <Link
+            as="button"
             className="lenkeKnapp lenke"
             onClick={(e) => {
                 e.preventDefault();
                 onClick();
             }}
         >
-            <Normaltekst>{text}</Normaltekst>
-        </button>
+            <BodyShort>{text}</BodyShort>
+        </Link>
     );
 };
 

@@ -1,8 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, intlUtils } from '@navikt/fp-common';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import actionCreator from 'app/context/action/actionCreator';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
@@ -25,8 +23,7 @@ import { Forelder } from 'app/types/Forelder';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
 import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { morFødselQuestionsConfig } from './morFødselQuestionsConfig';
+import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFødselQuestionsConfig';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
@@ -41,6 +38,7 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { Button, GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -177,7 +175,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                     ...formValues,
                     harRettPåForeldrepengerINorge,
                     erAleneOmOmsorg,
-                });
+                } as MorFødselQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
 
@@ -191,7 +189,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttak}
                             />
                         </Block>
-                        <Block padBottom="l" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
+                        <Block padBottom="xl" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={erDeltUttak}
@@ -206,8 +204,8 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             )}
                         </Block>
-                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"
                                     values={{
@@ -215,12 +213,12 @@ const MorFødsel: FunctionComponent<Props> = ({
                                         antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
                                     }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
                             <StartdatoPermisjonMor
-                                permisjonStartdato={formValues.permisjonStartdato}
-                                skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin}
+                                permisjonStartdato={formValues.permisjonStartdato!}
+                                skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
                             />
                         </Block>
                         <Block
@@ -231,14 +229,14 @@ const MorFødsel: FunctionComponent<Props> = ({
                             }
                         >
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={
                                     antallBarn > 1 &&
                                     (formValues.permisjonStartdato !== undefined ||
                                         formValues.skalIkkeHaUttakFørTermin === true)
                                 }
                             >
-                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                                <GuidePanel>
                                     <FormattedMessage
                                         id="uttaksplaninfo.veileder.flerbarnsInformasjon"
                                         values={{
@@ -247,10 +245,10 @@ const MorFødsel: FunctionComponent<Props> = ({
                                             navnMor: navnMor,
                                         }}
                                     />
-                                </Veilederpanel>
+                                </GuidePanel>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
                             >
                                 <FordelingFellesperiodeSpørsmål
@@ -264,9 +262,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                             </Block>
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </MorFødselFormComponents.Form>
                 );

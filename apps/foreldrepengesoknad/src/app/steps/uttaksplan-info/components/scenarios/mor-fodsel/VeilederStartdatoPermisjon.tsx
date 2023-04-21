@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { formaterDato, getVarighetString } from 'app/utils/dateUtils';
-import Veileder from 'app/components/veileder/Veileder';
 import { Uttaksdagen } from '../../../utils/Uttaksdagen';
+import { GuidePanel } from '@navikt/ds-react';
 
 type ugyldigStartdatoÅrsak = undefined | 'helgedag' | 'fortidlig';
 
@@ -89,13 +88,9 @@ const VeilederStartdatoPermisjon: React.FunctionComponent<Props> = ({
         visKunFeil,
     ]);
 
-    const erFeilmelding = ugyldigDatoÅrsak !== undefined;
-
     return (
         <Block margin="none" visible={msg !== undefined}>
-            <Veilederpanel svg={<Veileder farge="lilla" ansikt={erFeilmelding ? 'skeptisk' : 'glad'} stil="kompakt" />}>
-                {msg}
-            </Veilederpanel>
+            <GuidePanel>{msg}</GuidePanel>
         </Block>
     );
 };

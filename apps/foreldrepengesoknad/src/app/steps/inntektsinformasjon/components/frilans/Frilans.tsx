@@ -1,8 +1,6 @@
 import { Block, dateToday, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
-import { Knapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -14,6 +12,8 @@ import { validateFrilansoppstartsDato } from '../../validation/inntektsinformasj
 import FrilansoppdragListe from './FrilansoppdragListe';
 import HvemKanVæreFrilanser from './HvemKanVæreFrilanser';
 import FrilansoppdragModal from './modal/FrilansoppdragModal';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
     frilansoppdrag: FrilansOppdrag[];
@@ -61,9 +61,10 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                     name={InntektsinformasjonFormField.hattInntektSomFrilans}
                     legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd')}
-                    description={<HvemKanVæreFrilanser />}
                 />
+                <HvemKanVæreFrilanser />
             </Block>
+
             {formValues.hattInntektSomFrilans === YesOrNo.YES && (
                 <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <Block
@@ -126,9 +127,9 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                                 selectOppdrag={selectOppdrag}
                             />
                         </Block>
-                        <Knapp htmlType="button" onClick={handleOnLeggTil}>
+                        <Button variant="secondary" onClick={handleOnLeggTil}>
                             <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
-                        </Knapp>
+                        </Button>
                     </Block>
                     <Block
                         padBottom="l"

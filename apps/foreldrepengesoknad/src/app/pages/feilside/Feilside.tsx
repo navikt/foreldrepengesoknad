@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
-import Lenke from 'nav-frontend-lenker';
-import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
 import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import actionCreator from 'app/context/action/actionCreator';
@@ -80,7 +78,7 @@ const Feilside: React.FunctionComponent<Props> = ({
                             <>
                                 <Block padBottom="m">{illustrasjon.tekst}</Block>
                                 {illustrasjon.lenke && (
-                                    <Lenke href={illustrasjon.lenke.url}>{illustrasjon.lenke.tekst}</Lenke>
+                                    <Link href={illustrasjon.lenke.url}>{illustrasjon.lenke.tekst}</Link>
                                 )}
                             </>
                         ),
@@ -89,19 +87,23 @@ const Feilside: React.FunctionComponent<Props> = ({
             )}
             <div id={containerId} className={bem.block}>
                 <Block padBottom="l">
-                    <Innholdstittel>{tittel}</Innholdstittel>
+                    <Heading size="large">{tittel}</Heading>
                 </Block>
                 <Block padBottom="l">
-                    <Normaltekst>{ingress}</Normaltekst>
+                    <BodyShort>{ingress}</BodyShort>
                 </Block>
                 {søkerinfo !== undefined && !skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
-                        <Hovedknapp onClick={avbrytSøknadHandler}>Start søknaden på nytt</Hovedknapp>
+                        <Button variant="primary" onClick={avbrytSøknadHandler}>
+                            Start søknaden på nytt
+                        </Button>
                     </div>
                 )}
                 {søkerinfo !== undefined && skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
-                        <Hovedknapp onClick={gåTilbakeTilSøknadenHandler}>Gå tilbake til søknaden</Hovedknapp>
+                        <Button variant="primary" onClick={gåTilbakeTilSøknadenHandler}>
+                            Gå tilbake til søknaden
+                        </Button>
                     </div>
                 )}
             </div>

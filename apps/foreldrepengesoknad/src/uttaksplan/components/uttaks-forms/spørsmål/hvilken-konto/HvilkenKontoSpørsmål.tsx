@@ -1,12 +1,12 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
-import { RadioPanelProps } from 'nav-frontend-skjema';
 import React, { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getStønadskontoNavn } from 'uttaksplan/utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 
 interface Props {
     velgbareStønadskontoer: StønadskontoType[];
@@ -42,18 +42,17 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
     const legend = getSpørsmålsTekst(erOppholdsperiode, intl, navnAnnenForelder);
 
     const radios = velgbareStønadskontoer.map(
-        (konto): RadioPanelProps => ({
+        (konto): FormikRadioProp => ({
             label: getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg),
             value: `${konto}`,
         })
     );
 
     return (
-        <PeriodeUttakFormComponents.RadioPanelGroup
+        <PeriodeUttakFormComponents.RadioGroup
             name={fieldName}
             radios={radios}
             legend={legend}
-            useTwoColumns={true}
             validate={(value) => {
                 if (!hasValue(value)) {
                     return intlUtils(intl, 'uttaksplan.validering.hvilkenKonto');
