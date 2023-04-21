@@ -13,13 +13,13 @@ const BarnFødtEllerAdoptert: FunctionComponent<Props> = ({ visibility }) => {
 
     return (
         <>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.adopsjonAvEktefellesBarn)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.adopsjonAvEktefellesBarn)}>
                 <OmBarnetFormComponents.YesOrNoQuestion
                     name={OmBarnetFormField.adopsjonAvEktefellesBarn}
                     legend={intlUtils(intl, 'omBarnet.adopsjonGjelder')}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.erBarnetFødt)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.erBarnetFødt)}>
                 <OmBarnetFormComponents.YesOrNoQuestion
                     name={OmBarnetFormField.erBarnetFødt}
                     legend={intlUtils(intl, 'omBarnet.erBarnetFødt')}

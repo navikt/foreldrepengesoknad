@@ -1,5 +1,4 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import dayjs from 'dayjs';
@@ -8,6 +7,7 @@ import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateFødselsdato, validateTermindatoFødsel } from '../validation/omBarnetValidering';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -35,8 +35,8 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
 
     return (
         <>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
-                <OmBarnetFormComponents.RadioPanelGroup
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
+                <OmBarnetFormComponents.RadioGroup
                     name={OmBarnetFormField.antallBarn}
                     radios={[
                         {
@@ -52,15 +52,14 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                             value: '3',
                         },
                     ]}
-                    useTwoColumns={true}
                     legend={intlUtils(intl, 'omBarnet.antallBarn.født')}
                 />
             </Block>
             <Block
-                padBottom="l"
+                padBottom="xl"
                 visible={antallBarn !== undefined && søknadGjelderEtNyttBarn && parseInt(antallBarn, 10) >= 3}
             >
-                <OmBarnetFormComponents.Select name={OmBarnetFormField.antallBarnSelect}>
+                <OmBarnetFormComponents.Select label="Antall barn" name={OmBarnetFormField.antallBarnSelect}>
                     <option value="" />
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -71,7 +70,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     <option value="9">9</option>
                 </OmBarnetFormComponents.Select>
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
                 <FieldArray
                     name={OmBarnetFormField.fødselsdatoer}
                     render={() => [
@@ -87,7 +86,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                     ]}
                 />
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}

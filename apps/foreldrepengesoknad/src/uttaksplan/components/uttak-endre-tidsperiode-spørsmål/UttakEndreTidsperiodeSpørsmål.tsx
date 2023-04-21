@@ -1,14 +1,14 @@
 import React from 'react';
-import Modal from 'nav-frontend-modal';
 import { useIntl } from 'react-intl';
 import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import dayjs from 'dayjs';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
-import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { Block, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 import { Situasjon } from 'app/types/Situasjon';
+import { Modal } from '@navikt/ds-react';
 
 interface Props {
     periode: Periode;
@@ -71,60 +71,65 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Modal isOpen={visible} closeButton={true} onRequestClose={onAvbryt} contentLabel="Endre tidsperiode">
-                <TidsperiodeForm
-                    familiehendelsesdato={familiehendelsesdato}
-                    onBekreft={handleOnSubmit}
-                    periode={periode}
-                    tidsperiode={tidsperiode}
-                    ugyldigeTidsperioder={ugyldigeTidsperioder}
-                    utsettelserIPlan={utsettelserIPlan}
-                    initialMonth={initialMonth}
-                    termindato={termindato}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    morHarRett={morHarRett}
-                    situasjon={situasjon}
-                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
-                />
+            <Modal open={visible} closeButton={true} onClose={onAvbryt} aria-label="Endre tidsperiode">
+                <Modal.Content>
+                    <TidsperiodeForm
+                        familiehendelsesdato={familiehendelsesdato}
+                        onBekreft={handleOnSubmit}
+                        periode={periode}
+                        tidsperiode={tidsperiode}
+                        ugyldigeTidsperioder={ugyldigeTidsperioder}
+                        utsettelserIPlan={utsettelserIPlan}
+                        initialMonth={initialMonth}
+                        termindato={termindato}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        morHarRett={morHarRett}
+                        situasjon={situasjon}
+                        erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
+                    />
+                </Modal.Content>
             </Modal>
-            <UkerDagerTeller
-                ukeLegend={intlUtils(intl, 'uker.label')}
-                dagLegend={intlUtils(intl, 'dager.label')}
-                ukeStepper={{
-                    value: uker !== undefined ? uker : 0,
-                    min: 0,
-                    max: 100,
-                    onChange: (nyUker: number) => {
-                        const date = tidsperiode.fom;
-                        if (date) {
-                            changeTidsperiode({
-                                fom: date,
-                                tom: getTidsperiode(date, Math.min(nyUker, 200) * 5 + getDagValue(nyUker, dager)).tom,
-                            });
-                        }
-                    },
-                    increaseAriaLabel: 'Øk antall uker med en uke',
-                    decreaseAriaLabel: 'Mink antall uker med en uke',
-                }}
-                dagStepper={{
-                    value: getDagValue(uker, dager),
-                    min: uker === 0 ? 1 : 0,
-                    max: 5,
-                    onChange: (nyDager: number) => {
-                        const date = tidsperiode.fom;
-                        const ekstraUke = nyDager === 5 ? 1 : 0;
+            <Block padBottom="m">
+                <UkerDagerTeller
+                    ukeLegend={intlUtils(intl, 'uker.label')}
+                    dagLegend={intlUtils(intl, 'dager.label')}
+                    ukeStepper={{
+                        value: uker !== undefined ? uker : 0,
+                        min: 0,
+                        max: 100,
+                        onChange: (nyUker: number) => {
+                            const date = tidsperiode.fom;
+                            if (date) {
+                                changeTidsperiode({
+                                    fom: date,
+                                    tom: getTidsperiode(date, Math.min(nyUker, 200) * 5 + getDagValue(nyUker, dager))
+                                        .tom,
+                                });
+                            }
+                        },
+                        increaseAriaLabel: 'Øk antall uker med en uke',
+                        decreaseAriaLabel: 'Mink antall uker med en uke',
+                    }}
+                    dagStepper={{
+                        value: getDagValue(uker, dager),
+                        min: uker === 0 ? 1 : 0,
+                        max: 5,
+                        onChange: (nyDager: number) => {
+                            const date = tidsperiode.fom;
+                            const ekstraUke = nyDager === 5 ? 1 : 0;
 
-                        if (date) {
-                            changeTidsperiode({
-                                fom: date,
-                                tom: getTidsperiode(date, (uker + ekstraUke) * 5 + getDagValue(uker, nyDager)).tom,
-                            });
-                        }
-                    },
-                    increaseAriaLabel: 'Øk antall dager med en dag',
-                    decreaseAriaLabel: 'Mink antall dager med en dag',
-                }}
-            />
+                            if (date) {
+                                changeTidsperiode({
+                                    fom: date,
+                                    tom: getTidsperiode(date, (uker + ekstraUke) * 5 + getDagValue(uker, nyDager)).tom,
+                                });
+                            }
+                        },
+                        increaseAriaLabel: 'Øk antall dager med en dag',
+                        decreaseAriaLabel: 'Mink antall dager med en dag',
+                    }}
+                />
+            </Block>
         </>
     );
 };

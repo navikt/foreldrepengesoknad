@@ -1,4 +1,4 @@
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum FrilansoppdragModalFormField {
     navnOppdragsgiver = 'navnOppdragsgiver',

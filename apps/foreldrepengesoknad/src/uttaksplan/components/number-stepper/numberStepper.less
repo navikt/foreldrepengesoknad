@@ -1,9 +1,21 @@
 .numberStepper {
     display: flex;
     align-items: center;
+
     &__input {
-        width: 4rem;
-        margin: 0 0.5rem;
-        text-align: center;
+        width: 20%;
+        > input {
+            width: 100%;
+            display: block;
+            padding: 0.5rem;
+        }
+    }
+
+    &__decrease {
+        margin-right: 1rem;
+    }
+
+    &__increase {
+        margin-left: 1rem;
     }
 }

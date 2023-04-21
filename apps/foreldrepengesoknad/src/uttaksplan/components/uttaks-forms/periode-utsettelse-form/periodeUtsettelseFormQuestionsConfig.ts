@@ -4,7 +4,7 @@ import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
-interface PeriodeUtsettelseFormConfigPayload {
+export interface PeriodeUtsettelseFormConfigPayload {
     values: PeriodeUtsettelseFormData;
     erFarEllerMedmor: boolean;
     erAleneOmOmsorg: boolean;

@@ -1,10 +1,10 @@
 import React, { SVGProps } from 'react';
-import Ikon from 'nav-frontend-ikoner-assets';
 import ArbeidIkon from 'uttaksplan/assets/ArbeidIkon';
 import FerieIkon from 'uttaksplan/assets/FerieIkon';
 import SykdomIkon from 'uttaksplan/assets/SykdomIkon';
 import TerminIkon from 'uttaksplan/assets/TerminIkon';
 import UttakIkon from 'uttaksplan/assets/UttakIkon';
+import { InformationIcon, XMarkOctagonFillIcon, ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 
 export interface UttaksplanIkonProps extends SVGProps<any> {
     title: string;
@@ -37,11 +37,11 @@ const UttaksplanIkon: React.FunctionComponent<Props> = ({ ikon, title }) => {
         case 'termin':
             return <TerminIkon title={title} />;
         case 'info':
-            return <Ikon kind="info-sirkel-fyll" size="1.5rem" />;
+            return <InformationIcon />;
         case 'advarsel':
-            return <Ikon kind="advarsel-sirkel-fyll" size="1.5rem" />;
+            return <ExclamationmarkTriangleFillIcon />;
         case 'feil':
-            return <Ikon kind="feil-sirkel-fyll" size="1.5rem" />;
+            return <XMarkOctagonFillIcon />;
         default:
             return <UttakIkon title={title} />;
     }

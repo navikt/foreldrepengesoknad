@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
@@ -18,9 +17,6 @@ const JA = 'Ja';
 const NEI = 'Nei';
 const NÆRINGSRESULTAT_FØR_SKATT =
     'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.';
-
-//TODO (TOR) Bør ikkje ligga i test
-Modal.setAppElement(document.createElement('div'));
 
 describe('<Inntektsinformasjon>', () => {
     it('skal ikke ha arbeidsforhold og velger nei på alle spørsmål', async () => {

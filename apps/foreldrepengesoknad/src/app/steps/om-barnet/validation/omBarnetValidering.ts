@@ -7,11 +7,11 @@ import {
     intlUtils,
 } from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { isDateABeforeDateB } from 'app/utils/dateUtils';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);

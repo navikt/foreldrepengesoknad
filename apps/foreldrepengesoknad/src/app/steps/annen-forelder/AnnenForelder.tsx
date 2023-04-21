@@ -1,5 +1,4 @@
-import { Block, hasValue, intlUtils, Step, UtvidetInformasjon } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { Block, hasValue, intlUtils, Step } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
@@ -11,7 +10,6 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -24,7 +22,7 @@ import {
     getAnnenForelderFormInitialValues,
     mapAnnenForelderFormToState,
 } from './annenForelderFormUtils';
-import { annenForelderQuestionsConfig } from './annenForelderQuestionsConfig';
+import { annenForelderQuestionsConfig, AnnenForelderQuestionsPayload } from './annenForelderQuestionsConfig';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './components/AvtaleAtFarTarUtForeldrepengerVeileder';
 import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAleneomsorgVeileder';
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
@@ -38,7 +36,8 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import AlertStripe from 'nav-frontend-alertstriper';
+import { Alert, Button, ReadMore } from '@navikt/ds-react';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import links from 'app/links/links';
 import { getKjønnFromFnrString } from 'app/utils/personUtils';
 import { SivilstandType } from 'app/types/SivilstandType';
@@ -132,7 +131,8 @@ const AnnenForelder = () => {
                     skalOppgiPersonalia,
                     søkerRolle: rolle,
                     gjelderStebarnsadopsjon: isAdoptertStebarn(barn) ? true : false,
-                });
+                } as AnnenForelderQuestionsPayload);
+
                 const annenForelderHarRett = formValues.harRettPåForeldrepengerINorge === YesOrNo.YES;
                 const fnrFraAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
                 const oppgittFnr = formValues.fnr;
@@ -185,7 +185,7 @@ const AnnenForelder = () => {
                                 </Block>
                             )}
                             {!skalOppgiPersonalia && (
-                                <Block padBottom="l">
+                                <Block padBottom="xl">
                                     <RegistrertePersonalia
                                         person={annenForelderFraRegistrertBarn}
                                         fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
@@ -197,22 +197,15 @@ const AnnenForelder = () => {
                                 visible={
                                     visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg) || !skalOppgiPersonalia
                                 }
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.aleneOmOmsorg}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'annenForelder.aleneOmOmsorg.veileder.apneLabel'
-                                            )}
-                                        >
-                                            {intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder')}
-                                        </UtvidetInformasjon>
-                                    }
                                     legend={intlUtils(intl, 'annenForelder.aleneOmOmsorg')}
                                 />
+                                <ReadMore header={intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder.apneLabel')}>
+                                    {intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder')}
+                                </ReadMore>
                                 <AvtaleAtFarTarUtForeldrepengerVeileder
                                     visible={!isFarEllerMedmor(rolle) && formValues.aleneOmOmsorg === YesOrNo.YES}
                                     annenForelderNavn={formValues.fornavn!}
@@ -221,7 +214,7 @@ const AnnenForelder = () => {
 
                             {!formValues.kanIkkeOppgis && (
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(AnnenForelderFormField.datoForAleneomsorg)}
                                 >
                                     <Block>
@@ -237,6 +230,7 @@ const AnnenForelder = () => {
                                     <FarDokumentasjonAleneomsorgVeileder />
 
                                     <FormikFileUploader
+                                        legend="Dokumentasjon for aleneomsorg"
                                         label={intlUtils(
                                             intl,
                                             'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
@@ -249,33 +243,31 @@ const AnnenForelder = () => {
                                 </Block>
                             )}
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.harRettPåForeldrepengerINorge}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel'
-                                            )}
-                                        >
-                                            <FormattedMessage
-                                                id="annenForelder.harRettPåForeldrepengerINorge.veileder.del1"
-                                                values={{ navn: formValues.fornavn }}
-                                            ></FormattedMessage>
-                                            <br />
-                                            <FormattedMessage
-                                                id="annenForelder.harRettPåForeldrepengerINorge.veileder.del2"
-                                                values={{ navn: formValues.fornavn }}
-                                            ></FormattedMessage>
-                                        </UtvidetInformasjon>
-                                    }
                                     legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerINorge', {
                                         navn: formValues.fornavn,
                                     })}
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel'
+                                    )}
+                                >
+                                    <FormattedMessage
+                                        id="annenForelder.harRettPåForeldrepengerINorge.veileder.del1"
+                                        values={{ navn: formValues.fornavn }}
+                                    ></FormattedMessage>
+                                    <br />
+                                    <FormattedMessage
+                                        id="annenForelder.harRettPåForeldrepengerINorge.veileder.del2"
+                                        values={{ navn: formValues.fornavn }}
+                                    ></FormattedMessage>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="l"
@@ -284,7 +276,7 @@ const AnnenForelder = () => {
                                     visInfoboksOmFarskapsportal
                                 }
                             >
-                                <AlertStripe type="info">
+                                <Alert variant="info">
                                     <Block padBottom="l">
                                         <FormattedMessage
                                             id={tekstOmFarskapsportalId}
@@ -303,11 +295,9 @@ const AnnenForelder = () => {
                                         />
                                     </Block>
                                     <Block>
-                                        <FormattedMessage
-                                            id={intlUtils(intl, 'annenForelder.tekstOmFarskapsportal.mor.far.del2')}
-                                        />
+                                        <FormattedMessage id="annenForelder.tekstOmFarskapsportal.mor.far.del2" />
                                     </Block>
-                                </AlertStripe>
+                                </Alert>
                             </Block>
                             <Block
                                 padBottom="l"
@@ -315,50 +305,43 @@ const AnnenForelder = () => {
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.harOppholdtSegIEØS}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'annenForelder.harOppholdtSegIEØS.veileder.apneLabel'
-                                            )}
-                                        >
-                                            <FormattedMessage
-                                                id="annenForelder.harOppholdtSegIEØS.veileder"
-                                                values={{ navn: formValues.fornavn }}
-                                            ></FormattedMessage>
-                                        </UtvidetInformasjon>
-                                    }
                                     legend={intlUtils(intl, 'annenForelder.harOppholdtSegIEØS', {
                                         navn: formValues.fornavn,
                                     })}
                                 />
+                                <ReadMore
+                                    header={intlUtils(intl, 'annenForelder.harOppholdtSegIEØS.veileder.apneLabel')}
+                                >
+                                    <FormattedMessage
+                                        id="annenForelder.harOppholdtSegIEØS.veileder"
+                                        values={{ navn: formValues.fornavn }}
+                                    ></FormattedMessage>
+                                </ReadMore>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.harRettPåForeldrepengerIEØS}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(
-                                                intl,
-                                                'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel'
-                                            )}
-                                        >
-                                            <FormattedMessage
-                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder"
-                                                values={{ navn: formValues.fornavn }}
-                                            ></FormattedMessage>
-                                        </UtvidetInformasjon>
-                                    }
                                     legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerIEØS', {
                                         navn: formValues.fornavn,
                                     })}
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel'
+                                    )}
+                                >
+                                    <FormattedMessage
+                                        id="annenForelder.harRettPåForeldrepengerIEØS.veileder"
+                                        values={{ navn: formValues.fornavn }}
+                                    ></FormattedMessage>
+                                </ReadMore>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(AnnenForelderFormField.erInformertOmSøknaden)}
                             >
                                 <AnnenForelderFormComponents.YesOrNoQuestion
@@ -373,27 +356,23 @@ const AnnenForelder = () => {
                                 />
                             </Block>
 
-                            <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.erMorUfør}
-                                    description={
-                                        <UtvidetInformasjon
-                                            apneLabel={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}
-                                        >
-                                            {intlUtils(intl, 'annenForelder.erMorUfør.veileder', {
-                                                navn: formValues.fornavn,
-                                            })}
-                                        </UtvidetInformasjon>
-                                    }
                                     legend={intlUtils(intl, 'annenForelder.erMorUfør', {
                                         navn: formValues.fornavn,
                                     })}
                                 />
+                                <ReadMore header={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}>
+                                    {intlUtils(intl, 'annenForelder.erMorUfør.veileder', {
+                                        navn: formValues.fornavn,
+                                    })}
+                                </ReadMore>
                             </Block>
                             <Block visible={kanGåVidereMedSøknaden} textAlignCenter={true}>
-                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
-                                </Hovedknapp>
+                                </Button>
                             </Block>
                         </AnnenForelderFormComponents.Form>
                     </Step>

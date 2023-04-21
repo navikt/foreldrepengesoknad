@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import Normaltekst from 'nav-frontend-typografi/lib/normaltekst';
 import { bemUtils } from '@navikt/fp-common';
 import Pencil from './Pencil';
-import { EtikettFokus } from 'nav-frontend-etiketter';
+import { BodyShort, Tag } from '@navikt/ds-react';
 
 import './interactiveListElement.less';
 
@@ -32,7 +31,7 @@ const InteractiveListElement: FunctionComponent<Props> = ({
     return (
         <li className={bem.block}>
             <div className={bem.element('top')}>
-                <Normaltekst className="title">{title}</Normaltekst>
+                <BodyShort className="title">{title}</BodyShort>
                 <button
                     type="button"
                     className={bem.element('editButton')}
@@ -42,9 +41,9 @@ const InteractiveListElement: FunctionComponent<Props> = ({
                     <Pencil />
                 </button>
             </div>
-            <Normaltekst className={bem.element('text')}>{text}</Normaltekst>
+            <BodyShort className={bem.element('text')}>{text}</BodyShort>
             <div className={bem.element('bottom')}>
-                {missingDocumentation && <EtikettFokus>Mangler dokumentasjon</EtikettFokus>}
+                {missingDocumentation && <Tag variant="warning">Mangler dokumentasjon</Tag>}
                 <button
                     className={bem.element('deleteButton')}
                     onClick={onDelete}

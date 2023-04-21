@@ -1,11 +1,9 @@
 import React from 'react';
 import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-common';
-import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isUtsettelsesperiode, isUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { andreAugust2022ReglerGjelder, dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
-import { Knapp } from 'nav-frontend-knapper';
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
@@ -16,6 +14,8 @@ import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils
 import { getFørsteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from 'uttaksplan/utils/uttaksdatoerUtils';
 import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
+import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
     periode?: Periode;
@@ -173,7 +173,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             periodeId: periode !== undefined ? periode.id : undefined,
                                         }),
                                     dayPickerProps: {
-                                        initialMonth: initialMonth || familiehendelsesdato,
+                                        defaultMonth: initialMonth || familiehendelsesdato,
                                     },
                                 }}
                                 toDatepickerProps={{
@@ -197,14 +197,14 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             periodeId: periode !== undefined ? periode.id : undefined,
                                         }),
                                     dayPickerProps: {
-                                        initialMonth: ISOStringToDate(values.fom),
+                                        defaultMonth: ISOStringToDate(values.fom),
                                     },
                                 }}
                             />
                         </Block>
-                        <Knapp type="hoved">
+                        <Button type="submit">
                             <FormattedMessage id="uttaksplan.gåVidere" />
-                        </Knapp>
+                        </Button>
                     </Form.Form>
                 );
             }}

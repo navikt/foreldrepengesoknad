@@ -20,21 +20,19 @@ import SøknadRoutes from 'app/routes/routes';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { farMedmorFødselOgMorHarIkkeRettQuestionsConfig } from './farMedmorFødselOgMorHarIkkeRettQuestionsConfig';
+import {
+    FarMedmorFødselOgMorHarIkkeRettQuestionsPayload,
+    farMedmorFødselOgMorHarIkkeRettQuestionsConfig,
+} from './farMedmorFødselOgMorHarIkkeRettQuestionsConfig';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { Forelder } from 'app/types/Forelder';
 import { formaterNavn } from 'app/utils/personUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { DatepickerDateRange } from 'nav-datovelger';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
@@ -46,6 +44,9 @@ import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { DatepickerDateRange } from '@navikt/ds-datepicker';
+import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Button, GuidePanel } from '@navikt/ds-react';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -169,7 +170,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     ...formValues,
                     erMorUfør,
                     familiehendelsesdato: familiehendelsesdatoDate!,
-                });
+                } as FarMedmorFødselOgMorHarIkkeRettQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
 
@@ -190,7 +191,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isAnswered(FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad)}
                         >
                             {valgtStønadskonto && (
@@ -207,8 +208,8 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 />
                             )}
                         </Block>
-                        <Block padBottom="l" visible={visInfoOmPrematuruker === true}>
-                            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
+                            <GuidePanel>
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.informasjonPrematuruker"
                                     values={{
@@ -216,10 +217,10 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                         antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
                                     }}
                                 />
-                            </Veilederpanel>
+                            </GuidePanel>
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isIncluded(FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato)}
                         >
                             <FarMedmorFødselOgMorHarIkkeRettFormComponents.DatePicker
@@ -238,9 +239,9 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </FarMedmorFødselOgMorHarIkkeRettFormComponents.Form>
                 );

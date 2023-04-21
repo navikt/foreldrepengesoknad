@@ -1,18 +1,16 @@
 import React from 'react';
 
 import throttle from 'lodash.throttle';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { injectIntl, IntlShape } from 'react-intl';
-import { Block, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'uttaksplan/validering/tester/erTilleggsopplysningerGyldigTest';
-import { Textarea } from 'nav-frontend-skjema';
 import { Attachment } from 'app/types/Attachment';
+import { BodyLong, Label, ReadMore, Textarea } from '@navikt/ds-react';
 
 interface OwnProps {
     begrunnelse?: string;
     vedlegg?: Attachment[];
     onBegrunnelseTekstChange: (begrunnelse: string) => void;
-    //onVedleggChange: (vedlegg: AttachmentType[]) => void;
     intl: IntlShape;
 }
 
@@ -25,36 +23,7 @@ interface State {
 const getLabel = (intl: IntlShape) => {
     return (
         <>
-            <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.label')}</Element>
-            <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
-                <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
-                    <Block margin="s">
-                        <Element>
-                            {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}
-                        </Element>
-                        <Normaltekst>
-                            {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}
-                        </Normaltekst>
-                    </Block>
-                    <Block margin="s">
-                        <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Element>
-                        <Normaltekst>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</Normaltekst>
-                    </Block>
-                    <Block margin="s">
-                        <Element>
-                            {intlUtils(
-                                intl,
-                                'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
-                            )}
-                        </Element>
-                        <Normaltekst>
-                            {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering')}
-                        </Normaltekst>
-                    </Block>
-                    <Element>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Element>
-                    <Normaltekst>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</Normaltekst>
-                </div>
-            </UtvidetInformasjon>
+            <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.label')}</Label>
         </>
     );
 };
@@ -90,7 +59,7 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
 
         return (
             <div className="blokk-m">
-                <Block margin="l">
+                <Block margin="l" padBottom="xl">
                     <Textarea
                         value={this.state.begrunnelse}
                         maxLength={tilleggsopplysningerMaxLength}
@@ -98,6 +67,35 @@ class OppgiTilleggsopplysninger extends React.Component<Props, State> {
                         label={getLabel(intl)}
                         onChange={this.handleBegrunnelseChange}
                     />
+                    <ReadMore header={intlUtils(intl, 'uttaksplan.tilleggsopplysninger.apneLabel')}>
+                        <div style={{ backgroundColor: '#e9e7e7', padding: '1.5rem' }}>
+                            <Block margin="s">
+                                <Label>
+                                    {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift')}
+                                </Label>
+                                <BodyLong>
+                                    {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdomTilbakeITid')}
+                                </BodyLong>
+                            </Block>
+                            <Block margin="s">
+                                <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak.overskrift')}</Label>
+                                <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.uttak')}</BodyLong>
+                            </Block>
+                            <Block margin="s">
+                                <Label>
+                                    {intlUtils(
+                                        intl,
+                                        'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
+                                    )}
+                                </Label>
+                                <BodyLong>
+                                    {intlUtils(intl, 'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering')}
+                                </BodyLong>
+                            </Block>
+                            <Label>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom.overskrift')}</Label>
+                            <BodyLong>{intlUtils(intl, 'uttaksplan.tilleggsopplysninger.sykdom')}</BodyLong>
+                        </div>
+                    </ReadMore>
                 </Block>
             </div>
         );

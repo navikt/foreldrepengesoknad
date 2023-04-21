@@ -1,4 +1,4 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
+import { TidsperiodeDate, guid } from '@navikt/fp-common';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import {
@@ -13,7 +13,6 @@ import {
     tidperiodeOverlapperDato,
 } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
-import { guid } from 'nav-frontend-js-utils';
 import {
     isHull,
     isPeriodeUtenUttak,

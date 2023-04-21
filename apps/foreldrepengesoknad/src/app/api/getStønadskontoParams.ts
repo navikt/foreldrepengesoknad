@@ -1,4 +1,3 @@
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -8,6 +7,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { TilgjengeligeStønadskontoerParams } from './api';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {

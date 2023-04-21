@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
+import { Heading } from '@navikt/ds-react';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -32,7 +32,7 @@ type FormValues = Partial<{
     [BostedUtlandFormFields.landkode]: string;
 }>;
 
-const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues, string>();
+const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
 
 const mapBostedToFormValues = (bosted: BostedUtland): FormValues => {
     return {
@@ -71,10 +71,10 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
             onSubmit={onFormikSubmit}
             renderForm={({ values }) => {
                 return (
-                    <Form.Form onCancel={onCancel}>
-                        <Systemtittel tag="h1">
+                    <Form.Form onCancel={onCancel} showButtonArrows={false} submitButtonLabel="Legg til">
+                        <Heading size="medium" as="h1">
                             <FormattedMessage id={'utenlandsopphold.leggTilUtenlandsopphold.tittel'} />
-                        </Systemtittel>
+                        </Heading>
                         <Block>
                             <Form.DateIntervalPicker
                                 legend={intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom')}

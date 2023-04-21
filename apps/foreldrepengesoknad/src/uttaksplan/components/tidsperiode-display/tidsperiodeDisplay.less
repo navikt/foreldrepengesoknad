@@ -8,13 +8,13 @@
     &__dato-container {
         display: flex;
         justify-content: space-between;
-        width: 22rem;
+        width: 24rem;
     }
 
     &__dato {
         display: flex;
         justify-content: space-between;
-        width: 10rem;
+        width: 11rem;
     }
 
     @media (max-width: @mobile-breakpoint) {
@@ -22,11 +22,13 @@
 
         &__dato-container {
             margin-bottom: 1rem;
+            display: grid;
         }
 
         &__dato {
             flex-direction: column;
             width: 100%;
+            padding-bottom: 1rem;
         }
     }
 }

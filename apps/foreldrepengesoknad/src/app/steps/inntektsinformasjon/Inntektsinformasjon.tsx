@@ -1,8 +1,6 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -28,6 +26,7 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { BodyShort, Button } from '@navikt/ds-react';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const Inntektsinformasjon = () => {
@@ -73,7 +72,9 @@ const Inntektsinformasjon = () => {
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(formValues);
+                const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
+                    formValues as InntektsinformasjonFormData
+                );
 
                 return (
                     <Step
@@ -89,10 +90,9 @@ const Inntektsinformasjon = () => {
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">
-                                <Element>Utbetalinger fra NAV</Element>
-                                <Normaltekst>
+                                <BodyShort>
                                     Hvis du får utbetalinger fra NAV, trenger du ikke å opplyse om det i søknaden
-                                </Normaltekst>
+                                </BodyShort>
                             </Block>
 
                             <ArbeidsforholdInformasjon
@@ -104,14 +104,12 @@ const Inntektsinformasjon = () => {
                                 )}
                             />
 
-                            <InfoTilFiskere />
-
                             <Block padBottom="l">
                                 <Frilans
                                     frilansoppdrag={frilansoppdrag}
                                     setFrilansoppdrag={setFrilansoppdrag}
                                     visibility={visibility}
-                                    formValues={formValues}
+                                    formValues={formValues as InntektsinformasjonFormData}
                                 />
                             </Block>
 
@@ -120,7 +118,7 @@ const Inntektsinformasjon = () => {
                                     egenNæringInformasjon={egenNæringInformasjon}
                                     setEgenNæringsInformasjon={setEgenNæringsInformasjon}
                                     visibility={visibility}
-                                    formValues={formValues}
+                                    formValues={formValues as InntektsinformasjonFormData}
                                 />
                             </Block>
 
@@ -129,14 +127,18 @@ const Inntektsinformasjon = () => {
                                     andreInntekterInformasjon={andreInntekterInformasjon}
                                     setAndreInntekterInformasjon={setAndreInntekterInformasjon}
                                     visibility={visibility}
-                                    formValues={formValues}
+                                    formValues={formValues as InntektsinformasjonFormData}
                                 />
                             </Block>
 
+                            <Block padBottom="l">
+                                <InfoTilFiskere />
+                            </Block>
+
                             <Block textAlignCenter={true} visible={visibility.areAllQuestionsAnswered()}>
-                                <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                     {intlUtils(intl, 'søknad.gåVidere')}
-                                </Hovedknapp>
+                                </Button>
                             </Block>
                         </InntektsinformasjonFormComponents.Form>
                     </Step>

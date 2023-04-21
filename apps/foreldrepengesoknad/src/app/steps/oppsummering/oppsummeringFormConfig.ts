@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum OppsummeringFormField {
     harGodkjentOppsummering = 'harGodkjentOppsummering',
@@ -16,4 +16,4 @@ export const getInitialOppsummeringValues = (): OppsummeringFormData => {
     return initialOppsummeringValues;
 };
 
-export const OppsummeringFormComponents = getTypedFormComponents<OppsummeringFormField, OppsummeringFormData, string>();
+export const OppsummeringFormComponents = getTypedFormComponents<OppsummeringFormField, OppsummeringFormData>();

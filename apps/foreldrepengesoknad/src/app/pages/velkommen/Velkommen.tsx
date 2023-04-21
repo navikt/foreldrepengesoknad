@@ -1,4 +1,4 @@
-import { bemUtils, Block, intlUtils, LanguageToggle, Locale, Sidebanner } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, LanguageToggle, Locale } from '@navikt/fp-common';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -10,13 +10,10 @@ import {
     VelkommenFormData,
     VelkommenFormField,
     velkommenFormQuestions,
+    VelkommenQuestionsPayload,
 } from './velkommenFormConfig';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
-
-import './velkommen.less';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
 import SøknadRoutes from 'app/routes/routes';
 import { storeAppState } from 'app/utils/submitUtils';
@@ -35,6 +32,10 @@ import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtter
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Sak } from 'app/types/Sak';
+import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
+
+import './velkommen.less';
+import links from 'app/links/links';
 
 interface Props {
     fornavn: string;
@@ -44,7 +45,7 @@ interface Props {
     fnr: string;
 }
 
-const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onChangeLocale }) => {
+const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLocale }) => {
     const intl = useIntl();
     const søknad = useSøknad();
     const { dispatch, state } = useForeldrepengesøknadContext();
@@ -142,7 +143,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,
                     selectableBarn,
-                });
+                } as VelkommenQuestionsPayload);
                 const valgtBarnId = values.valgteBarn;
                 const valgtBarn =
                     valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
@@ -159,30 +160,47 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                             availableLocales={['nb', 'nn']}
                             toggle={(l: Locale) => onChangeLocale(l)}
                         />
-                        <Sidebanner
-                            dialog={{
-                                title: intlUtils(intl, 'velkommen.bobletittel', { name: fornavn }),
-                                text: (
-                                    <>
-                                        <Block padBottom="m">
-                                            <FormattedMessage id={'velkommen.bobletekst'} />
-                                        </Block>
-                                    </>
-                                ),
-                            }}
-                        />
-
                         <div className={bem.block}>
-                            <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
-                                {intlUtils(intl, 'velkommen.tittel')}
-                            </Innholdstittel>
+                            <Block>
+                                <Heading size="xlarge" className={`${bem.element('tittel')}`}>
+                                    {intlUtils(intl, 'velkommen.tittel')}
+                                </Heading>
+                            </Block>
+                            <Block padBottom="l">
+                                <GuidePanel poster>
+                                    <Block padBottom="m">{intlUtils(intl, 'velkommen.guidepanel.del1')}</Block>{' '}
+                                    <Block>
+                                        <FormattedMessage
+                                            id="velkommen.guidepanel.del2"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href={links.foreldrepenger}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </Block>
+                                </GuidePanel>
+                            </Block>
                             <Block padBottom="l" visible={visibility.isVisible(VelkommenFormField.valgteBarn)}>
                                 <BarnVelger
                                     selectableBarn={sortedSelectableBarn}
                                     visibility={visibility}
-                                    formValues={values}
+                                    formValues={values as VelkommenFormData}
                                     setFieldValue={setFieldValue}
                                 />
+                            </Block>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
+                            >
+                                <Alert variant="info">{intlUtils(intl, 'velkommen.lagring.info')}</Alert>
                             </Block>
                             <Block
                                 padBottom="l"
@@ -200,23 +218,22 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                                         <Block padBottom="m">
                                             <DinePlikter />
                                         </Block>
-                                        <Block padBottom="l">
-                                            <FormattedMessage id="velkommen.samtykkeIntro.del2" />
-                                        </Block>
-                                        <Block padBottom="l">
-                                            <FormattedMessage id="velkommen.samtykkeIntro.del3" />
-                                        </Block>
                                     </>
                                 </VelkommenFormComponents.ConfirmationCheckbox>
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                    >
                                         {knapptekst}
-                                    </Hovedknapp>
+                                    </Button>
                                 </div>
                             </Block>
-                            <Normaltekst className={bem.element('personopplysningerLink')}>
+                            <BodyShort className={bem.element('personopplysningerLink')}>
                                 <a
                                     className="lenke"
                                     href="#"
@@ -227,7 +244,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ fornavn, locale, saker, onC
                                 >
                                     <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                                 </a>
-                            </Normaltekst>
+                            </BodyShort>
                             <DinePersonopplysningerModal
                                 isOpen={isDinePersonopplysningerModalOpen}
                                 onRequestClose={() => setDinePersonopplysningerModalOpen(false)}

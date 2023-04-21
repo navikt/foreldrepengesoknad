@@ -1,11 +1,10 @@
 import { intlUtils } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
 import { isAttachmentWithError } from 'app/utils/vedleggUtils';
-import EtikettBase from 'nav-frontend-etiketter';
-import Lenke from 'nav-frontend-lenker';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';
+import { Link, Tag } from '@navikt/ds-react';
 
 import './oppsummeringAvDokumentasjon.less';
 
@@ -24,9 +23,9 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
         return vedlegg
             .filter((a: Attachment) => !isAttachmentWithError(a))
             .map(({ url, id, filename }) => (
-                <Lenke href={url!} key={id} target="_blank">
+                <Link href={url!} key={id} target="_blank">
                     {filename}
-                </Lenke>
+                </Link>
             ));
     };
 
@@ -36,11 +35,11 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
             ledetekst={ledetekst || intlUtils(intl, 'vedlagtdokumentasjon')}
         >
             {vedlegg && vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
-                renderListOfAttachmentPreviewLinks()
+                <div>{renderListOfAttachmentPreviewLinks()}</div>
             ) : (
-                <EtikettBase type="fokus">
-                    {intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}
-                </EtikettBase>
+                <div>
+                    <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
+                </div>
             )}
         </KompleksFeltoppsummering>
     );

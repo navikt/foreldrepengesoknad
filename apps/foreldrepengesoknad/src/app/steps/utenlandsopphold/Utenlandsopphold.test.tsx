@@ -1,6 +1,5 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
@@ -11,9 +10,6 @@ const { Default } = composeStories(stories);
 const HVOR_SKAL_DU_BO_LABEL = 'Hvor skal du bo de neste 12 månedene?';
 const LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP = 'Legg til nytt utenlandsopphold';
 const GÅ_VIDERE_KNAPP = 'Gå videre';
-
-//TODO (TOR) Bør ikkje ligga i test
-Modal.setAppElement(document.createElement('div'));
 
 describe('<Utenlandsopphold>', () => {
     it('skal kun bo og har bodd i Norge', async () => {
@@ -58,8 +54,8 @@ describe('<Utenlandsopphold>', () => {
         const hvilkeLandInput = screen.getByLabelText('Hvilket land skal du bo i?');
         await userEvent.type(hvilkeLandInput, 'Aruba');
 
-        expect(await screen.findByText('Ok')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ok'));
+        expect(await screen.findByText('Legg til')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
@@ -98,8 +94,8 @@ describe('<Utenlandsopphold>', () => {
         const hvilkeLandInput = screen.getByLabelText('Hvilket land bodde du i?');
         await userEvent.type(hvilkeLandInput, 'Aruba');
 
-        expect(await screen.findByText('Ok')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ok'));
+        expect(await screen.findByText('Legg til')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });

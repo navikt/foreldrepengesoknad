@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Element } from 'nav-frontend-typografi';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { UttaksplanHexColor } from 'uttaksplan/types/UttaksplanHexColor';
@@ -10,6 +9,7 @@ import { TilgjengeligeDager } from 'app/types/TilgjengeligeDager';
 import Personkort from 'app/components/personkort/Personkort';
 
 import './tilgjengeligeDagerGraf.less';
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     tilgjengeligeDager: TilgjengeligeDager;
@@ -128,19 +128,19 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({
             </div>
             {!erFarEllerMedmor && tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
                 <div style={{ paddingTop: '0.625rem' }}>
-                    <Element>
+                    <Label>
                         <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfo" values={{ navn: navnMor }} />
-                    </Element>
+                    </Label>
                 </div>
             )}
             {erFarEllerMedmor && tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
                 <div style={{ paddingTop: '0.625rem' }}>
-                    <Element>
+                    <Label>
                         <FormattedMessage
                             id="tilgjengeligeDagerGraf.uttakFørFødselInfoFarMedmor"
                             values={{ navn: navnMor }}
                         />
-                    </Element>
+                    </Label>
                 </div>
             )}
         </div>
@@ -160,9 +160,9 @@ const AleneomsorgGraf: React.FunctionComponent<Props> = ({ tilgjengeligeDager, e
         <div className={bem.block}>
             <div style={{ position: 'relative' }}>
                 <div className={bem.element('barTitle')}>
-                    <Element>
+                    <Label>
                         <FormattedMessage id="tilgjengeligeDagerGraf.periodeMedForeldrepenger" />
-                    </Element>
+                    </Label>
                 </div>
             </div>
             <Multibar
@@ -175,9 +175,9 @@ const AleneomsorgGraf: React.FunctionComponent<Props> = ({ tilgjengeligeDager, e
             />
             {!erFarEllerMedmor && tilgjengeligeDager.dagerForeldrepengerFørFødsel > 0 && (
                 <div style={{ paddingTop: '0.625rem' }}>
-                    <Element>
+                    <Label>
                         <FormattedMessage id="tilgjengeligeDagerGraf.uttakFørFødselInfoIkkeDeltUttak" />
-                    </Element>
+                    </Label>
                 </div>
             )}
         </div>

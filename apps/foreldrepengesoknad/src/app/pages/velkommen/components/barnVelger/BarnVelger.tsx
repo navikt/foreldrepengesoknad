@@ -4,12 +4,13 @@ import { IntlShape, useIntl } from 'react-intl';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import SøknadStatusEtikett from '../SøknadStatus';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
-import './barnVelger.less';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 import { Sak } from 'app/types/Sak';
 import { RegistrertAnnenForelder } from 'app/types/Person';
+
+import './barnVelger.less';
+import { BodyShort } from '@navikt/ds-react';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -51,7 +52,12 @@ const getRadioForNyttBarn = (intl: IntlShape): any => {
     return {
         label: (
             <>
-                <b> {intlUtils(intl, 'omBarnet.gjelderAnnetBarn')}</b>
+                <BodyShort className="radioTittle" size="medium">
+                    {intlUtils(intl, 'omBarnet.gjelderAnnetBarn')}
+                </BodyShort>
+                <Block margin="l">
+                    <BodyShort size="small"> {intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}</BodyShort>
+                </Block>
             </>
         ),
         value: SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN,
@@ -60,7 +66,11 @@ const getRadioForNyttBarn = (intl: IntlShape): any => {
 };
 
 const getSakstatus = (sakErFerdigbehandlet: boolean) => {
-    return <SøknadStatusEtikett sakErFerdigbehandlet={sakErFerdigbehandlet}></SøknadStatusEtikett>;
+    return (
+        <Block className="radioDescription" margin="l">
+            <SøknadStatusEtikett sakErFerdigbehandlet={sakErFerdigbehandlet}></SøknadStatusEtikett>
+        </Block>
+    );
 };
 
 const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: IntlShape): string => {
@@ -83,12 +93,17 @@ const getRadioForUfødtBarn = (barn: SelectableBarn, intl: IntlShape): any => {
     return {
         label: (
             <>
-                <b> {tittel}</b>
+                <BodyShort className="radioTittle" size="medium">
+                    {tittel}
+                </BodyShort>
+
                 {harSak && (
-                    <div>
-                        <p>{saksnummerTekst}</p>
+                    <>
+                        <BodyShort size="small" className="radioDescription">
+                            {saksnummerTekst}
+                        </BodyShort>
                         {saksStatus}
-                    </div>
+                    </>
                 )}
             </>
         ),
@@ -124,13 +139,15 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
     return {
         label: (
             <>
-                <b>{navnTekstEllerBarnMedUkjentNavnTekst}</b>
+                <BodyShort size="medium" className="radioTittle">
+                    {navnTekstEllerBarnMedUkjentNavnTekst}
+                </BodyShort>
                 {barn.alleBarnaLever && (
-                    <p>
+                    <BodyShort size="small" className="radioDescription">
                         {situasjonTekst} {fødtAdoptertDatoTekst}
-                    </p>
+                    </BodyShort>
                 )}
-                <p>{saksnummerTekst}</p>
+                <BodyShort size="small">{saksnummerTekst}</BodyShort>
                 {saksStatus !== undefined && saksStatus}
             </>
         ),
@@ -159,11 +176,9 @@ const BarnVelger: FunctionComponent<Props> = (props: Props) => {
 
     return (
         <Block visible={props.visibility.isVisible(VelkommenFormField.valgteBarn)}>
-            <Block padBottom="l">
-                <Normaltekst>{intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.info')}</Normaltekst>
-            </Block>
-            <Block padBottom="l">
+            <Block margin="xl">
                 <VelkommenFormComponents.RadioGroup
+                    legend={intlUtils(intl, 'velkommen.intro.harSaker.barnVelger.label')}
                     name={VelkommenFormField.valgteBarn}
                     validate={validateHarValgtEtBarn(intl)}
                     radios={props.selectableBarn

@@ -1,12 +1,14 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 
 import InteractiveListElement from './InteractiveListElement';
 
-export default {
+const defaultExport: Meta = {
     title: 'components/InteractiveListElement',
     component: InteractiveListElement,
 };
+
+export default defaultExport;
 
 export const Default: StoryFn<typeof InteractiveListElement> = () => (
     <InteractiveListElement

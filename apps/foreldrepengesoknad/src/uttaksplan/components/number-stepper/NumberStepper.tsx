@@ -41,7 +41,6 @@ const NumberStepper: React.FunctionComponent<Props> = ({
             </div>
             <div className={bem.element('input')}>
                 <input
-                    className="skjemaelement__input input--fullbredde"
                     type="number"
                     value={value}
                     onChange={(evt) => onChange(parseInt(evt.target.value, 10))}

@@ -330,7 +330,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     />
                 </Block>
             )}
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}
                     uttaksplan={uttaksplan}
@@ -345,9 +345,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
                 <VeilederInfo
                     messages={uttaksplanVeilederInfo}
-                    paneltype="plakat"
-                    kompakt={true}
-                    veilederStil={'normal'}
                     ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
                 />
             </Block>

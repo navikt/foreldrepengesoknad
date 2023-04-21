@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ReactNode } from 'react';
-import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
+import { bemUtils } from '@navikt/fp-common';
+import { Accordion } from '@navikt/ds-react';
 
 import './oppsummeringsPanel.less';
-import { bemUtils } from '@navikt/fp-common';
 
 interface Props {
     title: string;
@@ -13,9 +13,12 @@ const OppsummeringsPanel: FunctionComponent<Props> = ({ title, children }) => {
     const bem = bemUtils('oppsummeringsPanel');
 
     return (
-        <EkspanderbartPanel className={bem.block} tittel={title}>
-            <div className={bem.element('content')}>{children}</div>
-        </EkspanderbartPanel>
+        <Accordion className={bem.block}>
+            <Accordion.Item>
+                <Accordion.Header>{title}</Accordion.Header>
+                <Accordion.Content>{children}</Accordion.Content>
+            </Accordion.Item>
+        </Accordion>
     );
 };
 

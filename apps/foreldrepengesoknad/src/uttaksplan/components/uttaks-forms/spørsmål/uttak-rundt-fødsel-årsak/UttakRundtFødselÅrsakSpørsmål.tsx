@@ -35,11 +35,10 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
     return (
         <>
             <Block padBottom="l">
-                <PeriodeUttakFormComponents.RadioPanelGroup
+                <PeriodeUttakFormComponents.RadioGroup
                     legend={intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.spørsmål')}
                     name={fieldName}
                     radios={radios}
-                    useTwoColumns={true}
                     validate={(value) => {
                         if (!hasValue(value)) {
                             return intlUtils(intl, 'uttaksplan.validering.uttakRundtFødselFarMedmorWLB');

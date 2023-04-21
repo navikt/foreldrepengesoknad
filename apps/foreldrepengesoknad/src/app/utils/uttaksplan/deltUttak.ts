@@ -5,7 +5,6 @@ import { Forelder } from 'app/types/Forelder';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { guid } from 'nav-frontend-js-utils';
 import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
@@ -20,6 +19,7 @@ import {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '../wlbUtils';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
+import { guid } from '@navikt/fp-common';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,

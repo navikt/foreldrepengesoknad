@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { FormattedMessage } from 'react-intl';
 import { formaterNavn } from 'app/utils/personUtils';
-import './registrertePersonalia.less';
 import { bemUtils } from '@navikt/fp-common';
+import { BodyShort, Label } from '@navikt/ds-react';
+
+import './registrertePersonalia.less';
 
 interface Props {
     person: RegistrertAnnenForelder | RegistrertBarn;
@@ -25,26 +26,26 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
     const bem = bemUtils('registrertePersonalia');
     return (
         <div className={bem.block}>
-            <Element className={bem.element('navn')}>
+            <Label className={bem.element('navn')}>
                 {altTekstHvisUkjentNavn !== undefined
                     ? altTekstHvisUkjentNavn
                     : formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
-            </Element>
+            </Label>
             {fødselsnummerForVisning !== undefined && (
-                <Normaltekst>
+                <BodyShort>
                     <FormattedMessage
                         id="registrertePersonalia.fødselsnummer"
                         values={{ fnr: fødselsnummerForVisning }}
                     />
-                </Normaltekst>
+                </BodyShort>
             )}
             {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
-                <Normaltekst>
+                <BodyShort>
                     <FormattedMessage
                         id="registrertePersonalia.fødselsdato"
                         values={{ fødselsdato: fødselsdatoForVisning }}
                     />
-                </Normaltekst>
+                </BodyShort>
             )}
         </div>
     );

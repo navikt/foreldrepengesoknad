@@ -1,11 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import Modal from 'nav-frontend-modal';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { bemUtils, Block } from '@navikt/fp-common';
+import { FormattedMessage } from 'react-intl';
+import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 import './slettUttaksplanModal.less';
-import { FormattedMessage } from 'react-intl';
 
 interface Props {
     isOpen: boolean;
@@ -32,31 +30,31 @@ const SlettUttaksplanModal: FunctionComponent<Props> = ({
     return (
         <Modal
             className={bem.block}
-            isOpen={isOpen}
+            open={isOpen}
             closeButton={true}
-            onRequestClose={onClose}
-            contentLabel="Slett uttaksplanen din"
+            onClose={onClose}
+            aria-label="Slett uttaksplanen din"
         >
             <div className={bem.element('content')}>
                 <Block padBottom="l">
-                    <Undertittel>
+                    <Heading size="small">
                         <FormattedMessage id="uttaksplan.slettPlan.modal.tittel" />
-                    </Undertittel>
-                    <Normaltekst>
+                    </Heading>
+                    <BodyShort>
                         <FormattedMessage id={innhold1Id} />
-                    </Normaltekst>
+                    </BodyShort>
                     <br />
-                    <Normaltekst>
+                    <BodyShort>
                         <FormattedMessage id={innhold2Id} />
-                    </Normaltekst>
+                    </BodyShort>
                 </Block>
                 <div className={bem.element('knappWrapper')}>
-                    <Hovedknapp htmlType="button" onClick={handleSlettUttaksplanModalBekreft}>
+                    <Button onClick={handleSlettUttaksplanModalBekreft}>
                         <FormattedMessage id="uttaksplan.slettPlan.slett" />
-                    </Hovedknapp>
-                    <Knapp onClick={onClose}>
+                    </Button>
+                    <Button variant="secondary" onClick={onClose}>
                         <FormattedMessage id="uttaksplan.slettPlan.avbryt" />
-                    </Knapp>
+                    </Button>
                 </div>
             </div>
         </Modal>

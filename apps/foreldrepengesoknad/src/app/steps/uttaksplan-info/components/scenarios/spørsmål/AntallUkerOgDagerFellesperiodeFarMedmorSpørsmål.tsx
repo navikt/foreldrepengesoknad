@@ -1,7 +1,6 @@
-import { bemUtils, intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
-import { getNumberFromNumberInputValue, TypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
+import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { Label, ReadMore } from '@navikt/ds-react';
+import { getNumberFromNumberInputValue, TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import RangeIcon from '../../fordelingFellesperiode/range-input/RangeIcon';
@@ -64,18 +63,12 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
     const intl = useIntl();
 
     return (
-        <SkjemaGruppe
-            legend={
-                <Element>
+        <>
+            <legend>
+                <Label>
                     <FormattedMessage id="uttaksplaninfo.fellesperiode.tittel" />
-                </Element>
-            }
-            description={
-                <UtvidetInformasjon apneLabel={intlUtils(intl, 'uttaksplaninfo.fellesperiode.apneLabel')}>
-                    <FormattedMessage id="uttaksplaninfo.fellesperiode.lesMerInfo" />
-                </UtvidetInformasjon>
-            }
-        >
+                </Label>
+            </legend>
             <div className={bem.block}>
                 <div className={bem.element('stepper')}>
                     <div className={bem.element('icon')}>
@@ -98,7 +91,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                         integerValue={true}
                         name={ukerFieldName}
                         label={intlUtils(intl, 'uker.fellesperiode')}
-                        bredde="XS"
+                        width="xs"
                         step="1"
                     />
                     <div className={bem.element('icon')}>
@@ -132,7 +125,7 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                         integerValue={true}
                         name={dagerFieldName}
                         label={intlUtils(intl, 'dager.fellesperiode')}
-                        bredde="XS"
+                        width="xs"
                         step="1"
                     />
                     <div className={bem.element('icon')}>
@@ -146,7 +139,12 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: FunctionComponent<Props
                     </div>
                 </div>
             </div>
-        </SkjemaGruppe>
+            <Block margin="m">
+                <ReadMore header={intlUtils(intl, 'uttaksplaninfo.fellesperiode.apneLabel')}>
+                    <FormattedMessage id="uttaksplaninfo.fellesperiode.lesMerInfo" />
+                </ReadMore>
+            </Block>
+        </>
     );
 };
 

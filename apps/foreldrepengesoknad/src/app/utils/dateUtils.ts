@@ -1,5 +1,4 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { isISODateString } from 'nav-datovelger';
 import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
@@ -9,7 +8,6 @@ import { IntlShape } from 'react-intl';
 import { formatDate, formatDateExtended, hasValue, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { RegistrertBarn } from 'app/types/Person';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Alder } from 'app/types/Alder';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import {
@@ -24,6 +22,8 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import FeatureToggle from 'app/FeatureToggle';
 import { isFeatureEnabled } from './toggleUtils';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);

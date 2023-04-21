@@ -1,7 +1,6 @@
-import VeilederNormal from 'app/assets/VeilederNormal';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { GuidePanel } from '@navikt/ds-react';
 
 import './annenForelderVeileder.less';
 
@@ -17,12 +16,12 @@ const AvtaleAtFarTarUtForeldrepengerVeileder: React.FunctionComponent<Props> = (
 
     return (
         <div className="annenForelderVeileder">
-            <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+            <GuidePanel>
                 <FormattedMessage
                     id="annenForelder.veileder.aleneOmsorg.forBarnet"
                     values={{ navn: annenForelderNavn }}
                 />
-            </Veilederpanel>
+            </GuidePanel>
         </div>
     );
 };

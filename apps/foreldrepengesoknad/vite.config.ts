@@ -2,12 +2,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import checker from 'vite-plugin-checker';
 
 export default defineConfig({
     plugins: [
         react({
             include: '**/*.{jsx,tsx}',
         }),
+        checker({ typescript: true }),
     ],
     resolve: {
         alias: {
@@ -23,9 +25,6 @@ export default defineConfig({
     },
     optimizeDeps: {
         include: ['@navikt/fp-common'],
-    },
-    server: {
-        port: 8080,
     },
     test: {
         globals: true,

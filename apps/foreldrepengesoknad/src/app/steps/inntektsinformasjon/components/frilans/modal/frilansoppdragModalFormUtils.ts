@@ -1,10 +1,10 @@
 import { hasValue } from '@navikt/fp-common';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { FrilansoppdragModalFormData, FrilansoppdragModalFormField } from './frilansoppdragModalFormConfig';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const initialFrilansoppdragModalValues: FrilansoppdragModalFormData = {
     [FrilansoppdragModalFormField.navnOppdragsgiver]: '',

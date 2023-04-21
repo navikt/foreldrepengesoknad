@@ -3,11 +3,10 @@ import classnames from 'classnames';
 
 import { useIntl } from 'react-intl';
 
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import Lenke from 'nav-frontend-lenker';
 import { bemUtils, intlUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
 import { Attachment as AttachmentType } from 'app/types/Attachment';
 import { bytesString } from 'app/utils/globalUtil';
+import { Link, Loader } from '@navikt/ds-react';
 
 import './attachment.less';
 
@@ -28,15 +27,15 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
         <div className={cls}>
             {attachment.pending && (
                 <div className={bem.element('spinner')}>
-                    <NavFrontendSpinner type="S" />
+                    <Loader size="small" />
                 </div>
             )}
             <VedleggIkon className={bem.element('icon')} width={20} height={20} />
             <div className={bem.element('filename')}>
                 {attachment.url ? (
-                    <Lenke href={attachment.url} target="_blank">
+                    <Link href={attachment.url} target="_blank">
                         {attachment.filename}
-                    </Lenke>
+                    </Link>
                 ) : (
                     <span>{attachment.filename}</span>
                 )}

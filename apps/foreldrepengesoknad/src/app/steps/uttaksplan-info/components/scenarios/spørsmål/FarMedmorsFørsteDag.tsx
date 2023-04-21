@@ -1,5 +1,4 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import { dateToISOString, TypedFormComponents } from '@navikt/sif-common-formik/lib';
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
@@ -8,6 +7,7 @@ import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUti
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { validateStartdatoFarMedmor } from '../far-medmor-fødsel-og-mor-har-ikke-rett/validation/farMedmorFødselOgMorHarIkkeRettValidering';
+import { TypedFormComponents, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;

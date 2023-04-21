@@ -1,9 +1,9 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { finnEnum } from './adopsjonStartdatoValg';
 import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const initialMorFarAdopsjonValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: YesOrNo.UNANSWERED,

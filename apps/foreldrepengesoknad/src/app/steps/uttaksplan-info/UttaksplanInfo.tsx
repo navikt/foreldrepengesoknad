@@ -11,7 +11,6 @@ import getStønadskontoParams, {
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -22,10 +21,11 @@ import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/pe
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isFødtBarn } from 'app/context/types/Barn';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import SøknadRoutes from 'app/routes/routes';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { Loader } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const UttaksplanInfo = () => {
     const intl = useIntl();
@@ -166,7 +166,7 @@ const UttaksplanInfo = () => {
     ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <NavFrontendSpinner type="XXL" />
+                <Loader size="2xlarge" />
             </div>
         );
     }

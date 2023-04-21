@@ -2,10 +2,10 @@ import React from 'react';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 import HarArbeidsforhold from './HarArbeidsforhold';
+import { BodyShort, Label, ReadMore } from '@navikt/ds-react';
 
 import './arbeidsforholdInformasjon.less';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { UtvidetInformasjon } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -14,17 +14,17 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
     return (
-        <>
-            <Element>Dine arbeidsforhold</Element>
-            <UtvidetInformasjon apneLabel="Les mer om dine arbeidsforhold">
-                <Normaltekst>
-                    Er det feil eller mangler i informasjonen om dine arbeidsforhold? Da må du be din arbeidsgiver
-                    oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.
-                </Normaltekst>
-            </UtvidetInformasjon>
+        <Block padBottom="xl">
+            <Label>Dine arbeidsforhold</Label>
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
-        </>
+            <ReadMore header="Finner du feil eller mangler?">
+                <BodyShort>
+                    Informasjonen er hentet fra Arbeidsgiver- og arbeidstakerregisteret. Derfor må du be din
+                    arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.
+                </BodyShort>
+            </ReadMore>
+        </Block>
     );
 };
 

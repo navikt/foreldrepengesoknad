@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum FarMedmorFødselBeggeHarRettFormField {
     dekningsgrad = 'dekningsgrad',
@@ -18,6 +18,5 @@ export interface FarMedmorFødselBeggeHarRettFormData {
 
 export const FarMedmorFødselBeggeHarRettFormComponents = getTypedFormComponents<
     FarMedmorFødselBeggeHarRettFormField,
-    FarMedmorFødselBeggeHarRettFormData,
-    string
+    FarMedmorFødselBeggeHarRettFormData
 >();

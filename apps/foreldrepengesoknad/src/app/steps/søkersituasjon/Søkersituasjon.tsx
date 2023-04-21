@@ -1,7 +1,6 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -15,13 +14,14 @@ import {
     SøkersituasjonFormData,
     SøkersituasjonFormField,
 } from './søkersituasjonFormConfig';
-import søkersituasjonQuestionsConfig from './søkersituasjonQuestionsConfig';
+import søkersituasjonQuestionsConfig, { SøkersituasjonQuestionsPayload } from './søkersituasjonQuestionsConfig';
 import { mapSøkersituasjonFormDataToState } from './søkersituasjonUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { Button } from '@navikt/ds-react';
 
 const Søkersituasjon = () => {
     const intl = useIntl();
@@ -51,7 +51,7 @@ const Søkersituasjon = () => {
                 const visibility = søkersituasjonQuestionsConfig.getVisbility({
                     ...formValues,
                     søkerKjønn: kjønn,
-                });
+                } as SøkersituasjonQuestionsPayload);
                 const allQuestionsAnswered = visibility.areAllQuestionsAnswered();
                 return (
                     <Step
@@ -67,7 +67,7 @@ const Søkersituasjon = () => {
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>
                                 <Block>
-                                    <SøkersituasjonFormComponents.RadioPanelGroup
+                                    <SøkersituasjonFormComponents.RadioGroup
                                         name={SøkersituasjonFormField.situasjon}
                                         radios={[
                                             {
@@ -79,7 +79,6 @@ const Søkersituasjon = () => {
                                                 value: 'adopsjon',
                                             },
                                         ]}
-                                        useTwoColumns={true}
                                         legend={intlUtils(intl, 'søkersituasjon.text.situasjon')}
                                     />
                                 </Block>
@@ -88,9 +87,9 @@ const Søkersituasjon = () => {
                                 </Block>
                                 {allQuestionsAnswered && (
                                     <Block textAlignCenter={true} margin="l">
-                                        <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                             {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Hovedknapp>
+                                        </Button>
                                     </Block>
                                 )}
                             </div>

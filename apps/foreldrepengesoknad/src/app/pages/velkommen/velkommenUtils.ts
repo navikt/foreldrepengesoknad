@@ -1,5 +1,4 @@
 import { Sak } from 'app/types/Sak';
-import { guid } from 'nav-frontend-js-utils';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { Familiehendelse } from 'app/types/Familiehendelse';
 import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
@@ -13,6 +12,7 @@ import {
     getDødeBarnetForMerEnn3MånederSiden,
     getLeverBarnet,
 } from 'app/utils/barnUtils';
+import { guid } from '@navikt/fp-common';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],

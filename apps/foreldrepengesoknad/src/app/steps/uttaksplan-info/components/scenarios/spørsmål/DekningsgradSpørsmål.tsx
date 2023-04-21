@@ -1,10 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { TypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { intlUtils, UtvidetInformasjon } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { ReadMore } from '@navikt/ds-react';
 
 interface Props {
     FormKomponent: TypedFormComponents<any, any, any>;
@@ -27,31 +28,30 @@ const DekningsgradSpørsmål: FunctionComponent<Props> = ({
         ? 'uttaksplaninfo.dekningsgrad.label.deltUttak'
         : 'uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak';
     return (
-        <FormKomponent.RadioPanelGroup
-            name={dekningsgradFeltNavn}
-            radios={[
-                {
-                    label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
-                        antallUker: getAntallUker(tilgjengeligeStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]),
-                    }),
-                    value: Dekningsgrad.HUNDRE_PROSENT,
-                },
-                {
-                    label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
-                        antallUker: getAntallUker(tilgjengeligeStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]),
-                    }),
-                    value: Dekningsgrad.ÅTTI_PROSENT,
-                },
-            ]}
-            legend={intlUtils(intl, spørsmålTekst)}
-            description={
-                <UtvidetInformasjon apneLabel="Les mer om lengden på foreldrepengeperioden">
-                    Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan
-                    ikke endres senere.
-                </UtvidetInformasjon>
-            }
-            useTwoColumns={true}
-        />
+        <Block padBottom="l">
+            <FormKomponent.RadioGroup
+                name={dekningsgradFeltNavn}
+                radios={[
+                    {
+                        label: intlUtils(intl, 'uttaksplaninfo.49Uker', {
+                            antallUker: getAntallUker(tilgjengeligeStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]),
+                        }),
+                        value: Dekningsgrad.HUNDRE_PROSENT,
+                    },
+                    {
+                        label: intlUtils(intl, 'uttaksplaninfo.59Uker', {
+                            antallUker: getAntallUker(tilgjengeligeStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]),
+                        }),
+                        value: Dekningsgrad.ÅTTI_PROSENT,
+                    },
+                ]}
+                legend={intlUtils(intl, spørsmålTekst)}
+            />
+            <ReadMore header="Les mer om lengden på foreldrepengeperioden">
+                Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke
+                endres senere.
+            </ReadMore>
+        </Block>
     );
 };
 

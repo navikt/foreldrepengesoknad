@@ -1,5 +1,5 @@
+import { isISODateString } from '@navikt/ds-datepicker';
 import moment from 'moment';
-import { isISODateString } from 'nav-datovelger';
 
 export const dateStringToDateObjectMapper = (_key: string, value: string) => {
     if (isISODateString(value)) {

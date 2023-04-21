@@ -2,7 +2,7 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { hasValue } from '@navikt/fp-common';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 
-interface MorFødselQuestionsPayload extends MorFødselFormData {
+export interface MorFødselQuestionsPayload extends MorFødselFormData {
     harRettPåForeldrepengerINorge: boolean | undefined;
     erAleneOmOmsorg: boolean | undefined;
 }

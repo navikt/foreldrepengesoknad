@@ -1,6 +1,6 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Questions, QuestionConfig } from '@navikt/sif-common-question-config/lib';
 import { SelectableBarn } from './components/barnVelger/BarnVelger';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum VelkommenFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -17,7 +17,7 @@ export const getInitialVelkommenValues = (harForståttRettigheterOgPlikter: bool
     [VelkommenFormField.valgteBarn]: undefined,
 });
 
-interface VelkommenQuestionsPayload extends VelkommenFormData {
+export interface VelkommenQuestionsPayload extends VelkommenFormData {
     selectableBarn: SelectableBarn[];
 }
 

@@ -1,6 +1,4 @@
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
-import Modal from 'nav-frontend-modal';
-import { Undertittel } from 'nav-frontend-typografi';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -18,14 +16,12 @@ import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import andreInntekterModalQuestionsConfig from './andreInntekterModalQuestionsConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { AttachmentType } from 'app/types/AttachmentType';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederNormal from 'app/assets/VeilederNormal';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validation/andreInntekterValidation';
-
-import './andreInntekterModal.less';
 import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
+import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
+
+import './andreInntekterModal.less';
 
 interface Props {
     isOpen: boolean;
@@ -72,9 +68,9 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
 
     return (
         <Modal
-            isOpen={isOpen}
-            contentLabel={contentLabel}
-            onRequestClose={onRequestClose}
+            open={isOpen}
+            aria-label={contentLabel}
+            onClose={onRequestClose}
             closeButton={true}
             shouldCloseOnOverlayClick={false}
             className={bem.block}
@@ -83,7 +79,9 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                 initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt)}
                 onSubmit={onValidSubmit}
                 renderForm={({ values: formValues }) => {
-                    const visibility = andreInntekterModalQuestionsConfig.getVisbility(formValues);
+                    const visibility = andreInntekterModalQuestionsConfig.getVisbility(
+                        formValues as AndreInntekterFormData
+                    );
 
                     return (
                         <AndreInntekterModalFormComponents.Form
@@ -91,12 +89,13 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                             cleanup={(values) => cleanupAndreInntekterForm(values, visibility)}
                         >
                             <Block padBottom="l">
-                                <Undertittel className={bem.element('tittel')}>
+                                <Heading size="small" className={bem.element('tittel')}>
                                     <FormattedMessage id="inntektsinformasjon.andreInntekterModal.tittel" />
-                                </Undertittel>
+                                </Heading>
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.type)}>
-                                <AndreInntekterModalFormComponents.RadioPanelGroup
+                                <AndreInntekterModalFormComponents.RadioGroup
+                                    legend="Andre inntekter"
                                     name={AndreInntekterFormField.type}
                                     radios={[
                                         { label: 'Jobb i utlandet', value: AnnenInntektType.JOBB_I_UTLANDET },
@@ -117,7 +116,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                 padBottom="l"
                                 visible={visibility.isVisible(AndreInntekterFormField.navnPåArbeidsgiver)}
                             >
-                                <AndreInntekterModalFormComponents.Input
+                                <AndreInntekterModalFormComponents.TextField
                                     name={AndreInntekterFormField.navnPåArbeidsgiver}
                                     label={navnPåArbeidsgiverLabel}
                                     validate={validateRequiredTextInputField(navnPåArbeidsgiverLabel, intl)}
@@ -130,7 +129,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
-                                    validate={validateAnnenInntektFom(intl, formValues.tom)}
+                                    validate={validateAnnenInntektFom(intl, formValues.tom!)}
                                     maxDate={dayjs().toDate()}
                                 />
                             </Block>
@@ -147,26 +146,27 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
-                                    validate={validateAnnenInntektTom(intl, formValues.fom)}
+                                    validate={validateAnnenInntektTom(intl, formValues.fom!)}
                                     maxDate={dayjs().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.dokumentasjon)}>
-                                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
-                                    <FormattedMessage id={getVeilederMessageId(formValues)} />
-                                </Veilederpanel>
+                                <GuidePanel>
+                                    <FormattedMessage id={getVeilederMessageId(formValues as AndreInntekterFormData)} />
+                                </GuidePanel>
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.dokumentasjon)}>
                                 <FormikFileUploader
+                                    legend="Dokumentasjon av andre inntekter"
                                     name={AndreInntekterFormField.dokumentasjon}
                                     label="Last opp dokumentasjon"
-                                    attachments={formValues.dokumentasjon}
+                                    attachments={formValues.dokumentasjon!}
                                     attachmentType={AttachmentType.ANNEN_INNTEKT}
-                                    skjemanummer={getSkjemanummer(formValues)}
+                                    skjemanummer={getSkjemanummer(formValues as AndreInntekterFormData)}
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Hovedknapp>{intlUtils(intl, 'søknad.gåVidere')}</Hovedknapp>
+                                <Button>{intlUtils(intl, 'søknad.gåVidere')}</Button>
                             </Block>
                         </AndreInntekterModalFormComponents.Form>
                     );

@@ -14,9 +14,9 @@ import { getAnnenForelderSamtidigUttakPeriode } from 'uttaksplan/utils/periodeUt
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
-import AlertStripe from 'nav-frontend-alertstriper';
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { Alert } from '@navikt/ds-react';
 
 interface Props {
     uttaksplan: Periode[];
@@ -105,7 +105,7 @@ const Periodeliste: FunctionComponent<Props> = ({
         <div className={bem.block}>
             {uttaksplan.map((p, index) => {
                 return (
-                    <>
+                    <div key={p.id}>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
                             <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
                         ) : null}
@@ -113,7 +113,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (
                             <Block padBottom="s">
-                                <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
+                                <Alert className="nyStønadsperiodeNesteSak" variant="info">
                                     <FormattedMessage
                                         id="uttaksplan.periodeliste.info.nyStønadsperiodeNesteSak"
                                         values={{
@@ -122,7 +122,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                                             ),
                                         }}
                                     />
-                                </AlertStripe>
+                                </Alert>
                             </Block>
                         ) : null}
                         <PeriodelisteItem
@@ -161,7 +161,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                         index === uttaksplan.length - 1 &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === uttaksplan.length ? (
                             <Block padBottom="s">
-                                <AlertStripe className="nyStønadsperiodeNesteSak" type="info">
+                                <Alert className="nyStønadsperiodeNesteSak" variant="info">
                                     <FormattedMessage
                                         id="uttaksplan.periodeliste.info.nyStønadsperiodeNesteSak"
                                         values={{
@@ -170,10 +170,10 @@ const Periodeliste: FunctionComponent<Props> = ({
                                             ),
                                         }}
                                     />
-                                </AlertStripe>
+                                </Alert>
                             </Block>
                         ) : null}
-                    </>
+                    </div>
                 );
             })}
         </div>

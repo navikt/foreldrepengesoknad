@@ -97,7 +97,7 @@ const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues 
                         render={() =>
                             [...Array(parseInt(formValues.antallBarn!, 10))].map((_, index) => {
                                 return (
-                                    <Block padBottom="l" key={`${index}`}>
+                                    <Block padBottom="xl" key={`${index}`}>
                                         <OmBarnetFormComponents.DatePicker
                                             name={`${OmBarnetFormField.fødselsdatoer}.${index}` as OmBarnetFormField}
                                             label={

@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import { guid } from 'nav-frontend-js-utils';
 import AriaText from '../aria-text/AriaText';
 import preventDoubleTapZoom from 'uttaksplan/utils/preventDoubleTapZoom';
 
 import './sirkelknapp.less';
+import { guid } from '@navikt/fp-common';
 
 export type Stil = 'hvit' | 'bla' | 'info';
 

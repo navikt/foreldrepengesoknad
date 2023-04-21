@@ -2,13 +2,11 @@ import React, { FunctionComponent } from 'react';
 import * as countries from 'i18n-iso-countries';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { useIntl } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
 import { Attachment } from 'app/types/Attachment';
-import EtikettBase from 'nav-frontend-etiketter';
-import Lenke from 'nav-frontend-lenker';
 import { isAttachmentWithError } from 'app/utils/vedleggUtils';
+import { BodyShort, Link, Tag } from '@navikt/ds-react';
 
 interface Props {
     annenInntekt: AnnenInntekt;
@@ -22,10 +20,10 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
         return (
             <>
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.arbeidsgiverNavn')}>
-                    <Normaltekst>{jobbIUtlandetInntekt.arbeidsgiverNavn}</Normaltekst>
+                    <BodyShort>{jobbIUtlandetInntekt.arbeidsgiverNavn}</BodyShort>
                 </OppsummeringsPunkt>
                 <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.arbeidsgiverLand')}>
-                    <Normaltekst>{countries.getName(jobbIUtlandetInntekt.land, 'nb')}</Normaltekst>
+                    <BodyShort>{countries.getName(jobbIUtlandetInntekt.land, 'nb')}</BodyShort>
                 </OppsummeringsPunkt>
             </>
         );
@@ -39,9 +37,9 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
             return vedlegg
                 .filter((a: Attachment) => !isAttachmentWithError(a))
                 .map(({ url, id, filename }) => (
-                    <Lenke href={url!} key={id} target="_blank">
+                    <Link href={url!} key={id} target="_blank">
                         {filename}
-                    </Lenke>
+                    </Link>
                 ));
         };
         return (
@@ -49,9 +47,7 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
                 {(vedlegg || []).filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
                     renderListOfAttachmentPreviewLinks()
                 ) : (
-                    <EtikettBase type="fokus">
-                        {intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}
-                    </EtikettBase>
+                    <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
                 )}
             </OppsummeringsPunkt>
         );

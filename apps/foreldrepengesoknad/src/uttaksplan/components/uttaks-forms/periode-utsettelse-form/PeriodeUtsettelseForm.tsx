@@ -1,6 +1,5 @@
-import { bemUtils, Block, hasValue, intlUtils } from '@navikt/fp-common';
+import { bemUtils, Block, guid, hasValue, intlUtils } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import React, { Dispatch, FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
@@ -10,22 +9,30 @@ import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
-import { PeriodeUtsettelseFormComponents, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
+import {
+    PeriodeUtsettelseFormComponents,
+    PeriodeUtsettelseFormData,
+    PeriodeUtsettelseFormField,
+} from './periodeUtsettelseFormConfig';
 import {
     cleanupPeriodeUtsettelseFormData,
     getPeriodeUtsettelseFormInitialValues,
     mapPeriodeUtsettelseFormToPeriode,
 } from './periodeUtsettelseFormUtils';
 
-import './periodeUtsettelseForm.less';
-import { periodeUtsettelseFormQuestionsConfig } from './periodeUtsettelseFormQuestionsConfig';
+import {
+    PeriodeUtsettelseFormConfigPayload,
+    periodeUtsettelseFormQuestionsConfig,
+} from './periodeUtsettelseFormQuestionsConfig';
 import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
 import { førsteOktober2021ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { guid } from 'nav-frontend-js-utils';
 import { Situasjon } from 'app/types/Situasjon';
+
+import './periodeUtsettelseForm.less';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
     periode: Periode;
@@ -93,11 +100,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                     erFarEllerMedmor,
                     erAleneOmOmsorg,
                     søkerErFarEllerMedmorOgKunDeHarRett,
-                });
+                } as PeriodeUtsettelseFormConfigPayload);
 
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="l">
+                        <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="xl">
                             <TidsperiodeForm
                                 tidsperiode={tidsperiode}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -114,9 +121,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
-                            <SubmitListener cleanup={() => cleanupPeriodeUtsettelseFormData(values)} />
+                            <SubmitListener
+                                cleanup={() => cleanupPeriodeUtsettelseFormData(values as PeriodeUtsettelseFormData)}
+                            />
 
-                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="l">
+                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="xl">
                                 <TidsperiodeDisplay
                                     tidsperiode={tidsperiode}
                                     toggleVisTidsperiode={toggleVisTidsperiode}
@@ -144,7 +153,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                                 />
                             </Block>
-                            <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="l">
+                            <Block visible={visibility.isVisible(PeriodeUtsettelseFormField.årsak)} padBottom="xl">
                                 <UtsettelseÅrsakSpørsmål
                                     periodenErKunHelligdager={periodenErKunHelligdager}
                                     skalViseGamleUtsettelseÅrsaker={skalViseGamleUtsettelseÅrsaker}
@@ -152,15 +161,15 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     tidsperiodenErInnenforFørsteSeksUker={Tidsperioden(
                                         tidsperiode
                                     ).erInnenforFørsteSeksUker(familiehendelsesdato)}
-                                    utsettelseårsak={values.årsak}
-                                    vedlegg={values.vedlegg}
+                                    utsettelseårsak={values.årsak!}
+                                    vedlegg={values.vedlegg!}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 />
                             </Block>
                             <Block
                                 visible={visibility.isVisible(PeriodeUtsettelseFormField.bekrefterArbeidIPerioden)}
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <PeriodeUtsettelseFormComponents.Checkbox
                                     name={PeriodeUtsettelseFormField.bekrefterArbeidIPerioden}
@@ -176,11 +185,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             </Block>
                             <Block
                                 visible={visibility.isVisible(PeriodeUtsettelseFormField.morsAktivitetIPerioden)}
-                                padBottom="l"
+                                padBottom="xl"
                             >
                                 <AktivitetskravSpørsmål
-                                    aktivitetskravMorValue={values.morsAktivitetIPerioden}
-                                    aktivitetskravVedlegg={values.morsAktivitetIPeriodenDokumentasjon}
+                                    aktivitetskravMorValue={values.morsAktivitetIPerioden!}
+                                    aktivitetskravVedlegg={values.morsAktivitetIPeriodenDokumentasjon!}
                                     fieldName={PeriodeUtsettelseFormField.morsAktivitetIPerioden}
                                     navnPåForeldre={navnPåForeldre}
                                     FormComponents={PeriodeUtsettelseFormComponents}
@@ -193,9 +202,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 }
                             >
                                 <div style={{ textAlign: 'center', position: 'relative' }}>
-                                    <Knapp htmlType="button" onClick={() => toggleIsOpen!(periode.id)}>
+                                    <Button variant="secondary" onClick={() => toggleIsOpen!(periode.id)}>
                                         <FormattedMessage id="uttaksplan.lukk" />
-                                    </Knapp>
+                                    </Button>
                                     <div className={bem.element('slettPeriodeWrapper')}>
                                         <LinkButton
                                             onClick={() => handleDeletePeriode!(periode.id)}
@@ -214,12 +223,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 }
                             >
                                 <div className={bem.element('knapperad')}>
-                                    <Knapp htmlType="button" onClick={() => setNyPeriodeFormIsVisible!(false)}>
+                                    <Button variant="secondary" onClick={() => setNyPeriodeFormIsVisible!(false)}>
                                         <FormattedMessage id="uttaksplan.avbryt" />
-                                    </Knapp>
+                                    </Button>
                                     {visibility.areAllQuestionsAnswered() ? (
-                                        <Hovedknapp
-                                            htmlType="button"
+                                        <Button
                                             onClick={() => {
                                                 handleAddPeriode!(
                                                     mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
@@ -229,7 +237,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                             }}
                                         >
                                             <FormattedMessage id="uttaksplan.leggTil" />
-                                        </Hovedknapp>
+                                        </Button>
                                     ) : null}
                                 </div>
                             </Block>

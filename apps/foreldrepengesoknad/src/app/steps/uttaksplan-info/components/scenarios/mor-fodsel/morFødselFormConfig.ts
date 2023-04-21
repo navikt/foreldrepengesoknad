@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum MorFødselFormField {
     dekningsgrad = 'dekningsgrad',
@@ -14,4 +14,4 @@ export interface MorFødselFormData {
     [MorFødselFormField.fellesperiodeukerMor]: number | undefined;
 }
 
-export const MorFødselFormComponents = getTypedFormComponents<MorFødselFormField, MorFødselFormData, string>();
+export const MorFødselFormComponents = getTypedFormComponents<MorFødselFormField, MorFødselFormData>();

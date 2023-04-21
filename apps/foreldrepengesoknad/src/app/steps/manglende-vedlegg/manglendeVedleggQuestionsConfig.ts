@@ -2,7 +2,7 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { ManglendeVedleggFormData, ManglendeVedleggFormField } from './manglendeVedleggFormConfig';
 import { AttachmentType } from 'app/types/AttachmentType';
 
-interface ManglendeVedleggQuestionsPayload extends ManglendeVedleggFormData {
+export interface ManglendeVedleggQuestionsPayload extends ManglendeVedleggFormData {
     manglendeVedleggTyper: AttachmentType[];
     erLikEllerMindreEnnFireUkerTilUttaketStarter: boolean;
 }

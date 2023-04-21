@@ -22,8 +22,12 @@ describe('<AppContainer>', () => {
             storageError: null,
         }));
 
-        render(<AppContainer />);
+        render(
+            <div id="app">
+                <AppContainer />
+            </div>
+        );
 
-        expect(screen.getByText('Venter...')).toBeInTheDocument();
+        expect(screen.getByText('venter...')).toBeInTheDocument();
     });
 });

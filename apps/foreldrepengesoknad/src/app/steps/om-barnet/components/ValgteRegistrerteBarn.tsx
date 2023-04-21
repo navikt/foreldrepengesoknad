@@ -2,15 +2,15 @@ import * as React from 'react';
 import { RegistrertBarn } from 'app/types/Person';
 import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { OmBarnetFormComponents, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Element } from 'nav-frontend-typografi';
 import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
 import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
+import { Label } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     valgteBarn: RegistrertBarn[];
@@ -26,16 +26,16 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
     const fødselsdato = valgteBarn[0].fødselsdato;
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <div>
                     <Block padBottom="s">
-                        <Element>
+                        <Label>
                             <FormattedMessage id="omBarnet.valgteBarn.tittel" values={{ antallBarn }} />
-                        </Element>
+                        </Label>
                     </Block>
                     {alleBarnaLever ? (
                         valgteBarn.map((barn: RegistrertBarn) => (
-                            <Block padBottom="l" key={barn.fnr}>
+                            <Block padBottom="s" key={barn.fnr}>
                                 <RegistrertePersonalia
                                     person={barn}
                                     fødselsdatoForVisning={formaterFødselsdatoerPåBarn([barn.fødselsdato])}
@@ -44,7 +44,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                             </Block>
                         ))
                     ) : (
-                        <Block padBottom="l">
+                        <Block padBottom="s">
                             <RegistrertePersonalia
                                 person={valgteBarn[0]}
                                 fødselsdatoForVisning={formaterFødselsdatoerPåBarn(fødselsdatoer)}
@@ -60,12 +60,12 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     )}
                 </div>
             </Block>
-            <Block visible={visibility.isVisible(OmBarnetFormField.termindato) && valgteBarn.length > 0}>
+            <Block padBottom="l" visible={visibility.isVisible(OmBarnetFormField.termindato) && valgteBarn.length > 0}>
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
                     dayPickerProps={{
-                        initialMonth: fødselsdato,
+                        defaultMonth: fødselsdato,
                     }}
                     minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
                     maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}

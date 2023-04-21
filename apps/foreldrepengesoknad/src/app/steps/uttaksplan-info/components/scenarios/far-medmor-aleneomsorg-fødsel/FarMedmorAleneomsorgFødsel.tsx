@@ -1,5 +1,4 @@
 import { Block, intlUtils } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -23,7 +22,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import React, { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
@@ -40,6 +38,8 @@ import {
     mapFarMedmorAleneomsorgFødselFormToState,
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
+import { Button } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -139,7 +139,9 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(formValues);
+                const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(
+                    formValues as FarMedmorAleneomsorgFødselFormData
+                );
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
 
@@ -149,7 +151,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         includeValidationSummary={true}
                     >
                         <Block
-                            padBottom="xxl"
+                            padBottom="xl"
                             visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.dekningsgrad)}
                         >
                             <DekningsgradSpørsmål
@@ -175,7 +177,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             )}
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(
                                 FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse
                             )}
@@ -196,7 +198,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block
-                            padBottom="l"
+                            padBottom="xl"
                             visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.startdatoUttak)}
                         >
                             <FarMedmorAleneomsorgFødselFormComponents.DatePicker
@@ -208,9 +210,9 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Hovedknapp disabled={isSubmitting} spinner={isSubmitting}>
+                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                 {intlUtils(intl, 'søknad.gåVidere')}
-                            </Hovedknapp>
+                            </Button>
                         </Block>
                     </FarMedmorAleneomsorgFødselFormComponents.Form>
                 );

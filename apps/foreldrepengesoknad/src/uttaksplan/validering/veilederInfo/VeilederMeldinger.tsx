@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { VeilederMessage } from '../veilederInfo/types';
 import VeilederMelding, { VeilederMeldingStil } from './components/VeilederMelding';
+import { Block } from '@navikt/fp-common';
 
 interface Props {
     meldinger: VeilederMessage[];
@@ -12,12 +13,9 @@ const VeilederMeldinger: React.FunctionComponent<Props> = ({ meldinger, stil, sk
     return (
         <div>
             {meldinger.map((melding: VeilederMessage) => (
-                <VeilederMelding
-                    key={melding.contentIntlKey + melding.periodeId}
-                    message={melding}
-                    stil={stil}
-                    skjulMeldingIkon={skjulMeldingIkon}
-                />
+                <Block padBottom="xl" key={melding.contentIntlKey + melding.periodeId}>
+                    <VeilederMelding message={melding} stil={stil} skjulMeldingIkon={skjulMeldingIkon} />
+                </Block>
             ))}
         </div>
     );

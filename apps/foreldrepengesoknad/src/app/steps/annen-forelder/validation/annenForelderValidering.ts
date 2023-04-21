@@ -1,7 +1,7 @@
+import { isISODateString } from '@navikt/ds-datepicker';
 import { formatDate, hasValue, intlUtils } from '@navikt/fp-common';
 import { validateTextInputField } from 'app/utils/validationUtil';
 import dayjs from 'dayjs';
-import { isISODateString } from 'nav-datovelger';
 import { IntlShape } from 'react-intl';
 
 export const validateDatoForAleneomsorg =

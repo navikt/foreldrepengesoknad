@@ -1,13 +1,12 @@
 import { Block } from '@navikt/fp-common';
-import VeilederNormal from 'app/assets/VeilederNormal';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import Veilederpanel from 'nav-frontend-veilederpanel';
 import React, { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import { GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     vedlegg: Attachment[];
@@ -18,12 +17,13 @@ const MorErForSykDokumentasjonOpplastning: FunctionComponent<Props> = ({ navnMor
     return (
         <>
             <Block padBottom="l">
-                <Veilederpanel fargetema="normal" svg={<VeilederNormal transparentBackground={true} />}>
+                <GuidePanel>
                     <FormattedMessage id="uttaksplan.erMorForSykVeileder" values={{ navn: navnMor }} />
-                </Veilederpanel>
+                </GuidePanel>
             </Block>
             <Block>
                 <FormikFileUploader
+                    legend="Dokumentasjon for mors sykdom"
                     label="Last opp dokumentasjon for mors sykdom"
                     name={PeriodeUttakFormField.erMorForSykDokumentasjon}
                     attachmentType={AttachmentType.UTSETTELSE_SYKDOM}

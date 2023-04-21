@@ -1,5 +1,4 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Barn from 'app/context/types/Barn';
@@ -12,6 +11,7 @@ import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { IntlShape } from 'react-intl';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,

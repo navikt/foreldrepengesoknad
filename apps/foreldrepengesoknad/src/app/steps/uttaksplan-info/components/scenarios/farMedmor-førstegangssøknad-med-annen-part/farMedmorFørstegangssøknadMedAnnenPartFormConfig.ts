@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum FarMedmorFørstegangssøknadMedAnnenPartFormField {
     permisjonStartdato = 'permisjonStartdato',
@@ -10,6 +10,5 @@ export interface FarMedmorFørstegangssøknadMedAnnenPartFormData {
 
 export const FarMedmorFørstegangssøknadMedAnnenPartFormComponents = getTypedFormComponents<
     FarMedmorFørstegangssøknadMedAnnenPartFormField,
-    FarMedmorFørstegangssøknadMedAnnenPartFormData,
-    string
+    FarMedmorFørstegangssøknadMedAnnenPartFormData
 >();

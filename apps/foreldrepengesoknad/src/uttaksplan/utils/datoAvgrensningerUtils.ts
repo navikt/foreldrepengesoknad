@@ -1,13 +1,13 @@
 import { Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
-import { DatepickerLimitations } from 'nav-datovelger';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
+import { DatepickerLimitations } from '@navikt/ds-datepicker';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export interface DatoAvgrensninger {
     fra: Avgrensninger;
