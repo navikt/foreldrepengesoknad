@@ -14,7 +14,7 @@ on:
 jobs:
     build-app:
         name: Build
-        uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@main
         with:
             push-image: ${{ github.ref_name == 'master' }} # default: false
         secrets: inherit
@@ -23,7 +23,7 @@ jobs:
         name: Deploy foreldrepengesøknad til dev
         if: ${{ github.ref_name == 'master' }}
         needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
@@ -34,7 +34,7 @@ jobs:
         name: Deploy foreldrepengesøknad til prod
         if: ${{ github.ref_name == 'master' }}
         needs: [promote-foreldrepengesoknad-dev, build-app]
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
@@ -45,7 +45,7 @@ jobs:
         name: Deploy foreldrepengeoversikt til dev
         if: ${{ github.ref_name == 'master' }}
         needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
@@ -56,7 +56,7 @@ jobs:
         name: Deploy foreldrepengeoversikt til prod
         if: ${{ github.ref_name == 'master' }}
         needs: [promote-foreldrepengeoversikt-dev, build-app]
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
@@ -67,7 +67,7 @@ jobs:
         name: Deploy engangsstonad til dev
         if: ${{ github.ref_name == 'master' }}
         needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
@@ -78,7 +78,7 @@ jobs:
         name: Deploy engangsstonad til prod
         if: ${{ github.ref_name == 'master' }}
         needs: [promote-engangsstonad-dev, build-app]
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
@@ -89,7 +89,7 @@ jobs:
         name: Deploy svangerskapspengesoknad til dev
         if: ${{ github.ref_name == 'master' }}
         needs: build-app
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
@@ -100,7 +100,7 @@ jobs:
         name: Deploy svangerskapspengesoknad til prod
         if: ${{ github.ref_name == 'master' }}
         needs: [promote-svangerskapspengesoknad-dev, build-app]
-        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@turborepo
+        uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
             image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: prod-gcp
