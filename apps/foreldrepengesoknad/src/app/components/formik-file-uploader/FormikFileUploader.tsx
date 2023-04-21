@@ -22,6 +22,7 @@ export interface Props {
     label: string;
     attachmentType: AttachmentType;
     skjemanummer: Skjemanummer;
+    legend: string;
     onFileInputClick?: () => void;
 }
 
@@ -111,6 +112,8 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
     onFileInputClick,
     attachmentType,
     skjemanummer,
+    label,
+    legend,
     ...otherProps
 }) => {
     const intl = useIntl();
@@ -121,8 +124,8 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
         <>
             <Block padBottom="l">
                 <FormikFileInput
-                    legend="Last opp vedlegg"
-                    buttonLabel="Last opp vedlegg"
+                    legend={legend}
+                    buttonLabel={label}
                     name={name}
                     accept={VALID_EXTENSIONS.join(', ')}
                     onFilesSelect={(files: File[], { push, replace, remove }: ArrayHelpers) => {

@@ -223,7 +223,12 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
                             </Block>
                             <Block padBottom="l">
                                 <div style={{ textAlign: 'center' }}>
-                                    <Button variant="primary" disabled={isSubmitting} loading={isSubmitting}>
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                    >
                                         {knapptekst}
                                     </Button>
                                 </div>

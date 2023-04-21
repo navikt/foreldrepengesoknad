@@ -105,7 +105,7 @@ const Periodeliste: FunctionComponent<Props> = ({
         <div className={bem.block}>
             {uttaksplan.map((p, index) => {
                 return (
-                    <>
+                    <div key={p.id}>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
                             <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
                         ) : null}
@@ -173,7 +173,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                                 </Alert>
                             </Block>
                         ) : null}
-                    </>
+                    </div>
                 );
             })}
         </div>

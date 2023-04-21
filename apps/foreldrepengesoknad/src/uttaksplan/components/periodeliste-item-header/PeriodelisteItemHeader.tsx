@@ -138,7 +138,6 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
 };
 
 const PeriodelisteItemHeader: FunctionComponent<Props> = ({
-    egenPeriode,
     periode,
     navnPåForeldre,
     melding,
@@ -177,12 +176,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     return (
         <div>
             <div className={bem.block}>
-                <div
-                    className={classNames(
-                        bem.element('content'),
-                        egenPeriode ? bem.modifier('egenPeriode') : bem.modifier('annenPart')
-                    )}
-                >
+                <div className={bem.element('content')}>
                     <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
                     <div className={bem.element('tittel')}>
                         <Label as="h3">

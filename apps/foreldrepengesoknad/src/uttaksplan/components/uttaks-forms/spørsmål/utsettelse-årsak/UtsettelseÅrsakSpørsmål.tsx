@@ -249,6 +249,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
                 <FormikFileUploader
+                    legend="Dokumentasjon for utsettelsesårsak"
                     label={getAttachmentUploaderLabel(utsettelseårsak)}
                     name={PeriodeUtsettelseFormField.vedlegg}
                     attachments={vedlegg || []}

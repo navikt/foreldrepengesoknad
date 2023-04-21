@@ -230,6 +230,7 @@ const AnnenForelder = () => {
                                     <FarDokumentasjonAleneomsorgVeileder />
 
                                     <FormikFileUploader
+                                        legend="Dokumentasjon for aleneomsorg"
                                         label={intlUtils(
                                             intl,
                                             'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
@@ -294,9 +295,7 @@ const AnnenForelder = () => {
                                         />
                                     </Block>
                                     <Block>
-                                        <FormattedMessage
-                                            id={intlUtils(intl, 'annenForelder.tekstOmFarskapsportal.mor.far.del2')}
-                                        />
+                                        <FormattedMessage id="annenForelder.tekstOmFarskapsportal.mor.far.del2" />
                                     </Block>
                                 </Alert>
                             </Block>

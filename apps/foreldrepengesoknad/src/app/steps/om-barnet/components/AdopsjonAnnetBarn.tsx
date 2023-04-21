@@ -140,6 +140,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
                 <FormikFileUploader
+                    legend="Dokumentasjon om adopsjon"
                     label={intlUtils(intl, 'omBarnet.adopsjon.vedlegg')}
                     name={OmBarnetFormField.omsorgsovertakelse}
                     attachments={formValues.omsorgsovertakelse || []}

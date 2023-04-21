@@ -454,7 +454,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 }
                             >
                                 <div className={bem.element('knapperad-endre')}>
-                                    <Button variant="secondary" onClick={() => toggleIsOpen!(periode.id)}>
+                                    <Button type="button" variant="secondary" onClick={() => toggleIsOpen!(periode.id)}>
                                         <FormattedMessage id="uttaksplan.lukk" />
                                     </Button>
                                     <div className={bem.element('slettPeriodeWrapper')}>
@@ -475,11 +475,15 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 }
                             >
                                 <div className={bem.element('knapperad-legg-til')}>
-                                    <Button variant="secondary" onClick={() => setNyPeriodeFormIsVisible!(false)}>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={() => setNyPeriodeFormIsVisible!(false)}
+                                    >
                                         <FormattedMessage id="uttaksplan.avbryt" />
                                     </Button>
                                     {visibility.areAllQuestionsAnswered() ? (
-                                        <Button>
+                                        <Button type="submit">
                                             <FormattedMessage id="uttaksplan.leggTil" />
                                         </Button>
                                     ) : null}

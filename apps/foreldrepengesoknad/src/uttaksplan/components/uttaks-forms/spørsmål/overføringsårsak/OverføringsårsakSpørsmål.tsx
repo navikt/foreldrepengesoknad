@@ -89,6 +89,7 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
             {beOmDokumentasjon && (
                 <Block padBottom="l">
                     <FormikFileUploader
+                        legend="Dokumentasjon for overføringsårsak"
                         label={intlUtils(intl, 'uttaksplan.overføringsårsak.dokumentasjon')}
                         name={PeriodeUttakFormField.overføringsdokumentasjon}
                         attachments={vedlegg || []}

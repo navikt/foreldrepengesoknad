@@ -157,6 +157,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.dokumentasjon)}>
                                 <FormikFileUploader
+                                    legend="Dokumentasjon av andre inntekter"
                                     name={AndreInntekterFormField.dokumentasjon}
                                     label="Last opp dokumentasjon"
                                     attachments={formValues.dokumentasjon!}

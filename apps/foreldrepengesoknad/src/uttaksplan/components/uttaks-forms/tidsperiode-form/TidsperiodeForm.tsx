@@ -202,7 +202,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                 }}
                             />
                         </Block>
-                        <Button>
+                        <Button type="submit">
                             <FormattedMessage id="uttaksplan.gåVidere" />
                         </Button>
                     </Form.Form>

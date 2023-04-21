@@ -71,7 +71,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
             onSubmit={onFormikSubmit}
             renderForm={({ values }) => {
                 return (
-                    <Form.Form onCancel={onCancel}>
+                    <Form.Form onCancel={onCancel} showButtonArrows={false} submitButtonLabel="Legg til">
                         <Heading size="medium" as="h1">
                             <FormattedMessage id={'utenlandsopphold.leggTilUtenlandsopphold.tittel'} />
                         </Heading>

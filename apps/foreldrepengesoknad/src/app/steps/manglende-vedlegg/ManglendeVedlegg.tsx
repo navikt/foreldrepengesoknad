@@ -203,6 +203,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                     <FormikFileUploader
                                                         key={`${ManglendeVedleggFormField.vedlegg}.${index}`}
                                                         name={`${ManglendeVedleggFormField.vedlegg}.${index}`}
+                                                        legend=""
                                                         label={intlUtils(
                                                             intl,
                                                             'manglendeVedlegg.lastopp.manglende.vedlegg'

@@ -204,6 +204,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
                 <FormikFileUploader
+                    legend="Dokumentasjon for mors aktivitet"
                     label="Last opp dokumentasjon for mors aktivitet"
                     name={vedleggFieldName}
                     attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}

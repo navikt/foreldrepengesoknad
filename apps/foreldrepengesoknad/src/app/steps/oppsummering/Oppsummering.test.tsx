@@ -52,10 +52,6 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
 
-        expect(screen.queryByText('Søknaden gjelder')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByText(OM_BARNET_PANEL));
-
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('Ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
@@ -92,7 +88,7 @@ describe('<Oppsummering>', () => {
                 'Har Espen arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?'
             )
         ).not.toBeInTheDocument();
-        expect(screen.getByText('Ja')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
         expect(screen.queryByText('Har Espen uføretrygd?')).not.toBeInTheDocument();
     });
     it('Skal vise riktig informasjon om aleneomsorg', async () => {
@@ -115,7 +111,7 @@ describe('<Oppsummering>', () => {
         expect(await screen.findByText(OPPSUMMERING_HEADER)).toBeInTheDocument();
         await userEvent.click(screen.getByText(ANDRE_FORELDER_PANEL));
         expect(screen.getByText('Har Eline uføretrygd?')).toBeInTheDocument();
-        expect(screen.getByText('Ja')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
     });
 
     it('skal vise informasjon om adoptert barn', async () => {
@@ -130,7 +126,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('01.01.2021')).toBeInTheDocument();
         expect(screen.getByText('Gjelder søknaden stebarnsadopsjon?')).toBeInTheDocument();
-        expect(screen.getByText('Ja')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
         expect(screen.getByText('Adopsjonsdato')).toBeInTheDocument();
         expect(screen.getByText('01.10.2021')).toBeInTheDocument();
     });
@@ -149,7 +145,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Bo i Sverige')).toBeInTheDocument();
         expect(screen.getByText('01.01.2021 - 31.12.2021')).toBeInTheDocument();
         expect(screen.getByText('Jeg er i Norge på fødselstidspunktet')).toBeInTheDocument();
-        expect(screen.getByText('Nei')).toBeInTheDocument();
+        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
     });
 
     it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
@@ -159,12 +155,12 @@ describe('<Oppsummering>', () => {
 
         await userEvent.click(screen.getByText(ARBEIDSFORHOLD_OG_INNTEKTER_PANEL));
 
-        expect(screen.getByText('ORG.NR: 1')).toBeInTheDocument();
+        expect(screen.getByText('Org nr: 1')).toBeInTheDocument();
         expect(screen.getByText('80 prosent')).toBeInTheDocument();
         expect(screen.getByText('Auto Joachim Bilpleie')).toBeInTheDocument();
         expect(screen.getByText('01.01.2015 - Pågående')).toBeInTheDocument();
 
-        expect(screen.queryByText('ORG.NR: 2')).not.toBeInTheDocument();
+        expect(screen.queryByText('Org nr: 2')).not.toBeInTheDocument();
         expect(screen.queryByText('20 prosent')).not.toBeInTheDocument();
         expect(screen.queryByText('Taco Express')).not.toBeInTheDocument();
         expect(screen.queryByText('01.01.2019 - 01.01.2021')).not.toBeInTheDocument();
@@ -173,9 +169,9 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Oppstartsdato som frilans')).toBeInTheDocument();
         expect(screen.getByText('01.01.2019')).toBeInTheDocument();
         expect(screen.getByText('Jeg jobber fremdeles som frilans')).toBeInTheDocument();
-        expect(screen.getByText('Ja')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
         expect(screen.getByText('Jeg driver fosterhjem')).toBeInTheDocument();
-        expect(screen.getByText('Nei')).toBeInTheDocument();
+        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
     });
     it('skal vise informasjon om uttaksplan', async () => {
         render(<FarMedUførMor />);

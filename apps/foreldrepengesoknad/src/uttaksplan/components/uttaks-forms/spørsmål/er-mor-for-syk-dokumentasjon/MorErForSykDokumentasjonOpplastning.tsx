@@ -23,6 +23,7 @@ const MorErForSykDokumentasjonOpplastning: FunctionComponent<Props> = ({ navnMor
             </Block>
             <Block>
                 <FormikFileUploader
+                    legend="Dokumentasjon for mors sykdom"
                     label="Last opp dokumentasjon for mors sykdom"
                     name={PeriodeUttakFormField.erMorForSykDokumentasjon}
                     attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
