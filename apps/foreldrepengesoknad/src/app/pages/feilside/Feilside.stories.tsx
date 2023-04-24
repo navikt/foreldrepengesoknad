@@ -1,11 +1,10 @@
-import Feilside from './Feilside';
+import Feilside, { FeilsideProps } from './Feilside';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import links from 'app/links/links';
 import { StoryFn } from '@storybook/react';
-import { FeilsideProps } from './Feilside';
 
 const defaultExport = {
     title: 'pages/Feilside',
