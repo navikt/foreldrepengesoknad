@@ -539,11 +539,9 @@ const UttaksplanStep = () => {
                         }
                         activeStepId="uttaksplan"
                         pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
-                        stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}

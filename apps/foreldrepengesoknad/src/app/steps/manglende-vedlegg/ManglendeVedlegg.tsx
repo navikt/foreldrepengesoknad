@@ -111,11 +111,9 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                         }
                         activeStepId="dokumentasjon"
                         pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
-                        stepTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <ManglendeVedleggFormComponents.Form includeButtons={false}>
                             <Block padBottom="l">

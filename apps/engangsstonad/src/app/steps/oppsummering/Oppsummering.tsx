@@ -78,11 +78,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="oppsummering"
                         pageTitle={intlUtils(intl, 'søknad.oppsummering')}
-                        stepTitle={intlUtils(intl, 'søknad.oppsummering')}
                         backLinkHref={getPreviousStepHref('oppsummering')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
-                        kompakt={true}
                     >
                         <OppsummeringFormComponents.Form
                             includeButtons={false}

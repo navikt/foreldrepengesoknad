@@ -109,11 +109,9 @@ const OmBarnet: React.FunctionComponent = () => {
                         backLinkHref={getPreviousStepHref('omBarnet')}
                         activeStepId="omBarnet"
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
-                        stepTitle={intlUtils(intl, 'søknad.omBarnet')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <OmBarnetFormComponents.Form
                             includeButtons={false}

@@ -46,10 +46,8 @@ const Søkersituasjon: React.FunctionComponent = () => {
                         bannerTitle={getMessage(intl, 'søknad.pageheading')}
                         activeStepId="søkersituasjon"
                         pageTitle={getMessage(intl, 'søknad.søkersituasjon')}
-                        stepTitle={getMessage(intl, 'søknad.søkersituasjon')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
-                        kompakt={true}
                     >
                         <SøkersituasjonFormComponents.Form
                             includeButtons={false}

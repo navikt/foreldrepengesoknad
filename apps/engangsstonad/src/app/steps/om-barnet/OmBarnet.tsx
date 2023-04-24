@@ -100,11 +100,9 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                         bannerTitle={getMessage(intl, 'søknad.pageheading')}
                         activeStepId="omBarnet"
                         pageTitle={getMessage(intl, 'søknad.omBarnet')}
-                        stepTitle={getMessage(intl, 'søknad.omBarnet')}
                         backLinkHref={getPreviousStepHref('omBarnet')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
-                        kompakt={true}
                     >
                         <OmBarnetFormComponents.Form
                             includeButtons={false}

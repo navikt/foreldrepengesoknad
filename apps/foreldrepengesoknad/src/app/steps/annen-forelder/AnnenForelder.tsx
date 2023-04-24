@@ -159,11 +159,9 @@ const AnnenForelder = () => {
                         backLinkHref={getPreviousStepHref('annenForelder')}
                         activeStepId="annenForelder"
                         pageTitle={intlUtils(intl, 'søknad.annenForelder')}
-                        stepTitle={intlUtils(intl, 'søknad.annenForelder')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onForstettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}

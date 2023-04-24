@@ -177,11 +177,9 @@ const UttaksplanInfo = () => {
             backLinkHref={getPreviousStepHref('uttaksplanInfo')}
             activeStepId="uttaksplanInfo"
             pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
-            stepTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
             onCancel={onAvbrytSøknad}
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl)}
-            kompakt={true}
         >
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}

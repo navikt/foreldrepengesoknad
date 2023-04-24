@@ -82,11 +82,9 @@ const Inntektsinformasjon = () => {
                         backLinkHref={getPreviousStepHref('inntektsinformasjon')}
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
-                        stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">

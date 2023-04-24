@@ -178,11 +178,9 @@ const Oppsummering = () => {
                             }
                             activeStepId="oppsummering"
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
-                            stepTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={onAvbrytSøknad}
                             onContinueLater={onFortsettSøknadSenere}
                             steps={stepConfig(intl)}
-                            kompakt={true}
                         >
                             <Block padBottom="l">
                                 <GuidePanel>

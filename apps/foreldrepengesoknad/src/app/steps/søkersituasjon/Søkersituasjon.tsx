@@ -58,11 +58,9 @@ const Søkersituasjon = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="søkersituasjon"
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
-                        stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>

@@ -12,8 +12,6 @@ import ProgressStepper from '../progress-stepper/ProgressStepper';
 
 export interface StepProps {
     pageTitle: string;
-    stepTitle: string;
-    kompakt: boolean;
     bannerTitle?: string;
     backLinkHref?: string;
     backLinkOnClick?: (href: string, event: React.SyntheticEvent) => void;
@@ -33,7 +31,6 @@ export interface StepProps {
 const Step: React.FunctionComponent<StepProps> = ({
     bannerTitle,
     pageTitle,
-    stepTitle,
     backLinkHref,
     backLinkOnClick,
     steps,
@@ -45,12 +42,10 @@ const Step: React.FunctionComponent<StepProps> = ({
     children,
     previousStepTitle,
     pageAriaLabel,
-    kompakt,
     infoMessage,
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId);
     const bem = bemUtils('step');
-    console.log(kompakt, stepTitle); //TODO
     return (
         <Page
             className={bem.block}
