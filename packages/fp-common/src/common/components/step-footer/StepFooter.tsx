@@ -25,7 +25,6 @@ function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
                     {onAvbrytOgFortsettSenere && (
                         <ActionLink onClick={() => setVisFortsettSenereDialog(true)}>
                             <FormattedMessage id="steg.footer.fortsettSenere" />
-                            qfajakfakjfh
                         </ActionLink>
                     )}
                     {onAvbrytOgSlett && (

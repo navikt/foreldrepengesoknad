@@ -8,7 +8,7 @@ import BackLink from '../back-link/BackLink';
 import StepFooter from '../step-footer/StepFooter';
 
 import './step.less';
-import { Heading } from '@navikt/ds-react';
+import ProgressStepper from '../progress-stepper/ProgressStepper';
 
 export interface StepProps {
     pageTitle: string;
@@ -50,7 +50,7 @@ const Step: React.FunctionComponent<StepProps> = ({
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId);
     const bem = bemUtils('step');
-    console.log(kompakt); //TODO
+    console.log(kompakt, stepTitle); //TODO
     return (
         <Page
             className={bem.block}
@@ -69,15 +69,13 @@ const Step: React.FunctionComponent<StepProps> = ({
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
             {(showStepIndicator || backLinkHref) && (
                 <>
-                    <Block padBottom="l">
-                        <Heading size="medium" className={bem.element('title')}>
-                            {stepTitle}
-                        </Heading>
-                    </Block>
-                    {/* <div role="presentation" aria-hidden={true}>
-                        <StepIndicator kompakt={kompakt} steps={steps} activeStep={currentStepIndex} />
-                    </div> */}
-                    <div>HEI</div>
+                    <div role="presentation" aria-hidden={true}>
+                        <ProgressStepper
+                            steps={steps}
+                            currentStepIndex={currentStepIndex}
+                            titleHeadingLevel="2"
+                        ></ProgressStepper>
+                    </div>
                     {backLinkHref && (
                         <BackLink href={backLinkHref} ariaLabel={previousStepTitle} onClick={backLinkOnClick} />
                     )}
