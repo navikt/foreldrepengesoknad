@@ -1,16 +1,19 @@
-import { ComponentMeta } from '@storybook/react';
 import Feilside from './Feilside';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import links from 'app/links/links';
+import { StoryFn } from '@storybook/react';
+import { FeilsideProps } from './Feilside';
 
-export default {
+const defaultExport = {
     title: 'pages/Feilside',
     component: Feilside,
     decorators: [withForeldrepengersøknadContext],
-} as ComponentMeta<typeof Feilside>;
+};
+
+export default defaultExport;
 
 const søkerInfo = {
     søker: {
@@ -23,7 +26,7 @@ const søkerInfo = {
     },
 } as SøkerinfoDTO;
 
-const Template: StoryFn<Props> = (args) => {
+const Template: StoryFn<FeilsideProps> = (args: FeilsideProps) => {
     return (
         <ForeldrepengerStateMock
             søknad={
@@ -35,7 +38,7 @@ const Template: StoryFn<Props> = (args) => {
         </ForeldrepengerStateMock>
     );
 };
-export const Default = Template.bind({});
+export const Default = Template.bind({}) as any;
 Default.args = {
     dokumenttittel: 'NAV Foreldrepengesøknad Feilside',
     ingress: 'Beskrivelse av feilen',
