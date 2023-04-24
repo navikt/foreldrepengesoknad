@@ -7,7 +7,7 @@ import actionCreator from 'app/context/action/actionCreator';
 import Api from 'app/api/api';
 import './feilside.less';
 
-export interface Props {
+export interface FeilsideProps {
     containerId?: string;
     dokumenttittel: string;
     illustrasjon?: {
@@ -25,7 +25,7 @@ export interface Props {
     setLanguage?: (languageCode: string) => void;
 }
 
-const Feilside: React.FunctionComponent<Props> = ({
+const Feilside: React.FunctionComponent<FeilsideProps> = ({
     containerId,
     dokumenttittel,
     illustrasjon,

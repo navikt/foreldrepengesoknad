@@ -2,6 +2,7 @@ import bemUtils from '../../utils/bemUtils';
 import React from 'react';
 import './sidebanner.less';
 import { BodyShort, GuidePanel, Heading } from '@navikt/ds-react';
+import Block from '../block/Block';
 
 export interface SidebannerProps {
     dialog?: Dialog;
@@ -18,12 +19,14 @@ const Sidebanner: React.FunctionComponent<SidebannerProps> = ({ dialog }) => {
         <div className={bem.block}>
             {dialog && (
                 <div className={bem.element('speechbubble')}>
-                    <GuidePanel poster>
-                        <Heading size="small" level="2">
-                            {dialog.title}
-                        </Heading>
-                        <BodyShort>{dialog.text}</BodyShort>
-                    </GuidePanel>
+                    <Block padBottom="l">
+                        <GuidePanel poster>
+                            <Heading size="small" level="2">
+                                {dialog.title}
+                            </Heading>
+                            <BodyShort>{dialog.text}</BodyShort>
+                        </GuidePanel>
+                    </Block>
                 </div>
             )}
         </div>
