@@ -1,4 +1,3 @@
-import React from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import KalenderBakgrunnIkon from 'app/assets/KalenderBakgrunnIkon';
 

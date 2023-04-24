@@ -5,7 +5,7 @@ import Api from 'app/api/api';
 import { Sak } from 'app/types/Sak';
 import { EngangsstønadSak } from 'app/types/EngangsstønadSak';
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
-import React from 'react';
+
 import DokumentHendelse from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
 import { ExternalLink } from '@navikt/ds-icons';

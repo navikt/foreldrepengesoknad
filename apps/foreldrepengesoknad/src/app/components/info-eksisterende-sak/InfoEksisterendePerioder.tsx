@@ -3,7 +3,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { formaterDato } from 'app/utils/dateUtils';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode } from 'uttaksplan/types/Periode';
 import { getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';

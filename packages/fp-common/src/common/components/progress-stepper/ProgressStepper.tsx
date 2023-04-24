@@ -1,5 +1,5 @@
 import { BodyShort, Heading, Stepper } from '@navikt/ds-react';
-import Step, { StepperStepProps } from '@navikt/ds-react/esm/stepper/Step';
+import { StepperStepProps } from '@navikt/ds-react/esm/stepper/Step';
 import React, { useEffect, useRef, useState } from 'react';
 import { Back, Collapse, Expand } from '@navikt/ds-icons';
 import { guid } from './../../utils/guid';
@@ -91,7 +91,7 @@ const ProgressStepper: React.FunctionComponent<ProgressStepperProps> = ({
             <div className="progressStepper__heading">
                 <Heading
                     tabIndex={-1}
-                    size="xlarge"
+                    size="medium"
                     level={titleHeadingLevel}
                     className="progressStepper__heading__title"
                     ref={headingRef}
@@ -152,13 +152,13 @@ const ProgressStepper: React.FunctionComponent<ProgressStepperProps> = ({
                                 onStepChange={onStepSelect ? handleStepChange : undefined}
                             >
                                 {steps.map((s) => (
-                                    <Step
+                                    <Stepper.Step
                                         key={s.id}
                                         completed={s.completed}
                                         interactive={onStepSelect !== undefined && s.completed === true}
                                     >
                                         {s.label}
-                                    </Step>
+                                    </Stepper.Step>
                                 ))}
                             </Stepper>
                             {allStepsFooter && (

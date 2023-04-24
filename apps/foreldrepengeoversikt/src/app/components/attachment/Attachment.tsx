@@ -1,4 +1,3 @@
-import React from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import { Attachment as AttachmentType } from 'app/types/Attachment';
 import { Button, Link, Loader } from '@navikt/ds-react';

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Block, DisplayTextWithLabel } from '@navikt/fp-common';
 
 interface Props {

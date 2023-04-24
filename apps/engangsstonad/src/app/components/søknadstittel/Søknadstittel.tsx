@@ -1,4 +1,3 @@
-import React from 'react';
 import './søknadstittel.less';
 
 interface Props {

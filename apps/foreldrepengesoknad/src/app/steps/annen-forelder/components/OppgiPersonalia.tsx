@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenForelderFormComponents, AnnenForelderFormField } from '../annenforelderFormConfig';

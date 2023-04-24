@@ -1,7 +1,6 @@
 import { intlUtils } from '@navikt/fp-common';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';

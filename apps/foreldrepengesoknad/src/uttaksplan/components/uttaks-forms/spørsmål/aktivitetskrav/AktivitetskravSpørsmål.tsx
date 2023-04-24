@@ -5,7 +5,7 @@ import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';

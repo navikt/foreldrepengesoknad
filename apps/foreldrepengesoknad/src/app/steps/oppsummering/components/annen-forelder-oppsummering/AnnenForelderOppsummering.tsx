@@ -4,7 +4,7 @@ import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';

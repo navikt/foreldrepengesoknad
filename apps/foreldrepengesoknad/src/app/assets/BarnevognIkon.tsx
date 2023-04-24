@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const BarnevognIkon = (props: any) => (
     <svg
         focusable="false"

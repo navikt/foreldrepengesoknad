@@ -1,4 +1,3 @@
-import React from 'react';
 import { UttaksplanIkonProps } from 'uttaksplan/components/uttaksplan-ikon/UttaksplanIkon';
 
 const FerieIkon = (props: UttaksplanIkonProps) => {

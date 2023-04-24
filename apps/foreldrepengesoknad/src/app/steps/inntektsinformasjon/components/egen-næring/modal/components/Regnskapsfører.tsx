@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { EgenNæringModalFormComponents, EgenNæringModalFormField } from '../egenNæringModalFormConfig';
 import { Block, intlUtils } from '@navikt/fp-common';

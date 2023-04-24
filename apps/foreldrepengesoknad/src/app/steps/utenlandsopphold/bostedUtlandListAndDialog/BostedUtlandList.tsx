@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { BostedUtland } from './types';
 import { ActionLink, bemUtils, formatDateExtended, ItemList } from '@navikt/fp-common';

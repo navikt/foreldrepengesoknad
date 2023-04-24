@@ -1,17 +1,17 @@
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Heading, Modal } from '@navikt/ds-react';
 import { AdvarselIkon, bemUtils, intlUtils } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 
 import './byttBrowserModal.less';
+import { FunctionComponent, useState } from 'react';
 
 export interface Props {
     skalEndreNettleser: boolean;
 }
 
-export const ByttBrowserModal: React.FunctionComponent<Props> = ({ skalEndreNettleser }) => {
-    const [isOpen, toggleIsOpen] = React.useState(skalEndreNettleser);
+export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser }) => {
+    const [isOpen, toggleIsOpen] = useState(skalEndreNettleser);
     const intl = useIntl();
     const cls = bemUtils('bytt-browser-modal');
     return (

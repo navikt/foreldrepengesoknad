@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormikModalFormAndList, ModalFormAndListLabels } from '@navikt/sif-common-formik-ds';
 import BostedUtlandForm from './BostedUtlandForm';
 import BostedUtlandListe from './BostedUtlandList';

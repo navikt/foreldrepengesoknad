@@ -1,7 +1,7 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { getStønadskontoNavn } from 'uttaksplan/utils/stønadskontoerUtils';

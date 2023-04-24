@@ -1,4 +1,3 @@
-import React from 'react';
 import './iconBox.css';
 import { bemUtils } from '@navikt/fp-common';
 import { UttaksplanColor } from 'app/types/UttaksplanColor';

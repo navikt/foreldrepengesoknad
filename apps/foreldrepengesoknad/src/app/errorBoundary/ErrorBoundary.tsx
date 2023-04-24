@@ -1,15 +1,15 @@
-import React from 'react';
 import * as Sentry from '@sentry/browser';
 import Feilside from 'app/pages/feilside/Feilside';
 import links from 'app/links/links';
 import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
+import { Component } from 'react';
 
 interface State {
     hasError: boolean;
     error: Error | null;
 }
 
-class ErrorBoundary extends React.Component<any, State> {
+class ErrorBoundary extends Component<any, State> {
     constructor(props: unknown) {
         super(props);
         this.state = { hasError: false, error: null };
@@ -41,9 +41,6 @@ class ErrorBoundary extends React.Component<any, State> {
                     illustrasjon={{
                         tittel: 'Hei!',
                         tekst: 'Noe har gått galt med søknaden.',
-                        veileder: {
-                            ansikt: 'skeptisk',
-                        },
                         lenke: { tekst: 'Her finner du en lenke til brukerstøtte', url: links.brukerstøtte },
                     }}
                     skalKunneGåTilbakeTilSøknad={feilPgaForMangeVedlegg}

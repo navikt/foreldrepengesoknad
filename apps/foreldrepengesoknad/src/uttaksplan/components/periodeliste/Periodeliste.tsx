@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { bemUtils, Block, formatDate } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';

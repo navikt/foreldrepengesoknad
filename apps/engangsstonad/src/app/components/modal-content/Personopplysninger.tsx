@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Heading, Link, Label } from '@navikt/ds-react';
 import { lenker } from 'util/lenker';

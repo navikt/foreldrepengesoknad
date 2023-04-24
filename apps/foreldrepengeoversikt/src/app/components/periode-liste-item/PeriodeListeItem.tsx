@@ -21,7 +21,7 @@ import {
 import { NavnPåForeldre } from 'app/utils/personUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 
 import './periodeListeItem.css';

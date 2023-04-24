@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import Pencil from './Pencil';
 import { BodyShort, Tag } from '@navikt/ds-react';

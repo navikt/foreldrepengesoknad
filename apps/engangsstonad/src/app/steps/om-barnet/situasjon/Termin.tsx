@@ -4,7 +4,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
-import React from 'react';
+
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateTerminDate, valideringAvTerminbekreftelsesdato } from '../omBarnetValidering';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { bemUtils, intlUtils } from '@navikt/fp-common';

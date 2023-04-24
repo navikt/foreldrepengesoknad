@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { UtenlandsoppholdFormData } from 'app/steps/utenlandsopphold/utenlandsoppholdFormTypes';
 import dayjs from 'dayjs';

@@ -9,7 +9,7 @@ import { RequestStatus } from 'app/types/RequestStatus';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
-import React from 'react';
+
 interface Props {
     navnPåSøker: string;
     søkerinfo: SøkerinfoDTO;

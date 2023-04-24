@@ -3,7 +3,7 @@ import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUp
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
 import { getNavnGenitivEierform } from 'uttaksplan/utils/stønadskontoerUtils';

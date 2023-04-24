@@ -2,7 +2,7 @@ import { Block, intlUtils, Step } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import Uttaksplan from 'uttaksplan/Uttaksplan';
@@ -539,11 +539,9 @@ const UttaksplanStep = () => {
                         }
                         activeStepId="uttaksplan"
                         pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
-                        stepTitle={intlUtils(intl, 'søknad.uttaksplan')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}

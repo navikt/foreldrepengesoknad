@@ -1,6 +1,6 @@
 import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormField } from '../omBarnetFormConfig';
 

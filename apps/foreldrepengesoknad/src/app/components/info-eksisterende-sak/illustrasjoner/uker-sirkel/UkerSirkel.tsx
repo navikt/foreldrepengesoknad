@@ -1,4 +1,3 @@
-import React from 'react';
 import AntallUkerKalenderIkon from './antallUkerKalenderIkon/AntallUkerKalenderIkon';
 import { bemUtils } from '@navikt/fp-common';
 import Sirkelmaske from 'app/components/sirkelmaske/Sirkelmaske';

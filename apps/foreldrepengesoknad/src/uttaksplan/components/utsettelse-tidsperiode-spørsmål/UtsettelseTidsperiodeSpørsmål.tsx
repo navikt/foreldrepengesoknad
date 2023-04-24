@@ -3,7 +3,7 @@ import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Ti
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 import dayjs from 'dayjs';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';

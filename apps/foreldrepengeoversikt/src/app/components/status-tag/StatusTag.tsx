@@ -1,7 +1,6 @@
 import { Tag } from '@navikt/ds-react';
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { Sak } from 'app/types/Sak';
-import React from 'react';
 
 interface Props {
     className?: string;

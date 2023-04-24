@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Heading, Ingress, Label, LinkPanel, Tag } from '@navikt/ds-react';
 import { bemUtils, Block } from '@navikt/fp-common';

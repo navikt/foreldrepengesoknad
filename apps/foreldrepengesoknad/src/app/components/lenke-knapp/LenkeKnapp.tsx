@@ -1,4 +1,3 @@
-import React from 'react';
 import { BodyShort, Link } from '@navikt/ds-react';
 
 import './lenkeKnapp.less';

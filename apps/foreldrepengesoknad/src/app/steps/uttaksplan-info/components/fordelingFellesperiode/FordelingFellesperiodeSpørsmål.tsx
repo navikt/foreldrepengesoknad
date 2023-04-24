@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Block, intlUtils } from '@navikt/fp-common';
 import lenker from 'app/links/links';

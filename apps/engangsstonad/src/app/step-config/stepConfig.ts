@@ -14,17 +14,17 @@ const stepConfig: StepConfig[] = [
     {
         id: 'søkersituasjon',
         index: 0,
-        label: 'Fyll ut informasjon om barnet',
+        label: 'Din situasjon',
     },
     {
         id: 'omBarnet',
         index: 1,
-        label: 'Fyll ut informasjon om barnet',
+        label: 'Barnet',
     },
     {
         id: 'utenlandsopphold',
         index: 2,
-        label: 'Fyll ut informasjon om utenlandsopphold',
+        label: 'Utenlandsopphold',
     },
     {
         id: 'oppsummering',

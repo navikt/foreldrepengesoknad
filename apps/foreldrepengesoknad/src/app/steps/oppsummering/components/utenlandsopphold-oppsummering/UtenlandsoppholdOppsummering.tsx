@@ -2,7 +2,7 @@ import { doesTidsperiodeContainDate, intlUtils } from '@navikt/fp-common';
 import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UtenlandsoppholdListe from './UtenlandsoppholdOppsummeringListe';

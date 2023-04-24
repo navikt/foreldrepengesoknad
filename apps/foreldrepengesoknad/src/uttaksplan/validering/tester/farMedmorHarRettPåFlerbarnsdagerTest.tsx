@@ -1,4 +1,3 @@
-import React from 'react';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';

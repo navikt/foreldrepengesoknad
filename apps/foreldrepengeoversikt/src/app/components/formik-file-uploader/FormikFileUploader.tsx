@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrayHelpers } from 'formik';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { IntlShape, useIntl } from 'react-intl';

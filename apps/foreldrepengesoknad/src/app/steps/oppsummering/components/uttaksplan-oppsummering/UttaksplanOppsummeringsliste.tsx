@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { formatDate, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';

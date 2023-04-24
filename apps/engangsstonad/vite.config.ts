@@ -23,9 +23,6 @@ export default defineConfig({
             intl: path.resolve(__dirname, './src/app/intl/'),
         },
     },
-    optimizeDeps: {
-        include: ['@navikt/fp-common'],
-    },
     server: {
         port: 8080,
     },

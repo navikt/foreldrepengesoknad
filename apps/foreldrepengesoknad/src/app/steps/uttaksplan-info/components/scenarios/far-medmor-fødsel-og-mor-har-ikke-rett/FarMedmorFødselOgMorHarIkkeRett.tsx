@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';

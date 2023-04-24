@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import { Accordion } from '@navikt/ds-react';
 

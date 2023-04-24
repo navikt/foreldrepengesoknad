@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
 import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';

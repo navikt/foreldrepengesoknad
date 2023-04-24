@@ -1,5 +1,5 @@
 import { BodyShort, Link } from '@navikt/ds-react';
-import React from 'react';
+
 import { FileContent } from '@navikt/ds-icons';
 import { bemUtils, formatDateExtended } from '@navikt/fp-common';
 import { Dokument as DokumentType } from 'app/types/Dokument';

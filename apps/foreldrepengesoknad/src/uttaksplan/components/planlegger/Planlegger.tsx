@@ -6,7 +6,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';

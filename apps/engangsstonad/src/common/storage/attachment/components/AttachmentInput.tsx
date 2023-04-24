@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CustomSVG from 'common/components/custom-svg/CustomSVG';
 import BEMHelper from 'common/util/bem';

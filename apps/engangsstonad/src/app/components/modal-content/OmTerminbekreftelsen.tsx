@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Heading, BodyShort } from '@navikt/ds-react';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import DinePlikter from './DinePlikter';
 import IntlProvider from 'app/intl/IntlProvider';

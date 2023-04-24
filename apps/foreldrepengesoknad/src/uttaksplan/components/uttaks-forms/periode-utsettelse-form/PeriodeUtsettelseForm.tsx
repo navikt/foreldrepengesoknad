@@ -1,6 +1,6 @@
 import { bemUtils, Block, guid, hasValue, intlUtils } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import React, { Dispatch, FunctionComponent, useState } from 'react';
+import { Dispatch, FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
 import SendSøknadIkon, { OppsummeringIkonType } from './SendSøknadIkon';
 import { bemUtils } from '@navikt/fp-common';

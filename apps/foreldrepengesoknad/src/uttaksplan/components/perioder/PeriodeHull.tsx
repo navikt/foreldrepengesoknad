@@ -1,7 +1,7 @@
 import { ActionLink, bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { BodyShort } from '@navikt/ds-react';

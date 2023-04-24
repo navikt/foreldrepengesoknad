@@ -1,4 +1,3 @@
-import * as React from 'react';
 import KalenderIkon from '../assets/KalenderIkon';
 import UtbetalingerIkon from '../assets/UtbetalingerIkon';
 

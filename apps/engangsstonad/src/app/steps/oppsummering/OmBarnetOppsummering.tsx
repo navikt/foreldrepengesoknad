@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { useIntl } from 'react-intl';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';

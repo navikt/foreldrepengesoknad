@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MissingAttachment } from 'app/types/MissingAttachment';
 import { AdvarselIkon, bemUtils, Block, guid, intlUtils } from '@navikt/fp-common';

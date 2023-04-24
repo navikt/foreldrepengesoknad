@@ -3,7 +3,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { getUkerOgDagerFromDager, måned, måned3bokstaver, år } from 'app/utils/dateUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import {
     isForeldrepengerFørFødselUttaksperiode,
     isUtsettelseAnnenPart,

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import VedleggInput from './AttachmentInput';
@@ -10,6 +9,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Attachment, AttachmentType, Skjemanummer } from 'common/storage/attachment/types/Attachment';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
 import guid from 'common/util/guid';
+import { Fragment } from 'react';
 
 interface Props {
     attachments: Attachment[];
@@ -86,7 +86,7 @@ const AttachmentOverview: React.FunctionComponent<Props> = ({
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <div>
                 <VedleggInput
                     id={inputId}
@@ -134,7 +134,7 @@ const AttachmentOverview: React.FunctionComponent<Props> = ({
                     )}
                 </>
             </CSSTransition>
-        </React.Fragment>
+        </Fragment>
     );
 };
 export default AttachmentOverview;

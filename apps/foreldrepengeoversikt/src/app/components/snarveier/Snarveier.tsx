@@ -1,4 +1,3 @@
-import React from 'react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 
 import './snarveier.css';

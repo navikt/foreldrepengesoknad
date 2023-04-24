@@ -7,7 +7,7 @@ import { getSakTittel, getSakUndertittel } from 'app/utils/sakerUtils';
 import EtBarn from 'assets/EtBarn';
 import ToBarn from 'assets/ToBarn';
 import TreBarn from 'assets/TreBarn';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import SakLink from '../sak-link/SakLink';
 

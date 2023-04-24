@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TåteflaskeBaby = () => (
     <svg width={88} height={96} fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

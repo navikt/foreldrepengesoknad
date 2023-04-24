@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import * as countries from 'i18n-iso-countries';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';

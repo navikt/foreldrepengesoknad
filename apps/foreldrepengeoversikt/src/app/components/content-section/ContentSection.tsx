@@ -1,7 +1,7 @@
 import { Heading } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 import './content-section.css';
 

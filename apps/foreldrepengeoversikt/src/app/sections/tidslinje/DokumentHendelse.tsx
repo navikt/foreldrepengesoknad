@@ -1,5 +1,5 @@
 import { Link } from '@navikt/ds-react';
-import React from 'react';
+
 import { FileContent } from '@navikt/ds-icons';
 import { bemUtils } from '@navikt/fp-common';
 import { Dokument } from 'app/types/Dokument';

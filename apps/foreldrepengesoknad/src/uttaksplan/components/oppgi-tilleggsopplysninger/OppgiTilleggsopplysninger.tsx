@@ -1,11 +1,10 @@
-import React from 'react';
-
 import throttle from 'lodash.throttle';
 import { injectIntl, IntlShape } from 'react-intl';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'uttaksplan/validering/tester/erTilleggsopplysningerGyldigTest';
 import { Attachment } from 'app/types/Attachment';
 import { BodyLong, Label, ReadMore, Textarea } from '@navikt/ds-react';
+import { ChangeEvent, Component } from 'react';
 
 interface OwnProps {
     begrunnelse?: string;
@@ -28,9 +27,9 @@ const getLabel = (intl: IntlShape) => {
     );
 };
 
-export type TextareaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
+export type TextareaChangeEvent = ChangeEvent<HTMLTextAreaElement>;
 
-class OppgiTilleggsopplysninger extends React.Component<Props, State> {
+class OppgiTilleggsopplysninger extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
 

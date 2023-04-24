@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { IntlProvider as Provider } from 'react-intl';
 import moment from 'moment';
 import { Språkkode } from './types';

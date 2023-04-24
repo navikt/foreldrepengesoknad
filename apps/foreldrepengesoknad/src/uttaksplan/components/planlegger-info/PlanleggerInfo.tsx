@@ -4,7 +4,7 @@ import UkerSirkel from 'app/components/info-eksisterende-sak/illustrasjoner/uker
 import InnholdMedIllustrasjon from 'app/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import { Forelder } from 'app/types/Forelder';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import './planleggerInfo.less';

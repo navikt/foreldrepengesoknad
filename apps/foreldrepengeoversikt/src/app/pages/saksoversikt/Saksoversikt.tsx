@@ -18,7 +18,7 @@ import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 

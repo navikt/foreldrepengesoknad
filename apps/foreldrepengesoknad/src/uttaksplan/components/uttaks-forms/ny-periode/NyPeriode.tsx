@@ -3,7 +3,7 @@ import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';

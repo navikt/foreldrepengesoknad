@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import AriaText from '../aria-text/AriaText';
 import preventDoubleTapZoom from 'uttaksplan/utils/preventDoubleTapZoom';

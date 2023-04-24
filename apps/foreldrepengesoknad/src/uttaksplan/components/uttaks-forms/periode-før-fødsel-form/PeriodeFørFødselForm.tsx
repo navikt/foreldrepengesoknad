@@ -3,7 +3,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';

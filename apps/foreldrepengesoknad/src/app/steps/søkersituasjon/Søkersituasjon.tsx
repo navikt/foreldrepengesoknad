@@ -1,7 +1,7 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
-import React from 'react';
+
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -58,11 +58,9 @@ const Søkersituasjon = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="søkersituasjon"
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
-                        stepTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>

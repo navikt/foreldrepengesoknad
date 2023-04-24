@@ -1,4 +1,3 @@
-import React from 'react';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { IntlShape } from 'react-intl';
 import {

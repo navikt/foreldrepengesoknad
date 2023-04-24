@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { bemUtils, Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { BodyShort, Ingress, Label, Link } from '@navikt/ds-react';
 import KvitteringHeader from './components/KvitteringHeader';

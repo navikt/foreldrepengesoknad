@@ -1,5 +1,3 @@
-import React from 'react';
-
 const UttakIkon = (props: any) => {
     const { title, ...rest } = props;
     return (

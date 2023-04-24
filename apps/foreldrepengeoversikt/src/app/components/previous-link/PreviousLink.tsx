@@ -1,7 +1,7 @@
 import { Back } from '@navikt/ds-icons';
 import { BodyShort, Link as DSLink } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
-import React from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 
 import './previous-link.css';

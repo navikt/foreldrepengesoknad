@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 import Sirkelmaske from './Sirkelmaske';
 import PengerIkon from 'app/assets/PengerIkon';

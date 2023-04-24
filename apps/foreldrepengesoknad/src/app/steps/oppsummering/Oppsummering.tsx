@@ -1,5 +1,5 @@
 import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -178,11 +178,9 @@ const Oppsummering = () => {
                             }
                             activeStepId="oppsummering"
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
-                            stepTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={onAvbrytSøknad}
                             onContinueLater={onFortsettSøknadSenere}
                             steps={stepConfig(intl)}
-                            kompakt={true}
                         >
                             <Block padBottom="l">
                                 <GuidePanel>

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import classNames from 'classnames';
 
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {

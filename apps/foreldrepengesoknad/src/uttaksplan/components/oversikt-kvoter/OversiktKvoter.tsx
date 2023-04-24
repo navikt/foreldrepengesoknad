@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import Personkort from 'app/components/personkort/Personkort';

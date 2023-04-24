@@ -1,5 +1,5 @@
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 import './personalia.less';
 import { BodyShort } from '@navikt/ds-react';

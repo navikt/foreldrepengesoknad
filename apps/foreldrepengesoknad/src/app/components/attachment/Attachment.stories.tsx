@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 
 import { Attachment as AttachmentType } from 'app/types/Attachment';
