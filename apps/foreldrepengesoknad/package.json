@@ -11,8 +11,8 @@
         "start-express": "node ./server.js",
         "dev-api": "node ./mock-api-server.cjs",
         "dev": "cross-env NODE_ENV=development node ./server.cjs",
-        "test": "pnpm jest --color --config ./jest/jest.config.cjs --runInBand",
-        "vitest": "vitest",
+        "jest": "pnpm jest --color --config ./jest/jest.config.cjs --runInBand",
+        "test": "vitest run",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001"
     },

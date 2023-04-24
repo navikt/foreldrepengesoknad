@@ -2,6 +2,8 @@ import { renderHook } from '@testing-library/react';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useAvbrytSøknad from './useAvbrytSøknad';
+import MockAdapter from 'axios-mock-adapter';
+import { AxiosInstance } from 'app/api/apiInterceptor';
 
 const mockedNavigator = vi.fn();
 
@@ -24,6 +26,9 @@ describe('useAvbrytSøknad', () => {
             } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
+
+        const apiMock = new MockAdapter(AxiosInstance);
+        apiMock.onDelete('/storage').reply(200, {});
 
         const { result } = renderHook(() => useAvbrytSøknad());
 
