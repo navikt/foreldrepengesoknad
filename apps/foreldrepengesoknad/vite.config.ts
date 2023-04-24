@@ -23,9 +23,6 @@ export default defineConfig({
     build: {
         sourcemap: true,
     },
-    optimizeDeps: {
-        include: ['@navikt/fp-common'],
-    },
     test: {
         globals: true,
         environment: 'jsdom',
