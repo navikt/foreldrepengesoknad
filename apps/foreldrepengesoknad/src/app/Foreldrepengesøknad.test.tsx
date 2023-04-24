@@ -5,22 +5,24 @@ import { SøkerinfoDTO } from './types/SøkerinfoDTO';
 import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextState } from './context/ForeldrepengesøknadContextConfig';
 import IntlProvider from './intl/IntlProvider';
+import MockAdapter from 'axios-mock-adapter';
+import { AxiosInstance } from './api/apiInterceptor';
 
 describe('<Foreldrepengesøknad>', () => {
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('skal returnere spinner når data blir hentet', () => {
-        jest.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
+        vi.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
             søkerinfoData: undefined,
             søkerinfoError: null,
         }));
-        jest.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
+        vi.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
             storageData: undefined,
             storageError: null,
         }));
-        jest.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
+        vi.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
             sakerData: undefined,
             sakerError: null,
         }));
@@ -61,9 +63,12 @@ describe('<Foreldrepengesøknad>', () => {
             sakerData: { engangsstønad: [], foreldrepenger: [], svangerskapspenger: [] },
             sakerError: null,
         };
-        jest.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
-        jest.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
-        jest.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
+        vi.spyOn(Api, 'useSøkerinfo').mockImplementation(() => søkerinfoData);
+        vi.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
+        vi.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
+
+        const apiMock = new MockAdapter(AxiosInstance);
+        apiMock.onPost('/storage').reply(200, {});
 
         render(
             <ForeldrepengesøknadContextProvider>

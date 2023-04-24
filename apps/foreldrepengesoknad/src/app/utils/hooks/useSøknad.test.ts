@@ -12,9 +12,9 @@ describe('useSøknad', () => {
             } as Søknad,
         } as ForeldrepengesøknadContextState;
 
-        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state,
-            dispatch: () => jest.fn(),
+            dispatch: () => vi.fn(),
         }));
 
         const { result } = renderHook(() => useSøknad());

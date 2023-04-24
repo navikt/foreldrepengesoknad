@@ -2,11 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import MockDate from 'mockdate';
 import * as stories from './OmBarnet.stories';
 
-jest.mock('app/utils/hooks/useSaveLoadedRoute', () => {
-    return jest.fn();
+vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
+    return { default: vi.fn() };
 });
 
 const {
@@ -184,7 +183,8 @@ describe('<OmBarnet>', () => {
     it.each(farEllerMedMorSøker)(
         'Far/medmor kan ikke søke på termin hvis WLB regler ikke gjelder',
         async (FarEllerMedMorSøker) => {
-            MockDate.set(new Date('2022-08-01'));
+            const mockTodayDate = new Date('2022-08-01');
+            vi.setSystemTime(mockTodayDate);
             const user = userEvent.setup();
             render(<FarEllerMedMorSøker />);
 
@@ -197,23 +197,24 @@ describe('<OmBarnet>', () => {
             expect(await screen.findByText('Når er termindatoen?')).toBeInTheDocument();
 
             const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-            await user.type(termindatoInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
+            await user.type(termindatoInput, dayjs(new Date('2022-08-01')).format('DD.MM.YYYY'));
             await user.tab();
 
             expect(
-                await screen.findByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
+                await screen.findByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født.', {
                     exact: false,
                 })
             ).toBeInTheDocument();
             expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-            MockDate.reset();
+            vi.useRealTimers();
         }
     );
 
     it.each(farEllerMedMorSøker)(
         'Far/medmor kan søke på termin hvis WLB regler gjelder',
         async (FarEllerMedMorSøker) => {
-            MockDate.set(new Date('2022-08-02'));
+            const mockTodayDate = new Date('2022-08-02');
+            vi.setSystemTime(mockTodayDate);
             const user = userEvent.setup();
             render(<FarEllerMedMorSøker />);
             expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
@@ -246,12 +247,13 @@ describe('<OmBarnet>', () => {
             await user.tab();
 
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-            MockDate.reset();
+            vi.useRealTimers();
         }
     );
 
     it('Det registrerte barnet skal vises og far/medmor må oppgi termin hvis han/hun velger registrert barn som er født innenfor de siste 12 ukene', async () => {
-        MockDate.set(new Date('2021-03-16'));
+        const mockTodayDate = new Date('2021-03-16');
+        vi.setSystemTime(mockTodayDate);
         const user = userEvent.setup();
         render(<RegistrertBarnFødselFar />);
         expect(await screen.findByText('Barnet du søker for:')).toBeInTheDocument();
@@ -262,22 +264,24 @@ describe('<OmBarnet>', () => {
         await user.type(termindatoInput, dayjs(new Date('2021-03-01')).format('DD.MM.YYYY'));
         await user.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('Det registrerte barnet skal vises og far/medmor skal ikke måtte ikke oppgi termin hvis han velger registrert barn som er født tidligere enn de siste 12 ukene', async () => {
-        MockDate.set(new Date('2021-06-16'));
+        const mockTodayDate = new Date('2021-06-16');
+        vi.setSystemTime(mockTodayDate);
         render(<RegistrertBarnFødselFar />);
         expect(await screen.findByText('Barnet du søker for:')).toBeInTheDocument();
         expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
         expect(screen.getByText('Født 15.03.2021')).toBeInTheDocument();
         expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('Det registrerte barnet skal vises og mor skal bli spurt om termindato hvis hun velger registrert barn født innenfor de siste 12 ukene', async () => {
-        MockDate.set(new Date('2022-08-05'));
+        const mockTodayDate = new Date('2022-08-05');
+        vi.setSystemTime(mockTodayDate);
         const user = userEvent.setup();
         render(<RegistrertBarnFødselMor />);
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
@@ -290,11 +294,12 @@ describe('<OmBarnet>', () => {
         await user.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
         await user.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('Begge de registrerte barna skal vises og mor skal bli spurt om termindato hvis hun velger to registrerte barn født tidligere enn de siste 12 ukene', async () => {
-        MockDate.set(new Date('2022-10-16'));
+        const mockTodayDate = new Date('2022-10-16');
+        vi.setSystemTime(mockTodayDate);
         const user = userEvent.setup();
         render(<RegistrertBarnFødselMor />);
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
@@ -308,13 +313,14 @@ describe('<OmBarnet>', () => {
         await user.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        MockDate.reset();
+        vi.useRealTimers();
     });
     it('Trillinger der en er død skal vises uten navn', async () => {
-        MockDate.set(new Date('2023-03-10'));
+        const mockTodayDate = new Date('2023-03-10');
+        vi.setSystemTime(mockTodayDate);
         render(<RegistrertBarnTrillingerDerEnErDød />);
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
         expect(await screen.findByText('Trillinger', { exact: false })).toBeInTheDocument();
-        MockDate.reset();
+        vi.useRealTimers();
     });
 });

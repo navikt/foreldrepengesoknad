@@ -2,19 +2,21 @@ import { renderHook } from '@testing-library/react';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useAvbrytSøknad from './useAvbrytSøknad';
+import MockAdapter from 'axios-mock-adapter';
+import { AxiosInstance } from 'app/api/apiInterceptor';
 
-const mockedNavigator = jest.fn();
+const mockedNavigator = vi.fn();
 
-jest.mock('react-router-dom', () => ({
-    ...(jest.requireActual('react-router-dom') as any),
+vi.mock('react-router-dom', () => ({
+    ...(vi.importActual('react-router-dom') as any),
     useNavigate: () => mockedNavigator,
 }));
 
 describe('useAvbrytSøknad', () => {
     it('skal returnere funksjon for å avbryte søknad', () => {
-        const dispatchMock = jest.fn();
+        const dispatchMock = vi.fn();
 
-        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state: {
                 søkerinfo: {
                     person: {
@@ -24,6 +26,9 @@ describe('useAvbrytSøknad', () => {
             } as ForeldrepengesøknadContextState,
             dispatch: dispatchMock,
         }));
+
+        const apiMock = new MockAdapter(AxiosInstance);
+        apiMock.onDelete('/storage').reply(200, {});
 
         const { result } = renderHook(() => useAvbrytSøknad());
 
