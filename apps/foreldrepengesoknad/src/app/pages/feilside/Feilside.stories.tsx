@@ -1,4 +1,4 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import Feilside from './Feilside';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
