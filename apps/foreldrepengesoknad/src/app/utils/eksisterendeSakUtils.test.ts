@@ -9,8 +9,8 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from './eksisterendeSakUtils';
 
-jest.mock('@navikt/fp-common', () => ({
-    ...(jest.requireActual('@navikt/fp-common') as any),
+vi.mock('@navikt/fp-common', () => ({
+    ...(vi.importActual('@navikt/fp-common') as any),
     guid: () => '1',
 }));
 
@@ -394,7 +394,7 @@ describe('eksisterendeSakUtils', () => {
     };
 
     afterAll(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     describe('getArbeidsformFromUttakArbeidstype', () => {

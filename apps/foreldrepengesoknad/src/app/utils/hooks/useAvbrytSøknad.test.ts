@@ -3,18 +3,18 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import useAvbrytSøknad from './useAvbrytSøknad';
 
-const mockedNavigator = jest.fn();
+const mockedNavigator = vi.fn();
 
-jest.mock('react-router-dom', () => ({
-    ...(jest.requireActual('react-router-dom') as any),
+vi.mock('react-router-dom', () => ({
+    ...(vi.importActual('react-router-dom') as any),
     useNavigate: () => mockedNavigator,
 }));
 
 describe('useAvbrytSøknad', () => {
     it('skal returnere funksjon for å avbryte søknad', () => {
-        const dispatchMock = jest.fn();
+        const dispatchMock = vi.fn();
 
-        jest.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
+        vi.spyOn(context, 'useForeldrepengesøknadContext').mockImplementation(() => ({
             state: {
                 søkerinfo: {
                     person: {
