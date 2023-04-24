@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const ChatGroupBubble = () => (
     <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" role="presentation">
         <path

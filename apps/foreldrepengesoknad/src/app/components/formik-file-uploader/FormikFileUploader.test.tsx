@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FormikFileUploader from './FormikFileUploader';
 import { AttachmentType } from 'app/types/AttachmentType';

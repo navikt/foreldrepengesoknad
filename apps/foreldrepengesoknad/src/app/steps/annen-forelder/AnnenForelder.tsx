@@ -10,7 +10,7 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -159,11 +159,9 @@ const AnnenForelder = () => {
                         backLinkHref={getPreviousStepHref('annenForelder')}
                         activeStepId="annenForelder"
                         pageTitle={intlUtils(intl, 'søknad.annenForelder')}
-                        stepTitle={intlUtils(intl, 'søknad.annenForelder')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onForstettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}

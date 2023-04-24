@@ -1,5 +1,5 @@
 import { Locale } from '@navikt/fp-common';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import { sendErrorMessageToSentry } from './api/apiUtils';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 //TODO Dette bør ikkje ligga her
 window.appSettings = {
     REST_API_URL: '',

@@ -1,4 +1,3 @@
-import React from 'react';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
 import { bemUtils } from '@navikt/fp-common';

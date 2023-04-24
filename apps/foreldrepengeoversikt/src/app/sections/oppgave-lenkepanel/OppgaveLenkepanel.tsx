@@ -1,5 +1,5 @@
 import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import './oppgaveLenkepanel.css';
 import { bemUtils, Block, formatDate } from '@navikt/fp-common';

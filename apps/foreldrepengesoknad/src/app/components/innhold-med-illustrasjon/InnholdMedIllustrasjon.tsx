@@ -1,8 +1,8 @@
-import React from 'react';
 import { Heading } from '@navikt/ds-react';
 import { bemUtils, guid } from '@navikt/fp-common';
 
 import './innholdMedIllustrasjon.less';
+import { Children } from 'react';
 
 interface Props {
     tittel: string;
@@ -34,7 +34,7 @@ const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illust
             </div>
             {illustrasjoner && (
                 <div className={bem.element('illustrasjoner')} role="presentation" aria-hidden={true}>
-                    {React.Children.map(illustrasjoner, (ill) => (
+                    {Children.map(illustrasjoner, (ill) => (
                         <div className={bem.element('illustrasjon')} key={guid()}>
                             {ill}
                         </div>

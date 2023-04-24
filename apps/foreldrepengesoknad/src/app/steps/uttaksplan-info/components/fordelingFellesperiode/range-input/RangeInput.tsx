@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import { bemUtils, guid } from '@navikt/fp-common';
 import Fieldset from 'app/components/fieldset/Fieldset';
@@ -6,6 +5,7 @@ import AriaText from './AriaText';
 import RangeStepper from './RangeStepper';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 import './rangeInput.less';
+import { Component } from 'react';
 
 export interface RangeInputElementRendererOptions {
     value: number;
@@ -55,7 +55,7 @@ const defaultBottomContentRenderer: RangeInputElementRenderer = (options: RangeI
     </div>
 );
 
-class RangeInput extends React.Component<Props, State> {
+class RangeInput extends Component<Props, State> {
     container: HTMLDivElement | null = null;
 
     constructor(props: Props) {

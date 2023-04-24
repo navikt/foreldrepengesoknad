@@ -1,4 +1,3 @@
-import React from 'react';
 import { Story } from '@storybook/react';
 import IntlProvider from 'intl/IntlProvider';
 

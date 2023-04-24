@@ -1,4 +1,3 @@
-import React from 'react';
 import { BostedUtland } from 'app/steps/utenlandsopphold/bostedUtlandListAndDialog/types';
 import * as countries from 'i18n-iso-countries';
 

@@ -6,7 +6,7 @@ import { Kjønn } from 'app/types/domain/Person';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
-import React from 'react';
+
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import {

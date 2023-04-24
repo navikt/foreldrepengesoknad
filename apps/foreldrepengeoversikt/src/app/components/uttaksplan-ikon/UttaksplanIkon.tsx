@@ -2,7 +2,7 @@ import ArbeidIkon from 'assets/ArbeidIkon';
 import FerieIkon from 'assets/FerieIkon';
 import SykdomIkon from 'assets/SykdomIkon';
 import UttakIkon from 'assets/UttakIkon';
-import React, { SVGProps } from 'react';
+import { SVGProps } from 'react';
 
 export interface UttaksplanIkonProps extends SVGProps<any> {
     title: string;

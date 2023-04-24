@@ -1,4 +1,3 @@
-import React from 'react';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 import HarArbeidsforhold from './HarArbeidsforhold';

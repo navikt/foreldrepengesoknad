@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik-ds/lib';
 import getMessage from 'common/util/i18nUtils';

@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import preventDoubleTapZoom from '../preventDoubleTapZoom';
 import AriaText from '../AriaText';

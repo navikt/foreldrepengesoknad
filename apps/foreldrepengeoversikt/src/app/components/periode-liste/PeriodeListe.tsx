@@ -1,5 +1,5 @@
 import { Periode } from 'app/types/Periode';
-import * as React from 'react';
+
 import PeriodeListeItem from '../periode-liste-item/PeriodeListeItem';
 import { Heading } from '@navikt/ds-react';
 import './periode-liste.css';

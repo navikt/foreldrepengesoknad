@@ -1,7 +1,7 @@
 import { BodyShort, Link, ReadMore } from '@navikt/ds-react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import links from 'app/links/links';
-import React from 'react';
+
 import { FormattedMessage, useIntl } from 'react-intl';
 
 const HvemKanVæreFrilanser = () => {

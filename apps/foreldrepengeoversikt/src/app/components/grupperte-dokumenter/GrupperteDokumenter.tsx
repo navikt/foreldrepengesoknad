@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dokument as DokumentType } from 'app/types/Dokument';
 import Dokument from '../dokument/Dokument';
 import { bemUtils, guid } from '@navikt/fp-common';

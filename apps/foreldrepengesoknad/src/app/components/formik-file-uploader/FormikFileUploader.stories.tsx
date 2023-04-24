@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 import { AttachmentType } from 'app/types/AttachmentType';
 import withIntlProvider from 'storybook/decorators/withIntl';

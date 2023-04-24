@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { BodyShort, Heading, Ingress, Modal } from '@navikt/ds-react';

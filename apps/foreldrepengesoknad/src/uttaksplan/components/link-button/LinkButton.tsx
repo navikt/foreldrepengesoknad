@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
+import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
 import classNames from 'classnames';
 import { bemUtils } from '@navikt/fp-common';
 

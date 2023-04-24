@@ -1,6 +1,6 @@
 import { BodyShort } from '@navikt/ds-react';
 import { ActionLink, Block, intlUtils } from '@navikt/fp-common';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 

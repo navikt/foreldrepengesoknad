@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, FunctionComponent, ReactNode, useMemo, useReducer } from 'react';
+import { createContext, Dispatch, FunctionComponent, ReactNode, useMemo, useReducer } from 'react';
 import { ForeldrepengesøknadContextAction } from './action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from './ForeldrepengesøknadContextConfig';
 import foreldrepengesøknadReducer from './reducer/foreldrepengesøknadReducer';

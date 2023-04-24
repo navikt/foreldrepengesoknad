@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Block,
     date1YearAgo,
@@ -63,12 +62,10 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="utenlandsopphold"
                         pageTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
-                        stepTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block

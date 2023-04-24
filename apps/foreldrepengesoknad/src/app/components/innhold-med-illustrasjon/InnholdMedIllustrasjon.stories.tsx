@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 import InnholdMedIllustrasjon from './InnholdMedIllustrasjon';
 import UkerSirkel from '../../../app/components/info-eksisterende-sak/illustrasjoner/uker-sirkel/UkerSirkel';

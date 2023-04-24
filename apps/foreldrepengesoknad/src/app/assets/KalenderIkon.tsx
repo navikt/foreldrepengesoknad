@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const KalenderIkon = (props: any) => (
     <svg focusable="false" role="img" aria-hidden="true" width={34} height={31} {...props}>
         <title>{'Group'}</title>

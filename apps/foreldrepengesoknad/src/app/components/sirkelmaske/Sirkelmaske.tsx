@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 import { bemUtils } from '@navikt/fp-common';
 import { UttaksplanHexColor } from 'uttaksplan/types/UttaksplanHexColor';
 

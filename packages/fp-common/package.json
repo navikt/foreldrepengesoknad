@@ -1,8 +1,7 @@
 {
     "name": "@navikt/fp-common",
-    "version": "7.0.4",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "src/common/index.ts",
+    "types": "src/common/index.ts",
     "scripts": {
         "build": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "build-storybook": "storybook build -o .storybook-static-build",

@@ -3,7 +3,7 @@ import { intlUtils } from '@navikt/fp-common';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { isUttakAnnenPart, UtsettelseAnnenPartInfoPeriode, UttakAnnenPartInfoPeriode } from 'uttaksplan/types/Periode';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';

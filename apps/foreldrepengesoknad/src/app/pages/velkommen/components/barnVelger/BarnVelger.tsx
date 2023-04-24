@@ -1,5 +1,5 @@
 import { Block, formatDate, intlUtils } from '@navikt/fp-common';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';

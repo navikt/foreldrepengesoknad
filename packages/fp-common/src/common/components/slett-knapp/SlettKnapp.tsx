@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import TrashcanIkon from './TrashcanIkon';
 import { ButtonProps } from '@navikt/ds-react';
 

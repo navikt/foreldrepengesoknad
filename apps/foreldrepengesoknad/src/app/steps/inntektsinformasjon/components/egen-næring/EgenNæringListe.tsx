@@ -1,7 +1,7 @@
 import { formatDate } from '@navikt/fp-common';
 import InteractiveListElement from 'app/components/interactive-list-element/InteractiveListElement';
 import { Næring } from 'app/context/types/Næring';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 interface Props {
     næringsInformasjon: Næring[];

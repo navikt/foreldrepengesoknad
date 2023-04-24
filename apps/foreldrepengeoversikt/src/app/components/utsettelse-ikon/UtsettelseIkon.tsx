@@ -1,5 +1,5 @@
 import { intlUtils } from '@navikt/fp-common';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import IconBox from '../icon-box/IconBox';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import IntlProvider from '../../app/intl/IntlProvider';
 
 const withIntlProvider = (Story: any) => (

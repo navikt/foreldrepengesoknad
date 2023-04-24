@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import OversiktRoutes from './routes';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';

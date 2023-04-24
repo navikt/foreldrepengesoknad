@@ -1,4 +1,3 @@
-import React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { formatDate, Block, intlUtils, TidsperiodeDate, bemUtils } from '@navikt/fp-common';
 import { BodyShort, Label, Link } from '@navikt/ds-react';

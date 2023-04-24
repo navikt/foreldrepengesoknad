@@ -1,4 +1,3 @@
-import React from 'react';
 import { Attachment, AttachmentType, Skjemanummer } from 'common/storage/attachment/types/Attachment';
 import AttachmentOverview from 'common/storage/attachment/components/AttachmentOverview';
 import { FormattedMessage } from 'react-intl';

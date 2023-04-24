@@ -3,7 +3,6 @@ import { bemUtils } from '@navikt/fp-common';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
 import Sorry from 'assets/Sorry';
-import React from 'react';
 
 import './opplysninger.css';
 

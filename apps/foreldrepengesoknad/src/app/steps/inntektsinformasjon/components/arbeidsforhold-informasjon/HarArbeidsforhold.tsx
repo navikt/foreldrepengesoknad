@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';

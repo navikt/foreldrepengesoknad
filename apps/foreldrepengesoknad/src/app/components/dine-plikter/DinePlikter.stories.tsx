@@ -1,5 +1,3 @@
-import React from 'react';
-
 import withIntlProvider from 'storybook/decorators/withIntl';
 import DinePlikter from './DinePlikter';
 

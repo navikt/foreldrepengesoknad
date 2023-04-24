@@ -1,6 +1,6 @@
 import { intlUtils } from '@navikt/fp-common';
 import links from 'app/links/links';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import Feilside from '../feilside/Feilside';
 
@@ -21,9 +21,6 @@ const IkkeMyndig: FunctionComponent<Props> = ({ fornavn }) => {
                     navn: fornavn.toLowerCase(),
                 }),
                 tekst: intlUtils(intl, 'velkommen.ikkeMyndig.ingress'),
-                veileder: {
-                    ansikt: 'skeptisk',
-                },
                 lenke: {
                     tekst: intlUtils(intl, 'velkommen.ikkeMyndig.boblelenketekst'),
                     url: links.papirsøknad,

@@ -6,7 +6,7 @@ import links from 'app/links/links';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';

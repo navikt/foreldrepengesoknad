@@ -1,4 +1,3 @@
-import React from 'react';
 import { ForeldreparForelder } from 'app/types/ForeldreparSituasjonTypes';
 import Far1 from './assets/Far1';
 import Far2 from './assets/Far2';

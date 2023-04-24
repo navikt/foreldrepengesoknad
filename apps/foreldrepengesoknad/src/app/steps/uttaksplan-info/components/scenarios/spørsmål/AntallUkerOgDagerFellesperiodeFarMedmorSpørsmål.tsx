@@ -1,7 +1,7 @@
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { Label, ReadMore } from '@navikt/ds-react';
 import { getNumberFromNumberInputValue, TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import RangeIcon from '../../fordelingFellesperiode/range-input/RangeIcon';
 import Sirkelknapp from '../../fordelingFellesperiode/range-input/sirkelknapp/Sirkelknapp';

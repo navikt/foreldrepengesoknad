@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Block } from '@navikt/fp-common';
 import { Accordion, Heading } from '@navikt/ds-react';
 

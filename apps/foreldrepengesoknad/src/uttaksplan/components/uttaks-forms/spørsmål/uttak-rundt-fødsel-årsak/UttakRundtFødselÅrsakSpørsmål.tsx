@@ -1,6 +1,6 @@
 import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 

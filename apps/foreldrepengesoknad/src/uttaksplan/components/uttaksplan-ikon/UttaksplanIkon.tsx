@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react';
+import { SVGProps } from 'react';
 import ArbeidIkon from 'uttaksplan/assets/ArbeidIkon';
 import FerieIkon from 'uttaksplan/assets/FerieIkon';
 import SykdomIkon from 'uttaksplan/assets/SykdomIkon';

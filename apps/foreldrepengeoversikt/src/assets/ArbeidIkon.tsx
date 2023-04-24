@@ -1,5 +1,4 @@
 import { UttaksplanIkonProps } from 'app/components/uttaksplan-ikon/UttaksplanIkon';
-import React from 'react';
 
 const ArbeidIkon = (props: UttaksplanIkonProps) => {
     const { title, ...rest } = props;

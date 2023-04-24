@@ -5,13 +5,12 @@ import { Link } from '@navikt/ds-react';
 import { Back } from '@navikt/ds-icons';
 
 interface BackLinkProps {
-    className?: string;
     href: string;
     ariaLabel?: string;
     onClick?: (href: string, event: React.SyntheticEvent) => void;
 }
 
-const BackLink: React.FunctionComponent<BackLinkProps> = ({ className, href, onClick, ariaLabel }) => {
+const BackLink: React.FunctionComponent<BackLinkProps> = ({ href, onClick, ariaLabel }) => {
     const navigate = useNavigate();
 
     const handleOnClick = (event: React.SyntheticEvent) => {

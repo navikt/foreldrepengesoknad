@@ -2,7 +2,7 @@ import { Loader } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';

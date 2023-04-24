@@ -1,6 +1,6 @@
 import { Label } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
-import React, { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
 interface Props {
     title: string;

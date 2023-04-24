@@ -1,6 +1,6 @@
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
-import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';

@@ -1,6 +1,6 @@
 import { ReadMore } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
-import React from 'react';
+
 import { FormattedMessage, useIntl } from 'react-intl';
 import './hvaLeggerNAVVektPå.css';
 

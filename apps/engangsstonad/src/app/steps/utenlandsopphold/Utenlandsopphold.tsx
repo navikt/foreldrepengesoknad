@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     bemUtils,
     Block,
@@ -74,11 +73,9 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         bannerTitle={getMessage(intl, 'søknad.pageheading')}
                         activeStepId="utenlandsopphold"
                         pageTitle={getMessage(intl, 'søknad.utenlandsopphold')}
-                        stepTitle={getMessage(intl, 'søknad.utenlandsopphold')}
                         backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
-                        kompakt={true}
                     >
                         <UtenlandsoppholdFormComponents.Form
                             includeButtons={false}

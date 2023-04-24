@@ -1,7 +1,7 @@
 import { formatDate } from '@navikt/fp-common';
 import InteractiveListElement from 'app/components/interactive-list-element/InteractiveListElement';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 interface Props {
     frilansoppdrag: FrilansOppdrag[];

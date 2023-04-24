@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const KalenderBakgrunnIkon = (props: any) => (
     <svg focusable="false" role="img" aria-hidden="true" width={48} height={42} {...props}>
         <g fill="none" fillRule="evenodd">

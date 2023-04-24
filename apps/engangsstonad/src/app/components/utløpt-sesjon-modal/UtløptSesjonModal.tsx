@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import BEMHelper from 'common/util/bem';

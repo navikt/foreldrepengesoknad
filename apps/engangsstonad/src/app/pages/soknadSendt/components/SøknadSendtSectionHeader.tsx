@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { bemUtils, UtvidetInformasjon } from '@navikt/fp-common';
 import SøknadSendtIkon, { OppsummeringIkonType } from './SøknadSendtIkon';
 

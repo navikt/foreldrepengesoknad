@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { Attachment, AttachmentType, Skjemanummer } from 'common/storage/attachment/types/Attachment';
 import FormikFileInput from '@navikt/sif-common-formik-ds/lib/components/formik-file-input/FormikFileInput';

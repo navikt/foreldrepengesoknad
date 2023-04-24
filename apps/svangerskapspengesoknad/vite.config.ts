@@ -17,9 +17,6 @@ export default defineConfig({
             common: path.resolve(__dirname, './src/common/'),
         },
     },
-    optimizeDeps: {
-        include: ['@navikt/fp-common'],
-    },
     server: {
         port: 8080,
     },

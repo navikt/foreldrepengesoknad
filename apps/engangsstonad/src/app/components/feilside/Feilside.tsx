@@ -1,4 +1,3 @@
-import React from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from '@navikt/ds-icons';
 import { Språkkode } from 'intl/types';
@@ -7,26 +6,27 @@ import { Heading, Ingress } from '@navikt/ds-react';
 import { Locale, bemUtils, Block, LanguageToggle, Sidebanner } from '@navikt/fp-common';
 
 import './feilside.less';
+import { FunctionComponent, ReactNode } from 'react';
 
 export interface Props {
     containerId?: string;
     dokumenttittel: string;
     illustrasjon?: {
         tittel: string;
-        tekst: React.ReactNode;
+        tekst: ReactNode;
         lenke?: {
             url: string;
             tekst: string;
         };
         veileder?: VeilederProps;
     };
-    tittel: React.ReactNode;
-    ingress: React.ReactNode;
+    tittel: ReactNode;
+    ingress: ReactNode;
     språkkode?: Språkkode;
     setLanguage?: (languageCode: Locale) => void;
 }
 
-const Feilside: React.FunctionComponent<Props> = ({
+const Feilside: FunctionComponent<Props> = ({
     containerId,
     dokumenttittel,
     illustrasjon,
@@ -45,7 +45,6 @@ const Feilside: React.FunctionComponent<Props> = ({
             )}
             {illustrasjon && (
                 <Sidebanner
-                    veileder={illustrasjon.veileder}
                     dialog={{
                         title: illustrasjon.tittel,
                         text: (

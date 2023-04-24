@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik-ds';
 import { BostedUtland } from './types';

@@ -2,7 +2,7 @@ import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
 import { bemUtils, guid } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
-import React from 'react';
+
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
 import { useParams, Link } from 'react-router-dom';

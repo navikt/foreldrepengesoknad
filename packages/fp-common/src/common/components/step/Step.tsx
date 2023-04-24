@@ -1,19 +1,17 @@
 import React from 'react';
 import bemUtils from './../../utils/bemUtils';
 import Page from './Page';
-import StepIndicator, { StepIndicatorStep } from '../step-indicator/StepIndicator';
+import { StepIndicatorStep } from '../step-indicator/StepIndicator';
 import StepBanner from '../step-banner/StepBanner';
 import Block from '../block/Block';
 import BackLink from '../back-link/BackLink';
 import StepFooter from '../step-footer/StepFooter';
 
 import './step.less';
-import { Heading } from '@navikt/ds-react';
+import ProgressStepper from '../progress-stepper/ProgressStepper';
 
 export interface StepProps {
     pageTitle: string;
-    stepTitle: string;
-    kompakt: boolean;
     bannerTitle?: string;
     backLinkHref?: string;
     backLinkOnClick?: (href: string, event: React.SyntheticEvent) => void;
@@ -33,7 +31,6 @@ export interface StepProps {
 const Step: React.FunctionComponent<StepProps> = ({
     bannerTitle,
     pageTitle,
-    stepTitle,
     backLinkHref,
     backLinkOnClick,
     steps,
@@ -45,12 +42,10 @@ const Step: React.FunctionComponent<StepProps> = ({
     children,
     previousStepTitle,
     pageAriaLabel,
-    kompakt,
     infoMessage,
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId);
     const bem = bemUtils('step');
-
     return (
         <Page
             className={bem.block}
@@ -69,21 +64,15 @@ const Step: React.FunctionComponent<StepProps> = ({
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
             {(showStepIndicator || backLinkHref) && (
                 <>
-                    <Block padBottom="l">
-                        <Heading size="medium" className={bem.element('title')}>
-                            {stepTitle}
-                        </Heading>
-                    </Block>
                     <div role="presentation" aria-hidden={true}>
-                        <StepIndicator kompakt={kompakt} steps={steps} activeStep={currentStepIndex} />
+                        <ProgressStepper
+                            steps={steps}
+                            currentStepIndex={currentStepIndex}
+                            titleHeadingLevel="2"
+                        ></ProgressStepper>
                     </div>
                     {backLinkHref && (
-                        <BackLink
-                            href={backLinkHref}
-                            ariaLabel={previousStepTitle}
-                            className={bem.element('backLink')}
-                            onClick={backLinkOnClick}
-                        />
+                        <BackLink href={backLinkHref} ariaLabel={previousStepTitle} onClick={backLinkOnClick} />
                     )}
                 </>
             )}

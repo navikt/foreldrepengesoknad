@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AttachmentComponent from './Attachment';
 import './attachment.less';
 import { Attachment } from 'common/storage/attachment/types/Attachment';

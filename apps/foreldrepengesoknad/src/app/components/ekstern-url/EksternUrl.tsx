@@ -1,5 +1,5 @@
 import { intlUtils } from '@navikt/fp-common';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 
 export interface Props {

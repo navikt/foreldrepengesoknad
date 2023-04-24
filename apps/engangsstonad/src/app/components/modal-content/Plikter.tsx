@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link } from '@navikt/ds-react';
 import getMessage from 'common/util/i18nUtils';

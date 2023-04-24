@@ -20,9 +20,6 @@ export default defineConfig({
             assets: path.resolve(__dirname, './src/assets'),
         },
     },
-    optimizeDeps: {
-        include: ['@navikt/fp-common'],
-    },
     server: {
         port: 8080,
     },

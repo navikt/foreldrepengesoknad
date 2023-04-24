@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
 import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';

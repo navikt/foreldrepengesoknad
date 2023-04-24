@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
 import { Block, intlUtils, PictureScanningGuide } from '@navikt/fp-common';

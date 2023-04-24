@@ -1,6 +1,6 @@
 import { BodyLong, Button, Link } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
-import React from 'react';
+
 import { Edit } from '@navikt/ds-icons';
 import {
     filtrerAnnenPartsUttakNårIkkeSamtidigUttak,

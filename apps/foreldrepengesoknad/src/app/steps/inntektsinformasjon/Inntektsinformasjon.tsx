@@ -1,7 +1,7 @@
 import { Block, intlUtils, Step } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -82,11 +82,9 @@ const Inntektsinformasjon = () => {
                         backLinkHref={getPreviousStepHref('inntektsinformasjon')}
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
-                        stepTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
-                        kompakt={true}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">
