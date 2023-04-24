@@ -30,6 +30,7 @@ import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } 
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { guid } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import * as toggleUtils from './toggleUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -953,8 +954,7 @@ describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 
 });
 
 describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 2022', () => {
-    const toggleUtils = require('../utils/toggleUtils');
-    const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
+    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
 
     beforeAll(() => {
         MockDate.set(andreAugust2022);
@@ -995,8 +995,7 @@ describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 202
 });
 
 describe('To tette - WLB i prod', () => {
-    const toggleUtils = require('../utils/toggleUtils');
-    const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
+    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
     beforeAll(() => {
         featureIsEnabledMock.mockImplementation(() => false);
     });
@@ -1035,8 +1034,7 @@ describe('To tette - WLB i prod', () => {
 });
 
 describe('To tette - WLB i dev', () => {
-    const toggleUtils = require('../utils/toggleUtils');
-    const featureIsEnabledMock = jest.spyOn(toggleUtils, 'isFeatureEnabled');
+    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
     beforeAll(() => {
         featureIsEnabledMock.mockImplementation(() => true);
     });

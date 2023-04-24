@@ -1,21 +1,32 @@
 import { expect } from 'vitest';
-// import { cleanup } from '@testing-library/react';
 import matchers from '@testing-library/jest-dom/matchers';
+import { vi } from 'vitest';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { Modal } from '@navikt/ds-react';
+
+dayjs.extend(isSameOrAfter);
 
 expect.extend(matchers);
 
-const scriptTag = document.createElement('script');
-scriptTag.type = 'test/json';
-scriptTag.id = 'nav:appSettings';
-scriptTag.innerHTML = JSON.stringify({
-    REST_API_URL: 'http://localhost:8888/rest',
-    UTTAK_API_URL: 'https://foreldrepengesoknad-api.intern.dev.nav.no',
-    LOGIN_URL: 'http://localhost:8888/local/cookie',
-    APP_VERSION: 'dev',
-    FAMILIE: 'https://familie.dev.nav.no',
-    FEATURE_VIS_FEILSIDE: 'off',
-    FEATURE_VIS_ALERTSTRIPE: 'on',
-    FEATURE_VIS_PERIODER_SOM_SENDES_INN: 'on',
-    FEATURE_WLB_GJELDER_FRA_FORSTE_JAN: 'on',
+window.scrollTo = () => undefined;
+
+if (Modal.setAppElement) {
+    Modal.setAppElement('body');
+}
+
+vi.mock('./../src/app/Environment.ts', async () => {
+    return {
+        default: {
+            REST_API_URL: 'http://localhost:8888/rest',
+            UTTAK_API_URL: 'uttak-url',
+            LOGIN_URL: 'http://localhost:8888/local/cookie',
+            APP_VERSION: 'dev',
+            FAMILIE: 'https://familie.dev.nav.no',
+            FEATURE_VIS_FEILSIDE: 'off',
+            FEATURE_VIS_ALERTSTRIPE: 'on',
+            FEATURE_VIS_PERIODER_SOM_SENDES_INN: 'on',
+            FEATURE_WLB_GJELDER_FRA_FORSTE_JAN: 'off',
+        },
+    };
 });
-document.head.appendChild(scriptTag);
