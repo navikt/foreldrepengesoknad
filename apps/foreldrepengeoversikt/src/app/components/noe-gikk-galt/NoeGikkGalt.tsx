@@ -1,6 +1,5 @@
 import { Alert } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
-import React from 'react';
 
 import './noe-gikk-galt.css';
 

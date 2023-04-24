@@ -3,7 +3,7 @@ import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { Periode } from 'app/types/Periode';
 import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
 import { getNavnPåForeldre } from 'app/utils/personUtils';
-import * as React from 'react';
+
 import { useIntl } from 'react-intl';
 import { RettighetType } from 'app/types/RettighetType';
 import PeriodeListe from '../periode-liste/PeriodeListe';

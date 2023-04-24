@@ -1,7 +1,7 @@
 import { bemUtils } from '@navikt/fp-common';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import { Success, Warning, Clock } from '@navikt/ds-icons';
-import React from 'react';
+
 import { formaterDato, formaterTid } from 'app/utils/dateUtils';
 import './tidslinje-hendelse.css';
 import dayjs from 'dayjs';

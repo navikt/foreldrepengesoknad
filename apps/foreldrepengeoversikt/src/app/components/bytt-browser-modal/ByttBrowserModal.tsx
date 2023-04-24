@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { shouldChangeBrowser } from 'app/utils/browserUtils';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
@@ -6,9 +5,10 @@ import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import { Warning } from '@navikt/ds-icons';
 
 import './byttBrowserModal.less';
+import { useState } from 'react';
 
 const ByttBrowserModal: React.FunctionComponent = () => {
-    const [isOpen, toggleIsOpen] = React.useState(shouldChangeBrowser());
+    const [isOpen, toggleIsOpen] = useState(shouldChangeBrowser());
     const intl = useIntl();
     const cls = bemUtils('bytt-browser-modal');
 

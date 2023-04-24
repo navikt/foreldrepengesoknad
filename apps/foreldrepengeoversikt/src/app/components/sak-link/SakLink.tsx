@@ -2,7 +2,7 @@ import { Heading, LinkPanel } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import StatusTag from '../status-tag/StatusTag';
 

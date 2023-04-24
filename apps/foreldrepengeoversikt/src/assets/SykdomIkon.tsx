@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SykdomIkon = (props: any) => {
     const { title, ...rest } = props;
     return (

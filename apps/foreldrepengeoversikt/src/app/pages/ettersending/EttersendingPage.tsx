@@ -16,7 +16,7 @@ import { Skjemanummer } from 'app/types/Skjemanummer';
 import { deleteAttachment, isAttachmentWithError } from 'app/utils/attachmentUtils';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 import { getRelevanteSkjemanummer } from 'app/utils/skjemanummerUtils';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 import { EttersendingFormComponents, EttersendingFormField, EttersendingFormData } from './ettersendFormConfig';

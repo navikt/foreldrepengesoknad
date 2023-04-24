@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavRoutes } from 'app/routes/routes';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import './kontaktOss.css';

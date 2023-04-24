@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { IntlProvider as Provider } from 'react-intl';
 import dayjs from 'dayjs';
 import nbMessages from './nb_NO.json';

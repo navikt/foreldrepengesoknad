@@ -1,7 +1,7 @@
 import { LinkPanel } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import OversiktRoutes from 'app/routes/routes';
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 
 import './se-opplysninger.css';

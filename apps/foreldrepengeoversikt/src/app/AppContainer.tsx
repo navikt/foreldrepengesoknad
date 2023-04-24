@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import ByttBrowserModal from './components/bytt-browser-modal/ByttBrowserModal';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';

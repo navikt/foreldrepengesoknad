@@ -2,7 +2,7 @@ import { BodyLong, BodyShort, Loader } from '@navikt/ds-react';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
 import { AxiosError } from 'axios';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import OppgaveLenkepanel from '../oppgave-lenkepanel/OppgaveLenkepanel';
 import './oppgaver.css';

@@ -11,7 +11,7 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelseDato, getSakTittel, getSakUndertittel, utledFamiliesituasjon } from 'app/utils/sakerUtils';
 import TåteflaskeBaby from 'assets/TåteflaskeBaby';
 import classNames from 'classnames';
-import React from 'react';
+
 import { IntlShape, useIntl } from 'react-intl';
 import PreviousLink from '../previous-link/PreviousLink';
 import StatusTag from '../status-tag/StatusTag';

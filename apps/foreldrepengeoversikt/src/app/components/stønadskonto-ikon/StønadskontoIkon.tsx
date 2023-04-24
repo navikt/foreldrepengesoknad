@@ -4,7 +4,7 @@ import { StønadskontoType } from 'app/types/StønadskontoType';
 import { getStønadskontoForelderNavn } from 'app/utils/periodeUtils';
 import { NavnPåForeldre } from 'app/utils/personUtils';
 import { getStønadskontoFarge } from 'app/utils/styleUtils';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import IconBox from '../icon-box/IconBox';
