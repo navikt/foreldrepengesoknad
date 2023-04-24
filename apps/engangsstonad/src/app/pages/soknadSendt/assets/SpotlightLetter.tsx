@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const SpotlightLetter = (props: any) => (
     <svg
         width={120}

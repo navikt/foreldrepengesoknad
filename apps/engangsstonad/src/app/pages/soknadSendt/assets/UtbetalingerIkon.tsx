@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const UtbetalingerIkon = (props: any) => {
     const { title, ...rest } = props;
     return (

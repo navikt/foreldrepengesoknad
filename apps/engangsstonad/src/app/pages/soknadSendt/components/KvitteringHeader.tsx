@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import { Heading, Label, Link } from '@navikt/ds-react';

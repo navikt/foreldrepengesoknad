@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Veiviser: React.FunctionComponent<any> = (props: any) => (
     <svg width={80} height={80} role="img" aria-hidden="true" viewBox="0 0 64 64" {...props}>
         <g transform="translate(-1)" fill="none" fillRule="evenodd">

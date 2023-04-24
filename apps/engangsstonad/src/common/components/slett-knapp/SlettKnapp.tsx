@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { TrashcanIkon } from '@navikt/fp-common';
 
 import './slettKnapp.less';

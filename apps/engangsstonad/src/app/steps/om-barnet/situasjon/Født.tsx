@@ -4,7 +4,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import getMessage from 'common/util/i18nUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateFødselDate } from '../omBarnetValidering';

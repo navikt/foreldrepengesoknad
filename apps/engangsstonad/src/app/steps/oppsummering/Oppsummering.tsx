@@ -1,6 +1,6 @@
 import { bemUtils, Block, intlUtils, Locale, Step } from '@navikt/fp-common';
 import { Button, GuidePanel } from '@navikt/ds-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import Person from 'app/types/domain/Person';
@@ -96,7 +96,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                                       )
                             }
                         >
-                            <GuidePanel>{intlUtils(intl, 'oppsummering.text.lesNoye')}</GuidePanel>
+                            <Block padBottom="l">
+                                <GuidePanel>{intlUtils(intl, 'oppsummering.text.lesNoye')}</GuidePanel>
+                            </Block>
                             <div className={bem.block}>
                                 <Oppsummeringspunkt tittel={intlUtils(intl, 'søknad.omDeg')}>
                                     <OmDegOppsummering

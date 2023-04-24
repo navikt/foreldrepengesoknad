@@ -1,5 +1,5 @@
 import { bemUtils, Block, intlUtils, Step, useDocumentTitle } from '@navikt/fp-common';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 import {

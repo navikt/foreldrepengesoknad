@@ -4,7 +4,7 @@ import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Person from 'app/types/domain/Person';
 import { PageKeys } from 'app/types/PageKeys';
 import { lenker } from 'app/util/lenker';
-import React from 'react';
+
 import { useIntl } from 'react-intl';
 
 import './umyndig.less';

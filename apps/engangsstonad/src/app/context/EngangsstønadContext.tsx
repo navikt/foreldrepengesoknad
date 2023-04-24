@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, FunctionComponent, ReactNode, useMemo, useReducer } from 'react';
+import { createContext, Dispatch, FunctionComponent, ReactNode, useMemo, useReducer } from 'react';
 import { EngangsstønadContextAction } from './action/actionCreator';
 import { EngangsstønadContextState, engangsstønadInitialState } from './EngangsstønadContextConfig';
 import engangsstønadReducer from './reducer/engangsstønadReducer';

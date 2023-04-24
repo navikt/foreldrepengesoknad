@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { bemUtils, Block } from '@navikt/fp-common';
 import CheckmarkIkon from '../assets/CheckmarkIkon';

@@ -1,7 +1,7 @@
 import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
 import stepConfig from 'app/step-config/stepConfig';
 import getMessage from 'common/util/i18nUtils';
-import React from 'react';
+
 import { Button } from '@navikt/ds-react';
 import { useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
