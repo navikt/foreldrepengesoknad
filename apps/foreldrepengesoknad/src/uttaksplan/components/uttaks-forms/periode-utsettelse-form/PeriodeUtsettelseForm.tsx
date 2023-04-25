@@ -33,6 +33,7 @@ import { Situasjon } from 'app/types/Situasjon';
 
 import './periodeUtsettelseForm.less';
 import { Button } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     periode: Periode;
@@ -51,6 +52,7 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -69,6 +71,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     situasjon,
     utsettelserIPlan,
+    setPerioderErGyldige,
 }) => {
     const intl = useIntl();
     const { tidsperiode, id } = periode;
@@ -94,13 +97,29 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                     familiehendelsesdato
                 )
             }
-            renderForm={({ setFieldValue, values }) => {
+            renderForm={({ setFieldValue, values, isValid }) => {
                 const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
                     values,
                     erFarEllerMedmor,
                     erAleneOmOmsorg,
                     søkerErFarEllerMedmorOgKunDeHarRett,
                 } as PeriodeUtsettelseFormConfigPayload);
+
+                setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+                    const periodeIState = previousState.find((p) => p.id === periode.id);
+                    if (periodeIState && periodeIState.isValid !== isValid) {
+                        return previousState.map((p) => {
+                            if (p.id === periodeIState.id) {
+                                return { ...p, isValid };
+                            }
+                            return p;
+                        });
+                    }
+                    if (!periodeIState) {
+                        return [...previousState, { id: periode.id, isValid }];
+                    }
+                    return previousState;
+                });
 
                 return (
                     <>

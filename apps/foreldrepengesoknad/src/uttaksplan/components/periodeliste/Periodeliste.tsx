@@ -1,4 +1,4 @@
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { bemUtils, Block, formatDate } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
@@ -17,6 +17,7 @@ import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Alert } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     uttaksplan: Periode[];
@@ -35,7 +36,7 @@ interface Props {
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
@@ -43,6 +44,7 @@ interface Props {
     barn: Barn;
     barnFraNesteSak: BarnFraNesteSak | undefined;
     intl: IntlShape;
+    perioderErGyldige: PeriodeValidState[];
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
@@ -75,7 +77,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     meldingerPerPeriode,
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
-    setPeriodeErGyldig,
+    setPerioderErGyldige,
     erEndringssøknad,
     termindato,
     antallBarn,
@@ -83,6 +85,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     barn,
     barnFraNesteSak,
     intl,
+    perioderErGyldige,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -104,6 +107,8 @@ const Periodeliste: FunctionComponent<Props> = ({
     return (
         <div className={bem.block}>
             {uttaksplan.map((p, index) => {
+                const periodeMedValidState = perioderErGyldige.find((periodeMedState) => periodeMedState.id === p.id);
+                const periodeErGyldig = periodeMedValidState ? periodeMedValidState.isValid : true;
                 return (
                     <div key={p.id}>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
@@ -147,12 +152,13 @@ const Periodeliste: FunctionComponent<Props> = ({
                             erMorUfør={erMorUfør}
                             annenForelderSamtidigUttakPeriode={getAnnenForelderSamtidigUttakPeriode(p, uttaksplan)}
                             søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
-                            setPeriodeErGyldig={setPeriodeErGyldig}
+                            setPerioderErGyldige={setPerioderErGyldige}
                             erEndringssøknad={erEndringssøknad}
                             termindato={termindato}
                             antallBarn={antallBarn}
                             utsettelserIPlan={utsettelserIPlan}
                             intl={intl}
+                            periodeErGyldig={periodeErGyldig}
                         />
                         {erAllePerioderIPlanenFørFødsel && index === uttaksplan.length - 1 ? (
                             <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
