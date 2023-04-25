@@ -113,7 +113,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, erEndringssøknad)}
                     >
                         <ManglendeVedleggFormComponents.Form includeButtons={false}>
                             <Block padBottom="l">

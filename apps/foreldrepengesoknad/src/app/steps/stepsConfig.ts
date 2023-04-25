@@ -31,8 +31,20 @@ interface StepConfig {
     index: number;
     label: string;
 }
+const stepConfigEndringssøknad = (intl: IntlShape): StepConfig[] => [
+    {
+        id: 'uttaksplan',
+        index: 0,
+        label: intlUtils(intl, 'steps.label.uttaksplan'),
+    },
+    {
+        id: 'oppsummering',
+        index: 1,
+        label: intlUtils(intl, 'steps.label.oppsummering'),
+    },
+];
 
-const stepConfig = (intl: IntlShape): StepConfig[] => [
+const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
     {
         id: 'søkersituasjon',
         index: 0,
@@ -69,16 +81,18 @@ const stepConfig = (intl: IntlShape): StepConfig[] => [
         label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
     },
     {
-        id: 'dokumentasjon',
-        index: 7,
-        label: intlUtils(intl, 'steps.label.dokumentasjon'),
-    },
-    {
         id: 'oppsummering',
-        index: 8,
+        index: 7,
         label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
+
+const stepConfig = (intl: IntlShape, erEndringssøknad: boolean): StepConfig[] => {
+    if (erEndringssøknad) {
+        return stepConfigEndringssøknad(intl);
+    }
+    return stepConfigFørstegangssøknad(intl);
+};
 
 export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): string => {
     let href;

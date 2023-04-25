@@ -84,7 +84,7 @@ const Inntektsinformasjon = () => {
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, false)}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">

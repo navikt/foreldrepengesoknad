@@ -127,7 +127,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                                 selectOppdrag={selectOppdrag}
                             />
                         </Block>
-                        <Button variant="secondary" onClick={handleOnLeggTil}>
+                        <Button type="button" variant="secondary" onClick={handleOnLeggTil}>
                             <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
                         </Button>
                     </Block>

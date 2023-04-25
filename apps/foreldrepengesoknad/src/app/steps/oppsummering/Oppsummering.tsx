@@ -180,7 +180,7 @@ const Oppsummering = () => {
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={onAvbrytSøknad}
                             onContinueLater={onFortsettSøknadSenere}
-                            steps={stepConfig(intl)}
+                            steps={stepConfig(intl, erEndringssøknad)}
                         >
                             <Block padBottom="l">
                                 <GuidePanel>

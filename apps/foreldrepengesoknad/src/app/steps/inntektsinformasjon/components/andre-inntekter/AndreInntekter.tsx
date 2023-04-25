@@ -98,7 +98,7 @@ const AndreInntekter: FunctionComponent<Props> = ({
                             selectAnnenInntekt={selectAnnenInntekt}
                         />
                     </Block>
-                    <Button onClick={handleOnLeggTil}>
+                    <Button type="button" onClick={handleOnLeggTil}>
                         <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
                     </Button>
                 </div>

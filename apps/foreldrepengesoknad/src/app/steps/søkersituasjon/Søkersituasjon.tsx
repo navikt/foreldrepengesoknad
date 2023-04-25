@@ -60,7 +60,7 @@ const Søkersituasjon = () => {
                         pageTitle={intlUtils(intl, 'søknad.søkersituasjon')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, false)}
                     >
                         <SøkersituasjonFormComponents.Form includeButtons={false}>
                             <div>

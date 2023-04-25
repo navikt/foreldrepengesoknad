@@ -179,7 +179,7 @@ const UttaksplanInfo = () => {
             pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
             onCancel={onAvbrytSøknad}
             onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig(intl)}
+            steps={stepConfig(intl, false)}
         >
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
