@@ -65,7 +65,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, false)}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block

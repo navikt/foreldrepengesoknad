@@ -101,7 +101,7 @@ const EgenNæring: FunctionComponent<Props> = ({
                             selectNæring={selectNæring}
                         />
                     </Block>
-                    <Button onClick={handleOnLeggTil}>
+                    <Button type="button" onClick={handleOnLeggTil}>
                         <FormattedMessage id="inntektsinformasjon.leggTilVirksomhet" />
                     </Button>
                 </div>

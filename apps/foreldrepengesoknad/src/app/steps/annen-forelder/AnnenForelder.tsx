@@ -161,7 +161,7 @@ const AnnenForelder = () => {
                         pageTitle={intlUtils(intl, 'søknad.annenForelder')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onForstettSøknadSenere}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, false)}
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
