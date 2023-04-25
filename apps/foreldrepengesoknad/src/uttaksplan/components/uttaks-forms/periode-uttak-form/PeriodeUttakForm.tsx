@@ -34,7 +34,7 @@ import {
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
 import { FormattedMessage, IntlShape } from 'react-intl';
-import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
@@ -257,19 +257,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     { fom: values.fom, tom: values.tom } as TidsperiodeDate
                 );
                 setPerioderErGyldige((previousState: PeriodeValidState[]) => {
-                    const periodeIState = previousState.find((p) => p.id === periode.id);
-                    if (periodeIState && periodeIState.isValid !== isValid) {
-                        return previousState.map((p) => {
-                            if (p.id === periodeIState.id) {
-                                return { ...p, isValid };
-                            }
-                            return p;
-                        });
-                    }
-                    if (!periodeIState) {
-                        return [...previousState, { id: periode.id, isValid }];
-                    }
-                    return previousState;
+                    return getIsValidStateForPerioder(previousState, periode, isValid);
                 });
 
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({

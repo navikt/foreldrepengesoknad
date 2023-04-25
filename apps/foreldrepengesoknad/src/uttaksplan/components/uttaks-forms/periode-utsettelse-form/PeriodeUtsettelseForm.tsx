@@ -6,7 +6,7 @@ import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
-import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import {
@@ -106,19 +106,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 } as PeriodeUtsettelseFormConfigPayload);
 
                 setPerioderErGyldige((previousState: PeriodeValidState[]) => {
-                    const periodeIState = previousState.find((p) => p.id === periode.id);
-                    if (periodeIState && periodeIState.isValid !== isValid) {
-                        return previousState.map((p) => {
-                            if (p.id === periodeIState.id) {
-                                return { ...p, isValid };
-                            }
-                            return p;
-                        });
-                    }
-                    if (!periodeIState) {
-                        return [...previousState, { id: periode.id, isValid }];
-                    }
-                    return previousState;
+                    return getIsValidStateForPerioder(previousState, periode, isValid);
                 });
 
                 return (
@@ -247,6 +235,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     </Button>
                                     {visibility.areAllQuestionsAnswered() ? (
                                         <Button
+                                            type="submit"
                                             onClick={() => {
                                                 handleAddPeriode!(
                                                     mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
