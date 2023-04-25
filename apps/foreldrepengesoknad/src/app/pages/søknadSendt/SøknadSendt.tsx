@@ -95,7 +95,7 @@ const SøknadSendt = () => {
                                     info={intlUtils(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox')}
                                     infoApneLabel={intlUtils(intl, 'søknadSendt.infoFraArbeidsgiver.infoBox.apneLabel')}
                                 >
-                                    <Block padBottom="xl">
+                                    <Block padBottom="l">
                                         <BodyShort>
                                             <FormattedMessage id={'søknadSendt.infoFraArbeidsgiver.del1'} />
                                         </BodyShort>
@@ -124,15 +124,15 @@ const SøknadSendt = () => {
                             >
                                 {person.bankkonto && person.bankkonto.kontonummer ? (
                                     <>
-                                        <Block padBottom="xl">
+                                        <Block padBottom="l">
                                             <BodyShort>
                                                 <FormattedMessage id="søknadSendt.pengene.kontonummer" />
                                             </BodyShort>
                                         </Block>
-                                        <Block padBottom="xl">
+                                        <Block padBottom="l">
                                             <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
                                         </Block>
-                                        <Block padBottom="xl">
+                                        <Block padBottom="l">
                                             <BodyShort>
                                                 <Link href={links.brukerprofil}>
                                                     <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
@@ -142,7 +142,7 @@ const SøknadSendt = () => {
                                     </>
                                 ) : (
                                     <>
-                                        <Block padBottom="xl">
+                                        <Block padBottom="l">
                                             <BodyShort>
                                                 <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
                                             </BodyShort>
