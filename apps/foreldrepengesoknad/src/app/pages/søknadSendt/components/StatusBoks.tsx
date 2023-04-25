@@ -20,28 +20,30 @@ const StatusBoks: FunctionComponent<Props> = ({ saksNr }) => {
                     <FormattedMessage id="søknadSendt.status.tittel" />
                 </Heading>
             </Block>
-            <LinkPanel href={links.innsyn} border={true} className="statusBoks__lenkepanel">
-                <div className={bem.block}>
-                    <div className={bem.element('left')}>
-                        <Block padBottom="l">
-                            <Heading size="small" as="h3">
-                                <FormattedMessage id="søknadSendt.status.undertittel" />
-                            </Heading>
-                        </Block>
-                        <Tag variant="warning">
-                            <FormattedMessage id="søknadSendt.status.status" />
-                        </Tag>
-                    </div>
-                    {saksNr && (
-                        <div className={bem.element('right')}>
-                            <BodyShort>
-                                <FormattedMessage id="søknadSendt.status.saksnummer" />
-                            </BodyShort>
-                            <Ingress>{saksNr}</Ingress>
+            <Block padBottom="l">
+                <LinkPanel href={links.innsyn} border={true} className="statusBoks__lenkepanel">
+                    <div className={bem.block}>
+                        <div className={bem.element('left')}>
+                            <Block padBottom="l">
+                                <Heading size="small" as="h3">
+                                    <FormattedMessage id="søknadSendt.status.undertittel" />
+                                </Heading>
+                            </Block>
+                            <Tag variant="warning">
+                                <FormattedMessage id="søknadSendt.status.status" />
+                            </Tag>
                         </div>
-                    )}
-                </div>
-            </LinkPanel>
+                        {saksNr && (
+                            <div className={bem.element('right')}>
+                                <BodyShort>
+                                    <FormattedMessage id="søknadSendt.status.saksnummer" />
+                                </BodyShort>
+                                <Ingress>{saksNr}</Ingress>
+                            </div>
+                        )}
+                    </div>
+                </LinkPanel>
+            </Block>
         </Block>
     );
 };
