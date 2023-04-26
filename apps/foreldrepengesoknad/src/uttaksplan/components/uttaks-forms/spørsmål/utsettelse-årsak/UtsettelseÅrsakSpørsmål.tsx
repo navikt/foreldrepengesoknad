@@ -242,6 +242,12 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                     legend="Velg årsak for utsettelse"
                     name={PeriodeUtsettelseFormField.årsak}
                     radios={årsakOptions}
+                    validate={(value) => {
+                        if (value === '') {
+                            return 'Årsak må fylles ut';
+                        }
+                        return undefined;
+                    }}
                 />
             </Block>
             <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>

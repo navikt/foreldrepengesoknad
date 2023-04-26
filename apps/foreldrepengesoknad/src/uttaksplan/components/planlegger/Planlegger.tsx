@@ -6,7 +6,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import { VeiledermeldingerPerPeriode } from 'uttaksplan/validering/veilederInfo/types';
@@ -15,6 +15,7 @@ import Periodeliste from './../periodeliste/Periodeliste';
 
 import './planlegger.less';
 import { Button, Heading } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     uttaksplan: Periode[];
@@ -33,7 +34,7 @@ interface Props {
     situasjon: Situasjon;
     meldingerPerPeriode: VeiledermeldingerPerPeriode;
     erMorUfør: boolean;
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     erEndringssøknad: boolean;
     setSlettUttaksplanModalOpen: (isOpen: boolean) => void;
     setResetUttaksplanModalOpen: (isOpen: boolean) => void;
@@ -41,6 +42,7 @@ interface Props {
     barn: Barn;
     utsettelserIPlan: Utsettelsesperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
+    perioderErGyldige: PeriodeValidState[];
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -60,7 +62,7 @@ const Planlegger: FunctionComponent<Props> = ({
     situasjon,
     meldingerPerPeriode,
     erMorUfør,
-    setPeriodeErGyldig,
+    setPerioderErGyldige,
     erEndringssøknad,
     setSlettUttaksplanModalOpen,
     setResetUttaksplanModalOpen,
@@ -68,6 +70,7 @@ const Planlegger: FunctionComponent<Props> = ({
     barn,
     utsettelserIPlan,
     barnFraNesteSak,
+    perioderErGyldige,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -124,7 +127,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 meldingerPerPeriode={meldingerPerPeriode}
                                 erMorUfør={erMorUfør}
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
-                                setPeriodeErGyldig={setPeriodeErGyldig}
+                                setPerioderErGyldige={setPerioderErGyldige}
                                 erEndringssøknad={erEndringssøknad}
                                 termindato={termindato}
                                 antallBarn={barn.antallBarn}
@@ -132,6 +135,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 barn={barn}
                                 barnFraNesteSak={barnFraNesteSak}
                                 intl={intl}
+                                perioderErGyldige={perioderErGyldige}
                             />
                         </section>
                     </Block>
@@ -152,7 +156,7 @@ const Planlegger: FunctionComponent<Props> = ({
                                 erDeltUttak={erDeltUttak}
                                 situasjon={situasjon}
                                 erMorUfør={erMorUfør}
-                                setPeriodeErGyldig={setPeriodeErGyldig}
+                                setPerioderErGyldige={setPerioderErGyldige}
                                 nesteLedigeUttaksdato={nesteLedigeUttaksdato}
                                 søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                 erEndringssøknad={erEndringssøknad}
@@ -169,6 +173,7 @@ const Planlegger: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <div className={bem.element('knapperad')}>
                         <Button
+                            type="button"
                             variant="secondary"
                             onClick={() => {
                                 setNyPeriodeFormIsVisible(true);
@@ -178,6 +183,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             Legg til ny periode
                         </Button>
                         <Button
+                            type="button"
                             variant="secondary"
                             onClick={() => {
                                 setNyPeriodeFormIsVisible(true);
