@@ -6,7 +6,7 @@ import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
-import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import {
@@ -33,6 +33,7 @@ import { Situasjon } from 'app/types/Situasjon';
 
 import './periodeUtsettelseForm.less';
 import { Button } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     periode: Periode;
@@ -51,6 +52,8 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
+    isOpen: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -69,6 +72,8 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     søkerErFarEllerMedmorOgKunDeHarRett,
     situasjon,
     utsettelserIPlan,
+    setPerioderErGyldige,
+    isOpen,
 }) => {
     const intl = useIntl();
     const { tidsperiode, id } = periode;
@@ -88,19 +93,32 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     return (
         <PeriodeUtsettelseFormComponents.FormikWrapper
             initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
-            onSubmit={(values) =>
-                handleUpdatePeriode(
-                    mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
-                    familiehendelsesdato
-                )
-            }
-            renderForm={({ setFieldValue, values }) => {
+            onSubmit={(values) => {
+                if (!isNyPeriode) {
+                    handleUpdatePeriode(
+                        mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
+                        familiehendelsesdato
+                    );
+                } else {
+                    setNyPeriodeFormIsVisible!(false);
+                    handleAddPeriode!(
+                        mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
+                        familiehendelsesdato
+                    );
+                }
+            }}
+            renderForm={({ setFieldValue, values, isValid }) => {
                 const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
                     values,
                     erFarEllerMedmor,
                     erAleneOmOmsorg,
                     søkerErFarEllerMedmorOgKunDeHarRett,
                 } as PeriodeUtsettelseFormConfigPayload);
+                if (isOpen) {
+                    setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+                        return getIsValidStateForPerioder(previousState, periode, isValid);
+                    });
+                }
 
                 return (
                     <>
@@ -121,9 +139,13 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
-                            <SubmitListener
-                                cleanup={() => cleanupPeriodeUtsettelseFormData(values as PeriodeUtsettelseFormData)}
-                            />
+                            {!isNyPeriode && (
+                                <SubmitListener
+                                    cleanup={() =>
+                                        cleanupPeriodeUtsettelseFormData(values as PeriodeUtsettelseFormData)
+                                    }
+                                />
+                            )}
 
                             <Block visible={isValidTidsperiode(tidsperiode)} padBottom="xl">
                                 <TidsperiodeDisplay
@@ -141,8 +163,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
+                                        setTimeout(() => {
+                                            setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
+                                            setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
+                                        }, 0);
                                     }}
                                     tidsperiode={tidsperiode}
                                     onAvbryt={() => toggleVisTidsperiode()}
@@ -227,15 +251,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.avbryt" />
                                     </Button>
                                     {visibility.areAllQuestionsAnswered() ? (
-                                        <Button
-                                            onClick={() => {
-                                                handleAddPeriode!(
-                                                    mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
-                                                    familiehendelsesdato
-                                                );
-                                                setNyPeriodeFormIsVisible!(false);
-                                            }}
-                                        >
+                                        <Button type="submit">
                                             <FormattedMessage id="uttaksplan.leggTil" />
                                         </Button>
                                     ) : null}
