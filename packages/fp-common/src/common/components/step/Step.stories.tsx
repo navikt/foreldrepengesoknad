@@ -16,8 +16,6 @@ const Template: Story<StepProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     pageTitle: 'Foreldrepenger',
-    stepTitle: 'Om Barnet',
-    kompakt: true,
     activeStepId: 'test',
     steps: [
         { id: 'test', index: 1, label: 'Om Barnet' },
