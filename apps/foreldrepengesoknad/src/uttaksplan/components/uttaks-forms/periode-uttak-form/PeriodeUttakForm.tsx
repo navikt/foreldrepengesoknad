@@ -75,6 +75,7 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
+    isOpen: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -146,6 +147,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     intl,
+    isOpen,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
@@ -256,10 +258,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     termindato,
                     { fom: values.fom, tom: values.tom } as TidsperiodeDate
                 );
-                setPerioderErGyldige((previousState: PeriodeValidState[]) => {
-                    return getIsValidStateForPerioder(previousState, periode, isValid);
-                });
-
+                if (isOpen) {
+                    setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+                        return getIsValidStateForPerioder(previousState, periode, isValid);
+                    });
+                }
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,
                     regelProps: {
@@ -321,8 +324,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        setTimeout(() => {
+                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                            setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}

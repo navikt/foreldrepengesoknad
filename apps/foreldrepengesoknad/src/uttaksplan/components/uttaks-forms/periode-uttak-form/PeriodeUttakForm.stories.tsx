@@ -63,6 +63,7 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     isNyPeriode: boolean;
     intl: IntlShape;
+    isOpen: boolean;
 }
 
 const defaultInput = {
@@ -111,6 +112,7 @@ const defaultInput = {
     antallBarn: 1,
     utsettelserIPlan: [],
     isNyPeriode: true,
+    isOpen: true,
     // intl: intlMock,
 };
 

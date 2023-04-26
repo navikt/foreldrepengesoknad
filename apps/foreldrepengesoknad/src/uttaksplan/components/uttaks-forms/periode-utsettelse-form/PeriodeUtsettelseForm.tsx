@@ -53,6 +53,7 @@ interface Props {
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
+    isOpen: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -72,6 +73,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     situasjon,
     utsettelserIPlan,
     setPerioderErGyldige,
+    isOpen,
 }) => {
     const intl = useIntl();
     const { tidsperiode, id } = periode;
@@ -91,12 +93,20 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     return (
         <PeriodeUtsettelseFormComponents.FormikWrapper
             initialValues={getPeriodeUtsettelseFormInitialValues(periode)}
-            onSubmit={(values) =>
-                handleUpdatePeriode(
-                    mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
-                    familiehendelsesdato
-                )
-            }
+            onSubmit={(values) => {
+                if (!isNyPeriode) {
+                    handleUpdatePeriode(
+                        mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
+                        familiehendelsesdato
+                    );
+                } else {
+                    setNyPeriodeFormIsVisible!(false);
+                    handleAddPeriode!(
+                        mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
+                        familiehendelsesdato
+                    );
+                }
+            }}
             renderForm={({ setFieldValue, values, isValid }) => {
                 const visibility = periodeUtsettelseFormQuestionsConfig.getVisbility({
                     values,
@@ -104,10 +114,11 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                     erAleneOmOmsorg,
                     søkerErFarEllerMedmorOgKunDeHarRett,
                 } as PeriodeUtsettelseFormConfigPayload);
-
-                setPerioderErGyldige((previousState: PeriodeValidState[]) => {
-                    return getIsValidStateForPerioder(previousState, periode, isValid);
-                });
+                if (isOpen) {
+                    setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+                        return getIsValidStateForPerioder(previousState, periode, isValid);
+                    });
+                }
 
                 return (
                     <>
@@ -128,9 +139,13 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeUtsettelseFormComponents.Form includeButtons={false}>
-                            <SubmitListener
-                                cleanup={() => cleanupPeriodeUtsettelseFormData(values as PeriodeUtsettelseFormData)}
-                            />
+                            {!isNyPeriode && (
+                                <SubmitListener
+                                    cleanup={() =>
+                                        cleanupPeriodeUtsettelseFormData(values as PeriodeUtsettelseFormData)
+                                    }
+                                />
+                            )}
 
                             <Block visible={isValidTidsperiode(tidsperiode)} padBottom="xl">
                                 <TidsperiodeDisplay
@@ -148,8 +163,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
+                                        setTimeout(() => {
+                                            setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
+                                            setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
+                                        }, 0);
                                     }}
                                     tidsperiode={tidsperiode}
                                     onAvbryt={() => toggleVisTidsperiode()}
@@ -234,16 +251,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.avbryt" />
                                     </Button>
                                     {visibility.areAllQuestionsAnswered() ? (
-                                        <Button
-                                            type="submit"
-                                            onClick={() => {
-                                                handleAddPeriode!(
-                                                    mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
-                                                    familiehendelsesdato
-                                                );
-                                                setNyPeriodeFormIsVisible!(false);
-                                            }}
-                                        >
+                                        <Button type="submit">
                                             <FormattedMessage id="uttaksplan.leggTil" />
                                         </Button>
                                     ) : null}
