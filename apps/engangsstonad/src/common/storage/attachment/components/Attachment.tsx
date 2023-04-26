@@ -1,4 +1,4 @@
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import { useIntl } from 'react-intl';
 import SlettKnapp from '../../../components/slett-knapp/SlettKnapp';

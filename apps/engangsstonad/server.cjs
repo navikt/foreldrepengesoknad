@@ -1,15 +1,26 @@
 const express = require('express');
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const getDecorator = require('./src/build/scripts/decorator');
+const getDecorator = require('./src/build/scripts/decorator.cjs');
 const compression = require('compression');
 const morgan = require('morgan');
+
+const isDev = process.env.NODE_ENV === 'development';
+
+if (isDev) {
+    require('dotenv').config();
+}
 
 const server = express();
 server.disable('x-powered-by');
 server.use(compression());
 
-server.set('views', `${__dirname}/dist`);
+if (isDev) {
+    server.set('views', `${__dirname}`);
+} else {
+    server.set('views', `${__dirname}/dist`);
+}
+
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 server.use(morgan('tiny'));
@@ -44,21 +55,52 @@ const renderApp = (decoratorFragments) =>
         );
     });
 
-const startServer = (html) => {
-    server.use('/engangsstonad/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
-    server.use('/engangsstonad/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
-
-    server.get(/^\/(?!.*dist).*$/, (req, res) => {
-        res.send(html);
-    });
-
-    server.get('/internal/metrics', (req, res) => {
-        res.set('Content-Type', prometheus.register.contentType);
-        res.end(prometheus.register.metrics());
-    });
-
+const startServer = async (html) => {
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
+
+    if (isDev) {
+        const fs = require('fs');
+        fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+        const vedleggMockStore = './dist/vedlegg';
+
+        if (!fs.existsSync(vedleggMockStore)) {
+            fs.mkdirSync(vedleggMockStore);
+        }
+
+        const vite = await require('vite').createServer({
+            root: __dirname,
+            server: {
+                middlewareMode: true,
+                port: 8080,
+                open: './index-decorated.html',
+            },
+        });
+
+        server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
+            const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
+            const fileExists = fs.existsSync(fullPath);
+
+            if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
+                req.url = '/index-decorated.html';
+            }
+            next();
+        });
+
+        server.use(vite.middlewares);
+    } else {
+        server.use('/engangsstonad/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
+        server.use('/engangsstonad/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
+
+        server.get('/internal/metrics', (req, res) => {
+            res.set('Content-Type', prometheus.register.contentType);
+            res.end(prometheus.register.metrics());
+        });
+
+        server.get(/^\/(?!.*dist).*$/, (_req, res) => {
+            res.send(html);
+        });
+    }
 
     const port = process.env.PORT || 8080;
     server.listen(port, () => {
