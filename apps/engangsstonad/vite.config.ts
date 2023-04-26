@@ -33,5 +33,9 @@ export default defineConfig({
         deps: {
             inline: ['@navikt/ds-react'],
         },
+        coverage: {
+            include: ['src/**/*'],
+            exclude: [],
+        },
     },
 });
