@@ -74,19 +74,21 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     return (
         <>
             <Modal open={visible} closeButton={true} onClose={onAvbryt} aria-label="Endre tidsperiode">
-                <TidsperiodeForm
-                    familiehendelsesdato={familiehendelsesdato}
-                    onBekreft={handleOnSubmit}
-                    periode={periode}
-                    tidsperiode={tidsperiode}
-                    ugyldigeTidsperioder={ugyldigeTidsperioder}
-                    utsettelserIPlan={utsettelserIPlan}
-                    initialMonth={initialMonth}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    morHarRett={morHarRett}
-                    situasjon={situasjon}
-                    erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
-                />
+                <Modal.Content>
+                    <TidsperiodeForm
+                        familiehendelsesdato={familiehendelsesdato}
+                        onBekreft={handleOnSubmit}
+                        periode={periode}
+                        tidsperiode={tidsperiode}
+                        ugyldigeTidsperioder={ugyldigeTidsperioder}
+                        utsettelserIPlan={utsettelserIPlan}
+                        initialMonth={initialMonth}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        morHarRett={morHarRett}
+                        situasjon={situasjon}
+                        erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
+                    />
+                </Modal.Content>
             </Modal>
             <UkerDagerTeller
                 ukeLegend={intlUtils(intl, 'uker.label')}
