@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const isValidISODate = (date: string) => !!(date && moment(date, moment.ISO_8601).isValid());
 
