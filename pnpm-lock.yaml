@@ -663,6 +663,9 @@ importers:
       ts-loader:
         specifier: ^9.4.2
         version: 9.4.2(typescript@5.0.4)(webpack@5.78.0)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -1015,6 +1018,9 @@ importers:
       ts-loader:
         specifier: ^9.4.1
         version: 9.4.2(typescript@5.0.4)(webpack@5.80.0)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -1587,6 +1593,8 @@ importers:
       vite-plugin-checker:
         specifier: ^0.5.6
         version: 0.5.6(eslint@8.38.0)(typescript@5.0.4)(vite@4.2.1)
+
+  packages/tsconfig: {}
 
 packages:
 
