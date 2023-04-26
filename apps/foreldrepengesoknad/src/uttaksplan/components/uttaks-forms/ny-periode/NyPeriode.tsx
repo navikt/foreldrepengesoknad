@@ -10,6 +10,7 @@ import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseF
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { Situasjon } from 'app/types/Situasjon';
 import { Heading } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     familiehendelsesdato: Date;
@@ -26,7 +27,7 @@ interface Props {
     erDeltUttak: boolean;
     situasjon: Situasjon;
     erMorUfør: boolean;
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     nesteLedigeUttaksdato: Date | undefined;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     erEndringssøknad: boolean;
@@ -51,7 +52,7 @@ const NyPeriode: FunctionComponent<Props> = ({
     erDeltUttak,
     situasjon,
     erMorUfør,
-    setPeriodeErGyldig,
+    setPerioderErGyldige,
     nesteLedigeUttaksdato,
     søkerErFarEllerMedmorOgKunDeHarRett,
     erEndringssøknad,
@@ -89,13 +90,14 @@ const NyPeriode: FunctionComponent<Props> = ({
                 erDeltUttak={erDeltUttak}
                 situasjon={situasjon}
                 erMorUfør={erMorUfør}
-                setPeriodeErGyldig={setPeriodeErGyldig}
+                setPerioderErGyldige={setPerioderErGyldige}
                 erEndringssøknad={erEndringssøknad}
                 termindato={termindato}
                 morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                 antallBarn={antallBarn}
                 utsettelserIPlan={utsettelserIPlan}
                 intl={intl}
+                isOpen={true}
             />
         </>
     ) : (
@@ -114,6 +116,8 @@ const NyPeriode: FunctionComponent<Props> = ({
             arbeidsforhold={arbeidsforhold}
             situasjon={situasjon}
             utsettelserIPlan={utsettelserIPlan}
+            setPerioderErGyldige={setPerioderErGyldige}
+            isOpen={true}
         />
     );
 };

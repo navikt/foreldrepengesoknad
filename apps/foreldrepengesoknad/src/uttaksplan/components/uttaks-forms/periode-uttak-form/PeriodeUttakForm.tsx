@@ -5,7 +5,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -34,7 +34,7 @@ import {
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
 import { FormattedMessage, IntlShape } from 'react-intl';
-import { getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from 'uttaksplan/utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
@@ -47,6 +47,7 @@ import {
 
 import './periodeUttakForm.less';
 import { Button, GuidePanel } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     periode: Periode;
@@ -68,12 +69,13 @@ interface Props {
     handleDeletePeriode?: (periodeId: string) => void;
     isNyPeriode?: boolean;
     erMorUfør: boolean;
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     termindato: Date | undefined;
     morHarRett: boolean;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
+    isOpen: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -139,21 +141,16 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     situasjon,
     erMorUfør,
     erEndringssøknad,
-    setPeriodeErGyldig,
+    setPerioderErGyldige,
     termindato,
     morHarRett,
     antallBarn,
     utsettelserIPlan,
     intl,
+    isOpen,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUttakForm');
-
-    useEffect(() => {
-        return () => {
-            setPeriodeErGyldig(true);
-        };
-    }, [setPeriodeErGyldig]);
 
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
@@ -261,8 +258,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     termindato,
                     { fom: values.fom, tom: values.tom } as TidsperiodeDate
                 );
-                setPeriodeErGyldig(isValid);
-
+                if (isOpen) {
+                    setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+                        return getIsValidStateForPerioder(previousState, periode, isValid);
+                    });
+                }
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,
                     regelProps: {
@@ -324,8 +324,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                     }}
                                     changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                        setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        setTimeout(() => {
+                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
+                                            setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                        }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}

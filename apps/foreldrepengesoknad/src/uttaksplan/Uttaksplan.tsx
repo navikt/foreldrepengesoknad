@@ -77,6 +77,11 @@ interface Props {
     minsterettUkerToTette: number | undefined;
 }
 
+export interface PeriodeValidState {
+    id: string;
+    isValid: boolean;
+}
+
 const Uttaksplan: FunctionComponent<Props> = ({
     foreldreSituasjon,
     erDeltUttak,
@@ -119,7 +124,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
-    const [periodeErGyldig, setPeriodeErGyldig] = useState(true);
+    const [perioderErGyldige, setPerioderErGyldige] = useState<PeriodeValidState[]>([]);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
     const [resetUttaksplanModalOpen, setResetUttaksplanModalOpen] = useState(false);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
@@ -252,7 +257,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     });
 
     useEffect(() => {
-        if (!periodeErGyldig || uttaksplanValidering.harFeil) {
+        if (perioderErGyldige.some((p) => !p.isValid) || uttaksplanValidering.harFeil) {
             setUttaksplanErGyldig(false);
         } else {
             setUttaksplanErGyldig(true);
@@ -310,7 +315,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     situasjon={situasjon}
                     meldingerPerPeriode={meldingerPerPeriode}
                     erMorUfør={erMorUfør}
-                    setPeriodeErGyldig={setPeriodeErGyldig}
+                    setPerioderErGyldige={setPerioderErGyldige}
                     erEndringssøknad={erEndringssøknad}
                     setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
                     setResetUttaksplanModalOpen={setResetUttaksplanModalOpen}
@@ -318,6 +323,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     barn={barn}
                     utsettelserIPlan={utsettelserIPlan}
                     barnFraNesteSak={barnFraNesteSak}
+                    perioderErGyldige={perioderErGyldige}
                 />
             </Block>
             {visAutomatiskJusteringForm && (
