@@ -38,6 +38,7 @@ import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUt
 import { Situasjon } from 'app/types/Situasjon';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -451,4 +452,20 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
     }
 
     return undefined;
+};
+
+export const getIsValidStateForPerioder = (previousState: PeriodeValidState[], periode: Periode, isValid: boolean) => {
+    const periodeIState = previousState.find((p) => p.id === periode.id);
+    if (periodeIState && periodeIState.isValid !== isValid) {
+        return previousState.map((p) => {
+            if (p.id === periodeIState.id) {
+                return { ...p, isValid };
+            }
+            return p;
+        });
+    }
+    if (!periodeIState) {
+        return [...previousState, { id: periode.id, isValid }];
+    }
+    return previousState;
 };

@@ -6,7 +6,7 @@ import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Situasjon } from 'app/types/Situasjon';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import classNames from 'classnames';
-import { Dispatch, FunctionComponent, SetStateAction } from 'react';
+import { FunctionComponent } from 'react';
 import {
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -27,6 +27,7 @@ import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakFor
 
 import './periodelisteItem.less';
 import { Accordion } from '@navikt/ds-react';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 interface Props {
     egenPeriode: boolean;
@@ -49,12 +50,13 @@ interface Props {
     erMorUfør: boolean;
     annenForelderSamtidigUttakPeriode: Periode | undefined;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     erEndringssøknad: boolean;
     termindato: Date | undefined;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
+    periodeErGyldig: boolean;
 }
 
 const renderPeriodeListeInnhold = (
@@ -74,12 +76,13 @@ const renderPeriodeListeInnhold = (
     situasjon: Situasjon,
     erMorUfør: boolean,
     søkerErFarEllerMedmorOgKunDeHarRett: boolean,
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>,
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>,
     erEndringssøknad: boolean,
     termindato: Date | undefined,
     antallBarn: number,
     utsettelserIPlan: Utsettelsesperiode[],
-    intl: IntlShape
+    intl: IntlShape,
+    isOpen: boolean
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -117,12 +120,13 @@ const renderPeriodeListeInnhold = (
                     situasjon={situasjon}
                     erMorUfør={erMorUfør}
                     erEndringssøknad={erEndringssøknad}
-                    setPeriodeErGyldig={setPeriodeErGyldig}
+                    setPerioderErGyldige={setPerioderErGyldige}
                     termindato={termindato}
                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}
                     antallBarn={antallBarn}
                     utsettelserIPlan={utsettelserIPlan}
                     intl={intl}
+                    isOpen={isOpen}
                 />
             );
         case Periodetype.Utsettelse:
@@ -141,6 +145,8 @@ const renderPeriodeListeInnhold = (
                     arbeidsforhold={arbeidsforhold}
                     situasjon={situasjon}
                     utsettelserIPlan={utsettelserIPlan}
+                    setPerioderErGyldige={setPerioderErGyldige}
+                    isOpen={isOpen}
                 />
             );
         case Periodetype.Hull:
@@ -195,14 +201,22 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     annenForelderSamtidigUttakPeriode,
     søkerErFarEllerMedmorOgKunDeHarRett,
     erEndringssøknad,
-    setPeriodeErGyldig,
+    setPerioderErGyldige,
     termindato,
     antallBarn,
     utsettelserIPlan,
     intl,
+    periodeErGyldig,
 }) => {
     const bem = bemUtils('periodelisteItem');
-    const melding = meldinger.length > 0 ? meldinger[0] : undefined;
+    let melding = meldinger.length > 0 ? meldinger[0] : undefined;
+
+    if (!periodeErGyldig) {
+        melding = {
+            type: 'feil',
+            contentIntlKey: 'uttaksplan.validering.feil.erAllePeriodeSkjemaspørsmålBesvart',
+        };
+    }
 
     if (isInfoPeriode(periode) && !periode.visPeriodeIPlan) {
         return null;
@@ -264,12 +278,13 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                             situasjon,
                             erMorUfør,
                             søkerErFarEllerMedmorOgKunDeHarRett,
-                            setPeriodeErGyldig,
+                            setPerioderErGyldige,
                             erEndringssøknad,
                             termindato,
                             antallBarn,
                             utsettelserIPlan,
-                            intl
+                            intl,
+                            isOpen
                         )}
                     </Accordion.Content>
                 </Accordion.Item>

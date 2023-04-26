@@ -10,6 +10,7 @@ import withIntlProvider from 'storybook/decorators/withIntl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { IntlShape } from 'react-intl';
 import PeriodeUttakForm from './PeriodeUttakForm';
+import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 const stønadskonto100MorFar = [
     { konto: StønadskontoType.Mødrekvote, dager: 75 },
@@ -55,13 +56,14 @@ interface Props {
     handleAddPeriode: (periode: Periode, familiehendelsedato: Date) => void;
     setNyPeriodeFormIsVisible?: Dispatch<SetStateAction<boolean>>;
     erMorUfør: boolean;
-    setPeriodeErGyldig: Dispatch<SetStateAction<boolean>>;
+    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     termindato: Date | undefined;
     morHarRett: boolean;
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     isNyPeriode: boolean;
     intl: IntlShape;
+    isOpen: boolean;
 }
 
 const defaultInput = {
@@ -102,7 +104,7 @@ const defaultInput = {
         return 0;
     },
     erMorUfør: false,
-    setPeriodeErGyldig: () => {
+    setPerioderErGyldige: () => {
         return 0;
     },
     termindato: undefined,
@@ -110,6 +112,7 @@ const defaultInput = {
     antallBarn: 1,
     utsettelserIPlan: [],
     isNyPeriode: true,
+    isOpen: true,
     // intl: intlMock,
 };
 
