@@ -22,7 +22,6 @@ import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import FeatureToggle from 'app/FeatureToggle';
 import { isFeatureEnabled } from './toggleUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
 
 dayjs.extend(utc);
@@ -41,6 +40,15 @@ export const ISOStringToDate = (dateString: string | undefined): Date | undefine
         return dayjs.utc(dateString).toDate();
     }
     return undefined;
+};
+
+export const dateToISOString = (date: Date | undefined): string => {
+    if (date === undefined) {
+        return '';
+    }
+
+    const isoStringFormat = 'YYYY-MM-DD';
+    return dayjs(date).utc().format(isoStringFormat);
 };
 
 export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {

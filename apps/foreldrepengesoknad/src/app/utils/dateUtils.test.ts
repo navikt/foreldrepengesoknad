@@ -1,4 +1,5 @@
 import MockDate from 'mockdate';
+import timezone_mock from 'timezone-mock';
 import {
     dateRangeValidation,
     isDateABeforeDateB,
@@ -16,6 +17,7 @@ import {
     convertTidsperiodeToTidsperiodeDate,
     getRelevantFamiliehendelseDato,
     ISOStringToDate,
+    dateToISOString,
     isDateToday,
     getEndringstidspunkt,
     andreAugust2022ReglerGjelder,
@@ -29,7 +31,6 @@ import { RegistrertBarn } from 'app/types/Person';
 import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import { guid } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import * as toggleUtils from './toggleUtils';
 
 describe('dateUtils', () => {
@@ -1089,5 +1090,25 @@ describe('getEldsteDato', () => {
         ];
         const result = getEldsteDato(datoListe);
         expect(result).toEqual(new Date('2021-11-20'));
+    });
+});
+
+describe('dateUtils med tidssoner - riktig string-Date Date-string konvertering i forskjellige tidssoner', () => {
+    const testDato = '2022-02-22';
+    it('skal konvertere datoer riktig i tidssonen Etc/GMT+12', () => {
+        timezone_mock.register('Etc/GMT+12');
+        const datoString = testDato;
+        const datoStringToDate = ISOStringToDate(datoString);
+        const dateTilString = dateToISOString(datoStringToDate);
+        expect(dateTilString).toEqual(testDato);
+        timezone_mock.unregister();
+    });
+    it('skal konvertere datoer riktig i tidssonen Etc/GMT-14', () => {
+        timezone_mock.register('Etc/GMT-14');
+        const datoString = testDato;
+        const datoStringToDate = ISOStringToDate(datoString);
+        const dateTilString = dateToISOString(datoStringToDate);
+        expect(dateTilString).toEqual(testDato);
+        timezone_mock.unregister();
     });
 });
