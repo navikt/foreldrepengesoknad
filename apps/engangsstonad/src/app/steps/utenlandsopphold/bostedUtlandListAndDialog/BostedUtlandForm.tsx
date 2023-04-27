@@ -149,6 +149,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                                   'valideringsfeil.leggTilUtenlandsopphold.landDuHarBoddIPåkrevd'
                                               );
                                     }
+
+                                    return undefined;
                                 }}
                                 useAlpha3Code={false}
                             />

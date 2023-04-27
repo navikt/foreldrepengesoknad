@@ -1,15 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    bemUtils,
-    LanguageToggle,
-    intlUtils,
-    Block,
-    Locale,
-    useDocumentTitle,
-    UtvidetInformasjon,
-} from '@navikt/fp-common';
-import { Alert, BodyShort, Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
+import { bemUtils, LanguageToggle, intlUtils, Block, Locale, useDocumentTitle } from '@navikt/fp-common';
+import { Alert, BodyShort, Button, GuidePanel, Heading, Modal, ReadMore } from '@navikt/ds-react';
 import { lenker } from 'util/lenker';
 import {
     initialVelkommenValues,
@@ -135,12 +127,10 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
                                         <Block padBottom="l">
                                             <FormattedMessage id="velkommen.text.samtykkeIntro" />
                                         </Block>
-                                        <Block>
-                                            <UtvidetInformasjon
-                                                apneLabel={intlUtils(intl, 'velkommen.text.plikter.apneLabel')}
-                                            >
+                                        <Block padBottom="l">
+                                            <ReadMore header={intlUtils(intl, 'velkommen.text.plikter.apneLabel')}>
                                                 <Plikter />
-                                            </UtvidetInformasjon>
+                                            </ReadMore>
                                         </Block>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.text.kunEnStønad" />

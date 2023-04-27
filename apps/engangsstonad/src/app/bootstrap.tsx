@@ -2,16 +2,19 @@ import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
 import ErrorBoundary from './ErrorBoundary';
-import { BodyShort, Modal } from '@navikt/ds-react';
+import { Modal } from '@navikt/ds-react';
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
+import * as langNB from 'i18n-iso-countries/langs/nb.json';
+import * as langNN from 'i18n-iso-countries/langs/nn.json';
+import * as langEN from 'i18n-iso-countries/langs/en.json';
 
 import '@navikt/ds-css';
 import './styles/globals.less';
 
-countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
-countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
-countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+countries.registerLocale(langNB);
+countries.registerLocale(langNN);
+countries.registerLocale(langEN);
 
 Modal.setAppElement('#app');
 
@@ -31,8 +34,6 @@ const root = createRoot(container!);
 
 root.render(
     <ErrorBoundary>
-        <BodyShort>
-            <AppContainer />
-        </BodyShort>
+        <AppContainer />
     </ErrorBoundary>
 );
