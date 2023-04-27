@@ -36,7 +36,7 @@ import { getPerioderSomSkalSendesInn, storeAppState } from 'app/utils/submitUtil
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getEndringstidspunkt, getMorsSisteDag, ISOStringToDate } from 'app/utils/dateUtils';
+import { dateToISOString, getEndringstidspunkt, getMorsSisteDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -65,7 +65,6 @@ import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoe
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Alert, Button, Loader } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const UttaksplanStep = () => {
     const intl = useIntl();

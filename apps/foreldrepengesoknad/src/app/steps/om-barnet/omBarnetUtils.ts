@@ -14,11 +14,11 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Situasjon } from 'app/types/Situasjon';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { ISOStringToDate, dateToISOString } from 'app/utils/dateUtils';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,

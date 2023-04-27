@@ -13,7 +13,7 @@ import { Forelder } from 'app/types/Forelder';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { dateIsSameOrAfter, findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
+import { dateIsSameOrAfter, dateToISOString, findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
 import {
     MorFarAdopsjonFormComponents,
     MorFarAdopsjonFormData,
@@ -43,7 +43,7 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel } from '@navikt/ds-react';
 
 interface Props {

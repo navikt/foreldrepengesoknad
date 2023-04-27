@@ -10,7 +10,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
 import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
 import { Label } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { dateToISOString } from 'app/utils/dateUtils';
 
 interface Props {
     valgteBarn: RegistrertBarn[];

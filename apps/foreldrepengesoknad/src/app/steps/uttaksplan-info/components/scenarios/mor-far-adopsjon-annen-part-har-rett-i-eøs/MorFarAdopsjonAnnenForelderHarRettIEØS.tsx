@@ -11,7 +11,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
+import { dateToISOString, findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
@@ -39,7 +39,6 @@ import {
 } from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 

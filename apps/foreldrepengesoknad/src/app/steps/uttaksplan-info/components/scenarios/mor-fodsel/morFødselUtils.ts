@@ -1,7 +1,7 @@
 import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { dateToISOString } from 'app/utils/dateUtils';
 
 const initialMorFødselValues: MorFødselFormData = {
     [MorFødselFormField.dekningsgrad]: '',

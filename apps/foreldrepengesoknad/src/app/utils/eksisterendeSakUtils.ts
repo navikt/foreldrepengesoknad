@@ -8,6 +8,7 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getFamiliehendelseType } from './getFamiliehendelseType';
 import {
     convertTidsperiodeToTidsperiodeDate,
+    dateToISOString,
     getEldsteDato,
     getRelevantFamiliehendelseDato,
     ISOStringToDate,
@@ -36,7 +37,6 @@ import { IntlShape } from 'react-intl';
 import { Sak } from 'app/types/Sak';
 import PersonFnrDTO from 'app/types/PersonFnrDTO';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {

@@ -25,6 +25,7 @@ import { getFloatFromString } from 'app/utils/numberUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import {
     convertTidsperiodeToTidsperiodeDate,
+    dateToISOString,
     isDateInTheFuture,
     isDateTodayOrInTheFuture,
     ISOStringToDate,
@@ -37,7 +38,6 @@ import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {

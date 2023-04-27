@@ -11,7 +11,7 @@ import { Forelder } from 'app/types/Forelder';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { formaterDatoUtenDag, ISOStringToDate } from 'app/utils/dateUtils';
+import { dateToISOString, formaterDatoUtenDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -39,7 +39,6 @@ import {
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
 import { Button } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

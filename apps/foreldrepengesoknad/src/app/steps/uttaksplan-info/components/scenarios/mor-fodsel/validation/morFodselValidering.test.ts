@@ -34,7 +34,7 @@ describe('morFodselValidering', () => {
     });
 
     it('skal feile validering når persmisjonsdatoen er utenfor familiehendelse-avgrensingene', () => {
-        const familiehendelsedato = dayjs('2021-08-24').toDate();
+        const familiehendelsedato = new Date('2021-08-24');
         const skalIkkeHaUttakFørTermin = false;
         const permisjonStartdato = '2021-05-31';
 
@@ -48,7 +48,7 @@ describe('morFodselValidering', () => {
     });
 
     it('skal ikke feile validering', () => {
-        const familiehendelsedato = dayjs('2021-03-24').toDate();
+        const familiehendelsedato = new Date('2021-03-24');
         const skalIkkeHaUttakFørTermin = false;
         const permisjonStartdato = '2021-03-03';
 

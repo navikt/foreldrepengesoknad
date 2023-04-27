@@ -23,6 +23,7 @@ import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'ap
 import FeatureToggle from 'app/FeatureToggle';
 import { isFeatureEnabled } from './toggleUtils';
 import { isISODateString } from '@navikt/ds-datepicker';
+// import { formatISO, parseISO } from 'date-fns';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -38,6 +39,7 @@ export const ISOStringToDate = (dateString: string | undefined): Date | undefine
     }
     if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
         return dayjs.utc(dateString).toDate();
+        // return parseISO(dateString);
     }
     return undefined;
 };
@@ -48,7 +50,13 @@ export const dateToISOString = (date: Date | undefined): string => {
     }
 
     const isoStringFormat = 'YYYY-MM-DD';
-    return dayjs(date).utc().format(isoStringFormat);
+    // const a = formatISO(date, { representation: 'date' });
+    // const b = dayjs.utc(date).format(isoStringFormat);
+    // console.log('....dateToISOString.....');
+    // console.log('formatISO(date, {representation: "date"})', a);
+    // console.log('dayjs.utc(date).format(isoStringFormat)', b);
+    return dayjs.utc(date).format(isoStringFormat);
+    // return formatISO(date, { representation: 'date' });
 };
 
 export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {

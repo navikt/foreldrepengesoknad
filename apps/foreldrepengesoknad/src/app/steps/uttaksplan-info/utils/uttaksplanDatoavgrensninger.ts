@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
 import { Uttaksdagen } from './Uttaksdagen';
 import uttaksConstants from 'app/constants';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder, dateToISOString } from 'app/utils/dateUtils';
 import { Situasjon } from 'app/types/Situasjon';
 import { getFørsteUttaksdag2UkerFørFødsel } from 'app/utils/wlbUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { DatepickerLimitations } from '@navikt/ds-datepicker';
 
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
@@ -29,8 +28,12 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
 };
 
 const startdatoFørTermin = (familiehendelsesdato: string): DatepickerLimitations => {
+    console.log('.................');
+    console.log('familiehendelsesdato', familiehendelsesdato);
     const maksDato = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
+    console.log('maxdato', maksDato);
     const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
+    console.log('minDato', minDato);
     return {
         ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
         weekendsNotSelectable: true,

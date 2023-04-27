@@ -2,7 +2,12 @@ import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-commo
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isUtsettelsesperiode, isUttaksperiode, Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
-import { andreAugust2022ReglerGjelder, dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
+import {
+    andreAugust2022ReglerGjelder,
+    dateRangeValidation,
+    dateToISOString,
+    ISOStringToDate,
+} from 'app/utils/dateUtils';
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
@@ -13,7 +18,7 @@ import { mapTidsperiodeStringToTidsperiode } from 'uttaksplan/utils/periodeUtils
 import { getFørsteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from 'uttaksplan/utils/uttaksdatoerUtils';
 import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from 'app/utils/wlbUtils';
 import { Situasjon } from 'app/types/Situasjon';
-import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { Button } from '@navikt/ds-react';
 
 interface Props {
