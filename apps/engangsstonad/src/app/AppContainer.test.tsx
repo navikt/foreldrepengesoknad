@@ -2,8 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './AppContainer.stories';
+import amplitude from 'amplitude-js';
 
 const { VisApp } = composeStories(stories);
+
+amplitude.getInstance().init('test');
 
 describe('<AppContainer>', () => {
     it('skal rendre komponent ok', async () => {
