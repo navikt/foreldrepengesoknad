@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';

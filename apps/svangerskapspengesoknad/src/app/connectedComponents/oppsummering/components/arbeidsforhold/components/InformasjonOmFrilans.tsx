@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import moment from 'moment';
 import Block from 'common/components/block/Block';
 import { FrilansInformasjon } from 'app/types/FrilansInformasjon';

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Formik, FormikProps } from 'formik';
 import { isValid } from 'i18n-iso-countries';
@@ -6,7 +6,7 @@ import { isValid } from 'i18n-iso-countries';
 import BEMHelper from 'common/util/bem';
 import { Næringstype, Næring } from 'app/types/SelvstendigNæringsdrivende';
 import getMessage from 'common/util/i18nUtils';
-import CheckboksPanelGruppe from 'app/formik/wrappers/CheckboksPanelGruppe';
+import CheckboksGruppe from 'app/formik/wrappers/CheckboksPanelGruppe';
 import Block from 'common/components/block/Block';
 import InputField from 'app/formik/wrappers/InputField';
 import JaNeiSpørsmål from 'app/formik/wrappers/JaNeiSpørsmål';
@@ -60,14 +60,13 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
                         </Heading>
 
                         <Block>
-                            <CheckboksPanelGruppe
+                            <CheckboksGruppe
                                 name="næringstyper"
                                 label={getMessage(intl, 'arbeidsforhold.selvstendig.næringstype')}
                                 options={Object.values(Næringstype).map((næringstype: Næringstype) => ({
                                     label: getMessage(intl, `næringstype.${næringstype.toLocaleLowerCase()}`),
                                     value: næringstype,
                                 }))}
-                                columns={2}
                             />
                         </Block>
 
@@ -127,7 +126,6 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
                                 fullbredde={true}
                                 fra={
                                     <DatoInput
-                                        fullskjermKalender={true}
                                         name="tidsperiode.fom"
                                         label={getMessage(intl, 'arbeidsforhold.selvstendig.fom', {
                                             navn: values.navnPåNæringen,
@@ -136,7 +134,6 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
                                 }
                                 til={
                                     <DatoInput
-                                        fullskjermKalender={true}
                                         name="tidsperiode.tom"
                                         label={getMessage(intl, 'arbeidsforhold.selvstendig.tom', {
                                             navn: values.navnPåNæringen,
@@ -170,7 +167,6 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
 
                         <Block visible={visKomponent.skalViseOppstartsdato}>
                             <DatoInput
-                                fullskjermKalender={true}
                                 name="oppstartsdato"
                                 label={getMessage(intl, 'arbeidsforhold.selvstendig.oppstartsdato')}
                             />

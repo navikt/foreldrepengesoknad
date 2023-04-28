@@ -1,8 +1,7 @@
-import React, { ReactElement, FunctionComponent } from 'react';
+import { ReactElement, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import classnames from 'classnames';
-import StegIndikator from 'nav-frontend-stegindikator';
 
 import { AppRoute } from 'app/types/Routes';
 import { CustomFormikProps } from 'app/types/Formik';
@@ -64,16 +63,6 @@ const Step: FunctionComponent<Props> = (props) => {
     const location = useLocation();
 
     const currentStep = parsePathFromLocation(location);
-    const stegForStegIndikator = allSøknadSteps.map((otherStep, index) => {
-        return {
-            index,
-            aktiv: otherStep.step === currentStep.step && otherStep.subStep === currentStep.subStep,
-            label:
-                otherStep.step === StepID.TILRETTELEGGING && otherStep.subStep
-                    ? finnArbeidsforholdNavn(otherStep.subStep, arbeidsforhold)
-                    : getMessage(intl, `stegtittel.${otherStep.step}`),
-        };
-    });
 
     return (
         <div className={classnames(cls.block, className)}>
@@ -95,7 +84,6 @@ const Step: FunctionComponent<Props> = (props) => {
                         />
                     )}
                 </div>
-                <StegIndikator kompakt={true} steg={stegForStegIndikator} visLabel={false} />
                 <div />
             </div>
 

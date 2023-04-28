@@ -1,9 +1,6 @@
-import React, { ReactNode } from 'react';
-import { BekreftCheckboksPanel as BekreftCheckboksPanelNav } from 'nav-frontend-skjema';
+import { ReactNode } from 'react';
 import { Field, FieldProps } from 'formik';
-import { useIntl } from 'react-intl';
-
-import { translateError } from 'app/utils/errorUtils';
+import { ConfirmationPanel } from '@navikt/ds-react';
 
 interface Props {
     label: string;
@@ -13,25 +10,21 @@ interface Props {
 }
 
 const BekreftCheckboksPanel: React.FunctionComponent<Props> = ({ name, label, children, className }) => {
-    const intl = useIntl();
     return (
         <Field
             name={name}
             type="checkbox"
-            render={({ field, form }: FieldProps) => (
-                <BekreftCheckboksPanelNav
+            render={({ form }: FieldProps) => (
+                <ConfirmationPanel
                     checked={form.values[name]}
                     label={label}
-                    onChange={field.onChange}
-                    className={className}
-                    inputProps={{
-                        name: field.name,
-                        onBlur: field.onBlur,
+                    onChange={(value) => {
+                        form.setFieldValue(name, value);
                     }}
-                    feil={form.touched[name] && form.errors[name] ? translateError(intl, form.errors[name]) : ''}
+                    className={className}
                 >
                     {children}
-                </BekreftCheckboksPanelNav>
+                </ConfirmationPanel>
             )}
         />
     );

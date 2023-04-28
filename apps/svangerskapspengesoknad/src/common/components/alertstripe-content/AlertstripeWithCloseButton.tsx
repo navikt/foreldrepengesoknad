@@ -1,11 +1,10 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { guid } from 'nav-frontend-js-utils';
+import { Alert, BodyShort, Button, Label } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 import BEMHelper from 'common/util/bem';
 
 import './alertstripeWithCloseButton.less';
-import { Alert, BodyShort, Button, Label } from '@navikt/ds-react';
 
 interface AlertstripeContentProps {
     onClose?: () => void;

@@ -1,10 +1,11 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import countries from 'i18n-iso-countries';
 import * as Sentry from '@sentry/browser';
 import { BrowserRouter } from 'react-router-dom';
-import { BodyShort, Modal } from '@navikt/ds-react';
+import { Modal } from '@navikt/ds-react';
+import * as langNB from 'i18n-iso-countries/langs/nb.json';
+import * as langNN from 'i18n-iso-countries/langs/nn.json';
 
 import store from './redux/store';
 import IntlProvider from './intl/IntlProvider';
@@ -15,9 +16,8 @@ import './styles/global.less';
 import './styles/app.less';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
-countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
-countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
-console.log('svpsoknad');
+countries.registerLocale(langNB);
+countries.registerLocale(langNN);
 
 Modal.setAppElement('#app');
 
@@ -34,11 +34,9 @@ root.render(
     <ErrorBoundary>
         <Provider store={store}>
             <IntlProvider>
-                <BodyShort>
-                    <BrowserRouter basename="/">
-                        <Svangerskapspengesøknad />
-                    </BrowserRouter>
-                </BodyShort>
+                <BrowserRouter basename="/">
+                    <Svangerskapspengesøknad />
+                </BrowserRouter>
             </IntlProvider>
         </Provider>
     </ErrorBoundary>

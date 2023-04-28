@@ -1,5 +1,3 @@
-import React from 'react';
-
 import './feltoppsummering.less';
 import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import { Label } from '@navikt/ds-react';

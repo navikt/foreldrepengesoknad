@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentOverview from 'common/storage/attachment/components/AttachmentOverview';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { Component } from 'react';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];
@@ -12,7 +12,7 @@ export interface AttachmentsUploaderProps {
     onFileDelete: (attachment: Attachment) => void;
 }
 
-export default class AttachmentsUploaderPure extends React.Component<AttachmentsUploaderProps> {
+export default class AttachmentsUploaderPure extends Component<AttachmentsUploaderProps> {
     constructor(props: AttachmentsUploaderProps) {
         super(props);
         this.onFileDelete = this.onFileDelete.bind(this);

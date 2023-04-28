@@ -1,5 +1,5 @@
+import { isISODateString } from '@navikt/ds-datepicker';
 import moment, { Moment } from 'moment';
-import { isISODateString } from 'nav-datovelger';
 
 export function formaterDato(dato: Date, datoformat?: string): string {
     return moment.utc(dato).format(datoformat || 'dddd D. MMMM YYYY');

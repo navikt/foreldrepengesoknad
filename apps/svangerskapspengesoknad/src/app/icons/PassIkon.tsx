@@ -1,5 +1,3 @@
-import React from 'react';
-
 const PassIkon = (props: any) => (
     <svg width={30} height={38} viewBox="0 0 27 34" {...props}>
         <title>{'Verden'}</title>

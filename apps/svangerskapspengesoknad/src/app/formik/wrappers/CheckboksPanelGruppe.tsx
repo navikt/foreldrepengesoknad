@@ -1,11 +1,9 @@
-import React, { FunctionComponent } from 'react';
-import { FieldArrayRenderProps, FieldArray } from 'formik';
-import CheckboksPanelGruppeResponsive, {
-    CheckboxPanelgruppeResponsiveProps,
-} from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
+import { FunctionComponent } from 'react';
+import { FieldArrayRenderProps, Field } from 'formik';
 import { Omit, get } from 'lodash';
 import { translateError } from '../../utils/errorUtils';
 import { useIntl } from 'react-intl';
+import { Checkbox, CheckboxGroup, CheckboxGroupProps } from '@navikt/ds-react';
 
 interface OwnProps {
     name: string;
@@ -16,43 +14,40 @@ interface OwnProps {
     }>;
 }
 
-type Props = OwnProps & Omit<CheckboxPanelgruppeResponsiveProps, 'onChange' | 'checkboxes' | 'legend'>;
+type Props = OwnProps & Omit<CheckboxGroupProps, 'children' | 'onChange' | 'checkboxes' | 'legend'>;
 
-const CheckboksPanelGruppe: FunctionComponent<Props> = (props) => {
+const CheckboksGruppe: FunctionComponent<Props> = (props) => {
     const intl = useIntl();
     const { name, label, options, ...checkboksPanelGruppeProps } = props;
 
     return (
-        <FieldArray
+        <Field
             name={name}
             render={({ form, push, remove }: FieldArrayRenderProps) => {
-                const feilmelding = get(form.errors, name) as string;
+                const feilmelding = get(form.errors, name);
                 return (
-                    <CheckboksPanelGruppeResponsive
+                    <CheckboxGroup
                         {...checkboksPanelGruppeProps}
-                        feil={feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined}
+                        error={feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined}
                         legend={label}
-                        checkboxes={options.map((option) => {
-                            const values = get(form.values, name);
-                            return {
-                                ...option,
-                                checked: values && values.includes(option.value) ? true : false,
-                            };
-                        })}
-                        onChange={(_, value) => {
+                        onChange={(val) => {
                             const values = get(form.values, name) || [];
-                            const indexOfGrunnlag = values.indexOf(value);
+                            const indexOfGrunnlag = values.indexOf(val);
                             if (indexOfGrunnlag === -1) {
-                                push(value);
+                                push(val);
                             } else {
                                 remove(indexOfGrunnlag);
                             }
                         }}
-                    />
+                    >
+                        {options.map((cb) => (
+                            <Checkbox value={cb.value}>{cb.label}</Checkbox>
+                        ))}
+                    </CheckboxGroup>
                 );
             }}
         />
     );
 };
 
-export default CheckboksPanelGruppe;
+export default CheckboksGruppe;

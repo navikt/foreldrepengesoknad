@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { Component } from 'react';
 
 interface RangeIconProps {
     type: 'plus' | 'minus';
 }
 
-export default class RangeIcon extends React.Component<RangeIconProps> {
+export default class RangeIcon extends Component<RangeIconProps> {
     renderPlusIcon() {
         return (
             <path

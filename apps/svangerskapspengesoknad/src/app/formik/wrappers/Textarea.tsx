@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Textarea as NavFrontendTextarea, TextareaProps } from 'nav-frontend-skjema';
 import { get } from 'lodash';
 import { useIntl } from 'react-intl';
+import { Textarea as TextareaDS, TextareaProps } from '@navikt/ds-react';
 import { translateError } from 'app/utils/errorUtils';
 
 interface OwnProps {
@@ -22,11 +22,11 @@ const Textarea: FunctionComponent<Props> = ({ name, ...textareaProps }) => {
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
                 return (
-                    <NavFrontendTextarea
+                    <TextareaDS
                         {...field}
                         {...textareaProps}
                         value={field.value === undefined ? '' : field.value}
-                        feil={feil}
+                        error={feil}
                     />
                 );
             }}

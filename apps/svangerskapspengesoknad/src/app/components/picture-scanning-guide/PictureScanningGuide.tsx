@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';

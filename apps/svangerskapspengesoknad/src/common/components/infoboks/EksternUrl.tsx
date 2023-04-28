@@ -1,4 +1,3 @@
-import React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import { useIntl } from 'react-intl';
 

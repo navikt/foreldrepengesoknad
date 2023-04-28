@@ -1,48 +1,36 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { Field, FieldProps } from 'formik';
-import { get, Omit } from 'lodash';
-
-import RadioPanelGruppeResponsive, {
-    RadioPanelGruppeResponsiveProps,
-} from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import { get } from 'lodash';
 import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { translateError } from 'app/utils/errorUtils';
+import { Radio, RadioGroup } from '@navikt/ds-react';
 
-type Props = Omit<RadioPanelGruppeResponsiveProps, 'radios' | 'onChange'> & {
+type Props = {
+    name: string;
     labels?: {
         ja: string;
         nei: string;
     };
+    legend: string;
+    description?: ReactNode;
 };
 
-enum Radios {
-    'JA' = 'ja',
-    'NEI' = 'nei',
-}
-
-const JaNeiSpørsmål: FunctionComponent<Props> = ({ labels, name, ...radioPanelGruppeProps }) => {
+const JaNeiSpørsmål: FunctionComponent<Props> = ({ labels, name, legend, description }) => {
     const intl = useIntl();
     return (
         <Field
             name={name}
             type="string"
-            render={({ field, form }: FieldProps) => {
-                let checked;
-                if (field.value === true) {
-                    checked = Radios.JA;
-                } else if (field.value === false) {
-                    checked = Radios.NEI;
-                }
-
+            render={({ form }: FieldProps) => {
                 const radios = [
                     {
                         label: labels ? labels.ja : getMessage(intl, 'jaNeiSpørsmål.ja'),
-                        value: Radios.JA,
+                        value: true,
                     },
                     {
                         label: labels ? labels.nei : getMessage(intl, 'jaNeiSpørsmål.nei'),
-                        value: Radios.NEI,
+                        value: false,
                     },
                 ];
 
@@ -50,16 +38,20 @@ const JaNeiSpørsmål: FunctionComponent<Props> = ({ labels, name, ...radioPanel
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
                 return (
-                    <RadioPanelGruppeResponsive
-                        {...radioPanelGruppeProps}
-                        name={name}
-                        radios={radios}
-                        feil={feil}
-                        checked={checked}
-                        onChange={(_, value) => {
-                            form.setFieldValue(name, value === Radios.JA);
-                        }}
-                    />
+                    <RadioGroup legend={legend} name={name} error={feil} description={description}>
+                        {radios.map((radio) => {
+                            return (
+                                <Radio
+                                    onChange={(evt) => {
+                                        form.setFieldValue(name, evt.target.value === 'true');
+                                    }}
+                                    value={radio.value}
+                                >
+                                    {radio.label}
+                                </Radio>
+                            );
+                        })}
+                    </RadioGroup>
                 );
             }}
         />

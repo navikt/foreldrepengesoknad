@@ -1,9 +1,7 @@
-@import '../../../../../node_modules/nav-frontend-core/less/_variabler';
-
 .feil-oppsummering-boks {
-    background-color: @redErrorLighten20;
+    background-color: mix(#BA3A26,#fff,80%);
     display: none;
-    color: @white;
+    color: #fff;
     padding: 1.75rem;
     margin-bottom: 1rem;
 }
@@ -19,11 +17,11 @@
 .feil-oppsummering-boks__lenke {
     color: white;
     font-style: italic;
-    border-bottom: 1px solid @redErrorLighten60;
+    border-bottom: 1px solid mix(#BA3A26,#fff,80%);
 
     &:hover,
     &--hover {
-        color: @navBlaLighten80;
+        color: mix(#0067C5,#fff, 20%);
         border-bottom: 0;
     }
 }

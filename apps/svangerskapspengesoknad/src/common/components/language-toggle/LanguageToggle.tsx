@@ -1,12 +1,11 @@
-import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
-const { NedChevron } = require('nav-frontend-chevron');
 
 import getMessage from 'common/util/i18nUtils';
 import UKFlagSVG from '../flags/UKFlagSVG';
 import NorwayFlagSVG from '../flags/NorwayFlagSVG';
 import './languageToggle.less';
+import { ChevronDownIcon } from '@navikt/aksel-icons';
 
 interface Props {
     toggleLanguage: (langaugeCode: string) => void;
@@ -66,7 +65,7 @@ const LanguageToggle: React.FunctionComponent<Props> = ({ language, toggleLangua
                     </div>
                     <div className="languageToggle__button__language">{getLanguageTextFromCode(intl, language)}</div>
                     <div>
-                        <NedChevron />
+                        <ChevronDownIcon />
                     </div>
                 </Button>
                 <Menu className="languageToggle__menu">

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import { useIntl } from 'react-intl';
 

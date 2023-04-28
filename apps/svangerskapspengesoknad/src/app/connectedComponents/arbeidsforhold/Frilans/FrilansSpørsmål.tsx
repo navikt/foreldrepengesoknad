@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import JaNeiSpørsmål from 'app/formik/wrappers/JaNeiSpørsmål';
@@ -38,10 +38,9 @@ const FrilansSpørsmål: FunctionComponent<Props> = (props: Props) => {
         <>
             <Block>
                 <JaNeiSpørsmål
-                    twoColumns={true}
                     name="søker.harJobbetSomFrilansSiste10Mnd"
                     legend={getMessage(intl, 'arbeidsforhold.frilans.erFrilanser')}
-                    infoboksTekst={<FrilansSpørsmålInfoBoksTekst />}
+                    description={<FrilansSpørsmålInfoBoksTekst />}
                 />
             </Block>
 
@@ -54,7 +53,6 @@ const FrilansSpørsmål: FunctionComponent<Props> = (props: Props) => {
                                 margin={visKomponent.jobberFremdelesSomFrilans ? undefined : 'xxs'}
                             >
                                 <DatoInput
-                                    fullskjermKalender={true}
                                     name="søker.frilansInformasjon.oppstart"
                                     label={getMessage(intl, 'arbeidsforhold.frilans.fraOgMed')}
                                 />
@@ -62,7 +60,6 @@ const FrilansSpørsmål: FunctionComponent<Props> = (props: Props) => {
 
                             <Block visible={visKomponent.jobberFremdelesSomFrilans}>
                                 <JaNeiSpørsmål
-                                    twoColumns={true}
                                     name={'søker.frilansInformasjon.jobberFremdelesSomFrilans'}
                                     legend={getMessage(intl, 'arbeidsforhold.frilans.erDuFremdelesFrilanser')}
                                 />
@@ -85,7 +82,6 @@ const FrilansSpørsmål: FunctionComponent<Props> = (props: Props) => {
 
                             <Block visible={visKomponent.driverFosterhjem} margin="s">
                                 <JaNeiSpørsmål
-                                    twoColumns={true}
                                     name={'søker.frilansInformasjon.driverFosterhjem'}
                                     legend={getMessage(intl, 'arbeidsforhold.frilans.driverFosterhjem')}
                                 />

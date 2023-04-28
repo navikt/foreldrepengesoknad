@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import moment from 'moment';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 import { Utenlandsopphold } from 'app/types/InformasjonOmUtenlandsopphold';
-import { guid } from 'nav-frontend-js-utils';
 import getCountries, { Countries, getContryName } from 'app/utils/getCountries';
+import { guid } from '@navikt/fp-common';
 
 interface Props {
     iNorgeNeste12Mnd: boolean;

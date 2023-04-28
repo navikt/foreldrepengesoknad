@@ -1,7 +1,5 @@
-import React from 'react';
-
 //TODO Dette bør ikkje ligga her
-window.appSettings = {
+(window as any).appSettings = {
     REST_API_URL: '',
     UTTAK_API_URL: 'uttak-url',
 };

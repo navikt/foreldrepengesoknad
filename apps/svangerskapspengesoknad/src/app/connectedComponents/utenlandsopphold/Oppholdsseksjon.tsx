@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { connect as formConnect, FieldArray } from 'formik';
 import get from 'lodash/get';
@@ -62,13 +62,7 @@ const Oppholdsspørsmål: FunctionComponent<Props> = (props) => {
     return (
         <>
             <Block margin="xs">
-                <JaNeiSpørsmål
-                    twoColumns={true}
-                    name={name}
-                    legend={legend}
-                    labels={labels}
-                    infoboksTekst={infoboksTekst}
-                />
+                <JaNeiSpørsmål name={name} legend={legend} labels={labels} description={infoboksTekst} />
             </Block>
             <FieldArray
                 name={land}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import ErrorBoundary from 'app/components/ErrorBoundary/ErrorBoundary';

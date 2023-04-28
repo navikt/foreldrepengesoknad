@@ -1,15 +1,15 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Input, InputProps } from 'nav-frontend-skjema';
 import { get } from 'lodash';
 import { useIntl } from 'react-intl';
 import { translateError } from 'app/utils/errorUtils';
+import { TextField, TextFieldProps } from '@navikt/ds-react';
 
 interface OwnProps {
     name: string;
 }
 
-type Props = OwnProps & InputProps;
+type Props = OwnProps & TextFieldProps;
 
 const InputField: FunctionComponent<Props> = ({ name, ...inputProps }) => {
     const intl = useIntl();
@@ -27,11 +27,11 @@ const InputField: FunctionComponent<Props> = ({ name, ...inputProps }) => {
                         : undefined;
 
                 return (
-                    <Input
+                    <TextField
                         {...field}
                         {...inputProps}
                         value={field.value === undefined ? '' : field.value}
-                        feil={feil?.feilmelding}
+                        error={feil?.feilmelding}
                     />
                 );
             }}

@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import React from 'react';
 import { IntlProvider as Provider } from 'react-intl';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -10,6 +9,7 @@ import nbMessages from './nb_NO.json';
 import nbMessagesCommon from '../../common/intl/nb_NO.json';
 import nnMessages from './nn_NO.json';
 import nnMessagesCommon from '../../common/intl/nn_NO.json';
+import { Component } from 'react';
 
 interface StateProps {
     språkkode: Språkkode;
@@ -17,7 +17,7 @@ interface StateProps {
 
 moment.locale('nb');
 
-class IntlProvider extends React.Component<any, StateProps> {
+class IntlProvider extends Component<any, StateProps> {
     constructor(props: StateProps) {
         super(props);
     }

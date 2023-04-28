@@ -3,10 +3,10 @@ import { AnnenInntekt, AnnenInntektType } from '../types/AnnenInntekt';
 import getMessage from 'common/util/i18nUtils';
 import { IntlShape } from 'react-intl';
 import { SøkerinfoDTOArbeidsforhold } from 'app/types/SøkerinfoArbeidsforholdDTO';
-import { guid } from 'nav-frontend-js-utils';
 import uniqBy from 'lodash/uniqBy';
 import normalizeName from './normalizeName';
 import moment from 'moment';
+import { guid } from '@navikt/fp-common';
 
 export const getArbeidsforholdNavnFromId = (
     id: string | undefined,

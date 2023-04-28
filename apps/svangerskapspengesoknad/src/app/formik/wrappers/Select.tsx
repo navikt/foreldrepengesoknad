@@ -1,8 +1,8 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Select as NavSelect } from 'nav-frontend-skjema';
 import { SelectChangeEvent } from 'app/types/events';
 import get from 'lodash/get';
+import { Select as SelectDS } from '@navikt/ds-react';
 import { translateError } from 'app/utils/errorUtils';
 import { useIntl } from 'react-intl';
 
@@ -23,16 +23,16 @@ const Select: FunctionComponent<Props> = (props) => {
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
                 return (
-                    <NavSelect
+                    <SelectDS
                         {...field}
                         label={label}
                         onChange={(e: SelectChangeEvent) => {
                             form.setFieldValue(field.name, e.target.value);
                         }}
-                        feil={feil}
+                        error={feil}
                     >
                         {children}
-                    </NavSelect>
+                    </SelectDS>
                 );
             }}
         />

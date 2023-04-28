@@ -1,17 +1,17 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import moment from 'moment';
 import BEMHelper from 'common/util/bem';
 
 import { UferdigTilrettelegging, Tilretteleggingstype, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getArbeidsforholdNavnFromId } from 'app/utils/arbeidsforholdUtils';
-import { guid } from 'nav-frontend-js-utils';
 import { FormattedMessage } from 'react-intl';
 import OppsummeringBeskrivelse from '../OppsummeringBeskrivelse';
 import Block from 'common/components/block/Block';
 
 import './tilretteleggingOppsummering.less';
 import { BodyShort } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 const cls = BEMHelper('tilretteleggingOppsummering');
 

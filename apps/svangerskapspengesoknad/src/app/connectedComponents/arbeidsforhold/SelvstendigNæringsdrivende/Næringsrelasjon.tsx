@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 import InputField from 'app/formik/wrappers/InputField';
