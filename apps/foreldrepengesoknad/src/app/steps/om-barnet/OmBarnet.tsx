@@ -145,6 +145,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                                barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
                             />
                             <Block visible={visGåVidereKnapp} textAlignCenter={true}>
                                 <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
