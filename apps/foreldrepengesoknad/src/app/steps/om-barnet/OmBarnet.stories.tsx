@@ -195,3 +195,25 @@ RegistrertBarnTrillingerDerEnErDød.args = {
     } as ForeldrepengesøknadContextState,
     søkerinfo: søkerinfoMedDødTrilling,
 };
+
+export const SøknadPåUregistrertBarnSomErFødt = Template.bind({});
+SøknadPåUregistrertBarnSomErFødt.args = {
+    context: {
+        ...context,
+        søknad: {
+            ...context.søknad,
+            søkersituasjon: {
+                situasjon: 'fødsel',
+                rolle: 'mor',
+            },
+            barn: {
+                antallBarn: 1,
+                fnr: undefined,
+                fødselsdatoer: [new Date('2023-01-02')],
+                type: BarnType.FØDT,
+            },
+        },
+        søknadGjelderEtNyttBarn: false,
+    } as ForeldrepengesøknadContextState,
+    søkerinfo: { ...søkerinfo, registrerteBarn: [] },
+};

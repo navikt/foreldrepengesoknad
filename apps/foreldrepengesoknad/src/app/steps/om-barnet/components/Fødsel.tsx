@@ -14,9 +14,16 @@ interface Props {
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
     søknadGjelderEtNyttBarn: boolean;
+    barnSøktOmFørMenIkkeRegistrert: boolean;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibility, søknadGjelderEtNyttBarn }) => {
+const Fødsel: FunctionComponent<Props> = ({
+    søkersituasjon,
+    formValues,
+    visibility,
+    søknadGjelderEtNyttBarn,
+    barnSøktOmFørMenIkkeRegistrert,
+}) => {
     const { erBarnetFødt, antallBarn, fødselsdatoer } = formValues;
 
     const intl = useIntl();
@@ -28,7 +35,7 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
     if (
         søkersituasjon.situasjon === 'adopsjon' ||
         (søknadGjelderEtNyttBarn && erBarnetFødt !== YesOrNo.YES) ||
-        !søknadGjelderEtNyttBarn
+        (!søknadGjelderEtNyttBarn && !barnSøktOmFørMenIkkeRegistrert)
     ) {
         return null;
     }
