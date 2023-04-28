@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy-storybook:
-   uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@pnpm/storybook
+   uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
    with:
      package-manager: pnpm
    secrets: inherit
