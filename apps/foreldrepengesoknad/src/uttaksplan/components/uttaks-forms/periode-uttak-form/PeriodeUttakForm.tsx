@@ -5,7 +5,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -75,7 +75,6 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
-    isOpen: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -147,17 +146,22 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     intl,
-    isOpen,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
+    const [periodeIsValid, setPeriodeIsValid] = useState(true);
     const bem = bemUtils('periodeUttakForm');
-
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
     const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const annenForelderHarRettIEØS =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
+
+    useEffect(() => {
+        setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+            return getIsValidStateForPerioder(previousState, periode, periodeIsValid);
+        });
+    }, [periodeIsValid]);
 
     const handleCleanup = (
         values: PeriodeUttakFormData,
@@ -258,10 +262,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     termindato,
                     { fom: values.fom, tom: values.tom } as TidsperiodeDate
                 );
-                if (isOpen) {
-                    setPerioderErGyldige((previousState: PeriodeValidState[]) => {
-                        return getIsValidStateForPerioder(previousState, periode, isValid);
-                    });
+                if (isValid !== periodeIsValid) {
+                    setPeriodeIsValid(isValid);
                 }
                 const visibility = periodeUttakFormQuestionsConfig.getVisbility({
                     values,
