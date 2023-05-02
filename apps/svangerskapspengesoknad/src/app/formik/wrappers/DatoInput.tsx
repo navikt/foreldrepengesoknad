@@ -1,7 +1,12 @@
 import { FunctionComponent } from 'react';
 import { Field, FieldProps } from 'formik';
 import { DatePickerProps, UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react';
-import moment from 'moment';
+import { dateToISOFormattedDateString } from 'common/util/datoUtils';
+
+type DateRange = {
+    from: Date | undefined;
+    to?: Date | undefined;
+};
 
 interface OwnProps {
     name: string;
@@ -24,6 +29,14 @@ interface OwnProps {
               maksDato?: undefined;
           };
 }
+
+const isDateRange = (date: Date | DateRange | undefined): date is DateRange => {
+    if (date && (date as any).from) {
+        return true;
+    }
+
+    return false;
+};
 
 type Props = OwnProps & DatePickerProps;
 
@@ -50,21 +63,19 @@ const DatoInput: FunctionComponent<Props> = ({ name, datoAvgrensinger }) => {
                 // const error = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
                 return (
-                    <UNSAFE_DatePicker {...datepickerProps}>
-                        <UNSAFE_DatePicker.Input
-                            {...inputProps}
-                            onSelect={(event) => {
-                                const date = new Date(event.currentTarget.value);
-
-                                if (date !== undefined) {
-                                    const formattedDate = moment(event.currentTarget.value).format('dd.mm.yyyy');
-                                    form.setFieldValue(name, formattedDate);
-                                } else {
-                                    form.setFieldValue(name, event.currentTarget.value);
-                                }
-                            }}
-                            label="Velg dato"
-                        />
+                    <UNSAFE_DatePicker
+                        {...datepickerProps}
+                        onSelect={(date: Date | Date[] | DateRange | undefined) => {
+                            if (Array.isArray(date) || isDateRange(date)) {
+                            } else if (date !== undefined) {
+                                const dateString = dateToISOFormattedDateString(date);
+                                form.setFieldValue(name, dateString);
+                            } else {
+                                form.setFieldValue(name, date);
+                            }
+                        }}
+                    >
+                        <UNSAFE_DatePicker.Input {...inputProps} label="Velg dato" placeholder="dd.mm.åååå" />
                     </UNSAFE_DatePicker>
                 );
             }}

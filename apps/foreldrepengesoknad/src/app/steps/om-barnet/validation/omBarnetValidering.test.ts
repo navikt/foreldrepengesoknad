@@ -32,7 +32,7 @@ describe('omBarnetValidering', () => {
     });
 
     it('skal ikke feile validering når fødselsdato er før dagens dato', () => {
-        const fødselsdato = '2020-01-01';
+        const fødselsdato = '2021-01-01';
         const resultat = validateFødselsdato(intlMock)(fødselsdato);
         expect(resultat).toBeUndefined();
     });
