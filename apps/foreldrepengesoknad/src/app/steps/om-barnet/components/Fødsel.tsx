@@ -34,7 +34,7 @@ const Fødsel: FunctionComponent<Props> = ({
 
     if (
         søkersituasjon.situasjon === 'adopsjon' ||
-        (søknadGjelderEtNyttBarn && erBarnetFødt !== YesOrNo.YES) ||
+        erBarnetFødt !== YesOrNo.YES ||
         (!søknadGjelderEtNyttBarn && !barnSøktOmFørMenIkkeRegistrert)
     ) {
         return null;
