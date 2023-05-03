@@ -2,7 +2,7 @@
     "app": "engangsstonad",
     "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "ingresses": [
-        "https://engangsstonad.dev.nav.no"
+        "https://engangsstonad.intern.dev.nav.no"
     ],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.ekstern.dev.nav.no",
