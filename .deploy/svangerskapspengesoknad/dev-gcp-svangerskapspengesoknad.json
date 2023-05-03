@@ -2,7 +2,6 @@
     "app": "svangerskapspengesoknad",
     "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "ingresses": [
-        "https://svangerskapspengesoknad.dev.nav.no",
         "https://svangerskapspengesoknad.intern.dev.nav.no"
     ],
     "env": {
