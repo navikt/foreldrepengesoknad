@@ -37,26 +37,6 @@ const OmBarnet: React.FunctionComponent = () => {
     const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
     const { state } = useForeldrepengesøknadContext();
     const { søknadGjelderEtNyttBarn } = state;
-    const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
-        const valgtBarn = !søknadGjelderEtNyttBarn ? barn : undefined;
-        const oppdatertBarn = mapOmBarnetFormDataToState(
-            values,
-            arbeidsforhold,
-            valgtBarn,
-            søkersituasjon.situasjon,
-            barnSøktOmFørMenIkkeRegistrert
-        );
-        return [actionCreator.setOmBarnet(oppdatertBarn)];
-    };
-
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.ANNEN_FORELDER,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
-    );
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    useSaveLoadedRoute(SøknadRoutes.OM_BARNET);
 
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
         if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
@@ -81,6 +61,27 @@ const OmBarnet: React.FunctionComponent = () => {
             : undefined;
     const barnSøktOmFørMenIkkeRegistrert =
         !søknadGjelderEtNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
+
+    const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
+        const valgtBarn = !søknadGjelderEtNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? barn : undefined;
+        const oppdatertBarn = mapOmBarnetFormDataToState(
+            values,
+            arbeidsforhold,
+            valgtBarn,
+            søkersituasjon.situasjon,
+            barnSøktOmFørMenIkkeRegistrert
+        );
+        return [actionCreator.setOmBarnet(oppdatertBarn)];
+    };
+
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
+        onValidSubmitHandler,
+        SøknadRoutes.ANNEN_FORELDER,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+    );
+    const onAvbrytSøknad = useAvbrytSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    useSaveLoadedRoute(SøknadRoutes.OM_BARNET);
 
     return (
         <OmBarnetFormComponents.FormikWrapper

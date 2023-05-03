@@ -75,6 +75,13 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
         )
     );
     const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse);
+
+    let fødselsdatoer;
+    if (pdlBarn) {
+        fødselsdatoer = pdlBarn.map((barn) => barn.fødselsdato);
+    } else if (fødselsdatoFraSak !== undefined) {
+        fødselsdatoer = Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);
+    }
     return {
         id: guid(),
         type: barnType,
@@ -83,8 +90,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
         omsorgsovertagelse: ISOStringToDate(sak.familiehendelse.omsorgsovertakelse),
         kanSøkeOmEndring: sak.kanSøkeOmEndring,
         sak: sak,
-        fødselsdatoer:
-            fødselsdatoFraSak !== undefined ? Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak) : undefined,
+        fødselsdatoer,
         familiehendelsesdato: familiehendelseDato,
         sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
         startdatoFørsteStønadsperiode:

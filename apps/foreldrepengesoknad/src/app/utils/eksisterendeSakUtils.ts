@@ -8,9 +8,9 @@ import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getFamiliehendelseType } from './getFamiliehendelseType';
 import {
     convertTidsperiodeToTidsperiodeDate,
-    getEldsteDato,
     getRelevantFamiliehendelseDato,
     ISOStringToDate,
+    sorterDatoEtterEldst,
 } from './dateUtils';
 import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
@@ -432,7 +432,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
         return {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
+            fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer!),
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
@@ -448,7 +448,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
         return {
             type: BarnType.IKKE_UTFYLT,
             antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: [getEldsteDato(valgteBarn.fødselsdatoer!)],
+            fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer!),
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
