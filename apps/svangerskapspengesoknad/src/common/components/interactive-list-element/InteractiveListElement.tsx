@@ -1,10 +1,10 @@
 import BEMHelper from 'common/util/bem';
 import { useIntl } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
+import { PencilFillIcon, TrashIcon } from '@navikt/aksel-icons';
+import { BodyShort, Button } from '@navikt/ds-react';
 
 import './interactiveListElement.less';
-import getMessage from 'common/util/i18nUtils';
-import Pencil from './Pencil';
-import { BodyShort } from '@navikt/ds-react';
 
 export interface InteractiveListElementProps {
     style?: 'gray' | 'grayWithBorder';
@@ -37,25 +37,30 @@ const InteractiveListElement: React.FunctionComponent<AllListElementProps> = ({
         <li className={bem.classNames(bem.block, bem.modifier(style))}>
             <div className={bem.element('top')}>
                 <BodyShort className="title">{title}</BodyShort>
-                <button
+                <Button
+                    size="small"
                     type="button"
-                    className={bem.element('editButton')}
+                    variant="secondary"
                     onClick={onEdit}
-                    aria-label={editButtonAriaText || getMessage(intl, 'rediger')}
+                    className={bem.element('editButton')}
+                    icon={<PencilFillIcon />}
                 >
-                    <Pencil />
-                </button>
+                    {editButtonAriaText || getMessage(intl, 'rediger')}
+                </Button>
             </div>
             <BodyShort className={bem.element('text')}>{text}</BodyShort>
             <div className={bem.element('bottom')}>
-                <button
-                    className={bem.element('deleteButton')}
+                <Button
+                    size="small"
                     onClick={onDelete}
                     type="button"
+                    variant="secondary"
+                    className={bem.element('deleteButton')}
+                    icon={<TrashIcon />}
                     aria-label={deleteButtonAriaText}
                 >
                     {deleteLinkText}
-                </button>
+                </Button>
             </div>
         </li>
     );

@@ -44,7 +44,7 @@ const Datepicker: FunctionComponent<Props> = ({ error, label, datoAvgrensinger, 
     });
 
     return (
-        <UNSAFE_DatePicker {...datepickerProps}>
+        <UNSAFE_DatePicker {...datepickerProps} strategy="fixed">
             <UNSAFE_DatePicker.Input
                 error={error}
                 label={label}
