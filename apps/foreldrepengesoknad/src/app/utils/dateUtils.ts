@@ -221,10 +221,13 @@ export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): Reg
     )[registrerteBarn.length - 1];
 };
 
+export const sorterDatoEtterEldst = (dato: Date[]): Date[] => {
+    const d = [...dato].sort((a, b) => (isDateABeforeDateB(dateToISOString(a)!, dateToISOString(b)!) ? -1 : 1));
+    return d;
+};
+
 export const getEldsteDato = (dato: Date[]) => {
-    return [...dato].sort((a, b) => (isDateABeforeDateB(dateToISOString(a)!, dateToISOString(b)!) ? 1 : -1))[
-        dato.length - 1
-    ];
+    return sorterDatoEtterEldst(dato)[0];
 };
 
 type VarighetFormat = 'full' | 'normal';
