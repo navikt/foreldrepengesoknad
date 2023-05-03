@@ -312,8 +312,8 @@ const getSøkerrolleFromSaksgrunnlag = (
 };
 
 const getFødselsdatoer = (valgteBarn: SelectableBarn | undefined, sak: Saksgrunnlag): Date[] => {
-    if (valgteBarn) {
-        return sorterDatoEtterEldst(valgteBarn.fødselsdatoer!);
+    if (valgteBarn && valgteBarn.fødselsdatoer) {
+        return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
         return Array(sak.antallBarn).fill(ISOStringToDate(sak.fødselsdato)!);
     }
@@ -441,7 +441,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
         return {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer!),
+            fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer),
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
@@ -457,7 +457,7 @@ const getBarnFromValgteBarn = (valgteBarn: SelectableBarn): Barn => {
         return {
             type: BarnType.IKKE_UTFYLT,
             antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer!),
+            fødselsdatoer: valgteBarn.fødselsdatoer ? sorterDatoEtterEldst(valgteBarn.fødselsdatoer) : [],
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)

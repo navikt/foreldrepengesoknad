@@ -186,5 +186,5 @@ export const uttaksperiodeKanJusteresVedFødsel = (
     termindato: Date | undefined,
     uttaksperiodeFom: Date
 ) => {
-    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato);
+    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato, 'd');
 };
