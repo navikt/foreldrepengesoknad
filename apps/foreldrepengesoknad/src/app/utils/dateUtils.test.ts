@@ -1079,7 +1079,7 @@ describe('tidperiodeOverlapperDato', () => {
 });
 
 describe('getEldsteDato', () => {
-    it('Skal returnere eldste dato riktig', () => {
+    it('Skal returnere eldste dato riktig.', () => {
         const datoListe = [
             new Date('2023-10-21'),
             new Date('2023-11-21'),
