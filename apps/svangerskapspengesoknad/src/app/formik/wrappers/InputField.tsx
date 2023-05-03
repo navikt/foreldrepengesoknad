@@ -14,10 +14,8 @@ type Props = OwnProps & TextFieldProps;
 const InputField: FunctionComponent<Props> = ({ name, ...inputProps }) => {
     const intl = useIntl();
     return (
-        <Field
-            name={name}
-            type={inputProps.type}
-            render={({ field, form }: FieldProps) => {
+        <Field name={name} type={inputProps.type}>
+            {({ field, form }: FieldProps) => {
                 const feilmelding = get(form.errors, name);
                 const feil =
                     feilmelding && form.submitCount > 0
@@ -35,7 +33,7 @@ const InputField: FunctionComponent<Props> = ({ name, ...inputProps }) => {
                     />
                 );
             }}
-        />
+        </Field>
     );
 };
 

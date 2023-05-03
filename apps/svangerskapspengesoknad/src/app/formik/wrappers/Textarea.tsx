@@ -14,10 +14,8 @@ type Props = OwnProps & Omit<TextareaProps, 'value' | 'onChange'>;
 const Textarea: FunctionComponent<Props> = ({ name, ...textareaProps }) => {
     const intl = useIntl();
     return (
-        <Field
-            name={name}
-            type="textarea"
-            render={({ field, form }: FieldProps) => {
+        <Field name={name} type="textarea">
+            {({ field, form }: FieldProps) => {
                 const feilmelding = get(form.errors, name);
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
@@ -30,7 +28,7 @@ const Textarea: FunctionComponent<Props> = ({ name, ...textareaProps }) => {
                     />
                 );
             }}
-        />
+        </Field>
     );
 };
 

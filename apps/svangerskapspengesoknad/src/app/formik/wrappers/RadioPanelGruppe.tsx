@@ -20,10 +20,8 @@ const RadioGroup: FunctionComponent<Props> = (props) => {
     const { id, value, legend, radios, description, ...radioPanelGruppeProps } = props;
 
     return (
-        <Field
-            name={radioPanelGruppeProps.name}
-            type="string"
-            render={({ field, form }: FieldProps) => {
+        <Field name={radioPanelGruppeProps.name} type="string">
+            {({ field, form }: FieldProps) => {
                 const feilmelding = get(form.errors, radioPanelGruppeProps.name);
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
@@ -56,7 +54,7 @@ const RadioGroup: FunctionComponent<Props> = (props) => {
                     </RadioGroupDS>
                 );
             }}
-        />
+        </Field>
     );
 };
 export default RadioGroup;

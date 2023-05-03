@@ -16,9 +16,8 @@ const Select: FunctionComponent<Props> = (props) => {
     const intl = useIntl();
     const { name, label, children } = props;
     return (
-        <Field
-            name={name}
-            render={({ field, form }: FieldProps<any>) => {
+        <Field name={name}>
+            {({ field, form }: FieldProps<any>) => {
                 const feilmelding = get(form.errors, name);
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
 
@@ -35,7 +34,7 @@ const Select: FunctionComponent<Props> = (props) => {
                     </SelectDS>
                 );
             }}
-        />
+        </Field>
     );
 };
 

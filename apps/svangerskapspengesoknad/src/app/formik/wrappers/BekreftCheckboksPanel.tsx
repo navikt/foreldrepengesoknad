@@ -16,10 +16,8 @@ const BekreftCheckboksPanel: React.FunctionComponent<Props> = ({ name, label, ch
     const intl = useIntl();
 
     return (
-        <Field
-            name={name}
-            type="checkbox"
-            render={({ form }: FieldProps) => {
+        <Field name={name} type="checkbox">
+            {({ form }: FieldProps) => {
                 const feilmelding = get(form.errors, name);
                 const feil =
                     feilmelding && form.submitCount > 0
@@ -41,7 +39,7 @@ const BekreftCheckboksPanel: React.FunctionComponent<Props> = ({ name, label, ch
                     </ConfirmationPanel>
                 );
             }}
-        />
+        </Field>
     );
 };
 

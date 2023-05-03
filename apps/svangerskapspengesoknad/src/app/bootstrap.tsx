@@ -10,11 +10,15 @@ import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import store from './redux/store';
 import IntlProvider from './intl/IntlProvider';
 import Svangerskapspengesøknad from './connectedComponents/svangerskapspengesoknad/Svangerskapspengesøknad';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import 'dayjs/locale/nb.js';
 
 import '@navikt/ds-css';
 import './styles/global.less';
 import './styles/app.less';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import dayjs from 'dayjs';
+
+dayjs.locale('nb');
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);

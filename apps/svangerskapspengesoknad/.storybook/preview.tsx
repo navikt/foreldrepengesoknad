@@ -1,7 +1,7 @@
 //TODO Dette bør ikkje ligga her
 (window as any).appSettings = {
-    REST_API_URL: '',
-    UTTAK_API_URL: 'uttak-url',
+    REST_API_URL: 'api-url',
+    UTTAK_API_URL: 'api-url',
 };
 
 export const decorators = [

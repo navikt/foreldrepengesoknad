@@ -92,7 +92,7 @@ const Step: FunctionComponent<Props> = (props) => {
                 <div className={cls.classNames(cls.element('steginnhold'))}>{props.children}</div>
                 <div className={cls.classNames(cls.element('stegkontroller'), 'blokk-m')}>
                     {config.renderNesteknapp && (
-                        <Button variant="primary">
+                        <Button type="submit" variant="primary">
                             <FormattedMessage id="steg.nesteknapp" />
                         </Button>
                     )}

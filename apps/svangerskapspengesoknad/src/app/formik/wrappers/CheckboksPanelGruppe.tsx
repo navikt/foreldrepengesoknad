@@ -1,9 +1,10 @@
 import { FunctionComponent } from 'react';
-import { FieldArrayRenderProps, Field } from 'formik';
+import { FieldArrayRenderProps, FieldArray } from 'formik';
 import { Omit, get } from 'lodash';
 import { translateError } from '../../utils/errorUtils';
 import { useIntl } from 'react-intl';
 import { Checkbox, CheckboxGroup, CheckboxGroupProps } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 interface OwnProps {
     name: string;
@@ -21,32 +22,38 @@ const CheckboksGruppe: FunctionComponent<Props> = (props) => {
     const { name, label, options, ...checkboksPanelGruppeProps } = props;
 
     return (
-        <Field
-            name={name}
-            render={({ form, push, remove }: FieldArrayRenderProps) => {
+        <FieldArray name={name}>
+            {({ form, push, remove }: FieldArrayRenderProps) => {
                 const feilmelding = get(form.errors, name);
+                const values = get(form.values, name) || [];
+
                 return (
                     <CheckboxGroup
                         {...checkboksPanelGruppeProps}
                         error={feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined}
                         legend={label}
-                        onChange={(val) => {
-                            const values = get(form.values, name) || [];
-                            const indexOfGrunnlag = values.indexOf(val);
-                            if (indexOfGrunnlag === -1) {
-                                push(val);
-                            } else {
-                                remove(indexOfGrunnlag);
-                            }
-                        }}
+                        value={values}
                     >
                         {options.map((cb) => (
-                            <Checkbox value={cb.value}>{cb.label}</Checkbox>
+                            <Checkbox
+                                key={guid()}
+                                value={cb.value}
+                                onChange={(event) => {
+                                    const indexOfGrunnlag = values.indexOf(event.currentTarget.value);
+                                    if (indexOfGrunnlag === -1) {
+                                        push(event.currentTarget.value);
+                                    } else {
+                                        remove(indexOfGrunnlag);
+                                    }
+                                }}
+                            >
+                                {cb.label}
+                            </Checkbox>
                         ))}
                     </CheckboxGroup>
                 );
             }}
-        />
+        </FieldArray>
     );
 };
 
