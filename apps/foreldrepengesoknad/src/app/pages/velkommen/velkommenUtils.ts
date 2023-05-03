@@ -77,7 +77,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): S
     const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse);
 
     let fødselsdatoer;
-    if (pdlBarn) {
+    if (pdlBarn && pdlBarn.length > 0) {
         fødselsdatoer = pdlBarn.map((barn) => barn.fødselsdato);
     } else if (fødselsdatoFraSak !== undefined) {
         fødselsdatoer = Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);

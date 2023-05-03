@@ -311,10 +311,19 @@ const getSøkerrolleFromSaksgrunnlag = (
     }
 };
 
+const getFødselsdatoer = (valgteBarn: SelectableBarn | undefined, sak: Saksgrunnlag): Date[] => {
+    if (valgteBarn) {
+        return sorterDatoEtterEldst(valgteBarn.fødselsdatoer!);
+    } else if (sak.fødselsdato) {
+        return Array(sak.antallBarn).fill(ISOStringToDate(sak.fødselsdato)!);
+    }
+    return [];
+};
+
 const getBarnFromSaksgrunnlag = (
     situasjon: Situasjon,
     sak: Saksgrunnlag,
-    valgteBarnFnr: string[] | undefined
+    valgteBarn: SelectableBarn | undefined
 ): Barn | undefined => {
     switch (situasjon) {
         case 'fødsel':
@@ -322,9 +331,9 @@ const getBarnFromSaksgrunnlag = (
                 return {
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
-                    fødselsdatoer: [ISOStringToDate(sak.fødselsdato)!],
+                    fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
                     termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
-                    fnr: valgteBarnFnr,
+                    fnr: valgteBarn?.fnr,
                 };
             }
 
@@ -339,9 +348,9 @@ const getBarnFromSaksgrunnlag = (
                 type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
-                fødselsdatoer: sak.fødselsdato !== undefined ? [ISOStringToDate(sak.fødselsdato)!] : [],
+                fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
                 omsorgsovertakelse: [],
-                fnr: valgteBarnFnr,
+                fnr: valgteBarn?.fnr,
             };
         default:
             return undefined;
@@ -555,7 +564,7 @@ export const opprettSøknadFraEksisterendeSak = (
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
-    valgteBarnFnr: string[] | undefined
+    valgteBarn: SelectableBarn | undefined
 ): Partial<Søknad> | undefined => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
@@ -566,7 +575,7 @@ export const opprettSøknadFraEksisterendeSak = (
     }
 
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
-    const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarnFnr);
+    const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
 
     const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
 
@@ -580,7 +589,7 @@ export const opprettSøknadFraEksisterendeSak = (
         grunnlag,
         søkerinfo,
         situasjon,
-        valgteBarnFnr
+        valgteBarn?.fnr
     );
 
     const søknad: Partial<Søknad> = {
