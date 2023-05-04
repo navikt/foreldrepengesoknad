@@ -35,24 +35,13 @@ server.use((req, res, next) => {
 
 const renderApp = (decoratorFragments) =>
     new Promise((resolve, reject) => {
-        server.render(
-            'index.html',
-            Object.assign(
-                {
-                    REST_API_URL: process.env.FORELDREPENGESOKNAD_API_URL,
-                    LOGIN_URL: process.env.LOGINSERVICE_URL,
-                    APP_VERSION: process.env.APP_VERSION,
-                },
-                decoratorFragments
-            ),
-            (err, html) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(html);
-                }
+        server.render('index.html', decoratorFragments, (err, html) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(html);
             }
-        );
+        });
     });
 
 const startServer = async (html) => {
@@ -89,14 +78,7 @@ const startServer = async (html) => {
 
         server.use(vite.middlewares);
     } else {
-        server.use('/engangsstonad/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
-        server.use('/engangsstonad/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
-
-        server.get('/internal/metrics', (req, res) => {
-            res.set('Content-Type', prometheus.register.contentType);
-            res.end(prometheus.register.metrics());
-        });
-
+        server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
         server.get(/^\/(?!.*dist).*$/, (_req, res) => {
             res.send(html);
         });
@@ -112,6 +94,7 @@ const logError = (errorMessage, details) => console.log(errorMessage, details);
 
 getDecorator()
     .then(renderApp, (error) => {
+        console.log(error);
         logError('Failed to get decorator', error);
         process.exit(1);
     })

@@ -1,5 +1,7 @@
+import Environment from 'app/Environment';
+
 export const redirectToLogin = () => {
-    redirect((window as any).LOGIN_URL + '?redirect=' + window.location.origin);
+    redirect(Environment.LOGIN_URL + '?redirect=' + window.location.origin);
 };
 
 export const redirect = (url: string) => {
