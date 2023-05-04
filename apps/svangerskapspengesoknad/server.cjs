@@ -42,15 +42,6 @@ const renderApp = (decoratorFragments) =>
     });
 
 const startServer = async (html) => {
-    server.get(['/dist/settings.js'], (_req, res) => {
-        res.set('content-type', 'application/javascript');
-        res.send(`window.appSettings = {
-            REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-            LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
-            LOG_VALIDATION: '${process.env.LOG_VALIDATION}',
-        };`);
-    });
-
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
@@ -84,6 +75,7 @@ const startServer = async (html) => {
 
         server.use(vite.middlewares);
     } else {
+        server.use('/assets', express.static(path.resolve(__dirname, 'dist/assets')));
         server.get(/^\/(?!.*dist).*$/, (_req, res) => {
             res.send(html);
         });
