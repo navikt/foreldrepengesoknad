@@ -1,5 +1,3 @@
-import React from 'react';
-
 const PlussIkonSirkelDisabled = () => (
     <svg width={24} height={24}>
         <title>{'Icons/add/disabled'}</title>

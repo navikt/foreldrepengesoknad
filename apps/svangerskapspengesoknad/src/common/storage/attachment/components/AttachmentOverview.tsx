@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import VedleggInput from './AttachmentInput';
@@ -7,12 +6,13 @@ import LabelText from '../../../components/labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from 'common/util/filesize';
 import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
-import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Block from 'common/components/block/Block';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { guid } from '@navikt/fp-common';
+import { Component, ReactNode } from 'react';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
@@ -29,14 +29,14 @@ interface State {
 }
 
 type Props = AttachmentOverviewProps;
-class AttachmentOverview extends React.Component<Props, State> {
+class AttachmentOverview extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.deleteFailedAttachments = this.deleteFailedAttachments.bind(this);
     }
 
-    createErrorMessagesForFailedAttachments(attachments: Attachment[]): React.ReactNode[] {
-        const errorMessages: React.ReactNode[] = [];
+    createErrorMessagesForFailedAttachments(attachments: Attachment[]): ReactNode[] {
+        const errorMessages: ReactNode[] = [];
         const attachmentsWithError = attachments.filter(isAttachmentWithError);
         const multipleErrors = attachmentsWithError.length > 1;
 

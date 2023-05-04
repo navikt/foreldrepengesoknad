@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 
 import { useIntl } from 'react-intl';
@@ -39,7 +38,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                         {attachment.filename}
                     </Link>
                 ) : (
-                    <React.Fragment>{attachment.filename}</React.Fragment>
+                    <>{attachment.filename}</>
                 )}
                 {showFileSize && <div>{bytesString(attachment.filesize)}</div>}
             </div>

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import BEMHelper from 'common/util/bem';

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import Block from 'common/components/block/Block';
 import { Næring } from 'app/types/SelvstendigNæringsdrivende';
 import EndringSelvstendig from './selvstendig/EndringSelvstendig';

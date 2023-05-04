@@ -1,42 +1,60 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { Field, FieldProps } from 'formik';
 import { Omit, get } from 'lodash';
-
-import RadioPanelGruppeResponsive, {
-    RadioPanelGruppeResponsiveProps,
-} from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { translateError } from 'app/utils/errorUtils';
+import { Radio, RadioGroup as RadioGroupDS, RadioGroupProps, RadioProps } from '@navikt/ds-react';
 
-type Props = Omit<RadioPanelGruppeResponsiveProps, 'onChange'> & {
-    id?: string;
-    value?: string;
+export type FormikRadioProp = Omit<RadioProps, 'children' | 'name'> & {
+    label: React.ReactNode;
 };
 
-const RadioPanelGruppe: FunctionComponent<Props> = (props) => {
+interface Props extends Omit<RadioGroupProps, 'name' | 'onChange' | 'children' | 'radios'> {
+    name: string;
+    radios: FormikRadioProp[];
+    afterOnChange?: (newValue: string) => void;
+}
+
+const RadioGroup: FunctionComponent<Props> = (props) => {
     const intl = useIntl();
-    const { id, value, legend, ...radioPanelGruppeProps } = props;
+    const { id, value, legend, radios, description, ...radioPanelGruppeProps } = props;
+
     return (
-        <Field
-            name={radioPanelGruppeProps.name}
-            type="string"
-            render={({ field, form }: FieldProps) => {
+        <Field name={radioPanelGruppeProps.name} type="string">
+            {({ field, form }: FieldProps) => {
                 const feilmelding = get(form.errors, radioPanelGruppeProps.name);
                 const feil = feilmelding && form.submitCount > 0 ? translateError(intl, feilmelding) : undefined;
+
                 return (
-                    <RadioPanelGruppeResponsive
+                    <RadioGroupDS
                         {...radioPanelGruppeProps}
-                        name={id || radioPanelGruppeProps.name}
-                        checked={value || field.value}
+                        description={description}
+                        name={radioPanelGruppeProps.name}
                         legend={legend}
-                        onChange={(_, newValue) => {
-                            form.setFieldValue(radioPanelGruppeProps.name, newValue);
+                        onChange={(evt) => {
+                            form.setFieldValue(radioPanelGruppeProps.name, evt.target.value);
                         }}
-                        feil={feil}
-                    />
+                        error={feil}
+                    >
+                        {radios.map((rb, idx) => {
+                            const { label, ...rest } = rb;
+                            return (
+                                <Radio
+                                    key={idx}
+                                    {...rest}
+                                    name={field.name as any}
+                                    onChange={(evt) => {
+                                        form.setFieldValue(field.name, evt.target.value);
+                                    }}
+                                >
+                                    {label}
+                                </Radio>
+                            );
+                        })}
+                    </RadioGroupDS>
                 );
             }}
-        />
+        </Field>
     );
 };
-export default RadioPanelGruppe;
+export default RadioGroup;

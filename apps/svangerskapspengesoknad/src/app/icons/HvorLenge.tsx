@@ -1,5 +1,3 @@
-import React from 'react';
-
 const HvorLengeIkon = (props: any) => (
     <svg width={180} height={115} {...props}>
         <g fill="none" fillRule="evenodd">

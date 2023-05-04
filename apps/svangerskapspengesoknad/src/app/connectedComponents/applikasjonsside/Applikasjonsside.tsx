@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import { FormattedMessage } from 'react-intl';

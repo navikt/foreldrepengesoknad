@@ -6,7 +6,7 @@ import { Søker, SøkerDTO } from '../types/Søker';
 import { mapTilretteleggingerTilDTO } from './tilretteleggingUtils';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Språkkode } from 'common/types';
-import { isISODateString } from 'nav-datovelger';
+import { isISODateString } from '@navikt/ds-datepicker';
 import { Utenlandsopphold, UtenlandsoppholdDTO } from 'app/types/InformasjonOmUtenlandsopphold';
 
 const fjernForkastetTilrettelegging = (tilrettelegging: UferdigTilrettelegging[], søknadsgrunnlag: Søknadsgrunnlag[]) =>

@@ -1,6 +1,5 @@
 import { Button } from '@navikt/ds-react';
-import React from 'react';
-const { VenstreChevron } = require('nav-frontend-chevron');
+import { ChevronLeftIcon } from '@navikt/aksel-icons';
 
 import './backButton.less';
 
@@ -14,7 +13,7 @@ const BackButton: React.FunctionComponent<Props> = ({ onClick, hidden, text = 'T
     return hidden ? null : (
         <Button variant="secondary" className="backButton" onClick={onClick} size="small" type="button">
             <span className="backButton__chevron">
-                <VenstreChevron />
+                <ChevronLeftIcon />
             </span>
             {text}
         </Button>

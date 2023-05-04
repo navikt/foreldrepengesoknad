@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'formik';
 import { useIntl } from 'react-intl';
 import { flattenErrors, translateError } from 'app/utils/errorUtils';

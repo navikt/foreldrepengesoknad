@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { guid } from 'nav-frontend-js-utils';
+import { useState } from 'react';
 import InfoToggler from './InfoToggler';
-import './utvidetInformasjon.less';
 import EkspanderbartInnhold from './EkspanderbartInnhold';
 import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { BodyShort } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
+import './utvidetInformasjon.less';
 
 interface Props {
     children: React.ReactNode;

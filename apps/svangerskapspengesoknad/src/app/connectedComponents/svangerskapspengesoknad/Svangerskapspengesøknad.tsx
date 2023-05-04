@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Kjønn, Søkerinfo } from 'app/types/Søkerinfo';

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -22,7 +22,7 @@ import { useIsValid } from '../formik-wrapper/FormikWrapper';
 import useFormikSubmit from 'app/hooks/useFormikSubmit';
 
 import './intro.less';
-import Block from 'common/components/block/Block';
+import { Block } from '@navikt/fp-common';
 
 const cls = BEMHelper('intro');
 
@@ -50,7 +50,7 @@ const Intro: FunctionComponent<Props> = ({ søkerinfo, formik }) => {
 
     return (
         <Applikasjonsside visSpråkvelger={true}>
-            <Block marginTop="xs">
+            <Block padBottom="l">
                 <GuidePanel poster className={cls.block}>
                     <Heading size="small">{getMessage(intl, 'intro.bobletittel', { name: søker.fornavn })}</Heading>
                     <BodyShort>{getMessage(intl, 'intro.bobletekst')}</BodyShort>
@@ -60,49 +60,55 @@ const Intro: FunctionComponent<Props> = ({ søkerinfo, formik }) => {
                 <Heading size="large" className="blokk-xs">
                     <FormattedMessage id="intro.tittel" />
                 </Heading>
-                <Veilederinfo CustomIcon={DocumentIkon}>
-                    <FormattedMessage
-                        id="intro.ingress"
-                        values={{
-                            a: (msg: any) => (
-                                <a
-                                    className="lenke"
-                                    rel="noopener noreferrer"
-                                    href="https://familie.nav.no/om-svangerskapspenger#slik-soker-du"
-                                    target="_blank"
-                                >
-                                    {msg}
-                                </a>
-                            ),
-                        }}
-                    />
-                </Veilederinfo>
-                <BekreftCheckboksPanel
-                    className="blokk-m"
-                    name="harGodkjentVilkår"
-                    label={getMessage(intl, 'intro.godkjennVilkår.bekreft')}
-                >
-                    <FormattedMessage
-                        id="intro.godkjennVilkår.label"
-                        values={{
-                            link: (
-                                <a
-                                    className="lenke"
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        toggleDinePlikter(true);
-                                    }}
-                                >
-                                    <FormattedMessage id="intro.dinePlikter" />
-                                </a>
-                            ),
-                        }}
-                    />
-                </BekreftCheckboksPanel>
-                <Button variant="primary" type="submit" className="blokk-m">
-                    <FormattedMessage id="intro.begynnSøknad.knapp" />
-                </Button>
+                <Block padBottom="l">
+                    <Veilederinfo CustomIcon={DocumentIkon}>
+                        <FormattedMessage
+                            id="intro.ingress"
+                            values={{
+                                a: (msg: any) => (
+                                    <a
+                                        className="lenke"
+                                        rel="noopener noreferrer"
+                                        href="https://familie.nav.no/om-svangerskapspenger#slik-soker-du"
+                                        target="_blank"
+                                    >
+                                        {msg}
+                                    </a>
+                                ),
+                            }}
+                        />
+                    </Veilederinfo>
+                </Block>
+                <Block padBottom="l">
+                    <BekreftCheckboksPanel
+                        className="blokk-m"
+                        name="harGodkjentVilkår"
+                        label={getMessage(intl, 'intro.godkjennVilkår.bekreft')}
+                    >
+                        <FormattedMessage
+                            id="intro.godkjennVilkår.label"
+                            values={{
+                                link: (
+                                    <a
+                                        className="lenke"
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            toggleDinePlikter(true);
+                                        }}
+                                    >
+                                        <FormattedMessage id="intro.dinePlikter" />
+                                    </a>
+                                ),
+                            }}
+                        />
+                    </BekreftCheckboksPanel>
+                </Block>
+                <Block padBottom="l">
+                    <Button variant="primary" type="submit" className="blokk-m">
+                        <FormattedMessage id="intro.begynnSøknad.knapp" />
+                    </Button>
+                </Block>
                 <BodyShort className="velkommen__personopplysningerLink">
                     <a
                         className="lenke"

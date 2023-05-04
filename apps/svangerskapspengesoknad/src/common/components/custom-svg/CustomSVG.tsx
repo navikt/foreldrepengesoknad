@@ -1,5 +1,3 @@
-import React from 'react';
-
 export interface IconRef {
     id: string;
     viewBox: string;

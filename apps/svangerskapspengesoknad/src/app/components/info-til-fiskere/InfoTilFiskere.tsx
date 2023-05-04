@@ -1,4 +1,3 @@
-import React from 'react';
 import Block from 'common/components/block/Block';
 import { FormattedMessage } from 'react-intl';
 import UtvidetInformasjon from '../utvidet-informasjon/UtvidetInformasjon';

@@ -1,32 +1,27 @@
 const express = require('express');
-const server = express();
-server.use(express.json());
-
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const getDecorator = require('./src/build/scripts/decorator');
+const getDecorator = require('./src/build/scripts/decorator.cjs');
 const compression = require('compression');
 
+const isDev = process.env.NODE_ENV === 'development';
+
+const server = express();
+
+server.use(express.json());
 server.disable('x-powered-by');
-
-// Prometheus metrics
-const prometheus = require('prom-client');
-const collectDefaultMetrics = prometheus.collectDefaultMetrics;
-collectDefaultMetrics({ timeout: 5000 });
-const httpRequestDurationMicroseconds = new prometheus.Histogram({
-    name: 'http_request_duration_ms',
-    help: 'Duration of HTTP requests in ms',
-    labelNames: ['route'],
-    // buckets for response time from 0.1ms to 500ms
-    buckets: [0.1, 5, 15, 50, 100, 200, 300, 400, 500],
-});
-
 server.use(compression());
 
-server.set('views', `${__dirname}/dist`);
+if (isDev) {
+    require('dotenv').config();
+
+    server.set('views', `${__dirname}`);
+} else {
+    server.set('views', `${__dirname}/dist`);
+}
+
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
-
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
     res.set('X-Frame-Options', 'SAMEORIGIN');
@@ -46,10 +41,7 @@ const renderApp = (decoratorFragments) =>
         });
     });
 
-const startServer = (html) => {
-    server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
-    server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
-
+const startServer = async (html) => {
     server.get(['/dist/settings.js'], (_req, res) => {
         res.set('content-type', 'application/javascript');
         res.send(`window.appSettings = {
@@ -59,18 +51,43 @@ const startServer = (html) => {
         };`);
     });
 
-    server.get('/internal/metrics', (req, res) => {
-        res.set('Content-Type', prometheus.register.contentType);
-        res.end(prometheus.register.metrics());
-    });
-
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
-    server.get(/^\/(?!.*dist).*$/, (req, res) => {
-        res.send(html);
-        httpRequestDurationMicroseconds.labels(req.route.path).observe(10);
-    });
+    if (isDev) {
+        const fs = require('fs');
+        fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+        const vedleggMockStore = './dist/vedlegg';
+
+        if (!fs.existsSync(vedleggMockStore)) {
+            fs.mkdirSync(vedleggMockStore);
+        }
+
+        const vite = await require('vite').createServer({
+            root: __dirname,
+            server: {
+                middlewareMode: true,
+                port: 8080,
+                open: './index-decorated.html',
+            },
+        });
+
+        server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
+            const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
+            const fileExists = fs.existsSync(fullPath);
+
+            if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
+                req.url = '/index-decorated.html';
+            }
+            next();
+        });
+
+        server.use(vite.middlewares);
+    } else {
+        server.get(/^\/(?!.*dist).*$/, (_req, res) => {
+            res.send(html);
+        });
+    }
 
     const port = process.env.PORT || 8080;
     server.listen(port, () => {

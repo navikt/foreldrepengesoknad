@@ -1,4 +1,3 @@
-import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Block from 'common/components/block/Block';

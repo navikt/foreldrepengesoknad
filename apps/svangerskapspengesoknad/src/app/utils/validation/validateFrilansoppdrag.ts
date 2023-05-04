@@ -1,6 +1,6 @@
 import { FormikErrors } from 'formik';
 import { FrilansOppdrag } from 'app/types/FrilansInformasjon';
-import { isISODateString } from 'nav-datovelger';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 type FrilansoppdragFeil = FormikErrors<FrilansOppdrag>;
 

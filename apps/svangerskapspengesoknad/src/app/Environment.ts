@@ -1,14 +1,8 @@
 const Environment = () => {
     return {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore Fiks
-        REST_API_URL: window.appSettings.REST_API_URL,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore Fiks
-        LOGIN_URL: window.appSettings.LOGIN_URL,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore Fiks
-        LOG_VALIDATION: window.appSettings.LOG_VALIDATION,
+        REST_API_URL: (window as any).appSettings.REST_API_URL,
+        LOGIN_URL: (window as any).appSettings.LOGIN_URL,
+        LOG_VALIDATION: (window as any).appSettings.LOG_VALIDATION,
     };
 };
 

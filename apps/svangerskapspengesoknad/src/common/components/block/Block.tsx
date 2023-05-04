@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import BEMHelper from 'common/util/bem';
 import LabelMedInfobox from '../label-med-infobox/LabelMedInfobox';

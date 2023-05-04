@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { SubmitEvent } from '../../../app/types/events';

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { useIntl } from 'react-intl';
@@ -42,7 +42,6 @@ const VarigEndringAvNæringsinntekt: FunctionComponent<Props> = (props: Props) =
 
             <Block visible={visDato}>
                 <DatoInput
-                    fullskjermKalender={true}
                     name="endringAvNæringsinntektInformasjon.dato"
                     label={getMessage(intl, 'arbeidsforhold.selvstendig.endringAvNæringsinntektInformasjon.dato')}
                 />

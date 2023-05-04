@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Formik, FormikProps, FieldArray } from 'formik';
 import { connect } from 'react-redux';
@@ -91,7 +91,6 @@ const AndreInntekter: FunctionComponent<Props> = (props) => {
 
                         <Block>
                             <RadioPanelGruppe
-                                twoColumns={true}
                                 name="type"
                                 legend={getMessage(intl, 'arbeidsforhold.andreInntekter.inntektstype')}
                                 radios={[
@@ -135,20 +134,8 @@ const AndreInntekter: FunctionComponent<Props> = (props) => {
 
                             <Block>
                                 <DatoerInputLayout
-                                    fra={
-                                        <DatoInput
-                                            fullskjermKalender={true}
-                                            name="tidsperiode.fom"
-                                            label={getMessage(intl, 'fraOgMed')}
-                                        />
-                                    }
-                                    til={
-                                        <DatoInput
-                                            fullskjermKalender={true}
-                                            name="tidsperiode.tom"
-                                            label={getMessage(intl, 'tilOgMed')}
-                                        />
-                                    }
+                                    fra={<DatoInput name="tidsperiode.fom" label={getMessage(intl, 'fraOgMed')} />}
+                                    til={<DatoInput name="tidsperiode.tom" label={getMessage(intl, 'tilOgMed')} />}
                                 />
                             </Block>
 

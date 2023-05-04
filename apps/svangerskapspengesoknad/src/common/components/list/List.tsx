@@ -1,6 +1,6 @@
-import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import './list.less';
+import { Component } from 'react';
 
 interface ListProps<T> {
     data: T[];
@@ -10,7 +10,7 @@ interface ListProps<T> {
 
 const bem = BEMHelper('list');
 
-export default class List<T> extends React.Component<ListProps<T>> {
+export default class List<T> extends Component<ListProps<T>> {
     render() {
         const { data, renderElement, className } = this.props;
         return (

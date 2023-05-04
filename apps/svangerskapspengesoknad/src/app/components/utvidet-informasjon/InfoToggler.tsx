@@ -1,7 +1,5 @@
-import * as React from 'react';
-import NavFrontendChevron from 'nav-frontend-chevron';
-
 import BEMHelper from 'common/util/bem';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 
 import './infoToggler.less';
 
@@ -27,9 +25,7 @@ const InfoToggler = (props: Props) => {
         >
             <span className={cls.element('content')}>
                 <span className={cls.element('label')}>{children}</span>
-                <span className={cls.element('chevron')}>
-                    <NavFrontendChevron type={apen ? 'opp' : 'ned'} />
-                </span>
+                <span className={cls.element('chevron')}>{apen ? <ChevronUpIcon /> : <ChevronDownIcon />}</span>
             </span>
         </button>
     );

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 import BEMHelper from 'common/util/bem';
 import './loading.less';

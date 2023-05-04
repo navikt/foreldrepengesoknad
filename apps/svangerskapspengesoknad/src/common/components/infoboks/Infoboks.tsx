@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Sirkelknapp, { Stil } from 'common/components/sirkelknapp/Sirkelknapp';
 import LukkInfoIkon from 'common/components/ikoner/LukkInfoIkon';
 import InfoIkon from 'common/components/ikoner/InfoIkon';
@@ -52,7 +52,7 @@ const Infoboks: React.FunctionComponent<InfoboksProps> = ({
     const ikon = isExpanded ? <LukkInfoIkon /> : <InfoIkon />;
 
     return (
-        <React.Fragment>
+        <>
             <span className="infoboks__sirkel">
                 <Sirkelknapp
                     posisjoneringFraHøyre={windowPos !== 0 ? windowPos : undefined}
@@ -72,7 +72,7 @@ const Infoboks: React.FunctionComponent<InfoboksProps> = ({
             >
                 {isExpanded ? <div className="infoboks__wrapper typo-normal">{tekst}</div> : <span />}
             </Collapse>
-        </React.Fragment>
+        </>
     );
 };
 export default Infoboks;
