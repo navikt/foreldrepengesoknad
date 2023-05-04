@@ -18,5 +18,4 @@ jobs:
    uses: navikt/fp-gha-workflows/.github/workflows/codeql.yml@main
    with:
     language: javascript
-    config-file: ./.github/codeql/codeql-config.yml
    secrets: inherit

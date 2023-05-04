@@ -9,6 +9,7 @@ import {
     validateTermindato,
     validateTermindatoFødsel,
 } from './omBarnetValidering';
+import MockDate from 'mockdate';
 
 describe('omBarnetValidering', () => {
     const intlMock = getIntlMock();
@@ -32,9 +33,11 @@ describe('omBarnetValidering', () => {
     });
 
     it('skal ikke feile validering når fødselsdato er før dagens dato', () => {
-        const fødselsdato = '2021-01-01';
+        MockDate.set(new Date('2022-01-01'));
+        const fødselsdato = '2020-01-01';
         const resultat = validateFødselsdato(intlMock)(fødselsdato);
         expect(resultat).toBeUndefined();
+        MockDate.reset();
     });
 
     it('skal feile fødsel & adopsjonsvalidering når fødselsdato ikke er oppgitt', () => {

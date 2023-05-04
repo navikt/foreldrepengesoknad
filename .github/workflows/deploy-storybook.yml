@@ -1,0 +1,12 @@
+name: "Deploy storybook"
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy-storybook:
+   uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
+   with:
+     package-manager: pnpm
+   secrets: inherit
