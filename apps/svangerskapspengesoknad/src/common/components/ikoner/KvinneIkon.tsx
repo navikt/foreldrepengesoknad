@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const KvinneIkon = () => (
     <svg
         width={40}

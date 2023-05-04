@@ -7,15 +7,13 @@ const morgan = require('morgan');
 
 const isDev = process.env.NODE_ENV === 'development';
 
-if (isDev) {
-    require('dotenv').config();
-}
-
 const server = express();
 server.disable('x-powered-by');
 server.use(compression());
 
 if (isDev) {
+    require('dotenv').config();
+
     server.set('views', `${__dirname}`);
 } else {
     server.set('views', `${__dirname}/dist`);

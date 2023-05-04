@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Næringsrelasjon } from 'app/types/SelvstendigNæringsdrivende';
 
 import './regnskapsførerSelvstendig.less';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const MorGravidIkon = (props: any) => (
     <svg width={34} height={48} viewBox="0 0 68 96" {...props}>
         <g fill="none" fillRule="evenodd">

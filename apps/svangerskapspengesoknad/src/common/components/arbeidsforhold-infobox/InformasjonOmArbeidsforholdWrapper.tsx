@@ -1,26 +1,24 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 
 import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
 
 import ArbeidsforholdInfoBox from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
+import { BodyShort } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 import './arbeidsforhold.less';
-import { guid } from 'nav-frontend-js-utils';
-import { BodyShort } from '@navikt/ds-react';
+import { FunctionComponent } from 'react';
 
 interface ArbeidsforholdInfoWrapperProps {
     arbeidsforhold: Arbeidsforhold[] | undefined;
 }
-const InformasjonOmArbeidsforholdWrapper: React.FunctionComponent<ArbeidsforholdInfoWrapperProps> = ({
-    arbeidsforhold,
-}) => {
+const InformasjonOmArbeidsforholdWrapper: FunctionComponent<ArbeidsforholdInfoWrapperProps> = ({ arbeidsforhold }) => {
     const intl = useIntl();
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
     return (
-        <React.Fragment>
+        <>
             {!harArbeidsforhold && (
                 <div className="arbeidsforholdInfoBox">
                     <BodyShort>
@@ -40,7 +38,7 @@ const InformasjonOmArbeidsforholdWrapper: React.FunctionComponent<Arbeidsforhold
                     ))}
                 </ul>
             )}
-        </React.Fragment>
+        </>
     );
 };
 

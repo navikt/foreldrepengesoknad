@@ -1,5 +1,3 @@
-import React from 'react';
-
 const MinusIkonSirkelDisabled = () => (
     <svg width={24} height={24}>
         <g fill="none" fillRule="evenodd" stroke="#C6C2BF" strokeLinecap="round" strokeLinejoin="round">

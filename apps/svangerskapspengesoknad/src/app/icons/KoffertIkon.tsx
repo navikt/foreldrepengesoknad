@@ -1,5 +1,3 @@
-import React from 'react';
-
 const KoffertIkon = (props: any) => (
     <svg width={36} height={36} viewBox="0 0 48 48" {...props}>
         <g fill="none" fillRule="evenodd">

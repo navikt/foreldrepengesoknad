@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import { CustomFormikProps } from 'app/types/Formik';
 import Step from '../step/Step';
 

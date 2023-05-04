@@ -1,4 +1,3 @@
-import React from 'react';
 import { ModalSummaryProps } from '../ArbeidSeksjon/ArbeidSeksjon';
 import { Næring } from 'app/types/SelvstendigNæringsdrivende';
 import getMessage from 'common/util/i18nUtils';

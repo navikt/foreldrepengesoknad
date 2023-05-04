@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import moment from 'moment';
 import { EndringAvNæringsinntektInformasjon } from 'app/types/SelvstendigNæringsdrivende';
 import BEMHelper from 'common/util/bem';

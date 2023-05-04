@@ -1,9 +1,6 @@
-import React from 'react';
-
 //TODO Dette bør ikkje ligga her
-window.appSettings = {
-    REST_API_URL: '',
-    UTTAK_API_URL: 'uttak-url',
+(window as any).appSettings = {
+    REST_API_URL: 'rest-api',
 };
 
 export const decorators = [

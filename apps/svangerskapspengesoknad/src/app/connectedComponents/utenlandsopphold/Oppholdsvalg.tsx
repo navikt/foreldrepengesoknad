@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { Formik, FormikProps } from 'formik';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -76,7 +76,6 @@ const Oppholdvalg: FunctionComponent<Props> = (props) => {
                             <DatoerInputLayout
                                 fra={
                                     <DatoInput
-                                        fullskjermKalender={true}
                                         name="tidsperiode.fom"
                                         label={getMessage(intl, 'utenlandsopphold.land.fraOgMed')}
                                         datoAvgrensinger={datoAvgrensinger.fom}
@@ -84,7 +83,6 @@ const Oppholdvalg: FunctionComponent<Props> = (props) => {
                                 }
                                 til={
                                     <DatoInput
-                                        fullskjermKalender={true}
                                         name="tidsperiode.tom"
                                         datoAvgrensinger={datoAvgrensinger.tom}
                                         label={getMessage(intl, 'utenlandsopphold.land.tilOgMed')}

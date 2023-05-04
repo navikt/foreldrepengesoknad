@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
-import { BekreftCheckboksPanel as BekreftCheckboksPanelNav } from 'nav-frontend-skjema';
+import { ReactNode } from 'react';
 import { Field, FieldProps } from 'formik';
-import { useIntl } from 'react-intl';
-
+import { ConfirmationPanel } from '@navikt/ds-react';
+import { get } from 'lodash';
 import { translateError } from 'app/utils/errorUtils';
+import { useIntl } from 'react-intl';
 
 interface Props {
     label: string;
@@ -14,26 +14,32 @@ interface Props {
 
 const BekreftCheckboksPanel: React.FunctionComponent<Props> = ({ name, label, children, className }) => {
     const intl = useIntl();
+
     return (
-        <Field
-            name={name}
-            type="checkbox"
-            render={({ field, form }: FieldProps) => (
-                <BekreftCheckboksPanelNav
-                    checked={form.values[name]}
-                    label={label}
-                    onChange={field.onChange}
-                    className={className}
-                    inputProps={{
-                        name: field.name,
-                        onBlur: field.onBlur,
-                    }}
-                    feil={form.touched[name] && form.errors[name] ? translateError(intl, form.errors[name]) : ''}
-                >
-                    {children}
-                </BekreftCheckboksPanelNav>
-            )}
-        />
+        <Field name={name} type="checkbox">
+            {({ form }: FieldProps) => {
+                const feilmelding = get(form.errors, name);
+                const feil =
+                    feilmelding && form.submitCount > 0
+                        ? {
+                              feilmelding: translateError(intl, feilmelding),
+                          }
+                        : undefined;
+                return (
+                    <ConfirmationPanel
+                        checked={form.values[name]}
+                        label={label}
+                        onChange={(value) => {
+                            form.setFieldValue(name, value);
+                        }}
+                        className={className}
+                        error={feil?.feilmelding}
+                    >
+                        {children}
+                    </ConfirmationPanel>
+                );
+            }}
+        </Field>
     );
 };
 

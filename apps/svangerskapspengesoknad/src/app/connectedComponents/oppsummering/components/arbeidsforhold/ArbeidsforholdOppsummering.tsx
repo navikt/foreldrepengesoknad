@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Søknadsgrunnlag } from 'app/types/Søknad';
 import InformasjonOmArbeidsforholdWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
@@ -9,7 +9,7 @@ import InformasjonOmSelvstendig from './components/InformasjonOmSelvstendig';
 import InformasjonOmAndreInntekter from './components/InformasjonOmAndreInntekter';
 import DuHarSvartNeiListe from './DuHarSvartNeiListe';
 import { AnnenInntekt } from 'app/types/AnnenInntekt';
-import { guid } from 'nav-frontend-js-utils';
+import { guid } from '@navikt/fp-common';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];

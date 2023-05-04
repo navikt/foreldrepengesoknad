@@ -1,4 +1,3 @@
-import React from 'react';
 import BEMHelper from 'common/util/bem';
 import StatusIkon, { StatusIkonStatusKey } from 'app/icons/StatusIkon';
 import { Label } from '@navikt/ds-react';

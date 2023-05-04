@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { ModalSummaryProps } from '../ArbeidSeksjon/ArbeidSeksjon';
 import { FrilansOppdrag } from 'app/types/FrilansInformasjon';
 import InteractiveListElement from 'common/components/interactive-list-element/InteractiveListElement';

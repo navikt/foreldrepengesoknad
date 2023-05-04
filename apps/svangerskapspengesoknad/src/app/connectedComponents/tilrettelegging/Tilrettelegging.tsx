@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
@@ -24,7 +24,7 @@ import FormikStep from 'app/components/formik-step/FormikStep';
 import getMessage from 'common/util/i18nUtils';
 import SøknadStep from 'app/types/SøknadStep';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import CheckboksPanelGruppe from '../../formik/wrappers/CheckboksPanelGruppe';
+import CheckboksGruppe from '../../formik/wrappers/CheckboksPanelGruppe';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 import Textarea from '../../formik/wrappers/Textarea';
 import LabelMedInfobox from 'common/components/label-med-infobox/LabelMedInfobox';
@@ -276,7 +276,7 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                     </Block>
                 </Block>
                 <Block header={{ title: getMessage(intl, 'tilrettelegging.del2'), stil: 'seksjon' }} visible={visDel2}>
-                    <CheckboksPanelGruppe
+                    <CheckboksGruppe
                         label={
                             visFrilansEllerSelvstendig ? (
                                 <LabelMedInfobox
@@ -291,7 +291,6 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                             )
                         }
                         name={tilretteleggingstypeName}
-                        columns={1}
                         options={[
                             {
                                 label: getMessage(intl, 'tilrettelegging.hvordanKanDuJobbe.fullt'),

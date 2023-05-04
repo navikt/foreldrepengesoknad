@@ -1,4 +1,3 @@
-import React from 'react';
 import Block from 'common/components/block/Block';
 import InputField from 'app/formik/wrappers/InputField';
 import DatoInput from 'app/formik/wrappers/DatoInput';
@@ -43,7 +42,6 @@ const AddTilrettelegging: React.FunctionComponent<Props> = ({
                     <div className={cls.element('prosentWrapper')}>
                         <InputField
                             type="number"
-                            bredde="XS"
                             max={100}
                             min={0}
                             step={0.01}

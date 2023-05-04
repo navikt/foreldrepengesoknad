@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { CustomFormikProps } from 'app/types/Formik';
 import { getSøknadStepPath } from 'app/utils/stepUtils';
 import { useIntl } from 'react-intl';

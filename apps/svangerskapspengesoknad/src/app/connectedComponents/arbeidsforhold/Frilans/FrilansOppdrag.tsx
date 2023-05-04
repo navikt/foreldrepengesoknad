@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Formik, FormikProps } from 'formik';
 
@@ -59,20 +59,8 @@ const FrilansOppdrag: FunctionComponent<Props> = (props: Props) => {
 
                         <Block>
                             <DatoerInputLayout
-                                fra={
-                                    <DatoInput
-                                        fullskjermKalender={true}
-                                        name="tidsperiode.fom"
-                                        label={getMessage(intl, 'fraOgMed')}
-                                    />
-                                }
-                                til={
-                                    <DatoInput
-                                        fullskjermKalender={true}
-                                        name="tidsperiode.tom"
-                                        label={getMessage(intl, 'tilOgMed')}
-                                    />
-                                }
+                                fra={<DatoInput name="tidsperiode.fom" label={getMessage(intl, 'fraOgMed')} />}
+                                til={<DatoInput name="tidsperiode.tom" label={getMessage(intl, 'tilOgMed')} />}
                             />
                         </Block>
 

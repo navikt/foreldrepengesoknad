@@ -1,4 +1,4 @@
-import React, { ReactNode, FunctionComponent, useCallback } from 'react';
+import { ReactNode, FunctionComponent, useCallback } from 'react';
 import { Formik } from 'formik';
 
 import { CustomFormikProps } from 'app/types/Formik';

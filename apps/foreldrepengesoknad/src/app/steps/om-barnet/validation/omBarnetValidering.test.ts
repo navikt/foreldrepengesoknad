@@ -35,7 +35,6 @@ describe('omBarnetValidering', () => {
     it('skal ikke feile validering når fødselsdato er før dagens dato', () => {
         MockDate.set(new Date('2022-01-01'));
         const fødselsdato = '2020-01-01';
-        console.log('skal ikke feile validering når fødselsdato er før dagens dato');
         const resultat = validateFødselsdato(intlMock)(fødselsdato);
         expect(resultat).toBeUndefined();
         MockDate.reset();

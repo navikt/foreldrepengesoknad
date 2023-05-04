@@ -1,9 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
 import './statusBoks.less';
 import BEMHelper from 'common/util/bem';
-import Lenkepanelbase from 'nav-frontend-lenkepanel';
-import { BodyShort, Heading, Ingress, Tag } from '@navikt/ds-react';
+import { BodyShort, Heading, Ingress, LinkPanel, Tag } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 
@@ -21,12 +20,7 @@ const StatusBoks: FunctionComponent<Props> = ({ saksNr }) => {
                     <FormattedMessage id="søknadSendt.status.tittel" />
                 </Heading>
             </Block>
-            <Lenkepanelbase
-                href="https://foreldrepenger.nav.no"
-                border={true}
-                className="statusBoks__lenkepanel"
-                tittelProps="ingress"
-            >
+            <LinkPanel href="https://foreldrepenger.nav.no" border={true} className="statusBoks__lenkepanel">
                 <div className={cls.block}>
                     <div className={cls.element('left')}>
                         <Block margin="xs">
@@ -45,7 +39,7 @@ const StatusBoks: FunctionComponent<Props> = ({ saksNr }) => {
                         <Ingress>{saksNr}</Ingress>
                     </div>
                 </div>
-            </Lenkepanelbase>
+            </LinkPanel>
         </Block>
     );
 };

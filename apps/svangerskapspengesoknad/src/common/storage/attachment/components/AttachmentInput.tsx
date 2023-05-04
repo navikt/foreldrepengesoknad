@@ -1,13 +1,11 @@
-import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import CustomSVG from 'common/components/custom-svg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 
-const uploadIcon = require('./upload.svg').default;
 import { AttachmentType } from '../types/AttachmentType';
 
 import './attachment.less';
 import { Label } from '@navikt/ds-react';
+import { UploadIcon } from '@navikt/aksel-icons';
 
 interface AttachmentInputProps {
     id: string;
@@ -84,7 +82,7 @@ const AttachmentInput: React.FunctionComponent<Props> = ({ id, onClick, attachme
             onKeyPress={(e) => onKeyPress(e)}
         >
             <div className={BEM.element('icon')}>
-                <CustomSVG iconRef={uploadIcon} size={22} />
+                <UploadIcon />
             </div>
             <Label className={BEM.element('label')}>
                 <FormattedMessage id={`vedlegg.lastoppknapp.${attachmentType}`} />

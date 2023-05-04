@@ -1,5 +1,3 @@
-import React from 'react';
-
 const UKFlagSVG = () => (
     <svg width={25} height={18}>
         <title>{'flag_united_kingdom'}</title>

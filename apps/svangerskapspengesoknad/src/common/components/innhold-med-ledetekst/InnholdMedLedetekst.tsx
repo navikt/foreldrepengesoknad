@@ -1,6 +1,5 @@
-import React from 'react';
-import { guid } from 'nav-frontend-js-utils';
 import { BodyShort, Label } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 interface InnholdMedLedetekstProps {
     ledetekst: string;
