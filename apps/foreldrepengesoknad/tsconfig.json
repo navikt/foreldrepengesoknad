@@ -10,7 +10,7 @@
             "app/*": ["./app/*"]
         },
         "rootDir": "src",
-        "types": ["vite/client", "node", "jest", "@testing-library/jest-dom", "vitest/globals"]
+        "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
     "exclude": ["src/common/**/*", "node_modules"]
