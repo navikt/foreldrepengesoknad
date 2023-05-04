@@ -15,7 +15,7 @@ vi.mock('./../src/app/Environment.ts', async () => {
     return {
         default: {
             REST_API_URL: 'rest-api',
-            LOGIN_URL: 'http://localhost:8888/local/cookie',
+            LOGIN_URL: '',
         },
     };
 });
