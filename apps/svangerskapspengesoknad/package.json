@@ -11,10 +11,7 @@
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --write src",
         "dev-api": "node mock-api-server.cjs",
-        "start-express": "node ./server.cjs",
-        "upgrade": "npm-check --update",
-        "jest": "jest --color",
-        "test": "vitest",
+        "test": "vitest run",
         "tsc": "tsc  --pretty",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001"
