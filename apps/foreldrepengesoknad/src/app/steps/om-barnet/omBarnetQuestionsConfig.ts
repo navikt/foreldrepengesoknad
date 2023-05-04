@@ -53,11 +53,7 @@ const includeTermindato = (
     const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
 
     if (isFarEllerMedmor(rolle)) {
-        if (
-            andreAugust2022ReglerGjelder(relevantFødselsdato!) &&
-            valgteRegistrerteBarn !== undefined &&
-            valgteRegistrerteBarn.length === 0
-        ) {
+        if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {
             return true;
         }
         return erDatoInnenforDeSiste12Ukene(relevantFødselsdato!);
