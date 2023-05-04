@@ -1,8 +1,6 @@
 import FeatureToggle from '../FeatureToggle';
 import { isFeatureEnabled } from './toggleUtils';
 
-// TODO Denne er ikkje bra. Er avhengig av å setta verdiar i setup-fila til Jest.
-
 describe('<isFeatureEnabled>', () => {
     it('skal ha feature toggle som er på', () => {
         const erTogglePå = isFeatureEnabled(FeatureToggle.visAlertstripe);
