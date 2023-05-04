@@ -1,7 +1,11 @@
-//TODO Dette bør ikkje ligga her
-(window as any).appSettings = {
+const scriptTag = document.createElement('script');
+scriptTag.type = 'text/json';
+scriptTag.id = 'nav:appSettings';
+scriptTag.innerHTML = JSON.stringify({
     REST_API_URL: 'rest-api',
-};
+    LOGIN_URL: '',
+});
+document.head.appendChild(scriptTag);
 
 export const decorators = [
     (Story) => (
