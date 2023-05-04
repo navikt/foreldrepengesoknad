@@ -15,7 +15,6 @@ import '@navikt/ds-css';
 
 import '../../styles/global.less';
 import '../../styles/app.less';
-import { BodyShort } from '@navikt/ds-react';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
@@ -102,9 +101,7 @@ const Template: StoryFn<any> = () => {
         <ErrorBoundary>
             <Provider store={store}>
                 <IntlProvider>
-                    <BodyShort>
-                        <Svangerskapspengesøknad />
-                    </BodyShort>
+                    <Svangerskapspengesøknad />
                 </IntlProvider>
             </Provider>
         </ErrorBoundary>

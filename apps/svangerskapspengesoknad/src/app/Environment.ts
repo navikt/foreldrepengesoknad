@@ -1,8 +1,11 @@
 const Environment = () => {
+    const settingsNode = document.getElementById('nav:appSettings') as HTMLScriptElement;
+    const appSettings = JSON.parse(settingsNode.text);
+
     return {
-        REST_API_URL: (window as any).appSettings.REST_API_URL,
-        LOGIN_URL: (window as any).appSettings.LOGIN_URL,
-        LOG_VALIDATION: (window as any).appSettings.LOG_VALIDATION,
+        REST_API_URL: appSettings.REST_API_URL,
+        LOGIN_URL: appSettings.LOGIN_URL,
+        LOG_VALIDATION: appSettings.LOG_VALIDATION,
     };
 };
 
