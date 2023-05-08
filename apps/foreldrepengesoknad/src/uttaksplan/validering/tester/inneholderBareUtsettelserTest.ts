@@ -8,7 +8,7 @@ import { formaterDato } from 'app/utils/dateUtils';
 export function inneholderBareUtsettelserTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const ikkeOverskrivbarePerioder = grunnlag.perioder.filter((p) => !isOverskrivbarPeriode(p));
     const inneholderAndrePerioderEnnUtsettelser = ikkeOverskrivbarePerioder.some((p) => !isUtsettelsesperiode(p));
-    const bareUtsettelser = !inneholderAndrePerioderEnnUtsettelser && ikkeOverskrivbarePerioder.length > 0;
+    const bareUtsettelser = !inneholderAndrePerioderEnnUtsettelser && ikkeOverskrivbarePerioder.length >= 0;
     const passerer = bareUtsettelser === false;
     const intlKey = grunnlag.erEndringssøknad
         ? 'uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad'
