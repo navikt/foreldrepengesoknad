@@ -23,13 +23,31 @@
             "senereOpphold": []
         },
         "erEndringssøknad": false,
-        "uttaksplan": [],
+        "dekningsgrad": "100",
+        "uttaksplan": [
+            {
+                "id": "0649613795-06946-27088-2654-110761505718325",
+                "type": "uttak",
+                "forelder": "farMedmor",
+                "konto": "FORELDREPENGER",
+                "tidsperiode": {
+                    "fom": "2023-05-09T00:00:00.000Z",
+                    "tom": "2024-03-25T00:00:00.000Z"
+                },
+                "vedlegg": [],
+                "gradert": false
+            }
+        ],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/uttaksplan-info",
+    "currentRoute": "/soknad/uttaksplan",
+    "uttaksplanInfo": {
+        "startdatoUttak": "2023-05-09"
+    },
+    "antallUkerIUttaksplan": 46,
     "perioderSomSkalSendesInn": [],
     "harUttaksplanBlittSlettet": false,
     "søknadGjelderEtNyttBarn": true

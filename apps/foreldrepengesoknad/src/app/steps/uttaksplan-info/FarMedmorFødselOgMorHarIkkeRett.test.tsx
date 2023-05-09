@@ -7,7 +7,7 @@ import * as stories from './FarMedmorFodselOgMorHarIkkeRett.stories';
 const { UttaksplanDerMorIkkeHarRettPåForeldrepenger, UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør } =
     composeStories(stories);
 
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('skal fylle ut dekningsgrad med 80 prosent', async () => {
