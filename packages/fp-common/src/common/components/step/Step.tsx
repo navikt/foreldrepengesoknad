@@ -4,11 +4,10 @@ import Page from './Page';
 import { StepIndicatorStep } from '../step-indicator/StepIndicator';
 import StepBanner from '../step-banner/StepBanner';
 import Block from '../block/Block';
-import BackLink from '../back-link/BackLink';
 import StepFooter from '../step-footer/StepFooter';
+import ProgressStepper from '../progress-stepper/ProgressStepper';
 
 import './step.less';
-import ProgressStepper from '../progress-stepper/ProgressStepper';
 
 export interface StepProps {
     pageTitle: string;
@@ -32,7 +31,6 @@ const Step: React.FunctionComponent<StepProps> = ({
     bannerTitle,
     pageTitle,
     backLinkHref,
-    backLinkOnClick,
     steps,
     activeStepId,
     onCancel,
@@ -40,7 +38,6 @@ const Step: React.FunctionComponent<StepProps> = ({
     cancelOrContinueLaterAriaLabel,
     showStepIndicator = true,
     children,
-    previousStepTitle,
     pageAriaLabel,
     infoMessage,
 }) => {
@@ -71,9 +68,6 @@ const Step: React.FunctionComponent<StepProps> = ({
                             titleHeadingLevel="2"
                         ></ProgressStepper>
                     </div>
-                    {backLinkHref && (
-                        <BackLink href={backLinkHref} ariaLabel={previousStepTitle} onClick={backLinkOnClick} />
-                    )}
                 </>
             )}
             <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${pageTitle}`}>

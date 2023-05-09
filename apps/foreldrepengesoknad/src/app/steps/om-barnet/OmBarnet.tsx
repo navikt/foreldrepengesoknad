@@ -1,8 +1,8 @@
-import { Block, hasValue, intlUtils, Step } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -30,6 +30,7 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
+import { Link } from 'react-router-dom';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -148,10 +149,17 @@ const OmBarnet: React.FunctionComponent = () => {
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                                 barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
                             />
-                            <Block visible={visGåVidereKnapp} textAlignCenter={true}>
-                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                    {intlUtils(intl, 'søknad.gåVidere')}
-                                </Button>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    {visGåVidereKnapp && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
                             </Block>
                         </OmBarnetFormComponents.Form>
                     </Step>
