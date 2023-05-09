@@ -15,7 +15,7 @@ const {
     FarUfødtBarn,
     FarGiftUfødtBarn,
 } = composeStories(stories);
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 const ALENE_OMSORG_LABEL = 'Er du alene om omsorgen av barnet?';
 const JA = 'Ja';
 const NEI = 'Nei';

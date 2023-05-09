@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import actionCreator from 'app/context/action/actionCreator';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
@@ -39,6 +39,8 @@ import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/utta
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Button, GuidePanel } from '@navikt/ds-react';
+import { Link } from 'react-router-dom';
+import { getPreviousStepHref } from 'app/steps/stepsConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -261,10 +263,17 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </Block>
                         </Block>
-                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                {intlUtils(intl, 'søknad.gåVidere')}
-                            </Button>
+                        <Block>
+                            <StepButtonWrapper>
+                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
+                                    <FormattedMessage id="backlink.label" />
+                                </Button>
+                                {visibility.areAllQuestionsAnswered() && (
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
+                                )}
+                            </StepButtonWrapper>
                         </Block>
                     </MorFødselFormComponents.Form>
                 );

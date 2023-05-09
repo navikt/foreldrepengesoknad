@@ -213,7 +213,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     };
 };
 
-function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string) {
+function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string, signal: AbortSignal) {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
     return getAxiosInstance(fnr).post(url, søknad, {
@@ -222,6 +222,7 @@ function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsendin
         headers: {
             'content-type': 'application/json;',
         },
+        signal,
     });
 }
 

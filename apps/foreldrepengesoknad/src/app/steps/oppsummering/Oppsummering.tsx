@@ -1,4 +1,4 @@
-import { bemUtils, Block, intlUtils, Step } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import { useEffect, useMemo, useState } from 'react';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -28,7 +28,7 @@ import {
     getSøknadsdataForInnsending,
     UKJENT_UUID,
 } from 'app/api/apiUtils';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
@@ -44,6 +44,7 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 
 import './oppsummering.less';
 import { Button, GuidePanel } from '@navikt/ds-react';
+import useAbortSignal from 'app/utils/hooks/useAbortSignal';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -66,6 +67,7 @@ const Oppsummering = () => {
         tilleggsopplysninger,
         erEndringssøknad,
     } = useSøknad();
+    const abortSignal = useAbortSignal();
 
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const søkerinfo = useSøkerinfo();
@@ -110,7 +112,7 @@ const Oppsummering = () => {
             if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
                 throw new Error('Søknaden din inneholder ingen nye perioder.');
             }
-            Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr)
+            Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr, abortSignal)
                 .then((response) => {
                     dispatch(actionCreator.setKvittering(response.data));
                 })
@@ -171,11 +173,6 @@ const Oppsummering = () => {
                     <OppsummeringFormComponents.Form includeButtons={false}>
                         <Step
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                            backLinkHref={
-                                søknad.erEndringssøknad
-                                    ? getPreviousStepHrefEndringssøknad('oppsummering')
-                                    : getPreviousStepHref('oppsummering')
-                            }
                             activeStepId="oppsummering"
                             pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={onAvbrytSøknad}
@@ -253,11 +250,22 @@ const Oppsummering = () => {
                                 />
                             </Block>
                             <Block padBottom="l">
-                                <div style={{ textAlign: 'center' }}>
+                                <StepButtonWrapper>
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        to={
+                                            søknad.erEndringssøknad
+                                                ? getPreviousStepHrefEndringssøknad('oppsummering')
+                                                : getPreviousStepHref('oppsummering')
+                                        }
+                                    >
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
                                     <Button type="submit" disabled={formSubmitted} loading={formSubmitted}>
                                         {submitKnappTekst}
                                     </Button>
-                                </div>
+                                </StepButtonWrapper>
                             </Block>
                         </Step>
                     </OppsummeringFormComponents.Form>

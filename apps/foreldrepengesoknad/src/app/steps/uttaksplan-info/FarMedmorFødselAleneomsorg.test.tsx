@@ -5,7 +5,7 @@ import * as stories from './FarMedmorFodselAleneomsorg.stories';
 
 const { UttaksplanInfoFarMedmorFødselAleneomsorg } = composeStories(stories);
 
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<UttaksplanInfo_FarMedmorFødselAleneomsorg>', () => {
     // FIXME Noko tull med locale og datoar

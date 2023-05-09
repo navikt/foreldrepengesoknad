@@ -2,7 +2,7 @@ import { intlUtils, Step } from '@navikt/fp-common';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig from '../stepsConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
@@ -174,7 +174,7 @@ const UttaksplanInfo = () => {
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            backLinkHref={getPreviousStepHref('uttaksplanInfo')}
+            // backLinkHref={getPreviousStepHref('uttaksplanInfo')}
             activeStepId="uttaksplanInfo"
             pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
             onCancel={onAvbrytSøknad}
