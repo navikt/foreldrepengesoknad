@@ -8,7 +8,7 @@ const { Default } = composeStories(stories);
 
 const HVOR_SKAL_DU_BO_LABEL = 'Hvor skal du bo de neste 12 månedene?';
 const LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP = 'Legg til nytt utenlandsopphold';
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<Utenlandsopphold>', () => {
     it('skal kun bo og har bodd i Norge', async () => {

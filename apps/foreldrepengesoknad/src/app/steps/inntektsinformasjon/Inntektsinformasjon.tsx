@@ -1,8 +1,8 @@
-import { Block, intlUtils, Step } from '@navikt/fp-common';
+import { Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -28,6 +28,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { BodyShort, Button } from '@navikt/ds-react';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { Link } from 'react-router-dom';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -79,7 +80,6 @@ const Inntektsinformasjon = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('inntektsinformasjon')}
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={onAvbrytSøknad}
@@ -133,10 +133,21 @@ const Inntektsinformasjon = () => {
                                 <InfoTilFiskere />
                             </Block>
 
-                            <Block textAlignCenter={true} visible={visibility.areAllQuestionsAnswered()}>
-                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                    {intlUtils(intl, 'søknad.gåVidere')}
-                                </Button>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        to={getPreviousStepHref('inntektsinformasjon')}
+                                    >
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
                             </Block>
                         </InntektsinformasjonFormComponents.Form>
                     </Step>

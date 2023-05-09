@@ -1,4 +1,4 @@
-import { Block, formatDate, intlUtils, Step } from '@navikt/fp-common';
+import { Block, formatDate, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import _ from 'lodash';
 
@@ -27,6 +27,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { BodyShort, Button, GuidePanel, Label, ReadMore } from '@navikt/ds-react';
+import { Link } from 'react-router-dom';
 
 export const attenUkerPluss3Number = 18 * 7 + 3;
 
@@ -104,11 +105,6 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={
-                            erEndringssøknad
-                                ? getPreviousStepHrefEndringssøknad('dokumentasjon')
-                                : getPreviousStepHref('dokumentasjon')
-                        }
                         activeStepId="dokumentasjon"
                         pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
                         onCancel={onAvbrytSøknad}
@@ -222,10 +218,25 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                     </Block>
                                 );
                             })}
-                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Button disabled={isSubmitting} loading={isSubmitting}>
-                                    {intlUtils(intl, 'søknad.gåVidere')}
-                                </Button>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        to={
+                                            erEndringssøknad
+                                                ? getPreviousStepHrefEndringssøknad('dokumentasjon')
+                                                : getPreviousStepHref('dokumentasjon')
+                                        }
+                                    >
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
                             </Block>
                         </ManglendeVedleggFormComponents.Form>
                     </Step>

@@ -1,4 +1,4 @@
-import { Block, hasValue, intlUtils, Step } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
@@ -41,6 +41,7 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import links from 'app/links/links';
 import { getKjønnFromFnrString } from 'app/utils/personUtils';
 import { SivilstandType } from 'app/types/SivilstandType';
+import { Link } from 'react-router-dom';
 
 const AnnenForelder = () => {
     const intl = useIntl();
@@ -156,7 +157,6 @@ const AnnenForelder = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('annenForelder')}
                         activeStepId="annenForelder"
                         pageTitle={intlUtils(intl, 'søknad.annenForelder')}
                         onCancel={onAvbrytSøknad}
@@ -367,10 +367,17 @@ const AnnenForelder = () => {
                                     })}
                                 </ReadMore>
                             </Block>
-                            <Block visible={kanGåVidereMedSøknaden} textAlignCenter={true}>
-                                <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
-                                    {intlUtils(intl, 'søknad.gåVidere')}
-                                </Button>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('annenForelder')}>
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    {kanGåVidereMedSøknaden && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
                             </Block>
                         </AnnenForelderFormComponents.Form>
                     </Step>

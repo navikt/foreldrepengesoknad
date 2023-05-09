@@ -5,6 +5,7 @@ import {
     dateToday,
     intlUtils,
     Step,
+    StepButtonWrapper,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
 import {
@@ -31,6 +32,7 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { BodyLong, BodyShort, Button, ExpansionCard, Heading, Link } from '@navikt/ds-react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -62,7 +64,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="utenlandsopphold"
                         pageTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
-                        backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl, false)}
@@ -207,10 +208,21 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     </ExpansionCard.Content>
                                 </ExpansionCard>
                             </Block>
-                            <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                    {intlUtils(intl, 'søknad.gåVidere')}
-                                </Button>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <Button
+                                        variant="secondary"
+                                        as={RouterLink}
+                                        to={getPreviousStepHref('utenlandsopphold')}
+                                    >
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
                             </Block>
                         </UtenlandsoppholdFormComponents.Form>
                     </Step>

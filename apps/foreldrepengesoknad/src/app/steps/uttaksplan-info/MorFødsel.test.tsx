@@ -12,7 +12,7 @@ const {
 
 const PERIODE_LENGDE_LABEL_IKKE_DELT_UTTAK = 'Hvor lang periode med foreldrepenger ønsker du?';
 const PERIODE_LENGDE_LABEL_DELT_UTTAK = 'Hvor lang periode med foreldrepenger har dere valgt?';
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 const PERIODE_START_DATOFELT = 'Når ønsker du å starte perioden?';
 const UKER_FELLESPERIODE_LABEL = 'Hvor mange uker skal du ha av fellesperioden?';
 const IKKE_FORELDREPENGER_FØR_TERMIN = 'Jeg tok ikke ut foreldrepenger før termin';
