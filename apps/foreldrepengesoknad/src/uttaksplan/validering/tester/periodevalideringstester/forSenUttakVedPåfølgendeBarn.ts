@@ -18,8 +18,8 @@ export const laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn = (
             isUttakAnnenPart(periode))
     ) {
         return (
-            dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn, 'd') ||
-            dayjs.utc(periode.tidsperiode.tom).isSameOrAfter(førsteUttaksdagForPåfølgendeBarn, 'd')
+            dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(dayjs.utc(førsteUttaksdagForPåfølgendeBarn), 'd') ||
+            dayjs.utc(periode.tidsperiode.tom).isSameOrAfter(dayjs.utc(førsteUttaksdagForPåfølgendeBarn), 'd')
         );
     }
     return false;

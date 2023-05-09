@@ -9,9 +9,7 @@ export const skalViseInfoOmPrematuruker = (
     if (fødselsdato === undefined || termindato === undefined || situasjon !== 'fødsel') {
         return false;
     }
-    const fødselsdatoEtterEllerLikFørsteJuli = dayjs
-        .utc(fødselsdato)
-        .isSameOrAfter(dayjs.utc(new Date('2019-07-01')), 'day');
+    const fødselsdatoEtterEllerLikFørsteJuli = dayjs.utc(fødselsdato).isSameOrAfter(dayjs.utc('2019-07-01'), 'day');
     return (
         dayjs.utc(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(dayjs.utc(termindato), 'days') &&
         fødselsdatoEtterEllerLikFørsteJuli

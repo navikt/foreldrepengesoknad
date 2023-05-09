@@ -21,7 +21,8 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
 
 const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[] | undefined, regBarnFødselsdato: Date | undefined) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs.utc(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.find((fødselsdato) => dayjs.utc(fødselsdato).isSame(dayjs.utc(regBarnFødselsdato))) !==
+              undefined
         : false;
 };
 
@@ -50,7 +51,7 @@ export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: Registrer
     const dato3MånederTilbake = dayjs.utc(new Date()).subtract(3, 'month');
     return (
         registrerteBarn.dødsdato !== undefined &&
-        dayjs.utc(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
+        dayjs.utc(registrerteBarn.dødsdato).isBefore(dayjs.utc(dato3MånederTilbake), 'day')
     );
 };
 
@@ -79,8 +80,8 @@ export const getAndreBarnFødtSammenMedBarnet = (
     return registrerteBarn.filter(
         (b) =>
             b.fnr !== barnFnr &&
-            dayjs.utc(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
-            dayjs.utc(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day')
+            dayjs.utc(b.fødselsdato).isSameOrAfter(dayjs.utc(dagenFørFødsel), 'day') &&
+            dayjs.utc(b.fødselsdato).isSameOrBefore(dayjs.utc(dagenEtterFødsel), 'day')
     );
 };
 
@@ -133,7 +134,9 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined
     }
     const unikeFødselsdatoer = [] as Date[];
     fødselsdatoer.forEach((f) => {
-        const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs.utc(dato).isSame(f, 'day'));
+        const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) =>
+            dayjs.utc(dato).isSame(dayjs.utc(f), 'day')
+        );
         if (finnesIUnikeFødselsdatoer === undefined) {
             unikeFødselsdatoer.push(f);
         }

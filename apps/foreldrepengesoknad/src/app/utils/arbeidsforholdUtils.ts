@@ -53,7 +53,7 @@ export const getAktiveArbeidsforhold = (
         (a) =>
             a.tom === undefined ||
             a.tom === null ||
-            (fraDato !== undefined && dayjs.utc(fraDato).isSameOrBefore(a.tom, 'days'))
+            (fraDato !== undefined && dayjs.utc(fraDato).isSameOrBefore(dayjs.utc(a.tom), 'days'))
     );
 };
 

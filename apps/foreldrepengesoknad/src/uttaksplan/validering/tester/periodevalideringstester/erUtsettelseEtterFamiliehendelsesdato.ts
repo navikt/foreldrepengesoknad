@@ -6,7 +6,9 @@ import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
 export const erUtsettelseEtterFamiliehendelsesdato: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const ugyldigeUtsettelser = grunnlag.perioder
         .filter(isUtsettelsesperiode)
-        .filter((utsettelse) => dayjs.utc(utsettelse.tidsperiode.fom).isBefore(grunnlag.familiehendelsesdato, 'day'));
+        .filter((utsettelse) =>
+            dayjs.utc(utsettelse.tidsperiode.fom).isBefore(dayjs.utc(grunnlag.familiehendelsesdato), 'day')
+        );
     return {
         passerer: ugyldigeUtsettelser.length === 0,
         info: ugyldigeUtsettelser.map((periode) => ({

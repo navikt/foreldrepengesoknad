@@ -45,7 +45,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
-    const varighetIDager = dayjs.utc(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+    const varighetIDager = dayjs.utc(tidsperiode.fom).isSameOrBefore(dayjs.utc(tidsperiode.tom), 'day')
         ? Tidsperioden({
               fom: tidsperiode.fom,
               tom: tidsperiode.tom,

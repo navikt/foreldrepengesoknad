@@ -49,7 +49,7 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
     const erMerEnn3månederSidenFamiliehendelse = dayjs
         .utc(new Date())
         .subtract(3, 'month')
-        .isSameOrAfter(grunnlag.familiehendelsesdato, 'day');
+        .isSameOrAfter(dayjs.utc(grunnlag.familiehendelsesdato), 'day');
 
     return {
         passerer: dagerIgjenRundtFødsel <= 0 || erMerEnn3månederSidenFamiliehendelse,

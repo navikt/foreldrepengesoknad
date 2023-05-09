@@ -29,10 +29,10 @@ export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
 
 const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
     return (
-        dayjs.utc(t1.fom).isBetween(t2.fom, t2.tom, 'day', '[]') ||
-        dayjs.utc(t1.tom).isBetween(t2.fom, t2.tom, 'day', '[]') ||
-        dayjs.utc(t2.fom).isBetween(t1.fom, t1.tom, 'day', '[]') ||
-        dayjs.utc(t2.tom).isBetween(t1.fom, t1.tom, 'day', '[]')
+        dayjs.utc(t1.fom).isBetween(dayjs.utc(t2.fom), dayjs.utc(t2.tom), 'day', '[]') ||
+        dayjs.utc(t1.tom).isBetween(dayjs.utc(t2.fom), dayjs.utc(t2.tom), 'day', '[]') ||
+        dayjs.utc(t2.fom).isBetween(dayjs.utc(t1.fom), dayjs.utc(t1.tom), 'day', '[]') ||
+        dayjs.utc(t2.tom).isBetween(dayjs.utc(t1.fom), dayjs.utc(t1.tom), 'day', '[]')
     );
 };
 
@@ -49,14 +49,14 @@ function inneholderTidsperiodeDato(tidsperiode: TidsperiodeDate, dato: Date): bo
         return false;
     }
 
-    return dayjs.utc(dato).isBetween(tidsperiode.fom, tidsperiode.tom, 'days', '[]');
+    return dayjs.utc(dato).isBetween(dayjs.utc(tidsperiode.fom), dayjs.utc(tidsperiode.tom), 'days', '[]');
 }
 
 export function isValidTidsperiode(tidsperiode: any): tidsperiode is TidsperiodeDate {
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&
-        dayjs.utc(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+        dayjs.utc(tidsperiode.fom).isSameOrBefore(dayjs.utc(tidsperiode.tom), 'day')
     );
 }
 
@@ -64,7 +64,7 @@ export function resetTidsperiodeTomIfBeforeFom(tidsperiode: TidsperiodeDate): Ti
     return {
         fom: tidsperiode.fom,
         tom:
-            tidsperiode.fom && tidsperiode.tom && dayjs.utc(tidsperiode.fom).isAfter(tidsperiode.tom, 'day')
+            tidsperiode.fom && tidsperiode.tom && dayjs.utc(tidsperiode.fom).isAfter(dayjs.utc(tidsperiode.tom), 'day')
                 ? tidsperiode.fom
                 : tidsperiode.tom,
     };
@@ -95,7 +95,7 @@ export function datoErInnenforTidsperiode(dato: Date, tidsperiode: TidsperiodeDa
     if (!fom || !tom) {
         return false;
     }
-    return dayjs.utc(dato).isBetween(fom, tom, 'days', '[]');
+    return dayjs.utc(dato).isBetween(dayjs.utc(fom), dayjs.utc(tom), 'days', '[]');
 }
 
 function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number {
@@ -105,7 +105,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number 
     let fom = dayjs.utc(tidsperiode.fom);
     const tom = dayjs.utc(tidsperiode.tom);
     let antall = 0;
-    while (fom.isSameOrBefore(tom, 'day')) {
+    while (fom.isSameOrBefore(dayjs.utc(tom), 'day')) {
         if (Uttaksdagen(fom.toDate()).erUttaksdag()) {
             antall++;
         }
@@ -127,7 +127,7 @@ function flyttTidsperiode(tidsperiode: TidsperiodeDate, fom: Date): TidsperiodeD
 
 export function erTidsperioderLike(t1: TidsperiodeDate, t2: TidsperiodeDate) {
     if (isValidTidsperiode(t1) && isValidTidsperiode(t2)) {
-        return dayjs.utc(t1.fom).isSame(t2.fom, 'day') && dayjs.utc(t1.tom).isSame(t2.tom, 'day');
+        return dayjs.utc(t1.fom).isSame(dayjs.utc(t2.fom), 'day') && dayjs.utc(t1.tom).isSame(dayjs.utc(t2.tom), 'day');
     }
     return JSON.stringify(t1) === JSON.stringify(t2);
 }
@@ -145,8 +145,8 @@ function erTidsperiodeOmsluttetAvTidsperiode(tidsperiode1: TidsperiodeDate, tids
 function erTidsperiodeUtenforTidsperiode(tidsperiode1: TidsperiodeDate, tidsperiode2: TidsperiodeDate): boolean {
     if (isValidTidsperiode(tidsperiode1) && isValidTidsperiode(tidsperiode2)) {
         return (
-            dayjs.utc(tidsperiode1.fom).isAfter(tidsperiode2.tom, 'day') ||
-            dayjs.utc(tidsperiode1.tom).isBefore(tidsperiode2.fom, 'day')
+            dayjs.utc(tidsperiode1.fom).isAfter(dayjs.utc(tidsperiode2.tom), 'day') ||
+            dayjs.utc(tidsperiode1.tom).isBefore(dayjs.utc(tidsperiode2.fom), 'day')
         );
     }
     return false;
@@ -154,7 +154,7 @@ function erTidsperiodeUtenforTidsperiode(tidsperiode1: TidsperiodeDate, tidsperi
 
 function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
-    if (fom && tom && dayjs.utc(fom).isSame(tom, 'day')) {
+    if (fom && tom && dayjs.utc(fom).isSame(dayjs.utc(tom), 'day')) {
         return formaterDatoUtenDag(fom ? fom : tom);
     }
     return intl.formatMessage(
@@ -168,7 +168,7 @@ function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
 
 function tidsperiodeToStringKort(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
-    if (fom && tom && dayjs.utc(fom).isSame(tom, 'day')) {
+    if (fom && tom && dayjs.utc(fom).isSame(dayjs.utc(tom), 'day')) {
         return formaterDatoUtenDag(fom ? fom : tom);
     }
     return intl.formatMessage(
@@ -184,7 +184,7 @@ const erTidsperiodeFomEllerEtterDato = (tidsperiode: TidsperiodeDate, dato: Date
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&
-        dayjs.utc(tidsperiode.fom).isSameOrAfter(dato, 'day') &&
-        dayjs.utc(tidsperiode.tom).isSameOrAfter(dato, 'day')
+        dayjs.utc(tidsperiode.fom).isSameOrAfter(dayjs.utc(dato), 'day') &&
+        dayjs.utc(tidsperiode.tom).isSameOrAfter(dayjs.utc(dato), 'day')
     );
 };

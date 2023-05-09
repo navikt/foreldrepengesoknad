@@ -62,7 +62,7 @@ export const dateToISOString = (date: Date | undefined): string => {
 };
 
 export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
-    return dayjs.utc(date).isBetween(minDate, maxDate, 'day', '[]');
+    return dayjs.utc(date).isBetween(dayjs.utc(minDate), dayjs.utc(maxDate), 'day', '[]');
 };
 
 const validateDateInRange = (
@@ -107,8 +107,8 @@ const getMeldingOmOverlappendeUtsettelser = (
     }
     const overlappendeUtsettelsesPerioder = utsettelserIPlan.filter(
         (up) =>
-            dayjs.utc(dato).isSameOrAfter(up.tidsperiode.fom, 'day') &&
-            dayjs.utc(dato).isSameOrBefore(up.tidsperiode.tom, 'day') &&
+            dayjs.utc(dato).isSameOrAfter(dayjs.utc(up.tidsperiode.fom), 'day') &&
+            dayjs.utc(dato).isSameOrBefore(dayjs.utc(up.tidsperiode.tom), 'day') &&
             up.id !== periodeId
     );
     if (overlappendeUtsettelsesPerioder.length > 0) {
@@ -152,7 +152,7 @@ const validateFromDateInRange = ({
         return error;
     }
 
-    if (toDate && dayjs.utc(date).isAfter(toDate, 'day')) {
+    if (toDate && dayjs.utc(date).isAfter(dayjs.utc(toDate), 'day')) {
         return intlUtils(intl, errorKey);
     }
     return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);
@@ -189,7 +189,7 @@ const validateToDateInRange = ({
         return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
     }
 
-    if (fromDate && dayjs.utc(date).isBefore(fromDate, 'day')) {
+    if (fromDate && dayjs.utc(date).isBefore(dayjs.utc(fromDate), 'day')) {
         return intlUtils(intl, errorKey);
     }
 
@@ -206,7 +206,7 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
         return false;
     }
 
-    if (dayjs.utc(a).isBefore(b, 'day')) {
+    if (dayjs.utc(a).isBefore(dayjs.utc(b), 'day')) {
         return true;
     }
 
@@ -214,7 +214,7 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
 };
 
 export const isDateToday = (date: string): boolean => {
-    if (dayjs.utc().isSame(date, 'day')) {
+    if (dayjs.utc().isSame(dayjs.utc(date), 'day')) {
         return true;
     }
 
@@ -290,13 +290,13 @@ type DateValue = Date | undefined;
 
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
-        return dayjs.utc(date).isSameOrBefore(otherDate, 'day');
+        return dayjs.utc(date).isSameOrBefore(dayjs.utc(otherDate), 'day');
     }
     return true;
 };
 export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
-        return dayjs.utc(date).isSameOrAfter(otherDate, 'day');
+        return dayjs.utc(date).isSameOrAfter(dayjs.utc(otherDate), 'day');
     }
     return true;
 };
@@ -368,8 +368,8 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
     const førsteOktober2021 = new Date('2021-10-01');
 
     return (
-        dayjs.utc(familiehendelsesdato).isSameOrAfter(førsteOktober2021, 'day') &&
-        dayjs.utc(new Date()).isSameOrAfter(førsteOktober2021, 'day')
+        dayjs.utc(familiehendelsesdato).isSameOrAfter(dayjs.utc(førsteOktober2021), 'day') &&
+        dayjs.utc(new Date()).isSameOrAfter(dayjs.utc(førsteOktober2021), 'day')
     );
 };
 
@@ -377,11 +377,11 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
     const andreAugust2022 = new Date('2022-08-02');
     const førsteJanuar2022 = new Date('2022-01-01');
     if (isFeatureEnabled(FeatureToggle.wlbGjelderFraFørsteJanuar2022)) {
-        return dayjs.utc(familiehendelsesdato).isSameOrAfter(førsteJanuar2022, 'day');
+        return dayjs.utc(familiehendelsesdato).isSameOrAfter(dayjs.utc(førsteJanuar2022), 'day');
     }
     return (
-        dayjs.utc(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
-        dayjs.utc(new Date()).isSameOrAfter(andreAugust2022, 'day')
+        dayjs.utc(familiehendelsesdato).isSameOrAfter(dayjs.utc(andreAugust2022), 'day') &&
+        dayjs.utc(new Date()).isSameOrAfter(dayjs.utc(andreAugust2022), 'day')
     );
 };
 
@@ -396,7 +396,7 @@ export const getToTetteReglerGjelder = (
     return (
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
-        dayjs.utc(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
+        dayjs.utc(familiehendelsePlus48Uker).isAfter(dayjs.utc(familiehendelsesdatoNesteBarn), 'day')
     );
 };
 
@@ -404,7 +404,7 @@ export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
     farSinFørsteUttaksdag: Date,
     morsSisteUttaksdag: Date
 ): boolean => {
-    return dayjs.utc(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste(), 'day');
+    return dayjs.utc(farSinFørsteUttaksdag).isAfter(dayjs.utc(Uttaksdagen(morsSisteUttaksdag).neste()), 'day');
 };
 
 export const getEndringstidspunkt = (
@@ -430,7 +430,7 @@ export const getEndringstidspunkt = (
 
             const { fom } = periode.tidsperiode;
             const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
-                dayjs.utc(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day')
+                dayjs.utc(opprinneligPeriode.tidsperiode.fom).isSame(dayjs.utc(fom), 'day')
             );
 
             if (opprinneligPeriodeMedSammeFom !== undefined) {
@@ -460,12 +460,12 @@ export const getEndringstidspunkt = (
                 isPeriodeUtenUttak(periode) &&
                 dayjs
                     .utc(endringstidspunktNyPlan)
-                    .isAfter(søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom)
+                    .isAfter(dayjs.utc(søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom))
             ) {
                 const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
                     (p) =>
                         (isUttaksperiode(p) || isUtsettelsesperiode(p)) &&
-                        dayjs.utc(p.tidsperiode.fom).isAfter(endringstidspunktNyPlan)
+                        dayjs.utc(p.tidsperiode.fom).isAfter(dayjs.utc(endringstidspunktNyPlan))
                 );
                 endringstidspunktNyPlan =
                     førsteUttakEllerUtsettelseEtterEndring !== undefined
@@ -481,7 +481,7 @@ export const getEndringstidspunkt = (
 
             const { fom } = periode.tidsperiode;
             const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
-                dayjs.utc(nyPeriode.tidsperiode.fom).isSame(fom, 'day')
+                dayjs.utc(nyPeriode.tidsperiode.fom).isSame(dayjs.utc(fom), 'day')
             );
 
             if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
@@ -536,10 +536,13 @@ export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Dat
 };
 
 export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
-    dayjs.utc(date).isBetween(fom, tom, 'day', '[]');
+    dayjs.utc(date).isBetween(dayjs.utc(fom), dayjs.utc(tom), 'day', '[]');
 
 export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: Date): boolean => {
-    return dayjs.utc(tidsperiode.fom).isBefore(dato, 'day') && dayjs.utc(tidsperiode.tom).isSameOrAfter(dato, 'day');
+    return (
+        dayjs.utc(tidsperiode.fom).isBefore(dayjs.utc(dato), 'day') &&
+        dayjs.utc(tidsperiode.tom).isSameOrAfter(dayjs.utc(dato), 'day')
+    );
 };
 
 export const compareDates = (s: string) => {
@@ -561,8 +564,8 @@ export const compareDates = (s: string) => {
     console.log(dayjsNewDate);
     console.log(dayjsUtcNewDate);
     console.log(newDateDayjsUtcNewDate);
-    const eq = dayjs.utc(dayjsDateUtc).isSame(dateDate);
-    const eqUTCDayjs = dayjs.utc(dayjsDateUtc).isSame(dateDate);
+    const eq = dayjs.utc(dayjsDateUtc).isSame(dayjs.utc(dateDate));
+    const eqUTCDayjs = dayjs.utc(dayjsDateUtc).isSame(dayjs.utc(dateDate));
     console.log('new Date is equal dayjs without UTC: ', eq);
     console.log('new Date is equal dayjs with UTC:', eqUTCDayjs);
     return eq;
@@ -585,8 +588,8 @@ export const compareDatesNow = () => {
     console.log(dayjsNewDate);
     console.log(dayjsUtcNewDate);
     console.log(newDateDayjsUtcNewDate);
-    const eq = dayjs.utc(dayjsDateUtc).isSame(dateDate);
-    const eqUTCDayjs = dayjs.utc(dayjsDateUtc).isSame(dateDate);
+    const eq = dayjs.utc(dayjsDateUtc).isSame(dayjs.utc(dateDate));
+    const eqUTCDayjs = dayjs.utc(dayjsDateUtc).isSame(dayjs.utc(dateDate));
     console.log('new Date now is equal dayjs without UTC: ', eq);
     console.log('new Date now is equal dayjs with UTC:', eqUTCDayjs);
     return eq;

@@ -62,7 +62,7 @@ export const finnEndringerIUttaksplan = (
 
     if (nyPlanForInnsending.length === 0 && opprinneligPlan.length > nyPlan.length) {
         const førsteSlettedePeriode = opprinneligPlan.find((p) =>
-            dayjs.utc(p.tidsperiode.fom).isSame(endringstidspunkt, 'day')
+            dayjs.utc(p.tidsperiode.fom).isSame(dayjs.utc(endringstidspunkt), 'day')
         );
         const utsettelseForSlettedePerioder = {
             id: guid(),

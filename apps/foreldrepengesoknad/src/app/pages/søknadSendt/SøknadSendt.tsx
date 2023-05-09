@@ -26,7 +26,7 @@ const getBehandlingsFrist = (uttaksplan: Periode[]): string => {
         .utc(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak())
         .subtract(4, 'weeks');
 
-    const førsteMuligeBehandlingsfrist = dayjs.utc(new Date()).isSameOrAfter(førsteUttaksdag, 'day')
+    const førsteMuligeBehandlingsfrist = dayjs.utc(new Date()).isSameOrAfter(dayjs.utc(førsteUttaksdag), 'day')
         ? new Date()
         : førsteUttaksdag.toDate();
 

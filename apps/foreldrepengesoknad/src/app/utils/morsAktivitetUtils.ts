@@ -6,7 +6,7 @@ import { hasValue } from '@navikt/fp-common';
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
-        const reglerFørFørsteOkt2021 = dayjs.utc(new Date()).isBefore(new Date('2021-10-01'), 'day');
+        const reglerFørFørsteOkt2021 = dayjs.utc(new Date()).isBefore(dayjs.utc(new Date('2021-10-01')), 'day');
         const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erUfør : undefined;
         const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
             ? annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS

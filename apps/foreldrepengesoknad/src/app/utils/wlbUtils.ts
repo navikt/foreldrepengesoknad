@@ -77,16 +77,18 @@ export const starterTidsperiodeEtter2UkerFørFødsel = (
     termindato: Date | undefined
 ): boolean => {
     const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
-    return dayjs.utc(tidsperiode.fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
+    return dayjs.utc(tidsperiode.fom).isSameOrAfter(dayjs.utc(førsteUttaksdagToUkerFørFødsel), 'day');
 };
 
 export const starterUttaksperiodeFørFødsel = (periode: Periode, familiehendelsesdato: Date): boolean => {
-    return isUttaksperiode(periode) && dayjs.utc(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day');
+    return (
+        isUttaksperiode(periode) && dayjs.utc(periode.tidsperiode.fom).isBefore(dayjs.utc(familiehendelsesdato), 'day')
+    );
 };
 
 export const slutterTidsperiodeInnen6UkerEtterFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
-    return dayjs.utc(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
+    return dayjs.utc(tidsperiode.tom).isSameOrBefore(dayjs.utc(sisteUttaksdag6UkerEtterFødsel), 'day');
 };
 
 export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
@@ -96,7 +98,9 @@ export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel 
 ) => {
     return (
         starterTidsperiodeEtter2UkerFørFødsel(tidsperiode, familiehendelsesdato, termindato) &&
-        dayjs.utc(tidsperiode.fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
+        dayjs
+            .utc(tidsperiode.fom)
+            .isSameOrBefore(dayjs.utc(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato)), 'day')
     );
 };
 
@@ -186,5 +190,9 @@ export const uttaksperiodeKanJusteresVedFødsel = (
     termindato: Date | undefined,
     uttaksperiodeFom: Date
 ) => {
-    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs.utc(uttaksperiodeFom).isSame(termindato);
+    return (
+        !!ønskerJustertUttakVedFødsel &&
+        termindato !== undefined &&
+        dayjs.utc(uttaksperiodeFom).isSame(dayjs.utc(termindato))
+    );
 };

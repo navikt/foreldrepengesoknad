@@ -387,12 +387,12 @@ describe('dateUtils', () => {
     });
 
     it('skal returnere eldste dato', () => {
-        const kompaktDato = findEldsteDato([
+        const dato = findEldsteDato([
             ISOStringToDate('2021-01-03')!,
             ISOStringToDate('2021-01-01')!,
             ISOStringToDate('2021-01-02')!,
         ]);
-        expect(kompaktDato).toEqual(ISOStringToDate('2021-01-01')!);
+        expect(dato).toEqual(ISOStringToDate('2021-01-01'));
     });
 
     it('skal finne alder fra dato', () => {

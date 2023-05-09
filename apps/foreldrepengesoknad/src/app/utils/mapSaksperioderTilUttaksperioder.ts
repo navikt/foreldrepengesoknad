@@ -72,10 +72,10 @@ const slåSammenLikePerioder = (
         if (
             Perioden(forrigePeriode).erLik(periode, false, true) &&
             Perioden(forrigePeriode).erSammenhengende(periode) &&
-            !dayjs.utc(periode.tidsperiode.fom).isSame(familiehendelsesdato, 'day') &&
+            !dayjs.utc(periode.tidsperiode.fom).isSame(dayjs.utc(familiehendelsesdato), 'day') &&
             !(
                 førsteUttaksdagNesteBarnsSak !== undefined &&
-                dayjs.utc(periode.tidsperiode.fom).isSame(førsteUttaksdagNesteBarnsSak, 'day')
+                dayjs.utc(periode.tidsperiode.fom).isSame(dayjs.utc(førsteUttaksdagNesteBarnsSak), 'day')
             )
         ) {
             forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;

@@ -120,7 +120,7 @@ export const validateAnkomstdato = (intl: IntlShape) => (ankomstdato: string, f�
         return intlUtils(intl, 'valideringsfeil.omBarnet.ankomstDato.ugyldigDatoFormat');
     }
 
-    if (fødselsdato !== undefined && !dayjs.utc(fødselsdato).isSameOrBefore(ankomstdato, 'day')) {
+    if (fødselsdato !== undefined && !dayjs.utc(fødselsdato).isSameOrBefore(dayjs.utc(ankomstdato), 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.ankomstDato.førFødselsdato');
     }
 

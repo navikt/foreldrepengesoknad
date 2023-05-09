@@ -25,7 +25,7 @@ export interface OmBarnetQuestionPayload extends OmBarnetFormData {
 
 const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
     const twelveWeeksAfterBirthday = dayjs.utc(dato).add(12, 'weeks');
-    return dayjs.utc(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
+    return dayjs.utc(twelveWeeksAfterBirthday).isAfter(dayjs.utc(new Date()), 'day');
 };
 
 const includeTermindato = (

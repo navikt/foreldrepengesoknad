@@ -14,7 +14,9 @@ export const getKanPeriodenRundtFødselJusteres = (
     return (
         termindato !== undefined &&
         isUttaksperiode(periodeRundtFødsel) &&
-        dayjs.utc(periodeRundtFødsel.tidsperiode.fom).isSame(Uttaksdagen(termindato).denneEllerNeste(), 'day') &&
+        dayjs
+            .utc(periodeRundtFødsel.tidsperiode.fom)
+            .isSame(dayjs.utc(Uttaksdagen(termindato).denneEllerNeste()), 'day') &&
         periodeRundtFødsel.forelder === Forelder.farMedmor &&
         periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
         periodeRundtFødsel.ønskerSamtidigUttak === true &&

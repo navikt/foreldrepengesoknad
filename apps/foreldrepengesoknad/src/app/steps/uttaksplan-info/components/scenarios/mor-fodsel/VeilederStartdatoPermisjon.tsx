@@ -26,7 +26,7 @@ export const getÅrsakDersomUgyldigStartdato = (
     }
     if (Uttaksdagen(startdato).erUttaksdag() === false) {
         return 'helgedag';
-    } else if (førsteMuligeStartdato && dayjs.utc(startdato).isBefore(førsteMuligeStartdato, 'day')) {
+    } else if (førsteMuligeStartdato && dayjs.utc(startdato).isBefore(dayjs.utc(førsteMuligeStartdato), 'day')) {
         return 'fortidlig';
     }
 

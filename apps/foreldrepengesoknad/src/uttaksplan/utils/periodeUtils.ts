@@ -357,8 +357,8 @@ const erPeriodeFomEllerEtterDato = (periode: Periode, dato: Date): boolean => {
     return (
         periode.tidsperiode.fom !== undefined &&
         periode.tidsperiode.tom !== undefined &&
-        dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(dato, 'day') &&
-        dayjs.utc(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
+        dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(dayjs.utc(dato), 'day') &&
+        dayjs.utc(periode.tidsperiode.tom).isSameOrAfter(dayjs.utc(dato), 'day')
     );
 };
 
@@ -443,7 +443,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
             .find(
                 (p) =>
                     isUttakAnnenPart(p) &&
-                    dayjs.utc(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
+                    dayjs.utc(periode.tidsperiode.fom).isSame(dayjs.utc(p.tidsperiode.fom)) &&
                     p.ønskerSamtidigUttak === true &&
                     p.id !== periode.id
             );

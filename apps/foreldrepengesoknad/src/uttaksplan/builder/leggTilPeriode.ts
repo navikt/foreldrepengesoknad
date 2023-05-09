@@ -150,8 +150,8 @@ export const leggTilPeriode = ({
     const nyPeriodeTomDate = nyPeriode.tidsperiode.tom;
 
     if (
-        dayjs.utc(nyPeriodeFomDate).isBefore(familiehendelsesdato, 'day') &&
-        dayjs.utc(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato, 'day')
+        dayjs.utc(nyPeriodeFomDate).isBefore(dayjs.utc(familiehendelsesdato), 'day') &&
+        dayjs.utc(nyPeriodeTomDate).isSameOrAfter(dayjs.utc(familiehendelsesdato), 'day')
     ) {
         // Nye perioder skal legges før eller etter famdato ikke begge deler
         return [...perioder];
@@ -169,7 +169,7 @@ export const leggTilPeriode = ({
         const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtPeriode);
         const antallDagerINyPeriode = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
 
-        if (dayjs.utc(berørtPeriode.tidsperiode.fom).isSame(nyPeriodeFomDate)) {
+        if (dayjs.utc(berørtPeriode.tidsperiode.fom).isSame(dayjs.utc(nyPeriodeFomDate))) {
             return [
                 ...foregåendePerioder,
                 nyPeriode,
@@ -202,14 +202,14 @@ export const leggTilPeriode = ({
         const nyPeriodeFom = dayjs.utc(nyPeriode.tidsperiode.fom);
         const nyPeriodeTom = dayjs.utc(nyPeriode.tidsperiode.tom);
 
-        if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom, 'day')) {
+        if (nyPeriodeFom.isBefore(dayjs.utc(førstePeriode.tidsperiode.fom), 'day')) {
             const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(
                 nyPeriode.tidsperiode,
                 førstePeriode.tidsperiode
             );
 
-            if (nyPeriodeTom.isSameOrAfter(førstePeriode.tidsperiode.fom, 'day')) {
-                if (nyPeriodeFom.isBefore(familiehendelsesdato, 'day')) {
+            if (nyPeriodeTom.isSameOrAfter(dayjs.utc(førstePeriode.tidsperiode.fom), 'day')) {
+                if (nyPeriodeFom.isBefore(dayjs.utc(familiehendelsesdato), 'day')) {
                     // Kan ikke overlappe perioder før fødsel
                     return [...perioder];
                 }

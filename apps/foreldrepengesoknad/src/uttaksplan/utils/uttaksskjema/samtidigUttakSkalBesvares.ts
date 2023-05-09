@@ -26,7 +26,7 @@ const samtidigUttakSkalBesvares = (
     if (erAleneOmsorg || !erDeltUttakINorge || søkerHarMidlertidigOmsorg) {
         return false;
     }
-    if (søkerErFarEllerMedmor && dayjs.utc(tidsperiode.fom).isBefore(familiehendelsesdato, 'd')) {
+    if (søkerErFarEllerMedmor && dayjs.utc(tidsperiode.fom).isBefore(dayjs.utc(familiehendelsesdato), 'd')) {
         return false;
     }
     if (

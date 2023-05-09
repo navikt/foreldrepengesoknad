@@ -308,13 +308,15 @@ const cleanUttaksplan = (
 
 export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): Periode | undefined => {
     return uttaksplan.find((periode) =>
-        dayjs.utc(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]')
+        dayjs
+            .utc(tidspunkt)
+            .isBetween(dayjs.utc(periode.tidsperiode.fom), dayjs.utc(periode.tidsperiode.tom), 'day', '[]')
     );
 };
 
 export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], endringstidspunkt: Date): Periode[] => {
     const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
-        dayjs.utc(periode.tidsperiode.fom).isAfter(endringstidspunkt, 'day')
+        dayjs.utc(periode.tidsperiode.fom).isAfter(dayjs.utc(endringstidspunkt), 'day')
     );
 
     const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt

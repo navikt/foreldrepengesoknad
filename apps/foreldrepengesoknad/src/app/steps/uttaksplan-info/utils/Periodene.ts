@@ -79,7 +79,7 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
         }
         return isValidTidsperiode(p1.tidsperiode) ? 1 : -1;
     }
-    if (dayjs.utc(p1.tidsperiode.fom).isSame(p2.tidsperiode.fom, 'day')) {
+    if (dayjs.utc(p1.tidsperiode.fom).isSame(dayjs.utc(p2.tidsperiode.fom), 'day')) {
         return isInfoPeriode(p1) ? -1 : 1;
     }
 
@@ -87,7 +87,7 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
         return 1;
     }
 
-    return dayjs.utc(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
+    return dayjs.utc(p1.tidsperiode.fom).isBefore(dayjs.utc(p2.tidsperiode.fom), 'day') ? -1 : 1;
 }
 
 function getPeriode(perioder: Periode[], id: string): Periode | undefined {
@@ -141,8 +141,8 @@ function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Period
             datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode);
 
         const fomTomOmkranserTidsperiode =
-            dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(fom, 'day') &&
-            dayjs.utc(periode.tidsperiode.tom).isSameOrBefore(tom, 'day');
+            dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(dayjs.utc(fom), 'day') &&
+            dayjs.utc(periode.tidsperiode.tom).isSameOrBefore(dayjs.utc(tom), 'day');
 
         return fomEllerTomErInnenforTidsperiode || fomTomOmkranserTidsperiode;
     });
@@ -150,22 +150,24 @@ function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Period
 
 function finnPeriodeMedDato(perioder: Periode[], dato: Date): Periode | undefined {
     return perioder.find((periode) => {
-        return dayjs.utc(dato).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]');
+        return dayjs
+            .utc(dato)
+            .isBetween(dayjs.utc(periode.tidsperiode.fom), dayjs.utc(periode.tidsperiode.tom), 'day', '[]');
     });
 }
 
 function finnFørstePeriodeEtterDato(perioder: Periode[], dato: Date): Periode | undefined {
     return perioder.find((periode) => {
-        return dayjs.utc(periode.tidsperiode.fom).isAfter(dato, 'day');
+        return dayjs.utc(periode.tidsperiode.fom).isAfter(dayjs.utc(dato), 'day');
     });
 }
 
 function finnPerioderFørPeriode(perioder: Periode[], periode: Periode): Periode[] {
-    return perioder.filter((p) => dayjs.utc(p.tidsperiode.tom).isBefore(periode.tidsperiode.fom, 'day'));
+    return perioder.filter((p) => dayjs.utc(p.tidsperiode.tom).isBefore(dayjs.utc(periode.tidsperiode.fom), 'day'));
 }
 
 function finnPerioderEtterPeriode(perioder: Periode[], periode: Periode): Periode[] {
-    return perioder.filter((p) => dayjs.utc(p.tidsperiode.fom).isAfter(periode.tidsperiode.tom, 'day'));
+    return perioder.filter((p) => dayjs.utc(p.tidsperiode.fom).isAfter(dayjs.utc(periode.tidsperiode.tom), 'day'));
 }
 
 function finnForrigePeriode(perioder: Periode[], periode: Periode): Periode | undefined {
@@ -252,7 +254,7 @@ function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendels
         (periode) =>
             isForeldrepengerFørFødselUttaksperiode(periode) ||
             (isValidTidsperiode(periode.tidsperiode) &&
-                dayjs.utc(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day'))
+                dayjs.utc(periode.tidsperiode.fom).isBefore(dayjs.utc(familiehendelsesdato), 'day'))
     );
 }
 
@@ -260,7 +262,7 @@ function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendel
     return perioder.filter(
         (periode) =>
             isValidTidsperiode(periode.tidsperiode) &&
-            dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
+            dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(dayjs.utc(familiehendelsesdato), 'day') &&
             isForeldrepengerFørFødselUttaksperiode(periode) === false
     );
 }

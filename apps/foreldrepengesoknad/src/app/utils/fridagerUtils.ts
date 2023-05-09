@@ -24,7 +24,11 @@ export const getOffentligeFridager = (tidsperiode: TidsperiodeDate): HolidaysTyp
     const slutt = dayjs.utc(tidsperiode.tom).add(24, 'hours');
     return days
         .filter((d) => d.type === 'public')
-        .filter((d) => dayjs.utc(d.date).isAfter(start, 'day') && dayjs.utc(d.date).isBefore(slutt, 'day'));
+        .filter(
+            (d) =>
+                dayjs.utc(d.date).isAfter(dayjs.utc(start), 'day') &&
+                dayjs.utc(d.date).isBefore(dayjs.utc(slutt), 'day')
+        );
 };
 
 export const getOffentligeFridagerIMåned = (måned: Date): HolidaysTypes.Holiday[] => {
@@ -33,7 +37,11 @@ export const getOffentligeFridagerIMåned = (måned: Date): HolidaysTypes.Holida
     const slutt = dayjs.utc(måned).endOf('month');
     return days
         .filter((d) => d.type === 'public')
-        .filter((d) => dayjs.utc(d.date).isAfter(start, 'day') && dayjs.utc(d.date).isBefore(slutt, 'day'));
+        .filter(
+            (d) =>
+                dayjs.utc(d.date).isAfter(dayjs.utc(start), 'day') &&
+                dayjs.utc(d.date).isBefore(dayjs.utc(slutt), 'day')
+        );
 };
 
 /* Default - hente ut helligdager i default tidsrom */
@@ -43,6 +51,6 @@ export const fridager = getOffentligeFridager({
 });
 
 export const erFridag = (dato: Date): string | undefined => {
-    const fridag = fridager.find((fr) => dayjs.utc(fr.date).isSame(dato, 'day'));
+    const fridag = fridager.find((fr) => dayjs.utc(fr.date).isSame(dayjs.utc(dato), 'day'));
     return fridag ? fridag.name : undefined;
 };
