@@ -1,4 +1,3 @@
-import React from 'react';
 import { VeilederProps } from '../veileder/Veileder';
 import VeilederMedSnakkeboble from '../veileder-med-snakkeboble/VeilederMedSnakkeboble';
 import './feilsidemelding.less';

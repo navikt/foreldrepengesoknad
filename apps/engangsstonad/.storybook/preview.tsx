@@ -1,8 +1,12 @@
-//TODO Dette bør ikkje ligga her
-window.appSettings = {
+import React from 'react';
+
+const scriptTag = document.createElement('script');
+scriptTag.type = 'text/json';
+scriptTag.id = 'nav:appSettings';
+scriptTag.innerHTML = JSON.stringify({
     REST_API_URL: '',
-    UTTAK_API_URL: 'uttak-url',
-};
+});
+document.head.appendChild(scriptTag);
 
 export const decorators = [
     (Story) => (

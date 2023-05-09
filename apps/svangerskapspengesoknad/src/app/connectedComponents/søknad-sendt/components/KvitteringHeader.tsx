@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Person } from 'app/types/Søkerinfo';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';

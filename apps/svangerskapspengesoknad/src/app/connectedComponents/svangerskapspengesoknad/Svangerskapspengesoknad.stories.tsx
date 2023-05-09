@@ -1,4 +1,3 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import ErrorBoundary from 'app/components/ErrorBoundary/ErrorBoundary';
@@ -9,15 +8,16 @@ import IntlProvider from 'app/intl/IntlProvider';
 import { getAxiosInstance } from 'app/api/api';
 import store from 'app/redux/store';
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
+import * as langNB from 'i18n-iso-countries/langs/nb.json';
+import * as langNN from 'i18n-iso-countries/langs/nn.json';
 
 import '@navikt/ds-css';
 
 import '../../styles/global.less';
 import '../../styles/app.less';
-import { BodyShort } from '@navikt/ds-react';
 
-countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
-countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
+countries.registerLocale(langNB);
+countries.registerLocale(langNN);
 
 const søkerinfo = {
     søker: {
@@ -88,9 +88,9 @@ export default {
 
 const Template: StoryFn<any> = () => {
     const apiMock = new MockAdapter(getAxiosInstance());
-    apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
+    apiMock.onGet('/rest-api/sokerinfo').reply(200, søkerinfo);
 
-    apiMock.onPost('/soknad').reply(200, {
+    apiMock.onPost('/rest-api/soknad').reply(200, {
         mottattDato: '2019-02-20T20:39:42.757',
         referanseId: 'bddfa0bb-e00c-4982-b0cc-4a09654803c2',
         leveranseStatus: 'GOSYS',
@@ -101,9 +101,7 @@ const Template: StoryFn<any> = () => {
         <ErrorBoundary>
             <Provider store={store}>
                 <IntlProvider>
-                    <BodyShort>
-                        <Svangerskapspengesøknad />
-                    </BodyShort>
+                    <Svangerskapspengesøknad />
                 </IntlProvider>
             </Provider>
         </ErrorBoundary>

@@ -1,4 +1,3 @@
-import React from 'react';
 import countries from 'i18n-iso-countries';
 import { useIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';

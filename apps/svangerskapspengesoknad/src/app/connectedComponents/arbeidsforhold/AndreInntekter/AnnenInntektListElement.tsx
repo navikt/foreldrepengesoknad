@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { ModalSummaryProps } from '../ArbeidSeksjon/ArbeidSeksjon';
 import { useIntl } from 'react-intl';
 import { AnnenInntekt } from 'app/types/AnnenInntekt';

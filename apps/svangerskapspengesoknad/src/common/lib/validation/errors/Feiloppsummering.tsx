@@ -1,8 +1,8 @@
-import React from 'react';
 import classNames from 'classnames';
 import { SummaryError } from '../types/index';
 
 import '../styles/validering-styles.less';
+import { Component } from 'react';
 
 interface Props {
     title: string;
@@ -17,7 +17,7 @@ const cls = (show: boolean, className?: string) =>
         'feil-oppsummering-boks--visible': show,
     });
 
-class Feiloppsummering extends React.Component<Props, unknown> {
+class Feiloppsummering extends Component<Props, unknown> {
     element: HTMLElement | null = null;
     componentDidMount() {
         if (this.element) {

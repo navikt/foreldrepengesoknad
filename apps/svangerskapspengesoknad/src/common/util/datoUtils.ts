@@ -1,28 +1,28 @@
+import { isISODateString } from '@navikt/ds-datepicker';
 import moment, { Moment } from 'moment';
-import { isISODateString } from 'nav-datovelger';
 
 export function formaterDato(dato: Date, datoformat?: string): string {
-    return moment.utc(dato).format(datoformat || 'dddd D. MMMM YYYY');
+    return moment(dato).format(datoformat || 'dddd D. MMMM YYYY');
 }
 
 export function formaterDatoTall(dato: string, datoformat?: string): string {
-    return moment.utc(dato).format(datoformat || 'DD.MM.YYYY');
+    return moment(dato).format(datoformat || 'DD.MM.YYYY');
 }
 
 export function formaterDatoUtenDag(dato: Date): string {
-    return moment.utc(dato).format('D. MMMM YYYY');
+    return moment(dato).format('D. MMMM YYYY');
 }
 
 export function år(dato: Moment): string {
-    return moment.utc(dato).format('YYYY');
+    return moment(dato).format('YYYY');
 }
 
 export function årToBokstaver(dato: Date): string {
-    return moment.utc(dato).format('YY');
+    return moment(dato).format('YY');
 }
 
 export function måned(dato: Moment): string {
-    return moment.utc(dato).format('MMMM');
+    return moment(dato).format('MMMM');
 }
 
 export function måned3bokstaver(dato: Moment): string {
@@ -53,7 +53,7 @@ export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: n
     };
 };
 
-export const dateToISOFormattedDateString = (date?: Date) => (date ? moment.utc(date).format('YYYY-MM-DD') : undefined);
+export const dateToISOFormattedDateString = (date?: Date) => (date ? moment(date).format('YYYY-MM-DD') : undefined);
 
 export const halvannetÅrSiden = (dato: Date) => moment(dato).startOf('day').subtract(1, 'year').subtract(6, 'months');
 export const etÅrSiden = (dato: Date) =>
@@ -73,3 +73,21 @@ export const niMånederFremITid = (dato: Date) =>
 export const isInvalidDateString = (dateString: string | undefined) => {
     return dateString !== undefined && dateString !== '' && isISODateString(dateString) === false;
 };
+
+export type DateLimits =
+    | {
+          maksDato: string | undefined;
+          minDato?: undefined;
+      }
+    | {
+          minDato: string | undefined;
+          maksDato: string;
+      }
+    | {
+          minDato: string;
+          maksDato: string | undefined;
+      }
+    | {
+          minDato: string | undefined;
+          maksDato?: undefined;
+      };

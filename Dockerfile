@@ -3,7 +3,7 @@
 #########################################
 # PREPARE DEPS FOR BUILD
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.14.2 as prepare
+FROM --platform=$BUILDPLATFORM node:18.16 as prepare
 WORKDIR /usr/src/app
 
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
@@ -16,7 +16,7 @@ RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs
 #########################################
 # BUILD - Builds all node code
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.14.2-alpine as build
+FROM --platform=$BUILDPLATFORM node:18.16-alpine as build
 WORKDIR /usr/src/app
 
 RUN apk fix \

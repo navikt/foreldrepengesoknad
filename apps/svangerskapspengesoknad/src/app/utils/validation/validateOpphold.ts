@@ -3,8 +3,8 @@ import { FormikErrors } from 'formik';
 import { Tidsperiode } from 'app/types/Tidsperiode';
 import { Utenlandsopphold, Oppholdstype } from 'app/types/InformasjonOmUtenlandsopphold';
 import isEmpty from 'lodash/isEmpty';
-import { isISODateString } from 'nav-datovelger';
 import { dateToISOFormattedDateString } from 'common/util/datoUtils';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 type Oppholdsfeil = FormikErrors<Utenlandsopphold>;
 

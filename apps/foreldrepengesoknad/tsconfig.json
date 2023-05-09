@@ -1,31 +1,16 @@
 {
+    "extends": "tsconfig/vite.json",
     "compilerOptions": {
         "baseUrl": "src",
-        "composite": false,
-        "declaration": true,
-        "esModuleInterop": true,
-        "isolatedModules": true,
         "jsx": "react-jsx",
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "noEmit": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
         "paths": {
             "utils-test/*": ["./utils-test/*"],
             "uttaksplan/*": ["./uttaksplan/*"],
             "stories/*": ["./storybook/stories/*"],
             "app/*": ["./app/*"]
         },
-        "resolveJsonModule": true,
         "rootDir": "src",
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "strict": true,
-        "target": "ESNext",
-        "types": ["vite/client", "node", "jest", "@testing-library/jest-dom", "vitest/globals"],
-        "useDefineForClassFields": true
+        "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
     "exclude": ["src/common/**/*", "node_modules"]

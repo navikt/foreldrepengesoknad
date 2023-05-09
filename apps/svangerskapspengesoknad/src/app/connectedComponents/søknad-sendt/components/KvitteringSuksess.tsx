@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import BEMHelper from 'common/util/bem';
 import CheckmarkIkon from 'app/icons/CheckmarkIkon';

@@ -1,9 +1,0 @@
-name: "CodeQL config"
-
-languages: javascript
-
-queries:
-  - name: Extended Security
-    uses: security-extended
-  - name: Security and Quality
-    uses: security-and-quality

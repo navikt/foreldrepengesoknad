@@ -1,4 +1,3 @@
-import React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { ValidatorFailTextIntl } from 'common/lib/validation/types';
 

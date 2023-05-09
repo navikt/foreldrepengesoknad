@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
@@ -13,7 +12,9 @@ describe('<Svangerskapspengesøknad>', () => {
         expect(await screen.findByText('Jeg vil hjelpe deg med å fylle ut søknaden.')).toBeInTheDocument();
 
         expect(
-            await screen.findByText('For å gå videre med søknaden må du bekrefte at du har lest og forstått')
+            await screen.findByText('For å gå videre med søknaden må du bekrefte at du har lest og forstått', {
+                exact: false,
+            })
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Begynn med søknad'));

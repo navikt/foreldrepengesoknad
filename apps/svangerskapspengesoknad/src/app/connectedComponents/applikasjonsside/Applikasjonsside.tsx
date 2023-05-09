@@ -1,6 +1,5 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import { connect } from 'react-redux';
-import DocumentTitle from 'react-document-title';
 import { FormattedMessage } from 'react-intl';
 
 import { CommonActionTypes } from 'app/redux/types/CommonAction';
@@ -9,6 +8,7 @@ import { State } from 'app/redux/store';
 import Action from 'app/redux/types/Action';
 import Søknadstittel from 'app/components/søknadstittel/Søknadstittel';
 import LanguageToggle from 'common/components/language-toggle/LanguageToggle';
+import { useDocumentTitle } from '@navikt/fp-common';
 
 interface OwnProps {
     visSpråkvelger?: boolean;
@@ -27,9 +27,10 @@ interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 const Applikasjonsside: FunctionComponent<Props> = ({ visSpråkvelger, visTittel, språkkode, setSpråk, children }) => {
+    useDocumentTitle('Svangerskapspengesøknad');
+
     return (
         <>
-            <DocumentTitle title="Svangerskapspengesøknad" />
             {visSpråkvelger && (
                 <LanguageToggle
                     language={språkkode}

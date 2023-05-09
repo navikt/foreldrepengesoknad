@@ -1,10 +1,11 @@
-import React from 'react';
-
-//TODO Dette bør ikkje ligga her
-window.appSettings = {
-    REST_API_URL: '',
-    UTTAK_API_URL: 'uttak-url',
-};
+const scriptTag = document.createElement('script');
+scriptTag.type = 'text/json';
+scriptTag.id = 'nav:appSettings';
+scriptTag.innerHTML = JSON.stringify({
+    REST_API_URL: 'rest-api',
+    LOGIN_URL: '',
+});
+document.head.appendChild(scriptTag);
 
 export const decorators = [
     (Story) => (

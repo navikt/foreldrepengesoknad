@@ -1,4 +1,3 @@
-import React from 'react';
 import TrashcanIkon from '../ikoner/TrashcanIkon';
 import './slettKnapp.less';
 

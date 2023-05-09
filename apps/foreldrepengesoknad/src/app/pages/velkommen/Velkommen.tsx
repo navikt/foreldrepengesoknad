@@ -104,7 +104,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
                 eksisterendeSak!,
                 intl,
                 valgtEksisterendeSak.annenPart,
-                valgteBarn.fnr
+                valgteBarn
             ) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));

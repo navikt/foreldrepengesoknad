@@ -1,4 +1,3 @@
-import React from 'react';
 import MannIkon from 'common/components/ikoner/MannIkon';
 import KvinneIkon from 'common/components/ikoner/KvinneIkon';
 

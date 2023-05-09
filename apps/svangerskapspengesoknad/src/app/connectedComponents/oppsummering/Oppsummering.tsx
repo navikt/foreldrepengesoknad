@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 import { ApiActionTypes } from 'app/redux/types/ApiAction';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -91,7 +90,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                         <FormattedMessage
                             id="oppsummering.barn.termindato"
                             values={{
-                                dato: moment(values.barn.termindato).format('dddd Do MMMM YYYY'),
+                                dato: dayjs(values.barn.fødselsdato).format('dddd D. MMMM YYYY'),
                             }}
                         />
                     </Block>
@@ -99,7 +98,9 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                         {values.barn.fødselsdato !== undefined && (
                             <FormattedMessage
                                 id="oppsummering.barn.fødselsdato"
-                                values={{ dato: moment(values.barn.fødselsdato).format('dddd Do MMMM YYYY') }}
+                                values={{
+                                    dato: dayjs(values.barn.fødselsdato).format('dddd D. MMMM YYYY'),
+                                }}
                             />
                         )}
                     </div>

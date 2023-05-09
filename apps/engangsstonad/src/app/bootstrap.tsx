@@ -2,23 +2,27 @@ import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
 import ErrorBoundary from './ErrorBoundary';
-import { BodyShort, Modal } from '@navikt/ds-react';
+import { Modal } from '@navikt/ds-react';
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
+import * as langNB from 'i18n-iso-countries/langs/nb.json';
+import * as langNN from 'i18n-iso-countries/langs/nn.json';
+import * as langEN from 'i18n-iso-countries/langs/en.json';
 
 import '@navikt/ds-css';
 import './styles/globals.less';
+import Environment from './Environment';
 
-countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
-countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
-countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+countries.registerLocale(langNB);
+countries.registerLocale(langNN);
+countries.registerLocale(langEN);
 
 Modal.setAppElement('#app');
 
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
         dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
-        release: (window as any).APP_VERSION,
+        release: Environment.APP_VERSION,
         environment: window.location.hostname,
         integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
     });
@@ -31,8 +35,6 @@ const root = createRoot(container!);
 
 root.render(
     <ErrorBoundary>
-        <BodyShort>
-            <AppContainer />
-        </BodyShort>
+        <AppContainer />
     </ErrorBoundary>
 );

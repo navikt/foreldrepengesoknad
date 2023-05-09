@@ -1,7 +1,7 @@
-import { guid } from 'nav-frontend-js-utils';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
+import { guid } from '@navikt/fp-common';
 
 export const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 

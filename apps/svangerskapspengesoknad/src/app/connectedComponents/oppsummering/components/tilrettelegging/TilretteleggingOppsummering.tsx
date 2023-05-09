@@ -1,17 +1,17 @@
-import React, { FunctionComponent } from 'react';
-import moment from 'moment';
+import { FunctionComponent } from 'react';
 import BEMHelper from 'common/util/bem';
 
 import { UferdigTilrettelegging, Tilretteleggingstype, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getArbeidsforholdNavnFromId } from 'app/utils/arbeidsforholdUtils';
-import { guid } from 'nav-frontend-js-utils';
 import { FormattedMessage } from 'react-intl';
 import OppsummeringBeskrivelse from '../OppsummeringBeskrivelse';
 import Block from 'common/components/block/Block';
 
 import './tilretteleggingOppsummering.less';
 import { BodyShort } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
+import dayjs from 'dayjs';
 
 const cls = BEMHelper('tilretteleggingOppsummering');
 
@@ -35,7 +35,7 @@ const TilretteleggingOppsummering: FunctionComponent<Props> = ({ tilrettelegging
                                     <FormattedMessage
                                         id="oppsummering.tilrettelegging.info.jobbeFullt"
                                         values={{
-                                            startDato: moment(helTil.tilrettelagtArbeidFom).format('Do MMMM YYYY'),
+                                            startDato: dayjs(helTil.tilrettelagtArbeidFom).format('dddd D. MMMM YYYY'),
                                             strong: (msg: any) => <strong>{msg}</strong>,
                                         }}
                                     />
@@ -49,7 +49,7 @@ const TilretteleggingOppsummering: FunctionComponent<Props> = ({ tilrettelegging
                                     <FormattedMessage
                                         id="oppsummering.tilrettelegging.info.jobbeDelvis"
                                         values={{
-                                            startDato: moment(delTil.tilrettelagtArbeidFom).format('Do MMMM YYYY'),
+                                            startDato: dayjs(delTil.tilrettelagtArbeidFom).format('dddd D. MMMM YYYY'),
                                             prosent: delTil.stillingsprosent,
                                             strong: (msg: any) => <strong>{msg}</strong>,
                                         }}
@@ -64,7 +64,7 @@ const TilretteleggingOppsummering: FunctionComponent<Props> = ({ tilrettelegging
                                     <FormattedMessage
                                         id="oppsummering.tilrettelegging.info.ikkeJobbe"
                                         values={{
-                                            startDato: moment(ingenTil.slutteArbeidFom).format('Do MMMM YYYY'),
+                                            startDato: dayjs(ingenTil.slutteArbeidFom).format('dddd D. MMMM YYYY'),
                                             strong: (msg: any) => <strong>{msg}</strong>,
                                         }}
                                     />

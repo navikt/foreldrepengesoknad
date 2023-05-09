@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CheckmarkIkon = (props: any) => (
     <svg width={24} height={24} {...props}>
         <g fill="none" fillRule="evenodd">

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const DocumentIkon = (props: any) => (
     <svg width={64} height={64} {...props}>
         <title>{'klart skjema'}</title>

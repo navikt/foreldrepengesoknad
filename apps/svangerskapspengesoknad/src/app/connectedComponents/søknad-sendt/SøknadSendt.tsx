@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Heading, Panel } from '@navikt/ds-react';
 import { connect } from 'react-redux';
 

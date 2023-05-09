@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { OppsummeringIkonType } from 'app/types/OppsummeringIkonType';
 import MorGravidIkon from 'app/icons/MorGravidIkon';
 import FlaskeIkon from 'app/icons/FlaskeIkon';

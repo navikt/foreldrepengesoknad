@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Infoboks from 'common/components/infoboks/Infoboks';
 import BEMHelper from 'common/util/bem';
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import classnames from 'classnames';
 
 import Knapperad from 'common/components/knapperad/Knapperad';

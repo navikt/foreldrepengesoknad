@@ -26,6 +26,7 @@ import {
     getEldsteDato,
     compareDates,
     compareDatesNow,
+    sorterDatoEtterEldst,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
@@ -1082,7 +1083,7 @@ describe('tidperiodeOverlapperDato', () => {
 });
 
 describe('getEldsteDato', () => {
-    it('Skal returnere eldste dato riktig', () => {
+    it('Skal returnere eldste dato riktig.', () => {
         const datoListe = [
             new Date('2023-10-21'),
             new Date('2023-11-21'),
@@ -1124,5 +1125,20 @@ describe('compareDates', () => {
     it('date now', () => {
         const result = compareDatesNow();
         expect(result).toEqual(true);
+    });
+});
+
+describe('sorterDatoEtterEldst', () => {
+    it('Skal sortere dato riktig', () => {
+        const datoListe = [
+            ISOStringToDate('2021-11-21')!,
+            ISOStringToDate('2021-11-19')!,
+            ISOStringToDate('2021-11-20')!,
+        ];
+        const result = sorterDatoEtterEldst(datoListe);
+        expect(result.length).toBe(3);
+        expect(result[0]).toEqual(new Date('2021-11-19'));
+        expect(result[1]).toEqual(new Date('2021-11-20'));
+        expect(result[2]).toEqual(new Date('2021-11-21'));
     });
 });

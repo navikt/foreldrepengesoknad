@@ -16,6 +16,7 @@ const {
     RegistrertBarnFødselFar,
     RegistrertBarnFødselMor,
     RegistrertBarnTrillingerDerEnErDød,
+    SøknadPåUregistrertBarnSomErFødt,
 } = composeStories(stories);
 
 const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
@@ -322,5 +323,19 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Barna du søker for:')).toBeInTheDocument();
         expect(await screen.findByText('Trillinger', { exact: false })).toBeInTheDocument();
         vi.useRealTimers();
+    });
+    it('Skal fungere for en ny søknad basert på tidligerei innsendt søknad på et barn som er født men ikke registrert', async () => {
+        const user = userEvent.setup();
+        render(<SøknadPåUregistrertBarnSomErFødt />);
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor mange barn har du fått?')).toBeInTheDocument();
+        expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await user.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
+
+        await user.tab();
+        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });

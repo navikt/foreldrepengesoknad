@@ -1,9 +1,10 @@
+import Environment from 'app/Environment';
 import { EngangsstønadSøknadDto } from '../types/domain/EngangsstønadSøknad';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { redirectToLogin } from 'util/login';
 
 export const foreldrepengersoknadApi = axios.create({
-    baseURL: (window as any).REST_API_URL,
+    baseURL: Environment.REST_API_URL,
     withCredentials: true,
 });
 

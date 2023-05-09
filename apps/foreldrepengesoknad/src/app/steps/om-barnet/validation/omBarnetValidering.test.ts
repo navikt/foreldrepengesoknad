@@ -38,6 +38,7 @@ describe('omBarnetValidering', () => {
         const resultat = validateFødselsdato(intlMock)(fødselsdato);
         MockDate.set(new Date('2022-01-01'));
         expect(resultat).toBeUndefined();
+        MockDate.reset();
     });
 
     it('skal feile fødsel & adopsjonsvalidering når fødselsdato ikke er oppgitt', () => {

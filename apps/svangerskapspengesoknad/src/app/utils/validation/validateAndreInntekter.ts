@@ -1,6 +1,6 @@
 import { FormikErrors } from 'formik';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/types/AnnenInntekt';
-import { isISODateString } from 'nav-datovelger';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 type AnnenInntektFeil = FormikErrors<AnnenInntekt>;
 

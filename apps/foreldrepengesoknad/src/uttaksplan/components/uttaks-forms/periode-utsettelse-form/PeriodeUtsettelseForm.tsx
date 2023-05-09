@@ -1,6 +1,6 @@
 import { bemUtils, Block, guid, hasValue, intlUtils } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Dispatch, FunctionComponent, useState } from 'react';
+import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
@@ -53,7 +53,6 @@ interface Props {
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
-    isOpen: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -73,9 +72,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     situasjon,
     utsettelserIPlan,
     setPerioderErGyldige,
-    isOpen,
 }) => {
     const intl = useIntl();
+    const [periodeIsValid, setPeriodeIsValid] = useState(true);
     const { tidsperiode, id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUtsettelseForm');
@@ -89,6 +88,12 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
+
+    useEffect(() => {
+        setPerioderErGyldige((previousState: PeriodeValidState[]) => {
+            return getIsValidStateForPerioder(previousState, periode, periodeIsValid);
+        });
+    }, [periodeIsValid]);
 
     return (
         <PeriodeUtsettelseFormComponents.FormikWrapper
@@ -114,12 +119,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                     erAleneOmOmsorg,
                     søkerErFarEllerMedmorOgKunDeHarRett,
                 } as PeriodeUtsettelseFormConfigPayload);
-                if (isOpen) {
-                    setPerioderErGyldige((previousState: PeriodeValidState[]) => {
-                        return getIsValidStateForPerioder(previousState, periode, isValid);
-                    });
+                if (isValid !== periodeIsValid) {
+                    setPeriodeIsValid(isValid);
                 }
-
                 return (
                     <>
                         <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="xl">
