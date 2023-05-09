@@ -110,7 +110,9 @@ const renderHeaderContent = (
         if (!sak.familiehendelse) {
             return (
                 <div className={bem.element('content')}>
-                    <TåteflaskeBaby />
+                    <div className={bem.element('baby-ikonBox')}>
+                        <TåteflaskeBaby />
+                    </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', marginBottom: '1rem' }}>
                         <Heading size="xlarge">{getSaksoversiktHeading(sak.ytelse)}</Heading>
                         <div className={bem.element('text-with-bar')}>
@@ -142,18 +144,26 @@ const renderHeaderContent = (
         );
         return (
             <div className={bem.element('content')}>
-                <TåteflaskeBaby />
-                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', marginBottom: '1rem' }}>
-                    <Heading size="xlarge">{getSaksoversiktHeading(sak.ytelse)}</Heading>
+                <div className={bem.element('baby-ikonBox')}>
+                    <TåteflaskeBaby />
+                </div>
+                <div className={bem.element('content-detaljer')}>
+                    <Heading className={bem.element('tittel')} size="xlarge">
+                        {getSaksoversiktHeading(sak.ytelse)}
+                    </Heading>
                     <div className={bem.element('text-with-bar')}>
-                        <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        <hr
-                            className={classNames(
-                                bem.element('divider'),
-                                barnUndertittel ? bem.modifier('divider-long') : bem.modifier('divider-short')
-                            )}
-                        ></hr>
-                        <div>
+                        <div className={bem.element('saksnummer-text')}>
+                            <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
+                        </div>
+                        <div className={bem.element('barn-text')}>
+                            <hr
+                                className={classNames(
+                                    bem.element('divider'),
+                                    barnUndertittel ? bem.modifier('divider-long') : bem.modifier('divider-short')
+                                )}
+                            ></hr>
+                        </div>
+                        <div className={bem.element('barn-detaljer')}>
                             <BodyShort className={bem.element('divider-text')}>{barnTittel}</BodyShort>
                             {barnUndertittel && (
                                 <BodyShort className={bem.element('divider-text')}>{barnUndertittel}</BodyShort>
@@ -168,7 +178,9 @@ const renderHeaderContent = (
 
     return (
         <div className={bem.element('content')}>
-            <TåteflaskeBaby />
+            <div className={bem.element('baby-ikonBox')}>
+                <TåteflaskeBaby />
+            </div>
             <div className={bem.element('title-container')}>
                 <Heading size="xlarge">Oversikt over foreldrepenger</Heading>
                 <BodyShort>PENGESTØTTE</BodyShort>
