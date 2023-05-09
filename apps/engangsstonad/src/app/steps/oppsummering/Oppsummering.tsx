@@ -1,7 +1,7 @@
-import { bemUtils, Block, intlUtils, Locale, Step } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, Locale, Step, StepButtonWrapper } from '@navikt/fp-common';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import Person from 'app/types/domain/Person';
 import { fullNameFormat } from 'app/util/formats/formatUtils';
@@ -23,6 +23,7 @@ import { PageKeys } from 'app/types/PageKeys';
 
 import './oppsummering.less';
 import OmDegOppsummering from './OmDegOppsummering';
+import { Link } from 'react-router-dom';
 
 interface Props {
     person: Person;
@@ -78,7 +79,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="oppsummering"
                         pageTitle={intlUtils(intl, 'søknad.oppsummering')}
-                        backLinkHref={getPreviousStepHref('oppsummering')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
                     >
@@ -120,15 +120,18 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                                     label={intlUtils(intl, 'oppsummering.text.samtykke')}
                                 />
                             </Block>
-                            {allQuestionsAnswered && (
-                                <Block margin="xl">
-                                    <div className={bem.element('sendSøknadKnapp')}>
+                            <Block margin="xl">
+                                <StepButtonWrapper>
+                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('oppsummering')}>
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    {allQuestionsAnswered && (
                                         <Button type="submit" disabled={isSending} loading={isSending}>
                                             {intlUtils(intl, 'oppsummering.button.sendSøknad')}
                                         </Button>
-                                    </div>
-                                </Block>
-                            )}
+                                    )}
+                                </StepButtonWrapper>
+                            </Block>
                         </OppsummeringFormComponents.Form>
                     </Step>
                 );

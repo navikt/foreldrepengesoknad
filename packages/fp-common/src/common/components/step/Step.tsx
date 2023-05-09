@@ -12,11 +12,8 @@ import './step.less';
 export interface StepProps {
     pageTitle: string;
     bannerTitle?: string;
-    backLinkHref?: string;
-    backLinkOnClick?: (href: string, event: React.SyntheticEvent) => void;
     steps: StepIndicatorStep[];
     activeStepId: string;
-    previousStepTitle?: string;
     children: React.ReactNode;
     showStepIndicator?: boolean;
     topContentRenderer?: () => React.ReactElement<any>;
@@ -30,7 +27,6 @@ export interface StepProps {
 const Step: React.FunctionComponent<StepProps> = ({
     bannerTitle,
     pageTitle,
-    backLinkHref,
     steps,
     activeStepId,
     onCancel,
@@ -59,7 +55,7 @@ const Step: React.FunctionComponent<StepProps> = ({
             )}
         >
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
-            {(showStepIndicator || backLinkHref) && (
+            {showStepIndicator && (
                 <>
                     <div role="presentation" aria-hidden={true}>
                         <ProgressStepper

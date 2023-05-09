@@ -1,4 +1,4 @@
-import { Block, intlUtils, Step } from '@navikt/fp-common';
+import { Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -66,6 +66,7 @@ import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Alert, Button, Loader } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Link } from 'react-router-dom';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -528,15 +529,6 @@ const UttaksplanStep = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={erEndringssøknad ? undefined : getPreviousStepHref('uttaksplan')}
-                        backLinkOnClick={
-                            erEndringssøknad
-                                ? undefined
-                                : (_href, event) => {
-                                      event.preventDefault();
-                                      setGåTilbakeIsOpen(true);
-                                  }
-                        }
                         activeStepId="uttaksplan"
                         pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
                         onCancel={onAvbrytSøknad}
@@ -606,9 +598,29 @@ const UttaksplanStep = () => {
                             </Block>
                         )}
                         <Block textAlignCenter={true} padBottom="l">
-                            <Button type="submit" onClick={clickHandler} disabled={isSubmitting} loading={isSubmitting}>
-                                {intlUtils(intl, 'søknad.gåVidere')}
-                            </Button>
+                            <StepButtonWrapper>
+                                {!erEndringssøknad && (
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            setGåTilbakeIsOpen(true);
+                                        }}
+                                        to={getPreviousStepHref('uttaksplan')}
+                                    >
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                )}
+                                <Button
+                                    type="submit"
+                                    onClick={clickHandler}
+                                    disabled={isSubmitting}
+                                    loading={isSubmitting}
+                                >
+                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                </Button>
+                            </StepButtonWrapper>
                         </Block>
                     </Step>
                 );

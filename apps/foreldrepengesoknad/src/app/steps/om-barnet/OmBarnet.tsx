@@ -108,7 +108,6 @@ const OmBarnet: React.FunctionComponent = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        backLinkHref={getPreviousStepHref('omBarnet')}
                         activeStepId="omBarnet"
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
                         onCancel={onAvbrytSøknad}
