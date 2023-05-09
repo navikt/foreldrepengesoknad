@@ -7,6 +7,17 @@
 
 .header__content {
     display: flex;
+
+}
+.header__content-detaljer {
+    display: 'flex';
+    flex-direction: 'column';
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}
+
+.header__barn-detaljer {
+    display: inline-block;
 }
 
 .header__wrapper {
@@ -21,6 +32,11 @@
 
 .header__text-with-bar {
     display: flex;
+}
+
+.header__tittel {
+    font-size: 48px;
+    line-height: 52px;
 }
 
 .header__divider {
@@ -44,4 +60,45 @@
 
 .header__tag {
     margin-top: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+
+    .header__baby-ikonBox {
+            scale: 80%;
+    }
+
+    .header__text-with-bar {
+        display: grid;
+    }
+
+    .header__divider {
+        display: none;
+    }
+
+    .header__saksnummer-text {
+        margin-top: 0.5rem;
+        padding-bottom: 2px;
+    }
+
+    .header__barn-text {
+        padding-bottom: 2px;
+    }
+    
+    
+    .header__barn-detaljer {
+        display: 'flex';
+        flex-direction: 'column';
+    }
+
+    .header__tittel {
+        font-size: 32px;
+        line-height: 40px;
+    }
+
+    .header__tag {
+        margin-top: 0.5rem;
+    }
+    
 }
