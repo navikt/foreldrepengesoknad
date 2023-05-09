@@ -41,12 +41,12 @@ describe('<Utenlandsopphold>', () => {
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(fraOgMedInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
+        await userEvent.type(tilOgMedInput, dayjs.utc().add(1, 'years').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Hvilket land skal du bo i?')).toBeInTheDocument();
@@ -81,12 +81,12 @@ describe('<Utenlandsopphold>', () => {
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(fraOgMedInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
+        await userEvent.type(tilOgMedInput, dayjs.utc().add(1, 'years').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Hvilket land bodde du i?')).toBeInTheDocument();

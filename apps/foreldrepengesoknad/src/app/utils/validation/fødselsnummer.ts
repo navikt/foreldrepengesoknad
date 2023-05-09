@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
 import validator from '@navikt/fnrvalidator';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 type FødselsnummerValidationResult = false | 'fnr' | 'dnr' | 'hnr';
 export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
@@ -18,9 +21,9 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
 
-    let fødselsdato = dayjs(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
+    let fødselsdato = dayjs.utc(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
 
-    if (fødselsdato.get('year') > dayjs().get('year')) {
+    if (fødselsdato.get('year') > dayjs.utc().get('year')) {
         fødselsdato = fødselsdato.subtract(100, 'year');
     }
 
@@ -28,5 +31,5 @@ export const isSixteenOrOlder = (fnr: string, isFødselsnummerValid: Fødselsnum
         return false;
     }
 
-    return fødselsdato.isBefore(dayjs().subtract(16, 'year'), 'day');
+    return fødselsdato.isBefore(dayjs.utc().subtract(16, 'year'), 'day');
 };

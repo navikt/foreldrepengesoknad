@@ -85,7 +85,9 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
 
     const erLikEllerMindreEnnFireUkerTilUttaketStarter =
         førsteUttaksEllerUttsettelsesPeriode !== undefined &&
-        dayjs(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(dayjs().add(4, 'weeks'), 'day');
+        dayjs
+            .utc(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom)
+            .isSameOrBefore(dayjs.utc().add(4, 'weeks'), 'day');
 
     const manglendeVedleggTyper = Array.from(alleSendSenereVedlegg.values()).map((v) => v.type);
     useSaveLoadedRoute(SøknadRoutes.MANGLENDE_VEDLEGG);

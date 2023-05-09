@@ -55,7 +55,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(await screen.findByText(NÅR_FØRSTE_DAG)).toBeInTheDocument();
 
         const førsteDagInput = screen.getByLabelText(NÅR_FØRSTE_DAG);
-        await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
+        await userEvent.type(førsteDagInput, dayjs.utc().format('15.09.2021'));
         await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(await screen.findByText('uker med flerbarnsuker', { exact: false }));
@@ -74,7 +74,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(await screen.findByText('Jeg tok ikke ut foreldrepenger før termin')).toBeInTheDocument();
 
         const førsteDagInput = screen.getByLabelText(NÅR_ØNSKER_DU_Å_STARTE);
-        await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
+        await userEvent.type(førsteDagInput, dayjs.utc().format('15.09.2021'));
         await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 

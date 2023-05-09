@@ -130,7 +130,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateAnnenInntektFom(intl, formValues.tom!)}
-                                    maxDate={dayjs().toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.pågående)}>
@@ -147,7 +147,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateAnnenInntektTom(intl, formValues.fom!)}
-                                    maxDate={dayjs().toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.dokumentasjon)}>

@@ -176,7 +176,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringFom(intl, formValues.tom!)}
-                                    maxDate={dayjs().toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                 />
                             </Block>
                             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.pågående)}>
@@ -201,8 +201,8 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringTom(intl, formValues.fom!)}
-                                    maxDate={dayjs().toDate()}
-                                    minDate={dayjs(formValues.fom).toDate()}
+                                    maxDate={dayjs.utc().toDate()}
+                                    minDate={dayjs.utc(formValues.fom).toDate()}
                                 />
                             </Block>
                             <Block
@@ -265,7 +265,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringYrkesAktivDatoDato(intl)}
-                                    maxDate={dayjs().toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                 />
                             </Block>
                             <Block
@@ -296,7 +296,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringEndringAvInntektsDato(intl)}
-                                    maxDate={dayjs().toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                 />
                             </Block>
                             <Block

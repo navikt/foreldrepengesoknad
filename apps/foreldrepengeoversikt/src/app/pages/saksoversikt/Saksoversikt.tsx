@@ -51,7 +51,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
               ({ gyldigTil, aktiv, hendelse, saksnr }) =>
                   aktiv &&
                   saksnr === gjeldendeSak.saksnummer &&
-                  dayjs(gyldigTil).isSameOrAfter(new Date(), 'days') &&
+                  dayjs.utc(gyldigTil).isSameOrAfter(new Date(), 'days') &&
                   hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK
           )
         : undefined;

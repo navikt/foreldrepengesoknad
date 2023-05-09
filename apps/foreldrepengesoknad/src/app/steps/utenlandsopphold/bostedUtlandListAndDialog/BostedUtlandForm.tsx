@@ -85,7 +85,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate,
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
                                     validate: (value) => {
-                                        if (values.tom && values.fom && dayjs(values.tom).isSame(values.fom)) {
+                                        if (values.tom && values.fom && dayjs.utc(values.tom).isSame(values.fom)) {
                                             return 'Fra og med dato kan ikke være samme som til og med dato';
                                         }
 
@@ -108,7 +108,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
                                     validate: (value) => {
-                                        if (values.tom && values.fom && dayjs(values.tom).isSame(values.fom)) {
+                                        if (values.tom && values.fom && dayjs.utc(values.tom).isSame(values.fom)) {
                                             return 'Til og med dato kan ikke være samme som fra og med dato';
                                         }
 

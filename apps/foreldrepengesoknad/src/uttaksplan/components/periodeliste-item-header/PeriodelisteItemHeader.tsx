@@ -119,7 +119,7 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
 };
 
 const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
-    const d = dayjs(dato);
+    const d = dayjs.utc(dato);
 
     return (
         <div className={bem.element('dagmnd')}>

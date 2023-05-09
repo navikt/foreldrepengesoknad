@@ -6,7 +6,7 @@ describe('morFodselValidering', () => {
     const intlMock = getIntlMock();
 
     it('skal feile validering når permisjonsdato ikke er oppgitt og en skal ha uttak før termin', () => {
-        const familiehendelsedato = dayjs().toDate();
+        const familiehendelsedato = dayjs.utc().toDate();
         const skalIkkeHaUttakFørTermin = false;
         const permisjonStartdato = undefined;
 
@@ -20,7 +20,7 @@ describe('morFodselValidering', () => {
     });
 
     it('skal feile validering når en har er permisjonsdato og uttaksdatoen er en helgedag', () => {
-        const familiehendelsedato = dayjs().toDate();
+        const familiehendelsedato = dayjs.utc().toDate();
         const skalIkkeHaUttakFørTermin = false;
         const permisjonStartdato = '2021-08-22';
 

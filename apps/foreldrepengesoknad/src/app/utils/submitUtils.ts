@@ -56,13 +56,13 @@ export const finnEndringerIUttaksplan = (
         .filter(
             (p) =>
                 dateIsWithinRange(endringstidspunkt, p.tidsperiode.fom, p.tidsperiode.tom) ||
-                dayjs(p.tidsperiode.fom).isSameOrAfter(dayjs(endringstidspunkt), 'day')
+                dayjs.utc(p.tidsperiode.fom).isSameOrAfter(dayjs.utc(endringstidspunkt), 'day')
         )
         .filter(erPeriodeSomSkalSendesInn);
 
     if (nyPlanForInnsending.length === 0 && opprinneligPlan.length > nyPlan.length) {
         const førsteSlettedePeriode = opprinneligPlan.find((p) =>
-            dayjs(p.tidsperiode.fom).isSame(endringstidspunkt, 'day')
+            dayjs.utc(p.tidsperiode.fom).isSame(endringstidspunkt, 'day')
         );
         const utsettelseForSlettedePerioder = {
             id: guid(),

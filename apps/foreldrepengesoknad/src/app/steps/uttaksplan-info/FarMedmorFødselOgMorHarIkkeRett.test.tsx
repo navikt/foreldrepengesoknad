@@ -45,7 +45,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
         const startDagInput = screen.getByLabelText('Når ønsker du å starte perioden?');
-        await userEvent.type(startDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(startDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });

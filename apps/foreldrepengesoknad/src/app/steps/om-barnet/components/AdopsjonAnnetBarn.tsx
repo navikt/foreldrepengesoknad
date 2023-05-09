@@ -103,7 +103,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                                                 ? intlUtils(intl, 'omBarnet.fødselsdato')
                                                 : intlUtils(intl, `omBarnet.fødselsdato.adopsjon.${index + 1}`)
                                         }
-                                        minDate={dayjs(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
+                                        minDate={dayjs.utc(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
                                         maxDate={ISOStringToDate(formValues.adopsjonsdato)}
                                         validate={(value) =>
                                             validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)
@@ -127,8 +127,8 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.ankomstdato}
                     label={intlUtils(intl, 'omBarnet.ankomstDato')}
-                    minDate={dayjs(formValues.fødselsdatoer[0]).toDate()}
-                    maxDate={dayjs().add(6, 'months').toDate()}
+                    minDate={dayjs.utc(formValues.fødselsdatoer[0]).toDate()}
+                    maxDate={dayjs.utc().add(6, 'months').toDate()}
                     validate={(value) => validateAnkomstdato(intl)(value, formValues.fødselsdatoer[0])}
                     placeholder={'dd.mm.åååå'}
                 />

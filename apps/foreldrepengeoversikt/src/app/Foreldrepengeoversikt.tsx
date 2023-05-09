@@ -55,7 +55,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         ? minidialogData.filter(
               ({ gyldigTil, aktiv, hendelse }) =>
                   aktiv &&
-                  dayjs(gyldigTil).isSameOrAfter(new Date(), 'days') &&
+                  dayjs.utc(gyldigTil).isSameOrAfter(new Date(), 'days') &&
                   hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK
           )
         : undefined;

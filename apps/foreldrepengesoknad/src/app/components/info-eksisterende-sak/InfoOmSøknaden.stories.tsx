@@ -175,8 +175,8 @@ InfoOmMorsSak.args = {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '50',
                 tidsperiode: {
-                    fom: dayjs('2021-01-01').toDate(),
-                    tom: dayjs('2021-01-10').toDate(),
+                    fom: dayjs.utc('2021-01-01').toDate(),
+                    tom: dayjs.utc('2021-01-10').toDate(),
                 },
             } as Periode,
         ],

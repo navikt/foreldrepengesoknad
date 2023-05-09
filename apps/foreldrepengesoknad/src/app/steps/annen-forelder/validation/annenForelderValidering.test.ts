@@ -9,7 +9,7 @@ describe('annenForelderValidering', () => {
     const intlMock = getIntlMock();
 
     it('skal feile validering når dato for aleneomsorg ikke er oppgitt', () => {
-        const familiehendelsedato = dayjs();
+        const familiehendelsedato = dayjs.utc();
         const datoForAleneomsorg = undefined;
 
         const resultat = validateDatoForAleneomsorg(intlMock, familiehendelsedato)(datoForAleneomsorg!);
@@ -18,7 +18,7 @@ describe('annenForelderValidering', () => {
     });
 
     it('skal feile validering når dato for aleneomsorg ikke er en gyldig dato', () => {
-        const familiehendelsedato = dayjs();
+        const familiehendelsedato = dayjs.utc();
         const datoForAleneomsorg = '202-01-01';
 
         const resultat = validateDatoForAleneomsorg(intlMock, familiehendelsedato)(datoForAleneomsorg);
@@ -27,7 +27,7 @@ describe('annenForelderValidering', () => {
     });
 
     it('skal feile validering når dato for aleneomsorg er før familiehendelse dato', () => {
-        const familiehendelsedato = dayjs('2021-02-02');
+        const familiehendelsedato = dayjs.utc('2021-02-02');
         const datoForAleneomsorg = '2021-01-01';
 
         const resultat = validateDatoForAleneomsorg(intlMock, familiehendelsedato)(datoForAleneomsorg);
@@ -36,7 +36,7 @@ describe('annenForelderValidering', () => {
     });
 
     it('skal ikke feile validering når dato for aleneomsorg er etter familiehendelse dato', () => {
-        const familiehendelsedato = dayjs('2021-02-02');
+        const familiehendelsedato = dayjs.utc('2021-02-02');
         const datoForAleneomsorg = '2021-03-03';
 
         const resultat = validateDatoForAleneomsorg(intlMock, familiehendelsedato)(datoForAleneomsorg);

@@ -49,13 +49,13 @@ interface Props {
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
     return uttaksplan.findIndex(
-        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato)
+        (p) => isValidTidsperiode(p.tidsperiode) && dayjs.utc(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato)
     );
 };
 
 const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: Date | undefined) => {
     if (dato !== undefined) {
-        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length);
+        return Math.max(0, uttaksplan.filter((p) => dayjs.utc(p.tidsperiode.tom).isBefore(dato, 'day')).length);
     }
     return undefined;
 };

@@ -21,7 +21,7 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
 
 const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[] | undefined, regBarnFødselsdato: Date | undefined) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.find((fødselsdato) => dayjs.utc(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
         : false;
 };
 
@@ -47,9 +47,10 @@ export const getFødselsdato = (barn: Barn): Date | undefined => {
 };
 
 export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: RegistrertBarn) => {
-    const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
+    const dato3MånederTilbake = dayjs.utc(new Date()).subtract(3, 'month');
     return (
-        registrerteBarn.dødsdato !== undefined && dayjs(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
+        registrerteBarn.dødsdato !== undefined &&
+        dayjs.utc(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
     );
 };
 
@@ -73,13 +74,13 @@ export const getAndreBarnFødtSammenMedBarnet = (
     barnFødselsdato: Date,
     registrerteBarn: RegistrertBarn[]
 ) => {
-    const dagenFørFødsel = dayjs(barnFødselsdato).subtract(1, 'day');
-    const dagenEtterFødsel = dayjs(barnFødselsdato).add(1, 'day');
+    const dagenFørFødsel = dayjs.utc(barnFødselsdato).subtract(1, 'day');
+    const dagenEtterFødsel = dayjs.utc(barnFødselsdato).add(1, 'day');
     return registrerteBarn.filter(
         (b) =>
             b.fnr !== barnFnr &&
-            dayjs(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
-            dayjs(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day')
+            dayjs.utc(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
+            dayjs.utc(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day')
     );
 };
 
@@ -132,7 +133,7 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined
     }
     const unikeFødselsdatoer = [] as Date[];
     fødselsdatoer.forEach((f) => {
-        const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
+        const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs.utc(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {
             unikeFødselsdatoer.push(f);
         }

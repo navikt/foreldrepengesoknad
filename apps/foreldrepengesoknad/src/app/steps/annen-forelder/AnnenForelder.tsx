@@ -50,7 +50,7 @@ const AnnenForelder = () => {
         søker,
         søkersituasjon: { rolle },
     } = useSøknad();
-    const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
+    const familiehendelsedato = dayjs.utc(getFamiliehendelsedato(barn));
     const søkerinfo = useSøkerinfo();
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerinfo.registrerteBarn);
     const registrertBarnMedAnnenForelder =

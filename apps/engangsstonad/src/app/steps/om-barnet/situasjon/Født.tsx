@@ -71,8 +71,8 @@ const Født: React.FunctionComponent<Fødtprops> = ({ visibility, formValues }) 
                                 key={`${OmBarnetFormField.fødselsdatoer}.0`}
                                 name={`${OmBarnetFormField.fødselsdatoer}.0` as OmBarnetFormField}
                                 label={getMessage(intl, 'søknad.fødselsdato')}
-                                minDate={dayjs().subtract(6, 'month').toDate()}
-                                maxDate={dayjs().toDate()}
+                                minDate={dayjs.utc().subtract(6, 'month').toDate()}
+                                maxDate={dayjs.utc().toDate()}
                                 validate={(value) => validateFødselDate(value, intl)}
                                 placeholder={'dd.mm.åååå'}
                             />,

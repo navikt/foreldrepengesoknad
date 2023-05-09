@@ -14,15 +14,15 @@ export const Perioden = (periode: Periode) => ({
         erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
     erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
     inneholderFridager: () => Tidsperioden(periode.tidsperiode).getAntallFridager() > 0,
-    starterFør: (dato: Date) => dayjs(periode.tidsperiode.fom).isBefore(dato, 'day'),
-    slutterEtter: (dato: Date) => dayjs(periode.tidsperiode.tom).isAfter(dato, 'day'),
-    slutterSammeDagEllerEtter: (dato: Date) => dayjs(periode.tidsperiode.tom).isSameOrAfter(dato, 'day'),
+    starterFør: (dato: Date) => dayjs.utc(periode.tidsperiode.fom).isBefore(dato, 'day'),
+    slutterEtter: (dato: Date) => dayjs.utc(periode.tidsperiode.tom).isAfter(dato, 'day'),
+    slutterSammeDagEllerEtter: (dato: Date) => dayjs.utc(periode.tidsperiode.tom).isSameOrAfter(dato, 'day'),
 });
 
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = Uttaksdagen(dayjs(p1.tidsperiode.tom).toDate()).neste();
+    const p1NesteUttaksdato = Uttaksdagen(dayjs.utc(p1.tidsperiode.tom).toDate()).neste();
     const p2Startdato = p2.tidsperiode.fom;
-    return dayjs(p1NesteUttaksdato).isSame(p2Startdato, 'day');
+    return dayjs.utc(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
 
 function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, inkluderUtsettelser = false) {

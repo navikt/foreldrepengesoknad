@@ -29,10 +29,9 @@ export const getInitialFarMedmorAleneomsorgFødselValues = (
     dekningsgrad: Dekningsgrad
 ): FarMedmorAleneomsorgFødselFormData => {
     if (lagretUttaksplanInfo) {
-        const startetPåOmsorgsovertakelse = dayjs(lagretUttaksplanInfo.startdatoUttak).isSame(
-            dayjs(datoForAleneomsorg),
-            'day'
-        );
+        const startetPåOmsorgsovertakelse = dayjs
+            .utc(lagretUttaksplanInfo.startdatoUttak)
+            .isSame(dayjs.utc(datoForAleneomsorg), 'day');
 
         return {
             dekningsgrad,

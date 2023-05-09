@@ -20,7 +20,7 @@ export const graderingSkalBesvares = (
         erFarMedmor &&
         konto === StønadskontoType.Foreldrepenger &&
         morErForSyk === false &&
-        dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdagInnenSeksUkerEtterFødsel, 'day');
+        dayjs.utc(tidsperiode.fom).isSameOrBefore(sisteUttaksdagInnenSeksUkerEtterFødsel, 'day');
     if (
         periodetype === Periodetype.Uttak &&
         konto !== StønadskontoType.ForeldrepengerFørFødsel &&

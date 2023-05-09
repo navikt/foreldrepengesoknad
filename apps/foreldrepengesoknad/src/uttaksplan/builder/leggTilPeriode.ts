@@ -103,10 +103,10 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiod
 const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode): number => {
     if (Periodene([periode]).finnOverlappendePerioder(nyPeriode).length > 0) {
         const dateArray = [
-            dayjs(periode.tidsperiode.fom),
-            dayjs(periode.tidsperiode.tom),
-            dayjs(nyPeriode.tidsperiode.fom),
-            dayjs(nyPeriode.tidsperiode.tom),
+            dayjs.utc(periode.tidsperiode.fom),
+            dayjs.utc(periode.tidsperiode.tom),
+            dayjs.utc(nyPeriode.tidsperiode.fom),
+            dayjs.utc(nyPeriode.tidsperiode.tom),
         ];
         const minDate = dayjs.min(dateArray);
         const maxDate = dayjs.max(dateArray);
@@ -150,8 +150,8 @@ export const leggTilPeriode = ({
     const nyPeriodeTomDate = nyPeriode.tidsperiode.tom;
 
     if (
-        dayjs(nyPeriodeFomDate).isBefore(familiehendelsesdato, 'day') &&
-        dayjs(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato, 'day')
+        dayjs.utc(nyPeriodeFomDate).isBefore(familiehendelsesdato, 'day') &&
+        dayjs.utc(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato, 'day')
     ) {
         // Nye perioder skal legges før eller etter famdato ikke begge deler
         return [...perioder];
@@ -169,7 +169,7 @@ export const leggTilPeriode = ({
         const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtPeriode);
         const antallDagerINyPeriode = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
 
-        if (dayjs(berørtPeriode.tidsperiode.fom).isSame(nyPeriodeFomDate)) {
+        if (dayjs.utc(berørtPeriode.tidsperiode.fom).isSame(nyPeriodeFomDate)) {
             return [
                 ...foregåendePerioder,
                 nyPeriode,
@@ -199,8 +199,8 @@ export const leggTilPeriode = ({
     } else {
         const førstePeriode = perioder[0];
         const sistePeriode = perioder[perioder.length - 1];
-        const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
-        const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);
+        const nyPeriodeFom = dayjs.utc(nyPeriode.tidsperiode.fom);
+        const nyPeriodeTom = dayjs.utc(nyPeriode.tidsperiode.tom);
 
         if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom, 'day')) {
             const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(

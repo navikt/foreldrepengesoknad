@@ -48,7 +48,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
         tidsperiode &&
         tidsperiode.fom &&
         tidsperiode.tom &&
-        dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+        dayjs.utc(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
             ? Tidsperioden({
                   fom: tidsperiode.fom,
                   tom: tidsperiode.tom,

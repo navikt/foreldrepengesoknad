@@ -22,7 +22,7 @@ export const farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkke
         konto === StønadskontoType.Foreldrepenger &&
         erMorForSyk === false &&
         situasjon === 'fødsel' &&
-        dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day')
+        dayjs.utc(tidsperiode.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day')
     );
 };
 

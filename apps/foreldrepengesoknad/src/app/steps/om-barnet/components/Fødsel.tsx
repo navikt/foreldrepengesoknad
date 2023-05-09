@@ -78,8 +78,8 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                             key={`${OmBarnetFormField.fødselsdatoer}.0`}
                             name={`${OmBarnetFormField.fødselsdatoer}.0` as OmBarnetFormField}
                             label={intlUtils(intl, intlIdFødsel)}
-                            minDate={dayjs().subtract(3, 'years').toDate()}
-                            maxDate={dayjs().toDate()}
+                            minDate={dayjs.utc().subtract(3, 'years').toDate()}
+                            maxDate={dayjs.utc().toDate()}
                             validate={validateFødselsdato(intl)}
                             placeholder={'dd.mm.åååå'}
                         />,
@@ -90,8 +90,8 @@ const Fødsel: FunctionComponent<Props> = ({ søkersituasjon, formValues, visibi
                 <OmBarnetFormComponents.DatePicker
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
-                    minDate={dayjs(fødselsdatoer[0]).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(fødselsdatoer[0]).add(6, 'months').toDate()}
+                    minDate={dayjs.utc(fødselsdatoer[0]).subtract(1, 'months').toDate()}
+                    maxDate={dayjs.utc(fødselsdatoer[0]).add(6, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}
                     validate={validateTermindatoFødsel(fødselsdatoer[0], intl)}
                 />

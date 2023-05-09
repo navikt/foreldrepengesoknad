@@ -112,5 +112,5 @@ export const getErSøkerFarEllerMedmor = (søkerRolle: Søkerrolle): boolean =>
     søkerRolle === 'far' || søkerRolle === 'medmor';
 
 export const erEldreEnn3ÅrOg3Måneder = (fødselsdato: Date) => {
-    return dayjs(fødselsdato).add(3, 'year').add(3, 'month').isBefore(dayjs(), 'day');
+    return dayjs.utc(fødselsdato).add(3, 'year').add(3, 'month').isBefore(dayjs.utc(), 'day');
 };

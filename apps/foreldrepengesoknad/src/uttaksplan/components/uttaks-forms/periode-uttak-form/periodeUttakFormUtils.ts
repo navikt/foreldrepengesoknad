@@ -89,7 +89,7 @@ const getInitialValues = (
     annenForelderHarRettIEØS: boolean
 ): PeriodeUttakFormData => {
     const periodenStarterFørFamdato = startdatoPeriode
-        ? dayjs(startdatoPeriode).isBefore(familiehendelsesdato, 'day')
+        ? dayjs.utc(startdatoPeriode).isBefore(familiehendelsesdato, 'day')
         : false;
     const hvemSkalTaUttak = getHvemSkalTaUttak(
         erDeltUttak,
@@ -360,7 +360,7 @@ const getKontoVerdi = (
     if (samtidigWLBUttakFørFødselFarMedmor) {
         return StønadskontoType.Fedrekvote;
     }
-    if (!erDeltUttak && erFarEllerMedmor && dayjs(startDato).isBefore(familiehendelsesdato, 'day')) {
+    if (!erDeltUttak && erFarEllerMedmor && dayjs.utc(startDato).isBefore(familiehendelsesdato, 'day')) {
         return StønadskontoType.AktivitetsfriKvote;
     }
 

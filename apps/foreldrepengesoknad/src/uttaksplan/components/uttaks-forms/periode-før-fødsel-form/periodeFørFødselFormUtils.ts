@@ -15,7 +15,7 @@ export const getPeriodeFørFødselFormInitialValues = (
     periode: ForeldrepengerFørFødselUttaksperiode,
     familiehendelsesdato: Date
 ): PeriodeFørFødselFormData => {
-    const sisteUttaksagFørFødsel = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
+    const sisteUttaksagFørFødsel = Uttaksdagen(dayjs.utc(familiehendelsesdato).toDate()).forrige();
     const førsteUttaksdag3UkerFørFødsel = Uttaksdagen(sisteUttaksagFørFødsel).trekkFra(
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1
     );

@@ -27,7 +27,7 @@ export const Uttaksdagen = (dato: Date) => ({
 });
 
 function getUkedag(dato: Date): number {
-    return dayjs(dato).isoWeekday();
+    return dayjs.utc(dato).isoWeekday();
 }
 
 export function erUttaksdag(dato: Date): boolean {
@@ -133,10 +133,10 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
  * @param til
  */
 function getUttaksdagerFremTilDato(fom: Date, tom: Date): number {
-    if (dayjs(fom).isSame(tom, 'day')) {
+    if (dayjs.utc(fom).isSame(tom, 'day')) {
         return 0;
     }
-    if (dayjs(fom).isBefore(tom, 'day')) {
+    if (dayjs.utc(fom).isBefore(tom, 'day')) {
         return Tidsperioden({ fom, tom }).getAntallUttaksdager() - 1;
     }
     return (

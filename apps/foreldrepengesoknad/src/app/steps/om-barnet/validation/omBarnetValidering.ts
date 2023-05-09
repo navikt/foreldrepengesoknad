@@ -29,7 +29,7 @@ export const validateFødselsdato = (intl: IntlShape) => (fødselsdato: string) 
         return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere');
     }
 
-    if (dayjs(fødselsdato).isBefore(dayjs(new Date()).subtract(3, 'years').subtract(4, 'months'), 'day')) {
+    if (dayjs.utc(fødselsdato).isBefore(dayjs.utc(new Date()).subtract(3, 'years').subtract(4, 'months'), 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake');
     }
 
@@ -89,10 +89,10 @@ export const validateTermindatoFødsel = (fødselsdato: string, intl: IntlShape)
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat');
     }
 
-    if (!dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
+    if (!dayjs.utc(termindato).subtract(6, 'months').isSameOrBefore(dayjs.utc(fødselsdato), 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.forLangtFremITid');
     }
-    if (!dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
+    if (!dayjs.utc(termindato).add(1, 'months').isSameOrAfter(dayjs.utc(fødselsdato), 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.forLangtTilbakeITid');
     }
 
@@ -120,7 +120,7 @@ export const validateAnkomstdato = (intl: IntlShape) => (ankomstdato: string, f�
         return intlUtils(intl, 'valideringsfeil.omBarnet.ankomstDato.ugyldigDatoFormat');
     }
 
-    if (fødselsdato !== undefined && !dayjs(fødselsdato).isSameOrBefore(ankomstdato, 'day')) {
+    if (fødselsdato !== undefined && !dayjs.utc(fødselsdato).isSameOrBefore(ankomstdato, 'day')) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.ankomstDato.førFødselsdato');
     }
 
@@ -136,7 +136,7 @@ export const validateTerminbekreftelse = (intl: IntlShape) => (terminbekreftelse
         return intlUtils(intl, 'valideringsfeil.omBarnet.terminbekreftelseDato.ugyldigDatoFormat');
     }
 
-    if (dayjs().isBefore(dayjs(terminbekreftelseDato))) {
+    if (dayjs.utc().isBefore(dayjs.utc(terminbekreftelseDato))) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid');
     }
 

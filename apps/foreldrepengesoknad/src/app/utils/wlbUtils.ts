@@ -58,16 +58,16 @@ export const isUttaksperiodeBareFarMedmorHarRett = (periode: Periode, morHarRett
 export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date, termindato: Date | undefined): Date => {
     const terminEllerFamHendelsesdatoMinusToUker =
         termindato !== undefined
-            ? dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day')
-            : dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
+            ? dayjs.utc(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day')
+            : dayjs.utc(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
+    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs.utc(familiehendelsesdato));
     return Uttaksdagen(datoÅRegneFra.toDate()).denneEllerNeste();
 };
 
 export const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): Date => {
     const førsteUttaksdagForPeriodeEtterFødsel = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     return Uttaksdagen(
-        dayjs(førsteUttaksdagForPeriodeEtterFødsel).add(ANTALL_DAGER_SEKS_UKER, 'day').toDate()
+        dayjs.utc(førsteUttaksdagForPeriodeEtterFødsel).add(ANTALL_DAGER_SEKS_UKER, 'day').toDate()
     ).forrige();
 };
 
@@ -77,16 +77,16 @@ export const starterTidsperiodeEtter2UkerFørFødsel = (
     termindato: Date | undefined
 ): boolean => {
     const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
-    return dayjs(tidsperiode.fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
+    return dayjs.utc(tidsperiode.fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
 };
 
 export const starterUttaksperiodeFørFødsel = (periode: Periode, familiehendelsesdato: Date): boolean => {
-    return isUttaksperiode(periode) && dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day');
+    return isUttaksperiode(periode) && dayjs.utc(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day');
 };
 
 export const slutterTidsperiodeInnen6UkerEtterFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
-    return dayjs(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
+    return dayjs.utc(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
 };
 
 export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
@@ -96,7 +96,7 @@ export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel 
 ) => {
     return (
         starterTidsperiodeEtter2UkerFørFødsel(tidsperiode, familiehendelsesdato, termindato) &&
-        dayjs(tidsperiode.fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
+        dayjs.utc(tidsperiode.fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
     );
 };
 
@@ -186,5 +186,5 @@ export const uttaksperiodeKanJusteresVedFødsel = (
     termindato: Date | undefined,
     uttaksperiodeFom: Date
 ) => {
-    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato);
+    return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs.utc(uttaksperiodeFom).isSame(termindato);
 };

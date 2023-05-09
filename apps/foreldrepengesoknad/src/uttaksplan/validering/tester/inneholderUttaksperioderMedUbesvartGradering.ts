@@ -20,9 +20,9 @@ export const inneholderUttaksperioderMedUbesvartGradering = (grunnlag: Søknadsi
         //Feilmeldingen skal ikke komme hvis spm om flerbarnsdager skal besvares først (kun for perioder etter fødsel).
         .filter((p) =>
             grunnlag.erFlerbarnssøknad
-                ? (dayjs(p.tidsperiode.fom).isSameOrAfter(grunnlag.familiehendelsesdato, 'd') &&
+                ? (dayjs.utc(p.tidsperiode.fom).isSameOrAfter(grunnlag.familiehendelsesdato, 'd') &&
                       p.ønskerFlerbarnsdager !== undefined) ||
-                  dayjs(p.tidsperiode.fom).isBefore(grunnlag.familiehendelsesdato, 'd')
+                  dayjs.utc(p.tidsperiode.fom).isBefore(grunnlag.familiehendelsesdato, 'd')
                 : p
         )
         .filter((p) => p.gradert === undefined);

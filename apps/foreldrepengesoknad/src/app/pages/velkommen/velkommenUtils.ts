@@ -45,8 +45,8 @@ export const getErDatoInnenEnDagFraAnnenDato = (dato1: Date | undefined, dato2: 
         return false;
     }
     return (
-        dayjs(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
-        dayjs(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
+        dayjs.utc(dato1).isSameOrAfter(dayjs.utc(dato2).subtract(1, 'day'), 'day') &&
+        dayjs.utc(dato1).isSameOrBefore(dayjs.utc(dato2).add(1, 'day'), 'day')
     );
 };
 
@@ -197,7 +197,7 @@ const getSelectableBarnOptionsFraPDL = (
         (b) =>
             !(
                 b.dødsdato !== undefined &&
-                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs(b.fødselsdato), 'day'))
+                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs.utc(dato).isSame(dayjs.utc(b.fødselsdato), 'day'))
             )
     );
     registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
@@ -261,7 +261,7 @@ export const getBarnFraNesteSak = (
             barn.sak !== undefined &&
             barn.id !== valgteBarn.id &&
             barn.familiehendelsesdato !== undefined &&
-            dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato!, 'day')
+            dayjs.utc(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato!, 'day')
     );
     allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst);
     const nesteBarn = allePåfølgendeBarn[allePåfølgendeBarn.length - 1];
@@ -278,9 +278,9 @@ export const getBarnFraNesteSak = (
 };
 
 export function sorterRegistrerteBarnEtterEldstOgNavn(b1: RegistrertBarn, b2: RegistrertBarn) {
-    if (dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
+    if (dayjs.utc(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
         return 1;
-    } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
+    } else if (dayjs.utc(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
         return -1;
     } else {
         return b1.fornavn < b2.fornavn ? -1 : 1;
@@ -288,9 +288,9 @@ export function sorterRegistrerteBarnEtterEldstOgNavn(b1: RegistrertBarn, b2: Re
 }
 
 export function sorterSelectableBarnEtterYngst(b1: SelectableBarn, b2: SelectableBarn) {
-    return dayjs(b1.sortableDato).isBefore(b2.sortableDato, 'd')
+    return dayjs.utc(b1.sortableDato).isBefore(b2.sortableDato, 'd')
         ? 1
-        : dayjs(b1.sortableDato).isAfter(b2.sortableDato, 'd')
+        : dayjs.utc(b1.sortableDato).isAfter(b2.sortableDato, 'd')
         ? -1
         : 0;
 }

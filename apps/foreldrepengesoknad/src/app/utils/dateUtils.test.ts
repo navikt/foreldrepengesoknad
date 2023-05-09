@@ -24,6 +24,8 @@ import {
     tidperiodeOverlapperDato,
     getToTetteReglerGjelder,
     getEldsteDato,
+    compareDates,
+    compareDatesNow,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
@@ -1110,5 +1112,17 @@ describe('dateUtils med tidssoner - riktig string-Date Date-string konvertering 
         const dateTilString = dateToISOString(datoStringToDate);
         expect(dateTilString).toEqual(testDato);
         timezone_mock.unregister();
+    });
+});
+
+describe('compareDates', () => {
+    it('String date to date', () => {
+        const datoString = '2023-01-01';
+        const result = compareDates(datoString);
+        expect(result).toEqual(true);
+    });
+    it('date now', () => {
+        const result = compareDatesNow();
+        expect(result).toEqual(true);
     });
 });

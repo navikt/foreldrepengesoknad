@@ -17,7 +17,10 @@ export const validateUtenlandsoppholdNeste12Mnd =
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert');
         }
 
-        const dateRanges = utenlandsopphold.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
+        const dateRanges = utenlandsopphold.map((u) => ({
+            from: dayjs.utc(u.fom).toDate(),
+            to: dayjs.utc(u.tom).toDate(),
+        }));
 
         if (dateRangesCollide(dateRanges)) {
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapp');
@@ -37,7 +40,10 @@ export const validateUtenlandsoppholdSiste12Mnd =
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert');
         }
 
-        const dateRanges = utenlandsopphold.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
+        const dateRanges = utenlandsopphold.map((u) => ({
+            from: dayjs.utc(u.fom).toDate(),
+            to: dayjs.utc(u.tom).toDate(),
+        }));
 
         if (dateRangesCollide(dateRanges)) {
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapp');

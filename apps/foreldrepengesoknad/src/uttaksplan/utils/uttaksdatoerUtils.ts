@@ -85,7 +85,8 @@ export function getFørsteMuligeUttaksdag(
 
 export function getSisteMuligeUttaksdag(familiehendelsesdato: Date): Date {
     return Uttaksdagen(
-        dayjs(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato))
+        dayjs
+            .utc(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato))
             .add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'year')
             .subtract(1, 'day')
             .toDate()
@@ -106,5 +107,5 @@ export const erInnenFørsteSeksUkerFødselFarMedmor = (
     ) {
         return false;
     }
-    return dayjs(tidsperiode.fom).isBefore(dayjs(førsteUttaksdagEtterSeksUker), 'day');
+    return dayjs.utc(tidsperiode.fom).isBefore(dayjs.utc(førsteUttaksdagEtterSeksUker), 'day');
 };

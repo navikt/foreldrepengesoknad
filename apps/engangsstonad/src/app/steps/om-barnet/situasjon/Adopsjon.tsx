@@ -39,7 +39,7 @@ const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues 
                                 ? getMessage(intl, 'omBarnet.adopsjon.spørsmål.stebarnsadopsjondato')
                                 : getMessage(intl, 'omBarnet.adopsjon.spørsmål.overtaomsorgdato')
                         }
-                        minDate={dayjs().subtract(6, 'month').toDate()}
+                        minDate={dayjs.utc().subtract(6, 'month').toDate()}
                         validate={
                             formValues.adopsjonAvEktefellesBarn === YesOrNo.YES
                                 ? (value) => validateEktefellensBarnAdopsjonDate(value, intl)
@@ -108,8 +108,8 @@ const Adopsjon: React.FunctionComponent<Fødtprops> = ({ visibility, formValues 
                                                           `omBarnet.adopsjon.spørsmål.fødselsdato.${index + 1}`
                                                       )
                                             }
-                                            minDate={dayjs().subtract(15, 'year').toDate()}
-                                            maxDate={dayjs().toDate()}
+                                            minDate={dayjs.utc().subtract(15, 'year').toDate()}
+                                            maxDate={dayjs.utc().toDate()}
                                             validate={(fødselsDatoer) =>
                                                 validateAdopsjonFødselDate(
                                                     fødselsDatoer,

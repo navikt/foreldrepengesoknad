@@ -13,7 +13,10 @@ export const validateStartdatoFarMedmor =
         if (!Uttaksdagen(ISOStringToDate(permisjonStartdato)!).erUttaksdag()) {
             return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoHelg');
         }
-        if (dayjs(permisjonStartdato).isBefore(minDato, 'd') || dayjs(permisjonStartdato).isAfter(maxDato, 'd')) {
+        if (
+            dayjs.utc(permisjonStartdato).isBefore(minDato, 'd') ||
+            dayjs.utc(permisjonStartdato).isAfter(maxDato, 'd')
+        ) {
             return intlUtils(intl, 'valideringsfeil.dateOutsideRange.fom', {
                 fom: formatDateExtended(minDato),
                 tom: formatDateExtended(maxDato),

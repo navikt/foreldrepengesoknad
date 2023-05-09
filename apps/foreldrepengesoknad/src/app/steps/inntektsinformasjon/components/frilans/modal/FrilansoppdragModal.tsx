@@ -35,7 +35,7 @@ interface Props {
 }
 
 const startetSomFrilansIForrigeKalenderårEllerTidligere = (oppstartsdato: string) => {
-    return dayjs(oppstartsdato).year() < dayjs().year();
+    return dayjs.utc(oppstartsdato).year() < dayjs.utc().year();
 };
 
 const FrilansoppdragModal: FunctionComponent<Props> = ({
@@ -99,8 +99,8 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                     placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     validate={validateOppdragFom(intl, formValues.tom!, oppstartsdato)}
-                                    minDate={dayjs(oppstartsdato).toDate()}
-                                    maxDate={dayjs().toDate()}
+                                    minDate={dayjs.utc(oppstartsdato).toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                     showYearSelector={startetSomFrilansIForrigeKalenderårEllerTidligere(oppstartsdato)}
                                 />
                             </Block>
@@ -123,8 +123,8 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                         formValues.fom!,
                                         oppstartsdato
                                     )}
-                                    minDate={dayjs(formValues.fom).toDate()}
-                                    maxDate={dayjs().toDate()}
+                                    minDate={dayjs.utc(formValues.fom).toDate()}
+                                    maxDate={dayjs.utc().toDate()}
                                     showYearSelector={true}
                                 />
                             </Block>

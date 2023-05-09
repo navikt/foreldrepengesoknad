@@ -35,7 +35,7 @@ export const erSamtidigUttakFarMedmorFørFødselWLB = (
         erDeltUttak &&
         situasjon === 'fødsel' &&
         hasValue(values.fom) &&
-        dayjs(values.fom).isBefore(familiehendelsesdato, 'day')
+        dayjs.utc(values.fom).isBefore(familiehendelsesdato, 'day')
     );
 };
 
@@ -54,7 +54,7 @@ export const erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB = (
         erDeltUttak &&
         situasjon === 'fødsel' &&
         hasValue(values.fom) &&
-        dayjs(values.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day')
+        dayjs.utc(values.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day')
     );
 };
 
@@ -88,7 +88,7 @@ const skalViseGradering = (
 
     if (
         regler.graderingSkalBesvaresPgaWLBUttakRundtFødsel() &&
-        dayjs(values.fom).isSameOrAfter(familiehendelsesdato, 'd') &&
+        dayjs.utc(values.fom).isSameOrAfter(familiehendelsesdato, 'd') &&
         (erDeltUttakINorge || harAnnenForelderRettIEØS(annenForelder)) &&
         !hasValue(values.uttakRundtFødselÅrsak)
     ) {

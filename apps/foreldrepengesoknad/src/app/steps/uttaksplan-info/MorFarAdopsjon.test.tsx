@@ -83,7 +83,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText(VELG_DATO_DATOFELT)).toBeInTheDocument();
         const datoInput = screen.getByLabelText(VELG_DATO_DATOFELT);
-        await userEvent.type(datoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(datoInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(
@@ -113,7 +113,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText(VELG_DATO_DATOFELT)).toBeInTheDocument();
         const datoInput = screen.getByLabelText(VELG_DATO_DATOFELT);
-        await userEvent.type(datoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(datoInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(
@@ -146,12 +146,12 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
         const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
-        await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(sisteDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
-        await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(førsteDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -181,12 +181,12 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
         const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
-        await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(sisteDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
-        await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(førsteDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -232,12 +232,12 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText('siste dag med foreldrepenger?', { exact: false })).toBeInTheDocument();
         const sisteDagInput = screen.getByLabelText('siste dag med foreldrepenger?', { exact: false });
-        await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(sisteDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
-        await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(førsteDagInput, dayjs.utc().format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();

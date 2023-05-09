@@ -48,7 +48,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
         const startetInput = screen.getByRole('textbox');
-        await userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(startetInput, dayjs.utc().subtract(5, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
@@ -83,7 +83,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
         const startetInput = screen.getByRole('textbox');
-        await userEvent.type(startetInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(startetInput, dayjs.utc().subtract(5, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe('<Inntektsinformasjon>', () => {
         await userEvent.type(virksomhetInput, 'Espens landhandel');
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await userEvent.type(fraOgMedInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(fraOgMedInput, dayjs.utc().subtract(5, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Er oppdraget pågående?')).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(tilOgMedInput, dayjs.utc().subtract(1, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Ok')).toBeInTheDocument();
@@ -175,7 +175,7 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(await screen.findByText('Oppgi dato for når du ble yrkesaktiv')).toBeInTheDocument();
         const yrkesaktivDatoInput = screen.getByLabelText('Oppgi dato for når du ble yrkesaktiv');
-        await userEvent.type(yrkesaktivDatoInput, dayjs().subtract(5, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(yrkesaktivDatoInput, dayjs.utc().subtract(5, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Har du regnskapsfører?')).toBeInTheDocument();
@@ -225,7 +225,7 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(await screen.findByText('Fra og med')).toBeInTheDocument();
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await userEvent.type(fraOgMedInput, dayjs().subtract(4, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(fraOgMedInput, dayjs.utc().subtract(4, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(await screen.findByText('Pågående')).toBeInTheDocument();
@@ -233,7 +233,7 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await userEvent.type(tilOgMedInput, dayjs().subtract(1, 'M').format('DD.MM.YYYY'));
+        await userEvent.type(tilOgMedInput, dayjs.utc().subtract(1, 'M').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(

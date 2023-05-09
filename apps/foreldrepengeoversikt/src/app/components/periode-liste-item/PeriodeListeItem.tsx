@@ -48,8 +48,8 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
     const tomDate = ISOStringToDate(tom);
     const tittel = getPeriodeTittel(intl, periode, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     const antallDagerIPeriode = getAntallUttaksdagerITidsperiode({
-        fom: dayjs(periode.fom).toDate(),
-        tom: dayjs(periode.tom).toDate(),
+        fom: dayjs.utc(periode.fom).toDate(),
+        tom: dayjs.utc(periode.tom).toDate(),
     });
     const navnSøker = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -96,18 +96,18 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                     </div>
                     <div className={bem.element('innhold-tekst-date')}>
                         <BodyShort size="small">
-                            {dayjs(fomDate).get('date')}. {måned3bokstaver(dayjs(fomDate))}.
+                            {dayjs.utc(fomDate).get('date')}. {måned3bokstaver(dayjs.utc(fomDate))}.
                         </BodyShort>
                         <BodyShort size="small" className={bem.modifier('year')}>
-                            {dayjs(fomDate).get('year')}
+                            {dayjs.utc(fomDate).get('year')}
                         </BodyShort>
                     </div>
                     <div className={bem.element('innhold-tekst-date')}>
                         <BodyShort size="small">
-                            {dayjs(tomDate).get('date')}. {måned3bokstaver(dayjs(tomDate))}.
+                            {dayjs.utc(tomDate).get('date')}. {måned3bokstaver(dayjs.utc(tomDate))}.
                         </BodyShort>
                         <BodyShort size="small" className={bem.modifier('year')}>
-                            {dayjs(tomDate).get('year')}
+                            {dayjs.utc(tomDate).get('year')}
                         </BodyShort>
                     </div>
                 </div>

@@ -189,17 +189,19 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 erAdopsjon &&
                                 isAdoptertBarn(barn) &&
                                 formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
-                                dayjs(latestDate).isBefore(
-                                    dayjs(
-                                        finnStartdatoAdopsjon(
-                                            formValues.startdatoAdopsjonValg!,
-                                            undefined,
-                                            dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato)
-                                        )
-                                    ),
-                                    'day'
-                                ) &&
+                                dayjs
+                                    .utc(latestDate)
+                                    .isBefore(
+                                        dayjs.utc(
+                                            finnStartdatoAdopsjon(
+                                                formValues.startdatoAdopsjonValg!,
+                                                undefined,
+                                                dateToISOString(barn.adopsjonsdato),
+                                                dateToISOString(ankomstdato)
+                                            )
+                                        ),
+                                        'day'
+                                    ) &&
                                 !isAdoptertStebarn(barn) &&
                                 !erDeltUttak
                             }

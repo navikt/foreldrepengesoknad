@@ -37,13 +37,13 @@ describe('<OmBarnet>', () => {
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
 
         const barnFødtInput = screen.getByLabelText('Når ble barnet født?');
-        await user.type(barnFødtInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(barnFødtInput, dayjs.utc().format('DD.MM.YYYY'));
 
         await user.tab();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
 
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await user.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs.utc().format('DD.MM.YYYY'));
 
         await user.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når er termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-        await user.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(
@@ -73,7 +73,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når er terminbekreftelsen datert?')).toBeInTheDocument();
         const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
-        await user.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(termindatoDatertInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Oppgi datoen for stebarnsadopsjon')).toBeInTheDocument();
         const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
-        await user.type(stebarnsadopsjonInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(stebarnsadopsjonInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
         const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
-        await user.type(barnetFødtInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(barnetFødtInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(
@@ -118,7 +118,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når overtar du omsorgen?')).toBeInTheDocument();
         const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
-        await user.type(overtaOmsorgDatoInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(overtaOmsorgDatoInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
@@ -126,7 +126,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
         const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
-        await user.type(barnetFødtInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(barnetFødtInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(screen.queryByText('Adopterer du fra utlandet?')).not.toBeInTheDocument();
@@ -151,7 +151,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når overtar du omsorgen?')).toBeInTheDocument();
         const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
-        await user.type(overtaOmsorgDatoInput, dayjs(new Date('2021-09-30')).format('DD.MM.YYYY'));
+        await user.type(overtaOmsorgDatoInput, dayjs.utc(new Date('2021-09-30')).format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
@@ -159,7 +159,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når ble barnet født?')).toBeInTheDocument();
         const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
-        await user.type(barnetFødtInput, dayjs(new Date('2021-09-01')).format('DD.MM.YYYY'));
+        await user.type(barnetFødtInput, dayjs.utc(new Date('2021-09-01')).format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText('Adopterer du fra utlandet?')).toBeInTheDocument();
@@ -167,7 +167,7 @@ describe('<OmBarnet>', () => {
 
         expect(await screen.findByText('Når kommer barnet til Norge?')).toBeInTheDocument();
         const kommerTilNorgeDatoInput = screen.getByLabelText('Når kommer barnet til Norge?');
-        await user.type(kommerTilNorgeDatoInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(kommerTilNorgeDatoInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(
@@ -197,7 +197,7 @@ describe('<OmBarnet>', () => {
             expect(await screen.findByText('Når er termindatoen?')).toBeInTheDocument();
 
             const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-            await user.type(termindatoInput, dayjs(new Date('2022-08-01')).format('DD.MM.YYYY'));
+            await user.type(termindatoInput, dayjs.utc(new Date('2022-08-01')).format('DD.MM.YYYY'));
             await user.tab();
 
             expect(
@@ -224,7 +224,7 @@ describe('<OmBarnet>', () => {
             expect(await screen.findByText('Når er termindatoen?')).toBeInTheDocument();
 
             const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-            await user.type(termindatoInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
+            await user.type(termindatoInput, dayjs.utc(new Date('2022-08-02')).format('DD.MM.YYYY'));
             await user.tab();
             expect(
                 screen.queryByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
@@ -243,7 +243,7 @@ describe('<OmBarnet>', () => {
 
             expect(await screen.findByText('Når er terminbekreftelsen datert?')).toBeInTheDocument();
             const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
-            await user.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
+            await user.type(termindatoDatertInput, dayjs.utc().format('DD.MM.YYYY'));
             await user.tab();
 
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -261,7 +261,7 @@ describe('<OmBarnet>', () => {
         expect(screen.getByText('Født 15.03.2021')).toBeInTheDocument();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await user.type(termindatoInput, dayjs(new Date('2021-03-01')).format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs.utc(new Date('2021-03-01')).format('DD.MM.YYYY'));
         await user.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         vi.useRealTimers();
@@ -291,7 +291,7 @@ describe('<OmBarnet>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await user.type(termindatoInput, dayjs(new Date('2021-03-17')).format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs.utc(new Date('2021-03-17')).format('DD.MM.YYYY'));
         await user.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         vi.useRealTimers();
@@ -309,7 +309,7 @@ describe('<OmBarnet>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hva var termindatoen?')).toBeInTheDocument();
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await user.type(termindatoInput, dayjs(new Date('2022-08-01')).format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs.utc(new Date('2022-08-01')).format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();

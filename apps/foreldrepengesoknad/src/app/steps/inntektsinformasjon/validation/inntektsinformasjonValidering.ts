@@ -12,7 +12,7 @@ export const validateFrilansoppstartsDato = (intl: IntlShape) => (oppstartsdato:
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppstartsDato.ugyldigDatoFormat');
     }
 
-    if (dayjs().isBefore(dayjs(oppstartsdato), 'day')) {
+    if (dayjs.utc().isBefore(dayjs.utc(oppstartsdato), 'day')) {
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppstartsDato.kanIkkeVæreFremITid');
     }
 

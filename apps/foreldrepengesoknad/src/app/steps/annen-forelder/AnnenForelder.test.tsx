@@ -241,7 +241,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         const datoAleneInput = screen.getByLabelText('Dato du ble alene om omsorgen');
-        await user.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
+        await user.type(datoAleneInput, dayjs.utc().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();

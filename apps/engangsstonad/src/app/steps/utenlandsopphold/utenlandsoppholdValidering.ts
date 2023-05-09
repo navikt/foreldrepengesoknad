@@ -14,7 +14,7 @@ import { IntlShape } from 'react-intl';
 dayjs.extend(isBetween);
 
 const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
-    return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
+    return dayjs.utc(date).isBetween(minDate, maxDate, 'day', '[]');
 };
 
 const validateDateInRange = (
@@ -47,7 +47,7 @@ const validateFromDate = (intl: IntlShape, date: Date | undefined, minDate: Date
     if (error !== undefined) {
         return error;
     }
-    if (toDate && dayjs(date).isAfter(toDate, 'day')) {
+    if (toDate && dayjs.utc(date).isAfter(toDate, 'day')) {
         return intlUtils(intl, 'valideringsfeil.utenlandsopphold.førTilDato');
     }
     return undefined;
@@ -58,7 +58,7 @@ const validateToDate = (intl: IntlShape, date: Date | undefined, minDate: Date, 
     if (error !== undefined) {
         return error;
     }
-    if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
+    if (fromDate && dayjs.utc(date).isBefore(fromDate, 'day')) {
         return intlUtils(intl, 'valideringsfeil.utenlandsopphold.etterFraDato');
     }
     return undefined;
@@ -74,7 +74,10 @@ export const validateUtenlandsoppholdNeste12Mnd = (utenlandsopphold: BostedUtlan
         return intlUtils(intl, 'valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert');
     }
 
-    const dateRanges = utenlandsopphold.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
+    const dateRanges = utenlandsopphold.map((u) => ({
+        from: dayjs.utc(u.fom).toDate(),
+        to: dayjs.utc(u.tom).toDate(),
+    }));
 
     if (dateRangesCollide(dateRanges)) {
         return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapp');
@@ -90,7 +93,10 @@ export const validateUtenlandsoppholdSiste12Mnd = (utenlandsopphold: BostedUtlan
         return intlUtils(intl, 'valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert');
     }
 
-    const dateRanges = utenlandsopphold.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
+    const dateRanges = utenlandsopphold.map((u) => ({
+        from: dayjs.utc(u.fom).toDate(),
+        to: dayjs.utc(u.tom).toDate(),
+    }));
 
     if (dateRangesCollide(dateRanges)) {
         return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapp');

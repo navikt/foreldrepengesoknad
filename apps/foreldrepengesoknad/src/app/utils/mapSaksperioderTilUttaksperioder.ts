@@ -72,10 +72,10 @@ const slåSammenLikePerioder = (
         if (
             Perioden(forrigePeriode).erLik(periode, false, true) &&
             Perioden(forrigePeriode).erSammenhengende(periode) &&
-            !dayjs(periode.tidsperiode.fom).isSame(familiehendelsesdato, 'day') &&
+            !dayjs.utc(periode.tidsperiode.fom).isSame(familiehendelsesdato, 'day') &&
             !(
                 førsteUttaksdagNesteBarnsSak !== undefined &&
-                dayjs(periode.tidsperiode.fom).isSame(førsteUttaksdagNesteBarnsSak, 'day')
+                dayjs.utc(periode.tidsperiode.fom).isSame(førsteUttaksdagNesteBarnsSak, 'day')
             )
         ) {
             forrigePeriode.tidsperiode.tom = periode.tidsperiode.tom;
@@ -202,7 +202,7 @@ const getErMorForSyk = (
         erFarEllerMedmor &&
         !saksperiode.flerbarnsdager &&
         !saksperiode.samtidigUttak &&
-        dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'), 'day') &&
+        dayjs.utc(saksperiode.periode.fom).isBefore(dayjs.utc(familiehendelsesdato).add(6, 'weeks'), 'day') &&
         konto !== StønadskontoType.AktivitetsfriKvote
     ) {
         if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {

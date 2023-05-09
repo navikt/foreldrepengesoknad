@@ -67,8 +67,8 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
                     <OmBarnetFormComponents.DatePicker
                         name={OmBarnetFormField.termindato}
                         label={getMessage(intl, 'søknad.termindato')}
-                        minDate={dayjs().subtract(3, 'week').toDate()}
-                        maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                        minDate={dayjs.utc().subtract(3, 'week').toDate()}
+                        maxDate={dayjs.utc().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={(value) => validateTerminDate(value, intl)}
                         placeholder={'dd.mm.åååå'}
                     />
@@ -95,8 +95,8 @@ const Termin: React.FunctionComponent<Fødtprops> = ({ visibility, formValues })
                     <OmBarnetFormComponents.DatePicker
                         name={OmBarnetFormField.terminbekreftelsedato}
                         label={getMessage(intl, 'søknad.terminbekreftelsesdato')}
-                        minDate={dayjs(formValues.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
-                        maxDate={dayjs().toDate()}
+                        minDate={dayjs.utc(formValues.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
+                        maxDate={dayjs.utc().toDate()}
                         validate={(terminBekreftelseDato) =>
                             valideringAvTerminbekreftelsesdato(terminBekreftelseDato, formValues.termindato, intl)
                         }

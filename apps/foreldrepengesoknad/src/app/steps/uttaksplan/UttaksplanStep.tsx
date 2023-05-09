@@ -202,7 +202,7 @@ const UttaksplanStep = () => {
         if (
             førsteUttaksdagAnnenPart !== undefined &&
             state.barnFraNesteSak !== undefined &&
-            (dayjs(førsteUttaksdagAnnenPart).isBefore(state.barnFraNesteSak.startdatoFørsteStønadsperiode, 'd') ||
+            (dayjs.utc(førsteUttaksdagAnnenPart).isBefore(state.barnFraNesteSak.startdatoFørsteStønadsperiode, 'd') ||
                 state.barnFraNesteSak.startdatoFørsteStønadsperiode === undefined)
         ) {
             const oppdatertBarnNesteSak = {

@@ -15,7 +15,9 @@ export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: Søknadsinf
         .shift();
     const erLikEllerMindreEnnFireUkerTilUttaketStarter =
         førsteUttaksEllerUttsettelsesPeriode !== undefined &&
-        dayjs(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom).isSameOrBefore(dayjs().add(4, 'weeks'), 'day');
+        dayjs
+            .utc(førsteUttaksEllerUttsettelsesPeriode.tidsperiode.fom)
+            .isSameOrBefore(dayjs.utc().add(4, 'weeks'), 'day');
     const regelTekst = erLikEllerMindreEnnFireUkerTilUttaketStarter
         ? 'uttaksplan.validering.info.manglendeVedlegg'
         : 'uttaksplan.validering.advarsel.forTidligUtenDokumentasjon';

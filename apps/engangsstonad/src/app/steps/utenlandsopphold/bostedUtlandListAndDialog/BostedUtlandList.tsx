@@ -26,8 +26,8 @@ const BostedUtlandList: React.FunctionComponent<Props> = ({ bosteder, onDelete, 
                     {!onEdit && <span>{navn}</span>}
                 </span>
                 <span className={bem.element('dato')}>
-                    {formatDateExtended(dayjs(opphold.fom).toDate())} -{' '}
-                    {formatDateExtended(dayjs(opphold.tom).toDate())}
+                    {formatDateExtended(dayjs.utc(opphold.fom).toDate())} -{' '}
+                    {formatDateExtended(dayjs.utc(opphold.tom).toDate())}
                 </span>
             </div>
         );

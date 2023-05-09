@@ -357,8 +357,8 @@ const erPeriodeFomEllerEtterDato = (periode: Periode, dato: Date): boolean => {
     return (
         periode.tidsperiode.fom !== undefined &&
         periode.tidsperiode.tom !== undefined &&
-        dayjs(periode.tidsperiode.fom).isSameOrAfter(dato, 'day') &&
-        dayjs(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
+        dayjs.utc(periode.tidsperiode.fom).isSameOrAfter(dato, 'day') &&
+        dayjs.utc(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
     );
 };
 
@@ -370,7 +370,7 @@ export const erGradering = (periode: Periode) => periode.type === Periodetype.Ut
 
 export const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
     (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
-    dayjs(periode.tidsperiode.fom).isBefore(dayjs().startOf('day').subtract(3, 'months'), 'day');
+    dayjs.utc(periode.tidsperiode.fom).isBefore(dayjs.utc().startOf('day').subtract(3, 'months'), 'day');
 
 export const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
     periode.årsak === UtsettelseÅrsakType.Sykdom ||
@@ -443,7 +443,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
             .find(
                 (p) =>
                     isUttakAnnenPart(p) &&
-                    dayjs(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
+                    dayjs.utc(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
                     p.ønskerSamtidigUttak === true &&
                     p.id !== periode.id
             );

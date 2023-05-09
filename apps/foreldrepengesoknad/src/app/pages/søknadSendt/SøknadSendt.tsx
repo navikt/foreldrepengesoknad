@@ -22,12 +22,11 @@ import { BodyShort, Ingress, Link, Loader } from '@navikt/ds-react';
 import './søknadSendt.less';
 
 const getBehandlingsFrist = (uttaksplan: Periode[]): string => {
-    const førsteUttaksdag = dayjs(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak()).subtract(
-        4,
-        'weeks'
-    );
+    const førsteUttaksdag = dayjs
+        .utc(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak())
+        .subtract(4, 'weeks');
 
-    const førsteMuligeBehandlingsfrist = dayjs(new Date()).isSameOrAfter(førsteUttaksdag, 'day')
+    const førsteMuligeBehandlingsfrist = dayjs.utc(new Date()).isSameOrAfter(førsteUttaksdag, 'day')
         ? new Date()
         : førsteUttaksdag.toDate();
 

@@ -1,10 +1,10 @@
 {
     "søknad": {
         "type": "foreldrepenger",
-        "harGodkjentVilkår": true,
+        "harGodkjentVilkår": false,
         "søkersituasjon": {
-            "situasjon": "fødsel",
-            "rolle": "far"
+            "rolle": "",
+            "situasjon": ""
         },
         "annenForelder": {
             "kanIkkeOppgis": false
@@ -23,8 +23,7 @@
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/om-barnet",
+    "currentRoute": "/",
     "perioderSomSkalSendesInn": [],
-    "harUttaksplanBlittSlettet": false,
-    "søknadGjelderEtNyttBarn": true
+    "harUttaksplanBlittSlettet": false
 }

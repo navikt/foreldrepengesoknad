@@ -53,7 +53,7 @@ export const getAktiveArbeidsforhold = (
         (a) =>
             a.tom === undefined ||
             a.tom === null ||
-            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(a.tom, 'days'))
+            (fraDato !== undefined && dayjs.utc(fraDato).isSameOrBefore(a.tom, 'days'))
     );
 };
 
@@ -79,7 +79,7 @@ export const getKunArbeidsforholdForValgtTidsperiode = (
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
             if (a.tom === undefined) {
-                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.fom), 'day')) {
+                if (dayjs.utc(tidsperiode.fom).isSameOrAfter(dayjs.utc(a.fom), 'day')) {
                     return true;
                 }
 

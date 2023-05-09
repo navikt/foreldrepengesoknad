@@ -27,7 +27,7 @@ export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
         bareFarMedmorHarRett ||
         !andreAugust2022ReglerGjelder(familiehendelsesdato) ||
         situasjon !== 'fødsel' ||
-        dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')
+        dayjs.utc(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')
     ) {
         return false;
     }

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
-    return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
+    return dayjs.utc(dato).isBetween(dayjs.utc(fom), dayjs.utc(tom), 'day', '[]');
 };
 
 const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (

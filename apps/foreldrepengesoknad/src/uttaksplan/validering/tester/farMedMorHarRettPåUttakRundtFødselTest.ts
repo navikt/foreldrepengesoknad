@@ -46,7 +46,8 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
     } else {
         dagerIgjenRundtFødsel = ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL;
     }
-    const erMerEnn3månederSidenFamiliehendelse = dayjs(new Date())
+    const erMerEnn3månederSidenFamiliehendelse = dayjs
+        .utc(new Date())
         .subtract(3, 'month')
         .isSameOrAfter(grunnlag.familiehendelsesdato, 'day');
 

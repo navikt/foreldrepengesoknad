@@ -27,10 +27,12 @@ const slutterInnenforGyldigPermisjonsperiode = (
 ) => ({
     test: () =>
         dato !== undefined &&
-        dayjs(dato).isSameOrBefore(
-            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).sisteMuligeUttaksdagEtterTermin,
-            'day'
-        ),
+        dayjs
+            .utc(dato)
+            .isSameOrBefore(
+                uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).sisteMuligeUttaksdagEtterTermin,
+                'day'
+            ),
     failText: { intlKey: 'uttaksplan.validering.feil.etterSistePermisjonsdag' },
 });
 
@@ -42,10 +44,12 @@ const starterInnenforGyldigAntallUkerFørTermin = (
 ) => ({
     test: () =>
         dato !== undefined &&
-        dayjs(dato).isSameOrAfter(
-            uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).førsteMuligeUttaksdagFørTermin,
-            'day'
-        ),
+        dayjs
+            .utc(dato)
+            .isSameOrAfter(
+                uttaksdatoer(familiehendelsesdato, erFarEllerMedmor, termindato).førsteMuligeUttaksdagFørTermin,
+                'day'
+            ),
     failText: { intlKey: 'uttaksplan.validering.feil.før12UkerFørTermin' },
 });
 

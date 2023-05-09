@@ -101,13 +101,13 @@ const getDatoAvgrensninger = (
             minDato: førsteMuligeUttaksdag,
             maksDato: tidsperiode
                 ? ISOStringToDate(tom)!
-                : dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
+                : dayjs.utc(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },
         til: {
             minDato: tidsperiode ? ISOStringToDate(fom)! : førsteMuligeUttaksdag,
-            maksDato: dayjs(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
+            maksDato: dayjs.utc(familiehendelsesdato).add(3, 'years').subtract(1, 'day').toDate(),
             ugyldigeTidsperioder,
             helgedagerIkkeTillatt: true,
         },

@@ -303,18 +303,20 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             padBottom="xl"
                             visible={
                                 formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
-                                dayjs(latestDate).isBefore(
-                                    dayjs(
-                                        finnStartdatoAdopsjon(
-                                            formValues.startdatoAdopsjonValg,
-                                            formValues.annenStartdatoAdopsjon,
-                                            dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato),
-                                            formValues.søkersFørsteDag
-                                        )
-                                    ),
-                                    'day'
-                                ) &&
+                                dayjs
+                                    .utc(latestDate)
+                                    .isBefore(
+                                        dayjs.utc(
+                                            finnStartdatoAdopsjon(
+                                                formValues.startdatoAdopsjonValg,
+                                                formValues.annenStartdatoAdopsjon,
+                                                dateToISOString(barn.adopsjonsdato),
+                                                dateToISOString(ankomstdato),
+                                                formValues.søkersFørsteDag
+                                            )
+                                        ),
+                                        'day'
+                                    ) &&
                                 !isAdoptertStebarn(barn) &&
                                 !erDeltUttak
                             }

@@ -74,16 +74,15 @@ export const slåSammenLikePerioder = (
             }
 
             if (
-                (dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
-                    dayjs(periode.tidsperiode.tom).isSameOrAfter(
-                        Uttaksdagen(familiehendelsesdato).denneEllerNeste()
-                    )) ||
+                (dayjs.utc(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
+                    dayjs
+                        .utc(periode.tidsperiode.tom)
+                        .isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())) ||
                 (førsteUttaksdagNesteBarnsSak !== undefined &&
-                    dayjs(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
-                    dayjs(periode.tidsperiode.fom).isSameOrAfter(
-                        Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
-                        'day'
-                    ))
+                    dayjs.utc(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
+                    dayjs
+                        .utc(periode.tidsperiode.fom)
+                        .isSameOrAfter(Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(), 'day'))
             ) {
                 nyePerioder.push(forrigePeriode);
                 forrigePeriode = periode;
@@ -144,7 +143,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
             Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato);
 
         const farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene =
-            dayjs(tidsperiode.fom).isBefore(førsteUttaksdagEtterSeksUker, 'day') &&
+            dayjs.utc(tidsperiode.fom).isBefore(førsteUttaksdagEtterSeksUker, 'day') &&
             !erAdopsjon &&
             ((bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
                 (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)));
@@ -153,12 +152,12 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
             return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, årsak), førsteUttaksdagNesteBarnsSak);
         }
 
-        if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
+        if (dayjs.utc(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
             return getSplittetPeriodeOmNødvendig(getNyPeriodeUtenUttak(tidsperiode), førsteUttaksdagNesteBarnsSak);
         }
 
         if (tidsperiodeErInnenFørsteSeksUker && !erAdopsjon) {
-            if (dayjs(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker, 'day')) {
+            if (dayjs.utc(tidsperiode.tom).isBefore(førsteUttaksdagEtterSeksUker, 'day')) {
                 if (
                     (bareFarHarRett && førsteOktober2021ReglerGjelder(familiehendelsesdato)) ||
                     (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato))
@@ -278,7 +277,7 @@ export const finnOgSettInnHull = (
     const result = perioder.reduce((res, periode, index) => {
         if (index === 0 && erFarEllerMedmor) {
             const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-            if (dayjs(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.tidsperiode.fom)) {
+            if (dayjs.utc(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.tidsperiode.fom)) {
                 const tidsperiodeMellom6ukerEtterFødselOgPerioden: TidsperiodeDate = {
                     fom: førsteUttaksdagFamiliehendelsesdato,
                     tom: Uttaksdagen(periode.tidsperiode.fom).forrige(),
@@ -316,11 +315,11 @@ export const finnOgSettInnHull = (
             tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige(),
         };
 
-        if (dayjs(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
+        if (dayjs.utc(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
             return res;
         }
 
-        if (!erFarEllerMedmor && dayjs(tidsperiodeMellomPerioder.tom).isBefore(familiehendelsesdato, 'day')) {
+        if (!erFarEllerMedmor && dayjs.utc(tidsperiodeMellomPerioder.tom).isBefore(familiehendelsesdato, 'day')) {
             return res;
         }
 
@@ -498,12 +497,12 @@ export const settInnAnnenPartsUttak = (
 
     const førstePeriodeStartdato = perioder[0].tidsperiode.fom;
     const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
-        dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day')
+        dayjs.utc(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day')
     );
 
     const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
     const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
-        dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day')
+        dayjs.utc(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day')
     );
 
     return slåSammenLikePerioder(

@@ -99,7 +99,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
                                                 ? intlUtils(intl, 'omBarnet.fødselsdato')
                                                 : intlUtils(intl, `omBarnet.fødselsdato.adopsjon.${index + 1}`)
                                         }
-                                        minDate={dayjs().subtract(6, 'month').toDate()}
+                                        minDate={dayjs.utc().subtract(6, 'month').toDate()}
                                         maxDate={ISOStringToDate(formValues.adopsjonsdato)}
                                         validate={(value) =>
                                             validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)

@@ -84,7 +84,7 @@ describe('PeriodeUttakForm - tidsrom input', () => {
     it('skal ikke kunne gå videre med tom som er før fom', async () => {
         render(<NyPeriodeForMorEttBarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2021-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2021-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(
@@ -102,7 +102,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
     it('mor skal kunne legge til sin egen kvote med samtidig uttak og delvis arbeid', async () => {
         render(<NyPeriodeForMorEttBarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(await screen.findByText(VARGHET_PÅ_PERIODEN)).toBeInTheDocument();
@@ -157,7 +157,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
     it('mor skal kunne legge til uttak til far av fars kvote eller fellesperiode', async () => {
         render(<NyPeriodeForMorEttBarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -181,7 +181,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
     it('mor skal kunne legge til overføring av fars kvote', async () => {
         render(<NyPeriodeForMorEttBarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -211,7 +211,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
     it('far skal kunne legge til sin egen kvote med samtidig uttak og delvis arbeid', async () => {
         render(<NyPeriodeForFar1BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(await screen.findByText(VARGHET_PÅ_PERIODEN)).toBeInTheDocument();
@@ -266,7 +266,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
     it('far skal kunne legge mors uttak', async () => {
         render(<NyPeriodeForFar1BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -286,7 +286,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
     it('far skal kunne legge til overføring av mors kvote til seg selv', async () => {
         render(<NyPeriodeForFar1BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -314,7 +314,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
     it('far skal kunne legge til periode før fødsel', async () => {
         render(<NyPeriodeFørFødselForFar1BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-01')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-01')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -331,7 +331,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, delt uttak i Norge', () => {
     it('skal kunne legge til sin egen kvote med flerbarnsdager, samtidig uttak, og delvis arbeid, fra 7. uke etter fødsel', async () => {
         render(<NyPeriodeForFar2BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(await screen.findByText(VARGHET_PÅ_PERIODEN)).toBeInTheDocument();
@@ -372,7 +372,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, delt uttak i Norge', () => {
     it('skal kunne legge til sin egen kvote rundt fødsel med samtidig uttak, flerbarnsdager og delvis arbeid', async () => {
         render(<NyPeriodeRundtFødselForFar2BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-02')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
         expect(await screen.findByText(VARGHET_PÅ_PERIODEN)).toBeInTheDocument();
@@ -414,7 +414,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, delt uttak i Norge', () => {
     it('skal kunne legge til sin egen kvote rundt fødsel uten samtidig uttak fordi mor er syk', async () => {
         render(<NyPeriodeRundtFødselForFar2BarnDeltUttakINorge />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-02')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-02')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -447,7 +447,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
     it('skal kun vise relevante spørsmål når far velger kvote med aktivitetskrav', async () => {
         render(<NyPeriodeForBareFarHarRett />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -482,7 +482,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
     it('skal kun vise relevante spørsmål når far velger kvote uten aktivitetskrav', async () => {
         render(<NyPeriodeForBareFarHarRett />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -512,7 +512,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
     it('skal kun vise relevante spørsmål når far søker rundt fødsel', async () => {
         render(<NyPeriodeForBareFarHarRettRundtFødsel />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-05')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-05')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -557,7 +557,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett, 2 barn, mor ikke uf�
     it('skal kunne si ja til flerbarnsdager som utgjør foreldrepenger uten aktivitetskrav, og da ikke bli spurt om mors aktivitet. Hvis sier nei til flerbanrsdager, skal bli spurt om mor er for syk.', async () => {
         render(<NyPeriodeBFHRToBarnFørWLBMorIkkeUfør />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-08')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-08')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -624,7 +624,7 @@ describe('PeriodeUttakForm - Far søker, bare far har rett, 2 barn, mor ikke uf�
     it('skal vise relevante spørsmål, og ikke stille spørsmål om flerbarnsdager siden to kvoter med og uten aktivitetskrav finnes', async () => {
         render(<NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-15')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-15')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -681,7 +681,7 @@ describe('PeriodeUttakForm - Far søker, aleneomsorg', () => {
     it('skal kun vise relevante spørsmål når far har aleneomsorg', async () => {
         render(<NyPeriodeFarAleneomssorg />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -713,7 +713,7 @@ describe('PeriodeUttakForm - Mor søker, aleneomsorg', () => {
     it('skal kun vise relevante spørsmål når mor har aleneomsorg', async () => {
         render(<NyPeriodeMorAleneomssorg />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -742,7 +742,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål for mor når hun velger sin kvote', async () => {
         render(<NyPeriodeForMorEttBarnFarHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -770,7 +770,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål for mor når hun ønsker å ta ut fars kvote', async () => {
         render(<NyPeriodeForMorEttBarnFarHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -803,7 +803,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål for mor når hun velger fellesperiode', async () => {
         render(<NyPeriodeForMorEttBarnFarHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -830,7 +830,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål når far velger sin kvote', async () => {
         render(<NyPeriodeForFarEttBarnMorHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -858,7 +858,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål når far ønsker å ta ut fars kvote', async () => {
         render(<NyPeriodeForFarEttBarnMorHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -891,7 +891,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål med aktivitetskrav for mor når far velger fellesperiode', async () => {
         render(<NyPeriodeForFarEttBarnMorHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -920,7 +920,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
     it('skal vise relevante spørsmål når far legger til periode rundt fødsel', async () => {
         render(<NyPeriodeForFarEttBarnMorHarRettIEØSSøkerFørste6Uker />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-05')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-08-05')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -950,7 +950,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, mor har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål for far når det er to barn og far legger til fedrekvote', async () => {
         render(<NyPeriodeForFarToBarnMorHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
@@ -978,7 +978,7 @@ describe('PeriodeUttakForm - Far søker, 2 barn, mor har kun rett i EØS', () =>
     it('skal kun vise relevante spørsmål for far når det er to barn og far legger til fellesperiode', async () => {
         render(<NyPeriodeForFarToBarnMorHarRettIEØS />);
         const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.type(tomDagInput, dayjs.utc(new Date('2022-09-23')).format('DD.MM.YYYY'));
         await userEvent.tab();
         await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
