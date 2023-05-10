@@ -67,7 +67,7 @@ const Step: React.FunctionComponent<StepProps> = ({
                 </>
             )}
             <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${pageTitle}`}>
-                <Block margin="xl">{children}</Block>
+                <Block>{children}</Block>
 
                 {(onCancel || onContinueLater) && (
                     <div
