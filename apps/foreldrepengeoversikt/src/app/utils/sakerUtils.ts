@@ -287,8 +287,9 @@ export const getSakTittel = (
             .join(', ');
         const sisteFornavn = fornavn[fornavn.length - 1];
         navn = `${fornavnene} og ${sisteFornavn}`;
+    } else {
+        navn = `${fornavn[0]}`;
     }
-    navn = `${fornavn[0]}`;
 
     if (type === 'fødsel') {
         const fødtDatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
