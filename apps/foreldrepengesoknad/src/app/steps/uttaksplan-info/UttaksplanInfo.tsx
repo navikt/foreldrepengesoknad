@@ -174,7 +174,6 @@ const UttaksplanInfo = () => {
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            // backLinkHref={getPreviousStepHref('uttaksplanInfo')}
             activeStepId="uttaksplanInfo"
             pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
             onCancel={onAvbrytSøknad}
