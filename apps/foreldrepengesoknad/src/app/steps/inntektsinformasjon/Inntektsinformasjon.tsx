@@ -133,7 +133,7 @@ const Inntektsinformasjon = () => {
                                 <InfoTilFiskere />
                             </Block>
 
-                            <Block>
+                            <Block margin="xl">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"
