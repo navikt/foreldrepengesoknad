@@ -41,10 +41,11 @@ import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
+import { Button } from '@navikt/ds-react';
+import useAbortSignal from 'app/utils/hooks/useAbortSignal';
+import { PaperplaneIcon } from '@navikt/aksel-icons';
 
 import './oppsummering.less';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import useAbortSignal from 'app/utils/hooks/useAbortSignal';
 
 const Oppsummering = () => {
     const intl = useIntl();
@@ -180,11 +181,6 @@ const Oppsummering = () => {
                             steps={stepConfig(intl, erEndringssøknad)}
                         >
                             <Block padBottom="l">
-                                <GuidePanel>
-                                    <FormattedMessage id="oppsummering.veileder" />
-                                </GuidePanel>
-                            </Block>
-                            <Block padBottom="l">
                                 <div className={bem.block}>
                                     <OppsummeringsPanel title="Deg">
                                         <Personalia søkerinfo={søkerinfo} />
@@ -249,8 +245,8 @@ const Oppsummering = () => {
                                     validate={validateHarGodkjentOppsummering(intl)}
                                 />
                             </Block>
-                            <Block padBottom="l">
-                                <StepButtonWrapper>
+                            <Block margin="l" padBottom="l">
+                                <StepButtonWrapper lastStep={true}>
                                     <Button
                                         variant="secondary"
                                         as={Link}
@@ -262,7 +258,13 @@ const Oppsummering = () => {
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button type="submit" disabled={formSubmitted} loading={formSubmitted}>
+                                    <Button
+                                        icon={<PaperplaneIcon />}
+                                        iconPosition="right"
+                                        type="submit"
+                                        disabled={formSubmitted}
+                                        loading={formSubmitted}
+                                    >
                                         {submitKnappTekst}
                                     </Button>
                                 </StepButtonWrapper>

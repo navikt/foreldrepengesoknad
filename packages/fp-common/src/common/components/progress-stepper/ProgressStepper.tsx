@@ -136,7 +136,6 @@ const ProgressStepper: React.FunctionComponent<ProgressStepperProps> = ({
                             <Expand className="progressStepper__toggleAllStepsIcon" aria-hidden />
                         )}
                         {allStepsVisible && <Collapse className="progressStepper__toggleAllStepsIcon" aria-hidden />}
-                        {labels.showAllStepsLabel}
                     </button>
                 </div>
                 <div id={contentContainerID} aria-hidden={allStepsVisible === false} aria-live="polite">

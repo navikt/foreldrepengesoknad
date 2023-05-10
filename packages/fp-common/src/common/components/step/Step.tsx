@@ -56,7 +56,7 @@ const Step: React.FunctionComponent<StepProps> = ({
         >
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
             {showStepIndicator && (
-                <>
+                <Block padBottom="m">
                     <div role="presentation" aria-hidden={true}>
                         <ProgressStepper
                             steps={steps}
@@ -64,10 +64,10 @@ const Step: React.FunctionComponent<StepProps> = ({
                             titleHeadingLevel="2"
                         ></ProgressStepper>
                     </div>
-                </>
+                </Block>
             )}
             <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${pageTitle}`}>
-                <Block margin="xl">{children}</Block>
+                <Block>{children}</Block>
 
                 {(onCancel || onContinueLater) && (
                     <div
