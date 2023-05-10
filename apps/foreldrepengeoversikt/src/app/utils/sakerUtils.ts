@@ -279,32 +279,23 @@ export const getSakTittel = (
     if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
         return getTittelBarnNårNavnSkalIkkeVises(familiehendelsesdato, fødselsdatoer, antallBarn, intl, type);
     }
-
+    let navn;
     if (fornavn.length > 1) {
         const fornavnene = fornavn
             .map((n) => n.trim())
             .slice(0, -1)
             .join(', ');
         const sisteFornavn = fornavn[fornavn.length - 1];
-        return `${fornavnene} og ${sisteFornavn}`;
+        navn = `${fornavnene} og ${sisteFornavn}`;
     }
-    return `${fornavn[0]}`;
-};
+    navn = `${fornavn[0]}`;
 
-export const getSakUndertittel = (
-    fornavn: string[] | undefined,
-    fødselsdatoer: Date[] | undefined,
-    type: Situasjon,
-    familiehendelsedato: Date,
-    allebarnaLever: boolean
-) => {
-    const viserNavnPåBarn = fornavn !== undefined && fornavn.length > 0 && allebarnaLever;
-    if (type === 'fødsel' && viserNavnPåBarn) {
+    if (type === 'fødsel') {
         const fødtDatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        return `Født ${fødtDatoTekst}`;
+        return `${navn} født ${fødtDatoTekst}`;
     }
-    if (type === 'adopsjon' && viserNavnPåBarn) {
-        return `Adoptert ${formatDate(familiehendelsedato)}`;
+    if (type === 'adopsjon') {
+        return `${navn} adoptert ${formatDate(familiehendelsesdato)}`;
     }
-    return undefined;
+    return '';
 };
