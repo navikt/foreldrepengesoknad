@@ -367,7 +367,7 @@ const AnnenForelder = () => {
                                     })}
                                 </ReadMore>
                             </Block>
-                            <Block>
+                            <Block margin="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousStepHref('annenForelder')}>
                                         <FormattedMessage id="backlink.label" />

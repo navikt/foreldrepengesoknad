@@ -148,7 +148,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                                 barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
                             />
-                            <Block>
+                            <Block margin="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>
                                         <FormattedMessage id="backlink.label" />
