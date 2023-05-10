@@ -15,10 +15,10 @@ export const jsonSort = (json: any): string => {
 
     const sort = (o: any): any => {
         if (Array.isArray(o)) {
-            return o.sort().map(sort);
+            return o.sort((a, b) => a.localeCompare(b)).map(sort);
         } else if (isObject(o)) {
             return Object.keys(o)
-                .sort()
+                .sort((a, b) => a.localeCompare(b))
                 .reduce((a: any, k) => {
                     a[k] = sort(o[k]);
                     return a;
