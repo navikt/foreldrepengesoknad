@@ -10,3 +10,11 @@
 .step-button-wrapper > button {
     width: 50%;
 }
+
+.step-button-wrapper--last-step > a {
+    width: 40%;
+}
+
+.step-button-wrapper--last-step > button {
+    width: 60%;
+}

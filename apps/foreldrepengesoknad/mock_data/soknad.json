@@ -125,7 +125,7 @@
         "ønskerJustertUttakVedFødsel": false
     },
     "version": 5,
-    "currentRoute": "/soknad/inntektsinformasjon",
+    "currentRoute": "/soknad/oppsummering",
     "uttaksplanInfo": {
         "permisjonStartdato": "2023-05-10"
     },
