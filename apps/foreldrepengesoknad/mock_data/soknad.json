@@ -42,7 +42,7 @@
             {
                 "type": "info",
                 "infotype": "uttakAnnenPart",
-                "id": "62994652-0284-27608-7685-0884387978405",
+                "id": "94598485-3146-4850-8219-099700565427589",
                 "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
                 "tidsperiode": {
                     "fom": "2022-12-12T00:00:00.000Z",
@@ -58,7 +58,7 @@
             {
                 "type": "info",
                 "infotype": "uttakAnnenPart",
-                "id": "344121478-0389-3541-11559-08696299708647",
+                "id": "1952508969-08971-7069-1330-12772226609679",
                 "årsak": "UTTAK_FELLESP_ANNEN_FORELDER",
                 "tidsperiode": {
                     "fom": "2023-02-20T00:00:00.000Z",
@@ -72,7 +72,7 @@
                 "visPeriodeIPlan": true
             },
             {
-                "id": "2072214629-3653-07154-2905-64890553229679",
+                "id": "2139002374-01672-18801-18782-268496865513",
                 "type": "periodeUtenUttak",
                 "tidsperiode": {
                     "fom": "2023-03-06T00:00:00.000Z",
@@ -82,7 +82,7 @@
             {
                 "type": "info",
                 "infotype": "uttakAnnenPart",
-                "id": "003004732-5636-06429-4963-845093517124",
+                "id": "240387510-5422-12292-22187-01780786115298",
                 "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
                 "tidsperiode": {
                     "fom": "2023-03-20T00:00:00.000Z",
@@ -95,7 +95,7 @@
                 "visPeriodeIPlan": true
             },
             {
-                "id": "098742541-19499-15417-21299-7684577816910",
+                "id": "44979574-19413-12116-06845-10522236216914",
                 "type": "periodeUtenUttak",
                 "tidsperiode": {
                     "fom": "2023-04-03T00:00:00.000Z",
@@ -103,7 +103,7 @@
                 }
             },
             {
-                "id": "0373420422-0742-3610-8171-5312105011314",
+                "id": "2123213145-6427-8430-24879-9010795806668",
                 "forelder": "farMedmor",
                 "konto": "FEDREKVOTE",
                 "tidsperiode": {
@@ -125,7 +125,7 @@
         "ønskerJustertUttakVedFødsel": false
     },
     "version": 5,
-    "currentRoute": "/soknad/oppsummering",
+    "currentRoute": "/soknad/inntektsinformasjon",
     "uttaksplanInfo": {
         "permisjonStartdato": "2023-05-10"
     },
@@ -152,7 +152,7 @@
         },
         "saksperioder": [
             {
-                "guid": "2882915433-18176-5844-1582-144080848706440",
+                "guid": "2451405238-16907-8432-8756-03421009118102",
                 "periode": {
                     "fom": "2022-12-12",
                     "tom": "2023-02-17"
@@ -169,7 +169,7 @@
                 "samtidigUttak": 100
             },
             {
-                "guid": "684817013-18706-14690-06404-23185176993949",
+                "guid": "0886819552-01683-7383-5531-0936012406940",
                 "periode": {
                     "fom": "2023-02-20",
                     "tom": "2023-03-05"
@@ -186,7 +186,7 @@
                 "samtidigUttak": 50
             },
             {
-                "guid": "133591420-01017-5463-8846-15341930228275",
+                "guid": "2037022478-03801-27477-28028-07683572229150",
                 "periode": {
                     "fom": "2023-03-20",
                     "tom": "2023-03-31"
@@ -206,7 +206,7 @@
             {
                 "type": "info",
                 "infotype": "uttakAnnenPart",
-                "id": "62994652-0284-27608-7685-0884387978405",
+                "id": "94598485-3146-4850-8219-099700565427589",
                 "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
                 "tidsperiode": {
                     "fom": "2022-12-12T00:00:00.000Z",
@@ -222,7 +222,7 @@
             {
                 "type": "info",
                 "infotype": "uttakAnnenPart",
-                "id": "344121478-0389-3541-11559-08696299708647",
+                "id": "1952508969-08971-7069-1330-12772226609679",
                 "årsak": "UTTAK_FELLESP_ANNEN_FORELDER",
                 "tidsperiode": {
                     "fom": "2023-02-20T00:00:00.000Z",
@@ -238,7 +238,7 @@
             {
                 "type": "info",
                 "infotype": "uttakAnnenPart",
-                "id": "003004732-5636-06429-4963-845093517124",
+                "id": "240387510-5422-12292-22187-01780786115298",
                 "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
                 "tidsperiode": {
                     "fom": "2023-03-20T00:00:00.000Z",
@@ -254,7 +254,7 @@
     },
     "perioderSomSkalSendesInn": [
         {
-            "id": "0373420422-0742-3610-8171-5312105011314",
+            "id": "2123213145-6427-8430-24879-9010795806668",
             "forelder": "farMedmor",
             "konto": "FEDREKVOTE",
             "tidsperiode": {
