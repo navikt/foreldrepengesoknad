@@ -44,7 +44,7 @@ describe('dateUtils', () => {
         MockDate.reset();
     });
 
-    it('skal konvertere string til Date', () => {
+    it('skal konvertere string til Date riktig', () => {
         const dato = ISOStringToDate('2021-05-05');
 
         expect(dato?.getTime()).toBe(new Date('2021-05-05').getTime());
