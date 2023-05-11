@@ -1,4 +1,4 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, guid, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -88,9 +88,8 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
                     render={() =>
                         [...Array(parseInt(formValues.antallBarn!, 10))].map((_, index) => {
                             return (
-                                <Block key={index} padBottom="xl">
+                                <Block key={guid()} padBottom="xl">
                                     <OmBarnetFormComponents.DatePicker
-                                        key={`${OmBarnetFormField.fødselsdatoer}.${index}`}
                                         name={
                                             `${OmBarnetFormField.fødselsdatoer}.${index}` as unknown as OmBarnetFormField
                                         }

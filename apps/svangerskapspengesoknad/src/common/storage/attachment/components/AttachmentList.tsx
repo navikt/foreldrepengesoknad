@@ -2,6 +2,7 @@ import AttachmentComponent from './Attachment';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './attachment.less';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { guid } from '@navikt/fp-common';
 
 interface Props {
     attachments: Attachment[];
@@ -14,8 +15,8 @@ const AttachmentList: React.FunctionComponent<Props> = (props) => {
     return (
         <ul className="attachmentList">
             <TransitionGroup>
-                {attachments.map((attachment, index) => (
-                    <CSSTransition classNames="transitionFade" timeout={500} key={index}>
+                {attachments.map((attachment) => (
+                    <CSSTransition classNames="transitionFade" timeout={500} key={guid()}>
                         <li>
                             <AttachmentComponent
                                 attachment={attachment}

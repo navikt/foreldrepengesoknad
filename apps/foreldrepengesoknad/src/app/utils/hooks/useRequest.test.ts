@@ -42,7 +42,3 @@ describe('useGetRequest', () => {
         expect(result.current.error).toBeNull();
     });
 });
-
-// describe('usePostRequest', () => {
-//     //TODO Tests
-// });
