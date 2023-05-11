@@ -25,7 +25,10 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import { morFarFødselAnnenForelderHarRettIEØSQuestionsConfig } from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
+import {
+    morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
+    MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
+} from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
 import {
     MorFarFødselAnnenForelderHarRettIEØSFormComponents as MorFarFødselAnnenForelderHarRettIEØSFormComponents,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
@@ -41,7 +44,6 @@ import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import uttaksConstants from 'app/constants';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Button, GuidePanel } from '@navikt/ds-react';
-import { MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload } from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
 import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 
