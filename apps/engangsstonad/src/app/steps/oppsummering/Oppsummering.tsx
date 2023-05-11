@@ -15,15 +15,14 @@ import oppsummeringQuestionsConfig from './oppsummeringQuestionsConfig';
 import { EngangsstønadSøknadDto } from 'app/types/domain/EngangsstønadSøknad';
 import { mapStateForInnsending } from 'app/util/apiUtils';
 import Api from 'app/api/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import actionCreator from 'app/context/action/actionCreator';
 import { onAvbrytSøknad } from 'app/util/globalUtil';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
+import OmDegOppsummering from './OmDegOppsummering';
 
 import './oppsummering.less';
-import OmDegOppsummering from './OmDegOppsummering';
-import { Link } from 'react-router-dom';
 
 interface Props {
     person: Person;
