@@ -1,10 +1,9 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Heading, Modal } from '@navikt/ds-react';
+import { Button, Heading, Modal, BodyShort } from '@navikt/ds-react';
 import { AdvarselIkon, bemUtils, intlUtils } from '@navikt/fp-common';
-import { BodyShort } from '@navikt/ds-react';
+import { FunctionComponent, useState } from 'react';
 
 import './byttBrowserModal.less';
-import { FunctionComponent, useState } from 'react';
 
 export interface Props {
     skalEndreNettleser: boolean;

@@ -29,12 +29,11 @@ import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd 
 
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
+import { Button } from '@navikt/ds-react';
 
 import './utenlandsopphold.less';
-import { Button } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();

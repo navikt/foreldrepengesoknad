@@ -1,6 +1,5 @@
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
 import matchers from '@testing-library/jest-dom/matchers';
-import { vi } from 'vitest';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { Modal } from '@navikt/ds-react';

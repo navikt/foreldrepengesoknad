@@ -10,7 +10,7 @@ import {
 } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import getMessage from 'common/util/i18nUtils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import stepConfig, { getPreviousStepHref } from 'app/step-config/stepConfig';
@@ -26,7 +26,6 @@ import Adopsjon from './situasjon/Adopsjon';
 import Person from 'app/types/domain/Person';
 
 import './omBarnet.less';
-import { Link } from 'react-router-dom';
 
 interface Props {
     person: Person;
