@@ -150,6 +150,8 @@ export const getUtsettelseÅrsakFromSaksperiode = (
             return UtsettelseÅrsakType.HvØvelse;
         case UtsettelseÅrsakTypeDTO.NavTiltak:
             return UtsettelseÅrsakType.NavTiltak;
+        case UtsettelseÅrsakTypeDTO.Fri:
+            return UtsettelseÅrsakType.Fri;
         default:
             return undefined;
     }
