@@ -4,6 +4,7 @@ import { Field, FieldProps } from 'formik';
 import { Omit, get } from 'lodash';
 import { translateError } from 'app/utils/errorUtils';
 import { Radio, RadioGroup as RadioGroupDS, RadioGroupProps, RadioProps } from '@navikt/ds-react';
+import { guid } from '@navikt/fp-common';
 
 export type FormikRadioProp = Omit<RadioProps, 'children' | 'name'> & {
     label: React.ReactNode;
@@ -36,11 +37,11 @@ const RadioGroup: FunctionComponent<Props> = (props) => {
                         }}
                         error={feil}
                     >
-                        {radios.map((rb, idx) => {
+                        {radios.map((rb) => {
                             const { label, ...rest } = rb;
                             return (
                                 <Radio
-                                    key={idx}
+                                    key={guid()}
                                     {...rest}
                                     name={field.name as any}
                                     onChange={(evt) => {
