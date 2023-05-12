@@ -284,6 +284,9 @@ importers:
       '@formatjs/intl-relativetimeformat':
         specifier: ^11.1.4
         version: 11.1.4
+      '@navikt/aksel-icons':
+        specifier: ^2.8.11
+        version: 2.8.14
       '@navikt/ds-css':
         specifier: ^2.8.11
         version: 2.8.11

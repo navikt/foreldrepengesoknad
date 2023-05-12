@@ -15,7 +15,7 @@ export const jsonSort = (json: any): string => {
 
     const sort = (o: any): any => {
         if (Array.isArray(o)) {
-            return o.sort((a, b) => a.localeCompare(b)).map(sort);
+            return o.sort().map(sort);
         } else if (isObject(o)) {
             return Object.keys(o)
                 .sort((a, b) => a.localeCompare(b))
