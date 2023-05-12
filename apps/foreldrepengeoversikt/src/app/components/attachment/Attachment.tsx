@@ -2,7 +2,8 @@ import { bemUtils } from '@navikt/fp-common';
 import { Attachment as AttachmentType } from 'app/types/Attachment';
 import { Button, Link, Loader } from '@navikt/ds-react';
 import { bytesString } from 'app/utils/attachmentUtils';
-import { FileSuccess, Delete } from '@navikt/ds-icons';
+import { FileSuccess } from '@navikt/ds-icons';
+import { XMarkIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 
 import './attachment.css';
@@ -41,9 +42,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                         attachment.pending ? bem.modifier('pending') : undefined
                     )}
                 >
-                    <Button variant="tertiary" icon={<Delete aria-hidden />} onClick={() => onDelete(attachment)}>
-                        Slett dokument
-                    </Button>
+                    <Button variant="tertiary" icon={<XMarkIcon aria-hidden />} onClick={() => onDelete(attachment)} />
                 </div>
             )}
         </div>

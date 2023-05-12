@@ -1,6 +1,6 @@
 import { Add } from '@navikt/ds-icons';
-import { Alert, BodyLong, BodyShort, Button, Heading, ReadMore } from '@navikt/ds-react';
-import { bemUtils, Block, intlUtils, PictureScanningGuide } from '@navikt/fp-common';
+import { Alert, BodyLong, BodyShort, Button, Heading, Link as NAVLink } from '@navikt/ds-react';
+import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import AttachmentList from 'app/components/attachment/AttachmentList';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
@@ -121,6 +121,11 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                             <BodyShort className={bem.element('beskrivelse')}>
                                 Du kan laste opp dokumenter i formatene pdf, png og jpg.
                             </BodyShort>
+                            <Block padBottom="l">
+                                <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
+                                    Les om hvordan du kan ta bilde av dokumenter med mobilen
+                                </NAVLink>
+                            </Block>
                             <EttersendingFormComponents.Select
                                 className={bem.element('select')}
                                 label="Hva inneholder dokumentene dine?"
@@ -162,12 +167,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                                     </div>
                                 ))}
                             </Block>
-                            <Block padBottom="l">
-                                <ReadMore header={intlUtils(intl, 'pictureScanningGuide.apneLabel')}>
-                                    <PictureScanningGuide backgroundColor="white" />
-                                </ReadMore>
-                            </Block>
-                            <Block padBottom="l">
+                            <Block padBottom="l" visible={values.vedlegg ? values.vedlegg.length > 0 : false}>
                                 <Button
                                     type="submit"
                                     icon={<Add />}
