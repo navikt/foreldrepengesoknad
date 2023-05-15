@@ -55,7 +55,7 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
     const { tidsperiode, id, ...rest } = periode;
     const sortedPeriode: any = {};
     Object.keys(rest)
-        .sort()
+        .sort((a, b) => a.localeCompare(b))
         .filter((key) => (rest as any)[key] !== undefined)
         .forEach((key) => {
             sortedPeriode[key] = (rest as any)[key];

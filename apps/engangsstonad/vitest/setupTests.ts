@@ -1,7 +1,6 @@
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
 import matchers from '@testing-library/jest-dom/matchers';
 import { Modal } from '@navikt/ds-react';
-import { vi } from 'vitest';
 
 expect.extend(matchers);
 

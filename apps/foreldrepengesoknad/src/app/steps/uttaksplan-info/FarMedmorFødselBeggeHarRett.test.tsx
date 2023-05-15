@@ -8,7 +8,7 @@ import MockDate from 'mockdate';
 const { UttaksplanInfoFarMedmorFødselBeggeHarRett, UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB } =
     composeStories(stories);
 
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 80', async () => {

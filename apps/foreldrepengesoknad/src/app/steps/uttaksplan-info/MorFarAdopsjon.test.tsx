@@ -8,7 +8,7 @@ const { UttaksplanMedAleneomsorg, UttaksplanMedDeltUttakDerFarSøker, Uttaksplan
     composeStories(stories);
 
 const PERIODE_LENGDE_LABEL = 'Hvor lang periode med foreldrepenger ønsker du?';
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 const VELG_DATO_DATOFELT = 'Velg dato';
 const JA = 'Ja';
 const NEI = 'Nei';

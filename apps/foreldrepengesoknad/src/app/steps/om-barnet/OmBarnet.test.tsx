@@ -21,7 +21,7 @@ const {
 
 const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
 
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 const JA = 'Ja';
 const NEI = 'Nei';
 

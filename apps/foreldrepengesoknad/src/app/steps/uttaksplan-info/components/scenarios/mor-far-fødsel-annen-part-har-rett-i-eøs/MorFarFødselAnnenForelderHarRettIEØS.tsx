@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, StepButtonWrapper, hasValue, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
@@ -25,7 +25,10 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import { morFarFødselAnnenForelderHarRettIEØSQuestionsConfig } from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
+import {
+    morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
+    MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
+} from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
 import {
     MorFarFødselAnnenForelderHarRettIEØSFormComponents as MorFarFødselAnnenForelderHarRettIEØSFormComponents,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
@@ -41,7 +44,8 @@ import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import uttaksConstants from 'app/constants';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Button, GuidePanel } from '@navikt/ds-react';
-import { MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload } from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
+import { Link } from 'react-router-dom';
+import { getPreviousStepHref } from 'app/steps/stepsConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -241,10 +245,17 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 />
                             </GuidePanel>
                         </Block>
-                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                {intlUtils(intl, 'søknad.gåVidere')}
-                            </Button>
+                        <Block>
+                            <StepButtonWrapper>
+                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
+                                    <FormattedMessage id="backlink.label" />
+                                </Button>
+                                {visibility.areAllQuestionsAnswered() && (
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
+                                )}
+                            </StepButtonWrapper>
                         </Block>
                     </MorFarFødselAnnenForelderHarRettIEØSFormComponents.Form>
                 );

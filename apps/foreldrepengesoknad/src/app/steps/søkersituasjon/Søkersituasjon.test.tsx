@@ -5,7 +5,7 @@ import * as stories from './Søkersituasjon.stories';
 
 const { Default } = composeStories(stories);
 
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<Søkersituasjon>', () => {
     it('skal ha født og søke som mor', async () => {

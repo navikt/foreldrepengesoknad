@@ -1,0 +1,20 @@
+.step-button-wrapper {
+    gap: 0 0.5rem;
+    display: flex;
+}
+
+.step-button-wrapper > a {
+    width: 50%;
+}
+
+.step-button-wrapper > button {
+    width: 50%;
+}
+
+.step-button-wrapper--last-step > a {
+    width: 40%;
+}
+
+.step-button-wrapper--last-step > button {
+    width: 60%;
+}

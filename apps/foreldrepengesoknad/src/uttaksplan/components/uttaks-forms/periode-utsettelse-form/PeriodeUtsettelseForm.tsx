@@ -75,13 +75,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
-    const { tidsperiode, id } = periode;
+    const { id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUtsettelseForm');
-
-    const antallHelligdager = Tidsperioden(tidsperiode).getAntallFridager();
-    const antallUttaksdager = Tidsperioden(tidsperiode).getAntallUttaksdager();
-    const periodenErKunHelligdager = antallHelligdager === antallUttaksdager;
     const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false; // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
     const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
 
@@ -122,11 +118,14 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 if (isValid !== periodeIsValid) {
                     setPeriodeIsValid(isValid);
                 }
+                const antallHelligdager = Tidsperioden({ fom: values.fom!, tom: values.tom! }).getAntallFridager();
+                const antallUttaksdager = Tidsperioden({ fom: values.fom!, tom: values.tom! }).getAntallUttaksdager();
+                const periodenErKunHelligdager = antallHelligdager === antallUttaksdager;
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode(tidsperiode)} padBottom="xl">
+                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                             <TidsperiodeForm
-                                tidsperiode={tidsperiode}
+                                tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
                                 onBekreft={(values) => {
                                     setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));
@@ -149,9 +148,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 />
                             )}
 
-                            <Block visible={isValidTidsperiode(tidsperiode)} padBottom="xl">
+                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                                 <TidsperiodeDisplay
-                                    tidsperiode={tidsperiode}
+                                    tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}
                                 />
                                 <UtsettelseEndreTidsperiodeSpørsmål
@@ -170,7 +169,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                             setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
                                         }, 0);
                                     }}
-                                    tidsperiode={tidsperiode}
+                                    tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     onAvbryt={() => toggleVisTidsperiode()}
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
@@ -184,9 +183,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     periodenErKunHelligdager={periodenErKunHelligdager}
                                     skalViseGamleUtsettelseÅrsaker={skalViseGamleUtsettelseÅrsaker}
                                     erFarEllerMedmor={erFarEllerMedmor}
-                                    tidsperiodenErInnenforFørsteSeksUker={Tidsperioden(
-                                        tidsperiode
-                                    ).erInnenforFørsteSeksUker(familiehendelsesdato)}
+                                    tidsperiodenErInnenforFørsteSeksUker={Tidsperioden({
+                                        fom: values.fom!,
+                                        tom: values.tom!,
+                                    }).erInnenforFørsteSeksUker(familiehendelsesdato)}
                                     utsettelseårsak={values.årsak!}
                                     vedlegg={values.vedlegg!}
                                     erMorUfør={erMorUfør}

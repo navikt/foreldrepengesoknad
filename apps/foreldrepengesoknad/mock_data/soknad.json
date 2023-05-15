@@ -1,29 +1,351 @@
 {
     "søknad": {
         "type": "foreldrepenger",
-        "harGodkjentVilkår": false,
+        "harGodkjentVilkår": true,
         "søkersituasjon": {
-            "rolle": "",
-            "situasjon": ""
+            "situasjon": "fødsel",
+            "rolle": "far"
+        },
+        "barn": {
+            "type": "ufødt",
+            "antallBarn": 1,
+            "termindato": "2023-05-10T00:00:00.000Z"
         },
         "annenForelder": {
-            "kanIkkeOppgis": false
+            "etternavn": "sdfsdf",
+            "fornavn": "MOR",
+            "fnr": "02068629902",
+            "utenlandskFnr": false,
+            "erUfør": false,
+            "kanIkkeOppgis": false,
+            "harRettPåForeldrepengerINorge": false,
+            "harOppholdtSegIEØS": false,
+            "harRettPåForeldrepengerIEØS": false
         },
         "søker": {
-            "språkkode": "nb"
+            "erAleneOmOmsorg": false,
+            "språkkode": "nb",
+            "harHattAnnenInntektSiste10Mnd": false,
+            "harJobbetSomFrilansSiste10Mnd": false,
+            "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd": false,
+            "andreInntekterSiste10Mnd": [],
+            "selvstendigNæringsdrivendeInformasjon": []
         },
         "informasjonOmUtenlandsopphold": {
+            "iNorgeNeste12Mnd": true,
+            "iNorgeSiste12Mnd": true,
             "tidligereOpphold": [],
             "senereOpphold": []
         },
         "erEndringssøknad": false,
-        "uttaksplan": [],
-        "harGodkjentOppsummering": false,
+        "dekningsgrad": "100",
+        "uttaksplan": [
+            {
+                "type": "info",
+                "infotype": "uttakAnnenPart",
+                "id": "633415563-04974-09886-0528-02799028354706",
+                "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
+                "tidsperiode": {
+                    "fom": "2022-12-12T00:00:00.000Z",
+                    "tom": "2023-02-17T00:00:00.000Z"
+                },
+                "forelder": "mor",
+                "overskrives": true,
+                "gradert": false,
+                "ønskerSamtidigUttak": true,
+                "samtidigUttakProsent": "100",
+                "visPeriodeIPlan": true
+            },
+            {
+                "type": "info",
+                "infotype": "uttakAnnenPart",
+                "id": "265049332-28752-09964-1479-4954187176216",
+                "årsak": "UTTAK_FELLESP_ANNEN_FORELDER",
+                "tidsperiode": {
+                    "fom": "2023-02-20T00:00:00.000Z",
+                    "tom": "2023-03-03T00:00:00.000Z"
+                },
+                "forelder": "mor",
+                "overskrives": true,
+                "gradert": false,
+                "ønskerSamtidigUttak": true,
+                "samtidigUttakProsent": "50",
+                "visPeriodeIPlan": true
+            },
+            {
+                "id": "03087660-22376-9742-24157-2124842076613",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2023-03-06T00:00:00.000Z",
+                    "tom": "2023-03-17T00:00:00.000Z"
+                }
+            },
+            {
+                "type": "info",
+                "infotype": "uttakAnnenPart",
+                "id": "616209732-0968-6152-9215-165359749297",
+                "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
+                "tidsperiode": {
+                    "fom": "2023-03-20T00:00:00.000Z",
+                    "tom": "2023-03-31T00:00:00.000Z"
+                },
+                "forelder": "mor",
+                "overskrives": true,
+                "gradert": false,
+                "ønskerSamtidigUttak": false,
+                "visPeriodeIPlan": true
+            },
+            {
+                "id": "2104914811-6101-04189-0940-0135292149921",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2023-04-03T00:00:00.000Z",
+                    "tom": "2023-05-09T00:00:00.000Z"
+                }
+            },
+            {
+                "id": "17854164-1686-7717-02179-9533151287749",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2023-05-10T00:00:00.000Z",
+                    "tom": "2023-06-20T00:00:00.000Z"
+                }
+            },
+            {
+                "id": "38386159-09691-12153-05743-786902585311",
+                "type": "ubegrunnetOpphold",
+                "tidsperiode": {
+                    "fom": "2023-06-21T00:00:00.000Z",
+                    "tom": "2023-09-06T00:00:00.000Z"
+                },
+                "årsak": "fridag"
+            },
+            {
+                "id": "65219968-03128-06144-6050-29787012619871",
+                "forelder": "farMedmor",
+                "konto": "AKTIVITETSFRI_KVOTE",
+                "tidsperiode": {
+                    "fom": "2023-09-07T00:00:00.000Z",
+                    "tom": "2023-11-01T00:00:00.000Z"
+                },
+                "type": "uttak",
+                "erArbeidstaker": false,
+                "gradert": false,
+                "harIkkeAktivitetskrav": true,
+                "orgnumre": [],
+                "vedlegg": []
+            },
+            {
+                "id": "2587407768-1227-7467-3346-29743085764053",
+                "forelder": "farMedmor",
+                "konto": "FORELDREPENGER",
+                "tidsperiode": {
+                    "fom": "2023-11-02T00:00:00.000Z",
+                    "tom": "2024-06-12T00:00:00.000Z"
+                },
+                "type": "uttak",
+                "morsAktivitetIPerioden": "ARBEID_OG_UTDANNING",
+                "erArbeidstaker": false,
+                "gradert": false,
+                "orgnumre": [],
+                "vedlegg": [
+                    {
+                        "id": "V1955923691132117369194280388105513345",
+                        "file": {
+                            "name": "",
+                            "size": ""
+                        },
+                        "filename": "",
+                        "filesize": "",
+                        "uploaded": false,
+                        "pending": false,
+                        "type": "morsaktivitetdokumentasjon",
+                        "skjemanummer": "I000038",
+                        "innsendingsType": "SEND_SENERE"
+                    }
+                ]
+            }
+        ],
+        "harGodkjentOppsummering": true,
         "vedlegg": [],
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/",
-    "perioderSomSkalSendesInn": [],
-    "harUttaksplanBlittSlettet": false
+    "currentRoute": "/soknad/uttaksplan-info",
+    "uttaksplanInfo": {
+        "permisjonStartdato": "2023-09-07"
+    },
+    "antallUkerIUttaksplan": 46,
+    "eksisterendeSak": {
+        "saksnummer": "",
+        "erAnnenPartsSak": true,
+        "grunnlag": {
+            "dekningsgrad": "100",
+            "antallBarn": 1,
+            "morErAleneOmOmsorg": false,
+            "morErUfør": false,
+            "morHarRett": true,
+            "farMedmorErAleneOmOmsorg": false,
+            "farMedmorHarRett": true,
+            "søkerErFarEllerMedmor": true,
+            "termindato": "2023-05-10",
+            "erDeltUttak": true,
+            "erBarnetFødt": false,
+            "familiehendelseDato": "2023-05-10",
+            "familiehendelseType": "TERM",
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "barn": []
+        },
+        "saksperioder": [
+            {
+                "guid": "116857342-27040-04679-13024-02295935603821",
+                "periode": {
+                    "fom": "2022-12-12",
+                    "tom": "2023-02-17"
+                },
+                "gjelderAnnenPart": true,
+                "resultat": {
+                    "innvilget": true,
+                    "trekkerMinsterett": true,
+                    "trekkerDager": true,
+                    "årsak": "ANNET"
+                },
+                "kontoType": "FEDREKVOTE",
+                "flerbarnsdager": false,
+                "samtidigUttak": 100
+            },
+            {
+                "guid": "256298034-7265-6409-13449-756130621410",
+                "periode": {
+                    "fom": "2023-02-20",
+                    "tom": "2023-03-05"
+                },
+                "gjelderAnnenPart": true,
+                "resultat": {
+                    "innvilget": true,
+                    "trekkerMinsterett": true,
+                    "trekkerDager": true,
+                    "årsak": "ANNET"
+                },
+                "kontoType": "FELLESPERIODE",
+                "flerbarnsdager": false,
+                "samtidigUttak": 50
+            },
+            {
+                "guid": "069705496-02033-8352-31056-0526369430214",
+                "periode": {
+                    "fom": "2023-03-20",
+                    "tom": "2023-03-31"
+                },
+                "gjelderAnnenPart": true,
+                "resultat": {
+                    "innvilget": true,
+                    "trekkerMinsterett": true,
+                    "trekkerDager": true,
+                    "årsak": "ANNET"
+                },
+                "kontoType": "FEDREKVOTE",
+                "flerbarnsdager": false
+            }
+        ],
+        "uttaksplan": [
+            {
+                "type": "info",
+                "infotype": "uttakAnnenPart",
+                "id": "633415563-04974-09886-0528-02799028354706",
+                "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
+                "tidsperiode": {
+                    "fom": "2022-12-12T00:00:00.000Z",
+                    "tom": "2023-02-17T00:00:00.000Z"
+                },
+                "forelder": "mor",
+                "overskrives": true,
+                "gradert": false,
+                "ønskerSamtidigUttak": true,
+                "samtidigUttakProsent": "100",
+                "visPeriodeIPlan": true
+            },
+            {
+                "type": "info",
+                "infotype": "uttakAnnenPart",
+                "id": "265049332-28752-09964-1479-4954187176216",
+                "årsak": "UTTAK_FELLESP_ANNEN_FORELDER",
+                "tidsperiode": {
+                    "fom": "2023-02-20T00:00:00.000Z",
+                    "tom": "2023-03-03T00:00:00.000Z"
+                },
+                "forelder": "mor",
+                "overskrives": true,
+                "gradert": false,
+                "ønskerSamtidigUttak": true,
+                "samtidigUttakProsent": "50",
+                "visPeriodeIPlan": true
+            },
+            {
+                "type": "info",
+                "infotype": "uttakAnnenPart",
+                "id": "616209732-0968-6152-9215-165359749297",
+                "årsak": "UTTAK_FEDREKVOTE_ANNEN_FORELDER",
+                "tidsperiode": {
+                    "fom": "2023-03-20T00:00:00.000Z",
+                    "tom": "2023-03-31T00:00:00.000Z"
+                },
+                "forelder": "mor",
+                "overskrives": true,
+                "gradert": false,
+                "ønskerSamtidigUttak": false,
+                "visPeriodeIPlan": true
+            }
+        ]
+    },
+    "perioderSomSkalSendesInn": [
+        {
+            "id": "65219968-03128-06144-6050-29787012619871",
+            "forelder": "farMedmor",
+            "konto": "AKTIVITETSFRI_KVOTE",
+            "tidsperiode": {
+                "fom": "2023-09-07T00:00:00.000Z",
+                "tom": "2023-11-01T00:00:00.000Z"
+            },
+            "type": "uttak",
+            "erArbeidstaker": false,
+            "gradert": false,
+            "harIkkeAktivitetskrav": true,
+            "orgnumre": [],
+            "vedlegg": []
+        },
+        {
+            "id": "2587407768-1227-7467-3346-29743085764053",
+            "forelder": "farMedmor",
+            "konto": "FORELDREPENGER",
+            "tidsperiode": {
+                "fom": "2023-11-02T00:00:00.000Z",
+                "tom": "2024-06-12T00:00:00.000Z"
+            },
+            "type": "uttak",
+            "morsAktivitetIPerioden": "ARBEID_OG_UTDANNING",
+            "erArbeidstaker": false,
+            "gradert": false,
+            "orgnumre": [],
+            "vedlegg": [
+                {
+                    "id": "V1955923691132117369194280388105513345",
+                    "file": {
+                        "name": "",
+                        "size": ""
+                    },
+                    "filename": "",
+                    "filesize": "",
+                    "uploaded": false,
+                    "pending": false,
+                    "type": "morsaktivitetdokumentasjon",
+                    "skjemanummer": "I000038",
+                    "innsendingsType": "SEND_SENERE"
+                }
+            ]
+        }
+    ],
+    "harUttaksplanBlittSlettet": false,
+    "søknadGjelderEtNyttBarn": true,
+    "annenPartsUttakErLagtTilIPlan": true
 }

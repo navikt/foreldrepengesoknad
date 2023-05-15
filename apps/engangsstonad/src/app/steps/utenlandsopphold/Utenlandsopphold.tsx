@@ -6,6 +6,7 @@ import {
     dateToday,
     intlUtils,
     Step,
+    StepButtonWrapper,
     UtvidetInformasjon,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
@@ -15,7 +16,7 @@ import {
     UtenlandsoppholdFormComponents,
     UtenlandsoppholdFormData,
 } from './utenlandsoppholdFormTypes';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import stepConfig, { getPreviousStepHref } from 'app/step-config/stepConfig';
 import { utenlandsoppholdFormQuestions } from './utenlandsoppholdFormQuestions';
@@ -28,11 +29,11 @@ import { validateUtenlandsoppholdNeste12Mnd, validateUtenlandsoppholdSiste12Mnd 
 
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
+import { Button } from '@navikt/ds-react';
 
 import './utenlandsopphold.less';
-import { Button } from '@navikt/ds-react';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -73,7 +74,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         bannerTitle={getMessage(intl, 'søknad.pageheading')}
                         activeStepId="utenlandsopphold"
                         pageTitle={getMessage(intl, 'søknad.utenlandsopphold')}
-                        backLinkHref={getPreviousStepHref('utenlandsopphold')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
                     >
@@ -138,7 +138,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                         )}
                                     </Block>
                                 )}
-
                                 {visibility.isVisible(UtenlandsoppholdFieldNames.harBoddUtenforNorgeSiste12Mnd) && (
                                     <Block margin="xl">
                                         <UtenlandsoppholdFormComponents.YesOrNoQuestion
@@ -186,11 +185,20 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     </Block>
                                 )}
 
-                                {allQuestionsAnswered && (
-                                    <Block margin="xl" textAlignCenter={true}>
-                                        <Button type="submit">{getMessage(intl, 'søknad.gåVidere')}</Button>
-                                    </Block>
-                                )}
+                                <Block margin="xl">
+                                    <StepButtonWrapper>
+                                        <Button
+                                            variant="secondary"
+                                            as={Link}
+                                            to={getPreviousStepHref('utenlandsopphold')}
+                                        >
+                                            <FormattedMessage id="backlink.label" />
+                                        </Button>
+                                        {allQuestionsAnswered && (
+                                            <Button type="submit">{intlUtils(intl, 'søknad.gåVidere')}</Button>
+                                        )}
+                                    </StepButtonWrapper>
+                                </Block>
                             </div>
                         </UtenlandsoppholdFormComponents.Form>
                     </Step>

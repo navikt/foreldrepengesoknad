@@ -1,4 +1,4 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -23,7 +23,7 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
@@ -39,6 +39,8 @@ import {
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
 import { Button } from '@navikt/ds-react';
+import { Link } from 'react-router-dom';
+import { getPreviousStepHref } from 'app/steps/stepsConfig';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -208,10 +210,17 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                 placeholder={'dd.mm.åååå'}
                             />
                         </Block>
-                        <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                {intlUtils(intl, 'søknad.gåVidere')}
-                            </Button>
+                        <Block>
+                            <StepButtonWrapper>
+                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
+                                    <FormattedMessage id="backlink.label" />
+                                </Button>
+                                {visibility.areAllQuestionsAnswered() && (
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
+                                )}
+                            </StepButtonWrapper>
                         </Block>
                     </FarMedmorAleneomsorgFødselFormComponents.Form>
                 );

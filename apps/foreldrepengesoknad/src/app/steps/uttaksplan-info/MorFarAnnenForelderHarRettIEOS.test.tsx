@@ -14,7 +14,7 @@ const {
 const PERIODE_LENGDE_LABEL = 'Hvor lang periode med foreldrepenger ønsker du?';
 const NÅR_ØNSKER_DU_Å_STARTE = 'Når ønsker du å starte perioden?';
 const NÅR_FØRSTE_DAG = 'Når er din første dag med foreldrepenger?';
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 const farEllerMedMorSøkerAdopsjon = [
     UttaksplanAdopsjonFarSøkerMorHarRettIEOS,

@@ -52,7 +52,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
 
         dispatch(actionCreator.avbrytSøknad());
         await Api.deleteStoredAppState(søkerinfo.person.fnr);
-        window.location.href = 'http://localhost:8080';
+        window.location.href = 'https://nav.no';
     }, [dispatch, søkerinfo]);
 
     const gåTilbakeTilSøknadenHandler = useCallback(() => {

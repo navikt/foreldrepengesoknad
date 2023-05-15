@@ -5,7 +5,7 @@
     "locale.no-NB": "Bokmål - norsk",
     "locale.no-NN": "Nynorsk - norsk",
     "defaultMainRoleLabel": "Main content",
-    "backlink.label": "Back",
+    "backlink.label": "Previous step",
     "avbrytSøknadDialog.avbrytSøknadLabel": "Yes, cancel application",
     "avbrytSøknadDialog.fortsettSøknadLabel": "No",
     "avbrytSøknadDialog.intro": "What has been filled out so far will be deleted and you will be returned to the start page.",

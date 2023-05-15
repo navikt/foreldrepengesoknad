@@ -1,6 +1,6 @@
-import { bemUtils, Block, intlUtils, Step, useDocumentTitle } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, Step, StepButtonWrapper, useDocumentTitle } from '@navikt/fp-common';
 
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 import {
     OmBarnetFormComponents,
@@ -10,7 +10,7 @@ import {
 } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig from './omBarnetQuestionsConfig';
 import getMessage from 'common/util/i18nUtils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { UnansweredQuestionsInfo, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import actionCreator from 'app/context/action/actionCreator';
 import stepConfig, { getPreviousStepHref } from 'app/step-config/stepConfig';
@@ -100,7 +100,6 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                         bannerTitle={getMessage(intl, 'søknad.pageheading')}
                         activeStepId="omBarnet"
                         pageTitle={getMessage(intl, 'søknad.omBarnet')}
-                        backLinkHref={getPreviousStepHref('omBarnet')}
                         onCancel={() => onAvbrytSøknad(dispatch, navigate)}
                         steps={stepConfig}
                     >
@@ -159,11 +158,16 @@ const OmBarnet: React.FunctionComponent<Props> = ({ person }) => {
                                     formValues={formValues}
                                 />
 
-                                {allQuestionsAnswered && (
-                                    <Block margin="xl" textAlignCenter={true}>
-                                        <Button type="submit">{getMessage(intl, 'søknad.gåVidere')}</Button>
-                                    </Block>
-                                )}
+                                <Block margin="xl" textAlignCenter={true}>
+                                    <StepButtonWrapper>
+                                        <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>
+                                            <FormattedMessage id="backlink.label" />
+                                        </Button>
+                                        {allQuestionsAnswered && (
+                                            <Button type="submit">{intlUtils(intl, 'søknad.gåVidere')}</Button>
+                                        )}
+                                    </StepButtonWrapper>
+                                </Block>
                             </div>
                         </OmBarnetFormComponents.Form>
                     </Step>

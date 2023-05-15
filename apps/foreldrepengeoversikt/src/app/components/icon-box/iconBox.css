@@ -29,3 +29,10 @@
 .iconBox--gray {
     background-color: var(--a-gray-400);
 }
+
+@media (max-width: 768px) {
+    .iconBox__icon {
+        display: none;
+    }
+}
+

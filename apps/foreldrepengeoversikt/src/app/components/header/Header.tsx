@@ -8,7 +8,7 @@ import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import { ISOStringToDate } from 'app/utils/dateUtils';
-import { getFamiliehendelseDato, getSakTittel, getSakUndertittel, utledFamiliesituasjon } from 'app/utils/sakerUtils';
+import { getFamiliehendelseDato, getSakTittel, utledFamiliesituasjon } from 'app/utils/sakerUtils';
 import TåteflaskeBaby from 'assets/TåteflaskeBaby';
 import classNames from 'classnames';
 
@@ -41,7 +41,7 @@ const getHeaderRouteInfo = (path: string, minidialogerIds: string[], selectedRou
     }
 
     if (selectedRoute === OversiktRoutes.SAKSOVERSIKT) {
-        return { route: OversiktRoutes.HOVEDSIDE, label: 'Mine foreldrepenger', isExternalURL: false };
+        return { route: OversiktRoutes.HOVEDSIDE, label: 'Oversikt', isExternalURL: false };
     }
 
     if (selectedRoute === OversiktRoutes.DIN_PLAN) {
@@ -61,7 +61,7 @@ const getSaksoversiktHeading = (ytelse: Ytelse) => {
         return 'Svangerskapspengesak';
     }
 
-    return 'Foreldrepengesak';
+    return 'Din sak';
 };
 
 const renderHeaderContent = (
@@ -76,7 +76,7 @@ const renderHeaderContent = (
         return (
             <div className={bem.element('content')}>
                 <div>
-                    <Heading size="xlarge">Dokumenter</Heading>
+                    <Heading size="large">Dokumenter</Heading>
                     <div className={bem.element('text-with-bar')}>
                         <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
                         <div className={bem.element('divider')}>|</div>
@@ -93,7 +93,7 @@ const renderHeaderContent = (
         return (
             <div className={bem.element('content')}>
                 <div>
-                    <Heading size="xlarge">Last opp dokumenter</Heading>
+                    <Heading size="large">Last opp dokumenter</Heading>
                     <div className={bem.element('text-with-bar')}>
                         <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
                         <div className={bem.element('divider')}>|</div>
@@ -110,13 +110,17 @@ const renderHeaderContent = (
         if (!sak.familiehendelse) {
             return (
                 <div className={bem.element('content')}>
-                    <TåteflaskeBaby />
-                    <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', marginBottom: '1rem' }}>
-                        <Heading size="xlarge">{getSaksoversiktHeading(sak.ytelse)}</Heading>
+                    <div className={bem.element('baby-ikonBox')}>
+                        <TåteflaskeBaby />
+                    </div>
+                    <div className={bem.element('title-with-status-saksnr')}>
+                        <Heading size="large">{getSaksoversiktHeading(sak.ytelse)}</Heading>
+
+                        <StatusTag sak={sak} className={bem.element('tag')} />
+
                         <div className={bem.element('text-with-bar')}>
                             <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
                         </div>
-                        <StatusTag sak={sak} className={bem.element('tag')} />
                     </div>
                 </div>
             );
@@ -133,34 +137,22 @@ const renderHeaderContent = (
             intl,
             situasjon
         );
-        const barnUndertittel = getSakUndertittel(
-            barn?.fornavn,
-            barn?.fødselsdatoer,
-            situasjon,
-            familiehendelsedato!,
-            !!barn?.alleBarnaLever
-        );
+
         return (
             <div className={bem.element('content')}>
-                <TåteflaskeBaby />
-                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', marginBottom: '1rem' }}>
-                    <Heading size="xlarge">{getSaksoversiktHeading(sak.ytelse)}</Heading>
+                <div className={bem.element('baby-ikonBox')}>
+                    <TåteflaskeBaby />
+                </div>
+                <div className={bem.element('content-detaljer')}>
+                    <div className={bem.element('title-with-status-saksnr')}>
+                        <Heading size="large">{getSaksoversiktHeading(sak.ytelse)}</Heading>
+                        <StatusTag sak={sak} className={bem.element('tag')} />
+                    </div>
                     <div className={bem.element('text-with-bar')}>
                         <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        <hr
-                            className={classNames(
-                                bem.element('divider'),
-                                barnUndertittel ? bem.modifier('divider-long') : bem.modifier('divider-short')
-                            )}
-                        ></hr>
-                        <div>
-                            <BodyShort className={bem.element('divider-text')}>{barnTittel}</BodyShort>
-                            {barnUndertittel && (
-                                <BodyShort className={bem.element('divider-text')}>{barnUndertittel}</BodyShort>
-                            )}
-                        </div>
+                        <hr className={classNames(bem.element('divider'))}></hr>
+                        <BodyShort className={bem.element('divider-text')}>{barnTittel}</BodyShort>
                     </div>
-                    <StatusTag sak={sak} className={bem.element('tag')} />
                 </div>
             </div>
         );
@@ -168,10 +160,14 @@ const renderHeaderContent = (
 
     return (
         <div className={bem.element('content')}>
-            <TåteflaskeBaby />
+            <div className={bem.element('baby-ikonBox')}>
+                <TåteflaskeBaby />
+            </div>
             <div className={bem.element('title-container')}>
-                <Heading size="xlarge">Oversikt over foreldrepenger</Heading>
-                <BodyShort>PENGESTØTTE</BodyShort>
+                <Heading size="large">Oversikt over foreldrepenger</Heading>
+                <div className={bem.element('text-with-bar')}>
+                    <BodyShort>PENGESTØTTE</BodyShort>
+                </div>
             </div>
         </div>
     );

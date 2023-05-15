@@ -11,7 +11,7 @@ const FRILANS_SISTE_10_MÅNEDER_LABEL = 'Har du jobbet og hatt inntekt som frila
 const SELVSTENDIG_SISTE_10_MÅNEDER_LABEL =
     'Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?';
 const ANDRE_SISTE_10_MÅNEDER_LABEL = 'Har du hatt andre inntektskilder de siste 10 månedene?';
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 const JA = 'Ja';
 const NEI = 'Nei';
 const NÆRINGSRESULTAT_FØR_SKATT =

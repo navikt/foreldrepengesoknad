@@ -7,7 +7,7 @@ import * as stories from './FarMedmorFodselOgMorHarIkkeRett.stories';
 const { UttaksplanDerMorIkkeHarRettPåForeldrepenger, UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør } =
     composeStories(stories);
 
-const GÅ_VIDERE_KNAPP = 'Gå videre';
+const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('skal fylle ut dekningsgrad med 80 prosent', async () => {
@@ -18,7 +18,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         await userEvent.click(screen.getByText('50 uker med 80 prosent foreldrepenger'));
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getAllByText('Periode med foreldrepenger')[0]).toBeInTheDocument();
         expect(screen.getByText('50 uker')).toBeInTheDocument();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getAllByText('Periode med foreldrepenger')[0]).toBeInTheDocument();
         expect(screen.getByText('40 uker')).toBeInTheDocument();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
