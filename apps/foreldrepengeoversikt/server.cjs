@@ -45,7 +45,7 @@ const renderApp = (decoratorFragments) =>
 
 const startServer = async (html) => {
     server.use((req, res, next) => {
-        if (req.hostname === 'foreldrepengeplanlegger.nav.no' && !/^\/health/.test(req.path)) {
+        if (req.hostname === 'foreldrepengeplanlegger.nav.no' && !req.path.startsWith('/health')) {
             console.log('Redirecter fra foreldrepengeplanlegger til produktsider');
             res.redirect('https://www.nav.no/foreldrepenger#hvor-lenge');
         } else {
