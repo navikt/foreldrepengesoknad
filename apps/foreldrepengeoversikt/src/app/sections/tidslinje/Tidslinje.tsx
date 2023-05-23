@@ -21,12 +21,15 @@ import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
+import dayjs from 'dayjs';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
 interface Params {
     sak: Sak | EngangsstønadSak | SvangerskapspengeSak;
+    visHeleTidslinjen: boolean;
 }
 
-const Tidslinje: React.FunctionComponent<Params> = ({ sak }) => {
+const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) => {
     const params = useParams();
     const intl = useIntl();
     const bem = bemUtils('tidslinje-hendelse');
@@ -57,9 +60,27 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak }) => {
     const alleHendelser = venteHendelser ? tidslinjeHendelser.concat(venteHendelser) : tidslinjeHendelser;
     const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
 
+    const hendelserForVisning = [] as Tidslinjehendelse[];
+    if (visHeleTidslinjen) {
+        hendelserForVisning.push(...sorterteHendelser);
+    } else {
+        const dateNow = new Date();
+        const sisteHendelser = sorterteHendelser.filter((hendelse) =>
+            dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
+        );
+        if (sisteHendelser) {
+            hendelserForVisning.push(sisteHendelser[sisteHendelser.length - 1]);
+        }
+
+        const nesteHendelser = sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dateNow, 'd'));
+        if (nesteHendelser) {
+            hendelserForVisning.push(nesteHendelser[0]);
+        }
+    }
+
     return (
         <div>
-            {sorterteHendelser.map((hendelse) => {
+            {hendelserForVisning.map((hendelse) => {
                 return (
                     <TidslinjeHendelse
                         date={hendelse.opprettet}

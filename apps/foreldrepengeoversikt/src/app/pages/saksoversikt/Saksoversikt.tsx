@@ -24,6 +24,7 @@ import { useParams } from 'react-router-dom';
 
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
+import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -104,7 +105,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                 </ContentSection>
             )}
             <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
-                <Tidslinje sak={gjeldendeSak} />
+                <Tidslinje sak={gjeldendeSak} visHeleTidslinjen={false} />
+            </ContentSection>
+            <ContentSection padding="none">
+                <SeHeleProsessen />
             </ContentSection>
             <ContentSection padding="none">
                 <SeDokumenter />

@@ -5,6 +5,7 @@ enum OversiktRoutes {
     DIN_PLAN = 'din-plan',
     DOKUMENTER = 'dokumenter',
     ETTERSEND = 'ettersend',
+    TIDSLINJEN = 'tidslinjen',
 }
 
 export enum NavRoutes {
