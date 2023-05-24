@@ -13,7 +13,7 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmArbeidsforholdWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import VelgSøknadsgrunnlag from 'app/formik/wrappers/VelgSøknadsgrunnlag';
+import VelgSøknadsgrunnlag, { SøknadsgrunnlagOption } from 'app/formik/wrappers/VelgSøknadsgrunnlag';
 import Arbeidsforholdseksjon from './ArbeidSeksjon/ArbeidSeksjon';
 import SelvstendigNæringsdrivende from './SelvstendigNæringsdrivende/SelvstendigNæringsdrivende';
 import AndreInntekter from './AndreInntekter/AndreInntekter';
@@ -112,7 +112,24 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
         (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET
     );
 
-    let tilrettelegging = mergeSøknadsgrunnlagIntoTilrettelegging(values.søknadsgrunnlag, values.tilrettelegging);
+    const createSøknadsgrunnlag = (
+        søknadsgrunnlag: Søknadsgrunnlag[],
+        søknadsgrunnlagOptions: SøknadsgrunnlagOption[]
+    ): Søknadsgrunnlag[] => {
+        const filteredOptions = søknadsgrunnlagOptions.filter((option) => {
+            return søknadsgrunnlag.some((grunnlag) => (grunnlag as any) === option.value);
+        });
+
+        return filteredOptions.map((option) => ({
+            id: option.value,
+            type: option.type,
+        }));
+    };
+
+    let tilrettelegging = mergeSøknadsgrunnlagIntoTilrettelegging(
+        createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions),
+        values.tilrettelegging
+    );
     const prepareTilrettelegging = () => {
         if (frilansInformasjon === undefined) {
             tilrettelegging = tilrettelegging.filter(

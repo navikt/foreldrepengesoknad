@@ -28,7 +28,7 @@ export interface UferdigSøknad {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdPartial;
     barn: UferdigBarn;
     tilrettelegging: UferdigTilrettelegging[];
-    søknadsgrunnlag: Søknadsgrunnlag[];
+    søknadsgrunnlag: Søknadsgrunnlag[]; // FIX Typen lyver. Er bare en ID string
     søker: Partial<Søker>;
 }
 

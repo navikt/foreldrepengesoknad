@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { FunctionComponent } from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';

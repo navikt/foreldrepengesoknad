@@ -31,7 +31,7 @@ const mainSteps = [
 export const getAllSteps = (søknadsgrunnlag: Søknadsgrunnlag[]): SøknadStep[] => {
     const tilretteleggingSteps = søknadsgrunnlag.map((tilrettelegging) => ({
         step: StepID.TILRETTELEGGING,
-        subStep: tilrettelegging.id,
+        subStep: tilrettelegging,
     }));
 
     return pureSplice(
