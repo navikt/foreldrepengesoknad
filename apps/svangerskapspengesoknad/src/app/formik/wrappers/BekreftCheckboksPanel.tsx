@@ -29,8 +29,8 @@ const BekreftCheckboksPanel: React.FunctionComponent<Props> = ({ name, label, ch
                     <ConfirmationPanel
                         checked={form.values[name]}
                         label={label}
-                        onChange={(value) => {
-                            form.setFieldValue(name, value);
+                        onChange={() => {
+                            form.setFieldValue(name, !form.values[name]);
                         }}
                         className={className}
                         error={feil?.feilmelding}
