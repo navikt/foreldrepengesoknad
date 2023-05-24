@@ -56,7 +56,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = (props) => {
                 melding={getMessage(intl, 'feilside.mann.melding')}
             />
         );
-    } else if (kvittering.status === FetchStatus.FAILURE && getErrorCode(kvittering) !== 401) {
+    } else if (kvittering.status === FetchStatus.FAILURE) {
         return (
             <Feil
                 tittel={getMessage(intl, 'feilside.innsending.tittel')}
