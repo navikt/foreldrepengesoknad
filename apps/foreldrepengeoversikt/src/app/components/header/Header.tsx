@@ -79,13 +79,11 @@ const renderHeaderContent = (
 
     if (selectedRoute === OversiktRoutes.TIDSLINJEN) {
         return (
-            <div className={bem.element('content')}>
+            <div className={bem.element('content-fixed')}>
                 <div>
-                    <Heading size="large">Hele prosessen i din sak</Heading>
+                    <Heading size="large">Hele prosessen</Heading>
                     <div className={bem.element('text-with-bar')}>
                         <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        <div className={bem.element('divider')}>|</div>
-                        <BodyShort className={bem.element('divider-text')}>Noe mer tekst her?</BodyShort>
                     </div>
                 </div>
             </div>
@@ -210,7 +208,6 @@ const Header: React.FunctionComponent<Props> = ({ minidialogerIds, grupperteSake
         : undefined;
     const barnGrupperingForSak = sakIGrupperteSaker?.barn;
     const { route, isExternalURL, label } = headerRouteInfo;
-
     return (
         <div className={bem.block}>
             <div className={bem.element('wrapper')}>

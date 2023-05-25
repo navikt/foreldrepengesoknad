@@ -65,16 +65,29 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
         hendelserForVisning.push(...sorterteHendelser);
     } else {
         const dateNow = new Date();
-        const sisteHendelser = sorterteHendelser.filter((hendelse) =>
-            dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
+
+        const nåværendeHendelser = sorterteHendelser.filter((hendelse) =>
+            dayjs(hendelse.opprettet).isSame(dateNow, 'd')
         );
-        if (sisteHendelser) {
-            hendelserForVisning.push(sisteHendelser[sisteHendelser.length - 1]);
+        if (nåværendeHendelser.length > 0) {
+            hendelserForVisning.push(...nåværendeHendelser);
         }
 
         const nesteHendelser = sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dateNow, 'd'));
-        if (nesteHendelser) {
+        if (nesteHendelser.length > 0) {
             hendelserForVisning.push(nesteHendelser[0]);
+        }
+
+        if (hendelserForVisning.length === 0) {
+            const sisteHendelser = sorterteHendelser.filter((hendelse) =>
+                dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
+            );
+            if (sisteHendelser.length <= 3) {
+                hendelserForVisning.push(...sisteHendelser);
+            } else {
+                const sisteTreHendelser = sisteHendelser.slice(Math.max(hendelserForVisning.length - 3));
+                hendelserForVisning.push(...sisteTreHendelser);
+            }
         }
     }
 
