@@ -110,7 +110,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
                             {alleDokumenter.length > 0 && alleDokumenter.length > 3 && (
                                 <ReadMore
                                     className={bem.element('medium_font')}
-                                    header={`Du lastet opp ${hendelse.dokumenter.length} dokumenter`}
+                                    header={`Du sendte ${hendelse.dokumenter.length} dokumenter`}
                                 >
                                     {alleDokumenter}
                                 </ReadMore>
