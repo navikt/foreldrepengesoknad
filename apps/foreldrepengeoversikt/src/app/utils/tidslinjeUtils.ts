@@ -208,3 +208,37 @@ export const sorterTidslinjehendelser = (h1: Tidslinjehendelse, h2: Tidslinjehen
         return 0;
     }
 };
+
+export const getHendelserForVisning = (visHeleTidslinjen: boolean, sorterteHendelser: Tidslinjehendelse[]) => {
+    const hendelserForVisning = [] as Tidslinjehendelse[];
+    if (visHeleTidslinjen) {
+        hendelserForVisning.push(...sorterteHendelser);
+    } else {
+        const dateNow = new Date();
+
+        const nåværendeHendelser = sorterteHendelser.filter((hendelse) =>
+            dayjs(hendelse.opprettet).isSame(dateNow, 'd')
+        );
+        if (nåværendeHendelser.length > 0) {
+            hendelserForVisning.push(...nåværendeHendelser);
+        }
+
+        const nesteHendelser = sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dateNow, 'd'));
+        if (nesteHendelser.length > 0) {
+            hendelserForVisning.push(nesteHendelser[0]);
+        }
+
+        if (hendelserForVisning.length === 0) {
+            const sisteHendelser = sorterteHendelser.filter((hendelse) =>
+                dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
+            );
+            if (sisteHendelser.length <= 3) {
+                hendelserForVisning.push(...sisteHendelser);
+            } else {
+                const sisteTreHendelser = sisteHendelser.slice(Math.max(hendelserForVisning.length - 3));
+                hendelserForVisning.push(...sisteTreHendelser);
+            }
+        }
+    }
+    return hendelserForVisning;
+};

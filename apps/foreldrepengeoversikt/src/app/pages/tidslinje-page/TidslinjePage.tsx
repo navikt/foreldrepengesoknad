@@ -15,7 +15,7 @@ const TidslinjePage = () => {
 
     return (
         <div className={bem.element('div')}>
-            <Tidslinje sak={sak!} visHeleTidslinjen={true} />
+            <Tidslinje sak={sak} visHeleTidslinjen={true} />
         </div>
     );
 };

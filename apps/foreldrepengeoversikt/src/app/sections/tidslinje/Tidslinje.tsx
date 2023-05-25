@@ -16,16 +16,15 @@ import {
     getTidslinjehendelseStatus,
     getTidslinjehendelseTittel,
     getTidslinjehendelserDetaljer,
+    getHendelserForVisning,
 } from 'app/utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
-import dayjs from 'dayjs';
-import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
 interface Params {
-    sak: Sak | EngangsstønadSak | SvangerskapspengeSak;
+    sak: Sak | EngangsstønadSak | SvangerskapspengeSak | undefined;
     visHeleTidslinjen: boolean;
 }
 
@@ -36,7 +35,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
 
-    if (tidslinjeHendelserError || manglendeVedleggError) {
+    if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>
                 Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
@@ -60,36 +59,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
     const alleHendelser = venteHendelser ? tidslinjeHendelser.concat(venteHendelser) : tidslinjeHendelser;
     const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
 
-    const hendelserForVisning = [] as Tidslinjehendelse[];
-    if (visHeleTidslinjen) {
-        hendelserForVisning.push(...sorterteHendelser);
-    } else {
-        const dateNow = new Date();
-
-        const nåværendeHendelser = sorterteHendelser.filter((hendelse) =>
-            dayjs(hendelse.opprettet).isSame(dateNow, 'd')
-        );
-        if (nåværendeHendelser.length > 0) {
-            hendelserForVisning.push(...nåværendeHendelser);
-        }
-
-        const nesteHendelser = sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dateNow, 'd'));
-        if (nesteHendelser.length > 0) {
-            hendelserForVisning.push(nesteHendelser[0]);
-        }
-
-        if (hendelserForVisning.length === 0) {
-            const sisteHendelser = sorterteHendelser.filter((hendelse) =>
-                dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
-            );
-            if (sisteHendelser.length <= 3) {
-                hendelserForVisning.push(...sisteHendelser);
-            } else {
-                const sisteTreHendelser = sisteHendelser.slice(Math.max(hendelserForVisning.length - 3));
-                hendelserForVisning.push(...sisteTreHendelser);
-            }
-        }
-    }
+    const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, sorterteHendelser);
 
     return (
         <div>
