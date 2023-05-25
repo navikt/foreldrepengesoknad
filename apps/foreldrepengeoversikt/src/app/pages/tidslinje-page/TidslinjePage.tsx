@@ -10,7 +10,7 @@ import { bemUtils } from '@navikt/fp-common';
 const TidslinjePage = () => {
     const bem = bemUtils('tidslinje-page');
     const sak = useGetSelectedSak();
-    useSetBackgroundColor('blue');
+    useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
 
     return (

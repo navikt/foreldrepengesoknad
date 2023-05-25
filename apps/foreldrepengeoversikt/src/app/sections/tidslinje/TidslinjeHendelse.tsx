@@ -1,10 +1,10 @@
 import { bemUtils } from '@navikt/fp-common';
-import { BodyShort, Heading } from '@navikt/ds-react';
-import { Success, Warning, Clock } from '@navikt/ds-icons';
-
+import { BodyShort, Detail } from '@navikt/ds-react';
+import { RecordFillIcon, RecordIcon } from '@navikt/aksel-icons';
 import { formaterDato, formaterTid } from 'app/utils/dateUtils';
 import './tidslinje-hendelse.css';
 import dayjs from 'dayjs';
+import classNames from 'classnames';
 
 type TidslinjeHendelseType = 'completed' | 'incomplete' | 'warning';
 
@@ -13,24 +13,29 @@ interface Props {
     date: Date;
     title: string;
     type: TidslinjeHendelseType;
+    isActiveStep: boolean;
 }
 
 const bem = bemUtils('tidslinje-hendelse');
 
-const getIkon = (type: TidslinjeHendelseType) => {
-    switch (type) {
-        case 'completed':
-            return <Success height="32" width="32" className={bem.element('ikon', 'completed')} />;
-        case 'warning':
-            return <Warning height="32" width="32" className={bem.element('ikon', 'warning')} />;
-        case 'incomplete':
-            return <Clock height="32" width="32" className={bem.element('ikon', 'incomplete')} />;
-        default:
-            return null;
+const getIkonClassElement = (isActiveStep: boolean, opprettet: Date) => {
+    if (isActiveStep) {
+        return 'ikon_active';
+    } else if (dayjs(opprettet).isBefore(dayjs(), 'd')) {
+        return 'ikon_completed';
     }
+    return 'ikon_incomplete';
 };
 
-const TidslinjeHendelse: React.FunctionComponent<Props> = ({ type, date, title, children }) => {
+const getTimelineClassModifier = (isActiveStep: boolean) => {
+    if (isActiveStep) {
+        return 'active';
+    }
+    return 'inactive';
+};
+
+const TidslinjeHendelse: React.FunctionComponent<Props> = ({ type, date, title, children, isActiveStep }) => {
+    console.log(type); //TODO: fjern
     let dateTekst = formaterDato(date, 'D. MMM YYYY').toUpperCase();
     if (dayjs(date).isSame(new Date(), 'd')) {
         dateTekst = 'I DAG';
@@ -38,15 +43,21 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({ type, date, title, 
     if (dayjs(date).isSame(dayjs(new Date()).subtract(1, 'd'), 'd')) {
         dateTekst = 'I GÅR';
     }
+
     const tidTekst = formaterTid(date);
+
     return (
-        <div className={bem.block}>
-            <div className={bem.element('ikon')}>{getIkon(type)}</div>
+        <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(isActiveStep)}`))}>
+            <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>
+                {dayjs(date).isSameOrBefore(dayjs(), 'd') && <RecordFillIcon width="20" height="20" />}
+                {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" />}
+            </div>
+
             <div>
-                <Heading level="3" size="small">
+                <BodyShort size="small" className={bem.element('tittle')}>
                     {title}
-                </Heading>
-                <BodyShort size="small" className={bem.element('date')}>{`${dateTekst} ${tidTekst}`}</BodyShort>
+                </BodyShort>
+                <Detail className={bem.element('date')}>{`${dateTekst} ${tidTekst}`}</Detail>
                 {children}
             </div>
         </div>

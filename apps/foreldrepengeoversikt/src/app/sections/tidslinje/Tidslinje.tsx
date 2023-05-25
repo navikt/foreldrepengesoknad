@@ -1,4 +1,4 @@
-import { BodyShort, Button, Link, Loader } from '@navikt/ds-react';
+import { BodyShort, Button, Link, Loader, ReadMore } from '@navikt/ds-react';
 import { Link as LinkInternal, useParams } from 'react-router-dom';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
@@ -22,6 +22,7 @@ import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
+import dayjs from 'dayjs';
 
 interface Params {
     sak: Sak | EngangsstønadSak | SvangerskapspengeSak | undefined;
@@ -60,10 +61,17 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
     const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
 
     const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, sorterteHendelser);
-
+    const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
+        dayjs(hendelse.opprettet).isSameOrAfter(dayjs(), 'd')
+    );
     return (
         <div>
-            {hendelserForVisning.map((hendelse) => {
+            {hendelserForVisning.map((hendelse, index) => {
+                const isActiveStep = index === aktivtStegIndex;
+                const alleDokumenter = hendelse.dokumenter.map((dokument) => {
+                    return <DokumentHendelse dokument={dokument} key={dokument.url} />;
+                });
+
                 return (
                     <TidslinjeHendelse
                         date={hendelse.opprettet}
@@ -76,6 +84,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
                             sak.ytelse
                         )}
                         key={guid()}
+                        isActiveStep={isActiveStep}
                     >
                         <ul style={{ listStyle: 'none', padding: '0' }}>
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
@@ -93,23 +102,28 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
                                     </div>
                                 )}
                             {hendelse.merInformasjon && (
-                                <BodyShort className={bem.element('mer_informasjon')}>
+                                <BodyShort size="small" className={bem.element('mer_informasjon')}>
                                     {hendelse.merInformasjon}
                                 </BodyShort>
                             )}
-                            {hendelse.dokumenter.length > 0 &&
-                                hendelse.dokumenter.map((dokument) => {
-                                    return <DokumentHendelse dokument={dokument} key={dokument.url} />;
-                                })}
+                            {alleDokumenter.length > 0 && alleDokumenter.length <= 3 && alleDokumenter}
+                            {alleDokumenter.length > 0 && alleDokumenter.length > 3 && (
+                                <ReadMore
+                                    className={bem.element('medium_font')}
+                                    header={`Du lastet opp ${hendelse.dokumenter.length} dokumenter`}
+                                >
+                                    {alleDokumenter}
+                                </ReadMore>
+                            )}
                             {hendelse.linkTittel && hendelse.eksternalUrl && (
                                 <Link href={hendelse.eksternalUrl}>
-                                    <BodyShort>{hendelse.linkTittel}</BodyShort>
-                                    <ExternalLink></ExternalLink>
+                                    <BodyShort size="small">{hendelse.linkTittel}</BodyShort>
+                                    <ExternalLink fontSize={'16px'}></ExternalLink>
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (
-                                <LinkInternal to={hendelse.internalUrl}>
-                                    <Button className={bem.element('link')}>{hendelse.linkTittel}</Button>
+                                <LinkInternal className={bem.element('medium_font')} to={hendelse.internalUrl}>
+                                    <Button>{hendelse.linkTittel}</Button>
                                 </LinkInternal>
                             )}
                         </ul>

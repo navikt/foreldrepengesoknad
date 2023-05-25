@@ -209,21 +209,30 @@ export const sorterTidslinjehendelser = (h1: Tidslinjehendelse, h2: Tidslinjehen
     }
 };
 
-export const getHendelserForVisning = (visHeleTidslinjen: boolean, sorterteHendelser: Tidslinjehendelse[]) => {
+const getNåværendeHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
+    return sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isSame(new Date(), 'd'));
+};
+
+const getNesteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
+    return sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isSame(new Date(), 'd'));
+};
+
+export const getHendelserForVisning = (
+    visHeleTidslinjen: boolean,
+    sorterteHendelser: Tidslinjehendelse[]
+): Tidslinjehendelse[] => {
     const hendelserForVisning = [] as Tidslinjehendelse[];
     if (visHeleTidslinjen) {
         hendelserForVisning.push(...sorterteHendelser);
     } else {
         const dateNow = new Date();
 
-        const nåværendeHendelser = sorterteHendelser.filter((hendelse) =>
-            dayjs(hendelse.opprettet).isSame(dateNow, 'd')
-        );
+        const nåværendeHendelser = getNåværendeHendelser(sorterteHendelser);
         if (nåværendeHendelser.length > 0) {
             hendelserForVisning.push(...nåværendeHendelser);
         }
 
-        const nesteHendelser = sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dateNow, 'd'));
+        const nesteHendelser = getNesteHendelser(sorterteHendelser);
         if (nesteHendelser.length > 0) {
             hendelserForVisning.push(nesteHendelser[0]);
         }
