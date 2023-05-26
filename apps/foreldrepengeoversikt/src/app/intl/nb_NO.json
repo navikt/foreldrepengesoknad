@@ -124,7 +124,7 @@
     "tidslinje.tittel.VEDTAK_TILBAKEKREVING": "NAV har fattet vedtak",
     "tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER": "NAV har etterspurt opplysninger",
     "tidslinje.tittel.UTGÅENDE_ETTERLYS_INNTEKTSMELDING": "NAV har sendt deg brev fordi vi mangler inntektsmelding",
-    "tidslinje.tittel.VENTER_INNTEKTSMELDING": "NAV venter på inntektsmelding fra arbeidsgiver",
+    "tidslinje.tittel.VENTER_INNTEKTSMELDING": "Arbeidsgiver skal sende inntektsmelding til NAV",
     "tidslinje.tittel.VENTER_MELDEKORT": "NAV venter på at du sender inn meldekort",
     "tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD": "Vi kan tidligst behandle søknaden din {tidlistBehandlingsdato}",
     "tidslinje.tittel.VENT_DOKUMENTASJON": "NAV venter dokumentasjon fra deg",
