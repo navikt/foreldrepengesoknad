@@ -355,7 +355,6 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
     const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
         Tidsperioden(periode.tidsperiode).inneholderDato(datoWrapper.dato)
     );
-
     const oppsplittetPeriode: Periode[] = [];
 
     if (datoerIPerioden.length === 2) {
