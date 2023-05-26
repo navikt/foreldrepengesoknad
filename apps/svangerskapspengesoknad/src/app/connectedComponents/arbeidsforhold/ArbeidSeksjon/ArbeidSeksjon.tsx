@@ -13,8 +13,8 @@ import BEMHelper from 'common/util/bem';
 
 import { AnnenInntekt } from 'app/types/AnnenInntekt';
 import { Næring } from 'app/types/SelvstendigNæringsdrivende';
-import './arbeidSeksjon.less';
 import { Button, Modal } from '@navikt/ds-react';
+import './arbeidSeksjon.less';
 
 export interface ModalFormProps<T> {
     element?: T;
@@ -29,7 +29,6 @@ export interface ModalSummaryProps<T> {
     onDelete: () => void;
     editButtonAriaText?: string;
     deleteButtonAriaText?: string;
-    //intl: InjectedIntl;
 }
 
 interface OwnProps<T> {
