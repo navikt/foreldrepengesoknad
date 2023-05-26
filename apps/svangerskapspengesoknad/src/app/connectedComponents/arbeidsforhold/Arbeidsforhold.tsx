@@ -108,10 +108,6 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false &&
         harHattAnnenInntektSiste10Mnd === false;
 
-    const skalViseVeilederinfo = values.søknadsgrunnlag.some(
-        (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET
-    );
-
     const createSøknadsgrunnlag = (
         søknadsgrunnlag: Søknadsgrunnlag[],
         søknadsgrunnlagOptions: SøknadsgrunnlagOption[]
@@ -125,6 +121,10 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
             type: option.type,
         }));
     };
+
+    const skalViseVeilederinfo = createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions).some(
+        (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET
+    );
 
     let tilrettelegging = mergeSøknadsgrunnlagIntoTilrettelegging(
         createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions),
