@@ -6,14 +6,12 @@ import './tidslinje-hendelse.css';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 
-type TidslinjeHendelseType = 'completed' | 'incomplete' | 'warning';
-
 interface Props {
     children: React.ReactNode;
     date: Date;
     title: string;
-    type: TidslinjeHendelseType;
     isActiveStep: boolean;
+    visKlokkeslett: boolean;
 }
 
 const bem = bemUtils('tidslinje-hendelse');
@@ -34,8 +32,7 @@ const getTimelineClassModifier = (isActiveStep: boolean) => {
     return 'inactive';
 };
 
-const TidslinjeHendelse: React.FunctionComponent<Props> = ({ type, date, title, children, isActiveStep }) => {
-    console.log(type); //TODO: fjern
+const TidslinjeHendelse: React.FunctionComponent<Props> = ({ date, title, children, isActiveStep, visKlokkeslett }) => {
     let dateTekst = formaterDato(date, 'D. MMM YYYY').toUpperCase();
     if (dayjs(date).isSame(new Date(), 'd')) {
         dateTekst = 'I DAG';
@@ -44,7 +41,7 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({ type, date, title, 
         dateTekst = 'I GÅR';
     }
 
-    const tidTekst = formaterTid(date);
+    const tidTekst = visKlokkeslett ? formaterTid(date) : '';
 
     return (
         <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(isActiveStep)}`))}>

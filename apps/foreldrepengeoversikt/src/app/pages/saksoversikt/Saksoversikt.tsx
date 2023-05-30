@@ -105,7 +105,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                 </ContentSection>
             )}
             <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
-                <Tidslinje sak={gjeldendeSak} visHeleTidslinjen={false} />
+                <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
             </ContentSection>
             <ContentSection padding="none">
                 <SeHeleProsessen />

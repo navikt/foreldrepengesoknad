@@ -11,6 +11,11 @@ import { Uttaksdagen, UTTAKSDAGER_PER_UKE } from 'app/utils/Uttaksdagen';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import { Ytelse } from 'app/types/Ytelse';
 import { formaterDato } from './dateUtils';
+import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
+import { Familiehendelse } from 'app/types/Familiehendelse';
+import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
+import { BarnGruppering } from 'app/types/BarnGruppering';
+import { Situasjon } from 'app/types/Situasjon';
 
 export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -26,12 +31,64 @@ export const TIDSLINJEHENDELSER_PÅ_VENT = [
     TidslinjehendelseType.VENT_DOKUMENTASJON,
 ];
 
+export const getTidslinjetekstForAntallBarn = (
+    antallBarn: number,
+    intl: IntlShape,
+    gjelderAdopsjon: boolean | undefined
+): string => {
+    if (antallBarn === 1 || antallBarn === 0) {
+        return intlUtils(intl, 'barnet');
+    } else if (antallBarn > 1 && gjelderAdopsjon) {
+        return intlUtils(intl, 'barna');
+    } else if (antallBarn === 2) {
+        return intlUtils(intl, 'tvillingene');
+    } else if (antallBarn === 3) {
+        return intlUtils(intl, 'trillingene');
+    }
+    return intlUtils(intl, 'flerlingene');
+};
+
+const getTidslinjeTittelForFamiliehendelse = (
+    familiehendelse: Familiehendelse,
+    gjelderAdopsjon: boolean | undefined,
+    barnFraSak: BarnGruppering,
+    antallBarn: number,
+    intl: IntlShape
+): string => {
+    let barnNavnTekst = '';
+    if (barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever) {
+        barnNavnTekst = getTidslinjetekstForAntallBarn(antallBarn, intl, gjelderAdopsjon);
+    } else {
+        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn);
+    }
+    if (gjelderAdopsjon && familiehendelse.omsorgsovertakelse) {
+        if (dayjs(familiehendelse.omsorgsovertakelse).isSameOrBefore(dayjs(), 'd')) {
+            return intlUtils(intl, 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.tilbakeITid', {
+                navn: barnNavnTekst,
+            });
+        } else {
+            return intlUtils(intl, 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.fremITid', {
+                navn: barnNavnTekst,
+            });
+        }
+    } else if (familiehendelse.fødselsdato) {
+        return intlUtils(intl, 'tidslinje.tittel.FAMILIEHENDELSE.fødsel', { navn: barnNavnTekst });
+    } else {
+        return intlUtils(intl, 'tidslinje.tittel.FAMILIEHENDELSE.termindato');
+    }
+};
+
 export const getTidslinjehendelseTittel = (
     hendelsetype: TidslinjehendelseType,
     intl: IntlShape,
     tidlistBehandlingsdato: Date | undefined,
     manglendeVedleggData: Skjemanummer[] | undefined,
-    ytelse: Ytelse
+    ytelse: Ytelse,
+    gjelderAdopsjon: boolean | undefined,
+    familiehendelse: Familiehendelse | undefined,
+    barnFraSak: BarnGruppering,
+    antallBarn: number | undefined,
+    situasjon: Situasjon | undefined
 ): string => {
     if (hendelsetype === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD && tidlistBehandlingsdato !== undefined) {
         return intlUtils(intl, 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD', {
@@ -50,17 +107,16 @@ export const getTidslinjehendelseTittel = (
     if (hendelsetype === TidslinjehendelseType.FØRSTEGANGSSØKNAD) {
         return intlUtils(intl, 'tidslinje.tittel.FØRSTEGANGSSØKNAD', { ytelse });
     }
+    if (
+        ytelse === Ytelse.FORELDREPENGER &&
+        hendelsetype === TidslinjehendelseType.FAMILIEHENDELSE &&
+        antallBarn &&
+        familiehendelse &&
+        situasjon
+    ) {
+        return getTidslinjeTittelForFamiliehendelse(familiehendelse, gjelderAdopsjon, barnFraSak, antallBarn, intl);
+    }
     return intlUtils(intl, `tidslinje.tittel.${hendelsetype}`);
-};
-
-export const getTidslinjehendelseStatus = (hendelsetype: TidslinjehendelseType, hendelsesDato: Date) => {
-    if (TIDSLINJEHENDELSER_PÅ_VENT.includes(hendelsetype)) {
-        return 'warning';
-    }
-    if (dayjs(hendelsesDato).isSameOrBefore(new Date())) {
-        return 'completed';
-    }
-    return 'incomplete';
 };
 
 export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
@@ -146,6 +202,18 @@ export const getTidslinjehendelserDetaljer = (
     });
 };
 
+export const getTidslinjeFamiliehendelse = (sak: Foreldrepengesak): Tidslinjehendelse => {
+    const familiehendelse = getFamiliehendelseDato(sak.familiehendelse);
+    return {
+        type: 'søknad',
+        opprettet: new Date(familiehendelse),
+        tidslinjeHendelseType: TidslinjehendelseType.FAMILIEHENDELSE,
+        aktørType: AktørType.BRUKER,
+        dokumenter: [],
+        manglendeVedlegg: [],
+    };
+};
+
 export const getTidslinjehendelserFraBehandlingPåVent = (
     åpenBehandling: ÅpenBehandling,
     manglendeVedleggData: Skjemanummer[],
@@ -160,7 +228,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
         const behandlingTilstand = BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON;
         hendelseVenterPåDokumentasjon = {
             type: 'søknad',
-            opprettet: new Date(),
+            opprettet: dayjs(new Date()).add(1, 'd').toDate(),
             aktørType: getAktørtypeAvVenteårsak(åpenBehandling.tilstand),
             tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(behandlingTilstand),
             dokumenter: [],

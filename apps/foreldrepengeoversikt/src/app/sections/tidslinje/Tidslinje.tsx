@@ -2,9 +2,6 @@ import { BodyShort, Button, Link, Loader, ReadMore } from '@navikt/ds-react';
 import { Link as LinkInternal, useParams } from 'react-router-dom';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
-import { Sak } from 'app/types/Sak';
-import { EngangsstønadSak } from 'app/types/EngangsstønadSak';
-import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 
 import DokumentHendelse from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
@@ -13,29 +10,37 @@ import {
     VENTEÅRSAKER,
     sorterTidslinjehendelser,
     getTidslinjehendelserFraBehandlingPåVent,
-    getTidslinjehendelseStatus,
     getTidslinjehendelseTittel,
     getTidslinjehendelserDetaljer,
     getHendelserForVisning,
+    getTidslinjeFamiliehendelse,
 } from 'app/utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import dayjs from 'dayjs';
+import { Ytelse } from 'app/types/Ytelse';
+import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
+import { getAlleYtelser, getBarnGrupperingFraSak, utledFamiliesituasjon } from 'app/utils/sakerUtils';
+import { SakOppslag } from 'app/types/SakOppslag';
 
 interface Params {
-    sak: Sak | EngangsstønadSak | SvangerskapspengeSak | undefined;
+    saker: SakOppslag;
     visHeleTidslinjen: boolean;
+    søkersBarn: SøkerinfoDTOBarn[] | undefined;
 }
 
-const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) => {
+const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, søkersBarn }) => {
     const params = useParams();
     const intl = useIntl();
     const bem = bemUtils('tidslinje-hendelse');
+    const alleSaker = getAlleYtelser(saker);
+    const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
-
+    const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
+    const situasjon = sak.familiehendelse ? utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon) : undefined;
     if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>
@@ -57,12 +62,16 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
         ? getTidslinjehendelserFraBehandlingPåVent(åpenBehandlingPåVent, manglendeVedleggData, intl)
         : undefined;
 
+    const familiehendelse = sak.ytelse === Ytelse.FORELDREPENGER ? getTidslinjeFamiliehendelse(sak) : undefined;
+    if (familiehendelse) {
+        tidslinjeHendelser.push(familiehendelse);
+    }
     const alleHendelser = venteHendelser ? tidslinjeHendelser.concat(venteHendelser) : tidslinjeHendelser;
     const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
 
     const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, sorterteHendelser);
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
-        dayjs(hendelse.opprettet).isSameOrAfter(dayjs(), 'd')
+        dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
     );
     return (
         <div>
@@ -71,20 +80,28 @@ const Tidslinje: React.FunctionComponent<Params> = ({ sak, visHeleTidslinjen }) 
                 const alleDokumenter = hendelse.dokumenter.map((dokument) => {
                     return <DokumentHendelse dokument={dokument} key={dokument.url} />;
                 });
+                const visKlokkeslett =
+                    hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&
+                    dayjs(hendelse.opprettet).isSameOrBefore(dayjs());
 
                 return (
                     <TidslinjeHendelse
                         date={hendelse.opprettet}
-                        type={getTidslinjehendelseStatus(hendelse.tidslinjeHendelseType, hendelse.opprettet)}
                         title={getTidslinjehendelseTittel(
                             hendelse.tidslinjeHendelseType,
                             intl,
                             hendelse.tidligstBehandlingsDato,
                             manglendeVedleggData,
-                            sak.ytelse
+                            sak.ytelse,
+                            sak.gjelderAdopsjon,
+                            sak.familiehendelse,
+                            barnFraSak,
+                            sak.familiehendelse?.antallBarn,
+                            situasjon
                         )}
                         key={guid()}
                         isActiveStep={isActiveStep}
+                        visKlokkeslett={visKlokkeslett}
                     >
                         <ul style={{ listStyle: 'none', padding: '0' }}>
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
