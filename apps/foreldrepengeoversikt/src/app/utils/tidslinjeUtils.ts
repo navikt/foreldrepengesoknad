@@ -31,6 +31,18 @@ export const TIDSLINJEHENDELSER_PÅ_VENT = [
     TidslinjehendelseType.VENT_DOKUMENTASJON,
 ];
 
+export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: Date | undefined): Date | undefined => {
+    return førsteUttaksdagISaken
+        ? dayjs(førsteUttaksdagISaken)
+              .subtract(4 * 7, 'day')
+              .toDate()
+        : undefined;
+};
+
+export const getTidligstDatoForBehandlingAvTidligSøknad = () => {
+    return new Date('2023-11-05'); //TODO
+};
+
 export const getTidslinjetekstForAntallBarn = (
     antallBarn: number,
     intl: IntlShape,
@@ -46,6 +58,18 @@ export const getTidslinjetekstForAntallBarn = (
         return intlUtils(intl, 'trillingene');
     }
     return intlUtils(intl, 'flerlingene');
+};
+
+const getTidslinjeTittelForBarnTreÅr = (barnFraSak: BarnGruppering, antallBarn: number, intl: IntlShape) => {
+    let barnNavnTekst = '';
+    if (barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever) {
+        barnNavnTekst = getTidslinjetekstForAntallBarn(antallBarn, intl, false);
+    } else {
+        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn);
+    }
+    return intlUtils(intl, 'tidslinje.tittel.BARNET_TRE_ÅR', {
+        navn: barnNavnTekst,
+    });
 };
 
 const getTidslinjeTittelForFamiliehendelse = (
@@ -115,6 +139,15 @@ export const getTidslinjehendelseTittel = (
         situasjon
     ) {
         return getTidslinjeTittelForFamiliehendelse(familiehendelse, gjelderAdopsjon, barnFraSak, antallBarn, intl);
+    }
+    if (
+        ytelse === Ytelse.FORELDREPENGER &&
+        familiehendelse?.fødselsdato &&
+        antallBarn &&
+        situasjon !== 'adopsjon' &&
+        hendelsetype === TidslinjehendelseType.BARNET_TRE_ÅR
+    ) {
+        return getTidslinjeTittelForBarnTreÅr(barnFraSak, antallBarn, intl);
     }
     return intlUtils(intl, `tidslinje.tittel.${hendelsetype}`);
 };
@@ -214,6 +247,21 @@ export const getTidslinjeFamiliehendelse = (sak: Foreldrepengesak): Tidslinjehen
     };
 };
 
+export const getTidslinjeBarnTreÅrHendelse = (fødselsdato: string, intl: IntlShape): Tidslinjehendelse => {
+    const barn3ÅrDato = dayjs(fødselsdato).add(3, 'y').toDate();
+    return {
+        type: 'søknad',
+        opprettet: barn3ÅrDato,
+        tidslinjeHendelseType: TidslinjehendelseType.BARNET_TRE_ÅR,
+        aktørType: AktørType.BRUKER,
+        dokumenter: [],
+        manglendeVedlegg: [],
+        merInformasjon: intlUtils(intl, 'tidslinje.BARN_TRE_ÅR.informasjon'),
+        linkTittel: intlUtils(intl, 'tidslinje.BARN_TRE_ÅR.linkTittel'),
+        eksternalUrl: NavRoutes.HVOR_LENGE,
+    };
+};
+
 export const getTidslinjehendelserFraBehandlingPåVent = (
     åpenBehandling: ÅpenBehandling,
     manglendeVedleggData: Skjemanummer[],
@@ -229,7 +277,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
         hendelseVenterPåDokumentasjon = {
             type: 'søknad',
             opprettet: dayjs(new Date()).add(1, 'd').toDate(),
-            aktørType: getAktørtypeAvVenteårsak(åpenBehandling.tilstand),
+            aktørType: getAktørtypeAvVenteårsak(behandlingTilstand),
             tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(behandlingTilstand),
             dokumenter: [],
             manglendeVedlegg: [],
@@ -242,7 +290,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
     }
     const tidslinjeHendelse = {
         type: 'søknad',
-        opprettet: new Date(),
+        opprettet: dayjs(new Date()).add(1, 'd').toDate(),
         aktørType: getAktørtypeAvVenteårsak(åpenBehandling.tilstand),
         tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandling.tilstand),
         dokumenter: [],
@@ -261,7 +309,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
     };
 
     if (hendelseVenterPåDokumentasjon) {
-        return [tidslinjeHendelse, hendelseVenterPåDokumentasjon];
+        return [hendelseVenterPåDokumentasjon, tidslinjeHendelse];
     }
 
     return [tidslinjeHendelse];
@@ -277,12 +325,8 @@ export const sorterTidslinjehendelser = (h1: Tidslinjehendelse, h2: Tidslinjehen
     }
 };
 
-const getNåværendeHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
-    return sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isSame(new Date(), 'd'));
-};
-
 const getNesteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
-    return sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isSame(new Date(), 'd'));
+    return sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
 };
 
 export const getHendelserForVisning = (
@@ -295,14 +339,9 @@ export const getHendelserForVisning = (
     } else {
         const dateNow = new Date();
 
-        const nåværendeHendelser = getNåværendeHendelser(sorterteHendelser);
-        if (nåværendeHendelser.length > 0) {
-            hendelserForVisning.push(...nåværendeHendelser);
-        }
-
         const nesteHendelser = getNesteHendelser(sorterteHendelser);
         if (nesteHendelser.length > 0) {
-            hendelserForVisning.push(nesteHendelser[0]);
+            hendelserForVisning.push(...nesteHendelser);
         }
 
         if (hendelserForVisning.length === 0) {

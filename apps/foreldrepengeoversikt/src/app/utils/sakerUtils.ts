@@ -30,6 +30,15 @@ export function sorterPersonEtterEldstOgNavn(p1: Person, p2: Person) {
     }
 }
 
+export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): Date | undefined => {
+    if (sak.gjeldendeVedtak) {
+        return ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!;
+    } else if (sak.åpenBehandling && sak.åpenBehandling.søknadsperioder) {
+        return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);
+    }
+    return undefined;
+};
+
 export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];

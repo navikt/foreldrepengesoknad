@@ -5,6 +5,11 @@ import { formaterDato, formaterTid } from 'app/utils/dateUtils';
 import './tidslinje-hendelse.css';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
+import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
+import {
+    getTidligstDatoForBehandlingAvTidligSøknad,
+    getTidligstDatoForInntektsmelding,
+} from 'app/utils/tidslinjeUtils';
 
 interface Props {
     children: React.ReactNode;
@@ -12,6 +17,8 @@ interface Props {
     title: string;
     isActiveStep: boolean;
     visKlokkeslett: boolean;
+    type: TidslinjehendelseType;
+    førsteUttaksdagISaken: Date | undefined;
 }
 
 const bem = bemUtils('tidslinje-hendelse');
@@ -32,17 +39,41 @@ const getTimelineClassModifier = (isActiveStep: boolean) => {
     return 'inactive';
 };
 
-const TidslinjeHendelse: React.FunctionComponent<Props> = ({ date, title, children, isActiveStep, visKlokkeslett }) => {
-    let dateTekst = formaterDato(date, 'D. MMM YYYY').toUpperCase();
-    if (dayjs(date).isSame(new Date(), 'd')) {
-        dateTekst = 'I DAG';
+const getDateTekst = (type: TidslinjehendelseType, date: Date, førsteUttaksdagISaken: Date | undefined) => {
+    if (type === TidslinjehendelseType.VENTER_INNTEKTSMELDING) {
+        const tidligstDato = getTidligstDatoForInntektsmelding(førsteUttaksdagISaken);
+        if (dayjs(tidligstDato).isAfter(dayjs())) {
+            return tidligstDato ? `TIDLIGST ${formaterDato(tidligstDato, 'D. MMM YYYY').toUpperCase()}` : '';
+        } else {
+            return 'SNAREST';
+        }
+    } else if (type === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD) {
+        const tidligstDato = getTidligstDatoForBehandlingAvTidligSøknad();
+        return `TIDLIGST ${formaterDato(tidligstDato, 'D. MMM YYYY').toUpperCase()}`;
+    } else if ([TidslinjehendelseType.VENTER_MELDEKORT, TidslinjehendelseType.VENT_DOKUMENTASJON].includes(type)) {
+        return 'SNAREST';
+    } else if (type === TidslinjehendelseType.FREMTIDIG_VEDTAK) {
+        return 'SENERE';
+    } else if (dayjs(date).isSame(new Date(), 'd')) {
+        return 'I DAG';
+    } else if (dayjs(date).isSame(dayjs(new Date()).subtract(1, 'd'), 'd')) {
+        return 'I GÅR';
+    } else {
+        return formaterDato(date, 'D. MMM YYYY').toUpperCase();
     }
-    if (dayjs(date).isSame(dayjs(new Date()).subtract(1, 'd'), 'd')) {
-        dateTekst = 'I GÅR';
-    }
+};
 
+const TidslinjeHendelse: React.FunctionComponent<Props> = ({
+    date,
+    title,
+    children,
+    isActiveStep,
+    visKlokkeslett,
+    type,
+    førsteUttaksdagISaken,
+}) => {
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
-
+    const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken);
     return (
         <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(isActiveStep)}`))}>
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>

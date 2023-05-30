@@ -14,6 +14,7 @@ import {
     getTidslinjehendelserDetaljer,
     getHendelserForVisning,
     getTidslinjeFamiliehendelse,
+    getTidslinjeBarnTreÅrHendelse,
 } from 'app/utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
@@ -22,7 +23,12 @@ import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import dayjs from 'dayjs';
 import { Ytelse } from 'app/types/Ytelse';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser, getBarnGrupperingFraSak, utledFamiliesituasjon } from 'app/utils/sakerUtils';
+import {
+    getAlleYtelser,
+    getBarnGrupperingFraSak,
+    getFørsteUttaksdagIForeldrepengesaken,
+    utledFamiliesituasjon,
+} from 'app/utils/sakerUtils';
 import { SakOppslag } from 'app/types/SakOppslag';
 
 interface Params {
@@ -37,6 +43,8 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const bem = bemUtils('tidslinje-hendelse');
     const alleSaker = getAlleYtelser(saker);
     const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
+    const førsteUttaksdagISaken =
+        sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
@@ -62,9 +70,14 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
         ? getTidslinjehendelserFraBehandlingPåVent(åpenBehandlingPåVent, manglendeVedleggData, intl)
         : undefined;
 
-    const familiehendelse = sak.ytelse === Ytelse.FORELDREPENGER ? getTidslinjeFamiliehendelse(sak) : undefined;
-    if (familiehendelse) {
+    if (sak.ytelse === Ytelse.FORELDREPENGER) {
+        const familiehendelse = getTidslinjeFamiliehendelse(sak);
         tidslinjeHendelser.push(familiehendelse);
+    }
+
+    if (sak.ytelse === Ytelse.FORELDREPENGER && !sak.gjelderAdopsjon && sak.familiehendelse.fødselsdato) {
+        const barn3ÅrHendelse = getTidslinjeBarnTreÅrHendelse(sak.familiehendelse.fødselsdato, intl);
+        tidslinjeHendelser.push(barn3ÅrHendelse);
     }
     const alleHendelser = venteHendelser ? tidslinjeHendelser.concat(venteHendelser) : tidslinjeHendelser;
     const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
@@ -102,6 +115,8 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                         key={guid()}
                         isActiveStep={isActiveStep}
                         visKlokkeslett={visKlokkeslett}
+                        type={hendelse.tidslinjeHendelseType}
+                        førsteUttaksdagISaken={førsteUttaksdagISaken}
                     >
                         <ul style={{ listStyle: 'none', padding: '0' }}>
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&

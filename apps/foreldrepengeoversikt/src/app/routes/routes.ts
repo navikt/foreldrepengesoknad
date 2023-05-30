@@ -29,6 +29,7 @@ export enum NavRoutes {
     VENT_INNTEKTSMELDING = 'https://www.nav.no/arbeidsgiver/inntektsmelding',
     VENT_MELDEKORT = 'https://www.nav.no/no/person/arbeid/dagpenger-ved-arbeidsloshet-og-permittering/meldekort-hvordan-gjor-du-det',
     FORELDREPENGESOKNAD = 'https://foreldrepengesoknad.nav.no',
+    HVOR_LENGE = 'https://www.nav.no/foreldrepenger#hvor-lenge',
 }
 
 export default OversiktRoutes;
