@@ -6,10 +6,7 @@ import './tidslinje-hendelse.css';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
-import {
-    getTidligstDatoForBehandlingAvTidligSøknad,
-    getTidligstDatoForInntektsmelding,
-} from 'app/utils/tidslinjeUtils';
+import { getTidligstDatoForInntektsmelding } from 'app/utils/tidslinjeUtils';
 
 interface Props {
     children: React.ReactNode;
