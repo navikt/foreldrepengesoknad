@@ -418,16 +418,21 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
         return d1.dato.getTime() - d2.dato.getTime();
     });
 
+    const alleUnikeDatoer = alleDatoer.filter(
+        (date, i, self) =>
+            self.findIndex((d) => d.dato.getTime() === date.dato.getTime() && d.erFom === date.erFom) === i
+    );
+
     const normaliserteEgnePerioder: Periode[] = [];
     const normaliserteAnnenPartsPerioder: Periode[] = [];
 
     perioder.forEach((p) => {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteEgnePerioder.push(...oppsplittetPeriode);
     });
 
     annenPartsUttak.forEach((p) => {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
     });
 
