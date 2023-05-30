@@ -117,6 +117,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                         visKlokkeslett={visKlokkeslett}
                         type={hendelse.tidslinjeHendelseType}
                         førsteUttaksdagISaken={førsteUttaksdagISaken}
+                        tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
                     >
                         <ul style={{ listStyle: 'none', padding: '0' }}>
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&

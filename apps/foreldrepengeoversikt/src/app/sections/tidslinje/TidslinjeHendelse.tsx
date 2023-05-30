@@ -19,6 +19,7 @@ interface Props {
     visKlokkeslett: boolean;
     type: TidslinjehendelseType;
     førsteUttaksdagISaken: Date | undefined;
+    tidligstBehandlingsDato: Date | undefined;
 }
 
 const bem = bemUtils('tidslinje-hendelse');
@@ -39,7 +40,12 @@ const getTimelineClassModifier = (isActiveStep: boolean) => {
     return 'inactive';
 };
 
-const getDateTekst = (type: TidslinjehendelseType, date: Date, førsteUttaksdagISaken: Date | undefined) => {
+const getDateTekst = (
+    type: TidslinjehendelseType,
+    date: Date,
+    førsteUttaksdagISaken: Date | undefined,
+    tidligstBehandlingsDato: Date | undefined
+) => {
     if (type === TidslinjehendelseType.VENTER_INNTEKTSMELDING) {
         const tidligstDato = getTidligstDatoForInntektsmelding(førsteUttaksdagISaken);
         if (dayjs(tidligstDato).isAfter(dayjs())) {
@@ -48,8 +54,7 @@ const getDateTekst = (type: TidslinjehendelseType, date: Date, førsteUttaksdagI
             return 'SNAREST';
         }
     } else if (type === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD) {
-        const tidligstDato = getTidligstDatoForBehandlingAvTidligSøknad();
-        return `TIDLIGST ${formaterDato(tidligstDato, 'D. MMM YYYY').toUpperCase()}`;
+        return `TIDLIGST ${formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY').toUpperCase()}`;
     } else if ([TidslinjehendelseType.VENTER_MELDEKORT, TidslinjehendelseType.VENT_DOKUMENTASJON].includes(type)) {
         return 'SNAREST';
     } else if (type === TidslinjehendelseType.FREMTIDIG_VEDTAK) {
@@ -71,9 +76,10 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
     visKlokkeslett,
     type,
     førsteUttaksdagISaken,
+    tidligstBehandlingsDato,
 }) => {
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
-    const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken);
+    const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
     return (
         <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(isActiveStep)}`))}>
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>

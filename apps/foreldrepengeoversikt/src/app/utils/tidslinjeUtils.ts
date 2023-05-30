@@ -39,10 +39,6 @@ export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: Date |
         : undefined;
 };
 
-export const getTidligstDatoForBehandlingAvTidligSøknad = () => {
-    return new Date('2023-11-05'); //TODO
-};
-
 export const getTidslinjetekstForAntallBarn = (
     antallBarn: number,
     intl: IntlShape,
