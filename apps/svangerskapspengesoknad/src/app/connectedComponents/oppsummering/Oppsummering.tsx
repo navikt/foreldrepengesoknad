@@ -90,7 +90,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                         <FormattedMessage
                             id="oppsummering.barn.termindato"
                             values={{
-                                dato: dayjs(values.barn.fødselsdato).format('dddd D. MMMM YYYY'),
+                                dato: dayjs(values.barn.termindato).format('dddd D. MMMM YYYY'),
                             }}
                         />
                     </Block>
