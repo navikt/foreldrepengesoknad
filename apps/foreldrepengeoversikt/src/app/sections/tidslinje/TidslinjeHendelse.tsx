@@ -30,11 +30,14 @@ const getIkonClassElement = (isActiveStep: boolean, opprettet: Date) => {
     return 'ikon_incomplete';
 };
 
-const getTimelineClassModifier = (isActiveStep: boolean) => {
+const getTimelineClassModifier = (opprettet: Date, isActiveStep: boolean) => {
     if (isActiveStep) {
         return 'active';
     }
-    return 'inactive';
+    if (dayjs(opprettet).isBefore(dayjs(), 'd')) {
+        return 'complete';
+    }
+    return 'incomplete';
 };
 
 const getDateTekst = (
@@ -78,7 +81,7 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
     const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
     return (
-        <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(isActiveStep)}`))}>
+        <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`))}>
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>
                 {dayjs(date).isSameOrBefore(dayjs(), 'd') && <RecordFillIcon width="20" height="20" />}
                 {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" />}

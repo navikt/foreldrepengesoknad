@@ -15,6 +15,7 @@ import {
     getHendelserForVisning,
     getTidslinjeFamiliehendelse,
     getTidslinjeBarnTreÅrHendelse,
+    getTidslinjeVedtakHendelse,
 } from 'app/utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
@@ -69,19 +70,41 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const venteHendelser = åpenBehandlingPåVent
         ? getTidslinjehendelserFraBehandlingPåVent(åpenBehandlingPåVent, manglendeVedleggData, intl)
         : undefined;
+    if (venteHendelser) {
+        tidslinjeHendelser.push(...venteHendelser);
+    }
 
-    if (sak.ytelse === Ytelse.FORELDREPENGER) {
-        const familiehendelse = getTidslinjeFamiliehendelse(sak);
+    if (sak.familiehendelse) {
+        const familiehendelse = getTidslinjeFamiliehendelse(sak.familiehendelse);
         tidslinjeHendelser.push(familiehendelse);
     }
 
-    if (sak.ytelse === Ytelse.FORELDREPENGER && !sak.gjelderAdopsjon && sak.familiehendelse.fødselsdato) {
-        const barn3ÅrHendelse = getTidslinjeBarnTreÅrHendelse(sak.familiehendelse.fødselsdato, intl);
+    if (
+        barnFraSak.alleBarnaLever &&
+        sak.ytelse === Ytelse.FORELDREPENGER &&
+        (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato)
+    ) {
+        const barn3ÅrHendelse = getTidslinjeBarnTreÅrHendelse(
+            sak.familiehendelse.fødselsdato,
+            sak.familiehendelse.omsorgsovertakelse,
+            sak.familiehendelse.antallBarn,
+            sak.gjelderAdopsjon,
+
+            intl
+        );
         tidslinjeHendelser.push(barn3ÅrHendelse);
     }
-    const alleHendelser = venteHendelser ? tidslinjeHendelser.concat(venteHendelser) : tidslinjeHendelser;
-    const sorterteHendelser = [...alleHendelser].sort(sorterTidslinjehendelser);
 
+    if (sak.åpenBehandling) {
+        const vedtakHendelse = getTidslinjeVedtakHendelse(intl, sak.ytelse);
+        tidslinjeHendelser.push(vedtakHendelse);
+    }
+    const sorterteHendelser = [...tidslinjeHendelser].sort(sorterTidslinjehendelser);
+
+    // if (sak.ytelse === Ytelse.FORELDREPENGER && sak.gjeldendeVedtak) {
+    //     const periodeHendelser = getTidslinjePeriodeHendelser(intl, sak.ytelse);
+    //     tidslinjeHendelser.push(...periodeHendelser);
+    // }
     const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, sorterteHendelser);
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
         dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')

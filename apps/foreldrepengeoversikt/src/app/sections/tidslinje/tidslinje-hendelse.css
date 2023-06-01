@@ -16,21 +16,20 @@
 
 .tidslinje-hendelse__ikon_active svg{
     color: var(--a-deepblue-300);
-    background-color: var(--a-deepblue-100);
+    background-color: var(--a-deepblue-50);
 }
 
 .tidslinje-hendelse__ikon_completed svg{
-    color: var(--a-gray-200);
-     background-color: transparent; 
+    color: var(--a-deepblue-300);
+    background-color: transparent; 
 }
 
 .tidslinje-hendelse__ikon_incomplete svg{
     color: var(--a-gray-200);
-    /* background-color: transparent; */
 }
 
 .tidslinje-hendelse--active {
-    background-color: var(--a-deepblue-100);
+    background-color: var(--a-deepblue-50);
     border-radius: 4px;
 }
 
@@ -39,28 +38,29 @@
     width: 0;
     height: 100%;
     position: absolute;
-    border: 1px solid var(--a-gray-600);
     top: 0;
     left: 9px;
     z-index: 0;
 }
 
-.tidslinje-hendelse--active:before {
+.tidslinje-hendelse--active::before {
     border: 1px solid var(--a-deepblue-300);
 }
 
-.tidslinje-hendelse--inactive:before {
+.tidslinje-hendelse--complete:before {
+    border: 1px solid var(--a-deepblue-300);
+}
+
+.tidslinje-hendelse--incomplete:before {
     border: 1px solid var(--a-gray-200);
 }
 
 .tidslinje-hendelse:first-child:before {
     top: 24px;
-    border: 1px solid var(--a-gray-600);
 }
 
 .tidslinje-hendelse--inactive:first-child:before {
     top: 24px;
-    border: 1px solid var(--a-gray-200);
 }
 
 .tidslinje-hendelse:last-child:before {
@@ -69,7 +69,6 @@
 
 .tidslinje-hendelse--inactive:last-child:before {
     height: 27px;
-    border: 1px solid var(--a-gray-200);
 }
 
 .tidslinje-hendelse__mer_informasjon {
