@@ -300,6 +300,7 @@
     "valideringsfeil.maxTiMånederFørTerminDato": "Tilretteleggings datoen kan ikke være mer enn 10 mnd før termindato",
     "valideringsfeil.datoMåVæreFørTerminDato": "Tilretteleggings datoen må være før termindato",
     "valideringsfeil.ugyldigDato": "{feltNavn} må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.behovForTilretteleggingFom": "Tilretteleggingsdato må være fylt ut",
     "valideringsfeil.annenInntekt.land.påkrevd": "Du må oppgi hvilket land du har jobbet i",
     "valideringsfeil.annenInntekt.arbeidsgiverNavn.påkrevd": "Du må oppgi navn på arbeidsgiver",
     "valideringsfeil.annenInntekt.arbeidsgiverNavn.max100Tegn": "Navn på arbeidsgiver kan ikke være lenger enn 100 tegn",

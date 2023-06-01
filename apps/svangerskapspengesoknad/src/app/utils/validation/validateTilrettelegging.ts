@@ -37,6 +37,13 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                 set(tErrors, 'behovForTilretteleggingFom', 'valideringsfeil.datoMåVæreFørTerminDato');
             }
 
+            if (
+                !tilrettelegging.behovForTilretteleggingFom ||
+                tilrettelegging.behovForTilretteleggingFom === 'Invalid Date'
+            ) {
+                set(tErrors, 'behovForTilretteleggingFom', 'valideringsfeil.behovForTilretteleggingFom');
+            }
+
             const getInputName = (name: string) => `tilrettelegging.${index}.${name}`;
             const tilretteleggingstypeName = getInputName('type');
             const valgteTyper = get(søknad, tilretteleggingstypeName) || [];
