@@ -74,7 +74,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
         tidslinjeHendelser.push(...venteHendelser);
     }
 
-    if (sak.familiehendelse) {
+    if (sak.familiehendelse?.termindato || (sak.familiehendelse && barnFraSak.alleBarnaLever)) {
         const familiehendelse = getTidslinjeFamiliehendelse(sak.familiehendelse);
         tidslinjeHendelser.push(familiehendelse);
     }
