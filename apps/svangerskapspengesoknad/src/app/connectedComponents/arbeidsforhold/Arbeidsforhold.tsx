@@ -34,12 +34,12 @@ import { Søknadsgrunnlag } from 'app/types/Søknad';
 import { Arbeidsforholdstype, UferdigTilrettelegging } from 'app/types/Tilrettelegging';
 import { AnnenInntektType } from '../../types/AnnenInntekt';
 
-import './arbeidsforhold.less';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from 'app/components/info-til-fiskere/InfoTilFiskere';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import { BodyShort, Link } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
+import './arbeidsforhold.less';
 
 const cls = BEMHelper('arbeidsforhold');
 
@@ -108,10 +108,6 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false &&
         harHattAnnenInntektSiste10Mnd === false;
 
-    const skalViseVeilederinfo = values.søknadsgrunnlag.some(
-        (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET
-    );
-
     const createSøknadsgrunnlag = (
         søknadsgrunnlag: Søknadsgrunnlag[],
         søknadsgrunnlagOptions: SøknadsgrunnlagOption[]
@@ -125,6 +121,10 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
             type: option.type,
         }));
     };
+
+    const skalViseVeilederinfo = createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions).some(
+        (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET
+    );
 
     let tilrettelegging = mergeSøknadsgrunnlagIntoTilrettelegging(
         createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions),
@@ -200,15 +200,27 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
 
                 <FrilansSpørsmål formikProps={formikProps} />
 
-                <Block visible={visHarJobbetSomSelvstendigNæringsdrivendeSiste10MndSeksjon} margin="xs">
+                <Block visible={visHarJobbetSomSelvstendigNæringsdrivendeSiste10MndSeksjon} margin="xxs">
                     <Arbeidsforholdseksjon
                         name="søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd"
                         listName="søker.selvstendigNæringsdrivendeInformasjon"
                         legend={getMessage(intl, 'arbeidsforhold.selvstendig.erSelvstendigNæringsdrivende')}
                         buttonLabel={getMessage(intl, 'leggtil')}
-                        infoboksTekst={
+                        summaryListTitle={{ title: getMessage(intl, 'arbeidsforhold.selvstendig.listetittel') }}
+                        summaryListElementComponent={SelvstendigListElement}
+                        renderForm={(formProps: any) => <SelvstendigNæringsdrivende {...formProps} />}
+                    />
+                </Block>
+                <Block visible={visHarJobbetSomSelvstendigNæringsdrivendeSiste10MndSeksjon} margin="xs">
+                    <ReadMore header="Hvordan defineres selvstendig næringsdrivende?">
+                        <Block margin="xxs">
+                            <BodyLong>
+                                <FormattedMessage id="arbeidsforhold.selvstendig.infoboxTekst.del1" />
+                            </BodyLong>
+                        </Block>
+                        <BodyLong>
                             <FormattedMessage
-                                id="arbeidsforhold.selvstendig.infoboxTekst"
+                                id="arbeidsforhold.selvstendig.infoboxTekst.del2"
                                 values={{
                                     a: (msg: any) => (
                                         <a
@@ -221,34 +233,27 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
                                     ),
                                 }}
                             />
-                        }
-                        summaryListTitle={{ title: getMessage(intl, 'arbeidsforhold.selvstendig.listetittel') }}
-                        summaryListElementComponent={SelvstendigListElement}
-                        renderForm={(formProps: any) => <SelvstendigNæringsdrivende {...formProps} />}
-                    />
-                </Block>
-                <Block visible={visHarJobbetSomSelvstendigNæringsdrivendeSiste10MndSeksjon} margin="xs">
-                    <Link
-                        target="_blank"
-                        href="https://www.nav.no/no/person/innhold-til-person-forside/nyttig-a-vite/er-jeg-selvstendig-naeringsdrivende-frilanser-eller-arbeidstaker"
-                    >
-                        <FormattedMessage id="arbeidsforhold.erJegNæringsdrivendeFrilansEllerArbeidstaker" />
-                    </Link>
+                        </BodyLong>
+                    </ReadMore>
                 </Block>
 
-                <Block visible={visharHattAnnenInntektSiste10MndSeksjon}>
+                <Block visible={visharHattAnnenInntektSiste10MndSeksjon} margin="xxs">
                     <Arbeidsforholdseksjon
                         name="søker.harHattAnnenInntektSiste10Mnd"
                         listName="søker.andreInntekterSiste10Mnd"
                         legend={getMessage(intl, 'arbeidsforhold.andreInntekter')}
                         buttonLabel={getMessage(intl, 'leggtil')}
-                        infoboksTekst={<AnnenInntektSiste10MndHjelpeTekst />}
                         summaryListTitle={{ title: getMessage(intl, 'arbeidsforhold.andreInntekter.listetittel') }}
                         summaryListElementComponent={AndreInntekterListElement}
                         renderForm={(formProps: any) => (
                             <AndreInntekter {...formProps} skjulFørstegangstjeneste={harLagtTilFørstegangstjeneste} />
                         )}
                     />
+                </Block>
+                <Block margin="xs" visible={visharHattAnnenInntektSiste10MndSeksjon}>
+                    <ReadMore header="Hvilke andre inntektskilder kan gi rett på svangerskapspenger?">
+                        <AnnenInntektSiste10MndHjelpeTekst />
+                    </ReadMore>
                 </Block>
 
                 <Block visible={visSøknadsgrunnlagValg} margin="l">
@@ -319,15 +324,8 @@ export default connect(mapStateToProps)(Arbeidsforhold);
 const AnnenInntektSiste10MndHjelpeTekst = () => {
     const intl = useIntl();
     return (
-        <div>
-            <div>{getMessage(intl, 'annenInntekt.infoboksTekst.overskrift')}</div>
-            <ul>
-                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktEn')}</li>
-                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktTo')}</li>
-                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktTre')}</li>
-                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktFire')}</li>
-                <li>{getMessage(intl, 'annenInntekt.infoboksTekst.punktFem')}</li>
-            </ul>
-        </div>
+        <>
+            <BodyLong>{getMessage(intl, 'annenInntekt.infoboksTekst')}</BodyLong>
+        </>
     );
 };

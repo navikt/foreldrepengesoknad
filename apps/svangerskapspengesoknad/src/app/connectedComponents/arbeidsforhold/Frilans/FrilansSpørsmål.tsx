@@ -14,6 +14,7 @@ import FrilansListElement from './FrilansListElement';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 
 import FrilansSpørsmålInfoBoksTekst from './FrilansSpørsmålInfoBoksTekst';
+import { ReadMore } from '@navikt/ds-react';
 
 interface Props {
     formikProps: CustomFormikProps;
@@ -36,12 +37,16 @@ const FrilansSpørsmål: FunctionComponent<Props> = (props: Props) => {
 
     return (
         <>
-            <Block>
+            <Block margin="xxs">
                 <JaNeiSpørsmål
                     name="søker.harJobbetSomFrilansSiste10Mnd"
                     legend={getMessage(intl, 'arbeidsforhold.frilans.erFrilanser')}
-                    description={<FrilansSpørsmålInfoBoksTekst />}
                 />
+            </Block>
+            <Block>
+                <ReadMore header="Hvordan defineres frilanser?">
+                    <FrilansSpørsmålInfoBoksTekst />
+                </ReadMore>
             </Block>
 
             {formikProps.values.søker.harJobbetSomFrilansSiste10Mnd && (

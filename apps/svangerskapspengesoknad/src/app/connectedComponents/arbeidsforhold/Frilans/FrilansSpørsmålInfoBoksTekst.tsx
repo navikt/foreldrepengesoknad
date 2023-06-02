@@ -1,20 +1,22 @@
+import { BodyLong } from '@navikt/ds-react';
+import { Block } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
 
 const FrilansSpørsmålInfoBoksTekst = () => {
     return (
         <>
-            <FormattedMessage id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.title" />
-            <ul>
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt1" />
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt2" />
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt3" />
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt4" />
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt5" />
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt6" />
-                <FormattedMessage tagName="li" id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt7" />
-            </ul>
+            <Block padBottom="m">
+                <BodyLong>
+                    <FormattedMessage id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt1" />
+                </BodyLong>
+            </Block>
+            <Block padBottom="m">
+                <BodyLong>
+                    <FormattedMessage id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt2" />
+                </BodyLong>
+            </Block>
             <FormattedMessage
-                id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.link"
+                id="arbeidsforhold.frilans.erFrilanser.infoboksTekst.liste.punkt3"
                 values={{
                     a: (msg: any) => (
                         <a

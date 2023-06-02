@@ -20,7 +20,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
 
     const tiMånederSiden = moment(søknad.barn.termindato).startOf('day').subtract(10, 'months');
 
-    const idx = søknad.søknadsgrunnlag.findIndex((grunnlag: Søknadsgrunnlag) => grunnlag.id === arbeidsforholdId);
+    const idx = søknad.søknadsgrunnlag.findIndex((grunnlag: Søknadsgrunnlag) => (grunnlag as any) === arbeidsforholdId);
     if (søknad.tilrettelegging) {
         søknad.tilrettelegging.forEach((tilrettelegging, index) => {
             if (index > idx) {
@@ -35,6 +35,13 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
 
             if (moment(tilrettelegging.behovForTilretteleggingFom).isSameOrAfter(søknad.barn.termindato)) {
                 set(tErrors, 'behovForTilretteleggingFom', 'valideringsfeil.datoMåVæreFørTerminDato');
+            }
+
+            if (
+                !tilrettelegging.behovForTilretteleggingFom ||
+                tilrettelegging.behovForTilretteleggingFom === 'Invalid Date'
+            ) {
+                set(tErrors, 'behovForTilretteleggingFom', 'valideringsfeil.behovForTilretteleggingFom');
             }
 
             const getInputName = (name: string) => `tilrettelegging.${index}.${name}`;
