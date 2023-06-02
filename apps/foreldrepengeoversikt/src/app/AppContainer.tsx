@@ -3,6 +3,9 @@ import ByttBrowserModal from './components/bytt-browser-modal/ByttBrowserModal';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';
 import IntlProvider from './intl/IntlProvider';
+import dayjs from 'dayjs';
+
+dayjs.locale('nb');
 
 const AppContainer: FunctionComponent = () => {
     return (

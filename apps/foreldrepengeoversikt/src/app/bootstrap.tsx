@@ -5,6 +5,10 @@ import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
 import '@formatjs/intl-pluralrules/polyfill';
 import '@formatjs/intl-pluralrules/locale-data/nb';
+import 'dayjs/locale/nb.js';
+import 'dayjs/locale/nn.js';
+import dayjs from 'dayjs';
+dayjs.locale('nb');
 
 Sentry.init({
     dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',
