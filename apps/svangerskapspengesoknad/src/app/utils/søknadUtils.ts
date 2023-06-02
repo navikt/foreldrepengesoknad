@@ -10,7 +10,7 @@ import { isISODateString } from '@navikt/ds-datepicker';
 import { Utenlandsopphold, UtenlandsoppholdDTO } from 'app/types/InformasjonOmUtenlandsopphold';
 
 const fjernForkastetTilrettelegging = (tilrettelegging: UferdigTilrettelegging[], søknadsgrunnlag: Søknadsgrunnlag[]) =>
-    tilrettelegging.filter((t) => søknadsgrunnlag.some((g) => g.id === t.id));
+    tilrettelegging.filter((t) => søknadsgrunnlag.some((g) => (g as any) === t.id));
 
 const areDefined = (...items: any[]) => items.some((item) => item !== undefined);
 

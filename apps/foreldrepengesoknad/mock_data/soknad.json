@@ -171,7 +171,7 @@
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/uttaksplan",
+    "currentRoute": "/soknad/utenlandsopphold",
     "uttaksplanInfo": {
         "permisjonStartdato": "2023-09-07"
     },
