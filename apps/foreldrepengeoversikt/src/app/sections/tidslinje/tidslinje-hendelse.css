@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.tidslinje-hendelse__tekst{
+    padding-left: 7px;
+}
+
 .tidslinje-hendelse__ikon svg{
     size: 120%;
     position: relative;

@@ -87,7 +87,7 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
                 {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" />}
             </div>
 
-            <div>
+            <div className={bem.element('tekst')}>
                 <BodyShort size="small" className={bem.element('tittle')}>
                     {title}
                 </BodyShort>
