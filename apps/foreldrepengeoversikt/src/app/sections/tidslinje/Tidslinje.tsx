@@ -109,6 +109,9 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
         dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
     );
+    const finnesHendelserFørAktivtSteg = sorterteHendelser.find((hendelse) =>
+        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd')
+    );
     return (
         <div>
             {hendelserForVisning.map((hendelse, index) => {
@@ -141,6 +144,8 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                         type={hendelse.tidslinjeHendelseType}
                         førsteUttaksdagISaken={førsteUttaksdagISaken}
                         tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
+                        finnesHendelserFørAktivtSteg={!!finnesHendelserFørAktivtSteg}
+                        visHeleTidslinjen={visHeleTidslinjen}
                     >
                         <ul style={{ listStyle: 'none', padding: '0' }}>
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&

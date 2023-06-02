@@ -17,6 +17,8 @@ interface Props {
     type: TidslinjehendelseType;
     førsteUttaksdagISaken: Date | undefined;
     tidligstBehandlingsDato: Date | undefined;
+    finnesHendelserFørAktivtSteg: boolean;
+    visHeleTidslinjen: boolean;
 }
 
 const bem = bemUtils('tidslinje-hendelse');
@@ -77,11 +79,26 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
     type,
     førsteUttaksdagISaken,
     tidligstBehandlingsDato,
+    finnesHendelserFørAktivtSteg,
+    visHeleTidslinjen,
 }) => {
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
     const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
     return (
-        <div className={classNames(bem.block, bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`))}>
+        <div
+            className={classNames(
+                bem.block,
+                bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`),
+                bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`),
+                bem.modifier(
+                    `${
+                        isActiveStep && finnesHendelserFørAktivtSteg && !visHeleTidslinjen
+                            ? 'er_ikke_første_hendelse'
+                            : ''
+                    }`
+                )
+            )}
+        >
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>
                 {dayjs(date).isSameOrBefore(dayjs(), 'd') && <RecordFillIcon width="20" height="20" />}
                 {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" />}

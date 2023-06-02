@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.tidslinje-hendelse--er_ikke_første_hendelse {
+    padding-top: 2rem;
+}
+
 .tidslinje-hendelse__tekst{
     padding-left: 7px;
 }
