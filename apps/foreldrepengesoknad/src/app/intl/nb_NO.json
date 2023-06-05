@@ -165,6 +165,8 @@
     "omBarnet.fødselsdato.adopsjon.7": "Når er det syvende barnet født?",
     "omBarnet.fødselsdato.adopsjon.8": "Når er det åttende barnet født?",
     "omBarnet.fødselsdato.adopsjon.9": "Når er det niende barnet født?",
+    "omBarnet.termindato.erForTidligTilÅSøkePåTermin.heading": "Du er for tidlig ute",
+    "omBarnet.termindato.erForTidligTilÅSøkePåTermin.innhold": "Du kan søke om foreldrepenger tidligst i 26. svangerskapsuke. Du er dessverre for tidlig ute, og får ikke søkt før senere.",
     "omBarnet.termindato.født": "Hva var termindatoen?",
     "omBarnet.termindato.fødtFlereBarn": "Hva var termindatoen?",
     "omBarnet.termindato.termin": "Når er termindatoen?",
