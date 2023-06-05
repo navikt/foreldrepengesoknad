@@ -8,14 +8,9 @@ import TidslinjeHendelse from './TidslinjeHendelse';
 import { ExternalLink } from '@navikt/ds-icons';
 import {
     VENTEÅRSAKER,
-    sorterTidslinjehendelser,
-    getTidslinjehendelserFraBehandlingPåVent,
     getTidslinjehendelseTittel,
-    getTidslinjehendelserDetaljer,
     getHendelserForVisning,
-    getTidslinjeFamiliehendelse,
-    getTidslinjeBarnTreÅrHendelse,
-    getTidslinjeVedtakHendelse,
+    getAlleTidslinjehendelser,
 } from 'app/utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
 import { useIntl } from 'react-intl';
@@ -66,50 +61,20 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const åpenBehandlingPåVent =
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
 
-    const tidslinjeHendelser = getTidslinjehendelserDetaljer(tidslinjeHendelserData, intl);
-    const venteHendelser = åpenBehandlingPåVent
-        ? getTidslinjehendelserFraBehandlingPåVent(åpenBehandlingPåVent, manglendeVedleggData, intl)
-        : undefined;
-    if (venteHendelser) {
-        tidslinjeHendelser.push(...venteHendelser);
-    }
+    const alleSorterteHendelser = getAlleTidslinjehendelser(
+        tidslinjeHendelserData,
+        åpenBehandlingPåVent,
+        manglendeVedleggData,
+        sak,
+        barnFraSak,
+        intl
+    );
 
-    if (sak.familiehendelse?.termindato || (sak.familiehendelse && barnFraSak.alleBarnaLever)) {
-        const familiehendelse = getTidslinjeFamiliehendelse(sak.familiehendelse);
-        tidslinjeHendelser.push(familiehendelse);
-    }
-
-    if (
-        barnFraSak.alleBarnaLever &&
-        sak.ytelse === Ytelse.FORELDREPENGER &&
-        (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato)
-    ) {
-        const barn3ÅrHendelse = getTidslinjeBarnTreÅrHendelse(
-            sak.familiehendelse.fødselsdato,
-            sak.familiehendelse.omsorgsovertakelse,
-            sak.familiehendelse.antallBarn,
-            sak.gjelderAdopsjon,
-
-            intl
-        );
-        tidslinjeHendelser.push(barn3ÅrHendelse);
-    }
-
-    if (sak.åpenBehandling) {
-        const vedtakHendelse = getTidslinjeVedtakHendelse(intl, sak.ytelse);
-        tidslinjeHendelser.push(vedtakHendelse);
-    }
-    const sorterteHendelser = [...tidslinjeHendelser].sort(sorterTidslinjehendelser);
-
-    // if (sak.ytelse === Ytelse.FORELDREPENGER && sak.gjeldendeVedtak) {
-    //     const periodeHendelser = getTidslinjePeriodeHendelser(intl, sak.ytelse);
-    //     tidslinjeHendelser.push(...periodeHendelser);
-    // }
-    const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, sorterteHendelser);
+    const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, alleSorterteHendelser);
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
         dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
     );
-    const finnesHendelserFørAktivtSteg = sorterteHendelser.find((hendelse) =>
+    const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
         dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd')
     );
     return (
@@ -131,12 +96,9 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                             intl,
                             hendelse.tidligstBehandlingsDato,
                             manglendeVedleggData,
-                            sak.ytelse,
-                            sak.gjelderAdopsjon,
-                            sak.familiehendelse,
                             barnFraSak,
-                            sak.familiehendelse?.antallBarn,
-                            situasjon
+                            situasjon,
+                            sak
                         )}
                         key={guid()}
                         isActiveStep={isActiveStep}
