@@ -31,6 +31,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const OmBarnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -38,6 +39,7 @@ const OmBarnet: React.FunctionComponent = () => {
     const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
     const { state } = useForeldrepengesøknadContext();
     const { søknadGjelderEtNyttBarn } = state;
+    const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
 
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
         if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
@@ -140,6 +142,7 @@ const OmBarnet: React.FunctionComponent = () => {
                                 formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
                                 søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn}
+                                setErForTidligTilÅSøkePåTermin={setErForTidligTilÅSøkePåTermin}
                             />
                             <Fødsel
                                 søkersituasjon={søkersituasjon}
@@ -154,7 +157,11 @@ const OmBarnet: React.FunctionComponent = () => {
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {visGåVidereKnapp && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        <Button
+                                            type="submit"
+                                            disabled={isSubmitting || erForTidligTilÅSøkePåTermin}
+                                            loading={isSubmitting}
+                                        >
                                             {intlUtils(intl, 'søknad.gåVidere')}
                                         </Button>
                                     )}

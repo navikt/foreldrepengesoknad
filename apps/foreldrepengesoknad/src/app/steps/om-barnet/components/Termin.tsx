@@ -1,4 +1,12 @@
-import { attenUkerTreDager, date21DaysAgo, Block, dateToday, hasValue, intlUtils } from '@navikt/fp-common';
+import {
+    attenUkerTreDager,
+    date21DaysAgo,
+    Block,
+    dateToday,
+    hasValue,
+    intlUtils,
+    erIUke22Pluss3,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søkersituasjon from 'app/context/types/Søkersituasjon';
@@ -12,20 +20,32 @@ import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../
 import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { GuidePanel, Link, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore } from '@navikt/ds-react';
 interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
     søknadGjelderEtNyttBarn: boolean;
+    setErForTidligTilÅSøkePåTermin: (val: boolean) => void;
 }
 
-const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formValues, søknadGjelderEtNyttBarn }) => {
+const Termin: FunctionComponent<Props> = ({
+    søkersituasjon,
+    visibility,
+    formValues,
+    søknadGjelderEtNyttBarn,
+    setErForTidligTilÅSøkePåTermin,
+}) => {
     const intl = useIntl();
 
     if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== YesOrNo.NO || !søknadGjelderEtNyttBarn) {
         return null;
     }
+
+    const erForTidligTilÅSøkePåTermin = hasValue(formValues.termindato)
+        ? !erIUke22Pluss3(formValues.termindato)
+        : false;
+    setErForTidligTilÅSøkePåTermin(erForTidligTilÅSøkePåTermin);
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && hasValue(formValues.termindato);
@@ -132,6 +152,20 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, visibility, formVal
                     maxDate={dateToday}
                 />
             </Block>
+            {erForTidligTilÅSøkePåTermin && (
+                <Block padBottom="xl">
+                    <Alert variant="warning">
+                        <Block padBottom="m">
+                            <Heading level="3" size="small">
+                                <FormattedMessage id="omBarnet.termindato.erForTidligTilÅSøkePåTermin.heading" />
+                            </Heading>
+                        </Block>
+                        <BodyShort>
+                            <FormattedMessage id="omBarnet.termindato.erForTidligTilÅSøkePåTermin.innhold" />
+                        </BodyShort>
+                    </Alert>
+                </Block>
+            )}
         </>
     );
 };
