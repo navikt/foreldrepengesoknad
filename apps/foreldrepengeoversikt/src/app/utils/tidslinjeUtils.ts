@@ -206,7 +206,7 @@ export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): 
         return NavRoutes.VENT_INNTEKTSMELDING;
     }
     if (venteårsak === BehandlingTilstand.TIDLIG_SØKNAD) {
-        return NavRoutes.VENT_INNTEKTSMELDING;
+        return NavRoutes.SØKNADSFRISTER;
     }
 
     if (venteårsak === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {

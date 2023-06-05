@@ -28,6 +28,7 @@ export enum NavRoutes {
     MELD_FRA_OM_ENDRINGER = 'https://www.nav.no/no/nav-og-samfunn/om-nav/relatert-informasjon/du-har-plikt-til-a-gi-nav-riktige-opplysninger',
     VENT_INNTEKTSMELDING = 'https://www.nav.no/arbeidsgiver/inntektsmelding',
     VENT_MELDEKORT = 'https://www.nav.no/no/person/arbeid/dagpenger-ved-arbeidsloshet-og-permittering/meldekort-hvordan-gjor-du-det',
+    SØKNADSFRISTER = 'https://www.nav.no/foreldrepenger#soknadsfrister',
     FORELDREPENGESOKNAD = 'https://foreldrepengesoknad.nav.no',
     HVOR_LENGE = 'https://www.nav.no/foreldrepenger#hvor-lenge',
 }
