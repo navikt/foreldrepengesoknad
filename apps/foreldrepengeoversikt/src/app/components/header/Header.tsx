@@ -49,6 +49,11 @@ const getHeaderRouteInfo = (path: string, minidialogerIds: string[], selectedRou
         return { route: previousPage, label: 'Min sak', isExternalURL: false };
     }
 
+    if (selectedRoute === OversiktRoutes.TIDSLINJEN) {
+        const previousPage = path.split('/tidslinjen')[0];
+        return { route: previousPage, label: 'Min sak', isExternalURL: false };
+    }
+
     return { route: 'https://www.nav.no/no/ditt-nav', label: 'Min side', isExternalURL: true };
 };
 
@@ -71,6 +76,19 @@ const renderHeaderContent = (
     intl: IntlShape
 ) => {
     const bem = bemUtils('header');
+
+    if (selectedRoute === OversiktRoutes.TIDSLINJEN) {
+        return (
+            <div className={bem.element('content-fixed')}>
+                <div>
+                    <Heading size="large">Hele prosessen</Heading>
+                    <div className={bem.element('text-with-bar')}>
+                        <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     if (selectedRoute === OversiktRoutes.DOKUMENTER) {
         return (
@@ -190,7 +208,6 @@ const Header: React.FunctionComponent<Props> = ({ minidialogerIds, grupperteSake
         : undefined;
     const barnGrupperingForSak = sakIGrupperteSaker?.barn;
     const { route, isExternalURL, label } = headerRouteInfo;
-
     return (
         <div className={bem.block}>
             <div className={bem.element('wrapper')}>

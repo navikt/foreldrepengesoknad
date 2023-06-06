@@ -20,6 +20,7 @@ import { AxiosError } from 'axios';
 import EttersendingPage from 'app/pages/ettersending/EttersendingPage';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
+import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -104,6 +105,10 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                         <Route
                             path={OversiktRoutes.DOKUMENTER}
                             element={<DokumenterPage fnr={søkerinfo.søker.fnr} />}
+                        />
+                        <Route
+                            path={OversiktRoutes.TIDSLINJEN}
+                            element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
                         />
                         <Route
                             path=":oppgaveId"

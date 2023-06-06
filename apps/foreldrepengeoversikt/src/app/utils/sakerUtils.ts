@@ -30,7 +30,16 @@ export function sorterPersonEtterEldstOgNavn(p1: Person, p2: Person) {
     }
 }
 
-const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined): BarnGruppering => {
+export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): Date | undefined => {
+    if (sak.gjeldendeVedtak) {
+        return ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!;
+    } else if (sak.åpenBehandling && sak.åpenBehandling.søknadsperioder) {
+        return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);
+    }
+    return undefined;
+};
+
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
@@ -267,6 +276,19 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     }
 };
 
+export const getNavnPåBarna = (fornavn: string[]): string => {
+    if (fornavn.length > 1) {
+        const fornavnene = fornavn
+            .map((n) => n.trim())
+            .slice(0, -1)
+            .join(', ');
+        const sisteFornavn = fornavn[fornavn.length - 1];
+        return `${fornavnene} og ${sisteFornavn}`;
+    } else {
+        return `${fornavn[0]}`;
+    }
+};
+
 export const getSakTittel = (
     fornavn: string[] | undefined,
     fødselsdatoer: Date[] | undefined,
@@ -279,17 +301,7 @@ export const getSakTittel = (
     if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
         return getTittelBarnNårNavnSkalIkkeVises(familiehendelsesdato, fødselsdatoer, antallBarn, intl, type);
     }
-    let navn;
-    if (fornavn.length > 1) {
-        const fornavnene = fornavn
-            .map((n) => n.trim())
-            .slice(0, -1)
-            .join(', ');
-        const sisteFornavn = fornavn[fornavn.length - 1];
-        navn = `${fornavnene} og ${sisteFornavn}`;
-    } else {
-        navn = `${fornavn[0]}`;
-    }
+    const navn = getNavnPåBarna(fornavn);
 
     if (type === 'fødsel') {
         const fødtDatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
