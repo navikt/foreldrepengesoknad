@@ -1,15 +1,44 @@
 .tidslinje-hendelse {
     display: flex;
     align-items: flex-start;
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     position: relative;
 }
-.tidslinje-hendelse__ikon svg {
+
+.tidslinje-hendelse--aktiv_er_ikke_første_hendelse {
+    padding-top: 2rem;
+}
+
+.tidslinje-hendelse__tekst{
+    padding-left: 7px;
+}
+
+.tidslinje-hendelse__ikon svg{
+    size: 120%;
     position: relative;
     z-index: 2;
-    background-color: white;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    background-color: var(--a-white);
+    padding: 0px;
+    margin: 0px;
+}
+
+.tidslinje-hendelse__ikon_active svg{
+    color: var(--a-deepblue-300);
+    background-color: var(--a-deepblue-50);
+}
+
+.tidslinje-hendelse__ikon_completed svg{
+    color: var(--a-deepblue-300);
+    background-color: transparent; 
+}
+
+.tidslinje-hendelse__ikon_incomplete svg{
+    color: var(--a-gray-200);
+}
+
+.tidslinje-hendelse--active {
+    background-color: var(--a-deepblue-50);
+    border-radius: 4px;
 }
 
 .tidslinje-hendelse:before {
@@ -17,34 +46,37 @@
     width: 0;
     height: 100%;
     position: absolute;
-    border: 1px solid var(--a-gray-600);
     top: 0;
-    left: 27px;
+    left: 9px;
     z-index: 0;
+}
+
+.tidslinje-hendelse--active::before {
+    border: 1px solid var(--a-deepblue-300);
+}
+
+.tidslinje-hendelse--complete:before {
+    border: 1px solid var(--a-deepblue-300);
+}
+
+.tidslinje-hendelse--incomplete:before {
+    border: 1px solid var(--a-gray-200);
 }
 
 .tidslinje-hendelse:first-child:before {
     top: 24px;
-    border: 1px solid var(--a-gray-600);
+}
+
+.tidslinje-hendelse--inactive:first-child:before {
+    top: 24px;
 }
 
 .tidslinje-hendelse:last-child:before {
     height: 27px;
 }
 
-.tidslinje-hendelse__ikon--completed {
-    color: var(--a-green-600);
-    width: 3.5rem;
-}
-
-.tidslinje-hendelse__ikon--warning {
-    color: var(--a-orange-400);
-    width: 3.5rem;
-}
-
-.tidslinje-hendelse__ikon--incomplete {
-    color: var(--a-gray-500);
-    width: 3.5rem;
+.tidslinje-hendelse--inactive:last-child:before {
+    height: 27px;
 }
 
 .tidslinje-hendelse__mer_informasjon {
@@ -55,6 +87,19 @@
     color: var(--a-gray-500);
 }
 
+.tidslinje-hendelse__tittle {
+    font-weight: bold;
+}
+
 .tidslinje-hendelse__manglende_vedlegg {
     margin-bottom: 1rem;
+    font-size: var(--a-font-size-medium);
+}
+
+.tidslinje-hendelse__medium_font span{
+    font-size: var(--a-font-size-medium);
+}
+
+.tidslinje-hendelse__medium_font {
+    font-size: var(--a-font-size-medium);
 }

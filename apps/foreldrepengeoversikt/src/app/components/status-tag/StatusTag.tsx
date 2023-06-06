@@ -29,7 +29,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON) {
                 return (
                     <Tag className={className} variant="warning" size="xsmall">
-                        Venter på dokumentasjon
+                        Du må sende dokumentasjon
                     </Tag>
                 );
             }
@@ -45,7 +45,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {
                 return (
                     <Tag className={className} variant="warning" size="xsmall">
-                        Venter på meldekort
+                        Du må sende meldekort
                     </Tag>
                 );
             }

@@ -2,7 +2,7 @@ html,
 body {
     height: 100%;
     margin: 0;
-    background-color: var(--a-blue-50);
+    background-color: var(--a-deepblue-50);
 }
 
 .app {
@@ -10,7 +10,7 @@ body {
 }
 
 .app__blue {
-    background-color: var(--a-blue-50);
+    background-color: var(--a-deepblue-50);
     height: 100%;
 }
 
