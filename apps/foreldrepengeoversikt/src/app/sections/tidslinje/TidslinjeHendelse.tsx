@@ -89,11 +89,10 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
             className={classNames(
                 bem.block,
                 bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`),
-                bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`),
                 bem.modifier(
                     `${
                         isActiveStep && finnesHendelserFørAktivtSteg && !visHeleTidslinjen
-                            ? 'er_ikke_første_hendelse'
+                            ? 'aktiv_er_ikke_første_hendelse'
                             : ''
                     }`
                 )

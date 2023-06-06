@@ -14,7 +14,6 @@ import { formaterDato } from './dateUtils';
 import { Familiehendelse } from 'app/types/Familiehendelse';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 import { BarnGruppering } from 'app/types/BarnGruppering';
-import { Situasjon } from 'app/types/Situasjon';
 import { Sak } from 'app/types/Sak';
 
 export const VENTEÅRSAKER = [
@@ -145,7 +144,6 @@ export const getTidslinjehendelseTittel = (
     tidlistBehandlingsdato: Date | undefined,
     manglendeVedleggData: Skjemanummer[] | undefined,
     barnFraSak: BarnGruppering,
-    situasjon: Situasjon | undefined,
     sak: Sak
 ): string => {
     const { familiehendelse, ytelse, gjelderAdopsjon } = sak;
@@ -167,12 +165,7 @@ export const getTidslinjehendelseTittel = (
     if (hendelsetype === TidslinjehendelseType.FØRSTEGANGSSØKNAD) {
         return intlUtils(intl, 'tidslinje.tittel.FØRSTEGANGSSØKNAD', { ytelse });
     }
-    if (
-        hendelsetype === TidslinjehendelseType.FAMILIEHENDELSE &&
-        familiehendelse &&
-        antallBarn !== undefined &&
-        situasjon
-    ) {
+    if (hendelsetype === TidslinjehendelseType.FAMILIEHENDELSE && familiehendelse && antallBarn !== undefined) {
         return getTidslinjeTittelForFamiliehendelse(
             familiehendelse,
             gjelderAdopsjon,

@@ -5,7 +5,7 @@
     position: relative;
 }
 
-.tidslinje-hendelse--er_ikke_første_hendelse {
+.tidslinje-hendelse--aktiv_er_ikke_første_hendelse {
     padding-top: 2rem;
 }
 

@@ -19,12 +19,7 @@ import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import dayjs from 'dayjs';
 import { Ytelse } from 'app/types/Ytelse';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import {
-    getAlleYtelser,
-    getBarnGrupperingFraSak,
-    getFørsteUttaksdagIForeldrepengesaken,
-    utledFamiliesituasjon,
-} from 'app/utils/sakerUtils';
+import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
 import { SakOppslag } from 'app/types/SakOppslag';
 
 interface Params {
@@ -44,7 +39,6 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
-    const situasjon = sak.familiehendelse ? utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon) : undefined;
     if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>
@@ -97,7 +91,6 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                             hendelse.tidligstBehandlingsDato,
                             manglendeVedleggData,
                             barnFraSak,
-                            situasjon,
                             sak
                         )}
                         key={guid()}
