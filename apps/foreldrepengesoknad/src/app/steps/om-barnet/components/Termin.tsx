@@ -21,6 +21,7 @@ import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore } from '@navikt/ds-react';
+import { isISODateString } from '@navikt/ds-datepicker';
 interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;
@@ -42,9 +43,10 @@ const Termin: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erForTidligTilÅSøkePåTermin = hasValue(formValues.termindato)
-        ? !erIUke22Pluss3(formValues.termindato)
-        : false;
+    const erForTidligTilÅSøkePåTermin =
+        hasValue(formValues.termindato) && isISODateString(formValues.termindato)
+            ? !erIUke22Pluss3(formValues.termindato)
+            : false;
     setErForTidligTilÅSøkePåTermin(erForTidligTilÅSøkePåTermin);
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
