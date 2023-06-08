@@ -200,6 +200,10 @@ const AnnenForelder = () => {
                                 <AnnenForelderFormComponents.YesOrNoQuestion
                                     name={AnnenForelderFormField.aleneOmOmsorg}
                                     legend={intlUtils(intl, 'annenForelder.aleneOmOmsorg')}
+                                    labels={{
+                                        [YesOrNo.YES]: 'Ja',
+                                        [YesOrNo.NO]: 'Nei, jeg har aleneomsorg',
+                                    }}
                                 />
                                 <ReadMore header={intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder.apneLabel')}>
                                     {intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder')}
