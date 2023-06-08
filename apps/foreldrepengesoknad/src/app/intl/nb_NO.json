@@ -181,7 +181,7 @@
     "omBarnet.papirsøknad.lenke": "Her finner du papirsøknaden.",
     "omBarnet.valgteBarn.tittel": "{antallBarn, plural, one {Barnet} other {Barna}} du søker for:",
     "registrertePersonalia.fødselsdato": "Født {fødselsdato}",
-    "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
+    "annenForelder.aleneOmOmsorg": "Er dere sammen om omsorgen for barnet?",
     "annenForelder.aleneOmOmsorg.veileder": "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
     "annenForelder.aleneOmOmsorg.veileder.apneLabel": "Les mer om å være alene om omsorg for barnet",
     "annenForelder.bostedsland": "Hvor bor { navn }?",
