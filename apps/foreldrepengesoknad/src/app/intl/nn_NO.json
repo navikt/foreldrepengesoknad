@@ -225,7 +225,7 @@
     "annenForelder.harOppholdtSegIEØS": "Har {navn} opphalde seg fast i eit anna EØS-land enn Noreg eitt år før barnet vart fødd?",
     "annenForelder.harOppholdtSegIEØS.veileder.apneLabel": "Les meir om fast opphald i EØS",
     "annenForelder.harOppholdtSegIEØS.veileder": "Du kryssar ja viss {navn} har opphalde seg fast i eit anna EØS-land enn Noreg dei siste 12 månadene før barnet vart fødd. Korte utlandsturar i samband med til dømes ferie blir ikkje rekna som fast opphald.",
-    "annenForelder.erAnnenForelderInformert.veileder": "Du må orientere {navn} om søknaden, før du kan gå videre.",
+    "annenForelder.erAnnenForelderInformert.veileder": "Du må si ifra til {navn} om søknaden før du kan gå videre.",
     "annenForelder.tekstOmFarskapsportal.far.del1": "Viss du og mora til barnet ikkje er gift, må du erklæra farskap for at du skal bli registrert som far til barnet i folkeregisteret. <a>Her kan du erklæra farskap digitalt</a>",
     "annenForelder.tekstOmFarskapsportal.mor.far.del2": "Uavhengig av kva som er situasjonen din, kan du halda fram med å fylla ut søknaden og senda den inn.",
     "annenForelder.tekstOmFarskapsportal.mor.del1": "Viss du og faren til barnet ikkje er gift, må far erklæra farskap for at han skal bli registrert som far til barnet i folkeregisteret. <a>Her kan far erklære farskap digitalt.</a>",

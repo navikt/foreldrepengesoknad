@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
+import { Alert } from '@navikt/ds-react';
 
 import './annenForelderVeileder.less';
-import { GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     visible: boolean;
@@ -15,12 +15,12 @@ const MåOrientereAnnenForelderVeileder: React.FunctionComponent<Props> = ({ vis
 
     return (
         <div className="annenForelderVeileder">
-            <GuidePanel>
+            <Alert variant="warning">
                 <FormattedMessage
                     id="annenForelder.erAnnenForelderInformert.veileder"
                     values={{ navn: annenForelderNavn }}
                 />
-            </GuidePanel>
+            </Alert>
         </div>
     );
 };
