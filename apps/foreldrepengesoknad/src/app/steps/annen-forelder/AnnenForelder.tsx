@@ -197,13 +197,13 @@ const AnnenForelder = () => {
                                 }
                                 padBottom="xl"
                             >
-                                <AnnenForelderFormComponents.YesOrNoQuestion
+                                <AnnenForelderFormComponents.RadioGroup
                                     name={AnnenForelderFormField.aleneOmOmsorg}
                                     legend={intlUtils(intl, 'annenForelder.aleneOmOmsorg')}
-                                    labels={{
-                                        [YesOrNo.YES]: 'Ja',
-                                        [YesOrNo.NO]: 'Nei, jeg har aleneomsorg',
-                                    }}
+                                    radios={[
+                                        { label: 'Ja', value: YesOrNo.NO },
+                                        { label: 'Nei, jeg har aleneomsorg', value: YesOrNo.YES },
+                                    ]}
                                 />
                                 <ReadMore header={intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder.apneLabel')}>
                                     {intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder')}
