@@ -16,9 +16,11 @@ const {
     FarGiftUfødtBarn,
 } = composeStories(stories);
 const GÅ_VIDERE_KNAPP = 'Neste steg';
-const ALENE_OMSORG_LABEL = 'Er du alene om omsorgen av barnet?';
+const ALENE_OMSORG_LABEL = 'Er dere sammen om omsorgen for barnet?';
 const JA = 'Ja';
 const NEI = 'Nei';
+const ALENE_OM_OMSORG_NEI = 'Ja';
+const ALENE_OM_OMSORG_JA = 'Nei, jeg har aleneomsorg';
 const INFO_TEKST = 'Dere kan avtale at LEALAUS tar ut foreldrepenger.';
 const HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL = 'Har LEALAUS rett til foreldrepenger i Norge?';
 const HAR_FAR_HATT_OPPHOLD_I_EØS_LAND =
@@ -30,7 +32,7 @@ const HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL = 'Har TALENTFULL rett til foreldrepenge
 const HAR_MOR_RETT_TIL_FP_I_EØS_LABEL = 'Har TALENTFULL arbeidet eller mottatt pengestøtte i et EØS-land';
 const ER_ANNEN_FORELDER_UFØR = 'Har TALENTFULL uføretrygd?';
 const HAR_DU_ORIENTERT_LABEL = 'Har du orientert LEALAUS om søknaden din?';
-const DU_MÅ_INFORMERE_INFO_TEKST = 'Du må orientere LEALAUS om søknaden, før du kan gå videre.';
+const DU_MÅ_INFORMERE_INFO_TEKST = 'Du må si ifra til LEALAUS om søknaden før du kan gå videre.';
 const NAVN_ANNEN_FORELDER_LABEL = 'Hva heter den andre forelderen?';
 const KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL = 'Jeg kan ikke oppgi navnet til den andre forelderen';
 const LINK_TIL_FARSKAPSPORTAL_MOR = 'Her kan far erklære farskap digitalt';
@@ -46,7 +48,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText(JA));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText(INFO_TEKST)).toBeInTheDocument();
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
@@ -61,13 +63,13 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[0]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[2]);
+        await user.click(screen.getAllByText(NEI)[1]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
@@ -81,15 +83,15 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[0]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[2]);
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[3]);
+        await user.click(screen.getAllByText(NEI)[2]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
@@ -103,7 +105,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
@@ -113,7 +115,7 @@ describe('<AnnenForelder>', () => {
         expect(await screen.findByText(HAR_DU_ORIENTERT_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await user.click(screen.getAllByText(NEI)[2]);
+        await user.click(screen.getAllByText(NEI)[1]);
 
         expect(await screen.findByText(DU_MÅ_INFORMERE_INFO_TEKST)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
@@ -129,7 +131,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
@@ -197,7 +199,7 @@ describe('<AnnenForelder>', () => {
         await user.selectOptions(hvorBorSelect, 'Oman');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(JA));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -221,7 +223,7 @@ describe('<AnnenForelder>', () => {
         await user.type(fødselsnrInput, '05057923424');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(JA));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -235,7 +237,7 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText(JA));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText('Dato du ble alene om omsorgen')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
@@ -257,10 +259,10 @@ describe('<AnnenForelder>', () => {
         render(<ForFar />);
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[0]);
         expect(await screen.findByText(HAR_MOR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[2]);
@@ -268,10 +270,10 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[3]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[3]);
+        await user.click(screen.getAllByText(NEI)[2]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(ER_ANNEN_FORELDER_UFØR)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[4]);
+        await user.click(screen.getAllByText(NEI)[3]);
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
     it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder er far og har rett i Norge', async () => {
@@ -292,9 +294,9 @@ describe('<AnnenForelder>', () => {
         await user.type(fødselsnrInput, '05057923524');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Espen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[0]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).not.toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[1]);
         expect(await screen.findByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).toBeInTheDocument();
@@ -317,7 +319,7 @@ describe('<AnnenForelder>', () => {
         //Endrer fnr på annen forelder til en kvinnelig fnr:
         await user.type(fødselsnrInput, '05057923824');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Medmor rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[1]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).not.toBeInTheDocument();
@@ -342,7 +344,7 @@ describe('<AnnenForelder>', () => {
         const hvorBorSelect = screen.getByLabelText('Hvor bor Eksotisk?');
         await user.selectOptions(hvorBorSelect, 'Oman');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Eksotisk rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[1]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).toBeInTheDocument();
@@ -359,9 +361,9 @@ describe('<AnnenForelder>', () => {
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Mor?');
         await user.type(fødselsnrInput, '05057923424');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Mor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[0]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[1]);
         expect(await screen.findByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).toBeInTheDocument();
@@ -378,9 +380,9 @@ describe('<AnnenForelder>', () => {
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Mor?');
         await user.type(fødselsnrInput, '05057923424');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Mor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        await user.click(screen.getAllByText(NEI)[0]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[1]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
@@ -397,7 +399,7 @@ describe('<AnnenForelder>', () => {
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Mor?');
         await user.type(fødselsnrInput, '05057923424');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Mor rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await user.click(screen.getAllByText(JA)[1]);
         expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
