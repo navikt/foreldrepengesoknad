@@ -1,7 +1,7 @@
 # Selvbetjeningsløsning for søknad om foreldrepenger
 
 Kildekoden til frontend-appen for ny selvbetjeningsløsning for foreldrepengesøknad.
-
+ 
 # For å komme i gang
 
 For å kjøre opp appen i dev:
