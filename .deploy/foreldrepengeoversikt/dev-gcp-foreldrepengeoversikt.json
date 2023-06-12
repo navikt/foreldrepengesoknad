@@ -1,8 +1,8 @@
 {
-    "app": "foreldrepengeoversikt",
+    "app": "foreldrepengeoversikt-sommer",
     "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "ingresses": [
-        "https://foreldrepenger.intern.dev.nav.no"
+        "https://foreldrepenger-sommer.intern.dev.nav.no"
     ],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.ekstern.dev.nav.no",

@@ -1,6 +1,6 @@
 {
     "name": "svangerskapspengesoknad",
-    "repository": "https://github.com/navikt/svangerskapspengesoknad",
+    "repository": "https://github.com/navikt/sommerprosjekt23-svp",
     "version": "1.0.0",
     "description": "NAV Svangerskapspengesøknad",
     "type": "module",

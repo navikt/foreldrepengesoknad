@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/run/turbo,id=turbo \
 # PNPM - Dependency of all images
 ######################################### 
 FROM node:18.6-alpine as pnpm
-LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
+LABEL org.opencontainers.image.source=https://github.com/navikt/sommerprosjekt23-svp
 WORKDIR /usr/src/app
 
 RUN apk fix \

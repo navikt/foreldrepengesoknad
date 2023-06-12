@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "description": "NAV foreldrepengeoversikt",
-    "repository": "https://github.com/navikt/foreldrepengeoversikt",
+    "repository": "https://github.com/navikt/sommerprosjekt23-svp",
     "scripts": {
         "build": "vite build",
         "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",

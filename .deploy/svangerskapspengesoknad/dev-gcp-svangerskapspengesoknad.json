@@ -1,8 +1,8 @@
 {
-    "app": "svangerskapspengesoknad",
+    "app": "svangerskapspengesoknad-sommer",
     "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "ingresses": [
-        "https://svangerskapspengesoknad.intern.dev.nav.no"
+        "https://svangerskapspengesoknad-sommer.intern.dev.nav.no"
     ],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.ekstern.dev.nav.no",
