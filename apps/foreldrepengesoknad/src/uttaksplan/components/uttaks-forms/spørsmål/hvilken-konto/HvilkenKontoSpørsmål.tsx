@@ -1,6 +1,5 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { Situasjon } from 'app/types/Situasjon';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
@@ -12,15 +11,19 @@ interface Props {
     velgbareStønadskontoer: StønadskontoType[];
     erOppholdsperiode: boolean;
     navnPåForeldre: NavnPåForeldre;
-    navnAnnenForelder?: string;
     fieldName: PeriodeUttakFormField;
     erFarEllerMedmor: boolean;
-    situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
 }
 
-const getSpørsmålsTekst = (erOppholdsperiode: boolean, intl: IntlShape, navnAnnenForelder?: string): string => {
+const getSpørsmålsTekst = (
+    erOppholdsperiode: boolean,
+    intl: IntlShape,
+    navnPåForeldre: NavnPåForeldre,
+    erFarEllerMedmor: boolean
+): string => {
     if (erOppholdsperiode) {
+        const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
         return intlUtils(intl, 'uttaksplan.hvilkenKvote.annenForelder', {
             navnAnnenForelder,
         });
@@ -32,14 +35,13 @@ const getSpørsmålsTekst = (erOppholdsperiode: boolean, intl: IntlShape, navnAn
 const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
     velgbareStønadskontoer,
     erOppholdsperiode,
-    navnAnnenForelder,
     navnPåForeldre,
     fieldName,
     erFarEllerMedmor,
     erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
-    const legend = getSpørsmålsTekst(erOppholdsperiode, intl, navnAnnenForelder);
+    const legend = getSpørsmålsTekst(erOppholdsperiode, intl, navnPåForeldre, erFarEllerMedmor);
 
     const radios = velgbareStønadskontoer.map(
         (konto): FormikRadioProp => ({
