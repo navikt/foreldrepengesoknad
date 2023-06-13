@@ -417,12 +417,12 @@ const finnAnnenForelderForSaken = (
             : undefined;
     const barnMedGittFødselsdato =
         fødselsdato !== undefined
-            ? barn.filter(
+            ? barn.find(
                   (b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined
               )
-            : [];
+            : undefined;
 
-    const barnet = barnMedGittFnr || barnMedGittFødselsdato.length > 0 ? barnMedGittFødselsdato[0] : undefined;
+    const barnet = barnMedGittFnr || barnMedGittFødselsdato;
 
     if (barnet !== undefined && barnet.annenForelder?.fnr === annenForeldersFnrFraSaken) {
         const annenForelder = barnet.annenForelder;
