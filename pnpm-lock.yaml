@@ -74,8 +74,8 @@ importers:
         specifier: ^1.7.3
         version: 1.7.4
       date-holidays:
-        specifier: ^3.18.0
-        version: 3.19.0
+        specifier: ^3.21.1
+        version: 3.21.1
       dayjs:
         specifier: ^1.10.2
         version: 1.11.7
@@ -613,8 +613,8 @@ importers:
         specifier: ^2.29.3
         version: 2.29.3
       date-holidays:
-        specifier: ^3.19.0
-        version: 3.19.0
+        specifier: ^3.21.1
+        version: 3.21.1
       dayjs:
         specifier: ^1.11.5
         version: 1.11.7
@@ -884,8 +884,8 @@ importers:
         specifier: ^1.7.4
         version: 1.7.4
       date-holidays:
-        specifier: ^3.18.0
-        version: 3.19.0
+        specifier: ^3.21.1
+        version: 3.21.1
       dayjs:
         specifier: ^1.11.7
         version: 1.11.7
@@ -6674,8 +6674,8 @@ packages:
       union-value: 1.0.1
       unset-value: 1.0.0
 
-  /caldate@2.0.4:
-    resolution: {integrity: sha512-EtSyLpXDMAfc2PorMuQCvvfO4QP1H+uTuonzmtvk23sWNB/1oCj+skskw1GEQMlzcGvQrVCFIt58/4BVRWhGdw==}
+  /caldate@2.0.5:
+    resolution: {integrity: sha512-JndhrUuDuE975KUhFqJaVR1OQkCHZqpOrJur/CFXEIEhWhBMjxO85cRSK8q4FW+B+yyPq6GYua2u4KvNzTcq0w==}
     engines: {node: '>=12.0.0'}
     dependencies:
       moment-timezone: 0.5.43
@@ -7351,12 +7351,12 @@ packages:
     engines: {node: '>=0.11'}
     dev: false
 
-  /date-holidays-parser@3.4.3:
-    resolution: {integrity: sha512-o2GYEQC1Ytypz7svRFwKO9DEyg3yc2ZwMJnIVIUU6NDOpsknsewt+QilU/z/nHzI1qj13zVIvFIHgEnjg6neVA==}
+  /date-holidays-parser@3.4.4:
+    resolution: {integrity: sha512-R5aO4oT8H51ZKdvApqHrqYEiNBrqT6tRj2PFXNcZfqMI4nxY7KKKly0ZsmquR5gY+x9ldKR8SAMdozzIInaoXg==}
     engines: {node: '>=12.0.0'}
     dependencies:
       astronomia: 4.1.1
-      caldate: 2.0.4
+      caldate: 2.0.5
       date-bengali-revised: 2.0.2
       date-chinese: 2.1.4
       date-easter: 1.0.2
@@ -7365,12 +7365,12 @@ packages:
       moment-timezone: 0.5.43
     dev: false
 
-  /date-holidays@3.19.0:
-    resolution: {integrity: sha512-bQtGy4ycRAfMdJxueYQTx08V0P8ssoAd4X9rg2CWyCHCn3oKe7vbHtIebXlESWBVplc5GomSN25MJy+GEJ9o7w==}
+  /date-holidays@3.21.1:
+    resolution: {integrity: sha512-j9ZblefQ/WhIT4K4V7OXPzAxgAuRs2YVem8bQ0dLGiKTd7dpmfaS4Q8pfdpdoKsbyUVz/3MjZU+X0Lo2JFemlA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
-      date-holidays-parser: 3.4.3
+      date-holidays-parser: 3.4.4
       js-yaml: 4.1.0
       lodash.omit: 4.5.0
       lodash.pick: 4.4.0
