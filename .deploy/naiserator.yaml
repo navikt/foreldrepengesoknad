@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: {{app}}
-  namespace: teamforeldrepenger
+  namespace: po-familie-sommerstudenter-23
   labels:
-    team: teamforeldrepenger
+    team: po-familie-sommerstudenter-23
 spec:
   accessPolicy:
     outbound:

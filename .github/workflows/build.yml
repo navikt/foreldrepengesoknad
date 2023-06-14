@@ -28,6 +28,7 @@ jobs:
             image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
             app: foreldrepengeoversikt
+            namespace: po-familie-sommerstudenter-23
         secrets: inherit
 
     promote-svangerskapspengesoknad-dev:
@@ -39,4 +40,5 @@ jobs:
             image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
             app: svangerskapspengesoknad
+            namespace: po-familie-sommerstudenter-23
         secrets: inherit
