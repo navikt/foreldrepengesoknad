@@ -36,7 +36,7 @@ import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { Alert, Button, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import links from 'app/links/links';
 import { getKjønnFromFnrString } from 'app/utils/personUtils';
@@ -205,8 +205,11 @@ const AnnenForelder = () => {
                                         { label: 'Nei, jeg har aleneomsorg', value: YesOrNo.YES },
                                     ]}
                                 />
-                                <ReadMore header={intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder.apneLabel')}>
-                                    {intlUtils(intl, 'annenForelder.aleneOmOmsorg.veileder')}
+                                <ReadMore header={intlUtils(intl, 'annenForelder.aleneOmOmsorg.apneLabel')}>
+                                    <Block padBottom="xl">
+                                        <BodyLong>{intlUtils(intl, 'annenForelder.aleneOmOmsorg.del1')}</BodyLong>
+                                    </Block>
+                                    <BodyShort>{intlUtils(intl, 'annenForelder.aleneOmOmsorg.del2')}</BodyShort>
                                 </ReadMore>
                                 <AvtaleAtFarTarUtForeldrepengerVeileder
                                     visible={!isFarEllerMedmor(rolle) && formValues.aleneOmOmsorg === YesOrNo.YES}
