@@ -51,6 +51,10 @@ router.get('/rest/innsyn/v2/saker', (req, res) => {
     res.send(MockStorage.getSaker());
 });
 
+router.get('/rest/innsyn/v2/saker/oppdatert', (req, res) => {
+    res.send(true);
+});
+
 router.get('/rest/historikk', (req, res) => {
     res.send(MockStorage.getHistorikk());
 });

@@ -118,6 +118,17 @@ const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
     });
 };
 
+const useErSakOppdatert = () => {
+    const { data, error } = useGetRequest<boolean>('/innsyn/v2/saker/oppdatert', {
+        config: { withCredentials: true },
+    });
+
+    return {
+        oppdatertData: data,
+        oppdatertError: error,
+    };
+};
+
 const Api = {
     useSøkerinfo,
     useGetSaker,
@@ -126,6 +137,7 @@ const Api = {
     useGetTidslinjeHendelser,
     useGetMinidialog,
     useGetManglendeVedlegg,
+    useErSakOppdatert,
     sendEttersending,
 };
 
