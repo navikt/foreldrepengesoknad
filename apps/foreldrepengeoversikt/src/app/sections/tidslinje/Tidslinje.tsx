@@ -39,6 +39,11 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
+    const erAvslåttForeldrepengesøknad =
+        sak.ytelse === Ytelse.FORELDREPENGER &&
+        !!sak.gjeldendeVedtak &&
+        (sak.gjeldendeVedtak.perioder.length === 0 ||
+            sak.gjeldendeVedtak.perioder.every((p) => p.resultat.innvilget === false));
     if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>
@@ -64,7 +69,11 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
         intl
     );
 
-    const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, alleSorterteHendelser);
+    const hendelserForVisning = getHendelserForVisning(
+        visHeleTidslinjen,
+        alleSorterteHendelser,
+        erAvslåttForeldrepengesøknad
+    );
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
         dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
     );
