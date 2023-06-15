@@ -6,17 +6,24 @@ import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import ContentSection from '../content-section/ContentSection';
 
 import './har-ikke-saker.css';
+import { FunctionComponent } from 'react';
 
-const HarIkkeSaker = () => {
+interface Props {
+    oppdatertData: boolean;
+}
+
+const HarIkkeSaker: FunctionComponent<Props> = ({ oppdatertData }) => {
     const bem = bemUtils('har-ikke-saker');
     useSetBackgroundColor('blue');
 
     return (
         <>
-            <Alert variant="info" className={bem.element('ingen-søknad')}>
-                Vi finner ingen søknader fra deg om foreldrepenger. Hvis du har sendt en søknad i posten kan det ta to
-                uker før søknaden registreres i NAVs systemer.{' '}
-            </Alert>
+            {oppdatertData && (
+                <Alert variant="info" className={bem.element('ingen-søknad')}>
+                    Vi finner ingen søknader fra deg om foreldrepenger. Hvis du har sendt en søknad i posten kan det ta
+                    to uker før søknaden registreres i NAVs systemer.{' '}
+                </Alert>
+            )}
             <ContentSection>
                 <Heading level="2" size="large" className={bem.element('overskrift')}>
                     Kort om foreldrepenger
