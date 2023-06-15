@@ -37,7 +37,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 return false;
             }
 
-            return 1000;
+            return 15000;
         },
     });
 
