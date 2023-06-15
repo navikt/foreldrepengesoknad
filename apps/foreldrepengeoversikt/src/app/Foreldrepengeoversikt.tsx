@@ -31,7 +31,9 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const oppdatertQuery = useQuery<boolean>({
         queryKey: ['oppdatert'],
         queryFn: async () =>
-            await fetch(`${Environment.REST_API_URL}/innsyn/v2/saker/oppdatert`).then((response) => response.json()),
+            await fetch(`${Environment.REST_API_URL}/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then(
+                (response) => response.json()
+            ),
         refetchInterval: (data) => {
             if (data) {
                 return false;
