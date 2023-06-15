@@ -41,7 +41,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     const navnPåSøker = søkerinfo.søker.fornavn;
     const params = useParams();
     const alleSaker = getAlleYtelser(saker);
-    Api.useErSakOppdatert();
 
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     useSetSelectedSak(gjeldendeSak);

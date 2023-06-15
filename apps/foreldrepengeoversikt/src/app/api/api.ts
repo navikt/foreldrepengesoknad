@@ -19,9 +19,10 @@ const useSøkerinfo = () => {
     };
 };
 
-const useGetSaker = () => {
+const useGetSaker = (sakerSuspended: boolean) => {
     const { data, error } = useGetRequest<SakOppslagDTO>('/innsyn/v2/saker', {
         config: { withCredentials: true },
+        isSuspended: sakerSuspended,
     });
 
     return {
