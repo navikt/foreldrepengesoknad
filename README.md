@@ -1,20 +1,27 @@
-# Selvbetjeningsløsning for søknad om foreldrepenger
+# Selvbetjeningsløsning for søknadene om foreldrepenger, engangsstønad og svangerskapspenger og for foreldrepengeoversikt
 
-Kildekoden til frontend-appen for ny selvbetjeningsløsning for foreldrepengesøknad.
- 
+Kildekoden til frontend-appene foreldrepengesøknad, engangsstønad, svangerskapspenger og foreldrepengeoversikt (innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
+
 # For å komme i gang
+
+Du må på forhånd ha installert Node.js (v.18).
+Vi anbefaler å bruke Git Bash for å kjøre kommandoene.
+
+1. Installer pnpm: `npm install -g pnpm`.
+2. I roten av repoet, kjør `pnpm install`.
+3. Installer turborepo med `pnpm install -g turbo`
+4. Kjør `turbo build`
+5. For å sjekke om alt fungerer, kjør testene med `turbo test`
 
 For å kjøre opp appen i dev:
 
-1.  `npm install`.
-2.  `npm run start`.
-3.  `npm run start-mock-api-server`
+1.  cd til appen du ønsker å jobbe med, f.eks `apps/foreldrepengeoversikt`
+2.  Kjør `pnpm run dev-api`.
+3.  Kjør `pnpm run dev`
 
-For å kjøre cypress-tester:
+For å kjøre tester for en app:
 
-1.  `npm install`.
-2.  Vent på `Build success` i terminalen.
-3.  Klikk på `Run all tests` i Cypress-popupen.
+1.  cd til appen du ønsker å kjøre tester på og kjør `pnpm vitest`.
 
 # Henvendelser
 
