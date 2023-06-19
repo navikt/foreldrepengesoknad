@@ -54,7 +54,7 @@ const getHeaderRouteInfo = (path: string, minidialogerIds: string[], selectedRou
         return { route: previousPage, label: 'Min sak', isExternalURL: false };
     }
 
-    return { route: 'https://www.nav.no/no/ditt-nav', label: 'Min side', isExternalURL: true };
+    return { route: 'https://www.nav.no/minside/', label: 'Min side', isExternalURL: true };
 };
 
 const getSaksoversiktHeading = (ytelse: Ytelse) => {
