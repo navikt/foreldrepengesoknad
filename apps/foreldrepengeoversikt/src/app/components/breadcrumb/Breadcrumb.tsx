@@ -40,7 +40,7 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
                 const erNavHomeLink = p.displayName === 'nav.no';
 
                 if (lastBreadcrumb) {
-                    return <BodyShort>{p.displayName}</BodyShort>;
+                    return <BodyShort className={bem.element('flex-align')}>{p.displayName}</BodyShort>;
                 }
 
                 return (
