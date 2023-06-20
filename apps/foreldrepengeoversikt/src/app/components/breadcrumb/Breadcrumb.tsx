@@ -12,6 +12,7 @@ import './breadcrumb.css';
 
 interface Props {
     selectedRoute: OversiktRoutes;
+    oppgaveId: string | undefined;
 }
 
 const getBreadcrumbPath = (selectedRoute: OversiktRoutes) => {
@@ -23,20 +24,23 @@ const getBreadcrumbPath = (selectedRoute: OversiktRoutes) => {
     }
 };
 
-const getRoute = (route: string, saksnummer: string | undefined): string => {
+const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: string | undefined): string => {
     if (route === OversiktRoutes.SAKSOVERSIKT && hasValue(saksnummer)) {
         return `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
+    }
+    if (route === OversiktRoutes.OPPGAVER && hasValue(oppgaveId)) {
+        return `${OversiktRoutes.OPPGAVER}/${oppgaveId}`;
     }
 
     return route;
 };
 
-const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
+const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }) => {
     const bem = bemUtils('breadcrumb');
     const path = getBreadcrumbPath(selectedRoute);
 
     const sak = useGetSelectedSak();
-    let saksnummer = sak ? sak.saksnummer : undefined;
+    const saksnummer = sak ? sak.saksnummer : undefined;
 
     return (
         <div className={bem.block}>
@@ -56,7 +60,11 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
                                 <BodyShort>{p.displayName}</BodyShort>
                             </DSLink>
                         ) : (
-                            <Link key={p.displayName} className={bem.block} to={getRoute(p.route, saksnummer)}>
+                            <Link
+                                key={p.displayName}
+                                className={bem.block}
+                                to={getRoute(p.route, saksnummer, oppgaveId)}
+                            >
                                 <BodyShort>{p.displayName}</BodyShort>
                             </Link>
                         )}

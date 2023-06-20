@@ -154,9 +154,10 @@ const renderHeaderContent = (
 
 interface Props {
     grupperteSaker: GruppertSak[];
+    oppgaverIds: string[];
 }
 
-const Header: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
+const Header: React.FunctionComponent<Props> = ({ grupperteSaker, oppgaverIds }) => {
     const bem = bemUtils('header');
     const intl = useIntl();
     const selectedRoute = useGetSelectedRoute();
@@ -165,10 +166,12 @@ const Header: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
         ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
         : undefined;
     const barnGrupperingForSak = sakIGrupperteSaker?.barn;
+    const path = location.pathname;
+    const currentOppgaveId = oppgaverIds.find((id) => path.includes(id));
     return (
         <div className={bem.block}>
             <div className={bem.element('wrapper')}>
-                <Breadcrumb selectedRoute={selectedRoute} />
+                <Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />
                 {renderHeaderContent(selectedRoute, sak, barnGrupperingForSak, intl)}
             </div>
         </div>

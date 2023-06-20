@@ -58,6 +58,12 @@ const dinPlan: Breadcrumb = {
     isExternalLink: false,
 };
 
+const oppgaver: Breadcrumb = {
+    displayName: 'Din oppgave',
+    route: OversiktRoutes.OPPGAVER,
+    isExternalLink: false,
+};
+
 export const BREADCRUMBS: BreadcrumbMap = {
     [OversiktRoutes.HOVEDSIDE]: [nav, minSide, hovedside],
     [OversiktRoutes.SAKSOVERSIKT]: [nav, minSide, hovedside, saksoversikt],
@@ -65,4 +71,5 @@ export const BREADCRUMBS: BreadcrumbMap = {
     [OversiktRoutes.ETTERSEND]: [nav, minSide, hovedside, saksoversikt, dokumenter, ettersend],
     [OversiktRoutes.TIDSLINJEN]: [nav, minSide, hovedside, saksoversikt, tidslinjen],
     [OversiktRoutes.DIN_PLAN]: [nav, minSide, hovedside, saksoversikt, dinPlan],
+    [OversiktRoutes.OPPGAVER]: [nav, minSide, hovedside, saksoversikt, oppgaver],
 };
