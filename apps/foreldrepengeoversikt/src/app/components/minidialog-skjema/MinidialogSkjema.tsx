@@ -47,7 +47,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                     <Alert variant="success"> {intlUtils(intl, 'miniDialog.kvittering.svaretErSendt')}</Alert>
                 </Block>
                 <Block padBottom="l">
-                    <Link to={`/${minidialog.saksnr}`}>
+                    <Link to={`/sak/${minidialog.saksnr}`}>
                         {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
                     </Link>
                 </Block>

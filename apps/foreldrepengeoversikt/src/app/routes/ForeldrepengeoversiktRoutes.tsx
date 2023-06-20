@@ -63,7 +63,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
         }
     }, [navigate, saker]);
 
-    const minidialogerIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
+    const oppgaverIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
     const alleYtelser = getAlleYtelser(saker);
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
@@ -74,11 +74,11 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Header minidialogerIds={minidialogerIds} grupperteSaker={grupperteSaker} />
+            <Header grupperteSaker={grupperteSaker} oppgaverIds={oppgaverIds} />
             <div className={bem.block}>
                 <Routes>
                     <Route
-                        path="/"
+                        path={OversiktRoutes.HOVEDSIDE}
                         element={
                             <Forside
                                 alleYtelser={alleYtelser}
@@ -88,7 +88,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                             />
                         }
                     />
-                    <Route path="/sak/:saksnummer" element={<SakComponent />}>
+                    <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`} element={<SakComponent />}>
                         <Route
                             index
                             element={
@@ -114,7 +114,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                             element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
                         />
                         <Route
-                            path=":oppgaveId"
+                            path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
                             element={
                                 <MinidialogPage
                                     minidialoger={minidialogerData}

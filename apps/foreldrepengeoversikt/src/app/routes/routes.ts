@@ -6,6 +6,7 @@ enum OversiktRoutes {
     DOKUMENTER = 'dokumenter',
     ETTERSEND = 'ettersend',
     TIDSLINJEN = 'tidslinjen',
+    OPPGAVER = 'oppgaver',
 }
 
 export enum NavRoutes {
