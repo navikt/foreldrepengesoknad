@@ -53,16 +53,16 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
                 }
 
                 return (
-                    <div className={bem.block}>
+                    <div className={bem.element('flex-align')}>
                         {p.isExternalLink ? (
-                            <DSLink key={p.displayName} className={bem.block} href={p.route}>
+                            <DSLink key={p.displayName} className={bem.element('flex-align')} href={p.route}>
                                 {erNavHomeLink && <Home />}
                                 <BodyShort>{p.displayName}</BodyShort>
                             </DSLink>
                         ) : (
                             <Link
                                 key={p.displayName}
-                                className={bem.block}
+                                className={bem.element('flex-align')}
                                 to={getRoute(p.route, saksnummer, oppgaveId)}
                             >
                                 <BodyShort>{p.displayName}</BodyShort>

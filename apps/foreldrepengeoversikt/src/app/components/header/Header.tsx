@@ -170,8 +170,8 @@ const Header: React.FunctionComponent<Props> = ({ grupperteSaker, oppgaverIds })
     const currentOppgaveId = oppgaverIds.find((id) => path.includes(id));
     return (
         <div className={bem.block}>
+            <Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />
             <div className={bem.element('wrapper')}>
-                <Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />
                 {renderHeaderContent(selectedRoute, sak, barnGrupperingForSak, intl)}
             </div>
         </div>
