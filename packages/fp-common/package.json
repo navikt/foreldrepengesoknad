@@ -41,7 +41,7 @@
         "@navikt/ds-codemod": "2.8.11",
         "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@storybook/addon-essentials": "^7.0.3",
-        "@storybook/addon-interactions": "^7.0.3",
+        "@storybook/addon-interactions": "^7.0.22",
         "@storybook/addon-links": "^7.0.3",
         "@storybook/builder-vite": "^7.0.3",
         "@storybook/react": "^7.0.3",
