@@ -167,8 +167,8 @@ const Header: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
     const barnGrupperingForSak = sakIGrupperteSaker?.barn;
     return (
         <div className={bem.block}>
+            <Breadcrumb selectedRoute={selectedRoute} />
             <div className={bem.element('wrapper')}>
-                <Breadcrumb selectedRoute={selectedRoute} />
                 {renderHeaderContent(selectedRoute, sak, barnGrupperingForSak, intl)}
             </div>
         </div>
