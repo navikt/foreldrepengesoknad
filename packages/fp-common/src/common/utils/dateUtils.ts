@@ -1,6 +1,9 @@
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { isISODateString } from '@navikt/ds-datepicker';
 
+dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
 const dateFormatExtended = 'DD. MMM YYYY';
 
@@ -30,4 +33,14 @@ export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
     }
 
     return dayjs(date).isBetween(tidsperiode.fom, tidsperiode.tom, 'day', '[]');
+};
+
+export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
+    if (dateString === undefined) {
+        return undefined;
+    }
+    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
+        return dayjs.utc(dateString).toDate();
+    }
+    return undefined;
 };
