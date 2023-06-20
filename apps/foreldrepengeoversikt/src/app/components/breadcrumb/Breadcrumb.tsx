@@ -16,12 +16,7 @@ interface Props {
 }
 
 const getBreadcrumbPath = (selectedRoute: OversiktRoutes) => {
-    switch (selectedRoute) {
-        case OversiktRoutes.HOVEDSIDE:
-            return BREADCRUMBS[selectedRoute];
-        default:
-            return BREADCRUMBS[selectedRoute];
-    }
+    return BREADCRUMBS[selectedRoute];
 };
 
 const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: string | undefined): string => {
