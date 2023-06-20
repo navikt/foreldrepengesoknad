@@ -5,7 +5,7 @@ import { ChevronRightIcon } from '@navikt/aksel-icons';
 import { Link } from 'react-router-dom';
 
 import OversiktRoutes from 'app/routes/routes';
-import { BREADCRUMBS } from 'app/types/Breadcrumb';
+import { getBreadcrumbs } from 'app/types/Breadcrumb';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 
 import './breadcrumb.css';
@@ -14,10 +14,6 @@ interface Props {
     selectedRoute: OversiktRoutes;
     oppgaveId: string | undefined;
 }
-
-const getBreadcrumbPath = (selectedRoute: OversiktRoutes) => {
-    return BREADCRUMBS[selectedRoute];
-};
 
 const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: string | undefined): string => {
     if (route === OversiktRoutes.SAKSOVERSIKT && hasValue(saksnummer)) {
@@ -32,7 +28,7 @@ const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: stri
 
 const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }) => {
     const bem = bemUtils('breadcrumb');
-    const path = getBreadcrumbPath(selectedRoute);
+    const path = getBreadcrumbs(selectedRoute);
 
     const sak = useGetSelectedSak();
     const saksnummer = sak ? sak.saksnummer : undefined;

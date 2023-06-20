@@ -9,7 +9,6 @@ import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
 import Forside from 'app/pages/forside/Forside';
 import Header from 'app/components/header/Header';
 import DokumenterPage from 'app/pages/dokumenter-page/DokumenterPage';
-import Opplysninger from 'app/pages/opplysninger/Opplysninger';
 import { SakOppslag } from 'app/types/SakOppslag';
 
 import './routes-wrapper.css';
@@ -100,7 +99,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 />
                             }
                         />
-                        <Route path={OversiktRoutes.OPPLYSNINGER} element={<Opplysninger />} />
                         <Route
                             path={OversiktRoutes.DIN_PLAN}
                             element={<DinPlanPage navnPåSøker={søkerinfo.søker.fornavn} søkerinfo={søkerinfo} />}

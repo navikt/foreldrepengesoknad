@@ -1,4 +1,5 @@
 import OversiktRoutes from 'app/routes/routes';
+import { assertUnreachable } from 'app/utils/globalUtils';
 
 export interface Breadcrumb {
     displayName: string;
@@ -64,12 +65,23 @@ const oppgaver: Breadcrumb = {
     isExternalLink: false,
 };
 
-export const BREADCRUMBS: BreadcrumbMap = {
-    [OversiktRoutes.HOVEDSIDE]: [nav, minSide, hovedside],
-    [OversiktRoutes.SAKSOVERSIKT]: [nav, minSide, hovedside, saksoversikt],
-    [OversiktRoutes.DOKUMENTER]: [nav, minSide, hovedside, saksoversikt, dokumenter],
-    [OversiktRoutes.ETTERSEND]: [nav, minSide, hovedside, saksoversikt, dokumenter, ettersend],
-    [OversiktRoutes.TIDSLINJEN]: [nav, minSide, hovedside, saksoversikt, tidslinjen],
-    [OversiktRoutes.DIN_PLAN]: [nav, minSide, hovedside, saksoversikt, dinPlan],
-    [OversiktRoutes.OPPGAVER]: [nav, minSide, hovedside, saksoversikt, oppgaver],
+export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
+    switch (selectedRoute) {
+        case OversiktRoutes.HOVEDSIDE:
+            return [nav, minSide, hovedside];
+        case OversiktRoutes.SAKSOVERSIKT:
+            return [nav, minSide, hovedside, saksoversikt];
+        case OversiktRoutes.DOKUMENTER:
+            return [nav, minSide, hovedside, saksoversikt, dokumenter];
+        case OversiktRoutes.ETTERSEND:
+            return [nav, minSide, hovedside, saksoversikt, dokumenter, ettersend];
+        case OversiktRoutes.TIDSLINJEN:
+            return [nav, minSide, hovedside, saksoversikt, tidslinjen];
+        case OversiktRoutes.DIN_PLAN:
+            return [nav, minSide, hovedside, saksoversikt, dinPlan];
+        case OversiktRoutes.OPPGAVER:
+            return [nav, minSide, hovedside, saksoversikt, oppgaver];
+        default:
+            return assertUnreachable(selectedRoute, 'En rute mangler brødsmulesti');
+    }
 };
