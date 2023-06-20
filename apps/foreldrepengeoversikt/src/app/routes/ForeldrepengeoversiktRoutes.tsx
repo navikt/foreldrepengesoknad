@@ -77,7 +77,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
             <div className={bem.block}>
                 <Routes>
                     <Route
-                        path="/"
+                        path={OversiktRoutes.HOVEDSIDE}
                         element={
                             <Forside
                                 alleYtelser={alleYtelser}
@@ -87,7 +87,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                             />
                         }
                     />
-                    <Route path="/sak/:saksnummer" element={<SakComponent />}>
+                    <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`} element={<SakComponent />}>
                         <Route
                             index
                             element={
