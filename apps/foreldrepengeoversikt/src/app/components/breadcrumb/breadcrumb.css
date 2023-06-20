@@ -1,0 +1,8 @@
+.breadcrumb {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb__chevron {
+    margin: 0 0.5rem;
+}
