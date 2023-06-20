@@ -5,11 +5,19 @@
     margin-bottom: 0.5rem;
 }
 
+.breadcrumb__link-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 @media (max-width: 768px) {
     .breadcrumb {
         flex-wrap: wrap;
-        align-content: space-between;
-        height: 5.25rem;
+        margin-bottom: -1rem;
+    }
+
+    .breadcrumb__flex-align {
+        margin-bottom: 1rem;
     }
 }
 
