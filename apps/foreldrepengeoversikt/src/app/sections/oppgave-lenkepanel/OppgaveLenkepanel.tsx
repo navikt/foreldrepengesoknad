@@ -5,6 +5,7 @@ import './oppgaveLenkepanel.css';
 import { bemUtils, Block, formatDate } from '@navikt/fp-common';
 import { LinkPanel } from '@navikt/ds-react';
 import { DialogReport } from '@navikt/ds-icons';
+import OversiktRoutes from 'app/routes/routes';
 
 interface Props {
     minidialogInnslag: MinidialogInnslag;
@@ -15,7 +16,12 @@ const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogI
     const bem = bemUtils('oppgave-lenkepanel');
     return (
         <Block padBottom="l">
-            <LinkPanel as={Link} to={minidialogInnslag.dialogId} border={false} className={bem.element('linkPanel')}>
+            <LinkPanel
+                as={Link}
+                to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.dialogId}`}
+                border={false}
+                className={bem.element('linkPanel')}
+            >
                 <div className={bem.element('content')}>
                     <DialogReport className={bem.element('icon')}></DialogReport>
                     <div>
