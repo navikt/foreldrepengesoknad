@@ -66,6 +66,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
         manglendeVedleggData,
         sak,
         barnFraSak,
+        erAvslåttForeldrepengesøknad,
         intl
     );
 
