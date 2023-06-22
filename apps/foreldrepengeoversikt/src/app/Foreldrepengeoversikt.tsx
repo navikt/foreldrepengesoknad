@@ -66,6 +66,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         >
             <BrowserRouter>
                 <ScrollToTop />
+                <p>YEAAHH</p>
                 <ForeldrepengeoversiktRoutes
                     søkerinfo={søkerinfoData}
                     saker={saker}
