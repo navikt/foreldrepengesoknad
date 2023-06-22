@@ -5,11 +5,11 @@ svangerskapspenger.
 
 # Komme i gang
 
-For å kjøre opp app-en i dev (med parcel og mock-API):
+For å kjøre opp app-en i dev (med mock-api):
 
-1.  `pnpm install`
-2.  `pnpm run dev-api`
-3.  `pnpm run dev`
+1. `pnpm install`.
+2. `pnpm run dev-api`.
+3. `pnpm run dev`
 
 # Formik
 

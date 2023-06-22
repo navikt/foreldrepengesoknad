@@ -7,8 +7,9 @@ Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 
 For å kjøre opp appen i dev:
 
-1.  `npm install`.
-2.  `npm run start`.
+1. `pnpm install`.
+2. `pnpm run dev-api`.
+3. `pnpm run dev`
 
 # Henvendelser
 

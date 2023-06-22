@@ -9,58 +9,10 @@
                 "type": "INNGÅENDE_DOKUMENT",
                 "mottatt": "2023-01-31T09:06:48",
                 "saksnummer": "352011079",
-                "tittel": "Søknad om foreldrepenger ved fødsel",
+                "tittel": "Søknad om svangerskapspenger",
                 "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115874/624862989"
             }
         ],
         "manglendeVedlegg": []
-    },
-    {
-        "type": "vedtak",
-        "opprettet": "2023-01-31T09:09:48",
-        "aktørType": "NAV",
-        "tidslinjeHendelseType": "VEDTAK",
-        "dokumenter": [
-            {
-                "type": "UTGÅENDE_DOKUMENT",
-                "mottatt": "2023-01-31T09:09:48",
-                "saksnummer": "352011079",
-                "tittel": "Innvilgelsesbrev Foreldrepenger",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115875/624862990"
-            }
-        ],
-        "vedtakType": "INNVILGELSE"
-    },
-    {
-        "type": "vedtak",
-        "opprettet": "2023-01-31T09:17:13",
-        "aktørType": "NAV",
-        "tidslinjeHendelseType": "VEDTAK",
-        "dokumenter": [
-            {
-                "type": "UTGÅENDE_DOKUMENT",
-                "mottatt": "2023-01-31T09:17:13",
-                "saksnummer": "352011080",
-                "tittel": "Innvilgelsesbrev Foreldrepenger",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115879/624862995"
-            }
-        ],
-        "vedtakType": "INNVILGELSE"
-    },
-    {
-        "type": "vedtak",
-        "opprettet": "2023-01-31T09:17:24",
-        "aktørType": "NAV",
-        "tidslinjeHendelseType": "VEDTAK",
-        "dokumenter": [
-            {
-                "type": "UTGÅENDE_DOKUMENT",
-                "mottatt": "2023-01-31T09:17:24",
-                "saksnummer": "352011079",
-                "tittel": "Opphør Foreldrepenger",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115880/624862996"
-            }
-        ],
-        "vedtakType": "INNVILGELSE"
     }
 ]

@@ -93,7 +93,7 @@
             "saksnummer": "352011080",
             "sakAvsluttet": false,
             "sisteSøknadMottattDato": "2023-01-31",
-            "kanSøkeOmEndring": true,
+            "kanSøkeOmEndring": false,
             "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
@@ -104,59 +104,21 @@
                 "fnr": "03506715317"
             },
             "familiehendelse": {
-                "fødselsdato": "2023-01-10",
-                "termindato": "2023-01-10",
+                "termindato": "2023-09-15",
                 "antallBarn": 1
             },
-            "gjeldendeVedtak": {
-                "perioder": [
+            "åpenBehandling": {
+                "tilstand": "UNDER_BEHANDLING",
+                "søknadsperioder": [
                     {
-                        "fom": "2022-12-20",
-                        "tom": "2023-01-09",
-                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
+                        "fom": "2023-08-25",
+                        "tom": "2023-09-14",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL"
                     },
                     {
-                        "fom": "2023-01-10",
-                        "tom": "2023-02-20",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2023-02-21",
-                        "tom": "2023-04-24",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2023-04-25",
-                        "tom": "2023-08-14",
-                        "kontoType": "FELLESPERIODE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
+                        "fom": "2023-09-15",
+                        "tom": "2023-10-26",
+                        "kontoType": "MØDREKVOTE"
                     }
                 ]
             },
@@ -165,5 +127,40 @@
         }
     ],
     "engangsstønad": [],
-    "svangerskapspenger": []
+    "svangerskapspenger": [
+        {
+            "saksnummer": "352012251",
+            "familiehendelse": {
+                "termindato": "2023-09-15",
+                "antallBarn": 0
+            },
+            "sakAvsluttet": false,
+            "åpenBehandling": {
+                "tilstand": "VENT_INNTEKTSMELDING",
+                "søknad": {
+                    "arbeidsforhold": [
+                        {
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "947064649",
+                                    "type": "ORGANISASJON"
+                                }
+                            },
+                            "behovFrom": "2023-07-01",
+                            "tilrettelegginger": [
+                                {
+                                    "fom": "2023-07-01",
+                                    "tom": "2023-08-24",
+                                    "type": "INGEN"
+                                }
+                            ],
+                            "oppholdsperioder": []
+                        }
+                    ]
+                }
+            },
+            "oppdatertTidspunkt": "2023-06-21T12:56:13.534"
+        }
+    ]
 }
