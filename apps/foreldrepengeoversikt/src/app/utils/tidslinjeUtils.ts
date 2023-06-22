@@ -442,6 +442,7 @@ export const getAlleTidslinjehendelser = (
     manglendeVedleggData: Skjemanummer[],
     sak: Sak,
     barnFraSak: BarnGruppering,
+    erAvslåttForeldrepengesøknad: boolean,
     intl: IntlShape
 ): Tidslinjehendelse[] => {
     const tidslinjeHendelser = getTidslinjehendelserDetaljer(tidslinjeHendelserData, intl);
@@ -459,6 +460,7 @@ export const getAlleTidslinjehendelser = (
 
     if (
         barnFraSak.alleBarnaLever &&
+        !erAvslåttForeldrepengesøknad &&
         sak.ytelse === Ytelse.FORELDREPENGER &&
         (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato)
     ) {
