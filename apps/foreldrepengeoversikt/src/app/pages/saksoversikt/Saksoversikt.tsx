@@ -25,6 +25,7 @@ import { useParams } from 'react-router-dom';
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
+import TestComp from 'app/components/test-comp/TestComp';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -109,6 +110,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
             </ContentSection>
             <ContentSection padding="none">
                 <SeHeleProsessen />
+            </ContentSection>
+            <ContentSection padding="none">
+                <TestComp />
             </ContentSection>
             <ContentSection padding="none">
                 <SeDokumenter />
