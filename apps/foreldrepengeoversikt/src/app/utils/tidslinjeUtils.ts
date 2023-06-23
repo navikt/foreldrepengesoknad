@@ -462,6 +462,7 @@ export const getAlleTidslinjehendelser = (
         barnFraSak.alleBarnaLever &&
         !erAvslåttForeldrepengesøknad &&
         sak.ytelse === Ytelse.FORELDREPENGER &&
+        !sak.sakAvsluttet &&
         (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato)
     ) {
         const barn3ÅrHendelse = getTidslinjeBarnTreÅrHendelse(
