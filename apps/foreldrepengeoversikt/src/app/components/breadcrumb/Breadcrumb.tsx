@@ -16,11 +16,18 @@ interface Props {
 }
 
 const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: string | undefined): string => {
+    const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
+
     if (route === OversiktRoutes.SAKSOVERSIKT && hasValue(saksnummer)) {
-        return `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
+        return sakRoute;
     }
+
     if (route === OversiktRoutes.OPPGAVER && hasValue(oppgaveId)) {
         return `${OversiktRoutes.OPPGAVER}/${oppgaveId}`;
+    }
+
+    if (route === OversiktRoutes.DOKUMENTER) {
+        return `${sakRoute}/${OversiktRoutes.DOKUMENTER}`;
     }
 
     return route;
