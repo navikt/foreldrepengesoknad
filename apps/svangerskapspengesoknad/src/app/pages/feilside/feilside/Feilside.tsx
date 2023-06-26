@@ -3,7 +3,7 @@ import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
 import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import './feilside.less';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
-import { useSvangerskapspengesøknadContext } from 'app/context/hooks/useSvangerskapspengesøknadContext';
+import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 
 export interface FeilsideProps {
     containerId?: string;
@@ -34,7 +34,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     setLanguage,
 }) => {
     const bem = bemUtils('feilside');
-    const { dispatch, state } = useSvangerskapspengesøknadContext();
+    const { dispatch, state } = useSvangerskapspengerContext();
     const { søkerinfo } = state;
 
     const avbrytSøknadHandler = useCallback(async () => {

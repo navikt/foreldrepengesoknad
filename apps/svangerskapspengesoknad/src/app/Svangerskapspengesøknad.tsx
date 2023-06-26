@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { useSvangerskapspengesøknadContext } from './context/hooks/useSvangerskapspengesøknadContext';
+import { useSvangerskapspengerContext } from './context/hooks/useSvangerskapspengerContext';
 import { Loader } from '@navikt/ds-react';
-// import actionCreator from './context/action/actionCreator';
+import actionCreator from './context/action/actionCreator';
 import { sendErrorMessageToSentry } from './utils/errorUtils';
 // import SvangerskapspengesøknadRoutes from './routes/SvangerskapspengesøknadRoutes';
 // import SøknadRoutes from './routes/routes';
 // import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
-// import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
+import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -17,19 +17,15 @@ const renderSpinner = () => (
 
 const Svangerskapspengesøknad = () => {
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
-    const { dispatch, state } = useSvangerskapspengesøknadContext();
+    const { dispatch } = useSvangerskapspengerContext();
+    // const intl = useIntl();
 
     useEffect(() => {
         if (søkerinfoData !== undefined) {
-            console.log('DATA:', søkerinfoData);
-            console.log('dispatch, state: ', dispatch, state);
-            // dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
+            dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
         }
     }, [søkerinfoData]);
-    // console.log(state);
-    if (søkerinfoData === undefined) {
-        return renderSpinner();
-    }
+
     useEffect(() => {
         if (søkerinfoError) {
             sendErrorMessageToSentry(søkerinfoError);
@@ -39,6 +35,9 @@ const Svangerskapspengesøknad = () => {
         }
     }, [søkerinfoError]);
 
+    if (søkerinfoData === undefined) {
+        return renderSpinner();
+    }
     return (
         <div>
             <p>Hei</p>

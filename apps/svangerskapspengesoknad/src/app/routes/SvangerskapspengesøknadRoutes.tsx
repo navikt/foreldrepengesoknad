@@ -4,7 +4,7 @@ import SøknadRoutes from './routes';
 import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import isAvailable from './isAvailable';
 import Velkommen from 'app/pages/velkommen/Velkommen';
-import { useSvangerskapspengesøknadContext } from 'app/context/hooks/useSvangerskapspengesøknadContext';
+import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -27,7 +27,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, søkerErMyndig: boolea
 };
 
 const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute }) => {
-    const { state } = useSvangerskapspengesøknadContext();
+    const { state } = useSvangerskapspengerContext();
     const navigate = useNavigate();
     const harGodkjentVilkår = false; //TODO
     const erMyndig = true; //TODO
