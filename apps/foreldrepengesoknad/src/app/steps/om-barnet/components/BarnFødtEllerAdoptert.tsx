@@ -26,7 +26,10 @@ const BarnFødtEllerAdoptert: FunctionComponent<Props> = ({ visibility }) => {
                     legend={intlUtils(intl, 'omBarnet.erBarnetFødt')}
                 />
                 <ReadMore header={intlUtils(intl, 'omBarnet.erBarnetFødt.readMore.header')}>
-                    <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold" />
+                    <Block padBottom="m">
+                        <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
+                    </Block>
+                    <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del2" />
                 </ReadMore>
             </Block>
         </>
