@@ -6,6 +6,13 @@ metadata:
   labels:
     team: teamforeldrepenger
 spec:
+  gcp:
+    buckets:
+      - name: teamforeldrepenger-trc
+        retentionPeriodDays: 10
+        lifecycleCondition:
+          age: 7
+          numNewerVersions: 0
   accessPolicy:
     outbound:
       external:
