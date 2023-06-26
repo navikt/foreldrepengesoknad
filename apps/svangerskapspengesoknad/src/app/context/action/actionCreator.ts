@@ -1,19 +1,18 @@
-import { Locale } from '@navikt/fp-common';
+import SøknadRoutes from 'app/routes/routes';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 
 export enum SvangerskapspengerContextActionKeys {
     SET_SØKERINFO = 'setSøkerinfo',
-    SET_HARGODKJENTVILKÅR = 'setGarGodtkjentVilkår',
-    SET_SPRÅKKODE = 'setSpråkkode',
+    SET_CURRENT_ROUTE = 'setCurrentRoute',
 }
 
-interface SetVelkommen {
-    type: SvangerskapspengerContextActionKeys.SET_HARGODKJENTVILKÅR;
-    payload: boolean;
+interface SetCurrentRoute {
+    type: SvangerskapspengerContextActionKeys.SET_CURRENT_ROUTE;
+    payload: SøknadRoutes;
 }
 
-const setVelkommen = (payload: boolean): SetVelkommen => ({
-    type: SvangerskapspengerContextActionKeys.SET_HARGODKJENTVILKÅR,
+const setCurrentRoute = (payload: SøknadRoutes): SetCurrentRoute => ({
+    type: SvangerskapspengerContextActionKeys.SET_CURRENT_ROUTE,
     payload,
 });
 
@@ -27,20 +26,9 @@ const setSøkerinfo = (payload: Søkerinfo): SetSøkerinfo => ({
     payload,
 });
 
-interface SetSpråkkode {
-    type: SvangerskapspengerContextActionKeys.SET_SPRÅKKODE;
-    payload: Locale;
-}
-
-const setSpråkkode = (payload: Locale): SetSpråkkode => ({
-    type: SvangerskapspengerContextActionKeys.SET_SPRÅKKODE,
-    payload,
-});
-
-export type SvangerskapspengerContextAction = SetVelkommen | SetSøkerinfo | SetSpråkkode;
+export type SvangerskapspengerContextAction = SetCurrentRoute | SetSøkerinfo;
 
 export default {
-    setVelkommen,
+    setCurrentRoute,
     setSøkerinfo,
-    setSpråkkode,
 };

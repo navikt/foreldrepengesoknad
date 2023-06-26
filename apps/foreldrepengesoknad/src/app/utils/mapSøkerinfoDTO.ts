@@ -2,11 +2,11 @@ import { erMyndig } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { ISOStringToDate } from './dateUtils';
+import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

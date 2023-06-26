@@ -1,11 +1,11 @@
 import { erMyndig } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import Person from 'app/types/Person';
+import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO copy';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
