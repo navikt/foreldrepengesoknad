@@ -1,3 +1,15 @@
 {
-    "sesjonUtløpt.tittel": "Du er nå logget ut"
+    "sesjonUtløpt.tittel": "Du er nå logget ut",
+    "forside.begynnMedSøknad": "Start søknaden",
+    "forside.tittel": "Søknad om svangerskapspenger",
+    "forside.guidepanel.del1": "Friske, gravide kvinner som ikke kan fortsette å jobbe under svangerskapet fordi det kan medføre risiko for barnet, kan få svangerskapspenger. Man kan få svangerskapspenger fra det tidspunktet du må avbryte arbeidet, og fram til tre uker før man har termin.",
+    "forside.guidepanel.del2": "Det er tre krav du må oppfylle for å motta svangerskapspenger:",
+    "forside.guidepanel.del3.punkt1": "Jobben din kan skade det ufødte barnet",
+    "forside.guidepanel.del3.punkt2": "Du må ha tjent minst 55 739 kr det siste året",
+    "forside.guidepanel.del3.punkt3": "Du må ha vært i arbeid i mist 4 uker",
+    "forside.guidepanel.lesMer": "Les mer om svangerskapspenger",
+    "forside.tilrettelegging.info": "Før du søker må du har vært hos lege eller jordmor. Du må og ha klart skjemaet for risiko og tilrettelegging i svangerskapet som skal være fylt ut av lege eller jordmor og din arbeidsgiver.",
+    "forside.dinePlikter": "For å gå videre med søknaden må du bekrefte at du har lest og forstått dine plikter:",
+    "forside.dinePlikter.punkt1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til svangerskapspenger.",
+    "forside.dinePlikter.punkt2": "Jeg har lest og forstått det som står på nav.no/rettogplikt"
 }

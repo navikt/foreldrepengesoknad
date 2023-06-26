@@ -1145,6 +1145,12 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
+      '@navikt/sif-common-formik-ds':
+        specifier: ^0.14.1
+        version: 0.14.1(@navikt/ds-css@2.8.11)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@2.8.11)(formik@2.2.9)(react-intl@6.3.2)
+      '@navikt/sif-common-question-config':
+        specifier: ^0.0.7
+        version: 0.0.7
       '@sentry/browser':
         specifier: ^7.47.0
         version: 7.47.0

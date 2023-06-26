@@ -3,9 +3,9 @@ import { useSvangerskapspengerContext } from './context/hooks/useSvangerskapspen
 import { Loader } from '@navikt/ds-react';
 import actionCreator from './context/action/actionCreator';
 import { sendErrorMessageToSentry } from './utils/errorUtils';
-// import SvangerskapspengesøknadRoutes from './routes/SvangerskapspengesøknadRoutes';
-// import SøknadRoutes from './routes/routes';
-// import { BrowserRouter } from 'react-router-dom';
+import SvangerskapspengesøknadRoutes from './routes/SvangerskapspengesøknadRoutes';
+import SøknadRoutes from './routes/routes';
+import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 
@@ -40,10 +40,9 @@ const Svangerskapspengesøknad = () => {
     }
     return (
         <div>
-            <p>Hei</p>
-            {/* <BrowserRouter>
+            <BrowserRouter>
                 <SvangerskapspengesøknadRoutes currentRoute={SøknadRoutes.VELKOMMEN} />
-            </BrowserRouter> */}
+            </BrowserRouter>
         </div>
     );
 };
