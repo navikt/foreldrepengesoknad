@@ -1,10 +1,10 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import SøknadRoutes from './routes';
-import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
+// import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import isAvailable from './isAvailable';
-import Velkommen from 'app/pages/velkommen/Velkommen';
-import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
+import Velkommen from 'app/pages/forside/Forside';
+// import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -27,27 +27,25 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, søkerErMyndig: boolea
 };
 
 const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute }) => {
-    const { state } = useSvangerskapspengerContext();
+    // const { state } = useSvangerskapspengerContext();
     const navigate = useNavigate();
     const harGodkjentVilkår = false; //TODO
     const erMyndig = true; //TODO
     // const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
     // const erMyndig = state.søkerinfo.person.erMyndig;//TODO
-    const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
 
     useEffect(() => {
-        if (currentRoute && erMyndig && harGodkjentVilkår && isFirstTimeLoadingApp) {
-            setIsFirstTimeLoadingApp(false);
+        if (currentRoute && erMyndig && harGodkjentVilkår) {
             if (isAvailable(currentRoute)) {
                 navigate(currentRoute);
             }
         }
-    }, [currentRoute, erMyndig, harGodkjentVilkår, navigate, isFirstTimeLoadingApp]);
+    }, [currentRoute, erMyndig, harGodkjentVilkår, navigate]);
 
     return (
         <Routes>
             <Route path={SøknadRoutes.VELKOMMEN} element={<Velkommen />} />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={state.søkerinfo.person.fornavn} />} />
+            {/* <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={state.søkerinfo.person.fornavn} />} /> */}
 
             {renderSøknadRoutes(harGodkjentVilkår, erMyndig)}
         </Routes>
