@@ -55,7 +55,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
     }
     if (sak && sak.ytelse === Ytelse.FORELDREPENGER) {
         return (
-            <ContentSection heading="Din plan" padding="large">
+            <ContentSection heading="Din plan">
                 <DinPlan
                     sak={sak}
                     visHelePlanen={true}
