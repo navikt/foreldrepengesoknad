@@ -10,6 +10,7 @@ import {
 } from './forsideFormConfig';
 import links from 'app/links/links';
 import './forside.css';
+import { validateHarForståttRettigheterOgPlikter } from './forsideValidation';
 
 const Forside = () => {
     const intl = useIntl();
@@ -38,7 +39,7 @@ const Forside = () => {
                                     {intlUtils(intl, 'forside.tittel')}
                                 </Heading>
                             </Block>
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <GuidePanel poster>
                                     <Block padBottom="m">{intlUtils(intl, 'forside.guidepanel.del1')}</Block>
                                     <Block padBottom="m">{intlUtils(intl, 'forside.guidepanel.del2')}</Block>
@@ -68,7 +69,7 @@ const Forside = () => {
                                 </GuidePanel>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(ForsideFormField.harForståttRettigheterOgPlikter)}
                             >
                                 <Alert variant="info">
@@ -90,25 +91,38 @@ const Forside = () => {
                                 </Alert>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(ForsideFormField.harForståttRettigheterOgPlikter)}
                             >
-                                {/* <VelkommenFormComponents.ConfirmationCheckbox
-                                    name={VelkommenFormField.harForståttRettigheterOgPlikter}
-                                    label={intlUtils(intl, 'velkommen.samtykke')}
+                                <ForsideFormComponents.ConfirmationCheckbox
+                                    name={ForsideFormField.harForståttRettigheterOgPlikter}
+                                    label={intlUtils(intl, 'forside.samtykke')}
                                     validate={validateHarForståttRettigheterOgPlikter(intl)}
                                 >
-                                    <>
-                                        <Block padBottom="l">
-                                            <FormattedMessage id="velkommen.samtykkeIntro.del1" />
-                                        </Block>
-                                        <Block padBottom="m">
-                                            <DinePlikter />
-                                        </Block>
-                                    </>
-                                </VelkommenFormComponents.ConfirmationCheckbox> */}
+                                    <Block padBottom="s">{intlUtils(intl, 'forside.samtykkeIntro')}</Block>
+                                    <ul>
+                                        <li>{intlUtils(intl, 'forside.samtykkeIntro.punkt1')}</li>
+                                        <li>
+                                            <FormattedMessage
+                                                id="forside.samtykkeIntro.punkt2"
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <a
+                                                            className="lenke"
+                                                            rel="noopener noreferrer"
+                                                            href={links.rettOgPlikt}
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </a>
+                                                    ),
+                                                }}
+                                            />
+                                        </li>
+                                    </ul>
+                                </ForsideFormComponents.ConfirmationCheckbox>
                             </Block>
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <div style={{ textAlign: 'center' }}>
                                     <Button
                                         type="submit"
@@ -120,10 +134,6 @@ const Forside = () => {
                                     </Button>
                                 </div>
                             </Block>
-                            {/* <DinePersonopplysningerModal
-                                isOpen={isDinePersonopplysningerModalOpen}
-                                onRequestClose={() => setDinePersonopplysningerModalOpen(false)}
-                            /> */}
                         </div>
                     </ForsideFormComponents.Form>
                 );
