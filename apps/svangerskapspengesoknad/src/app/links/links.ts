@@ -5,4 +5,5 @@ export default {
     svangerskapspenger: 'https://familie.nav.no/om-svangerskapspenger',
     tilretteleggingsskjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
+    rettOgPlikt: 'https://www.nav.no/endringer',
 };

@@ -11,5 +11,10 @@
     "forside.tilrettelegging.info": "Før du søker må du har vært hos lege eller jordmor. Du må og ha klart <a>skjemaet for risiko og tilrettelegging i svangerskapet</a> som skal være fylt ut av lege eller jordmor og din arbeidsgiver.",
     "forside.dinePlikter": "For å gå videre med søknaden må du bekrefte at du har lest og forstått dine plikter:",
     "forside.dinePlikter.punkt1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til svangerskapspenger.",
-    "forside.dinePlikter.punkt2": "Jeg har lest og forstått det som står på nav.no/rettogplikt"
+    "forside.dinePlikter.punkt2": "Jeg har lest og forstått det som står på nav.no/rettogplikt",
+    "forside.samtykke": "Ja, jeg har forstått mine plikter",
+    "forside.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått dine plikter:",
+    "forside.samtykkeIntro.punkt1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til svangerskapspenger.",
+    "forside.samtykkeIntro.punkt2": "Jeg har lest og forstått det som står på <a>nav.no/rettogplikt</a>",
+    "forside.valideringsfeil.harForståttRettigheterOgPlikter": "Du må bekrefte at du har lest og forstått dine plikter."
 }
