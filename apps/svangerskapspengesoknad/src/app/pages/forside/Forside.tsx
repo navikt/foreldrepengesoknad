@@ -8,8 +8,9 @@ import {
     forsideFormQuestions,
     getInitialForsideValues,
 } from './forsideFormConfig';
-import './forside.less';
 import links from 'app/links/links';
+import './forside.css';
+
 const Forside = () => {
     const intl = useIntl();
     const handleSubmit = () => {
@@ -70,7 +71,23 @@ const Forside = () => {
                                 padBottom="l"
                                 visible={visibility.isVisible(ForsideFormField.harForståttRettigheterOgPlikter)}
                             >
-                                <Alert variant="info">{intlUtils(intl, 'forside.tilrettelegging.info')}</Alert>
+                                <Alert variant="info">
+                                    <FormattedMessage
+                                        id="forside.tilrettelegging.info"
+                                        values={{
+                                            a: (msg: any) => (
+                                                <a
+                                                    className="lenke"
+                                                    rel="noopener noreferrer"
+                                                    href={links.tilretteleggingsskjema}
+                                                    target="_blank"
+                                                >
+                                                    {msg}
+                                                </a>
+                                            ),
+                                        }}
+                                    />
+                                </Alert>
                             </Block>
                             <Block
                                 padBottom="l"

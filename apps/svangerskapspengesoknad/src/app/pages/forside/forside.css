@@ -1,0 +1,29 @@
+
+
+.forside {
+    max-width: 704px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.forside__personopplysningerLink {
+        text-align: center;
+    }
+
+.forside____tittel {
+        text-align: center;
+        padding-top: 48px;
+        padding-bottom: 32px;
+    }
+
+@media (max-width: 768px) {
+    .forside {
+        max-width: 100%;
+        padding: 1rem;
+    
+    }
+    .forside____tittel {
+        padding-top: 20px;
+            padding-bottom: 20px;
+    }
+}
