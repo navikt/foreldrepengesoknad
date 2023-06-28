@@ -2,9 +2,9 @@ import { FunctionComponent } from 'react';
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
 import IntlProvider from './intl/IntlProvider';
 import dayjs from 'dayjs';
-import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
+import ByttBrowserModal from '@navikt/fp-common/src/common/pages/byttBrowserModal/ByttBrowserModal';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
-import { shouldChangeBrowser } from './utils/browserUtils';
+import { shouldChangeBrowser } from '@navikt/fp-common/src/common/utils/browserUtils';
 import SvangerskapspengerContextProvider from './context/SvangerskapspengerContext';
 
 dayjs.locale('nb');

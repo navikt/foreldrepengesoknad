@@ -1,10 +1,11 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Heading, Modal, BodyShort } from '@navikt/ds-react';
-import { AdvarselIkon, bemUtils, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent, useState } from 'react';
 
 import './byttBrowserModal.less';
-
+import bemUtils from './../../utils/bemUtils';
+import AdvarselIkon from './../../assets/advarsel-ikon/AdvarselIkon';
+import { intlUtils } from './../../../common';
 export interface Props {
     skalEndreNettleser: boolean;
 }
