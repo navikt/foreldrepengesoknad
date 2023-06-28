@@ -2,11 +2,16 @@
     display: flex;
     justify-content: center;
     text-align: center;
-
+    padding: 1rem;
+    display: block;
 }
 
 .bytt-browser-modal__ikon {
     width: 100%;
     justify-self: center;
     margin-bottom: 1rem;
+}
+
+.bytt-browser-modal__tekst {
+    padding: 1rem 0;
 }
