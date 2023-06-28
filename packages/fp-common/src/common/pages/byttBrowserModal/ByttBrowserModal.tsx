@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Heading, Modal, BodyShort } from '@navikt/ds-react';
 import { FunctionComponent, useState } from 'react';
 
-import './byttBrowserModal.less';
+import './bytt-browser-modal.css';
 import bemUtils from './../../utils/bemUtils';
 import AdvarselIkon from './../../assets/advarsel-ikon/AdvarselIkon';
 import { intlUtils } from './../../../common';
@@ -23,10 +23,8 @@ export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser 
             onClose={() => undefined}
         >
             <AdvarselIkon />
-            <Heading size="medium" className="blokk-m">
-                {<FormattedMessage id="byttBrowser.tittel" />}
-            </Heading>
-            <BodyShort className="blokk-m">{<FormattedMessage id="byttBrowser.ingress" />}</BodyShort>
+            <Heading size="medium">{<FormattedMessage id="byttBrowser.tittel" />}</Heading>
+            <BodyShort className={cls.element('tekst')}>{<FormattedMessage id="byttBrowser.ingress" />}</BodyShort>
             <div className={cls.element('ok-knapp')}>
                 <Button variant="primary" className={cls.element('ok-knapp')} onClick={() => toggleIsOpen(false)}>
                     {<FormattedMessage id="ok" />}
