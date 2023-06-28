@@ -1,17 +1,21 @@
-
+@import './../../styles/variables.css';
 
 .forside {
-    max-width: 704px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: var(--app-max-width);
+    margin:  var(--app-margin);
+    padding:  var(--app-padding);
 }
 
 .forside__personopplysningerLink {
         text-align: center;
     }
 
+.forside__liste {
+        padding: 0 2rem;
+}
+
 .forside__tittel {
-        padding-top: 48px;
+        padding-top: 32px;
         padding-bottom: 32px;
     }
 

@@ -1,0 +1,11 @@
+:root {
+ --mobile-breakpoint: 768px;
+ --app-max-width: 704px;
+ --app-margin: 0 auto;
+ --app-padding: 2rem;
+
+ --mobile-app-max-width: 100%
+ --mobile-app-padding: 1rem;
+}
+
+

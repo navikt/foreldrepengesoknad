@@ -1,7 +1,7 @@
 import { intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import Feilside from '../feilside/feilside/Feilside';
+import Feilside from '../feilside/Feilside';
 import links from 'app/links/links';
 
 export interface IkkeMyndigProps {

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
 import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
-import './feilside.less';
+import './feilside.css';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 
