@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
@@ -48,8 +48,7 @@ const DekningsgradSpørsmål: FunctionComponent<Props> = ({
                 legend={intlUtils(intl, spørsmålTekst)}
             />
             <ReadMore header="Les mer om lengden på foreldrepengeperioden">
-                Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke
-                endres senere.
+                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad80" />
             </ReadMore>
         </Block>
     );
