@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import links from 'app/links/links';
-import Feilside from 'app/pages/feilside/feilside/Feilside';
+import Feilside from 'app/pages/feilside/Feilside';
 import { Component } from 'react';
 
 export const FOR_MANGE_VEDLEGG_ERROR =

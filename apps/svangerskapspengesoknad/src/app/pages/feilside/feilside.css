@@ -1,0 +1,20 @@
+@import './../../styles/variables.css';
+
+.feilside {
+    max-width: var(--app-max-width);
+    margin:  var(--app-margin);
+    padding:  var(--app-padding);
+}
+
+.feilside__avbrytKnapp {
+        display: flex;
+        justify-content: center;
+}
+
+@media (max-width: var(--mobile-breakpoint)) {
+    .feilside{
+        max-width: 100%;
+    }
+}
+
+

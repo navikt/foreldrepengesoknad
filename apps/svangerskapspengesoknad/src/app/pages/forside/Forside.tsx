@@ -1,4 +1,4 @@
-import { Alert, Button, GuidePanel, Heading } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -41,31 +41,27 @@ const Forside = () => {
                             </Block>
                             <Block padBottom="xl">
                                 <GuidePanel poster>
-                                    <Block padBottom="m">{intlUtils(intl, 'forside.guidepanel.del1')}</Block>
-                                    <Block padBottom="m">{intlUtils(intl, 'forside.guidepanel.del2')}</Block>
-                                    <ul>
-                                        <li>{intlUtils(intl, 'forside.guidepanel.del3.punkt1')}</li>
-                                        <li>{intlUtils(intl, 'forside.guidepanel.del3.punkt2')}</li>
-                                        <li>{intlUtils(intl, 'forside.guidepanel.del3.punkt3')}</li>
+                                    <BodyShort size="medium">{intlUtils(intl, 'forside.guidepanel')}</BodyShort>
+                                    <ul className={`${bem.element('liste')}`}>
+                                        <li>{intlUtils(intl, 'forside.guidepanel.punkt1')}</li>
+                                        <li>{intlUtils(intl, 'forside.guidepanel.punkt2')}</li>
+                                        <li>{intlUtils(intl, 'forside.guidepanel.punkt3')}</li>
                                     </ul>
-                                    <Block padBottom="m">{intlUtils(intl, 'forside.guidepanel.del1')}</Block>
-                                    <Block>
-                                        <FormattedMessage
-                                            id="forside.guidepanel.lesMer"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <a
-                                                        className="lenke"
-                                                        rel="noopener noreferrer"
-                                                        href={links.svangerskapspenger}
-                                                        target="_blank"
-                                                    >
-                                                        {msg}
-                                                    </a>
-                                                ),
-                                            }}
-                                        />
-                                    </Block>
+                                    <FormattedMessage
+                                        id="forside.guidepanel.lesMer"
+                                        values={{
+                                            a: (msg: any) => (
+                                                <a
+                                                    className="lenke"
+                                                    rel="noopener noreferrer"
+                                                    href={links.svangerskapspenger}
+                                                    target="_blank"
+                                                >
+                                                    {msg}
+                                                </a>
+                                            ),
+                                        }}
+                                    />
                                 </GuidePanel>
                             </Block>
                             <Block
@@ -99,8 +95,8 @@ const Forside = () => {
                                     label={intlUtils(intl, 'forside.samtykke')}
                                     validate={validateHarForståttRettigheterOgPlikter(intl)}
                                 >
-                                    <Block padBottom="s">{intlUtils(intl, 'forside.samtykkeIntro')}</Block>
-                                    <ul>
+                                    <BodyShort size="medium">{intlUtils(intl, 'forside.samtykkeIntro')}</BodyShort>
+                                    <ul className={`${bem.element('liste')}`}>
                                         <li>{intlUtils(intl, 'forside.samtykkeIntro.punkt1')}</li>
                                         <li>
                                             <FormattedMessage
