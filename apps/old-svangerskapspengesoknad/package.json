@@ -1,8 +1,8 @@
 {
-    "name": "svangerskapspengesoknad",
+    "name": "old-svangerskapspengesoknad",
     "repository": "https://github.com/navikt/svangerskapspengesoknad",
     "version": "1.0.0",
-    "description": "NAV Svangerskapspengesøknad",
+    "description": "NAV Old Svangerskapspengesøknad",
     "type": "module",
     "scripts": {
         "build": "vite build",

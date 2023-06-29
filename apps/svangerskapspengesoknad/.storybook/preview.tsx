@@ -1,3 +1,5 @@
+import '../src/app/styles/app.css';
+import '@navikt/ds-css';
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';

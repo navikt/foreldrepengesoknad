@@ -9,6 +9,6 @@ export interface SvangerskapspengerContextState {
 
 export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
     version: 1,
-    currentRoute: SøknadRoutes.VELKOMMEN,
+    currentRoute: SøknadRoutes.FORSIDE,
     søkerinfo: undefined!,
 };
