@@ -8,6 +8,7 @@ import SøknadRoutes from './routes/routes';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
+import './styles/app.css';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -41,7 +42,7 @@ const Svangerskapspengesøknad = () => {
     return (
         <div>
             <BrowserRouter>
-                <SvangerskapspengesøknadRoutes currentRoute={SøknadRoutes.VELKOMMEN} />
+                <SvangerskapspengesøknadRoutes currentRoute={SøknadRoutes.FORSIDE} />
             </BrowserRouter>
         </div>
     );

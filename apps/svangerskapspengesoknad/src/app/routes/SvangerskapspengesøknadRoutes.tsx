@@ -4,6 +4,8 @@ import SøknadRoutes from './routes';
 // import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import isAvailable from './isAvailable';
 import Velkommen from 'app/pages/forside/Forside';
+import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
+import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 // import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 
 interface Props {
@@ -11,8 +13,8 @@ interface Props {
 }
 
 const renderSøknadRoutes = (harGodkjentVilkår: boolean, søkerErMyndig: boolean) => {
-    if (!harGodkjentVilkår) {
-        return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
+    if (!harGodkjentVilkår && søkerErMyndig) {
+        return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;
     }
 
     if (!søkerErMyndig) {
@@ -21,19 +23,20 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, søkerErMyndig: boolea
 
     return (
         <>
-            <Route path={SøknadRoutes.VELKOMMEN} element={<Velkommen />} />
+            <Route path={SøknadRoutes.FORSIDE} element={<Velkommen />} />
         </>
     );
 };
 
 const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute }) => {
-    // const { state } = useSvangerskapspengerContext();
+    const { state } = useSvangerskapspengerContext();
+    console.log(state);
     const navigate = useNavigate();
     const harGodkjentVilkår = false; //TODO
-    const erMyndig = true; //TODO
+    // const erMyndig = true; //TODO
     // const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
-    // const erMyndig = state.søkerinfo.person.erMyndig;//TODO
-
+    const erMyndig = false; // state.søkerinfo.person?.erMyndig; //TODO
+    console.log('Ermydnog: ', erMyndig);
     useEffect(() => {
         if (currentRoute && erMyndig && harGodkjentVilkår) {
             if (isAvailable(currentRoute)) {
@@ -44,8 +47,8 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
 
     return (
         <Routes>
-            <Route path={SøknadRoutes.VELKOMMEN} element={<Velkommen />} />
-            {/* <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={state.søkerinfo.person.fornavn} />} /> */}
+            <Route path={SøknadRoutes.FORSIDE} element={<Velkommen />} />
+            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={'Hei'} />} />
 
             {renderSøknadRoutes(harGodkjentVilkår, erMyndig)}
         </Routes>

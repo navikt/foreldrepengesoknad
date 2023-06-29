@@ -1,5 +1,5 @@
 enum SøknadRoutes {
-    VELKOMMEN = '/',
+    FORSIDE = '/',
     IKKE_MYNDIG = 'ikke-myndig',
 }
 

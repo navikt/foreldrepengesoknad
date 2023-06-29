@@ -1,17 +1,17 @@
 import { StoryFn } from '@storybook/react';
 import IkkeMyndig, { IkkeMyndigProps } from './IkkeMyndig';
+import withIntlProvider from 'storybook/decorators/withIntl';
 
-const defaultExport = {
+export default {
     title: 'pages/IkkeMyndig',
     component: IkkeMyndig,
+    decorators: [withIntlProvider],
 };
-
-export default defaultExport;
 
 const Template: StoryFn<IkkeMyndigProps> = (args: IkkeMyndigProps) => {
     return <IkkeMyndig {...args}></IkkeMyndig>;
 };
-export const Default = Template.bind({}) as any;
+export const Default = Template.bind({});
 Default.args = {
     fornavn: 'Vakker',
 };
