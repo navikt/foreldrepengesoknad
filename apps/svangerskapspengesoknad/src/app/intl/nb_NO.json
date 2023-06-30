@@ -2,6 +2,7 @@
     "sesjonUtløpt.tittel": "Du er nå logget ut",
     "forside.begynnMedSøknad": "Start søknaden",
     "forside.tittel": "Søknad om svangerskapspenger",
+    "forside.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "forside.guidepanel": "Det er tre krav du må oppfylle for å motta svangerskapspenger:",
     "forside.guidepanel.punkt1": "Jobben din kan skade det ufødte barnet",
     "forside.guidepanel.punkt2": "Du må ha tjent minst 55 739 kr det siste året",
@@ -15,5 +16,8 @@
     "forside.samtykkeIntro": "Du må bekrefte at du har lest og forstått dine plikter:",
     "forside.samtykkeIntro.punkt1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til svangerskapspenger.",
     "forside.samtykkeIntro.punkt2": "Jeg har lest og forstått det som står på <a>nav.no/rettogplikt</a>",
-    "forside.valideringsfeil.harForståttRettigheterOgPlikter": "Du må bekrefte at du har lest og forstått dine plikter."
+    "forside.valideringsfeil.harForståttRettigheterOgPlikter": "Du må bekrefte at du har lest og forstått dine plikter.",
+    "ikkeMyndig.boblelenketekst": "Her kan du laste ned papirsøknaden",
+    "ikkeMyndig.ingress": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
+    "ikkeMyndig.tittel": "Hei, {navn}!"
 }
