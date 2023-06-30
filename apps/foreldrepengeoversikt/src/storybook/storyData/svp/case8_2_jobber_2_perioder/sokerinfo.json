@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "11478346680",
+    "fornavn": "Tøff",
+    "etternavn": "Tregrense",
+    "kjønn": "K",
+    "fødselsdato": "1983-07-11",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

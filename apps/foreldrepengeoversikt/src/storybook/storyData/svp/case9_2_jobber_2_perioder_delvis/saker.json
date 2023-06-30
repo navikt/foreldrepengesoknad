@@ -1,0 +1,70 @@
+{
+  "foreldrepenger": [],
+  "engangsstønad": [],
+  "svangerskapspenger": [
+    {
+      "saksnummer": "352012294",
+      "familiehendelse": {
+        "termindato": "2023-10-14",
+        "antallBarn": 0
+      },
+      "sakAvsluttet": false,
+      "åpenBehandling": {
+        "tilstand": "UNDER_BEHANDLING",
+        "søknad": {
+          "arbeidsforhold": [
+            {
+              "aktivitet": {
+                "type": "ORDINÆRT_ARBEID",
+                "arbeidsgiver": {
+                  "id": "972674818",
+                  "type": "ORGANISASJON"
+                }
+              },
+              "behovFrom": "2023-06-30",
+              "tilrettelegginger": [
+                {
+                  "fom": "2023-07-29",
+                  "tom": "2023-09-22",
+                  "type": "INGEN"
+                },
+                {
+                  "fom": "2023-07-22",
+                  "tom": "2023-07-28",
+                  "type": "DELVIS",
+                  "arbeidstidprosent": 50
+                }
+              ],
+              "oppholdsperioder": []
+            },
+            {
+              "aktivitet": {
+                "type": "ORDINÆRT_ARBEID",
+                "arbeidsgiver": {
+                  "id": "805824352",
+                  "type": "ORGANISASJON"
+                }
+              },
+              "behovFrom": "2023-06-30",
+              "tilrettelegginger": [
+                {
+                  "fom": "2023-08-26",
+                  "tom": "2023-09-22",
+                  "type": "INGEN"
+                },
+                {
+                  "fom": "2023-07-20",
+                  "tom": "2023-08-25",
+                  "type": "DELVIS",
+                  "arbeidstidprosent": 50
+                }
+              ],
+              "oppholdsperioder": []
+            }
+          ]
+        }
+      },
+      "oppdatertTidspunkt": "2023-06-28T15:20:40.283"
+    }
+  ]
+}

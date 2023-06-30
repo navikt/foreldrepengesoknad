@@ -1,0 +1,80 @@
+[
+  {
+    "type": "søknad",
+    "opprettet": "2023-06-26T13:05:41.911314",
+    "aktørType": "BRUKER",
+    "tidslinjeHendelseType": "FØRSTEGANGSSØKNAD",
+    "dokumenter": [
+      {
+        "type": "INNGÅENDE_DOKUMENT",
+        "mottatt": "2023-06-26T13:05:44",
+        "saksnummer": "352012259",
+        "tittel": "Søknad om svangerskapspenger",
+        "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234658/624985379",
+        "journalpost": "598234658",
+        "dokumentId": "624985379",
+        "erHoveddokument": true
+      },
+      {
+        "type": "INNGÅENDE_DOKUMENT",
+        "mottatt": "2023-06-26T13:05:44",
+        "saksnummer": "352012259",
+        "tittel": "Skjema for tilrettelegging og omplassering ved graviditet",
+        "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234658/624985380",
+        "journalpost": "598234658",
+        "dokumentId": "624985380",
+        "erHoveddokument": false
+      },
+      {
+        "type": "INNGÅENDE_DOKUMENT",
+        "mottatt": "2023-06-26T13:05:44",
+        "saksnummer": "352012259",
+        "tittel": "Søknad om svangerskapspenger",
+        "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234658/624985381",
+        "journalpost": "598234658",
+        "dokumentId": "624985381",
+        "erHoveddokument": false
+      }
+    ],
+    "manglendeVedlegg": []
+  },
+  {
+    "type": "inntektsmelding",
+    "opprettet": "2023-06-26T13:12:26.241418",
+    "tidslinjeHendelseType": "INNTEKTSMELDING",
+    "dokumenter": [],
+    "arbeidsgiver": {
+      "id": "839942907",
+      "type": "ORGANISASJON"
+    }
+  },
+  {
+    "type": "inntektsmelding",
+    "opprettet": "2023-06-26T13:14:43.562534",
+    "tidslinjeHendelseType": "INNTEKTSMELDING",
+    "dokumenter": [],
+    "arbeidsgiver": {
+      "id": "972674818",
+      "type": "ORGANISASJON"
+    }
+  },
+  {
+    "type": "vedtak",
+    "opprettet": "2023-06-26T13:32:49",
+    "aktørType": "NAV",
+    "tidslinjeHendelseType": "VEDTAK",
+    "dokumenter": [
+      {
+        "type": "UTGÅENDE_DOKUMENT",
+        "mottatt": "2023-06-26T13:32:49",
+        "saksnummer": "352012259",
+        "tittel": "Innvilgelsesbrev svangerskapspenger",
+        "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234683/624985407",
+        "journalpost": "598234683",
+        "dokumentId": "624985407",
+        "erHoveddokument": true
+      }
+    ],
+    "vedtakType": "INNVILGELSE"
+  }
+]

@@ -1,0 +1,52 @@
+[
+    {
+      "type": "UTGÅENDE_DOKUMENT",
+      "mottatt": "2023-06-26T14:57:50",
+      "saksnummer": "352012262",
+      "tittel": "Innvilgelsesbrev svangerskapspenger",
+      "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234732/624985466",
+      "journalpost": "598234732",
+      "dokumentId": "624985466",
+      "erHoveddokument": true
+    },
+    {
+      "type": "INNGÅENDE_DOKUMENT",
+      "mottatt": "2023-06-26T14:51:28",
+      "saksnummer": "352012262",
+      "tittel": "Søknad om svangerskapspenger",
+      "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234728/624985458",
+      "journalpost": "598234728",
+      "dokumentId": "624985458",
+      "erHoveddokument": true
+    },
+    {
+      "type": "INNGÅENDE_DOKUMENT",
+      "mottatt": "2023-06-26T14:51:28",
+      "saksnummer": "352012262",
+      "tittel": "Skjema for tilrettelegging og omplassering ved graviditet",
+      "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234728/624985459",
+      "journalpost": "598234728",
+      "dokumentId": "624985459",
+      "erHoveddokument": false
+    },
+    {
+      "type": "INNGÅENDE_DOKUMENT",
+      "mottatt": "2023-06-26T14:51:28",
+      "saksnummer": "352012262",
+      "tittel": "Skjema for tilrettelegging og omplassering ved graviditet",
+      "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234728/624985460",
+      "journalpost": "598234728",
+      "dokumentId": "624985460",
+      "erHoveddokument": false
+    },
+    {
+      "type": "UTGÅENDE_DOKUMENT",
+      "mottatt": "2023-06-26T13:53:16",
+      "saksnummer": "352012262",
+      "tittel": "Ikke mottatt søknad",
+      "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234691/624985415",
+      "journalpost": "598234691",
+      "dokumentId": "624985415",
+      "erHoveddokument": true
+    }
+  ]
