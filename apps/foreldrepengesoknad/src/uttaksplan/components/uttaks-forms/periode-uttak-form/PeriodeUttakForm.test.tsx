@@ -33,6 +33,8 @@ const HVEM_SKAL_HA_FP = 'Hvem skal ha foreldrepenger?';
 const MOR_NAVN = 'Vakker';
 const FAR_NAVN = 'Pen';
 const HVILKEN_KONTO = 'Hvilken del av foreldrepengene skal du ta ut?';
+const HVILKEN_KONTO_ANNEN_FORELDER_MOR = 'Hvilken del av foreldrepengene skal Vakker ta ut?';
+const HVILKEN_KONTO_ANNEN_FORELDER_FAR = 'Hvilken del av foreldrepengene skal Pen ta ut?';
 const MORS_KVOTE = 'Vakkers kvote';
 const FARS_KVOTE = 'Pens kvote';
 const FELLESPERIODE = 'Fellesperiode';
@@ -167,7 +169,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
         await userEvent.click(screen.getByText(FAR_NAVN));
 
         //Skal kunne besvare at far ønsker fedrekvote
-        expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
+        expect(await screen.findByText(HVILKEN_KONTO_ANNEN_FORELDER_FAR)).toBeInTheDocument();
         expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
         await userEvent.click(screen.getByText(FARS_KVOTE));
 
@@ -275,8 +277,8 @@ describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
         expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
         await userEvent.click(screen.getByText(MOR_NAVN));
 
-        //Skal kunne besvare hvilken konto han ønsker å ta ut i perioden
-        expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
+        //Skal kunne besvare hvilken konto mor skal å ta ut i perioden
+        expect(await screen.findByText(HVILKEN_KONTO_ANNEN_FORELDER_MOR)).toBeInTheDocument();
         expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
         await userEvent.click(screen.getByText(MORS_KVOTE));
 

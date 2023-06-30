@@ -262,6 +262,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     termindato,
                     { fom: values.fom, tom: values.tom } as TidsperiodeDate
                 );
+                const søkerOppgirAnnenForeldersPeriode =
+                    (values.hvemSkalTaUttak === 'mor' && erFarEllerMedmor) ||
+                    (values.hvemSkalTaUttak === 'farMedmor' && !erFarEllerMedmor);
+
                 if (isValid !== periodeIsValid) {
                     setPeriodeIsValid(isValid);
                 }
@@ -352,10 +356,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <HvilkenKontoSpørsmål
                                     fieldName={PeriodeUttakFormField.konto}
                                     velgbareStønadskontoer={velgbareStønadskontoer}
-                                    erOppholdsperiode={false}
+                                    erOppholdsperiode={søkerOppgirAnnenForeldersPeriode}
                                     navnPåForeldre={navnPåForeldre}
                                     erFarEllerMedmor={erFarEllerMedmor}
-                                    situasjon={situasjon}
                                     erAleneOmOmsorg={erAleneOmOmsorg}
                                 />
                             </Block>

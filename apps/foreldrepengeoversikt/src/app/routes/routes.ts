@@ -1,11 +1,11 @@
 enum OversiktRoutes {
     HOVEDSIDE = '/',
     SAKSOVERSIKT = '/sak',
-    OPPLYSNINGER = 'opplysninger',
     DIN_PLAN = 'din-plan',
     DOKUMENTER = 'dokumenter',
     ETTERSEND = 'ettersend',
     TIDSLINJEN = 'tidslinjen',
+    OPPGAVER = 'oppgaver',
 }
 
 export enum NavRoutes {

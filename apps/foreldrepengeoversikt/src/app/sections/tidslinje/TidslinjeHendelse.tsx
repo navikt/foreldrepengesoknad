@@ -26,7 +26,7 @@ const bem = bemUtils('tidslinje-hendelse');
 const getIkonClassElement = (isActiveStep: boolean, opprettet: Date) => {
     if (isActiveStep) {
         return 'ikon_active';
-    } else if (dayjs(opprettet).isBefore(dayjs(), 'd')) {
+    } else if (dayjs(opprettet).isBefore(dayjs())) {
         return 'ikon_completed';
     }
     return 'ikon_incomplete';
@@ -36,7 +36,7 @@ const getTimelineClassModifier = (opprettet: Date, isActiveStep: boolean) => {
     if (isActiveStep) {
         return 'active';
     }
-    if (dayjs(opprettet).isBefore(dayjs(), 'd')) {
+    if (dayjs(opprettet).isBefore(dayjs())) {
         return 'complete';
     }
     return 'incomplete';

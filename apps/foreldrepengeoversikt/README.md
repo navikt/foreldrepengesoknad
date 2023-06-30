@@ -1,15 +1,14 @@
-# Innsyn for søknad om foreldrepenger
+# Innsyn for søknad om foreldrepenger, engangsstønad og svangerskapspenger
 
-Kildekoden til frontend-appen for ny innsynsløsning for
-foreldrepengesøknad , engangsstønad og svangerskapspenger.
+Kildekoden til frontend-appen for ny innsynsløsning for foreldrepengesøknad, engangsstønad og svangerskapspenger.
 
 # Komme i gang
 
 For å kjøre opp appen i dev:
 
-1. `pnpm install`.
-2. `pnpm run dev-api`.
-3. `pnpm run dev`
+1.  `pnpm install`.
+2.  `pnpm run dev-api`.
+3.  `pnpm run dev`.
 
 # Henvendelser
 

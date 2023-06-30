@@ -105,7 +105,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     />
                 </ContentSection>
             )}
-            <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
+            <ContentSection heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
                 <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
             </ContentSection>
             <ContentSection padding="none">
@@ -118,7 +118,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                 <SeDokumenter />
             </ContentSection>
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                <ContentSection heading={intlUtils(intl, 'saksoversikt.dinPlan')} padding="large">
+                <ContentSection heading={intlUtils(intl, 'saksoversikt.dinPlan')}>
                     <DinPlan
                         sak={gjeldendeSak}
                         visHelePlanen={false}

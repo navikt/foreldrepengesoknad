@@ -398,31 +398,39 @@ const getNesteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
     return sorterteHendelser.filter((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
 };
 
+const getSisteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
+    const dateNow = new Date();
+    const sisteHendelser = sorterteHendelser.filter((hendelse) =>
+        dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
+    );
+    if (sisteHendelser.length <= 3) {
+        return sisteHendelser;
+    } else {
+        const sisteTreHendelser = sisteHendelser.slice(Math.max(sisteHendelser.length - 3));
+        return sisteTreHendelser;
+    }
+};
+
 export const getHendelserForVisning = (
     visHeleTidslinjen: boolean,
-    sorterteHendelser: Tidslinjehendelse[]
+    sorterteHendelser: Tidslinjehendelse[],
+    erAvslåttForeldrepengesøknad: boolean
 ): Tidslinjehendelse[] => {
     const hendelserForVisning = [] as Tidslinjehendelse[];
     if (visHeleTidslinjen) {
         hendelserForVisning.push(...sorterteHendelser);
+    } else if (erAvslåttForeldrepengesøknad) {
+        const sisteHendelser = getSisteHendelser(sorterteHendelser);
+        hendelserForVisning.push(...sisteHendelser);
     } else {
-        const dateNow = new Date();
-
         const nesteHendelser = getNesteHendelser(sorterteHendelser);
         if (nesteHendelser.length > 0) {
             hendelserForVisning.push(...nesteHendelser);
         }
 
         if (hendelserForVisning.length === 0) {
-            const sisteHendelser = sorterteHendelser.filter((hendelse) =>
-                dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
-            );
-            if (sisteHendelser.length <= 3) {
-                hendelserForVisning.push(...sisteHendelser);
-            } else {
-                const sisteTreHendelser = sisteHendelser.slice(Math.max(hendelserForVisning.length - 3));
-                hendelserForVisning.push(...sisteTreHendelser);
-            }
+            const sisteHendelser = getSisteHendelser(sorterteHendelser);
+            hendelserForVisning.push(...sisteHendelser);
         }
     }
     return hendelserForVisning;
@@ -434,6 +442,7 @@ export const getAlleTidslinjehendelser = (
     manglendeVedleggData: Skjemanummer[],
     sak: Sak,
     barnFraSak: BarnGruppering,
+    erAvslåttForeldrepengesøknad: boolean,
     intl: IntlShape
 ): Tidslinjehendelse[] => {
     const tidslinjeHendelser = getTidslinjehendelserDetaljer(tidslinjeHendelserData, intl);
@@ -451,7 +460,9 @@ export const getAlleTidslinjehendelser = (
 
     if (
         barnFraSak.alleBarnaLever &&
+        !erAvslåttForeldrepengesøknad &&
         sak.ytelse === Ytelse.FORELDREPENGER &&
+        !sak.sakAvsluttet &&
         (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato)
     ) {
         const barn3ÅrHendelse = getTidslinjeBarnTreÅrHendelse(
