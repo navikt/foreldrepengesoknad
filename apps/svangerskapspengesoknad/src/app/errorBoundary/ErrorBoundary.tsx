@@ -46,6 +46,7 @@ class ErrorBoundary extends Component<any, State> {
                         lenke: { tekst: 'Her finner du en lenke til brukerstøtte', url: links.brukerstøtte },
                     }}
                     skalKunneGåTilbakeTilSøknad={feilPgaForMangeVedlegg}
+                    skalKunneStartePåNytt={!feilPgaForMangeVedlegg}
                 />
             );
         }

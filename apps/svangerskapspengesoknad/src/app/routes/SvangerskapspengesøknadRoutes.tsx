@@ -4,17 +4,13 @@ import SøknadRoutes from './routes';
 import isAvailable from './isAvailable';
 import Forside from 'app/pages/forside/Forside';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import Barnet from 'app/pages/barnet/Barnet';
 
 interface Props {
     currentRoute: SøknadRoutes;
 }
 
-const renderSøknadRoutes = (harGodkjentVilkår: boolean, søkerErMyndig: boolean) => {
-    if (!søkerErMyndig) {
-        return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
-    }
+const renderSøknadRoutes = (harGodkjentVilkår: boolean) => {
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;
     }
@@ -33,9 +29,6 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
 
     useEffect(() => {
-        // if (!erMyndig) {
-        //     navigate(SøknadRoutes.IKKE_MYNDIG);
-        // }
         if (currentRoute && erMyndig && harGodkjentVilkår && isFirstTimeLoadingApp) {
             setIsFirstTimeLoadingApp(false);
             if (isAvailable(currentRoute, harGodkjentVilkår)) {
@@ -47,9 +40,8 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
     return (
         <Routes>
             <Route path={SøknadRoutes.FORSIDE} element={<Forside />} />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig fornavn={'Hei'} />} />
 
-            {renderSøknadRoutes(harGodkjentVilkår, erMyndig)}
+            {renderSøknadRoutes(harGodkjentVilkår)}
         </Routes>
     );
 };

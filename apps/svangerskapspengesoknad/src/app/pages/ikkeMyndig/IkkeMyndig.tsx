@@ -18,7 +18,7 @@ const IkkeMyndig: FunctionComponent<IkkeMyndigProps> = ({ fornavn }) => {
             tittel=""
             illustrasjon={{
                 tittel: intlUtils(intl, 'ikkeMyndig.tittel', {
-                    navn: fornavn.toLowerCase(),
+                    navn: fornavn,
                 }),
                 tekst: intlUtils(intl, 'ikkeMyndig.ingress'),
                 lenke: {
@@ -26,6 +26,7 @@ const IkkeMyndig: FunctionComponent<IkkeMyndigProps> = ({ fornavn }) => {
                     url: links.papirsøknad,
                 },
             }}
+            skalKunneStartePåNytt={false}
             skalKunneGåTilbakeTilSøknad={false}
         />
     );

@@ -19,6 +19,7 @@ export interface FeilsideProps {
     tittel: React.ReactNode;
     ingress: React.ReactNode;
     skalKunneGåTilbakeTilSøknad: boolean;
+    skalKunneStartePåNytt: boolean;
     språkkode?: Locale;
     setLanguage?: (languageCode: string) => void;
 }
@@ -30,6 +31,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     tittel,
     ingress,
     skalKunneGåTilbakeTilSøknad,
+    skalKunneStartePåNytt,
     språkkode,
     setLanguage,
 }) => {
@@ -87,7 +89,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
                 <Block padBottom="l">
                     <BodyShort>{ingress}</BodyShort>
                 </Block>
-                {søkerinfo !== undefined && !skalKunneGåTilbakeTilSøknad && (
+                {søkerinfo !== undefined && skalKunneStartePåNytt && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Button variant="primary" onClick={avbrytSøknadHandler}>
                             Start søknaden på nytt
