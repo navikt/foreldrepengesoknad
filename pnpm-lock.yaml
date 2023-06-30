@@ -1,9 +1,16 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
     dependencies:
+      '-':
+        specifier: ^0.0.1
+        version: 0.0.1
       gh-pages:
         specifier: 5.0.0
         version: 5.0.0
@@ -16,6 +23,9 @@ importers:
       lint-staged:
         specifier: 13.2.1
         version: 13.2.1
+      pnpm:
+        specifier: ^8.6.3
+        version: 8.6.3
       shelljs:
         specifier: 0.8.5
         version: 0.8.5
@@ -288,17 +298,17 @@ importers:
         specifier: ^2.8.11
         version: 2.8.14
       '@navikt/ds-css':
-        specifier: ^2.8.11
-        version: 2.8.11
+        specifier: ^4.4.0
+        version: 4.4.0
       '@navikt/ds-datepicker':
         specifier: ^4.1.5
-        version: 4.1.5(@navikt/ds-css@2.8.11)(@navikt/ds-react@2.8.11)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.1.5(@navikt/ds-css@4.4.0)(@navikt/ds-react@4.4.0)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/ds-icons':
         specifier: ^2.8.11
         version: 2.8.11(@types/react@18.0.35)(react@18.2.0)
       '@navikt/ds-react':
-        specifier: ^2.8.11
-        version: 2.8.11(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^4.4.0
+        version: 4.4.0(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
@@ -307,7 +317,7 @@ importers:
         version: link:../../packages/fp-common
       '@navikt/sif-common-formik-ds':
         specifier: ^0.16.0
-        version: 0.16.0(@navikt/ds-css@2.8.11)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@2.8.11)(formik@2.2.9)(react-intl@6.3.2)
+        version: 0.16.0(@navikt/ds-css@4.4.0)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@4.4.0)(formik@2.2.9)(react-intl@6.3.2)
       '@sentry/browser':
         specifier: ^7.47.0
         version: 7.47.0
@@ -1108,7 +1118,7 @@ importers:
         version: 0.5.6(typescript@5.0.4)(vite@4.3.2)
       vitest:
         specifier: ^0.30.1
-        version: 0.30.1(happy-dom@9.2.1)(jsdom@21.1.1)(less@4.1.3)(sass@1.62.0)
+        version: 0.30.1(jsdom@21.1.1)(less@4.1.3)
 
   packages/eslint-config-custom:
     dependencies:
@@ -1282,6 +1292,10 @@ importers:
   packages/tsconfig: {}
 
 packages:
+
+  /-@0.0.1:
+    resolution: {integrity: sha512-3HfneK3DGAm05fpyj20sT3apkNcvPpCuccOThOPdzz8sY7GgQGe0l93XH9bt+YzibcTIgUAIMoyVJI740RtgyQ==}
+    dev: false
 
   /@adobe/css-tools@4.2.0:
     resolution: {integrity: sha512-E09FiIft46CmH5Qnjb0wsW54/YQd69LsxeKUOWawmws1XWvyFGURnAChH0mlr7YPFR1ofwvUQfcL0J3lMxXqPA==}
@@ -2885,14 +2899,14 @@ packages:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
     dev: true
 
-  /@floating-ui/core@1.2.6:
-    resolution: {integrity: sha512-EvYTiXet5XqweYGClEmpu3BoxmsQ4hkj3QaYA6qEnigCWffTP3vNRwBReTdrwDwo7OoJ3wM8Uoe9Uk4n+d4hfg==}
+  /@floating-ui/core@1.3.1:
+    resolution: {integrity: sha512-Bu+AMaXNjrpjh41znzHqaz3r2Nr8hHuHZT6V2LBKMhyMl0FgKA62PNYbqnfgmzOhoWZj70Zecisbo4H1rotP5g==}
     dev: false
 
-  /@floating-ui/dom@1.2.6:
-    resolution: {integrity: sha512-02vxFDuvuVPs22iJICacezYJyf7zwwOCWkPNkWNBr1U0Qt1cKFYzWvxts0AmqcOQGwt/3KJWcWIgtbUU38keyw==}
+  /@floating-ui/dom@1.4.2:
+    resolution: {integrity: sha512-VKmvHVatWnewmGGy+7Mdy4cTJX71Pli6v/Wjb5RQBuq5wjUYx+Ef+kRThi8qggZqDgD8CogCpqhRoVp3+yQk+g==}
     dependencies:
-      '@floating-ui/core': 1.2.6
+      '@floating-ui/core': 1.3.1
     dev: false
 
   /@floating-ui/react-dom@1.3.0(react-dom@18.2.0)(react@18.2.0):
@@ -2901,7 +2915,18 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@floating-ui/dom': 1.2.6
+      '@floating-ui/dom': 1.4.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@floating-ui/react-dom@2.0.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-rZtAmSht4Lry6gdhAJDrCp/6rKN7++JnL1/Anbr/DdeyYXQPxvg/ivrbYvJulbRf4vL8b212suwMM2lxbv+RQA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/dom': 1.4.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -2913,6 +2938,19 @@ packages:
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/react-dom': 1.3.0(react-dom@18.2.0)(react@18.2.0)
+      aria-hidden: 1.2.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tabbable: 6.1.1
+    dev: false
+
+  /@floating-ui/react@0.24.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qjCKUZDEz/4bnJmu4gn66TqsoX912/re8JGEi3pXazsphmyh327l0UpTgpBAT3WkNbnzAH7Adt3wKlLMNtfupw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/react-dom': 2.0.1(react-dom@18.2.0)(react@18.2.0)
       aria-hidden: 1.2.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -3371,6 +3409,10 @@ packages:
     resolution: {integrity: sha512-DQsJYNWmgpD5eB2ksrdKB/u5VJlxImtmaSJPVwpOgT0F8Ghmx05iW91rAUfX2PpfixZEFLGGivnm7FrgKrR0bA==}
     dev: false
 
+  /@navikt/aksel-icons@4.4.0:
+    resolution: {integrity: sha512-0ocpEXeg8doTfVBnjqqxvuMcBrAzUKMKBUewlJ1hyma53VLWVBfDQZqlr/9QvvWyN5wx8Go4jrwVye3AViXirg==}
+    dev: false
+
   /@navikt/ds-codemod@2.8.11(@babel/preset-env@7.21.4)(@types/node@18.15.11):
     resolution: {integrity: sha512-iK9gtyWtPQgBeEOfhXw5sTpCY/HeXi5IAuTB2xcOq+WA2Nx8R/7ZK/XI+naruSwUvuEtQUH9Dvv3UtoGoSBbsw==}
     engines: {node: '>=12.0.0'}
@@ -3398,6 +3440,10 @@ packages:
 
   /@navikt/ds-css@2.8.11:
     resolution: {integrity: sha512-sR8lOeqTYz3tfuc2NKsHR3p9UUVGTs6no2Ym1wzpetVc5uYkySZq72IgYGtYQsDjh6trBV21OZ2gfoIei4yWjA==}
+    dev: false
+
+  /@navikt/ds-css@4.4.0:
+    resolution: {integrity: sha512-zAc/FmYPD3BbCJ6N2Nw5vLcFEaYofG7ypNL0Rm47o3jlorVtb+sz3GgeqckmMdEC/d8eIZdIZDakYSTzaYJWaQ==}
     dev: false
 
   /@navikt/ds-datepicker@4.1.5(@navikt/ds-css@2.8.11)(@navikt/ds-react@2.8.11)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@7.4.10)(react-dom@18.2.0)(react@18.2.0):
@@ -3448,6 +3494,30 @@ packages:
       - react-dom
     dev: false
 
+  /@navikt/ds-datepicker@4.1.5(@navikt/ds-css@4.4.0)(@navikt/ds-react@4.4.0)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-z68UH3DFme0rrKFY43NOhcdkdF0B9c1SwoURJHjF0ffxRlSTwfsGQ1hyZmLbyFoO9+HOuByMXEVvCysElAkbHw==}
+    peerDependencies:
+      '@navikt/ds-css': 2.x
+      '@navikt/ds-react': 2.x
+      classnames: ^2.3.x
+      date-fns: ^2.x
+      dayjs: ^1.x
+      react: 18.x
+      react-day-picker: ^8.x
+    dependencies:
+      '@navikt/ds-css': 4.4.0
+      '@navikt/ds-react': 4.4.0(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
+      classnames: 2.3.2
+      date-fns: 2.29.3
+      dayjs: 1.11.7
+      focus-trap-react: 10.1.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-day-picker: 8.7.1(date-fns@2.29.3)(react@18.2.0)
+    transitivePeerDependencies:
+      - prop-types
+      - react-dom
+    dev: false
+
   /@navikt/ds-icons@2.8.11(@types/react@18.0.35)(react@18.2.0):
     resolution: {integrity: sha512-ejMtwdzDiZbl1YW+GGs1mT9mKrINIuTsdDBEUFE8UVua/Fgtd42K0EBHVE9v2LnHN4MJiigS2sBKudDc3o1zDA==}
     peerDependencies:
@@ -3473,6 +3543,29 @@ packages:
       '@floating-ui/react': 0.17.0(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 2.8.14
       '@navikt/ds-icons': 2.8.11(@types/react@18.0.35)(react@18.2.0)
+      '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': 18.0.35
+      clsx: 1.2.1
+      date-fns: 2.29.3
+      react: 18.2.0
+      react-day-picker: 8.3.4(date-fns@2.29.3)(react@18.2.0)
+      react-modal: 3.15.1(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@navikt/ds-react@4.4.0(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-G9bABtvMsyngllSbufsEOVPChe0Fjo6qL7CMSnrBtXY2IaPAwtd2OLiNKmXpSazQwwhakpz9eco24QzItotFSA==}
+    peerDependencies:
+      '@types/react': ^17.0.30 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@floating-ui/react': 0.24.1(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/aksel-icons': 4.4.0
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.0.35
@@ -3521,6 +3614,26 @@ packages:
       '@navikt/ds-css': 2.8.11
       '@navikt/ds-datepicker': 4.1.5(@navikt/ds-css@2.8.11)(@navikt/ds-react@2.8.11)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/ds-react': 2.8.11(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
+      formik: 2.2.9(react@18.2.0)
+      i18n-iso-countries: 7.5.0
+      lodash.debounce: 4.0.8
+      react-fast-compare: 3.2.1
+      react-intl: 6.3.2(react@18.2.0)(typescript@5.0.4)
+      uuid: 9.0.0
+    dev: false
+
+  /@navikt/sif-common-formik-ds@0.16.0(@navikt/ds-css@4.4.0)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@4.4.0)(formik@2.2.9)(react-intl@6.3.2):
+    resolution: {integrity: sha512-G8lNkBAnS18jwDPuBvgVvnp/FjURe1NyzPs5BDu6puwlFPaudmITYozHyMWPxv+motMiBAOT7dsPmPDgIWRMZQ==}
+    peerDependencies:
+      '@navikt/ds-css': '2'
+      '@navikt/ds-datepicker': '>=4.1.2'
+      '@navikt/ds-react': '2'
+      formik: 2.x
+      react-intl: 6.x
+    dependencies:
+      '@navikt/ds-css': 4.4.0
+      '@navikt/ds-datepicker': 4.1.5(@navikt/ds-css@4.4.0)(@navikt/ds-react@4.4.0)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/ds-react': 4.4.0(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
       formik: 2.2.9(react@18.2.0)
       i18n-iso-countries: 7.5.0
       lodash.debounce: 4.0.8
@@ -9739,6 +9852,7 @@ packages:
     resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==}
     engines: {node: '>=0.10.0'}
     hasBin: true
+    requiresBuild: true
 
   /immutable@4.3.0:
     resolution: {integrity: sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==}
@@ -12419,6 +12533,12 @@ packages:
       mlly: 1.2.0
       pathe: 1.1.0
     dev: true
+
+  /pnpm@8.6.3:
+    resolution: {integrity: sha512-0Y4neugHIJEEa8y8oJMfd9wwgHkc1hIq6JC/UEEl2K92s3+zPaKH26n7u22m67E+MU6fpKRkx+/+PYWZzr5yQw==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    dev: false
 
   /polished@4.2.2:
     resolution: {integrity: sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==}
@@ -15325,6 +15445,73 @@ packages:
       concordance: 5.0.4
       debug: 4.3.4
       happy-dom: 9.2.1
+      jsdom: 21.1.1
+      local-pkg: 0.4.3
+      magic-string: 0.30.0
+      pathe: 1.1.0
+      picocolors: 1.0.0
+      source-map: 0.6.1
+      std-env: 3.3.2
+      strip-literal: 1.0.1
+      tinybench: 2.4.0
+      tinypool: 0.4.0
+      vite: 4.3.2(@types/node@18.15.11)(less@4.1.3)(sass@1.62.0)
+      vite-node: 0.30.1(@types/node@18.15.11)(less@4.1.3)(sass@1.62.0)
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
+  /vitest@0.30.1(jsdom@21.1.1)(less@4.1.3):
+    resolution: {integrity: sha512-y35WTrSTlTxfMLttgQk4rHcaDkbHQwDP++SNwPb+7H8yb13Q3cu2EixrtHzF27iZ8v0XCciSsLg00RkPAzB/aA==}
+    engines: {node: '>=v14.18.0'}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@vitest/browser': '*'
+      '@vitest/ui': '*'
+      happy-dom: '*'
+      jsdom: '*'
+      playwright: '*'
+      safaridriver: '*'
+      webdriverio: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+      playwright:
+        optional: true
+      safaridriver:
+        optional: true
+      webdriverio:
+        optional: true
+    dependencies:
+      '@types/chai': 4.3.4
+      '@types/chai-subset': 1.3.3
+      '@types/node': 18.15.11
+      '@vitest/expect': 0.30.1
+      '@vitest/runner': 0.30.1
+      '@vitest/snapshot': 0.30.1
+      '@vitest/spy': 0.30.1
+      '@vitest/utils': 0.30.1
+      acorn: 8.8.2
+      acorn-walk: 8.2.0
+      cac: 6.7.14
+      chai: 4.3.7
+      concordance: 5.0.4
+      debug: 4.3.4
       jsdom: 21.1.1
       local-pkg: 0.4.3
       magic-string: 0.30.0

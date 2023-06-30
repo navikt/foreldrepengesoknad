@@ -18,10 +18,12 @@
         "prepare": "husky install"
     },
     "dependencies": {
+        "-": "^0.0.1",
         "gh-pages": "5.0.0",
         "glob": "10.0.0",
         "husky": "8.0.3",
         "lint-staged": "13.2.1",
+        "pnpm": "^8.6.3",
         "shelljs": "0.8.5",
         "turbo": "^1.8.6"
     },

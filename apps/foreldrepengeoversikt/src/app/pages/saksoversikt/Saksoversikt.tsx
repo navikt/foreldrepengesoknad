@@ -1,4 +1,5 @@
 import { Loader } from '@navikt/ds-react';
+
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
@@ -25,7 +26,9 @@ import { useParams } from 'react-router-dom';
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
-import TestComp from 'app/components/test-comp/TestComp';
+import TestTimeline from 'app/components/test-timeline/testTimeline';
+import { SammendragSoknad } from 'app/sections/sammendragSoknad/SammendragSoknad';
+import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -93,7 +96,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
             </div>
         );
     }
-
+    console.log(saker);
     return (
         <div className={bem.block}>
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
@@ -105,18 +108,25 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     />
                 </ContentSection>
             )}
-            <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
-                <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
-            </ContentSection>
-            <ContentSection padding="none">
-                <SeHeleProsessen />
-            </ContentSection>
-            <ContentSection padding="none">
-                <TestComp />
-            </ContentSection>
-            <ContentSection padding="none">
-                <SeDokumenter />
-            </ContentSection>
+            {gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER ? (
+                <SammendragSoknad sak={gjeldendeSak as SvangerskapspengeSak} />
+            ) : (
+                <>
+                    <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
+                        <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
+                    </ContentSection>
+                    <ContentSection padding="none">
+                        <SeHeleProsessen />
+                    </ContentSection>
+
+                    <ContentSection padding="none">
+                        <TestTimeline />
+                    </ContentSection>
+                    <ContentSection padding="none">
+                        <SeDokumenter />
+                    </ContentSection>
+                </>
+            )}
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.dinPlan')} padding="large">
                     <DinPlan

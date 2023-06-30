@@ -168,5 +168,41 @@
         }
     ],
     "engangsstønad": [],
-    "svangerskapspenger": []
+    "svangerskapspenger": [
+        {
+        "saksnummer": "352012254",
+        "familiehendelse": {
+            "termindato": "2023-07-16",
+            "antallBarn": 0
+        },
+        "sakAvsluttet": false,
+        "åpenBehandling": {
+            "tilstand": "VENT_INNTEKTSMELDING",
+            "søknad": {
+                "arbeidsforhold": [
+                    {
+                        "aktivitet": {
+                            "type": "ORDINÆRT_ARBEID",
+                            "arbeidsgiver": {
+                                "id": "947064649",
+                                "type": "ORGANISASJON"
+                            }
+                        },
+                        "behovFrom": "2023-06-30",
+                        "tilrettelegginger": [
+                            {
+                                "fom": "2023-07-01",
+                                "tom": "2023-07-01",
+                                "type": "DELVIS",
+                                "arbeidstidprosent": 20.00
+                            }
+                        ],
+                        "oppholdsperioder": []
+                    }
+                ]
+            }
+        },
+        "oppdatertTidspunkt": "2023-06-22T15:37:56.814"
+        }
+    ]
 }

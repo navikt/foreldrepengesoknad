@@ -44,7 +44,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
             hasNavigated.current = true;
             const antallSaker = getAntallSaker(saker);
             const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
-
             if (antallSaker === 1) {
                 if (foreldrepenger.length === 1) {
                     navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);

@@ -1,5 +1,6 @@
 import { Familiehendelse } from './Familiehendelse';
 import { Ytelse } from './Ytelse';
+import { GjeldendeVedtak } from './svpTypesSommer';
 import { ÅpenBehandling } from './ÅpenBehandling';
 
 export interface SvangerskapspengeSakDTO {
@@ -8,6 +9,7 @@ export interface SvangerskapspengeSakDTO {
     gjelderAdopsjon?: boolean;
     familiehendelse?: Familiehendelse;
     åpenBehandling?: ÅpenBehandling;
+    gjeldendeVedtak?: GjeldendeVedtak;
 }
 
 export interface SvangerskapspengeSak extends SvangerskapspengeSakDTO {
