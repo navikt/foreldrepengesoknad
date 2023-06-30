@@ -11,13 +11,22 @@ import {
 import links from 'app/links/links';
 import './forside.css';
 import { validateHarForståttRettigheterOgPlikter } from './forsideValidation';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import actionCreator, { SvangerskapspengerContextAction } from 'app/context/action/actionCreator';
+import SøknadRoutes from 'app/routes/routes';
 
 const Forside = () => {
     const intl = useIntl();
-    const handleSubmit = () => {
-        console.log('submitting');
-    };
     const bem = bemUtils('forside');
+
+    const onValidSubmitHandler = (values: Partial<ForsideFormData>) => {
+        const actionsToDispatch: SvangerskapspengerContextAction[] = [
+            actionCreator.setHarGodkjentVilkår(values.harForståttRettigheterOgPlikter!),
+        ];
+        return actionsToDispatch;
+    };
+
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.BARNET);
     return (
         <ForsideFormComponents.FormikWrapper
             initialValues={getInitialForsideValues(false)} //{getInitialForsideValues(søknad.harGodkjentVilkår)}
@@ -123,8 +132,8 @@ const Forside = () => {
                                     <Button
                                         type="submit"
                                         variant="primary"
-                                        //disabled={isSubmitting}
-                                        //loading={isSubmitting}
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
                                     >
                                         {intlUtils(intl, 'forside.begynnMedSøknad')}
                                     </Button>

@@ -19,7 +19,6 @@ const renderSpinner = () => (
 const Svangerskapspengesøknad = () => {
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { dispatch } = useSvangerskapspengerContext();
-    // const intl = useIntl();
 
     useEffect(() => {
         if (søkerinfoData !== undefined) {

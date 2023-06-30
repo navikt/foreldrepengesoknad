@@ -14,15 +14,15 @@ const IkkeMyndig: FunctionComponent<IkkeMyndigProps> = ({ fornavn }) => {
     return (
         <Feilside
             dokumenttittel="NAV Svangerskapspengesøknad"
-            ingress={intlUtils(intl, 'velkommen.ingress')}
-            tittel={intlUtils(intl, 'velkommen.tittel')}
+            ingress=""
+            tittel=""
             illustrasjon={{
-                tittel: intlUtils(intl, 'velkommen.ikkeMyndig.tittel', {
+                tittel: intlUtils(intl, 'ikkeMyndig.tittel', {
                     navn: fornavn.toLowerCase(),
                 }),
-                tekst: intlUtils(intl, 'velkommen.ikkeMyndig.ingress'),
+                tekst: intlUtils(intl, 'ikkeMyndig.ingress'),
                 lenke: {
-                    tekst: intlUtils(intl, 'velkommen.ikkeMyndig.boblelenketekst'),
+                    tekst: intlUtils(intl, 'ikkeMyndig.boblelenketekst'),
                     url: links.papirsøknad,
                 },
             }}

@@ -17,6 +17,14 @@ const svangerskapspengerReducer = (
                 ...state,
                 currentRoute: action.payload,
             };
+        case SvangerskapspengerContextActionKeys.SET_HARGODKJENTVILKÅR:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    harGodkjentVilkår: action.payload,
+                },
+            };
         default:
             return state;
     }

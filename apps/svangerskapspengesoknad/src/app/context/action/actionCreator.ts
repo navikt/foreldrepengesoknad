@@ -4,6 +4,7 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 export enum SvangerskapspengerContextActionKeys {
     SET_SØKERINFO = 'setSøkerinfo',
     SET_CURRENT_ROUTE = 'setCurrentRoute',
+    SET_HARGODKJENTVILKÅR = 'setHarGodkjentVilkår',
 }
 
 interface SetCurrentRoute {
@@ -26,9 +27,20 @@ const setSøkerinfo = (payload: Søkerinfo): SetSøkerinfo => ({
     payload,
 });
 
-export type SvangerskapspengerContextAction = SetCurrentRoute | SetSøkerinfo;
+interface SetHarGodkjentVilkår {
+    type: SvangerskapspengerContextActionKeys.SET_HARGODKJENTVILKÅR;
+    payload: boolean;
+}
+
+const setHarGodkjentVilkår = (payload: boolean): SetHarGodkjentVilkår => ({
+    type: SvangerskapspengerContextActionKeys.SET_HARGODKJENTVILKÅR,
+    payload,
+});
+
+export type SvangerskapspengerContextAction = SetCurrentRoute | SetSøkerinfo | SetHarGodkjentVilkår;
 
 export default {
     setCurrentRoute,
     setSøkerinfo,
+    setHarGodkjentVilkår,
 };
