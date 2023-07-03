@@ -1,12 +1,16 @@
 import PeriodeKort from 'app/components/periode-kort/PeriodeKort';
 
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
+import { formaterDato } from 'app/utils/dateUtils';
 
 interface Props {
     sak: SvangerskapspengeSak;
 }
 
 export const SammendragSoknad: React.FC<Props> = ({ sak }) => {
+    const datoFormat = 'DD. MMMM YYYY';
+    let melding;
+    console.log(sak);
     if ('åpenBehandling' in sak) {
         return (
             <>
@@ -15,17 +19,27 @@ export const SammendragSoknad: React.FC<Props> = ({ sak }) => {
                     sak.åpenBehandling.søknad &&
                     sak.åpenBehandling.søknad.arbeidsforhold.map((arbeidsforhold) => {
                         return (
-                            <PeriodeKort
-                                key={
-                                    sak.åpenBehandling &&
-                                    sak.åpenBehandling.søknad &&
-                                    sak.åpenBehandling.søknad.arbeidsforhold.indexOf(arbeidsforhold)
-                                }
-                                arbeidsgiver={arbeidsforhold.aktivitet.arbeidsgiver.id}
-                                fra={arbeidsforhold.tilrettelegginger[0].fom}
-                                til={arbeidsforhold.tilrettelegginger[0].tom}
-                                type={arbeidsforhold.tilrettelegginger[0].type}
-                            />
+                            (melding = (
+                                <p>
+                                    <b>
+                                        {formaterDato(arbeidsforhold.tilrettelegginger[0].fom, datoFormat)} -{' '}
+                                        {formaterDato(arbeidsforhold.tilrettelegginger[0].tom, datoFormat)}
+                                    </b>{' '}
+                                    jobber du hos {arbeidsforhold.aktivitet.arbeidsgiver.id} og har søkt om{' '}
+                                    {arbeidsforhold.tilrettelegginger[0].type} svangerskapspenger
+                                </p>
+                            )),
+                            (
+                                <PeriodeKort
+                                    key={
+                                        sak.åpenBehandling &&
+                                        sak.åpenBehandling.søknad &&
+                                        sak.åpenBehandling.søknad.arbeidsforhold.indexOf(arbeidsforhold)
+                                    }
+                                >
+                                    {melding}
+                                </PeriodeKort>
+                            )
                         );
                     })}
             </>
@@ -37,18 +51,30 @@ export const SammendragSoknad: React.FC<Props> = ({ sak }) => {
                 {sak.gjeldendeVedtak &&
                     sak.gjeldendeVedtak.arbeidsforhold.map((arbeidsforhold) => {
                         return (
-                            <PeriodeKort
-                                key={sak.gjeldendeVedtak && sak.gjeldendeVedtak.arbeidsforhold.indexOf(arbeidsforhold)}
-                                arbeidsgiver={arbeidsforhold.aktivitet.arbeidsgiver.id}
-                                fra={arbeidsforhold.tilrettelegginger[0].fom}
-                                til={arbeidsforhold.tilrettelegginger[0].tom}
-                                type={arbeidsforhold.tilrettelegginger[0].type}
-                            />
+                            (melding = (
+                                <p>
+                                    <b>
+                                        {formaterDato(arbeidsforhold.tilrettelegginger[0].fom, datoFormat)}{' '}
+                                        {formaterDato(arbeidsforhold.tilrettelegginger[0].tom, datoFormat)}
+                                    </b>{' '}
+                                    jobber du hos {arbeidsforhold.aktivitet.arbeidsgiver.id} og mottar{' '}
+                                    {arbeidsforhold.tilrettelegginger[0].type} svangerskapspenger
+                                </p>
+                            )),
+                            (
+                                <PeriodeKort
+                                    key={
+                                        sak.åpenBehandling &&
+                                        sak.åpenBehandling.søknad &&
+                                        sak.åpenBehandling.søknad.arbeidsforhold.indexOf(arbeidsforhold)
+                                    }
+                                >
+                                    {melding}
+                                </PeriodeKort>
+                            )
                         );
                     })}
             </>
         );
     } else return <></>;
-
-    console.log(sak);
 };

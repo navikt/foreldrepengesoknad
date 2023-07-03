@@ -1,24 +1,14 @@
-import { BodyLong } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import ContentSection from '../content-section/ContentSection';
 
 interface Props {
-    arbeidsgiver: string;
-    fra: string;
-    til: string;
-    type: string;
+    children: React.ReactNode;
 }
 
-const PeriodeKort: React.FunctionComponent<Props> = ({ arbeidsgiver, fra, til, type }: Props) => {
+const PeriodeKort: React.FunctionComponent<Props> = ({ children }: Props) => {
     return (
         <ContentSection>
-            <BodyLong>
-                <p>
-                    <b>
-                        {fra} {til}
-                    </b>{' '}
-                    jobber du hos {arbeidsgiver} og mottar {type} svangerskapspenger
-                </p>
-            </BodyLong>
+            <BodyShort>{children}</BodyShort>
         </ContentSection>
     );
 };

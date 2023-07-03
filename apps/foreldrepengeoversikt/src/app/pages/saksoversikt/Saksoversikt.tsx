@@ -96,7 +96,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
             </div>
         );
     }
-    console.log(saker);
     return (
         <div className={bem.block}>
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
