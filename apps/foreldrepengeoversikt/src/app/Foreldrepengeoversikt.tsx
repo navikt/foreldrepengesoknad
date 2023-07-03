@@ -50,7 +50,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
             </div>
         );
     }
-
+    console.log(søkerinfoData);
     const aktiveMinidialoger = minidialogData
         ? minidialogData.filter(
               ({ gyldigTil, aktiv, hendelse }) =>

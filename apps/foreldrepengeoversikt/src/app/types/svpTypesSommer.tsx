@@ -18,6 +18,7 @@ interface svpPerioder {
     tom: string;
     type: string; // Enums??
     arbeidstidprosent: number;
+    resultat: ResultatSammendrag;
 }
 
 interface Aktivitet {
@@ -28,6 +29,11 @@ interface Aktivitet {
 interface Arbeidsgiver {
     id: string;
     type: string;
+}
+
+interface ResultatSammendrag {
+    resultatType: string; //Enum??
+    utbetalingsgrad: number;
 }
 
 export interface Søknad {

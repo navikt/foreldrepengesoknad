@@ -1,5 +1,6 @@
 import { BodyShort } from '@navikt/ds-react';
-import ContentSection from '../content-section/ContentSection';
+
+import './periodeKort.css';
 
 interface Props {
     children: React.ReactNode;
@@ -7,9 +8,9 @@ interface Props {
 
 const PeriodeKort: React.FunctionComponent<Props> = ({ children }: Props) => {
     return (
-        <ContentSection>
-            <BodyShort>{children}</BodyShort>
-        </ContentSection>
+        <div className="periodeKort">
+            <BodyShort size="small">{children}</BodyShort>
+        </div>
     );
 };
 export default PeriodeKort;

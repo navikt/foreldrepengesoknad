@@ -108,7 +108,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                 </ContentSection>
             )}
             {gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER ? (
-                <SammendragSoknad sak={gjeldendeSak as SvangerskapspengeSak} />
+                <SammendragSoknad sak={gjeldendeSak as SvangerskapspengeSak} søker={søkerinfo} />
             ) : (
                 <>
                     <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
