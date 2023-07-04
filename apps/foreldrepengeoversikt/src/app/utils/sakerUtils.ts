@@ -38,6 +38,14 @@ export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): D
     }
     return undefined;
 };
+export const getFørsteUttaksdagISvangerskapspenger = (sak: SvangerskapspengeSak): Date | undefined => {
+    if (sak.gjeldendeVedtak) {
+        return ISOStringToDate(sak.gjeldendeVedtak.arbeidsforhold[0].tilrettelegginger[0].fom)!;
+    } else if (sak.åpenBehandling && sak.åpenBehandling.søknadsperioder) {
+        return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);
+    }
+    return undefined;
+};
 
 export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;

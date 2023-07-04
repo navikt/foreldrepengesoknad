@@ -98,6 +98,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     }
     return (
         <div className={bem.block}>
+            <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
+                <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
+            </ContentSection>
+            <ContentSection padding="none">
+                <SeHeleProsessen />
+            </ContentSection>
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
                     <Oppgaver
@@ -111,13 +117,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                 <SammendragSoknad sak={gjeldendeSak as SvangerskapspengeSak} søker={søkerinfo} />
             ) : (
                 <>
-                    <ContentSection cornerStyle="square" heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
-                        <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
-                    </ContentSection>
-                    <ContentSection padding="none">
-                        <SeHeleProsessen />
-                    </ContentSection>
-
                     <ContentSection padding="none">
                         <TestTimeline />
                     </ContentSection>

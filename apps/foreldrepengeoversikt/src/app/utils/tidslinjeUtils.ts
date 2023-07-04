@@ -15,6 +15,7 @@ import { Familiehendelse } from 'app/types/Familiehendelse';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 import { BarnGruppering } from 'app/types/BarnGruppering';
 import { Sak } from 'app/types/Sak';
+import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 
 export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -182,6 +183,9 @@ export const getTidslinjehendelseTittel = (
         hendelsetype === TidslinjehendelseType.BARNET_TRE_ÅR
     ) {
         return getTidslinjeTittelForBarnTreÅr(barnFraSak, antallBarn, familiehendelse?.omsorgsovertakelse, intl);
+    }
+    if (ytelse === Ytelse.SVANGERSKAPSPENGER && hendelsetype === TidslinjehendelseType.UTBETALING) {
+        return 'Førstkommende utbetaling fra NAV';
     }
     return intlUtils(intl, `tidslinje.tittel.${hendelsetype}`);
 };
@@ -427,6 +431,28 @@ export const getHendelserForVisning = (
     }
     return hendelserForVisning;
 };
+export const getTidslinjeSvangerskapspengerUtbetalingHendelse = (sak: SvangerskapspengeSak): Tidslinjehendelse => {
+    //let aktuelleArbiedsgivere;
+    let arbeidsgiverString = ' ';
+    sak.gjeldendeVedtak?.arbeidsforhold.forEach((arbeidsforhold) => {
+        arbeidsforhold.tilrettelegginger.some((i) => {
+            if (dayjs().isBefore(i.tom) && dayjs().isAfter(i.fom) && i.resultat.resultatType === 'INNVILGET') {
+                return (arbeidsgiverString += arbeidsforhold.aktivitet.arbeidsgiver.id + ' ');
+            } else return;
+        });
+    });
+
+    //console.log("j "+arbeidsgiverString)
+    return {
+        type: 'søknad',
+        opprettet: dayjs().toDate(),
+        aktørType: AktørType.BRUKER,
+        tidslinjeHendelseType: TidslinjehendelseType.UTBETALING,
+        dokumenter: [],
+        manglendeVedlegg: [],
+        merInformasjon: `Får du stønad fra ${arbeidsgiverString}`,
+    };
+};
 
 export const getAlleTidslinjehendelser = (
     tidslinjeHendelserData: Tidslinjehendelse[],
@@ -468,6 +494,10 @@ export const getAlleTidslinjehendelser = (
     if (sak.åpenBehandling) {
         const vedtakHendelse = getTidslinjeVedtakHendelse(intl, sak.ytelse);
         tidslinjeHendelser.push(vedtakHendelse);
+    }
+    if (sak.ytelse === Ytelse.SVANGERSKAPSPENGER && sak.gjeldendeVedtak) {
+        const utbetalindHendelse = getTidslinjeSvangerskapspengerUtbetalingHendelse(sak as SvangerskapspengeSak);
+        tidslinjeHendelser.push(utbetalindHendelse);
     }
 
     return [...tidslinjeHendelser].sort(sorterTidslinjehendelser);
