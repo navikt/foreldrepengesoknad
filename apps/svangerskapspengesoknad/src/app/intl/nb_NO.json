@@ -1,4 +1,6 @@
 {
+    "søknad.pageheading": "Søknad om svangerskapspenger",
+    "søknad.gåVidere": "Neste steg",
     "sesjonUtløpt.tittel": "Du er nå logget ut",
     "forside.begynnMedSøknad": "Start søknaden",
     "forside.tittel": "Søknad om svangerskapspenger",
@@ -8,7 +10,7 @@
     "forside.guidepanel.punkt2": "Du må ha tjent minst 55 739 kr det siste året",
     "forside.guidepanel.punkt3": "Du må ha vært i arbeid i mist 4 uker",
     "forside.guidepanel.lesMer": "<a>Les mer om svangerskapspenger</a>",
-    "forside.tilrettelegging.info": "Før du søker må du ha vært hos lege eller jordmor. Du må ha <a>skjemaet for risiko og tilrettelegging i svangerskapet</a> som skal være fylt ut av lege eller jordmor og din arbeidsgiver.",
+    "forside.tilrettelegging.info": "Før du søker må <a>skjemaet for risiko og tilrettelegging i svangerskapet</a> være fylt ut av både din arbeidsgiver og lege eller jordmor.",
     "forside.dinePlikter": "For å gå videre med søknaden må du bekrefte at du har lest og forstått dine plikter:",
     "forside.dinePlikter.punkt1": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til svangerskapspenger.",
     "forside.dinePlikter.punkt2": "Jeg har lest og forstått det som står på nav.no/rettogplikt",
@@ -19,5 +21,16 @@
     "forside.valideringsfeil.harForståttRettigheterOgPlikter": "Du må bekrefte at du har lest og forstått dine plikter.",
     "ikkeMyndig.boblelenketekst": "Her kan du laste ned papirsøknaden",
     "ikkeMyndig.ingress": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
-    "ikkeMyndig.tittel": "Hei, {navn}!"
+    "ikkeMyndig.tittel": "Hei, {navn}!",
+    "steps.label.barnet": "Barnet",
+    "steps.label.arbeidsforhold": "Arbeidsforhold og inntekt",
+    "steps.label.tilrettelegging": "Tilrettelegging",
+    "steps.label.utenlandsopphold": "Opphold i utlandet",
+    "steps.label.oppsummering": "Oppsummering",
+    "barnet.erBarnetFødt": "Er barnet født?",
+    "barnet.erBarnetFødtmerInfo.tittel": "Du kan få svangerskapspenger tre måneder tilbake i tid",
+    "barnet.erBarnetFødtmerInfo.tekst": "Dersom du har vært borte fra jobb før du søker svangerskapspenger, kan du få tilbakedatert søknaden for inntil tre måneder.",
+    "barnet.fødselsdato": "Fødselsdato",
+    "barnet.termindato": "Termindato",
+    "valideringsfeil.termindato.forLangtFremITid": "Du kan ikke søke så langt frem i tid."
 }

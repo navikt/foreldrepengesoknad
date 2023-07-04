@@ -48,7 +48,7 @@
         "@navikt/ds-datepicker": "^4.1.5",
         "@navikt/ds-react": "4.4.2",
         "@navikt/fp-common": "workspace:*",
-        "@navikt/sif-common-formik-ds": "^0.14.1",
+        "@navikt/sif-common-formik-ds": "^0.21.1",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@sentry/browser": "^7.47.0",
         "amplitude-js": "^8.21.8",
