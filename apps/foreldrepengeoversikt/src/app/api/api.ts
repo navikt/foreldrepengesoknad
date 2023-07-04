@@ -19,9 +19,10 @@ const useSøkerinfo = () => {
     };
 };
 
-const useGetSaker = () => {
+const useGetSaker = (sakerSuspended: boolean) => {
     const { data, error } = useGetRequest<SakOppslagDTO>('/innsyn/v2/saker', {
         config: { withCredentials: true },
+        isSuspended: sakerSuspended,
     });
 
     return {
@@ -118,6 +119,17 @@ const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
     });
 };
 
+const useErSakOppdatert = () => {
+    const { data, error } = useGetRequest<boolean>('/innsyn/v2/saker/oppdatert', {
+        config: { withCredentials: true },
+    });
+
+    return {
+        oppdatertData: data,
+        oppdatertError: error,
+    };
+};
+
 const Api = {
     useSøkerinfo,
     useGetSaker,
@@ -126,6 +138,7 @@ const Api = {
     useGetTidslinjeHendelser,
     useGetMinidialog,
     useGetManglendeVedlegg,
+    useErSakOppdatert,
     sendEttersending,
 };
 

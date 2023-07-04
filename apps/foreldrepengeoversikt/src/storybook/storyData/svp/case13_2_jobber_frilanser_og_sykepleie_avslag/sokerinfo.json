@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "10498346036",
+    "fornavn": "Estetisk",
+    "etternavn": "Adresse",
+    "kjønn": "K",
+    "fødselsdato": "1983-09-10",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 50,
+      "fom": "2003-06-26"
+    }
+  ]
+}

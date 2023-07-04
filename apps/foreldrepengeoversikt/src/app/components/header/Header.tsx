@@ -13,49 +13,10 @@ import TåteflaskeBaby from 'assets/TåteflaskeBaby';
 import classNames from 'classnames';
 
 import { IntlShape, useIntl } from 'react-intl';
-import PreviousLink from '../previous-link/PreviousLink';
+import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
 
 import './header.css';
-
-const getHeaderRouteInfo = (path: string, minidialogerIds: string[], selectedRoute: OversiktRoutes) => {
-    if (selectedRoute === OversiktRoutes.DOKUMENTER) {
-        const previousPage = path.split('/dokumenter')[0];
-        return { route: previousPage, label: 'Min sak', isExternalURL: false };
-    }
-
-    if (selectedRoute === OversiktRoutes.ETTERSEND) {
-        const previousPage = path.split('/ettersend')[0];
-        return { route: `${previousPage}/${OversiktRoutes.DOKUMENTER}`, label: 'Dokumenter', isExternalURL: false };
-    }
-
-    if (selectedRoute === OversiktRoutes.OPPLYSNINGER) {
-        const previousPage = path.split('/opplysninger')[0];
-        return { route: previousPage, label: 'Min sak', isExternalURL: false };
-    }
-
-    const currentOppgaveRoute = minidialogerIds.find((id) => path.includes(id));
-    if (currentOppgaveRoute) {
-        const previousPage = path.split(`/${currentOppgaveRoute}`)[0];
-        return { route: previousPage, label: 'Min sak', isExternalURL: false };
-    }
-
-    if (selectedRoute === OversiktRoutes.SAKSOVERSIKT) {
-        return { route: OversiktRoutes.HOVEDSIDE, label: 'Oversikt', isExternalURL: false };
-    }
-
-    if (selectedRoute === OversiktRoutes.DIN_PLAN) {
-        const previousPage = path.split('/din-plan')[0];
-        return { route: previousPage, label: 'Min sak', isExternalURL: false };
-    }
-
-    if (selectedRoute === OversiktRoutes.TIDSLINJEN) {
-        const previousPage = path.split('/tidslinjen')[0];
-        return { route: previousPage, label: 'Min sak', isExternalURL: false };
-    }
-
-    return { route: 'https://www.nav.no/no/ditt-nav', label: 'Min side', isExternalURL: true };
-};
 
 const getSaksoversiktHeading = (ytelse: Ytelse) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -193,25 +154,24 @@ const renderHeaderContent = (
 
 interface Props {
     grupperteSaker: GruppertSak[];
-    minidialogerIds: string[];
+    oppgaverIds: string[];
 }
 
-const Header: React.FunctionComponent<Props> = ({ minidialogerIds, grupperteSaker }) => {
+const Header: React.FunctionComponent<Props> = ({ grupperteSaker, oppgaverIds }) => {
     const bem = bemUtils('header');
     const intl = useIntl();
-    const path = location.pathname;
     const selectedRoute = useGetSelectedRoute();
-    const headerRouteInfo = getHeaderRouteInfo(path, minidialogerIds, selectedRoute);
     const sak = useGetSelectedSak();
     const sakIGrupperteSaker = sak
         ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
         : undefined;
     const barnGrupperingForSak = sakIGrupperteSaker?.barn;
-    const { route, isExternalURL, label } = headerRouteInfo;
+    const path = location.pathname;
+    const currentOppgaveId = oppgaverIds.find((id) => path.includes(id));
     return (
         <div className={bem.block}>
+            <Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />
             <div className={bem.element('wrapper')}>
-                <PreviousLink route={route} externalURL={isExternalURL} linkLabel={label} />
                 {renderHeaderContent(selectedRoute, sak, barnGrupperingForSak, intl)}
             </div>
         </div>

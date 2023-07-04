@@ -1,0 +1,54 @@
+{
+  "foreldrepenger": [],
+  "engangsstønad": [],
+  "svangerskapspenger": [
+    {
+      "saksnummer": "352012285",
+      "familiehendelse": {
+        "fødselsdato": "2023-06-27",
+        "termindato": "2023-07-31",
+        "antallBarn": 1
+      },
+      "sakAvsluttet": false,
+      "gjeldendeVedtak": {
+        "arbeidsforhold": [
+          {
+            "aktivitet": {
+              "type": "ORDINÆRT_ARBEID",
+              "arbeidsgiver": {
+                "id": "907670201",
+                "type": "ORGANISASJON"
+              }
+            },
+            "behovFrom": "2023-06-16",
+            "tilrettelegginger": [
+              {
+                "fom": "2023-06-19",
+                "tom": "2023-06-26",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-06-16",
+                "tom": "2023-06-18",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              }
+            ],
+            "oppholdsperioder": [],
+            "avslutningÅrsak": "AVSLAG_FØDSEL"
+          }
+        ]
+      },
+      "oppdatertTidspunkt": "2023-06-28T15:20:39.351"
+    }
+  ]
+}

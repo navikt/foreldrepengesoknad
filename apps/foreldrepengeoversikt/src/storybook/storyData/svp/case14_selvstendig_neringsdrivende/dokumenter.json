@@ -1,0 +1,72 @@
+[
+  {
+    "type": "UTGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:52:18",
+    "saksnummer": "352012281",
+    "tittel": "Innvilgelsesbrev svangerskapspenger",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234902/624985681",
+    "journalpost": "598234902",
+    "dokumentId": "624985681",
+    "erHoveddokument": true
+  },
+  {
+    "type": "INNGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:48:57",
+    "saksnummer": "352012281",
+    "tittel": "Søknad om svangerskapspenger",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234899/624985677",
+    "journalpost": "598234899",
+    "dokumentId": "624985677",
+    "erHoveddokument": true
+  },
+  {
+    "type": "INNGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:48:57",
+    "saksnummer": "352012281",
+    "tittel": "Søknad om svangerskapspenger",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234899/624985678",
+    "journalpost": "598234899",
+    "dokumentId": "624985678",
+    "erHoveddokument": false
+  },
+  {
+    "type": "UTGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:44:04",
+    "saksnummer": "352012281",
+    "tittel": "Innvilgelsesbrev svangerskapspenger",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234895/624985671",
+    "journalpost": "598234895",
+    "dokumentId": "624985671",
+    "erHoveddokument": true
+  },
+  {
+    "type": "INNGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:40:30",
+    "saksnummer": "352012281",
+    "tittel": "Søknad om svangerskapspenger",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234883/624985656",
+    "journalpost": "598234883",
+    "dokumentId": "624985656",
+    "erHoveddokument": true
+  },
+  {
+    "type": "INNGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:40:30",
+    "saksnummer": "352012281",
+    "tittel": "Søknad om svangerskapspenger",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234883/624985657",
+    "journalpost": "598234883",
+    "dokumentId": "624985657",
+    "erHoveddokument": false
+  },
+  {
+    "type": "UTGÅENDE_DOKUMENT",
+    "mottatt": "2023-06-27T10:32:15",
+    "saksnummer": "352012281",
+    "tittel": "Ikke mottatt søknad",
+    "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234880/624985651",
+    "journalpost": "598234880",
+    "dokumentId": "624985651",
+    "erHoveddokument": true
+  }
+]

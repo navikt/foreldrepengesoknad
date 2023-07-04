@@ -6,24 +6,55 @@
             "situasjon": "fødsel",
             "rolle": "far"
         },
+        "barn": {
+            "type": "ufødt",
+            "antallBarn": 1,
+            "termindato": "2023-06-14T00:00:00.000Z"
+        },
         "annenForelder": {
-            "kanIkkeOppgis": false
+            "kanIkkeOppgis": true
         },
         "søker": {
-            "språkkode": "nb"
+            "erAleneOmOmsorg": true,
+            "språkkode": "nb",
+            "harHattAnnenInntektSiste10Mnd": false,
+            "harJobbetSomFrilansSiste10Mnd": false,
+            "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd": false,
+            "andreInntekterSiste10Mnd": [],
+            "selvstendigNæringsdrivendeInformasjon": []
         },
         "informasjonOmUtenlandsopphold": {
+            "iNorgeNeste12Mnd": true,
+            "iNorgeSiste12Mnd": true,
             "tidligereOpphold": [],
             "senereOpphold": []
         },
         "erEndringssøknad": false,
-        "uttaksplan": [],
+        "dekningsgrad": "100",
+        "uttaksplan": [
+            {
+                "id": "38833431-8793-1570-30488-118430907306690",
+                "type": "uttak",
+                "forelder": "farMedmor",
+                "konto": "FORELDREPENGER",
+                "tidsperiode": {
+                    "fom": "2023-06-14T00:00:00.000Z",
+                    "tom": "2024-04-30T00:00:00.000Z"
+                },
+                "vedlegg": [],
+                "gradert": false
+            }
+        ],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/om-barnet",
+    "currentRoute": "/soknad/oppsummering",
+    "uttaksplanInfo": {
+        "startdatoUttak": "2023-06-14"
+    },
+    "antallUkerIUttaksplan": 46,
     "perioderSomSkalSendesInn": [],
     "harUttaksplanBlittSlettet": false,
     "søknadGjelderEtNyttBarn": true

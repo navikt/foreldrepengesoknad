@@ -1,0 +1,115 @@
+{
+  "foreldrepenger": [],
+  "engangsstønad": [],
+  "svangerskapspenger": [
+    {
+      "saksnummer": "352012259",
+      "familiehendelse": {
+        "termindato": "2023-10-12",
+        "antallBarn": 0
+      },
+      "sakAvsluttet": false,
+      "gjeldendeVedtak": {
+        "arbeidsforhold": [
+          {
+            "aktivitet": {
+              "type": "ORDINÆRT_ARBEID",
+              "arbeidsgiver": {
+                "id": "972674818",
+                "type": "ORGANISASJON"
+              }
+            },
+            "behovFrom": "2023-06-26",
+            "tilrettelegginger": [
+              {
+                "fom": "2023-06-26",
+                "tom": "2023-08-28",
+                "type": "DELVIS",
+                "arbeidstidprosent": 50,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 50
+                }
+              },
+              {
+                "fom": "2023-09-07",
+                "tom": "2023-09-20",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-08-29",
+                "tom": "2023-09-06",
+                "type": "DELVIS",
+                "arbeidstidprosent": 20,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 80
+                }
+              }
+            ],
+            "oppholdsperioder": [],
+            "avslutningÅrsak": "NORMAL"
+          },
+          {
+            "aktivitet": {
+              "type": "FRILANS"
+            },
+            "behovFrom": "2023-07-18",
+            "risikofaktorer": "Jeg jobber som fjellklatrer wohooo",
+            "tiltak": "Alle",
+            "tilrettelegginger": [
+              {
+                "fom": "2023-08-30",
+                "tom": "2023-09-20",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-07-25",
+                "tom": "2023-08-03",
+                "type": "DELVIS",
+                "arbeidstidprosent": 50,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 50
+                }
+              },
+              {
+                "fom": "2023-07-18",
+                "tom": "2023-07-24",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-08-04",
+                "tom": "2023-08-29",
+                "type": "DELVIS",
+                "arbeidstidprosent": 20,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 80
+                }
+              }
+            ],
+            "oppholdsperioder": [],
+            "avslutningÅrsak": "NORMAL"
+          }
+        ]
+      },
+      "oppdatertTidspunkt": "2023-06-28T15:20:39.017"
+    }
+  ]
+}

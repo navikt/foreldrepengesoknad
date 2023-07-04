@@ -1,0 +1,19 @@
+{
+  "foreldrepenger": [],
+  "engangsstønad": [],
+  "svangerskapspenger": [
+    {
+      "saksnummer": "352012271",
+      "familiehendelse": {
+        "termindato": "2023-07-31",
+        "antallBarn": 0
+      },
+      "sakAvsluttet": true,
+      "gjeldendeVedtak": {
+        "arbeidsforhold": [],
+        "avslagÅrsak": "ARBEIDSGIVER_KAN_TILRETTELEGGE"
+      },
+      "oppdatertTidspunkt": "2023-06-28T15:20:38.816"
+    }
+  ]
+}

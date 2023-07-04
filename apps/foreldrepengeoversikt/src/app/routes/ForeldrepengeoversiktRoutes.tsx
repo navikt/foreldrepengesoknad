@@ -9,7 +9,6 @@ import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
 import Forside from 'app/pages/forside/Forside';
 import Header from 'app/components/header/Header';
 import DokumenterPage from 'app/pages/dokumenter-page/DokumenterPage';
-import Opplysninger from 'app/pages/opplysninger/Opplysninger';
 import { SakOppslag } from 'app/types/SakOppslag';
 
 import './routes-wrapper.css';
@@ -27,6 +26,7 @@ interface Props {
     minidialogerError: AxiosError | null;
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
+    oppdatertData: boolean;
 }
 
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
@@ -34,6 +34,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     saker,
     minidialogerData,
     minidialogerError,
+    oppdatertData,
 }) => {
     const bem = bemUtils('routesWrapper');
     const hasNavigated = useRef(false);
@@ -60,7 +61,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
         }
     }, [navigate, saker]);
 
-    const minidialogerIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
+    const oppgaverIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
     const alleYtelser = getAlleYtelser(saker);
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
@@ -71,20 +72,21 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Header minidialogerIds={minidialogerIds} grupperteSaker={grupperteSaker} />
+            <Header grupperteSaker={grupperteSaker} oppgaverIds={oppgaverIds} />
             <div className={bem.block}>
                 <Routes>
                     <Route
-                        path="/"
+                        path={OversiktRoutes.HOVEDSIDE}
                         element={
                             <Forside
                                 alleYtelser={alleYtelser}
                                 grupperteSaker={grupperteSaker}
                                 avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
+                                oppdatertData={oppdatertData}
                             />
                         }
                     />
-                    <Route path="/sak/:saksnummer" element={<SakComponent />}>
+                    <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`} element={<SakComponent />}>
                         <Route
                             index
                             element={
@@ -96,7 +98,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 />
                             }
                         />
-                        <Route path={OversiktRoutes.OPPLYSNINGER} element={<Opplysninger />} />
                         <Route
                             path={OversiktRoutes.DIN_PLAN}
                             element={<DinPlanPage navnPåSøker={søkerinfo.søker.fornavn} søkerinfo={søkerinfo} />}
@@ -110,7 +111,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                             element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
                         />
                         <Route
-                            path=":oppgaveId"
+                            path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
                             element={
                                 <MinidialogPage
                                     minidialoger={minidialogerData}

@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "14488500474",
+    "fornavn": "Urimelig",
+    "etternavn": "Make",
+    "kjønn": "K",
+    "fødselsdato": "1985-08-14",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

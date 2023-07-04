@@ -1,0 +1,16 @@
+{
+  "søker": {
+    "fnr": "23418920637",
+    "fornavn": "Initiativrik",
+    "etternavn": "Juice",
+    "kjønn": "K",
+    "fødselsdato": "1989-01-23",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  }
+}

@@ -4,16 +4,21 @@ import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';
 import IntlProvider from './intl/IntlProvider';
 import dayjs from 'dayjs';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 dayjs.locale('nb');
 
 const AppContainer: FunctionComponent = () => {
     return (
         <ErrorBoundary>
-            <IntlProvider locale="nb">
-                <ByttBrowserModal />
-                <Foreldrepengeoversikt />
-            </IntlProvider>
+            <QueryClientProvider client={queryClient}>
+                <IntlProvider locale="nb">
+                    <ByttBrowserModal />
+                    <Foreldrepengeoversikt />
+                </IntlProvider>
+            </QueryClientProvider>
         </ErrorBoundary>
     );
 };

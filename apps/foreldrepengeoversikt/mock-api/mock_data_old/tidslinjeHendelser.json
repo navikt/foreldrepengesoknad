@@ -1,0 +1,18 @@
+[
+    {
+        "type": "søknad",
+        "opprettet": "2023-01-31T09:06:46.541655",
+        "aktørType": "BRUKER",
+        "tidslinjeHendelseType": "FØRSTEGANGSSØKNAD",
+        "dokumenter": [
+            {
+                "type": "INNGÅENDE_DOKUMENT",
+                "mottatt": "2023-01-31T09:06:48",
+                "saksnummer": "352011079",
+                "tittel": "Søknad om svangerskapspenger",
+                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115874/624862989"
+            }
+        ],
+        "manglendeVedlegg": []
+    }
+]

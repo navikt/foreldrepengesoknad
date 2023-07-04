@@ -1,0 +1,34 @@
+{
+  "søker": {
+    "fnr": "23518815245",
+    "fornavn": "Styrbar",
+    "etternavn": "Alm",
+    "kjønn": "K",
+    "fødselsdato": "1988-11-23",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "barn": [
+      {
+        "fnr": "27462353370",
+        "fornavn": "Innesluttet",
+        "etternavn": "Veranda",
+        "kjønn": "M",
+        "fødselsdato": "2023-06-27"
+      }
+    ],
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "907670201",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "KLONELABBEN",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

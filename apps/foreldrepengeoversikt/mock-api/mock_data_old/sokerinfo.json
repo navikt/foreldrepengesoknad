@@ -1,0 +1,32 @@
+{
+    "søker": {
+        "fnr": "28448027874",
+        "fornavn": "Magnífico",
+        "etternavn": "Barista",
+        "kjønn": "K",
+        "fødselsdato": "1980-04-28",
+        "bankkonto": {
+            "kontonummer": "",
+            "banknavn": ""
+        },
+        "sivilstand": {
+            "type": "UGIFT"
+        }
+    },
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "972674818",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+            "stillingsprosent": 100.0,
+            "fom": "2003-06-26"
+        },
+        {
+            "arbeidsgiverId": "805824352",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "VEGANSK SLAKTERI",
+            "stillingsprosent": 100.0,
+            "fom": "2003-06-26"
+        }
+    ]
+}

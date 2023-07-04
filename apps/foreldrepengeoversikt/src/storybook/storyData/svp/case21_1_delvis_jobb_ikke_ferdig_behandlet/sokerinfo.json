@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "27427747021",
+    "fornavn": "Mange",
+    "etternavn": "Arkitektur",
+    "kjønn": "K",
+    "fødselsdato": "1977-02-27",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}
