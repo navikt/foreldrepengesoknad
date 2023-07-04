@@ -1,0 +1,31 @@
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0 0.75rem 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.breadcrumb__link-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        flex-wrap: wrap;
+        margin-bottom: -1rem;
+    }
+
+    .breadcrumb__flex-align {
+        margin-bottom: 1rem;
+    }
+}
+
+.breadcrumb__flex-align {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb__chevron {
+    margin: 0 0.5rem;
+}

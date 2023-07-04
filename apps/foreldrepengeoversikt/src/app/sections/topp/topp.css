@@ -1,0 +1,11 @@
+.topp {
+    padding: 0 1rem;
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.topp__content {
+    display: flex;
+    padding-top: 0.5rem;
+    justify-content: space-between;
+}

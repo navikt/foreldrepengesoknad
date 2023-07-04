@@ -1,0 +1,23 @@
+.grupperte-dokumenter {
+    margin-bottom: 1rem;
+    margin-top: -1rem;
+}
+
+.grupperte-dokumenter__header {
+    border-bottom: 2px solid var(--a-gray-300);
+}
+
+.grupperte-dokumenter__header-content {
+    display: flex;
+}
+
+.grupperte-dokumenter__ikon {
+    margin-right: 0.875rem;
+    flex-shrink: 0;
+}
+
+.grupperte-dokumenter__content {
+    border-bottom: none;
+    margin-left: 3rem;
+    padding-right: 0;
+}

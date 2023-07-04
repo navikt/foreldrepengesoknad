@@ -1,0 +1,146 @@
+.periode__box {
+    box-shadow: 0 2px 4px 0 var(--a-gray-200);
+    border-top: 1rem;
+    border-left: 0.5rem solid transparent;
+    border-radius: 0.35rem;
+    padding-right: 0.5rem;
+}
+
+.periode {
+    padding: 1rem;
+    margin: 0 -1rem 1rem -1rem;
+}
+
+.periode__ikon-blue {
+    background-color: var(--a-purple-400);
+    border-radius: 0.5rem;
+}
+
+.periode__ikon-purple {
+    background-color: var(--a-blue-400);
+    border-radius: 0.5rem;
+}
+
+.periode__ikon-blue-purple {
+    border-radius: 0.5rem;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--a-blue-400),
+        var(--a-blue-400) 50%,
+        var(--a-purple-400) 50%,
+        var(--a-purple-400) 100%
+    );
+}
+
+.periode__innhold {
+    display: grid;
+    grid-template-columns: 6% 64% 15% 15%;
+    align-items: center;
+    margin: 0;
+}
+
+.periode__annen_part_innhold {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    align-items: center;
+    margin: 0;
+}
+
+.periode__innhold-tekst-periodetittel {
+    margin-left: 1rem;
+}
+
+.periode__innhold-tekst-date {
+    margin-left: 1rem;
+    text-align: center;
+}
+
+.periode__innhold-tekst > p {
+    margin-bottom: 0.25rem;
+}
+
+.periode__beskrivelse {
+    display: flex;
+}
+
+.periode__beskrivelseAnnenPart {
+    display: flex;
+}
+
+.periode--year {
+    color: var(--a-gray-500);
+}
+
+.periode--eierNavn {
+    font-style: italic;
+    padding-left: 0.15rem;
+}
+
+.periode--varighetAnnenPart {
+    font-style: italic;
+}
+
+.periode--eierNavnAnnenPart {
+    font-style: italic;
+    padding-left: 0.2rem;
+    color: var(--a-gray-700);
+}
+
+.periode--samtidigUttakAnnenPart {
+    font-weight: 600;
+    color: var(--a-gray-700);
+}
+
+.periode--hvit {
+    background-color: white;
+}
+
+.periode--grå {
+    background-color: var(--a-gray-100);
+}
+
+.periode__samtidig-uttak {
+    border: 0.1rem solid var(--a-gray-100);
+    border-radius: 0.35rem;
+    border-style: dotted;
+    margin-top: 0.75rem;
+    margin-left: 5%;
+    padding: 1.25rem;
+}
+
+.periode--bg-farMedmor {
+    border-left: 0.5rem solid var(--a-blue-400);
+}
+
+.periode--bg-mor {
+    border-left: 0.5rem solid var(--a-purple-400);
+}
+
+.periode--bg-søker {
+    background: white;
+}
+
+.periode--bg-annen-part {
+    background: var(--a-gray-100);
+}
+
+.periode__samtidigUttakInfo {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+
+@media (max-width: 768px) {
+    .periode__innhold {
+        display: grid;
+        grid-template-columns: 70% 15% 15%;
+        align-items: center;
+        margin: 0;
+    }
+
+    .periode__box {
+        border-left: 0;
+    }
+}
+

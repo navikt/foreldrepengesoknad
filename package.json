@@ -1,0 +1,32 @@
+{
+    "name": "fp-selvbetjening",
+    "private": true,
+    "scripts": {
+        "dev": "turbo dev",
+        "build": "turbo build",
+        "test": "turbo test",
+        "lint": "turbo lint",
+        "prettier": "turbo prettier",
+        "fp": "pnpm --filter foreldrepengesoknad run dev",
+        "fp-prod": "pnpm --filter foreldrepengesoknad run start",
+        "storybook-common": "pnpm --filter @navikt/fp-common run storybook",
+        "storybook-deploy-clean-folder": "rm -rf ./.storybook-static-build",
+        "storybook-deploy-build-all": "turbo build-storybook",
+        "storybook-deploy-create-folder": "node scripts/create-storybook-index.js",
+        "storybook-deploy-to-github": "gh-pages -d .storybook-static-build -t true",
+        "deploy-storybook": "pnpm storybook-deploy-clean-folder && pnpm storybook-deploy-build-all && pnpm storybook-deploy-create-folder &&  pnpm storybook-deploy-to-github",
+        "prepare": "husky install"
+    },
+    "dependencies": {
+        "gh-pages": "5.0.0",
+        "glob": "10.0.0",
+        "husky": "8.0.3",
+        "lint-staged": "13.2.1",
+        "shelljs": "0.8.5",
+        "turbo": "^1.8.6"
+    },
+    "lint-staged": {
+        "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
+        "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
+    }
+}

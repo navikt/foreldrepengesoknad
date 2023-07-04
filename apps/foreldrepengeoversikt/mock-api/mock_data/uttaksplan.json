@@ -1,0 +1,109 @@
+{
+    "grunnlag": {
+        "termindato": "2021-09-08",
+        "fødselsdato": "2021-09-08",
+        "dekningsgrad": 100,
+        "antallBarn": 1,
+        "søkerErFarEllerMedmor": false,
+        "morErAleneOmOmsorg": false,
+        "morHarRett": true,
+        "morErUfør": false,
+        "farMedmorErAleneOmOmsorg": false,
+        "farMedmorHarRett": true,
+        "annenForelderErInformert": true
+    },
+    "perioder": [
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FORELDREPENGER_FØR_FØDSEL",
+            "trekkDager": 15,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "type": "ORGANISASJON",
+                "navn": "SJOKKERENDE ELEKTRIKER"
+            },
+            "periodeResultatÅrsak": "2006",
+            "periode": {
+                "fom": "2021-08-18",
+                "tom": "2021-09-07"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 30,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "type": "ORGANISASJON",
+                "navn": "SJOKKERENDE ELEKTRIKER"
+            },
+            "periodeResultatÅrsak": "2003",
+            "periode": {
+                "fom": "2021-09-08",
+                "tom": "2021-10-19"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "MØDREKVOTE",
+            "trekkDager": 45,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "type": "ORGANISASJON",
+                "navn": "SJOKKERENDE ELEKTRIKER"
+            },
+            "periodeResultatÅrsak": "2003",
+            "periode": {
+                "fom": "2021-10-20",
+                "tom": "2021-12-21"
+            }
+        },
+        {
+            "periodeResultatType": "INNVILGET",
+            "graderingInnvilget": false,
+            "samtidigUttak": false,
+            "stønadskontotype": "FELLESPERIODE",
+            "trekkDager": 80,
+            "arbeidstidprosent": 0,
+            "utbetalingsprosent": 100,
+            "gjelderAnnenPart": false,
+            "manueltBehandlet": false,
+            "flerbarnsdager": false,
+            "uttakArbeidType": "ORDINÆRT_ARBEID",
+            "arbeidsgiverInfo": {
+                "id": "947064649",
+                "type": "ORGANISASJON",
+                "navn": "SJOKKERENDE ELEKTRIKER"
+            },
+            "periodeResultatÅrsak": "2002",
+            "periode": {
+                "fom": "2022-01-12",
+                "tom": "2022-05-03"
+            }
+        }
+    ]
+}

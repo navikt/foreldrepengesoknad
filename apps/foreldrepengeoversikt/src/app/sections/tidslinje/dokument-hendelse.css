@@ -1,0 +1,10 @@
+.dokument-hendelse {
+    display: flex;
+    align-items: center;
+    font-size: var(--a-font-size-medium);
+}
+
+.dokument-hendelse__ikon {
+    color: var(--a-surface-action);
+    min-width: 24px;
+}
