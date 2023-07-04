@@ -5,19 +5,19 @@ import { IntlShape } from 'react-intl';
 
 export const validateTermindato = (intl: IntlShape) => (termindato: string) => {
     if (!hasValue(termindato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.duMåOppgi');
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.duMåOppgi');
     }
 
     if (!isISODateString(termindato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat');
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.ugyldigDatoFormat');
     }
 
     if (!erMindreEnn3UkerSiden(termindato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.forTidlig');
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.forTidlig');
     }
 
     if (!erIUke22Pluss3(termindato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22');
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.duMåVæreIUke22');
     }
 
     return undefined;
@@ -25,19 +25,19 @@ export const validateTermindato = (intl: IntlShape) => (termindato: string) => {
 
 export const validateFødselsdato = (intl: IntlShape) => (fødselsdato: string) => {
     if (!hasValue(fødselsdato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi');
+        return intlUtils(intl, 'valideringsfeil.barnet.fødselsdato.duMåOppgi');
     }
 
     if (!isISODateString(fødselsdato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.ugyldigDatoFormat');
+        return intlUtils(intl, 'valideringsfeil.barnet.fødselsdato.ugyldigDatoFormat');
     }
 
     if (etterDagensDato(fødselsdato)) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere');
+        return intlUtils(intl, 'valideringsfeil.barnet.fødselsdato.måVæreIdagEllerTidligere');
     }
 
     if (dayjs(fødselsdato).isBefore(dayjs(new Date()).subtract(3, 'years').subtract(4, 'months'), 'day')) {
-        return intlUtils(intl, 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake');
+        return intlUtils(intl, 'valideringsfeil.barnet.fødselsdato.ikkeMerEnn3År3MndTilbake');
     }
 
     return undefined;
