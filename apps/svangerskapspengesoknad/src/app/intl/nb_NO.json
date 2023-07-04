@@ -32,5 +32,7 @@
     "barnet.erBarnetFødtmerInfo.tekst": "Dersom du har vært borte fra jobb før du søker svangerskapspenger, kan du få tilbakedatert søknaden for inntil tre måneder.",
     "barnet.fødselsdato": "Fødselsdato",
     "barnet.termindato": "Termindato",
+    "barnet.termindato.tittel": "Du kan få svangerskapspenger frem til tre uker før termin",
+    "barnet.termindato.tekst": "Du kan få svangerskapspenger fra tidspunktet du må slutte å jobbe frem til te uker før termin. Fra tre uker før termin kan du få foreldrepenger eller engangsstønad.",
     "valideringsfeil.termindato.forLangtFremITid": "Du kan ikke søke så langt frem i tid."
 }
