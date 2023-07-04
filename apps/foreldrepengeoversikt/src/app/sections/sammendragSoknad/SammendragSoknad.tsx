@@ -4,6 +4,7 @@ import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { formaterDato } from 'app/utils/dateUtils';
 import { XMarkIcon, CheckmarkIcon } from '@navikt/aksel-icons';
+import { guid } from '@navikt/fp-common';
 
 interface Props {
     sak: SvangerskapspengeSak;
@@ -13,7 +14,7 @@ interface Props {
 export const SammendragSoknad: React.FC<Props> = ({ sak, søker }) => {
     const datoFormat = 'DD. MMMM';
     let melding;
-    console.log(sak);
+
     if ('åpenBehandling' in sak) {
         return (
             <>
@@ -37,17 +38,7 @@ export const SammendragSoknad: React.FC<Props> = ({ sak, søker }) => {
                                     og har søkt om {periode.type} svangerskapspenger
                                 </p>
                             );
-                            return (
-                                <PeriodeKort
-                                    key={
-                                        sak.åpenBehandling &&
-                                        sak.åpenBehandling.søknad &&
-                                        sak.åpenBehandling.søknad.arbeidsforhold.indexOf(arbeidsforhold)
-                                    }
-                                >
-                                    {melding}
-                                </PeriodeKort>
-                            );
+                            return <PeriodeKort key={guid()}>{melding}</PeriodeKort>;
                         });
                     })}
             </>
@@ -80,17 +71,7 @@ export const SammendragSoknad: React.FC<Props> = ({ sak, søker }) => {
                                     </p>
                                 </>
                             );
-                            return (
-                                <PeriodeKort
-                                    key={
-                                        sak.åpenBehandling &&
-                                        sak.åpenBehandling.søknad &&
-                                        sak.åpenBehandling.søknad.arbeidsforhold.indexOf(arbeidsforhold)
-                                    }
-                                >
-                                    {melding}
-                                </PeriodeKort>
-                            );
+                            return <PeriodeKort key={guid()}>{melding}</PeriodeKort>;
                         });
                     })}
             </>

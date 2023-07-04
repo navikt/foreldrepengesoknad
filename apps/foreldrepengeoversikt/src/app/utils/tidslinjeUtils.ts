@@ -441,11 +441,13 @@ export const getTidslinjeSvangerskapspengerUtbetalingHendelse = (sak: Svangerska
             } else return;
         });
     });
-
-    //console.log("j "+arbeidsgiverString)
     return {
         type: 'søknad',
-        opprettet: dayjs().toDate(),
+        opprettet: dayjs(
+            dayjs().date() < 20
+                ? dayjs().year() + '-' + (dayjs().month() + 1) + '-20'
+                : dayjs().year() + '-' + (dayjs().month() + 2) + '-20'
+        ).toDate(),
         aktørType: AktørType.BRUKER,
         tidslinjeHendelseType: TidslinjehendelseType.UTBETALING,
         dokumenter: [],
