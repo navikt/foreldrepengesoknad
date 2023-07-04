@@ -6,6 +6,14 @@ const svangerskapspengerReducer = (
     action: SvangerskapspengerContextAction
 ): SvangerskapspengerContextState => {
     switch (action.type) {
+        case SvangerskapspengerContextActionKeys.SET_BARN:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    barn: action.payload,
+                },
+            };
         case SvangerskapspengerContextActionKeys.SET_SØKERINFO:
             return {
                 ...state,

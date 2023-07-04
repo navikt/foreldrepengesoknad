@@ -4,7 +4,7 @@ import SøknadRoutes from './routes';
 import isAvailable from './isAvailable';
 import Forside from 'app/pages/forside/Forside';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import Barnet from 'app/pages/barnet/Barnet';
+import Barnet from 'app/steps/barnet/Barnet';
 
 interface Props {
     currentRoute: SøknadRoutes;

@@ -13,5 +13,5 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
     version: 1,
     currentRoute: SøknadRoutes.FORSIDE,
     søkerinfo: undefined!,
-    søknad: { harGodkjentVilkår: false },
+    søknad: { harGodkjentVilkår: false, barn: undefined! },
 };
