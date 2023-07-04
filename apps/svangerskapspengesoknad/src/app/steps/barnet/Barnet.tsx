@@ -8,7 +8,7 @@ import barnetQuestionsConfig from './barnetQuestionsConfig';
 import stepConfig from '../stepsConfig';
 import actionCreator from 'app/context/action/actionCreator';
 import { Button } from '@navikt/ds-react';
-import { validateFødselsdato, validateTermindato } from './omBarnetValidering';
+import { validateFødselsdato, validateTermindato } from './barnetValidering';
 import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
 
