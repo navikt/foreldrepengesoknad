@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "26478824857",
+    "fornavn": "Munter",
+    "etternavn": "Hane",
+    "kjønn": "K",
+    "fødselsdato": "1988-07-26",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "839942907",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "HÅRREISENDE FRISØR",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

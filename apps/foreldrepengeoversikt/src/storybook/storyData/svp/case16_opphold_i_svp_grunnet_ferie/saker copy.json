@@ -1,0 +1,141 @@
+{
+  "foreldrepenger": [],
+  "engangsstønad": [],
+  "svangerskapspenger": [
+    {
+      "saksnummer": "352012286",
+      "familiehendelse": {
+        "termindato": "2023-11-16",
+        "antallBarn": 0
+      },
+      "sakAvsluttet": false,
+      "gjeldendeVedtak": {
+        "arbeidsforhold": [
+          {
+            "aktivitet": {
+              "type": "ORDINÆRT_ARBEID",
+              "arbeidsgiver": {
+                "id": "972674818",
+                "type": "ORGANISASJON"
+              }
+            },
+            "behovFrom": "2023-06-28",
+            "tilrettelegginger": [
+              {
+                "fom": "2023-07-26",
+                "tom": "2023-07-31",
+                "type": "DELVIS",
+                "arbeidstidprosent": 20,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 80
+                }
+              },
+              {
+                "fom": "2023-08-01",
+                "tom": "2023-10-25",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-06-28",
+                "tom": "2023-07-16",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-07-24",
+                "tom": "2023-07-25",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              }
+            ],
+            "oppholdsperioder": [
+              {
+                "fom": "2023-07-17",
+                "tom": "2023-07-23",
+                "årsak": "FERIE",
+                "oppholdKilde": "INNTEKTSMELDING"
+              }
+            ],
+            "avslutningÅrsak": "NORMAL"
+          },
+          {
+            "aktivitet": {
+              "type": "ORDINÆRT_ARBEID",
+              "arbeidsgiver": {
+                "id": "805824352",
+                "type": "ORGANISASJON"
+              }
+            },
+            "behovFrom": "2023-06-29",
+            "tilrettelegginger": [
+              {
+                "fom": "2023-07-24",
+                "tom": "2023-07-30",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-08-05",
+                "tom": "2023-10-25",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-07-31",
+                "tom": "2023-08-04",
+                "type": "DELVIS",
+                "arbeidstidprosent": 20,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 80
+                }
+              },
+              {
+                "fom": "2023-06-29",
+                "tom": "2023-07-16",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              }
+            ],
+            "oppholdsperioder": [
+              {
+                "fom": "2023-07-17",
+                "tom": "2023-07-23",
+                "årsak": "FERIE",
+                "oppholdKilde": "INNTEKTSMELDING"
+              }
+            ],
+            "avslutningÅrsak": "NORMAL"
+          }
+        ]
+      },
+      "oppdatertTidspunkt": "2023-06-28T15:20:39.602"
+    }
+  ]
+}

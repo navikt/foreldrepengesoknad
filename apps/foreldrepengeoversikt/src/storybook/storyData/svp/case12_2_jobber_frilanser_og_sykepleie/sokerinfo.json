@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "28488434219",
+    "fornavn": "Gåen",
+    "etternavn": "Ærfugl",
+    "kjønn": "K",
+    "fødselsdato": "1984-08-28",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 50,
+      "fom": "2003-06-26"
+    }
+  ]
+}

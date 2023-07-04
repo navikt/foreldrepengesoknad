@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "25417828276",
+    "fornavn": "Utydelig",
+    "etternavn": "Astrolog",
+    "kjønn": "K",
+    "fødselsdato": "1978-01-25",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

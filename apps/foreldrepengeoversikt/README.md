@@ -1,7 +1,6 @@
-# Innsyn for søknad om foreldrepenger
+# Innsyn for søknad om foreldrepenger, engangsstønad og svangerskapspenger
 
-Kildekoden til frontend-appen for ny innsynsløsning for
-foreldrepengesøknad , engangsstønad og svangerskapspenger.
+Kildekoden til frontend-appen for ny innsynsløsning for foreldrepengesøknad, engangsstønad og svangerskapspenger.
 
 # Komme i gang
 

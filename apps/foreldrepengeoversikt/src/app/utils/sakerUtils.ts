@@ -31,7 +31,7 @@ export function sorterPersonEtterEldstOgNavn(p1: Person, p2: Person) {
 }
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): Date | undefined => {
-    if (sak.gjeldendeVedtak) {
+    if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
         return ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!;
     } else if (sak.åpenBehandling && sak.åpenBehandling.søknadsperioder) {
         return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);

@@ -1,0 +1,41 @@
+[
+  {
+    "type": "inntektsmelding",
+    "opprettet": "2023-06-27T11:14:38.36813",
+    "tidslinjeHendelseType": "INNTEKTSMELDING",
+    "dokumenter": [],
+    "arbeidsgiver": {
+      "id": "972674818",
+      "type": "ORGANISASJON"
+    }
+  },
+  {
+    "type": "søknad",
+    "opprettet": "2023-06-27T11:15:21.745874",
+    "aktørType": "BRUKER",
+    "tidslinjeHendelseType": "FØRSTEGANGSSØKNAD",
+    "dokumenter": [
+      {
+        "type": "INNGÅENDE_DOKUMENT",
+        "mottatt": "2023-06-27T11:15:22",
+        "saksnummer": "352012289",
+        "tittel": "Søknad om svangerskapspenger",
+        "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234925/624985711",
+        "journalpost": "598234925",
+        "dokumentId": "624985711",
+        "erHoveddokument": true
+      },
+      {
+        "type": "INNGÅENDE_DOKUMENT",
+        "mottatt": "2023-06-27T11:15:22",
+        "saksnummer": "352012289",
+        "tittel": "Skjema for tilrettelegging og omplassering ved graviditet",
+        "url": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest/dokument/hent-dokument/598234925/624985712",
+        "journalpost": "598234925",
+        "dokumentId": "624985712",
+        "erHoveddokument": false
+      }
+    ],
+    "manglendeVedlegg": []
+  }
+]

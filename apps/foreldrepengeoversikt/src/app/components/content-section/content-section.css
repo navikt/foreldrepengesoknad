@@ -1,5 +1,8 @@
 .content-section {
     margin-bottom: 2rem;
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--surface-alt-3-subtle, #CCE2F0);
+    border-radius: 8px;
 }
 
 .content-section--bg-white {

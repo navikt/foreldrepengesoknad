@@ -57,9 +57,6 @@ const Termin: FunctionComponent<Props> = ({
         ? 'omBarnet.veileder.terminbekreftelse.far'
         : 'omBarnet.veileder.terminbekreftelse';
 
-    const intlTermindatoInfotekst = søkerErFarMedmor
-        ? 'omBarnet.termindato.infotekst.farMedmor'
-        : 'omBarnet.termindato.infotekst';
     return (
         <>
             <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
@@ -109,7 +106,10 @@ const Termin: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
                 <ReadMore header={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
-                    {intlUtils(intl, intlTermindatoInfotekst)}
+                    <Block padBottom="m">
+                        <FormattedMessage id="omBarnet.termindato.innhold.del1" />
+                    </Block>
+                    <FormattedMessage id="omBarnet.termindato.innhold.del2" />
                 </ReadMore>
             </Block>
 

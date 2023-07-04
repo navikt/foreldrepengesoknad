@@ -113,6 +113,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     />
                 </ContentSection>
             )}
+
             {gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER ? (
                 <SammendragSoknad sak={gjeldendeSak as SvangerskapspengeSak} søker={søkerinfo} />
             ) : (
@@ -125,8 +126,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     </ContentSection>
                 </>
             )}
+
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                <ContentSection heading={intlUtils(intl, 'saksoversikt.dinPlan')} padding="large">
+                <ContentSection heading={intlUtils(intl, 'saksoversikt.dinPlan')}>
                     <DinPlan
                         sak={gjeldendeSak}
                         visHelePlanen={false}

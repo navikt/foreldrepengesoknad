@@ -1,0 +1,25 @@
+{
+  "søker": {
+    "fnr": "24504410230",
+    "fornavn": "Stille",
+    "etternavn": "Japp",
+    "kjønn": "K",
+    "fødselsdato": "1944-10-24",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "947064649",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "SJOKKERENDE ELEKTRIKER",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

@@ -26,6 +26,7 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.navnRegnskapsfører)}>
                 <EgenNæringModalFormComponents.TextField
                     name={EgenNæringModalFormField.navnRegnskapsfører}
+                    maxLength={100}
                     label={regnskapsførerNavnLabel}
                     validate={validateRequiredTextInputField(regnskapsførerNavnLabel, intl)}
                 />

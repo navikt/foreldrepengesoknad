@@ -21,6 +21,7 @@ import { Ytelse } from 'app/types/Ytelse';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
 import { SakOppslag } from 'app/types/SakOppslag';
+import OversiktRoutes from 'app/routes/routes';
 
 //import { S } from '@storybook/react/dist/types-0a347bb9';
 
@@ -33,6 +34,8 @@ interface Params {
 const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, søkersBarn }) => {
     const params = useParams();
     const intl = useIntl();
+    const sakPath = location.pathname.replace(`/${OversiktRoutes.TIDSLINJEN}`, '');
+
     const bem = bemUtils('tidslinje-hendelse');
     const alleSaker = getAlleYtelser(saker);
     const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
@@ -42,6 +45,11 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
 
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
+    const erAvslåttForeldrepengesøknad =
+        sak.ytelse === Ytelse.FORELDREPENGER &&
+        !!sak.gjeldendeVedtak &&
+        (sak.gjeldendeVedtak.perioder.length === 0 ||
+            sak.gjeldendeVedtak.perioder.every((p) => p.resultat.innvilget === false));
     if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>
@@ -64,10 +72,15 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
         manglendeVedleggData,
         sak,
         barnFraSak,
+        erAvslåttForeldrepengesøknad,
         intl
     );
 
-    const hendelserForVisning = getHendelserForVisning(visHeleTidslinjen, alleSorterteHendelser);
+    const hendelserForVisning = getHendelserForVisning(
+        visHeleTidslinjen,
+        alleSorterteHendelser,
+        erAvslåttForeldrepengesøknad
+    );
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
         dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
     );
@@ -142,7 +155,10 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (
-                                <LinkInternal className={bem.element('medium_font')} to={hendelse.internalUrl}>
+                                <LinkInternal
+                                    className={bem.element('medium_font')}
+                                    to={`${sakPath}/${hendelse.internalUrl}`}
+                                >
                                     <Button>{hendelse.linkTittel}</Button>
                                 </LinkInternal>
                             )}

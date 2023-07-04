@@ -1,0 +1,32 @@
+{
+  "søker": {
+    "fnr": "02477412036",
+    "fornavn": "Bevisst",
+    "etternavn": "Frende",
+    "kjønn": "K",
+    "fødselsdato": "1974-07-02",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    },
+    {
+      "arbeidsgiverId": "805824352",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "VEGANSK SLAKTERI",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

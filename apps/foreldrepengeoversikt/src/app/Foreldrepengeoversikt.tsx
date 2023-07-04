@@ -10,15 +10,47 @@ import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
 import { HendelseType } from './types/HendelseType';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
+import { UseQueryResult } from '@tanstack/react-query';
+//import Environment from './Environment';
+
 
 import './styles/app.css';
+import { SakOppslag } from './types/SakOppslag';
+
+const getSakerSuspended = (oppdatertQuery: UseQueryResult<boolean, unknown>) => {
+    if (oppdatertQuery.isLoading) {
+        return true;
+    }
+
+    return oppdatertQuery.data ? false : true;
+};
 
 const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const bem = bemUtils('app');
     const backgroundColor = useGetBackgroundColor();
 
+    // const oppdatertQuery = useQuery<boolean>({
+    //     queryKey: ['oppdatert'],
+    //     queryFn: async () =>
+    //         await fetch(`${Environment.REST_API_URL}/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then(
+    //             (response) => response.json()
+    //         ),
+    //     refetchInterval: (data) => {
+    //         if (data) {
+    //             return false;
+    //         }
+
+    //         return 15000;
+    //     },
+    // });
+
+    //const oppdatertQuery = { data: true };
+    const oppdatertQuery = { data: true } as UseQueryResult<boolean, unknown>;
+
+    const sakerSuspended = getSakerSuspended(oppdatertQuery);
+
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
-    const { sakerData, sakerError } = Api.useGetSaker();
+    const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
     const { minidialogData, minidialogError } = Api.useGetMinidialog();
 
     useEffect(() => {
@@ -43,7 +75,13 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         return undefined;
     }, [sakerData]);
 
-    if (!søkerinfoData || !sakerData || !saker || (!minidialogData && !minidialogError)) {
+    if (
+        !søkerinfoData ||
+        (!sakerData && !sakerSuspended) ||
+        (!saker && !sakerSuspended) ||
+        (!minidialogData && !minidialogError) ||
+        oppdatertQuery.isLoading
+    ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -58,6 +96,11 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                   hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK
           )
         : undefined;
+    const defaultSaker: SakOppslag = {
+        engangsstønad: [],
+        foreldrepenger: [],
+        svangerskapspenger: [],
+    };
 
     return (
         <div
@@ -67,9 +110,10 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 <ScrollToTop />
                 <ForeldrepengeoversiktRoutes
                     søkerinfo={søkerinfoData}
-                    saker={saker}
+                    saker={saker || defaultSaker}
                     minidialogerData={aktiveMinidialoger}
                     minidialogerError={minidialogError}
+                    oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
                 />
             </BrowserRouter>
         </div>

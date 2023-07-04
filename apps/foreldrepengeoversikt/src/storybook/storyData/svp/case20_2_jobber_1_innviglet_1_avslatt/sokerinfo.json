@@ -1,0 +1,32 @@
+{
+  "søker": {
+    "fnr": "22506433200",
+    "fornavn": "Äcklig",
+    "etternavn": "Hinne",
+    "kjønn": "K",
+    "fødselsdato": "1964-10-22",
+    "bankkonto": {
+      "kontonummer": "",
+      "banknavn": ""
+    },
+    "sivilstand": {
+      "type": "UGIFT"
+    }
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "972674818",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "PENGELØS SPAREBANK",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    },
+    {
+      "arbeidsgiverId": "805824352",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "VEGANSK SLAKTERI",
+      "stillingsprosent": 100,
+      "fom": "2003-06-26"
+    }
+  ]
+}

@@ -1,167 +1,61 @@
 {
-    "foreldrepenger": [
-        {
-            "saksnummer": "352011079",
-            "sakAvsluttet": false,
-            "kanSøkeOmEndring": true,
-            "sakTilhørerMor": true,
-            "gjelderAdopsjon": false,
-            "morUføretrygd": false,
-            "harAnnenForelderTilsvarendeRettEØS": false,
-            "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BEGGE_RETT",
-            "annenPart": {
-                "fnr": "03506715317"
+  "foreldrepenger": [],
+  "engangsstønad": [],
+  "svangerskapspenger": [
+    {
+      "saksnummer": "352012258",
+      "familiehendelse": {
+        "termindato": "2023-10-12",
+        "antallBarn": 0
+      },
+      "sakAvsluttet": false,
+      "gjeldendeVedtak": {
+        "arbeidsforhold": [
+          {
+            "aktivitet": {
+              "type": "ORDINÆRT_ARBEID",
+              "arbeidsgiver": {
+                "id": "972674818",
+                "type": "ORGANISASJON"
+              }
             },
-            "familiehendelse": {
-                "fødselsdato": "2022-07-01",
-                "termindato": "2022-07-01",
-                "antallBarn": 1
-            },
-            "gjeldendeVedtak": {
-                "perioder": [
-                    {
-                        "fom": "2022-06-10",
-                        "tom": "2022-06-30",
-                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-07-01",
-                        "tom": "2022-08-11",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-08-12",
-                        "tom": "2022-10-13",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-10-14",
-                        "tom": "2022-12-19",
-                        "kontoType": "FELLESPERIODE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-12-20",
-                        "tom": "2023-02-02",
-                        "kontoType": "FELLESPERIODE",
-                        "resultat": {
-                            "innvilget": false,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": false,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    }
-                ]
-            },
-            "barn": [
-                {
-                    "fnr": "01472254177"
+            "behovFrom": "2023-06-26",
+            "tilrettelegginger": [
+              {
+                "fom": "2023-06-26",
+                "tom": "2023-08-28",
+                "type": "DELVIS",
+                "arbeidstidprosent": 50,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 50
                 }
+              },
+              {
+                "fom": "2023-09-07",
+                "tom": "2023-09-20",
+                "type": "INGEN",
+                "arbeidstidprosent": 0,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 100
+                }
+              },
+              {
+                "fom": "2023-08-29",
+                "tom": "2023-09-06",
+                "type": "DELVIS",
+                "arbeidstidprosent": 20,
+                "resultat": {
+                  "resultatType": "INNVILGET",
+                  "utbetalingsgrad": 80
+                }
+              }
             ],
-            "dekningsgrad": "HUNDRE"
-        },
-        {
-            "saksnummer": "352011080",
-            "sakAvsluttet": false,
-            "sisteSøknadMottattDato": "2023-01-31",
-            "kanSøkeOmEndring": false,
-            "sakTilhørerMor": true,
-            "gjelderAdopsjon": false,
-            "morUføretrygd": false,
-            "harAnnenForelderTilsvarendeRettEØS": false,
-            "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BEGGE_RETT",
-            "annenPart": {
-                "fnr": "03506715317"
-            },
-            "familiehendelse": {
-                "termindato": "2023-09-15",
-                "antallBarn": 1
-            },
-            "åpenBehandling": {
-                "tilstand": "UNDER_BEHANDLING",
-                "søknadsperioder": [
-                    {
-                        "fom": "2023-08-25",
-                        "tom": "2023-09-14",
-                        "kontoType": "FORELDREPENGER_FØR_FØDSEL"
-                    },
-                    {
-                        "fom": "2023-09-15",
-                        "tom": "2023-10-26",
-                        "kontoType": "MØDREKVOTE"
-                    }
-                ]
-            },
-            "barn": [],
-            "dekningsgrad": "HUNDRE"
-        }
-    ],
-    "engangsstønad": [],
-    "svangerskapspenger": [
-        {
-            "saksnummer": "352012251",
-            "familiehendelse": {
-                "termindato": "2023-09-15",
-                "antallBarn": 0
-            },
-            "sakAvsluttet": false,
-            "åpenBehandling": {
-                "tilstand": "VENT_INNTEKTSMELDING",
-                "søknad": {
-                    "arbeidsforhold": [
-                        {
-                            "aktivitet": {
-                                "type": "ORDINÆRT_ARBEID",
-                                "arbeidsgiver": {
-                                    "id": "972674818",
-                                    "type": "ORGANISASJON"
-                                }
-                            },
-                            "behovFrom": "2023-07-01",
-                            "tilrettelegginger": [
-                                {
-                                    "fom": "2023-07-01",
-                                    "tom": "2023-08-24",
-                                    "type": "INGEN"
-                                }
-                            ],
-                            "oppholdsperioder": []
-                        }
-                    ]
-                }
-            },
-            "oppdatertTidspunkt": "2023-06-21T12:56:13.534"
-        },
+            "oppholdsperioder": [],
+            "avslutningÅrsak": "NORMAL"
+          },
+          
         {
             "saksnummer":"352012275",
             "familiehendelse":{
@@ -263,3 +157,4 @@
         }
     ]
 }
+

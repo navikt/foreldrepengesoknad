@@ -1,11 +1,10 @@
-# Selvbetjeningsløsning for søknadene om foreldrepenger, engangsstønad og svangerskapspenger og for foreldrepengeoversikt
+# Selvbetjeningsløsning for søknadene om foreldrepenger, engangsstønad og svangerskapspenger og for innsynsløsning for foreldrepengeytelser.
 
 Kildekoden til frontend-appene foreldrepengesøknad, engangsstønad, svangerskapspenger og foreldrepengeoversikt (innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
 
 # For å komme i gang
 
-Du må på forhånd ha installert Node.js (v.18).
-Vi anbefaler å bruke Git Bash for å kjøre kommandoene.
+Du må på forhånd ha installert Node.js (v.18). Vi anbefaler å bruke Git Bash for å kjøre kommandoene.
 
 1. Installer pnpm: `npm install -g pnpm`.
 2. I roten av repoet, kjør `pnpm install`.

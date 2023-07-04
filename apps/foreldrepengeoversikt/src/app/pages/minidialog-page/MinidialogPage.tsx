@@ -12,6 +12,7 @@ import ContentSection from 'app/components/content-section/ContentSection';
 import Api from 'app/api/api';
 import { Heading } from '@navikt/ds-react';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
+import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 
 interface Props {
     fnr: string;
@@ -22,6 +23,7 @@ interface Props {
 const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, saker }) => {
     const params = useParams();
     const navigate = useNavigate();
+    useSetSelectedRoute(OversiktRoutes.OPPGAVER);
     const alleSaker = getAlleYtelser(saker);
     const sak = alleSaker.find((s) => s.saksnummer === params.saksnummer);
     const minidialog = minidialoger ? minidialoger.find((d) => d.saksnr === params.saksnummer) : undefined;
