@@ -33,7 +33,7 @@
     "barnet.fødselsdato": "Fødselsdato",
     "barnet.termindato": "Termindato",
     "barnet.termindato.merInfo.tittel": "Du kan få svangerskapspenger frem til tre uker før termin.",
-    "barnet.termindato.merInfo.tekst": "Du kan få svangerskapspenger fra tidspunktet du må slutte å jobbe frem til te uker før termin. Fra tre uker før termin kan du få foreldrepenger eller engangsstønad.",
+    "barnet.termindato.merInfo.tekst": "Du kan få svangerskapspenger fra tidspunktet du må slutte å jobbe frem til te uker før termin. Fra tre uker før termin kan du søke foreldrepenger.",
     "valideringsfeil.termindato.forLangtFremITid": "Du kan ikke søke så langt frem i tid.",
     "valideringsfeil.barnet.termindato.duMåOppgi": "Du må oppgi termindato.",
     "valideringsfeil.barnet.termindato.ugyldigDatoFormat": "Termindato må være en gyldig dato på formatet dd.mm.åååå.",
