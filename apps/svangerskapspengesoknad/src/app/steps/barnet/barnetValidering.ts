@@ -1,5 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { erIUke22Pluss3, erMindreEnn3UkerSiden, etterDagensDato, hasValue, intlUtils } from '@navikt/fp-common';
+import { erMindreEnn3UkerSiden, etterDagensDato, hasValue, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 

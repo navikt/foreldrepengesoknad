@@ -11,6 +11,7 @@ import { Button } from '@navikt/ds-react';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
 import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
+import { ReadMore } from '@navikt/ds-react';
 
 const Barnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -34,7 +35,7 @@ const Barnet: React.FunctionComponent = () => {
                     ...formValues,
                 } as BarnetFormData);
 
-                const visGåVidereKnapp = visibility.areAllQuestionsAnswered();
+                const visGåVidereKnapp = true; // TODO: fjern? visibility.areAllQuestionsAnswered();
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -49,13 +50,16 @@ const Barnet: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
-                            <Block padBottom="l" visible={true}>
+                            <Block padBottom="xl" visible={true}>
                                 <BarnetFormComponents.YesOrNoQuestion
                                     name={BarnetFormField.erBarnetFødt}
                                     legend={intlUtils(intl, 'barnet.erBarnetFødt')}
                                 />
+                                <ReadMore size="small" header={intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tittel')}>
+                                    {intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tekst')}
+                                </ReadMore>
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(BarnetFormField.fødselsdato)}>
+                            <Block padBottom="xl" visible={visibility.isVisible(BarnetFormField.fødselsdato)}>
                                 <BarnetFormComponents.DatePicker
                                     name={BarnetFormField.fødselsdato}
                                     label={intlUtils(intl, 'barnet.fødselsdato')}
@@ -65,7 +69,7 @@ const Barnet: React.FunctionComponent = () => {
                                     placeholder={'dd.mm.åååå'}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={true}>
+                            <Block padBottom="xl" visible={true}>
                                 <BarnetFormComponents.DatePicker
                                     name={BarnetFormField.termindato}
                                     label={intlUtils(intl, 'barnet.termindato')}
@@ -74,6 +78,9 @@ const Barnet: React.FunctionComponent = () => {
                                     maxDate={undefined} //TODO
                                     validate={validateTermindato(intl)}
                                 />
+                                <ReadMore size="small" header={intlUtils(intl, 'barnet.termindato.merInfo.tittel')}>
+                                    {intlUtils(intl, 'barnet.termindato.merInfo.tekst')}
+                                </ReadMore>
                             </Block>
                             <Block margin="l">
                                 <StepButtonWrapper>
