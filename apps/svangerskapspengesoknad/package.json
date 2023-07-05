@@ -43,10 +43,10 @@
         "vitest": "^0.30.1"
     },
     "dependencies": {
-        "@formatjs/intl-pluralrules": "^5.1.10",
-        "@navikt/ds-css": "4.4.2",
-        "@navikt/ds-datepicker": "^4.1.5",
-        "@navikt/ds-react": "4.4.2",
+        "@formatjs/intl-pluralrules": "^5.2.4",
+        "@navikt/ds-css": "4.6.1",
+        "@navikt/ds-datepicker": "^4.2.0",
+        "@navikt/ds-react": "^4.6.1",
         "@navikt/fp-common": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.21.1",
         "@navikt/sif-common-question-config": "^0.0.7",
