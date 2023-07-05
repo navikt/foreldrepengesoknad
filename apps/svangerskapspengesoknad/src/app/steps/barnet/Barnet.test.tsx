@@ -30,4 +30,31 @@ describe('<Barnet>', () => {
         expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
         expect(await screen.findByText(NESTE_STEG)).toBeInTheDocument();
     });
+    it('validering av for tidlig termindato (lengre enn 1 måned tilbake)', async () => {
+        //TODO
+    });
+    it('validering av for tidlig termindato og manglende fødselsdato', async () => {
+        //TODO
+    });
+    it('validering av manglende termindato', async () => {
+        //TODO
+    });
+    it('validering av for sen termindato', async () => {
+        //TODO
+    });
+    it('validering av termindato på feil format', async () => {
+        //TODO
+    });
+    it('validering av for tidlig fødselsdato', async () => {
+        //TODO
+    });
+    it('validering av for sen fødselsdato', async () => {
+        //TODO
+    });
+    it('validering av manglende fødselsdato', async () => {
+        //TODO
+    });
+    it('validering av fødselsdato på feil format', async () => {
+        //TODO
+    });
 });
