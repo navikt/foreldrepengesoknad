@@ -12,6 +12,7 @@ import { validateFødselsdato, validateTermindato } from './barnetValidering';
 import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { ReadMore } from '@navikt/ds-react';
+import { niMånederFremITid, halvannetÅrSiden, etÅrSiden } from 'app/utils/dateUtils';
 
 const Barnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -63,7 +64,7 @@ const Barnet: React.FunctionComponent = () => {
                                 <BarnetFormComponents.DatePicker
                                     name={BarnetFormField.fødselsdato}
                                     label={intlUtils(intl, 'barnet.fødselsdato')}
-                                    minDate={undefined} //TODO {dayjs().subtract(3, 'years').toDate()}
+                                    minDate={halvannetÅrSiden(new Date())}
                                     maxDate={dayjs().toDate()}
                                     validate={validateFødselsdato(intl)}
                                     placeholder={'dd.mm.åååå'}
@@ -74,9 +75,9 @@ const Barnet: React.FunctionComponent = () => {
                                     name={BarnetFormField.termindato}
                                     label={intlUtils(intl, 'barnet.termindato')}
                                     placeholder={'dd.mm.åååå'}
-                                    minDate={undefined} //TODO
-                                    maxDate={undefined} //TODO
-                                    validate={validateTermindato(intl)}
+                                    minDate={etÅrSiden(new Date())}
+                                    maxDate={niMånederFremITid(new Date())}
+                                    validate={validateTermindato(intl, formValues.fødselsdato)}
                                 />
                                 <ReadMore size="small" header={intlUtils(intl, 'barnet.termindato.merInfo.tittel')}>
                                     {intlUtils(intl, 'barnet.termindato.merInfo.tekst')}

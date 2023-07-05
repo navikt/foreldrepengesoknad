@@ -1,9 +1,10 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { erMindreEnn3UkerSiden, etterDagensDato, hasValue, intlUtils } from '@navikt/fp-common';
+import { etterDagensDato, hasValue, intlUtils } from '@navikt/fp-common';
+import { niMånederFremITid, etÅrSiden, enMånedSiden, halvannetÅrSiden } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-export const validateTermindato = (intl: IntlShape) => (termindato: string, fødselsdato: string | undefined) => {
+export const validateTermindato = (intl: IntlShape, fødselsdato: string | undefined) => (termindato: string) => {
     if (!hasValue(termindato)) {
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.duMåOppgi');
     }
@@ -12,11 +13,14 @@ export const validateTermindato = (intl: IntlShape) => (termindato: string, fød
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.ugyldigDatoFormat');
     }
 
-    if (!erMindreEnn3UkerSiden(termindato)) {
-        if (!hasValue(fødselsdato)) {
-            return intlUtils(intl, 'valideringsfeil.barnet.termindato.forTidlig.fødselsdatoMangler');
-        }
-        return intlUtils(intl, 'valideringsfeil.barnet.termindato.forTidlig');
+    if (dayjs(termindato).isSameOrAfter(niMånederFremITid(new Date()))) {
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtFremITid');
+    }
+    if (dayjs(termindato).isBefore(enMånedSiden(new Date())) && !fødselsdato) {
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato');
+    }
+    if (dayjs(termindato).isBefore(etÅrSiden(new Date()))) {
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtTilbakeITid');
     }
 
     return undefined;
@@ -35,8 +39,8 @@ export const validateFødselsdato = (intl: IntlShape) => (fødselsdato: string) 
         return intlUtils(intl, 'valideringsfeil.barnet.fødselsdato.måVæreIdagEllerTidligere');
     }
 
-    if (dayjs(fødselsdato).isBefore(dayjs(new Date()).subtract(3, 'years').subtract(4, 'months'), 'day')) {
-        return intlUtils(intl, 'valideringsfeil.barnet.termindato.forTidlig');
+    if (dayjs(fødselsdato).isBefore(halvannetÅrSiden(new Date()))) {
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtTilbakeITid');
     }
 
     return undefined;
