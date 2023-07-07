@@ -122,11 +122,9 @@ const Inntektsinformasjon = () => {
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    {visibility.areAllQuestionsAnswered() && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
                                 </StepButtonWrapper>
                             </Block>
                         </InntektsinformasjonFormComponents.Form>
