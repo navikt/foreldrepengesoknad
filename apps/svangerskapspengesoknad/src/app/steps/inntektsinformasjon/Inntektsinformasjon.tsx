@@ -21,6 +21,7 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
+import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -109,9 +110,9 @@ const Inntektsinformasjon = () => {
                                 />
                             </Block>
 
-                            {/* <Block padBottom="l">
+                            <Block padBottom="l">
                                 <InfoTilFiskere />
-                            </Block> */}
+                            </Block>
 
                             <Block margin="xl">
                                 <StepButtonWrapper>

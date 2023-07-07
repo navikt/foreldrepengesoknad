@@ -121,5 +121,7 @@
     "inntektsinformasjon.andreInntekter.inntektsliste.ventelønn": "Vartpenger og ventelønn",
     "inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",
-    "inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet": "Jobb i utlandet"
+    "inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet": "Jobb i utlandet",
+    "annenInntekt.spørsmål.arbeidsgiver": "Oppgi namnet på arbeidsgjevaren",
+    "annenInntekt.spørsmål.land": "Kva land har du jobba i?"
 }
