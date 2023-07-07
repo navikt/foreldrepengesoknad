@@ -32,12 +32,10 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: {
         isIncluded: () => true,
         isAnswered: ({ hattInntektSomNæringsdrivende }) => hattInntektSomNæringsdrivende !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ hattInntektSomFrilans }) => hattInntektSomFrilans !== YesOrNo.UNANSWERED,
     },
     [InntektsinformasjonFormField.hattAndreInntekter]: {
         isIncluded: () => true,
         isAnswered: ({ hattAndreInntekter }) => hattAndreInntekter !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ hattInntektSomNæringsdrivende }) => hattInntektSomNæringsdrivende !== YesOrNo.UNANSWERED,
     },
 };
 
