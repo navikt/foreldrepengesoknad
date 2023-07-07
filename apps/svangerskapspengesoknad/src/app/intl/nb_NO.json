@@ -23,7 +23,7 @@
     "ikkeMyndig.ingress": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "steps.label.barnet": "Barnet",
-    "steps.label.arbeidsforhold": "Arbeidsforhold og inntekt",
+    "steps.label.inntektsinformasjon": "Arbeidsforhold og inntekt",
     "steps.label.tilrettelegging": "Tilrettelegging",
     "steps.label.utenlandsopphold": "Opphold i utlandet",
     "steps.label.oppsummering": "Oppsummering",

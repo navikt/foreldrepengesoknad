@@ -4,11 +4,16 @@ import minMax from 'dayjs/plugin/minMax';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { YesOrNo, DateRange } from '@navikt/sif-common-formik-ds/lib';
+import { IntlShape } from 'react-intl';
+import { textGyldigRegex, textRegex } from './regexUtils';
+import { intlUtils } from './../../common';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+
+export type SkjemaelementFeil = string | undefined;
 
 export const dateToday = dayjs().toDate();
 export const date1YearFromNow = dayjs().add(1, 'years').toDate();
@@ -30,7 +35,7 @@ export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey: string)
 };
 
 export const validateRequiredField = (value: any, errorMsg: string): string | undefined => {
-    if (!hasValue(value)) {
+    if (!hasValue(value) || (typeof value === 'string' && value.trim() === '')) {
         return errorMsg;
     }
 
@@ -177,3 +182,37 @@ export const sortOpenDateRange = (d1: OpenDateRange, d2: OpenDateRange): number 
     }
     return 1;
 };
+
+export const getIllegalChars = (value: any): string => {
+    const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
+    const ugyldigStringSet = new Set(kunUgyldigeTegn.split(''));
+    return Array.from(ugyldigStringSet).join('');
+};
+
+export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: IntlShape): string => {
+    const ugyldigeTegn = getIllegalChars(value).replace(/[\t]/g, 'Tabulatortegn');
+    return intlUtils(intl, 'valideringsfeil.fritekst.kanIkkeInneholdeTegn', {
+        feltNavn: feltNavn,
+        ugyldigeTegn: ugyldigeTegn,
+    });
+};
+
+export const validateTextHasLegalChars = (value: any): boolean => textRegex.test(value);
+
+export const validateTextInputField = (value: any, feltNavn: string, intl: IntlShape): string | undefined => {
+    if (!validateTextHasLegalChars(value)) {
+        return getIllegalCharsErrorMessage(value, feltNavn, intl);
+    }
+    return undefined;
+};
+
+export const validateRequiredTextInputField =
+    (feltNavn: string, intl: IntlShape) =>
+    (value: string): SkjemaelementFeil => {
+        const errorMsgEmpty = intlUtils(intl, 'valideringsfeil.inputfelt.required', { inputFeltLabel: feltNavn });
+        const requiredFieldIsEmptyError = validateRequiredField(value, errorMsgEmpty);
+        if (requiredFieldIsEmptyError) {
+            return requiredFieldIsEmptyError;
+        }
+        return validateTextInputField(value, feltNavn, intl);
+    };
