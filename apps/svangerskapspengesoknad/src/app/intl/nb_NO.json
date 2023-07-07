@@ -117,11 +117,10 @@
     "inntektsinformasjon.andreInntekterModal.tittel": "Legg til inntektskilde",
     "inntektsinformasjon.andreInntekterModal.veileder.militær": "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektsinformasjon.andreInntekterModal.veileder.sluttpakke": "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
-    "inntektsinformasjon.andreInntekterModal.veileder.ventelønn": "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
-    "inntektsinformasjon.andreInntekter.inntektsliste.ventelønn": "Vartpenger og ventelønn",
     "inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",
     "inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet": "Jobb i utlandet",
+
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi namnet på arbeidsgjevaren",
     "annenInntekt.spørsmål.land": "Kva land har du jobba i?"
 }
