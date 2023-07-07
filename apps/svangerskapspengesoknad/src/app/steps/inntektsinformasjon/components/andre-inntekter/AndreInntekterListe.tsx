@@ -19,11 +19,7 @@ const getTitle = (type: AnnenInntektType, intl: IntlShape): string => {
         return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste');
     }
 
-    if (type === AnnenInntektType.SLUTTPAKKE) {
-        return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke');
-    }
-
-    return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.ventelønn');
+    return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke');
 };
 
 const AndreInntekterListe: FunctionComponent<Props> = ({ andreInntekter, deleteAnnenInntekt, selectAnnenInntekt }) => {
