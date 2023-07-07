@@ -6,4 +6,8 @@ export default {
     tilretteleggingsskjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
     rettOgPlikt: 'https://www.nav.no/endringer',
+    frilanserInfoBoks:
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
+    næringsdrivendeInfoBoks:
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
 };

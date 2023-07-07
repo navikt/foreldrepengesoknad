@@ -5,3 +5,4 @@ export const etÅrSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(1,
 export const enMånedSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(1, 'month').toDate();
 export const halvannetÅrSiden = (dato: Date) =>
     dayjs(dato).startOf('day').subtract(1, 'year').subtract(6, 'months').toDate();
+export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();

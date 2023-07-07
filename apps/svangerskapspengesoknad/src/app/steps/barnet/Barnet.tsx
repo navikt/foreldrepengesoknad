@@ -22,10 +22,7 @@ const Barnet: React.FunctionComponent = () => {
         return [actionCreator.setBarn(barn)];
     };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.BARNET //TODO
-    );
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.INNTEKTSINFORMASJON);
 
     return (
         <BarnetFormComponents.FormikWrapper
@@ -36,7 +33,6 @@ const Barnet: React.FunctionComponent = () => {
                     ...formValues,
                 } as BarnetFormData);
 
-                const visGåVidereKnapp = true; // TODO: fjern? visibility.areAllQuestionsAnswered();
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -85,11 +81,9 @@ const Barnet: React.FunctionComponent = () => {
                             </Block>
                             <Block margin="l">
                                 <StepButtonWrapper>
-                                    {visGåVidereKnapp && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
                                 </StepButtonWrapper>
                             </Block>
                         </BarnetFormComponents.Form>

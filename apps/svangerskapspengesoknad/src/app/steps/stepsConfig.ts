@@ -3,12 +3,16 @@ import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil
 import { IntlShape } from 'react-intl';
 
 type BarnetStepId = 'barnet';
-type ArbeidsforholdStepId = 'arbeidsforhold';
+type InntektsinformasjonStepId = 'inntektsinformasjon';
 type TilretteleggingStepId = 'tilrettelegging';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type OppsummeringStepId = 'oppsummering';
 
-type StepIdWithBackHref = ArbeidsforholdStepId | TilretteleggingStepId | UtenlandsoppholdStepId | OppsummeringStepId;
+type StepIdWithBackHref =
+    | InntektsinformasjonStepId
+    | TilretteleggingStepId
+    | UtenlandsoppholdStepId
+    | OppsummeringStepId;
 
 export type StepId = BarnetStepId | StepIdWithBackHref;
 
@@ -25,9 +29,9 @@ const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
         label: intlUtils(intl, 'steps.label.barnet'),
     },
     {
-        id: 'arbeidsforhold',
+        id: 'inntektsinformasjon',
         index: 1,
-        label: intlUtils(intl, 'steps.label.arbeidsforhold'),
+        label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
     },
     {
         id: 'tilrettelegging',
@@ -54,7 +58,7 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
     let href;
 
     switch (id) {
-        case 'arbeidsforhold':
+        case 'inntektsinformasjon':
             href = '/soknad/barnet';
             break;
         case 'tilrettelegging':

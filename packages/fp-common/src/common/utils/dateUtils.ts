@@ -2,6 +2,7 @@ import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperi
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { isISODateString } from '@navikt/ds-datepicker';
+import { hasValue } from './validationUtils';
 
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
@@ -43,4 +44,24 @@ export const ISOStringToDate = (dateString: string | undefined): Date | undefine
         return dayjs.utc(dateString).toDate();
     }
     return undefined;
+};
+
+export const isDateInTheFuture = (date: string): boolean => {
+    if (dayjs().isBefore(date, 'day')) {
+        return true;
+    }
+
+    return false;
+};
+
+export const isDateABeforeDateB = (a: string, b: string): boolean => {
+    if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {
+        return false;
+    }
+
+    if (dayjs(a).isBefore(b, 'day')) {
+        return true;
+    }
+
+    return false;
 };

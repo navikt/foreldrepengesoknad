@@ -5,6 +5,7 @@ import isAvailable from './isAvailable';
 import Forside from 'app/pages/forside/Forside';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import Barnet from 'app/steps/barnet/Barnet';
+import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -17,6 +18,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean) => {
     return (
         <>
             <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
+            <Route path={SøknadRoutes.INNTEKTSINFORMASJON} element={<Inntektsinformasjon />} />
         </>
     );
 };
