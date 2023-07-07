@@ -42,7 +42,7 @@
     "valideringsfeil.barnet.termindato.forLangtFremITid": "Du kan ikke søke så langt frem i tid.",
     "valideringsfeil.barnet.fødselsdato.duMåOppgi": "Du må oppgi fødselsdato.",
     "valideringsfeil.barnet.fødselsdato.ugyldigDatoFormat": "Dødselsdato må være en gyldig dato på formatet dd.mm.åååå.",
-    "valideringsfeil.barnet.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være tilbake i tid."
+    "valideringsfeil.barnet.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være tilbake i tid.",
 
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org nr: {organisasjonsnummer}",
@@ -122,5 +122,4 @@
     "inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",
     "inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet": "Jobb i utlandet"
-
 }
