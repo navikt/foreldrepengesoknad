@@ -1,0 +1,1 @@
+{"version":3,"file":"Dekningsgrad-fced8842.js","sources":["../../src/app/types/Dekningsgrad.ts"],"sourcesContent":["export enum Dekningsgrad {\n    ÅTTI_PROSENT = '80',\n    HUNDRE_PROSENT = '100',\n}\n"],"names":["Dekningsgrad"],"mappings":"AAAY,IAAAA,GAAAA,IACRA,EAAA,aAAe,KACfA,EAAA,eAAiB,MAFTA,IAAAA,GAAA,CAAA,CAAA"}

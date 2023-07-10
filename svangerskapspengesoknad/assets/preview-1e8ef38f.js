@@ -1,0 +1,2 @@
+import{j as e}from"./jsx-runtime-670450c2.js";import"./index-f1f749bf.js";import"./_commonjsHelpers-042e6b4d.js";const t=document.createElement("script");t.type="text/json";t.id="nav:appSettings";t.innerHTML=JSON.stringify({REST_API_URL:"rest-api",LOGIN_URL:""});document.head.appendChild(t);const o=[i=>e("div",{id:"app",style:{backgroundColor:"white",padding:"40px"},children:e(i,{})})];export{o as decorators};
+//# sourceMappingURL=preview-1e8ef38f.js.map

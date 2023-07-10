@@ -1,0 +1,1 @@
+.utvidetInformasjon{display:flex;flex-direction:row;flex-wrap:wrap;max-width:100%;margin-bottom:1rem}.utvidetInformasjon__innhold,.utvidetInformasjon__toggler{width:100%}.utvidetInformasjon__innhold{order:1}.utvidetInformasjon__toggler{order:2}

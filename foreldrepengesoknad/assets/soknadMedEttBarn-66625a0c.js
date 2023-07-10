@@ -1,0 +1,2 @@
+const e="/soknad/uttaksplan-info",n={søknad:{type:"foreldrepenger",harGodkjentVilkår:!0,søkersituasjon:{situasjon:"fødsel",rolle:"mor"},barn:{type:"født",fødselsdatoer:["2021-03-15"],antallBarn:"1",datoForAleneomsorg:"",dokumentasjonAvAleneomsorg:[]},annenForelder:{kanIkkeOppgis:!0},søker:{språkkode:"nb"},informasjonOmUtenlandsopphold:{tidligereOpphold:[],senereOpphold:[]},erEndringssøknad:!1},version:4,currentRoute:e,søknadGjelderEtNyttBarn:!0};export{n as _};
+//# sourceMappingURL=soknadMedEttBarn-66625a0c.js.map

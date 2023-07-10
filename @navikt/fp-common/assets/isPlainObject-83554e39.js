@@ -1,0 +1,2 @@
+import{_ as a,j as c,a as n}from"./_getPrototype-349d8341.js";var i=a,s=c,b=n,j="[object Object]",p=Function.prototype,f=Object.prototype,e=p.toString,u=f.hasOwnProperty,l=e.call(Object);function O(r){if(!b(r)||i(r)!=j)return!1;var o=s(r);if(o===null)return!0;var t=u.call(o,"constructor")&&o.constructor;return typeof t=="function"&&t instanceof t&&e.call(t)==l}var P=O;export{P as i};
+//# sourceMappingURL=isPlainObject-83554e39.js.map

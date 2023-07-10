@@ -1,0 +1,2 @@
+const t={MØDREKVOTE:95,FEDREKVOTE:95,FELLESPERIODE:90,FORELDREPENGER_FØR_FØDSEL:15},e={farRundtFødsel:0,generellMinsterett:0,toTette:0},o={kontoer:t,minsteretter:e},E={MØDREKVOTE:75,FEDREKVOTE:75,FELLESPERIODE:80,FORELDREPENGER_FØR_FØDSEL:15},n={farRundtFødsel:0,generellMinsterett:0,toTette:0},s={kontoer:E,minsteretter:n};export{o as a,s};
+//# sourceMappingURL=stønadskontoDeltUttak100-ce558aaf.js.map

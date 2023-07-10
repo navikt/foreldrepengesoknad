@@ -1,0 +1,58 @@
+html {
+  height: 100%;
+}
+  
+body {
+  background-color: rgb(47, 47, 47);
+  font-size: 13px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.main-header {
+  color: rgb(153, 153, 153);
+  padding-top: 20px;
+  text-align: center;
+}
+
+.header {
+  color: rgb(153, 153, 153);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-gap: 10px;
+}
+
+.box {
+  background-color: #444;
+  color: rgb(153, 153, 153);
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 150%;
+}
+  
+.package-row {
+  color: #666;
+  display: flex;
+  align-items: stretch;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.package-row:hover {
+  background-color: #bbb;
+}
+
+.package-row .title {
+  color: rgb(153, 153, 153);
+  border-top-left-radius: 5%;
+  border-bottom-left-radius: 5%;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.description {
+  margin-top: 10px;
+}
