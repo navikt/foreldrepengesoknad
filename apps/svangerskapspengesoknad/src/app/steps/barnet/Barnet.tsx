@@ -22,7 +22,7 @@ const Barnet: React.FunctionComponent = () => {
         return [actionCreator.setBarn(barn)];
     };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.INNTEKTSINFORMASJON);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ARBEID);
 
     return (
         <BarnetFormComponents.FormikWrapper

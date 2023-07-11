@@ -1,4 +1,4 @@
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO copy';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useGetRequest } from 'app/utils/hooks/useGetRequest';
 
 const useSøkerinfo = () => {

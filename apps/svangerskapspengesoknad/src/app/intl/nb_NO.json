@@ -23,8 +23,8 @@
     "ikkeMyndig.ingress": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "steps.label.barnet": "Barnet",
-    "steps.label.inntektsinformasjon": "Arbeidsforhold og inntekt",
-    "steps.label.tilrettelegging": "Tilrettelegging",
+    "steps.label.arbeid": "Arbeidsforhold og inntekt",
+    "steps.label.periode": "Tilrettelegging",
     "steps.label.utenlandsopphold": "Opphold i utlandet",
     "steps.label.oppsummering": "Oppsummering",
     "barnet.erBarnetFødt": "Er barnet født?",
@@ -120,7 +120,15 @@
     "inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",
     "inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet": "Jobb i utlandet",
-
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi namnet på arbeidsgjevaren",
-    "annenInntekt.spørsmål.land": "Kva land har du jobba i?"
+    "annenInntekt.spørsmål.land": "Kva land har du jobba i?",
+
+    "tilrettelegging.veileder.intro": "I de neste spørsmålene skal du fylle inn informasjon fra skjemaet du akkurat lastet opp.",
+    "tilrettelegging.tilrettelagtArbeidFom.label": "Fra hvilken dato har du behov for tilrettelegging eller omplassering?",
+    "tilrettelegging.tilrettelagtArbeidFom.lesMer.tittel": "Les mer om dato for tilrettelegging eller omplassering",
+    "tilrettelegging.tilrettelagtArbeidFom.lesMer.info": "Her skal du oppgi datoen jordmor eller legen din mener at du trenger tilrettelegging eller omplassering. Datoen finner du i punkt 1.1 Tilrettelegging/omplassering er nødvendig fra og med i skjemaet.",
+    "tilrettelegging.tilretteleggingsType.label": "Hvordan har arbeidsgiveren din vurdert at du kan jobbe mens du er gravid?",
+    "tilrettelegging.tilretteleggingsType.hel": "a) Du kan fortsette med samme stillingsprosent",
+    "tilrettelegging.tilretteleggingsType.delvis": "b) Du kan fortsette med redusert arbeidstid",
+    "tilrettelegging.tilretteleggingsType.ingen": "c) Du kan ikke fortsette å jobbe"
 }

@@ -22,6 +22,14 @@ const svangerskapspengerReducer = (
                     søker: action.payload,
                 },
             };
+        case SvangerskapspengerContextActionKeys.SET_SØKER:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    søker: action.payload,
+                },
+            };
         case SvangerskapspengerContextActionKeys.SET_SØKERINFO:
             return {
                 ...state,

@@ -3,16 +3,12 @@ import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil
 import { IntlShape } from 'react-intl';
 
 type BarnetStepId = 'barnet';
-type InntektsinformasjonStepId = 'inntektsinformasjon';
-type TilretteleggingStepId = 'tilrettelegging';
+type InntektsinformasjonStepId = 'arbeid';
+type PeriodeStepId = 'periode';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type OppsummeringStepId = 'oppsummering';
 
-type StepIdWithBackHref =
-    | InntektsinformasjonStepId
-    | TilretteleggingStepId
-    | UtenlandsoppholdStepId
-    | OppsummeringStepId;
+type StepIdWithBackHref = InntektsinformasjonStepId | PeriodeStepId | UtenlandsoppholdStepId | OppsummeringStepId;
 
 export type StepId = BarnetStepId | StepIdWithBackHref;
 
@@ -29,19 +25,19 @@ const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
         label: intlUtils(intl, 'steps.label.barnet'),
     },
     {
-        id: 'inntektsinformasjon',
+        id: 'arbeid',
         index: 1,
-        label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
-    },
-    {
-        id: 'tilrettelegging',
-        index: 2,
-        label: intlUtils(intl, 'steps.label.tilrettelegging'),
+        label: intlUtils(intl, 'steps.label.arbeid'),
     },
     {
         id: 'utenlandsopphold',
-        index: 3,
+        index: 2,
         label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+    },
+    {
+        id: 'periode',
+        index: 3,
+        label: intlUtils(intl, 'steps.label.periode'),
     },
     {
         id: 'oppsummering',
@@ -58,17 +54,17 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
     let href;
 
     switch (id) {
-        case 'inntektsinformasjon':
+        case 'arbeid':
             href = '/soknad/barnet';
             break;
-        case 'tilrettelegging':
-            href = '/soknad/arbeidsforhold';
-            break;
         case 'utenlandsopphold':
-            href = '/soknad/tilrettelegging';
+            href = '/soknad/arbeid';
+            break;
+        case 'periode':
+            href = '/soknad/utenlandsopphold';
             break;
         case 'oppsummering':
-            href = '/soknad/utenlandsopphold';
+            href = '/soknad/periode';
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);

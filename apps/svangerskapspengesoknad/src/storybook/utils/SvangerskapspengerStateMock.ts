@@ -1,6 +1,6 @@
 import actionCreator from 'app/context/action/actionCreator';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO copy';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { FunctionComponent, useEffect, useState } from 'react';
 
