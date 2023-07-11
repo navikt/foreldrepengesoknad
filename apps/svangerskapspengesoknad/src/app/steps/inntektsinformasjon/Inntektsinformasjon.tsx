@@ -11,7 +11,6 @@ import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import EgenNæring from './components/egen-næring/EgenNæring';
 import Frilans from './components/frilans/Frilans';
-// import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import { InntektsinformasjonFormComponents, InntektsinformasjonFormData } from './inntektsinformasjonFormConfig';
 import {
     getInitialInntektsinformasjonFormValues,
@@ -23,7 +22,7 @@ import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 
-const Inntektsinformasjon = () => {
+const Arbeidsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
@@ -49,10 +48,7 @@ const Inntektsinformasjon = () => {
         return [actionCreator.setSøker(updatedSøker)];
     };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.BARNET //TODO
-    );
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
@@ -66,8 +62,8 @@ const Inntektsinformasjon = () => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="inntektsinformasjon"
-                        pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
+                        activeStepId="arbeid"
+                        pageTitle={intlUtils(intl, 'steps.label.arbeid')}
                         // onCancel={onAvbrytSøknad}
                         // onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
@@ -116,11 +112,7 @@ const Inntektsinformasjon = () => {
 
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={getPreviousStepHref('inntektsinformasjon')}
-                                    >
+                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('arbeid')}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
@@ -136,4 +128,4 @@ const Inntektsinformasjon = () => {
     );
 };
 
-export default Inntektsinformasjon;
+export default Arbeidsinformasjon;

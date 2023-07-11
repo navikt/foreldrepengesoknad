@@ -24,5 +24,6 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined!,
             frilansInformasjon: undefined!,
         },
+        tilrettelegging: [],
     },
 };

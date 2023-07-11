@@ -1,7 +1,10 @@
 enum SøknadRoutes {
     FORSIDE = '/',
     BARNET = '/barnet',
-    INNTEKTSINFORMASJON = '/inntektsinformasjon',
+    ARBEID = '/arbeid',
+    UTENLANDSOPPHOLD = '/utenlandsopphold',
+    PERIODE = '/periode',
+    OPPSUMMERING = '/oppsummering',
     SØKNAD_SENDT = '/soknad/soknad-sendt',
 }
 

@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import Person from 'app/types/Person';
-import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO copy';
+import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

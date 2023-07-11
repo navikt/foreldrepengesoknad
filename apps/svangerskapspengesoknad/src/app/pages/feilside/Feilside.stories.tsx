@@ -3,7 +3,7 @@ import links from 'app/links/links';
 import { StoryFn } from '@storybook/react';
 import withSvangerskapspengerContextProvider from './../../../storybook/decorators/withSvangerskapspengerContext';
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO copy';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 const defaultExport = {
     title: 'pages/Feilside',
