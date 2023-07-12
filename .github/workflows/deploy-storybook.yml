@@ -7,8 +7,7 @@ on:
 jobs:
   deploy-storybook:
    permissions:
-     actions: read
-     contents: read
+     contents: write
      pages: write
    uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
    with:
