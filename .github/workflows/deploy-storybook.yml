@@ -6,6 +6,8 @@ on:
 
 jobs:
   deploy-storybook:
+   permissions:
+     pages: write
    uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
    with:
      package-manager: pnpm
