@@ -20,6 +20,7 @@ import { ArbeidsgiverInfoType } from 'app/types/ArbeidsgiverInfo';
 import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
 import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
 
 describe('getKontotypeBareFarHarRett', () => {
     const periodeTrekkerMinsterett = true;
@@ -577,5 +578,47 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(result.length).toEqual(1);
         const periode1 = result[0] as Uttaksperiode;
         expect(periode1.erMorForSyk).toEqual(true);
+    });
+    it('Skal mappe og slå sammen avslåtte premature perioder for annen part (uttak og utsettelser) til å trekke fra fellesperiode konto', () => {
+        const avslåttePerioderAnnenPart = [
+            {
+                periode: {
+                    fom: '2021-12-01',
+                    tom: '2021-12-15',
+                },
+                gjelderAnnenPart: true,
+                kontoType: StønadskontoType.Fellesperiode,
+                guid: '0',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+            },
+            {
+                periode: {
+                    fom: '2021-12-16',
+                    tom: '2021-12-28',
+                },
+                gjelderAnnenPart: true,
+                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                guid: '0',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+            },
+        ] as Saksperiode[];
+
+        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderAnnenPart, grunnlag, undefined);
+        expect(result.length).toEqual(1);
+        const periode1 = result[0] as AvslåttPeriode;
+        expect(periode1.tidsperiode.fom).toEqual(new Date('2021-12-01'));
+        expect(periode1.tidsperiode.tom).toEqual(new Date('2021-12-28'));
+        expect(periode1.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(periode1.infotype).toEqual(PeriodeInfoType.avslåttPeriode);
     });
 });

@@ -168,10 +168,13 @@ export const getForelderFromPeriode = (periode: Periode): Forelder | undefined =
 };
 
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
+    let forelderNavn = '';
     if (navnPåForeldre.farMedmor) {
-        return forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    } else {
+        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
     }
-    return forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
+    return capitalizeFirstLetter(forelderNavn);
 };
 
 export const getPeriodeTittel = (
@@ -249,7 +252,15 @@ export const getPeriodeTittel = (
                     return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
                         navn: getForelderNavn(periode.forelder, navnPåForeldre),
                     });
-                default:
+                case PeriodeInfoType.avslåttPeriode:
+                    if (
+                        (periode.forelder === Forelder.mor && erFarEllerMedmor) ||
+                        (periode.forelder === Forelder.farMedmor && !erFarEllerMedmor)
+                    ) {
+                        return intlUtils(intl, 'uttaksplan.periodetype.info.avslåttPeriode.annenPart', {
+                            navn: getForelderNavn(periode.forelder, navnPåForeldre),
+                        });
+                    }
                     return intlUtils(intl, `uttaksplan.periodetype.info.${periode.infotype}`);
             }
     }
