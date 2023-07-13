@@ -61,7 +61,10 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
                 </Heading>
                 <TilesList columns={'flex'}>
                     {(erDeltUttakINorge || søkerErMor) && (
-                        <Personkort ikon={<ForelderIkon forelder={svgInfo.mor} />} tittel={navnPåForeldre.mor}>
+                        <Personkort
+                            ikon={<ForelderIkon forelder={svgInfo.mor} />}
+                            tittel={capitalizeFirstLetter(navnPåForeldre.mor)}
+                        >
                             <strong>{getVarighetString(brukteDagerPerForelder.mor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}
