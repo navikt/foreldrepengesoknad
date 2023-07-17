@@ -4,6 +4,7 @@ import { OppholdÅrsakType } from '../types/OppholdÅrsakType';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
 import { StønadskontoType } from '../types/StønadskontoType';
 import {
+    InfoPeriode,
     isAnnenPartInfoPeriode,
     isHull,
     isOverføringsperiode,
@@ -15,6 +16,7 @@ import {
     Periodetype,
     Utsettelsesperiode,
     UttakAnnenPartInfoPeriode,
+    Uttaksperiode,
 } from '../types/Periode';
 import { NavnPåForeldre } from '../../app/types/NavnPåForeldre';
 import { Forelder } from '../../app/types/Forelder';
@@ -168,10 +170,78 @@ export const getForelderFromPeriode = (periode: Periode): Forelder | undefined =
 };
 
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
+    let forelderNavn = '';
     if (navnPåForeldre.farMedmor) {
-        return forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    } else {
+        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
     }
-    return forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
+    return capitalizeFirstLetter(forelderNavn);
+};
+
+const getPeriodeTittelUttaksPeriode = (
+    intl: IntlShape,
+    periode: Uttaksperiode,
+    navnPåForeldre: NavnPåForeldre,
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+    situasjon: Situasjon,
+    erFarEllerMedmor?: boolean,
+    erAleneOmOmsorg?: boolean
+) => {
+    const tittelMedNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
+    const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
+        intl,
+        tittelMedNavn,
+        periode,
+        situasjon,
+        familiehendelsesdato,
+        termindato
+    );
+    if (
+        (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
+        (periode.ønskerSamtidigUttak && isValidStillingsprosent(periode.samtidigUttakProsent))
+    ) {
+        return `${tittel} ${intlUtils(intl, 'gradering.prosent', {
+            stillingsprosent: getUttaksprosentFromStillingsprosent(
+                prettifyProsent(periode.stillingsprosent),
+                periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
+            ),
+        })}`;
+    }
+    return tittel;
+};
+
+const getPeriodeTittelInfoPeriode = (
+    intl: IntlShape,
+    periode: InfoPeriode,
+    navnPåForeldre: NavnPåForeldre,
+    erFarEllerMedmor?: boolean
+) => {
+    switch (periode.infotype) {
+        case PeriodeInfoType.uttakAnnenPart:
+            return getUttakAnnenPartStønadskontoNavn(
+                intl,
+                getStønadskontoFromOppholdsårsak(periode.årsak),
+                periode.forelder,
+                navnPåForeldre,
+                periode.samtidigUttakProsent
+            );
+        case PeriodeInfoType.utsettelseAnnenPart:
+            return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
+                navn: getForelderNavn(periode.forelder, navnPåForeldre),
+            });
+        case PeriodeInfoType.avslåttPeriode:
+            if (
+                (periode.forelder === Forelder.mor && erFarEllerMedmor) ||
+                (periode.forelder === Forelder.farMedmor && !erFarEllerMedmor)
+            ) {
+                return intlUtils(intl, 'uttaksplan.periodetype.info.avslåttPeriode.annenPart', {
+                    navn: getForelderNavn(periode.forelder, navnPåForeldre),
+                });
+            }
+            return intlUtils(intl, `uttaksplan.periodetype.info.${periode.infotype}`);
+    }
 };
 
 export const getPeriodeTittel = (
@@ -186,34 +256,16 @@ export const getPeriodeTittel = (
 ): string => {
     switch (periode.type) {
         case Periodetype.Uttak: {
-            const tittelMedNavn = getStønadskontoNavn(
+            return getPeriodeTittelUttaksPeriode(
                 intl,
-                periode.konto,
+                periode,
                 navnPåForeldre,
+                familiehendelsesdato,
+                termindato,
+                situasjon,
                 erFarEllerMedmor,
                 erAleneOmOmsorg
             );
-            const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
-                intl,
-                tittelMedNavn,
-                periode,
-                situasjon,
-                familiehendelsesdato,
-                termindato
-            );
-            if (
-                (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
-                (periode.ønskerSamtidigUttak && isValidStillingsprosent(periode.samtidigUttakProsent))
-            ) {
-                return `${tittel} ${intlUtils(intl, 'gradering.prosent', {
-                    stillingsprosent: getUttaksprosentFromStillingsprosent(
-                        prettifyProsent(periode.stillingsprosent),
-                        periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
-                    ),
-                })}`;
-            }
-
-            return tittel;
         }
         case Periodetype.PeriodeUtenUttak:
             return intlUtils(intl, 'uttaksplan.periodetype.periodeUtenUttak.tittel');
@@ -236,22 +288,7 @@ export const getPeriodeTittel = (
         case Periodetype.Hull:
             return intlUtils(intl, 'uttaksplan.periodetype.hull.tittel');
         case Periodetype.Info:
-            switch (periode.infotype) {
-                case PeriodeInfoType.uttakAnnenPart:
-                    return getUttakAnnenPartStønadskontoNavn(
-                        intl,
-                        getStønadskontoFromOppholdsårsak(periode.årsak),
-                        periode.forelder,
-                        navnPåForeldre,
-                        periode.samtidigUttakProsent
-                    );
-                case PeriodeInfoType.utsettelseAnnenPart:
-                    return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
-                        navn: getForelderNavn(periode.forelder, navnPåForeldre),
-                    });
-                default:
-                    return intlUtils(intl, `uttaksplan.periodetype.info.${periode.infotype}`);
-            }
+            return getPeriodeTittelInfoPeriode(intl, periode, navnPåForeldre, erFarEllerMedmor);
     }
 };
 
