@@ -446,6 +446,7 @@ export const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, 
         termindato &&
         saksperiode.gjelderAnnenPart &&
         !saksperiode.resultat.innvilget &&
+        saksperiode.resultat.trekkerDager &&
         dayjs(saksperiode.periode.tom).isBefore(dayjs(ISOStringToDate(termindato)), 'd') &&
         saksperiode.kontoType !== StønadskontoType.Fedrekvote
     );
