@@ -48,7 +48,7 @@ const DekningsgradSpørsmål: FunctionComponent<Props> = ({
                 legend={intlUtils(intl, spørsmålTekst)}
             />
             <ReadMore header="Les mer om lengden på foreldrepengeperioden">
-                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad80" />
+                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
             </ReadMore>
         </Block>
     );
