@@ -40,7 +40,7 @@ const OmBarnet: React.FunctionComponent = () => {
     const { state } = useForeldrepengesøknadContext();
     const { søknadGjelderEtNyttBarn } = state;
     const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
-
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
         if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
             return barn.fnr.includes(regBarn.fnr);
@@ -101,7 +101,7 @@ const OmBarnet: React.FunctionComponent = () => {
                 } as OmBarnetQuestionPayload);
 
                 const farMedmorSøkerPåTerminFørWLB =
-                    isFarEllerMedmor(søkersituasjon.rolle) &&
+                    erFarEllerMedmor &&
                     convertYesOrNoOrUndefinedToBoolean(formValues.erBarnetFødt) === false &&
                     hasValue(formValues.termindato) &&
                     !andreAugust2022ReglerGjelder(ISOStringToDate(formValues.termindato)!);
@@ -124,7 +124,7 @@ const OmBarnet: React.FunctionComponent = () => {
                             {valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0 && (
                                 <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} visibility={visibility} />
                             )}
-                            <BarnFødtEllerAdoptert visibility={visibility} />
+                            <BarnFødtEllerAdoptert visibility={visibility} erFarEllerMedmor={erFarEllerMedmor} />
                             <AdopsjonAnnetBarn
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues as OmBarnetFormData}

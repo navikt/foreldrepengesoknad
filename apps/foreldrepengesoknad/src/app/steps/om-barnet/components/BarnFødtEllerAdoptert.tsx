@@ -7,11 +7,11 @@ import { ReadMore } from '@navikt/ds-react';
 
 interface Props {
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
+    erFarEllerMedmor: boolean;
 }
 
-const BarnFødtEllerAdoptert: FunctionComponent<Props> = ({ visibility }) => {
+const BarnFødtEllerAdoptert: FunctionComponent<Props> = ({ visibility, erFarEllerMedmor }) => {
     const intl = useIntl();
-
     return (
         <>
             <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.adopsjonAvEktefellesBarn)}>
@@ -25,12 +25,14 @@ const BarnFødtEllerAdoptert: FunctionComponent<Props> = ({ visibility }) => {
                     name={OmBarnetFormField.erBarnetFødt}
                     legend={intlUtils(intl, 'omBarnet.erBarnetFødt')}
                 />
-                <ReadMore header={intlUtils(intl, 'omBarnet.erBarnetFødt.readMore.header')}>
-                    <Block padBottom="m">
-                        <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
-                    </Block>
-                    <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del2" />
-                </ReadMore>
+                {!erFarEllerMedmor && (
+                    <ReadMore header={intlUtils(intl, 'omBarnet.erBarnetFødt.readMore.header')}>
+                        <Block padBottom="m">
+                            <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
+                        </Block>
+                        <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del2" />
+                    </ReadMore>
+                )}
             </Block>
         </>
     );
