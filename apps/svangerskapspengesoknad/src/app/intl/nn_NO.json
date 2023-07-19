@@ -134,5 +134,13 @@
     "tilrettelegging.tilretteleggingsType.label": "Hvordan har arbeidsgiveren din vurdert at du kan jobbe mens du er gravid?",
     "tilrettelegging.tilretteleggingsType.hel": "a) Du kan fortsette med samme stillingsprosent",
     "tilrettelegging.tilretteleggingsType.delvis": "b) Du kan fortsette med redusert arbeidstid",
-    "tilrettelegging.tilretteleggingsType.ingen": "c) Du kan ikke fortsette å jobbe"
+    "tilrettelegging.tilretteleggingsType.ingen": "c) Du kan ikke fortsette å jobbe",
+    "valideringsfeil.fraOgMedDato.gyldigDato": "Fra og med dato må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.fraOgMedDato.påkrevd": "Du må oppgi en fra og med dato",
+    "valideringsfeil.fraOgMedDato.erIFremtiden": "Fra og med dato må være før eller lik dagens dato",
+    "valideringsfeil.fraOgMedDato.førTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
+    "valideringsfeil.tilOgMedDato.gyldigDato": "Til og med dato må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.tilOgMedDato.påkrevd": "Du må oppgi en til og med dato",
+    "valideringsfeil.tilOgMedDato.erIFremtiden": "Fra og med dato må være før eller lik dagens dato",
+    "valideringsfeil.tilOgMedDato.etterFraDato": "Du må legge inn en til og med dato som er etter fra og med datoen."
 }

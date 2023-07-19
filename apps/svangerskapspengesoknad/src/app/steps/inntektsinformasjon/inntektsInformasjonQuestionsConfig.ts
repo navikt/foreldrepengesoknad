@@ -16,7 +16,7 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: {
         isIncluded: ({ hattInntektSomFrilans }) => hattInntektSomFrilans === YesOrNo.YES,
         isAnswered: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ frilansOppstartsDato }) => hasValue(frilansOppstartsDato),
+        visibilityFilter: ({ hattInntektSomFrilans }) => hattInntektSomFrilans === YesOrNo.YES,
     },
     [InntektsinformasjonFormField.frilansSluttDato]: {
         isIncluded: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser === YesOrNo.NO,

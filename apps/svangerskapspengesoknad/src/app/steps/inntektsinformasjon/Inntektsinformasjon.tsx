@@ -67,6 +67,7 @@ const Inntektsinformasjon = () => {
     const { termindato } = barn;
     const [frilans, setFrilans] = useState<Frilans | undefined>(undefined);
     const [redigererFrilans, setRedigererFrilans] = useState(false);
+    const [frilansStartFeil, setFrilansStartFeil] = useState<string | undefined>(undefined);
     console.log(frilans);
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
@@ -84,9 +85,8 @@ const Inntektsinformasjon = () => {
 
         return [actionCreator.setSøker(updatedSøker)];
     };
-
+    console.log('frilansStartFeil ', frilansStartFeil);
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
-
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
@@ -129,13 +129,15 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
-                            {(!frilans || redigererFrilans) && (
+                            {((formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans) && (
                                 <Block padBottom="l">
                                     <FrilansForm
                                         visibility={visibility}
                                         formValues={formValues as InntektsinformasjonFormData}
                                         setFrilans={setFrilans}
                                         setRedigererFrilans={setRedigererFrilans}
+                                        frilansStartFeil={frilansStartFeil}
+                                        setFrilansStartFeil={setFrilansStartFeil}
                                     />
                                 </Block>
                             )}
