@@ -10,8 +10,11 @@ import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import EgenNæring from './components/egen-næring/EgenNæring';
-import Frilans from './components/frilans/Frilans';
-import { InntektsinformasjonFormComponents, InntektsinformasjonFormData } from './inntektsinformasjonFormConfig';
+import {
+    InntektsinformasjonFormComponents,
+    InntektsinformasjonFormData,
+    InntektsinformasjonFormField,
+} from './inntektsinformasjonFormConfig';
 import {
     getInitialInntektsinformasjonFormValues,
     mapInntektsinformasjonFormDataToState,
@@ -21,15 +24,50 @@ import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
+import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
+import { Frilans } from 'app/types/Frilans';
+import FrilansForm from './components/frilans/FrilansForm';
+import FrilansVisning from './components/frilans/FrilansVisning';
+import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
-const Arbeidsinformasjon = () => {
+export const cleanupInntektsinformasjonFormData = (
+    values: InntektsinformasjonFormData,
+    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>
+): InntektsinformasjonFormData => {
+    const cleanedData: InntektsinformasjonFormData = {
+        hattInntektSomFrilans: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)
+            ? values.hattInntektSomFrilans
+            : YesOrNo.UNANSWERED,
+        hattInntektSomNæringsdrivende: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)
+            ? values.hattInntektSomNæringsdrivende
+            : YesOrNo.UNANSWERED,
+        hattAndreInntekter: visibility.isVisible(InntektsinformasjonFormField.hattAndreInntekter)
+            ? values.hattAndreInntekter
+            : YesOrNo.UNANSWERED,
+        frilansOppstartsDato: visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)
+            ? values.frilansOppstartsDato
+            : '',
+        frilansSluttDato: visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)
+            ? values.frilansSluttDato
+            : '',
+        jobberFremdelesSomFrilanser: visibility.isVisible(InntektsinformasjonFormField.jobberFremdelesSomFrilanser)
+            ? values.jobberFremdelesSomFrilanser
+            : YesOrNo.UNANSWERED,
+    };
+
+    return cleanedData;
+};
+
+const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
     const { termindato } = barn;
-    const [frilansoppdrag, setFrilansoppdrag] = useState(
-        søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
-    );
+    const [frilans, setFrilans] = useState<Frilans | undefined>(undefined);
+    const [redigererFrilans, setRedigererFrilans] = useState(false);
+    console.log(frilans);
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
     );
@@ -41,7 +79,6 @@ const Arbeidsinformasjon = () => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(
             values,
             andreInntekterInformasjon,
-            frilansoppdrag,
             egenNæringInformasjon
         );
 
@@ -68,7 +105,11 @@ const Arbeidsinformasjon = () => {
                         // onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl)}
                     >
-                        <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                        <InntektsinformasjonFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                            cleanup={(values) => cleanupInntektsinformasjonFormData(values, visibility)}
+                        >
                             <Block padBottom="l">
                                 <BodyShort>
                                     Hvis du får utbetalinger fra NAV, trenger du ikke å opplyse om det i søknaden
@@ -78,15 +119,31 @@ const Arbeidsinformasjon = () => {
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
                             />
-
-                            <Block padBottom="l">
-                                <Frilans
-                                    frilansoppdrag={frilansoppdrag}
-                                    setFrilansoppdrag={setFrilansoppdrag}
-                                    visibility={visibility}
-                                    formValues={formValues as InntektsinformasjonFormData}
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}
+                            >
+                                <InntektsinformasjonFormComponents.YesOrNoQuestion
+                                    name={InntektsinformasjonFormField.hattInntektSomFrilans}
+                                    legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd')}
                                 />
+                                <HvemKanVæreFrilanser />
                             </Block>
+                            {(!frilans || redigererFrilans) && (
+                                <Block padBottom="l">
+                                    <FrilansForm
+                                        visibility={visibility}
+                                        formValues={formValues as InntektsinformasjonFormData}
+                                        setFrilans={setFrilans}
+                                        setRedigererFrilans={setRedigererFrilans}
+                                    />
+                                </Block>
+                            )}
+                            {frilans && !redigererFrilans && formValues.hattInntektSomFrilans === YesOrNo.YES && (
+                                <Block padBottom="l">
+                                    <FrilansVisning frilans={frilans} setRedigererFrilans={setRedigererFrilans} />
+                                </Block>
+                            )}
 
                             <Block padBottom="l">
                                 <EgenNæring
@@ -109,7 +166,9 @@ const Arbeidsinformasjon = () => {
                             <Block padBottom="l">
                                 <InfoTilFiskere />
                             </Block>
-
+                            <Block padBottom="l">
+                                <InfoOmFørstegangstjeneste />
+                            </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousStepHref('arbeid')}>
@@ -128,4 +187,4 @@ const Arbeidsinformasjon = () => {
     );
 };
 
-export default Arbeidsinformasjon;
+export default Inntektsinformasjon;

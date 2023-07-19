@@ -1,0 +1,38 @@
+.frilansvisning {
+    border-radius: 2px; 
+    background: var(--global-deepblue-50, #E6F1F8);
+    display: grid;
+    grid-template-columns: 1fr 8% 8%;
+    grid-template-rows: 50% 50%;
+    width: 568px;
+    padding: 16px;
+    gap: 0px;
+}
+
+.frilansvisning__tittel {
+    grid-column: 1;
+    grid-row: 1;
+
+}
+
+.frilansvisning__dato {
+    grid-column: 1;
+    grid-row: 2;
+    align-self:flex-end;
+}
+
+/* .frilansvisning__slett {
+    grid-column: 2;
+    grid-row: 2;
+    width:2rem;
+    height:2rem;
+    align-self:last baseline;
+} */
+
+.frilansvisning__rediger {
+    grid-column: 3;
+    grid-row: 2;
+    width:2rem;
+    height:2rem;
+    align-self:last baseline;
+}

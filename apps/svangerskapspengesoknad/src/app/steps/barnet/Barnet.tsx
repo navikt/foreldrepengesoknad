@@ -56,7 +56,7 @@ const Barnet: React.FunctionComponent = () => {
                                     {intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tekst')}
                                 </ReadMore>
                             </Block>
-                            <Block padBottom="xl" visible={visibility.isVisible(BarnetFormField.fødselsdato)}>
+                            <Block padBottom="xxl" visible={visibility.isVisible(BarnetFormField.fødselsdato)}>
                                 <BarnetFormComponents.DatePicker
                                     name={BarnetFormField.fødselsdato}
                                     label={intlUtils(intl, 'barnet.fødselsdato')}
@@ -66,7 +66,7 @@ const Barnet: React.FunctionComponent = () => {
                                     placeholder={'dd.mm.åååå'}
                                 />
                             </Block>
-                            <Block padBottom="xl" visible={true}>
+                            <Block padBottom="xxl" visible={true}>
                                 <BarnetFormComponents.DatePicker
                                     name={BarnetFormField.termindato}
                                     label={intlUtils(intl, 'barnet.termindato')}

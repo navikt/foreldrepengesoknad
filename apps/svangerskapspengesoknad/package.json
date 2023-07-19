@@ -44,6 +44,7 @@
     },
     "dependencies": {
         "@formatjs/intl-pluralrules": "^5.2.4",
+        "@navikt/aksel-icons": "^4.7.0",
         "@navikt/ds-css": "4.6.1",
         "@navikt/ds-datepicker": "^4.2.0",
         "@navikt/ds-react": "^4.6.1",
