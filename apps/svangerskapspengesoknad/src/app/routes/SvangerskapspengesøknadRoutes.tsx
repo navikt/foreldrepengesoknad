@@ -5,7 +5,7 @@ import isAvailable from './isAvailable';
 import Forside from 'app/pages/forside/Forside';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import Barnet from 'app/steps/barnet/Barnet';
-import Arbeidsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
+import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import Tilrettelegging from 'app/steps/tilrettelegging/Tilrettelegging';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 
@@ -20,7 +20,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean) => {
     return (
         <>
             <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
-            <Route path={SøknadRoutes.ARBEID} element={<Arbeidsinformasjon />} />
+            <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
             <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             <Route path={SøknadRoutes.PERIODE} element={<Tilrettelegging />} />
         </>

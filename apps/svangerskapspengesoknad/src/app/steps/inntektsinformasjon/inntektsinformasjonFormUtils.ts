@@ -3,7 +3,7 @@ import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Næring } from 'app/types/Næring';
 import { AnnenInntekt, AnnenInntektType } from 'app/types/AnnenInntekt';
-import { Frilans, FrilansOppdrag } from 'app/types/Frilans';
+import { Frilans } from 'app/types/Frilans';
 import { ISOStringToDate } from '@navikt/fp-common';
 import {
     convertBooleanOrUndefinedToYesOrNo,
@@ -16,8 +16,7 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.frilansOppstartsDato]: '',
-    [InntektsinformasjonFormField.oppdragForNæreVennerEllerFamilie]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.inntektSomFosterforelder]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.frilansSluttDato]: '',
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
 };
 
@@ -54,13 +53,6 @@ export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     };
 };
 
-export const cleanupInvisibleCharsFromFrilansinformasjon = (frilansoppdrag: FrilansOppdrag[]): FrilansOppdrag[] => {
-    return frilansoppdrag.map((oppdrag: FrilansOppdrag) => ({
-        ...oppdrag,
-        navnPåArbeidsgiver: replaceInvisibleCharsWithSpace(oppdrag.navnPåArbeidsgiver),
-    }));
-};
-
 export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInntekt[]): AnnenInntekt[] => {
     return andreInntekter.map((inntekt) =>
         inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
@@ -75,7 +67,6 @@ export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInn
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
     andreInntekter?: AnnenInntekt[],
-    frilansoppdrag?: FrilansOppdrag[],
     næringer?: Næring[]
 ): Søker => {
     let frilansInformasjon: Frilans | undefined = undefined;
@@ -83,12 +74,8 @@ export const mapInntektsinformasjonFormDataToState = (
     if (values.hattInntektSomFrilans === YesOrNo.YES) {
         frilansInformasjon = {
             oppstart: ISOStringToDate(values.frilansOppstartsDato)!,
+            sluttDato: ISOStringToDate(values.frilansSluttDato)!,
             jobberFremdelesSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser)!,
-            harJobbetForNærVennEllerFamilieSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
-                values.oppdragForNæreVennerEllerFamilie
-            )!,
-            driverFosterhjem: convertYesOrNoOrUndefinedToBoolean(values.inntektSomFosterforelder),
-            oppdragForNæreVennerEllerFamilieSiste10Mnd: cleanupInvisibleCharsFromFrilansinformasjon(frilansoppdrag!),
         };
     }
 
@@ -118,14 +105,9 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
         ),
         hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
         frilansOppstartsDato: søker.frilansInformasjon ? dateToISOString(søker.frilansInformasjon.oppstart) : '',
-        inntektSomFosterforelder: søker.frilansInformasjon
-            ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.driverFosterhjem)
-            : YesOrNo.UNANSWERED,
+        frilansSluttDato: søker.frilansInformasjon ? dateToISOString(søker.frilansInformasjon.sluttDato) : '',
         jobberFremdelesSomFrilanser: søker.frilansInformasjon
             ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.jobberFremdelesSomFrilans)
-            : YesOrNo.UNANSWERED,
-        oppdragForNæreVennerEllerFamilie: søker.frilansInformasjon
-            ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd)
             : YesOrNo.UNANSWERED,
     };
 };
