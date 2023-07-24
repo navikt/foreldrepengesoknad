@@ -26,7 +26,7 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { Frilans } from 'app/types/Frilans';
-import FrilansForm from './components/frilans/FrilansForm';
+import FrilansSubform from './components/frilans/FrilansSubform';
 import FrilansVisning from './components/frilans/FrilansVisning';
 import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -67,8 +67,7 @@ const Inntektsinformasjon = () => {
     const { termindato } = barn;
     const [frilans, setFrilans] = useState<Frilans | undefined>(undefined);
     const [redigererFrilans, setRedigererFrilans] = useState(false);
-    const [frilansStartFeil, setFrilansStartFeil] = useState<string | undefined>(undefined);
-    console.log(frilans);
+
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
     );
@@ -85,13 +84,12 @@ const Inntektsinformasjon = () => {
 
         return [actionCreator.setSøker(updatedSøker)];
     };
-    console.log('frilansStartFeil ', frilansStartFeil);
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={handleSubmit}
-            renderForm={({ values: formValues }) => {
+            renderForm={({ values: formValues, errors, setFieldValue }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
@@ -112,7 +110,7 @@ const Inntektsinformasjon = () => {
                         >
                             <Block padBottom="l">
                                 <BodyShort>
-                                    Hvis du får utbetalinger fra NAV, trenger du ikke å opplyse om det i søknaden
+                                    {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
                                 </BodyShort>
                             </Block>
 
@@ -131,13 +129,13 @@ const Inntektsinformasjon = () => {
                             </Block>
                             {((formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans) && (
                                 <Block padBottom="l">
-                                    <FrilansForm
+                                    <FrilansSubform
                                         visibility={visibility}
                                         formValues={formValues as InntektsinformasjonFormData}
                                         setFrilans={setFrilans}
                                         setRedigererFrilans={setRedigererFrilans}
-                                        frilansStartFeil={frilansStartFeil}
-                                        setFrilansStartFeil={setFrilansStartFeil}
+                                        errors={errors}
+                                        setFieldValue={setFieldValue}
                                     />
                                 </Block>
                             )}
