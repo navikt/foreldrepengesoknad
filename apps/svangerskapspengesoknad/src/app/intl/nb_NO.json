@@ -1,6 +1,7 @@
 {
     "leggTil": "Legg til",
     "avbryt": "Avbryt",
+    "pågående": "pågående",
     "søknad.pageheading": "Søknad om svangerskapspenger",
     "søknad.gåVidere": "Neste steg",
     "sesjonUtløpt.tittel": "Du er nå logget ut",
@@ -45,7 +46,7 @@
     "valideringsfeil.barnet.fødselsdato.duMåOppgi": "Du må oppgi fødselsdato.",
     "valideringsfeil.barnet.fødselsdato.ugyldigDatoFormat": "Dødselsdato må være en gyldig dato på formatet dd.mm.åååå.",
     "valideringsfeil.barnet.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være tilbake i tid.",
-
+    "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": " Hvis du får utbetalinger fra NAV, trenger du ikke å opplyse om det i søknaden.",
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org nr: {organisasjonsnummer}",
     "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
@@ -142,5 +143,6 @@
     "valideringsfeil.tilOgMedDato.gyldigDato": "Til og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.tilOgMedDato.påkrevd": "Du må oppgi en til og med dato",
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Fra og med dato må være før eller lik dagens dato",
-    "valideringsfeil.tilOgMedDato.etterFraDato": "Du må legge inn en til og med dato som er etter fra og med datoen."
+    "valideringsfeil.tilOgMedDato.etterFraDato": "Du må legge inn en til og med dato som er etter fra og med datoen.",
+    "valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd": "Du må oppgi om oppdraget er pågående"
 }
