@@ -7,13 +7,13 @@ import {
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from '../../inntektsinformasjonFormConfig';
-import './frilans-subform.css';
-import { Button, ErrorMessage } from '@navikt/ds-react';
+import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import { Frilans } from 'app/types/Frilans';
 import { validateFrilansSlutt, validateFrilansStart, validatePågåendeOppdrag } from './validation/frilansValidation';
 import { getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import './frilans-input.css';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
@@ -30,7 +30,7 @@ const cleanValues = (formValues: InntektsinformasjonFormData, setFieldValue: any
     }
 };
 
-const FrilansSubform: FunctionComponent<Props> = ({
+const FrilansInput: FunctionComponent<Props> = ({
     visibility,
     formValues,
     errors,
@@ -43,7 +43,7 @@ const FrilansSubform: FunctionComponent<Props> = ({
     const [frilansErPågåendeFeil, setFrilansErPågåendeFeil] = useState<string | undefined>(undefined);
     const [frilansSluttFeil, setFrilansSluttFeil] = useState<string | undefined>(undefined);
     const intl = useIntl();
-    const bem = bemUtils('frilansSubform');
+    const bem = bemUtils('frilansInput');
 
     const handleOnLeggTil = () => {
         setSubmitClicked(true);
@@ -92,6 +92,9 @@ const FrilansSubform: FunctionComponent<Props> = ({
 
     return (
         <>
+            <Block padBottom="l">
+                <Heading size="small">{intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.tittel')}</Heading>
+            </Block>
             <div className={bem.block}>
                 <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)}>
                     <InntektsinformasjonFormComponents.DatePicker
@@ -164,7 +167,7 @@ const FrilansSubform: FunctionComponent<Props> = ({
                 </Block>
                 <Button
                     type="button"
-                    variant="secondary"
+                    variant="primary"
                     onClick={(event) => {
                         event.preventDefault();
                         handleOnLeggTil();
@@ -177,4 +180,4 @@ const FrilansSubform: FunctionComponent<Props> = ({
     );
 };
 
-export default FrilansSubform;
+export default FrilansInput;

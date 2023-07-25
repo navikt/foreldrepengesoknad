@@ -28,7 +28,7 @@ const FrilansVisning: FunctionComponent<Props> = ({ frilans, setRedigererFrilans
                 <Label className={bem.element('tittel')}>{frilansTekst}</Label>
 
                 <BodyShort className={bem.element('dato')}>
-                    {formatDate(frilans.oppstart)}-{tilTekst}
+                    {formatDate(frilans.oppstart)} - {tilTekst}
                 </BodyShort>
 
                 <Button

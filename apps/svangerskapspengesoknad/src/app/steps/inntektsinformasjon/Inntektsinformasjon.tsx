@@ -26,7 +26,7 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { Frilans } from 'app/types/Frilans';
-import FrilansSubform from './components/frilans/FrilansSubform';
+import FrilansInput from './components/frilans/FrilansInput';
 import FrilansVisning from './components/frilans/FrilansVisning';
 import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -129,7 +129,7 @@ const Inntektsinformasjon = () => {
                             </Block>
                             {((formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans) && (
                                 <Block padBottom="l">
-                                    <FrilansSubform
+                                    <FrilansInput
                                         visibility={visibility}
                                         formValues={formValues as InntektsinformasjonFormData}
                                         setFrilans={setFrilans}

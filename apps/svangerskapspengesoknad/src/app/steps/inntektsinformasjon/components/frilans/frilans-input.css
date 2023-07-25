@@ -1,21 +1,21 @@
-.frilansSubform {
+.frilansInput {
     background-color: var(--a-deepblue-50);
     margin-bottom: 1rem;
     padding: 1rem 
 }
 
-.frilansSubform__avbryt {
+.frilansInput__avbryt {
     margin-left: 1rem; 
 }
 
-.frilansSubform__leggtil {
+.frilansInput__leggtil {
     background-color: blue;
 }
 
-.frilansSubform__leggtil > :first-child {
+.frilansInput__leggtil > :first-child {
     background-color: white;  
 }
 
-.frilansSubform__feilmelding {
+.frilansInput__feilmelding {
     padding-top: 0.5rem;
 }
