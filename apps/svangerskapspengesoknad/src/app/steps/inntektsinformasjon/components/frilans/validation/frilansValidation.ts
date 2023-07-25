@@ -1,6 +1,7 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { hasValue, intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { fireUkerSiden } from 'app/utils/dateUtils';
 import { IntlShape } from 'react-intl';
 
 export const validateFrilansStart = (intl: IntlShape, tom: string, submitClicked: boolean) => (fom: string) => {
@@ -47,6 +48,10 @@ export const validateFrilansSlutt =
 
         if (isDateInTheFuture(tom)) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
+        }
+
+        if (isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.merEnn4UkerSiden');
         }
 
         if (fom && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {

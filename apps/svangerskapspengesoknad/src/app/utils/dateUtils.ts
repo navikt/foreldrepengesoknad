@@ -7,3 +7,4 @@ export const halvannetÅrSiden = (dato: Date) =>
     dayjs(dato).startOf('day').subtract(1, 'year').subtract(6, 'months').toDate();
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 export const treUkerSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(3, 'weeks').toDate();
+export const fireUkerSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(4, 'weeks').toDate();

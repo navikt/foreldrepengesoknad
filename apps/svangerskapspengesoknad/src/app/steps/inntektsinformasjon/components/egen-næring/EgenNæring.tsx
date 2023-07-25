@@ -67,7 +67,7 @@ const EgenNæring: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <InntektsinformasjonFormComponents.YesOrNoQuestion
                         name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
-                        legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd')}
+                        legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende')}
                         validate={(hattInntektSomNæringsdrivende) => {
                             if (hattInntektSomNæringsdrivende === YesOrNo.YES) {
                                 if (egenNæringInformasjon.length === 0) {

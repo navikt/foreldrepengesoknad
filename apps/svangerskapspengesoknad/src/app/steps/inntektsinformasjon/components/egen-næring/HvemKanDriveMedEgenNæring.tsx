@@ -8,18 +8,16 @@ const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();
 
     return (
-        <ReadMore
-            header={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.apneLabel')}
-        >
+        <ReadMore header={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel')}>
             <div>
                 <Block padBottom="l">
                     <BodyShort>
-                        <FormattedMessage id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.del1" />
+                        <FormattedMessage id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1" />
                     </BodyShort>
                 </Block>
                 <BodyShort>
                     <FormattedMessage
-                        id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.infoboks.del2"
+                        id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2"
                         values={{
                             a: (msg: any) => (
                                 <Link href={links.næringsdrivendeInfoBoks} rel="noreferrer" target="_blank">
