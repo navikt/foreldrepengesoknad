@@ -1,4 +1,4 @@
-import { Block, ISOStringToDate, bemUtils, dateToday, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, bemUtils, date4WeeksAgo, dateToday, hasValue, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -142,6 +142,7 @@ const FrilansSubform: FunctionComponent<Props> = ({
                     <InntektsinformasjonFormComponents.DatePicker
                         name={InntektsinformasjonFormField.frilansSluttDato}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.slutt')}
+                        minDate={date4WeeksAgo}
                         maxDate={dateToday}
                         showYearSelector={true}
                         placeholder={'dd.mm.åååå'}

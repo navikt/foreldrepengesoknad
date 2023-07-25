@@ -123,7 +123,7 @@ const Inntektsinformasjon = () => {
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattInntektSomFrilans}
-                                    legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd')}
+                                    legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilans')}
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
