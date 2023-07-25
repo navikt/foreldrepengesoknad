@@ -1,15 +1,17 @@
 import { BodyShort, Button, Heading, Label } from '@navikt/ds-react';
-import { bemUtils, formatDate } from '@navikt/fp-common';
+import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { Frilans } from 'app/types/Frilans';
 import { FunctionComponent } from 'react';
 import './frilansvisning.css';
 import { PencilWritingIcon } from '@navikt/aksel-icons';
+import { useIntl } from 'react-intl';
 interface Props {
     frilans: Frilans;
     setRedigererFrilans: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const FrilansVisning: FunctionComponent<Props> = ({ frilans, setRedigererFrilans }) => {
+    const intl = useIntl();
     const bem = bemUtils('frilansvisning');
     const frilansTekst =
         !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? 'Du jobbet frilans' : 'Du jobber frilans';
@@ -21,9 +23,11 @@ const FrilansVisning: FunctionComponent<Props> = ({ frilans, setRedigererFrilans
 
     return (
         <>
-            <Heading level="3" size="small">
-                Frilansarbeid
-            </Heading>
+            <Block padBottom="l">
+                <Heading level="3" size="small">
+                    {intlUtils(intl, 'inntektsinformasjon.frilansArbeid.tittel')}
+                </Heading>
+            </Block>
             <div className={bem.block}>
                 <Label className={bem.element('tittel')}>{frilansTekst}</Label>
 

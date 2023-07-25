@@ -93,7 +93,9 @@ const FrilansInput: FunctionComponent<Props> = ({
     return (
         <>
             <Block padBottom="l">
-                <Heading size="small">{intlUtils(intl, 'inntektsinformasjon.frilansOppdrag.tittel')}</Heading>
+                <Heading level="3" size="small">
+                    {intlUtils(intl, 'inntektsinformasjon.frilansArbeid.tittel')}
+                </Heading>
             </Block>
             <div className={bem.block}>
                 <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)}>
