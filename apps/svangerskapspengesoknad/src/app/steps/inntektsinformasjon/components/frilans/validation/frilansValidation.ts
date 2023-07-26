@@ -1,7 +1,8 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { hasValue, intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
+import { intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { fireUkerSiden } from 'app/utils/dateUtils';
+import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 
 export const validateFrilansStart = (intl: IntlShape, tom: string, submitClicked: boolean) => (fom: string) => {
@@ -26,7 +27,7 @@ export const validateFrilansStart = (intl: IntlShape, tom: string, submitClicked
 
 export const validatePågåendeOppdrag = (intl: IntlShape, submitClicked: boolean) => (pågående: YesOrNo) => {
     if (submitClicked && pågående === YesOrNo.UNANSWERED) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd');
+        return intlUtils(intl, 'valideringsfeil.frilansoppdrag.pågående.påkrevd');
     }
 
     return undefined;

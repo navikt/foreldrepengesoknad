@@ -1,4 +1,4 @@
-import { Block, ISOStringToDate, bemUtils, date4WeeksAgo, dateToday, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, bemUtils, date4WeeksAgo, dateToday, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -14,6 +14,7 @@ import { getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import './frilans-input.css';
+import { hasValue } from 'app/utils/validationUtils';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
@@ -38,16 +39,15 @@ const FrilansInput: FunctionComponent<Props> = ({
     setRedigererFrilans,
     setFieldValue,
 }) => {
+    const intl = useIntl();
+    const bem = bemUtils('frilansInput');
     const [submitClicked, setSubmitClicked] = useState(false);
     const [frilansOppstartFeil, setFrilansOppstartFeil] = useState<string | undefined>(undefined);
     const [frilansErPågåendeFeil, setFrilansErPågåendeFeil] = useState<string | undefined>(undefined);
     const [frilansSluttFeil, setFrilansSluttFeil] = useState<string | undefined>(undefined);
-    const intl = useIntl();
-    const bem = bemUtils('frilansInput');
 
     const handleOnLeggTil = () => {
         setSubmitClicked(true);
-
         const formIsAnswered =
             hasValue(formValues.frilansOppstartsDato) &&
             formValues.jobberFremdelesSomFrilanser !== YesOrNo.UNANSWERED &&
@@ -113,7 +113,9 @@ const FrilansInput: FunctionComponent<Props> = ({
                         </div>
                     )}
                     {submitClicked && !frilansOppstartFeil && !hasValue(formValues.frilansOppstartsDato) && (
-                        <ErrorMessage>{intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd')}.</ErrorMessage>
+                        <div className={bem.element('feilmelding')}>
+                            <ErrorMessage>{intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd')}.</ErrorMessage>
+                        </div>
                     )}
                 </Block>
                 <Block
@@ -135,10 +137,7 @@ const FrilansInput: FunctionComponent<Props> = ({
                         formValues.jobberFremdelesSomFrilanser === YesOrNo.UNANSWERED && (
                             <div>
                                 <ErrorMessage>
-                                    {intlUtils(
-                                        intl,
-                                        'valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd'
-                                    )}
+                                    {intlUtils(intl, 'valideringsfeil.frilansoppdrag.pågående.påkrevd')}
                                 </ErrorMessage>
                             </div>
                         )}

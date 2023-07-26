@@ -218,3 +218,7 @@ export const validateRequiredTextInputField =
         }
         return validateTextInputField(value, feltNavn, intl);
     };
+
+export const containsWhiteSpace = (s: string): boolean => {
+    return /\s/.test(s);
+};

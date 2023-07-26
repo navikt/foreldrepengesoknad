@@ -1,6 +1,7 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { etterDagensDato, hasValue, intlUtils } from '@navikt/fp-common';
+import { etterDagensDato, intlUtils } from '@navikt/fp-common';
 import { niMånederFremITid, etÅrSiden, enMånedSiden, halvannetÅrSiden } from 'app/utils/dateUtils';
+import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 

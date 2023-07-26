@@ -1,20 +1,20 @@
 @import './../../../../styles/variables.css';
 
-.frilansInput {
+.egenNæringInput {
     background-color: var(--a-deepblue-50);
     margin-bottom: 1rem;
     padding: 1rem;
     width: var(--app-max-width)
 }
 
-.frilansInput__leggtil {
+.egenNæringInput__leggtil {
     background-color: blue;
 }
 
-.frilansInput__leggtil > :first-child {
+.egenNæringInput__leggtil > :first-child {
     background-color: white;  
 }
 
-.frilansInput__feilmelding {
+.egenNæringInput__feilmelding {
     padding-top: 0.5rem;
 }

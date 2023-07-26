@@ -99,7 +99,7 @@ const AndreInntekter: FunctionComponent<Props> = ({
                         />
                     </Block>
                     <Button type="button" onClick={handleOnLeggTil}>
-                        <FormattedMessage id="inntektsinformasjon.leggTilOppdrag" />
+                        <FormattedMessage id="leggTil" />
                     </Button>
                 </div>
             )}

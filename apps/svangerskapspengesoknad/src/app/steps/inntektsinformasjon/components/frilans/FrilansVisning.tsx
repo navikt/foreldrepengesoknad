@@ -2,7 +2,7 @@ import { BodyShort, Button, Heading, Label } from '@navikt/ds-react';
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { Frilans } from 'app/types/Frilans';
 import { FunctionComponent } from 'react';
-import './frilansvisning.css';
+import './frilans-visning.css';
 import { PencilWritingIcon } from '@navikt/aksel-icons';
 import { useIntl } from 'react-intl';
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 const FrilansVisning: FunctionComponent<Props> = ({ frilans, setRedigererFrilans }) => {
     const intl = useIntl();
-    const bem = bemUtils('frilansvisning');
+    const bem = bemUtils('frilans-visning');
     const frilansTekst =
         !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? 'Du jobbet frilans' : 'Du jobber frilans';
     const tilTekst =

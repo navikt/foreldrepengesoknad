@@ -9,13 +9,13 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import EgenNæring from './components/egen-næring/EgenNæring';
 import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from './inntektsinformasjonFormConfig';
 import {
+    cleanupInntektsinformasjonForm,
     getInitialInntektsinformasjonFormValues,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
@@ -30,61 +30,36 @@ import FrilansInput from './components/frilans/FrilansInput';
 import FrilansVisning from './components/frilans/FrilansVisning';
 import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-
-export const cleanupInntektsinformasjonFormData = (
-    values: InntektsinformasjonFormData,
-    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>
-): InntektsinformasjonFormData => {
-    const cleanedData: InntektsinformasjonFormData = {
-        hattInntektSomFrilans: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)
-            ? values.hattInntektSomFrilans
-            : YesOrNo.UNANSWERED,
-        hattInntektSomNæringsdrivende: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)
-            ? values.hattInntektSomNæringsdrivende
-            : YesOrNo.UNANSWERED,
-        hattAndreInntekter: visibility.isVisible(InntektsinformasjonFormField.hattAndreInntekter)
-            ? values.hattAndreInntekter
-            : YesOrNo.UNANSWERED,
-        frilansOppstartsDato: visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)
-            ? values.frilansOppstartsDato
-            : '',
-        frilansSluttDato: visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)
-            ? values.frilansSluttDato
-            : '',
-        jobberFremdelesSomFrilanser: visibility.isVisible(InntektsinformasjonFormField.jobberFremdelesSomFrilanser)
-            ? values.jobberFremdelesSomFrilanser
-            : YesOrNo.UNANSWERED,
-    };
-
-    return cleanedData;
-};
+import EgenNæringInput from './components/egen-næring/EgenNæringInput';
+import { Næring } from 'app/types/Næring';
+import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
+import EgenNæringVisning from './components/egen-næring/EgenNæringVisning';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
     const { termindato } = barn;
-    const [frilans, setFrilans] = useState<Frilans | undefined>(undefined);
-    const [redigererFrilans, setRedigererFrilans] = useState(false);
-
-    const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
-        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
+    const [frilans, setFrilans] = useState<Frilans | undefined>(
+        søker.frilansInformasjon ? søker.frilansInformasjon : undefined
     );
+    const [redigererFrilans, setRedigererFrilans] = useState(false);
+    const [næring, setNæring] = useState<Næring | undefined>(
+        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : undefined
+    );
+    const [redigererNæring, setRedigererNæring] = useState(false);
+
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
     );
 
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
-        const updatedSøker = mapInntektsinformasjonFormDataToState(
-            values,
-            andreInntekterInformasjon,
-            egenNæringInformasjon
-        );
+        const updatedSøker = mapInntektsinformasjonFormDataToState(values, andreInntekterInformasjon);
 
         return [actionCreator.setSøker(updatedSøker)];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
+
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
@@ -93,6 +68,13 @@ const Inntektsinformasjon = () => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
+                const visFrilansInput =
+                    (formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans;
+                const visFrilansInfo = frilans && !redigererFrilans && formValues.hattInntektSomFrilans === YesOrNo.YES;
+                const visNæringInput =
+                    (formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && !næring) || redigererNæring;
+                const visNæringInfo =
+                    næring && !redigererNæring && formValues.hattInntektSomNæringsdrivende === YesOrNo.YES;
 
                 return (
                     <Step
@@ -106,7 +88,7 @@ const Inntektsinformasjon = () => {
                         <InntektsinformasjonFormComponents.Form
                             includeButtons={false}
                             includeValidationSummary={true}
-                            cleanup={(values) => cleanupInntektsinformasjonFormData(values, visibility)}
+                            cleanup={(values) => cleanupInntektsinformasjonForm(values, visibility)}
                         >
                             <Block padBottom="l">
                                 <BodyShort>
@@ -127,7 +109,7 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
-                            {((formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans) && (
+                            {visFrilansInput && (
                                 <Block padBottom="l">
                                     <FrilansInput
                                         visibility={visibility}
@@ -139,20 +121,43 @@ const Inntektsinformasjon = () => {
                                     />
                                 </Block>
                             )}
-                            {frilans && !redigererFrilans && formValues.hattInntektSomFrilans === YesOrNo.YES && (
+                            {visFrilansInfo && (
                                 <Block padBottom="l">
-                                    <FrilansVisning frilans={frilans} setRedigererFrilans={setRedigererFrilans} />
+                                    <FrilansVisning frilans={frilans!} setRedigererFrilans={setRedigererFrilans} />
                                 </Block>
                             )}
-
-                            <Block padBottom="l">
-                                <EgenNæring
-                                    egenNæringInformasjon={egenNæringInformasjon}
-                                    setEgenNæringsInformasjon={setEgenNæringsInformasjon}
-                                    visibility={visibility}
-                                    formValues={formValues as InntektsinformasjonFormData}
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(
+                                    InntektsinformasjonFormField.hattInntektSomNæringsdrivende
+                                )}
+                            >
+                                <InntektsinformasjonFormComponents.YesOrNoQuestion
+                                    name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
+                                    legend={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende'
+                                    )}
                                 />
+                                <HvemKanDriveMedEgenNæring />
                             </Block>
+                            {visNæringInput && (
+                                <Block padBottom="l">
+                                    <EgenNæringInput
+                                        visibility={visibility}
+                                        formValues={formValues as InntektsinformasjonFormData}
+                                        setNæring={setNæring}
+                                        setRedigererNæring={setRedigererNæring}
+                                        errors={errors}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                </Block>
+                            )}
+                            {visNæringInfo && (
+                                <Block padBottom="l">
+                                    <EgenNæringVisning næring={næring!} setRedigererNæring={setRedigererNæring} />
+                                </Block>
+                            )}
 
                             <Block padBottom="l">
                                 <AndreInntekter
