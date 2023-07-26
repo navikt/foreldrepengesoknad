@@ -1,4 +1,5 @@
 import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { Næringstype } from 'app/types/Næring';
 
 export enum InntektsinformasjonFormField {
     hattInntektSomFrilans = 'hattInntektSomFrilans',
@@ -7,6 +8,17 @@ export enum InntektsinformasjonFormField {
     frilansOppstartsDato = 'frilansOppstartsDato',
     frilansSluttDato = 'frilansSluttDato',
     jobberFremdelesSomFrilanser = 'jobberFremdelesSomFrilanser',
+    egenNæringType = 'egenNæringType',
+    egenNæringNavn = 'egenNæringNavn',
+    egenNæringRegistrertINorge = 'egenNæringRegistrertINorge',
+    egenNæringOrgnr = 'egenNæringOrgnr',
+    egenNæringLand = 'egenNæringLand',
+    egenNæringFom = 'egenNæringFom',
+    egenNæringTom = 'egenNæringTom',
+    egenNæringPågående = 'egenNæringPågående',
+    egenNæringYrkesAktivDato = 'egenNæringYrkesAktivDato',
+    egenNæringResultat = 'egenNæringResultat',
+    egenNæringBlittYrkesaktivDe3SisteÅrene = 'egenNæringBlittYrkesaktivDe3SisteÅrene',
 }
 
 export interface InntektsinformasjonFormData {
@@ -16,6 +28,17 @@ export interface InntektsinformasjonFormData {
     [InntektsinformasjonFormField.frilansOppstartsDato]: string;
     [InntektsinformasjonFormField.frilansSluttDato]: string;
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo;
+    [InntektsinformasjonFormField.egenNæringType]: Næringstype | undefined;
+    [InntektsinformasjonFormField.egenNæringNavn]: string;
+    [InntektsinformasjonFormField.egenNæringRegistrertINorge]: YesOrNo;
+    [InntektsinformasjonFormField.egenNæringOrgnr]: string;
+    [InntektsinformasjonFormField.egenNæringLand]: string;
+    [InntektsinformasjonFormField.egenNæringFom]: string;
+    [InntektsinformasjonFormField.egenNæringTom]: string;
+    [InntektsinformasjonFormField.egenNæringPågående]: YesOrNo;
+    [InntektsinformasjonFormField.egenNæringYrkesAktivDato]: string;
+    [InntektsinformasjonFormField.egenNæringResultat]: string;
+    [InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo;
 }
 
 export const InntektsinformasjonFormComponents = getTypedFormComponents<

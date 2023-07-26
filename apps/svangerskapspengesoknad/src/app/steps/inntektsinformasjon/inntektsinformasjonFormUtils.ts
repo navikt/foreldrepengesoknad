@@ -10,6 +10,10 @@ import {
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common/src/common/utils/formUtils';
 import { Søker, Søkerrolle } from 'app/types/Søker';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { date4YearsAgo } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
+import { hasValue } from 'app/utils/validationUtils';
 
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
@@ -18,41 +22,28 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.frilansOppstartsDato]: '',
     [InntektsinformasjonFormField.frilansSluttDato]: '',
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
-};
-
-const cleanUpRegnskapsførerNæring = (næring: Næring): Næring => {
-    if (næring.harRegnskapsfører) {
-        return {
-            ...næring,
-            regnskapsfører: {
-                ...næring.regnskapsfører!,
-                navn: replaceInvisibleCharsWithSpace(næring.regnskapsfører!.navn),
-            },
-        };
-    }
-    return næring;
+    [InntektsinformasjonFormField.egenNæringType]: undefined,
+    [InntektsinformasjonFormField.egenNæringNavn]: '',
+    [InntektsinformasjonFormField.egenNæringRegistrertINorge]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.egenNæringOrgnr]: '',
+    [InntektsinformasjonFormField.egenNæringLand]: '',
+    [InntektsinformasjonFormField.egenNæringTom]: '',
+    [InntektsinformasjonFormField.egenNæringFom]: '',
+    [InntektsinformasjonFormField.egenNæringPågående]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.egenNæringResultat]: '',
+    [InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.egenNæringYrkesAktivDato]: '',
 };
 
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     const cleanedNavn = replaceInvisibleCharsWithSpace(næring.navnPåNæringen);
-    if (næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {
-        const cleanedEndringInformasjon = {
-            ...næring.endringAvNæringsinntektInformasjon!,
-            forklaring: replaceInvisibleCharsWithSpace(næring.endringAvNæringsinntektInformasjon!.forklaring),
-        };
-
-        return {
-            ...cleanUpRegnskapsførerNæring(næring),
-            navnPåNæringen: cleanedNavn,
-            endringAvNæringsinntektInformasjon: cleanedEndringInformasjon,
-        };
-    }
     return {
-        ...cleanUpRegnskapsførerNæring(næring),
+        ...næring,
         navnPåNæringen: cleanedNavn,
     };
 };
 
+//TODO: burde dette flyttes til andre inntekter?
 export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInntekt[]): AnnenInntekt[] => {
     return andreInntekter.map((inntekt) =>
         inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
@@ -66,10 +57,10 @@ export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInn
 
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
-    andreInntekter?: AnnenInntekt[],
-    næringer?: Næring[]
+    andreInntekter?: AnnenInntekt[]
 ): Søker => {
     let frilansInformasjon: Frilans | undefined = undefined;
+    let næring: Næring | undefined = undefined;
 
     if (values.hattInntektSomFrilans === YesOrNo.YES) {
         frilansInformasjon = {
@@ -77,6 +68,10 @@ export const mapInntektsinformasjonFormDataToState = (
             sluttDato: ISOStringToDate(values.frilansSluttDato)!,
             jobberFremdelesSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser)!,
         };
+    }
+
+    if (values.hattInntektSomNæringsdrivende === YesOrNo.YES) {
+        næring = mapEgenNæringFormValuesToState(values);
     }
 
     return {
@@ -88,15 +83,13 @@ export const mapInntektsinformasjonFormDataToState = (
         )!,
         andreInntekterSiste10Mnd:
             values.hattAndreInntekter === YesOrNo.YES ? cleanupInvisibleCharsFromAndreInntekter(andreInntekter!) : [],
-        selvstendigNæringsdrivendeInformasjon:
-            values.hattInntektSomNæringsdrivende === YesOrNo.YES
-                ? næringer!.map((næring) => cleanupInvisibleCharsFromNæring(næring))
-                : [],
-        frilansInformasjon: values.hattInntektSomFrilans === YesOrNo.YES ? frilansInformasjon : undefined,
+        selvstendigNæringsdrivendeInformasjon: næring,
+        frilansInformasjon: frilansInformasjon,
     };
 };
 
 export const getInitialInntektsinformasjonFormValues = (søker: Søker): InntektsinformasjonFormData => {
+    const næring = søker.selvstendigNæringsdrivendeInformasjon;
     return {
         ...initialInntektsinformasjonFormValues,
         hattAndreInntekter: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
@@ -109,5 +102,109 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
         jobberFremdelesSomFrilanser: søker.frilansInformasjon
             ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.jobberFremdelesSomFrilans)
             : YesOrNo.UNANSWERED,
+        egenNæringType: næring?.næringstype,
+        egenNæringNavn: næring?.navnPåNæringen || '',
+        egenNæringRegistrertINorge: convertBooleanOrUndefinedToYesOrNo(næring?.registrertINorge),
+        egenNæringLand: næring?.registrertILand || '',
+        egenNæringFom: dateToISOString(næring?.tidsperiode.fom),
+        egenNæringTom: dateToISOString(næring?.tidsperiode.tom) || '',
+        egenNæringOrgnr: næring?.organisasjonsnummer || '',
+        egenNæringPågående: convertBooleanOrUndefinedToYesOrNo(næring?.pågående),
+        egenNæringResultat: næring?.næringsinntekt?.toString() || '',
+        egenNæringBlittYrkesaktivDe3SisteÅrene: convertBooleanOrUndefinedToYesOrNo(
+            næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+        ),
+        egenNæringYrkesAktivDato: dateToISOString(næring?.oppstartsdato) || '',
+    };
+};
+
+export const cleanupInntektsinformasjonForm = (
+    values: InntektsinformasjonFormData,
+    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>
+): InntektsinformasjonFormData => {
+    return {
+        hattInntektSomFrilans: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)
+            ? values.hattInntektSomFrilans
+            : initialInntektsinformasjonFormValues.hattInntektSomFrilans,
+        frilansOppstartsDato: visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)
+            ? values.frilansOppstartsDato
+            : initialInntektsinformasjonFormValues.frilansOppstartsDato,
+        jobberFremdelesSomFrilanser: visibility.isVisible(InntektsinformasjonFormField.jobberFremdelesSomFrilanser)
+            ? values.jobberFremdelesSomFrilanser
+            : initialInntektsinformasjonFormValues.jobberFremdelesSomFrilanser,
+        frilansSluttDato: visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)
+            ? values.frilansSluttDato
+            : initialInntektsinformasjonFormValues.frilansSluttDato,
+        hattAndreInntekter: visibility.isVisible(InntektsinformasjonFormField.hattAndreInntekter)
+            ? values.hattAndreInntekter
+            : initialInntektsinformasjonFormValues.hattAndreInntekter,
+        hattInntektSomNæringsdrivende: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)
+            ? values.hattInntektSomNæringsdrivende
+            : initialInntektsinformasjonFormValues.hattInntektSomNæringsdrivende,
+        egenNæringType: visibility.isVisible(InntektsinformasjonFormField.egenNæringType)
+            ? values.egenNæringType
+            : undefined,
+        egenNæringNavn: visibility.isVisible(InntektsinformasjonFormField.egenNæringNavn)
+            ? values.egenNæringNavn
+            : initialInntektsinformasjonFormValues.egenNæringNavn,
+        egenNæringRegistrertINorge: visibility.isVisible(InntektsinformasjonFormField.egenNæringRegistrertINorge)
+            ? values.egenNæringRegistrertINorge
+            : initialInntektsinformasjonFormValues.egenNæringRegistrertINorge,
+        egenNæringOrgnr: visibility.isVisible(InntektsinformasjonFormField.egenNæringOrgnr)
+            ? values.egenNæringOrgnr
+            : initialInntektsinformasjonFormValues.egenNæringOrgnr,
+        egenNæringLand: visibility.isVisible(InntektsinformasjonFormField.egenNæringLand)
+            ? values.egenNæringLand
+            : initialInntektsinformasjonFormValues.egenNæringLand,
+        egenNæringTom: visibility.isVisible(InntektsinformasjonFormField.egenNæringTom)
+            ? values.egenNæringTom
+            : initialInntektsinformasjonFormValues.egenNæringTom,
+        egenNæringFom: visibility.isVisible(InntektsinformasjonFormField.egenNæringFom)
+            ? values.egenNæringFom
+            : initialInntektsinformasjonFormValues.egenNæringFom,
+        egenNæringPågående: visibility.isVisible(InntektsinformasjonFormField.egenNæringPågående)
+            ? values.egenNæringPågående
+            : initialInntektsinformasjonFormValues.egenNæringPågående,
+        egenNæringResultat: visibility.isVisible(InntektsinformasjonFormField.egenNæringResultat)
+            ? values.egenNæringResultat
+            : initialInntektsinformasjonFormValues.egenNæringResultat,
+        egenNæringBlittYrkesaktivDe3SisteÅrene: visibility.isVisible(
+            InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene
+        )
+            ? values.egenNæringBlittYrkesaktivDe3SisteÅrene
+            : initialInntektsinformasjonFormValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
+        egenNæringYrkesAktivDato: visibility.isVisible(InntektsinformasjonFormField.egenNæringYrkesAktivDato)
+            ? values.egenNæringYrkesAktivDato
+            : initialInntektsinformasjonFormValues.egenNæringYrkesAktivDato,
+    };
+};
+
+export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
+    if (!oppstartsdato) {
+        return true;
+    }
+
+    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+};
+
+export const mapEgenNæringFormValuesToState = (formValues: Partial<InntektsinformasjonFormData>): Næring => {
+    return {
+        næringstype: formValues.egenNæringType!,
+        tidsperiode: {
+            fom: ISOStringToDate(formValues.egenNæringFom)!,
+            tom: ISOStringToDate(formValues.egenNæringTom),
+        },
+        pågående: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringPågående)!,
+        næringsinntekt: hasValue(formValues.egenNæringResultat)
+            ? parseInt(formValues.egenNæringResultat!, 10)
+            : undefined,
+        navnPåNæringen: formValues.egenNæringNavn!,
+        organisasjonsnummer: hasValue(formValues.egenNæringOrgnr) ? formValues.egenNæringOrgnr : undefined,
+        registrertINorge: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringRegistrertINorge)!,
+        registrertILand: hasValue(formValues.egenNæringLand) ? formValues.egenNæringLand : undefined,
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertYesOrNoOrUndefinedToBoolean(
+            formValues.egenNæringBlittYrkesaktivDe3SisteÅrene
+        )!,
+        oppstartsdato: ISOStringToDate(formValues.egenNæringYrkesAktivDato),
     };
 };

@@ -1,8 +1,8 @@
-import { hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { AnnenInntektType } from 'app/types/AnnenInntekt';
+import { hasValue } from 'app/utils/validationUtils';
 
 const AndreInntekterModalFormConfig: QuestionConfig<AndreInntekterFormData, AndreInntekterFormField> = {
     [AndreInntekterFormField.type]: {

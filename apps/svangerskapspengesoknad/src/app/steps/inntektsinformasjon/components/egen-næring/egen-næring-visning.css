@@ -1,0 +1,43 @@
+@import './../../../../styles/variables.css';
+
+.egen-næring-visning {
+    border-radius: 2px; 
+    background: var(--global-deepblue-50, #E6F1F8);
+    display: grid;
+    grid-template-columns: 1fr 8% 8%;
+    grid-template-rows: 25% 25% 25% 25%;
+    width: var(--app-max-width);
+    padding: 16px;
+    gap: 0px;
+}
+
+.egen-næring-visning__tittel {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.egen-næring-visning__orgnr {
+    grid-column: 1;
+    grid-row: 2;
+    align-self:flex-end;
+}
+
+.egen-næring-visning__dato {
+    grid-column: 1;
+    grid-row: 3;
+    align-self:flex-end;
+}
+
+.egen-næring-visning__inntekt {
+    grid-column: 1;
+    grid-row: 4;
+    align-self:flex-end;
+}
+
+.egen-næring-visning__rediger {
+    grid-column: 3;
+    grid-row: 4;
+    width:2rem;
+    height:2rem;
+    align-self:last baseline;
+}

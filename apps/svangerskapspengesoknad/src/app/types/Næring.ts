@@ -8,7 +8,7 @@ export enum Næringstype {
 }
 
 export interface Næring {
-    næringstyper: Næringstype[];
+    næringstype: Næringstype;
     tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
     næringsinntekt?: number;
     pågående: boolean;
@@ -18,10 +18,6 @@ export interface Næring {
     registrertILand?: string;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
     oppstartsdato?: Date;
-    hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
-    endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
-    harRegnskapsfører: boolean;
-    regnskapsfører?: Næringsrelasjon;
 }
 
 export interface EndringAvNæringsinntektInformasjon {
