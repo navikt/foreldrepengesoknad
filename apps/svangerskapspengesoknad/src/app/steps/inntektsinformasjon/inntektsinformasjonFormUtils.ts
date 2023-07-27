@@ -2,7 +2,7 @@ import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inn
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Næring } from 'app/types/Næring';
-import { AnnenInntekt, AnnenInntektType } from 'app/types/AnnenInntekt';
+import { AnnenInntektIUtlandet, AnnenInntektType } from 'app/types/AnnenInntektIUtlandet';
 import { Frilans } from 'app/types/Frilans';
 import { ISOStringToDate } from '@navikt/fp-common';
 import {
@@ -33,6 +33,11 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.egenNæringResultat]: '',
     [InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.egenNæringYrkesAktivDato]: '',
+    [InntektsinformasjonFormField.arbeidIUtlandetLand]: '',
+    [InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver]: '',
+    [InntektsinformasjonFormField.arbeidIUtlandetFom]: '',
+    [InntektsinformasjonFormField.arbeidIUtlandetPågående]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.arbeidIUtlandetTom]: '',
 };
 
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
@@ -43,8 +48,9 @@ export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     };
 };
 
-//TODO: burde dette flyttes til andre inntekter?
-export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInntekt[]): AnnenInntekt[] => {
+export const cleanupInvisibleCharsFromArbeidIUtlandet = (
+    andreInntekter: AnnenInntektIUtlandet[]
+): AnnenInntektIUtlandet[] => {
     return andreInntekter.map((inntekt) =>
         inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
             ? {
@@ -57,23 +63,10 @@ export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInn
 
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
-    andreInntekter?: AnnenInntekt[]
+    frilans: Frilans | undefined,
+    næring: Næring | undefined,
+    arbeidIUtlandet: AnnenInntektIUtlandet[]
 ): Søker => {
-    let frilansInformasjon: Frilans | undefined = undefined;
-    let næring: Næring | undefined = undefined;
-
-    if (values.hattInntektSomFrilans === YesOrNo.YES) {
-        frilansInformasjon = {
-            oppstart: ISOStringToDate(values.frilansOppstartsDato)!,
-            sluttDato: ISOStringToDate(values.frilansSluttDato)!,
-            jobberFremdelesSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser)!,
-        };
-    }
-
-    if (values.hattInntektSomNæringsdrivende === YesOrNo.YES) {
-        næring = mapEgenNæringFormValuesToState(values);
-    }
-
     return {
         rolle: Søkerrolle.MOR,
         harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattAndreInntekter)!,
@@ -82,15 +75,19 @@ export const mapInntektsinformasjonFormDataToState = (
             values.hattInntektSomNæringsdrivende
         )!,
         andreInntekterSiste10Mnd:
-            values.hattAndreInntekter === YesOrNo.YES ? cleanupInvisibleCharsFromAndreInntekter(andreInntekter!) : [],
-        selvstendigNæringsdrivendeInformasjon: næring,
-        frilansInformasjon: frilansInformasjon,
+            values.hattAndreInntekter === YesOrNo.YES ? cleanupInvisibleCharsFromArbeidIUtlandet(arbeidIUtlandet!) : [],
+        selvstendigNæringsdrivendeInformasjon:
+            values.hattInntektSomNæringsdrivende === YesOrNo.YES ? cleanupInvisibleCharsFromNæring(næring!) : undefined,
+        frilansInformasjon: frilans,
     };
 };
 
-export const getInitialInntektsinformasjonFormValues = (søker: Søker): InntektsinformasjonFormData => {
+export const getInitialInntektsinformasjonFormValues = (
+    søker: Søker,
+    selectedAnnenInntekt: AnnenInntektIUtlandet | undefined
+): InntektsinformasjonFormData => {
     const næring = søker.selvstendigNæringsdrivendeInformasjon;
-    return {
+    const init = {
         ...initialInntektsinformasjonFormValues,
         hattAndreInntekter: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
         hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(
@@ -115,14 +112,30 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
             næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
         ),
         egenNæringYrkesAktivDato: dateToISOString(næring?.oppstartsdato) || '',
+        arbeidIUtlandetLand: selectedAnnenInntekt
+            ? selectedAnnenInntekt.land
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetLand,
+        arbeidIUtlandetNavnArbeidsgiver: selectedAnnenInntekt
+            ? selectedAnnenInntekt.arbeidsgiverNavn
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetNavnArbeidsgiver,
+        arbeidIUtlandetFom: selectedAnnenInntekt
+            ? selectedAnnenInntekt.tidsperiode.fom
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetFom,
+        arbeidIUtlandetPågående: selectedAnnenInntekt
+            ? convertBooleanOrUndefinedToYesOrNo(selectedAnnenInntekt.pågående)
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetPågående,
+        arbeidIUtlandetTom: selectedAnnenInntekt
+            ? selectedAnnenInntekt.tidsperiode.tom || ''
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetTom,
     };
+    return init;
 };
 
 export const cleanupInntektsinformasjonForm = (
     values: InntektsinformasjonFormData,
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>
 ): InntektsinformasjonFormData => {
-    return {
+    const a = {
         hattInntektSomFrilans: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)
             ? values.hattInntektSomFrilans
             : initialInntektsinformasjonFormValues.hattInntektSomFrilans,
@@ -176,7 +189,25 @@ export const cleanupInntektsinformasjonForm = (
         egenNæringYrkesAktivDato: visibility.isVisible(InntektsinformasjonFormField.egenNæringYrkesAktivDato)
             ? values.egenNæringYrkesAktivDato
             : initialInntektsinformasjonFormValues.egenNæringYrkesAktivDato,
+        arbeidIUtlandetLand: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetLand)
+            ? values.arbeidIUtlandetLand
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetLand,
+        arbeidIUtlandetNavnArbeidsgiver: visibility.isVisible(
+            InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver
+        )
+            ? values.arbeidIUtlandetNavnArbeidsgiver
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetNavnArbeidsgiver,
+        arbeidIUtlandetFom: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetFom)
+            ? values.arbeidIUtlandetFom
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetFom,
+        arbeidIUtlandetPågående: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetPågående)
+            ? values.arbeidIUtlandetPågående
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetPågående,
+        arbeidIUtlandetTom: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetTom)
+            ? values.arbeidIUtlandetTom
+            : initialInntektsinformasjonFormValues.arbeidIUtlandetTom,
     };
+    return a;
 };
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
@@ -206,5 +237,20 @@ export const mapEgenNæringFormValuesToState = (formValues: Partial<Inntektsinfo
             formValues.egenNæringBlittYrkesaktivDe3SisteÅrene
         )!,
         oppstartsdato: ISOStringToDate(formValues.egenNæringYrkesAktivDato),
+    };
+};
+
+export const mapArbeidIUtlandetFormValuesToState = (
+    values: Partial<InntektsinformasjonFormData>
+): AnnenInntektIUtlandet => {
+    return {
+        arbeidsgiverNavn: values.arbeidIUtlandetNavnArbeidsgiver!,
+        land: values.arbeidIUtlandetLand!,
+        pågående: convertYesOrNoOrUndefinedToBoolean(values.arbeidIUtlandetPågående)!,
+        tidsperiode: {
+            fom: values.arbeidIUtlandetFom!,
+            tom: values.arbeidIUtlandetTom,
+        },
+        type: AnnenInntektType.JOBB_I_UTLANDET,
     };
 };

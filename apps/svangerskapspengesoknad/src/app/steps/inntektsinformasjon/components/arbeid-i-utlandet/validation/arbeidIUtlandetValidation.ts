@@ -3,40 +3,32 @@ import { intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-com
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 
-export const validateAnnenInntektFom = (intl: IntlShape, tom: string) => (fom: string) => {
-    if (!hasValue(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
-    }
-
-    if (!isISODateString(fom)) {
+export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefined) => (fom: string) => {
+    if (hasValue(fom) && !isISODateString(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
     }
 
-    if (isDateInTheFuture(fom)) {
+    if (hasValue(fom) && isDateInTheFuture(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
     }
 
-    if (isDateABeforeDateB(tom, fom)) {
+    if (hasValue(fom) && tom && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
     }
 
     return undefined;
 };
 
-export const validateAnnenInntektTom = (intl: IntlShape, fom: string) => (tom: string) => {
-    if (!hasValue(tom)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
-    }
-
-    if (!isISODateString(tom)) {
+export const validateArbeidIUtlandetTom = (intl: IntlShape, fom: string | undefined) => (tom: string) => {
+    if (hasValue(tom) && !isISODateString(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
 
-    if (isDateInTheFuture(tom)) {
+    if (hasValue(tom) && isDateInTheFuture(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
     }
 
-    if (isDateABeforeDateB(tom, fom)) {
+    if (hasValue(tom) && fom && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 

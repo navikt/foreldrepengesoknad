@@ -1,0 +1,24 @@
+@import './../../../../styles/variables.css';
+
+.arbeidIUtlandetInput {
+    background-color: var(--a-deepblue-50);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: var(--app-max-width)
+}
+
+.arbeidIUtlandetInput__tittel {
+    padding-bottom: 1rem;
+}
+
+.arbeidIUtlandetInput__leggtil {
+    background-color: blue;
+}
+
+.arbeidIUtlandetInput__leggtil > :first-child {
+    background-color: white;  
+}
+
+.arbeidIUtlandetInput__feilmelding {
+    padding-top: 0.5rem;
+}
