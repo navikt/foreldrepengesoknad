@@ -5,18 +5,18 @@ import { InntektsinformasjonFormData, InntektsinformasjonFormField } from '../..
 import { AnnenInntektIUtlandet } from 'app/types/AnnenInntektIUtlandet';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Block, guid } from '@navikt/fp-common';
+import { FormikErrors } from 'formik';
 
 interface Props {
     andreInntekterIUtlandet: AnnenInntektIUtlandet[];
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
-    // setRedigererArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
-    errors: any;
+    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: AnnenInntektIUtlandet | undefined;
-    addAnnenInntekt: any;
-    editAnnenInntekt: any;
-    deleteAnnenInntekt: any;
-    setFieldValue: any;
+    addAnnenInntekt: (inntekt: AnnenInntektIUtlandet) => void;
+    editAnnenInntekt: (inntektSomEditeres: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => void;
+    deleteAnnenInntekt: (inntektSomSlettes: AnnenInntektIUtlandet) => void;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<AnnenInntektIUtlandet | undefined>>;
 }
 
@@ -25,13 +25,12 @@ interface VisningEllerInputProps {
     isSelected: boolean;
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
-    // setRedigererArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
-    errors: any;
+    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: AnnenInntektIUtlandet | undefined;
-    addAnnenInntekt: any;
-    editAnnenInntekt: any;
-    deleteAnnenInntekt: any;
-    setFieldValue: any;
+    addAnnenInntekt: (inntekt: AnnenInntektIUtlandet) => void;
+    editAnnenInntekt: (inntektSomEditeres: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => void;
+    deleteAnnenInntekt: (inntektSomSlettes: AnnenInntektIUtlandet) => void;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<AnnenInntektIUtlandet | undefined>>;
 }
 

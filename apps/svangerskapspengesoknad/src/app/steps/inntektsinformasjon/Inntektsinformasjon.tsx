@@ -72,15 +72,15 @@ const Inntektsinformasjon = () => {
         setLeggTilNyttArbeidIUtlandet(false);
     };
 
-    const deleteAnnenInntekt = (annenInntekt: AnnenInntektIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet.filter((inntekt) => inntekt !== annenInntekt);
+    const deleteAnnenInntekt = (inntektSomSlettes: AnnenInntektIUtlandet) => {
+        const updatedAndreInntekterInformasjon = arbeidIUtlandet.filter((inntekt) => inntekt !== inntektSomSlettes);
         setArbeidIUtlandet(updatedAndreInntekterInformasjon);
         setSelectedAnnenInntekt(undefined);
     };
 
-    const editAnnenInntekt = (editertInntekt: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => {
+    const editAnnenInntekt = (inntektSomEditeres: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => {
         const updatedAndreInntekterInformasjon = arbeidIUtlandet
-            .filter((inntekt) => inntekt !== editertInntekt)
+            .filter((inntekt) => inntekt !== inntektSomEditeres)
             .concat(oppdatertInntekt);
         setSelectedAnnenInntekt(undefined);
         setArbeidIUtlandet(updatedAndreInntekterInformasjon);

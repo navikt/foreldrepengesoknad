@@ -9,7 +9,7 @@ import { Button, Heading } from '@navikt/ds-react';
 import { Block, bemUtils, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { getIn } from 'formik';
+import { FormikErrors, getIn } from 'formik';
 import { hasValue } from 'app/utils/validationUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
@@ -25,15 +25,15 @@ interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<AnnenInntektIUtlandet | undefined>>;
-    errors: any;
-    setFieldValue: any;
+    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     selectedAnnenInntekt: AnnenInntektIUtlandet | undefined;
-    addAnnenInntekt: any;
-    editAnnenInntekt: any;
+    addAnnenInntekt: (inntekt: AnnenInntektIUtlandet) => void;
+    editAnnenInntekt: (inntektSomEditeres: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => void;
     erFørsteInput: boolean;
 }
 
-const cleanValues = (setFieldValue: any) => {
+const cleanValues = (setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void) => {
     setFieldValue(
         InntektsinformasjonFormField.arbeidIUtlandetLand,
         initialInntektsinformasjonFormValues.arbeidIUtlandetLand

@@ -13,7 +13,7 @@ interface Props {
     arbeidIUtlandet: AnnenInntektIUtlandet;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<AnnenInntektIUtlandet | undefined>>;
     deleteAnnenInntekt: (arbeidIUtlandet: AnnenInntektIUtlandet) => void;
-    setFieldValue: any;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
 const getTilTekst = (arbeid: AnnenInntektIUtlandet): string => {

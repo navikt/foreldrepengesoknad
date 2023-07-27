@@ -19,7 +19,7 @@ import {
 } from './modal/validation/egenNæringValidation';
 import dayjs from 'dayjs';
 import OrgnummerEllerLand from './modal/components/OrgnummerEllerLand';
-import { getIn } from 'formik';
+import { FormikErrors, getIn } from 'formik';
 import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
 import { mapEgenNæringFormValuesToState } from '../../inntektsinformasjonFormUtils';
 import { hasValue } from 'app/utils/validationUtils';
@@ -29,11 +29,14 @@ interface Props {
     formValues: InntektsinformasjonFormData;
     setNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
     setRedigererNæring: React.Dispatch<React.SetStateAction<boolean>>;
-    errors: any;
-    setFieldValue: any;
+    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
-const cleanValues = (formValues: InntektsinformasjonFormData, setFieldValue: any) => {
+const cleanValues = (
+    formValues: InntektsinformasjonFormData,
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
+) => {
     if (formValues.egenNæringPågående === YesOrNo.YES) {
         setFieldValue(InntektsinformasjonFormField.egenNæringTom, '');
     }
