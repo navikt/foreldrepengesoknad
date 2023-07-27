@@ -7,14 +7,15 @@ import {
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from '../../inntektsinformasjonFormConfig';
-import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 import { Frilans } from 'app/types/Frilans';
-import { validateFrilansSlutt, validateFrilansStart, validatePågåendeOppdrag } from './validation/frilansValidation';
+import { validateFrilansSlutt, validateFrilansStart } from './validation/frilansValidation';
 import { getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import './frilans-input.css';
 import { hasValue } from 'app/utils/validationUtils';
+import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
@@ -31,6 +32,14 @@ const cleanValues = (formValues: InntektsinformasjonFormData, setFieldValue: any
     }
 };
 
+const areAllFrilansQuestionsAnswered = (formValues: InntektsinformasjonFormData) => {
+    return (
+        hasValue(formValues.frilansOppstartsDato) &&
+        hasValue(formValues.jobberFremdelesSomFrilanser) &&
+        (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES || hasValue(formValues.frilansOppstartsDato))
+    );
+};
+
 const FrilansInput: FunctionComponent<Props> = ({
     visibility,
     formValues,
@@ -42,19 +51,13 @@ const FrilansInput: FunctionComponent<Props> = ({
     const intl = useIntl();
     const bem = bemUtils('frilansInput');
     const [submitClicked, setSubmitClicked] = useState(false);
-    const [frilansOppstartFeil, setFrilansOppstartFeil] = useState<string | undefined>(undefined);
-    const [frilansErPågåendeFeil, setFrilansErPågåendeFeil] = useState<string | undefined>(undefined);
-    const [frilansSluttFeil, setFrilansSluttFeil] = useState<string | undefined>(undefined);
+    const [fomFeil, setFomFeil] = useState<string | undefined>(undefined);
+    const [tomFeil, setTomFeil] = useState<string | undefined>(undefined);
 
     const handleOnLeggTil = () => {
         setSubmitClicked(true);
-        const formIsAnswered =
-            hasValue(formValues.frilansOppstartsDato) &&
-            formValues.jobberFremdelesSomFrilanser !== YesOrNo.UNANSWERED &&
-            (!visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato) ||
-                hasValue(formValues.frilansSluttDato));
-        const formIsValid =
-            frilansOppstartFeil === undefined && frilansPågåendeError === undefined && frilansSluttFeil === undefined;
+        const formIsAnswered = areAllFrilansQuestionsAnswered(formValues);
+        const formIsValid = fomFeil === undefined && tomFeil === undefined;
         if (formIsAnswered && formIsValid) {
             const frilansInfo = {
                 jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(formValues.jobberFremdelesSomFrilanser),
@@ -68,27 +71,20 @@ const FrilansInput: FunctionComponent<Props> = ({
     };
 
     const frilansOppstartError = getIn(errors, InntektsinformasjonFormField.frilansOppstartsDato);
-    const frilansPågåendeError = getIn(errors, InntektsinformasjonFormField.jobberFremdelesSomFrilanser);
     const frilansSluttError = getIn(errors, InntektsinformasjonFormField.frilansSluttDato);
 
     useEffect(() => {
         if (frilansOppstartError !== undefined) {
-            setFrilansOppstartFeil(frilansOppstartError);
+            setFomFeil(frilansOppstartError);
         } else {
-            setFrilansOppstartFeil(undefined);
+            setFomFeil(undefined);
         }
-        if (frilansPågåendeError !== undefined) {
-            setFrilansErPågåendeFeil(frilansPågåendeError);
+        if (frilansSluttError !== undefined) {
+            setTomFeil(frilansSluttError);
         } else {
-            setFrilansErPågåendeFeil(undefined);
+            setTomFeil(undefined);
         }
-
-        if (visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato) && frilansSluttError !== undefined) {
-            setFrilansSluttFeil(frilansSluttError);
-        } else {
-            setFrilansSluttFeil(undefined);
-        }
-    }, [frilansOppstartError, frilansPågåendeError, frilansSluttError, visibility]);
+    }, [frilansOppstartError, frilansSluttError]);
 
     return (
         <>
@@ -102,20 +98,17 @@ const FrilansInput: FunctionComponent<Props> = ({
                     <InntektsinformasjonFormComponents.DatePicker
                         name={InntektsinformasjonFormField.frilansOppstartsDato}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
-                        validate={validateFrilansStart(intl, formValues.frilansSluttDato, submitClicked)}
+                        validate={validateFrilansStart(intl, formValues.frilansSluttDato)}
                         maxDate={dateToday}
                         showYearSelector={true}
                         placeholder={'dd.mm.åååå'}
                     />
-                    {frilansOppstartFeil !== undefined && (
-                        <div className={bem.element('feilmelding')}>
-                            <ErrorMessage>{frilansOppstartFeil}</ErrorMessage>
-                        </div>
-                    )}
-                    {submitClicked && !frilansOppstartFeil && !hasValue(formValues.frilansOppstartsDato) && (
-                        <div className={bem.element('feilmelding')}>
-                            <ErrorMessage>{intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd')}.</ErrorMessage>
-                        </div>
+                    {getInputFeltFeil(
+                        submitClicked,
+                        InntektsinformasjonFormField.frilansOppstartsDato,
+                        formValues.frilansOppstartsDato,
+                        intl,
+                        fomFeil
                     )}
                 </Block>
                 <Block
@@ -125,22 +118,13 @@ const FrilansInput: FunctionComponent<Props> = ({
                     <InntektsinformasjonFormComponents.YesOrNoQuestion
                         name={InntektsinformasjonFormField.jobberFremdelesSomFrilanser}
                         legend={intlUtils(intl, 'inntektsinformasjon.frilans.jobberFremdelesSomFrilans')}
-                        validate={validatePågåendeOppdrag(intl, submitClicked)}
                     />
-                    {frilansErPågåendeFeil !== undefined && (
-                        <div className={bem.element('feilmelding')}>
-                            <ErrorMessage>{frilansErPågåendeFeil}</ErrorMessage>
-                        </div>
+                    {getInputFeltFeil(
+                        submitClicked,
+                        InntektsinformasjonFormField.jobberFremdelesSomFrilanser,
+                        formValues.jobberFremdelesSomFrilanser,
+                        intl
                     )}
-                    {submitClicked &&
-                        !frilansErPågåendeFeil &&
-                        formValues.jobberFremdelesSomFrilanser === YesOrNo.UNANSWERED && (
-                            <div>
-                                <ErrorMessage>
-                                    {intlUtils(intl, 'valideringsfeil.frilansoppdrag.pågående.påkrevd')}
-                                </ErrorMessage>
-                            </div>
-                        )}
                 </Block>
                 <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)}>
                     <InntektsinformasjonFormComponents.DatePicker
@@ -153,17 +137,16 @@ const FrilansInput: FunctionComponent<Props> = ({
                         validate={validateFrilansSlutt(
                             intl,
                             formValues.jobberFremdelesSomFrilanser,
-                            formValues.frilansOppstartsDato,
-                            submitClicked
+                            formValues.frilansOppstartsDato
+                            // submitClicked
                         )}
                     />
-                    {frilansSluttFeil !== undefined && (
-                        <div className={bem.element('feilmelding')}>
-                            <ErrorMessage>{frilansSluttFeil}</ErrorMessage>
-                        </div>
-                    )}
-                    {submitClicked && !frilansSluttFeil && !hasValue(formValues.frilansSluttDato) && (
-                        <ErrorMessage>{intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd')}</ErrorMessage>
+                    {getInputFeltFeil(
+                        submitClicked,
+                        InntektsinformasjonFormField.frilansSluttDato,
+                        formValues.frilansSluttDato,
+                        intl,
+                        tomFeil
                     )}
                 </Block>
                 <Button

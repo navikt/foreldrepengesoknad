@@ -5,59 +5,42 @@ import { fireUkerSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 
-export const validateFrilansStart = (intl: IntlShape, tom: string, submitClicked: boolean) => (fom: string) => {
-    if (submitClicked && !hasValue(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
-    }
-
-    if (!isISODateString(fom)) {
+export const validateFrilansStart = (intl: IntlShape, tom: string) => (fom: string) => {
+    if (hasValue(fom) && !isISODateString(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
     }
 
-    if (isDateInTheFuture(fom)) {
+    if (hasValue(fom) && isDateInTheFuture(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
     }
 
-    if (tom && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
+    if (hasValue(fom) && tom && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
     }
 
     return undefined;
 };
 
-export const validatePågåendeOppdrag = (intl: IntlShape, submitClicked: boolean) => (pågående: YesOrNo) => {
-    if (submitClicked && pågående === YesOrNo.UNANSWERED) {
-        return intlUtils(intl, 'valideringsfeil.frilansoppdrag.pågående.påkrevd');
+export const validateFrilansSlutt = (intl: IntlShape, pågående: YesOrNo, fom: string) => (tom: string) => {
+    if (pågående === YesOrNo.YES) {
+        return undefined;
+    }
+
+    if (hasValue(tom) && !isISODateString(tom)) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+    }
+
+    if (hasValue(tom) && isDateInTheFuture(tom)) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
+    }
+
+    if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.merEnn4UkerSiden');
+    }
+
+    if (hasValue(tom) && fom && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 
     return undefined;
 };
-
-export const validateFrilansSlutt =
-    (intl: IntlShape, pågående: YesOrNo, fom: string, submitClicked: boolean) => (tom: string) => {
-        if (pågående === YesOrNo.YES) {
-            return undefined;
-        }
-
-        if (submitClicked && !hasValue(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
-        }
-
-        if (!isISODateString(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
-        }
-
-        if (isDateInTheFuture(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
-        }
-
-        if (isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.merEnn4UkerSiden');
-        }
-
-        if (fom && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
-        }
-
-        return undefined;
-    };

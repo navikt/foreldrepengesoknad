@@ -1,5 +1,6 @@
 {
     "leggTil": "Legg til",
+    "oppdater": "Oppdater",
     "avbryt": "Avbryt",
     "pågående": "pågående",
     "søknad.pageheading": "Søknad om svangerskapspenger",
@@ -113,6 +114,8 @@
     "inntektsinformasjon.egenNæring.blittYrkesaktivSiste3År": "Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?",
     "inntektsinformasjon.egenNæring.yrkesaktivDato": "Når ble du yrkesaktiv?",
     "inntektsinformasjon.arbeidIUtlandet.tittel": "Arbeid i utlandet",
+    "inntektsinformasjon.arbeidIUtlandet.tittel.ny": "Legg til nytt arbeid i utlandet",
+    "inntektsinformasjon.arbeidIUtlandet.tittel.oppdater": "Oppdater arbeid i utlandet",
     "inntektsinformasjon.arbeidIUtlandet.lesMer.tittel": "Hvordan kan dette påvirke svangerskapspengene?",
     "inntektsinformasjon.arbeidIUtlandet.lesMer.innhold": "Hvordan kan dette påvirke svangerskapspengene?",
     "inntektsinformasjon.arbeidIUtlandet.land": "Hvilket land har du jobbet i?",
@@ -132,7 +135,6 @@
     "tilrettelegging.tilretteleggingsType.delvis": "b) Du kan fortsette med redusert arbeidstid",
     "tilrettelegging.tilretteleggingsType.ingen": "c) Du kan ikke fortsette å jobbe",
     "valideringsfeil.fraOgMedDato.gyldigDato": "Fra og med dato må være en gyldig dato på formatet dd.mm.åååå",
-    "valideringsfeil.fraOgMedDato.påkrevd": "Du må oppgi startdatoen på næringen din",
     "valideringsfeil.fraOgMedDato.erIFremtiden": "Fra og med dato må være før eller lik dagens dato",
     "valideringsfeil.fraOgMedDato.førTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
     "valideringsfeil.tilOgMedDato.gyldigDato": "Til og med dato må være en gyldig dato på formatet dd.mm.åååå",
@@ -140,7 +142,9 @@
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Fra og med dato må være før eller lik dagens dato",
     "valideringsfeil.tilOgMedDato.etterFraDato": "Du må legge inn en til og med dato som er etter fra og med datoen.",
     "valideringsfeil.tilOgMedDato.merEnn4UkerSiden": "Datoen er før 4 uker siden. Det er ikke relevant for svangerskapspenger dersom du ikke har jobbet de siste 4 ukene som frilanser.",
-    "valideringsfeil.frilansoppdrag.pågående.påkrevd": "Du må oppgi om oppdraget er pågående",
+    "valideringsfeil.jobberFremdelesSomFrilanser.påkrevd": "Du må oppgi om du fortsatt jobber som frilanser",
+    "valideringsfeil.frilansOppstartsDato.påkrevd": "Du må oppgi dato for når du startet som frilanser",
+    "valideringsfeil.frilansSluttDato.påkrevd": "Du må oppgi dato for når du sluttet som frilanser",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
     "valideringsfeil.næringsinntekt.ugyldigFormat": "Næringsresultat kan kun bestå av siffer og må oppgis i hele kroner",
     "valideringsfeil.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
@@ -157,5 +161,10 @@
     "valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd": "Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene",
     "valideringsfeil.egenNæringYrkesAktivDato.påkrevd": "Du må oppgi dato for når du ble yrkesaktiv",
     "valideringsfeil.egenNæringOrgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
-    "valideringsfeil.egenNæringOrgnr.inneholderMellomrom": "Organisasjonsnummeret kan ikke inneholde mellomrom"
+    "valideringsfeil.egenNæringOrgnr.inneholderMellomrom": "Organisasjonsnummeret kan ikke inneholde mellomrom",
+    "valideringsfeil.arbeidIUtlandetNavnArbeidsgiver.påkrevd": "Du må oppgi navn på arbeidsgiver i utlandet",
+    "valideringsfeil.arbeidIUtlandetLand.påkrevd": "Du må oppgi land på arbeidsgiver i utlandet",
+    "valideringsfeil.arbeidIUtlandetFom.påkrevd": "Du må oppgi startdatoen på arbeidet i utlandet",
+    "valideringsfeil.arbeidIUtlandetTom.påkrevd": "Du må oppgi sluttdatoen på arbeidet i utlandet",
+    "valideringsfeil.arbeidIUtlandetPågående.påkrevd": "Du må svare på om du fortsatt jobber i utlandet"
 }
