@@ -10,7 +10,7 @@ import {
 import { Button, Heading } from '@navikt/ds-react';
 import { Frilans } from 'app/types/Frilans';
 import { validateFrilansSlutt, validateFrilansStart } from './validation/frilansValidation';
-import { getIn } from 'formik';
+import { FormikErrors, getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import './frilans-input.css';
@@ -22,11 +22,14 @@ interface Props {
     formValues: InntektsinformasjonFormData;
     setFrilans: React.Dispatch<React.SetStateAction<Frilans | undefined>>;
     setRedigererFrilans: React.Dispatch<React.SetStateAction<boolean>>;
-    errors: any;
-    setFieldValue: any;
+    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
-const cleanValues = (formValues: InntektsinformasjonFormData, setFieldValue: any) => {
+const cleanValues = (
+    formValues: InntektsinformasjonFormData,
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
+) => {
     if (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES) {
         setFieldValue(InntektsinformasjonFormField.frilansSluttDato, '');
     }
