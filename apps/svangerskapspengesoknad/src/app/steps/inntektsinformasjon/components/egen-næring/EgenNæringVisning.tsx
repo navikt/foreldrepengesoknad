@@ -53,7 +53,7 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring, setRedigererNæ
                     })}
                 </BodyShort>
                 <Button
-                    aria-label="rediger frilansinformasjon"
+                    aria-label="rediger informasjon om egen næring"
                     variant="secondary"
                     className={bem.element('rediger')}
                     icon={<PencilWritingIcon aria-hidden />}

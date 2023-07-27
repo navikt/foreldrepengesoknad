@@ -19,6 +19,11 @@ export enum InntektsinformasjonFormField {
     egenNæringYrkesAktivDato = 'egenNæringYrkesAktivDato',
     egenNæringResultat = 'egenNæringResultat',
     egenNæringBlittYrkesaktivDe3SisteÅrene = 'egenNæringBlittYrkesaktivDe3SisteÅrene',
+    arbeidIUtlandetLand = 'arbeidIUtlandetLand',
+    arbeidIUtlandetNavnArbeidsgiver = 'arbeidIUtlandetNavnArbeidsgiver',
+    arbeidIUtlandetFom = 'arbeidIUtlandetFom',
+    arbeidIUtlandetPågående = 'arbeidIUtlandetPågående',
+    arbeidIUtlandetTom = 'arbeidIUtlandetTom',
 }
 
 export interface InntektsinformasjonFormData {
@@ -39,6 +44,11 @@ export interface InntektsinformasjonFormData {
     [InntektsinformasjonFormField.egenNæringYrkesAktivDato]: string;
     [InntektsinformasjonFormField.egenNæringResultat]: string;
     [InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo;
+    [InntektsinformasjonFormField.arbeidIUtlandetLand]: string;
+    [InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver]: string;
+    [InntektsinformasjonFormField.arbeidIUtlandetFom]: string;
+    [InntektsinformasjonFormField.arbeidIUtlandetPågående]: YesOrNo;
+    [InntektsinformasjonFormField.arbeidIUtlandetTom]: string;
 }
 
 export const InntektsinformasjonFormComponents = getTypedFormComponents<
