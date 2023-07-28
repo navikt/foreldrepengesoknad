@@ -8,6 +8,7 @@ import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     barn: Barn;
+    familiehendelsesdato: Date;
 }
 
 const getAntallBarnTekst = (antallBarn: number, intl: IntlShape): string => {
@@ -38,7 +39,7 @@ const getTerminEllerFødselsdato = (barn: Barn) => {
     return formatDate(barn.fødselsdatoer[0]);
 };
 
-const BarnOppsummering: FunctionComponent<Props> = ({ barn }) => {
+const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato }) => {
     const intl = useIntl();
 
     return (
@@ -59,7 +60,7 @@ const BarnOppsummering: FunctionComponent<Props> = ({ barn }) => {
                     <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.barn.adopsjonsdato')}>
                         <BodyShort>{formatDate(barn.adopsjonsdato)}</BodyShort>
                     </OppsummeringsPunkt>
-                    <BarnAdoptertIUtlandetDetaljer barn={barn} />
+                    <BarnAdoptertIUtlandetDetaljer barn={barn} familiehendelsesdato={familiehendelsesdato} />
                 </>
             )}
         </>

@@ -187,7 +187,10 @@ const Oppsummering = () => {
                                     </OppsummeringsPanel>
                                     {!erEndringssøknad && (
                                         <OppsummeringsPanel title="Barnet">
-                                            <BarnOppsummering barn={barn} />
+                                            <BarnOppsummering
+                                                barn={barn}
+                                                familiehendelsesdato={familiehendelsesdato!}
+                                            />
                                         </OppsummeringsPanel>
                                     )}
                                     {!erEndringssøknad && (
