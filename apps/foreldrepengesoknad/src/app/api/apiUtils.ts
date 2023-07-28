@@ -267,7 +267,7 @@ const changeGradertUttaksPeriode = (periode: UttaksPeriodeForInnsending): Uttaks
 };
 
 const cleanUttaksplan = (
-    uttaksplan: Periode[],
+    plan: Periode[],
     familiehendelsesdato: Date,
     søkerErFarEllerMedmor: boolean,
     ønskerJustertUttakVedFødsel: boolean | undefined,
@@ -275,6 +275,9 @@ const cleanUttaksplan = (
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date
 ): PeriodeForInnsending[] => {
+    const uttaksplan = plan.map((periode) => {
+        return { ...periode };
+    });
     const cleanedUttaksplan = uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
