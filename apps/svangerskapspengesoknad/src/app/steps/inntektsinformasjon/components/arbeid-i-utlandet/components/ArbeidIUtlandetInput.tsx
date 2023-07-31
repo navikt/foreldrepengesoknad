@@ -3,7 +3,7 @@ import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
-} from '../../inntektsinformasjonFormConfig';
+} from '../../../inntektsinformasjonFormConfig';
 import './arbeid-i-utlandet-input.css';
 import { Button, Heading } from '@navikt/ds-react';
 import { Block, bemUtils, intlUtils, validateTextInputField } from '@navikt/fp-common';
@@ -12,25 +12,26 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { FormikErrors, getIn } from 'formik';
 import { hasValue } from 'app/utils/validationUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
+import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 import dayjs from 'dayjs';
-import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from './validation/arbeidIUtlandetValidation';
-import { AnnenInntektIUtlandet } from 'app/types/AnnenInntektIUtlandet';
+import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../validation/arbeidIUtlandetValidation';
+import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import {
     initialInntektsinformasjonFormValues,
     mapArbeidIUtlandetFormValuesToState,
-} from '../../inntektsinformasjonFormUtils';
+} from '../../../inntektsinformasjonFormUtils';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
-    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<AnnenInntektIUtlandet | undefined>>;
+    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
-    selectedAnnenInntekt: AnnenInntektIUtlandet | undefined;
-    addAnnenInntekt: (inntekt: AnnenInntektIUtlandet) => void;
-    editAnnenInntekt: (inntektSomEditeres: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => void;
+    selectedAnnenInntekt: ArbeidIUtlandet | undefined;
+    addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
+    editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     erFørsteInput: boolean;
+    setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const cleanValues = (setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void) => {
@@ -76,6 +77,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     addAnnenInntekt,
     editAnnenInntekt,
     erFørsteInput,
+    setLeggTilNyttArbeidIUtlandet,
 }) => {
     const tittelId = selectedAnnenInntekt
         ? 'inntektsinformasjon.arbeidIUtlandet.tittel.oppdater'
@@ -105,6 +107,10 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
         }
     };
 
+    const handleOnAvbryt = () => {
+        setSelectedAnnenInntekt(undefined);
+        setLeggTilNyttArbeidIUtlandet(false);
+    };
     const navnError = getIn(errors, InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver);
     const fomError = getIn(errors, InntektsinformasjonFormField.arbeidIUtlandetFom);
     const tomError = getIn(errors, InntektsinformasjonFormField.arbeidIUtlandetTom);
@@ -227,6 +233,16 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                 >
                     <FormattedMessage id={submitButtonId} />
                 </Button>
+                {!erFørsteInput && (
+                    <Button
+                        className={bem.element('avbryt')}
+                        type="button"
+                        variant="secondary"
+                        onClick={handleOnAvbryt}
+                    >
+                        <FormattedMessage id="avbryt" />
+                    </Button>
+                )}
             </div>
         </>
     );

@@ -5,18 +5,18 @@ import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import './arbeid-i-utlandet-visning.css';
 import { BodyShort, Button, Label } from '@navikt/ds-react';
 import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
-import { AnnenInntektIUtlandet } from 'app/types/AnnenInntektIUtlandet';
-import { InntektsinformasjonFormField } from '../../inntektsinformasjonFormConfig';
+import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
+import { InntektsinformasjonFormField } from '../../../inntektsinformasjonFormConfig';
 import { convertBooleanOrUndefinedToYesOrNo } from '@navikt/fp-common/src/common/utils/formUtils';
 
 interface Props {
-    arbeidIUtlandet: AnnenInntektIUtlandet;
-    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<AnnenInntektIUtlandet | undefined>>;
-    deleteAnnenInntekt: (arbeidIUtlandet: AnnenInntektIUtlandet) => void;
+    arbeidIUtlandet: ArbeidIUtlandet;
+    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
+    deleteAnnenInntekt: (arbeidIUtlandet: ArbeidIUtlandet) => void;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
-const getTilTekst = (arbeid: AnnenInntektIUtlandet): string => {
+const getTilTekst = (arbeid: ArbeidIUtlandet): string => {
     return !arbeid.pågående && arbeid.tidsperiode.tom ? formatDate(arbeid.tidsperiode.tom) : 'Pågående';
 };
 
@@ -29,7 +29,7 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
     const intl = useIntl();
     const bem = bemUtils('arbeidIUtlandetVisning');
 
-    const handleOnClickRediger = (arbeidIUtlandet: AnnenInntektIUtlandet) => {
+    const handleOnClickRediger = (arbeidIUtlandet: ArbeidIUtlandet) => {
         setSelectedAnnenInntekt(arbeidIUtlandet);
         setFieldValue(InntektsinformasjonFormField.arbeidIUtlandetLand, arbeidIUtlandet.land);
         setFieldValue(InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver, arbeidIUtlandet.arbeidsgiverNavn);
@@ -41,7 +41,7 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
         );
     };
 
-    const handleOnClickSlett = (arbeidIUtlandet: AnnenInntektIUtlandet) => {
+    const handleOnClickSlett = (arbeidIUtlandet: ArbeidIUtlandet) => {
         deleteAnnenInntekt(arbeidIUtlandet);
     };
 

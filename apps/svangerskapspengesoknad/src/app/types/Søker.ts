@@ -1,4 +1,4 @@
-import { AnnenInntektIUtlandet } from './AnnenInntektIUtlandet';
+import { ArbeidIUtlandet } from './ArbeidIUtlandet';
 import { Frilans } from './Frilans';
 import { Næring } from './Næring';
 
@@ -13,5 +13,5 @@ export interface Søker {
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
     selvstendigNæringsdrivendeInformasjon?: Næring;
     harHattAnnenInntektSiste10Mnd: boolean;
-    andreInntekterSiste10Mnd?: AnnenInntektIUtlandet[];
+    andreInntekterSiste10Mnd?: ArbeidIUtlandet[];
 }

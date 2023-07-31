@@ -4,7 +4,7 @@ export enum AnnenInntektType {
     JOBB_I_UTLANDET = 'JOBB_I_UTLANDET',
 }
 
-export interface AnnenInntektIUtlandet {
+export interface ArbeidIUtlandet {
     type: AnnenInntektType.JOBB_I_UTLANDET;
     tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;
@@ -12,6 +12,6 @@ export interface AnnenInntektIUtlandet {
     land: string;
 }
 
-export interface AnnenInntektIUtlandetInnsending extends Omit<AnnenInntektIUtlandet, 'tidsperiode'> {
+export interface ArbeidIUtlandetInnsending extends Omit<ArbeidIUtlandet, 'tidsperiode'> {
     tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
 }
