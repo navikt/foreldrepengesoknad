@@ -1,8 +1,8 @@
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from '../../inntektsinformasjonFormConfig';
 import ArbeidIUtlandetInput from './components/ArbeidIUtlandetInput';
-import { Block } from '@navikt/fp-common';
-import { FormattedMessage } from 'react-intl';
+import { Block, intlUtils } from '@navikt/fp-common';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent, useState } from 'react';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
@@ -29,6 +29,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     setArbeidIUtlandet,
     setSelectedAnnenInntekt,
 }) => {
+    const intl = useIntl();
     const [leggTilNyttArbeidIUtlandet, setLeggTilNyttArbeidIUtlandet] = useState(false);
 
     const addAnnenInntekt = (annenInntekt: ArbeidIUtlandet) => {
@@ -59,6 +60,11 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
 
     return (
         <div>
+            {formValues.hattAndreInntekter === YesOrNo.YES && (
+                <Heading level="3" size="small">
+                    {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
+                </Heading>
+            )}
             {arbeidIUtlandet.length > 0 && (
                 <ArbeidIUtlandetList
                     andreInntekterIUtlandet={arbeidIUtlandet}

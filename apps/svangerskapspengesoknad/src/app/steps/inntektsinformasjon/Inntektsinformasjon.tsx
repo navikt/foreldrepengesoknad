@@ -19,14 +19,12 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
-import { BodyShort, Button, Heading } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { Frilans } from 'app/types/Frilans';
-import FrilansInput from './components/frilans/FrilansInput';
-import FrilansVisning from './components/frilans/FrilansVisning';
 import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import EgenNæringInput from './components/egen-næring/EgenNæringInput';
@@ -36,6 +34,7 @@ import EgenNæringVisning from './components/egen-næring/EgenNæringVisning';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/components/ArbeidIUtlandetReadMore';
 import ArbeidIUtlandetSubform from './components/arbeid-i-utlandet/ArbeidIUtlandetSubform';
+import FrilansSubform from './components/frilans/FrilansSubform';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -45,7 +44,7 @@ const Inntektsinformasjon = () => {
     const [frilans, setFrilans] = useState<Frilans | undefined>(
         søker.frilansInformasjon ? søker.frilansInformasjon : undefined
     );
-    const [redigererFrilans, setRedigererFrilans] = useState(false);
+
     const [næring, setNæring] = useState<Næring | undefined>(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : undefined
     );
@@ -72,9 +71,6 @@ const Inntektsinformasjon = () => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
-                const visFrilansInput =
-                    (formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans;
-                const visFrilansInfo = frilans && !redigererFrilans && formValues.hattInntektSomFrilans === YesOrNo.YES;
                 const visNæringInput =
                     (formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && !næring) || redigererNæring;
                 const visNæringInfo =
@@ -112,23 +108,14 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
-                            {visFrilansInput && (
-                                <Block padBottom="l">
-                                    <FrilansInput
-                                        visibility={visibility}
-                                        formValues={formValues as InntektsinformasjonFormData}
-                                        setFrilans={setFrilans}
-                                        setRedigererFrilans={setRedigererFrilans}
-                                        errors={errors}
-                                        setFieldValue={setFieldValue}
-                                    />
-                                </Block>
-                            )}
-                            {visFrilansInfo && (
-                                <Block padBottom="l">
-                                    <FrilansVisning frilans={frilans!} setRedigererFrilans={setRedigererFrilans} />
-                                </Block>
-                            )}
+                            <FrilansSubform
+                                frilans={frilans}
+                                visibility={visibility}
+                                formValues={formValues as InntektsinformasjonFormData}
+                                errors={errors}
+                                setFieldValue={setFieldValue}
+                                setFrilans={setFrilans}
+                            />
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(
@@ -183,11 +170,6 @@ const Inntektsinformasjon = () => {
                                 />
                                 <ArbeidIUtlandetReadMore />
                             </Block>
-                            {formValues.hattAndreInntekter === YesOrNo.YES && (
-                                <Heading level="3" size="small">
-                                    {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
-                                </Heading>
-                            )}
                             <ArbeidIUtlandetSubform
                                 arbeidIUtlandet={arbeidIUtlandet}
                                 visibility={visibility}
