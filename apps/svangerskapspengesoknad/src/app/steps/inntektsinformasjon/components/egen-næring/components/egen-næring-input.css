@@ -1,17 +1,9 @@
 @import './../../../../../styles/variables.css';
 
-.arbeidIUtlandetInput {
+.egenNæringInput {
     background-color: var(--a-deepblue-50);
     margin-bottom: 1rem;
     padding: 1rem;
     width: var(--app-max-width)
 }
 
-.arbeidIUtlandetInput__tittel {
-    padding-bottom: 1rem;
-}
-
-
-.arbeidIUtlandetInput__avbryt {
-    margin-left: 1rem;
-}

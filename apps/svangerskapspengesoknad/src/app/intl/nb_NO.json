@@ -124,6 +124,7 @@
     "inntektsinformasjon.arbeidIUtlandet.tom": "Når sluttet du i jobben?",
     "inntektsinformasjon.arbeidIUtlandet.leggTil": "Legg til nytt arbeid i utlandet",
     "inntektsinformasjon.arbeidIUtlandet.apneLabel": "Hvordan kan dette påvirke svangerskapspengene?",
+    "inntektsinformasjon.arbeidIUtlandet.innhold": "Arbeid i et annet EØS-land kan gi deg rett til svangerskapspenger.",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiver",
     "annenInntekt.spørsmål.land": "Hvilket land jobbet du i?",
     "tilrettelegging.veileder.intro": "I de neste spørsmålene skal du fylle inn informasjon fra skjemaet du akkurat lastet opp.",
@@ -154,9 +155,11 @@
     "valideringsfeil.egenNæringType.påkrevd": "Du må oppgi type virksomhet du har",
     "valideringsfeil.inputfelt.required": "{inputFeltLabel} må fylles ut",
     "valideringsfeil.egenNæringFom.påkrevd": "Du må oppgi startdatoen på næringen din",
+    "valideringsfeil.egenNæringTom.påkrevd": "Du må oppgi sluttdatoen for næringen din.",
     "valideringsfeil.egenNæringResultat.påkrevd": "Du må oppgi næringsresultat før skatt de siste 4 ukene",
     "valideringsfeil.egenNæringRegistrertINorge.påkrevd": "Du må oppgi om virksomheten er registrert i Norge",
     "valideringsfeil.egenNæringNavn.påkrevd": "Du må oppgi navnet på virksomheten din",
+    "valideringsfeil.næringsinntekt.ugyldigFormat": "Næringsinntekt kan kun bestå av tall",
     "valideringsfeil.egenNæringPågående.påkrevd": "Du må oppgi om virksomheten din er pågående",
     "valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd": "Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene",
     "valideringsfeil.egenNæringYrkesAktivDato.påkrevd": "Du må oppgi dato for når du ble yrkesaktiv",
@@ -166,5 +169,6 @@
     "valideringsfeil.arbeidIUtlandetLand.påkrevd": "Du må oppgi land på arbeidsgiver i utlandet",
     "valideringsfeil.arbeidIUtlandetFom.påkrevd": "Du må oppgi startdatoen på arbeidet i utlandet",
     "valideringsfeil.arbeidIUtlandetTom.påkrevd": "Du må oppgi sluttdatoen på arbeidet i utlandet",
-    "valideringsfeil.arbeidIUtlandetPågående.påkrevd": "Du må svare på om du fortsatt jobber i utlandet"
+    "valideringsfeil.arbeidIUtlandetPågående.påkrevd": "Du må svare på om du fortsatt jobber i utlandet",
+    "valideringsfeil.inntektsinformasjon.måOppgiArbeidIUtlandet": "Du må oppgi arbeid i utlandet"
 }

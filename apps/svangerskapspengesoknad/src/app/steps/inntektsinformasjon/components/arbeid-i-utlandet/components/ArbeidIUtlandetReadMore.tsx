@@ -5,9 +5,8 @@ import { useIntl } from 'react-intl';
 const ArbeidIUtlandetReadMore = () => {
     const intl = useIntl();
     return (
-        //TODO: Mer informasjon
         <ReadMore header={intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.apneLabel')}>
-            <div> TODO: Mer informasjon</div>
+            <div> {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.innhold')}</div>
         </ReadMore>
     );
 };

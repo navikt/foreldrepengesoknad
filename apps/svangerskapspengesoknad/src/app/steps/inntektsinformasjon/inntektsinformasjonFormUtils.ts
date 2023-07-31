@@ -18,7 +18,7 @@ import { hasValue } from 'app/utils/validationUtils';
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.frilansOppstartsDato]: '',
     [InntektsinformasjonFormField.frilansSluttDato]: '',
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
@@ -67,13 +67,15 @@ export const mapInntektsinformasjonFormDataToState = (
 ): Søker => {
     return {
         rolle: Søkerrolle.MOR,
-        harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattAndreInntekter)!,
+        harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattArbeidIUtlandet)!,
         harJobbetSomFrilansSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
             values.hattInntektSomNæringsdrivende
         )!,
         andreInntekterSiste10Mnd:
-            values.hattAndreInntekter === YesOrNo.YES ? cleanupInvisibleCharsFromArbeidIUtlandet(arbeidIUtlandet!) : [],
+            values.hattArbeidIUtlandet === YesOrNo.YES
+                ? cleanupInvisibleCharsFromArbeidIUtlandet(arbeidIUtlandet!)
+                : [],
         selvstendigNæringsdrivendeInformasjon:
             values.hattInntektSomNæringsdrivende === YesOrNo.YES ? cleanupInvisibleCharsFromNæring(næring!) : undefined,
         frilansInformasjon: frilans,
@@ -133,7 +135,7 @@ export const cleanupInntektsinformasjonForm = (
     values: InntektsinformasjonFormData,
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>
 ): InntektsinformasjonFormData => {
-    const a = {
+    return {
         hattInntektSomFrilans: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)
             ? values.hattInntektSomFrilans
             : initialInntektsinformasjonFormValues.hattInntektSomFrilans,
@@ -146,9 +148,9 @@ export const cleanupInntektsinformasjonForm = (
         frilansSluttDato: visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)
             ? values.frilansSluttDato
             : initialInntektsinformasjonFormValues.frilansSluttDato,
-        hattAndreInntekter: visibility.isVisible(InntektsinformasjonFormField.hattAndreInntekter)
-            ? values.hattAndreInntekter
-            : initialInntektsinformasjonFormValues.hattAndreInntekter,
+        hattArbeidIUtlandet: visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)
+            ? values.hattArbeidIUtlandet
+            : initialInntektsinformasjonFormValues.hattArbeidIUtlandet,
         hattInntektSomNæringsdrivende: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)
             ? values.hattInntektSomNæringsdrivende
             : initialInntektsinformasjonFormValues.hattInntektSomNæringsdrivende,
@@ -205,7 +207,6 @@ export const cleanupInntektsinformasjonForm = (
             ? values.arbeidIUtlandetTom
             : initialInntektsinformasjonFormValues.arbeidIUtlandetTom,
     };
-    return a;
 };
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {

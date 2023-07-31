@@ -4,7 +4,7 @@ import { Næringstype } from 'app/types/Næring';
 export enum InntektsinformasjonFormField {
     hattInntektSomFrilans = 'hattInntektSomFrilans',
     hattInntektSomNæringsdrivende = 'hattInntektSomNæringsdrivende',
-    hattAndreInntekter = 'hattAndreInntekter',
+    hattArbeidIUtlandet = 'hattArbeidIUtlandet',
     frilansOppstartsDato = 'frilansOppstartsDato',
     frilansSluttDato = 'frilansSluttDato',
     jobberFremdelesSomFrilanser = 'jobberFremdelesSomFrilanser',
@@ -29,7 +29,7 @@ export enum InntektsinformasjonFormField {
 export interface InntektsinformasjonFormData {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo;
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo;
-    [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo;
+    [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo;
     [InntektsinformasjonFormField.frilansOppstartsDato]: string;
     [InntektsinformasjonFormField.frilansSluttDato]: string;
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo;

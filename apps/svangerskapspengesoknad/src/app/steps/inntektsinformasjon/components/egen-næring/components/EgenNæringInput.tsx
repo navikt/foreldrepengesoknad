@@ -7,7 +7,7 @@ import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
-} from '../../inntektsinformasjonFormConfig';
+} from '../../../inntektsinformasjonFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring, Næringstype } from 'app/types/Næring';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -16,12 +16,12 @@ import {
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
     validateNumber,
-} from './modal/validation/egenNæringValidation';
+} from '../modal/validation/egenNæringValidation';
 import dayjs from 'dayjs';
-import OrgnummerEllerLand from './modal/components/OrgnummerEllerLand';
+import OrgnummerEllerLand from '../modal/components/OrgnummerEllerLand';
 import { FormikErrors, getIn } from 'formik';
-import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
-import { mapEgenNæringFormValuesToState } from '../../inntektsinformasjonFormUtils';
+import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
+import { mapEgenNæringFormValuesToState } from '../../../inntektsinformasjonFormUtils';
 import { hasValue } from 'app/utils/validationUtils';
 
 interface Props {
