@@ -35,7 +35,7 @@ export const validateFrilansSlutt = (intl: IntlShape, pågående: YesOrNo, fom: 
     }
 
     if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.merEnn4UkerSiden');
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.frilans.merEnn4UkerSiden');
     }
 
     if (hasValue(tom) && fom && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {

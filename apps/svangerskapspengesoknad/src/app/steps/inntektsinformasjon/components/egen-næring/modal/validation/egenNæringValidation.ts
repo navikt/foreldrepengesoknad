@@ -8,8 +8,10 @@ import {
 } from '@navikt/fp-common';
 import { erGyldigNorskOrgnummer } from '@navikt/fp-common/src/common/utils/organisasjonUtils';
 import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
+import { fireUkerSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const validateEgenNæringFom =
     (intl: IntlShape, tom: string) =>
@@ -38,6 +40,10 @@ export const validateEgenNæringTom =
 
         if (hasValue(tom) && isDateInTheFuture(tom)) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
+        }
+
+        if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.egenNæring.merEnn4UkerSiden');
         }
 
         if (hasValue(tom) && isDateABeforeDateB(tom, fom)) {

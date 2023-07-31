@@ -10,9 +10,9 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
         isIncluded: () => true,
         isAnswered: ({ hattInntektSomFrilans }) => hattInntektSomFrilans !== YesOrNo.UNANSWERED,
     },
-    [InntektsinformasjonFormField.frilansOppstartsDato]: {
+    [InntektsinformasjonFormField.frilansFom]: {
         isIncluded: ({ hattInntektSomFrilans }) => hattInntektSomFrilans === YesOrNo.YES,
-        isAnswered: ({ frilansOppstartsDato }) => hasValue(frilansOppstartsDato),
+        isAnswered: ({ frilansFom }) => hasValue(frilansFom),
         visibilityFilter: ({ hattInntektSomFrilans }) => hattInntektSomFrilans === YesOrNo.YES,
     },
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: {
@@ -20,9 +20,9 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
         isAnswered: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser !== YesOrNo.UNANSWERED,
         visibilityFilter: ({ hattInntektSomFrilans }) => hattInntektSomFrilans === YesOrNo.YES,
     },
-    [InntektsinformasjonFormField.frilansSluttDato]: {
+    [InntektsinformasjonFormField.frilansTom]: {
         isIncluded: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser === YesOrNo.NO,
-        isAnswered: ({ frilansSluttDato }) => hasValue(frilansSluttDato),
+        isAnswered: ({ frilansTom }) => hasValue(frilansTom),
         visibilityFilter: ({ hattInntektSomFrilans }) => hattInntektSomFrilans === YesOrNo.YES,
     },
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: {

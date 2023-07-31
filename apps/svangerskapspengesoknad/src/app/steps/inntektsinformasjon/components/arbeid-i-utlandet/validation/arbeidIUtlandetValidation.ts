@@ -1,7 +1,9 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
+import { fireUkerSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefined) => (fom: string) => {
     if (hasValue(fom) && !isISODateString(fom)) {
@@ -26,6 +28,10 @@ export const validateArbeidIUtlandetTom = (intl: IntlShape, fom: string | undefi
 
     if (hasValue(tom) && isDateInTheFuture(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
+    }
+
+    if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn4UkerSiden');
     }
 
     if (hasValue(tom) && fom && isDateABeforeDateB(tom, fom)) {

@@ -1,4 +1,4 @@
-import { Block, bemUtils, intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { Block, bemUtils, date4WeeksAgo, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import './egen-næring-input.css';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -269,7 +269,7 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                         showYearSelector={true}
                         validate={validateEgenNæringTom(intl, formValues.egenNæringFom!)}
                         maxDate={dayjs().toDate()}
-                        minDate={dayjs(formValues.egenNæringFom).toDate()}
+                        minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.egenNæringFom)).toDate()}
                     />
                     {getInputFeltFeil(
                         submitClicked,

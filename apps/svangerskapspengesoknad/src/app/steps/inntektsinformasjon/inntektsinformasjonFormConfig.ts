@@ -5,8 +5,8 @@ export enum InntektsinformasjonFormField {
     hattInntektSomFrilans = 'hattInntektSomFrilans',
     hattInntektSomNæringsdrivende = 'hattInntektSomNæringsdrivende',
     hattArbeidIUtlandet = 'hattArbeidIUtlandet',
-    frilansOppstartsDato = 'frilansOppstartsDato',
-    frilansSluttDato = 'frilansSluttDato',
+    frilansFom = 'frilansFom',
+    frilansTom = 'frilansTom',
     jobberFremdelesSomFrilanser = 'jobberFremdelesSomFrilanser',
     egenNæringType = 'egenNæringType',
     egenNæringNavn = 'egenNæringNavn',
@@ -30,8 +30,8 @@ export interface InntektsinformasjonFormData {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo;
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo;
     [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo;
-    [InntektsinformasjonFormField.frilansOppstartsDato]: string;
-    [InntektsinformasjonFormField.frilansSluttDato]: string;
+    [InntektsinformasjonFormField.frilansFom]: string;
+    [InntektsinformasjonFormField.frilansTom]: string;
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo;
     [InntektsinformasjonFormField.egenNæringType]: Næringstype | undefined;
     [InntektsinformasjonFormField.egenNæringNavn]: string;
