@@ -146,7 +146,7 @@
     "valideringsfeil.frilansOppstartsDato.påkrevd": "Du må oppgi dato for når du startet som frilanser",
     "valideringsfeil.frilansSluttDato.påkrevd": "Du må oppgi dato for når du sluttet som frilanser",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
-    "valideringsfeil.næringsinntekt.ugyldigFormat": "Næringsresultat kan kun bestå av siffer og må oppgis i hele kroner",
+    "valideringsfeil.næringsinntekt.ugyldigFormavbryat": "Næringsresultat kan kun bestå av siffer og må oppgis i hele kroner",
     "valideringsfeil.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
     "valideringsfeil.egenNæringOrgnr.påkrevd": "Du må oppgi organisasjonsnummer",
     "valideringsfeil.egenNæring.registrertINorge": "Du må oppgi om næringen er registrert i Norge eller ikke",

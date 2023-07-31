@@ -33,10 +33,9 @@ import EgenNæringInput from './components/egen-næring/EgenNæringInput';
 import { Næring } from 'app/types/Næring';
 import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
 import EgenNæringVisning from './components/egen-næring/EgenNæringVisning';
-import { AnnenInntektIUtlandet } from 'app/types/AnnenInntektIUtlandet';
-import ArbeidIUtlandetInformasjon from './components/arbeid-i-utlandet/ArbeidIUtlandetInformasjon';
-import ArbeidIUtlandetList from './components/arbeid-i-utlandet/ArbeidIUtlandetList';
-import ArbeidIUtlandetInput from './components/arbeid-i-utlandet/ArbeidIUtlandetInput';
+import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
+import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/components/ArbeidIUtlandetReadMore';
+import ArbeidIUtlandetSubform from './components/arbeid-i-utlandet/ArbeidIUtlandetSubform';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -51,12 +50,12 @@ const Inntektsinformasjon = () => {
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : undefined
     );
     const [redigererNæring, setRedigererNæring] = useState(false);
-    const [leggTilNyttArbeidIUtlandet, setLeggTilNyttArbeidIUtlandet] = useState(false);
-    const [arbeidIUtlandet, setArbeidIUtlandet] = useState<AnnenInntektIUtlandet[]>(
+
+    const [arbeidIUtlandet, setArbeidIUtlandet] = useState<ArbeidIUtlandet[]>(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
     );
 
-    const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<AnnenInntektIUtlandet | undefined>(undefined);
+    const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
 
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, næring, arbeidIUtlandet);
@@ -64,32 +63,6 @@ const Inntektsinformasjon = () => {
         return [actionCreator.setSøker(updatedSøker)];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
-
-    const addAnnenInntekt = (annenInntekt: AnnenInntektIUtlandet) => {
-        const updatedandreInntekterInformasjon = arbeidIUtlandet.concat(annenInntekt);
-        setArbeidIUtlandet(updatedandreInntekterInformasjon);
-        setSelectedAnnenInntekt(undefined);
-        setLeggTilNyttArbeidIUtlandet(false);
-    };
-
-    const deleteAnnenInntekt = (inntektSomSlettes: AnnenInntektIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet.filter((inntekt) => inntekt !== inntektSomSlettes);
-        setArbeidIUtlandet(updatedAndreInntekterInformasjon);
-        setSelectedAnnenInntekt(undefined);
-    };
-
-    const editAnnenInntekt = (inntektSomEditeres: AnnenInntektIUtlandet, oppdatertInntekt: AnnenInntektIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet
-            .filter((inntekt) => inntekt !== inntektSomEditeres)
-            .concat(oppdatertInntekt);
-        setSelectedAnnenInntekt(undefined);
-        setArbeidIUtlandet(updatedAndreInntekterInformasjon);
-    };
-
-    const handleOnLeggTilArbeidIUtlandet = () => {
-        setLeggTilNyttArbeidIUtlandet(true);
-        setSelectedAnnenInntekt(undefined);
-    };
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
@@ -208,53 +181,23 @@ const Inntektsinformasjon = () => {
                                         return undefined;
                                     }}
                                 />
-                                <ArbeidIUtlandetInformasjon />
+                                <ArbeidIUtlandetReadMore />
                             </Block>
                             {formValues.hattAndreInntekter === YesOrNo.YES && (
                                 <Heading level="3" size="small">
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
                                 </Heading>
                             )}
-                            {arbeidIUtlandet.length > 0 && (
-                                <ArbeidIUtlandetList
-                                    andreInntekterIUtlandet={arbeidIUtlandet}
-                                    visibility={visibility}
-                                    formValues={formValues as InntektsinformasjonFormData}
-                                    errors={errors}
-                                    setFieldValue={setFieldValue}
-                                    selectedAnnenInntekt={selectedAnnenInntekt}
-                                    addAnnenInntekt={addAnnenInntekt}
-                                    editAnnenInntekt={editAnnenInntekt}
-                                    deleteAnnenInntekt={deleteAnnenInntekt}
-                                    setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                                />
-                            )}
-                            {(leggTilNyttArbeidIUtlandet ||
-                                (formValues.hattAndreInntekter === YesOrNo.YES && arbeidIUtlandet.length === 0)) && (
-                                <ArbeidIUtlandetInput
-                                    visibility={visibility}
-                                    formValues={formValues as InntektsinformasjonFormData}
-                                    errors={errors}
-                                    setFieldValue={setFieldValue}
-                                    selectedAnnenInntekt={selectedAnnenInntekt}
-                                    addAnnenInntekt={addAnnenInntekt}
-                                    editAnnenInntekt={editAnnenInntekt}
-                                    setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                                    erFørsteInput={arbeidIUtlandet.length === 0}
-                                />
-                            )}
-                            {formValues.hattAndreInntekter === YesOrNo.YES && arbeidIUtlandet.length > 0 && (
-                                <Block padBottom="xl">
-                                    <Button
-                                        aria-label="legg til ny informasjon om arbeid i utlandet"
-                                        variant="secondary"
-                                        type="button"
-                                        onClick={handleOnLeggTilArbeidIUtlandet}
-                                    >
-                                        <FormattedMessage id="inntektsinformasjon.arbeidIUtlandet.leggTil" />
-                                    </Button>
-                                </Block>
-                            )}
+                            <ArbeidIUtlandetSubform
+                                arbeidIUtlandet={arbeidIUtlandet}
+                                visibility={visibility}
+                                formValues={formValues as InntektsinformasjonFormData}
+                                errors={errors}
+                                selectedAnnenInntekt={selectedAnnenInntekt}
+                                setFieldValue={setFieldValue}
+                                setArbeidIUtlandet={setArbeidIUtlandet}
+                                setSelectedAnnenInntekt={setSelectedAnnenInntekt}
+                            />
                             <Block padBottom="l">
                                 <InfoTilFiskere />
                             </Block>

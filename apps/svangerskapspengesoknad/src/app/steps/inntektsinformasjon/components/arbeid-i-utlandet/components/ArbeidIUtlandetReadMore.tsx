@@ -2,7 +2,7 @@ import { ReadMore } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 
-const ArbeidIUtlandetInformasjon = () => {
+const ArbeidIUtlandetReadMore = () => {
     const intl = useIntl();
     return (
         //TODO: Mer informasjon
@@ -12,4 +12,4 @@ const ArbeidIUtlandetInformasjon = () => {
     );
 };
 
-export default ArbeidIUtlandetInformasjon;
+export default ArbeidIUtlandetReadMore;

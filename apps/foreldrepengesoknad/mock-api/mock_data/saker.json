@@ -4,13 +4,13 @@
             "saksnummer": "352011594",
             "sakAvsluttet": false,
             "sisteSøknadMottattDato": "2023-03-31",
-            "kanSøkeOmEndring": false,
+            "kanSøkeOmEndring": true,
             "sakTilhørerMor": false,
-            "gjelderAdopsjon": true,
+            "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
-            "rettighetType": "BEGGE_RETT",
+            "rettighetType": "BARE_SØKER_RETT",
             "annenPart": {
                 "type": "person",
                 "fnr": "05489305072",
@@ -18,25 +18,107 @@
                 "etternavn": "Tangent"
             },
             "familiehendelse": {
-                "fødselsdato": "2023-02-01",
-                "antallBarn": 1,
-                "omsorgsovertakelse": "2023-04-10"
+                "fødselsdato": "2023-03-24",
+                "antallBarn": 1
             },
-            "åpenBehandling": {
-                "tilstand": "VENT_INNTEKTSMELDING",
-                "søknadsperioder": [
+            "gjeldendeVedtak": {
+                "perioder": [
                     {
-                        "fom": "2023-04-10",
-                        "tom": "2023-07-21",
-                        "kontoType": "FEDREKVOTE",
-                        "flerbarnsdager": false
+                        "fom": "2023-03-22",
+                        "tom": "2023-03-23",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": true,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
                     },
                     {
-                        "fom": "2023-07-24",
-                        "tom": "2023-09-15",
-                        "kontoType": "FELLESPERIODE",
-                        "morsAktivitet": "UTDANNING",
-                        "flerbarnsdager": false
+                        "fom": "2023-03-24",
+                        "tom": "2023-04-05",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": true,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
+                    },
+                    {
+                        "fom": "2023-05-05",
+                        "tom": "2023-05-18",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": false,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
+                    },
+                    {
+                        "fom": "2023-05-19",
+                        "tom": "2023-05-19",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": true,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
+                    },
+
+                    {
+                        "fom": "2023-05-22",
+                        "tom": "2023-05-25",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": false,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
+                    },
+                    {
+                        "fom": "2023-05-26",
+                        "tom": "2023-05-29",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": true,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
+                    },
+                    {
+                        "fom": "2023-05-30",
+                        "tom": "2023-06-27",
+                        "utsettelseÅrsak": "FRI",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": false,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": false
+                        }
+                    },
+                    {
+                        "fom": "2023-06-28",
+                        "tom": "2023-07-07",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false,
+                        "resultat": {
+                            "innvilget": true,
+                            "årsak": "ANNET",
+                            "trekkerDager": true,
+                            "trekkerMinsterett": true
+                        }
                     }
                 ]
             },

@@ -2,7 +2,7 @@ import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inn
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Næring } from 'app/types/Næring';
-import { AnnenInntektIUtlandet, AnnenInntektType } from 'app/types/AnnenInntektIUtlandet';
+import { ArbeidIUtlandet, AnnenInntektType } from 'app/types/ArbeidIUtlandet';
 import { Frilans } from 'app/types/Frilans';
 import { ISOStringToDate } from '@navikt/fp-common';
 import {
@@ -48,9 +48,7 @@ export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     };
 };
 
-export const cleanupInvisibleCharsFromArbeidIUtlandet = (
-    andreInntekter: AnnenInntektIUtlandet[]
-): AnnenInntektIUtlandet[] => {
+export const cleanupInvisibleCharsFromArbeidIUtlandet = (andreInntekter: ArbeidIUtlandet[]): ArbeidIUtlandet[] => {
     return andreInntekter.map((inntekt) =>
         inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
             ? {
@@ -65,7 +63,7 @@ export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
     frilans: Frilans | undefined,
     næring: Næring | undefined,
-    arbeidIUtlandet: AnnenInntektIUtlandet[]
+    arbeidIUtlandet: ArbeidIUtlandet[]
 ): Søker => {
     return {
         rolle: Søkerrolle.MOR,
@@ -84,7 +82,7 @@ export const mapInntektsinformasjonFormDataToState = (
 
 export const getInitialInntektsinformasjonFormValues = (
     søker: Søker,
-    selectedAnnenInntekt: AnnenInntektIUtlandet | undefined
+    selectedAnnenInntekt: ArbeidIUtlandet | undefined
 ): InntektsinformasjonFormData => {
     const næring = søker.selvstendigNæringsdrivendeInformasjon;
     const init = {
@@ -240,9 +238,7 @@ export const mapEgenNæringFormValuesToState = (formValues: Partial<Inntektsinfo
     };
 };
 
-export const mapArbeidIUtlandetFormValuesToState = (
-    values: Partial<InntektsinformasjonFormData>
-): AnnenInntektIUtlandet => {
+export const mapArbeidIUtlandetFormValuesToState = (values: Partial<InntektsinformasjonFormData>): ArbeidIUtlandet => {
     return {
         arbeidsgiverNavn: values.arbeidIUtlandetNavnArbeidsgiver!,
         land: values.arbeidIUtlandetLand!,
