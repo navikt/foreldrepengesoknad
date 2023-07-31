@@ -16,6 +16,7 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import './frilans-input.css';
 import { hasValue } from 'app/utils/validationUtils';
 import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
+import dayjs from 'dayjs';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
@@ -32,15 +33,15 @@ const cleanValues = (
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
 ) => {
     if (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES) {
-        setFieldValue(InntektsinformasjonFormField.frilansSluttDato, '');
+        setFieldValue(InntektsinformasjonFormField.frilansTom, '');
     }
 };
 
 const areAllFrilansQuestionsAnswered = (formValues: InntektsinformasjonFormData) => {
     return (
-        hasValue(formValues.frilansOppstartsDato) &&
+        hasValue(formValues.frilansFom) &&
         hasValue(formValues.jobberFremdelesSomFrilanser) &&
-        (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES || hasValue(formValues.frilansOppstartsDato))
+        (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES || hasValue(formValues.frilansFom))
     );
 };
 
@@ -66,8 +67,8 @@ const FrilansInput: FunctionComponent<Props> = ({
         if (formIsAnswered && formIsValid) {
             const frilansInfo = {
                 jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(formValues.jobberFremdelesSomFrilanser),
-                oppstart: ISOStringToDate(formValues.frilansOppstartsDato)!,
-                sluttDato: ISOStringToDate(formValues.frilansSluttDato)!,
+                oppstart: ISOStringToDate(formValues.frilansFom)!,
+                sluttDato: ISOStringToDate(formValues.frilansTom)!,
             };
             cleanValues(formValues, setFieldValue);
             setFrilans(frilansInfo);
@@ -75,14 +76,15 @@ const FrilansInput: FunctionComponent<Props> = ({
         }
     };
 
-    const frilansOppstartError = getIn(errors, InntektsinformasjonFormField.frilansOppstartsDato);
-    const frilansSluttError = getIn(errors, InntektsinformasjonFormField.frilansSluttDato);
+    const frilansOppstartError = getIn(errors, InntektsinformasjonFormField.frilansFom);
+    const frilansSluttError = getIn(errors, InntektsinformasjonFormField.frilansTom);
 
     useEffect(() => {
         if (frilansOppstartError !== undefined) {
             setFomFeil(frilansOppstartError);
         } else {
-            //TODO Må validere formen på nytt hvis ingen feil, for å unngå at validering kalles med gamle verdier på fom/tom.
+            //TODO Kan dette gjøres annerledes?
+            // Må validere formen på nytt hvis ingen feil, for å unngå at validering kalles med gamle verdier på fom/tom.
             validateForm();
             setFomFeil(undefined);
         }
@@ -102,19 +104,19 @@ const FrilansInput: FunctionComponent<Props> = ({
                 </Heading>
             </Block>
             <div className={bem.block}>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)}>
+                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansFom)}>
                     <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.frilansOppstartsDato}
+                        name={InntektsinformasjonFormField.frilansFom}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
-                        validate={validateFrilansStart(intl, formValues.frilansSluttDato)}
+                        validate={validateFrilansStart(intl, formValues.frilansTom)}
                         maxDate={dateToday}
                         showYearSelector={true}
                         placeholder={'dd.mm.åååå'}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.frilansOppstartsDato,
-                        formValues.frilansOppstartsDato,
+                        InntektsinformasjonFormField.frilansFom,
+                        formValues.frilansFom,
                         intl,
                         fomFeil
                     )}
@@ -134,25 +136,24 @@ const FrilansInput: FunctionComponent<Props> = ({
                         intl
                     )}
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)}>
+                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansTom)}>
                     <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.frilansSluttDato}
+                        name={InntektsinformasjonFormField.frilansTom}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.slutt')}
-                        minDate={date4WeeksAgo}
+                        minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.frilansFom)).toDate()}
                         maxDate={dateToday}
                         showYearSelector={true}
                         placeholder={'dd.mm.åååå'}
                         validate={validateFrilansSlutt(
                             intl,
                             formValues.jobberFremdelesSomFrilanser,
-                            formValues.frilansOppstartsDato
-                            // submitClicked
+                            formValues.frilansFom
                         )}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.frilansSluttDato,
-                        formValues.frilansSluttDato,
+                        InntektsinformasjonFormField.frilansTom,
+                        formValues.frilansTom,
                         intl,
                         tomFeil
                     )}

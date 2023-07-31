@@ -19,8 +19,8 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.frilansOppstartsDato]: '',
-    [InntektsinformasjonFormField.frilansSluttDato]: '',
+    [InntektsinformasjonFormField.frilansFom]: '',
+    [InntektsinformasjonFormField.frilansTom]: '',
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.egenNæringType]: undefined,
     [InntektsinformasjonFormField.egenNæringNavn]: '',
@@ -139,15 +139,15 @@ export const cleanupInntektsinformasjonForm = (
         hattInntektSomFrilans: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)
             ? values.hattInntektSomFrilans
             : initialInntektsinformasjonFormValues.hattInntektSomFrilans,
-        frilansOppstartsDato: visibility.isVisible(InntektsinformasjonFormField.frilansOppstartsDato)
-            ? values.frilansOppstartsDato
-            : initialInntektsinformasjonFormValues.frilansOppstartsDato,
+        frilansFom: visibility.isVisible(InntektsinformasjonFormField.frilansFom)
+            ? values.frilansFom
+            : initialInntektsinformasjonFormValues.frilansFom,
         jobberFremdelesSomFrilanser: visibility.isVisible(InntektsinformasjonFormField.jobberFremdelesSomFrilanser)
             ? values.jobberFremdelesSomFrilanser
             : initialInntektsinformasjonFormValues.jobberFremdelesSomFrilanser,
-        frilansSluttDato: visibility.isVisible(InntektsinformasjonFormField.frilansSluttDato)
-            ? values.frilansSluttDato
-            : initialInntektsinformasjonFormValues.frilansSluttDato,
+        frilansTom: visibility.isVisible(InntektsinformasjonFormField.frilansTom)
+            ? values.frilansTom
+            : initialInntektsinformasjonFormValues.frilansTom,
         hattArbeidIUtlandet: visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)
             ? values.hattArbeidIUtlandet
             : initialInntektsinformasjonFormValues.hattArbeidIUtlandet,

@@ -6,7 +6,7 @@ import {
 } from '../../../inntektsinformasjonFormConfig';
 import './arbeid-i-utlandet-input.css';
 import { Button, Heading } from '@navikt/ds-react';
-import { Block, bemUtils, intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { Block, bemUtils, date4WeeksAgo, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormikErrors, getIn } from 'formik';
@@ -214,6 +214,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                         showYearSelector={true}
                         validate={validateArbeidIUtlandetTom(intl, formValues.arbeidIUtlandetFom)}
                         maxDate={dayjs().toDate()}
+                        minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.arbeidIUtlandetFom)).toDate()}
                     />
                     {getInputFeltFeil(
                         submitClicked,
