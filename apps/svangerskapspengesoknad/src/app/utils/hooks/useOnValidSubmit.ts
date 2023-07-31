@@ -15,7 +15,6 @@ const useOnValidSubmit = <T>(
 
     useEffect(() => {
         if (harSubmitted) {
-            console.log('navigating to', state.currentRoute);
             navigate(state.currentRoute);
         }
     }, [harSubmitted, navigate, nextRoute, state]);

@@ -6,16 +6,16 @@ import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
-} from '../../inntektsinformasjonFormConfig';
+} from '../../../inntektsinformasjonFormConfig';
 import { Button, Heading } from '@navikt/ds-react';
 import { Frilans } from 'app/types/Frilans';
-import { validateFrilansSlutt, validateFrilansStart } from './validation/frilansValidation';
+import { validateFrilansSlutt, validateFrilansStart } from '../validation/frilansValidation';
 import { FormikErrors, getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import './frilans-input.css';
 import { hasValue } from 'app/utils/validationUtils';
-import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
+import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;

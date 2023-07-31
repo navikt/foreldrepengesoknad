@@ -60,7 +60,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
 
     return (
         <div>
-            {formValues.hattAndreInntekter === YesOrNo.YES && (
+            {formValues.hattArbeidIUtlandet === YesOrNo.YES && (
                 <Heading level="3" size="small">
                     {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
                 </Heading>
@@ -81,7 +81,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
                 />
             )}
             {(leggTilNyttArbeidIUtlandet ||
-                (formValues.hattAndreInntekter === YesOrNo.YES && arbeidIUtlandet.length === 0)) && (
+                (formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length === 0)) && (
                 <ArbeidIUtlandetInput
                     visibility={visibility}
                     formValues={formValues as InntektsinformasjonFormData}
@@ -95,7 +95,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
                     setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
                 />
             )}
-            {formValues.hattAndreInntekter === YesOrNo.YES && arbeidIUtlandet.length > 0 && (
+            {formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length > 0 && (
                 <Block padBottom="xl">
                     <Button
                         aria-label="legg til ny informasjon om arbeid i utlandet"

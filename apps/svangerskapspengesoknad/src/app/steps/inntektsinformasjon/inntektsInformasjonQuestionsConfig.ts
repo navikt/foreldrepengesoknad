@@ -29,9 +29,9 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
         isIncluded: () => true,
         isAnswered: ({ hattInntektSomNæringsdrivende }) => hattInntektSomNæringsdrivende !== YesOrNo.UNANSWERED,
     },
-    [InntektsinformasjonFormField.hattAndreInntekter]: {
+    [InntektsinformasjonFormField.hattArbeidIUtlandet]: {
         isIncluded: () => true,
-        isAnswered: ({ hattAndreInntekter }) => hattAndreInntekter !== YesOrNo.UNANSWERED,
+        isAnswered: ({ hattArbeidIUtlandet }) => hattArbeidIUtlandet !== YesOrNo.UNANSWERED,
     },
     [InntektsinformasjonFormField.egenNæringType]: {
         isIncluded: () => true,

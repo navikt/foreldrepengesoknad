@@ -4,8 +4,8 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent, useState } from 'react';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FormikErrors } from 'formik';
-import FrilansInput from './FrilansInput';
-import FrilansVisning from './FrilansVisning';
+import FrilansInput from './components/FrilansInput';
+import FrilansVisning from './components/FrilansVisning';
 import { Frilans } from 'app/types/Frilans';
 interface Props {
     frilans: Frilans | undefined;
@@ -29,7 +29,6 @@ const FrilansSubform: FunctionComponent<Props> = ({
 
     return (
         <div>
-            {' '}
             {visFrilansInput && (
                 <Block padBottom="l">
                     <FrilansInput

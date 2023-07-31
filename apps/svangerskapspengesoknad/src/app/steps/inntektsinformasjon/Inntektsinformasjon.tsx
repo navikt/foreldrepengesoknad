@@ -27,14 +27,13 @@ import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjenest
 import { Frilans } from 'app/types/Frilans';
 import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import EgenNæringInput from './components/egen-næring/EgenNæringInput';
-import { Næring } from 'app/types/Næring';
 import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
-import EgenNæringVisning from './components/egen-næring/EgenNæringVisning';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/components/ArbeidIUtlandetReadMore';
 import ArbeidIUtlandetSubform from './components/arbeid-i-utlandet/ArbeidIUtlandetSubform';
 import FrilansSubform from './components/frilans/FrilansSubform';
+import { Næring } from 'app/types/Næring';
+import EgenNæringSubform from './components/egen-næring/EgenNæringSubform';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -48,7 +47,6 @@ const Inntektsinformasjon = () => {
     const [næring, setNæring] = useState<Næring | undefined>(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : undefined
     );
-    const [redigererNæring, setRedigererNæring] = useState(false);
 
     const [arbeidIUtlandet, setArbeidIUtlandet] = useState<ArbeidIUtlandet[]>(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
@@ -71,10 +69,6 @@ const Inntektsinformasjon = () => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
-                const visNæringInput =
-                    (formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && !næring) || redigererNæring;
-                const visNæringInfo =
-                    næring && !redigererNæring && formValues.hattInntektSomNæringsdrivende === YesOrNo.YES;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -131,36 +125,27 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
-                            {visNæringInput && (
-                                <Block padBottom="l">
-                                    <EgenNæringInput
-                                        visibility={visibility}
-                                        formValues={formValues as InntektsinformasjonFormData}
-                                        setNæring={setNæring}
-                                        setRedigererNæring={setRedigererNæring}
-                                        errors={errors}
-                                        setFieldValue={setFieldValue}
-                                    />
-                                </Block>
-                            )}
-                            {visNæringInfo && (
-                                <Block padBottom="l">
-                                    <EgenNæringVisning næring={næring!} setRedigererNæring={setRedigererNæring} />
-                                </Block>
-                            )}
+                            <EgenNæringSubform
+                                næring={næring}
+                                visibility={visibility}
+                                formValues={formValues as InntektsinformasjonFormData}
+                                errors={errors}
+                                setFieldValue={setFieldValue}
+                                setNæring={setNæring}
+                            />
                             <Block
                                 padBottom="l"
-                                visible={visibility.isVisible(InntektsinformasjonFormField.hattAndreInntekter)}
+                                visible={visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)}
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
-                                    name={InntektsinformasjonFormField.hattAndreInntekter}
+                                    name={InntektsinformasjonFormField.hattArbeidIUtlandet}
                                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
                                     validate={(hattAndreInntekter) => {
                                         if (hattAndreInntekter === YesOrNo.YES) {
                                             if (arbeidIUtlandet.length === 0) {
                                                 return intlUtils(
                                                     intl,
-                                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag'
+                                                    'valideringsfeil.inntektsinformasjon.måOppgiArbeidIUtlandet'
                                                 );
                                             }
                                         }
