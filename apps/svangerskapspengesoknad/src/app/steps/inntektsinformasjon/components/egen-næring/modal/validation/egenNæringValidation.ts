@@ -41,7 +41,7 @@ export const validateEgenNæringTom =
         }
 
         if (hasValue(tom) && isDateABeforeDateB(tom, fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.førTilDato');
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
         }
 
         return undefined;

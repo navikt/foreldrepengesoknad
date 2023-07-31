@@ -14,6 +14,7 @@ interface Props {
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     setFrilans: React.Dispatch<React.SetStateAction<Frilans | undefined>>;
+    validateForm: any; //Promise<FormikErrors<Partial<InntektsinformasjonFormData>>>;
 }
 const FrilansSubform: FunctionComponent<Props> = ({
     frilans,
@@ -22,6 +23,7 @@ const FrilansSubform: FunctionComponent<Props> = ({
     errors,
     setFieldValue,
     setFrilans,
+    validateForm,
 }) => {
     const [redigererFrilans, setRedigererFrilans] = useState(false);
     const visFrilansInput = (formValues.hattInntektSomFrilans === YesOrNo.YES && !frilans) || redigererFrilans;
@@ -38,6 +40,7 @@ const FrilansSubform: FunctionComponent<Props> = ({
                         setRedigererFrilans={setRedigererFrilans}
                         errors={errors}
                         setFieldValue={setFieldValue}
+                        validateForm={validateForm}
                     />
                 </Block>
             )}

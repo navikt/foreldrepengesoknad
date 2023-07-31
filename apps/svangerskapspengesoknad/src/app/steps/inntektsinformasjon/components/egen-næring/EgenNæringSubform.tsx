@@ -14,6 +14,7 @@ interface Props {
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     setNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
+    validateForm: any;
 }
 const EgenNæringSubform: FunctionComponent<Props> = ({
     næring,
@@ -22,6 +23,7 @@ const EgenNæringSubform: FunctionComponent<Props> = ({
     errors,
     setFieldValue,
     setNæring,
+    validateForm,
 }) => {
     const [redigererNæring, setRedigererNæring] = useState(false);
     const visNæringInput = (formValues.hattInntektSomNæringsdrivende === YesOrNo.YES && !næring) || redigererNæring;
@@ -38,6 +40,7 @@ const EgenNæringSubform: FunctionComponent<Props> = ({
                         setRedigererNæring={setRedigererNæring}
                         errors={errors}
                         setFieldValue={setFieldValue}
+                        validateForm={validateForm}
                     />
                 </Block>
             )}
