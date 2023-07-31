@@ -24,6 +24,7 @@ interface Props {
     setRedigererFrilans: React.Dispatch<React.SetStateAction<boolean>>;
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    validateForm: any; //Promise<FormikErrors<Partial<InntektsinformasjonFormData>>>
 }
 
 const cleanValues = (
@@ -50,6 +51,7 @@ const FrilansInput: FunctionComponent<Props> = ({
     setFrilans,
     setRedigererFrilans,
     setFieldValue,
+    validateForm,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('frilansInput');
@@ -80,11 +82,14 @@ const FrilansInput: FunctionComponent<Props> = ({
         if (frilansOppstartError !== undefined) {
             setFomFeil(frilansOppstartError);
         } else {
+            //TODO Må validere formen på nytt hvis ingen feil, for å unngå at validering kalles med gamle verdier på fom/tom.
+            validateForm();
             setFomFeil(undefined);
         }
         if (frilansSluttError !== undefined) {
             setTomFeil(frilansSluttError);
         } else {
+            validateForm();
             setTomFeil(undefined);
         }
     }, [frilansOppstartError, frilansSluttError]);

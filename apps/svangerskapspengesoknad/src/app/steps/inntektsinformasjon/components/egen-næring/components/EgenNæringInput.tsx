@@ -27,10 +27,11 @@ import { hasValue } from 'app/utils/validationUtils';
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
-    setNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
-    setRedigererNæring: React.Dispatch<React.SetStateAction<boolean>>;
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    setNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
+    setRedigererNæring: React.Dispatch<React.SetStateAction<boolean>>;
+    validateForm: any;
 }
 
 const cleanValues = (
@@ -70,10 +71,11 @@ const areAllEgenNæringQuestionsAnswered = (formValues: InntektsinformasjonFormD
 const EgenNæringInput: FunctionComponent<Props> = ({
     visibility,
     formValues,
+    errors,
     setFieldValue,
     setNæring,
     setRedigererNæring,
-    errors,
+    validateForm,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('egenNæringInput');
@@ -123,11 +125,13 @@ const EgenNæringInput: FunctionComponent<Props> = ({
         if (fomError !== undefined) {
             setFomFeil(fomError);
         } else {
+            validateForm();
             setFomFeil(undefined);
         }
         if (tomError !== undefined) {
             setTomFeil(tomError);
         } else {
+            validateForm();
             setTomFeil(undefined);
         }
 

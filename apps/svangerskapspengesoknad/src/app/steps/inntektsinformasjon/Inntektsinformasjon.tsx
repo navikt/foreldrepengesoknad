@@ -65,7 +65,7 @@ const Inntektsinformasjon = () => {
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker, selectedAnnenInntekt)}
             onSubmit={handleSubmit}
-            renderForm={({ values: formValues, errors, setFieldValue }) => {
+            renderForm={({ values: formValues, errors, setFieldValue, validateForm }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
@@ -109,6 +109,7 @@ const Inntektsinformasjon = () => {
                                 errors={errors}
                                 setFieldValue={setFieldValue}
                                 setFrilans={setFrilans}
+                                validateForm={validateForm}
                             />
                             <Block
                                 padBottom="l"
@@ -132,6 +133,7 @@ const Inntektsinformasjon = () => {
                                 errors={errors}
                                 setFieldValue={setFieldValue}
                                 setNæring={setNæring}
+                                validateForm={validateForm}
                             />
                             <Block
                                 padBottom="l"
