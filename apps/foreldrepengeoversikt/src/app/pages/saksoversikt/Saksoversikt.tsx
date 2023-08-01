@@ -1,4 +1,4 @@
-import { Loader } from '@navikt/ds-react';
+// import { Loader } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
@@ -81,17 +81,20 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
         annenPartVedtakIsSuspended
     );
 
-    if (
-        !annenPartVedtakIsSuspended &&
-        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
-        !annenPartsVedtakError
-    ) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader type="XXL" />
-            </div>
-        );
-    }
+    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
+    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+
+    // if (
+    //     !annenPartVedtakIsSuspended &&
+    //     annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
+    //     !annenPartsVedtakError
+    // ) {
+    //     return (
+    //         <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+    //             <Loader type="XXL" />
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className={bem.block}>
@@ -104,8 +107,21 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     />
                 </ContentSection>
             )}
-            <ContentSection heading={intlUtils(intl, 'saksoversikt.tidslinje')}>
-                <Tidslinje saker={saker} visHeleTidslinjen={false} søkersBarn={søkerinfo.søker.barn} />
+            <ContentSection
+                heading={intlUtils(intl, 'saksoversikt.tidslinje')}
+                showSkeleton={!tidslinjeHendelserData || !manglendeVedleggData}
+                skeletonProps={{ height: '250px', variant: 'rounded' }}
+                marginBottom="small"
+            >
+                <Tidslinje
+                    saker={saker}
+                    visHeleTidslinjen={false}
+                    tidslinjeHendelserError={tidslinjeHendelserError}
+                    tidslinjeHendelserData={tidslinjeHendelserData!}
+                    manglendeVedleggData={manglendeVedleggData!}
+                    manglendeVedleggError={manglendeVedleggError}
+                    søkersBarn={søkerinfo.søker.barn}
+                />
             </ContentSection>
             <ContentSection padding="none">
                 <SeHeleProsessen />
@@ -114,7 +130,15 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                 <SeDokumenter />
             </ContentSection>
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                <ContentSection heading={intlUtils(intl, 'saksoversikt.dinPlan')}>
+                <ContentSection
+                    heading={intlUtils(intl, 'saksoversikt.dinPlan')}
+                    showSkeleton={
+                        !annenPartVedtakIsSuspended &&
+                        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
+                        !annenPartsVedtakError
+                    }
+                    skeletonProps={{ height: '210px', variant: 'rounded' }}
+                >
                     <DinPlan
                         sak={gjeldendeSak}
                         visHelePlanen={false}

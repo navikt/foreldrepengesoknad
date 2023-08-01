@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react';
+import { Heading, Skeleton, SkeletonProps } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
 import { FunctionComponent } from 'react';
@@ -15,6 +15,9 @@ interface Props {
     cornerStyle?: CornerStyle;
     heading?: string;
     padding?: Padding;
+    showSkeleton?: boolean;
+    skeletonProps?: SkeletonProps;
+    marginBottom?: 'default' | 'small';
 }
 
 const ContentSection: FunctionComponent<Props> = ({
@@ -23,24 +26,43 @@ const ContentSection: FunctionComponent<Props> = ({
     backgroundColor = 'white',
     cornerStyle = 'rounded',
     padding = 'default',
+    showSkeleton = false,
+    marginBottom = 'default',
+    skeletonProps,
 }) => {
     const bem = bemUtils('content-section');
 
+    if (showSkeleton && skeletonProps) {
+        return (
+            <div className={bem.element('skeleton')}>
+                {heading && (
+                    <Heading size="medium" level="2" className={bem.element('heading')}>
+                        {heading}
+                    </Heading>
+                )}
+                <Skeleton {...skeletonProps} />
+            </div>
+        );
+    }
+
     return (
-        <section
-            className={classNames(
-                bem.block,
-                bem.modifier(`bg-${backgroundColor}`),
-                bem.modifier(`padding-${padding}`),
-                bem.modifier(`corner-style-${cornerStyle}`)
-            )}
-        >
+        <section>
             {heading && (
                 <Heading size="medium" level="2" className={bem.element('heading')}>
                     {heading}
                 </Heading>
             )}
-            {children}
+            <div
+                className={classNames(
+                    bem.block,
+                    bem.modifier(`bg-${backgroundColor}`),
+                    bem.modifier(`padding-${padding}`),
+                    bem.modifier(`corner-style-${cornerStyle}`),
+                    bem.modifier(`margin-${marginBottom}`)
+                )}
+            >
+                {children}
+            </div>
         </section>
     );
 };

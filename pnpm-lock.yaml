@@ -169,7 +169,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/jest-dom':
         specifier: ^5.6.5
         version: 5.16.5
@@ -285,20 +285,20 @@ importers:
         specifier: ^11.1.4
         version: 11.1.4
       '@navikt/aksel-icons':
-        specifier: ^2.8.11
-        version: 2.8.14
+        specifier: ^4.7.2
+        version: 4.7.2
       '@navikt/ds-css':
-        specifier: ^2.8.11
-        version: 2.8.11
+        specifier: ^4.7.2
+        version: 4.7.2
       '@navikt/ds-datepicker':
         specifier: ^4.1.5
-        version: 4.1.5(@navikt/ds-css@2.8.11)(@navikt/ds-react@2.8.11)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.1.5(@navikt/ds-css@4.7.2)(@navikt/ds-react@4.7.2)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/ds-icons':
-        specifier: ^2.8.11
-        version: 2.8.11(@types/react@18.0.35)(react@18.2.0)
+        specifier: ^3.4.3
+        version: 3.4.3(@types/react@18.0.35)(react@18.2.0)
       '@navikt/ds-react':
-        specifier: ^2.8.11
-        version: 2.8.11(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^4.7.2
+        version: 4.7.2(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
@@ -307,7 +307,7 @@ importers:
         version: link:../../packages/fp-common
       '@navikt/sif-common-formik-ds':
         specifier: ^0.16.0
-        version: 0.16.0(@navikt/ds-css@2.8.11)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@2.8.11)(formik@2.2.9)(react-intl@6.3.2)
+        version: 0.16.0(@navikt/ds-css@4.7.2)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@4.7.2)(formik@2.2.9)(react-intl@6.3.2)
       '@sentry/browser':
         specifier: ^7.47.0
         version: 7.47.0
@@ -431,7 +431,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@types/amplitude-js':
         specifier: ^8.16.2
         version: 8.16.2
@@ -530,7 +530,7 @@ importers:
         version: 7.0.3
       storybook-addon-mock:
         specifier: 4.0.0
-        version: 4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/theming@7.0.3)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3)
+        version: 4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/theming@7.0.24)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3)
       ts-jest:
         specifier: ^29.1.0
         version: 29.1.0(@babel/core@7.21.4)(esbuild@0.17.16)(jest@29.5.0)(typescript@5.0.4)
@@ -726,7 +726,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/dom':
         specifier: ^9.0.0
         version: 9.0.0
@@ -1006,7 +1006,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/dom':
         specifier: ^9.0.0
         version: 9.0.0
@@ -1277,7 +1277,7 @@ importers:
         version: 7.0.3
       storybook-react-intl:
         specifier: ^2.0.1
-        version: 2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0)
+        version: 2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0)
       vite:
         specifier: ^4.3.2
         version: 4.3.2(@types/node@18.15.11)(less@4.1.3)(sass@1.62.0)
@@ -2891,14 +2891,23 @@ packages:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
     dev: true
 
-  /@floating-ui/core@1.2.6:
-    resolution: {integrity: sha512-EvYTiXet5XqweYGClEmpu3BoxmsQ4hkj3QaYA6qEnigCWffTP3vNRwBReTdrwDwo7OoJ3wM8Uoe9Uk4n+d4hfg==}
+  /@floating-ui/core@1.4.1:
+    resolution: {integrity: sha512-jk3WqquEJRlcyu7997NtR5PibI+y5bi+LS3hPmguVClypenMsCY3CBa3LAQnozRCtCrYWSEtAdiskpamuJRFOQ==}
+    dependencies:
+      '@floating-ui/utils': 0.1.1
     dev: false
 
   /@floating-ui/dom@1.2.6:
     resolution: {integrity: sha512-02vxFDuvuVPs22iJICacezYJyf7zwwOCWkPNkWNBr1U0Qt1cKFYzWvxts0AmqcOQGwt/3KJWcWIgtbUU38keyw==}
     dependencies:
-      '@floating-ui/core': 1.2.6
+      '@floating-ui/core': 1.4.1
+    dev: false
+
+  /@floating-ui/dom@1.5.1:
+    resolution: {integrity: sha512-KwvVcPSXg6mQygvA1TjbN/gh///36kKtllIF8SUm0qpFj8+rvYrpvlYdL1JoA71SHpDqgSSdGOSoQ0Mp3uY5aw==}
+    dependencies:
+      '@floating-ui/core': 1.4.1
+      '@floating-ui/utils': 0.1.1
     dev: false
 
   /@floating-ui/react-dom@1.3.0(react-dom@18.2.0)(react@18.2.0):
@@ -2908,6 +2917,17 @@ packages:
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/dom': 1.2.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@floating-ui/react-dom@2.0.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-rZtAmSht4Lry6gdhAJDrCp/6rKN7++JnL1/Anbr/DdeyYXQPxvg/ivrbYvJulbRf4vL8b212suwMM2lxbv+RQA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/dom': 1.5.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -2923,6 +2943,23 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       tabbable: 6.1.1
+    dev: false
+
+  /@floating-ui/react@0.24.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qjCKUZDEz/4bnJmu4gn66TqsoX912/re8JGEi3pXazsphmyh327l0UpTgpBAT3WkNbnzAH7Adt3wKlLMNtfupw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/react-dom': 2.0.1(react-dom@18.2.0)(react@18.2.0)
+      aria-hidden: 1.2.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tabbable: 6.1.1
+    dev: false
+
+  /@floating-ui/utils@0.1.1:
+    resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
     dev: false
 
   /@formatjs/ecma402-abstract@1.12.0:
@@ -3377,6 +3414,10 @@ packages:
     resolution: {integrity: sha512-DQsJYNWmgpD5eB2ksrdKB/u5VJlxImtmaSJPVwpOgT0F8Ghmx05iW91rAUfX2PpfixZEFLGGivnm7FrgKrR0bA==}
     dev: false
 
+  /@navikt/aksel-icons@4.7.2:
+    resolution: {integrity: sha512-pFZg5yCX6QMsyyl8j/O3bF3EBqMiIF00Bo2CAdVl4V1JVQNBTJ5Ed6Tktmq0mtv4vBE5C7NvRelUeUN+Jex+/Q==}
+    dev: false
+
   /@navikt/ds-codemod@2.8.11(@babel/preset-env@7.21.4)(@types/node@18.15.11):
     resolution: {integrity: sha512-iK9gtyWtPQgBeEOfhXw5sTpCY/HeXi5IAuTB2xcOq+WA2Nx8R/7ZK/XI+naruSwUvuEtQUH9Dvv3UtoGoSBbsw==}
     engines: {node: '>=12.0.0'}
@@ -3404,6 +3445,10 @@ packages:
 
   /@navikt/ds-css@2.8.11:
     resolution: {integrity: sha512-sR8lOeqTYz3tfuc2NKsHR3p9UUVGTs6no2Ym1wzpetVc5uYkySZq72IgYGtYQsDjh6trBV21OZ2gfoIei4yWjA==}
+    dev: false
+
+  /@navikt/ds-css@4.7.2:
+    resolution: {integrity: sha512-EvbwCbsCoVprOBz+f83IkNLLvkA/dkkKVhKlSEHFrSNPbp7GR1zIRuNOQ8LLr9xhhQAace4HQCRhOV4iR8+rWQ==}
     dev: false
 
   /@navikt/ds-datepicker@4.1.5(@navikt/ds-css@2.8.11)(@navikt/ds-react@2.8.11)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@7.4.10)(react-dom@18.2.0)(react@18.2.0):
@@ -3454,8 +3499,45 @@ packages:
       - react-dom
     dev: false
 
+  /@navikt/ds-datepicker@4.1.5(@navikt/ds-css@4.7.2)(@navikt/ds-react@4.7.2)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-z68UH3DFme0rrKFY43NOhcdkdF0B9c1SwoURJHjF0ffxRlSTwfsGQ1hyZmLbyFoO9+HOuByMXEVvCysElAkbHw==}
+    peerDependencies:
+      '@navikt/ds-css': 2.x
+      '@navikt/ds-react': 2.x
+      classnames: ^2.3.x
+      date-fns: ^2.x
+      dayjs: ^1.x
+      react: 18.x
+      react-day-picker: ^8.x
+    dependencies:
+      '@navikt/ds-css': 4.7.2
+      '@navikt/ds-react': 4.7.2(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
+      classnames: 2.3.2
+      date-fns: 2.29.3
+      dayjs: 1.11.7
+      focus-trap-react: 10.1.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-day-picker: 8.7.1(date-fns@2.29.3)(react@18.2.0)
+    transitivePeerDependencies:
+      - prop-types
+      - react-dom
+    dev: false
+
   /@navikt/ds-icons@2.8.11(@types/react@18.0.35)(react@18.2.0):
     resolution: {integrity: sha512-ejMtwdzDiZbl1YW+GGs1mT9mKrINIuTsdDBEUFE8UVua/Fgtd42K0EBHVE9v2LnHN4MJiigS2sBKudDc3o1zDA==}
+    peerDependencies:
+      '@types/react': ^17.0.30 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@types/react': 18.0.35
+      react: 18.2.0
+    dev: false
+
+  /@navikt/ds-icons@3.4.3(@types/react@18.0.35)(react@18.2.0):
+    resolution: {integrity: sha512-Ys25tnDUzS+AtagMMW4/154OCZy+pTxCv9uiV4YcZUeXMfjnMiRWx1dueyCODb7FF7Jd6TwELd3G6ieQt/rf+w==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -3479,6 +3561,29 @@ packages:
       '@floating-ui/react': 0.17.0(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 2.8.14
       '@navikt/ds-icons': 2.8.11(@types/react@18.0.35)(react@18.2.0)
+      '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': 18.0.35
+      clsx: 1.2.1
+      date-fns: 2.29.3
+      react: 18.2.0
+      react-day-picker: 8.3.4(date-fns@2.29.3)(react@18.2.0)
+      react-modal: 3.15.1(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@navikt/ds-react@4.7.2(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-u62Z0OevPx3tDcxuX6JEEzfjDAPBBsPAXa5+OfM+jV1tw8wEuv2Vy/55BV5lzkbnYTAeMaXw+ZZeKrx9EEq/ug==}
+    peerDependencies:
+      '@types/react': ^17.0.30 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@floating-ui/react': 0.24.1(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/aksel-icons': 4.7.2
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.0.35
@@ -3527,6 +3632,26 @@ packages:
       '@navikt/ds-css': 2.8.11
       '@navikt/ds-datepicker': 4.1.5(@navikt/ds-css@2.8.11)(@navikt/ds-react@2.8.11)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/ds-react': 2.8.11(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
+      formik: 2.2.9(react@18.2.0)
+      i18n-iso-countries: 7.5.0
+      lodash.debounce: 4.0.8
+      react-fast-compare: 3.2.1
+      react-intl: 6.3.2(react@18.2.0)(typescript@5.0.4)
+      uuid: 9.0.0
+    dev: false
+
+  /@navikt/sif-common-formik-ds@0.16.0(@navikt/ds-css@4.7.2)(@navikt/ds-datepicker@4.1.5)(@navikt/ds-react@4.7.2)(formik@2.2.9)(react-intl@6.3.2):
+    resolution: {integrity: sha512-G8lNkBAnS18jwDPuBvgVvnp/FjURe1NyzPs5BDu6puwlFPaudmITYozHyMWPxv+motMiBAOT7dsPmPDgIWRMZQ==}
+    peerDependencies:
+      '@navikt/ds-css': '2'
+      '@navikt/ds-datepicker': '>=4.1.2'
+      '@navikt/ds-react': '2'
+      formik: 2.x
+      react-intl: 6.x
+    dependencies:
+      '@navikt/ds-css': 4.7.2
+      '@navikt/ds-datepicker': 4.1.5(@navikt/ds-css@4.7.2)(@navikt/ds-react@4.7.2)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(prop-types@15.8.1)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/ds-react': 4.7.2(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
       formik: 2.2.9(react@18.2.0)
       i18n-iso-countries: 7.5.0
       lodash.debounce: 4.0.8
@@ -5040,7 +5165,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/testing-react@2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0):
+  /@storybook/testing-react@2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0):
     resolution: {integrity: sha512-xpjULCHN368+3+vC56tZ232EwgmG8F+1hOa17zqLFlADWNbFr/19ko0raMIdXiik9Fn6JAErJNKH7OhO0ni8qA==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -5050,11 +5175,11 @@ packages:
       '@storybook/types': ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@storybook/client-logger': 7.0.3
+      '@storybook/client-logger': 7.0.24
       '@storybook/csf': 0.1.0
-      '@storybook/preview-api': 7.0.3
+      '@storybook/preview-api': 7.0.24
       '@storybook/react': 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
-      '@storybook/types': 7.0.3
+      '@storybook/types': 7.0.24
       react: 18.2.0
     dev: true
 
@@ -14199,7 +14324,7 @@ packages:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
     dev: true
 
-  /storybook-addon-mock@4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/theming@7.0.3)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3):
+  /storybook-addon-mock@4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/theming@7.0.24)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3):
     resolution: {integrity: sha512-3c01q9pYzkLjOajnnFLgya8HIHLVVQCaulasOeTniFaEAQeEngqxzc6sYWJx2AlISVsSktEonBGB7QVgmT9A9g==}
     peerDependencies:
       '@storybook/addons': ^7.0.0
@@ -14219,8 +14344,8 @@ packages:
       '@storybook/addons': 7.0.24(react-dom@18.2.0)(react@18.2.0)
       '@storybook/blocks': 7.0.3(react-dom@18.2.0)(react@18.2.0)
       '@storybook/components': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/theming': 7.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/manager-api': 7.0.24(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/theming': 7.0.24(react-dom@18.2.0)(react@18.2.0)
       mock-xmlhttprequest: 8.2.0
       path-to-regexp: 6.2.1
       polished: 4.2.2
@@ -14259,7 +14384,7 @@ packages:
       react-router-dom: 6.10.0(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
-  /storybook-i18n@2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react@18.2.0):
+  /storybook-i18n@2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-4Hhy6lBSj0LzR9YN8EiZ/QFSkyurs1z/eDRkqs8sGUganc4lZOay7Nv22ugd0TaYW39gaV88upNaJ9aH21/WrQ==}
     peerDependencies:
       '@storybook/components': ^7.0.0
@@ -14275,14 +14400,14 @@ packages:
         optional: true
     dependencies:
       '@storybook/components': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/preview-api': 7.0.3
-      '@storybook/types': 7.0.3
+      '@storybook/manager-api': 7.0.24(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/preview-api': 7.0.24
+      '@storybook/types': 7.0.24
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /storybook-react-intl@2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0):
+  /storybook-react-intl@2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0):
     resolution: {integrity: sha512-3QlyWHdQnroM78Kgaj5u7sqDtR1VfUXbuRgNqw0z5d7XHnAP1uyNXCH+aRWD4Ybxp+DLQsge+LZkusKjI+zf/Q==}
     peerDependencies:
       '@storybook/components': ^7.0.0
@@ -14299,13 +14424,13 @@ packages:
         optional: true
     dependencies:
       '@storybook/components': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/preview-api': 7.0.3
-      '@storybook/types': 7.0.3
+      '@storybook/manager-api': 7.0.24(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/preview-api': 7.0.24
+      '@storybook/types': 7.0.24
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-intl: 6.3.2(react@18.2.0)(typescript@5.0.4)
-      storybook-i18n: 2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react@18.2.0)
+      storybook-i18n: 2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
   /storybook@7.0.3:
