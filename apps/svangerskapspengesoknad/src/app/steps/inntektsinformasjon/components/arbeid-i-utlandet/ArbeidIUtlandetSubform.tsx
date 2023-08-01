@@ -30,13 +30,13 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     setSelectedAnnenInntekt,
 }) => {
     const intl = useIntl();
-    const [leggTilNyttArbeidIUtlandet, setLeggTilNyttArbeidIUtlandet] = useState(false);
+    const [leggerTilNyttArbeidIUtlandet, setLeggerTilNyttArbeidIUtlandet] = useState(false);
 
     const addAnnenInntekt = (annenInntekt: ArbeidIUtlandet) => {
         const updatedandreInntekterInformasjon = arbeidIUtlandet.concat(annenInntekt);
         setArbeidIUtlandet(updatedandreInntekterInformasjon);
         setSelectedAnnenInntekt(undefined);
-        setLeggTilNyttArbeidIUtlandet(false);
+        setLeggerTilNyttArbeidIUtlandet(false);
     };
 
     const deleteAnnenInntekt = (inntektSomSlettes: ArbeidIUtlandet) => {
@@ -54,7 +54,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     };
 
     const handleOnLeggTilArbeidIUtlandet = () => {
-        setLeggTilNyttArbeidIUtlandet(true);
+        setLeggerTilNyttArbeidIUtlandet(true);
         setSelectedAnnenInntekt(undefined);
     };
 
@@ -77,10 +77,11 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
                     editAnnenInntekt={editAnnenInntekt}
                     deleteAnnenInntekt={deleteAnnenInntekt}
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                    setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
+                    setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
+                    leggerTilNyttArbeidIUtlandet={leggerTilNyttArbeidIUtlandet}
                 />
             )}
-            {(leggTilNyttArbeidIUtlandet ||
+            {(leggerTilNyttArbeidIUtlandet ||
                 (formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length === 0)) && (
                 <ArbeidIUtlandetInput
                     visibility={visibility}
@@ -92,7 +93,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
                     editAnnenInntekt={editAnnenInntekt}
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                     erFørsteInput={arbeidIUtlandet.length === 0}
-                    setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
+                    setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
                 />
             )}
             {formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length > 0 && (

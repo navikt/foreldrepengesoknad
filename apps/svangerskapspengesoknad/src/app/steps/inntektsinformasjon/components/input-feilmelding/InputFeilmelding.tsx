@@ -1,9 +1,9 @@
 import { ErrorMessage } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
-import './input-feilmelding.css';
 import { IntlShape } from 'react-intl';
 import { ReactNode } from 'react';
 import { hasValue } from 'app/utils/validationUtils';
+import './input-feilmelding.css';
 
 export const getInputFeltFeil = (
     submitClicked: boolean,

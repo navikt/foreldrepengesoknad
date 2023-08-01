@@ -12,6 +12,7 @@ interface Props {
     formValues: InntektsinformasjonFormData;
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
+    leggerTilNyttArbeidIUtlandet: boolean;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     deleteAnnenInntekt: (inntektSomSlettes: ArbeidIUtlandet) => void;
@@ -26,6 +27,7 @@ const ArbeidIUtlandetList: FunctionComponent<Props> = ({
     formValues,
     errors,
     selectedAnnenInntekt,
+    leggerTilNyttArbeidIUtlandet,
     addAnnenInntekt,
     editAnnenInntekt,
     deleteAnnenInntekt,
@@ -50,6 +52,7 @@ const ArbeidIUtlandetList: FunctionComponent<Props> = ({
                     selectedAnnenInntekt={selectedAnnenInntekt}
                     errors={errors}
                     setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
+                    leggerTilNyttArbeidIUtlandet={leggerTilNyttArbeidIUtlandet}
                 />
             ))}
         </>
