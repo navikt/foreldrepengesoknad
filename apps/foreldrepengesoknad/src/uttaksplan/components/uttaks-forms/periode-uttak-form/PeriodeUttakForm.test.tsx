@@ -93,7 +93,7 @@ describe('PeriodeUttakForm - tidsrom input', () => {
             await screen.findByText('Du må legge inn en fra og med dato som er før til og med datoen.')
         ).toBeInTheDocument();
         expect(
-            await screen.findByText('Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er', {
+            await screen.findByText('Du må legge inn en til og med dato som er etter fra og med datoen.', {
                 exact: false,
             })
         ).toBeInTheDocument();

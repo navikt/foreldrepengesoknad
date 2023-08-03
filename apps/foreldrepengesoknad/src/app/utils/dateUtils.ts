@@ -124,6 +124,10 @@ const validateFromDateInRange = ({
     utsettelserIPlan?: Utsettelsesperiode[];
     toDate?: Date;
 }): SkjemaelementFeil => {
+    if (toDate && date && dayjs(date).isAfter(toDate, 'day')) {
+        return intlUtils(intl, errorKey);
+    }
+
     const error = validateDateInRange(intl, date, minDate, maxDate, true);
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
@@ -134,9 +138,6 @@ const validateFromDateInRange = ({
         return error;
     }
 
-    if (toDate && dayjs(date).isAfter(toDate, 'day')) {
-        return intlUtils(intl, errorKey);
-    }
     return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);
 };
 
@@ -161,6 +162,10 @@ const validateToDateInRange = ({
     utsettelserIPlan?: Utsettelsesperiode[];
     fromDate?: Date;
 }): SkjemaelementFeil => {
+    if (fromDate && date && dayjs(date).isBefore(fromDate, 'day')) {
+        return intlUtils(intl, errorKey);
+    }
+
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
 
     if (error !== undefined) {
@@ -169,10 +174,6 @@ const validateToDateInRange = ({
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
         return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
-    }
-
-    if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
-        return intlUtils(intl, errorKey);
     }
 
     return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);

@@ -64,7 +64,7 @@ export const getDatoavgrensningerForStønadskonto = (
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato);
     }
     if (isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(familiehendelsesdato)) {
-        return getDatoavgrensningerForEkstrauttakFørTermin(familiehendelsesdato);
+        return getDatoavgrensningerForEkstrauttakFørTermin(familiehendelsesdato, termindato);
     }
 
     const standardAvgrensninger = standardAvgrensningerForUttakEtterFødsel(familiehendelsesdato);
@@ -135,10 +135,14 @@ const getDatoavgrensningerForForeldrepengerFørFødsel = (familiehendelsesdato: 
     };
 };
 
-const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date): DatoAvgrensninger => {
+const getDatoavgrensningerForEkstrauttakFørTermin = (
+    familiehendelsesdato: Date,
+    termindato: Date | undefined
+): DatoAvgrensninger => {
+    const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
     const avgrensninger: DatepickerLimitations = {
         ...standardAvgrensningerForUttakEtterFødsel,
-        ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(dateToISOString(familiehendelsesdato)),
+        ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(dateToISOString(datoÅRegneFra)),
     };
 
     return {

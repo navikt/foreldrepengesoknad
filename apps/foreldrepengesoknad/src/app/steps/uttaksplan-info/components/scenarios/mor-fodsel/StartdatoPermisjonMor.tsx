@@ -30,9 +30,14 @@ const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, in
 interface Props {
     permisjonStartdato: string;
     skalIkkeHaUttakFørTermin: boolean;
+    termindato: Date | undefined;
 }
 
-const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, skalIkkeHaUttakFørTermin }) => {
+const StartdatoPermisjonMor: FunctionComponent<Props> = ({
+    permisjonStartdato,
+    skalIkkeHaUttakFørTermin,
+    termindato,
+}) => {
     const intl = useIntl();
     const { barn } = useSøknad();
     const bem = bemUtils('datoInput');
@@ -58,7 +63,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
     const antallDagerFørFødselIhtRegler = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
     const visVeileder = antallDager !== antallDagerFørFødselIhtRegler;
 
-    const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
+    const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdatoDate, termindato);
     const maksDato = Uttaksdagen(familiehendelsesdatoDate).forrige();
 
     return (
@@ -76,7 +81,8 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({ permisjonStartdato, s
                         validate={validateErStartdatoFørTermindato(
                             intl,
                             familiehendelsesdatoDate,
-                            skalIkkeHaUttakFørTermin
+                            skalIkkeHaUttakFørTermin,
+                            termindato
                         )}
                         disableWeekend
                         placeholder={'dd.mm.åååå'}

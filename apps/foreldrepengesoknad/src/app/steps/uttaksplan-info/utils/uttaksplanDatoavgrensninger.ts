@@ -28,8 +28,9 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
     };
 };
 
-const startdatoFørTermin = (familiehendelsesdato: string): DatepickerLimitations => {
-    const maksDato = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
+const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitations => {
+    const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+    const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).forrige();
     const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
     return {
         ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
