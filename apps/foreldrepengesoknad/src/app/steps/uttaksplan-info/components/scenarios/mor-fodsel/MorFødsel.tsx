@@ -221,6 +221,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                             <StartdatoPermisjonMor
                                 permisjonStartdato={formValues.permisjonStartdato!}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
+                                termindato={termindato}
                             />
                         </Block>
                         <Block
