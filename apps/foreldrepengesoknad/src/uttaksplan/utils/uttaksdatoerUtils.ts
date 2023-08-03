@@ -78,7 +78,9 @@ export function getFørsteMuligeUttaksdag(
             return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
         }
     }
-    return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
+
+    const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+    return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(datoÅRegneFra)).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
     );
 }
