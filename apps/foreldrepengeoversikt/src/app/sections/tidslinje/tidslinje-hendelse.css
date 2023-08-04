@@ -3,6 +3,7 @@
     align-items: flex-start;
     padding: 1rem 0;
     position: relative;
+    margin: 0 -1rem;
 }
 
 .tidslinje-hendelse--aktiv_er_ikke_første_hendelse {
@@ -38,7 +39,6 @@
 
 .tidslinje-hendelse--active {
     background-color: var(--a-deepblue-100);
-    margin: 0 -1rem;
 }
 
 .tidslinje-hendelse:before {
