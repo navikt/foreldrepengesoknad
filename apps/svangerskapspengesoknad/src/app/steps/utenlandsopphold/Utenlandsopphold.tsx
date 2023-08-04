@@ -11,22 +11,23 @@ import {
     UtenlandsoppholdFormComponents,
     UtenlandsoppholdFormData,
 } from './components/utenlandsoppholdFormTypes';
-import { getInitialUtenlandsoppholdValuesFromState } from './components/utenlandsoppholdFormUtils';
+import {
+    getInitialUtenlandsoppholdValuesFromState,
+    mapUtenlandsoppholdFormDataToState,
+} from './components/utenlandsoppholdFormUtils';
 import { utenlandsoppholdFormQuestions } from './components/utenlandsoppholdFormQuestions';
 import { useState } from 'react';
 import { BostedUtland } from 'app/types/BostedUtland';
 import BostedUtlandComponent from './subform/BostedUtlandComponent';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import InformasjonOmUtenlandsopphold from './components/InformasjonOmUtenlandsopphold';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import SøknadRoutes from 'app/routes/routes';
+import actionCreator from 'app/context/action/actionCreator';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
     const { informasjonOmUtenlandsopphold } = useSøknad();
-
-    const handleSubmit = () => {
-        console.log('TODO SUBMIT Utenlandsopphold');
-        //map BostedUtland to Utenlandsopphold
-    };
     const [bostedUtlandFremtid, setBostedUtlandFremtid] = useState<BostedUtland[]>(
         informasjonOmUtenlandsopphold.senereOpphold.map((opphold, index) => {
             return {
@@ -48,6 +49,13 @@ const Utenlandsopphold: React.FunctionComponent = () => {
             };
         })
     );
+
+    const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
+        const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values, bostedUtlandFremtid, bostedUtlandFortid);
+        return [actionCreator.setUtenlandsopphold(utenlandsopphold)];
+    };
+
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ARBEID);
 
     return (
         <UtenlandsoppholdFormComponents.FormikWrapper
@@ -146,8 +154,9 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {visibility.areAllQuestionsAnswered() && (
-                                        // <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        <Button type="submit">{intlUtils(intl, 'søknad.gåVidere')}</Button>
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
                                     )}
                                 </StepButtonWrapper>
                             </Block>

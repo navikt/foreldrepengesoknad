@@ -49,6 +49,14 @@ const svangerskapspengerReducer = (
                     harGodkjentVilkår: action.payload,
                 },
             };
+        case SvangerskapspengerContextActionKeys.SET_UTENLANDSOPPHOLD:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    informasjonOmUtenlandsopphold: action.payload,
+                },
+            };
         default:
             return state;
     }
