@@ -5,15 +5,15 @@ import {
     validateBostedUtlandFom,
     validateBostedUtlandTom,
     validerOverlappendeUtenlandsperioder,
-} from '../subform/bostedUtlandUtils';
+} from './bostedUtlandSubformUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, dateToday, intlUtils } from '@navikt/fp-common';
 import { Button, Heading } from '@navikt/ds-react';
 import {
     BostedUtlandFormComponents,
-    BostedUtlandFormData,
-    BostedUtlandFormField,
-} from '../subform/bostedUtlandFormTypes';
+    BostedUtlandSubformData,
+    BostedUtlandSubformField,
+} from './bostedUtlandSubformTypes';
 import InputFeilmelding, {
     getInputFeltFeil,
 } from 'app/steps/inntektsinformasjon/components/input-feilmelding/InputFeilmelding';
@@ -21,7 +21,7 @@ import { FormikErrors, getIn } from 'formik';
 import { hasValue } from 'app/utils/validationUtils';
 import './bosted-utland-subform.css';
 
-const areAllBostedUtlandQuestionsAnswered = (formValues: Partial<BostedUtlandFormData>) => {
+const areAllBostedUtlandQuestionsAnswered = (formValues: Partial<BostedUtlandSubformData>) => {
     return hasValue(formValues.fom) && hasValue(formValues.tom) && hasValue(formValues.land);
 };
 
@@ -30,8 +30,8 @@ interface Props {
     selectedOpphold: BostedUtland | undefined;
     alleOpphold: BostedUtland[];
     oppgirIFortid: boolean;
-    formValues: Partial<BostedUtlandFormData>;
-    errors: FormikErrors<Partial<BostedUtlandFormData>>;
+    formValues: Partial<BostedUtlandSubformData>;
+    errors: FormikErrors<Partial<BostedUtlandSubformData>>;
     setSelectedOpphold: React.Dispatch<React.SetStateAction<BostedUtland | undefined>>;
     addOpphold: (inntekt: BostedUtland) => void;
     editOpphold: (oppholdSomEditeres: BostedUtland, oppdatertOpphold: BostedUtland) => void;
@@ -58,7 +58,7 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
     const tittelId = selectedOpphold
         ? 'inntektsinformasjon.arbeidIUtlandet.tittel.oppdater'
         : 'inntektsinformasjon.arbeidIUtlandet.tittel.ny';
-    const handleOnSubmit = (values: Partial<BostedUtlandFormData>, event: any) => {
+    const handleOnSubmit = (values: Partial<BostedUtlandSubformData>, event: any) => {
         event.preventDefault();
         const formIsAnswered = areAllBostedUtlandQuestionsAnswered(formValues);
         const formIsValid = !fomFeil && !tomFeil;
@@ -94,8 +94,8 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
     const [submitClicked, setSubmitClicked] = useState(false);
     const [fomFeil, setFomFeil] = useState<string | undefined>(undefined);
     const [tomFeil, setTomFeil] = useState<string | undefined>(undefined);
-    const fomError = getIn(errors, BostedUtlandFormField.fom);
-    const tomError = getIn(errors, BostedUtlandFormField.tom);
+    const fomError = getIn(errors, BostedUtlandSubformField.fom);
+    const tomError = getIn(errors, BostedUtlandSubformField.tom);
 
     useEffect(() => {
         if (fomError !== undefined) {
@@ -121,14 +121,14 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
             )}
             <Block padBottom="l">
                 <BostedUtlandFormComponents.CountrySelect
-                    name={BostedUtlandFormField.land}
+                    name={BostedUtlandSubformField.land}
                     label={intlUtils(intl, spmId)}
                 />
-                {getInputFeltFeil(submitClicked, BostedUtlandFormField.land, formValues.land, intl)}
+                {getInputFeltFeil(submitClicked, BostedUtlandSubformField.land, formValues.land, intl)}
             </Block>
             <Block padBottom="l">
                 <BostedUtlandFormComponents.DatePicker
-                    name={BostedUtlandFormField.fom}
+                    name={BostedUtlandSubformField.fom}
                     label={intlUtils(intl, 'utenlandsopphold.fraogmed')}
                     validate={validateBostedUtlandFom(formValues.tom, oppgirIFortid, intl)}
                     maxDate={oppgirIFortid ? dateToday : undefined}
@@ -136,11 +136,11 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
                     showYearSelector={true}
                     placeholder={'dd.mm.åååå'}
                 />
-                {getInputFeltFeil(submitClicked, BostedUtlandFormField.fom, formValues.fom, intl, fomFeil)}
+                {getInputFeltFeil(submitClicked, BostedUtlandSubformField.fom, formValues.fom, intl, fomFeil)}
             </Block>
             <Block padBottom="l">
                 <BostedUtlandFormComponents.DatePicker
-                    name={BostedUtlandFormField.tom}
+                    name={BostedUtlandSubformField.tom}
                     label={intlUtils(intl, 'utenlandsopphold.tilogmed')}
                     validate={validateBostedUtlandTom(formValues.fom, oppgirIFortid, intl)}
                     maxDate={oppgirIFortid ? dateToday : undefined}
@@ -148,7 +148,7 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
                     showYearSelector={true}
                     placeholder={'dd.mm.åååå'}
                 />
-                {getInputFeltFeil(submitClicked, BostedUtlandFormField.tom, formValues.tom, intl, tomFeil)}
+                {getInputFeltFeil(submitClicked, BostedUtlandSubformField.tom, formValues.tom, intl, tomFeil)}
             </Block>
             {overlappendePerioderFeil && <InputFeilmelding feilmelding={overlappendePerioderFeil} />}
             <Block margin="xl">

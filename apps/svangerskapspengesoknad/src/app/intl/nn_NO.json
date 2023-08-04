@@ -188,6 +188,8 @@
     "valideringsfeil.utenlandsopphold.hattInntektSomNæringsdrivende.påkrevd": "Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.",
     "valideringsfeil.utenlandsopphold.skalBoINorge.påkrevd": "Du må oppgi om du skal bo i Norge de neste 12 månedene.",
     "valideringsfeil.utenlandsopphold.harBoddINorge.påkrevd": "Du må oppgi om du har bodd i Norge de siste 12 månedene.",
+    "valideringsfeil.utenlandsopphold.tom.merEnn1ÅrSiden": "Datoen er mer enn 1 år siden. Det er ikke relevant for svangerskapspenger dersom du ikke har bodd i utlandet det siste året.",
+    "valideringsfeil.utenlandsopphold.fom.merEnn1ÅrFremITid": "Datoen er mer enn 1 år frem i tid. Det er ikke relevant for svangerskapspenger dersom du ikke skal bo i utlandet det neste året.",
     "valideringsfeil.barnet.erBarnetFødt.påkrevd": "Du må oppgi om barnet er født.",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",

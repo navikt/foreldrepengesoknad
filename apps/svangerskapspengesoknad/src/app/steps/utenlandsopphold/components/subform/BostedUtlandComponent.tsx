@@ -3,8 +3,8 @@ import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Block } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
 import { Button } from '@navikt/ds-react';
-import BostedUtlandInput from '../components/BostedUtlandInput';
-import BostedUtlandList from '../components/BostedUtlandList';
+import BostedUtlandInput from '../BostedUtlandInput';
+import BostedUtlandList from '../BostedUtlandList';
 
 interface Props {
     alleOpphold: BostedUtland[];
