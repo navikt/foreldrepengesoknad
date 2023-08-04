@@ -97,7 +97,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     validate={(skalBoINorgeNeste12Mnd) =>
                                         validateYesOrNoIsAnswered(
                                             skalBoINorgeNeste12Mnd,
-                                            'valideringsfeil.utenlandsopphold.skalBoINorgePåkrevd'
+                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.skalBoINorge.påkrevd')
                                         )
                                     }
                                 />
@@ -129,7 +129,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            'valideringsfeil.utenlandsopphold.harBoddINorge.påkrevd'
+                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.harBoddINorge.påkrevd')
                                         )
                                     }
                                 />
@@ -153,11 +153,9 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    {visibility.areAllQuestionsAnswered() && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
                                 </StepButtonWrapper>
                             </Block>
                         </UtenlandsoppholdFormComponents.Form>
