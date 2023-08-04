@@ -89,7 +89,7 @@ export const getInitialInntektsinformasjonFormValues = (
     const næring = søker.selvstendigNæringsdrivendeInformasjon;
     const init = {
         ...initialInntektsinformasjonFormValues,
-        hattAndreInntekter: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
+        hattArbeidIUtlandet: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
         hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(
             søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
         ),
