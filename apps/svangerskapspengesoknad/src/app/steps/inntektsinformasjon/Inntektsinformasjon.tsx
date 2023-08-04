@@ -59,7 +59,7 @@ const Inntektsinformasjon = () => {
 
         return [actionCreator.setSøker(updatedSøker)];
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper

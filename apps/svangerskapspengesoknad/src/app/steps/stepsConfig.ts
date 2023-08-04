@@ -25,15 +25,16 @@ const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
         label: intlUtils(intl, 'steps.label.barnet'),
     },
     {
-        id: 'arbeid',
-        index: 1,
-        label: intlUtils(intl, 'steps.label.arbeid'),
-    },
-    {
         id: 'utenlandsopphold',
-        index: 2,
+        index: 1,
         label: intlUtils(intl, 'steps.label.utenlandsopphold'),
     },
+    {
+        id: 'arbeid',
+        index: 2,
+        label: intlUtils(intl, 'steps.label.arbeid'),
+    },
+
     {
         id: 'periode',
         index: 3,
@@ -54,14 +55,14 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
     let href;
 
     switch (id) {
-        case 'arbeid':
+        case 'utenlandsopphold':
             href = '/barnet';
             break;
-        case 'utenlandsopphold':
-            href = '/arbeid';
+        case 'arbeid':
+            href = '/utenlandsopphold';
             break;
         case 'periode':
-            href = '/utenlandsopphold';
+            href = '/arbeid';
             break;
         case 'oppsummering':
             href = '/periode';
