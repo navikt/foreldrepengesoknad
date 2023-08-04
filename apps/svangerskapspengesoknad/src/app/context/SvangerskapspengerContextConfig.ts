@@ -25,5 +25,13 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
             frilansInformasjon: undefined!,
         },
         tilrettelegging: [],
+        informasjonOmUtenlandsopphold: {
+            iNorgePåHendelsestidspunktet: undefined!,
+            iNorgeSiste12Mnd: undefined!,
+            iNorgeNeste12Mnd: undefined!,
+            jobbetINorgeSiste12Mnd: undefined!,
+            tidligereOpphold: [],
+            senereOpphold: [],
+        },
     },
 };

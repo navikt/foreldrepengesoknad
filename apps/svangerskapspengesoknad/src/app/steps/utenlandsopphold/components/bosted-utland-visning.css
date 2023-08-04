@@ -1,0 +1,48 @@
+@import './../../../styles/variables.css';
+
+.bostedUtlandVisning {
+    border-radius: 2px; 
+    background: var(--global-deepblue-50, #E6F1F8);
+    display: grid;
+    grid-template-columns: 1fr 8% 8%;
+    grid-template-rows: 1fr 1fr;
+    width: var(--app-max-width);
+    padding: 16px;
+    gap: 0px;
+}
+
+.bostedUtlandVisning__tittel {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.bostedUtlandVisning__land {
+    grid-column: 1;
+    grid-row: 2;
+    align-self:flex-end;
+}
+
+.bostedUtlandVisning__dato {
+    grid-column: 1;
+    grid-row: 2;
+    align-self:flex-end;
+}
+
+
+.bostedUtlandVisning__rediger {
+    grid-column: 3;
+    grid-row: 2;
+    width: 2rem;
+    height: 2rem;
+    align-self:last baseline;
+}
+
+.bostedUtlandVisning__slett {
+    grid-column: 2;
+    grid-row: 2;
+    width:2rem;
+    height:2rem;
+    align-self:last baseline;
+}
+
+
