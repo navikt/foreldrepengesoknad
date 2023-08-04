@@ -5,14 +5,11 @@ import { BodyLong, ExpansionCard } from '@navikt/ds-react';
 
 const InfoOmFørstegangstjeneste = () => {
     return (
-        <ExpansionCard aria-label="Er du i førstegangstjeneste?">
+        <ExpansionCard size="small" aria-label="Er du i førstegangstjeneste?">
             <ExpansionCard.Header>
-                <ExpansionCard.Title as="h2">
+                <ExpansionCard.Title size="small" as="h2">
                     <FormattedMessage id="inntektsinformasjon.infoOmFørstegangstjeneste.tittel" />
                 </ExpansionCard.Title>
-                <ExpansionCard.Description>
-                    <FormattedMessage id="inntektsinformasjon.infoOmFørstegangstjeneste.description" />
-                </ExpansionCard.Description>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <Block padBottom="l">
