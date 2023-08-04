@@ -1,5 +1,6 @@
 import SøknadRoutes from 'app/routes/routes';
 import { Barn } from 'app/types/Barn';
+import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
 import { Søker } from 'app/types/Søker';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
@@ -11,6 +12,7 @@ export enum SvangerskapspengerContextActionKeys {
     SET_SØKERINFO = 'setSøkerinfo',
     SET_CURRENT_ROUTE = 'setCurrentRoute',
     SET_HARGODKJENTVILKÅR = 'setHarGodkjentVilkår',
+    SET_UTENLANDSOPPHOLD = 'setUtenlandsopphold',
 }
 interface SetBarn {
     type: SvangerskapspengerContextActionKeys.SET_BARN;
@@ -72,13 +74,24 @@ const setHarGodkjentVilkår = (payload: boolean): SetHarGodkjentVilkår => ({
     payload,
 });
 
+interface SetUtenlandsopphold {
+    type: SvangerskapspengerContextActionKeys.SET_UTENLANDSOPPHOLD;
+    payload: InformasjonOmUtenlandsopphold;
+}
+
+const setUtenlandsopphold = (payload: InformasjonOmUtenlandsopphold): SetUtenlandsopphold => ({
+    type: SvangerskapspengerContextActionKeys.SET_UTENLANDSOPPHOLD,
+    payload,
+});
+
 export type SvangerskapspengerContextAction =
     | SetBarn
     | SetSøker
     | SetTilrettelegging
     | SetCurrentRoute
     | SetSøkerinfo
-    | SetHarGodkjentVilkår;
+    | SetHarGodkjentVilkår
+    | SetUtenlandsopphold;
 
 export default {
     setBarn,
@@ -87,4 +100,5 @@ export default {
     setCurrentRoute,
     setSøkerinfo,
     setHarGodkjentVilkår,
+    setUtenlandsopphold,
 };
