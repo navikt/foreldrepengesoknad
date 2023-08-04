@@ -1,8 +1,8 @@
 import { BostedUtland } from 'app/types/BostedUtland';
 import { FunctionComponent } from 'react';
-import { getInitialOppholdFormData } from '../subform/bostedUtlandUtils';
-import { BostedUtlandFormComponents } from '../subform/bostedUtlandFormTypes';
-import BostedUtlandSubform from './BostedUtlandSubform';
+import { getInitialOppholdFormData } from './subform/bostedUtlandSubformUtils';
+import { BostedUtlandFormComponents } from './subform/bostedUtlandSubformTypes';
+import BostedUtlandSubform from './subform/BostedUtlandSubform';
 
 interface Props {
     currentOppholdId: number | undefined;

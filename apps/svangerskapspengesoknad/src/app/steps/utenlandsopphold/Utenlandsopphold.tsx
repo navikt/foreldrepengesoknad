@@ -10,15 +10,15 @@ import {
     UtenlandsoppholdField,
     UtenlandsoppholdFormComponents,
     UtenlandsoppholdFormData,
-} from './components/utenlandsoppholdFormTypes';
+} from './utenlandsoppholdFormTypes';
 import {
     getInitialUtenlandsoppholdValuesFromState,
     mapUtenlandsoppholdFormDataToState,
-} from './components/utenlandsoppholdFormUtils';
-import { utenlandsoppholdFormQuestions } from './components/utenlandsoppholdFormQuestions';
+} from './utenlandsoppholdFormUtils';
+import { utenlandsoppholdFormQuestions } from './utenlandsoppholdFormQuestions';
 import { useState } from 'react';
 import { BostedUtland } from 'app/types/BostedUtland';
-import BostedUtlandComponent from './subform/BostedUtlandComponent';
+import BostedUtlandComponent from './components/subform/BostedUtlandComponent';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import InformasjonOmUtenlandsopphold from './components/InformasjonOmUtenlandsopphold';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';

@@ -1,12 +1,12 @@
 import { IntlShape } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik-ds';
-import { BostedUtlandFormData, initialBostedUtlandFormData } from './bostedUtlandFormTypes';
-import { formatDate, intlUtils } from '@navikt/fp-common';
+import { BostedUtlandSubformData, initialBostedUtlandFormData } from './bostedUtlandSubformTypes';
+import { date1YearAgo, date1YearFromNow, formatDate, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { BostedUtland } from 'app/types/BostedUtland';
 import { hasValue } from 'app/utils/validationUtils';
 
-export const mapBostedUtland = (formValues: Partial<BostedUtlandFormData>, id: number): BostedUtland => {
+export const mapBostedUtland = (formValues: Partial<BostedUtlandSubformData>, id: number): BostedUtland => {
     return {
         id: id,
         landkode: formValues.land!,
@@ -62,6 +62,10 @@ export const validateBostedUtlandFom =
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.fom.førDagensDato');
         }
 
+        if (!oppgirIFortid && hasValue(fom) && dayjs(fom).isAfter(date1YearFromNow)) {
+            return intlUtils(intl, 'valideringsfeil.utenlandsopphold.fom.merEnn1ÅrFremITid');
+        }
+
         return undefined;
     };
 
@@ -75,12 +79,15 @@ export const validateBostedUtlandTom =
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.tom.førFom');
         }
 
-        if (oppgirIFortid && tom && dayjs(tom).isBefore(dayjs(), 'day')) {
+        if (oppgirIFortid && tom && dayjs(tom).isAfter(dayjs(), 'day')) {
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.tom.etterDagensDato');
         }
 
         if (!oppgirIFortid && tom && dayjs(tom).isBefore(dayjs(), 'day')) {
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.tom.førDagensDato');
+        }
+        if (oppgirIFortid && hasValue(tom) && dayjs(tom).isBefore(date1YearAgo)) {
+            return intlUtils(intl, 'valideringsfeil.utenlandsopphold.tom.merEnn1ÅrSiden');
         }
 
         return undefined;
