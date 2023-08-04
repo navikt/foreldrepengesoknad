@@ -55,16 +55,16 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
 
     switch (id) {
         case 'arbeid':
-            href = '/soknad/barnet';
+            href = '/barnet';
             break;
         case 'utenlandsopphold':
-            href = '/soknad/arbeid';
+            href = '/arbeid';
             break;
         case 'periode':
-            href = '/soknad/utenlandsopphold';
+            href = '/utenlandsopphold';
             break;
         case 'oppsummering':
-            href = '/soknad/periode';
+            href = '/periode';
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
