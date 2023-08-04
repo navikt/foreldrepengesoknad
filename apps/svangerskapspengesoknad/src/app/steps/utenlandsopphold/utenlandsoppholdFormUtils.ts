@@ -38,11 +38,9 @@ export const mapUtenlandsoppholdFormDataToState = (
         iNorgeSiste12Mnd: convertYesOrNoOrUndefinedToBoolean(harBoddINorgeSiste12Mnd)!,
         iNorgeNeste12Mnd: convertYesOrNoOrUndefinedToBoolean(skalBoINorgeNeste12Mnd)!,
         senereOpphold:
-            skalBoINorgeNeste12Mnd === YesOrNo.YES
-                ? mapBostedUtlandToUtenlandsopphold(utenlandsoppholdNeste12Mnd!)
-                : [],
+            skalBoINorgeNeste12Mnd === YesOrNo.NO ? mapBostedUtlandToUtenlandsopphold(utenlandsoppholdNeste12Mnd!) : [],
         tidligereOpphold:
-            harBoddINorgeSiste12Mnd === YesOrNo.YES
+            harBoddINorgeSiste12Mnd === YesOrNo.NO
                 ? mapBostedUtlandToUtenlandsopphold(utenlandsoppholdSiste12Mnd!)
                 : [],
         jobbetINorgeSiste12Mnd: true, //TODO - what does this do?
