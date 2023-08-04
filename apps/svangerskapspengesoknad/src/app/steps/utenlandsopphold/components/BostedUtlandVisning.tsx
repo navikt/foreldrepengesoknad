@@ -9,19 +9,11 @@ import { BostedUtland } from 'app/types/BostedUtland';
 
 interface Props {
     oppholdIUtlandet: BostedUtland;
-    leggerTilNyttOppholdIUtlandet: boolean;
-    annetOppholdBlirRedigert: boolean;
     setSelectedOpphold: React.Dispatch<React.SetStateAction<BostedUtland | undefined>>;
     deleteOpphold: (arbeidIUtlandet: BostedUtland) => void;
 }
 
-const BostedUtlandVisning: FunctionComponent<Props> = ({
-    oppholdIUtlandet,
-    leggerTilNyttOppholdIUtlandet,
-    annetOppholdBlirRedigert,
-    setSelectedOpphold,
-    deleteOpphold,
-}) => {
+const BostedUtlandVisning: FunctionComponent<Props> = ({ oppholdIUtlandet, setSelectedOpphold, deleteOpphold }) => {
     const intl = useIntl();
     const bem = bemUtils('bostedUtlandVisning');
 
@@ -50,7 +42,6 @@ const BostedUtlandVisning: FunctionComponent<Props> = ({
                         className={bem.element('rediger')}
                         icon={<PencilWritingIcon aria-hidden />}
                         onClick={() => handleOnClickRediger(oppholdIUtlandet)}
-                        disabled={leggerTilNyttOppholdIUtlandet || annetOppholdBlirRedigert}
                     />
                     <Button
                         aria-label="slett opphold i utlandet"
@@ -58,7 +49,6 @@ const BostedUtlandVisning: FunctionComponent<Props> = ({
                         className={bem.element('slett')}
                         icon={<TrashIcon aria-hidden />}
                         onClick={() => handleOnClickSlett(oppholdIUtlandet)}
-                        disabled={leggerTilNyttOppholdIUtlandet || annetOppholdBlirRedigert}
                     />
                 </div>
             </Block>

@@ -1,4 +1,4 @@
-import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, intlUtils, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { useIntl } from 'react-intl';
@@ -51,6 +51,12 @@ const Barnet: React.FunctionComponent = () => {
                                 <BarnetFormComponents.YesOrNoQuestion
                                     name={BarnetFormField.erBarnetFødt}
                                     legend={intlUtils(intl, 'barnet.erBarnetFødt')}
+                                    validate={(value) =>
+                                        validateYesOrNoIsAnswered(
+                                            value,
+                                            intlUtils(intl, 'valideringsfeil.barnet.erBarnetFødt.påkrevd')
+                                        )
+                                    }
                                 />
                                 <ReadMore size="small" header={intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tittel')}>
                                     {intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tekst')}
