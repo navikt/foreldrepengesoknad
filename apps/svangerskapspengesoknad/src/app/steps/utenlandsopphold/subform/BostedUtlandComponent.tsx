@@ -46,7 +46,6 @@ const BostedUtlandComponent: FunctionComponent<Props> = ({ oppgirIFortid, alleOp
                     alleOpphold={alleOpphold}
                     selectedOpphold={selectedOpphold}
                     oppgirIFortid={oppgirIFortid}
-                    leggerTilNyttOppholdIUtlandet={leggerTilNyttOppholdIUtlandet}
                     addOpphold={addOpphold}
                     editOpphold={editOpphold}
                     deleteOpphold={deleteOpphold}

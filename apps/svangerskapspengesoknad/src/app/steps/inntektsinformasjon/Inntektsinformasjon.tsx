@@ -1,4 +1,4 @@
-import { Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
@@ -99,6 +99,12 @@ const Inntektsinformasjon = () => {
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattInntektSomFrilans}
                                     legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilans')}
+                                    validate={(value) =>
+                                        validateYesOrNoIsAnswered(
+                                            value,
+                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.frilans.påkrevd')
+                                        )
+                                    }
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
@@ -123,6 +129,15 @@ const Inntektsinformasjon = () => {
                                         intl,
                                         'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende'
                                     )}
+                                    validate={(value) =>
+                                        validateYesOrNoIsAnswered(
+                                            value,
+                                            intlUtils(
+                                                intl,
+                                                'valideringsfeil.utenlandsopphold.hattInntektSomNæringsdrivende.påkrevd'
+                                            )
+                                        )
+                                    }
                                 />
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
@@ -142,8 +157,8 @@ const Inntektsinformasjon = () => {
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattArbeidIUtlandet}
                                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
-                                    validate={(hattAndreInntekter) => {
-                                        if (hattAndreInntekter === YesOrNo.YES) {
+                                    validate={(value) => {
+                                        if (value === YesOrNo.YES) {
                                             if (arbeidIUtlandet.length === 0) {
                                                 return intlUtils(
                                                     intl,
@@ -151,8 +166,13 @@ const Inntektsinformasjon = () => {
                                                 );
                                             }
                                         }
-
-                                        return undefined;
+                                        return validateYesOrNoIsAnswered(
+                                            value,
+                                            intlUtils(
+                                                intl,
+                                                'valideringsfeil.utenlandsopphold.hattArbeidIUtlandet.påkrevd'
+                                            )
+                                        );
                                     }}
                                 />
                                 <ArbeidIUtlandetReadMore />

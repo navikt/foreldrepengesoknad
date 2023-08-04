@@ -10,7 +10,6 @@ interface Props {
     oppgirIFortid: boolean;
     isSelected: boolean;
     selectedOpphold: BostedUtland | undefined;
-    leggerTilNyttOppholdIUtlandet: boolean;
     addOpphold: (opphold: BostedUtland) => void;
     editOpphold: (oppholdSomEditeres: BostedUtland, oppdatertOpphold: BostedUtland) => void;
     deleteOpphold: (oppholdSomSlettes: BostedUtland) => void;
@@ -23,7 +22,6 @@ const BostedUtlandListElement: FunctionComponent<Props> = ({
     opphold,
     alleOpphold,
     selectedOpphold,
-    leggerTilNyttOppholdIUtlandet,
     oppgirIFortid,
     setSelectedOpphold,
     deleteOpphold,
@@ -39,8 +37,6 @@ const BostedUtlandListElement: FunctionComponent<Props> = ({
                         oppholdIUtlandet={opphold}
                         setSelectedOpphold={setSelectedOpphold}
                         deleteOpphold={deleteOpphold}
-                        leggerTilNyttOppholdIUtlandet={leggerTilNyttOppholdIUtlandet}
-                        annetOppholdBlirRedigert={!!selectedOpphold}
                     />
                 )}
                 {isSelected && (
