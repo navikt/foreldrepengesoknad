@@ -5,14 +5,11 @@ import { BodyLong, ExpansionCard, Label } from '@navikt/ds-react';
 
 const InfoTilFiskere = () => {
     return (
-        <ExpansionCard aria-label="Info til fiskere">
+        <ExpansionCard size="small" aria-label="Info til fiskere">
             <ExpansionCard.Header>
-                <ExpansionCard.Title as="h2">
+                <ExpansionCard.Title size="small" as="h2">
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.tittel" />
                 </ExpansionCard.Title>
-                <ExpansionCard.Description>
-                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.description" />
-                </ExpansionCard.Description>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <Block padBottom="l">

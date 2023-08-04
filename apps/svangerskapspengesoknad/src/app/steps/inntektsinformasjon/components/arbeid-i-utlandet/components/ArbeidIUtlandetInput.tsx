@@ -24,13 +24,13 @@ import {
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
-    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
+    erFørsteInput: boolean;
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
+    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
-    erFørsteInput: boolean;
     setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -70,13 +70,13 @@ const areAllArbeidIUtlandetQuestionsAnswered = (formValues: InntektsinformasjonF
 const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     visibility,
     formValues,
-    setFieldValue,
-    setSelectedAnnenInntekt,
     errors,
     selectedAnnenInntekt,
+    erFørsteInput,
+    setFieldValue,
+    setSelectedAnnenInntekt,
     addAnnenInntekt,
     editAnnenInntekt,
-    erFørsteInput,
     setLeggTilNyttArbeidIUtlandet,
 }) => {
     const tittelId = selectedAnnenInntekt
