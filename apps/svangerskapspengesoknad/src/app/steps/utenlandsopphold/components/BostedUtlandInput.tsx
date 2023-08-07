@@ -1,8 +1,9 @@
 import { BostedUtland } from 'app/types/BostedUtland';
 import { FunctionComponent } from 'react';
 import { getInitialOppholdFormData } from './subform/bostedUtlandSubformUtils';
-import { BostedUtlandSubformComponents } from './subform/bostedUtlandSubformConfig';
+import { BostedUtlandSubformComponents, BostedUtlandSubformData } from './subform/bostedUtlandSubformConfig';
 import BostedUtlandSubform from './subform/BostedUtlandSubform';
+import { bostedUtlandFormQuestionsConfig } from './subform/BostedUtlandSubformQuestions';
 
 interface Props {
     currentOppholdId: number | undefined;
@@ -29,6 +30,7 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
             initialValues={getInitialOppholdFormData(selectedOpphold)}
             onSubmit={() => undefined}
             renderForm={({ values: formValues, errors, validateForm }) => {
+                const visibility = bostedUtlandFormQuestionsConfig.getVisbility(formValues as BostedUtlandSubformData);
                 return (
                     <BostedUtlandSubform
                         currentOppholdId={currentOppholdId}
@@ -37,6 +39,7 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
                         oppgirIFortid={oppgirIFortid}
                         formValues={formValues}
                         errors={errors}
+                        visibility={visibility}
                         setSelectedOpphold={setSelectedOpphold}
                         editOpphold={editOpphold}
                         addOpphold={addOpphold}
