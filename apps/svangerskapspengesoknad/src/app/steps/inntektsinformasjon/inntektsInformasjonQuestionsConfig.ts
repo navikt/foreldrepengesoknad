@@ -81,27 +81,6 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
             egenNæringBlittYrkesaktivDe3SisteÅrene === YesOrNo.YES,
         isAnswered: ({ egenNæringYrkesAktivDato }) => hasValue(egenNæringYrkesAktivDato),
     },
-
-    [InntektsinformasjonFormField.arbeidIUtlandetLand]: {
-        isIncluded: () => true,
-        isAnswered: ({ arbeidIUtlandetLand }) => hasValue(arbeidIUtlandetLand),
-    },
-    [InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver]: {
-        isIncluded: () => true,
-        isAnswered: ({ arbeidIUtlandetNavnArbeidsgiver }) => hasValue(arbeidIUtlandetNavnArbeidsgiver),
-    },
-    [InntektsinformasjonFormField.arbeidIUtlandetFom]: {
-        isIncluded: () => true,
-        isAnswered: ({ arbeidIUtlandetFom }) => hasValue(arbeidIUtlandetFom),
-    },
-    [InntektsinformasjonFormField.arbeidIUtlandetPågående]: {
-        isIncluded: () => true,
-        isAnswered: ({ arbeidIUtlandetPågående }) => arbeidIUtlandetPågående !== YesOrNo.UNANSWERED,
-    },
-    [InntektsinformasjonFormField.arbeidIUtlandetTom]: {
-        isIncluded: ({ arbeidIUtlandetPågående }) => arbeidIUtlandetPågående === YesOrNo.NO,
-        isAnswered: ({ arbeidIUtlandetTom }) => hasValue(arbeidIUtlandetTom),
-    },
 };
 
 const inntektsinforMasjonQuestionsConfig = Questions<InntektsinformasjonFormData, InntektsinformasjonFormField>(

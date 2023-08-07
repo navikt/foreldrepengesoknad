@@ -30,7 +30,7 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/components/ArbeidIUtlandetReadMore';
-import ArbeidIUtlandetSubform from './components/arbeid-i-utlandet/ArbeidIUtlandetSubform';
+import ArbeidIUtlandetComponent from './components/arbeid-i-utlandet/ArbeidIUtlandetComponent';
 import FrilansSubform from './components/frilans/FrilansSubform';
 import { Næring } from 'app/types/Næring';
 import EgenNæringSubform from './components/egen-næring/EgenNæringSubform';
@@ -63,7 +63,7 @@ const Inntektsinformasjon = () => {
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
-            initialValues={getInitialInntektsinformasjonFormValues(søker, selectedAnnenInntekt)}
+            initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, errors, setFieldValue, validateForm }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
@@ -177,13 +177,11 @@ const Inntektsinformasjon = () => {
                                 />
                                 <ArbeidIUtlandetReadMore />
                             </Block>
-                            <ArbeidIUtlandetSubform
+                            <ArbeidIUtlandetComponent
                                 arbeidIUtlandet={arbeidIUtlandet}
-                                visibility={visibility}
                                 formValues={formValues as InntektsinformasjonFormData}
                                 errors={errors}
                                 selectedAnnenInntekt={selectedAnnenInntekt}
-                                setFieldValue={setFieldValue}
                                 setArbeidIUtlandet={setArbeidIUtlandet}
                                 setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                             />

@@ -6,8 +6,6 @@ import './arbeid-i-utlandet-visning.css';
 import { BodyShort, Button, Label } from '@navikt/ds-react';
 import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
-import { InntektsinformasjonFormField } from '../../../inntektsinformasjonFormConfig';
-import { convertBooleanOrUndefinedToYesOrNo } from '@navikt/fp-common/src/common/utils/formUtils';
 
 interface Props {
     arbeidIUtlandet: ArbeidIUtlandet;
@@ -15,7 +13,6 @@ interface Props {
     annenInntektBlirRedigert: boolean;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
     deleteAnnenInntekt: (arbeidIUtlandet: ArbeidIUtlandet) => void;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
 }
 
 const getTilTekst = (arbeid: ArbeidIUtlandet): string => {
@@ -28,21 +25,12 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
     annenInntektBlirRedigert,
     setSelectedAnnenInntekt,
     deleteAnnenInntekt,
-    setFieldValue,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('arbeidIUtlandetVisning');
 
     const handleOnClickRediger = (arbeidIUtlandet: ArbeidIUtlandet) => {
         setSelectedAnnenInntekt(arbeidIUtlandet);
-        setFieldValue(InntektsinformasjonFormField.arbeidIUtlandetLand, arbeidIUtlandet.land);
-        setFieldValue(InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver, arbeidIUtlandet.arbeidsgiverNavn);
-        setFieldValue(InntektsinformasjonFormField.arbeidIUtlandetFom, arbeidIUtlandet.tidsperiode.fom);
-        setFieldValue(InntektsinformasjonFormField.arbeidIUtlandetTom, arbeidIUtlandet.tidsperiode.tom);
-        setFieldValue(
-            InntektsinformasjonFormField.arbeidIUtlandetPågående,
-            convertBooleanOrUndefinedToYesOrNo(arbeidIUtlandet.pågående)
-        );
     };
 
     const handleOnClickSlett = (arbeidIUtlandet: ArbeidIUtlandet) => {
