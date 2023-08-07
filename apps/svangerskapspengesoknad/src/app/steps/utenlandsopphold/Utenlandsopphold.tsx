@@ -1,7 +1,5 @@
 import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-// import actionCreator from 'app/context/action/actionCreator';
-// import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { BodyShort, Button } from '@navikt/ds-react';

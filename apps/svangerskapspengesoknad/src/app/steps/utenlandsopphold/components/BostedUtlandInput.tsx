@@ -1,7 +1,7 @@
 import { BostedUtland } from 'app/types/BostedUtland';
 import { FunctionComponent } from 'react';
 import { getInitialOppholdFormData } from './subform/bostedUtlandSubformUtils';
-import { BostedUtlandFormComponents } from './subform/bostedUtlandSubformTypes';
+import { BostedUtlandSubformComponents } from './subform/bostedUtlandSubformConfig';
 import BostedUtlandSubform from './subform/BostedUtlandSubform';
 
 interface Props {
@@ -25,7 +25,7 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
     setLeggerTilNyttOppholdIUtlandet,
 }) => {
     return (
-        <BostedUtlandFormComponents.FormikWrapper
+        <BostedUtlandSubformComponents.FormikWrapper
             initialValues={getInitialOppholdFormData(selectedOpphold)}
             onSubmit={() => undefined}
             renderForm={({ values: formValues, errors, validateForm }) => {

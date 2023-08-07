@@ -1,5 +1,5 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
-import { BostedUtlandSubformData, BostedUtlandSubformField } from './bostedUtlandSubformTypes';
+import { BostedUtlandSubformData, BostedUtlandSubformField } from './bostedUtlandSubformConfig';
 import { hasValue } from 'app/utils/validationUtils';
 
 const BostedUtlandSubformConfig: QuestionConfig<BostedUtlandSubformData, BostedUtlandSubformField> = {

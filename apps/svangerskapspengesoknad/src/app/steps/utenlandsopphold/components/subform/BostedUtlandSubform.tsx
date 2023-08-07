@@ -10,10 +10,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, dateToday, intlUtils } from '@navikt/fp-common';
 import { Button, Heading } from '@navikt/ds-react';
 import {
-    BostedUtlandFormComponents,
+    BostedUtlandSubformComponents,
     BostedUtlandSubformData,
     BostedUtlandSubformField,
-} from './bostedUtlandSubformTypes';
+} from './bostedUtlandSubformConfig';
 import InputFeilmelding, {
     getInputFeltFeil,
 } from 'app/steps/inntektsinformasjon/components/input-feilmelding/InputFeilmelding';
@@ -120,14 +120,14 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
                 </Heading>
             )}
             <Block padBottom="l">
-                <BostedUtlandFormComponents.CountrySelect
+                <BostedUtlandSubformComponents.CountrySelect
                     name={BostedUtlandSubformField.land}
                     label={intlUtils(intl, spmId)}
                 />
                 {getInputFeltFeil(submitClicked, BostedUtlandSubformField.land, formValues.land, intl)}
             </Block>
             <Block padBottom="l">
-                <BostedUtlandFormComponents.DatePicker
+                <BostedUtlandSubformComponents.DatePicker
                     name={BostedUtlandSubformField.fom}
                     label={intlUtils(intl, 'utenlandsopphold.fraogmed')}
                     validate={validateBostedUtlandFom(formValues.tom, oppgirIFortid, intl)}
@@ -139,7 +139,7 @@ const BostedUtlandSubform: FunctionComponent<Props> = ({
                 {getInputFeltFeil(submitClicked, BostedUtlandSubformField.fom, formValues.fom, intl, fomFeil)}
             </Block>
             <Block padBottom="l">
-                <BostedUtlandFormComponents.DatePicker
+                <BostedUtlandSubformComponents.DatePicker
                     name={BostedUtlandSubformField.tom}
                     label={intlUtils(intl, 'utenlandsopphold.tilogmed')}
                     validate={validateBostedUtlandTom(formValues.fom, oppgirIFortid, intl)}
