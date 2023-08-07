@@ -20,6 +20,7 @@ import InputFeilmelding, {
 import { FormikErrors, getIn } from 'formik';
 import { hasValue } from 'app/utils/validationUtils';
 import './bosted-utland-subform.css';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
 const areAllBostedUtlandQuestionsAnswered = (formValues: Partial<BostedUtlandSubformData>) => {
     return hasValue(formValues.fom) && hasValue(formValues.tom) && hasValue(formValues.land);
@@ -32,6 +33,7 @@ interface Props {
     oppgirIFortid: boolean;
     formValues: Partial<BostedUtlandSubformData>;
     errors: FormikErrors<Partial<BostedUtlandSubformData>>;
+    visibility: QuestionVisibility<BostedUtlandSubformField>;
     setSelectedOpphold: React.Dispatch<React.SetStateAction<BostedUtland | undefined>>;
     addOpphold: (inntekt: BostedUtland) => void;
     editOpphold: (oppholdSomEditeres: BostedUtland, oppdatertOpphold: BostedUtland) => void;
