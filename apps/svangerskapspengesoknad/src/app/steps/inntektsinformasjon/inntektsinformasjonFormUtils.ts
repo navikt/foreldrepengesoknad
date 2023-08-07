@@ -2,7 +2,7 @@ import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inn
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Næring } from 'app/types/Næring';
-import { ArbeidIUtlandet, AnnenInntektType } from 'app/types/ArbeidIUtlandet';
+import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Frilans } from 'app/types/Frilans';
 import { ISOStringToDate } from '@navikt/fp-common';
 import {
@@ -33,11 +33,6 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.egenNæringResultat]: '',
     [InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.egenNæringYrkesAktivDato]: '',
-    [InntektsinformasjonFormField.arbeidIUtlandetLand]: '',
-    [InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver]: '',
-    [InntektsinformasjonFormField.arbeidIUtlandetFom]: '',
-    [InntektsinformasjonFormField.arbeidIUtlandetPågående]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.arbeidIUtlandetTom]: '',
 };
 
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
@@ -46,17 +41,6 @@ export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
         ...næring,
         navnPåNæringen: cleanedNavn,
     };
-};
-
-export const cleanupInvisibleCharsFromArbeidIUtlandet = (andreInntekter: ArbeidIUtlandet[]): ArbeidIUtlandet[] => {
-    return andreInntekter.map((inntekt) =>
-        inntekt.type === AnnenInntektType.JOBB_I_UTLANDET
-            ? {
-                  ...inntekt,
-                  arbeidsgiverNavn: replaceInvisibleCharsWithSpace(inntekt.arbeidsgiverNavn),
-              }
-            : inntekt
-    );
 };
 
 export const mapInntektsinformasjonFormDataToState = (
@@ -72,20 +56,14 @@ export const mapInntektsinformasjonFormDataToState = (
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
             values.hattInntektSomNæringsdrivende
         )!,
-        andreInntekterSiste10Mnd:
-            values.hattArbeidIUtlandet === YesOrNo.YES
-                ? cleanupInvisibleCharsFromArbeidIUtlandet(arbeidIUtlandet!)
-                : [],
+        andreInntekterSiste10Mnd: values.hattArbeidIUtlandet === YesOrNo.YES ? arbeidIUtlandet : [],
         selvstendigNæringsdrivendeInformasjon:
             values.hattInntektSomNæringsdrivende === YesOrNo.YES ? cleanupInvisibleCharsFromNæring(næring!) : undefined,
         frilansInformasjon: frilans,
     };
 };
 
-export const getInitialInntektsinformasjonFormValues = (
-    søker: Søker,
-    selectedAnnenInntekt: ArbeidIUtlandet | undefined
-): InntektsinformasjonFormData => {
+export const getInitialInntektsinformasjonFormValues = (søker: Søker): InntektsinformasjonFormData => {
     const næring = søker.selvstendigNæringsdrivendeInformasjon;
     const init = {
         ...initialInntektsinformasjonFormValues,
@@ -112,21 +90,6 @@ export const getInitialInntektsinformasjonFormValues = (
             næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
         ),
         egenNæringYrkesAktivDato: dateToISOString(næring?.oppstartsdato) || '',
-        arbeidIUtlandetLand: selectedAnnenInntekt
-            ? selectedAnnenInntekt.land
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetLand,
-        arbeidIUtlandetNavnArbeidsgiver: selectedAnnenInntekt
-            ? selectedAnnenInntekt.arbeidsgiverNavn
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetNavnArbeidsgiver,
-        arbeidIUtlandetFom: selectedAnnenInntekt
-            ? selectedAnnenInntekt.tidsperiode.fom
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetFom,
-        arbeidIUtlandetPågående: selectedAnnenInntekt
-            ? convertBooleanOrUndefinedToYesOrNo(selectedAnnenInntekt.pågående)
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetPågående,
-        arbeidIUtlandetTom: selectedAnnenInntekt
-            ? selectedAnnenInntekt.tidsperiode.tom || ''
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetTom,
     };
     return init;
 };
@@ -189,23 +152,6 @@ export const cleanupInntektsinformasjonForm = (
         egenNæringYrkesAktivDato: visibility.isVisible(InntektsinformasjonFormField.egenNæringYrkesAktivDato)
             ? values.egenNæringYrkesAktivDato
             : initialInntektsinformasjonFormValues.egenNæringYrkesAktivDato,
-        arbeidIUtlandetLand: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetLand)
-            ? values.arbeidIUtlandetLand
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetLand,
-        arbeidIUtlandetNavnArbeidsgiver: visibility.isVisible(
-            InntektsinformasjonFormField.arbeidIUtlandetNavnArbeidsgiver
-        )
-            ? values.arbeidIUtlandetNavnArbeidsgiver
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetNavnArbeidsgiver,
-        arbeidIUtlandetFom: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetFom)
-            ? values.arbeidIUtlandetFom
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetFom,
-        arbeidIUtlandetPågående: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetPågående)
-            ? values.arbeidIUtlandetPågående
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetPågående,
-        arbeidIUtlandetTom: visibility.isVisible(InntektsinformasjonFormField.arbeidIUtlandetTom)
-            ? values.arbeidIUtlandetTom
-            : initialInntektsinformasjonFormValues.arbeidIUtlandetTom,
     };
 };
 
@@ -236,18 +182,5 @@ export const mapEgenNæringFormValuesToState = (formValues: Partial<Inntektsinfo
             formValues.egenNæringBlittYrkesaktivDe3SisteÅrene
         )!,
         oppstartsdato: ISOStringToDate(formValues.egenNæringYrkesAktivDato),
-    };
-};
-
-export const mapArbeidIUtlandetFormValuesToState = (values: Partial<InntektsinformasjonFormData>): ArbeidIUtlandet => {
-    return {
-        arbeidsgiverNavn: values.arbeidIUtlandetNavnArbeidsgiver!,
-        land: values.arbeidIUtlandetLand!,
-        pågående: convertYesOrNoOrUndefinedToBoolean(values.arbeidIUtlandetPågående)!,
-        tidsperiode: {
-            fom: values.arbeidIUtlandetFom!,
-            tom: values.arbeidIUtlandetTom,
-        },
-        type: AnnenInntektType.JOBB_I_UTLANDET,
     };
 };

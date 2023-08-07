@@ -169,7 +169,7 @@
     "valideringsfeil.arbeidIUtlandetLand.påkrevd": "Du må oppgi land på arbeidsgiver i utlandet",
     "valideringsfeil.arbeidIUtlandetFom.påkrevd": "Du må oppgi startdatoen på arbeidet i utlandet",
     "valideringsfeil.arbeidIUtlandetTom.påkrevd": "Du må oppgi sluttdatoen på arbeidet i utlandet",
-    "valideringsfeil.arbeidIUtlandetPågående.påkrevd": "Du må svare på om du fortsatt jobber i utlandet",
+    "valideringsfeil.arbeidIUtlandetErPågående.påkrevd": "Du må svare på om du fortsatt jobber i utlandet",
     "valideringsfeil.inntektsinformasjon.måOppgiArbeidIUtlandet": "Du må oppgi arbeid i utlandet",
     "valideringsfeil.utenlandsopphold.overlapper": "Du har et utenlandsopphold i {land} fra {fom} til {tom} som overlapper med de valgte datoene. Du må endre på denne perioden først.",
     "valideringsfeil.fom.påkrevd": "Du må oppgi en fra og med dato",

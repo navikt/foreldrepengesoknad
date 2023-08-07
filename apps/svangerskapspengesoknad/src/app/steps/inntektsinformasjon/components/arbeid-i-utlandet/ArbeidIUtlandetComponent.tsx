@@ -1,31 +1,27 @@
 import { Button, Heading } from '@navikt/ds-react';
-import { InntektsinformasjonFormData, InntektsinformasjonFormField } from '../../inntektsinformasjonFormConfig';
+import { InntektsinformasjonFormData } from '../../inntektsinformasjonFormConfig';
 import ArbeidIUtlandetInput from './components/ArbeidIUtlandetInput';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent, useState } from 'react';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { FormikErrors } from 'formik';
 import ArbeidIUtlandetList from './components/ArbeidIUtlandetList';
 interface Props {
     arbeidIUtlandet: ArbeidIUtlandet[];
-    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
     errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     setArbeidIUtlandet: React.Dispatch<React.SetStateAction<ArbeidIUtlandet[]>>;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
 }
-const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
+const ArbeidIUtlandetComponent: FunctionComponent<Props> = ({
     arbeidIUtlandet,
-    visibility,
     formValues,
     errors,
     selectedAnnenInntekt,
-    setFieldValue,
+    // setFieldValue,
     setArbeidIUtlandet,
     setSelectedAnnenInntekt,
 }) => {
@@ -68,10 +64,8 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
             {arbeidIUtlandet.length > 0 && (
                 <ArbeidIUtlandetList
                     andreInntekterIUtlandet={arbeidIUtlandet}
-                    visibility={visibility}
                     formValues={formValues as InntektsinformasjonFormData}
                     errors={errors}
-                    setFieldValue={setFieldValue}
                     selectedAnnenInntekt={selectedAnnenInntekt}
                     addAnnenInntekt={addAnnenInntekt}
                     editAnnenInntekt={editAnnenInntekt}
@@ -84,10 +78,8 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
             {(leggerTilNyttArbeidIUtlandet ||
                 (formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length === 0)) && (
                 <ArbeidIUtlandetInput
-                    visibility={visibility}
                     formValues={formValues as InntektsinformasjonFormData}
                     errors={errors}
-                    setFieldValue={setFieldValue}
                     selectedAnnenInntekt={selectedAnnenInntekt}
                     addAnnenInntekt={addAnnenInntekt}
                     editAnnenInntekt={editAnnenInntekt}
@@ -112,4 +104,4 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     );
 };
 
-export default ArbeidIUtlandetSubform;
+export default ArbeidIUtlandetComponent;
