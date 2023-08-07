@@ -12,10 +12,13 @@ export interface BostedUtlandSubformData {
     [BostedUtlandSubformField.tom]: string;
 }
 
-export const initialBostedUtlandFormData: BostedUtlandSubformData = {
+export const initialBostedUtlandSubformData: BostedUtlandSubformData = {
     [BostedUtlandSubformField.land]: '',
     [BostedUtlandSubformField.fom]: '',
     [BostedUtlandSubformField.tom]: '',
 };
 
-export const BostedUtlandFormComponents = getTypedFormComponents<BostedUtlandSubformField, BostedUtlandSubformData>();
+export const BostedUtlandSubformComponents = getTypedFormComponents<
+    BostedUtlandSubformField,
+    BostedUtlandSubformData
+>();

@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik-ds';
-import { BostedUtlandSubformData, initialBostedUtlandFormData } from './bostedUtlandSubformTypes';
+import { BostedUtlandSubformData, initialBostedUtlandSubformData } from './bostedUtlandSubformConfig';
 import { date1YearAgo, date1YearFromNow, formatDate, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { BostedUtland } from 'app/types/BostedUtland';
@@ -95,10 +95,10 @@ export const validateBostedUtlandTom =
 
 export const getInitialOppholdFormData = (selectedOpphold: BostedUtland | undefined) => {
     if (selectedOpphold === undefined) {
-        return { ...initialBostedUtlandFormData };
+        return { ...initialBostedUtlandSubformData };
     }
     return {
-        ...initialBostedUtlandFormData,
+        ...initialBostedUtlandSubformData,
         fom: selectedOpphold.fom,
         tom: selectedOpphold.tom,
         land: selectedOpphold.landkode,
