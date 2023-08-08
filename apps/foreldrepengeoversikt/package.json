@@ -110,6 +110,6 @@
         "react-transition-group": "^4.4.5",
         "request": "^2.88.2",
         "url-search-params-polyfill": "^8.1.1",
-        "winston": "^3.8.2"
+        "winston": "^3.10.0"
     }
 }
