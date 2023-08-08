@@ -37,7 +37,7 @@
         "@types/react": "^18.0.35",
         "@types/react-aria-menubutton": "^6.2.9",
         "@types/react-collapse": "^5.0.1",
-        "@types/react-dom": "^18.0.11",
+        "@types/react-dom": "^18.2.7",
         "@types/react-modal": "^3.13.1",
         "@types/react-scroll": "^1.8.4",
         "@types/react-transition-group": "^4.4.5",
