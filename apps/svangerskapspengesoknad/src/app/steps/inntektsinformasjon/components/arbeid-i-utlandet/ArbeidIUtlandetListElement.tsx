@@ -1,18 +1,13 @@
 import { FunctionComponent } from 'react';
 import ArbeidIUtlandetVisning from './ArbeidIUtlandetVisning';
-import ArbeidIUtlandetInput from './ArbeidIUtlandetInput';
-import { InntektsinformasjonFormData } from '../../../inntektsinformasjonFormConfig';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Block, guid } from '@navikt/fp-common';
-import { FormikErrors } from 'formik';
+import ArbeidIUtlandetSubform from './subform/ArbeidIUtlandetSubform';
 
 interface Props {
     inntekt: ArbeidIUtlandet;
     isSelected: boolean;
-    formValues: InntektsinformasjonFormData;
-    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
-    leggerTilNyttArbeidIUtlandet: boolean;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     deleteAnnenInntekt: (inntektSomSlettes: ArbeidIUtlandet) => void;
@@ -23,10 +18,7 @@ interface Props {
 const ArbeidIUtlandetListElement: FunctionComponent<Props> = ({
     isSelected,
     inntekt,
-    errors,
-    formValues,
     selectedAnnenInntekt,
-    leggerTilNyttArbeidIUtlandet,
     setSelectedAnnenInntekt,
     deleteAnnenInntekt,
     addAnnenInntekt,
@@ -41,14 +33,10 @@ const ArbeidIUtlandetListElement: FunctionComponent<Props> = ({
                         arbeidIUtlandet={inntekt}
                         setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                         deleteAnnenInntekt={deleteAnnenInntekt}
-                        leggerTilNyttArbeidIUtlandet={leggerTilNyttArbeidIUtlandet}
-                        annenInntektBlirRedigert={!!selectedAnnenInntekt}
                     />
                 )}
                 {isSelected && (
-                    <ArbeidIUtlandetInput
-                        formValues={formValues as InntektsinformasjonFormData}
-                        errors={errors}
+                    <ArbeidIUtlandetSubform
                         selectedAnnenInntekt={selectedAnnenInntekt}
                         addAnnenInntekt={addAnnenInntekt}
                         editAnnenInntekt={editAnnenInntekt}

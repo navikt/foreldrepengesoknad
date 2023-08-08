@@ -32,10 +32,10 @@ export const getInitialArbeidIUtlandetFormData = (arbeid: ArbeidIUtlandet | unde
     }
     return {
         ...initialArbeidIUtlandetFormValues,
-        fom: arbeid.tidsperiode.fom,
-        tom: arbeid.tidsperiode.tom,
-        land: arbeid.land,
-        navnArbeidsgiver: arbeid.arbeidsgiverNavn,
-        erPågående: convertBooleanOrUndefinedToYesOrNo(arbeid.pågående),
+        arbeidIUtlandetFom: arbeid.tidsperiode.fom,
+        arbeidIUtlandetTom: arbeid.tidsperiode.tom,
+        arbeidIUtlandetLand: arbeid.land,
+        arbeidIUtlandetNavnArbeidsgiver: arbeid.arbeidsgiverNavn,
+        arbeidIUtlandetErPågående: convertBooleanOrUndefinedToYesOrNo(arbeid.pågående),
     };
 };

@@ -1,26 +1,21 @@
-import { InntektsinformasjonFormData } from '../../../inntektsinformasjonFormConfig';
 import './arbeid-i-utlandet-input.css';
-import { FormikErrors } from 'formik';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { FunctionComponent } from 'react';
-import { ArbeidIUtlandetSubformComponents, ArbeidIUtlandetSubformData } from './subform/arbeidIUtlandetSubformConfig';
-import { getInitialArbeidIUtlandetFormData } from './subform/arbeidIUtlandetSubformUtils';
-import ArbeidIUtlandetSubform from './subform/ArbeidIUtlandetSubform';
-import { arbeidIUtlandetSubformQuestionsConfig } from './subform/arbeidIUtlandetSubformQuestions';
+import { ArbeidIUtlandetSubformComponents, ArbeidIUtlandetSubformData } from './arbeidIUtlandetSubformConfig';
+import { getInitialArbeidIUtlandetFormData } from './arbeidIUtlandetSubformUtils';
+import { arbeidIUtlandetSubformQuestionsConfig } from './arbeidIUtlandetSubformQuestions';
+import ArbeidIUtlandetInput from './ArbeidIUtlandetInput';
 
 interface Props {
-    formValues: InntektsinformasjonFormData;
     erFørsteInput: boolean;
-    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
-    // setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
+const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     selectedAnnenInntekt,
     erFørsteInput,
     setSelectedAnnenInntekt,
@@ -37,7 +32,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                     formValues as ArbeidIUtlandetSubformData
                 );
                 return (
-                    <ArbeidIUtlandetSubform
+                    <ArbeidIUtlandetInput
                         formValues={formValues}
                         errors={errors}
                         selectedAnnenInntekt={selectedAnnenInntekt}
@@ -55,4 +50,4 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     );
 };
 
-export default ArbeidIUtlandetInput;
+export default ArbeidIUtlandetSubform;

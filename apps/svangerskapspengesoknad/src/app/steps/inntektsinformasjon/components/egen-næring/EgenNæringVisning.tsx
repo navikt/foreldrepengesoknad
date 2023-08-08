@@ -15,7 +15,6 @@ interface Props {
 const EgenNæringVisning: FunctionComponent<Props> = ({ næring, setRedigererNæring }) => {
     const intl = useIntl();
     const bem = bemUtils('egen-næring-visning');
-    // const næringTekst = !næring.pågående && næring.tidsperiode.tom ? 'Du jobbet nærinh' : 'Du jobber nøring';
     const tilTekst = !næring.pågående && næring.tidsperiode.tom ? formatDate(næring.tidsperiode.tom) : 'Pågående';
     const handleOnClickRediger = () => {
         setRedigererNæring(true);

@@ -3,76 +3,36 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import './egen-næring-input.css';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Alert, BodyShort, Button, Heading, ReadMore } from '@navikt/ds-react';
-import {
-    InntektsinformasjonFormComponents,
-    InntektsinformasjonFormData,
-    InntektsinformasjonFormField,
-} from '../../../inntektsinformasjonFormConfig';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring, Næringstype } from 'app/types/Næring';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import {
     validateEgenNæringFom,
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
     validateNumber,
-} from '../modal/validation/egenNæringValidation';
+} from '../validation/egenNæringValidation';
 import dayjs from 'dayjs';
-import OrgnummerEllerLand from '../modal/components/OrgnummerEllerLand';
+import OrgnummerEllerLand from '../OrgnummerEllerLand';
 import { FormikErrors, getIn } from 'formik';
 import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
-import { mapEgenNæringFormValuesToState } from '../../../inntektsinformasjonFormUtils';
-import { hasValue } from 'app/utils/validationUtils';
+import { mapEgenNæringFormValuesToState } from './egenNæringSubformUtils';
+import { EgenNæringSubformComponents, EgenNæringSubformData, EgenNæringSubformField } from './egenNæringSubformConfig';
 
 interface Props {
-    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
-    formValues: InntektsinformasjonFormData;
-    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    næring: Næring | undefined;
+    visibility: QuestionVisibility<EgenNæringSubformField, undefined>;
+    formValues: Partial<EgenNæringSubformData>;
+    errors: FormikErrors<Partial<EgenNæringSubformData>>;
     setNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
     setRedigererNæring: React.Dispatch<React.SetStateAction<boolean>>;
     validateForm: any;
 }
 
-const cleanValues = (
-    formValues: InntektsinformasjonFormData,
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
-) => {
-    if (formValues.egenNæringPågående === YesOrNo.YES) {
-        setFieldValue(InntektsinformasjonFormField.egenNæringTom, '');
-    }
-    if (formValues.egenNæringBlittYrkesaktivDe3SisteÅrene === YesOrNo.NO) {
-        setFieldValue(InntektsinformasjonFormField.egenNæringYrkesAktivDato, '');
-    }
-    if (formValues.egenNæringRegistrertINorge === YesOrNo.NO) {
-        setFieldValue(InntektsinformasjonFormField.egenNæringOrgnr, '');
-    }
-    if (formValues.egenNæringRegistrertINorge === YesOrNo.YES) {
-        setFieldValue(InntektsinformasjonFormField.egenNæringLand, '');
-    }
-};
-
-const areAllEgenNæringQuestionsAnswered = (formValues: InntektsinformasjonFormData) => {
-    return (
-        hasValue(formValues.egenNæringType) &&
-        hasValue(formValues.egenNæringNavn) &&
-        hasValue(formValues.egenNæringRegistrertINorge) &&
-        (formValues.egenNæringRegistrertINorge === YesOrNo.NO || hasValue(formValues.egenNæringOrgnr)) &&
-        (formValues.egenNæringRegistrertINorge === YesOrNo.YES || hasValue(formValues.egenNæringLand)) &&
-        hasValue(formValues.egenNæringFom) &&
-        (formValues.egenNæringPågående === YesOrNo.YES || hasValue(formValues.egenNæringTom)) &&
-        hasValue(formValues.egenNæringResultat) &&
-        hasValue(formValues.egenNæringBlittYrkesaktivDe3SisteÅrene) &&
-        (formValues.egenNæringBlittYrkesaktivDe3SisteÅrene === YesOrNo.NO ||
-            hasValue(formValues.egenNæringYrkesAktivDato))
-    );
-};
-
 const EgenNæringInput: FunctionComponent<Props> = ({
+    næring,
     visibility,
     formValues,
     errors,
-    setFieldValue,
     setNæring,
     setRedigererNæring,
     validateForm,
@@ -88,26 +48,25 @@ const EgenNæringInput: FunctionComponent<Props> = ({
     const [yrkesAktivDatoFeil, setYrkesAktivDatoFeil] = useState<string | undefined>(undefined);
 
     const navnPåNæringLabel = intlUtils(intl, 'inntektsinformasjon.egenNæring.navnPåNæring');
-
+    const submitButtonId = næring ? 'oppdater' : 'leggTil';
     const handleOnLeggTil = () => {
         setSubmitClicked(true);
-        const formIsAnswered = areAllEgenNæringQuestionsAnswered(formValues);
+        const formIsAnswered = visibility.areAllQuestionsAnswered();
         const formIsValid = !navnFeil && !orgNrFeil && !fomFeil && !tomFeil && !resultatFeil && !yrkesAktivDatoFeil;
 
         if (formIsAnswered && formIsValid) {
             const næringsInformasjon = mapEgenNæringFormValuesToState(formValues);
-            cleanValues(formValues, setFieldValue);
             setNæring(næringsInformasjon);
             setRedigererNæring(false);
         }
     };
 
-    const navnError = getIn(errors, InntektsinformasjonFormField.egenNæringNavn);
-    const orgNrError = getIn(errors, InntektsinformasjonFormField.egenNæringOrgnr);
-    const fomError = getIn(errors, InntektsinformasjonFormField.egenNæringFom);
-    const tomError = getIn(errors, InntektsinformasjonFormField.egenNæringTom);
-    const resultatError = getIn(errors, InntektsinformasjonFormField.egenNæringResultat);
-    const yrkesaktivDatoError = getIn(errors, InntektsinformasjonFormField.egenNæringYrkesAktivDato);
+    const navnError = getIn(errors, EgenNæringSubformField.egenNæringNavn);
+    const orgNrError = getIn(errors, EgenNæringSubformField.egenNæringOrgnr);
+    const fomError = getIn(errors, EgenNæringSubformField.egenNæringFom);
+    const tomError = getIn(errors, EgenNæringSubformField.egenNæringTom);
+    const resultatError = getIn(errors, EgenNæringSubformField.egenNæringResultat);
+    const yrkesaktivDatoError = getIn(errors, EgenNæringSubformField.egenNæringYrkesAktivDato);
 
     useEffect(() => {
         if (navnError !== undefined) {
@@ -156,9 +115,9 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                 </Heading>
             </Block>
             <div className={bem.block}>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringType)}>
-                    <InntektsinformasjonFormComponents.RadioGroup
-                        name={InntektsinformasjonFormField.egenNæringType}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringType)}>
+                    <EgenNæringSubformComponents.RadioGroup
+                        name={EgenNæringSubformField.egenNæringType}
                         legend={intlUtils(intl, 'inntektsinformasjon.egenNæring.næringstype')}
                         radios={[
                             {
@@ -181,39 +140,36 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringType,
+                        EgenNæringSubformField.egenNæringType,
                         formValues.egenNæringType,
                         intl
                     )}
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringNavn)}>
-                    <InntektsinformasjonFormComponents.TextField
-                        name={InntektsinformasjonFormField.egenNæringNavn}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringNavn)}>
+                    <EgenNæringSubformComponents.TextField
+                        name={EgenNæringSubformField.egenNæringNavn}
                         label={navnPåNæringLabel}
                         maxLength={100}
                         validate={(value) => validateTextInputField(value, navnPåNæringLabel, intl)}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringNavn,
+                        EgenNæringSubformField.egenNæringNavn,
                         formValues.egenNæringNavn,
                         intl,
                         navnFeil
                     )}
                 </Block>
-                <Block
-                    padBottom="l"
-                    visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringRegistrertINorge)}
-                >
-                    <InntektsinformasjonFormComponents.YesOrNoQuestion
-                        name={InntektsinformasjonFormField.egenNæringRegistrertINorge}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringRegistrertINorge)}>
+                    <EgenNæringSubformComponents.YesOrNoQuestion
+                        name={EgenNæringSubformField.egenNæringRegistrertINorge}
                         legend={intlUtils(intl, 'inntektsinformasjon.egenNæring.erNæringenRegistrertINorge', {
                             navnPåNæringen: formValues.egenNæringNavn,
                         })}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringRegistrertINorge,
+                        EgenNæringSubformField.egenNæringRegistrertINorge,
                         formValues.egenNæringRegistrertINorge,
                         intl
                     )}
@@ -224,9 +180,9 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                     submitClicked={submitClicked}
                     formValues={formValues}
                 />
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringFom)}>
-                    <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.egenNæringFom}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringFom)}>
+                    <EgenNæringSubformComponents.DatePicker
+                        name={EgenNæringSubformField.egenNæringFom}
                         label={intlUtils(intl, 'inntektsinformasjon.egenNæring.startetNæring.fom', {
                             navnPåNæringen: formValues.egenNæringNavn,
                         })}
@@ -238,29 +194,29 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringFom,
+                        EgenNæringSubformField.egenNæringFom,
                         formValues.egenNæringFom,
                         intl,
                         fomFeil
                     )}
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringPågående)}>
-                    <InntektsinformasjonFormComponents.YesOrNoQuestion
-                        name={InntektsinformasjonFormField.egenNæringPågående}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringPågående)}>
+                    <EgenNæringSubformComponents.YesOrNoQuestion
+                        name={EgenNæringSubformField.egenNæringPågående}
                         legend={intlUtils(intl, 'inntektsinformasjon.egenNæring.startetNæring.pågående', {
                             navnPåNæringen: formValues.egenNæringNavn,
                         })}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringPågående,
+                        EgenNæringSubformField.egenNæringPågående,
                         formValues.egenNæringPågående,
                         intl
                     )}
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringTom)}>
-                    <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.egenNæringTom}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringTom)}>
+                    <EgenNæringSubformComponents.DatePicker
+                        name={EgenNæringSubformField.egenNæringTom}
                         label={intlUtils(intl, 'inntektsinformasjon.egenNæring.startetNæring.tom', {
                             navnPåNæringen: formValues.egenNæringNavn,
                         })}
@@ -273,21 +229,21 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringTom,
+                        EgenNæringSubformField.egenNæringTom,
                         formValues.egenNæringTom,
                         intl,
                         tomFeil
                     )}
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringResultat)}>
-                    <InntektsinformasjonFormComponents.NumberInput
-                        name={InntektsinformasjonFormField.egenNæringResultat}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringResultat)}>
+                    <EgenNæringSubformComponents.NumberInput
+                        name={EgenNæringSubformField.egenNæringResultat}
                         label={intlUtils(intl, 'inntektsinformasjon.egenNæring.næringsinntekt')}
                         validate={validateNumber(intl, 'valideringsfeil.næringsinntekt.ugyldigFormat')}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringResultat,
+                        EgenNæringSubformField.egenNæringResultat,
                         formValues.egenNæringResultat,
                         intl,
                         resultatFeil
@@ -300,15 +256,15 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                 </Block>
                 <Block
                     padBottom="l"
-                    visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene)}
+                    visible={visibility.isVisible(EgenNæringSubformField.egenNæringBlittYrkesaktivDe3SisteÅrene)}
                 >
-                    <InntektsinformasjonFormComponents.YesOrNoQuestion
-                        name={InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene}
+                    <EgenNæringSubformComponents.YesOrNoQuestion
+                        name={EgenNæringSubformField.egenNæringBlittYrkesaktivDe3SisteÅrene}
                         legend={intlUtils(intl, 'inntektsinformasjon.egenNæring.blittYrkesaktivSiste3År')}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringBlittYrkesaktivDe3SisteÅrene,
+                        EgenNæringSubformField.egenNæringBlittYrkesaktivDe3SisteÅrene,
                         formValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
                         intl
                     )}
@@ -323,12 +279,9 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                         </BodyShort>
                     </ReadMore>
                 </Block>
-                <Block
-                    padBottom="l"
-                    visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringYrkesAktivDato)}
-                >
-                    <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.egenNæringYrkesAktivDato}
+                <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringYrkesAktivDato)}>
+                    <EgenNæringSubformComponents.DatePicker
+                        name={EgenNæringSubformField.egenNæringYrkesAktivDato}
                         label={intlUtils(intl, 'inntektsinformasjon.egenNæring.yrkesaktivDato')}
                         placeholder="dd.mm.åååå"
                         fullscreenOverlay={true}
@@ -338,7 +291,7 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.egenNæringYrkesAktivDato,
+                        EgenNæringSubformField.egenNæringYrkesAktivDato,
                         formValues.egenNæringYrkesAktivDato,
                         intl,
                         yrkesAktivDatoFeil
@@ -355,7 +308,7 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                         handleOnLeggTil();
                     }}
                 >
-                    <FormattedMessage id="leggTil" />
+                    <FormattedMessage id={submitButtonId} />
                 </Button>
             </div>
         </>

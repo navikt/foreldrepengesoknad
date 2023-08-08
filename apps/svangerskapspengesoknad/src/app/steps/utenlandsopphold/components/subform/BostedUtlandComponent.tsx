@@ -3,7 +3,7 @@ import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Block } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
 import { Button } from '@navikt/ds-react';
-import BostedUtlandInput from '../BostedUtlandInput';
+import BostedUtlandSubform from './BostedUtlandSubform';
 import BostedUtlandList from '../BostedUtlandList';
 
 interface Props {
@@ -54,7 +54,7 @@ const BostedUtlandComponent: FunctionComponent<Props> = ({ oppgirIFortid, alleOp
                 />
             )}
             {(leggerTilNyttOppholdIUtlandet || alleOpphold.length === 0) && (
-                <BostedUtlandInput
+                <BostedUtlandSubform
                     alleOpphold={alleOpphold}
                     oppgirIFortid={oppgirIFortid}
                     selectedOpphold={selectedOpphold}

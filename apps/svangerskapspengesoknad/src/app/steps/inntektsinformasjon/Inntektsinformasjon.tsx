@@ -29,11 +29,11 @@ import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
-import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/components/ArbeidIUtlandetReadMore';
-import ArbeidIUtlandetComponent from './components/arbeid-i-utlandet/ArbeidIUtlandetComponent';
-import FrilansSubform from './components/frilans/FrilansSubform';
+import ArbeidIUtlandetDetaljer from './components/arbeid-i-utlandet/ArbeidIUtlandetDetaljer';
+import FrilansDetaljer from './components/frilans/FrilansDetaljer';
 import { Næring } from 'app/types/Næring';
-import EgenNæringSubform from './components/egen-næring/EgenNæringSubform';
+import EgenNæringDetaljer from './components/egen-næring/EgenNæringDetaljer';
+import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlandetReadMore';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -65,7 +65,7 @@ const Inntektsinformasjon = () => {
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={handleSubmit}
-            renderForm={({ values: formValues, errors, setFieldValue, validateForm }) => {
+            renderForm={({ values: formValues }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
@@ -108,15 +108,7 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
-                            <FrilansSubform
-                                frilans={frilans}
-                                visibility={visibility}
-                                formValues={formValues as InntektsinformasjonFormData}
-                                errors={errors}
-                                setFieldValue={setFieldValue}
-                                setFrilans={setFrilans}
-                                validateForm={validateForm}
-                            />
+                            <FrilansDetaljer formValues={formValues} frilans={frilans} setFrilans={setFrilans} />
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(
@@ -141,14 +133,10 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
-                            <EgenNæringSubform
+                            <EgenNæringDetaljer
                                 næring={næring}
-                                visibility={visibility}
                                 formValues={formValues as InntektsinformasjonFormData}
-                                errors={errors}
-                                setFieldValue={setFieldValue}
                                 setNæring={setNæring}
-                                validateForm={validateForm}
                             />
                             <Block
                                 padBottom="l"
@@ -177,14 +165,15 @@ const Inntektsinformasjon = () => {
                                 />
                                 <ArbeidIUtlandetReadMore />
                             </Block>
-                            <ArbeidIUtlandetComponent
-                                arbeidIUtlandet={arbeidIUtlandet}
-                                formValues={formValues as InntektsinformasjonFormData}
-                                errors={errors}
-                                selectedAnnenInntekt={selectedAnnenInntekt}
-                                setArbeidIUtlandet={setArbeidIUtlandet}
-                                setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                            />
+                            {formValues.hattArbeidIUtlandet === YesOrNo.YES && (
+                                <ArbeidIUtlandetDetaljer
+                                    arbeidIUtlandet={arbeidIUtlandet}
+                                    formValues={formValues as InntektsinformasjonFormData}
+                                    selectedAnnenInntekt={selectedAnnenInntekt}
+                                    setArbeidIUtlandet={setArbeidIUtlandet}
+                                    setSelectedAnnenInntekt={setSelectedAnnenInntekt}
+                                />
+                            )}
                             <Block padBottom="l">
                                 <InfoTilFiskere />
                             </Block>

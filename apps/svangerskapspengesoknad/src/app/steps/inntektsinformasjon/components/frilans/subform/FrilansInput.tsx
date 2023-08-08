@@ -2,56 +2,33 @@ import { Block, ISOStringToDate, bemUtils, date4WeeksAgo, dateToday, intlUtils }
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    InntektsinformasjonFormComponents,
-    InntektsinformasjonFormData,
-    InntektsinformasjonFormField,
-} from '../../../inntektsinformasjonFormConfig';
 import { Button, Heading } from '@navikt/ds-react';
 import { Frilans } from 'app/types/Frilans';
-import { validateFrilansSlutt, validateFrilansStart } from '../validation/frilansValidation';
 import { FormikErrors, getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import './frilans-input.css';
-import { hasValue } from 'app/utils/validationUtils';
-import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 import dayjs from 'dayjs';
+import { FrilansSubformComponents, FrilansSubformData, FrilansSubformField } from './frilansSubformConfig';
+import { validateFrilansSlutt, validateFrilansStart } from '../validation/frilansValidation';
+import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 
 interface Props {
-    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
-    formValues: InntektsinformasjonFormData;
+    frilans: Frilans | undefined;
+    visibility: QuestionVisibility<FrilansSubformField, undefined>;
+    formValues: Partial<FrilansSubformData>;
+    errors: FormikErrors<Partial<FrilansSubformData>>;
     setFrilans: React.Dispatch<React.SetStateAction<Frilans | undefined>>;
     setRedigererFrilans: React.Dispatch<React.SetStateAction<boolean>>;
-    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     validateForm: any; //Promise<FormikErrors<Partial<InntektsinformasjonFormData>>>
 }
 
-const cleanValues = (
-    formValues: InntektsinformasjonFormData,
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
-) => {
-    if (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES) {
-        setFieldValue(InntektsinformasjonFormField.frilansTom, '');
-    }
-};
-
-const areAllFrilansQuestionsAnswered = (formValues: InntektsinformasjonFormData) => {
-    return (
-        hasValue(formValues.frilansFom) &&
-        hasValue(formValues.jobberFremdelesSomFrilanser) &&
-        (formValues.jobberFremdelesSomFrilanser === YesOrNo.YES || hasValue(formValues.frilansFom))
-    );
-};
-
 const FrilansInput: FunctionComponent<Props> = ({
+    frilans,
     visibility,
     formValues,
     errors,
     setFrilans,
     setRedigererFrilans,
-    setFieldValue,
     validateForm,
 }) => {
     const intl = useIntl();
@@ -59,10 +36,10 @@ const FrilansInput: FunctionComponent<Props> = ({
     const [submitClicked, setSubmitClicked] = useState(false);
     const [fomFeil, setFomFeil] = useState<string | undefined>(undefined);
     const [tomFeil, setTomFeil] = useState<string | undefined>(undefined);
-
+    const submitButtonId = frilans ? 'oppdater' : 'leggTil';
     const handleOnLeggTil = () => {
         setSubmitClicked(true);
-        const formIsAnswered = areAllFrilansQuestionsAnswered(formValues);
+        const formIsAnswered = visibility.areAllQuestionsAnswered();
         const formIsValid = fomFeil === undefined && tomFeil === undefined;
         if (formIsAnswered && formIsValid) {
             const frilansInfo = {
@@ -70,14 +47,13 @@ const FrilansInput: FunctionComponent<Props> = ({
                 oppstart: ISOStringToDate(formValues.frilansFom)!,
                 sluttDato: ISOStringToDate(formValues.frilansTom)!,
             };
-            cleanValues(formValues, setFieldValue);
             setFrilans(frilansInfo);
             setRedigererFrilans(false);
         }
     };
 
-    const frilansOppstartError = getIn(errors, InntektsinformasjonFormField.frilansFom);
-    const frilansSluttError = getIn(errors, InntektsinformasjonFormField.frilansTom);
+    const frilansOppstartError = getIn(errors, FrilansSubformField.frilansFom);
+    const frilansSluttError = getIn(errors, FrilansSubformField.frilansTom);
 
     useEffect(() => {
         if (frilansOppstartError !== undefined) {
@@ -104,41 +80,38 @@ const FrilansInput: FunctionComponent<Props> = ({
                 </Heading>
             </Block>
             <div className={bem.block}>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansFom)}>
-                    <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.frilansFom}
+                <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.frilansFom)}>
+                    <FrilansSubformComponents.DatePicker
+                        name={FrilansSubformField.frilansFom}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
-                        validate={validateFrilansStart(intl, formValues.frilansTom)}
+                        validate={validateFrilansStart(intl, formValues.frilansTom!)}
                         maxDate={dateToday}
                         showYearSelector={true}
                         placeholder={'dd.mm.åååå'}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.frilansFom,
+                        FrilansSubformField.frilansFom,
                         formValues.frilansFom,
                         intl,
                         fomFeil
                     )}
                 </Block>
-                <Block
-                    padBottom="l"
-                    visible={visibility.isVisible(InntektsinformasjonFormField.jobberFremdelesSomFrilanser)}
-                >
-                    <InntektsinformasjonFormComponents.YesOrNoQuestion
-                        name={InntektsinformasjonFormField.jobberFremdelesSomFrilanser}
+                <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.jobberFremdelesSomFrilanser)}>
+                    <FrilansSubformComponents.YesOrNoQuestion
+                        name={FrilansSubformField.jobberFremdelesSomFrilanser}
                         legend={intlUtils(intl, 'inntektsinformasjon.frilans.jobberFremdelesSomFrilans')}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.jobberFremdelesSomFrilanser,
+                        FrilansSubformField.jobberFremdelesSomFrilanser,
                         formValues.jobberFremdelesSomFrilanser,
                         intl
                     )}
                 </Block>
-                <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.frilansTom)}>
-                    <InntektsinformasjonFormComponents.DatePicker
-                        name={InntektsinformasjonFormField.frilansTom}
+                <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.frilansTom)}>
+                    <FrilansSubformComponents.DatePicker
+                        name={FrilansSubformField.frilansTom}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.slutt')}
                         minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.frilansFom)).toDate()}
                         maxDate={dateToday}
@@ -146,13 +119,13 @@ const FrilansInput: FunctionComponent<Props> = ({
                         placeholder={'dd.mm.åååå'}
                         validate={validateFrilansSlutt(
                             intl,
-                            formValues.jobberFremdelesSomFrilanser,
-                            formValues.frilansFom
+                            formValues.jobberFremdelesSomFrilanser!,
+                            formValues.frilansFom!
                         )}
                     />
                     {getInputFeltFeil(
                         submitClicked,
-                        InntektsinformasjonFormField.frilansTom,
+                        FrilansSubformField.frilansTom,
                         formValues.frilansTom,
                         intl,
                         tomFeil
@@ -166,7 +139,7 @@ const FrilansInput: FunctionComponent<Props> = ({
                         handleOnLeggTil();
                     }}
                 >
-                    <FormattedMessage id="leggTil" />
+                    <FormattedMessage id={submitButtonId} />
                 </Button>
             </div>
         </>

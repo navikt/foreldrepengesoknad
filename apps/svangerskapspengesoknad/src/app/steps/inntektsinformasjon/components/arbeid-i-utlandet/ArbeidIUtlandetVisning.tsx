@@ -9,8 +9,6 @@ import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 
 interface Props {
     arbeidIUtlandet: ArbeidIUtlandet;
-    leggerTilNyttArbeidIUtlandet: boolean;
-    annenInntektBlirRedigert: boolean;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
     deleteAnnenInntekt: (arbeidIUtlandet: ArbeidIUtlandet) => void;
 }
@@ -21,8 +19,6 @@ const getTilTekst = (arbeid: ArbeidIUtlandet): string => {
 
 const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
     arbeidIUtlandet,
-    leggerTilNyttArbeidIUtlandet,
-    annenInntektBlirRedigert,
     setSelectedAnnenInntekt,
     deleteAnnenInntekt,
 }) => {
@@ -56,7 +52,6 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
                         className={bem.element('rediger')}
                         icon={<PencilWritingIcon aria-hidden />}
                         onClick={() => handleOnClickRediger(arbeidIUtlandet)}
-                        disabled={leggerTilNyttArbeidIUtlandet || annenInntektBlirRedigert}
                     />
                     <Button
                         aria-label="slett informasjon om arbeid i utlandet"
@@ -64,7 +59,6 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
                         className={bem.element('slett')}
                         icon={<TrashIcon aria-hidden />}
                         onClick={() => handleOnClickSlett(arbeidIUtlandet)}
-                        disabled={leggerTilNyttArbeidIUtlandet || annenInntektBlirRedigert}
                     />
                 </div>
             </Block>

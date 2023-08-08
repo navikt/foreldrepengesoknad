@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getInputFeltFeil } from '../../../input-feilmelding/InputFeilmelding';
+import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 import dayjs from 'dayjs';
 import { Block, bemUtils, date4WeeksAgo, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ import { FormikErrors, getIn } from 'formik';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { mapArbeidIUtlandet } from './arbeidIUtlandetSubformUtils';
 import { Button, Heading } from '@navikt/ds-react';
-import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../../validation/arbeidIUtlandetValidation';
+import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../validation/arbeidIUtlandetValidation';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
+const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     formValues,
     errors,
     selectedAnnenInntekt,
@@ -204,4 +204,4 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     );
 };
 
-export default ArbeidIUtlandetSubform;
+export default ArbeidIUtlandetInput;
