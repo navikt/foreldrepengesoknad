@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { Block, guid } from '@navikt/fp-common';
-import BostedUtlandInput from './BostedUtlandInput';
+import BostedUtlandSubform from './subform/BostedUtlandSubform';
 import BostedUtlandVisning from './BostedUtlandVisning';
 import { BostedUtland } from 'app/types/BostedUtland';
 
@@ -40,7 +40,7 @@ const BostedUtlandListElement: FunctionComponent<Props> = ({
                     />
                 )}
                 {isSelected && (
-                    <BostedUtlandInput
+                    <BostedUtlandSubform
                         currentOppholdId={opphold.id}
                         oppgirIFortid={oppgirIFortid}
                         alleOpphold={alleOpphold}

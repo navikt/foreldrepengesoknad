@@ -14,7 +14,7 @@ export const validateFrilansStart = (intl: IntlShape, tom: string) => (fom: stri
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
     }
 
-    if (hasValue(fom) && tom && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
+    if (hasValue(fom) && hasValue(tom) && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
     }
 
@@ -38,7 +38,7 @@ export const validateFrilansSlutt = (intl: IntlShape, pågående: YesOrNo, fom: 
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.frilans.merEnn4UkerSiden');
     }
 
-    if (hasValue(tom) && fom && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {
+    if (hasValue(tom) && hasValue(fom) && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 

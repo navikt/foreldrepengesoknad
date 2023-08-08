@@ -1,16 +1,11 @@
 import { FunctionComponent } from 'react';
-import { InntektsinformasjonFormData } from '../../../inntektsinformasjonFormConfig';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { guid } from '@navikt/fp-common';
-import { FormikErrors } from 'formik';
 import ArbeidIUtlandetListElement from './ArbeidIUtlandetListElement';
 
 interface Props {
     andreInntekterIUtlandet: ArbeidIUtlandet[];
-    formValues: InntektsinformasjonFormData;
-    errors: FormikErrors<Partial<InntektsinformasjonFormData>>;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
-    leggerTilNyttArbeidIUtlandet: boolean;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     deleteAnnenInntekt: (inntektSomSlettes: ArbeidIUtlandet) => void;
@@ -20,10 +15,7 @@ interface Props {
 
 const ArbeidIUtlandetList: FunctionComponent<Props> = ({
     andreInntekterIUtlandet,
-    formValues,
-    errors,
     selectedAnnenInntekt,
-    leggerTilNyttArbeidIUtlandet,
     addAnnenInntekt,
     editAnnenInntekt,
     deleteAnnenInntekt,
@@ -35,17 +27,14 @@ const ArbeidIUtlandetList: FunctionComponent<Props> = ({
             {andreInntekterIUtlandet.map((inntekt) => (
                 <ArbeidIUtlandetListElement
                     key={guid()}
-                    isSelected={selectedAnnenInntekt === inntekt} //TODO - call a function to find out
+                    isSelected={selectedAnnenInntekt === inntekt}
                     inntekt={inntekt}
-                    formValues={formValues}
                     addAnnenInntekt={addAnnenInntekt}
                     editAnnenInntekt={editAnnenInntekt}
                     deleteAnnenInntekt={deleteAnnenInntekt}
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                     selectedAnnenInntekt={selectedAnnenInntekt}
-                    errors={errors}
                     setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
-                    leggerTilNyttArbeidIUtlandet={leggerTilNyttArbeidIUtlandet}
                 />
             ))}
         </>

@@ -2,19 +2,19 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { validateEgenNæringOrgnr } from '../validation/egenNæringValidation';
+import { validateEgenNæringOrgnr } from './validation/egenNæringValidation';
+import { getInputFeltFeil } from '../input-feilmelding/InputFeilmelding';
 import {
-    InntektsinformasjonFormComponents,
-    InntektsinformasjonFormData,
-    InntektsinformasjonFormField,
-} from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
-import { getInputFeltFeil } from '../../../input-feilmelding/InputFeilmelding';
+    EgenNæringSubformComponents,
+    EgenNæringSubformData,
+    EgenNæringSubformField,
+} from './subform/egenNæringSubformConfig';
 
 interface Props {
-    visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
+    visibility: QuestionVisibility<EgenNæringSubformField, undefined>;
     orgNrFeil: string | undefined;
     submitClicked: boolean;
-    formValues: InntektsinformasjonFormData;
+    formValues: Partial<EgenNæringSubformData>;
 }
 
 const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility, orgNrFeil, submitClicked, formValues }) => {
@@ -22,29 +22,29 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility, orgNrFeil, s
 
     return (
         <>
-            <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringOrgnr)}>
-                <InntektsinformasjonFormComponents.NumberInput
-                    name={InntektsinformasjonFormField.egenNæringOrgnr}
+            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringOrgnr)}>
+                <EgenNæringSubformComponents.NumberInput
+                    name={EgenNæringSubformField.egenNæringOrgnr}
                     label={intlUtils(intl, 'inntektsinformasjon.egenNæring.orgnr')}
                     validate={validateEgenNæringOrgnr(intl)}
                 />
                 {getInputFeltFeil(
                     submitClicked,
-                    InntektsinformasjonFormField.egenNæringOrgnr,
+                    EgenNæringSubformField.egenNæringOrgnr,
                     formValues.egenNæringOrgnr,
                     intl,
                     orgNrFeil
                 )}
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.egenNæringLand)}>
-                <InntektsinformasjonFormComponents.CountrySelect
-                    name={InntektsinformasjonFormField.egenNæringLand}
+            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringLand)}>
+                <EgenNæringSubformComponents.CountrySelect
+                    name={EgenNæringSubformField.egenNæringLand}
                     label={intlUtils(intl, 'inntektsinformasjon.egenNæring.registrertILand')}
                     useAlpha3Code={false}
                 />
                 {getInputFeltFeil(
                     submitClicked,
-                    InntektsinformasjonFormField.egenNæringLand,
+                    EgenNæringSubformField.egenNæringLand,
                     formValues.egenNæringLand,
                     intl
                 )}
