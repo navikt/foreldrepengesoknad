@@ -14,6 +14,7 @@ import { mapArbeidIUtlandet } from './arbeidIUtlandetSubformUtils';
 import { Button, Heading } from '@navikt/ds-react';
 import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../validation/arbeidIUtlandetValidation';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 
 interface Props {
     formValues: Partial<ArbeidIUtlandetSubformData>;
@@ -172,7 +173,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                         showYearSelector={true}
                         validate={validateArbeidIUtlandetTom(intl, formValues.arbeidIUtlandetFom)}
                         maxDate={dayjs().toDate()}
-                        minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.arbeidIUtlandetFom)).toDate()}
+                        minDate={getMinInputTilOgMedValue(formValues.arbeidIUtlandetFom, date4WeeksAgo)}
                     />
                     {getInputFeltFeil(
                         submitClicked,

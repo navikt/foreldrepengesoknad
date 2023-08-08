@@ -10,8 +10,10 @@ import {
 } from '@navikt/fp-common/src/common/utils/formUtils';
 import { Søker, Søkerrolle } from 'app/types/Søker';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-// import { useIntl } from 'react-intl';
-// import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { SøknadsgrunnlagOption } from 'app/types/VelgSøknadsgrunnlag';
+import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
@@ -19,50 +21,40 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo.UNANSWERED,
 };
 
-// export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
-//     søker: Partial<Søker>,
-//     arbeidsforhold: Arbeidsforhold[],
-//     termindato: string
-
-// ): SøknadsgrunnlagOption[] => {
-//     const intl = useIntl();
-//     const { selvstendigNæringsdrivendeInformasjon = [], andreInntekterSiste10Mnd = [], frilansInformasjon } = søker;
-//     const førstegangstjeneste = andreInntekterSiste10Mnd.find(
-//         (inntekt) => inntekt.type === AnnenInntektType.MILITÆRTJENESTE
-//     );
-//     const unikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
-
-//     return [
-//         ...unikeArbeidsforhold.map((forhold) => ({
-//             value: forhold.guid,
-//             label: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
-//             type: forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
-//         })),
-//         ...selvstendigNæringsdrivendeInformasjon.map((næring) => ({
-//             value: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
-//             label: næring.navnPåNæringen,
-//             type: Arbeidsforholdstype.SELVSTENDIG,
-//         })),
-//         ...(førstegangstjeneste
-//             ? [
-//                   {
-//                       value: førstegangstjeneste.type,
-//                       label: getAnnenInntektElementTitle(førstegangstjeneste, intl),
-//                       type: Arbeidsforholdstype.PRIVAT,
-//                   },
-//               ]
-//             : []),
-//         ...(frilansInformasjon !== undefined
-//             ? [
-//                   {
-//                       value: 'Frilans',
-//                       label: 'Frilans',
-//                       type: Arbeidsforholdstype.FRILANSER,
-//                   },
-//               ]
-//             : []),
-//     ];
-// };
+export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
+    frilans: Frilans | undefined,
+    næring: Næring | undefined,
+    arbeidsforhold: Arbeidsforhold[],
+    termindato: Date
+): SøknadsgrunnlagOption[] => {
+    const unikeArbeidsforhold = [
+        ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => ({
+            value: forhold.id,
+            label: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
+            type: forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
+        })),
+    ];
+    const næringValg = næring
+        ? [
+              {
+                  value: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
+                  label: næring.navnPåNæringen,
+                  type: Arbeidsforholdstype.SELVSTENDIG,
+              },
+          ]
+        : [];
+    const frilansValg =
+        frilans !== undefined
+            ? [
+                  {
+                      value: 'Frilans',
+                      label: 'Frilans',
+                      type: Arbeidsforholdstype.FRILANSER,
+                  },
+              ]
+            : [];
+    return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
+};
 
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     const cleanedNavn = replaceInvisibleCharsWithSpace(næring.navnPåNæringen);

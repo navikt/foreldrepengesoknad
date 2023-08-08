@@ -1,4 +1,4 @@
-import { Block, ISOStringToDate, bemUtils, date4WeeksAgo, dateToday, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, bemUtils, dateToday, intlUtils, date4WeeksAgo } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -7,10 +7,10 @@ import { Frilans } from 'app/types/Frilans';
 import { FormikErrors, getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import './frilans-input.css';
-import dayjs from 'dayjs';
 import { FrilansSubformComponents, FrilansSubformData, FrilansSubformField } from './frilansSubformConfig';
 import { validateFrilansSlutt, validateFrilansStart } from '../validation/frilansValidation';
 import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
+import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 
 interface Props {
     frilans: Frilans | undefined;
@@ -113,7 +113,7 @@ const FrilansInput: FunctionComponent<Props> = ({
                     <FrilansSubformComponents.DatePicker
                         name={FrilansSubformField.frilansTom}
                         label={intlUtils(intl, 'inntektsinformasjon.frilans.slutt')}
-                        minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.frilansFom)).toDate()}
+                        minDate={getMinInputTilOgMedValue(formValues.frilansFom, date4WeeksAgo)}
                         maxDate={dateToday}
                         showYearSelector={true}
                         placeholder={'dd.mm.åååå'}

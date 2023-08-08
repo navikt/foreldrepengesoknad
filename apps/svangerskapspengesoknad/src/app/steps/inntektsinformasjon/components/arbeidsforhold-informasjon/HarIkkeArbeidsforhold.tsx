@@ -1,4 +1,4 @@
-import { Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -16,7 +16,9 @@ const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) 
 
     return (
         <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>
-            <Label>{intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold')}</Label>
+            <BodyShort>
+                {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold')}
+            </BodyShort>
         </div>
     );
 };
