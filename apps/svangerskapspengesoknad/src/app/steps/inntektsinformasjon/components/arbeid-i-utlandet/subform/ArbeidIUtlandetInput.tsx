@@ -21,6 +21,7 @@ interface Props {
     errors: FormikErrors<Partial<ArbeidIUtlandetSubformData>>;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
     visibility: QuestionVisibility<ArbeidIUtlandetSubformField>;
+    allArbeidIUtlandet: ArbeidIUtlandet[];
     validateForm: any;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
@@ -33,6 +34,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     selectedAnnenInntekt,
     erFørsteInput,
     visibility,
+    allArbeidIUtlandet,
     validateForm,
     setSelectedAnnenInntekt,
     addAnnenInntekt,
@@ -56,10 +58,11 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
         const formIsValid = !navnFeil && !fomFeil && !tomFeil;
 
         if (formIsAnswered && formIsValid) {
-            const arbeidIUtlandet = mapArbeidIUtlandet(formValues);
             if (selectedAnnenInntekt) {
+                const arbeidIUtlandet = mapArbeidIUtlandet(formValues, selectedAnnenInntekt.id);
                 editAnnenInntekt(selectedAnnenInntekt, arbeidIUtlandet);
             } else {
+                const arbeidIUtlandet = mapArbeidIUtlandet(formValues, allArbeidIUtlandet.length);
                 addAnnenInntekt(arbeidIUtlandet);
             }
             setSelectedAnnenInntekt(undefined);

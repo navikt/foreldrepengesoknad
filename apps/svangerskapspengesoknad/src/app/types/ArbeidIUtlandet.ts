@@ -5,6 +5,7 @@ export enum AnnenInntektType {
 }
 
 export interface ArbeidIUtlandet {
+    id: number;
     type: AnnenInntektType.JOBB_I_UTLANDET;
     tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;

@@ -1,5 +1,5 @@
 export interface BostedUtland {
-    id?: number;
+    id: number;
     fom: string;
     tom: string;
     landkode: string;

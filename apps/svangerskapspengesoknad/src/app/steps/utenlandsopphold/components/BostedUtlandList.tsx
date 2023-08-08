@@ -24,9 +24,11 @@ const BostedUtlandList: FunctionComponent<Props> = ({
     editOpphold,
     setLeggerTilNyttOppholdIUtlandet,
 }) => {
+    const sorterteOpphold = alleOpphold.sort((a, b) => a.id - b.id);
+
     return (
         <>
-            {alleOpphold.map((opphold) => (
+            {sorterteOpphold.map((opphold) => (
                 <BostedUtlandListElement
                     alleOpphold={alleOpphold}
                     isSelected={selectedOpphold === opphold}

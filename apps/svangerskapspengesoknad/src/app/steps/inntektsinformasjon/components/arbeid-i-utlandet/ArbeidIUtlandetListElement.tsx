@@ -8,6 +8,7 @@ interface Props {
     inntekt: ArbeidIUtlandet;
     isSelected: boolean;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
+    allArbeidIUtlandet: ArbeidIUtlandet[];
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     deleteAnnenInntekt: (inntektSomSlettes: ArbeidIUtlandet) => void;
@@ -19,6 +20,7 @@ const ArbeidIUtlandetListElement: FunctionComponent<Props> = ({
     isSelected,
     inntekt,
     selectedAnnenInntekt,
+    allArbeidIUtlandet,
     setSelectedAnnenInntekt,
     deleteAnnenInntekt,
     addAnnenInntekt,
@@ -37,6 +39,7 @@ const ArbeidIUtlandetListElement: FunctionComponent<Props> = ({
                 )}
                 {isSelected && (
                     <ArbeidIUtlandetSubform
+                        allArbeidIUtlandet={allArbeidIUtlandet}
                         selectedAnnenInntekt={selectedAnnenInntekt}
                         addAnnenInntekt={addAnnenInntekt}
                         editAnnenInntekt={editAnnenInntekt}

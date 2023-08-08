@@ -10,12 +10,59 @@ import {
 } from '@navikt/fp-common/src/common/utils/formUtils';
 import { Søker, Søkerrolle } from 'app/types/Søker';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+// import { useIntl } from 'react-intl';
+// import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo.UNANSWERED,
 };
+
+// export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
+//     søker: Partial<Søker>,
+//     arbeidsforhold: Arbeidsforhold[],
+//     termindato: string
+
+// ): SøknadsgrunnlagOption[] => {
+//     const intl = useIntl();
+//     const { selvstendigNæringsdrivendeInformasjon = [], andreInntekterSiste10Mnd = [], frilansInformasjon } = søker;
+//     const førstegangstjeneste = andreInntekterSiste10Mnd.find(
+//         (inntekt) => inntekt.type === AnnenInntektType.MILITÆRTJENESTE
+//     );
+//     const unikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
+
+//     return [
+//         ...unikeArbeidsforhold.map((forhold) => ({
+//             value: forhold.guid,
+//             label: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
+//             type: forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
+//         })),
+//         ...selvstendigNæringsdrivendeInformasjon.map((næring) => ({
+//             value: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
+//             label: næring.navnPåNæringen,
+//             type: Arbeidsforholdstype.SELVSTENDIG,
+//         })),
+//         ...(førstegangstjeneste
+//             ? [
+//                   {
+//                       value: førstegangstjeneste.type,
+//                       label: getAnnenInntektElementTitle(førstegangstjeneste, intl),
+//                       type: Arbeidsforholdstype.PRIVAT,
+//                   },
+//               ]
+//             : []),
+//         ...(frilansInformasjon !== undefined
+//             ? [
+//                   {
+//                       value: 'Frilans',
+//                       label: 'Frilans',
+//                       type: Arbeidsforholdstype.FRILANSER,
+//                   },
+//               ]
+//             : []),
+//     ];
+// };
 
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     const cleanedNavn = replaceInvisibleCharsWithSpace(næring.navnPåNæringen);
@@ -41,7 +88,7 @@ export const mapInntektsinformasjonFormDataToState = (
         andreInntekterSiste10Mnd: values.hattArbeidIUtlandet === YesOrNo.YES ? arbeidIUtlandet : [],
         selvstendigNæringsdrivendeInformasjon:
             values.hattInntektSomNæringsdrivende === YesOrNo.YES ? cleanupInvisibleCharsFromNæring(næring!) : undefined,
-        frilansInformasjon: frilans,
+        frilansInformasjon: values.hattInntektSomFrilans === YesOrNo.YES ? frilans : undefined,
     };
 };
 

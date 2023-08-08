@@ -9,6 +9,7 @@ import ArbeidIUtlandetInput from './ArbeidIUtlandetInput';
 interface Props {
     erFørsteInput: boolean;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
+    allArbeidIUtlandet: ArbeidIUtlandet[];
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
@@ -18,6 +19,7 @@ interface Props {
 const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     selectedAnnenInntekt,
     erFørsteInput,
+    allArbeidIUtlandet,
     setSelectedAnnenInntekt,
     addAnnenInntekt,
     editAnnenInntekt,
@@ -38,6 +40,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
                         selectedAnnenInntekt={selectedAnnenInntekt}
                         erFørsteInput={erFørsteInput}
                         visibility={visibility}
+                        allArbeidIUtlandet={allArbeidIUtlandet}
                         setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                         addAnnenInntekt={addAnnenInntekt}
                         editAnnenInntekt={editAnnenInntekt}
