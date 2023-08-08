@@ -52,7 +52,7 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
     };
 
     return (
-        <div>
+        <Block padBottom="xl">
             <Heading level="3" size="small">
                 {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
             </Heading>
@@ -92,7 +92,7 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
                     </Button>
                 </Block>
             )}
-        </div>
+        </Block>
     );
 };
 

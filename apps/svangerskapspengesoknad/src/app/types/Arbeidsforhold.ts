@@ -1,4 +1,5 @@
 interface Arbeidsforhold {
+    id: string;
     arbeidsgiverNavn: string;
     arbeidsgiverId: string;
     arbeidsgiverIdType: string;

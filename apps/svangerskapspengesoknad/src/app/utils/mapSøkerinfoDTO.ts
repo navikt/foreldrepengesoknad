@@ -1,4 +1,4 @@
-import { erMyndig } from '@navikt/fp-common';
+import { erMyndig, guid } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import dayjs from 'dayjs';
@@ -19,6 +19,7 @@ const mapArbeidsforholdDTOToArbeidsforhold = (
 
     return arbeidsforhold.map((arbforhold) => {
         return {
+            id: guid(),
             arbeidsgiverId: arbforhold.arbeidsgiverId,
             arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
             arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,

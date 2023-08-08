@@ -20,6 +20,14 @@ import InputFeilmelding, {
 import { FormikErrors, getIn } from 'formik';
 import './bosted-utland-subform.css';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
+
+const getMinValueTomInput = (oppgirIFortid: boolean, fom: string | undefined, datobegrensning: Date) => {
+    if (oppgirIFortid) {
+        return fom && hasValue(fom) ? new Date(fom) : undefined;
+    }
+    return getMinInputTilOgMedValue(fom, datobegrensning);
+};
 
 interface Props {
     currentOppholdId: number | undefined;
@@ -144,7 +152,7 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
                     label={intlUtils(intl, 'utenlandsopphold.tilogmed')}
                     validate={validateBostedUtlandTom(formValues.fom, oppgirIFortid, intl)}
                     maxDate={oppgirIFortid ? dateToday : undefined}
-                    minDate={!oppgirIFortid ? dateToday : undefined}
+                    minDate={getMinValueTomInput(oppgirIFortid, formValues.fom, dateToday)}
                     showYearSelector={true}
                     placeholder={'dd.mm.åååå'}
                 />

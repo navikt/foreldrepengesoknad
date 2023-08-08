@@ -16,12 +16,13 @@ import {
 import {
     cleanupInntektsinformasjonForm,
     getInitialInntektsinformasjonFormValues,
+    mapArbeidsforholdToSøknadsgrunnlagOptions,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
-import { getAktiveArbeidsforhold } from 'app/utils/arbeidsgforholdUtils';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { Frilans } from 'app/types/Frilans';
@@ -34,19 +35,13 @@ import FrilansDetaljer from './components/frilans/FrilansDetaljer';
 import { Næring } from 'app/types/Næring';
 import EgenNæringDetaljer from './components/egen-næring/EgenNæringDetaljer';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlandetReadMore';
-// import { Tilrettelegging } from 'app/types/Tilrettelegging';
+import { VelgSøknadsgrunnlag } from 'app/types/VelgSøknadsgrunnlag';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
     const { termindato } = barn;
-
-    // const søknadsgrunnlagOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
-    //     cleanupSøker(values.søker) as Søker,
-    //     arbeidsforhold,
-    //     barn.termindato!
-    // );
 
     const [frilans, setFrilans] = useState<Frilans | undefined>(
         søker.frilansInformasjon ? søker.frilansInformasjon : undefined
@@ -69,6 +64,8 @@ const Inntektsinformasjon = () => {
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
 
+    const skalViseInfoOmInntektsmelding = arbeidsforhold.length > 0;
+
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
@@ -77,6 +74,21 @@ const Inntektsinformasjon = () => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData
                 );
+
+                const søknadsgrunnlagOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
+                    frilans,
+                    næring,
+                    arbeidsforhold,
+                    barn.termindato!
+                );
+
+                const kanIkkeSøke =
+                    arbeidsforhold.length === 0 &&
+                    formValues.hattInntektSomFrilans === YesOrNo.NO &&
+                    formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
+
+                const visSøknadsgrunnlagValg =
+                    visibility.areAllQuestionsAnswered() && søknadsgrunnlagOptions.length > 0;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -91,7 +103,7 @@ const Inntektsinformasjon = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupInntektsinformasjonForm(values, visibility)}
                         >
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <BodyShort>
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
                                 </BodyShort>
@@ -100,8 +112,13 @@ const Inntektsinformasjon = () => {
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
                             />
+                            <Block visible={skalViseInfoOmInntektsmelding} padBottom="xl">
+                                <GuidePanel>
+                                    {intlUtils(intl, 'inntektsinformasjon.veileder.inntektsmelding')}
+                                </GuidePanel>
+                            </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
@@ -118,7 +135,7 @@ const Inntektsinformasjon = () => {
                             </Block>
                             <FrilansDetaljer formValues={formValues} frilans={frilans} setFrilans={setFrilans} />
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(
                                     InntektsinformasjonFormField.hattInntektSomNæringsdrivende
                                 )}
@@ -147,7 +164,7 @@ const Inntektsinformasjon = () => {
                                 setNæring={setNæring}
                             />
                             <Block
-                                padBottom="l"
+                                padBottom="xl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)}
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
@@ -182,20 +199,71 @@ const Inntektsinformasjon = () => {
                                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                                 />
                             )}
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <InfoTilFiskere />
                             </Block>
-                            <Block padBottom="l">
+                            <Block padBottom="xl">
                                 <InfoOmFørstegangstjeneste />
+                            </Block>
+
+                            <Block visible={visSøknadsgrunnlagValg} padBottom="xl">
+                                <VelgSøknadsgrunnlag
+                                    label={intlUtils(intl, 'inntektsinformasjon.grunnlag.label')}
+                                    options={søknadsgrunnlagOptions}
+                                />
+                            </Block>
+                            <Block visible={kanIkkeSøke}>
+                                <Alert variant="warning">
+                                    <div>
+                                        <Block>
+                                            <FormattedMessage
+                                                id="inntektsinformasjon.alert.ingenArbeidsforhold.tittel"
+                                                values={{
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                }}
+                                            />
+                                        </Block>
+                                        <FormattedMessage
+                                            id="inntektsinformasjon.alert.ingenArbeidsforhold"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href="https://familie.nav.no/om-svangerskapspenger"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                        <FormattedMessage
+                                            id="inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href="https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </div>
+                                </Alert>
                             </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousStepHref('arbeid')}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
+                                    {!kanIkkeSøke && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
                                 </StepButtonWrapper>
                             </Block>
                         </InntektsinformasjonFormComponents.Form>

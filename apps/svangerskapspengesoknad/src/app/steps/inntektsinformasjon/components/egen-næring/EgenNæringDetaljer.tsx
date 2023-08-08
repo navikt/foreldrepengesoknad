@@ -18,12 +18,12 @@ const EgenNæringDetaljer: FunctionComponent<Props> = ({ næring, formValues, se
     return (
         <div>
             {visNæringInput && (
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <EgenNæringSubform setNæring={setNæring} setRedigererNæring={setRedigererNæring} næring={næring} />
                 </Block>
             )}
             {visNæringInfo && (
-                <Block padBottom="l">
+                <Block padBottom="xl">
                     <EgenNæringVisning næring={næring!} setRedigererNæring={setRedigererNæring} />
                 </Block>
             )}

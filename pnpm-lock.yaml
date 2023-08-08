@@ -169,7 +169,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/jest-dom':
         specifier: ^5.6.5
         version: 5.16.5
@@ -431,7 +431,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@types/amplitude-js':
         specifier: ^8.16.2
         version: 8.16.2
@@ -530,7 +530,7 @@ importers:
         version: 7.0.3
       storybook-addon-mock:
         specifier: 4.0.0
-        version: 4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/theming@7.0.3)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3)
+        version: 4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/theming@7.0.24)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3)
       ts-jest:
         specifier: ^29.1.0
         version: 29.1.0(@babel/core@7.21.4)(esbuild@0.17.16)(jest@29.5.0)(typescript@5.0.4)
@@ -726,7 +726,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/dom':
         specifier: ^9.0.0
         version: 9.0.0
@@ -1006,7 +1006,7 @@ importers:
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/dom':
         specifier: ^9.0.0
         version: 9.0.0
@@ -1121,6 +1121,9 @@ importers:
       '@formatjs/intl-pluralrules':
         specifier: ^5.2.4
         version: 5.2.4
+      '@navikt/aksel-icons':
+        specifier: ^4.7.0
+        version: 4.7.0
       '@navikt/ds-css':
         specifier: 4.6.1
         version: 4.6.1
@@ -1135,7 +1138,7 @@ importers:
         version: link:../../packages/fp-common
       '@navikt/sif-common-formik-ds':
         specifier: ^0.21.1
-        version: 0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.4.2)(react-intl@6.3.2)(react@18.2.0)
+        version: 0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.4.3)(react-intl@6.3.2)(react@18.2.0)
       '@navikt/sif-common-question-config':
         specifier: ^0.0.7
         version: 0.0.7
@@ -1143,8 +1146,8 @@ importers:
         specifier: ^7.47.0
         version: 7.47.0
       amplitude-js:
-        specifier: ^8.21.8
-        version: 8.21.8
+        specifier: ^8.21.9
+        version: 8.21.9
       axios:
         specifier: ^1.3.5
         version: 1.3.5
@@ -1152,20 +1155,26 @@ importers:
         specifier: ^6.26.0
         version: 6.26.0
       dayjs:
-        specifier: ^1.11.7
+        specifier: ^1.11.5
         version: 1.11.7
       express:
         specifier: ^4.18.2
         version: 4.18.2
       formik:
-        specifier: ^2.4.2
-        version: 2.4.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(react@18.2.0)
       i18n-iso-countries:
         specifier: ^7.5.0
         version: 7.5.0
       jsdom:
         specifier: 21.1.1
         version: 21.1.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      lodash.groupby:
+        specifier: ^4.6.0
+        version: 4.6.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1184,7 +1193,7 @@ importers:
         version: link:../../packages/eslint-config-custom
       '@storybook/testing-react':
         specifier: ^2.0.0
-        version: 2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0)
+        version: 2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0)
       '@testing-library/jest-dom':
         specifier: ^5.6.5
         version: 5.16.5
@@ -1197,6 +1206,12 @@ importers:
       '@types/amplitude-js':
         specifier: ^8.16.2
         version: 8.16.2
+      '@types/lodash':
+        specifier: ^4.14.192
+        version: 4.14.192
+      '@types/lodash.groupby':
+        specifier: ^4.6.7
+        version: 4.6.7
       '@types/react':
         specifier: ^18.0.35
         version: 18.0.35
@@ -1422,7 +1437,7 @@ importers:
         version: 7.0.3
       storybook-react-intl:
         specifier: ^2.0.1
-        version: 2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0)
+        version: 2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0)
       vite:
         specifier: ^4.3.2
         version: 4.3.2(@types/node@18.15.11)(less@4.1.3)(sass@1.62.0)
@@ -3567,8 +3582,8 @@ packages:
     resolution: {integrity: sha512-DQsJYNWmgpD5eB2ksrdKB/u5VJlxImtmaSJPVwpOgT0F8Ghmx05iW91rAUfX2PpfixZEFLGGivnm7FrgKrR0bA==}
     dev: false
 
-  /@navikt/aksel-icons@4.6.1:
-    resolution: {integrity: sha512-qMUt5oxBfur4LpRbGn0v154OvIn4Z27veIruSxYmLm++EvBhS9CeJtwzjDUQhzqH3ixgn5MDN2YZ/sMVQPlI0Q==}
+  /@navikt/aksel-icons@4.7.0:
+    resolution: {integrity: sha512-HPyH9XafehwYIX4NFfHzr2ebMWi7WHM9gpJwk5R16xS9ZfODzV9fG8eVSRVR13GPSTiorfihPEZBxvUGygDDVA==}
     dev: false
 
   /@navikt/ds-codemod@2.8.11(@babel/preset-env@7.21.4)(@types/node@18.15.11):
@@ -3738,7 +3753,7 @@ packages:
         optional: true
     dependencies:
       '@floating-ui/react': 0.24.1(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 4.6.1
+      '@navikt/aksel-icons': 4.7.0
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.0.35
@@ -3820,7 +3835,7 @@ packages:
       - react
     dev: false
 
-  /@navikt/sif-common-formik-ds@0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.4.2)(react-intl@6.3.2)(react@18.2.0):
+  /@navikt/sif-common-formik-ds@0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.4.3)(react-intl@6.3.2)(react@18.2.0):
     resolution: {integrity: sha512-ist2HkSSTwDNZ5JHC8UHuVYbQkOiZhth6KPkpYSkfx3cx8jUhfhWPzPZwj7TJqcbYN+qdRxgnF7PxQYidFaI8A==}
     peerDependencies:
       '@navikt/ds-css': '3'
@@ -3834,7 +3849,7 @@ packages:
       '@navikt/ds-icons': 3.4.3(@types/react@18.0.35)(react@18.2.0)
       '@navikt/ds-react': 4.6.1(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
-      formik: 2.4.2(react@18.2.0)
+      formik: 2.4.3(react@18.2.0)
       i18n-iso-countries: 7.6.0
       lodash: 4.17.21
       react-fast-compare: 3.2.2
@@ -5350,7 +5365,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/testing-react@2.0.0(@storybook/client-logger@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/react@7.0.3)(@storybook/types@7.0.3)(react@18.2.0):
+  /@storybook/testing-react@2.0.0(@storybook/client-logger@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/react@7.0.3)(@storybook/types@7.0.24)(react@18.2.0):
     resolution: {integrity: sha512-xpjULCHN368+3+vC56tZ232EwgmG8F+1hOa17zqLFlADWNbFr/19ko0raMIdXiik9Fn6JAErJNKH7OhO0ni8qA==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -5360,11 +5375,11 @@ packages:
       '@storybook/types': ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@storybook/client-logger': 7.0.3
+      '@storybook/client-logger': 7.0.24
       '@storybook/csf': 0.1.0
-      '@storybook/preview-api': 7.0.3
+      '@storybook/preview-api': 7.0.24
       '@storybook/react': 7.0.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
-      '@storybook/types': 7.0.3
+      '@storybook/types': 7.0.24
       react: 18.2.0
     dev: true
 
@@ -6394,6 +6409,17 @@ packages:
 
   /amplitude-js@8.21.8:
     resolution: {integrity: sha512-fiURS2KONUk8vzDiUiz8QGQhvTelgghSmLGMNSsWtU28+DB0YeornwkK5h8aiN9t7o9IdTn2UrurQIyOSk2nGA==}
+    dependencies:
+      '@amplitude/analytics-connector': 1.4.6
+      '@amplitude/ua-parser-js': 0.7.33
+      '@amplitude/utils': 1.10.2
+      '@babel/runtime': 7.21.0
+      blueimp-md5: 2.19.0
+      query-string: 8.1.0
+    dev: false
+
+  /amplitude-js@8.21.9:
+    resolution: {integrity: sha512-d0jJH00wbXu7sxKtVwkdSXtVffjqdUrxuACKlnzP7jU5qt9wriXXMgHifdH5Oq+buKmyF8wKL9S02gAykysURA==}
     dependencies:
       '@amplitude/analytics-connector': 1.4.6
       '@amplitude/ua-parser-js': 0.7.33
@@ -9505,8 +9531,8 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /formik@2.4.2(react@18.2.0):
-    resolution: {integrity: sha512-C6nx0hifW2uENP3M6HpPmnAE6HFWCcd8/sqBZEOHZY6lpHJ5qehsfAy43ktpFLEmkBmhiZDei726utcUB9leqg==}
+  /formik@2.4.3(react@18.2.0):
+    resolution: {integrity: sha512-2Dy79Szw3zlXmZiokUdKsn+n1ow4G8hRrC/n92cOWHNTWXCRpQXlyvz6HcjW7aSQZrldytvDOavYjhfmDnUq8Q==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -14527,7 +14553,7 @@ packages:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
     dev: true
 
-  /storybook-addon-mock@4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/theming@7.0.3)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3):
+  /storybook-addon-mock@4.0.0(@storybook/addons@7.0.24)(@storybook/blocks@7.0.3)(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/theming@7.0.24)(react-dom@18.2.0)(react@18.2.0)(storybook@7.0.3):
     resolution: {integrity: sha512-3c01q9pYzkLjOajnnFLgya8HIHLVVQCaulasOeTniFaEAQeEngqxzc6sYWJx2AlISVsSktEonBGB7QVgmT9A9g==}
     peerDependencies:
       '@storybook/addons': ^7.0.0
@@ -14547,8 +14573,8 @@ packages:
       '@storybook/addons': 7.0.24(react-dom@18.2.0)(react@18.2.0)
       '@storybook/blocks': 7.0.3(react-dom@18.2.0)(react@18.2.0)
       '@storybook/components': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/theming': 7.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/manager-api': 7.0.24(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/theming': 7.0.24(react-dom@18.2.0)(react@18.2.0)
       mock-xmlhttprequest: 8.2.0
       path-to-regexp: 6.2.1
       polished: 4.2.2
@@ -14587,7 +14613,7 @@ packages:
       react-router-dom: 6.10.0(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
-  /storybook-i18n@2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react@18.2.0):
+  /storybook-i18n@2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-4Hhy6lBSj0LzR9YN8EiZ/QFSkyurs1z/eDRkqs8sGUganc4lZOay7Nv22ugd0TaYW39gaV88upNaJ9aH21/WrQ==}
     peerDependencies:
       '@storybook/components': ^7.0.0
@@ -14603,14 +14629,14 @@ packages:
         optional: true
     dependencies:
       '@storybook/components': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/preview-api': 7.0.3
-      '@storybook/types': 7.0.3
+      '@storybook/manager-api': 7.0.24(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/preview-api': 7.0.24
+      '@storybook/types': 7.0.24
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /storybook-react-intl@2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0):
+  /storybook-react-intl@2.0.1(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react-intl@6.3.2)(react@18.2.0):
     resolution: {integrity: sha512-3QlyWHdQnroM78Kgaj5u7sqDtR1VfUXbuRgNqw0z5d7XHnAP1uyNXCH+aRWD4Ybxp+DLQsge+LZkusKjI+zf/Q==}
     peerDependencies:
       '@storybook/components': ^7.0.0
@@ -14627,13 +14653,13 @@ packages:
         optional: true
     dependencies:
       '@storybook/components': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 7.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/preview-api': 7.0.3
-      '@storybook/types': 7.0.3
+      '@storybook/manager-api': 7.0.24(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/preview-api': 7.0.24
+      '@storybook/types': 7.0.24
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-intl: 6.3.2(react@18.2.0)(typescript@5.0.4)
-      storybook-i18n: 2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.3)(@storybook/preview-api@7.0.3)(@storybook/types@7.0.3)(react-dom@18.2.0)(react@18.2.0)
+      storybook-i18n: 2.0.6(@storybook/components@7.0.3)(@storybook/manager-api@7.0.24)(@storybook/preview-api@7.0.24)(@storybook/types@7.0.24)(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
   /storybook@7.0.3:

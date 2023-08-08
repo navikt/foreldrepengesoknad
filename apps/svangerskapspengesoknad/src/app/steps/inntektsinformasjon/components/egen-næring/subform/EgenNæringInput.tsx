@@ -17,6 +17,7 @@ import { FormikErrors, getIn } from 'formik';
 import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 import { mapEgenNæringFormValuesToState } from './egenNæringSubformUtils';
 import { EgenNæringSubformComponents, EgenNæringSubformData, EgenNæringSubformField } from './egenNæringSubformConfig';
+import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 
 interface Props {
     næring: Næring | undefined;
@@ -225,7 +226,7 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                         showYearSelector={true}
                         validate={validateEgenNæringTom(intl, formValues.egenNæringFom!)}
                         maxDate={dayjs().toDate()}
-                        minDate={dayjs.max(dayjs(date4WeeksAgo), dayjs(formValues.egenNæringFom)).toDate()}
+                        minDate={getMinInputTilOgMedValue(formValues.egenNæringFom, date4WeeksAgo)}
                     />
                     {getInputFeltFeil(
                         submitClicked,
