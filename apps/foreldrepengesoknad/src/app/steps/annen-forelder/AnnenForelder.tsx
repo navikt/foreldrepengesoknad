@@ -263,15 +263,20 @@ const AnnenForelder = () => {
                                         'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel'
                                     )}
                                 >
-                                    <FormattedMessage
-                                        id="annenForelder.harRettPåForeldrepengerINorge.veileder.del1"
-                                        values={{ navn: formValues.fornavn }}
-                                    ></FormattedMessage>
-                                    <br />
-                                    <FormattedMessage
-                                        id="annenForelder.harRettPåForeldrepengerINorge.veileder.del2"
-                                        values={{ navn: formValues.fornavn }}
-                                    ></FormattedMessage>
+                                    <Block padBottom="m">
+                                        <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder"></FormattedMessage>
+                                    </Block>
+                                    <ul style={{ margin: '0', padding: '1rem 2rem 0' }}>
+                                        <li>
+                                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
+                                        </li>
+                                        <li>
+                                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt2" />
+                                        </li>
+                                        <li>
+                                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt3" />
+                                        </li>
+                                    </ul>
                                 </ReadMore>
                             </Block>
                             <Block
