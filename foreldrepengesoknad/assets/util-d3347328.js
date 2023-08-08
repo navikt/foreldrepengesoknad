@@ -1,2 +1,0 @@
-import{I as T}from"./Attachment-a8e5b8d1.js";import{A as r}from"./getTypedFormComponents-a42e978b.js";const e=n=>Array.isArray(n)&&n[0]!==null&&n.some(a=>a&&a.innsendingsType===T.SEND_SENERE),o=n=>n===r.UTSETTELSE_SYKDOM||n===r.MORS_AKTIVITET_DOKUMENTASJON||n===r.HV_ØVELSE||n===r.NAV_TILTAK||n===r.OVERFØRING_KVOTE,A=(n,a,E)=>{if(n==null)return new Map;const t=a||"søknad";let i=E||new Map;return Object.keys(n).forEach(s=>{typeof n[s]=="object"&&(e(n[s])?i.set(t+"."+s,n[s][0]):i=A(n[s],t+"."+s,i))}),i};export{A as f,o as i};
-//# sourceMappingURL=util-d3347328.js.map
