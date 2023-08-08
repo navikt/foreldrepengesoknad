@@ -34,7 +34,7 @@
         "@types/lodash.groupby": "^4.6.7",
         "@types/lodash.throttle": "^4.1.7",
         "@types/node": "^18.15.11",
-        "@types/react": "^18.0.35",
+        "@types/react": "^18.2.19",
         "@types/react-aria-menubutton": "^6.2.9",
         "@types/react-collapse": "^5.0.1",
         "@types/react-dom": "^18.0.11",
