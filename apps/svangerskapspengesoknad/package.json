@@ -54,7 +54,7 @@
         "prettier": "^2.8.7",
         "react-test-renderer": "^18.2.0",
         "storybook": "7.2.1",
-        "storybook-addon-react-router-v6": "^0.3.5",
+        "storybook-addon-react-router-v6": "^2.0.2",
         "ts-loader": "^9.4.2",
         "tsconfig": "workspace:*",
         "typescript": "^5.0.4",
