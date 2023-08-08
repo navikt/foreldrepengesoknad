@@ -11,7 +11,7 @@ interface Props {
     oppgirIFortid: boolean;
     setUtenlandsopphold: Dispatch<SetStateAction<BostedUtland[]>>;
 }
-const BostedUtlandComponent: FunctionComponent<Props> = ({ oppgirIFortid, alleOpphold, setUtenlandsopphold }) => {
+const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpphold, setUtenlandsopphold }) => {
     const [leggerTilNyttOppholdIUtlandet, setLeggerTilNyttOppholdIUtlandet] = useState(false);
     const [selectedOpphold, setSelectedOpphold] = useState<BostedUtland | undefined>(undefined);
 
@@ -82,4 +82,4 @@ const BostedUtlandComponent: FunctionComponent<Props> = ({ oppgirIFortid, alleOp
     );
 };
 
-export default BostedUtlandComponent;
+export default BostedUtlandDetails;

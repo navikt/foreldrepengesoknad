@@ -15,9 +15,10 @@ export const initialArbeidIUtlandetFormValues: ArbeidIUtlandetSubformData = {
     [ArbeidIUtlandetSubformField.arbeidIUtlandetTom]: '',
 };
 
-export const mapArbeidIUtlandet = (formValues: Partial<ArbeidIUtlandetSubformData>): ArbeidIUtlandet => {
+export const mapArbeidIUtlandet = (formValues: Partial<ArbeidIUtlandetSubformData>, id: number): ArbeidIUtlandet => {
     const erPågående = convertYesOrNoOrUndefinedToBoolean(formValues.arbeidIUtlandetErPågående);
     return {
+        id: id,
         type: AnnenInntektType.JOBB_I_UTLANDET,
         tidsperiode: { fom: formValues.arbeidIUtlandetFom!, tom: formValues.arbeidIUtlandetTom },
         pågående: !!erPågående,

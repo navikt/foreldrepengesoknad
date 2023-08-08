@@ -71,10 +71,11 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
         );
         setOverlappendePerioderFeil(overlappendePerioderTekst);
         if (formIsAnswered && formIsValid && !overlappendePerioderTekst) {
-            const nyttOpphold = mapBostedUtland(values, alleOpphold.length);
             if (selectedOpphold) {
+                const nyttOpphold = mapBostedUtland(values, selectedOpphold.id);
                 editOpphold(selectedOpphold, nyttOpphold);
             } else {
+                const nyttOpphold = mapBostedUtland(values, alleOpphold.length);
                 addOpphold(nyttOpphold);
             }
             setSelectedOpphold(undefined);

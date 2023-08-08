@@ -4,8 +4,8 @@ import { guid } from '@navikt/fp-common';
 import ArbeidIUtlandetListElement from './ArbeidIUtlandetListElement';
 
 interface Props {
-    andreInntekterIUtlandet: ArbeidIUtlandet[];
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
+    allArbeidIUtlandet: ArbeidIUtlandet[];
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     deleteAnnenInntekt: (inntektSomSlettes: ArbeidIUtlandet) => void;
@@ -14,21 +14,23 @@ interface Props {
 }
 
 const ArbeidIUtlandetList: FunctionComponent<Props> = ({
-    andreInntekterIUtlandet,
     selectedAnnenInntekt,
+    allArbeidIUtlandet,
     addAnnenInntekt,
     editAnnenInntekt,
     deleteAnnenInntekt,
     setSelectedAnnenInntekt,
     setLeggTilNyttArbeidIUtlandet,
 }) => {
+    const sorterteArbeidIUtlandet = allArbeidIUtlandet.sort((a, b) => a.id - b.id);
     return (
         <>
-            {andreInntekterIUtlandet.map((inntekt) => (
+            {sorterteArbeidIUtlandet.map((inntekt) => (
                 <ArbeidIUtlandetListElement
                     key={guid()}
                     isSelected={selectedAnnenInntekt === inntekt}
                     inntekt={inntekt}
+                    allArbeidIUtlandet={allArbeidIUtlandet}
                     addAnnenInntekt={addAnnenInntekt}
                     editAnnenInntekt={editAnnenInntekt}
                     deleteAnnenInntekt={deleteAnnenInntekt}

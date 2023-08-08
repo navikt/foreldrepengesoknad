@@ -34,12 +34,20 @@ import FrilansDetaljer from './components/frilans/FrilansDetaljer';
 import { Næring } from 'app/types/Næring';
 import EgenNæringDetaljer from './components/egen-næring/EgenNæringDetaljer';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlandetReadMore';
+// import { Tilrettelegging } from 'app/types/Tilrettelegging';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
     const { termindato } = barn;
+
+    // const søknadsgrunnlagOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
+    //     cleanupSøker(values.søker) as Søker,
+    //     arbeidsforhold,
+    //     barn.termindato!
+    // );
+
     const [frilans, setFrilans] = useState<Frilans | undefined>(
         søker.frilansInformasjon ? søker.frilansInformasjon : undefined
     );
@@ -48,14 +56,14 @@ const Inntektsinformasjon = () => {
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : undefined
     );
 
-    const [arbeidIUtlandet, setArbeidIUtlandet] = useState<ArbeidIUtlandet[]>(
+    const [allArbeidIUtlandet, setAllArbeidIUtlandet] = useState<ArbeidIUtlandet[]>(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
     );
 
     const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
 
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
-        const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, næring, arbeidIUtlandet);
+        const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, næring, allArbeidIUtlandet);
 
         return [actionCreator.setSøker(updatedSøker)];
     };
@@ -147,7 +155,7 @@ const Inntektsinformasjon = () => {
                                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
                                     validate={(value) => {
                                         if (value === YesOrNo.YES) {
-                                            if (arbeidIUtlandet.length === 0) {
+                                            if (allArbeidIUtlandet.length === 0) {
                                                 return intlUtils(
                                                     intl,
                                                     'valideringsfeil.inntektsinformasjon.måOppgiArbeidIUtlandet'
@@ -167,10 +175,10 @@ const Inntektsinformasjon = () => {
                             </Block>
                             {formValues.hattArbeidIUtlandet === YesOrNo.YES && (
                                 <ArbeidIUtlandetDetaljer
-                                    arbeidIUtlandet={arbeidIUtlandet}
+                                    allArbeidIUtlandet={allArbeidIUtlandet}
                                     formValues={formValues as InntektsinformasjonFormData}
                                     selectedAnnenInntekt={selectedAnnenInntekt}
-                                    setArbeidIUtlandet={setArbeidIUtlandet}
+                                    setArbeidIUtlandet={setAllArbeidIUtlandet}
                                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                                 />
                             )}

@@ -9,14 +9,14 @@ import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import ArbeidIUtlandetList from './ArbeidIUtlandetList';
 
 interface Props {
-    arbeidIUtlandet: ArbeidIUtlandet[];
+    allArbeidIUtlandet: ArbeidIUtlandet[];
     formValues: InntektsinformasjonFormData;
     selectedAnnenInntekt: ArbeidIUtlandet | undefined;
     setArbeidIUtlandet: React.Dispatch<React.SetStateAction<ArbeidIUtlandet[]>>;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
 }
 const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
-    arbeidIUtlandet,
+    allArbeidIUtlandet,
     formValues,
     selectedAnnenInntekt,
     setArbeidIUtlandet,
@@ -26,20 +26,20 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
     const [leggerTilNyttArbeidIUtlandet, setLeggerTilNyttArbeidIUtlandet] = useState(false);
 
     const addAnnenInntekt = (annenInntekt: ArbeidIUtlandet) => {
-        const updatedandreInntekterInformasjon = arbeidIUtlandet.concat(annenInntekt);
+        const updatedandreInntekterInformasjon = allArbeidIUtlandet.concat(annenInntekt);
         setArbeidIUtlandet(updatedandreInntekterInformasjon);
         setSelectedAnnenInntekt(undefined);
         setLeggerTilNyttArbeidIUtlandet(false);
     };
 
     const deleteAnnenInntekt = (inntektSomSlettes: ArbeidIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet.filter((inntekt) => inntekt !== inntektSomSlettes);
+        const updatedAndreInntekterInformasjon = allArbeidIUtlandet.filter((inntekt) => inntekt !== inntektSomSlettes);
         setArbeidIUtlandet(updatedAndreInntekterInformasjon);
         setSelectedAnnenInntekt(undefined);
     };
 
     const editAnnenInntekt = (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet
+        const updatedAndreInntekterInformasjon = allArbeidIUtlandet
             .filter((inntekt) => inntekt !== inntektSomEditeres)
             .concat(oppdatertInntekt);
         setSelectedAnnenInntekt(undefined);
@@ -57,10 +57,10 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
                 {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
             </Heading>
 
-            {arbeidIUtlandet.length > 0 && (
+            {allArbeidIUtlandet.length > 0 && (
                 <ArbeidIUtlandetList
-                    andreInntekterIUtlandet={arbeidIUtlandet}
                     selectedAnnenInntekt={selectedAnnenInntekt}
+                    allArbeidIUtlandet={allArbeidIUtlandet}
                     addAnnenInntekt={addAnnenInntekt}
                     editAnnenInntekt={editAnnenInntekt}
                     deleteAnnenInntekt={deleteAnnenInntekt}
@@ -69,17 +69,18 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
                 />
             )}
             {(leggerTilNyttArbeidIUtlandet ||
-                (formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length === 0)) && (
+                (formValues.hattArbeidIUtlandet === YesOrNo.YES && allArbeidIUtlandet.length === 0)) && (
                 <ArbeidIUtlandetSubform
+                    allArbeidIUtlandet={allArbeidIUtlandet}
                     selectedAnnenInntekt={selectedAnnenInntekt}
                     addAnnenInntekt={addAnnenInntekt}
                     editAnnenInntekt={editAnnenInntekt}
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                    erFørsteInput={arbeidIUtlandet.length === 0}
+                    erFørsteInput={allArbeidIUtlandet.length === 0}
                     setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
                 />
             )}
-            {formValues.hattArbeidIUtlandet === YesOrNo.YES && arbeidIUtlandet.length > 0 && (
+            {formValues.hattArbeidIUtlandet === YesOrNo.YES && allArbeidIUtlandet.length > 0 && (
                 <Block padBottom="xl">
                     <Button
                         aria-label="legg til ny informasjon om arbeid i utlandet"

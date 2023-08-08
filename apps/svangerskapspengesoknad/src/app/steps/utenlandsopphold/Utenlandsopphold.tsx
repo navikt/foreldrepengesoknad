@@ -16,7 +16,7 @@ import {
 import { utenlandsoppholdFormQuestions } from './utenlandsoppholdFormQuestions';
 import { useState } from 'react';
 import { BostedUtland } from 'app/types/BostedUtland';
-import BostedUtlandComponent from './components/subform/BostedUtlandComponent';
+import BostedUtlandDetails from './components/subform/BostedUtlandDetails';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import InformasjonOmUtenlandsopphold from './components/InformasjonOmUtenlandsopphold';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -101,7 +101,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block padBottom="xl" visible={formValues.skalBoINorgeNeste12Mnd === YesOrNo.NO}>
-                                <BostedUtlandComponent
+                                <BostedUtlandDetails
                                     alleOpphold={bostedUtlandFremtid}
                                     oppgirIFortid={false}
                                     setUtenlandsopphold={setBostedUtlandFremtid}
@@ -133,7 +133,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block padBottom="xl" visible={formValues.harBoddINorgeSiste12Mnd === YesOrNo.NO}>
-                                <BostedUtlandComponent
+                                <BostedUtlandDetails
                                     alleOpphold={bostedUtlandFortid}
                                     oppgirIFortid={true}
                                     setUtenlandsopphold={setBostedUtlandFortid}
