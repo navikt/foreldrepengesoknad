@@ -373,7 +373,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,
             visPeriodeIPlan: skalVises,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: saksperiode.kontoType,
             avslåttPeriodeType: Periodetype.Uttak,
         };
     }

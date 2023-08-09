@@ -579,7 +579,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         const periode1 = result[0] as Uttaksperiode;
         expect(periode1.erMorForSyk).toEqual(true);
     });
-    it('Skal mappe og slå sammen avslåtte premature perioder for annen part (uttak og utsettelser) til å trekke fra fellesperiode konto', () => {
+    it('Skal mappe og slå sammen avslåtte premature perioder for annen part (uttak og utsettelser) til å trekke fra angitt konto', () => {
         const avslåttePerioderAnnenPart = [
             {
                 periode: {
@@ -603,6 +603,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: true,
                 utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                kontoType: StønadskontoType.Fellesperiode,
                 guid: '0',
                 resultat: {
                     innvilget: false,
