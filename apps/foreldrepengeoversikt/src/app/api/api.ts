@@ -34,6 +34,7 @@ const useGetSaker = (sakerSuspended: boolean) => {
 const useGetMellomlagretSøknad = () => {
     const { data, error } = useGetRequest<any>('/storage', {
         config: { withCredentials: true },
+        isSuspended: true,
     });
 
     return {
