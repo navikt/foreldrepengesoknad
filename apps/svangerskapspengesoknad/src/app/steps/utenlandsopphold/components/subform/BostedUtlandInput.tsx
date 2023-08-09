@@ -8,7 +8,7 @@ import {
 } from './bostedUtlandSubformUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, dateToday, intlUtils } from '@navikt/fp-common';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import {
     BostedUtlandSubformComponents,
     BostedUtlandSubformData,
@@ -61,9 +61,6 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [overlappendePerioderFeil, setOverlappendePerioderFeil] = useState<string | undefined>(undefined);
     const erFørsteInput = alleOpphold.length === 0;
-    const tittelId = selectedOpphold
-        ? 'inntektsinformasjon.arbeidIUtlandet.tittel.oppdater'
-        : 'inntektsinformasjon.arbeidIUtlandet.tittel.ny';
     const submitButtonId = selectedOpphold ? 'oppdater' : 'leggTil';
 
     const handleOnSubmit = (values: Partial<BostedUtlandSubformData>, event: any) => {
@@ -122,11 +119,6 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            {!erFørsteInput && (
-                <Heading className={bem.element('tittel')} size="small" level="4">
-                    {intlUtils(intl, tittelId)}
-                </Heading>
-            )}
             <Block padBottom="l">
                 <BostedUtlandSubformComponents.CountrySelect
                     name={BostedUtlandSubformField.land}

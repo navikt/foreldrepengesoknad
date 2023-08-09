@@ -2,7 +2,7 @@ import { Block, ISOStringToDate, bemUtils, dateToday, intlUtils, date4WeeksAgo }
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import { Frilans } from 'app/types/Frilans';
 import { FormikErrors, getIn } from 'formik';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
@@ -73,76 +73,57 @@ const FrilansInput: FunctionComponent<Props> = ({
     }, [frilansOppstartError, frilansSluttError]);
 
     return (
-        <>
-            <Block padBottom="l">
-                <Heading level="3" size="small">
-                    {intlUtils(intl, 'inntektsinformasjon.frilansArbeid.tittel')}
-                </Heading>
+        <div className={bem.block}>
+            <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.frilansFom)}>
+                <FrilansSubformComponents.DatePicker
+                    name={FrilansSubformField.frilansFom}
+                    label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
+                    validate={validateFrilansStart(intl, formValues.frilansTom!)}
+                    maxDate={dateToday}
+                    showYearSelector={true}
+                    placeholder={'dd.mm.åååå'}
+                />
+                {getInputFeltFeil(submitClicked, FrilansSubformField.frilansFom, formValues.frilansFom, intl, fomFeil)}
             </Block>
-            <div className={bem.block}>
-                <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.frilansFom)}>
-                    <FrilansSubformComponents.DatePicker
-                        name={FrilansSubformField.frilansFom}
-                        label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
-                        validate={validateFrilansStart(intl, formValues.frilansTom!)}
-                        maxDate={dateToday}
-                        showYearSelector={true}
-                        placeholder={'dd.mm.åååå'}
-                    />
-                    {getInputFeltFeil(
-                        submitClicked,
-                        FrilansSubformField.frilansFom,
-                        formValues.frilansFom,
+            <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.jobberFremdelesSomFrilanser)}>
+                <FrilansSubformComponents.YesOrNoQuestion
+                    name={FrilansSubformField.jobberFremdelesSomFrilanser}
+                    legend={intlUtils(intl, 'inntektsinformasjon.frilans.jobberFremdelesSomFrilans')}
+                />
+                {getInputFeltFeil(
+                    submitClicked,
+                    FrilansSubformField.jobberFremdelesSomFrilanser,
+                    formValues.jobberFremdelesSomFrilanser,
+                    intl
+                )}
+            </Block>
+            <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.frilansTom)}>
+                <FrilansSubformComponents.DatePicker
+                    name={FrilansSubformField.frilansTom}
+                    label={intlUtils(intl, 'inntektsinformasjon.frilans.slutt')}
+                    minDate={getMinInputTilOgMedValue(formValues.frilansFom, date4WeeksAgo)}
+                    maxDate={dateToday}
+                    showYearSelector={true}
+                    placeholder={'dd.mm.åååå'}
+                    validate={validateFrilansSlutt(
                         intl,
-                        fomFeil
+                        formValues.jobberFremdelesSomFrilanser!,
+                        formValues.frilansFom!
                     )}
-                </Block>
-                <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.jobberFremdelesSomFrilanser)}>
-                    <FrilansSubformComponents.YesOrNoQuestion
-                        name={FrilansSubformField.jobberFremdelesSomFrilanser}
-                        legend={intlUtils(intl, 'inntektsinformasjon.frilans.jobberFremdelesSomFrilans')}
-                    />
-                    {getInputFeltFeil(
-                        submitClicked,
-                        FrilansSubformField.jobberFremdelesSomFrilanser,
-                        formValues.jobberFremdelesSomFrilanser,
-                        intl
-                    )}
-                </Block>
-                <Block padBottom="l" visible={visibility.isVisible(FrilansSubformField.frilansTom)}>
-                    <FrilansSubformComponents.DatePicker
-                        name={FrilansSubformField.frilansTom}
-                        label={intlUtils(intl, 'inntektsinformasjon.frilans.slutt')}
-                        minDate={getMinInputTilOgMedValue(formValues.frilansFom, date4WeeksAgo)}
-                        maxDate={dateToday}
-                        showYearSelector={true}
-                        placeholder={'dd.mm.åååå'}
-                        validate={validateFrilansSlutt(
-                            intl,
-                            formValues.jobberFremdelesSomFrilanser!,
-                            formValues.frilansFom!
-                        )}
-                    />
-                    {getInputFeltFeil(
-                        submitClicked,
-                        FrilansSubformField.frilansTom,
-                        formValues.frilansTom,
-                        intl,
-                        tomFeil
-                    )}
-                </Block>
-                <Button
-                    type="button"
-                    variant="primary"
-                    onClick={(event) => {
-                        event.preventDefault();
-                        handleOnLeggTil();
-                    }}
-                >
-                    <FormattedMessage id={submitButtonId} />
-                </Button>
-            </div>
-        </>
+                />
+                {getInputFeltFeil(submitClicked, FrilansSubformField.frilansTom, formValues.frilansTom, intl, tomFeil)}
+            </Block>
+            <Button
+                type="button"
+                variant="primary"
+                onClick={(event) => {
+                    event.preventDefault();
+                    handleOnLeggTil();
+                }}
+            >
+                <FormattedMessage id={submitButtonId} />
+            </Button>
+        </div>
     );
 };
 

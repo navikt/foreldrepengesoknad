@@ -51,12 +51,17 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
         setSelectedAnnenInntekt(undefined);
     };
 
-    return (
-        <Block padBottom="xl">
-            <Heading level="3" size="small">
-                {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
-            </Heading>
+    if (formValues.hattArbeidIUtlandet !== YesOrNo.YES) {
+        return null;
+    }
 
+    return (
+        <>
+            <Block padBottom="l">
+                <Heading level="3" size="small">
+                    {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tittel')}
+                </Heading>
+            </Block>
             {allArbeidIUtlandet.length > 0 && (
                 <ArbeidIUtlandetList
                     selectedAnnenInntekt={selectedAnnenInntekt}
@@ -88,11 +93,11 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
                         type="button"
                         onClick={handleOnLeggTilArbeidIUtlandet}
                     >
-                        <FormattedMessage id="inntektsinformasjon.arbeidIUtlandet.leggTil" />
+                        <FormattedMessage id="inntektsinformasjon.arbeid.leggTil" />
                     </Button>
                 </Block>
             )}
-        </Block>
+        </>
     );
 };
 

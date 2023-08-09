@@ -1,6 +1,5 @@
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Næring } from 'app/types/Næring';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Frilans } from 'app/types/Frilans';
@@ -22,8 +21,9 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
 };
 
 export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
+    formValues: Partial<InntektsinformasjonFormData>,
     frilans: Frilans | undefined,
-    næring: Næring | undefined,
+    næring: Næring[],
     arbeidsforhold: Arbeidsforhold[],
     termindato: Date
 ): SøknadsgrunnlagOption[] => {
@@ -34,17 +34,16 @@ export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
             type: forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
         })),
     ];
-    const næringValg = næring
-        ? [
-              {
-                  value: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
-                  label: næring.navnPåNæringen,
+    const næringValg =
+        formValues.hattInntektSomNæringsdrivende === YesOrNo.YES
+            ? næring.map((egenNæring) => ({
+                  value: egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`,
+                  label: egenNæring.navnPåNæringen,
                   type: Arbeidsforholdstype.SELVSTENDIG,
-              },
-          ]
-        : [];
+              }))
+            : [];
     const frilansValg =
-        frilans !== undefined
+        formValues.hattInntektSomFrilans === YesOrNo.YES && frilans !== undefined
             ? [
                   {
                       value: 'Frilans',
@@ -56,18 +55,10 @@ export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
     return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
 };
 
-export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
-    const cleanedNavn = replaceInvisibleCharsWithSpace(næring.navnPåNæringen);
-    return {
-        ...næring,
-        navnPåNæringen: cleanedNavn,
-    };
-};
-
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
     frilans: Frilans | undefined,
-    næring: Næring | undefined,
+    næring: Næring[],
     arbeidIUtlandet: ArbeidIUtlandet[]
 ): Søker => {
     return {
@@ -78,8 +69,7 @@ export const mapInntektsinformasjonFormDataToState = (
             values.hattInntektSomNæringsdrivende
         )!,
         andreInntekterSiste10Mnd: values.hattArbeidIUtlandet === YesOrNo.YES ? arbeidIUtlandet : [],
-        selvstendigNæringsdrivendeInformasjon:
-            values.hattInntektSomNæringsdrivende === YesOrNo.YES ? cleanupInvisibleCharsFromNæring(næring!) : undefined,
+        selvstendigNæringsdrivendeInformasjon: values.hattInntektSomNæringsdrivende === YesOrNo.YES ? næring : [],
         frilansInformasjon: values.hattInntektSomFrilans === YesOrNo.YES ? frilans : undefined,
     };
 };

@@ -2,7 +2,7 @@ import { Block, bemUtils, date4WeeksAgo, intlUtils, validateTextInputField } fro
 import { FormattedMessage, useIntl } from 'react-intl';
 import './egen-næring-input.css';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Alert, BodyShort, Button, Heading, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring, Næringstype } from 'app/types/Næring';
 import {
@@ -20,23 +20,31 @@ import { EgenNæringSubformComponents, EgenNæringSubformData, EgenNæringSubfor
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 
 interface Props {
-    næring: Næring | undefined;
-    visibility: QuestionVisibility<EgenNæringSubformField, undefined>;
     formValues: Partial<EgenNæringSubformData>;
+    erFørsteInput: boolean;
     errors: FormikErrors<Partial<EgenNæringSubformData>>;
-    setNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
-    setRedigererNæring: React.Dispatch<React.SetStateAction<boolean>>;
+    selectedNæring: Næring | undefined;
+    visibility: QuestionVisibility<EgenNæringSubformField>;
+    allNæring: Næring[];
     validateForm: any;
+    setSelectedNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
+    addNæring: (inntekt: Næring) => void;
+    editNæring: (inntektSomEditeres: Næring, oppdatertInntekt: Næring) => void;
+    setLeggTilNyNæring: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EgenNæringInput: FunctionComponent<Props> = ({
-    næring,
-    visibility,
     formValues,
     errors,
-    setNæring,
-    setRedigererNæring,
+    selectedNæring,
+    erFørsteInput,
+    visibility,
+    allNæring,
     validateForm,
+    setSelectedNæring,
+    addNæring,
+    editNæring,
+    setLeggTilNyNæring,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('egenNæringInput');
@@ -49,17 +57,27 @@ const EgenNæringInput: FunctionComponent<Props> = ({
     const [yrkesAktivDatoFeil, setYrkesAktivDatoFeil] = useState<string | undefined>(undefined);
 
     const navnPåNæringLabel = intlUtils(intl, 'inntektsinformasjon.egenNæring.navnPåNæring');
-    const submitButtonId = næring ? 'oppdater' : 'leggTil';
+    const submitButtonId = selectedNæring ? 'oppdater' : 'leggTil';
     const handleOnLeggTil = () => {
         setSubmitClicked(true);
         const formIsAnswered = visibility.areAllQuestionsAnswered();
         const formIsValid = !navnFeil && !orgNrFeil && !fomFeil && !tomFeil && !resultatFeil && !yrkesAktivDatoFeil;
 
         if (formIsAnswered && formIsValid) {
-            const næringsInformasjon = mapEgenNæringFormValuesToState(formValues);
-            setNæring(næringsInformasjon);
-            setRedigererNæring(false);
+            if (selectedNæring) {
+                const arbeidIUtlandet = mapEgenNæringFormValuesToState(formValues, selectedNæring.id);
+                editNæring(selectedNæring, arbeidIUtlandet);
+            } else {
+                const arbeidIUtlandet = mapEgenNæringFormValuesToState(formValues, allNæring.length);
+                addNæring(arbeidIUtlandet);
+            }
+            setSelectedNæring(undefined);
         }
+    };
+
+    const handleOnAvbryt = () => {
+        setSelectedNæring(undefined);
+        setLeggTilNyNæring(false);
     };
 
     const navnError = getIn(errors, EgenNæringSubformField.egenNæringNavn);
@@ -110,11 +128,6 @@ const EgenNæringInput: FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
-                <Heading level="3" size="small">
-                    {intlUtils(intl, 'inntektsinformasjon.egenNæring.tittel')}
-                </Heading>
-            </Block>
             <div className={bem.block}>
                 <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringType)}>
                     <EgenNæringSubformComponents.RadioGroup
@@ -311,6 +324,16 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                 >
                     <FormattedMessage id={submitButtonId} />
                 </Button>
+                {!erFørsteInput && (
+                    <Button
+                        className={bem.element('avbryt')}
+                        type="button"
+                        variant="secondary"
+                        onClick={handleOnAvbryt}
+                    >
+                        <FormattedMessage id="avbryt" />
+                    </Button>
+                )}
             </div>
         </>
     );

@@ -37,6 +37,14 @@
 .egen-næring-visning__rediger {
     grid-column: 3;
     grid-row: 4;
+    width: 2rem;
+    height: 2rem;
+    align-self:last baseline;
+}
+
+.egen-næring-visning__slett {
+    grid-column: 2;
+    grid-row: 4;
     width:2rem;
     height:2rem;
     align-self:last baseline;

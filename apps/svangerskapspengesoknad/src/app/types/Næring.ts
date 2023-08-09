@@ -8,6 +8,7 @@ export enum Næringstype {
 }
 
 export interface Næring {
+    id: number;
     næringstype: Næringstype;
     tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
     næringsinntekt?: number;
