@@ -45,6 +45,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
     const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
+    const { storageData } = Api.useGetMellomlagretSøknad();
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
     const { minidialogData, minidialogError } = Api.useGetMinidialog();
@@ -111,6 +112,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                     minidialogerData={aktiveMinidialoger}
                     minidialogerError={minidialogError}
                     oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
+                    storageData={storageData}
                 />
             </BrowserRouter>
         </div>

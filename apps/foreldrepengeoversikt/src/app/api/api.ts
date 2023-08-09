@@ -31,6 +31,17 @@ const useGetSaker = (sakerSuspended: boolean) => {
     };
 };
 
+const useGetMellomlagretSøknad = () => {
+    const { data, error } = useGetRequest<any>('/storage', {
+        config: { withCredentials: true },
+    });
+
+    return {
+        storageData: data,
+        storageError: error,
+    };
+};
+
 const useGetAnnenPartsVedtak = (
     annenPartFnr: string | undefined,
     barnFnr: string | undefined,
@@ -139,6 +150,7 @@ const Api = {
     useGetMinidialog,
     useGetManglendeVedlegg,
     useErSakOppdatert,
+    useGetMellomlagretSøknad,
     sendEttersending,
 };
 

@@ -1,13 +1,13 @@
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
-import { Block, bemUtils } from '@navikt/fp-common';
+import { Block, bemUtils, guid } from '@navikt/fp-common';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 import SakLink from 'app/components/sak-link/SakLink';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Heading } from '@navikt/ds-react';
 
 import './forside.css';
 
@@ -16,6 +16,7 @@ interface Props {
     grupperteSaker: GruppertSak[];
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
     oppdatertData: boolean;
+    storageData: any;
 }
 
 const Forside: React.FunctionComponent<Props> = ({
@@ -23,6 +24,7 @@ const Forside: React.FunctionComponent<Props> = ({
     grupperteSaker,
     avslåttSvangerskapspengesak,
     oppdatertData,
+    storageData,
 }) => {
     const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
@@ -36,6 +38,16 @@ const Forside: React.FunctionComponent<Props> = ({
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
+            </Block>
+            <Block>
+                {storageData &&
+                    storageData.map((søknad: any) => {
+                        return (
+                            <Heading level="1" size="large" key={guid()}>
+                                Dette er en mellomlagret søknad av typen: {søknad.type}
+                            </Heading>
+                        );
+                    })}
             </Block>
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />

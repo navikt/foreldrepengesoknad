@@ -27,6 +27,7 @@ interface Props {
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     oppdatertData: boolean;
+    storageData: any;
 }
 
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
@@ -35,6 +36,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     minidialogerData,
     minidialogerError,
     oppdatertData,
+    storageData,
 }) => {
     const bem = bemUtils('routesWrapper');
     const hasNavigated = useRef(false);
@@ -84,6 +86,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 grupperteSaker={grupperteSaker}
                                 avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
                                 oppdatertData={oppdatertData}
+                                storageData={storageData}
                             />
                         }
                     />
