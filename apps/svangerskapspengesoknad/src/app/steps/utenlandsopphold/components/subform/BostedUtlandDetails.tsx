@@ -74,7 +74,7 @@ const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpph
                         type="button"
                         onClick={handleOnLeggTilOppholdIUtlandet}
                     >
-                        <FormattedMessage id="inntektsinformasjon.arbeidIUtlandet.leggTil" />
+                        <FormattedMessage id="inntektsinformasjon.arbeid.leggTil" />
                     </Button>
                 </Block>
             )}

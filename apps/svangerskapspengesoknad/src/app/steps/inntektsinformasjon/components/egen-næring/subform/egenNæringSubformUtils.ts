@@ -8,6 +8,7 @@ import { Næring } from 'app/types/Næring';
 import dayjs from 'dayjs';
 import { date4YearsAgo } from 'app/utils/dateUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
     if (!oppstartsdato) {
@@ -17,8 +18,9 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
     return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };
 
-export const mapEgenNæringFormValuesToState = (formValues: Partial<EgenNæringSubformData>): Næring => {
+export const mapEgenNæringFormValuesToState = (formValues: Partial<EgenNæringSubformData>, id: number): Næring => {
     return {
+        id: id,
         næringstype: formValues.egenNæringType!,
         tidsperiode: {
             fom: ISOStringToDate(formValues.egenNæringFom)!,
@@ -28,7 +30,7 @@ export const mapEgenNæringFormValuesToState = (formValues: Partial<EgenNæringS
         næringsinntekt: hasValue(formValues.egenNæringResultat)
             ? parseInt(formValues.egenNæringResultat!, 10)
             : undefined,
-        navnPåNæringen: formValues.egenNæringNavn!,
+        navnPåNæringen: replaceInvisibleCharsWithSpace(formValues.egenNæringNavn!),
         organisasjonsnummer: hasValue(formValues.egenNæringOrgnr) ? formValues.egenNæringOrgnr : undefined,
         registrertINorge: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringRegistrertINorge)!,
         registrertILand: hasValue(formValues.egenNæringLand) ? formValues.egenNæringLand : undefined,

@@ -20,7 +20,7 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
-import { Alert, BodyShort, Button, GuidePanel } from '@navikt/ds-react';
+import { BodyShort, Button, GuidePanel } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
@@ -36,6 +36,7 @@ import { Næring } from 'app/types/Næring';
 import EgenNæringDetaljer from './components/egen-næring/EgenNæringDetaljer';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlandetReadMore';
 import { VelgSøknadsgrunnlag } from 'app/types/VelgSøknadsgrunnlag';
+import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -47,8 +48,8 @@ const Inntektsinformasjon = () => {
         søker.frilansInformasjon ? søker.frilansInformasjon : undefined
     );
 
-    const [næring, setNæring] = useState<Næring | undefined>(
-        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : undefined
+    const [allNæring, setAllNæring] = useState<Næring[]>(
+        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
     );
 
     const [allArbeidIUtlandet, setAllArbeidIUtlandet] = useState<ArbeidIUtlandet[]>(
@@ -56,9 +57,10 @@ const Inntektsinformasjon = () => {
     );
 
     const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
+    const [selectedNæring, setSelectedNæring] = useState<Næring | undefined>(undefined);
 
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
-        const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, næring, allArbeidIUtlandet);
+        const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, allNæring, allArbeidIUtlandet);
 
         return [actionCreator.setSøker(updatedSøker)];
     };
@@ -76,8 +78,9 @@ const Inntektsinformasjon = () => {
                 );
 
                 const søknadsgrunnlagOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
+                    formValues,
                     frilans,
-                    næring,
+                    allNæring,
                     arbeidsforhold,
                     barn.termindato!
                 );
@@ -108,7 +111,6 @@ const Inntektsinformasjon = () => {
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
                                 </BodyShort>
                             </Block>
-
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
                             />
@@ -159,9 +161,11 @@ const Inntektsinformasjon = () => {
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
                             <EgenNæringDetaljer
-                                næring={næring}
                                 formValues={formValues as InntektsinformasjonFormData}
-                                setNæring={setNæring}
+                                allNæring={allNæring}
+                                selectedNæring={selectedNæring}
+                                setAllNæring={setAllNæring}
+                                setSelectedNæring={setSelectedNæring}
                             />
                             <Block
                                 padBottom="xl"
@@ -190,69 +194,27 @@ const Inntektsinformasjon = () => {
                                 />
                                 <ArbeidIUtlandetReadMore />
                             </Block>
-                            {formValues.hattArbeidIUtlandet === YesOrNo.YES && (
-                                <ArbeidIUtlandetDetaljer
-                                    allArbeidIUtlandet={allArbeidIUtlandet}
-                                    formValues={formValues as InntektsinformasjonFormData}
-                                    selectedAnnenInntekt={selectedAnnenInntekt}
-                                    setArbeidIUtlandet={setAllArbeidIUtlandet}
-                                    setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                                />
-                            )}
-                            <Block padBottom="xl">
-                                <InfoTilFiskere />
-                            </Block>
-                            <Block padBottom="xl">
-                                <InfoOmFørstegangstjeneste />
-                            </Block>
-
+                            <ArbeidIUtlandetDetaljer
+                                allArbeidIUtlandet={allArbeidIUtlandet}
+                                formValues={formValues as InntektsinformasjonFormData}
+                                selectedAnnenInntekt={selectedAnnenInntekt}
+                                setArbeidIUtlandet={setAllArbeidIUtlandet}
+                                setSelectedAnnenInntekt={setSelectedAnnenInntekt}
+                            />
                             <Block visible={visSøknadsgrunnlagValg} padBottom="xl">
                                 <VelgSøknadsgrunnlag
                                     label={intlUtils(intl, 'inntektsinformasjon.grunnlag.label')}
                                     options={søknadsgrunnlagOptions}
                                 />
                             </Block>
+                            <Block padBottom="xl">
+                                <InfoTilFiskere />
+                            </Block>
+                            <Block padBottom="xl">
+                                <InfoOmFørstegangstjeneste />
+                            </Block>
                             <Block visible={kanIkkeSøke}>
-                                <Alert variant="warning">
-                                    <div>
-                                        <Block>
-                                            <FormattedMessage
-                                                id="inntektsinformasjon.alert.ingenArbeidsforhold.tittel"
-                                                values={{
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </Block>
-                                        <FormattedMessage
-                                            id="inntektsinformasjon.alert.ingenArbeidsforhold"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <a
-                                                        className="lenke"
-                                                        rel="noopener noreferrer"
-                                                        href="https://familie.nav.no/om-svangerskapspenger"
-                                                    >
-                                                        {msg}
-                                                    </a>
-                                                ),
-                                            }}
-                                        />
-                                        <FormattedMessage
-                                            id="inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <a
-                                                        className="lenke"
-                                                        rel="noopener noreferrer"
-                                                        href="https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
-                                                    >
-                                                        {msg}
-                                                    </a>
-                                                ),
-                                            }}
-                                        />
-                                    </div>
-                                </Alert>
+                                <BrukerKanIkkeSøke />
                             </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>

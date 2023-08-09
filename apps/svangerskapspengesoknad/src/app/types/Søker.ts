@@ -11,7 +11,7 @@ export interface Søker {
     harJobbetSomFrilansSiste10Mnd: boolean;
     frilansInformasjon?: Frilans;
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-    selvstendigNæringsdrivendeInformasjon?: Næring;
+    selvstendigNæringsdrivendeInformasjon?: Næring[];
     harHattAnnenInntektSiste10Mnd: boolean;
     andreInntekterSiste10Mnd?: ArbeidIUtlandet[];
 }

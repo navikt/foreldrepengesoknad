@@ -11,7 +11,7 @@ import {
 import { FormikErrors, getIn } from 'formik';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { mapArbeidIUtlandet } from './arbeidIUtlandetSubformUtils';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../validation/arbeidIUtlandetValidation';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
@@ -42,9 +42,6 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     editAnnenInntekt,
     setLeggTilNyttArbeidIUtlandet,
 }) => {
-    const tittelId = selectedAnnenInntekt
-        ? 'inntektsinformasjon.arbeidIUtlandet.tittel.oppdater'
-        : 'inntektsinformasjon.arbeidIUtlandet.tittel.ny';
     const submitButtonId = selectedAnnenInntekt ? 'oppdater' : 'leggTil';
     const intl = useIntl();
     const bem = bemUtils('arbeidIUtlandetInput');
@@ -102,11 +99,6 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     return (
         <>
             <div className={bem.block}>
-                {!erFørsteInput && (
-                    <Heading className={bem.element('tittel')} size="small" level="4">
-                        {intlUtils(intl, tittelId)}
-                    </Heading>
-                )}
                 <Block padBottom="l">
                     <ArbeidIUtlandetSubformComponents.CountrySelect
                         name={ArbeidIUtlandetSubformField.arbeidIUtlandetLand}
