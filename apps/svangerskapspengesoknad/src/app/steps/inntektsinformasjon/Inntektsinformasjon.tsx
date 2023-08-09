@@ -19,7 +19,9 @@ import {
     mapArbeidsforholdToSøknadsgrunnlagOptions,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
-import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
+import inntektsinforMasjonQuestionsConfig, {
+    InntektsinformasjonFormQuestionPayload,
+} from './inntektsInformasjonQuestionsConfig';
 import { BodyShort, Button, GuidePanel } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -73,25 +75,23 @@ const Inntektsinformasjon = () => {
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
-                    formValues as InntektsinformasjonFormData
-                );
-
-                const søknadsgrunnlagOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
+                const tilretteleggingsValg = mapArbeidsforholdToSøknadsgrunnlagOptions(
                     formValues,
                     frilans,
                     allNæring,
                     arbeidsforhold,
                     barn.termindato!
                 );
+                const visibility = inntektsinforMasjonQuestionsConfig.getVisbility({
+                    ...formValues,
+                    tilretteleggingsValg,
+                } as InntektsinformasjonFormQuestionPayload);
 
                 const kanIkkeSøke =
                     arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
                     formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
 
-                const visSøknadsgrunnlagValg =
-                    visibility.areAllQuestionsAnswered() && søknadsgrunnlagOptions.length > 0;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -201,10 +201,14 @@ const Inntektsinformasjon = () => {
                                 setArbeidIUtlandet={setAllArbeidIUtlandet}
                                 setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                             />
-                            <Block visible={visSøknadsgrunnlagValg} padBottom="xl">
+                            <Block
+                                visible={visibility.isVisible(InntektsinformasjonFormField.tilrettelegging)}
+                                padBottom="xl"
+                            >
                                 <VelgSøknadsgrunnlag
                                     label={intlUtils(intl, 'inntektsinformasjon.grunnlag.label')}
-                                    options={søknadsgrunnlagOptions}
+                                    options={tilretteleggingsValg}
+                                    intl={intl}
                                 />
                             </Block>
                             <Block padBottom="xl">

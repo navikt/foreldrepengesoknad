@@ -1,8 +1,16 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { SøknadsgrunnlagOption } from 'app/types/VelgSøknadsgrunnlag';
 
-const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData, InntektsinformasjonFormField> = {
+export interface InntektsinformasjonFormQuestionPayload extends InntektsinformasjonFormData {
+    tilretteleggingsValg: SøknadsgrunnlagOption[];
+}
+
+const InntektsinformasjonFormConfig: QuestionConfig<
+    InntektsinformasjonFormQuestionPayload,
+    InntektsinformasjonFormField
+> = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: {
         isIncluded: () => true,
         isAnswered: ({ hattInntektSomFrilans }) => hattInntektSomFrilans !== YesOrNo.UNANSWERED,
@@ -15,10 +23,15 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
         isIncluded: () => true,
         isAnswered: ({ hattArbeidIUtlandet }) => hattArbeidIUtlandet !== YesOrNo.UNANSWERED,
     },
+    [InntektsinformasjonFormField.tilrettelegging]: {
+        isIncluded: ({ tilretteleggingsValg }) => tilretteleggingsValg.length > 0,
+        isAnswered: ({ tilrettelegging }) => tilrettelegging.length > 0,
+    },
 };
 
-const inntektsinforMasjonQuestionsConfig = Questions<InntektsinformasjonFormData, InntektsinformasjonFormField>(
-    InntektsinformasjonFormConfig
-);
+const inntektsinforMasjonQuestionsConfig = Questions<
+    InntektsinformasjonFormQuestionPayload,
+    InntektsinformasjonFormField
+>(InntektsinformasjonFormConfig);
 
 export default inntektsinforMasjonQuestionsConfig;

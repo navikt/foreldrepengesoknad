@@ -18,6 +18,7 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattArbeidIUtlandet]: YesOrNo.UNANSWERED,
+    [InntektsinformasjonFormField.tilrettelegging]: [],
 };
 
 export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
@@ -100,5 +101,8 @@ export const cleanupInntektsinformasjonForm = (
         hattInntektSomNæringsdrivende: visibility.isVisible(InntektsinformasjonFormField.hattInntektSomNæringsdrivende)
             ? values.hattInntektSomNæringsdrivende
             : initialInntektsinformasjonFormValues.hattInntektSomNæringsdrivende,
+        tilrettelegging: visibility.isVisible(InntektsinformasjonFormField.tilrettelegging)
+            ? values.tilrettelegging
+            : initialInntektsinformasjonFormValues.tilrettelegging,
     };
 };
