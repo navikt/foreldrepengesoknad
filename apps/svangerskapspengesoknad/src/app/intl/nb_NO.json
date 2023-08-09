@@ -153,6 +153,7 @@
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
     "valideringsfeil.næringsinntekt.ugyldigFormavbryat": "Næringsresultat kan kun bestå av siffer og må oppgis i hele kroner",
     "valideringsfeil.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
+    "valideringsfeil.tilrettelegging.påkrevd": "Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.",
     "valideringsfeil.egenNæringOrgnr.påkrevd": "Du må oppgi organisasjonsnummer",
     "valideringsfeil.egenNæring.registrertINorge": "Du må oppgi om næringen er registrert i Norge eller ikke",
     "valideringsfeil.egenNæringLand.påkrevd": "Du må oppgi hvilket land næringen er registert i",
