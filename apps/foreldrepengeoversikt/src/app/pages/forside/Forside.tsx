@@ -1,6 +1,6 @@
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
-import { Block, bemUtils, guid } from '@navikt/fp-common';
+import { Block, bemUtils } from '@navikt/fp-common';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
 import { GruppertSak } from 'app/types/GruppertSak';
@@ -40,14 +40,11 @@ const Forside: React.FunctionComponent<Props> = ({
                 )}
             </Block>
             <Block>
-                {storageData &&
-                    storageData.map((søknad: any) => {
-                        return (
-                            <Heading level="1" size="large" key={guid()}>
-                                Dette er en mellomlagret søknad av typen: {søknad.type}
-                            </Heading>
-                        );
-                    })}
+                {storageData && storageData.søknad.harGodkjentVilkår && (
+                    <Heading level="1" size="large">
+                        Dette er en mellomlagret søknad av typen: {storageData.søknad.type}
+                    </Heading>
+                )}
             </Block>
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
