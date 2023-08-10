@@ -1,6 +1,6 @@
 import { bemUtils, Block, intlUtils, Locale, Step, StepButtonWrapper } from '@navikt/fp-common';
 import { Button, GuidePanel } from '@navikt/ds-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import Person from 'app/types/domain/Person';
@@ -13,7 +13,13 @@ import { OppsummeringFormComponents, initialOppsummeringValues, OppsummeringForm
 import { UnansweredQuestionsInfo } from '@navikt/sif-common-formik-ds/lib';
 import oppsummeringQuestionsConfig from './oppsummeringQuestionsConfig';
 import { EngangsstønadSøknadDto } from 'app/types/domain/EngangsstønadSøknad';
-import { mapStateForInnsending } from 'app/util/apiUtils';
+import {
+    FEIL_VED_INNSENDING,
+    getErrorCallId,
+    mapStateForInnsending,
+    sendErrorMessageToSentry,
+    UKJENT_UUID,
+} from 'app/util/apiUtils';
 import Api from 'app/api/api';
 import { useNavigate, Link } from 'react-router-dom';
 import actionCreator from 'app/context/action/actionCreator';
@@ -21,7 +27,6 @@ import { onAvbrytSøknad } from 'app/util/globalUtil';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { PageKeys } from 'app/types/PageKeys';
 import OmDegOppsummering from './OmDegOppsummering';
-
 import './oppsummering.less';
 
 interface Props {
@@ -35,6 +40,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
     const { state, dispatch } = useEngangsstønadContext();
     const navigate = useNavigate();
     const [isSending, setIsSending] = useState(false);
+    const [submitError, setSubmitError] = useState<any>(undefined);
 
     logAmplitudeEvent('sidevisning', {
         app: 'engangsstonadny',
@@ -60,9 +66,19 @@ const Oppsummering: React.FunctionComponent<Props> = ({ person, locale }) => {
                 team: 'foreldrepenger',
             });
         } catch (error) {
-            navigate('/kvittering');
+            setSubmitError(error);
         }
     };
+
+    useEffect(() => {
+        if (submitError !== undefined) {
+            sendErrorMessageToSentry(submitError);
+            const submitErrorCallId = getErrorCallId(submitError);
+            const callIdForBruker =
+                submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
+            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+        }
+    }, [submitError]);
 
     return (
         <OppsummeringFormComponents.FormikWrapper
