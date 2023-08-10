@@ -157,6 +157,8 @@
     "utenlandsopphold.siste12MånederInfotekst.apneLabel": "Read more about previous stays abroad",
     "utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge": "only lived in Norway",
     "utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet": "lived abroad in whole or in part",
+    "valideringsfeil.fomErLikTom": "As of date cannot be the same as even date",
+    "valideringsfeil.tomErLikFom": "Even date cannot be the same as as of date",
     "valideringsfeil.bekreftOpplysninger": "You must confirm that the information is correct",
     "valideringsfeil.dateOutsideRange": "Invalid date",
     "valideringsfeil.fodselsdato.duMåOppgi": "You must enter the date of birth",

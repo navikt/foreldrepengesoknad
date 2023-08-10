@@ -157,6 +157,8 @@
     "utenlandsopphold.siste12MånederInfotekst.apneLabel": "Les mer om tidligere utenlandsopphold",
     "utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge": "Kun bodd i Norge",
     "utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet": "Bodd i utlandet helt eller delvis",
+    "valideringsfeil.fomErLikTom": "Fra og med dato kan ikke være samme som til og med dato",
+    "valideringsfeil.tomErLikFom": "Til og med dato kan ikke være samme som fra og med dato",
     "valideringsfeil.bekreftOpplysninger": "Du må bekrefte at opplysningene stemmer",
     "valideringsfeil.dateOutsideRange": "Ugyldig dato",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",

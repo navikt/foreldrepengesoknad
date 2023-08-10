@@ -5,6 +5,7 @@ import { BostedUtland, isValidBostedUtland } from './types';
 import { Block, intlUtils } from '@navikt/fp-common';
 import { dateRangeValidation } from '../utenlandsoppholdValidering';
 import { Heading } from '@navikt/ds-react';
+import dayjs from 'dayjs';
 
 export const commonFieldErrorRenderer = (intl: IntlShape, error: any): any => {
     if (typeof error === 'object' && error.key !== undefined) {
@@ -95,14 +96,18 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate,
                                     invalidFormatError: 'valideringsfeil.fraOgMedDato.gyldigDato',
                                     maxDate: ISOStringToDate(values.tom) || maxDate,
-                                    validate: (value) =>
-                                        dateRangeValidation.validateFromDate(
+                                    validate: (value) => {
+                                        if (values.tom && values.fom && dayjs(values.tom).isSame(values.fom)) {
+                                            return getMessage(intl, 'valideringsfeil.fomErLikTom');
+                                        }
+                                        return dateRangeValidation.validateFromDate(
                                             intl,
                                             ISOStringToDate(value),
                                             minDate,
                                             maxDate,
                                             ISOStringToDate(values.tom)
-                                        ),
+                                        );
+                                    },
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
@@ -112,14 +117,18 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     minDate: ISOStringToDate(values.fom) || minDate,
                                     maxDate,
                                     invalidFormatError: 'valideringsfeil.tilOgMedDato.gyldigDato',
-                                    validate: (value) =>
-                                        dateRangeValidation.validateToDate(
+                                    validate: (value) => {
+                                        if (values.tom && values.fom && dayjs(values.tom).isSame(values.fom)) {
+                                            return getMessage(intl, 'valideringsfeil.tomErLikFom');
+                                        }
+                                        return dateRangeValidation.validateToDate(
                                             intl,
                                             ISOStringToDate(value),
                                             minDate,
                                             maxDate,
                                             ISOStringToDate(values.fom)
-                                        ),
+                                        );
+                                    },
                                 }}
                             />
                         </Block>
