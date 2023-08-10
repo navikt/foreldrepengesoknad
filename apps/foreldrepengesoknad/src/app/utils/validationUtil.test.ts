@@ -8,7 +8,7 @@ describe('validationUtil', () => {
         const søkerFnr = '21091981146';
         const andrePartFnr = '08088620241';
 
-        const resultat = validateFødselsnummer(intl, søkerFnr)(andrePartFnr);
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
         expect(resultat).toBeUndefined;
     });
@@ -17,7 +17,7 @@ describe('validationUtil', () => {
         const søkerFnr = '08088620241';
         const andrePartFnr = '08088620241';
 
-        const resultat = validateFødselsnummer(intl, søkerFnr)(andrePartFnr);
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
         expect(resultat).toBe('Du kan ikke oppgi ditt eget fødselsnummer');
     });
@@ -26,7 +26,7 @@ describe('validationUtil', () => {
         const søkerFnr = '08088620241';
         const andrePartFnr = '';
 
-        const resultat = validateFødselsnummer(intl, søkerFnr)(andrePartFnr);
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
         expect(resultat).toBe('Du må skrive et gyldig fødselsnummer');
     });
@@ -35,7 +35,7 @@ describe('validationUtil', () => {
         const søkerFnr = '08088620241';
         const andrePartFnr = '21091981146';
 
-        const resultat = validateFødselsnummer(intl, søkerFnr)(andrePartFnr);
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
         expect(resultat).toBe('Feil i fødselsnummer. Den andre forelderen må være over seksten år gammel');
     });
@@ -45,7 +45,7 @@ describe('validationUtil', () => {
         const erUtenlandskFnr = true;
         const andrePartFnr = '';
 
-        const resultat = validateFødselsnummer(intl, søkerFnr, erUtenlandskFnr)(andrePartFnr);
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
         expect(resultat).toBe('Fødselsnummer må fylles ut');
     });
@@ -55,9 +55,18 @@ describe('validationUtil', () => {
         const erUtenlandskFnr = true;
         const andrePartFnr = '08088620241';
 
-        const resultat = validateFødselsnummer(intl, søkerFnr, erUtenlandskFnr)(andrePartFnr);
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
         expect(resultat).toBeUndefined;
+    });
+    it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
+        const søkerFnr = '08088620241';
+        const erUtenlandskFnr = true;
+        const andrePartFnr = '887–862024';
+
+        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
+
+        expect(resultat).toBe('– er ugyldige tegn i feltet "fødselsnummer".');
     });
 });
 

@@ -29,6 +29,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
     const bem = bemUtils('oppgiPersonalia');
     const fornavnLabel = intlUtils(intl, 'annenForelder.spørsmål.fornavn');
     const etternavnLabel = intlUtils(intl, 'annenForelder.spørsmål.etternavn');
+    const fnrLabel = intlUtils(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn });
     return (
         <div className={bem.block}>
             <Block padBottom="xl">
@@ -67,8 +68,8 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({
             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.fnr)}>
                 <AnnenForelderFormComponents.TextField
                     name={AnnenForelderFormField.fnr}
-                    label={intlUtils(intl, 'annenForelder.spørsmål.fnr', { navn: fornavn })}
-                    validate={validateFødselsnummer(intl, søkersFødselsnummer, erUtenlandskFnr)}
+                    label={fnrLabel}
+                    validate={validateFødselsnummer(intl, søkersFødselsnummer, fnrLabel, erUtenlandskFnr)}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(AnnenForelderFormField.utenlandskFnr)}>
