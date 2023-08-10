@@ -10,17 +10,11 @@ import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/types/domai
 import { BostedUtland } from 'app/steps/utenlandsopphold/bostedUtlandListAndDialog/types';
 import dayjs from 'dayjs';
 import { Locale } from '@navikt/fp-common';
-import * as Sentry from '@sentry/browser';
+
 import utc from 'dayjs/plugin/utc';
 import Adopsjon from 'app/types/domain/Adopsjon';
-import { AxiosError } from 'axios';
 
 dayjs.extend(utc);
-
-export const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
-
-export const UKJENT_UUID = 'ukjent uuid';
 
 const isArrayOfAttachments = (attachment: Attachment) => {
     return Array.isArray(attachment) && attachment.some((element: Attachment) => element.filename);
@@ -104,31 +98,4 @@ export const mapStateForInnsending = (state: EngangsstønadContextState, locale:
         },
         vedlegg: mapAttachments(JSON.parse(JSON.stringify(state.søknad))),
     };
-};
-
-export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
-    const errorCallId = getErrorCallId(error) + '. ';
-    const errorTimestamp = getErrorTimestamp(error) + '. ';
-    const hideNumbersAndTrim = (tekst: string): string => {
-        return tekst.replace(/\d/g, '*').slice(0, 250) + '...';
-    };
-
-    let errorString = errorCallId + errorTimestamp;
-    if (error.request && error.request.data && error.request.data.messages) {
-        errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
-    } else if (error.response && error.response.data && error.response.data.messages) {
-        errorString = errorString + hideNumbersAndTrim(error.response.data.messages);
-    }
-    if (error.message) {
-        errorString = errorString + error.message;
-    }
-    Sentry.captureMessage(errorString);
-};
-
-export const getErrorCallId = (error: AxiosError<any>): string => {
-    return error.response && error.response.data && error.response.data.uuid ? error.response.data.uuid : UKJENT_UUID;
-};
-
-export const getErrorTimestamp = (error: AxiosError<any>): string => {
-    return error.response && error.response.data && error.response.data.timestamp ? error.response.data.timestamp : '';
 };
