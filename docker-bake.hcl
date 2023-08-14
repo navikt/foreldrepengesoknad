@@ -55,7 +55,7 @@ target "engangsstonad-amd" {
     }
 }
 
-target "foreldrepengeoversikt-arm" {
+target "foreldrepengeoversikt-amd" {
     inherits=["base-amd"]
     tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG-PROD}"]
     target="prod"
