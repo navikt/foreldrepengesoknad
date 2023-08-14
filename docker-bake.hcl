@@ -16,7 +16,7 @@ group "default" {
 
 target "base" {
     dockerfile="Dockerfile"
-    platforms=["linux/amd64", "linux/arm64"]
+    platforms=["linux/amd64"]
     cache-from=["type=gha"]
     cache-to=["type=gha,mode=max"]
 }
