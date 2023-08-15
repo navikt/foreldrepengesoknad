@@ -115,6 +115,10 @@ jobs:
     build-app:
         name: Create build version
         needs: create-manifest
+        runs-on: ubuntu-latest
+        if: ${{ github.ref_name == 'master' }}
+        permissions:
+            contents: read
         steps:
             - name: Generate build version
               id: generate-build-version
