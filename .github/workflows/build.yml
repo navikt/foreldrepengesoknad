@@ -13,6 +13,9 @@ on:
 
 jobs:
     build-app:
+        strategy:
+            matrix:
+                platform: ['amd64', 'arm64']
         name: Build
         permissions:
             contents: read
