@@ -123,6 +123,8 @@ jobs:
             - name: Generate build version
               id: generate-build-version
               run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+        outputs:
+            build-version: ${{ steps.generate-build-version.outputs.build-version }}
 
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
