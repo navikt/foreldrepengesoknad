@@ -3,7 +3,7 @@
 #########################################
 # PREPARE DEPS FOR BUILD
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.16 as prepare
+FROM --platform=$BUILDPLATFORM node:18.17 as prepare
 WORKDIR /usr/src/app
 
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
@@ -16,7 +16,7 @@ RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs
 #########################################
 # BUILD - Builds all node code
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.16-alpine as build
+FROM --platform=$BUILDPLATFORM node:18.17-alpine as build
 WORKDIR /usr/src/app
 
 RUN apk fix \
@@ -48,7 +48,7 @@ RUN --mount=type=cache,target=/run/turbo,id=turbo \
 #########################################
 # PNPM - Dependency of all images
 ######################################### 
-FROM node:18.6-alpine as pnpm
+FROM node:18.17-alpine as pnpm
 LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
