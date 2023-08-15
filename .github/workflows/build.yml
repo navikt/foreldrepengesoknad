@@ -63,6 +63,13 @@ jobs:
             - name: Push manifest
               run: docker manifest push ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
 
+            - name: Tag image
+              run: |
+                  docker buildx imagetools create \
+                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
+                    -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:latest \
+                       ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ steps.generate-build-version.outputs.build-version }}
+
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
         if: ${{ github.ref_name == 'master' }}
