@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/run/turbo,id=turbo \
     && mkdir -p node_modules/.cache \
     && rm -rf node_modules/.cache/turbo \
     && ln -s /run/turbo node_modules/.cache/turbo \
-    && turbo test \
+    && turbo build \
     && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
 #########################################
