@@ -12,18 +12,33 @@ on:
             - 'CODEOWNERS'
 
 jobs:
-    build-app:
+    build-platform-images:
         strategy:
             matrix:
                 platform: ['amd64', 'arm64']
-        name: Build
+        name: Build platform images
         permissions:
             contents: read
             packages: write
         uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@main
         with:
             push-image: ${{ github.ref_name == 'master' }} # default: false
+            set: |
+                *.platform=linux/${{ matrix.platform }}
         secrets: inherit
+
+    build-app:
+        name: Build
+        needs: build-platform-images
+        if: ${{ github.ref_name == 'master' }}
+        permissions:
+            contents: read
+            packages: write
+        with:
+            push-image: ${{ github.ref_name == 'master' }} # default: false
+        secrets: inherit
+        steps:
+            - run: echo 'Building'
 
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
