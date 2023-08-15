@@ -1,7 +1,7 @@
 import { starterUttaksperiodeFørFødsel } from 'app/utils/wlbUtils';
 import {
     isForeldrepengerFørFødselUttaksperiode,
-    isInfoPeriode,
+    isInfoPeriodeAnnenPart,
     isUtsettelsesperiode,
     Periode,
 } from 'uttaksplan/types/Periode';
@@ -208,7 +208,7 @@ const getBevegeligePerioder = (
                 !isUtsettelsesperiode(p) &&
                 !isForeldrepengerFørFødselUttaksperiode(p) &&
                 !starterUttaksperiodeFørFødsel(p, familiehendelsesdato) &&
-                !isInfoPeriode(p)
+                !isInfoPeriodeAnnenPart(p)
         ),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
@@ -220,7 +220,7 @@ const getBevegeligePerioder = (
 };
 
 const getAnnenPartsUttak = (perioder: Periode[]): Periode[] => {
-    return perioder.filter((p) => isInfoPeriode(p));
+    return perioder.filter((p) => isInfoPeriodeAnnenPart(p));
 };
 
 const Uttaksplanbuilder = (
@@ -234,7 +234,7 @@ const Uttaksplanbuilder = (
     opprinneligPlan?: Periode[]
 ) => {
     const perioderUtenAnnenPart = finnOgSettInnHull(
-        perioder.filter((p) => !isInfoPeriode(p)),
+        perioder.filter((p) => !isInfoPeriodeAnnenPart(p)),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
