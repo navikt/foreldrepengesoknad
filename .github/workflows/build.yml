@@ -53,6 +53,13 @@ jobs:
             - name: Set build version to env variable
               run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
 
+            - name: Login to GitHub Packages Docker Registry
+              uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
             - name: Tag image
               run: |
                   docker buildx imagetools create \
