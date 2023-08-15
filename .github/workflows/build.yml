@@ -28,6 +28,7 @@ jobs:
         secrets: inherit
 
     build-app:
+        runs-on: ubuntu-latest
         name: Build
         needs: build-platform-images
         if: ${{ github.ref_name == 'master' }}
