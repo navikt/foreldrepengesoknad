@@ -21,7 +21,7 @@
         "gh-pages": "5.0.0",
         "glob": "10.0.0",
         "husky": "8.0.3",
-        "lint-staged": "13.2.1",
+        "lint-staged": "14.0.0",
         "shelljs": "0.8.5",
         "turbo": "^1.8.6"
     },
