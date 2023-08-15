@@ -23,8 +23,7 @@ jobs:
         uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@main
         with:
             push-image: ${{ github.ref_name == 'master' }} # default: false
-            set: |
-                *.platform=linux/${{ matrix.platform }}
+            platform: ${{ matrix.platform }}
         secrets: inherit
 
     build-app:
