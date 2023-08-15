@@ -81,7 +81,7 @@ jobs:
         needs:
             - build-platform-images
             - test
-        # if: ${{ github.ref_name == 'master' }}
+        if: ${{ github.ref_name == 'master' }}
         permissions:
             contents: read
             packages: write
