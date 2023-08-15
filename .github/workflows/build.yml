@@ -27,15 +27,41 @@ jobs:
         secrets: inherit
 
     build-app:
+        strategy:
+            matrix:
+                app:
+                    - 'foreldrepengesoknad'
+                    - 'engangsstonad'
+                    - 'foreldrepengeoversikt'
+                    - 'svangerskapspenger'
+
         runs-on: ubuntu-latest
-        name: Build
+        name: Create multiplatform image
         needs: build-platform-images
         if: ${{ github.ref_name == 'master' }}
         permissions:
             contents: read
             packages: write
         steps:
-            - run: echo 'Building'
+            - name: Generate build version
+              id: generate-build-version
+              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+
+            - name: Print build version
+              run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
+
+            - name: Set build version to env variable
+              run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
+
+            - name: Create docker manifest
+              run: |
+                  docker manifest create \
+                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }} \
+                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:arm64-${{ github.sha }} \
+                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:amd64-${{ github.sha }}
+
+            - name: Push manifest
+              run: docker manifest push ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
 
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
