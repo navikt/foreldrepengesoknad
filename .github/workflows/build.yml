@@ -53,20 +53,22 @@ jobs:
             - name: Set build version to env variable
               run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
 
-            - name: Create docker manifest
-              run: |
-                  docker manifest create \
-                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }} \
-                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:arm64-${{ github.sha }} \
-                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:amd64-${{ github.sha }}
+            # - name: Create docker manifest
+            #   run: |
+            #       docker manifest create \
+            #         ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }} \
+            #         ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:arm64-${{ github.sha }} \
+            #         ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:amd64-${{ github.sha }}
 
-            - name: Push manifest
-              run: docker manifest push ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
+            # - name: Push manifest
+            #   run: docker manifest push ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
 
             - name: Tag image
               run: |
                   docker buildx imagetools create \
-                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
+                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:arm64-${{ github.sha }} \
+                    ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:amd64-${{ github.sha }} \
+                    -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }} \
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:latest \
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ steps.generate-build-version.outputs.build-version }}
 
