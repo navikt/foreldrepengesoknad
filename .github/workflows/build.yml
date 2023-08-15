@@ -33,7 +33,7 @@ jobs:
                     - 'foreldrepengesoknad'
                     - 'engangsstonad'
                     - 'foreldrepengeoversikt'
-                    - 'svangerskapspenger'
+                    - 'svangerskapspengesoknad'
 
         runs-on: ubuntu-latest
         name: Create multiplatform image
