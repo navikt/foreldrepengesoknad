@@ -38,7 +38,7 @@ jobs:
         runs-on: ubuntu-latest
         name: Create multiplatform image
         needs: build-platform-images
-        if: ${{ github.ref_name == 'master' }}
+        # if: ${{ github.ref_name == 'master' }}
         permissions:
             contents: read
             packages: write
@@ -52,16 +52,6 @@ jobs:
 
             - name: Set build version to env variable
               run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
-
-            # - name: Create docker manifest
-            #   run: |
-            #       docker manifest create \
-            #         ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }} \
-            #         ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:arm64-${{ github.sha }} \
-            #         ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:amd64-${{ github.sha }}
-
-            # - name: Push manifest
-            #   run: docker manifest push ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }}
 
             - name: Tag image
               run: |
