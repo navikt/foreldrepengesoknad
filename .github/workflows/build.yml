@@ -112,6 +112,8 @@ jobs:
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:latest \
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ steps.generate-build-version.outputs.build-version }}
 
+        outputs: ${{ steps.generate-build-version.outputs.build-version }}
+
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
         if: ${{ github.ref_name == 'master' }}
