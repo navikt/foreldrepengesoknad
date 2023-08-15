@@ -67,7 +67,7 @@ jobs:
             platform: ${{ matrix.platform }}
         secrets: inherit
 
-    build-app:
+    create-manifest:
         strategy:
             matrix:
                 app:
@@ -112,8 +112,13 @@ jobs:
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:latest \
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ steps.generate-build-version.outputs.build-version }}
 
-        outputs:
-            version: ${{ steps.generate-build-version.outputs.build-version }}
+    build-app:
+        name: Create build version
+        needs: create-manifest
+        steps:
+            - name: Generate build version
+              id: generate-build-version
+              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
 
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
@@ -121,7 +126,7 @@ jobs:
         needs: build-app
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.version }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
             cluster: dev-gcp
             app: foreldrepengesoknad
         secrets: inherit
