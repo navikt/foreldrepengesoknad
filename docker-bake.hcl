@@ -12,8 +12,8 @@ group "default" {
 
 target "base" {
     dockerfile="Dockerfile"
-    cache-from=["type=gha"]
-    cache-to=["type=gha,mode=max"]
+    cache-from=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${TAG}"]
+    cache-to=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${TAG},mode=max"]
 }
 
 target "foreldrepengesoknad" {
