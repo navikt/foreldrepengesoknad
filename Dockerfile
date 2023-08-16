@@ -3,7 +3,7 @@
 #########################################
 # PREPARE DEPS FOR BUILD
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.16 as prepare
+FROM --platform=$BUILDPLATFORM node:18.17 as prepare
 WORKDIR /usr/src/app
 
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
@@ -16,7 +16,7 @@ RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs
 #########################################
 # BUILD - Builds all node code
 ######################################### 
-FROM --platform=$BUILDPLATFORM node:18.16-alpine as build
+FROM --platform=$BUILDPLATFORM node:18.17-alpine as build
 WORKDIR /usr/src/app
 
 RUN apk fix \
@@ -42,13 +42,13 @@ RUN --mount=type=cache,target=/run/turbo,id=turbo \
     && mkdir -p node_modules/.cache \
     && rm -rf node_modules/.cache/turbo \
     && ln -s /run/turbo node_modules/.cache/turbo \
-    && turbo test \
+    && turbo build \
     && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
 
 #########################################
 # PNPM - Dependency of all images
 ######################################### 
-FROM node:18.6-alpine as pnpm
+FROM node:18.17-alpine as pnpm
 LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
 WORKDIR /usr/src/app
 
@@ -76,7 +76,7 @@ COPY --from=build  /usr/src/app ./
 #########################################
 # PROD IMAGES
 ######################################### 
-FROM prod-deps as prod
+FROM prod-deps
 ARG CMD
 ENV APP=$CMD
 

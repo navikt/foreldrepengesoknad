@@ -1,8 +1,4 @@
-variable "TAG-AUTOTEST" {
-  default = "latest"
-}
-
-variable "TAG-PROD" {
+variable "TAG" {
   default = "latest"
 }
 
@@ -16,15 +12,13 @@ group "default" {
 
 target "base" {
     dockerfile="Dockerfile"
-    platforms=["linux/amd64", "linux/arm64"]
     cache-from=["type=gha"]
     cache-to=["type=gha,mode=max"]
 }
 
 target "foreldrepengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG-PROD}"]
-    target="prod"
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
     args={
         CMD="foreldrepengesoknad"
     }
@@ -32,8 +26,7 @@ target "foreldrepengesoknad" {
 
 target "svangerskapspengesoknad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG-PROD}"]
-    target="prod"
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG}"]
     args={
         CMD="svangerskapspengesoknad"
     }
@@ -41,8 +34,7 @@ target "svangerskapspengesoknad" {
 
 target "engangsstonad" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG-PROD}"]
-    target="prod"
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG}"]
     args={
         CMD="engangsstonad"
     }
@@ -50,8 +42,7 @@ target "engangsstonad" {
 
 target "foreldrepengeoversikt" {
     inherits=["base"]
-    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG-AUTOTEST}", "ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG-PROD}"]
-    target="prod"
+    tags=["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG}"]
     args={
         CMD="foreldrepengeoversikt"
     }
