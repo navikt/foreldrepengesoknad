@@ -81,7 +81,7 @@ describe('<Oppsummering>', () => {
             )
         ).not.toBeInTheDocument();
         expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
-        expect(screen.queryByText('Har Espen uføretrygd?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Mottar Espen uføretrygd?')).not.toBeInTheDocument();
     });
     it('Skal vise riktig informasjon om aleneomsorg', async () => {
         render(<MedAleneOmsorg />);
@@ -102,7 +102,7 @@ describe('<Oppsummering>', () => {
         render(<FarMedUførMor />);
 
         await userEvent.click(await screen.findByText(ANDRE_FORELDER_PANEL));
-        expect(screen.getByText('Har Eline uføretrygd?')).toBeInTheDocument();
+        expect(screen.getByText('Mottar Eline uføretrygd?')).toBeInTheDocument();
         expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
     });
 
@@ -183,7 +183,7 @@ describe('<Oppsummering>', () => {
                 'Har Anne arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?'
             )
         ).toBeInTheDocument();
-        expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
+        expect(screen.queryByText('Mottar Anne uføretrygd')).not.toBeInTheDocument();
     });
     it('Skal vise informasjon om at mor har hatt opphold men ikke rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);
@@ -198,7 +198,7 @@ describe('<Oppsummering>', () => {
                 'Har Anne arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?'
             )
         ).toBeInTheDocument();
-        expect(screen.queryByText('Har Anne uføretrygd')).not.toBeInTheDocument();
+        expect(screen.queryByText('Mottar Anne uføretrygd')).not.toBeInTheDocument();
     });
     it('skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {
         render(<FarMedMorSomHarRettINorge />);
@@ -211,6 +211,6 @@ describe('<Oppsummering>', () => {
         expect(
             screen.queryByText('Har Anne arbeidet eller mottatt pengestøtte i et EØS-land?', { exact: false })
         ).not.toBeInTheDocument();
-        expect(screen.queryByText('Har Frida uføretrygd')).not.toBeInTheDocument();
+        expect(screen.queryByText('Mottar Frida uføretrygd')).not.toBeInTheDocument();
     });
 });
