@@ -70,7 +70,7 @@ jobs:
     create-build-version:
         name: Create build version
         runs-on: ubuntu-latest
-        if: ${{ github.ref_name == 'master' }}
+        # if: ${{ github.ref_name == 'master' }}
         permissions:
             contents: read
         steps:
