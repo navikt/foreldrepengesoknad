@@ -74,6 +74,10 @@ jobs:
         permissions:
             contents: read
         steps:
+            - name: Print context
+              run: echo "$JSON"
+              env:
+                  JSON: ${{ toJSON(github) }}
             - name: Generate build version
               id: generate-build-version
               run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
