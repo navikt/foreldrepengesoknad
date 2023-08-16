@@ -374,9 +374,12 @@ const AnnenForelder = () => {
                                     })}
                                 />
                                 <ReadMore header={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}>
-                                    {intlUtils(intl, 'annenForelder.erMorUfør.veileder', {
-                                        navn: formValues.fornavn,
-                                    })}
+                                    <Block padBottom="l">
+                                        <FormattedMessage id="annenForelder.erMorUfør.veileder.del1" />
+                                    </Block>
+                                    <Block>
+                                        <FormattedMessage id="annenForelder.erMorUfør.veileder.del2" />
+                                    </Block>
                                 </ReadMore>
                             </Block>
                             <Block margin="l">
