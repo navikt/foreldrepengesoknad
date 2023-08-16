@@ -6,14 +6,21 @@ variable "GITHUB_REPOSITORY" {
   default = "navikt/foreldrepengesoknad"
 }
 
+variable "CACHE_TAG" {
+  default = "latest"
+}
+
 group "default" {
     targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt"]
 }
 
 target "base" {
     dockerfile="Dockerfile"
-    cache-from=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${TAG}"]
-    cache-to=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${TAG},mode=max"]
+    cache-from=[
+        "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${CACHE_TAG}",
+        "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:master"
+    ]
+    cache-to=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${CACHE_TAG},mode=max"]
 }
 
 target "foreldrepengesoknad" {
