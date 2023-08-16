@@ -1,0 +1,10 @@
+import{j as o,a as u}from"./jsx-runtime-2c139190.js";import{A as n}from"./getTypedFormComponents-5434d462.js";import{w as f}from"./withIntl-c7b55499.js";import{aI as g,aO as k}from"./validationUtils-8c57b3bf.js";import{F as l}from"./FormikFileUploader-7e1be4af.js";import{S as d}from"./Skjemanummer-77149054.js";import"./index-b14cf94f.js";import"./v4-a960c1f4.js";import"./Link-bafd8a7d.js";import"./clsx.m-266f4de0.js";import"./index-7e4e529b.js";import"./IntlProvider-2564294f.js";import"./extends-3f1aa0c7.js";import"./index-99a37931.js";import"./index-4d501b15.js";import"./Label-3bb7eadc.js";import"./apiInterceptor-f5dabb2f.js";import"./AttachmentList-c14351b2.js";import"./Attachment-ef85a257.js";import"./globalUtil-9d9e0ee4.js";import"./vedleggUtils-a4e8332d.js";import"./Attachment-a8e5b8d1.js";const q={title:"components/FormikFileUploader",component:l,decorators:[f]},c=F=>o(g,{initialValues:{},onSubmit:()=>{},children:u(k,{children:[o(l,{...F}),";"]})}),r=c.bind({});r.args={attachments:[],name:"field_name",label:"Last opp vedlegg",attachmentType:n.ADOPSJONSVEDTAK,skjemanummer:d.ANNET};const e=c.bind({});e.args={attachments:[{id:"1",pending:!1,filename:"Fil som er lastet opp"}],name:"field_name",label:"Last opp vedlegg",attachmentType:n.ADOPSJONSVEDTAK,skjemanummer:d.ANNET};var m,a,t;r.parameters={...r.parameters,docs:{...(m=r.parameters)==null?void 0:m.docs,source:{originalSource:`args => <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />;
+        </Form>
+    </Formik>`,...(t=(a=r.parameters)==null?void 0:a.docs)==null?void 0:t.source}}};var i,s,p;e.parameters={...e.parameters,docs:{...(i=e.parameters)==null?void 0:i.docs,source:{originalSource:`args => <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />;
+        </Form>
+    </Formik>`,...(p=(s=e.parameters)==null?void 0:s.docs)==null?void 0:p.source}}};const z=["Default","FilSomErLastetOpp"];export{r as Default,e as FilSomErLastetOpp,z as __namedExportsOrder,q as default};
+//# sourceMappingURL=FormikFileUploader.stories-ce640fa5.js.map
