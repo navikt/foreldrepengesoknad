@@ -13,7 +13,7 @@ interface Props {
 const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDeletePeriode }) => {
     const bem = bemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
-        handleDeletePeriode!(periode.id);
+        handleDeletePeriode(periode.id);
     };
     return (
         <div className={bem.element('wrapper')}>
