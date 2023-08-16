@@ -30,7 +30,7 @@ const HAR_MOR_HATT_OPPHOLD_I_EØS_LAND =
     'Har TALENTFULL oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?';
 const HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL = 'Har TALENTFULL rett til foreldrepenger i Norge?';
 const HAR_MOR_RETT_TIL_FP_I_EØS_LABEL = 'Har TALENTFULL arbeidet eller mottatt pengestøtte i et EØS-land';
-const ER_ANNEN_FORELDER_UFØR = 'Har TALENTFULL uføretrygd?';
+const ER_ANNEN_FORELDER_UFØR = 'Mottar TALENTFULL uføretrygd?';
 const HAR_DU_ORIENTERT_LABEL = 'Har du orientert LEALAUS om søknaden din?';
 const DU_MÅ_INFORMERE_INFO_TEKST = 'Du må si ifra til LEALAUS om søknaden før du kan gå videre.';
 const NAVN_ANNEN_FORELDER_LABEL = 'Hva heter den andre forelderen?';

@@ -212,7 +212,7 @@
     "annenForelder.veileder.aleneOmsorg.forBarnet": "Dere kan avtale at {navn} tar ut foreldrepenger.",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan": "Hvis dere startet foreldrepengeperioden 1. januar 2019 eller senere, vil {navn} se i søknaden sin når du skal ha foreldrepenger og eventuelle utsettelser.",
     "annenForelder.spørsmål.erAnnenForelderInformert": "Har du orientert {navn} om søknaden din?",
-    "annenForelder.erMorUfør": "Mottar den andre forelderen uføretrygd?",
+    "annenForelder.erMorUfør": "Mottar {navn} uføretrygd?",
     "annenForelder.erMorUfør.veileder.apneLabel": "Hvordan kan dette innvirke på foreldrepengene?",
     "annenForelder.erMorUfør.veileder.del1": "Hvis mor har uføretrygd får far/medmor hele perioden med foreldrepenger, utenom de 9 ukene som er satt av til mor rett før og etter fødsel.",
     "annenForelder.erMorUfør.veileder.del2": "Dersom far/medmor har uføretrygd vil mor få hele perioden med foreldrepenger.",
