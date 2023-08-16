@@ -67,7 +67,21 @@ jobs:
             platform: ${{ matrix.platform }}
         secrets: inherit
 
+    create-build-version:
+        name: Create build version
+        runs-on: ubuntu-latest
+        if: ${{ github.ref_name == 'master' }}
+        permissions:
+            contents: read
+        steps:
+            - name: Generate build version
+              id: generate-build-version
+              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+        outputs:
+            build-version: ${{ steps.generate-build-version.outputs.build-version }}
+
     create-manifest:
+        needs: create-build-version
         strategy:
             matrix:
                 app:
@@ -81,20 +95,14 @@ jobs:
         needs:
             - build-platform-images
             - test
+            - create-build-version
         if: ${{ github.ref_name == 'master' }}
         permissions:
             contents: read
             packages: write
         steps:
-            - name: Generate build version
-              id: generate-build-version
-              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
-
             - name: Print build version
-              run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
-
-            - name: Set build version to env variable
-              run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
+              run: echo "Generated build-version is ${{ needs.create-build-version.outputs.build-version }}"
 
             - name: Login to GitHub Packages Docker Registry
               uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -110,29 +118,17 @@ jobs:
                     ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:amd64-${{ github.sha }} \
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ github.sha }} \
                     -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:latest \
-                    -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ steps.generate-build-version.outputs.build-version }}
-
-    build-app:
-        name: Create build version
-        needs: create-manifest
-        runs-on: ubuntu-latest
-        if: ${{ github.ref_name == 'master' }}
-        permissions:
-            contents: read
-        steps:
-            - name: Generate build version
-              id: generate-build-version
-              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
-        outputs:
-            build-version: ${{ steps.generate-build-version.outputs.build-version }}
+                    -t ghcr.io/navikt/foreldrepengesoknad/${{ matrix.app }}:${{ needs.create-build-version.outputs.build-version }}
 
     promote-foreldrepengesoknad-dev:
         name: Deploy foreldrepengesøknad til dev
         if: ${{ github.ref_name == 'master' }}
-        needs: build-app
+        needs: 
+            - create-manifest
+            - create-build-version
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.create-build-version.outputs.build-version }}
             cluster: dev-gcp
             app: foreldrepengesoknad
         secrets: inherit
@@ -140,10 +136,10 @@ jobs:
     promote-foreldrepengesoknad-prod:
         name: Deploy foreldrepengesøknad til prod
         if: ${{ github.ref_name == 'master' }}
-        needs: [promote-foreldrepengesoknad-dev, build-app]
+        needs: [promote-foreldrepengesoknad-dev, create-manifest, create-build-version]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengesoknad:${{ needs.create-build-version.outputs.build-version }}
             cluster: prod-gcp
             app: foreldrepengesoknad
         secrets: inherit
@@ -151,10 +147,12 @@ jobs:
     promote-foreldrepengeoversikt-dev:
         name: Deploy foreldrepengeoversikt til dev
         if: ${{ github.ref_name == 'master' }}
-        needs: build-app
+        needs: 
+            - create-manifest
+            - create-build-version
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.create-build-version.outputs.build-version }}
             cluster: dev-gcp
             app: foreldrepengeoversikt
         secrets: inherit
@@ -162,10 +160,10 @@ jobs:
     promote-foreldrepengeoversikt-prod:
         name: Deploy foreldrepengeoversikt til prod
         if: ${{ github.ref_name == 'master' }}
-        needs: [promote-foreldrepengeoversikt-dev, build-app]
+        needs: [promote-foreldrepengeoversikt-dev, create-manifest, create-build-version]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/foreldrepengeoversikt:${{ needs.create-build-version.outputs.build-version }}
             cluster: prod-gcp
             app: foreldrepengeoversikt
         secrets: inherit
@@ -173,10 +171,12 @@ jobs:
     promote-engangsstonad-dev:
         name: Deploy engangsstonad til dev
         if: ${{ github.ref_name == 'master' }}
-        needs: build-app
+        needs: 
+            - create-manifest
+            - create-build-version
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.create-build-version.outputs.build-version }}
             cluster: dev-gcp
             app: engangsstonad
         secrets: inherit
@@ -184,10 +184,10 @@ jobs:
     promote-engangsstonad-prod:
         name: Deploy engangsstonad til prod
         if: ${{ github.ref_name == 'master' }}
-        needs: [promote-engangsstonad-dev, build-app]
+        needs: [promote-engangsstonad-dev, create-manifest, create-build-version]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/engangsstonad:${{ needs.create-build-version.outputs.build-version }}
             cluster: prod-gcp
             app: engangsstonad
         secrets: inherit
@@ -195,10 +195,12 @@ jobs:
     promote-svangerskapspengesoknad-dev:
         name: Deploy svangerskapspengesoknad til dev
         if: ${{ github.ref_name == 'master' }}
-        needs: build-app
+        needs: 
+            - create-manifest
+            - create-build-version
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.create-build-version.outputs.build-version }}
             cluster: dev-gcp
             app: svangerskapspengesoknad
         secrets: inherit
@@ -206,10 +208,10 @@ jobs:
     promote-svangerskapspengesoknad-prod:
         name: Deploy svangerskapspengesoknad til prod
         if: ${{ github.ref_name == 'master' }}
-        needs: [promote-svangerskapspengesoknad-dev, build-app]
+        needs: [promote-svangerskapspengesoknad-dev, create-manifest, create-build-version]
         uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
         with:
-            image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.build-app.outputs.build-version }}
+            image: ghcr.io/${{ github.repository }}/svangerskapspengesoknad:${{ needs.create-build-version.outputs.build-version }}
             cluster: prod-gcp
             app: svangerskapspengesoknad
         secrets: inherit
