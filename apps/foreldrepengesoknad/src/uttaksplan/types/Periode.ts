@@ -102,6 +102,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
+    kanSlettes: boolean;
 }
 
 export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
@@ -192,6 +193,14 @@ export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
     return periode.type === Periodetype.Info && periode.overskrives === true;
 };
 
+export const isInfoPeriodeAnnenPart = (periode: Periode): periode is InfoPeriode => {
+    return (
+        periode.type === Periodetype.Info &&
+        (periode.infotype === PeriodeInfoType.uttakAnnenPart ||
+            periode.infotype === PeriodeInfoType.utsettelseAnnenPart)
+    );
+};
+
 export const isHull = (periode: Periode): periode is PeriodeHull => {
     return periode.type === Periodetype.Hull;
 };
@@ -202,6 +211,10 @@ export const isUtsettelseAnnenPart = (periode: Periode): periode is UtsettelseAn
 
 export const isAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
     return periode.type === Periodetype.Info && periode.infotype === PeriodeInfoType.avslåttPeriode;
+};
+
+export const isSlettbarAvslåttPeriode = (periode: Periode): periode is AvslåttPeriode => {
+    return isAvslåttPeriode(periode) && periode.kanSlettes;
 };
 
 export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInfoPeriode => {

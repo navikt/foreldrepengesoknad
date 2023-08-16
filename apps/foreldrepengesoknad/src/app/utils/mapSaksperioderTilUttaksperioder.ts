@@ -308,6 +308,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
         visPeriodeIPlan: true,
+        kanSlettes: saksperiode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
     };
     return avslåttPeriode;
 };
@@ -375,6 +376,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             visPeriodeIPlan: skalVises,
             kontoType: saksperiode.kontoType,
             avslåttPeriodeType: Periodetype.Uttak,
+            kanSlettes: false,
         };
     }
 

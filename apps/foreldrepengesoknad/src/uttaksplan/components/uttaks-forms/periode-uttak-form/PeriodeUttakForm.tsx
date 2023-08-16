@@ -1,4 +1,4 @@
-import { bemUtils, Block, guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import { ActionLink, bemUtils, Block, guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -6,7 +6,6 @@ import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
-import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
@@ -465,12 +464,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.lukk" />
                                     </Button>
                                     <div className={bem.element('slettPeriodeWrapper')}>
-                                        <LinkButton
+                                        <ActionLink
                                             onClick={() => handleDeletePeriode!(periode.id)}
                                             className={bem.element('slettPeriode')}
                                         >
                                             <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
-                                        </LinkButton>
+                                        </ActionLink>
                                     </div>
                                 </div>
                             </Block>
