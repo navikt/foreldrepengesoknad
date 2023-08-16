@@ -385,6 +385,8 @@ export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {
             return 'uttaksplan.slettPeriode.opphold';
         case Periodetype.Utsettelse:
             return 'uttaksplan.slettPeriode.utsettelse';
+        case Periodetype.Info:
+            return 'uttaksplan.slettPeriode.info';
         default:
             return '';
     }

@@ -11,6 +11,7 @@ import {
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
+    isSlettbarAvslåttPeriode,
     Periode,
     Periodetype,
     Utsettelsesperiode,
@@ -28,6 +29,7 @@ import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakFor
 import './periodelisteItem.less';
 import { Accordion } from '@navikt/ds-react';
 import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
+import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
 
 interface Props {
     egenPeriode: boolean;
@@ -168,8 +170,14 @@ const renderPeriodeListeInnhold = (
             );
         case Periodetype.Info:
             return (
-                periode.visPeriodeIPlan &&
-                !isAvslåttPeriode(periode) && <PeriodeInfo periode={periode} navnPåForeldre={navnPåForeldre} />
+                <>
+                    {periode.visPeriodeIPlan && !isAvslåttPeriode(periode) && (
+                        <PeriodeInfo periode={periode} navnPåForeldre={navnPåForeldre} />
+                    )}
+                    {isSlettbarAvslåttPeriode(periode) && (
+                        <SlettbarAvslåttPeriode periode={periode} handleDeletePeriode={handleDeletePeriode} />
+                    )}
+                </>
             );
         default:
             return <div>Ingen visning</div>;
