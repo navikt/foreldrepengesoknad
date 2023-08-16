@@ -17,10 +17,10 @@ group "default" {
 target "base" {
     dockerfile="Dockerfile"
     cache-from=[
-        "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${CACHE_TAG}",
-        "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:master"
+        "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/build-cache:${CACHE_TAG}",
+        "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/build-cache:master"
     ]
-    cache-to=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad-cache:${CACHE_TAG},mode=max"]
+    cache-to=["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/build-cache:${CACHE_TAG},mode=max"]
 }
 
 target "foreldrepengesoknad" {
