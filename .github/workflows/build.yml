@@ -53,11 +53,37 @@ jobs:
             - name: Run tests
               run: pnpm exec turbo test
 
+    create-build-version:
+        name: Create build version
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            - name: Print context
+              run: echo "$JSON"
+              env:
+                  JSON: ${{ toJSON(github) }}
+            - name: Generate build version
+              id: generate-build-version
+              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+            - name: Generate cache tags
+              shell: bash
+              id: generate-cache-tags
+              env:
+                  GITHUB_REF_NAME: ${{ github.ref_name }}
+              run: |
+                  GITHUB_REF_NAME=${GITHUB_REF_NAME//\//_}
+                  echo "cache-tag=$GITHUB_REF_NAME" >> $GITHUB_OUTPUT
+        outputs:
+            build-version: ${{ steps.generate-build-version.outputs.build-version }}
+            cache-tag: ${{ steps.generate-cache-tags.outputs.cache-tag }}
+
     build-platform-images:
         strategy:
             matrix:
                 platform: ['amd64', 'arm64']
         name: Build platform images
+        needs: create-build-version
         permissions:
             contents: read
             packages: write
@@ -65,20 +91,8 @@ jobs:
         with:
             push-image: ${{ github.ref_name == 'master' }} # default: false
             platform: ${{ matrix.platform }}
+            cache-tag: ${{ needs.create-build-version.outputs.cache-tag }}
         secrets: inherit
-
-    create-build-version:
-        name: Create build version
-        runs-on: ubuntu-latest
-        if: ${{ github.ref_name == 'master' }}
-        permissions:
-            contents: read
-        steps:
-            - name: Generate build version
-              id: generate-build-version
-              run: echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
-        outputs:
-            build-version: ${{ steps.generate-build-version.outputs.build-version }}
 
     create-manifest:
         strategy:
