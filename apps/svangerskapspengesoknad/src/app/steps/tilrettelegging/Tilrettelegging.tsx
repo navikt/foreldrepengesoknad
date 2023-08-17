@@ -1,7 +1,7 @@
 import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import { Button, GuidePanel, ReadMore } from '@navikt/ds-react';
+import { Button, GuidePanel, Heading, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     TilretteleggingFormComponents,
@@ -27,7 +27,7 @@ interface Props {
     navn: string;
 }
 
-const Tilrettelegging: FunctionComponent<Props> = ({ id, type, navn }) => {
+const Tilrettelegging: FunctionComponent<Props> = ({ type, navn }) => {
     const intl = useIntl();
     const { tilrettelegging } = useSøknad();
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
@@ -37,6 +37,7 @@ const Tilrettelegging: FunctionComponent<Props> = ({ id, type, navn }) => {
     };
     const sideTittel = intlUtils(intl, 'steps.label.periode', { navn });
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ARBEID);
+
     return (
         <TilretteleggingFormComponents.FormikWrapper
             initialValues={getTilretteleggingInitialValues(tilrettelegging)}
@@ -52,14 +53,18 @@ const Tilrettelegging: FunctionComponent<Props> = ({ id, type, navn }) => {
                         pageTitle={sideTittel}
                         // onCancel={onAvbrytSøknad}
                         // onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, navn)}
+                        steps={stepConfig(intl, type)}
                     >
                         <TilretteleggingFormComponents.Form
                             includeButtons={false}
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmTilretteleggingFormData(values, visibility)}
                         >
-                            <div>{`Tilrettelegging for ${id} ${navn} ${type}`}</div>
+                            <Block padBottom="xl">
+                                <Heading level="2" size="small">
+                                    {navn}
+                                </Heading>
+                            </Block>
                             <Block padBottom="xl">
                                 <GuidePanel>{intlUtils(intl, 'tilrettelegging.veileder.intro')}</GuidePanel>
                             </Block>
