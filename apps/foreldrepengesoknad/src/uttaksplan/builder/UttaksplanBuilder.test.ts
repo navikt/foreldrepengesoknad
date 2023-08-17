@@ -86,8 +86,6 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             fom: new Date('2022-07-04'),
             tom: new Date('2022-07-15'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
     },
     {
         id: '6',
@@ -231,7 +229,7 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             false,
             false,
-            undefined
+            undefined,
         ).leggTilPeriode(nyPeriode);
 
         expect(result.length).toBe(4);
@@ -256,7 +254,7 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             false,
             false,
-            undefined
+            undefined,
         ).leggTilPeriode(nyPeriode2);
 
         expect(result2.length).toBe(7);
@@ -282,7 +280,7 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             false,
             false,
-            undefined
+            undefined,
         ).leggTilPeriode(nyPeriodeISluttenAvPlanen);
 
         expect(result.length).toEqual(8);
@@ -318,7 +316,7 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             false,
             undefined,
-            perioderMedAnnenPartsUttakOgUtsettelserISlutten
+            perioderMedAnnenPartsUttakOgUtsettelserISlutten,
         ).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
 
         expect(result.length).toEqual(11);

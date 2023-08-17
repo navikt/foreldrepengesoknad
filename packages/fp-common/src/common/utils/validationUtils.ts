@@ -81,14 +81,14 @@ export const sisteMuligeDatoForOvertaOmsorg = (dato: string) => {
 export const erIUke22Pluss3 = (dato: string) => {
     const terminDato = dayjs(dato);
     const uke22Pluss3 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day')).isSame(dayjs().startOf('day'));
+    return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day'))!.isSame(dayjs().startOf('day'));
 };
 
 export const utstedtDatoErIUke22 = (utstedtDatoString: string, terminDatoString: string) => {
     const utstedtDato = dayjs(utstedtDatoString).startOf('day');
     const terminDato = dayjs(terminDatoString).startOf('day');
     const uke22 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    return dayjs.max(uke22, utstedtDato).isSame(utstedtDato);
+    return dayjs.max(uke22, utstedtDato)!.isSame(utstedtDato);
 };
 
 export const idagEllerTidligere = (dato: string) => {
