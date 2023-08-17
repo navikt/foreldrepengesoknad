@@ -18,7 +18,7 @@ interface StepConfig {
     label: string;
 }
 
-const stepConfigFørstegangssøknad = (intl: IntlShape, navn: string | undefined): StepConfig[] => [
+const stepConfigFørstegangssøknad = (intl: IntlShape, type: string | undefined): StepConfig[] => [
     {
         id: 'barnet',
         index: 0,
@@ -38,7 +38,7 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, navn: string | undefined
     {
         id: 'periode',
         index: 3,
-        label: intlUtils(intl, 'steps.label.periode', { navn }),
+        label: intlUtils(intl, 'steps.label.periode', { type }),
     },
     {
         id: 'oppsummering',
@@ -47,8 +47,8 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, navn: string | undefined
     },
 ];
 
-const stepConfig = (intl: IntlShape, navn?: string): StepConfig[] => {
-    return stepConfigFørstegangssøknad(intl, navn);
+const stepConfig = (intl: IntlShape, type?: string): StepConfig[] => {
+    return stepConfigFørstegangssøknad(intl, type);
 };
 
 export const getPreviousStepHref = (id: StepIdWithBackHref): string => {

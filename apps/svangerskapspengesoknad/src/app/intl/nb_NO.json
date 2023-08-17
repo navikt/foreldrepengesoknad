@@ -28,7 +28,7 @@
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "steps.label.barnet": "Barnet",
     "steps.label.arbeid": "Arbeidsforhold og inntekt",
-    "steps.label.periode": "Tilrettelegging for {navn}",
+    "steps.label.periode": "Tilrettelegging for {type}",
     "steps.label.utenlandsopphold": "Opphold i utlandet",
     "steps.label.oppsummering": "Oppsummering",
     "barnet.erBarnetFødt": "Er barnet født?",
