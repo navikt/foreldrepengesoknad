@@ -7,15 +7,15 @@ import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FunctionComponent } from 'react';
 import { IntlShape } from 'react-intl';
 
-export interface SøknadsgrunnlagOption {
-    value: string;
+export interface TilretteleggingBehov {
+    id: string;
     type: Arbeidsforholdstype;
     label: string;
 }
 
 interface Props {
     label: string;
-    options: SøknadsgrunnlagOption[];
+    options: TilretteleggingBehov[];
     intl: IntlShape;
 }
 
@@ -32,7 +32,7 @@ export const VelgSøknadsgrunnlag: FunctionComponent<Props> = (props) => {
         <InntektsinformasjonFormComponents.CheckboxGroup
             name={InntektsinformasjonFormField.tilrettelegging}
             legend={label}
-            checkboxes={options.map((option) => ({ label: option.label, value: option.value }))}
+            checkboxes={options.map((option) => ({ label: option.label, value: option.id }))}
             validate={(value) => validateTilretteleggingIsAnswered(value, intl)}
         />
     );

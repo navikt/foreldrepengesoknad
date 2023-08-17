@@ -1,10 +1,10 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { SøknadsgrunnlagOption } from 'app/types/VelgSøknadsgrunnlag';
+import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 
 export interface InntektsinformasjonFormQuestionPayload extends InntektsinformasjonFormData {
-    tilretteleggingsValg: SøknadsgrunnlagOption[];
+    tilretteleggingsValg: TilretteleggingBehov[];
 }
 
 const InntektsinformasjonFormConfig: QuestionConfig<

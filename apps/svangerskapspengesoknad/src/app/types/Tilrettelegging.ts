@@ -2,6 +2,7 @@ export enum Tilretteleggingstype {
     'HEL' = 'hel',
     'DELVIS' = 'delvis',
     'INGEN' = 'ingen',
+    'NOE' = 'noe',
 }
 
 export enum Arbeidsforholdstype {
@@ -11,59 +12,50 @@ export enum Arbeidsforholdstype {
     'PRIVAT' = 'privat',
 }
 
-export interface ArbeidsforholdFrilans {
-    type: Arbeidsforholdstype.FRILANSER;
-    risikoFaktorer?: string;
-    tilretteleggingstiltak?: string;
+export interface TilretteleggingArbeidsforhold {
+    id?: string;
+    type: Arbeidsforholdstype;
 }
 
-export interface ArbeidsforholdSelvstendig {
-    type: Arbeidsforholdstype.SELVSTENDIG;
-    risikoFaktorer?: string;
-    tilretteleggingstiltak?: string;
-}
-
-export interface ArbeidsforholdPrivat {
-    type: Arbeidsforholdstype.PRIVAT;
-    id: string;
-}
-
-export interface ArbeidsforholdVirksomhet {
-    type: Arbeidsforholdstype.VIRKSOMHET;
-    id: string;
-}
-export const isArbeidsforholdVirksomhetDTO = (
-    arbeidsforhold: Arbeidsforhold
-): arbeidsforhold is ArbeidsforholdVirksomhet => {
-    return arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET;
-};
-
-export type Arbeidsforhold =
-    | ArbeidsforholdFrilans
-    | ArbeidsforholdSelvstendig
-    | ArbeidsforholdVirksomhet
-    | ArbeidsforholdPrivat;
-
-interface TilretteleggingBase {
-    type: Tilretteleggingstype;
-    behovForTilretteleggingFom: Date;
-    arbeidsforhold: Arbeidsforhold;
-    vedlegg: string[];
-}
-
-export interface HelTilrettelegging extends TilretteleggingBase {
-    type: Tilretteleggingstype.HEL;
-    tilrettelagtArbeidFom: Date;
-}
-export interface DelvisTilrettelegging extends TilretteleggingBase {
-    type: Tilretteleggingstype.DELVIS;
-    tilrettelagtArbeidFom: Date;
+export interface DelvisTilrettelegging {
+    tilrettelagtArbeidFom: string;
     stillingsprosent: number;
 }
 
-export interface IngenTilrettelegging extends TilretteleggingBase {
-    type: Tilretteleggingstype.INGEN;
-    slutteArbeidFom: Date;
+export interface HelTilrettelegging {
+    tilrettelagtArbeidFom: string;
 }
 
-export type Tilrettelegging = HelTilrettelegging | DelvisTilrettelegging | IngenTilrettelegging;
+export interface IngenTilrettelegging {
+    slutteArbeidFom: string;
+}
+
+export interface Tilrettelegging {
+    id: string;
+    behovForTilretteleggingFom: string;
+    arbeidsforhold: TilretteleggingArbeidsforhold;
+    vedlegg: string[];
+    helTilrettelegging?: HelTilrettelegging[];
+    delvisTilrettelegging?: DelvisTilrettelegging[];
+    ingenTilrettelegging?: IngenTilrettelegging[];
+}
+
+export type UferdigTilrettelegging = Tilrettelegging & {
+    behovForTilretteleggingFom?: string;
+    type: Tilretteleggingstype[];
+    helTilrettelegging?: [
+        {
+            tilrettelagtArbeidFom?: string;
+        }
+    ];
+    delvisTilrettelegging?: DelvisTilrettelegging[];
+    ingenTilrettelegging?: [
+        {
+            slutteArbeidFom?: string;
+        }
+    ];
+    risikoFaktorer?: string;
+    tilretteleggingstiltak?: string;
+};
+
+export default Tilrettelegging;

@@ -39,6 +39,7 @@ import EgenNæringDetaljer from './components/egen-næring/EgenNæringDetaljer';
 import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlandetReadMore';
 import { VelgSøknadsgrunnlag } from 'app/types/VelgSøknadsgrunnlag';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
+import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -63,8 +64,16 @@ const Inntektsinformasjon = () => {
 
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, allNæring, allArbeidIUtlandet);
-
-        return [actionCreator.setSøker(updatedSøker)];
+        const arbeidMedTilretteleggingsBehov = mapTilrettelegging(
+            values.tilrettelegging!,
+            updatedSøker.harJobbetSomFrilansSiste10Mnd,
+            updatedSøker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+            frilans,
+            allNæring,
+            arbeidsforhold,
+            termindato
+        );
+        return [actionCreator.setTilretteleggingBehov(arbeidMedTilretteleggingsBehov)];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
 
@@ -76,7 +85,8 @@ const Inntektsinformasjon = () => {
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const tilretteleggingsValg = mapArbeidsforholdToSøknadsgrunnlagOptions(
-                    formValues,
+                    formValues.hattInntektSomFrilans === YesOrNo.YES,
+                    formValues.hattInntektSomNæringsdrivende === YesOrNo.YES,
                     frilans,
                     allNæring,
                     arbeidsforhold,

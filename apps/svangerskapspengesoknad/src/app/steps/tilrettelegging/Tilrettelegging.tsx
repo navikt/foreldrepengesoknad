@@ -17,10 +17,17 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import tilretteleggingQuestionsConfig from './tilretteleggingQuestionsConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
+import { FunctionComponent } from 'react';
 
-const Tilrettelegging = () => {
+interface Props {
+    id: string;
+    type: Arbeidsforholdstype;
+    navn: string;
+}
+
+const Tilrettelegging: FunctionComponent<Props> = ({ id, type, navn }) => {
     const intl = useIntl();
     const { tilrettelegging } = useSøknad();
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
@@ -28,7 +35,7 @@ const Tilrettelegging = () => {
         const tilrettelegging = mapOmTilretteleggingFormDataToState(values);
         return [actionCreator.setTilrettelegging(tilrettelegging)];
     };
-
+    const sideTittel = intlUtils(intl, 'steps.label.periode', { navn });
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ARBEID);
     return (
         <TilretteleggingFormComponents.FormikWrapper
@@ -38,21 +45,21 @@ const Tilrettelegging = () => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
                     ...formValues,
                 } as TilretteleggingFormData);
-
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="periode"
-                        pageTitle={intlUtils(intl, 'steps.label.tilrettelegging')}
+                        pageTitle={sideTittel}
                         // onCancel={onAvbrytSøknad}
                         // onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, navn)}
                     >
                         <TilretteleggingFormComponents.Form
                             includeButtons={false}
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmTilretteleggingFormData(values, visibility)}
                         >
+                            <div>{`Tilrettelegging for ${id} ${navn} ${type}`}</div>
                             <Block padBottom="xl">
                                 <GuidePanel>{intlUtils(intl, 'tilrettelegging.veileder.intro')}</GuidePanel>
                             </Block>

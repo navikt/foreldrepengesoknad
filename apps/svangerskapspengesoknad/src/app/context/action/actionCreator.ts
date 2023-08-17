@@ -4,6 +4,7 @@ import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsoppho
 import { Søker } from 'app/types/Søker';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
+import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 
 export enum SvangerskapspengerContextActionKeys {
     SET_BARN = 'setBarn',
@@ -11,8 +12,10 @@ export enum SvangerskapspengerContextActionKeys {
     SET_TILRETTELEGGING = 'setTilrettelegging',
     SET_SØKERINFO = 'setSøkerinfo',
     SET_CURRENT_ROUTE = 'setCurrentRoute',
+    SET_CURRENT_TILRETTELEGGING_ID = 'setCurrentTilretteleggingId',
     SET_HARGODKJENTVILKÅR = 'setHarGodkjentVilkår',
     SET_UTENLANDSOPPHOLD = 'setUtenlandsopphold',
+    SET_TILRETTELEGGING_BEHOV = 'setTilretteleggingBehov',
 }
 interface SetBarn {
     type: SvangerskapspengerContextActionKeys.SET_BARN;
@@ -54,6 +57,16 @@ const setCurrentRoute = (payload: SøknadRoutes): SetCurrentRoute => ({
     payload,
 });
 
+interface SetCurrentTilretteleggingId {
+    type: SvangerskapspengerContextActionKeys.SET_CURRENT_TILRETTELEGGING_ID;
+    payload: string;
+}
+
+const setCurrentTilretteleggingId = (payload: string): SetCurrentTilretteleggingId => ({
+    type: SvangerskapspengerContextActionKeys.SET_CURRENT_TILRETTELEGGING_ID,
+    payload,
+});
+
 interface SetSøkerinfo {
     type: SvangerskapspengerContextActionKeys.SET_SØKERINFO;
     payload: Søkerinfo;
@@ -84,21 +97,35 @@ const setUtenlandsopphold = (payload: InformasjonOmUtenlandsopphold): SetUtenlan
     payload,
 });
 
+interface SetTilretteleggingBehov {
+    type: SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING_BEHOV;
+    payload: TilretteleggingBehov[];
+}
+
+const setTilretteleggingBehov = (payload: TilretteleggingBehov[]): SetTilretteleggingBehov => ({
+    type: SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING_BEHOV,
+    payload,
+});
+
 export type SvangerskapspengerContextAction =
     | SetBarn
     | SetSøker
     | SetTilrettelegging
     | SetCurrentRoute
+    | SetCurrentTilretteleggingId
     | SetSøkerinfo
     | SetHarGodkjentVilkår
-    | SetUtenlandsopphold;
+    | SetUtenlandsopphold
+    | SetTilretteleggingBehov;
 
 export default {
     setBarn,
     setSøker,
     setTilrettelegging,
     setCurrentRoute,
+    setCurrentTilretteleggingId,
     setSøkerinfo,
     setHarGodkjentVilkår,
     setUtenlandsopphold,
+    setTilretteleggingBehov,
 };

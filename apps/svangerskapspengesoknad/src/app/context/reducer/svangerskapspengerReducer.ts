@@ -41,6 +41,11 @@ const svangerskapspengerReducer = (
                 ...state,
                 currentRoute: action.payload,
             };
+        case SvangerskapspengerContextActionKeys.SET_CURRENT_TILRETTELEGGING_ID:
+            return {
+                ...state,
+                currentTilretteleggingId: action.payload,
+            };
         case SvangerskapspengerContextActionKeys.SET_HARGODKJENTVILKÅR:
             return {
                 ...state,
@@ -56,6 +61,11 @@ const svangerskapspengerReducer = (
                     ...state.søknad,
                     informasjonOmUtenlandsopphold: action.payload,
                 },
+            };
+        case SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING_BEHOV:
+            return {
+                ...state,
+                tilretteleggingBehov: action.payload,
             };
         default:
             return state;
