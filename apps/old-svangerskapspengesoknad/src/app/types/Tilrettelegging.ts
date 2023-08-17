@@ -58,4 +58,10 @@ export type UferdigTilrettelegging = Tilrettelegging & {
     tilretteleggingstiltak?: string;
 };
 
+export interface TilretteleggingBehov {
+    id: string;
+    navn: string;
+    type: Arbeidsforholdstype;
+}
+
 export default Tilrettelegging;

@@ -10,7 +10,7 @@ import {
 import { Søker, Søkerrolle } from 'app/types/Søker';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { SøknadsgrunnlagOption } from 'app/types/VelgSøknadsgrunnlag';
+import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
@@ -22,32 +22,32 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
 };
 
 export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
-    formValues: Partial<InntektsinformasjonFormData>,
+    erFrilanser: boolean,
+    harNæring: boolean,
     frilans: Frilans | undefined,
     næring: Næring[],
     arbeidsforhold: Arbeidsforhold[],
     termindato: Date
-): SøknadsgrunnlagOption[] => {
+): TilretteleggingBehov[] => {
     const unikeArbeidsforhold = [
         ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => ({
-            value: forhold.id,
+            id: forhold.id,
             label: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
             type: forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
         })),
     ];
-    const næringValg =
-        formValues.hattInntektSomNæringsdrivende === YesOrNo.YES
-            ? næring.map((egenNæring) => ({
-                  value: egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`,
-                  label: egenNæring.navnPåNæringen,
-                  type: Arbeidsforholdstype.SELVSTENDIG,
-              }))
-            : [];
+    const næringValg = harNæring
+        ? næring.map((egenNæring) => ({
+              id: egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`,
+              label: egenNæring.navnPåNæringen,
+              type: Arbeidsforholdstype.SELVSTENDIG,
+          }))
+        : [];
     const frilansValg =
-        formValues.hattInntektSomFrilans === YesOrNo.YES && frilans !== undefined
+        erFrilanser && frilans !== undefined
             ? [
                   {
-                      value: 'Frilans',
+                      id: 'Frilans',
                       label: 'Frilans',
                       type: Arbeidsforholdstype.FRILANSER,
                   },
