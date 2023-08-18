@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, MutableRefObject, useRef } from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
@@ -50,7 +50,16 @@ interface StateProps {
 
 type Props = OwnProps & StateProps & StepProps;
 
-const initialValuesForTilrettelegginger = (tilrettelegging: UferdigTilrettelegging): UferdigTilrettelegging => {
+const initialValuesForTilrettelegginger = (
+    tilrettelegging: UferdigTilrettelegging,
+    haveInitialValuesBeenSet: MutableRefObject<boolean>,
+): UferdigTilrettelegging => {
+    if (haveInitialValuesBeenSet.current) {
+        return tilrettelegging;
+    }
+
+    haveInitialValuesBeenSet.current = true;
+
     if (tilrettelegging.ingenTilrettelegging === undefined) {
         tilrettelegging.ingenTilrettelegging = [
             {
@@ -79,6 +88,7 @@ const initialValuesForTilrettelegginger = (tilrettelegging: UferdigTilretteleggi
 const Tilrettelegging: FunctionComponent<Props> = (props) => {
     const intl = useIntl();
     const { id, step, formikProps, arbeidsforhold, vedlegg, uploadAttachment, deleteAttachment } = props;
+    const haveInitialValuesBeenSet = useRef<boolean>(false);
 
     const { values, setFieldValue } = formikProps;
 
@@ -95,7 +105,8 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
     const tilretteleggingstypeName = getInputName('type');
     const valgteTilretteleggingstyper = get(values, tilretteleggingstypeName) || [];
     const { ingenTilrettelegging, delvisTilrettelegging, helTilrettelegging } = initialValuesForTilrettelegginger(
-        values.tilrettelegging[index]
+        values.tilrettelegging[index],
+        haveInitialValuesBeenSet,
     );
 
     const frilansRisikoErOk = erFrilansEllerSelvstendig
@@ -139,6 +150,8 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
         if (visHelTilrettelegging === false) {
             setFieldValue(getInputName('helTilrettelegging'), undefined);
         }
+
+        setTimeout(() => console.log(values));
     };
 
     const navigateTo = useNavigate();
@@ -249,11 +262,11 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                         <LabelMedInfobox
                                             title={getMessage(
                                                 intl,
-                                                'tilrettelegging.behovForTilretteleggingFom.label.frilansSN'
+                                                'tilrettelegging.behovForTilretteleggingFom.label.frilansSN',
                                             )}
                                             info={getMessage(
                                                 intl,
-                                                'tilrettelegging.behovForTilretteleggingFom.infoBox.frilansSN'
+                                                'tilrettelegging.behovForTilretteleggingFom.infoBox.frilansSN',
                                             )}
                                         />
                                     ) : (
@@ -261,7 +274,7 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                             title={getMessage(intl, 'tilrettelegging.behovForTilretteleggingFom.label')}
                                             info={getMessage(
                                                 intl,
-                                                'tilrettelegging.behovForTilretteleggingFom.infoBox'
+                                                'tilrettelegging.behovForTilretteleggingFom.infoBox',
                                             )}
                                         />
                                     )
@@ -327,11 +340,11 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                                     maksDato: treUkerSiden(values.barn.termindato!),
                                                 }}
                                                 datoInputName={`${getInputName(
-                                                    'helTilrettelegging'
+                                                    'helTilrettelegging',
                                                 )}.${ind}.tilrettelagtArbeidFom`}
                                                 datoLabel={getMessage(
                                                     intl,
-                                                    'tilrettelegging.hvordanKanDuJobbe.fullt.spørsmål'
+                                                    'tilrettelegging.hvordanKanDuJobbe.fullt.spørsmål',
                                                 )}
                                                 showDeleteButton={ind !== 0}
                                                 delvisTilrettelegging={false}
@@ -375,18 +388,18 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                                     maksDato: treUkerSiden(values.barn.termindato!),
                                                 }}
                                                 datoInputName={`${getInputName(
-                                                    'delvisTilrettelegging'
+                                                    'delvisTilrettelegging',
                                                 )}.${ind}.tilrettelagtArbeidFom`}
                                                 datoLabel={getMessage(
                                                     intl,
-                                                    'tilrettelegging.hvordanKanDuJobbe.delvis.spørsmål'
+                                                    'tilrettelegging.hvordanKanDuJobbe.delvis.spørsmål',
                                                 )}
                                                 prosentInputName={`${getInputName(
-                                                    'delvisTilrettelegging'
+                                                    'delvisTilrettelegging',
                                                 )}.${ind}.stillingsprosent`}
                                                 prosentLabel={getMessage(
                                                     intl,
-                                                    'tilrettelegging.stillingsprosent.label'
+                                                    'tilrettelegging.stillingsprosent.label',
                                                 )}
                                                 showDeleteButton={ind !== 0}
                                                 delvisTilrettelegging={true}
@@ -435,11 +448,11 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
                                                     maksDato: treUkerSiden(values.barn.termindato!),
                                                 }}
                                                 datoInputName={`${getInputName(
-                                                    'ingenTilrettelegging'
+                                                    'ingenTilrettelegging',
                                                 )}.${ind}.slutteArbeidFom`}
                                                 datoLabel={getMessage(
                                                     intl,
-                                                    'tilrettelegging.hvordanKanDuJobbe.ingenting.spørsmål'
+                                                    'tilrettelegging.hvordanKanDuJobbe.ingenting.spørsmål',
                                                 )}
                                                 showDeleteButton={ind !== 0}
                                                 delvisTilrettelegging={false}
