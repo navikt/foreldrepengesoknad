@@ -344,10 +344,28 @@ const AnnenForelder = () => {
                                         'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel'
                                     )}
                                 >
-                                    <FormattedMessage
-                                        id="annenForelder.harRettPåForeldrepengerIEØS.veileder"
-                                        values={{ navn: formValues.fornavn }}
-                                    ></FormattedMessage>
+                                    <Block padBottom="l">
+                                        <FormattedMessage
+                                            id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
+                                            values={{ navn: formValues.fornavn }}
+                                        ></FormattedMessage>
+                                    </Block>
+
+                                    <Block padBottom="l">
+                                        <FormattedMessage
+                                            id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"
+                                            values={{ navn: formValues.fornavn }}
+                                        ></FormattedMessage>
+                                    </Block>
+
+                                    <Block>
+                                        <Link to="https://www.nav.no/foreldrepenger#utland" target="_blank">
+                                            <FormattedMessage
+                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link"
+                                                values={{ navn: formValues.fornavn }}
+                                            />
+                                        </Link>
+                                    </Block>
                                 </ReadMore>
                             </Block>
                             <Block
