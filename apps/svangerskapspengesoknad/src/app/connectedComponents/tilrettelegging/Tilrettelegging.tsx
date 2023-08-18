@@ -1,4 +1,4 @@
-import { FunctionComponent, MutableRefObject, useRef } from 'react';
+import { FunctionComponent } from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
@@ -50,16 +50,7 @@ interface StateProps {
 
 type Props = OwnProps & StateProps & StepProps;
 
-const initialValuesForTilrettelegginger = (
-    tilrettelegging: UferdigTilrettelegging,
-    haveInitialValuesBeenSet: MutableRefObject<boolean>,
-): UferdigTilrettelegging => {
-    if (haveInitialValuesBeenSet.current) {
-        return tilrettelegging;
-    }
-
-    haveInitialValuesBeenSet.current = true;
-
+const initialValuesForTilrettelegginger = (tilrettelegging: UferdigTilrettelegging): UferdigTilrettelegging => {
     if (tilrettelegging.ingenTilrettelegging === undefined) {
         tilrettelegging.ingenTilrettelegging = [
             {
@@ -88,7 +79,6 @@ const initialValuesForTilrettelegginger = (
 const Tilrettelegging: FunctionComponent<Props> = (props) => {
     const intl = useIntl();
     const { id, step, formikProps, arbeidsforhold, vedlegg, uploadAttachment, deleteAttachment } = props;
-    const haveInitialValuesBeenSet = useRef<boolean>(false);
 
     const { values, setFieldValue } = formikProps;
 
@@ -106,7 +96,6 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
     const valgteTilretteleggingstyper = get(values, tilretteleggingstypeName) || [];
     const { ingenTilrettelegging, delvisTilrettelegging, helTilrettelegging } = initialValuesForTilrettelegginger(
         values.tilrettelegging[index],
-        haveInitialValuesBeenSet,
     );
 
     const frilansRisikoErOk = erFrilansEllerSelvstendig
@@ -142,16 +131,16 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
 
     const cleanupTilrettelegging = () => {
         if (visIngenTilrettelegging === false) {
-            setFieldValue(getInputName('ingenTilrettelegging'), []);
+            setFieldValue(getInputName('ingenTilrettelegging'), undefined);
         }
         if (visDelvisTilrettelegging === false) {
-            setFieldValue(getInputName('delvisTilrettelegging'), []);
+            setFieldValue(getInputName('delvisTilrettelegging'), undefined);
         }
         if (visHelTilrettelegging === false) {
-            setFieldValue(getInputName('helTilrettelegging'), []);
+            setFieldValue(getInputName('helTilrettelegging'), undefined);
         }
 
-        setTimeout(() => console.log(values));
+        console.log(values);
     };
 
     const navigateTo = useNavigate();

@@ -49,7 +49,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
             const valgteTyper = get(søknad, tilretteleggingstypeName) || [];
 
             const ingenTilretteleggingDatoer: string[] =
-                tilrettelegging.ingenTilrettelegging !== undefined && tilrettelegging.ingenTilrettelegging !== null
+                tilrettelegging.ingenTilrettelegging !== undefined
                     ? tilrettelegging.ingenTilrettelegging
                           .filter((ingen: IngenTilrettelegging) => ingen.slutteArbeidFom !== undefined)
                           .reduce((result: string[], ingen: IngenTilrettelegging) => {
@@ -59,7 +59,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                     : [];
 
             const delvisTilretteleggingDatoer: string[] =
-                tilrettelegging.delvisTilrettelegging !== undefined && tilrettelegging.delvisTilrettelegging !== null
+                tilrettelegging.delvisTilrettelegging !== undefined
                     ? tilrettelegging.delvisTilrettelegging
                           .filter((delvis: DelvisTilrettelegging) => delvis.tilrettelagtArbeidFom !== undefined)
                           .reduce((result: string[], delvis: DelvisTilrettelegging) => {
@@ -69,7 +69,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                     : [];
 
             const helTilretteleggingDatoer: string[] =
-                tilrettelegging.helTilrettelegging !== undefined && tilrettelegging.helTilrettelegging !== null
+                tilrettelegging.helTilrettelegging !== undefined
                     ? tilrettelegging.helTilrettelegging
                           .filter((hel: HelTilrettelegging) => hel.tilrettelagtArbeidFom !== undefined)
                           .reduce((result: string[], hel: HelTilrettelegging) => {

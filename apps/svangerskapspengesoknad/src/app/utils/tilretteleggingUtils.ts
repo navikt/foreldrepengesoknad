@@ -55,7 +55,7 @@ const mapHelTilrettelegging = (
     arbeidsforhold: ArbeidsforholdDTO,
     helTilrettelegging: HelTilrettelegging,
 ): HelTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.helTilrettelegging) {
+    if (!tilrettelegging.helTilrettelegging || !helTilrettelegging.tilrettelagtArbeidFom) {
         return undefined;
     }
     return {
@@ -72,7 +72,7 @@ const mapDelvisTilrettelegging = (
     arbeidsforhold: ArbeidsforholdDTO,
     delvisTilrettelegging: DelvisTilrettelegging,
 ): DelvisTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.delvisTilrettelegging) {
+    if (!tilrettelegging.delvisTilrettelegging || !delvisTilrettelegging.tilrettelagtArbeidFom) {
         return undefined;
     }
     return {
@@ -90,7 +90,7 @@ const mapIngenTilrettelegging = (
     arbeidsforhold: ArbeidsforholdDTO,
     ingenTilrettelegging: IngenTilrettelegging,
 ): IngenTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.ingenTilrettelegging) {
+    if (!tilrettelegging.ingenTilrettelegging || !ingenTilrettelegging.slutteArbeidFom) {
         return undefined;
     }
     return {
