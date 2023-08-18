@@ -142,13 +142,13 @@ const Tilrettelegging: FunctionComponent<Props> = (props) => {
 
     const cleanupTilrettelegging = () => {
         if (visIngenTilrettelegging === false) {
-            setFieldValue(getInputName('ingenTilrettelegging'), undefined);
+            setFieldValue(getInputName('ingenTilrettelegging'), []);
         }
         if (visDelvisTilrettelegging === false) {
-            setFieldValue(getInputName('delvisTilrettelegging'), undefined);
+            setFieldValue(getInputName('delvisTilrettelegging'), []);
         }
         if (visHelTilrettelegging === false) {
-            setFieldValue(getInputName('helTilrettelegging'), undefined);
+            setFieldValue(getInputName('helTilrettelegging'), []);
         }
 
         setTimeout(() => console.log(values));
