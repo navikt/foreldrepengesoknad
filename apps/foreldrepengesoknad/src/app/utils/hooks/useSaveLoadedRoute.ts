@@ -4,13 +4,14 @@ import { useForeldrepengesøknadContext } from '../../context/hooks/useForeldrep
 import { useEffect, useRef } from 'react';
 import { storeAppState } from '../submitUtils';
 import { redirectToLogin } from '../redirectToLogin';
+import { Kvittering } from 'app/types/Kvittering';
 
-const useSaveLoadedRoute = (currentRoute: SøknadRoutes) => {
+const useSaveLoadedRoute = (currentRoute: SøknadRoutes, kvittering?: Kvittering) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
     const routeHasBeenSaved = useRef(false);
 
     useEffect(() => {
-        if (!routeHasBeenSaved.current) {
+        if (!routeHasBeenSaved.current && !kvittering) {
             routeHasBeenSaved.current = true;
             dispatch(actionCreator.updateCurrentRoute(currentRoute));
             storeAppState({ ...state, currentRoute }).catch((error) => {

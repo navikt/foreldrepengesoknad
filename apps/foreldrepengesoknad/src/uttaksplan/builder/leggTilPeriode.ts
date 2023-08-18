@@ -113,8 +113,8 @@ const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode):
         const overlappendeTidsperiode = dateArray.filter((date) => date !== minDate && date !== maxDate);
 
         return Tidsperioden({
-            fom: dayjs.min(overlappendeTidsperiode).toDate(),
-            tom: dayjs.max(overlappendeTidsperiode).toDate(),
+            fom: dayjs.min(overlappendeTidsperiode)!.toDate(),
+            tom: dayjs.max(overlappendeTidsperiode)!.toDate(),
         }).getAntallUttaksdager();
     }
 
@@ -186,7 +186,7 @@ export const leggTilPeriode = ({
                 berørtPeriodeSplittetPåNyPeriode[0],
                 berørtPeriodeSplittetPåNyPeriode[1],
                 ...Periodene([berørtPeriodeSplittetPåNyPeriode[2], ...påfølgendePerioder]).forskyvPerioder(
-                    antallDagerINyPeriode
+                    antallDagerINyPeriode,
                 ),
             ];
         }
@@ -205,7 +205,7 @@ export const leggTilPeriode = ({
         if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom, 'day')) {
             const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(
                 nyPeriode.tidsperiode,
-                førstePeriode.tidsperiode
+                førstePeriode.tidsperiode,
             );
 
             if (nyPeriodeTom.isSameOrAfter(førstePeriode.tidsperiode.fom, 'day')) {
@@ -229,7 +229,7 @@ export const leggTilPeriode = ({
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        førsteUttaksdagNesteBarnsSak
+                        førsteUttaksdagNesteBarnsSak,
                     ),
                     ...perioder,
                 ];
@@ -239,7 +239,7 @@ export const leggTilPeriode = ({
         } else {
             const tidsperiodeMellomSistePeriodeOgNyPeriode = getTidsperiodeMellomPerioder(
                 sistePeriode.tidsperiode,
-                nyPeriode.tidsperiode
+                nyPeriode.tidsperiode,
             );
 
             if (tidsperiodeMellomSistePeriodeOgNyPeriode) {
@@ -252,7 +252,7 @@ export const leggTilPeriode = ({
                         erAdopsjon,
                         bareFarHarRett,
                         erFarEllerMedmor,
-                        førsteUttaksdagNesteBarnsSak
+                        førsteUttaksdagNesteBarnsSak,
                     ),
                     nyPeriode,
                 ];

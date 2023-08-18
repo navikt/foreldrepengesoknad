@@ -34,17 +34,17 @@ export const mapGrunnlagTilTilrettelegging = (søknadsgrunnlag: Søknadsgrunnlag
 
 export const mergeSøknadsgrunnlagIntoTilrettelegging = (
     søknadsgrunnlag: Søknadsgrunnlag[],
-    existingTilrettelegging: UferdigTilrettelegging[]
+    existingTilrettelegging: UferdigTilrettelegging[],
 ) => {
     const nyeTilrettelegginger = mapGrunnlagTilTilrettelegging(
         søknadsgrunnlag.filter(
             (grunnlag: Søknadsgrunnlag) =>
-                !existingTilrettelegging.find((t: UferdigTilrettelegging) => t.id === grunnlag.id)
-        )
+                !existingTilrettelegging.find((t: UferdigTilrettelegging) => t.id === grunnlag.id),
+        ),
     );
 
     const selectedTilrettelegging = existingTilrettelegging.filter((t) =>
-        søknadsgrunnlag.map((s) => s.id).includes(t.id)
+        søknadsgrunnlag.map((s) => s.id).includes(t.id),
     );
 
     return [...selectedTilrettelegging, ...nyeTilrettelegginger];
@@ -53,9 +53,9 @@ export const mergeSøknadsgrunnlagIntoTilrettelegging = (
 const mapHelTilrettelegging = (
     tilrettelegging: Tilrettelegging,
     arbeidsforhold: ArbeidsforholdDTO,
-    helTilrettelegging: HelTilrettelegging
+    helTilrettelegging: HelTilrettelegging,
 ): HelTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.helTilrettelegging) {
+    if (!tilrettelegging.helTilrettelegging || !helTilrettelegging.tilrettelagtArbeidFom) {
         return undefined;
     }
     return {
@@ -70,9 +70,9 @@ const mapHelTilrettelegging = (
 const mapDelvisTilrettelegging = (
     tilrettelegging: Tilrettelegging,
     arbeidsforhold: ArbeidsforholdDTO,
-    delvisTilrettelegging: DelvisTilrettelegging
+    delvisTilrettelegging: DelvisTilrettelegging,
 ): DelvisTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.delvisTilrettelegging) {
+    if (!tilrettelegging.delvisTilrettelegging || !delvisTilrettelegging.tilrettelagtArbeidFom) {
         return undefined;
     }
     return {
@@ -88,9 +88,9 @@ const mapDelvisTilrettelegging = (
 const mapIngenTilrettelegging = (
     tilrettelegging: Tilrettelegging,
     arbeidsforhold: ArbeidsforholdDTO,
-    ingenTilrettelegging: IngenTilrettelegging
+    ingenTilrettelegging: IngenTilrettelegging,
 ): IngenTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.ingenTilrettelegging) {
+    if (!tilrettelegging.ingenTilrettelegging || !ingenTilrettelegging.slutteArbeidFom) {
         return undefined;
     }
     return {
@@ -133,7 +133,7 @@ export const mapTilretteleggingerTilDTO = (tilrettelegging: UferdigTilretteleggi
     const dto: TilretteleggingDTO[] = [];
     tilrettelegging.forEach((t) => {
         const arbeidsforhold = mapArbeidsforholdForTilrettelegging(t);
-        if (t.helTilrettelegging) {
+        if (t.helTilrettelegging && t.helTilrettelegging.length > 0) {
             t.helTilrettelegging.forEach((helTil: HelTilrettelegging) => {
                 const helTilrettelegging = mapHelTilrettelegging(t, arbeidsforhold, helTil);
                 if (helTilrettelegging) {
@@ -141,7 +141,7 @@ export const mapTilretteleggingerTilDTO = (tilrettelegging: UferdigTilretteleggi
                 }
             });
         }
-        if (t.delvisTilrettelegging) {
+        if (t.delvisTilrettelegging && t.delvisTilrettelegging.length > 0) {
             t.delvisTilrettelegging.forEach((delTil: DelvisTilrettelegging) => {
                 const delvisTilrettelegging = mapDelvisTilrettelegging(t, arbeidsforhold, delTil);
                 if (delvisTilrettelegging) {
@@ -149,7 +149,7 @@ export const mapTilretteleggingerTilDTO = (tilrettelegging: UferdigTilretteleggi
                 }
             });
         }
-        if (t.ingenTilrettelegging) {
+        if (t.ingenTilrettelegging && t.ingenTilrettelegging.length > 0) {
             t.ingenTilrettelegging.forEach((ingenTil: IngenTilrettelegging) => {
                 const ingenTilrettelegging = mapIngenTilrettelegging(t, arbeidsforhold, ingenTil);
                 if (ingenTilrettelegging) {

@@ -120,7 +120,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                             set(
                                 tErrors,
                                 `ingenTilrettelegging.${ind}.slutteArbeidFom`,
-                                'valideringsfeil.ingenTilrettelegging.slutteArbeidFom.påkrevd'
+                                'valideringsfeil.ingenTilrettelegging.slutteArbeidFom.påkrevd',
                             );
                         }
 
@@ -128,14 +128,14 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                             set(
                                 tErrors,
                                 `ingenTilrettelegging.${ind}.slutteArbeidFom`,
-                                'valideringsfeil.ingenTilrettelegging.slutteArbeidFom.ugyldigDato'
+                                'valideringsfeil.ingenTilrettelegging.slutteArbeidFom.ugyldigDato',
                             );
                         } else {
                             if (moment(slutteArbeidFom).isBefore(tilrettelegging.behovForTilretteleggingFom)) {
                                 set(
                                     tErrors,
                                     `ingenTilrettelegging.${ind}.slutteArbeidFom`,
-                                    'valideringsfeil.ingenTilrettelegging.tilrettelagtArbeidForTidlig'
+                                    'valideringsfeil.ingenTilrettelegging.tilrettelagtArbeidForTidlig',
                                 );
                             }
 
@@ -143,7 +143,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `ingenTilrettelegging.${ind}.slutteArbeidFom`,
-                                    'valideringsfeil.ingenTilrettelegging.forLangtFremITid'
+                                    'valideringsfeil.ingenTilrettelegging.forLangtFremITid',
                                 );
                             }
 
@@ -151,7 +151,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `ingenTilrettelegging.${ind}.slutteArbeidFom`,
-                                    'valideringsfeil.ingenTilrettelegging.forLangtTilbakeITid'
+                                    'valideringsfeil.ingenTilrettelegging.forLangtTilbakeITid',
                                 );
                             }
 
@@ -161,8 +161,8 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                     set(
                                         tErrors,
                                         `ingenTilrettelegging.${ind}.slutteArbeidFom`,
-                                        'valideringsfeil.overlappendePeriode'
-                                    )
+                                        'valideringsfeil.overlappendePeriode',
+                                    ),
                                 );
                             }
                         }
@@ -189,8 +189,8 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `delvisTilrettelegging.${ind}.stillingsprosent`,
-                                    'valideringsfeil.delvisTilrettelegging.stillingsprosent.range'
-                                )
+                                    'valideringsfeil.delvisTilrettelegging.stillingsprosent.range',
+                                ),
                             );
                         }
 
@@ -200,8 +200,8 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `delvisTilrettelegging.${ind}.stillingsprosent`,
-                                    'valideringsfeil.delvisTilrettelegging.stillingsprosent.påkrevd'
-                                )
+                                    'valideringsfeil.delvisTilrettelegging.stillingsprosent.påkrevd',
+                                ),
                             );
                         }
 
@@ -211,8 +211,8 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `delvisTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.delvisTilrettelegging.tilrettelagtArbeidFom.påkrevd'
-                                )
+                                    'valideringsfeil.delvisTilrettelegging.tilrettelagtArbeidFom.påkrevd',
+                                ),
                             );
                         }
 
@@ -220,14 +220,14 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                             set(
                                 tErrors,
                                 `delvisTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                'valideringsfeil.delvisTilrettelegging.tilrettelagtArbeidFom.ugyldigDato'
+                                'valideringsfeil.delvisTilrettelegging.tilrettelagtArbeidFom.ugyldigDato',
                             );
                         } else {
                             if (moment(tilrettelagtArbeidFom).isSameOrAfter(søknad.barn.termindato)) {
                                 set(
                                     tErrors,
                                     `delvisTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.delvisTilrettelegging.forLangtFremITid'
+                                    'valideringsfeil.delvisTilrettelegging.forLangtFremITid',
                                 );
                             }
 
@@ -235,7 +235,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `delvisTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.delvisTilrettelegging.forLangtTilbakeITid'
+                                    'valideringsfeil.delvisTilrettelegging.forLangtTilbakeITid',
                                 );
                             }
 
@@ -243,7 +243,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `delvisTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.delvisTilrettelegging.tilrettelagtArbeidForTidlig'
+                                    'valideringsfeil.delvisTilrettelegging.tilrettelagtArbeidForTidlig',
                                 );
                             }
 
@@ -253,8 +253,8 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                     set(
                                         tErrors,
                                         `delvisTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                        'valideringsfeil.overlappendePeriode'
-                                    )
+                                        'valideringsfeil.overlappendePeriode',
+                                    ),
                                 );
                             }
                         }
@@ -270,7 +270,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                             set(
                                 tErrors,
                                 `helTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                'valideringsfeil.helTilrettelegging.tilrettelagtArbeidFom.påkrevd'
+                                'valideringsfeil.helTilrettelegging.tilrettelagtArbeidFom.påkrevd',
                             );
                         }
 
@@ -278,14 +278,14 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                             set(
                                 tErrors,
                                 `helTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                'valideringsfeil.helTilrettelegging.tilrettelagtArbeidFom.ugyldigDato'
+                                'valideringsfeil.helTilrettelegging.tilrettelagtArbeidFom.ugyldigDato',
                             );
                         } else {
                             if (moment(tilrettelagtArbeidFom).isBefore(tilrettelegging.behovForTilretteleggingFom)) {
                                 set(
                                     tErrors,
                                     `helTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.helTilrettelegging.tilrettelagtArbeidForTidlig'
+                                    'valideringsfeil.helTilrettelegging.tilrettelagtArbeidForTidlig',
                                 );
                             }
 
@@ -293,7 +293,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `helTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.helTilrettelegging.forLangtFremITid'
+                                    'valideringsfeil.helTilrettelegging.forLangtFremITid',
                                 );
                             }
 
@@ -301,7 +301,7 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                 set(
                                     tErrors,
                                     `helTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                    'valideringsfeil.helTilrettelegging.forLangtTilbakeITid'
+                                    'valideringsfeil.helTilrettelegging.forLangtTilbakeITid',
                                 );
                             }
 
@@ -311,8 +311,8 @@ const validateTilrettelegging = (søknad: UferdigSøknad, arbeidsforholdId?: str
                                     set(
                                         tErrors,
                                         `helTilrettelegging.${ind}.tilrettelagtArbeidFom`,
-                                        'valideringsfeil.overlappendePeriode'
-                                    )
+                                        'valideringsfeil.overlappendePeriode',
+                                    ),
                                 );
                             }
                         }

@@ -45,4 +45,6 @@ export const logEvent = async (eventName: string, eventProperties?: EventPropert
         });
         return Promise.race([timeoutPromise, logPromise]);
     }
+
+    return undefined;
 };

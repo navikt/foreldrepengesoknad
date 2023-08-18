@@ -16,7 +16,6 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.oppdragForNæreVennerEllerFamilie]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.inntektSomFosterforelder]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo.UNANSWERED,
 };
 
 const cleanUpRegnskapsførerNæring = (næring: Næring): Næring => {
@@ -66,7 +65,7 @@ export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInn
                   ...inntekt,
                   arbeidsgiverNavn: replaceInvisibleCharsWithSpace(inntekt.arbeidsgiverNavn),
               }
-            : inntekt
+            : inntekt,
     );
 };
 
@@ -75,7 +74,7 @@ export const mapInntektsinformasjonFormDataToState = (
     søker: Søker,
     andreInntekter?: AnnenInntekt[],
     frilansoppdrag?: FrilansOppdrag[],
-    næringer?: Næring[]
+    næringer?: Næring[],
 ): Søker => {
     let frilansInformasjon: Frilans | undefined = undefined;
 
@@ -84,7 +83,7 @@ export const mapInntektsinformasjonFormDataToState = (
             oppstart: ISOStringToDate(values.frilansOppstartsDato)!,
             jobberFremdelesSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser)!,
             harJobbetForNærVennEllerFamilieSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
-                values.oppdragForNæreVennerEllerFamilie
+                values.oppdragForNæreVennerEllerFamilie,
             )!,
             driverFosterhjem: convertYesOrNoOrUndefinedToBoolean(values.inntektSomFosterforelder),
             oppdragForNæreVennerEllerFamilieSiste10Mnd: cleanupInvisibleCharsFromFrilansinformasjon(frilansoppdrag!),
@@ -97,7 +96,7 @@ export const mapInntektsinformasjonFormDataToState = (
         harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattAndreInntekter)!,
         harJobbetSomFrilansSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
-            values.hattInntektSomNæringsdrivende
+            values.hattInntektSomNæringsdrivende,
         )!,
         andreInntekterSiste10Mnd:
             values.hattAndreInntekter === YesOrNo.YES ? cleanupInvisibleCharsFromAndreInntekter(andreInntekter!) : [],
@@ -114,7 +113,7 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
         ...initialInntektsinformasjonFormValues,
         hattAndreInntekter: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
         hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(
-            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         ),
         hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
         frilansOppstartsDato: søker.frilansInformasjon ? dateToISOString(søker.frilansInformasjon.oppstart) : '',
