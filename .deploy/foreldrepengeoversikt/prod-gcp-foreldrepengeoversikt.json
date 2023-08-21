@@ -8,7 +8,7 @@
         "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
         "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.nav.no/rest",
         "LOGINSERVICE_URL": "https://loginservice.nav.no/login",
-        "FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.nav.no",
+        "FP_UTTAK_SERVICE_URL": "https://foreldrepengesoknad-api.nav.no/rest",
         "KLAGE_URL": "https://familie.nav.no"
     }
 }
