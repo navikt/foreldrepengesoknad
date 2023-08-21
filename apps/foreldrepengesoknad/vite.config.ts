@@ -31,5 +31,6 @@ export default defineConfig({
             include: ['src/**/*'],
             exclude: [],
         },
+        maxConcurrency: 10,
     },
 });
