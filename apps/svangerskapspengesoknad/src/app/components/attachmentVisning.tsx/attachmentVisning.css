@@ -1,0 +1,22 @@
+.attachmentVisning {
+    border-radius: 8px;
+    border: 2px solid var(--border-strong, rgba(1, 11, 24, 0.68));
+    background: var(--surface-action-subtle, #e6f0ff);
+    display: grid;
+    grid-template-columns: 15% 1fr 15%;
+    width: 20rem;
+    padding: 1rem;
+    margin: 0.5rem;
+}
+
+.attachmentVisning__icon {
+    width: 2rem;
+    height: 2rem;
+    align-self: center;
+}
+
+.attachmentVisning__slett {
+    width: 2rem;
+    height: 2rem;
+    align-self: center;
+}
