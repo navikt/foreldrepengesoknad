@@ -43,7 +43,7 @@ spec:
     - name: LOGINSERVICE_URL
       value: "https://loginservice-testing.dev.nav.no/login"
     - name: FP_UTTAK_SERVICE_URL
-      value: "https://foreldrepengesoknad-api.intern.dev.nav.no"
+      value: "https://foreldrepengesoknad-api.intern.dev.nav.no/rest"
     - name: FEATURE_VIS_PERIODER_SOM_SENDES_INN
       value: "on"
     - name: FEATURE_BRUK_SAKER_V2
