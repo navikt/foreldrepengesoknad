@@ -12,6 +12,7 @@ import {
     leggTilVisningsInfo,
     normaliserPerioder,
     Periodene,
+    skalAnnenPartsPeriodeVises,
 } from 'app/utils/periodeUtils';
 import { NavRoutes } from 'app/routes/routes';
 import './din-plan.css';
@@ -26,6 +27,7 @@ interface Props {
     navnPåSøker: string;
     sak: Foreldrepengesak;
     visHelePlanen: boolean;
+    termindato: string | undefined;
 }
 
 const DinPlan: React.FunctionComponent<Props> = ({
@@ -34,6 +36,7 @@ const DinPlan: React.FunctionComponent<Props> = ({
     visHelePlanen,
     navnPåSøker,
     navnAnnenForelder,
+    termindato,
 }) => {
     const bem = bemUtils('din-plan');
 
@@ -50,8 +53,8 @@ const DinPlan: React.FunctionComponent<Props> = ({
     const annenPartsPerioderForVisning =
         annenPartsPerioder !== undefined
             ? getPerioderForVisning(
-                  slåSammenLikePerioder(annenPartsPerioder).filter((p) => p.resultat && p.resultat.innvilget === true),
-                  true
+                  slåSammenLikePerioder(annenPartsPerioder).filter((p) => skalAnnenPartsPeriodeVises(p, termindato)),
+                  true,
               )
             : undefined;
     let annenPartsPlan: Periode[] = [];
@@ -59,12 +62,12 @@ const DinPlan: React.FunctionComponent<Props> = ({
     if (søkersPlan && annenPartsPerioderForVisning) {
         const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(
             søkersPlan,
-            annenPartsPerioderForVisning
+            annenPartsPerioderForVisning,
         );
         søkersPlan = normaliserteEgnePerioder;
         const filtrerteAnnenPartsPerioder = filtrerAnnenPartsUttakNårIkkeSamtidigUttak(
             normaliserteAnnenPartsPerioder,
-            søkersPlan
+            søkersPlan,
         );
         annenPartsPlan = leggTilVisningsInfo(filtrerteAnnenPartsPerioder, søkersPlan);
     }
