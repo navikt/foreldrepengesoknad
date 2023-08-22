@@ -12,6 +12,7 @@ interface Props {
     uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | '';
     vedlegg: Attachment[];
     navnMor: string;
+    isOpen: boolean;
 }
 
 const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
@@ -19,6 +20,7 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
     uttakRundtFødselÅrsak,
     navnMor,
     vedlegg,
+    isOpen,
 }) => {
     const intl = useIntl();
     const radios = [
@@ -49,7 +51,7 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({
                 />
             </Block>
             <Block padBottom="l" visible={uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk}>
-                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} />
+                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} isOpen={isOpen} />
             </Block>
         </>
     );
