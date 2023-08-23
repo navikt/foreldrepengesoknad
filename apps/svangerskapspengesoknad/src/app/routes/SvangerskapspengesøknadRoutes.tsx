@@ -9,21 +9,43 @@ import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasj
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 import Tilrettelegging from 'app/steps/tilrettelegging/Tilrettelegging';
+import Oppsummering from 'app/steps/oppsummering/Oppsummering';
+import actionCreator from 'app/context/action/actionCreator';
 
 interface Props {
     currentRoute: SøknadRoutes;
 }
 
+export const getNesteTilretteleggingId = (
+    tilretteleggingBehov: TilretteleggingBehov[],
+    currentTilretteleggingId: string | undefined
+) => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[0].id;
+    }
+    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
+    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
+        return undefined;
+    }
+    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
+};
+
 export const findNextRouteForTilrettelegging = (
     currentRoute: SøknadRoutes,
-    tilretteleggingBehov: TilretteleggingBehov[] | undefined
+    currentTilretteleggingId: string | undefined,
+    tilretteleggingBehov: TilretteleggingBehov[] | undefined,
+    dispatch: any
 ): any => {
     if (tilretteleggingBehov === undefined || tilretteleggingBehov.length === 0) {
         return SøknadRoutes.ARBEID;
-    } else if (currentRoute === SøknadRoutes.ARBEID) {
-        return `${SøknadRoutes.PERIODE}/${tilretteleggingBehov[0].id}`;
     } else if (currentRoute === SøknadRoutes.PERIODE) {
-        return `${SøknadRoutes.PERIODE}/${tilretteleggingBehov[0].id}`;
+        const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingBehov, currentTilretteleggingId);
+        dispatch(actionCreator.setCurrentTilretteleggingId(nesteTilretteleggingId));
+        if (nesteTilretteleggingId) {
+            return `${SøknadRoutes.PERIODE}/${nesteTilretteleggingId}`;
+        } else {
+            return SøknadRoutes.OPPSUMMERING;
+        }
     }
     return SøknadRoutes.ARBEID;
 };
@@ -32,6 +54,7 @@ const getTilretteleggingRoutes = (tilretteleggingValg: TilretteleggingBehov[] | 
     return tilretteleggingValg?.map((tilrettelegging) => {
         return (
             <Route
+                key={tilrettelegging.id}
                 path={`${SøknadRoutes.PERIODE}/${tilrettelegging.id}`}
                 element={
                     <Tilrettelegging id={tilrettelegging.id} type={tilrettelegging.type} navn={tilrettelegging.label} />
@@ -51,6 +74,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
             <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
             <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             {getTilretteleggingRoutes(tilretteleggingBehov)}
+            <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />
         </>
     );
 };

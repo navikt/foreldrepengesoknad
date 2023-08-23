@@ -25,6 +25,7 @@ export interface Props {
     onFileInputClick?: () => void;
     skjemanummer: Skjemanummer;
     validateHasAttachment: boolean;
+    description?: string;
 }
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
