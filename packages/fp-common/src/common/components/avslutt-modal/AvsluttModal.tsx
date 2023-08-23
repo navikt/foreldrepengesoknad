@@ -18,7 +18,10 @@ const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgS
         <Modal open={isOpen} onClose={() => setIsOpen(false)} closeButton={true}>
             <Modal.Content className={bem.element('content')}>
                 <Heading size="medium">Fortsett senere</Heading>
-                <BodyLong>Søknaden er lagret, og du kan fullføre den senere, eller velge å slette den</BodyLong>
+                <BodyLong>
+                    Søknaden er lagret, og du kan fullføre den senere, eller velge å slette den. Søknaden blir lagret i
+                    24 timer.
+                </BodyLong>
                 <div className={bem.element('button-wrapper')}>
                     <Button variant="tertiary" onClick={onAvbrytOgSlett}>
                         Slett søknaden
