@@ -1,11 +1,9 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useState } from 'react';
 import bemUtils from '../../utils/bemUtils';
-import ActionLink from '../action-link/ActionLink';
-import AvbrytSoknadDialog from '../dialogs/avbryt-soknad-dialog/AvbrytSoknadDialog';
-import FortsettSøknadSenereDialog from '../dialogs/fortsett-søknad-senere-dialog/FortsettSøknadSenereDialog';
+import AvsluttModal from '../avslutt-modal/AvsluttModal';
 
 import './stepFooter.less';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
     onAvbrytOgFortsettSenere?: () => void;
@@ -13,8 +11,7 @@ interface Props {
 }
 
 function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
-    const [visAvbrytDialog, setVisAvbrytDialog] = React.useState<boolean>(false);
-    const [visFortsettSenereDialog, setVisFortsettSenereDialog] = React.useState<boolean>(false);
+    const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
 
     const bem = bemUtils('stepFooter');
     return (
@@ -22,35 +19,17 @@ function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
             <div className={bem.block}>
                 <div className={bem.element('divider')} />
                 <div className={bem.element('links')}>
-                    {onAvbrytOgFortsettSenere && (
-                        <ActionLink onClick={() => setVisFortsettSenereDialog(true)}>
-                            <FormattedMessage id="steg.footer.fortsettSenere" />
-                        </ActionLink>
-                    )}
-                    {onAvbrytOgSlett && (
-                        <ActionLink
-                            className={bem.element('avbrytSoknadLenke')}
-                            onClick={() => setVisAvbrytDialog(true)}
-                        >
-                            <FormattedMessage id="steg.footer.avbryt" />
-                        </ActionLink>
-                    )}
+                    <AvsluttModal
+                        isOpen={avsluttIsOpen}
+                        setIsOpen={setAvsluttIsOpen}
+                        onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
+                        onAvbrytOgSlett={onAvbrytOgSlett}
+                    />
+                    <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+                        Avslutt
+                    </Button>
                 </div>
             </div>
-            {onAvbrytOgFortsettSenere && (
-                <FortsettSøknadSenereDialog
-                    synlig={visFortsettSenereDialog}
-                    onFortsettSøknadSenere={onAvbrytOgFortsettSenere}
-                    onFortsettSøknad={() => setVisFortsettSenereDialog(false)}
-                />
-            )}
-            {onAvbrytOgSlett && (
-                <AvbrytSoknadDialog
-                    synlig={visAvbrytDialog}
-                    onAvbrytSøknad={onAvbrytOgSlett}
-                    onFortsettSøknad={() => setVisAvbrytDialog(false)}
-                />
-            )}
         </>
     );
 }
