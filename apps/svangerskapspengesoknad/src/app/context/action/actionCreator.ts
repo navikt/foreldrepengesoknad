@@ -59,10 +59,10 @@ const setCurrentRoute = (payload: SøknadRoutes): SetCurrentRoute => ({
 
 interface SetCurrentTilretteleggingId {
     type: SvangerskapspengerContextActionKeys.SET_CURRENT_TILRETTELEGGING_ID;
-    payload: string;
+    payload: string | undefined;
 }
 
-const setCurrentTilretteleggingId = (payload: string): SetCurrentTilretteleggingId => ({
+const setCurrentTilretteleggingId = (payload: string | undefined): SetCurrentTilretteleggingId => ({
     type: SvangerskapspengerContextActionKeys.SET_CURRENT_TILRETTELEGGING_ID,
     payload,
 });

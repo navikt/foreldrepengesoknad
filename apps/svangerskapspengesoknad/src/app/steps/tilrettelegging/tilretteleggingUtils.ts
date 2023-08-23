@@ -5,8 +5,10 @@ import { Tilrettelegging } from 'app/types/Tilrettelegging';
 const getInitValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.tilrettelagtArbeidFom]: '',
     [TilretteleggingFormField.tilretteleggingsType]: '',
+    [TilretteleggingFormField.vedlegg]: [],
 });
 
+//TODO: do we need this? Always visible now.
 export const cleanupOmTilretteleggingFormData = (
     values: TilretteleggingFormData,
     visibility: QuestionVisibility<TilretteleggingFormField, undefined>
@@ -18,6 +20,7 @@ export const cleanupOmTilretteleggingFormData = (
         tilretteleggingsType: visibility.isVisible(TilretteleggingFormField.tilretteleggingsType)
             ? values.tilretteleggingsType
             : '',
+        vedlegg: visibility.isVisible(TilretteleggingFormField.vedlegg) ? values.vedlegg : [],
     };
 
     return cleanedData;

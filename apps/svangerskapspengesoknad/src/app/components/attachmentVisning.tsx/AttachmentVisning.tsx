@@ -7,21 +7,23 @@ import { Block, bemUtils } from '@navikt/fp-common';
 
 interface Props {
     vedlegg: Attachment;
-    handleSlettVedlegg: (vedlegg: Attachment) => void;
+    onDelete: (vedlegg: Attachment) => void;
 }
 
-const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, handleSlettVedlegg }) => {
+const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
     const bem = bemUtils('attachmentVisning');
-    const handleOnClick = handleSlettVedlegg(vedlegg);
+    const filstørrelseKB = Math.round(vedlegg.filesize * 0.001);
     return (
         <div className={bem.block}>
             <FileIcon className={bem.element('icon')} title="Opplastet fil" />
             <div>
                 <Block padBottom="s">
-                    <BodyShort size="medium">{vedlegg.filename}</BodyShort>
+                    <BodyShort className={bem.element('filename')} size="medium">
+                        {vedlegg.filename}
+                    </BodyShort>
                 </Block>
                 <Block padBottom="s">
-                    <BodyShort size="small">{vedlegg.filesize}</BodyShort>
+                    <BodyShort size="small">{`${filstørrelseKB} kb`}</BodyShort>
                 </Block>
             </div>
 
@@ -30,7 +32,7 @@ const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, handleSlettVedle
                 variant="secondary"
                 className={bem.element('slett')}
                 icon={<XMarkIcon aria-hidden />}
-                onClick={() => handleOnClick}
+                onClick={() => onDelete}
             />
         </div>
     );

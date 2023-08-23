@@ -17,7 +17,14 @@ const useOnValidSubmit = <T>(
     useEffect(() => {
         if (harSubmitted) {
             if (state.currentRoute === SøknadRoutes.ARBEID || state.currentRoute === SøknadRoutes.PERIODE) {
-                navigate(findNextRouteForTilrettelegging(state.currentRoute, state.tilretteleggingBehov));
+                navigate(
+                    findNextRouteForTilrettelegging(
+                        state.currentRoute,
+                        state.currentTilretteleggingId,
+                        state.tilretteleggingBehov,
+                        dispatch
+                    )
+                );
             } else {
                 navigate(state.currentRoute);
             }

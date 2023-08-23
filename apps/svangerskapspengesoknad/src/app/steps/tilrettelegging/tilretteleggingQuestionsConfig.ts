@@ -12,6 +12,10 @@ const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormData, Tilrett
         isIncluded: () => true,
         isAnswered: ({ tilretteleggingsType }) => hasValue(tilretteleggingsType),
     },
+    [TilretteleggingFormField.vedlegg]: {
+        isIncluded: () => true,
+        isAnswered: ({ vedlegg }) => hasValue(vedlegg),
+    },
 };
 
 const tilretteleggingQuestionsConfig = Questions<TilretteleggingFormData, TilretteleggingFormField>(

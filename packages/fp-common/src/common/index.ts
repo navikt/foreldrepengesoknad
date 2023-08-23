@@ -1,6 +1,7 @@
 export { default as LanguageToggle } from './components/language-toggle/LanguageToggle';
 export { default as Sidebanner } from './components/sidebanner/Sidebanner';
 export { default as Block } from './components/block/Block';
+export { default as FormikFileUploader } from './components/formik-file-uploader/FormikFileUploader';
 export { default as Step } from './components/step/Step';
 export { default as SlettKnapp } from './components/slett-knapp/SlettKnapp';
 export { default as ItemList } from './components/item-list/ItemList';
