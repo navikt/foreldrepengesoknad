@@ -1,5 +1,4 @@
-import { Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
-// import { Block, hasValue, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 
@@ -20,9 +19,8 @@ import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataT
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-// import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
-// import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
+import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
@@ -102,13 +100,13 @@ const OmBarnet: React.FunctionComponent = () => {
                     søknadGjelderEtNyttBarn: barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn,
                 } as OmBarnetQuestionPayload);
 
-                // const farMedmorSøkerPåTerminFørWLB =
-                //     erFarEllerMedmor &&
-                //     convertYesOrNoOrUndefinedToBoolean(formValues.erBarnetFødt) === false &&
-                //     hasValue(formValues.termindato) &&
-                //     !andreAugust2022ReglerGjelder(ISOStringToDate(formValues.termindato)!);
+                const farMedmorSøkerPåTerminFørWLB =
+                    erFarEllerMedmor &&
+                    convertYesOrNoOrUndefinedToBoolean(formValues.erBarnetFødt) === false &&
+                    hasValue(formValues.termindato) &&
+                    !andreAugust2022ReglerGjelder(ISOStringToDate(formValues.termindato)!);
 
-                // const visGåVidereKnapp = visibility.areAllQuestionsAnswered() && !farMedmorSøkerPåTerminFørWLB;
+                const visGåVidereKnapp = visibility.areAllQuestionsAnswered() && !farMedmorSøkerPåTerminFørWLB;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -158,13 +156,15 @@ const OmBarnet: React.FunctionComponent = () => {
                                     <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button
-                                        type="submit"
-                                        disabled={isSubmitting || erForTidligTilÅSøkePåTermin}
-                                        loading={isSubmitting}
-                                    >
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
+                                    {visGåVidereKnapp && (
+                                        <Button
+                                            type="submit"
+                                            disabled={isSubmitting || erForTidligTilÅSøkePåTermin}
+                                            loading={isSubmitting}
+                                        >
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
                                 </StepButtonWrapper>
                             </Block>
                         </OmBarnetFormComponents.Form>
