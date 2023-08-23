@@ -22,6 +22,7 @@ interface Props {
     vedlegg: Attachment[];
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
+    isOpen: boolean;
 }
 
 const getUtsettelseÅrsakOptions = (
@@ -31,7 +32,7 @@ const getUtsettelseÅrsakOptions = (
     erFarEllerMedmor: boolean,
     tidsperiodenErInnenforFørsteSeksUker: boolean,
     erMorUfør: boolean,
-    søkerErFarEllerMedmorOgKunDeHarRett: boolean
+    søkerErFarEllerMedmorOgKunDeHarRett: boolean,
 ) => {
     const allRadios: FormikRadioProp[] = [
         {
@@ -199,6 +200,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     vedlegg,
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
+    isOpen,
 }) => {
     const intl = useIntl();
     const årsakOptions = getUtsettelseÅrsakOptions(
@@ -208,7 +210,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
         erFarEllerMedmor,
         tidsperiodenErInnenforFørsteSeksUker,
         erMorUfør,
-        søkerErFarEllerMedmorOgKunDeHarRett
+        søkerErFarEllerMedmorOgKunDeHarRett,
     );
 
     if (årsakOptions.length === 0) {
@@ -253,7 +255,7 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
             <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
                 <GuidePanel>{getVeilederTekst(utsettelseårsak)}</GuidePanel>
             </Block>
-            <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
+            <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak) && isOpen}>
                 <FormikFileUploader
                     legend="Dokumentasjon for utsettelsesårsak"
                     label={getAttachmentUploaderLabel(utsettelseårsak)}

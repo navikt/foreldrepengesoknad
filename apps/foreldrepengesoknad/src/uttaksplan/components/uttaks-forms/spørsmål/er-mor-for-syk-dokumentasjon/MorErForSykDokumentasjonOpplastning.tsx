@@ -11,9 +11,10 @@ import { GuidePanel } from '@navikt/ds-react';
 interface Props {
     vedlegg: Attachment[];
     navnMor: string;
+    isOpen: boolean;
 }
 
-const MorErForSykDokumentasjonOpplastning: FunctionComponent<Props> = ({ navnMor, vedlegg }) => {
+const MorErForSykDokumentasjonOpplastning: FunctionComponent<Props> = ({ navnMor, vedlegg, isOpen }) => {
     return (
         <>
             <Block padBottom="l">
@@ -21,7 +22,7 @@ const MorErForSykDokumentasjonOpplastning: FunctionComponent<Props> = ({ navnMor
                     <FormattedMessage id="uttaksplan.erMorForSykVeileder" values={{ navn: navnMor }} />
                 </GuidePanel>
             </Block>
-            <Block>
+            <Block visible={isOpen}>
                 <FormikFileUploader
                     legend="Dokumentasjon for mors sykdom"
                     label="Last opp dokumentasjon for mors sykdom"

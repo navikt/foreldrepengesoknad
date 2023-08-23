@@ -51,6 +51,7 @@ interface Props {
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
+    isOpen: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -70,6 +71,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     situasjon,
     utsettelserIPlan,
     setPerioderErGyldige,
+    isOpen,
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -96,13 +98,13 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 if (!isNyPeriode) {
                     handleUpdatePeriode(
                         mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
-                        familiehendelsesdato
+                        familiehendelsesdato,
                     );
                 } else {
                     setNyPeriodeFormIsVisible!(false);
                     handleAddPeriode!(
                         mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
-                        familiehendelsesdato
+                        familiehendelsesdato,
                     );
                 }
             }}
@@ -189,6 +191,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     vedlegg={values.vedlegg!}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block
@@ -218,6 +221,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     navnPåForeldre={navnPåForeldre}
                                     FormComponents={PeriodeUtsettelseFormComponents}
                                     vedleggFieldName={PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block
