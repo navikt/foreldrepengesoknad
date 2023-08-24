@@ -12,6 +12,7 @@ const IkkeMyndig: FunctionComponent<IkkeMyndigProps> = ({ fornavn }) => {
     const intl = useIntl();
 
     return (
+        //TODO: Lag en egen side for dette
         <Feilside
             dokumenttittel="NAV Svangerskapspengesøknad"
             ingress=""
