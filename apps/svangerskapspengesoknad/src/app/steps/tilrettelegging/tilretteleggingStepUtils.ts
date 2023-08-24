@@ -1,10 +1,9 @@
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
-import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingFormConfig';
+import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingStepFormConfig';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
 
 const getInitValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.tilrettelagtArbeidFom]: '',
-    [TilretteleggingFormField.tilretteleggingsType]: '',
     [TilretteleggingFormField.vedlegg]: [],
 });
 
@@ -16,9 +15,6 @@ export const cleanupOmTilretteleggingFormData = (
     const cleanedData: TilretteleggingFormData = {
         tilrettelagtArbeidFom: visibility.isVisible(TilretteleggingFormField.tilrettelagtArbeidFom)
             ? values.tilrettelagtArbeidFom
-            : '',
-        tilretteleggingsType: visibility.isVisible(TilretteleggingFormField.tilretteleggingsType)
-            ? values.tilretteleggingsType
             : '',
         vedlegg: visibility.isVisible(TilretteleggingFormField.vedlegg) ? values.vedlegg : [],
     };

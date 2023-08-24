@@ -15,6 +15,7 @@ import { Button } from '@navikt/ds-react';
 import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../validation/arbeidIUtlandetValidation';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
+import './arbeid-i-utlandet-input.css';
 
 interface Props {
     formValues: Partial<ArbeidIUtlandetSubformData>;

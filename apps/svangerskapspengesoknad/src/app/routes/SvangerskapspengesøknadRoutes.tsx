@@ -8,7 +8,7 @@ import Barnet from 'app/steps/barnet/Barnet';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
-import Tilrettelegging from 'app/steps/tilrettelegging/Tilrettelegging';
+import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import actionCreator from 'app/context/action/actionCreator';
 
@@ -57,7 +57,11 @@ const getTilretteleggingRoutes = (tilretteleggingValg: TilretteleggingBehov[] | 
                 key={tilrettelegging.id}
                 path={`${SøknadRoutes.PERIODE}/${tilrettelegging.id}`}
                 element={
-                    <Tilrettelegging id={tilrettelegging.id} type={tilrettelegging.type} navn={tilrettelegging.label} />
+                    <TilretteleggingStep
+                        id={tilrettelegging.id}
+                        type={tilrettelegging.type}
+                        navn={tilrettelegging.label}
+                    />
                 }
             />
         );
