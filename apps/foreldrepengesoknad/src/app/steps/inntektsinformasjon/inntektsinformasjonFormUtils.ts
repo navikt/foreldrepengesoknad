@@ -16,7 +16,6 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.oppdragForNæreVennerEllerFamilie]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.inntektSomFosterforelder]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo.UNANSWERED,
 };
 
 const cleanUpRegnskapsførerNæring = (næring: Næring): Næring => {

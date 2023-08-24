@@ -38,5 +38,5 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
             senereOpphold: [],
         },
     },
-    tilretteleggingBehov: undefined!,
+    tilretteleggingBehov: [],
 };
