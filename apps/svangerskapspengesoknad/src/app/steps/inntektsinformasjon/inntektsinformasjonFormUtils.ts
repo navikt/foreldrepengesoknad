@@ -75,7 +75,10 @@ export const mapInntektsinformasjonFormDataToState = (
     };
 };
 
-export const getInitialInntektsinformasjonFormValues = (søker: Søker): InntektsinformasjonFormData => {
+export const getInitialInntektsinformasjonFormValues = (
+    søker: Søker,
+    tilretteleggingsBehov: TilretteleggingBehov[]
+): InntektsinformasjonFormData => {
     const init = {
         ...initialInntektsinformasjonFormValues,
         hattArbeidIUtlandet: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
@@ -83,6 +86,7 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
             søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
         ),
         hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
+        tilrettelegging: tilretteleggingsBehov.map((t) => t.id),
     };
     return init;
 };

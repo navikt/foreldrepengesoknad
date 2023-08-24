@@ -40,11 +40,14 @@ import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlan
 import { VelgSøknadsgrunnlag } from 'app/types/VelgSøknadsgrunnlag';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
+import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
+    const { state } = useSvangerskapspengerContext();
+    const { tilretteleggingBehov } = state;
     const { termindato } = barn;
 
     const [frilans, setFrilans] = useState<Frilans | undefined>(
@@ -73,7 +76,10 @@ const Inntektsinformasjon = () => {
             arbeidsforhold,
             termindato
         );
-        return [actionCreator.setTilretteleggingBehov(arbeidMedTilretteleggingsBehov)];
+        return [
+            actionCreator.setSøker(updatedSøker),
+            actionCreator.setTilretteleggingBehov(arbeidMedTilretteleggingsBehov),
+        ];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
 
@@ -81,7 +87,7 @@ const Inntektsinformasjon = () => {
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
-            initialValues={getInitialInntektsinformasjonFormValues(søker)}
+            initialValues={getInitialInntektsinformasjonFormValues(søker, tilretteleggingBehov)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const tilretteleggingsValg = mapArbeidsforholdToSøknadsgrunnlagOptions(
