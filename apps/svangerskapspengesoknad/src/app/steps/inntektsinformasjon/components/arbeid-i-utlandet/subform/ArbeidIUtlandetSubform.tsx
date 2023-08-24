@@ -1,4 +1,3 @@
-import './arbeid-i-utlandet-input.css';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { FunctionComponent } from 'react';
 import { ArbeidIUtlandetSubformComponents, ArbeidIUtlandetSubformData } from './arbeidIUtlandetSubformConfig';
@@ -28,7 +27,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     return (
         <ArbeidIUtlandetSubformComponents.FormikWrapper
             initialValues={getInitialArbeidIUtlandetFormData(selectedAnnenInntekt)}
-            onSubmit={() => undefined}
+            onSubmit={() => console.log('submit')}
             renderForm={({ values: formValues, errors, validateForm }) => {
                 const visibility = arbeidIUtlandetSubformQuestionsConfig.getVisbility(
                     formValues as ArbeidIUtlandetSubformData

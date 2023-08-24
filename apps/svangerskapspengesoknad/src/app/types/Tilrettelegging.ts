@@ -12,50 +12,47 @@ export enum Arbeidsforholdstype {
     'PRIVAT' = 'privat',
 }
 
-export interface TilretteleggingArbeidsforhold {
+export interface ArbeidsforholdForTilrettelegging {
     id?: string;
     type: Arbeidsforholdstype;
 }
 
-export interface DelvisTilrettelegging {
+export interface DelvisTilretteleggingDTO {
     tilrettelagtArbeidFom: string;
     stillingsprosent: number;
 }
 
-export interface HelTilrettelegging {
+export interface HelTilretteleggingDTO {
     tilrettelagtArbeidFom: string;
 }
 
-export interface IngenTilrettelegging {
+//TODO: Kan slettes?
+export interface IngenTilretteleggingDTO {
     slutteArbeidFom: string;
+}
+
+export interface TilretteleggingInput {
+    type: Tilretteleggingstype;
+    fom: string;
+    stillingsprosent: number;
+}
+
+export interface TilretteleggingDTO {
+    id: string;
+    behovForTilretteleggingFom: string;
+    arbeidsforhold: ArbeidsforholdForTilrettelegging;
+    vedlegg: string[];
+    helTilrettelegging?: HelTilretteleggingDTO[];
+    delvisTilrettelegging?: DelvisTilretteleggingDTO[];
+    ingenTilrettelegging?: IngenTilretteleggingDTO[];
 }
 
 export interface Tilrettelegging {
     id: string;
     behovForTilretteleggingFom: string;
-    arbeidsforhold: TilretteleggingArbeidsforhold;
+    arbeidsforhold: ArbeidsforholdForTilrettelegging;
     vedlegg: string[];
-    helTilrettelegging?: HelTilrettelegging[];
-    delvisTilrettelegging?: DelvisTilrettelegging[];
-    ingenTilrettelegging?: IngenTilrettelegging[];
+    tilrettelegginger: TilretteleggingInput[];
 }
-
-export type UferdigTilrettelegging = Tilrettelegging & {
-    behovForTilretteleggingFom?: string;
-    type: Tilretteleggingstype[];
-    helTilrettelegging?: [
-        {
-            tilrettelagtArbeidFom?: string;
-        }
-    ];
-    delvisTilrettelegging?: DelvisTilrettelegging[];
-    ingenTilrettelegging?: [
-        {
-            slutteArbeidFom?: string;
-        }
-    ];
-    risikoFaktorer?: string;
-    tilretteleggingstiltak?: string;
-};
 
 export default Tilrettelegging;

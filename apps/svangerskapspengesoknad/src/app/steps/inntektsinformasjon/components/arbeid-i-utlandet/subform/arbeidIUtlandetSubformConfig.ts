@@ -17,14 +17,6 @@ export interface ArbeidIUtlandetSubformData {
     [ArbeidIUtlandetSubformField.arbeidIUtlandetTom]: string;
 }
 
-export const initialArbeidIUtlandetSubformData: ArbeidIUtlandetSubformData = {
-    [ArbeidIUtlandetSubformField.arbeidIUtlandetLand]: '',
-    [ArbeidIUtlandetSubformField.arbeidIUtlandetNavnArbeidsgiver]: '',
-    [ArbeidIUtlandetSubformField.arbeidIUtlandetFom]: '',
-    [ArbeidIUtlandetSubformField.arbeidIUtlandetErPågående]: YesOrNo.UNANSWERED,
-    [ArbeidIUtlandetSubformField.arbeidIUtlandetTom]: '',
-};
-
 export const ArbeidIUtlandetSubformComponents = getTypedFormComponents<
     ArbeidIUtlandetSubformField,
     ArbeidIUtlandetSubformData

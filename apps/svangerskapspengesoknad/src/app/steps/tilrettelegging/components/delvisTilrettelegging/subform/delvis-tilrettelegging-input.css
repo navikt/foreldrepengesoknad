@@ -1,0 +1,10 @@
+.delvisTilretteleggingInput {
+    background-color: var(--a-deepblue-50);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: var(--app-max-width);
+}
+
+.delvisTilretteleggingInput__avbryt {
+    margin-left: 1rem;
+}
