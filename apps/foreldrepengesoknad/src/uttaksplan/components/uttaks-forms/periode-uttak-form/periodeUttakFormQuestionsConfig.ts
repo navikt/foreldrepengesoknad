@@ -20,6 +20,7 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;
+    isOpen: boolean;
 }
 
 export const erSamtidigUttakFarMedmorFørFødselWLB = (
@@ -27,7 +28,7 @@ export const erSamtidigUttakFarMedmorFørFødselWLB = (
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ) => {
     return (
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
@@ -44,7 +45,7 @@ export const erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB = (
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ) => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
 
@@ -63,7 +64,7 @@ export const skalViseWLBInfoOmSamtidigUttakRundtFødsel = (
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ) => {
     return (
         values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.samtidigUttak ||
@@ -76,7 +77,7 @@ const skalViseGradering = (
     values: PeriodeUttakFormData,
     familiehendelsesdato: Date,
     erDeltUttakINorge: boolean,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ): boolean => {
     if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
         return false;
@@ -160,7 +161,7 @@ const skalViseFlerbarnsdager = (
     kontoValue: StønadskontoType | '',
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ): boolean => {
     if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
         return false;
@@ -174,7 +175,7 @@ const skalViseFlerbarnsdager = (
             kontoValue,
             erFarEllerMedmor,
             termindato,
-            situasjon
+            situasjon,
         ) &&
         values.uttakRundtFødselÅrsak === ''
     ) {
@@ -193,7 +194,7 @@ const skalViseKonto = (
     familiehendelsesdato: Date,
     erDeltUttakINorge: boolean,
     erFarEllerMedmor: boolean,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ): boolean => {
     const tidsperiode = { fom: values.fom, tom: values.tom };
     if (!isValidTidsperiode(tidsperiode)) {
@@ -205,7 +206,7 @@ const skalViseKonto = (
             erDeltUttakINorge,
             familiehendelsesdato,
             erFarEllerMedmor,
-            situasjon
+            situasjon,
         ) &&
         !hasValue(values.hvemSkalTaUttak)
     ) {
@@ -237,7 +238,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
                 regelProps.familiehendelsesdato,
                 regelProps.erDeltUttakINorge,
                 regelProps.erFarEllerMedmor,
-                regelProps.situasjon
+                regelProps.situasjon,
             ),
     },
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: {
@@ -253,7 +254,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
                 values.konto,
                 regelProps.erFarEllerMedmor,
                 regelProps.termindato,
-                regelProps.situasjon
+                regelProps.situasjon,
             ),
     },
     [PeriodeUttakFormField.erMorForSyk]: {
@@ -287,7 +288,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
                 values,
                 regelProps.familiehendelsesdato,
                 regelProps.erDeltUttakINorge,
-                regelProps.annenForelder
+                regelProps.annenForelder,
             ),
     },
     [PeriodeUttakFormField.stillingsprosent]: {
@@ -319,13 +320,13 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     },
     [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: {
         isAnswered: ({ values }) => values.aktivitetskravMorDokumentasjon.length >= 0,
-        isIncluded: ({ values, regelProps }) =>
-            getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
+        isIncluded: ({ values, regelProps, isOpen }) =>
+            getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares() && isOpen,
         visibilityFilter: ({ values, regelProps }) =>
             skalViseAktivitetskrav(getUttakSkjemaregler(values, regelProps), values),
     },
 };
 
 export const periodeUttakFormQuestionsConfig = Questions<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField>(
-    PeriodeUttakFormConfig
+    PeriodeUttakFormConfig,
 );

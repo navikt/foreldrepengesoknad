@@ -22,12 +22,13 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     aktivitetskravMorValue: MorsAktivitet | '';
     aktivitetskravVedlegg: Attachment[];
+    isOpen: boolean;
 }
 
 const getVeilederTekst = (
     intl: IntlShape,
     morsAktivitetIPerioden: MorsAktivitet | '',
-    navnPåForeldre: NavnPåForeldre
+    navnPåForeldre: NavnPåForeldre,
 ) => {
     if (morsAktivitetIPerioden === MorsAktivitet.Arbeid) {
         return (
@@ -124,7 +125,7 @@ const renderOptions = (intl: IntlShape) => {
         .filter(
             (aktivitetsid) =>
                 (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.Uføre &&
-                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.IkkeOppgitt
+                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.IkkeOppgitt,
         )
         .map((aktivitetsid) => (
             <option value={(MorsAktivitet as any)[aktivitetsid]} key={(MorsAktivitet as any)[aktivitetsid]}>
@@ -159,6 +160,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
     aktivitetskravMorValue,
     aktivitetskravVedlegg,
     FormComponents,
+    isOpen,
 }) => {
     const intl = useIntl();
 
@@ -202,7 +204,8 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                     </BodyShort>
                 </GuidePanel>
             </Block>
-            <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
+
+            <Block padBottom="l" visible={hasValue(aktivitetskravMorValue) && isOpen}>
                 <FormikFileUploader
                     legend="Dokumentasjon for mors aktivitet"
                     label="Last opp dokumentasjon for mors aktivitet"

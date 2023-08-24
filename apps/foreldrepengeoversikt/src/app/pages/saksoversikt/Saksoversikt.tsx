@@ -53,7 +53,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                   aktiv &&
                   saksnr === gjeldendeSak.saksnummer &&
                   dayjs(gyldigTil).isSameOrAfter(new Date(), 'days') &&
-                  hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK
+                  hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK,
           )
         : undefined;
     const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
@@ -78,7 +78,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
         annenPartFnr,
         barnFnr,
         familiehendelsesdato,
-        annenPartVedtakIsSuspended
+        annenPartVedtakIsSuspended,
     );
 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
@@ -145,6 +145,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                         navnPåSøker={navnPåSøker}
                         navnAnnenForelder={navnAnnenForelder}
                         annenPartsPerioder={annenPartsVedtakData?.perioder}
+                        termindato={gjeldendeSak.familiehendelse.termindato}
                     />
                 </ContentSection>
             )}

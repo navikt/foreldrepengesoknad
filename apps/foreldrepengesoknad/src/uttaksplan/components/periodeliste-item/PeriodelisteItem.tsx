@@ -83,7 +83,8 @@ const renderPeriodeListeInnhold = (
     termindato: Date | undefined,
     antallBarn: number,
     utsettelserIPlan: Utsettelsesperiode[],
-    intl: IntlShape
+    intl: IntlShape,
+    isOpen: boolean,
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -127,6 +128,7 @@ const renderPeriodeListeInnhold = (
                     antallBarn={antallBarn}
                     utsettelserIPlan={utsettelserIPlan}
                     intl={intl}
+                    isOpen={isOpen}
                 />
             );
         case Periodetype.Utsettelse:
@@ -146,6 +148,7 @@ const renderPeriodeListeInnhold = (
                     situasjon={situasjon}
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}
+                    isOpen={isOpen}
                 />
             );
         case Periodetype.Hull:
@@ -288,7 +291,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                             termindato,
                             antallBarn,
                             utsettelserIPlan,
-                            intl
+                            intl,
+                            isOpen,
                         )}
                     </Accordion.Content>
                 </Accordion.Item>

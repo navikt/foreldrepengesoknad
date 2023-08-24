@@ -97,6 +97,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 antallBarn={antallBarn}
                 utsettelserIPlan={utsettelserIPlan}
                 intl={intl}
+                isOpen={true}
             />
         </>
     ) : (
@@ -116,6 +117,7 @@ const NyPeriode: FunctionComponent<Props> = ({
             situasjon={situasjon}
             utsettelserIPlan={utsettelserIPlan}
             setPerioderErGyldige={setPerioderErGyldige}
+            isOpen={true}
         />
     );
 };

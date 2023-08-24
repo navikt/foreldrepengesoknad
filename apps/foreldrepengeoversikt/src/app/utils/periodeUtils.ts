@@ -73,14 +73,14 @@ export const finnDuplikatePerioderPgaArbeidsforohld = (periode: Periode, periode
         .filter((p) =>
             isEqual(
                 getFelterForSammenligningAvDuplikatePerioderPgaArbeidsforhold(p),
-                getFelterForSammenligningAvDuplikatePerioderPgaArbeidsforhold(periode)
-            )
+                getFelterForSammenligningAvDuplikatePerioderPgaArbeidsforhold(periode),
+            ),
         );
 };
 
 export const erDuplikatPeriodePgaFlereArbeidsforhold = (
     periode: Periode,
-    uttaksperiodeDtoListe: Periode[]
+    uttaksperiodeDtoListe: Periode[],
 ): boolean => {
     return finnDuplikatePerioderPgaArbeidsforohld(periode, uttaksperiodeDtoListe).length > 0;
 };
@@ -111,13 +111,13 @@ export const gyldigePerioderForVisning = (periode: Periode, erPlanVedtatt: boole
 const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     periode: Periode,
     index: number,
-    perioder: Periode[]
+    perioder: Periode[],
 ) => {
     const likePerioder = perioder.filter(
         (periode2, index_periode2) =>
             index !== index_periode2 &&
             dayjs(periode.fom).isSame(periode2.fom, 'd') &&
-            dayjs(periode.tom).isSame(periode2.tom, 'd')
+            dayjs(periode.tom).isSame(periode2.tom, 'd'),
     );
 
     if (likePerioder.length === 0) {
@@ -135,7 +135,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 
 export const getCleanedPlanForVisning = (
     plan: Periode[] | undefined,
-    erPlanVedtatt: boolean
+    erPlanVedtatt: boolean,
 ): Periode[] | undefined => {
     if (plan === undefined) {
         return undefined;
@@ -143,11 +143,11 @@ export const getCleanedPlanForVisning = (
     const filtrertPlan = plan.filter((periode) => !isOppholdsperiode(periode));
     if (erPlanVedtatt) {
         const utenOverlappendeAvslåttePerioder = filtrertPlan.filter((p, index) =>
-            filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode(p, index, plan)
+            filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode(p, index, plan),
         );
 
         const gyldigePerioder = utenOverlappendeAvslåttePerioder.filter((p) =>
-            gyldigePerioderForVisning(p, erPlanVedtatt)
+            gyldigePerioderForVisning(p, erPlanVedtatt),
         );
 
         return gyldigePerioder;
@@ -204,7 +204,7 @@ export const getStønadskontoForelderNavn = (
     periodeResultat: PeriodeResultat | undefined,
     morsAktivitet: MorsAktivitet | undefined,
     erFarEllerMedmor?: boolean,
-    erAleneOmOmsorg?: boolean
+    erAleneOmOmsorg?: boolean,
 ) => {
     let navn;
 
@@ -222,7 +222,7 @@ export const getStønadskontoForelderNavn = (
     if (navn) {
         return intl.formatMessage(
             { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote' },
-            { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) }
+            { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
         );
     }
 
@@ -242,7 +242,7 @@ export const getStønadskontoForelderNavn = (
 
 export const getUttaksprosentFromStillingsprosent = (
     stillingsPst: number | undefined,
-    samtidigUttakPst: number | undefined
+    samtidigUttakPst: number | undefined,
 ): number | undefined => {
     if (samtidigUttakPst) {
         return samtidigUttakPst;
@@ -260,7 +260,7 @@ export const getOppholdskontoNavn = (
     intl: IntlShape,
     årsak: OppholdÅrsakType,
     foreldernavn: string,
-    erMor: boolean
+    erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     return erMor
@@ -273,7 +273,7 @@ export const getPeriodeTittel = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor?: boolean,
-    erAleneOmOmsorg?: boolean
+    erAleneOmOmsorg?: boolean,
 ): string => {
     if (isAvslåttPeriode(periode)) {
         return intlUtils(intl, 'uttaksplan.avslåttPeriode');
@@ -286,7 +286,7 @@ export const getPeriodeTittel = (
             periode.resultat,
             periode.morsAktivitet,
             erFarEllerMedmor,
-            erAleneOmOmsorg
+            erAleneOmOmsorg,
         );
         //TODO:
         // const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
@@ -319,7 +319,7 @@ export const getPeriodeTittel = (
             periode.kontoType!,
             navnPåForeldre,
             periode.resultat,
-            periode.morsAktivitet
+            periode.morsAktivitet,
         );
     }
     if (isUtsettelsesperiode(periode)) {
@@ -341,7 +341,7 @@ interface SplittetDatoType {
 
 const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]) => {
     const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
-        Tidsperioden(getTidsperiode(periode)).inneholderDato(datoWrapper.dato)
+        Tidsperioden(getTidsperiode(periode)).inneholderDato(datoWrapper.dato),
     );
     const oppsplittetPeriode: Periode[] = [];
 
@@ -421,7 +421,7 @@ export const normaliserPerioder = (søkersPerioder: Periode[], annenPartsPeriode
 
 export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
     annenPartsPerioder: Periode[],
-    søkerensPerioder: Periode[]
+    søkerensPerioder: Periode[],
 ): Periode[] => {
     const filtrerteAnnenPartsPerioder = annenPartsPerioder.filter((periode) => {
         if (!isUttaksperiode(periode)) {
@@ -496,7 +496,7 @@ export const getPerioderForVisning = (perioder: Periode[], erAnnenPartsPeriode: 
         .filter(
             (p) =>
                 isValidTidsperiode(getTidsperiode(p)) &&
-                (isUttaksperiode(p) || isOverføringsperiode(p) || isUtsettelsesperiode(p))
+                (isUttaksperiode(p) || isOverføringsperiode(p) || isUtsettelsesperiode(p)),
         );
 };
 
@@ -504,7 +504,7 @@ export const getOverlappendePeriodeTittel = (
     søkerensPeriode: Periode,
     overlappendePeriodeAnnenPart: Periode,
     intl: IntlShape,
-    navnPåForeldre: NavnPåForeldre
+    navnPåForeldre: NavnPåForeldre,
 ) => {
     if (søkerensPeriode.utsettelseÅrsak) {
         return getStønadskontoForelderNavn(
@@ -512,11 +512,27 @@ export const getOverlappendePeriodeTittel = (
             overlappendePeriodeAnnenPart.kontoType!,
             navnPåForeldre,
             overlappendePeriodeAnnenPart.resultat,
-            overlappendePeriodeAnnenPart.morsAktivitet
+            overlappendePeriodeAnnenPart.morsAktivitet,
         );
     }
     if (overlappendePeriodeAnnenPart.utsettelseÅrsak) {
         return 'Utsettelse';
     }
     return 'Samtidig uttak';
+};
+
+export const erAnnenPartsPrematurePeriode = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
+    return (
+        !!termindato &&
+        !annenPartsPeriode.resultat.innvilget &&
+        dayjs(annenPartsPeriode.tom).isBefore(dayjs(termindato), 'd') &&
+        annenPartsPeriode.kontoType !== StønadskontoType.Fedrekvote
+    );
+};
+
+export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
+    if (annenPartsPeriode.resultat.innvilget) {
+        return true;
+    }
+    return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);
 };

@@ -54,7 +54,7 @@ const OmBarnet: React.FunctionComponent = () => {
         barn && isFødtBarn(barn)
             ? registrerteBarn.filter(
                   (barn: RegistrertBarn) =>
-                      barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato)
+                      barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
             : [];
 
@@ -72,7 +72,7 @@ const OmBarnet: React.FunctionComponent = () => {
             arbeidsforhold,
             valgtBarn,
             søkersituasjon.situasjon,
-            barnSøktOmFørMenIkkeRegistrert
+            barnSøktOmFørMenIkkeRegistrert,
         );
         return [actionCreator.setOmBarnet(oppdatertBarn)];
     };
@@ -80,7 +80,7 @@ const OmBarnet: React.FunctionComponent = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.ANNEN_FORELDER,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();

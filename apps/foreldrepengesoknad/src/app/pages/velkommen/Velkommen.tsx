@@ -30,7 +30,6 @@ import { Søknad } from 'app/context/types/Søknad';
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Sak } from 'app/types/Sak';
 import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 
@@ -55,8 +54,6 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
     const { registrerteBarn } = søkerinfo;
     const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
-
-    useSaveLoadedRoute(SøknadRoutes.VELKOMMEN);
 
     useEffect(() => {
         if (state.søknad.søker.språkkode !== locale) {
@@ -96,7 +93,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
         if (endringssøknad) {
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             );
 
             const søknad = opprettSøknadFraEksisterendeSak(
@@ -104,14 +101,14 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
                 eksisterendeSak!,
                 intl,
                 valgtEksisterendeSak.annenPart,
-                valgteBarn
+                valgteBarn,
             ) as Søknad;
 
             actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
             actionsToDispatch.push(actionCreator.setSøknad(søknad));
             actionsToDispatch.push(actionCreator.setEksisterendeSak(eksisterendeSak));
             actionsToDispatch.push(
-                actionCreator.setBrukerSvarteJaPåAutoJustering(eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel)
+                actionCreator.setBrukerSvarteJaPåAutoJustering(eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel),
             );
             actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
         } else if (nySøknadPåAlleredeSøktBarn) {
@@ -132,7 +129,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.SØKERSITUASJON,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     return (

@@ -15,6 +15,7 @@ interface Props {
     navnAnnenForelder: string;
     erEndringssøknad: boolean;
     valgtOverføringsårsak: OverføringÅrsakType | '';
+    isOpen: boolean;
 }
 
 const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
@@ -22,6 +23,7 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
     navnAnnenForelder,
     erEndringssøknad,
     valgtOverføringsårsak,
+    isOpen,
 }) => {
     const intl = useIntl();
     const navn = capitalizeFirstLetter(navnAnnenForelder);
@@ -86,7 +88,7 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
                     </GuidePanel>
                 </Block>
             )}
-            {beOmDokumentasjon && (
+            {beOmDokumentasjon && isOpen && (
                 <Block padBottom="l">
                     <FormikFileUploader
                         legend="Dokumentasjon for overføringsårsak"
