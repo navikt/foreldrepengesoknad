@@ -36,7 +36,6 @@ const Skjema: React.FunctionComponent = () => {
             initialValues={getInitialSkjemaValuesFromState(state)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
-                const vedlegg = state.søknad.vedlegg;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -74,10 +73,10 @@ const Skjema: React.FunctionComponent = () => {
                                     legend=""
                                     buttonLabel={intlUtils(intl, 'tilrettelegging.vedlegg.buttonLabel')}
                                     name={SkjemaFormField.vedlegg}
-                                    attachments={vedlegg || []}
+                                    attachments={formValues.vedlegg || []}
                                     attachmentType={AttachmentType.TILRETTELEGGING}
                                     skjemanummer={skjemanummer}
-                                    validateHasAttachment={false}
+                                    validateHasAttachment={true}
                                     label={intlUtils(intl, 'tilrettelegging.vedlegg.label')}
                                 />
                                 <AttachmentList
