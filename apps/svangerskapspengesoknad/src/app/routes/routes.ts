@@ -3,6 +3,7 @@ enum SøknadRoutes {
     BARNET = '/barnet',
     ARBEID = '/arbeid',
     UTENLANDSOPPHOLD = '/utenlandsopphold',
+    SKJEMA = '/skjema',
     PERIODE = '/periode',
     OPPSUMMERING = '/oppsummering',
     SØKNAD_SENDT = '/soknad/soknad-sendt',

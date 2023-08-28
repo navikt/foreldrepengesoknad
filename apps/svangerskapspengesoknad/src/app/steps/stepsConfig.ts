@@ -5,10 +5,16 @@ import { IntlShape } from 'react-intl';
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
 type PeriodeStepId = 'periode';
+type SkjemaStepId = 'skjema';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type OppsummeringStepId = 'oppsummering';
 
-type StepIdWithBackHref = InntektsinformasjonStepId | PeriodeStepId | UtenlandsoppholdStepId | OppsummeringStepId;
+type StepIdWithBackHref =
+    | InntektsinformasjonStepId
+    | SkjemaStepId
+    | PeriodeStepId
+    | UtenlandsoppholdStepId
+    | OppsummeringStepId;
 
 export type StepId = BarnetStepId | StepIdWithBackHref;
 
@@ -34,15 +40,19 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, type: string | undefined
         index: 2,
         label: intlUtils(intl, 'steps.label.arbeid'),
     },
-
+    {
+        id: 'skjema',
+        index: 3,
+        label: intlUtils(intl, 'steps.label.skjema'),
+    },
     {
         id: 'periode',
-        index: 3,
+        index: 4,
         label: intlUtils(intl, 'steps.label.periode', { type }),
     },
     {
         id: 'oppsummering',
-        index: 4,
+        index: 5,
         label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
@@ -61,8 +71,11 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
         case 'arbeid':
             href = '/utenlandsopphold';
             break;
-        case 'periode':
+        case 'skjema':
             href = '/arbeid';
+            break;
+        case 'periode':
+            href = '/skjema';
             break;
         case 'oppsummering':
             href = '/periode';

@@ -81,7 +81,7 @@ const Inntektsinformasjon = () => {
             actionCreator.setTilretteleggingBehov(arbeidMedTilretteleggingsBehov),
         ];
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SKJEMA);
 
     const skalViseInfoOmInntektsmelding = arbeidsforhold.length > 0;
 

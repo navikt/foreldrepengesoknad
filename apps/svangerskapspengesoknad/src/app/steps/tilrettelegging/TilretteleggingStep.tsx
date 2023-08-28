@@ -1,7 +1,7 @@
-import { Block, FormikFileUploader, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import { Button, GuidePanel, Heading, Label, ReadMore } from '@navikt/ds-react';
+import { Button, GuidePanel, Heading, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     TilretteleggingFormComponents,
@@ -22,12 +22,6 @@ import { Link } from 'react-router-dom';
 import { FunctionComponent, useState } from 'react';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
-import links from 'app/links/links';
-import AttachmentList from 'app/components/attachmentList/AttachmentList';
-import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentUtils';
 import DelvisTilretteleggingDetaljer from './components/delvisTilrettelegging/DelvisTilretteleggingDetaljer';
 import dayjs from 'dayjs';
 
@@ -42,7 +36,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
     const { tilrettelegging } = useSøknad();
     const { state } = useSvangerskapspengerContext();
     const { tilretteleggingBehov, currentTilretteleggingId } = state;
-    const vedlegg = [] as Attachment[]; //TODO: hent fra nåværende tilrettelegging.
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         console.log(values);
         const tilrettelegging = mapOmTilretteleggingFormDataToState(values);
@@ -53,10 +46,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
         ? SøknadRoutes.PERIODE
         : SøknadRoutes.OPPSUMMERING;
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nesteRoute);
-    const skjemanummer =
-        type === Arbeidsforholdstype.VIRKSOMHET
-            ? Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING
-            : Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
     const currentTilrettelegging = tilrettelegging.find((t) => t.id === id);
     const [tilretteleggingInput, setTilretteleggingInput] = useState<TilretteleggingInput[]>(
         currentTilrettelegging && currentTilrettelegging.tilrettelegginger
@@ -71,7 +60,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
         <TilretteleggingFormComponents.FormikWrapper
             initialValues={getTilretteleggingInitialValues(tilrettelegging)}
             onSubmit={handleSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
+            renderForm={({ values: formValues }) => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
                     ...formValues,
                 } as TilretteleggingFormData);
@@ -93,48 +82,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
                                 <Heading level="2" size="small">
                                     {navn}
                                 </Heading>
-                            </Block>
-                            <Block padBottom="xxxl">
-                                <Block padBottom="l">
-                                    <Label>{intlUtils(intl, 'tilrettelegging.vedlegg.label')}</Label>
-                                </Block>
-                                <FormattedMessage
-                                    id="tilrettelegging.vedlegg.description"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <a
-                                                className="lenke"
-                                                rel="noopener noreferrer"
-                                                href={links.arbeidstilsynetSkjema}
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </a>
-                                        ),
-                                    }}
-                                />
-                                <FormikFileUploader
-                                    legend=""
-                                    buttonLabel={intlUtils(intl, 'tilrettelegging.vedlegg.buttonLabel')}
-                                    name={TilretteleggingFormField.vedlegg}
-                                    attachments={vedlegg || []}
-                                    attachmentType={AttachmentType.TILRETTELEGGING}
-                                    skjemanummer={skjemanummer}
-                                    validateHasAttachment={false}
-                                    label={intlUtils(intl, 'tilrettelegging.vedlegg.label')}
-                                />
-                                <AttachmentList
-                                    vedlegg={formValues.vedlegg!}
-                                    onDelete={(file: Attachment) => {
-                                        setFieldValue(
-                                            TilretteleggingFormField.vedlegg,
-                                            deleteAttachment(formValues.vedlegg!, file)
-                                        );
-                                    }}
-                                />
-                                <ReadMore header={'Les om hvordan ta et bra bilde'}>
-                                    <div>TODO</div>
-                                </ReadMore>
                             </Block>
                             <Block padBottom="xl">
                                 <GuidePanel>{intlUtils(intl, 'tilrettelegging.veileder.intro')}</GuidePanel>
