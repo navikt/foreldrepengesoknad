@@ -29,6 +29,7 @@
     "steps.label.barnet": "Barnet",
     "steps.label.arbeid": "Arbeidsforhold og inntekt",
     "steps.label.periode": "Tilrettelegging for {type}",
+    "steps.label.skjema": "Last opp skjema",
     "steps.label.utenlandsopphold": "Opphold i utlandet",
     "steps.label.oppsummering": "Oppsummering",
     "barnet.erBarnetFødt": "Er barnet født?",

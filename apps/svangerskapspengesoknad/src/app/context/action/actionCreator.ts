@@ -1,3 +1,4 @@
+import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import SøknadRoutes from 'app/routes/routes';
 import { Barn } from 'app/types/Barn';
 import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
@@ -16,6 +17,7 @@ export enum SvangerskapspengerContextActionKeys {
     SET_HARGODKJENTVILKÅR = 'setHarGodkjentVilkår',
     SET_UTENLANDSOPPHOLD = 'setUtenlandsopphold',
     SET_TILRETTELEGGING_BEHOV = 'setTilretteleggingBehov',
+    SET_VEDLEGG = 'setVedlegg',
 }
 interface SetBarn {
     type: SvangerskapspengerContextActionKeys.SET_BARN;
@@ -107,6 +109,16 @@ const setTilretteleggingBehov = (payload: TilretteleggingBehov[]): SetTilrettele
     payload,
 });
 
+interface SetVedlegg {
+    type: SvangerskapspengerContextActionKeys.SET_VEDLEGG;
+    payload: Attachment[];
+}
+
+const setVedlegg = (payload: Attachment[]): SetVedlegg => ({
+    type: SvangerskapspengerContextActionKeys.SET_VEDLEGG,
+    payload,
+});
+
 export type SvangerskapspengerContextAction =
     | SetBarn
     | SetSøker
@@ -116,7 +128,8 @@ export type SvangerskapspengerContextAction =
     | SetSøkerinfo
     | SetHarGodkjentVilkår
     | SetUtenlandsopphold
-    | SetTilretteleggingBehov;
+    | SetTilretteleggingBehov
+    | SetVedlegg;
 
 export default {
     setBarn,
@@ -128,4 +141,5 @@ export default {
     setHarGodkjentVilkår,
     setUtenlandsopphold,
     setTilretteleggingBehov,
+    setVedlegg,
 };

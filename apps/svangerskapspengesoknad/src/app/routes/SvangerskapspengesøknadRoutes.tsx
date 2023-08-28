@@ -11,6 +11,7 @@ import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import actionCreator from 'app/context/action/actionCreator';
+import Skjema from 'app/steps/skjema/Skjema';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -76,6 +77,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
         <>
             <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
             <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
+            <Route path={SøknadRoutes.SKJEMA} element={<Skjema />} />
             <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             {getTilretteleggingRoutes(tilretteleggingBehov)}
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />

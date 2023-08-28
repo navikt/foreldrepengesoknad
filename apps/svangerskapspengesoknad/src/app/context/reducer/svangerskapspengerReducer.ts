@@ -67,6 +67,14 @@ const svangerskapspengerReducer = (
                 ...state,
                 tilretteleggingBehov: action.payload,
             };
+        case SvangerskapspengerContextActionKeys.SET_VEDLEGG:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    vedlegg: action.payload,
+                },
+            };
         default:
             return state;
     }
