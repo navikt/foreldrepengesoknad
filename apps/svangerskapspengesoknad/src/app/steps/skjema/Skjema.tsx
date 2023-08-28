@@ -7,13 +7,14 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { SkjemaFormComponents, SkjemaFormData, SkjemaFormField } from './skjemaFormTypes';
-import stepConfig from '../stepsConfig';
+import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentUtils';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
 import { getInitialSkjemaValuesFromState } from './skjemaFormUtils';
+import { Link } from 'react-router-dom';
 
 const Skjema: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -94,6 +95,9 @@ const Skjema: React.FunctionComponent = () => {
                             </Block>
                             <Block margin="l">
                                 <StepButtonWrapper>
+                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('skjema')}>
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>
