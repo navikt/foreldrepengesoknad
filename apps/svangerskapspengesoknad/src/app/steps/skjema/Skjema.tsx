@@ -19,10 +19,9 @@ const Skjema: React.FunctionComponent = () => {
     const intl = useIntl();
     const { state } = useSvangerskapspengerContext();
     // const { tilretteleggingBehov } = state;
-    const vedlegg = [] as Attachment[]; //TODO: hent fra nåværende tilrettelegging.
     const onValidSubmitHandler = (values: Partial<SkjemaFormData>) => {
         console.log(values);
-        return [actionCreator.setVedlegg(vedlegg)];
+        return [actionCreator.setVedlegg(values.vedlegg!)];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
 
@@ -36,6 +35,7 @@ const Skjema: React.FunctionComponent = () => {
             initialValues={getInitialSkjemaValuesFromState(state)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
+                const vedlegg = state.søknad.vedlegg;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
