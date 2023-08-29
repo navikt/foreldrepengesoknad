@@ -24,7 +24,7 @@ interface StepConfig {
     label: string;
 }
 
-const stepConfigFørstegangssøknad = (intl: IntlShape, type: string | undefined): StepConfig[] => [
+const stepConfigFørstegangssøknad = (intl: IntlShape, _type: string | undefined): StepConfig[] => [
     {
         id: 'barnet',
         index: 0,
@@ -45,14 +45,14 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, type: string | undefined
         index: 3,
         label: intlUtils(intl, 'steps.label.skjema'),
     },
-    {
-        id: 'periode',
-        index: 4,
-        label: intlUtils(intl, 'steps.label.periode', { type }),
-    },
+    // {
+    //     id: 'periode',
+    //     index: 4,
+    //     label: intlUtils(intl, 'steps.label.periode', { type }),
+    // },
     {
         id: 'oppsummering',
-        index: 5,
+        index: 4,
         label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
@@ -78,7 +78,7 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
             href = '/skjema';
             break;
         case 'oppsummering':
-            href = '/periode';
+            href = '/skjema';
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
