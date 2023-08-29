@@ -1,26 +1,25 @@
 const express = require('express');
-const server = express();
-server.use(express.json());
 const path = require('path');
 const mustacheExpress = require('mustache-express');
 const getDecorator = require('./src/build/scripts/decorator.cjs');
 var compression = require('compression');
 
-server.disable('x-powered-by');
-
 const isDev = process.env.NODE_ENV === 'development';
 
-if (isDev) {
-    require('dotenv').config();
-}
+const server = express();
 
+server.use(express.json());
+server.disable('x-powered-by');
 server.use(compression());
 
 if (isDev) {
+    require('dotenv').config();
+
     server.set('views', `${__dirname}`);
 } else {
     server.set('views', `${__dirname}/dist`);
 }
+
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 

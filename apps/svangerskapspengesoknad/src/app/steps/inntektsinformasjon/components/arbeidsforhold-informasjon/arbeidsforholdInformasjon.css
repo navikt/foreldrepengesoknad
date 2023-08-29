@@ -2,6 +2,7 @@
 
 .arbeidsforholdInfoBox {
     padding: 1rem;
+    margin-bottom: 1rem;
     background-color: var(--a-deepblue-50);
     border-radius: 0.25rem;
 }
