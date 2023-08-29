@@ -41,7 +41,7 @@ const Skjema: React.FunctionComponent = () => {
         const alleVedlegg = values.vedlegg ? values.vedlegg?.flat(1) : [];
         return [actionCreator.setVedlegg(alleVedlegg), actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
 
     return (
         <SkjemaFormComponents.FormikWrapper
