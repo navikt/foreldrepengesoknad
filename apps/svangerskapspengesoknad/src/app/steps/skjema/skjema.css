@@ -8,13 +8,18 @@
     margin-bottom: 0;
 }
 
-.skjema__arbeidsgiverBoksFlere {
+.skjema__arbeidsgiverBoksList {
     background: var(--a-deepblue-50);
     margin-bottom: 3.5rem;
     border-radius: 2px;
     padding-top: 1rem;
+    padding: 1rem 1.5rem;
+}
+
+.skjema__lastOppKnappList {
+    padding-top: 0.5rem;
 }
 
 .skjema__lastOppKnapp {
-    padding: 1rem 1.5rem;
+    padding-top: 0rem;
 }
