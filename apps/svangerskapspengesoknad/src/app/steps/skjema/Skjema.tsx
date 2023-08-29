@@ -30,7 +30,7 @@ const Skjema: React.FunctionComponent = () => {
     const descriptionId = flereTilrettelegginger
         ? 'tilrettelegging.vedlegg.description.flereTilrettelegginger'
         : 'tilrettelegging.vedlegg.description.enTilrettelegging';
-    const classVariant = flereTilrettelegginger ? 'Flere' : '';
+    const classVariant = flereTilrettelegginger ? 'List' : '';
 
     const onValidSubmitHandler = (values: Partial<SkjemaFormData>) => {
         const mappedTilrettelegging = mapTilretteleggingMedSkjema(tilrettelegging, values);
@@ -110,7 +110,7 @@ const Skjema: React.FunctionComponent = () => {
                                                 name={SkjemaFormField.vedlegg}
                                                 render={() => {
                                                     return (
-                                                        <div className={bem.element('lastOppKnapp')}>
+                                                        <div className={bem.element(`lastOppKnapp${classVariant}`)}>
                                                             <FormikFileUploader
                                                                 key={`${SkjemaFormField.vedlegg}.${index}`}
                                                                 name={`${SkjemaFormField.vedlegg}.${index}`}
