@@ -21,7 +21,7 @@ const useOnValidSubmit = <T>(
                     findNextRouteForTilrettelegging(
                         state.currentRoute,
                         state.currentTilretteleggingId,
-                        state.tilretteleggingBehov,
+                        state.søknad.tilrettelegging,
                         dispatch
                     )
                 );

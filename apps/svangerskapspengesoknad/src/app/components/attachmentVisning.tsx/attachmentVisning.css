@@ -1,11 +1,11 @@
 .attachmentVisning {
     border-radius: 8px;
-    border: 2px solid var(--border-strong, rgba(1, 11, 24, 0.68));
-    background: var(--surface-action-subtle, #e6f0ff);
+    border: 3px solid var(--a-deepblue-100, #99c4dd);
+    background: var(--a-deepblue-50, #e6f0ff);
     display: grid;
     grid-template-columns: 7% 1fr 5%;
     padding: 1rem;
-    margin: 0.5rem;
+    margin: 1rem 1.5rem;
 }
 
 .attachmentVisning__filename {

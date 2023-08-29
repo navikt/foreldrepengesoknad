@@ -1,5 +1,5 @@
 import { Button, Label, ReadMore } from '@navikt/ds-react';
-import { Block, FormikFileUploader, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, FormikFileUploader, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachmentList/AttachmentList';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import links from 'app/links/links';
@@ -13,24 +13,32 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentUtils';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
-import { getInitialSkjemaValuesFromState } from './skjemaFormUtils';
+import { getInitialSkjemaValuesFromState, mapTilretteleggingMedSkjema } from './skjemaFormUtils';
 import { Link } from 'react-router-dom';
+import { FieldArray } from 'formik';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import useSøknad from 'app/utils/hooks/useSøknad';
+import './skjema.css';
 
 const Skjema: React.FunctionComponent = () => {
     const intl = useIntl();
+    const bem = bemUtils('skjema');
     const { state } = useSvangerskapspengerContext();
-    // const { tilretteleggingBehov } = state;
+    const { tilrettelegging } = useSøknad();
+
+    const flereTilrettelegginger = tilrettelegging.length > 1;
+    const descriptionId = flereTilrettelegginger
+        ? 'tilrettelegging.vedlegg.description.flereTilrettelegginger'
+        : 'tilrettelegging.vedlegg.description.enTilrettelegging';
+    const classVariant = flereTilrettelegginger ? 'Flere' : '';
+
     const onValidSubmitHandler = (values: Partial<SkjemaFormData>) => {
-        console.log(values);
-        return [actionCreator.setVedlegg(values.vedlegg!)];
+        const mappedTilrettelegging = mapTilretteleggingMedSkjema(tilrettelegging, values);
+        const alleVedlegg = values.vedlegg ? values.vedlegg?.flat(1) : [];
+        return [actionCreator.setVedlegg(alleVedlegg), actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.PERIODE);
 
-    //TODO: sjemanummer må hentes ut basert på arbeidsgiver man setter
-    const skjemanummer = Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
-    // type === Arbeidsforholdstype.VIRKSOMHET
-    //     ? Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING
-    //     : Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
     return (
         <SkjemaFormComponents.FormikWrapper
             initialValues={getInitialSkjemaValuesFromState(state)}
@@ -50,12 +58,13 @@ const Skjema: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             // cleanup={(values) => cleanupSkjemaFormData(values, visibility)}
                         >
-                            <Block padBottom="xxxl">
+                            <Block padBottom="xxl">
                                 <Block padBottom="l">
                                     <Label>{intlUtils(intl, 'tilrettelegging.vedlegg.label')}</Label>
                                 </Block>
+
                                 <FormattedMessage
-                                    id="tilrettelegging.vedlegg.description"
+                                    id={descriptionId}
                                     values={{
                                         a: (msg: any) => (
                                             <a
@@ -69,25 +78,68 @@ const Skjema: React.FunctionComponent = () => {
                                         ),
                                     }}
                                 />
-                                <FormikFileUploader
-                                    legend=""
-                                    buttonLabel={intlUtils(intl, 'tilrettelegging.vedlegg.buttonLabel')}
-                                    name={SkjemaFormField.vedlegg}
-                                    attachments={formValues.vedlegg || []}
-                                    attachmentType={AttachmentType.TILRETTELEGGING}
-                                    skjemanummer={skjemanummer}
-                                    validateHasAttachment={true}
-                                    label={intlUtils(intl, 'tilrettelegging.vedlegg.label')}
-                                />
-                                <AttachmentList
-                                    vedlegg={formValues.vedlegg!}
-                                    onDelete={(file: Attachment) => {
-                                        setFieldValue(
-                                            SkjemaFormField.vedlegg,
-                                            deleteAttachment(formValues.vedlegg!, file)
-                                        );
-                                    }}
-                                />
+                            </Block>
+                            {tilrettelegging.map((t: Tilrettelegging, index: number) => {
+                                const key = t.id;
+                                const skjemanummer =
+                                    t.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET
+                                        ? Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING
+                                        : Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
+                                const vedleggForTilrettelegging = formValues.vedlegg ? formValues.vedlegg[index] : [];
+                                return (
+                                    <Block key={key}>
+                                        {flereTilrettelegginger && (
+                                            <div className={bem.element('arbeidsgiverNavn')}>
+                                                <Label>{`${t.arbeidsforhold.navn}`}</Label>
+                                            </div>
+                                        )}
+                                        <div className={bem.element(`arbeidsgiverBoks${classVariant}`)}>
+                                            {vedleggForTilrettelegging.length > 0 && (
+                                                <AttachmentList
+                                                    vedlegg={vedleggForTilrettelegging}
+                                                    onDelete={(file: Attachment) => {
+                                                        setFieldValue(
+                                                            SkjemaFormField.vedlegg,
+                                                            deleteAttachment(vedleggForTilrettelegging, file)
+                                                        );
+                                                    }}
+                                                />
+                                            )}
+                                            <FieldArray
+                                                validateOnChange={false}
+                                                name={SkjemaFormField.vedlegg}
+                                                render={() => {
+                                                    return (
+                                                        <div className={bem.element('lastOppKnapp')}>
+                                                            <FormikFileUploader
+                                                                key={`${SkjemaFormField.vedlegg}.${index}`}
+                                                                name={`${SkjemaFormField.vedlegg}.${index}`}
+                                                                buttonLabel={intlUtils(
+                                                                    intl,
+                                                                    'tilrettelegging.vedlegg.buttonLabel'
+                                                                )}
+                                                                legend=""
+                                                                label={`Last opp dokument`}
+                                                                attachments={
+                                                                    formValues.vedlegg &&
+                                                                    formValues.vedlegg.length > index &&
+                                                                    formValues.vedlegg[index]
+                                                                        ? formValues.vedlegg[index]
+                                                                        : [] || []
+                                                                }
+                                                                attachmentType={AttachmentType.TILRETTELEGGING}
+                                                                skjemanummer={skjemanummer}
+                                                                validateHasAttachment={true}
+                                                            />
+                                                        </div>
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                    </Block>
+                                );
+                            })}
+                            <Block padBottom="l">
                                 <ReadMore header={'Les om hvordan ta et bra bilde'}>
                                     <div>TODO</div>
                                 </ReadMore>

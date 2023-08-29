@@ -6,7 +6,7 @@ export enum SkjemaFormField {
 }
 
 export interface SkjemaFormData {
-    [SkjemaFormField.vedlegg]: Attachment[];
+    [SkjemaFormField.vedlegg]: Attachment[][];
 }
 
 export const initialSkjemaFormData: SkjemaFormData = {

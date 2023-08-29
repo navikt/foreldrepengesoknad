@@ -15,6 +15,7 @@ export enum Arbeidsforholdstype {
 export interface ArbeidsforholdForTilrettelegging {
     id?: string;
     type: Arbeidsforholdstype;
+    navn: string;
 }
 
 export interface DelvisTilretteleggingDTO {
@@ -49,9 +50,9 @@ export interface TilretteleggingDTO {
 
 export interface Tilrettelegging {
     id: string;
-    behovForTilretteleggingFom: string;
+    behovForTilretteleggingFom?: string;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    vedlegg: string[];
+    vedlegg?: string[];
     tilrettelegginger: TilretteleggingInput[];
 }
 

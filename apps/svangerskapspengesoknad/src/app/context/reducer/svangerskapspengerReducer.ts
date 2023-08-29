@@ -22,14 +22,6 @@ const svangerskapspengerReducer = (
                     søker: action.payload,
                 },
             };
-        case SvangerskapspengerContextActionKeys.SET_SØKER:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    søker: action.payload,
-                },
-            };
         case SvangerskapspengerContextActionKeys.SET_SØKERINFO:
             return {
                 ...state,
@@ -62,10 +54,13 @@ const svangerskapspengerReducer = (
                     informasjonOmUtenlandsopphold: action.payload,
                 },
             };
-        case SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING_BEHOV:
+        case SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING:
             return {
                 ...state,
-                tilretteleggingBehov: action.payload,
+                søknad: {
+                    ...state.søknad,
+                    tilrettelegging: action.payload,
+                },
             };
         case SvangerskapspengerContextActionKeys.SET_VEDLEGG:
             return {

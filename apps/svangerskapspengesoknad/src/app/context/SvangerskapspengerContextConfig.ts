@@ -2,7 +2,6 @@ import SøknadRoutes from 'app/routes/routes';
 import { Søkerrolle } from 'app/types/Søker';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søknad } from 'app/types/Søknad';
-import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 
 export interface SvangerskapspengerContextState {
     version: number;
@@ -10,7 +9,6 @@ export interface SvangerskapspengerContextState {
     currentTilretteleggingId: string | undefined;
     søkerinfo: Søkerinfo;
     søknad: Søknad;
-    tilretteleggingBehov: TilretteleggingBehov[];
 }
 
 export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
@@ -39,5 +37,4 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
         },
         vedlegg: [],
     },
-    tilretteleggingBehov: [],
 };

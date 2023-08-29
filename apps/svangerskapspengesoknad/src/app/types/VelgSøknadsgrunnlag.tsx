@@ -3,19 +3,13 @@ import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormField,
 } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import Tilrettelegging from 'app/types/Tilrettelegging';
 import { FunctionComponent } from 'react';
 import { IntlShape } from 'react-intl';
 
-export interface TilretteleggingBehov {
-    id: string;
-    type: Arbeidsforholdstype;
-    label: string;
-}
-
 interface Props {
     label: string;
-    options: TilretteleggingBehov[];
+    options: Tilrettelegging[];
     intl: IntlShape;
 }
 
@@ -32,7 +26,7 @@ export const VelgSøknadsgrunnlag: FunctionComponent<Props> = (props) => {
         <InntektsinformasjonFormComponents.CheckboxGroup
             name={InntektsinformasjonFormField.tilrettelegging}
             legend={label}
-            checkboxes={options.map((option) => ({ label: option.label, value: option.id }))}
+            checkboxes={options.map((option) => ({ label: option.arbeidsforhold.navn, value: option.id }))}
             validate={(value) => validateTilretteleggingIsAnswered(value, intl)}
         />
     );

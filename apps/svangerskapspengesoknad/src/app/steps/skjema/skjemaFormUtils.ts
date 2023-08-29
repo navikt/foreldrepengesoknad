@@ -1,15 +1,32 @@
 import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import { SkjemaFormData, initialSkjemaFormData } from './skjemaFormTypes';
+import Tilrettelegging from 'app/types/Tilrettelegging';
+import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 
-//TODO
 export const getInitialSkjemaValuesFromState = (state: SvangerskapspengerContextState): SkjemaFormData => {
-    const vedlegg = state.søknad.vedlegg;
+    const alleVedlegg = state.søknad.vedlegg;
+    const tilrettelegginger = state.søknad.tilrettelegging;
+
+    const vedleggPerTilrettelegging = tilrettelegginger.map((tilrettelegging: Tilrettelegging) => {
+        return tilrettelegging.vedlegg?.map((vedleggId: string) => {
+            return alleVedlegg.find((vedlegg: Attachment) => vedlegg.id === vedleggId);
+        });
+    }) as Attachment[][];
+
     return {
         ...initialSkjemaFormData,
-        vedlegg: vedlegg,
+        vedlegg: vedleggPerTilrettelegging,
     };
 };
 
-export const mapSkjemaToState = () => {
-    console.log('TODO');
+export const mapTilretteleggingMedSkjema = (
+    tilrettelegging: Tilrettelegging[],
+    values: Partial<SkjemaFormData>
+): Tilrettelegging[] => {
+    return tilrettelegging.map((t, index) => {
+        return {
+            ...t,
+            vedlegg: values.vedlegg ? values.vedlegg[index].map((v) => v.id) : [],
+        };
+    });
 };
