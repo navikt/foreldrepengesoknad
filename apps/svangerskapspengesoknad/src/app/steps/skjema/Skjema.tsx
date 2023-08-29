@@ -13,7 +13,11 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentUtils';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
-import { getInitialSkjemaValuesFromState, mapTilretteleggingMedSkjema } from './skjemaFormUtils';
+import {
+    getInitialSkjemaValuesFromState,
+    getVedleggForTilrettelegging,
+    mapTilretteleggingMedSkjema,
+} from './skjemaFormUtils';
 import { Link } from 'react-router-dom';
 import { FieldArray } from 'formik';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
@@ -85,7 +89,8 @@ const Skjema: React.FunctionComponent = () => {
                                     t.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET
                                         ? Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING
                                         : Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
-                                const vedleggForTilrettelegging = formValues.vedlegg ? formValues.vedlegg[index] : [];
+                                const vedleggForTilrettelegging = getVedleggForTilrettelegging(formValues, index);
+
                                 return (
                                     <Block key={key}>
                                         {flereTilrettelegginger && (
@@ -94,13 +99,13 @@ const Skjema: React.FunctionComponent = () => {
                                             </div>
                                         )}
                                         <div className={bem.element(`arbeidsgiverBoks${classVariant}`)}>
-                                            {vedleggForTilrettelegging.length > 0 && (
+                                            {vedleggForTilrettelegging && vedleggForTilrettelegging.length > 0 && (
                                                 <AttachmentList
                                                     vedlegg={vedleggForTilrettelegging}
                                                     onDelete={(file: Attachment) => {
                                                         setFieldValue(
                                                             SkjemaFormField.vedlegg,
-                                                            deleteAttachment(vedleggForTilrettelegging, file)
+                                                            deleteAttachment(formValues.vedlegg!, index, file)
                                                         );
                                                     }}
                                                 />
@@ -120,13 +125,10 @@ const Skjema: React.FunctionComponent = () => {
                                                                 )}
                                                                 legend=""
                                                                 label={`Last opp dokument`}
-                                                                attachments={
-                                                                    formValues.vedlegg &&
-                                                                    formValues.vedlegg.length > index &&
-                                                                    formValues.vedlegg[index]
-                                                                        ? formValues.vedlegg[index]
-                                                                        : [] || []
-                                                                }
+                                                                attachments={getVedleggForTilrettelegging(
+                                                                    formValues,
+                                                                    index
+                                                                )}
                                                                 attachmentType={AttachmentType.TILRETTELEGGING}
                                                                 skjemanummer={skjemanummer}
                                                                 validateHasAttachment={true}
