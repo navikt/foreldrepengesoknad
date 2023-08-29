@@ -13,6 +13,9 @@ interface Props {
 const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
     const bem = bemUtils('attachmentVisning');
     const filstørrelseKB = Math.round(vedlegg.filesize * 0.001);
+    const handleOnClickSlett = (vedlegg: Attachment) => {
+        onDelete(vedlegg);
+    };
     return (
         <div className={bem.block}>
             <FileIcon className={bem.element('icon')} title="Opplastet fil" />
@@ -30,9 +33,10 @@ const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
             <Button
                 aria-label="slett skjema"
                 variant="secondary"
+                type="button"
                 className={bem.element('slett')}
                 icon={<XMarkIcon aria-hidden />}
-                onClick={() => onDelete}
+                onClick={() => handleOnClickSlett(vedlegg)}
             />
         </div>
     );

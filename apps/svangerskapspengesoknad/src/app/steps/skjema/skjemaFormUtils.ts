@@ -30,3 +30,7 @@ export const mapTilretteleggingMedSkjema = (
         };
     });
 };
+
+export const getVedleggForTilrettelegging = (values: Partial<SkjemaFormData>, index: number): Attachment[] => {
+    return values.vedlegg && values.vedlegg.length > index && values.vedlegg[index] ? values.vedlegg[index] : [] || [];
+};

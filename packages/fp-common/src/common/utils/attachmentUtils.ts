@@ -32,8 +32,9 @@ export const bytesString = (bytes: number): string => {
     });
 };
 
-export const deleteAttachment = (attachments: Attachment[], deleted: Attachment): Attachment[] => {
-    return attachments.filter((att) => att !== deleted);
+export const deleteAttachment = (alleVedlegg: Attachment[][], index: number, deleted: Attachment): Attachment[][] => {
+    alleVedlegg[index] = alleVedlegg[index].filter((att) => att !== deleted);
+    return alleVedlegg;
 };
 
 export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>
