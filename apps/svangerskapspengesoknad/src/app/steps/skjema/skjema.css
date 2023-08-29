@@ -1,0 +1,20 @@
+.skjema__arbeidsgiverNavn {
+    font-weight: bold;
+    background: var(--a-deepblue-100);
+    padding: 1rem;
+}
+
+.skjema__arbeidsgiverBoks {
+    margin-bottom: 0;
+}
+
+.skjema__arbeidsgiverBoksFlere {
+    background: var(--a-deepblue-50);
+    margin-bottom: 3.5rem;
+    border-radius: 2px;
+    padding-top: 1rem;
+}
+
+.skjema__lastOppKnapp {
+    padding: 1rem 1.5rem;
+}

@@ -7,18 +7,19 @@ import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapsp
 import Barnet from 'app/steps/barnet/Barnet';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
-import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import actionCreator from 'app/context/action/actionCreator';
 import Skjema from 'app/steps/skjema/Skjema';
+import Tilrettelegging from 'app/types/Tilrettelegging';
+import useSøknad from 'app/utils/hooks/useSøknad';
 
 interface Props {
     currentRoute: SøknadRoutes;
 }
 
 export const getNesteTilretteleggingId = (
-    tilretteleggingBehov: TilretteleggingBehov[],
+    tilretteleggingBehov: Tilrettelegging[],
     currentTilretteleggingId: string | undefined
 ) => {
     if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
@@ -34,7 +35,7 @@ export const getNesteTilretteleggingId = (
 export const findNextRouteForTilrettelegging = (
     currentRoute: SøknadRoutes,
     currentTilretteleggingId: string | undefined,
-    tilretteleggingBehov: TilretteleggingBehov[] | undefined,
+    tilretteleggingBehov: Tilrettelegging[] | undefined,
     dispatch: any
 ): any => {
     if (tilretteleggingBehov === undefined || tilretteleggingBehov.length === 0) {
@@ -51,7 +52,7 @@ export const findNextRouteForTilrettelegging = (
     return SøknadRoutes.ARBEID;
 };
 
-const getTilretteleggingRoutes = (tilretteleggingValg: TilretteleggingBehov[] | undefined) => {
+const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
     return tilretteleggingValg?.map((tilrettelegging) => {
         return (
             <Route
@@ -60,8 +61,8 @@ const getTilretteleggingRoutes = (tilretteleggingValg: TilretteleggingBehov[] | 
                 element={
                     <TilretteleggingStep
                         id={tilrettelegging.id}
-                        type={tilrettelegging.type}
-                        navn={tilrettelegging.label}
+                        type={tilrettelegging.arbeidsforhold.type}
+                        navn={tilrettelegging.arbeidsforhold.navn}
                     />
                 }
             />
@@ -69,7 +70,7 @@ const getTilretteleggingRoutes = (tilretteleggingValg: TilretteleggingBehov[] | 
     });
 };
 
-const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: TilretteleggingBehov[]) => {
+const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: Tilrettelegging[]) => {
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;
     }
@@ -87,7 +88,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
 
 const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute }) => {
     const { state } = useSvangerskapspengerContext();
-    const { tilretteleggingBehov } = state;
+    const { tilrettelegging } = useSøknad();
     const navigate = useNavigate();
     const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
     const erMyndig = true; // TODO: state.søkerinfo.person?.erMyndig;
@@ -106,7 +107,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
         <Routes>
             <Route path={SøknadRoutes.FORSIDE} element={<Forside />} />
 
-            {renderSøknadRoutes(harGodkjentVilkår, tilretteleggingBehov)}
+            {renderSøknadRoutes(harGodkjentVilkår, tilrettelegging)}
         </Routes>
     );
 };

@@ -32,15 +32,8 @@ export const getTilretteleggingInitialValues = (
     };
 };
 
-export const mapOmTilretteleggingFormDataToState = (values: Partial<TilretteleggingFormData>): Tilrettelegging => {
+export const mapOmTilretteleggingFormDataToState = (values: Partial<TilretteleggingFormData>): Tilrettelegging[] => {
+    //TODO
     console.log(values);
-    return {
-        // rolle: Søkerrolle.MOR,
-        // harJobbetSomFrilansSiste10Mnd: values.;
-        // frilansInformasjon?: Frilans;
-        // harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-        // selvstendigNæringsdrivendeInformasjon?: Næring[];
-        // harHattAnnenInntektSiste10Mnd: boolean;
-        // andreInntekterSiste10Mnd?: AnnenInntekt[];
-    } as Tilrettelegging;
+    return [];
 };

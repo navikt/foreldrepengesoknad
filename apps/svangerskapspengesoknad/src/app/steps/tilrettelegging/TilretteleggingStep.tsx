@@ -35,14 +35,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
     const intl = useIntl();
     const { tilrettelegging } = useSøknad();
     const { state } = useSvangerskapspengerContext();
-    const { tilretteleggingBehov, currentTilretteleggingId } = state;
+    const { currentTilretteleggingId } = state;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         console.log(values);
         const tilrettelegging = mapOmTilretteleggingFormDataToState(values);
         return [actionCreator.setTilrettelegging(tilrettelegging)];
     };
     const sideTittel = intlUtils(intl, 'steps.label.periode', { type: navn });
-    const nesteRoute = getNesteTilretteleggingId(tilretteleggingBehov, currentTilretteleggingId)
+    const nesteRoute = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId)
         ? SøknadRoutes.PERIODE
         : SøknadRoutes.OPPSUMMERING;
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nesteRoute);

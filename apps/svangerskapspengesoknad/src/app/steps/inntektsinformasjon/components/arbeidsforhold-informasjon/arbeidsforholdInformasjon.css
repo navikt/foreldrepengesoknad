@@ -31,9 +31,9 @@
 }
 
 @media (max-width: var(mobile-breakpoint)) {
-    .arbeidsforholdInfoBox{
-    margin-left: -1rem;
-    margin-right: -1rem;
-    border-radius: 0;
+    .arbeidsforholdInfoBox {
+        margin-left: -1rem;
+        margin-right: -1rem;
+        border-radius: 0;
     }
 }

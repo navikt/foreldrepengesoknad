@@ -10,9 +10,8 @@ import {
 import { Søker, Søkerrolle } from 'app/types/Søker';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,
@@ -22,34 +21,66 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
 };
 
 export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
+    tilrettelegginger: Tilrettelegging[],
     erFrilanser: boolean,
     harNæring: boolean,
     frilans: Frilans | undefined,
     næring: Næring[],
     arbeidsforhold: Arbeidsforhold[],
     termindato: Date
-): TilretteleggingBehov[] => {
+): Tilrettelegging[] => {
     const unikeArbeidsforhold = [
-        ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => ({
-            id: forhold.id,
-            label: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
-            type: forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
-        })),
+        ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => {
+            const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == forhold.id);
+            return {
+                id: tilretteleggingFraState?.id || forhold.id,
+                arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
+                    id: forhold.id,
+                    type:
+                        forhold.arbeidsgiverIdType === 'orgnr'
+                            ? Arbeidsforholdstype.VIRKSOMHET
+                            : Arbeidsforholdstype.PRIVAT,
+                    navn: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
+                },
+                tilrettelegginger: tilretteleggingFraState?.tilrettelegginger || [],
+                vedlegg: tilretteleggingFraState?.vedlegg || [],
+                behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+            };
+        }),
     ];
     const næringValg = harNæring
-        ? næring.map((egenNæring) => ({
-              id: egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`,
-              label: egenNæring.navnPåNæringen,
-              type: Arbeidsforholdstype.SELVSTENDIG,
-          }))
+        ? næring.map((egenNæring) => {
+              const næringId =
+                  egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`;
+              const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == næringId);
+              return {
+                  id: tilretteleggingFraState?.id || næringId,
+                  arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
+                      id: egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`,
+                      type: Arbeidsforholdstype.SELVSTENDIG,
+                      navn: egenNæring.navnPåNæringen,
+                  },
+                  vedlegg: tilretteleggingFraState?.vedlegg || [],
+                  behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+                  tilrettelegginger: tilretteleggingFraState?.tilrettelegginger || [],
+              };
+          })
         : [];
+    const frilansTilretteleggingFraState = tilrettelegginger.find((t) => t.id == 'Frilans');
     const frilansValg =
         erFrilanser && frilans !== undefined
             ? [
                   {
                       id: 'Frilans',
-                      label: 'Frilans',
-                      type: Arbeidsforholdstype.FRILANSER,
+                      arbeidsforhold: frilansTilretteleggingFraState?.arbeidsforhold || {
+                          id: 'Frilans',
+                          navn: 'Frilans',
+                          type: Arbeidsforholdstype.FRILANSER,
+                      },
+                      vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
+                      behovForTilretteleggingFom:
+                          frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+                      tilrettelegginger: frilansTilretteleggingFraState?.tilrettelegginger || [],
                   },
               ]
             : [];
@@ -77,7 +108,7 @@ export const mapInntektsinformasjonFormDataToState = (
 
 export const getInitialInntektsinformasjonFormValues = (
     søker: Søker,
-    tilretteleggingsBehov: TilretteleggingBehov[]
+    tilretteleggingsBehov: Tilrettelegging[]
 ): InntektsinformasjonFormData => {
     const init = {
         ...initialInntektsinformasjonFormValues,

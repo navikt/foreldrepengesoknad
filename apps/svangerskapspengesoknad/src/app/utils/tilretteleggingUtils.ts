@@ -2,8 +2,10 @@ import { mapArbeidsforholdToSøknadsgrunnlagOptions } from 'app/steps/inntektsin
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Frilans } from 'app/types/Frilans';
 import { Næring } from 'app/types/Næring';
+import Tilrettelegging from 'app/types/Tilrettelegging';
 
 export const mapTilrettelegging = (
+    tilrettelegging: Tilrettelegging[],
     valgtTilrettelegging: string[],
     erFrilanser: boolean,
     harNæring: boolean,
@@ -13,6 +15,7 @@ export const mapTilrettelegging = (
     termindato: Date
 ) => {
     const allTilretteleggingOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
+        tilrettelegging,
         erFrilanser,
         harNæring,
         frilans,

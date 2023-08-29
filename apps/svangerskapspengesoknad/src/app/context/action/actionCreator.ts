@@ -5,7 +5,6 @@ import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsoppho
 import { Søker } from 'app/types/Søker';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
-import { TilretteleggingBehov } from 'app/types/VelgSøknadsgrunnlag';
 
 export enum SvangerskapspengerContextActionKeys {
     SET_BARN = 'setBarn',
@@ -16,7 +15,6 @@ export enum SvangerskapspengerContextActionKeys {
     SET_CURRENT_TILRETTELEGGING_ID = 'setCurrentTilretteleggingId',
     SET_HARGODKJENTVILKÅR = 'setHarGodkjentVilkår',
     SET_UTENLANDSOPPHOLD = 'setUtenlandsopphold',
-    SET_TILRETTELEGGING_BEHOV = 'setTilretteleggingBehov',
     SET_VEDLEGG = 'setVedlegg',
 }
 interface SetBarn {
@@ -41,10 +39,10 @@ const setSøker = (payload: Søker): SetSøker => ({
 
 interface SetTilrettelegging {
     type: SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING;
-    payload: Tilrettelegging;
+    payload: Tilrettelegging[];
 }
 
-const setTilrettelegging = (payload: Tilrettelegging): SetTilrettelegging => ({
+const setTilrettelegging = (payload: Tilrettelegging[]): SetTilrettelegging => ({
     type: SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING,
     payload,
 });
@@ -99,16 +97,6 @@ const setUtenlandsopphold = (payload: InformasjonOmUtenlandsopphold): SetUtenlan
     payload,
 });
 
-interface SetTilretteleggingBehov {
-    type: SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING_BEHOV;
-    payload: TilretteleggingBehov[];
-}
-
-const setTilretteleggingBehov = (payload: TilretteleggingBehov[]): SetTilretteleggingBehov => ({
-    type: SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING_BEHOV,
-    payload,
-});
-
 interface SetVedlegg {
     type: SvangerskapspengerContextActionKeys.SET_VEDLEGG;
     payload: Attachment[];
@@ -128,7 +116,6 @@ export type SvangerskapspengerContextAction =
     | SetSøkerinfo
     | SetHarGodkjentVilkår
     | SetUtenlandsopphold
-    | SetTilretteleggingBehov
     | SetVedlegg;
 
 export default {
@@ -140,6 +127,5 @@ export default {
     setSøkerinfo,
     setHarGodkjentVilkår,
     setUtenlandsopphold,
-    setTilretteleggingBehov,
     setVedlegg,
 };
