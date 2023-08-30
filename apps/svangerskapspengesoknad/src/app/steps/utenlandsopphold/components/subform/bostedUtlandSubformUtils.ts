@@ -5,6 +5,7 @@ import { date1YearAgo, date1YearFromNow, formatDate, intlUtils } from '@navikt/f
 import dayjs from 'dayjs';
 import { BostedUtland } from 'app/types/BostedUtland';
 import { hasValue } from 'app/utils/validationUtils';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 export const mapBostedUtland = (formValues: Partial<BostedUtlandSubformData>, id: number): BostedUtland => {
     return {
@@ -46,6 +47,10 @@ export const validerOverlappendeUtenlandsperioder = (
 
 export const validateBostedUtlandFom =
     (tom: string | undefined, oppgirIFortid: boolean, intl: IntlShape) => (fom: string) => {
+        if (hasValue(fom) && !isISODateString(fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
+        }
+
         if (tom && fom && dayjs(tom).isSame(fom)) {
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.fom.sammeSomTom');
         }
@@ -71,6 +76,9 @@ export const validateBostedUtlandFom =
 
 export const validateBostedUtlandTom =
     (fom: string | undefined, oppgirIFortid: boolean, intl: IntlShape) => (tom: string) => {
+        if (hasValue(tom) && !isISODateString(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        }
         if (tom && fom && dayjs(fom).isSame(tom)) {
             return intlUtils(intl, 'valideringsfeil.utenlandsopphold.tom.sammeSomFom');
         }
