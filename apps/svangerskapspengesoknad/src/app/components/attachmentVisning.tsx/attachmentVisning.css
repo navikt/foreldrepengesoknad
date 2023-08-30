@@ -24,6 +24,10 @@
     align-self: center;
 }
 
+.attachmentVisning--pending {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .attachmentVisning {
         grid-template-columns: 12% 1fr 10%;

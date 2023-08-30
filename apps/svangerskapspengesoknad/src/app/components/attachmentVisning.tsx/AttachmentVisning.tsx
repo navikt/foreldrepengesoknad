@@ -1,10 +1,10 @@
 import { FileIcon, XMarkIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { BodyShort, Button, Loader } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { FunctionComponent } from 'react';
-import './attachmentVisning.css';
 import { Block, bemUtils } from '@navikt/fp-common';
-
+import classNames from 'classnames';
+import './attachmentVisning.css';
 interface Props {
     vedlegg: Attachment;
     onDelete: (vedlegg: Attachment) => void;
@@ -18,7 +18,8 @@ const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
     };
     return (
         <div className={bem.block}>
-            <FileIcon className={bem.element('icon')} title="Opplastet fil" />
+            {vedlegg.pending && <Loader className={bem.element('icon')} size="small" />}
+            {!vedlegg.pending && <FileIcon className={bem.element('icon')} title="Opplastet fil" />}
             <div>
                 <Block padBottom="s">
                     <BodyShort className={bem.element('filename')} size="medium">
@@ -34,7 +35,7 @@ const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
                 aria-label="slett skjema"
                 variant="secondary"
                 type="button"
-                className={bem.element('slett')}
+                className={classNames(bem.element('slett'), vedlegg.pending ? bem.modifier('pending') : undefined)}
                 icon={<XMarkIcon aria-hidden />}
                 onClick={() => handleOnClickSlett(vedlegg)}
             />
