@@ -49,16 +49,18 @@ const Barnet: React.FunctionComponent = () => {
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
                             <Block padBottom="xl" visible={true}>
-                                <BarnetFormComponents.YesOrNoQuestion
-                                    name={BarnetFormField.erBarnetFødt}
-                                    legend={intlUtils(intl, 'barnet.erBarnetFødt')}
-                                    validate={(value) =>
-                                        validateYesOrNoIsAnswered(
-                                            value,
-                                            intlUtils(intl, 'valideringsfeil.barnet.erBarnetFødt.påkrevd')
-                                        )
-                                    }
-                                />
+                                <Block padBottom="m">
+                                    <BarnetFormComponents.YesOrNoQuestion
+                                        name={BarnetFormField.erBarnetFødt}
+                                        legend={intlUtils(intl, 'barnet.erBarnetFødt')}
+                                        validate={(value) =>
+                                            validateYesOrNoIsAnswered(
+                                                value,
+                                                intlUtils(intl, 'valideringsfeil.barnet.erBarnetFødt.påkrevd')
+                                            )
+                                        }
+                                    />
+                                </Block>
                                 <ReadMore size="small" header={intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tittel')}>
                                     {intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tekst')}
                                 </ReadMore>
@@ -74,14 +76,16 @@ const Barnet: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block padBottom="xxl" visible={true}>
-                                <BarnetFormComponents.DatePicker
-                                    name={BarnetFormField.termindato}
-                                    label={intlUtils(intl, 'barnet.termindato')}
-                                    placeholder={'dd.mm.åååå'}
-                                    minDate={etÅrSiden(new Date())}
-                                    maxDate={niMånederFremITid(new Date())}
-                                    validate={validateTermindato(intl, formValues.fødselsdato)}
-                                />
+                                <Block padBottom="l">
+                                    <BarnetFormComponents.DatePicker
+                                        name={BarnetFormField.termindato}
+                                        label={intlUtils(intl, 'barnet.termindato')}
+                                        placeholder={'dd.mm.åååå'}
+                                        minDate={etÅrSiden(new Date())}
+                                        maxDate={niMånederFremITid(new Date())}
+                                        validate={validateTermindato(intl, formValues.fødselsdato)}
+                                    />
+                                </Block>
                                 <ReadMore size="small" header={intlUtils(intl, 'barnet.termindato.merInfo.tittel')}>
                                     {intlUtils(intl, 'barnet.termindato.merInfo.tekst')}
                                 </ReadMore>
