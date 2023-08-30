@@ -1,13 +1,13 @@
 @import './../../../../styles/variables.css';
 
 .arbeidIUtlandetVisning {
-    border-radius: 2px; 
-    background: var(--global-deepblue-50, #E6F1F8);
+    border-radius: 2px;
+    background: var(--global-deepblue-50, #e6f1f8);
     display: grid;
-    grid-template-columns: 1fr 8% 8%;
+    grid-template-columns: 1fr 2.5rem 2rem;
     grid-template-rows: 1fr 1fr 1fr;
     width: var(--app-max-width);
-    padding: 16px;
+    padding: 1rem;
     gap: 0px;
 }
 
@@ -19,30 +19,27 @@
 .arbeidIUtlandetVisning__land {
     grid-column: 1;
     grid-row: 2;
-    align-self:flex-end;
+    align-self: flex-end;
 }
 
 .arbeidIUtlandetVisning__dato {
     grid-column: 1;
     grid-row: 3;
-    align-self:flex-end;
+    align-self: flex-end;
 }
-
 
 .arbeidIUtlandetVisning__rediger {
     grid-column: 3;
     grid-row: 3;
     width: 2rem;
     height: 2rem;
-    align-self:last baseline;
+    align-self: last baseline;
 }
 
 .arbeidIUtlandetVisning__slett {
     grid-column: 2;
     grid-row: 3;
-    width:2rem;
-    height:2rem;
-    align-self:last baseline;
+    width: 2rem;
+    height: 2rem;
+    align-self: last baseline;
 }
-
-
