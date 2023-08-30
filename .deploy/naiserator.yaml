@@ -10,7 +10,6 @@ spec:
     outbound:
       external:
         - host: {{dekoratoren}}
-        - host: login.test.idporten.no
   image: {{image}}
   port: 8080
   replicas:
