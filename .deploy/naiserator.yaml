@@ -10,6 +10,7 @@ spec:
     outbound:
       external:
         - host: {{dekoratoren}}
+        - host: login.ekstern.dev.nav.no
   image: {{image}}
   port: 8080
   replicas:
