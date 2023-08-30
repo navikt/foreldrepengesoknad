@@ -1,8 +1,8 @@
 import { BostedUtland } from 'app/types/BostedUtland';
 import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { Block } from '@navikt/fp-common';
-import { FormattedMessage } from 'react-intl';
-import { Button } from '@navikt/ds-react';
+import { Block, intlUtils } from '@navikt/fp-common';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Alert, Button } from '@navikt/ds-react';
 import BostedUtlandSubform from './BostedUtlandSubform';
 import BostedUtlandList from '../BostedUtlandList';
 
@@ -14,12 +14,15 @@ interface Props {
 const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpphold, setUtenlandsopphold }) => {
     const [leggerTilNyttOppholdIUtlandet, setLeggerTilNyttOppholdIUtlandet] = useState(false);
     const [selectedOpphold, setSelectedOpphold] = useState<BostedUtland | undefined>(undefined);
+    const [erFørsteInput, setErFørsteInput] = useState(true);
+    const intl = useIntl();
 
     const addOpphold = (opphold: BostedUtland) => {
         const updatedOpphold = alleOpphold.concat(opphold);
         setUtenlandsopphold(updatedOpphold);
         setSelectedOpphold(undefined);
         setLeggerTilNyttOppholdIUtlandet(false);
+        setErFørsteInput(false);
     };
 
     const deleteOpphold = (oppholdSomSlettes: BostedUtland) => {
@@ -38,7 +41,10 @@ const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpph
         setLeggerTilNyttOppholdIUtlandet(true);
         setSelectedOpphold(undefined);
     };
-
+    const visAlertOmNødvendigInput = !erFørsteInput && alleOpphold.length === 0;
+    const alertTekstId = oppgirIFortid
+        ? 'utenlandsopphold.duMåOppgiInformasjon.iFortid'
+        : 'utenlandsopphold.duMåOppgiInformasjon.iFremtid';
     return (
         <div>
             {alleOpphold.length > 0 && (
@@ -52,6 +58,13 @@ const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpph
                     setSelectedOpphold={setSelectedOpphold}
                     setLeggerTilNyttOppholdIUtlandet={setLeggerTilNyttOppholdIUtlandet}
                 />
+            )}
+            {visAlertOmNødvendigInput && (
+                <Block padBottom="l">
+                    <Alert variant="info" style={{ padding: '0.5rem' }}>
+                        {intlUtils(intl, alertTekstId)}
+                    </Alert>
+                </Block>
             )}
             {(leggerTilNyttOppholdIUtlandet || alleOpphold.length === 0) && (
                 <BostedUtlandSubform

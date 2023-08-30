@@ -12,9 +12,11 @@ export const getInputFeltFeil = (
     intl: IntlShape,
     valideringsfeil?: string
 ): ReactNode => {
-    if (valideringsfeil !== undefined) {
+    if (!submitClicked) {
+        return null;
+    } else if (valideringsfeil !== undefined) {
         return <InputFeilmelding feilmelding={valideringsfeil} />;
-    } else if (submitClicked && !valideringsfeil && !hasValue(fieldValue)) {
+    } else if (!valideringsfeil && !hasValue(fieldValue)) {
         return <InputFeilmelding feilmelding={intlUtils(intl, `valideringsfeil.${fieldName}.påkrevd`)} />;
     }
     return null;

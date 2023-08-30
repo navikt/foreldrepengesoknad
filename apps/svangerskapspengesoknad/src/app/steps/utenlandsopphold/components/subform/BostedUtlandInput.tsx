@@ -63,8 +63,8 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
     const erFørsteInput = alleOpphold.length === 0;
     const submitButtonId = selectedOpphold ? 'oppdater' : 'leggTil';
 
-    const handleOnSubmit = (values: Partial<BostedUtlandSubformData>, event: any) => {
-        event.preventDefault();
+    const handleOnSubmit = (values: Partial<BostedUtlandSubformData>) => {
+        setSubmitClicked(true);
         const formIsAnswered = visibility.areAllQuestionsAnswered();
         const formIsValid = !fomFeil && !tomFeil;
         const overlappendePerioderTekst = validerOverlappendeUtenlandsperioder(
@@ -85,7 +85,6 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
             }
             setSelectedOpphold(undefined);
         }
-        setSubmitClicked(true);
     };
 
     const handleOnAvbryt = () => {
@@ -115,7 +114,7 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
             validateForm();
             setTomFeil(undefined);
         }
-    }, [fomError, tomError]);
+    }, [fomError, tomError, submitClicked]);
 
     return (
         <div className={bem.block}>
@@ -152,12 +151,17 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
             </Block>
             {overlappendePerioderFeil && <InputFeilmelding feilmelding={overlappendePerioderFeil} />}
             <Block margin="xl">
-                <Button variant="primary" onClick={(event) => handleOnSubmit(formValues, event)}>
+                <Button type="button" variant="primary" onClick={() => handleOnSubmit(formValues)}>
                     <FormattedMessage id={submitButtonId} />
                 </Button>
 
                 {!erFørsteInput && (
-                    <Button className={bem.element('avbryt')} variant="secondary" onClick={handleOnAvbryt}>
+                    <Button
+                        type="button"
+                        className={bem.element('avbryt')}
+                        variant="secondary"
+                        onClick={handleOnAvbryt}
+                    >
                         <FormattedMessage id="avbryt" />
                     </Button>
                 )}

@@ -314,14 +314,7 @@ const EgenNæringInput: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <Alert variant="info">{intlUtils(intl, 'inntektsinformasjon.egenNæring.veileder')}</Alert>
                 </Block>
-                <Button
-                    type="button"
-                    variant="primary"
-                    onClick={(event) => {
-                        event.preventDefault();
-                        handleOnLeggTil();
-                    }}
-                >
+                <Button type="button" variant="primary" onClick={handleOnLeggTil}>
                     <FormattedMessage id={submitButtonId} />
                 </Button>
                 {!erFørsteInput && (

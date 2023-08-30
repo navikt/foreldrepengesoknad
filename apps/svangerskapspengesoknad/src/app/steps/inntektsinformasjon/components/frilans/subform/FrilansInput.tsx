@@ -113,14 +113,7 @@ const FrilansInput: FunctionComponent<Props> = ({
                 />
                 {getInputFeltFeil(submitClicked, FrilansSubformField.frilansTom, formValues.frilansTom, intl, tomFeil)}
             </Block>
-            <Button
-                type="button"
-                variant="primary"
-                onClick={(event) => {
-                    event.preventDefault();
-                    handleOnLeggTil();
-                }}
-            >
+            <Button type="button" variant="primary" onClick={handleOnLeggTil}>
                 <FormattedMessage id={submitButtonId} />
             </Button>
         </div>

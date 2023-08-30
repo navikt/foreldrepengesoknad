@@ -1,4 +1,4 @@
-import { Button, Heading } from '@navikt/ds-react';
+import { Alert, Button, Heading } from '@navikt/ds-react';
 import { InntektsinformasjonFormData } from '../../inntektsinformasjonFormConfig';
 import ArbeidIUtlandetSubform from './subform/ArbeidIUtlandetSubform';
 import { Block, intlUtils } from '@navikt/fp-common';
@@ -7,7 +7,6 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent, useState } from 'react';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import ArbeidIUtlandetList from './ArbeidIUtlandetList';
-
 interface Props {
     allArbeidIUtlandet: ArbeidIUtlandet[];
     formValues: InntektsinformasjonFormData;
@@ -24,12 +23,14 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const [leggerTilNyttArbeidIUtlandet, setLeggerTilNyttArbeidIUtlandet] = useState(false);
+    const [erFørsteInput, setErFørsteInput] = useState(true);
 
     const addAnnenInntekt = (annenInntekt: ArbeidIUtlandet) => {
         const updatedandreInntekterInformasjon = allArbeidIUtlandet.concat(annenInntekt);
         setArbeidIUtlandet(updatedandreInntekterInformasjon);
         setSelectedAnnenInntekt(undefined);
         setLeggerTilNyttArbeidIUtlandet(false);
+        setErFørsteInput(false);
     };
 
     const deleteAnnenInntekt = (inntektSomSlettes: ArbeidIUtlandet) => {
@@ -55,6 +56,8 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
         return null;
     }
 
+    const visAlertOmNødvendigInput = !erFørsteInput && allArbeidIUtlandet.length === 0;
+
     return (
         <>
             <Block padBottom="l">
@@ -72,6 +75,13 @@ const ArbeidIUtlandetDetaljer: FunctionComponent<Props> = ({
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                     setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
                 />
+            )}
+            {visAlertOmNødvendigInput && (
+                <Block padBottom="l">
+                    <Alert variant="info" style={{ padding: '0.5rem' }}>
+                        {intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.duMåOppgiInformasjon')}
+                    </Alert>
+                </Block>
             )}
             {(leggerTilNyttArbeidIUtlandet ||
                 (formValues.hattArbeidIUtlandet === YesOrNo.YES && allArbeidIUtlandet.length === 0)) && (

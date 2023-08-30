@@ -176,14 +176,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                         tomError
                     )}
                 </Block>
-                <Button
-                    type="button"
-                    variant="primary"
-                    onClick={(event) => {
-                        event.preventDefault();
-                        handleOnLeggTil();
-                    }}
-                >
+                <Button type="button" variant="primary" onClick={handleOnLeggTil}>
                     <FormattedMessage id={submitButtonId} />
                 </Button>
                 {!erFørsteInput && (

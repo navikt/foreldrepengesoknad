@@ -23,6 +23,12 @@ export const validateTermindato = (intl: IntlShape, fødselsdato: string | undef
     if (dayjs(termindato).isBefore(etÅrSiden(new Date()))) {
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtTilbakeITid');
     }
+    if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.6mndEtterFødsel');
+    }
+    if (fødselsdato && !dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
+        return intlUtils(intl, 'valideringsfeil.barnet.termindato.1mndFørFødsel');
+    }
 
     return undefined;
 };

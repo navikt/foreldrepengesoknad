@@ -5,7 +5,7 @@ import { FunctionComponent, useState } from 'react';
 import { Næring } from 'app/types/Næring';
 import EgenNæringSubform from './subform/EgenNæringSubform';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Heading } from '@navikt/ds-react';
+import { Alert, Button, Heading } from '@navikt/ds-react';
 import EgenNæringList from './validation/EgenNæringList';
 interface Props {
     selectedNæring: Næring | undefined;
@@ -23,12 +23,14 @@ const EgenNæringDetaljer: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const [leggTilNyNæring, setLeggTilNyNæring] = useState(false);
+    const [erFørsteInput, setErFørsteInput] = useState(true);
 
     const addNæring = (nyNæring: Næring) => {
         const updatedNæringsinfo = allNæring.concat(nyNæring);
         setAllNæring(updatedNæringsinfo);
         setSelectedNæring(undefined);
         setLeggTilNyNæring(false);
+        setErFørsteInput(false);
     };
 
     const deleteNæring = (næringSomSlettes: Næring) => {
@@ -52,6 +54,8 @@ const EgenNæringDetaljer: FunctionComponent<Props> = ({
         return null;
     }
 
+    const visAlertOmNødvendigInput = !erFørsteInput && allNæring.length === 0;
+
     return (
         <>
             <Block padBottom="l">
@@ -69,6 +73,13 @@ const EgenNæringDetaljer: FunctionComponent<Props> = ({
                     setSelectedNæring={setSelectedNæring}
                     setLeggTilNyNæring={setLeggTilNyNæring}
                 />
+            )}
+            {visAlertOmNødvendigInput && (
+                <Block padBottom="l">
+                    <Alert variant="info" style={{ padding: '0.5rem' }}>
+                        {intlUtils(intl, 'inntektsinformasjon.egenNæring.duMåOppgiInformasjon')}
+                    </Alert>
+                </Block>
             )}
             {(leggTilNyNæring || allNæring.length === 0) && (
                 <EgenNæringSubform
