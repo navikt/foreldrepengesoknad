@@ -22,10 +22,12 @@ import InformasjonOmUtenlandsopphold from './components/InformasjonOmUtenlandsop
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
 import actionCreator from 'app/context/action/actionCreator';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
     const { informasjonOmUtenlandsopphold } = useSøknad();
+    const onAvbrytSøknad = useAvbrytSøknad();
     const [bostedUtlandFremtid, setBostedUtlandFremtid] = useState<BostedUtland[]>(
         informasjonOmUtenlandsopphold.senereOpphold.map((opphold, index) => {
             return {
@@ -67,8 +69,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="utenlandsopphold"
                         pageTitle={intlUtils(intl, 'steps.label.utenlandsopphold')}
-                        // onCancel={onAvbrytSøknad}
-                        // onContinueLater={onFortsettSøknadSenere}
+                        onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>

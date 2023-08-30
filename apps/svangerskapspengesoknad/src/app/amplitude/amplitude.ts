@@ -1,7 +1,7 @@
 import amplitude from 'amplitude-js';
 
 export enum PageKeys {
-    Velkommen = 'velkommen',
+    Forside = 'forside',
     Umyndig = 'umyndig',
 }
 

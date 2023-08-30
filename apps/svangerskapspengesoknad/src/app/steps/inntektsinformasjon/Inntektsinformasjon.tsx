@@ -40,11 +40,13 @@ import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlan
 import { VelgSøknadsgrunnlag } from 'app/types/VelgSøknadsgrunnlag';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn, tilrettelegging } = useSøknad();
+    const onAvbrytSøknad = useAvbrytSøknad();
     const { termindato } = barn;
 
     const [frilans, setFrilans] = useState<Frilans | undefined>(
@@ -109,8 +111,7 @@ const Inntektsinformasjon = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="arbeid"
                         pageTitle={intlUtils(intl, 'steps.label.arbeid')}
-                        // onCancel={onAvbrytSøknad}
-                        // onContinueLater={onFortsettSøknadSenere}
+                        onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
                         <InntektsinformasjonFormComponents.Form

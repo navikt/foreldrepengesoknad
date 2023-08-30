@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { ReadMore } from '@navikt/ds-react';
 import { niMånederFremITid, halvannetÅrSiden, etÅrSiden } from 'app/utils/dateUtils';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Barnet: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -23,6 +24,7 @@ const Barnet: React.FunctionComponent = () => {
     };
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <BarnetFormComponents.FormikWrapper
@@ -38,8 +40,7 @@ const Barnet: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="barnet"
                         pageTitle={intlUtils(intl, 'steps.label.barnet')}
-                        // onCancel={onAvbrytSøknad}
-                        // onContinueLater={onFortsettSøknadSenere}
+                        onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
                         <BarnetFormComponents.Form

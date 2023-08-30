@@ -23,13 +23,14 @@ import { FieldArray } from 'formik';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import './skjema.css';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Skjema: React.FunctionComponent = () => {
     const intl = useIntl();
     const bem = bemUtils('skjema');
     const { state } = useSvangerskapspengerContext();
     const { tilrettelegging } = useSøknad();
-
+    const onAvbrytSøknad = useAvbrytSøknad();
     const flereTilrettelegginger = tilrettelegging.length > 1;
     const descriptionId = flereTilrettelegginger
         ? 'tilrettelegging.vedlegg.description.flereTilrettelegginger'
@@ -53,8 +54,7 @@ const Skjema: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="skjema"
                         pageTitle={'Tilretteleggingskjema'}
-                        // onCancel={onAvbrytSøknad}
-                        // onContinueLater={onFortsettSøknadSenere}
+                        onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
                         <SkjemaFormComponents.Form
