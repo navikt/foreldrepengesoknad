@@ -24,6 +24,7 @@ import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapsp
 import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import DelvisTilretteleggingDetaljer from './components/delvisTilrettelegging/DelvisTilretteleggingDetaljer';
 import dayjs from 'dayjs';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 interface Props {
     id: string;
@@ -35,6 +36,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
     const intl = useIntl();
     const { tilrettelegging } = useSøknad();
     const { state } = useSvangerskapspengerContext();
+    const onAvbrytSøknad = useAvbrytSøknad();
     const { currentTilretteleggingId } = state;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         console.log(values);
@@ -69,8 +71,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ type, navn, id }) => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="periode"
                         pageTitle={sideTittel}
-                        // onCancel={onAvbrytSøknad}
-                        // onContinueLater={onFortsettSøknadSenere}
+                        onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, type)}
                     >
                         <TilretteleggingFormComponents.Form

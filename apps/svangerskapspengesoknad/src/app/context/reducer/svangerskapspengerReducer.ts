@@ -1,4 +1,4 @@
-import { SvangerskapspengerContextState } from '../SvangerskapspengerContextConfig';
+import { SvangerskapspengerContextState, svangerskapspengerInitialState } from '../SvangerskapspengerContextConfig';
 import { SvangerskapspengerContextAction, SvangerskapspengerContextActionKeys } from '../action/actionCreator';
 
 const svangerskapspengerReducer = (
@@ -69,6 +69,11 @@ const svangerskapspengerReducer = (
                     ...state.søknad,
                     vedlegg: action.payload,
                 },
+            };
+        case SvangerskapspengerContextActionKeys.AVBRYT_SØKNAD:
+            return {
+                ...svangerskapspengerInitialState,
+                søkerinfo: state.søkerinfo,
             };
         default:
             return state;
