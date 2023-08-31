@@ -1,4 +1,4 @@
-import { Button, Label, ReadMore } from '@navikt/ds-react';
+import { Alert, Button, Label, ReadMore } from '@navikt/ds-react';
 import { Block, FormikFileUploader, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachmentList/AttachmentList';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
@@ -24,6 +24,9 @@ import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging'
 import useSøknad from 'app/utils/hooks/useSøknad';
 import './skjema.css';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import { useEffect, useState } from 'react';
+
+const MAX_ANTALL_VEDLEGG = 40;
 
 const Skjema: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -31,6 +34,8 @@ const Skjema: React.FunctionComponent = () => {
     const { state } = useSvangerskapspengerContext();
     const { tilrettelegging } = useSøknad();
     const onAvbrytSøknad = useAvbrytSøknad();
+    const [forMangeFiler, setForMangeFiler] = useState(false);
+    const [submitClicked, setSubmitClicked] = useState(false);
     const flereTilrettelegginger = tilrettelegging.length > 1;
     const descriptionId = flereTilrettelegginger
         ? 'tilrettelegging.vedlegg.description.flereTilrettelegginger'
@@ -44,11 +49,22 @@ const Skjema: React.FunctionComponent = () => {
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
 
+    const handleOnSubmit = (values: any) => {
+        setSubmitClicked(true);
+
+        if (!forMangeFiler) {
+            handleSubmit(values);
+        }
+    };
     return (
         <SkjemaFormComponents.FormikWrapper
             initialValues={getInitialSkjemaValuesFromState(state)}
-            onSubmit={handleSubmit}
+            onSubmit={handleOnSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
+                const antallVedlegg = formValues.vedlegg?.flat(1).length || 0;
+                useEffect(() => {
+                    setForMangeFiler(antallVedlegg > MAX_ANTALL_VEDLEGG);
+                }, [setForMangeFiler, antallVedlegg]);
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -146,6 +162,9 @@ const Skjema: React.FunctionComponent = () => {
                                     <div>TODO</div>
                                 </ReadMore>
                             </Block>
+                            {forMangeFiler && submitClicked && (
+                                <Alert variant="error">{intlUtils(intl, 'tilrettelegging.skjema.maks40Filer')}</Alert>
+                            )}
                             <Block margin="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousStepHref('skjema')}>
