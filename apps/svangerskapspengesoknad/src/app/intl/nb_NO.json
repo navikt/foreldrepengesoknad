@@ -266,5 +266,6 @@
     "tilrettelegging.hvordanKanDuJobbe.frilansSN.infoBox": "Her skal du fortelle oss hvordan du har vurdert at du kan jobbe i perioden du har behov for svangerskapspenger. Dersom situasjonen ikke er lik hele perioden, kan du sette flere kryss.",
     "tilrettelegging.hvordanKanDuJobbe.fullt.infoBox": "Her skal du fylle ut det som er krysset av under Del 2: Arbeidsgivers tilbakemelding om mulighet for tilrettelegging/omplassering i skjemaet.",
     "tilrettelegging.leggTilPeriode": "Legg til ny periode",
-    "tilrettelegging.fjernPeriode": "Fjern periode"
+    "tilrettelegging.fjernPeriode": "Fjern periode",
+    "tilrettelegging.skjema.maks40Filer": "Du kan laste opp maksimalt 40 filer. Sett noen filer for å gå videre."
 }
