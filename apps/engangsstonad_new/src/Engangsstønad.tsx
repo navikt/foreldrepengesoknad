@@ -1,0 +1,216 @@
+import { useCallback, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { Loader } from '@navikt/ds-react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Locale } from '@navikt/fp-common';
+import SøkersituasjonForm, {
+    FormValues as SøkersituasjonFormValues,
+} from './sider/steg/sokersituasjon/SøkersituasjonForm';
+import Velkommen from './sider/velkommen/Velkommen';
+import OmBarnetForm, { FormValues as OmBarnetFormValues } from './sider/steg/omBarnet/OmBarnetForm';
+import UtenlandsoppholdForm, {
+    FormValues as UtenlandsoppholdFormFormValus,
+} from './sider/steg/utenlandsopphold/UtenlandsoppholdForm';
+import Oppsummering from './sider/steg/oppsummering/Oppsummering';
+import { lenker } from './lenker';
+import Feilside from './sider/feilside/Feilside';
+import { useRequest } from './fpcommon/api/apiHooks';
+import Api from './api';
+import Person from './types/Person';
+import Kvittering from './types/Kvittering';
+import SøknadSendt from './sider/kvittering/SøknadSendt';
+
+const renderSpinner = () => (
+    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+        <Loader size="2xlarge" />
+    </div>
+);
+
+interface Props {
+    locale: Locale;
+    onChangeLocale: (locale: Locale) => void;
+}
+
+const useDataLagrer = (locale: Locale) => {
+    const navigate = useNavigate();
+
+    const [lagretSøkersituasjon, lagreSøkersituasjon] = useState<SøkersituasjonFormValues | undefined>();
+    const [lagretOmBarnet, lagreOmBarnet] = useState<OmBarnetFormValues | undefined>();
+    const [lagretUtenlandsopphold, lagreUtenlandsopphold] = useState<UtenlandsoppholdFormFormValus | undefined>();
+
+    const lagreSøkersituasjonOgGåTilOmBarnet = useCallback((form: SøkersituasjonFormValues) => {
+        lagreSøkersituasjon(form);
+        navigate('/soknad/om-barnet');
+    }, []);
+    const lagreOmBarnetOgGårTilUtenlandsopphold = useCallback((form: OmBarnetFormValues) => {
+        lagreOmBarnet(form);
+        navigate('/soknad/utenlandsopphold');
+    }, []);
+    const lagreUtenlandsoppholdOgGåTilOppsummering = useCallback((form: UtenlandsoppholdFormFormValus) => {
+        lagreUtenlandsopphold(form);
+        navigate('/soknad/oppsummering');
+    }, []);
+
+    const [kvittering, setKvittering] = useState<Kvittering | undefined>();
+
+    const avbrytSøknad = useCallback(() => {
+        lagreSøkersituasjon(undefined);
+        lagreOmBarnet(undefined);
+        lagreUtenlandsopphold(undefined);
+    }, []);
+
+    const sendSøknad = async () => {
+        //TODO Diverse mapping
+        const søknadForInnsending = {
+            barn: lagretOmBarnet,
+            type: 'engangsstønad',
+            erEndringssøknad: false,
+            informasjonOmUtenlandsopphold: lagretUtenlandsopphold,
+            søker: {
+                språkkode: locale,
+            },
+            vedlegg: [],
+        };
+
+        const kvitteringFraSøknad = await Api.sendSøknad(søknadForInnsending);
+        setKvittering(kvitteringFraSøknad.data);
+        navigate('/kvittering');
+    };
+
+    return {
+        lagre: {
+            lagreSøkersituasjonOgGåTilOmBarnet,
+            lagreOmBarnetOgGårTilUtenlandsopphold,
+            lagreUtenlandsoppholdOgGåTilOppsummering,
+        },
+        data: {
+            lagretSøkersituasjon,
+            lagretOmBarnet,
+            lagretUtenlandsopphold,
+            kvittering,
+        },
+        avbrytSøknad,
+        sendSøknad,
+    };
+};
+
+const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+    const intl = useIntl();
+    const navigate = useNavigate();
+
+    const [erVelkommen, setVelkommen] = useState(false);
+
+    const { avbrytSøknad, sendSøknad, lagre, data } = useDataLagrer(locale);
+
+    const gåTilSøkersituasjon = useCallback(() => {
+        setVelkommen(true);
+        navigate('/soknad/søkersituasjon');
+    }, []);
+
+    const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
+
+    if (error !== null) {
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            return renderSpinner();
+        }
+
+        return (
+            <Feilside
+                dokumenttittel="NAV Engangsstønad"
+                ingress=""
+                tittel=""
+                illustrasjon={{
+                    tittel: intl.formatMessage({ id: 'intro.generellFeil.tittel' }),
+                    tekst: intl.formatMessage({ id: 'intro.generellFeil.ingress' }),
+                    veileder: {
+                        ansikt: 'skeptisk',
+                    },
+                    lenke: {
+                        tekst: intl.formatMessage({ id: 'intro.generellFeil.brukerstøtte' }),
+                        url: lenker.brukerstøtte,
+                    },
+                }}
+                setLanguage={onChangeLocale}
+                språkkode={locale}
+            />
+        );
+    }
+
+    if (loading || !person) {
+        return renderSpinner();
+    }
+
+    return (
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <Velkommen locale={locale} onChangeLocale={onChangeLocale} startSøknad={gåTilSøkersituasjon} />
+                }
+            />
+            {!erVelkommen && <Route path="*" element={<Navigate to="/" />} />}
+            {erVelkommen && (
+                <>
+                    <Route
+                        path="/soknad/søkersituasjon"
+                        element={
+                            <SøkersituasjonForm
+                                lagretSøkersituasjon={data.lagretSøkersituasjon}
+                                lagreSøkersituasjon={lagre.lagreSøkersituasjonOgGåTilOmBarnet}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
+                    />
+                    {data.lagretSøkersituasjon && (
+                        <Route
+                            path="/soknad/om-barnet"
+                            element={
+                                <OmBarnetForm
+                                    kjønn={person.kjønn}
+                                    søkersituasjon={data.lagretSøkersituasjon}
+                                    lagretOmBarnet={data.lagretOmBarnet}
+                                    lagreOmBarnet={lagre.lagreOmBarnetOgGårTilUtenlandsopphold}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                    )}
+                    {data.lagretOmBarnet && (
+                        <Route
+                            path="/soknad/utenlandsopphold"
+                            element={
+                                <UtenlandsoppholdForm
+                                    lagreUtenlandsopphold={lagre.lagreUtenlandsoppholdOgGåTilOppsummering}
+                                    lagretUtenlandsopphold={data.lagretUtenlandsopphold}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                    )}
+                    {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
+                        <Route
+                            path="/soknad/oppsummering"
+                            element={
+                                <Oppsummering
+                                    person={person}
+                                    omBarnet={data.lagretOmBarnet}
+                                    utenlandsopphold={data.lagretUtenlandsopphold}
+                                    avbrytSøknad={avbrytSøknad}
+                                    sendSøknad={sendSøknad}
+                                />
+                            }
+                        />
+                    )}
+                    {data.kvittering && (
+                        <Route
+                            path="/kvittering"
+                            element={<SøknadSendt person={person} kvittering={data.kvittering} />}
+                        />
+                    )}
+                </>
+            )}
+        </Routes>
+    );
+};
+
+export default Engangsstønad;

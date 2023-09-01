@@ -1,0 +1,14 @@
+{
+    "extends": "tsconfig/vite.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "baseUrl": "./src",
+        "paths": {
+            "styles/*": ["styles/*"],
+            "intl/*": ["intl/*"],
+            "types/*": ["types/*"]
+        },
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
+    },
+    "exclude": ["node_modules", "build", "scripts", "config", "src/build", "src/config", "dist"]
+}

@@ -42,7 +42,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
         dispatch(
             actionCreator.setVelkommen({
                 harForståttRettigheterOgPlikter: values.harForståttRettigheterOgPlikter!,
-            })
+            }),
         );
         navigate('/soknad/søkersituasjon');
     };
@@ -117,7 +117,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
                                         if (value !== true) {
                                             result = intlUtils(
                                                 intl,
-                                                'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter'
+                                                'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter',
                                             );
                                         }
                                         return result;
