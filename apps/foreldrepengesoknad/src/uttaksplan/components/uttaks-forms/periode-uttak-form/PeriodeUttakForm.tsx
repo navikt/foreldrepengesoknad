@@ -197,6 +197,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
     const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
 
+    if (!isOpen) {
+        return null;
+    }
+
     return (
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(
