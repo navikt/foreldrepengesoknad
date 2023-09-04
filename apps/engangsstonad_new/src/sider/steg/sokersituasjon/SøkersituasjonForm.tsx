@@ -49,10 +49,10 @@ const SøkersituasjonForm: React.FunctionComponent<OwnProps> = ({
                             name="situasjon"
                             label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
                         >
-                            <Radio value="fødsel">
+                            <Radio value={Søkersituasjon.FØDSEL}>
                                 <FormattedMessage id="søkersituasjon.radiobutton.fødsel" />
                             </Radio>
-                            <Radio value="adopsjon">
+                            <Radio value={Søkersituasjon.ADOPSJON}>
                                 <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
                             </Radio>
                         </RadioGroupPanel>

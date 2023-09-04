@@ -34,10 +34,6 @@ const UtenlandsoppholdForm: React.FunctionComponent<OwnProps> = ({
         defaultValues: lagretUtenlandsopphold,
     });
 
-    const lagre = (values: FormValues) => {
-        lagreUtenlandsopphold(values);
-    };
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -47,13 +43,13 @@ const UtenlandsoppholdForm: React.FunctionComponent<OwnProps> = ({
             steps={stepConfig}
         >
             <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagre)}>
+                <form onSubmit={formMethods.handleSubmit(lagreUtenlandsopphold)}>
                     <FremtidigBosted />
                     <TidligereBosted />
                     <Block margin="xl">
                         <StepButtonWrapper>
                             <Button variant="secondary" as={Link} to={getPreviousStepHref('utenlandsopphold')}>
-                                <FormattedMessage id="søknad.forrige" />
+                                <FormattedMessage id="backlink.label" />
                             </Button>
                             <Button type="submit">
                                 <FormattedMessage id="søknad.gåVidere" />

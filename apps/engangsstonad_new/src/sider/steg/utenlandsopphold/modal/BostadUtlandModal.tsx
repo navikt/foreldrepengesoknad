@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { FormProvider, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
@@ -7,6 +7,7 @@ import { Block, date1YearFromNow, dateToday } from '@navikt/fp-common';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
+import { validateFromDate, validateToDate } from 'fpcommon/validering/valideringsregler';
 
 export type FormValues = {
     fom: string;
@@ -29,6 +30,7 @@ const BostadUtlandModal: FunctionComponent<Props> = ({
     lukkModal,
     erFremtidigOpphold,
 }) => {
+    const intl = useIntl();
     const formMethods = useForm<FormValues>({
         defaultValues: utlandsopphold,
     });
@@ -64,9 +66,24 @@ const BostadUtlandModal: FunctionComponent<Props> = ({
                                 },
                             ]}
                             label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
+                            validate={[
+                                (fomValue) => {
+                                    if (tom && fomValue && dayjs(tom).isSame(fomValue)) {
+                                        return intl.formatMessage({ id: 'valideringsfeil.fomErLikTom' });
+                                    }
+                                    return validateFromDate(
+                                        intl,
+                                        dayjs(fomValue).toDate(),
+                                        dayjs(dateToday).subtract(1, 'day').toDate(),
+                                        tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                                        dayjs(tom).toDate(),
+                                    );
+                                },
+                            ]}
                         />
                         <Datepicker
                             name="tom"
+                            label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
                             disabledDays={[
                                 {
                                     from: dayjs().subtract(50, 'year').toDate(),
@@ -79,7 +96,22 @@ const BostadUtlandModal: FunctionComponent<Props> = ({
                                     to: dayjs().add(50, 'year').toDate(),
                                 },
                             ]}
-                            label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
+                            validate={[
+                                (tomValue) => {
+                                    if (tomValue && fom && dayjs(tomValue).isSame(fom)) {
+                                        return intl.formatMessage({ id: 'valideringsfeil.tomErLikFom' });
+                                    }
+                                    return validateToDate(
+                                        intl,
+                                        dayjs(tomValue).toDate(),
+                                        dayjs(fom || dateToday)
+                                            .subtract(1, 'day')
+                                            .toDate(),
+                                        dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                                        dayjs(fom).toDate(),
+                                    );
+                                },
+                            ]}
                         />
                     </Block>
                     <Block padBottom="l">
@@ -94,6 +126,21 @@ const BostadUtlandModal: FunctionComponent<Props> = ({
                                     }
                                 />
                             }
+                            validate={[
+                                (country) => {
+                                    if (country === '' || !country) {
+                                        return erFremtidigOpphold
+                                            ? intl.formatMessage({
+                                                  id: 'valideringsfeil.leggTilUtenlandsopphold.landDuSkalBoIPåkreved',
+                                              })
+                                            : intl.formatMessage({
+                                                  id: 'valideringsfeil.leggTilUtenlandsopphold.landDuHarBoddIPåkrevd',
+                                              });
+                                    }
+
+                                    return undefined;
+                                },
+                            ]}
                         >
                             {createCountryOptions().map((o: Record<string, any>) => (
                                 <option key={o[0]} value={o[0]}>

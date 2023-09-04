@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -29,20 +29,28 @@ const FremtidigBosted: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const formMethods = useFormContext<FormValues>();
-
-    const [valgtOppholdIndex, setValgtOppholdIndex] = useState<number | undefined>();
-
     const { append, remove } = useFieldArray({
         name: 'utenlandsoppholdNeste12Mnd',
         control: formMethods.control,
     });
-    const leggTilOpphold = (values: BostedUtlandFormValues) => {
-        append(values);
-        setValgtOppholdIndex(undefined);
-    };
-    const fjernOpphold = (index: number) => {
-        remove(index);
-    };
+
+    const [valgtOppholdIndex, setValgtOppholdIndex] = useState<number | undefined>();
+
+    const leggTilOpphold = useCallback(
+        (values: BostedUtlandFormValues) => {
+            append(values);
+            setValgtOppholdIndex(undefined);
+        },
+        [append],
+    );
+    const fjernOpphold = useCallback(
+        (index: number) => {
+            remove(index);
+        },
+        [remove],
+    );
+
+    // TODO Manglar validering av periodar
 
     const skalBoUtenforNorgeNeste12Mnd = formMethods.watch('skalBoUtenforNorgeNeste12Mnd');
     const utenlandsoppholdNeste12Mnd = formMethods.watch('utenlandsoppholdNeste12Mnd');
@@ -53,6 +61,8 @@ const FremtidigBosted: React.FunctionComponent = () => {
                 <RadioGroupPanel
                     name="skalBoUtenforNorgeNeste12Mnd"
                     label={<FormattedMessage id="utenlandsopphold.neste12Måneder.spørsmål" />}
+                    //TODO Fiks valideringstekst
+                    validate={[(value) => (value === undefined ? 'Felt er obligatorisk' : undefined)]}
                 >
                     <Radio value={true}>
                         <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet" />

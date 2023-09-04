@@ -43,6 +43,8 @@ const TidligereBosted: React.FunctionComponent = () => {
         remove(index);
     };
 
+    // TODO Manglar validering av periodar
+
     const utenlandsoppholdSiste12Mnd = formMethods.watch('utenlandsoppholdSiste12Mnd');
     const harBoddUtenforNorgeSiste12Mnd = formMethods.watch('harBoddUtenforNorgeSiste12Mnd');
 
@@ -52,6 +54,7 @@ const TidligereBosted: React.FunctionComponent = () => {
                 <RadioGroupPanel
                     name="harBoddUtenforNorgeSiste12Mnd"
                     label={<FormattedMessage id="utenlandsopphold.siste12Måneder.spørsmål" />}
+                    validate={[(value) => (value === undefined ? 'Felt er obligatorisk' : undefined)]}
                 >
                     <Radio value={true}>
                         <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet" />

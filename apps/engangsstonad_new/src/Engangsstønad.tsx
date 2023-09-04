@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Loader } from '@navikt/ds-react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { Locale } from '@navikt/fp-common';
+import { Locale, erMyndig } from '@navikt/fp-common';
 import SøkersituasjonForm, {
     FormValues as SøkersituasjonFormValues,
 } from './sider/steg/sokersituasjon/SøkersituasjonForm';
@@ -19,6 +19,7 @@ import Api from './api';
 import Person from './types/Person';
 import Kvittering from './types/Kvittering';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
+import Umyndig from './sider/umyndig/Umyndig';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -31,7 +32,7 @@ interface Props {
     onChangeLocale: (locale: Locale) => void;
 }
 
-const useDataLagrer = (locale: Locale) => {
+const useDataHåndterer = (locale: Locale) => {
     const navigate = useNavigate();
 
     const [lagretSøkersituasjon, lagreSøkersituasjon] = useState<SøkersituasjonFormValues | undefined>();
@@ -60,7 +61,7 @@ const useDataLagrer = (locale: Locale) => {
     }, []);
 
     const sendSøknad = async () => {
-        //TODO Diverse mapping
+        //TODO Treng nok framleis noko mapping (Gjer mappinga i dei ulike komponentane ved neste?)
         const søknadForInnsending = {
             barn: lagretOmBarnet,
             type: 'engangsstønad',
@@ -69,6 +70,7 @@ const useDataLagrer = (locale: Locale) => {
             søker: {
                 språkkode: locale,
             },
+            //TODO Vedlegg
             vedlegg: [],
         };
 
@@ -100,7 +102,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
 
     const [erVelkommen, setVelkommen] = useState(false);
 
-    const { avbrytSøknad, sendSøknad, lagre, data } = useDataLagrer(locale);
+    const { avbrytSøknad, sendSøknad, lagre, data } = useDataHåndterer(locale);
 
     const gåTilSøkersituasjon = useCallback(() => {
         setVelkommen(true);
@@ -138,6 +140,10 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
 
     if (loading || !person) {
         return renderSpinner();
+    }
+
+    if (!erMyndig(person.fødselsdato)) {
+        return <Umyndig person={person} />;
     }
 
     return (

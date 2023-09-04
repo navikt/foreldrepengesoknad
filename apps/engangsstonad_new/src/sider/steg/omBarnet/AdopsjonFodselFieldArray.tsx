@@ -1,31 +1,36 @@
 import { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { Block } from '@navikt/fp-common';
 
 import Datepicker from 'fpcommon/form/Datepicker';
+import { validateAdopsjonFødselDate } from 'fpcommon/validering/valideringsregler';
 
 export type FormValues = {
-    adopsjonAvEktefellesBarn?: boolean;
-    adopsjonsdato?: string;
-    antallBarn?: number;
-    antallBarnDropDown?: number;
     fødselsdatoer?: {
         dato?: string;
     }[];
 };
 
-const AdopsjonFodselFieldArray: React.FunctionComponent = () => {
-    const { watch, control } = useFormContext<FormValues>();
+interface Props {
+    antallBarn?: number;
+    antallBarnDropDown?: number;
+    adopsjonsdato?: string;
+}
 
+const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
+    adopsjonsdato,
+    antallBarn,
+    antallBarnDropDown,
+}) => {
+    const intl = useIntl();
+
+    const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
         control,
         name: 'fødselsdatoer',
     });
-
-    const antallBarn = watch('antallBarn');
-    const antallBarnDropDown = watch('antallBarnDropDown');
 
     useEffect(() => {
         if (!antallBarn) {
@@ -69,6 +74,7 @@ const AdopsjonFodselFieldArray: React.FunctionComponent = () => {
                                 }
                             />
                         }
+                        validate={[(fødselsdato) => validateAdopsjonFødselDate(fødselsdato, adopsjonsdato, intl)]}
                     />
                 </Block>
             ))}

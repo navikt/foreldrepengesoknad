@@ -278,9 +278,6 @@ importers:
       '@navikt/ds-css':
         specifier: 4.12.1
         version: 4.12.1
-      '@navikt/ds-datepicker':
-        specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@4.12.1)(@navikt/ds-react@4.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0)
       '@navikt/ds-icons':
         specifier: 3.4.3
         version: 3.4.3(@types/react@18.2.20)(react@18.2.0)
@@ -293,12 +290,6 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
-      '@navikt/sif-common-formik-ds':
-        specifier: ^0.23.3
-        version: 0.23.3(@navikt/ds-css@4.12.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.12.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0)
-      '@navikt/sif-common-question-config':
-        specifier: ^0.0.7
-        version: 0.0.7
       '@sentry/browser':
         specifier: ^7.64.0
         version: 7.64.0

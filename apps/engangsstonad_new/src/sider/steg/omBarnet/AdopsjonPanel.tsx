@@ -1,23 +1,47 @@
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Radio } from '@navikt/ds-react';
-import { Block, Kjønn } from '@navikt/fp-common';
+import { Block, Kjønn, hasValue, sisteMuligeDatoForOvertaOmsorg } from '@navikt/fp-common';
 
-import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
+import AdopsjonFodselFieldArray, { FormValues as FieldArrayFormValues } from './AdopsjonFodselFieldArray';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
+import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
 
 export type FormValues = {
     adopsjonAvEktefellesBarn?: boolean;
     adopsjonsdato?: string;
     antallBarn?: number;
     antallBarnDropDown?: number;
-    fødselsdatoer?: {
-        dato?: string;
-    }[];
     søkerAdopsjonAlene?: boolean;
+} & FieldArrayFormValues;
+
+const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {
+    if (!hasValue(dato)) {
+        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.ektefellensBarn.duMåOppgi' });
+    }
+
+    if (!isValidFormattedDateString(dato)) {
+        return intl.formatMessage({ id: 'invalidFormatErrorKey.adopsjonsdato' });
+    }
+
+    if (sisteMuligeDatoForOvertaOmsorg(dato)) {
+        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.forLangtFremITid' });
+    }
+
+    return undefined;
+};
+
+const validateOvertaOmsorgAdopsjonDate = (dato: string, intl: IntlShape) => {
+    if (!hasValue(dato)) {
+        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.overtaOmsorg.duMåOppgi' });
+    }
+    if (sisteMuligeDatoForOvertaOmsorg(dato)) {
+        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.forLangtFremITid' });
+    }
+    return undefined;
 };
 
 interface OwnProps {
@@ -25,9 +49,10 @@ interface OwnProps {
 }
 
 const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
+    const intl = useIntl();
     const { watch } = useFormContext<FormValues>();
 
-    const { adopsjonAvEktefellesBarn, adopsjonsdato, antallBarn } = watch();
+    const { adopsjonAvEktefellesBarn, adopsjonsdato, antallBarn, antallBarnDropDown } = watch();
 
     return (
         <>
@@ -61,6 +86,11 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                             {
                                 from: dayjs().subtract(6, 'month').toDate(),
                             },
+                        ]}
+                        validate={[
+                            adopsjonAvEktefellesBarn
+                                ? (value) => validateEktefellensBarnAdopsjonDate(value, intl)
+                                : (value) => validateOvertaOmsorgAdopsjonDate(value, intl),
                         ]}
                     />
                 </Block>
@@ -99,7 +129,11 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                     </Select>
                 </Block>
             )}
-            <AdopsjonFodselFieldArray />
+            <AdopsjonFodselFieldArray
+                adopsjonsdato={adopsjonsdato}
+                antallBarn={antallBarn}
+                antallBarnDropDown={antallBarnDropDown}
+            />
             {antallBarn && kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
                 <Block margin="xl">
                     <RadioGroupPanel
@@ -115,6 +149,7 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                     </RadioGroupPanel>
                 </Block>
             )}
+            {/* TODO FileUploader */}
         </>
     );
 };

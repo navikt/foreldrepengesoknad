@@ -80,7 +80,7 @@ const Datepicker: FunctionComponent<DatepickerProps> = ({
     };
 
     return (
-        <DatePicker {...dpProps}>
+        <DatePicker {...dpProps} strategy="fixed">
             <DatePicker.Input
                 {...inputProps}
                 onChange={onChangeInput}
