@@ -6,34 +6,34 @@ import './frilans-visning.css';
 import { PencilWritingIcon } from '@navikt/aksel-icons';
 interface Props {
     frilans: Frilans;
-    setRedigererFrilans: React.Dispatch<React.SetStateAction<boolean>>;
+    frilansTittel?: string;
+    setRedigererFrilans?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FrilansVisning: FunctionComponent<Props> = ({ frilans, setRedigererFrilans }) => {
+const FrilansVisning: FunctionComponent<Props> = ({ frilans, frilansTittel, setRedigererFrilans }) => {
     const bem = bemUtils('frilans-visning');
     const frilansTekst =
         !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? 'Du jobbet frilans' : 'Du jobber frilans';
     const tilTekst =
         !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? formatDate(frilans.sluttDato) : 'Pågående';
-    const handleOnClickRediger = () => {
-        setRedigererFrilans(true);
-    };
-
+    const tekstForVisning = frilansTittel ? frilansTittel : frilansTekst;
     return (
         <div className={bem.block}>
-            <Label className={bem.element('tittel')}>{frilansTekst}</Label>
+            <Label className={bem.element('tittel')}>{tekstForVisning}</Label>
 
             <BodyShort className={bem.element('dato')}>
                 {formatDate(frilans.oppstart)} - {tilTekst}
             </BodyShort>
 
-            <Button
-                aria-label="rediger frilansinformasjon"
-                variant="secondary"
-                className={bem.element('rediger')}
-                icon={<PencilWritingIcon aria-hidden />}
-                onClick={handleOnClickRediger}
-            />
+            {setRedigererFrilans && (
+                <Button
+                    aria-label="rediger frilansinformasjon"
+                    variant="secondary"
+                    className={bem.element('rediger')}
+                    icon={<PencilWritingIcon aria-hidden />}
+                    onClick={() => setRedigererFrilans(true)}
+                />
+            )}
         </div>
     );
 };

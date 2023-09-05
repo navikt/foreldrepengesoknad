@@ -9,7 +9,6 @@ import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasj
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
-import actionCreator from 'app/context/action/actionCreator';
 import Skjema from 'app/steps/skjema/Skjema';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -17,6 +16,20 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 interface Props {
     currentRoute: SøknadRoutes;
 }
+
+export const getForrigeTilretteleggingId = (
+    tilretteleggingBehov: Tilrettelegging[],
+    currentTilretteleggingId: string | undefined
+) => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[tilretteleggingBehov.length - 1].id;
+    }
+    const forrigeTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) - 1;
+    if (forrigeTilretteleggingIndex < 0) {
+        return undefined;
+    }
+    return tilretteleggingBehov[forrigeTilretteleggingIndex].id;
+};
 
 export const getNesteTilretteleggingId = (
     tilretteleggingBehov: Tilrettelegging[],
@@ -32,24 +45,23 @@ export const getNesteTilretteleggingId = (
     return tilretteleggingBehov[nesteTilretteleggingIndex].id;
 };
 
-export const findNextRouteForTilrettelegging = (
+export const findNextRoute = (
     currentRoute: SøknadRoutes,
+    nextRoute: SøknadRoutes,
     currentTilretteleggingId: string | undefined,
-    tilretteleggingBehov: Tilrettelegging[] | undefined,
-    dispatch: any
+    tilretteleggingBehov: Tilrettelegging[]
 ): any => {
-    if (tilretteleggingBehov === undefined || tilretteleggingBehov.length === 0) {
-        return SøknadRoutes.ARBEID;
-    } else if (currentRoute === SøknadRoutes.PERIODE) {
-        const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingBehov, currentTilretteleggingId);
-        dispatch(actionCreator.setCurrentTilretteleggingId(nesteTilretteleggingId));
-        if (nesteTilretteleggingId) {
-            return `${SøknadRoutes.PERIODE}/${nesteTilretteleggingId}`;
-        } else {
-            return SøknadRoutes.OPPSUMMERING;
-        }
+    if (currentRoute !== SøknadRoutes.SKJEMA && currentRoute !== SøknadRoutes.PERIODE) {
+        return nextRoute;
     }
-    return SøknadRoutes.ARBEID;
+
+    const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingBehov, currentTilretteleggingId);
+
+    if (nesteTilretteleggingId) {
+        return `${SøknadRoutes.PERIODE}/${nesteTilretteleggingId}`;
+    } else {
+        return SøknadRoutes.OPPSUMMERING;
+    }
 };
 
 const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
@@ -60,6 +72,7 @@ const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undef
                 path={`${SøknadRoutes.PERIODE}/${tilrettelegging.id}`}
                 element={
                     <TilretteleggingStep
+                        key={tilrettelegging.id}
                         id={tilrettelegging.id}
                         type={tilrettelegging.arbeidsforhold.type}
                         navn={tilrettelegging.arbeidsforhold.navn}
@@ -77,9 +90,9 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
     return (
         <>
             <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
+            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
             <Route path={SøknadRoutes.SKJEMA} element={<Skjema />} />
-            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             {getTilretteleggingRoutes(tilretteleggingBehov)}
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />
         </>

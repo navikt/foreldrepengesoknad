@@ -1,5 +1,4 @@
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
-import SøknadRoutes from 'app/routes/routes';
 import { Barn } from 'app/types/Barn';
 import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
 import { Søker } from 'app/types/Søker';
@@ -50,10 +49,10 @@ const setTilrettelegging = (payload: Tilrettelegging[]): SetTilrettelegging => (
 
 interface SetCurrentRoute {
     type: SvangerskapspengerContextActionKeys.SET_CURRENT_ROUTE;
-    payload: SøknadRoutes;
+    payload: string;
 }
 
-const setCurrentRoute = (payload: SøknadRoutes): SetCurrentRoute => ({
+const setCurrentRoute = (payload: string): SetCurrentRoute => ({
     type: SvangerskapspengerContextActionKeys.SET_CURRENT_ROUTE,
     payload,
 });

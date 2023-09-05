@@ -1,33 +1,18 @@
 import actionCreator, { SvangerskapspengerContextAction } from 'app/context/action/actionCreator';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { findNextRouteForTilrettelegging } from 'app/routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from 'app/routes/routes';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const useOnValidSubmit = <T>(
-    submitHandler: (values: T) => SvangerskapspengerContextAction[],
-    nextRoute: SøknadRoutes
-) => {
+const useOnValidSubmit = <T>(submitHandler: (values: T) => SvangerskapspengerContextAction[], nextRoute: string) => {
     const { dispatch, state } = useSvangerskapspengerContext();
     const navigate = useNavigate();
     const [harSubmitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     useEffect(() => {
         if (harSubmitted) {
-            if (state.currentRoute === SøknadRoutes.ARBEID || state.currentRoute === SøknadRoutes.PERIODE) {
-                navigate(
-                    findNextRouteForTilrettelegging(
-                        state.currentRoute,
-                        state.currentTilretteleggingId,
-                        state.søknad.tilrettelegging,
-                        dispatch
-                    )
-                );
-            } else {
-                navigate(state.currentRoute);
-            }
+            setIsSubmitting(false);
+            navigate(state.currentRoute);
         }
     }, [harSubmitted, navigate, nextRoute, state]);
 

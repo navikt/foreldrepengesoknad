@@ -1,4 +1,12 @@
-import { Block, ISOStringToDate, bemUtils, dateToday, intlUtils, date4WeeksAgo } from '@navikt/fp-common';
+import {
+    Block,
+    ISOStringToDate,
+    bemUtils,
+    dateToday,
+    intlUtils,
+    date4WeeksAgo,
+    date20YearsAgo,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -80,6 +88,7 @@ const FrilansInput: FunctionComponent<Props> = ({
                     label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
                     validate={validateFrilansStart(intl, formValues.frilansTom!)}
                     maxDate={dateToday}
+                    minDate={date20YearsAgo}
                     showYearSelector={true}
                     placeholder={'dd.mm.åååå'}
                 />

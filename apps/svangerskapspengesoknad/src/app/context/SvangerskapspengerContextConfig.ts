@@ -5,7 +5,7 @@ import { Søknad } from 'app/types/Søknad';
 
 export interface SvangerskapspengerContextState {
     version: number;
-    currentRoute: SøknadRoutes;
+    currentRoute: string;
     currentTilretteleggingId: string | undefined;
     søkerinfo: Søkerinfo;
     søknad: Søknad;

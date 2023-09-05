@@ -1,20 +1,23 @@
-import { Accordion, BodyShort } from '@navikt/ds-react';
-import { Block, Step, formatDate, intlUtils } from '@navikt/fp-common';
+import { Accordion, BodyShort, Button } from '@navikt/ds-react';
+import { Block, Step, StepButtonWrapper, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { useIntl } from 'react-intl';
-import stepConfig from '../stepsConfig';
+import { FormattedMessage, useIntl } from 'react-intl';
+import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { Link } from 'react-router-dom';
+import { PaperplaneIcon } from '@navikt/aksel-icons';
+import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
-    const { barn, informasjonOmUtenlandsopphold } = søknad;
+    const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
     const søkerinfo = useSøkerinfo();
     const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
-
+    useUpdateCurrentTilretteleggingId(undefined);
     console.log(søknad);
 
     return (
@@ -84,6 +87,26 @@ const Oppsummering = () => {
                     </Accordion.Content>
                 </Accordion.Item>
             </Accordion>
+            <Block margin="xl">
+                <StepButtonWrapper>
+                    <Button
+                        variant="secondary"
+                        as={Link}
+                        to={getPreviousStepHref('oppsummering', tilrettelegging, undefined)}
+                    >
+                        <FormattedMessage id="backlink.label" />
+                    </Button>
+                    <Button
+                        icon={<PaperplaneIcon />}
+                        iconPosition="right"
+                        type="submit"
+                        // disabled={formSubmitted}
+                        // loading={formSubmitted}
+                    >
+                        Send inn søknad
+                    </Button>
+                </StepButtonWrapper>
+            </Block>
         </Step>
     );
 };

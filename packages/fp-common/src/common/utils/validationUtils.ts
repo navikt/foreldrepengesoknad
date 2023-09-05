@@ -23,6 +23,7 @@ export const date20YearsAgo = dayjs().subtract(20, 'years').toDate();
 export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day').toDate();
 export const sixMonthsAgo = dayjs().subtract(6, 'month').startOf('day').toDate();
 export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day').toDate();
+export const date20YearsAgo = dayjs().subtract(20, 'years').startOf('day').toDate();
 
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
