@@ -1,8 +1,6 @@
 export enum Tilretteleggingstype {
-    'HEL' = 'hel',
-    'DELVIS' = 'delvis',
     'INGEN' = 'ingen',
-    'NOE' = 'noe',
+    'DELVIS' = 'delvis',
 }
 
 export enum Arbeidsforholdstype {
@@ -35,7 +33,7 @@ export interface IngenTilretteleggingDTO {
 export interface TilretteleggingInput {
     type: Tilretteleggingstype;
     fom: string;
-    stillingsprosent: number;
+    stillingsprosent?: number;
 }
 
 export interface TilretteleggingDTO {

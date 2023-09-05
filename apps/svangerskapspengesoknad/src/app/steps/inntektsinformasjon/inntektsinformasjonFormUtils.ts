@@ -20,6 +20,7 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.tilrettelegging]: [],
 };
 
+//TODO: Finn bedre løsning for currentId, går det bra at tilretteleggingFraState?.id ikke settes hvis finnes?
 export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
     tilrettelegginger: Tilrettelegging[],
     erFrilanser: boolean,
@@ -29,11 +30,13 @@ export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
     arbeidsforhold: Arbeidsforhold[],
     termindato: Date
 ): Tilrettelegging[] => {
+    let currentId = 0;
     const unikeArbeidsforhold = [
         ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => {
             const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == forhold.id);
+            currentId = currentId + 1;
             return {
-                id: tilretteleggingFraState?.id || forhold.id,
+                id: currentId.toString(), //tilretteleggingFraState?.id || forhold.id,
                 arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
                     id: forhold.id,
                     type:
@@ -53,8 +56,9 @@ export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
               const næringId =
                   egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`;
               const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == næringId);
+              currentId = currentId + 1;
               return {
-                  id: tilretteleggingFraState?.id || næringId,
+                  id: currentId.toString(), //tilretteleggingFraState?.id || næringId,
                   arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
                       id: egenNæring.organisasjonsnummer || `${egenNæring.navnPåNæringen}${egenNæring.registrertILand}`,
                       type: Arbeidsforholdstype.SELVSTENDIG,
@@ -67,11 +71,12 @@ export const mapArbeidsforholdToSøknadsgrunnlagOptions = (
           })
         : [];
     const frilansTilretteleggingFraState = tilrettelegginger.find((t) => t.id == 'Frilans');
+    currentId = currentId + 1;
     const frilansValg =
         erFrilanser && frilans !== undefined
             ? [
                   {
-                      id: 'Frilans',
+                      id: currentId.toString(),
                       arbeidsforhold: frilansTilretteleggingFraState?.arbeidsforhold || {
                           id: 'Frilans',
                           navn: 'Frilans',

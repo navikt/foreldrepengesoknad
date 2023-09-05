@@ -25,10 +25,13 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import './skjema.css';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useEffect, useState } from 'react';
+import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
+import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
 const Skjema: React.FunctionComponent = () => {
+    useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
     const bem = bemUtils('skjema');
     const { state } = useSvangerskapspengerContext();
@@ -47,7 +50,12 @@ const Skjema: React.FunctionComponent = () => {
         const alleVedlegg = values.vedlegg ? values.vedlegg?.flat(1) : [];
         return [actionCreator.setVedlegg(alleVedlegg), actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.OPPSUMMERING);
+    const førsteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, state.currentTilretteleggingId);
+
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(
+        onValidSubmitHandler,
+        `${SøknadRoutes.PERIODE}/${førsteTilretteleggingId}`
+    );
 
     const handleOnSubmit = (values: any) => {
         setSubmitClicked(true);
@@ -147,7 +155,7 @@ const Skjema: React.FunctionComponent = () => {
                                                                 )}
                                                                 attachmentType={AttachmentType.TILRETTELEGGING}
                                                                 skjemanummer={skjemanummer}
-                                                                validateHasAttachment={true}
+                                                                validateHasAttachment={false} //TODO: true
                                                             />
                                                         </div>
                                                     );

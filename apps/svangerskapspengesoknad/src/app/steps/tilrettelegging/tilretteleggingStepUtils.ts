@@ -1,39 +1,76 @@
-import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
-import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingStepFormConfig';
-import { Tilrettelegging } from 'app/types/Tilrettelegging';
+import {
+    TilretteleggingFormData,
+    TilretteleggingFormField,
+    TilretteleggingPeriodeType,
+} from './tilretteleggingStepFormConfig';
+import { Tilrettelegging, TilretteleggingInput, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 
-const getInitValues = (): Readonly<TilretteleggingFormData> => ({
+export const getInitTilretteleggingFormDataValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.tilrettelagtArbeidFom]: '',
-    [TilretteleggingFormField.vedlegg]: [],
+    [TilretteleggingFormField.tilrettelagtArbeidType]: undefined!,
+    [TilretteleggingFormField.tilretteleggingPeriodetype]: undefined!,
+    [TilretteleggingFormField.stillingsprosent]: '',
 });
 
-//TODO: do we need this? Always visible now.
-export const cleanupOmTilretteleggingFormData = (
-    values: TilretteleggingFormData,
-    visibility: QuestionVisibility<TilretteleggingFormField, undefined>
-): TilretteleggingFormData => {
-    const cleanedData: TilretteleggingFormData = {
-        tilrettelagtArbeidFom: visibility.isVisible(TilretteleggingFormField.tilrettelagtArbeidFom)
-            ? values.tilrettelagtArbeidFom
-            : '',
-        vedlegg: visibility.isVisible(TilretteleggingFormField.vedlegg) ? values.vedlegg : [],
-    };
-
-    return cleanedData;
+export const erTilretteleggingFerdigUtfylt = (tilrettelegging: Tilrettelegging) => {
+    return (
+        tilrettelegging.behovForTilretteleggingFom !== undefined &&
+        tilrettelegging.tilrettelegginger &&
+        tilrettelegging.tilrettelegginger.length !== 0
+    );
 };
 
-export const getTilretteleggingInitialValues = (
-    tilrettelegging: Tilrettelegging[] | undefined
-): TilretteleggingFormData => {
-    const initialOmTilretteleggingValues = getInitValues();
-    console.log(tilrettelegging);
-    return {
-        ...initialOmTilretteleggingValues,
-    };
+export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging): TilretteleggingFormData => {
+    const initValues = getInitTilretteleggingFormDataValues();
+    if (!erTilretteleggingFerdigUtfylt(tilrettelegging)) {
+        return initValues;
+    } else {
+        const antallPerioder = tilrettelegging.tilrettelegginger.length;
+        //TODO: fix for flere perioder
+        const førsteperiode = tilrettelegging.tilrettelegginger[0];
+        const values = {
+            tilrettelagtArbeidFom: tilrettelegging.behovForTilretteleggingFom!,
+            tilrettelagtArbeidType: førsteperiode.type ? førsteperiode.type : initValues.tilrettelagtArbeidType,
+            tilretteleggingPeriodetype:
+                antallPerioder === 1 ? TilretteleggingPeriodeType.EN : TilretteleggingPeriodeType.VARIERT,
+            stillingsprosent:
+                førsteperiode.type === Tilretteleggingstype.DELVIS
+                    ? førsteperiode.stillingsprosent!.toString()
+                    : initValues.stillingsprosent,
+        };
+        console.log('init: ', values);
+        return values;
+    }
 };
 
-export const mapOmTilretteleggingFormDataToState = (values: Partial<TilretteleggingFormData>): Tilrettelegging[] => {
-    //TODO
-    console.log(values);
-    return [];
+//TODO: må utvide denne for case med flere perioder og riktig fom på perioden
+const getTilretteleggingsPerioderFromInput = (values: TilretteleggingFormData): TilretteleggingInput[] => {
+    return [
+        {
+            type: values.tilrettelagtArbeidType,
+            fom: values.tilrettelagtArbeidFom,
+            stillingsprosent:
+                values.tilrettelagtArbeidType === Tilretteleggingstype.DELVIS
+                    ? parseFloat(values.stillingsprosent)
+                    : undefined,
+        },
+    ];
+};
+
+export const mapOmTilretteleggingFormDataToState = (
+    id: string,
+    values: Partial<TilretteleggingFormData>,
+    tilretteleggingFraState: Tilrettelegging[]
+): Tilrettelegging[] => {
+    const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
+    const tilrettelegginsperioder = getTilretteleggingsPerioderFromInput(values as TilretteleggingFormData);
+    const oppdatert = {
+        ...tilretteleggingForOppdatering,
+        behovForTilretteleggingFom: values.tilrettelagtArbeidFom,
+        tilrettelegginger: tilrettelegginsperioder,
+    } as Tilrettelegging;
+    const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {
+        return t.id === id ? oppdatert : t;
+    });
+    return nyTilretteleggingISøknad;
 };

@@ -22,7 +22,7 @@ import {
 import inntektsinforMasjonQuestionsConfig, {
     InntektsinformasjonFormQuestionPayload,
 } from './inntektsInformasjonQuestionsConfig';
-import { BodyShort, Button, GuidePanel } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
@@ -80,8 +80,6 @@ const Inntektsinformasjon = () => {
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SKJEMA);
 
-    const skalViseInfoOmInntektsmelding = arbeidsforhold.length > 0;
-
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker, tilrettelegging)}
@@ -127,11 +125,6 @@ const Inntektsinformasjon = () => {
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
                             />
-                            <Block visible={skalViseInfoOmInntektsmelding} padBottom="xl">
-                                <GuidePanel>
-                                    {intlUtils(intl, 'inntektsinformasjon.veileder.inntektsmelding')}
-                                </GuidePanel>
-                            </Block>
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}
@@ -219,6 +212,7 @@ const Inntektsinformasjon = () => {
                                 padBottom="xl"
                             >
                                 <VelgSøknadsgrunnlag
+                                    formValues={formValues}
                                     label={intlUtils(intl, 'inntektsinformasjon.grunnlag.label')}
                                     options={tilretteleggingsValg}
                                     intl={intl}

@@ -9,21 +9,14 @@ import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
 
 interface Props {
     næring: Næring;
-    setSelectedNæring: React.Dispatch<React.SetStateAction<Næring | undefined>>;
-    deleteNæring: (næring: Næring) => void;
+    setSelectedNæring?: React.Dispatch<React.SetStateAction<Næring | undefined>>;
+    deleteNæring?: (næring: Næring) => void;
 }
 
 const EgenNæringVisning: FunctionComponent<Props> = ({ næring, setSelectedNæring, deleteNæring }) => {
     const intl = useIntl();
     const bem = bemUtils('egen-næring-visning');
     const tilTekst = !næring.pågående && næring.tidsperiode.tom ? formatDate(næring.tidsperiode.tom) : 'Pågående';
-    const handleOnClickRediger = (næring: Næring) => {
-        setSelectedNæring(næring);
-    };
-
-    const handleOnClickSlett = (næringSomSletters: Næring) => {
-        deleteNæring(næringSomSletters);
-    };
 
     return (
         <div>
@@ -52,20 +45,24 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring, setSelectedNær
                             inntekt: næring.næringsinntekt,
                         })}
                     </BodyShort>
-                    <Button
-                        aria-label="rediger informasjon om egen næring"
-                        variant="secondary"
-                        className={bem.element('rediger')}
-                        icon={<PencilWritingIcon aria-hidden />}
-                        onClick={() => handleOnClickRediger(næring)}
-                    />
-                    <Button
-                        aria-label="slett informasjon om arbeid i utlandet"
-                        variant="secondary"
-                        className={bem.element('slett')}
-                        icon={<TrashIcon aria-hidden />}
-                        onClick={() => handleOnClickSlett(næring)}
-                    />
+                    {setSelectedNæring && (
+                        <Button
+                            aria-label="rediger informasjon om egen næring"
+                            variant="secondary"
+                            className={bem.element('rediger')}
+                            icon={<PencilWritingIcon aria-hidden />}
+                            onClick={() => setSelectedNæring(næring)}
+                        />
+                    )}
+                    {deleteNæring && (
+                        <Button
+                            aria-label="slett informasjon om arbeid i utlandet"
+                            variant="secondary"
+                            className={bem.element('slett')}
+                            icon={<TrashIcon aria-hidden />}
+                            onClick={() => deleteNæring(næring)}
+                        />
+                    )}
                 </div>
             </Block>
         </div>

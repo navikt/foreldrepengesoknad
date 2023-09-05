@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 import dayjs from 'dayjs';
-import { Block, bemUtils, date4WeeksAgo, intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { Block, bemUtils, date20YearsAgo, date4WeeksAgo, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { FunctionComponent, useEffect, useState } from 'react';
 import {
     ArbeidIUtlandetSubformComponents,
@@ -136,6 +136,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                         showYearSelector={true}
                         validate={validateArbeidIUtlandetFom(intl, formValues.arbeidIUtlandetTom)}
                         maxDate={dayjs().toDate()}
+                        minDate={date20YearsAgo}
                     />
                     {getInputFeltFeil(
                         submitClicked,

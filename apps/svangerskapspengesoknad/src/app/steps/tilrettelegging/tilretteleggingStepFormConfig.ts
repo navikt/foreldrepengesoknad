@@ -1,14 +1,27 @@
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { Tilretteleggingstype } from 'app/types/Tilrettelegging';
+
+export enum TilretteleggingPeriodeType {
+    'EN' = 'en',
+    'VARIERT' = 'VARIERT',
+}
 
 export enum TilretteleggingFormField {
     tilrettelagtArbeidFom = 'tilrettelagtArbeidFom',
-    vedlegg = 'vedlegg',
+    tilrettelagtArbeidType = 'tilrettelagtArbeidType',
+    tilretteleggingPeriodetype = 'tilretteleggingPeriodetype',
+    tilretteleggingsFom = 'tilretteleggingsFom',
+    tilretteleggingsTom = 'tilretteleggingsTom',
+    stillingsprosent = 'stillingsprosent',
 }
 
 export interface TilretteleggingFormData {
     [TilretteleggingFormField.tilrettelagtArbeidFom]: string;
-    [TilretteleggingFormField.vedlegg]: Attachment[];
+    [TilretteleggingFormField.tilrettelagtArbeidType]: Tilretteleggingstype;
+    [TilretteleggingFormField.tilretteleggingPeriodetype]: TilretteleggingPeriodeType;
+    // [TilretteleggingFormField.tilretteleggingsFom]: string[];
+    // [TilretteleggingFormField.tilretteleggingsTom]: string[];
+    [TilretteleggingFormField.stillingsprosent]: string;
 }
 
 export const TilretteleggingFormComponents = getTypedFormComponents<

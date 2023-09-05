@@ -27,7 +27,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     return (
         <ArbeidIUtlandetSubformComponents.FormikWrapper
             initialValues={getInitialArbeidIUtlandetFormData(selectedAnnenInntekt)}
-            onSubmit={() => console.log('submit')}
+            onSubmit={() => console.log('')}
             renderForm={({ values: formValues, errors, validateForm }) => {
                 const visibility = arbeidIUtlandetSubformQuestionsConfig.getVisbility(
                     formValues as ArbeidIUtlandetSubformData
