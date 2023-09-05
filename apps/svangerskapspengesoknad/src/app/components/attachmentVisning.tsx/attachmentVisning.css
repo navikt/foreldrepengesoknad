@@ -1,7 +1,7 @@
 .attachmentVisning {
-    border-radius: 8px;
-    border: 3px solid var(--a-deepblue-100, #99c4dd);
-    background: var(--a-deepblue-50, #e6f0ff);
+    border-top: 1px solid var(--border-subtle-hover, rgba(5, 23, 51, 0.34));
+    border-bottom: 1px solid var(--border-subtle-hover, rgba(5, 23, 51, 0.34));
+    background: #fff;
     display: grid;
     grid-template-columns: 7% 1fr 5%;
     padding: 1rem;

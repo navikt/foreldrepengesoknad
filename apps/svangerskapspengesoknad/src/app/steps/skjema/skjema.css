@@ -1,7 +1,9 @@
-.skjema__arbeidsgiverNavn {
-    font-weight: bold;
-    background: var(--a-deepblue-100);
-    padding: 1rem;
+.skjema__heading {
+    font-size: 20px;
+}
+
+.skjema__headingBox {
+    padding-top: 3rem;
 }
 
 .skjema__arbeidsgiverBoks {
@@ -9,17 +11,13 @@
 }
 
 .skjema__arbeidsgiverBoksList {
-    background: var(--a-deepblue-50);
-    margin-bottom: 3.5rem;
-    border-radius: 2px;
-    padding-top: 1rem;
-    padding: 1rem 1.5rem;
+    margin-top: 2rem;
 }
 
 .skjema__lastOppKnappList {
-    padding-top: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 .skjema__lastOppKnapp {
-    padding-top: 0rem;
+    padding-bottom: 1rem;
 }

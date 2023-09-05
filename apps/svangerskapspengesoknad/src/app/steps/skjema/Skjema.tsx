@@ -2,7 +2,6 @@ import { Alert, Button, Label, ReadMore } from '@navikt/ds-react';
 import { Block, FormikFileUploader, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachmentList/AttachmentList';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import links from 'app/links/links';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -27,6 +26,8 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useEffect, useState } from 'react';
 import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
+import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
+import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -40,9 +41,6 @@ const Skjema: React.FunctionComponent = () => {
     const [forMangeFiler, setForMangeFiler] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
     const flereTilrettelegginger = tilrettelegging.length > 1;
-    const descriptionId = flereTilrettelegginger
-        ? 'tilrettelegging.vedlegg.description.flereTilrettelegginger'
-        : 'tilrettelegging.vedlegg.description.enTilrettelegging';
     const classVariant = flereTilrettelegginger ? 'List' : '';
 
     const onValidSubmitHandler = (values: Partial<SkjemaFormData>) => {
@@ -86,27 +84,6 @@ const Skjema: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             // cleanup={(values) => cleanupSkjemaFormData(values, visibility)}
                         >
-                            <Block padBottom="xxl">
-                                <Block padBottom="l">
-                                    <Label>{intlUtils(intl, 'tilrettelegging.vedlegg.label')}</Label>
-                                </Block>
-
-                                <FormattedMessage
-                                    id={descriptionId}
-                                    values={{
-                                        a: (msg: any) => (
-                                            <a
-                                                className="lenke"
-                                                rel="noopener noreferrer"
-                                                href={links.arbeidstilsynetSkjema}
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </a>
-                                        ),
-                                    }}
-                                />
-                            </Block>
                             {tilrettelegging.map((t: Tilrettelegging, index: number) => {
                                 const key = t.id;
                                 const skjemanummer =
@@ -114,15 +91,26 @@ const Skjema: React.FunctionComponent = () => {
                                         ? Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING
                                         : Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
                                 const vedleggForTilrettelegging = getVedleggForTilrettelegging(formValues, index);
-
+                                const erSNEllerFrilans =
+                                    t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
+                                    t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG;
+                                const labelTekst =
+                                    t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
+                                        ? intlUtils(intl, 'skjema.tittel.frilanser')
+                                        : t.arbeidsforhold.navn;
                                 return (
                                     <Block key={key}>
                                         {flereTilrettelegginger && (
-                                            <div className={bem.element('arbeidsgiverNavn')}>
-                                                <Label>{`${t.arbeidsforhold.navn}`}</Label>
+                                            <div className={bem.element('headingBox')}>
+                                                <Label className={bem.element('heading')}>{`${labelTekst}`}</Label>
                                             </div>
                                         )}
                                         <div className={bem.element(`arbeidsgiverBoks${classVariant}`)}>
+                                            {erSNEllerFrilans && (
+                                                <SkjemaopplastningTekstFrilansSN typeArbeid={t.arbeidsforhold.type} />
+                                            )}
+                                            {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}
+
                                             {vedleggForTilrettelegging && vedleggForTilrettelegging.length > 0 && (
                                                 <AttachmentList
                                                     vedlegg={vedleggForTilrettelegging}
@@ -145,7 +133,7 @@ const Skjema: React.FunctionComponent = () => {
                                                                 name={`${SkjemaFormField.vedlegg}.${index}`}
                                                                 buttonLabel={intlUtils(
                                                                     intl,
-                                                                    'tilrettelegging.vedlegg.buttonLabel'
+                                                                    'skjema.vedlegg.buttonLabel'
                                                                 )}
                                                                 legend=""
                                                                 label={`Last opp dokument`}
@@ -171,7 +159,7 @@ const Skjema: React.FunctionComponent = () => {
                                 </ReadMore>
                             </Block>
                             {forMangeFiler && submitClicked && (
-                                <Alert variant="error">{intlUtils(intl, 'tilrettelegging.skjema.maks40Filer')}</Alert>
+                                <Alert variant="error">{intlUtils(intl, 'skjema.maks40Filer')}</Alert>
                             )}
                             <Block margin="l">
                                 <StepButtonWrapper>
