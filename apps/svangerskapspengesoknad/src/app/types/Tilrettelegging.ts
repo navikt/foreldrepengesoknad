@@ -14,6 +14,7 @@ export interface ArbeidsforholdForTilrettelegging {
     id?: string;
     type: Arbeidsforholdstype;
     navn: string;
+    risikofaktorer?: string;
 }
 
 export interface DelvisTilretteleggingDTO {

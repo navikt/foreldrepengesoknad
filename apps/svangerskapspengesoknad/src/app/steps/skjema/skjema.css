@@ -15,9 +15,19 @@
 }
 
 .skjema__lastOppKnappList {
-    padding-bottom: 1rem;
+    padding-bottom: 0;
 }
 
 .skjema__lastOppKnapp {
     padding-bottom: 1rem;
+}
+
+.skjema__line {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    height: 2px;
+    stroke-width: 2px;
+    background-color: #99c3ff;
+    border: none;
 }

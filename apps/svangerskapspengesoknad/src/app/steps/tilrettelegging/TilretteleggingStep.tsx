@@ -169,7 +169,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     validate={validateStillingsprosent(intl)}
                                 />
                             </Block>
-                            <Alert variant="warning"> Denne sider er under utvikling </Alert>
+                            <Alert variant="warning"> Denne siden er under utvikling </Alert>
                             <Block margin="xl">
                                 <StepButtonWrapper>
                                     <Button

@@ -16,6 +16,7 @@ import {
     getInitialSkjemaValuesFromState,
     getVedleggForTilrettelegging,
     mapTilretteleggingMedSkjema,
+    validateRisikofaktorer,
 } from './skjemaFormUtils';
 import { Link } from 'react-router-dom';
 import { FieldArray } from 'formik';
@@ -44,7 +45,7 @@ const Skjema: React.FunctionComponent = () => {
     const classVariant = flereTilrettelegginger ? 'List' : '';
 
     const onValidSubmitHandler = (values: Partial<SkjemaFormData>) => {
-        const mappedTilrettelegging = mapTilretteleggingMedSkjema(tilrettelegging, values);
+        const mappedTilrettelegging = mapTilretteleggingMedSkjema(tilrettelegging, values as SkjemaFormData);
         const alleVedlegg = values.vedlegg ? values.vedlegg?.flat(1) : [];
         return [actionCreator.setVedlegg(alleVedlegg), actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
@@ -98,6 +99,11 @@ const Skjema: React.FunctionComponent = () => {
                                     t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
                                         ? intlUtils(intl, 'skjema.tittel.frilanser')
                                         : t.arbeidsforhold.navn;
+                                const risikofaktorerLabel = intlUtils(
+                                    intl,
+                                    `skjema.frilans.risikofaktorer.${t.arbeidsforhold.type}`
+                                );
+
                                 return (
                                     <Block key={key}>
                                         {flereTilrettelegginger && (
@@ -107,10 +113,35 @@ const Skjema: React.FunctionComponent = () => {
                                         )}
                                         <div className={bem.element(`arbeidsgiverBoks${classVariant}`)}>
                                             {erSNEllerFrilans && (
-                                                <SkjemaopplastningTekstFrilansSN typeArbeid={t.arbeidsforhold.type} />
+                                                <>
+                                                    <Block padBottom="xxxl">
+                                                        <SkjemaFormComponents.Textarea
+                                                            name={
+                                                                t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
+                                                                    ? SkjemaFormField.risikofaktorerFrilanser
+                                                                    : SkjemaFormField.risikofaktorerNæring
+                                                            }
+                                                            label={risikofaktorerLabel}
+                                                            minLength={5}
+                                                            maxLength={1000}
+                                                            validate={validateRisikofaktorer(
+                                                                intl,
+                                                                risikofaktorerLabel,
+                                                                t.arbeidsforhold.type
+                                                            )}
+                                                            description={intlUtils(
+                                                                intl,
+                                                                'skjema.frilansSN.risikofaktorer.description'
+                                                            )}
+                                                        />
+                                                    </Block>
+                                                    <SkjemaopplastningTekstFrilansSN
+                                                        typeArbeid={t.arbeidsforhold.type}
+                                                    />
+                                                </>
                                             )}
-                                            {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}
 
+                                            {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}
                                             {vedleggForTilrettelegging && vedleggForTilrettelegging.length > 0 && (
                                                 <AttachmentList
                                                     vedlegg={vedleggForTilrettelegging}
@@ -150,6 +181,9 @@ const Skjema: React.FunctionComponent = () => {
                                                 }}
                                             />
                                         </div>
+                                        {index !== tilrettelegging.length - 1 && (
+                                            <hr className={bem.element('line')}></hr>
+                                        )}
                                     </Block>
                                 );
                             })}
