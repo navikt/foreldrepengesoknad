@@ -1,0 +1,4 @@
+.oppsummering__header-reverse-chevron > .navds-accordion__header {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}

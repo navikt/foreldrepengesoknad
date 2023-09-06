@@ -1,7 +1,7 @@
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 import HarArbeidsforhold from './HarArbeidsforhold';
-import { BodyShort, Label, ReadMore } from '@navikt/ds-react';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 import './arbeidsforholdInformasjon.css';
 import { Block } from '@navikt/fp-common';
@@ -15,7 +15,6 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
 
     return (
         <Block padBottom="xl">
-            <Label>Dine arbeidsforhold</Label>
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
