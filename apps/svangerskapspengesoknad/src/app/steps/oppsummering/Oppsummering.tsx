@@ -1,5 +1,5 @@
 import { Accordion, BodyShort, Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, formatDate, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
@@ -11,6 +11,8 @@ import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
 
+import './oppsummering.css';
+
 const Oppsummering = () => {
     const søknad = useSøknad();
     const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
@@ -19,7 +21,7 @@ const Oppsummering = () => {
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
     useUpdateCurrentTilretteleggingId(undefined);
-    console.log(søknad);
+    const bem = bemUtils('oppsummering');
 
     return (
         <Step
@@ -29,7 +31,7 @@ const Oppsummering = () => {
             steps={stepConfig(intl)}
         >
             <Accordion>
-                <Accordion.Item defaultOpen={true}>
+                <Accordion.Item className={bem.element('header-reverse-chevron')}>
                     <Accordion.Header>
                         <FormattedMessage id="oppsummering.omDeg" />
                     </Accordion.Header>
@@ -40,7 +42,7 @@ const Oppsummering = () => {
                         <BodyShort>{søkerinfo.person.fnr}</BodyShort>
                     </Accordion.Content>
                 </Accordion.Item>
-                <Accordion.Item defaultOpen={true}>
+                <Accordion.Item className={bem.element('header-reverse-chevron')}>
                     <Accordion.Header>
                         <FormattedMessage id="oppsummering.omBarnet" />
                     </Accordion.Header>
@@ -55,7 +57,7 @@ const Oppsummering = () => {
                         )}
                     </Accordion.Content>
                 </Accordion.Item>
-                <Accordion.Item defaultOpen={true}>
+                <Accordion.Item className={bem.element('header-reverse-chevron')}>
                     <Accordion.Header>
                         <FormattedMessage id="oppsummering.omUtenlandsopphold" />
                     </Accordion.Header>
@@ -63,7 +65,7 @@ const Oppsummering = () => {
                         <UtenlandsoppholdOppsummering informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold} />
                     </Accordion.Content>
                 </Accordion.Item>
-                <Accordion.Item defaultOpen={true}>
+                <Accordion.Item className={bem.element('header-reverse-chevron')}>
                     <Accordion.Header>
                         <FormattedMessage id="oppsummering.omArbeidsforhold" />
                     </Accordion.Header>
@@ -74,7 +76,7 @@ const Oppsummering = () => {
                         />
                     </Accordion.Content>
                 </Accordion.Item>
-                <Accordion.Item defaultOpen={true}>
+                <Accordion.Item className={bem.element('header-reverse-chevron')}>
                     <Accordion.Header>
                         <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
                     </Accordion.Header>
