@@ -60,27 +60,6 @@ const Oppsummering = () => {
                         <FormattedMessage id="oppsummering.omUtenlandsopphold" />
                     </Accordion.Header>
                     <Accordion.Content>
-                        <Block margin="m" padBottom="xl">
-                            <BodyShort>
-                                {informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
-                                    ? 'Du har bodd i Norge de siste 12 månedene'
-                                    : 'Du har oppholdt deg i utlandet i de siste 12 månedene'}
-                            </BodyShort>
-                        </Block>
-                        <Block padBottom="xl">
-                            <BodyShort>
-                                {informasjonOmUtenlandsopphold.iNorgeNeste12Mnd
-                                    ? 'Du skal bo i Norge de neste 12 månedene'
-                                    : 'Du skal oppholde deg i utlandet de neste 12 månedene'}
-                            </BodyShort>
-                        </Block>
-                        <Block padBottom="xl">
-                            <BodyShort>
-                                {informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet
-                                    ? 'På fødselstidspunktet kommer du til å bo i Norge'
-                                    : 'På fødselstidpunktet kommer du ikke til å bo i Norge'}
-                            </BodyShort>
-                        </Block>
                         <UtenlandsoppholdOppsummering informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold} />
                     </Accordion.Content>
                 </Accordion.Item>
@@ -96,7 +75,9 @@ const Oppsummering = () => {
                     </Accordion.Content>
                 </Accordion.Item>
                 <Accordion.Item defaultOpen={true}>
-                    <Accordion.Header>Periode med svangerskapspenger</Accordion.Header>
+                    <Accordion.Header>
+                        <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
+                    </Accordion.Header>
                     <Accordion.Content>
                         <Block margin="m">
                             <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
