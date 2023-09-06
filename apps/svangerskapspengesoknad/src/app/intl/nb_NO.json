@@ -301,10 +301,6 @@
     "oppsummering.omUtenlandsopphold": "Bo i utlandet",
     "oppsummering.omArbeidsforhold": "Arbeidsforhold",
     "oppsummering.periodeMedSvangerskapspenger": "Periode med svangerskapspenger",
-    "oppsummering.utenlandsopphold.skalBoINorge": "De neste 12 månedene skal jeg",
-    "oppsummering.utenlandsopphold.skalBoINorge.norge": "Bo i Norge",
-    "oppsummering.utenlandsopphold.skalBoINorge.utenlands": "Bo i {land}",
-    "oppsummering.utenlandsopphold.harBoddINorge": "De siste 12 månedene har jeg",
-    "oppsummering.utenlandsopphold.harBoddINorge.norge": "Bodd i Norge",
-    "oppsummering.utenlandsopphold.harBoddINorge.utenlands": "Bodd i {land}"
+    "oppsummering.utenlandsopphold.skalBoINorge.utenlands": "Du skal bo i {land} i løpet av de neste 12 månedene",
+    "oppsummering.utenlandsopphold.harBoddINorge.utenlands": "Du har bodd i {land} i løpet av de siste 12 månedene"
 }
