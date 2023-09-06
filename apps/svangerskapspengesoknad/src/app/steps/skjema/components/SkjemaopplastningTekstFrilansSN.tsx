@@ -8,8 +8,7 @@ interface Props {
 }
 const SkjemaopplastningTekstFrilansSN: React.FunctionComponent<Props> = ({ typeArbeid }) => {
     const intl = useIntl();
-    const labelId =
-        typeArbeid === Arbeidsforholdstype.FRILANSER ? 'skjema.vedlegg.label.frilans' : 'skjema.vedlegg.label.næring';
+    const labelId = `skjema.vedlegg.label.${typeArbeid}`;
     return (
         <div style={{ marginBottom: '1rem' }}>
             <div>
