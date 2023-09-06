@@ -248,7 +248,6 @@
     "tilrettelegging.stillingsprosent.label": "Hvilken prosent skal du jobbe?",
     "tilrettelegging.tilretteleggingPeriodetype.readmore.tittel": "Hva skjer tre uker før fødsel?",
     "tilrettelegging.tilretteleggingPeriodetype.readmore.description": "TODO",
-
     "tilrettelegging.delvisTilretteleggingVisning": "Du kan jobbe {stillingsprosent}% f.o.m: {date}",
     "tilrettelegging.delvisTilrettelegging.tittel": "Du kan fortsette med redusert arbeidstid",
     "tilrettelegging.delvisTilrettelegging.fom": "Fra hvilken dato kan du jobbe redusert?",
@@ -271,7 +270,6 @@
     "tilrettelegging.type.hel": "Min vanlige stilling",
     "tilrettelegging.type.ingen": "Nei",
     "tilrettelegging.type.noe": "Ja",
-
     "tilrettelegging.vedlegg.label.frilansSN": "Last opp skjema for krav om svangerskapspenger til selvstendig næringsdrivende og frilans",
     "tilrettelegging.veileder.vedlegg": "Her skal du laste opp skjemaet som er fylt ut av din lege eller jordmor, og din arbeidsgiver. Skjemaet forklarer oss om du kan jobbe videre eller ikke i perioden du er gravid. Du kan ta bilde av skjemaet og laste det opp.",
     "tilrettelegging.veileder.vedlegg.frilansSN": "Her skal du laste opp skjemaet som er fylt ut av din lege eller jordmor. Skjemaet forklarer oss om du kan jobbe videre eller ikke i perioden du er gravid. Du kan ta bilde av skjemaet og laste det opp.",
@@ -291,5 +289,16 @@
     "tilrettelegging.tilrettelagtArbeidType.ingen": "Jeg kan ikke jobbe",
     "tilrettelegging.tilretteleggingPeriodetype.label": "Hvor lenge kan du jobbe redusert?",
     "tilrettelegging.tilretteleggingPeriodetype.en": "Jeg skal ha den samme arbeidsprosenten frem til tre uker før fødsel",
-    "tilrettelegging.tilretteleggingPeriodetype.variert": "Jeg skal ha perioder med ulik arbeidsprosent"
+    "tilrettelegging.tilretteleggingPeriodetype.variert": "Jeg skal ha perioder med ulik arbeidsprosent",
+    "tilrettelegging.skjema.maks40Filer": "Du kan laste opp maksimalt 40 filer. Sett noen filer for å gå videre.",
+    "oppsummering.omDeg": "Deg",
+    "oppsummering.omBarnet": "Barnet",
+    "oppsummering.omUtenlandsopphold": "Utenlandsopphold",
+    "oppsummering.omArbeidsforhold": "Arbeidsforhold",
+    "oppsummering.utenlandsopphold.skalBoINorge": "De neste 12 månedene skal jeg",
+    "oppsummering.utenlandsopphold.skalBoINorge.norge": "Bo i Norge",
+    "oppsummering.utenlandsopphold.skalBoINorge.utenlands": "Bo i {land}",
+    "oppsummering.utenlandsopphold.harBoddINorge": "De siste 12 månedene har jeg",
+    "oppsummering.utenlandsopphold.harBoddINorge.norge": "Bodd i Norge",
+    "oppsummering.utenlandsopphold.harBoddINorge.utenlands": "Bodd i {land}"
 }
