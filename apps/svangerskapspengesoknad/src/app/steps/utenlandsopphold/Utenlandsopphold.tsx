@@ -26,7 +26,8 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { informasjonOmUtenlandsopphold } = useSøknad();
+    const { informasjonOmUtenlandsopphold, barn } = useSøknad();
+    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
     const onAvbrytSøknad = useAvbrytSøknad();
     const [bostedUtlandFremtid, setBostedUtlandFremtid] = useState<BostedUtland[]>(
         informasjonOmUtenlandsopphold.senereOpphold.map((opphold, index) => {
@@ -51,7 +52,12 @@ const Utenlandsopphold: React.FunctionComponent = () => {
     );
 
     const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
-        const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values, bostedUtlandFremtid, bostedUtlandFortid);
+        const utenlandsopphold = mapUtenlandsoppholdFormDataToState(
+            values,
+            bostedUtlandFremtid,
+            bostedUtlandFortid,
+            familiehendelsedato!
+        );
         return [actionCreator.setUtenlandsopphold(utenlandsopphold)];
     };
 
