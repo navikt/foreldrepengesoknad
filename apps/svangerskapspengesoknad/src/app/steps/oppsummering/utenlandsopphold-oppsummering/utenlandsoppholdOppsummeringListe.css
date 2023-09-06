@@ -1,0 +1,14 @@
+@import './../../../styles/variables.css';
+
+.utenlandsoppholdOppsummeringListe {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.utenlandsoppholdOppsummeringListe__listElement {
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+}

@@ -9,6 +9,7 @@ import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { Link } from 'react-router-dom';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
+import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -29,7 +30,9 @@ const Oppsummering = () => {
         >
             <Accordion>
                 <Accordion.Item defaultOpen={true}>
-                    <Accordion.Header>Deg</Accordion.Header>
+                    <Accordion.Header>
+                        <FormattedMessage id="oppsummering.omDeg" />
+                    </Accordion.Header>
                     <Accordion.Content>
                         <Block padBottom="xl" margin="m">
                             <BodyShort>{`${søkerinfo.person.fornavn} ${søkerinfo.person.etternavn}`}</BodyShort>
@@ -38,15 +41,24 @@ const Oppsummering = () => {
                     </Accordion.Content>
                 </Accordion.Item>
                 <Accordion.Item defaultOpen={true}>
-                    <Accordion.Header>Barnet</Accordion.Header>
+                    <Accordion.Header>
+                        <FormattedMessage id="oppsummering.omBarnet" />
+                    </Accordion.Header>
                     <Accordion.Content>
-                        <Block margin="m">
+                        <Block margin="m" padBottom={barn.erBarnetFødt ? 'xl' : 'none'}>
                             <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
                         </Block>
+                        {barn.erBarnetFødt && barn.fødselsdato && (
+                            <Block margin="m">
+                                <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+                            </Block>
+                        )}
                     </Accordion.Content>
                 </Accordion.Item>
                 <Accordion.Item defaultOpen={true}>
-                    <Accordion.Header>Utenlandsopphold</Accordion.Header>
+                    <Accordion.Header>
+                        <FormattedMessage id="oppsummering.omUtenlandsopphold" />
+                    </Accordion.Header>
                     <Accordion.Content>
                         <Block margin="m" padBottom="xl">
                             <BodyShort>
@@ -62,15 +74,20 @@ const Oppsummering = () => {
                                     : 'Du skal oppholde deg i utlandet de neste 12 månedene'}
                             </BodyShort>
                         </Block>
-                        <BodyShort>
-                            {informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet
-                                ? 'På fødselstidspunktet kommer du til å bo i Norge'
-                                : 'På fødselstidpunktet kommer du ikke til å bo i Norge'}
-                        </BodyShort>
+                        <Block padBottom="xl">
+                            <BodyShort>
+                                {informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet
+                                    ? 'På fødselstidspunktet kommer du til å bo i Norge'
+                                    : 'På fødselstidpunktet kommer du ikke til å bo i Norge'}
+                            </BodyShort>
+                        </Block>
+                        <UtenlandsoppholdOppsummering informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold} />
                     </Accordion.Content>
                 </Accordion.Item>
                 <Accordion.Item defaultOpen={true}>
-                    <Accordion.Header>Arbeidsforhold</Accordion.Header>
+                    <Accordion.Header>
+                        <FormattedMessage id="oppsummering.omArbeidsforhold" />
+                    </Accordion.Header>
                     <Accordion.Content>
                         <ArbeidsforholdInformasjon
                             visManglerInfo={false}
