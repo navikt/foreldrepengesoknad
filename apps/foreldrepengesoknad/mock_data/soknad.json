@@ -26,7 +26,12 @@
         },
         "søker": {
             "erAleneOmOmsorg": false,
-            "språkkode": "nb"
+            "språkkode": "nb",
+            "harHattAnnenInntektSiste10Mnd": false,
+            "harJobbetSomFrilansSiste10Mnd": false,
+            "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd": false,
+            "andreInntekterSiste10Mnd": [],
+            "selvstendigNæringsdrivendeInformasjon": []
         },
         "informasjonOmUtenlandsopphold": {
             "iNorgeNeste12Mnd": true,
@@ -129,7 +134,7 @@
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/inntektsinformasjon",
+    "currentRoute": "/soknad/oppsummering",
     "uttaksplanInfo": {
         "permisjonStartdato": "2023-12-06"
     },

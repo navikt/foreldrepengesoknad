@@ -13,9 +13,9 @@ const OppsummeringsPanel: FunctionComponent<Props> = ({ title, children }) => {
     const bem = bemUtils('oppsummeringsPanel');
 
     return (
-        <Accordion className={bem.block}>
-            <Accordion.Item>
-                <Accordion.Header>{title}</Accordion.Header>
+        <Accordion>
+            <Accordion.Item className={bem.element('specificity')}>
+                <Accordion.Header className={bem.element('header')}>{title}</Accordion.Header>
                 <Accordion.Content>{children}</Accordion.Content>
             </Accordion.Item>
         </Accordion>
