@@ -66,7 +66,7 @@
         "wait-on": "^7.0.1"
     },
     "dependencies": {
-        "@formatjs/intl-pluralrules": "^5.2.4",
+        "@formatjs/intl-pluralrules": "^5.2.5",
         "@formatjs/intl-relativetimeformat": "^11.2.4",
         "@navikt/aksel-icons": "^4.12.1",
         "@navikt/ds-css": "^4.12.1",
