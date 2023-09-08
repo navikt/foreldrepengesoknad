@@ -301,5 +301,6 @@
     "oppsummering.omArbeidsforhold": "Arbeidsforhold",
     "oppsummering.periodeMedSvangerskapspenger": "Periode med svangerskapspenger",
     "oppsummering.utenlandsopphold.skalBoINorge.utenlands": "Bo i {land}",
-    "oppsummering.utenlandsopphold.harBoddINorge.utenlands": "Bodd i {land}"
+    "oppsummering.utenlandsopphold.harBoddINorge.utenlands": "Bodd i {land}",
+    "oppsummering.bekreft": "Opplysningene jeg har oppgitt stemmer og jeg har gjort meg kjent med vilkårene for å motta svangerskapspenger."
 }
