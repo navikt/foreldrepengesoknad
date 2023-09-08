@@ -554,8 +554,8 @@ importers:
         specifier: ^6.10.0
         version: 6.10.0
       '@formatjs/intl-numberformat':
-        specifier: ^8.7.0
-        version: 8.7.0
+        specifier: ^8.7.1
+        version: 8.7.1
       '@formatjs/intl-pluralrules':
         specifier: ^5.2.4
         version: 5.2.4
@@ -3016,6 +3016,13 @@ packages:
       '@formatjs/intl-localematcher': 0.4.0
       tslib: 2.5.0
 
+  /@formatjs/ecma402-abstract@1.17.1:
+    resolution: {integrity: sha512-N2sjSUrmsEoynG8Q61pkrKlJ9PxcUGxJke1x3301aGyprGgl58wHWhgGUnzTfS4OHNNNQDxzjcXVp1t5fGW6yQ==}
+    dependencies:
+      '@formatjs/intl-localematcher': 0.4.1
+      tslib: 2.5.0
+    dev: false
+
   /@formatjs/fast-memoize@2.2.0:
     resolution: {integrity: sha512-hnk/nY8FyrL5YxwP9e4r9dqeM6cAbo8PeU9UjyXojZMNvVad2Z06FAVHyR3Ecw6fza+0GH7vdJgiKIVXTMbSBA==}
     dependencies:
@@ -3061,11 +3068,17 @@ packages:
     dependencies:
       tslib: 2.5.0
 
-  /@formatjs/intl-numberformat@8.7.0:
-    resolution: {integrity: sha512-LuJXld4hjVKXUAGjtqz0t4DhZJDI0fkIAUHKrhIyb0qomudd/G0v9GzCnOLt6pQ93OBFTHmqzp1qN5n1tJJ4sg==}
+  /@formatjs/intl-localematcher@0.4.1:
+    resolution: {integrity: sha512-Fs4MhhHlLC0RrspX2u2KP7zlwL9eHrBZsOBxaPOeqrCZYLaOUK4cYXQ1ErpAB0HnGV/GUXNa5smzV/7jCuRzxg==}
     dependencies:
-      '@formatjs/ecma402-abstract': 1.17.0
-      '@formatjs/intl-localematcher': 0.4.0
+      tslib: 2.5.0
+    dev: false
+
+  /@formatjs/intl-numberformat@8.7.1:
+    resolution: {integrity: sha512-HQh3bCN9wQ9ecUdlnfooS5k+9Ab6Jn/YfO67GA0VfTk6oJOBAM4/5U1f1zcROFIl7AV3hShoYMvohx25YwfEQQ==}
+    dependencies:
+      '@formatjs/ecma402-abstract': 1.17.1
+      '@formatjs/intl-localematcher': 0.4.1
       tslib: 2.5.0
     dev: false
 
@@ -13273,6 +13286,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: true
 
   /pinkie-promise@2.0.1:
@@ -13569,6 +13583,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -14552,6 +14567,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     dev: true
     optional: true
 
