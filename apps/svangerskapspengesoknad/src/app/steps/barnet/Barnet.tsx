@@ -48,7 +48,7 @@ const Barnet: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
-                            <Block padBottom="xl" visible={true}>
+                            <Block padBottom="xl">
                                 <Block padBottom="m">
                                     <BarnetFormComponents.YesOrNoQuestion
                                         name={BarnetFormField.erBarnetFødt}

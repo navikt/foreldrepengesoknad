@@ -155,9 +155,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     )}
                                     validate={(value: YesOrNo) => {
                                         if (value === YesOrNo.UNANSWERED) {
-                                            return intlUtils(
-                                                intl,
-                                                'valideringsfeil.inntektsinformasjon.egenNæring.registrertINorge',
+                                            return intlUtils(intl, 'valideringsfeil.egenNæring.registrertINorge',
                                             );
                                         }
 

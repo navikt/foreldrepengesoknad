@@ -6,15 +6,19 @@ import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 
 export const validateFrilansStart = (intl: IntlShape, tom: string) => (fom: string) => {
-    if (hasValue(fom) && !isISODateString(fom)) {
+    if (!hasValue(fom)) {
+        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
+    }
+
+    if (!isISODateString(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
     }
 
-    if (hasValue(fom) && isDateInTheFuture(fom)) {
+    if (isDateInTheFuture(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
     }
 
-    if (hasValue(fom) && hasValue(tom) && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
+    if (hasValue(tom) && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
     }
 
@@ -25,20 +29,23 @@ export const validateFrilansSlutt = (intl: IntlShape, pågående: YesOrNo, fom: 
     if (pågående === YesOrNo.YES) {
         return undefined;
     }
+    if (!hasValue(tom)) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+    }
 
-    if (hasValue(tom) && !isISODateString(tom)) {
+    if (!isISODateString(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
 
-    if (hasValue(tom) && isDateInTheFuture(tom)) {
+    if (isDateInTheFuture(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
     }
 
-    if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
+    if (isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.frilans.merEnn4UkerSiden');
     }
 
-    if (hasValue(tom) && hasValue(fom) && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {
+    if (hasValue(fom) && isISODateString(fom) && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 

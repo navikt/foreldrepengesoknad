@@ -1,12 +1,10 @@
 import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
-import SøknadRoutes from 'app/routes/routes';
-import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getNextRouteForInntektsinformasjon, getPreviousStepHref } from '../stepsConfig';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import {
     InntektsinformasjonFormComponents,
@@ -16,94 +14,51 @@ import {
 import {
     cleanupInntektsinformasjonForm,
     getInitialInntektsinformasjonFormValues,
-    mapArbeidsforholdToSøknadsgrunnlagOptions,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
-import inntektsinforMasjonQuestionsConfig, {
-    InntektsinformasjonFormQuestionPayload,
-} from './inntektsInformasjonQuestionsConfig';
+
 import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
-import { Frilans } from 'app/types/Frilans';
-import HvemKanVæreFrilanser from './components/frilans/HvemKanVæreFrilanser';
+import HvemKanVæreFrilanser from './components/frilans-visning/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
-import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
-import ArbeidIUtlandetDetaljer from './components/arbeid-i-utlandet/ArbeidIUtlandetDetaljer';
-import FrilansDetaljer from './components/frilans/FrilansDetaljer';
-import { Næring } from 'app/types/Næring';
-import EgenNæringDetaljer from './components/egen-næring/EgenNæringDetaljer';
-import ArbeidIUtlandetReadMore from './components/arbeid-i-utlandet/ArbeidIUtlandetReadMore';
-import { VelgSøknadsgrunnlag } from 'app/types/VelgSøknadsgrunnlag';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
-import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
+import SøknadRoutes from 'app/routes/routes';
+import { useState } from 'react';
+import ArbeidIUtlandetReadMore from '../arbeid_i_utlandet/components/ArbeidIUtlandetReadMore';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn, tilrettelegging } = useSøknad();
+    const [nextRoute, setNextRoute] = useState(SøknadRoutes.SKJEMA);
     const onAvbrytSøknad = useAvbrytSøknad();
     const { termindato } = barn;
-
-    const [frilans, setFrilans] = useState<Frilans | undefined>(
-        søker.frilansInformasjon ? søker.frilansInformasjon : undefined
-    );
-
-    const [allNæring, setAllNæring] = useState<Næring[]>(
-        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
-    );
-
-    const [allArbeidIUtlandet, setAllArbeidIUtlandet] = useState<ArbeidIUtlandet[]>(
-        søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
-    );
-
-    const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
-    const [selectedNæring, setSelectedNæring] = useState<Næring | undefined>(undefined);
-
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
-        const updatedSøker = mapInntektsinformasjonFormDataToState(values, frilans, allNæring, allArbeidIUtlandet);
-        const mappedTilrettelegging = mapTilrettelegging(
-            tilrettelegging,
-            values.tilrettelegging!,
-            updatedSøker.harJobbetSomFrilansSiste10Mnd,
-            updatedSøker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
-            frilans,
-            allNæring,
-            arbeidsforhold,
-            termindato
-        );
-        return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging(mappedTilrettelegging)];
+        const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
+        return [actionCreator.setSøker(updatedSøker)];
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SKJEMA);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker, tilrettelegging)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const tilretteleggingsValg = mapArbeidsforholdToSøknadsgrunnlagOptions(
-                    tilrettelegging,
-                    formValues.hattInntektSomFrilans === YesOrNo.YES,
-                    formValues.hattInntektSomNæringsdrivende === YesOrNo.YES,
-                    frilans,
-                    allNæring,
-                    arbeidsforhold,
-                    barn.termindato!
-                );
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility({
                     ...formValues,
-                    tilretteleggingsValg,
-                } as InntektsinformasjonFormQuestionPayload);
+                } as InntektsinformasjonFormData);
 
                 const kanIkkeSøke =
                     arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
                     formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
-
+                setNextRoute(getNextRouteForInntektsinformasjon(formValues));
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -141,7 +96,6 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
-                            <FrilansDetaljer formValues={formValues} frilans={frilans} setFrilans={setFrilans} />
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isVisible(
@@ -166,13 +120,6 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
-                            <EgenNæringDetaljer
-                                formValues={formValues as InntektsinformasjonFormData}
-                                allNæring={allNæring}
-                                selectedNæring={selectedNæring}
-                                setAllNæring={setAllNæring}
-                                setSelectedNæring={setSelectedNæring}
-                            />
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)}
@@ -180,34 +127,10 @@ const Inntektsinformasjon = () => {
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattArbeidIUtlandet}
                                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
-                                    validate={(value) => {
-                                        if (value === YesOrNo.YES) {
-                                            if (allArbeidIUtlandet.length === 0) {
-                                                return intlUtils(
-                                                    intl,
-                                                    'valideringsfeil.inntektsinformasjon.måOppgiArbeidIUtlandet'
-                                                );
-                                            }
-                                        }
-                                        return validateYesOrNoIsAnswered(
-                                            value,
-                                            intlUtils(
-                                                intl,
-                                                'valideringsfeil.utenlandsopphold.hattArbeidIUtlandet.påkrevd'
-                                            )
-                                        );
-                                    }}
                                 />
                                 <ArbeidIUtlandetReadMore />
                             </Block>
-                            <ArbeidIUtlandetDetaljer
-                                allArbeidIUtlandet={allArbeidIUtlandet}
-                                formValues={formValues as InntektsinformasjonFormData}
-                                selectedAnnenInntekt={selectedAnnenInntekt}
-                                setArbeidIUtlandet={setAllArbeidIUtlandet}
-                                setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                            />
-                            <Block
+                            {/* <Block
                                 visible={visibility.isVisible(InntektsinformasjonFormField.tilrettelegging)}
                                 padBottom="xl"
                             >
@@ -217,7 +140,7 @@ const Inntektsinformasjon = () => {
                                     options={tilretteleggingsValg}
                                     intl={intl}
                                 />
-                            </Block>
+                            </Block> */}
                             <Block padBottom="xl">
                                 <InfoTilFiskere />
                             </Block>

@@ -38,7 +38,6 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
                     ? førsteperiode.stillingsprosent!.toString()
                     : initValues.stillingsprosent,
         };
-        console.log('init: ', values);
         return values;
     }
 };

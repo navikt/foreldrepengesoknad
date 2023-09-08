@@ -4,14 +4,14 @@ import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging'
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Næring } from 'app/types/Næring';
 import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
-import FrilansVisning from 'app/steps/inntektsinformasjon/components/frilans/FrilansVisning';
+import FrilansVisning from 'app/steps/inntektsinformasjon/components/frilans-visning/FrilansVisning';
 import EgenNæringVisning from 'app/steps/inntektsinformasjon/components/egen-næring/EgenNæringVisning';
 
 interface Props {
     currentTilrettelegging: Tilrettelegging;
     arbeidsforhold: Arbeidsforhold[];
     frilans: Frilans | undefined;
-    egenNæring: Næring[] | undefined;
+    egenNæring: Næring | undefined;
 }
 
 const ArbeidsgiverVisning: FunctionComponent<Props> = ({
@@ -35,8 +35,7 @@ const ArbeidsgiverVisning: FunctionComponent<Props> = ({
 
         case Arbeidsforholdstype.SELVSTENDIG:
             if (egenNæring) {
-                const næring = egenNæring.find((n) => n.navnPåNæringen === currentTilrettelegging?.arbeidsforhold.navn);
-                return <EgenNæringVisning næring={næring!} />;
+                return <EgenNæringVisning næring={egenNæring} />;
             }
             return null;
         default:

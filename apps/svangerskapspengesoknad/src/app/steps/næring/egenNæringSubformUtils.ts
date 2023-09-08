@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { date4YearsAgo } from 'app/utils/dateUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { Søker } from 'app/types/Søker';
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
     if (!oppstartsdato) {
@@ -18,9 +19,8 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
     return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };
 
-export const mapEgenNæringFormValuesToState = (formValues: Partial<EgenNæringSubformData>, id: number): Næring => {
+export const mapEgenNæringFormValuesToState = (formValues: EgenNæringSubformData): Næring => {
     return {
-        id: id,
         næringstype: formValues.egenNæringType!,
         tidsperiode: {
             fom: ISOStringToDate(formValues.egenNæringFom)!,
@@ -61,5 +61,13 @@ export const getInitialEgenNæringSubformValues = (næring: Næring | undefined)
             næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
         ),
         egenNæringYrkesAktivDato: dateToISOString(næring?.oppstartsdato) || '',
+    };
+};
+
+export const mapNæringDataToSøkerState = (søker: Søker, values: EgenNæringSubformData): Søker => {
+    const næring = mapEgenNæringFormValuesToState(values);
+    return {
+        ...søker,
+        selvstendigNæringsdrivendeInformasjon: næring,
     };
 };
