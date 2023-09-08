@@ -1,4 +1,4 @@
-import { Accordion, BodyShort, Button } from '@navikt/ds-react';
+import { Accordion, BodyShort, Button, ConfirmationPanel } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -87,6 +87,9 @@ const Oppsummering = () => {
                     </Accordion.Content>
                 </Accordion.Item>
             </Accordion>
+            <Block margin="xl">
+                <ConfirmationPanel label={intlUtils(intl, 'oppsummering.bekreft')} />
+            </Block>
             <Block margin="xl">
                 <StepButtonWrapper>
                     <Button
