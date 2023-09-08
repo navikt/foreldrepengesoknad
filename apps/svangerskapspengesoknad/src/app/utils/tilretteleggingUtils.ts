@@ -1,25 +1,25 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { SkjemaelementFeil, hasValue, intlUtils } from '@navikt/fp-common';
-import { mapArbeidsforholdToSøknadsgrunnlagOptions } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormUtils';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Frilans } from 'app/types/Frilans';
-import { Næring } from 'app/types/Næring';
 import Tilrettelegging, { Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { dagenFør, tiMånederSidenDato } from './dateUtils';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Næring } from 'app/types/Næring';
+import { Frilans } from 'app/types/Frilans';
+import { mapArbeidsforholdToVelgArbeidOptions } from 'app/steps/velgArbeidsforhold/velgArbeidFormUtils';
 
 export const mapTilrettelegging = (
     tilrettelegging: Tilrettelegging[],
     valgtTilrettelegging: string[],
     erFrilanser: boolean,
     harNæring: boolean,
-    frilans: Frilans | undefined,
-    næring: Næring[],
     arbeidsforhold: Arbeidsforhold[],
+    frilans: Frilans | undefined,
+    næring: Næring | undefined,
     termindato: Date
 ) => {
-    const allTilretteleggingOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
+    const allTilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging,
         erFrilanser,
         harNæring,
@@ -28,11 +28,9 @@ export const mapTilrettelegging = (
         arbeidsforhold,
         termindato
     );
-
     const selectedTilrettelegging = allTilretteleggingOptions.filter((o) =>
         valgtTilrettelegging.find((t) => t === o.id)
     );
-
     return selectedTilrettelegging;
 };
 

@@ -16,15 +16,19 @@ import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 export const validateEgenNæringFom =
     (intl: IntlShape, tom: string) =>
     (fom: string): SkjemaelementFeil => {
-        if (hasValue(fom) && !isISODateString(fom)) {
+        if (!hasValue(fom)) {
+            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
+        }
+
+        if (!isISODateString(fom)) {
             return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
         }
 
-        if (hasValue(fom) && isDateInTheFuture(fom)) {
+        if (isDateInTheFuture(fom)) {
             return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
         }
 
-        if (hasValue(fom) && isDateABeforeDateB(tom, fom)) {
+        if (isDateABeforeDateB(tom, fom)) {
             return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
         }
 
@@ -34,19 +38,22 @@ export const validateEgenNæringFom =
 export const validateEgenNæringTom =
     (intl: IntlShape, fom: string) =>
     (tom: string): SkjemaelementFeil => {
-        if (hasValue(tom) && !isISODateString(tom)) {
+        if (!hasValue(tom)) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+        }
+        if (!isISODateString(tom)) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
         }
 
-        if (hasValue(tom) && isDateInTheFuture(tom)) {
+        if (isDateInTheFuture(tom)) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
         }
 
-        if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
+        if (isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.egenNæring.merEnn4UkerSiden');
         }
 
-        if (hasValue(tom) && isDateABeforeDateB(tom, fom)) {
+        if (isDateABeforeDateB(tom, fom)) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
         }
 
@@ -56,10 +63,13 @@ export const validateEgenNæringTom =
 export const validateEgenNæringOrgnr =
     (intl: IntlShape) =>
     (orgnr: string): SkjemaelementFeil => {
+        if (!hasValue(orgnr)) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.påkrevd');
+        }
         if (containsWhiteSpace(orgnr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom');
         }
-        if (hasValue(orgnr) && !erGyldigNorskOrgnummer(orgnr)) {
+        if (!erGyldigNorskOrgnummer(orgnr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.ugyldigFormat');
         }
 
@@ -67,12 +77,30 @@ export const validateEgenNæringOrgnr =
     };
 
 export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato: string) => {
-    if (hasValue(dato) && !isISODateString(dato)) {
+    if (!hasValue(dato)) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+    }
+
+    if (!isISODateString(dato)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
 
-    if (hasValue(dato) && isDateInTheFuture(dato)) {
+    if (isDateInTheFuture(dato)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+    }
+
+    return undefined;
+};
+
+export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) => {
+    if (!hasValue(value)) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringInntekt.påkrevd');
+    } else {
+        const valueNumber = getNumberFromNumberInputValue(value);
+
+        if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
+            return intlUtils(intl, 'valideringsfeil.næringsinntekt.ugyldigFormat');
+        }
     }
 
     return undefined;

@@ -12,6 +12,10 @@ import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import Skjema from 'app/steps/skjema/Skjema';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
+import FrilansStep from 'app/steps/frilans/FrilansStep';
+import ArbeidIUtlandetStep from 'app/steps/arbeid_i_utlandet/ArbeidIUtlandetStep';
+import VelgArbeid from 'app/steps/velgArbeidsforhold/VelgArbeid';
+import EgenNæringStep from 'app/steps/næring/EgenNæringStep';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -92,6 +96,10 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
             <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
             <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
+            <Route path={SøknadRoutes.FRILANS} element={<FrilansStep />} />
+            <Route path={SøknadRoutes.NÆRING} element={<EgenNæringStep />} />
+            <Route path={SøknadRoutes.ARBEID_I_UTLANDET} element={<ArbeidIUtlandetStep />} />
+            <Route path={SøknadRoutes.VELG_ARBEID} element={<VelgArbeid />} />
             <Route path={SøknadRoutes.SKJEMA} element={<Skjema />} />
             {getTilretteleggingRoutes(tilretteleggingBehov)}
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />

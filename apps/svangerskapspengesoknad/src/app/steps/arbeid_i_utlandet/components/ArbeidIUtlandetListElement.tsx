@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import ArbeidIUtlandetVisning from './ArbeidIUtlandetVisning';
+import ArbeidIUtlandetVisning from './visning/ArbeidIUtlandetVisning';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Block, guid } from '@navikt/fp-common';
 import ArbeidIUtlandetSubform from './subform/ArbeidIUtlandetSubform';

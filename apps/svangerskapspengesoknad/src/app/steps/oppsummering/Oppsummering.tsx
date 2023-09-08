@@ -95,7 +95,7 @@ const Oppsummering = () => {
                     <Button
                         variant="secondary"
                         as={Link}
-                        to={getPreviousStepHref('oppsummering', tilrettelegging, undefined)}
+                        to={getPreviousStepHref('oppsummering', undefined, tilrettelegging, undefined)}
                     >
                         <FormattedMessage id="backlink.label" />
                     </Button>

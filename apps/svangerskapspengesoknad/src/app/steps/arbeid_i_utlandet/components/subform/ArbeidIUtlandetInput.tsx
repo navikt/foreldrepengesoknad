@@ -1,5 +1,4 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getInputFeltFeil } from '../../input-feilmelding/InputFeilmelding';
 import dayjs from 'dayjs';
 import { Block, bemUtils, date20YearsAgo, date4WeeksAgo, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -12,10 +11,11 @@ import { FormikErrors, getIn } from 'formik';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { mapArbeidIUtlandet } from './arbeidIUtlandetSubformUtils';
 import { Button } from '@navikt/ds-react';
-import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../validation/arbeidIUtlandetValidation';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import './arbeid-i-utlandet-input.css';
+import { getInputFeltFeil } from 'app/steps/inntektsinformasjon/components/input-feilmelding/InputFeilmelding';
+import { validateArbeidIUtlandetFom, validateArbeidIUtlandetTom } from '../arbeidIUtlandetValidation';
 
 interface Props {
     formValues: Partial<ArbeidIUtlandetSubformData>;
@@ -96,14 +96,14 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
             setTomFeil(undefined);
         }
     }, [navnError, fomError, tomError]);
-    const navnPåArbeidsgiverLabel = intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.navn');
+    const navnPåArbeidsgiverLabel = intlUtils(intl, 'arbeidIUtlandet.navn');
     return (
         <>
             <div className={bem.block}>
                 <Block padBottom="l">
                     <ArbeidIUtlandetSubformComponents.CountrySelect
                         name={ArbeidIUtlandetSubformField.arbeidIUtlandetLand}
-                        label={intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.land')}
+                        label={intlUtils(intl, 'arbeidIUtlandet.land')}
                         useAlpha3Code={false}
                     />
                     {getInputFeltFeil(
@@ -130,7 +130,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <ArbeidIUtlandetSubformComponents.DatePicker
                         name={ArbeidIUtlandetSubformField.arbeidIUtlandetFom}
-                        label={intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.fom')}
+                        label={intlUtils(intl, 'arbeidIUtlandet.fom')}
                         placeholder="dd.mm.åååå"
                         fullscreenOverlay={true}
                         showYearSelector={true}
@@ -149,7 +149,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <ArbeidIUtlandetSubformComponents.YesOrNoQuestion
                         name={ArbeidIUtlandetSubformField.arbeidIUtlandetErPågående}
-                        legend={intlUtils(intl, 'inntektsinformasjon.egenNæring.startetNæring.pågående')}
+                        legend={intlUtils(intl, 'egenNæring.startetNæring.pågående')}
                     />
                     {getInputFeltFeil(
                         submitClicked,
@@ -161,7 +161,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
                 <Block padBottom="l" visible={visibility.isVisible(ArbeidIUtlandetSubformField.arbeidIUtlandetTom)}>
                     <ArbeidIUtlandetSubformComponents.DatePicker
                         name={ArbeidIUtlandetSubformField.arbeidIUtlandetTom}
-                        label={intlUtils(intl, 'inntektsinformasjon.arbeidIUtlandet.tom')}
+                        label={intlUtils(intl, 'arbeidIUtlandet.tom')}
                         placeholder="dd.mm.åååå"
                         fullscreenOverlay={true}
                         showYearSelector={true}

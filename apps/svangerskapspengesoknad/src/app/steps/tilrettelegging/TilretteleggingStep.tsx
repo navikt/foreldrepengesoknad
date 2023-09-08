@@ -8,7 +8,6 @@ import {
     TilretteleggingFormData,
     TilretteleggingFormField,
     TilretteleggingPeriodeType,
-    // tilretteleggingFormQuestions,
 } from './tilretteleggingStepFormConfig';
 import { getTilretteleggingInitialValues, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -65,7 +64,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     }
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-    console.log('Current t: ', currentTilrettelegging?.arbeidsforhold.navn);
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -177,6 +175,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                         as={Link}
                                         to={getPreviousStepHref(
                                             'periode',
+                                            undefined,
                                             tilretteleggingFraState,
                                             state.currentTilretteleggingId
                                         )}
