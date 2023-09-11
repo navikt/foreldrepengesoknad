@@ -11,4 +11,5 @@ export interface Søknad {
     søker: Søker;
     tilrettelegging: Tilrettelegging[];
     vedlegg: Attachment[];
+    harGodkjentOppsummering: boolean;
 }
