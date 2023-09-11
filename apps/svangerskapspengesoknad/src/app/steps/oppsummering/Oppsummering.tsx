@@ -2,7 +2,7 @@ import { Accordion, BodyShort, Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -25,9 +25,9 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
-import FrilansVisning from '../../components/frilans-visning/FrilansVisning';
 import EgenNæringVisning from '../../components/egen-næring-visning/EgenNæringVisning';
 import ArbeidIUtlandetVisning from '../arbeid_i_utlandet/components/visning/ArbeidIUtlandetVisning';
+import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -48,6 +48,7 @@ const Oppsummering = () => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
         setFormSubmitted(true);
     };
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, barn.termindato);
 
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
@@ -123,13 +124,12 @@ const Oppsummering = () => {
                                     </Accordion.Header>
                                     <Accordion.Content>
                                         <Block padBottom="xl">
-                                            <ArbeidsforholdInformasjon
-                                                visManglerInfo={false}
-                                                arbeidsforhold={getAktiveArbeidsforhold(
-                                                    arbeidsforhold,
-                                                    barn.termindato
-                                                )}
-                                            />
+                                            {aktiveArbeidsforhold.length > 0 && (
+                                                <ArbeidsforholdInformasjon
+                                                    visManglerInfo={false}
+                                                    arbeidsforhold={aktiveArbeidsforhold}
+                                                />
+                                            )}
                                             {søknad.søker.harJobbetSomFrilansSiste10Mnd &&
                                                 søknad.søker.frilansInformasjon && (
                                                     <FrilansVisning
@@ -177,7 +177,7 @@ const Oppsummering = () => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getPreviousStepHref('oppsummering', undefined, tilrettelegging, undefined)}
+                                        to={getBackLinkTilretteleggingEllerSkjemaSteg(tilrettelegging, undefined)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

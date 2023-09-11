@@ -2,7 +2,7 @@ import { VelgArbeidFormComponents, VelgArbeidFormData, VelgArbeidFormField } fro
 import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import stepConfig, { getPreviousStepHref } from 'app/steps/stepsConfig';
+import stepConfig, { getBackLinkForVelgArbeidSteg } from 'app/steps/stepsConfig';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
@@ -31,11 +31,8 @@ const VelgArbeid: React.FunctionComponent = () => {
         const mappedTilrettelegging = mapTilrettelegging(
             tilrettelegging,
             values.arbeidMedTilrettelegging!,
-            søker.harJobbetSomFrilansSiste10Mnd,
-            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+            søker,
             arbeidsforhold,
-            søker.frilansInformasjon,
-            søker.selvstendigNæringsdrivendeInformasjon,
             barn.termindato
         );
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
@@ -88,7 +85,7 @@ const VelgArbeid: React.FunctionComponent = () => {
 
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('velgArbeid', søker)}>
+                                    <Button variant="secondary" as={Link} to={getBackLinkForVelgArbeidSteg(søker)}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>

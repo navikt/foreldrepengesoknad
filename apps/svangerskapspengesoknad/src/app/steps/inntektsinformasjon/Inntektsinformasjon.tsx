@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import stepConfig, { getNextRouteForInntektsinformasjon, getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getNextRouteForInntektsinformasjon, getPreviousSetStepHref } from '../stepsConfig';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import {
     InntektsinformasjonFormComponents,
@@ -19,7 +19,10 @@ import {
 
 import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
-import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import {
+    getAktiveArbeidsforhold,
+    søkerHarKunEtArbeid as søkerHarKunEtAktivtArbeid,
+} from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -31,6 +34,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
+import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
@@ -39,8 +43,29 @@ const Inntektsinformasjon = () => {
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.SKJEMA);
     const onAvbrytSøknad = useAvbrytSøknad();
     const { termindato } = barn;
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
+        if (
+            søkerHarKunEtAktivtArbeid(
+                termindato,
+                arbeidsforhold,
+                updatedSøker.harJobbetSomFrilansSiste10Mnd,
+                updatedSøker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+            ) &&
+            aktiveArbeidsforhold.length > 0
+        ) {
+            const mappedTilretteleggingsValg = mapTilrettelegging(
+                tilrettelegging,
+                [aktiveArbeidsforhold[0].id],
+                updatedSøker,
+                arbeidsforhold,
+                barn.termindato
+            );
+
+            return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging(mappedTilretteleggingsValg)];
+        }
+
         return [actionCreator.setSøker(updatedSøker)];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
@@ -58,7 +83,7 @@ const Inntektsinformasjon = () => {
                     arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
                     formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
-                setNextRoute(getNextRouteForInntektsinformasjon(formValues));
+                setNextRoute(getNextRouteForInntektsinformasjon(termindato, formValues, aktiveArbeidsforhold));
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -78,9 +103,7 @@ const Inntektsinformasjon = () => {
                                 </BodyShort>
                             </Block>
                             <Block padBottom="xl">
-                                <ArbeidsforholdInformasjon
-                                    arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
-                                />
+                                <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
                             </Block>
                             <Block
                                 padBottom="xl"
@@ -143,7 +166,7 @@ const Inntektsinformasjon = () => {
                             </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('arbeid')}>
+                                    <Button variant="secondary" as={Link} to={getPreviousSetStepHref('arbeid')}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {!kanIkkeSøke && (

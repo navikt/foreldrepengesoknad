@@ -14,7 +14,7 @@ import {
 } from '@navikt/fp-common';
 import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getNextRouteForNæring, getPreviousStepHref } from 'app/steps/stepsConfig';
+import stepConfig, { getBackLinkForNæringSteg, getNextRouteForNæring } from 'app/steps/stepsConfig';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 import dayjs from 'dayjs';
@@ -30,15 +30,41 @@ import {
     validateEgenNæringYrkesAktivDatoDato,
 } from './egenNæringValidation';
 import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerEllerLand';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
+import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 const EgenNæringStep: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { søker } = useSøknad();
+    const { søker, barn, tilrettelegging } = useSøknad();
+    const { arbeidsforhold } = useSøkerinfo();
     const onValidSubmitHandler = (values: Partial<EgenNæringSubformData>) => {
         const søkerMedNæring = mapNæringDataToSøkerState(søker, values as EgenNæringSubformData);
+        if (
+            søkerHarKunEtArbeid(
+                barn.termindato,
+                arbeidsforhold,
+                søkerMedNæring.harJobbetSomFrilansSiste10Mnd,
+                søkerMedNæring.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+            )
+        ) {
+            const mappedTilretteleggingsValg = mapTilrettelegging(
+                tilrettelegging,
+                ['Næring'],
+                søkerMedNæring,
+                arbeidsforhold,
+                barn.termindato
+            );
+
+            return [
+                actionCreator.setSøker(søkerMedNæring),
+                actionCreator.setTilrettelegging(mappedTilretteleggingsValg),
+            ];
+        }
+
         return [actionCreator.setSøker(søkerMedNæring)];
     };
-    const nextRoute = getNextRouteForNæring(søker);
+    const nextRoute = getNextRouteForNæring(søker, barn.termindato, arbeidsforhold);
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -222,7 +248,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                             </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('næring', søker)}>
+                                    <Button variant="secondary" as={Link} to={getBackLinkForNæringSteg(søker)}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>

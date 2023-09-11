@@ -7,6 +7,9 @@ import Tilrettelegging from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
 import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
+import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -19,18 +22,17 @@ type SkjemaStepId = 'skjema';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type OppsummeringStepId = 'oppsummering';
 
-type StepIdWithBackHref =
-    | UtenlandsoppholdStepId
-    | InntektsinformasjonStepId
-    | FrilansStepId
+type StepIdWithSetBackHref = UtenlandsoppholdStepId | InntektsinformasjonStepId | FrilansStepId;
+
+type StepIdWithComputedBackHref =
     | NæringStepId
     | ArbeidIUtlandetStepId
-    | SkjemaStepId
     | VelgArbeidStepId
+    | SkjemaStepId
     | PeriodeStepId
     | OppsummeringStepId;
 
-export type StepId = BarnetStepId | StepIdWithBackHref;
+export type StepId = BarnetStepId | StepIdWithSetBackHref | StepIdWithComputedBackHref;
 
 interface StepConfig {
     id: StepId;
@@ -118,8 +120,20 @@ export const getArbeidUtlandRouteIfArbeidUtland = (søker: Søker): SøknadRoute
     }
     return undefined;
 };
+export const getBackLinkForSkjemaSteg = (søker: Søker, termindato: Date, arbeidsforhold: Arbeidsforhold[]) => {
+    const harKunEtArbeid = søkerHarKunEtArbeid(
+        termindato,
+        arbeidsforhold,
+        søker.harJobbetSomFrilansSiste10Mnd,
+        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+    );
+    if (harKunEtArbeid) {
+        return getBackLinkForVelgArbeidSteg(søker);
+    }
+    return SøknadRoutes.VELG_ARBEID;
+};
 
-const getBackLinkTilretteleggingEllerSkjemaSteg = (
+export const getBackLinkTilretteleggingEllerSkjemaSteg = (
     tilrettelegginger: Tilrettelegging[] | undefined,
     currentTilretteleggingId: string | undefined
 ) => {
@@ -133,21 +147,21 @@ const getBackLinkTilretteleggingEllerSkjemaSteg = (
     return SøknadRoutes.SKJEMA;
 };
 
-const getBackLinkForNæringSteg = (søker: Søker | undefined) => {
+export const getBackLinkForNæringSteg = (søker: Søker | undefined) => {
     if (!søker) {
         return SøknadRoutes.ARBEID;
     }
     return getFrilansRouteIfFrilans(søker) || SøknadRoutes.ARBEID;
 };
 
-const getBackLinkForArbeidIUtlandetSteg = (søker: Søker | undefined) => {
+export const getBackLinkForArbeidIUtlandetSteg = (søker: Søker | undefined) => {
     if (!søker) {
         return SøknadRoutes.ARBEID;
     }
     return getNæringRouteIfNæring(søker) || getFrilansRouteIfFrilans(søker) || SøknadRoutes.ARBEID;
 };
 
-const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined) => {
+export const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined) => {
     if (!søker) {
         return SøknadRoutes.ARBEID;
     }
@@ -159,12 +173,7 @@ const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined) => {
     );
 };
 
-export const getPreviousStepHref = (
-    id: StepIdWithBackHref,
-    søker?: Søker,
-    tilrettelegginger?: Tilrettelegging[],
-    currentTilretteleggingId?: string
-): string => {
+export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
     let href;
     switch (id) {
         case 'utenlandsopphold':
@@ -176,24 +185,6 @@ export const getPreviousStepHref = (
         case 'frilans':
             href = SøknadRoutes.ARBEID;
             break;
-        case 'næring':
-            href = getBackLinkForNæringSteg(søker);
-            break;
-        case 'arbeidIUtlandet':
-            href = getBackLinkForArbeidIUtlandetSteg(søker);
-            break;
-        case 'velgArbeid':
-            href = getBackLinkForVelgArbeidSteg(søker);
-            break;
-        case 'skjema':
-            href = SøknadRoutes.VELG_ARBEID;
-            break;
-        case 'periode':
-            href = getBackLinkTilretteleggingEllerSkjemaSteg(tilrettelegginger, currentTilretteleggingId);
-            break;
-        case 'oppsummering':
-            href = getBackLinkTilretteleggingEllerSkjemaSteg(tilrettelegginger, currentTilretteleggingId);
-            break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
     }
@@ -203,7 +194,11 @@ export const getPreviousStepHref = (
 
 export default stepConfig;
 
-export const getNextRouteForInntektsinformasjon = (values: Partial<InntektsinformasjonFormData>) => {
+export const getNextRouteForInntektsinformasjon = (
+    termindato: Date,
+    values: Partial<InntektsinformasjonFormData>,
+    arbeidsforhold: Arbeidsforhold[]
+) => {
     if (hasValue(values.hattInntektSomFrilans) && values.hattInntektSomFrilans === YesOrNo.YES) {
         return SøknadRoutes.FRILANS;
     }
@@ -213,13 +208,41 @@ export const getNextRouteForInntektsinformasjon = (values: Partial<Inntektsinfor
     if (hasValue(values.hattArbeidIUtlandet) && values.hattArbeidIUtlandet === YesOrNo.YES) {
         return SøknadRoutes.ARBEID_I_UTLANDET;
     }
+    const søkerHarEtAktivtArbeid = søkerHarKunEtArbeid(
+        termindato,
+        arbeidsforhold,
+        !!convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans),
+        !!convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomNæringsdrivende)
+    );
+    if (søkerHarEtAktivtArbeid) {
+        return SøknadRoutes.SKJEMA;
+    }
     return SøknadRoutes.VELG_ARBEID;
 };
 
-export const getNextRouteForFrilans = (søker: Søker) => {
-    return getNæringRouteIfNæring(søker) || getArbeidUtlandRouteIfArbeidUtland(søker) || SøknadRoutes.VELG_ARBEID;
+export const getVelgArbeidEllerSkjemaRoute = (termindato: Date, arbeidsforhold: Arbeidsforhold[], søker: Søker) => {
+    const harKunEtArbeid = søkerHarKunEtArbeid(
+        termindato,
+        arbeidsforhold,
+        søker.harJobbetSomFrilansSiste10Mnd,
+        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+    );
+    if (harKunEtArbeid) {
+        return SøknadRoutes.SKJEMA;
+    }
+    return SøknadRoutes.VELG_ARBEID;
 };
 
-export const getNextRouteForNæring = (søker: Søker) => {
-    return getArbeidUtlandRouteIfArbeidUtland(søker) || SøknadRoutes.VELG_ARBEID;
+export const getNextRouteForFrilans = (søker: Søker, termindato: Date, arbeidsforhold: Arbeidsforhold[]) => {
+    return (
+        getNæringRouteIfNæring(søker) ||
+        getArbeidUtlandRouteIfArbeidUtland(søker) ||
+        getVelgArbeidEllerSkjemaRoute(termindato, arbeidsforhold, søker)
+    );
+};
+
+export const getNextRouteForNæring = (søker: Søker, termindato: Date, arbeidsforhold: Arbeidsforhold[]) => {
+    return (
+        getArbeidUtlandRouteIfArbeidUtland(søker) || getVelgArbeidEllerSkjemaRoute(termindato, arbeidsforhold, søker)
+    );
 };
