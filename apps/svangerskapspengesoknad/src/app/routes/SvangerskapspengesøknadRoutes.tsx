@@ -15,7 +15,7 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import FrilansStep from 'app/steps/frilans/FrilansStep';
 import ArbeidIUtlandetStep from 'app/steps/arbeid_i_utlandet/ArbeidIUtlandetStep';
 import VelgArbeid from 'app/steps/velgArbeidsforhold/VelgArbeid';
-import EgenNæringStep from 'app/steps/næring/EgenNæringStep';
+import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
 
 interface Props {
     currentRoute: SøknadRoutes;

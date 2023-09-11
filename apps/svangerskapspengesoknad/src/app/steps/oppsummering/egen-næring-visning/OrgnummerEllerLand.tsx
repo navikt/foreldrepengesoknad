@@ -2,7 +2,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { validateEgenNæringOrgnr } from '../../steps/egen-næring/egenNæringValidation';
+import { validateEgenNæringOrgnr } from '../../egen-næring/egenNæringValidation';
 import { EgenNæringSubformComponents, EgenNæringSubformField } from 'app/steps/egen-næring/egenNæringSubformConfig';
 
 interface Props {
