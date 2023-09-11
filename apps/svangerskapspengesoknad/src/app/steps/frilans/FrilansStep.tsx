@@ -13,7 +13,7 @@ import {
 } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import stepConfig, { getNextRouteForFrilans, getPreviousStepHref } from 'app/steps/stepsConfig';
+import stepConfig, { getNextRouteForFrilans, getPreviousSetStepHref } from 'app/steps/stepsConfig';
 import { validateFrilansSlutt, validateFrilansStart } from './frilansValidation';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
@@ -21,15 +21,40 @@ import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
+import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
 
 const FrilansStep: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { søker } = useSøknad();
+    const { arbeidsforhold } = useSøkerinfo();
+    const { søker, barn, tilrettelegging } = useSøknad();
     const onValidSubmitHandler = (values: Partial<FrilansFormData>) => {
         const søkerMedFrilans = mapFrilansDataToSøkerState(søker, values as FrilansFormData);
+        if (
+            søkerHarKunEtArbeid(
+                barn.termindato,
+                arbeidsforhold,
+                søkerMedFrilans.harJobbetSomFrilansSiste10Mnd,
+                søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+            )
+        ) {
+            const mappedTilretteleggingsValg = mapTilrettelegging(
+                tilrettelegging,
+                ['Frilans'],
+                søkerMedFrilans,
+                arbeidsforhold,
+                barn.termindato
+            );
+
+            return [
+                actionCreator.setSøker(søkerMedFrilans),
+                actionCreator.setTilrettelegging(mappedTilretteleggingsValg),
+            ];
+        }
         return [actionCreator.setSøker(søkerMedFrilans)];
     };
-    const nextRoute = getNextRouteForFrilans(søker);
+    const nextRoute = getNextRouteForFrilans(søker, barn.termindato, arbeidsforhold);
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -95,7 +120,7 @@ const FrilansStep: React.FunctionComponent = () => {
                             </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('frilans')}>
+                                    <Button variant="secondary" as={Link} to={getPreviousSetStepHref('frilans')}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>

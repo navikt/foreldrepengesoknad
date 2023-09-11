@@ -5,26 +5,22 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { dagenFør, tiMånederSidenDato } from './dateUtils';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Næring } from 'app/types/Næring';
-import { Frilans } from 'app/types/Frilans';
 import { mapArbeidsforholdToVelgArbeidOptions } from 'app/steps/velgArbeidsforhold/velgArbeidFormUtils';
+import { Søker } from 'app/types/Søker';
 
 export const mapTilrettelegging = (
     tilrettelegging: Tilrettelegging[],
     valgtTilrettelegging: string[],
-    erFrilanser: boolean,
-    harNæring: boolean,
+    søker: Søker,
     arbeidsforhold: Arbeidsforhold[],
-    frilans: Frilans | undefined,
-    næring: Næring | undefined,
     termindato: Date
 ) => {
     const allTilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging,
-        erFrilanser,
-        harNæring,
-        frilans,
-        næring,
+        søker.harJobbetSomFrilansSiste10Mnd,
+        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+        søker.frilansInformasjon,
+        søker.selvstendigNæringsdrivendeInformasjon,
         arbeidsforhold,
         termindato
     );

@@ -6,16 +6,17 @@ import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import SøknadRoutes from 'app/routes/routes';
-import stepConfig, { getPreviousStepHref } from 'app/steps/stepsConfig';
+import stepConfig, { getBackLinkForArbeidIUtlandetSteg, getVelgArbeidEllerSkjemaRoute } from 'app/steps/stepsConfig';
 import { Link } from 'react-router-dom';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import ArbeidIUtlandetList from './components/ArbeidIUtlandetList';
 import ArbeidIUtlandetSubform from './components/subform/ArbeidIUtlandetSubform';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { søker } = useSøknad();
+    const { arbeidsforhold } = useSøkerinfo();
+    const { søker, barn } = useSøknad();
     const [arbeidIUtlandet, setArbeidIUtlandet] = useState(søker.andreInntekterSiste10Mnd || []);
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
@@ -62,8 +63,8 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
         const søkerMedArbeidIUtlandet = { ...søker, andreInntekterSiste10Mnd: arbeidIUtlandet };
         return [actionCreator.setSøker(søkerMedArbeidIUtlandet)];
     };
-
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.VELG_ARBEID);
+    const nextRoute = getVelgArbeidEllerSkjemaRoute(barn.termindato, arbeidsforhold, søker);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const visAlertOmNødvendigInput = !erFørsteInput && arbeidIUtlandet.length === 0;
@@ -132,7 +133,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
             )}
             <Block margin="xl">
                 <StepButtonWrapper>
-                    <Button variant="secondary" as={Link} to={getPreviousStepHref('arbeidIUtlandet', søker)}>
+                    <Button variant="secondary" as={Link} to={getBackLinkForArbeidIUtlandetSteg(søker)}>
                         <FormattedMessage id="backlink.label" />
                     </Button>
                     <Button

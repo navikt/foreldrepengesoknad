@@ -35,3 +35,17 @@ export const getUnikeArbeidsforhold = (
 
     return [];
 };
+
+export const søkerHarKunEtArbeid = (
+    termindato: Date,
+    arbeidsforhold: Arbeidsforhold[],
+    erFrilanser: boolean,
+    harEgenNæring: boolean
+) => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    return (
+        (aktiveArbeidsforhold.length === 1 && !erFrilanser && !harEgenNæring) ||
+        (aktiveArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
+        (aktiveArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
+    );
+};

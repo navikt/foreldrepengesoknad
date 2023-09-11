@@ -1,7 +1,7 @@
 import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getPreviousSetStepHref } from '../stepsConfig';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -154,7 +154,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     <Button
                                         variant="secondary"
                                         as={RouterLink}
-                                        to={getPreviousStepHref('utenlandsopphold')}
+                                        to={getPreviousSetStepHref('utenlandsopphold')}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

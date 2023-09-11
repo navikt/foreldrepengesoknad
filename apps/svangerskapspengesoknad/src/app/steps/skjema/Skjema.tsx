@@ -6,7 +6,7 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { SkjemaFormComponents, SkjemaFormData, SkjemaFormField } from './skjemaFormTypes';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentUtils';
@@ -31,6 +31,7 @@ import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRo
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -38,8 +39,9 @@ const Skjema: React.FunctionComponent = () => {
     useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
     const bem = bemUtils('skjema');
+    const { arbeidsforhold } = useSøkerinfo();
     const { state } = useSvangerskapspengerContext();
-    const { tilrettelegging } = useSøknad();
+    const { søker, barn, tilrettelegging } = useSøknad();
     const onAvbrytSøknad = useAvbrytSøknad();
     const [forMangeFiler, setForMangeFiler] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
@@ -199,7 +201,11 @@ const Skjema: React.FunctionComponent = () => {
                             )}
                             <Block margin="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('skjema')}>
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        to={getBackLinkForSkjemaSteg(søker, barn.termindato, arbeidsforhold)}
+                                    >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>

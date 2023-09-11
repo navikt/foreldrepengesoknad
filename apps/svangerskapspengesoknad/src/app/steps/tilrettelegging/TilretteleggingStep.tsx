@@ -1,6 +1,6 @@
 import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsConfig';
 import { Alert, Button, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -173,9 +173,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getPreviousStepHref(
-                                            'periode',
-                                            undefined,
+                                        to={getBackLinkTilretteleggingEllerSkjemaSteg(
                                             tilretteleggingFraState,
                                             state.currentTilretteleggingId
                                         )}
