@@ -6,6 +6,9 @@ import { IntlShape } from 'react-intl';
 import { hasValue } from 'app/utils/validationUtils';
 import { intlUtils, validateTextInputField } from '@navikt/fp-common';
 
+export const RISIKOFAKTORER_MIN_LENGTH = 10;
+export const RISIKOFAKTORER_MAX_LENGTH = 1000;
+
 export const getInitialSkjemaValuesFromState = (state: SvangerskapspengerContextState): SkjemaFormData => {
     const alleVedlegg = state.søknad.vedlegg;
     const tilrettelegginger = state.søknad.tilrettelegging;
@@ -61,6 +64,14 @@ export const validateRisikofaktorer =
     (intl: IntlShape, label: string, type: Arbeidsforholdstype) => (risikoFaktorer: string) => {
         if (!hasValue(risikoFaktorer) || risikoFaktorer.trim() === '') {
             return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.${type}.påkrevd`);
+        }
+
+        if (risikoFaktorer.length > RISIKOFAKTORER_MAX_LENGTH) {
+            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forLang`);
+        }
+
+        if (risikoFaktorer.length < RISIKOFAKTORER_MIN_LENGTH) {
+            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forKort`);
         }
 
         return validateTextInputField(risikoFaktorer, label, intl);
