@@ -22,15 +22,15 @@ import { Link } from 'react-router-dom';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
-import HvemKanVæreFrilanser from './components/frilans-visning/HvemKanVæreFrilanser';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import HvemKanDriveMedEgenNæring from './components/egen-næring/HvemKanDriveMedEgenNæring';
+import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
 import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
 import ArbeidIUtlandetReadMore from '../arbeid_i_utlandet/components/ArbeidIUtlandetReadMore';
+import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
