@@ -16,6 +16,7 @@ export enum SvangerskapspengerContextActionKeys {
     SET_UTENLANDSOPPHOLD = 'setUtenlandsopphold',
     SET_VEDLEGG = 'setVedlegg',
     AVBRYT_SØKNAD = 'avbrytSøknad',
+    GODKJENT_OPPSUMMERING = 'godkjentOppsummering',
 }
 interface SetBarn {
     type: SvangerskapspengerContextActionKeys.SET_BARN;
@@ -115,6 +116,16 @@ const avbrytSøknad = (): AvbrytSøknad => ({
     type: SvangerskapspengerContextActionKeys.AVBRYT_SØKNAD,
 });
 
+interface GodkjentOppsummering {
+    type: SvangerskapspengerContextActionKeys.GODKJENT_OPPSUMMERING;
+    payload: boolean;
+}
+
+const setGodkjentOppsummering = (payload: boolean): GodkjentOppsummering => ({
+    type: SvangerskapspengerContextActionKeys.GODKJENT_OPPSUMMERING,
+    payload,
+});
+
 export type SvangerskapspengerContextAction =
     | SetBarn
     | SetSøker
@@ -125,7 +136,8 @@ export type SvangerskapspengerContextAction =
     | SetHarGodkjentVilkår
     | SetUtenlandsopphold
     | SetVedlegg
-    | AvbrytSøknad;
+    | AvbrytSøknad
+    | GodkjentOppsummering;
 
 export default {
     setBarn,
@@ -138,4 +150,5 @@ export default {
     setUtenlandsopphold,
     setVedlegg,
     avbrytSøknad,
+    setGodkjentOppsummering,
 };
