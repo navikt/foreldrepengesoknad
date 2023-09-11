@@ -9,8 +9,8 @@ import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 
 interface Props {
     arbeidIUtlandet: ArbeidIUtlandet;
-    setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
-    deleteAnnenInntekt: (arbeidIUtlandet: ArbeidIUtlandet) => void;
+    setSelectedAnnenInntekt?: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
+    deleteAnnenInntekt?: (arbeidIUtlandet: ArbeidIUtlandet) => void;
 }
 
 const getTilTekst = (arbeid: ArbeidIUtlandet): string => {
@@ -25,14 +25,6 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
     const intl = useIntl();
     const bem = bemUtils('arbeidIUtlandetVisning');
 
-    const handleOnClickRediger = (arbeidIUtlandet: ArbeidIUtlandet) => {
-        setSelectedAnnenInntekt(arbeidIUtlandet);
-    };
-
-    const handleOnClickSlett = (arbeidIUtlandet: ArbeidIUtlandet) => {
-        deleteAnnenInntekt(arbeidIUtlandet);
-    };
-
     return (
         <div>
             <Block padBottom="l">
@@ -46,20 +38,24 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
                     <BodyShort className={bem.element('dato')}>
                         {formatDate(arbeidIUtlandet.tidsperiode.fom)} - {getTilTekst(arbeidIUtlandet)}
                     </BodyShort>
-                    <Button
-                        aria-label="rediger informasjon om arbeid i utlandet"
-                        variant="secondary"
-                        className={bem.element('rediger')}
-                        icon={<PencilWritingIcon aria-hidden />}
-                        onClick={() => handleOnClickRediger(arbeidIUtlandet)}
-                    />
-                    <Button
-                        aria-label="slett informasjon om arbeid i utlandet"
-                        variant="secondary"
-                        className={bem.element('slett')}
-                        icon={<TrashIcon aria-hidden />}
-                        onClick={() => handleOnClickSlett(arbeidIUtlandet)}
-                    />
+                    {setSelectedAnnenInntekt && (
+                        <Button
+                            aria-label="rediger informasjon om arbeid i utlandet"
+                            variant="secondary"
+                            className={bem.element('rediger')}
+                            icon={<PencilWritingIcon aria-hidden />}
+                            onClick={() => setSelectedAnnenInntekt(arbeidIUtlandet)}
+                        />
+                    )}
+                    {deleteAnnenInntekt && (
+                        <Button
+                            aria-label="slett informasjon om arbeid i utlandet"
+                            variant="secondary"
+                            className={bem.element('slett')}
+                            icon={<TrashIcon aria-hidden />}
+                            onClick={() => deleteAnnenInntekt(arbeidIUtlandet)}
+                        />
+                    )}
                 </div>
             </Block>
         </div>
