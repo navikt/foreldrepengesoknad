@@ -13,6 +13,8 @@ import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentU
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
 import {
+    RISIKOFAKTORER_MAX_LENGTH,
+    RISIKOFAKTORER_MIN_LENGTH,
     getInitialSkjemaValuesFromState,
     getVedleggForTilrettelegging,
     mapTilretteleggingMedSkjema,
@@ -122,8 +124,8 @@ const Skjema: React.FunctionComponent = () => {
                                                                     : SkjemaFormField.risikofaktorerNæring
                                                             }
                                                             label={risikofaktorerLabel}
-                                                            minLength={5}
-                                                            maxLength={1000}
+                                                            minLength={RISIKOFAKTORER_MIN_LENGTH}
+                                                            maxLength={RISIKOFAKTORER_MAX_LENGTH}
                                                             validate={validateRisikofaktorer(
                                                                 intl,
                                                                 risikofaktorerLabel,
@@ -174,7 +176,7 @@ const Skjema: React.FunctionComponent = () => {
                                                                 )}
                                                                 attachmentType={AttachmentType.TILRETTELEGGING}
                                                                 skjemanummer={skjemanummer}
-                                                                validateHasAttachment={false} //TODO: true
+                                                                validateHasAttachment={true}
                                                             />
                                                         </div>
                                                     );
