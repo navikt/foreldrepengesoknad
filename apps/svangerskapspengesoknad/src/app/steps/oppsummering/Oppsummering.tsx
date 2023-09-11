@@ -22,6 +22,9 @@ import actionCreator from 'app/context/action/actionCreator';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { useEffect, useState } from 'react';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
+import Api from 'app/api/api';
+import useAbortSignal from 'app/hooks/useAbortSignal';
+import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -30,6 +33,7 @@ const Oppsummering = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
     useUpdateCurrentTilretteleggingId(undefined);
+    const abortSignal = useAbortSignal();
 
     const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
     const { arbeidsforhold } = søkerinfo;
@@ -45,7 +49,18 @@ const Oppsummering = () => {
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
             setIsSendingSøknad(true);
-            console.log('weeeeee');
+
+            Api.sendSøknad(søknad, abortSignal)
+                .then(() => {
+                    console.log('Søknad sendt inn success');
+                })
+                .catch((error) => {
+                    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                        redirectToLogin();
+                    }
+
+                    console.log('Søknad innsending error');
+                });
         }
     });
 
