@@ -4,8 +4,8 @@ import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging'
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Næring } from 'app/types/Næring';
 import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
-import FrilansVisning from 'app/steps/inntektsinformasjon/components/frilans-visning/FrilansVisning';
-import EgenNæringVisning from 'app/steps/inntektsinformasjon/components/egen-næring/EgenNæringVisning';
+import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
+import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
 
 interface Props {
     currentTilrettelegging: Tilrettelegging;

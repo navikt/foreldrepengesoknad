@@ -29,7 +29,7 @@ import {
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
 } from './egenNæringValidation';
-import OrgnummerEllerLand from '../inntektsinformasjon/components/egen-næring/OrgnummerEllerLand';
+import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerEllerLand';
 
 const EgenNæringStep: React.FunctionComponent = () => {
     const intl = useIntl();

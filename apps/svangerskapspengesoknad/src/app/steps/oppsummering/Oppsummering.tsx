@@ -25,8 +25,8 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
-import FrilansVisning from '../inntektsinformasjon/components/frilans-visning/FrilansVisning';
-import EgenNæringVisning from '../inntektsinformasjon/components/egen-næring/EgenNæringVisning';
+import FrilansVisning from '../../components/frilans-visning/FrilansVisning';
+import EgenNæringVisning from '../../components/egen-næring-visning/EgenNæringVisning';
 import ArbeidIUtlandetVisning from '../arbeid_i_utlandet/components/visning/ArbeidIUtlandetVisning';
 
 const Oppsummering = () => {
