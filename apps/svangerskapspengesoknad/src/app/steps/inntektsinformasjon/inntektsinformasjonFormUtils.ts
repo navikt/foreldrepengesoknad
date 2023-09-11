@@ -22,9 +22,9 @@ export const mapInntektsinformasjonFormDataToState = (
     return {
         ...søker,
         rolle: Søkerrolle.MOR,
-        harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattArbeidIUtlandet)!,
-        harJobbetSomFrilansSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
+        harHattAnnenInntekt: convertYesOrNoOrUndefinedToBoolean(values.hattArbeidIUtlandet)!,
+        harJobbetSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
+        harJobbetSomSelvstendigNæringsdrivende: convertYesOrNoOrUndefinedToBoolean(
             values.hattInntektSomNæringsdrivende
         )!,
     };
@@ -36,11 +36,9 @@ export const getInitialInntektsinformasjonFormValues = (
 ): InntektsinformasjonFormData => {
     const init = {
         ...initialInntektsinformasjonFormValues,
-        hattArbeidIUtlandet: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
-        hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(
-            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
-        ),
-        hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
+        hattArbeidIUtlandet: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntekt),
+        hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomSelvstendigNæringsdrivende),
+        hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilans),
         tilrettelegging: tilretteleggingsBehov.map((t) => t.id),
     };
     return init;

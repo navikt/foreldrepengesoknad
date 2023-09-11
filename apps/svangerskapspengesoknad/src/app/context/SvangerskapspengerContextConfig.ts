@@ -21,9 +21,9 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
         barn: undefined!,
         søker: {
             rolle: Søkerrolle.MOR,
-            harHattAnnenInntektSiste10Mnd: undefined!,
-            harJobbetSomFrilansSiste10Mnd: undefined!,
-            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined!,
+            harHattAnnenInntekt: undefined!,
+            harJobbetSomFrilans: undefined!,
+            harJobbetSomSelvstendigNæringsdrivende: undefined!,
             frilansInformasjon: undefined!,
         },
         tilrettelegging: [],

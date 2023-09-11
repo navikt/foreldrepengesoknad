@@ -130,21 +130,20 @@ const Oppsummering = () => {
                                                     arbeidsforhold={aktiveArbeidsforhold}
                                                 />
                                             )}
-                                            {søknad.søker.harJobbetSomFrilansSiste10Mnd &&
-                                                søknad.søker.frilansInformasjon && (
-                                                    <FrilansVisning
-                                                        frilans={søknad.søker.frilansInformasjon}
-                                                    ></FrilansVisning>
-                                                )}
-                                            {søknad.søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd &&
+                                            {søknad.søker.harJobbetSomFrilans && søknad.søker.frilansInformasjon && (
+                                                <FrilansVisning
+                                                    frilans={søknad.søker.frilansInformasjon}
+                                                ></FrilansVisning>
+                                            )}
+                                            {søknad.søker.harJobbetSomSelvstendigNæringsdrivende &&
                                                 søknad.søker.selvstendigNæringsdrivendeInformasjon && (
                                                     <EgenNæringVisning
                                                         næring={søknad.søker.selvstendigNæringsdrivendeInformasjon}
                                                     ></EgenNæringVisning>
                                                 )}
-                                            {søknad.søker.harHattAnnenInntektSiste10Mnd &&
-                                                søknad.søker.andreInntekterSiste10Mnd &&
-                                                søknad.søker.andreInntekterSiste10Mnd.map((arbeid) => {
+                                            {søknad.søker.harHattAnnenInntekt &&
+                                                søknad.søker.andreInntekter &&
+                                                søknad.søker.andreInntekter.map((arbeid) => {
                                                     return (
                                                         <ArbeidIUtlandetVisning
                                                             arbeidIUtlandet={arbeid}

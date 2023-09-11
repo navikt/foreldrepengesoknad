@@ -44,8 +44,8 @@ const EgenNæringStep: React.FunctionComponent = () => {
             søkerHarKunEtArbeid(
                 barn.termindato,
                 arbeidsforhold,
-                søkerMedNæring.harJobbetSomFrilansSiste10Mnd,
-                søkerMedNæring.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                søkerMedNæring.harJobbetSomFrilans,
+                søkerMedNæring.harJobbetSomSelvstendigNæringsdrivende
             )
         ) {
             const mappedTilretteleggingsValg = mapTilrettelegging(

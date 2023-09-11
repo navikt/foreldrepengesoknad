@@ -17,8 +17,8 @@ export const mapTilrettelegging = (
 ) => {
     const allTilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging,
-        søker.harJobbetSomFrilansSiste10Mnd,
-        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+        søker.harJobbetSomFrilans,
+        søker.harJobbetSomSelvstendigNæringsdrivende,
         søker.frilansInformasjon,
         søker.selvstendigNæringsdrivendeInformasjon,
         arbeidsforhold,

@@ -17,11 +17,11 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
-    const [arbeidIUtlandet, setArbeidIUtlandet] = useState(søker.andreInntekterSiste10Mnd || []);
+    const [arbeidIUtlandet, setArbeidIUtlandet] = useState(søker.andreInntekter || []);
     const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
     const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
     const [leggerTilNyttArbeidIUtlandet, setLeggerTilNyttArbeidIUtlandet] = useState(
-        !søker.andreInntekterSiste10Mnd || søker.andreInntekterSiste10Mnd.length === 0
+        !søker.andreInntekter || søker.andreInntekter.length === 0
     );
     const [erFørsteInput, setErFørsteInput] = useState(true);
 
@@ -60,7 +60,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     };
 
     const onValidSubmitHandler = () => {
-        const søkerMedArbeidIUtlandet = { ...søker, andreInntekterSiste10Mnd: arbeidIUtlandet };
+        const søkerMedArbeidIUtlandet = { ...søker, andreInntekter: arbeidIUtlandet };
         return [actionCreator.setSøker(søkerMedArbeidIUtlandet)];
     };
     const nextRoute = getVelgArbeidEllerSkjemaRoute(barn.termindato, arbeidsforhold, søker);
