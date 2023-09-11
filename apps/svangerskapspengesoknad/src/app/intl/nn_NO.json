@@ -210,6 +210,7 @@
     "valideringsfeil.stillingsprosent.måVæreMindreEnn100": "Stillingsprosent må være mindre enn 100",
     "valideringsfeil.skjema.risikofaktorer.frilanser.påkrevd": "Du må oppgi en beskrivelse av risikofaktorer i jobben din som frilanser.",
     "valideringsfeil.skjema.risikofaktorer.selvstendig.påkrevd": "Du må oppgi en beskrivelse av risikofaktorer i jobben din som selvstendig næringsdrivende.",
+    "valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd": "Du må bekrefte at du har gjort deg kjent med vilkårene.",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Legg til nytt utenlandsopphold",
     "utenlandsopphold.fraogmed": "Fra og med",

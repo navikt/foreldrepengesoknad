@@ -1,4 +1,4 @@
-import { Accordion, BodyShort, Button, ConfirmationPanel } from '@navikt/ds-react';
+import { Accordion, BodyShort, Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -12,105 +12,147 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
 
 import './oppsummering.css';
+import {
+    OppsummeringFormComponents,
+    OppsummeringFormData,
+    OppsummeringFormField,
+    getInitialOppsummeringValues,
+} from './oppsummeringFormConfig';
+import actionCreator from 'app/context/action/actionCreator';
+import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
+import { useEffect, useState } from 'react';
+import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
-    const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
     const søkerinfo = useSøkerinfo();
+    const { dispatch } = useSvangerskapspengerContext();
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [isSendingSøknad, setIsSendingSøknad] = useState(false);
+    useUpdateCurrentTilretteleggingId(undefined);
+
+    const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
     const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
-    useUpdateCurrentTilretteleggingId(undefined);
     const bem = bemUtils('oppsummering');
 
+    const handleSubmit = (values: Partial<OppsummeringFormData>) => {
+        dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
+        setFormSubmitted(true);
+    };
+
+    useEffect(() => {
+        if (formSubmitted && !isSendingSøknad) {
+            setIsSendingSøknad(true);
+            console.log('weeeeee');
+        }
+    });
+
     return (
-        <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId="oppsummering"
-            pageTitle="Oppsummering"
-            steps={stepConfig(intl)}
-        >
-            <Accordion>
-                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                    <Accordion.Header>
-                        <FormattedMessage id="oppsummering.omDeg" />
-                    </Accordion.Header>
-                    <Accordion.Content>
-                        <Block padBottom="xl" margin="m">
-                            <BodyShort>{`${søkerinfo.person.fornavn} ${søkerinfo.person.etternavn}`}</BodyShort>
-                        </Block>
-                        <BodyShort>{søkerinfo.person.fnr}</BodyShort>
-                    </Accordion.Content>
-                </Accordion.Item>
-                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                    <Accordion.Header>
-                        <FormattedMessage id="oppsummering.omBarnet" />
-                    </Accordion.Header>
-                    <Accordion.Content>
-                        <Block margin="m" padBottom={barn.erBarnetFødt ? 'xl' : 'none'}>
-                            <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
-                        </Block>
-                        {barn.erBarnetFødt && barn.fødselsdato && (
-                            <Block margin="m">
-                                <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+        <OppsummeringFormComponents.FormikWrapper
+            initialValues={getInitialOppsummeringValues()}
+            onSubmit={handleSubmit}
+            renderForm={() => {
+                return (
+                    <OppsummeringFormComponents.Form includeButtons={false}>
+                        <Step
+                            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                            activeStepId="oppsummering"
+                            pageTitle="Oppsummering"
+                            steps={stepConfig(intl)}
+                        >
+                            <Accordion>
+                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
+                                    <Accordion.Header>
+                                        <FormattedMessage id="oppsummering.omDeg" />
+                                    </Accordion.Header>
+                                    <Accordion.Content>
+                                        <Block padBottom="xl" margin="m">
+                                            <BodyShort>{`${søkerinfo.person.fornavn} ${søkerinfo.person.etternavn}`}</BodyShort>
+                                        </Block>
+                                        <BodyShort>{søkerinfo.person.fnr}</BodyShort>
+                                    </Accordion.Content>
+                                </Accordion.Item>
+                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
+                                    <Accordion.Header>
+                                        <FormattedMessage id="oppsummering.omBarnet" />
+                                    </Accordion.Header>
+                                    <Accordion.Content>
+                                        <Block margin="m" padBottom={barn.erBarnetFødt ? 'xl' : 'none'}>
+                                            <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+                                        </Block>
+                                        {barn.erBarnetFødt && barn.fødselsdato && (
+                                            <Block margin="m">
+                                                <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+                                            </Block>
+                                        )}
+                                    </Accordion.Content>
+                                </Accordion.Item>
+                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
+                                    <Accordion.Header>
+                                        <FormattedMessage id="oppsummering.omUtenlandsopphold" />
+                                    </Accordion.Header>
+                                    <Accordion.Content>
+                                        <UtenlandsoppholdOppsummering
+                                            informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
+                                        />
+                                    </Accordion.Content>
+                                </Accordion.Item>
+                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
+                                    <Accordion.Header>
+                                        <FormattedMessage id="oppsummering.omArbeidsforhold" />
+                                    </Accordion.Header>
+                                    <Accordion.Content>
+                                        <ArbeidsforholdInformasjon
+                                            visManglerInfo={false}
+                                            arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, barn.termindato)}
+                                        />
+                                    </Accordion.Content>
+                                </Accordion.Item>
+                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
+                                    <Accordion.Header>
+                                        <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
+                                    </Accordion.Header>
+                                    <Accordion.Content>
+                                        <Block margin="m">
+                                            <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+                                        </Block>
+                                    </Accordion.Content>
+                                </Accordion.Item>
+                            </Accordion>
+                            <Block margin="xl">
+                                <OppsummeringFormComponents.ConfirmationCheckbox
+                                    name={OppsummeringFormField.harGodkjentOppsummering}
+                                    label={intlUtils(intl, 'oppsummering.bekreft')}
+                                    validate={validateHarGodkjentOppsummering(intl)}
+                                />
                             </Block>
-                        )}
-                    </Accordion.Content>
-                </Accordion.Item>
-                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                    <Accordion.Header>
-                        <FormattedMessage id="oppsummering.omUtenlandsopphold" />
-                    </Accordion.Header>
-                    <Accordion.Content>
-                        <UtenlandsoppholdOppsummering informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold} />
-                    </Accordion.Content>
-                </Accordion.Item>
-                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                    <Accordion.Header>
-                        <FormattedMessage id="oppsummering.omArbeidsforhold" />
-                    </Accordion.Header>
-                    <Accordion.Content>
-                        <ArbeidsforholdInformasjon
-                            visManglerInfo={false}
-                            arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, barn.termindato)}
-                        />
-                    </Accordion.Content>
-                </Accordion.Item>
-                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                    <Accordion.Header>
-                        <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
-                    </Accordion.Header>
-                    <Accordion.Content>
-                        <Block margin="m">
-                            <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
-                        </Block>
-                    </Accordion.Content>
-                </Accordion.Item>
-            </Accordion>
-            <Block margin="xl">
-                <ConfirmationPanel label={intlUtils(intl, 'oppsummering.bekreft')} />
-            </Block>
-            <Block margin="xl">
-                <StepButtonWrapper>
-                    <Button
-                        variant="secondary"
-                        as={Link}
-                        to={getPreviousStepHref('oppsummering', undefined, tilrettelegging, undefined)}
-                    >
-                        <FormattedMessage id="backlink.label" />
-                    </Button>
-                    <Button
-                        icon={<PaperplaneIcon />}
-                        iconPosition="right"
-                        type="submit"
-                        // disabled={formSubmitted}
-                        // loading={formSubmitted}
-                    >
-                        Send inn søknad
-                    </Button>
-                </StepButtonWrapper>
-            </Block>
-        </Step>
+                            <Block margin="xl">
+                                <StepButtonWrapper>
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        to={getPreviousStepHref('oppsummering', undefined, tilrettelegging, undefined)}
+                                    >
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    <Button
+                                        icon={<PaperplaneIcon />}
+                                        iconPosition="right"
+                                        type="submit"
+                                        disabled={formSubmitted}
+                                        loading={formSubmitted}
+                                    >
+                                        Send inn søknad
+                                    </Button>
+                                </StepButtonWrapper>
+                            </Block>
+                        </Step>
+                    </OppsummeringFormComponents.Form>
+                );
+            }}
+        />
     );
 };
 

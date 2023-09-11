@@ -75,6 +75,14 @@ const svangerskapspengerReducer = (
                 ...svangerskapspengerInitialState,
                 søkerinfo: state.søkerinfo,
             };
+        case SvangerskapspengerContextActionKeys.GODKJENT_OPPSUMMERING:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    harGodkjentOppsummering: true,
+                },
+            };
         default:
             return state;
     }
