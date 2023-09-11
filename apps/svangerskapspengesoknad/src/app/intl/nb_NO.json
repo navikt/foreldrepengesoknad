@@ -210,7 +210,7 @@
     "valideringsfeil.stillingsprosent.måVæreMindreEnn100": "Stillingsprosent må være mindre enn 100",
     "valideringsfeil.skjema.risikofaktorer.frilanser.påkrevd": "Du må oppgi en beskrivelse av risikofaktorer i jobben din som frilanser.",
     "valideringsfeil.skjema.risikofaktorer.selvstendig.påkrevd": "Du må oppgi en beskrivelse av risikofaktorer i jobben din som selvstendig næringsdrivende.",
-    "valideringsfeil.skjema.risikofaktorer.forKort": "Beskrivelse av risikofaktorer må være minst 25 tegn",
+    "valideringsfeil.skjema.risikofaktorer.forKort": "Beskrivelse av risikofaktorer må være minst 10 tegn",
     "valideringsfeil.skjema.risikofaktorer.forLang": "Beskrivelse av risikofaktorer kan maksimalt inneholde 1000 tegn",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noe gikk galt prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type",

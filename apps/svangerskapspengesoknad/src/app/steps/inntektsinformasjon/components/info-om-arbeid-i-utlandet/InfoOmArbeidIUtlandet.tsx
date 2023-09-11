@@ -2,7 +2,7 @@ import { ReadMore } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 
-const ArbeidIUtlandetReadMore = () => {
+const InfoOmArbeidIUtlandet = () => {
     const intl = useIntl();
     return (
         <ReadMore header={intlUtils(intl, 'arbeidIUtlandet.apneLabel')}>
@@ -11,4 +11,4 @@ const ArbeidIUtlandetReadMore = () => {
     );
 };
 
-export default ArbeidIUtlandetReadMore;
+export default InfoOmArbeidIUtlandet;
