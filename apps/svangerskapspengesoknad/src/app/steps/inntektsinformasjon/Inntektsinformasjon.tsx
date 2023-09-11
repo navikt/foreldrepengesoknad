@@ -50,8 +50,8 @@ const Inntektsinformasjon = () => {
             søkerHarKunEtAktivtArbeid(
                 termindato,
                 arbeidsforhold,
-                updatedSøker.harJobbetSomFrilansSiste10Mnd,
-                updatedSøker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                updatedSøker.harJobbetSomFrilans,
+                updatedSøker.harJobbetSomSelvstendigNæringsdrivende
             ) &&
             aktiveArbeidsforhold.length > 0
         ) {

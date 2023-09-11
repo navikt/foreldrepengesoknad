@@ -24,8 +24,8 @@ const VelgArbeid: React.FunctionComponent = () => {
     const {
         frilansInformasjon,
         selvstendigNæringsdrivendeInformasjon,
-        harJobbetSomFrilansSiste10Mnd,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+        harJobbetSomFrilans,
+        harJobbetSomSelvstendigNæringsdrivende,
     } = søker;
     const onValidSubmitHandler = (values: Partial<VelgArbeidFormData>) => {
         const mappedTilrettelegging = mapTilrettelegging(
@@ -42,8 +42,8 @@ const VelgArbeid: React.FunctionComponent = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const options = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging,
-        harJobbetSomFrilansSiste10Mnd,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+        harJobbetSomFrilans,
+        harJobbetSomSelvstendigNæringsdrivende,
         frilansInformasjon,
         selvstendigNæringsdrivendeInformasjon,
         arbeidsforhold,

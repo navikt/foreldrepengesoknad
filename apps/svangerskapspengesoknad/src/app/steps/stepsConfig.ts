@@ -101,21 +101,21 @@ const stepConfig = (intl: IntlShape, navn?: string): StepConfig[] => {
 };
 
 export const getNæringRouteIfNæring = (søker: Søker): SøknadRoutes | undefined => {
-    if (søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
+    if (søker.harJobbetSomSelvstendigNæringsdrivende) {
         return SøknadRoutes.NÆRING;
     }
     return undefined;
 };
 
 export const getFrilansRouteIfFrilans = (søker: Søker): SøknadRoutes | undefined => {
-    if (søker.harJobbetSomFrilansSiste10Mnd) {
+    if (søker.harJobbetSomFrilans) {
         return SøknadRoutes.FRILANS;
     }
     return undefined;
 };
 
 export const getArbeidUtlandRouteIfArbeidUtland = (søker: Søker): SøknadRoutes | undefined => {
-    if (søker.harHattAnnenInntektSiste10Mnd) {
+    if (søker.harHattAnnenInntekt) {
         return SøknadRoutes.ARBEID_I_UTLANDET;
     }
     return undefined;
@@ -124,8 +124,8 @@ export const getBackLinkForSkjemaSteg = (søker: Søker, termindato: Date, arbei
     const harKunEtArbeid = søkerHarKunEtArbeid(
         termindato,
         arbeidsforhold,
-        søker.harJobbetSomFrilansSiste10Mnd,
-        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+        søker.harJobbetSomFrilans,
+        søker.harJobbetSomSelvstendigNæringsdrivende
     );
     if (harKunEtArbeid) {
         return getBackLinkForVelgArbeidSteg(søker);
@@ -224,8 +224,8 @@ export const getVelgArbeidEllerSkjemaRoute = (termindato: Date, arbeidsforhold: 
     const harKunEtArbeid = søkerHarKunEtArbeid(
         termindato,
         arbeidsforhold,
-        søker.harJobbetSomFrilansSiste10Mnd,
-        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+        søker.harJobbetSomFrilans,
+        søker.harJobbetSomSelvstendigNæringsdrivende
     );
     if (harKunEtArbeid) {
         return SøknadRoutes.SKJEMA;

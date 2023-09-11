@@ -35,8 +35,8 @@ const FrilansStep: React.FunctionComponent = () => {
             søkerHarKunEtArbeid(
                 barn.termindato,
                 arbeidsforhold,
-                søkerMedFrilans.harJobbetSomFrilansSiste10Mnd,
-                søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                søkerMedFrilans.harJobbetSomFrilans,
+                søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende
             )
         ) {
             const mappedTilretteleggingsValg = mapTilrettelegging(
