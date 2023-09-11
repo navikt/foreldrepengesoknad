@@ -4,7 +4,6 @@
     display: grid;
     grid-template-columns: 1fr 2rem;
     grid-template-rows: 50% 50%;
-    width: var(--app-max-width);
     padding: 1rem;
     gap: 0px;
 }

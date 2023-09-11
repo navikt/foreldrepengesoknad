@@ -25,6 +25,9 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
+import FrilansVisning from '../inntektsinformasjon/components/frilans-visning/FrilansVisning';
+import EgenNæringVisning from '../inntektsinformasjon/components/egen-næring/EgenNæringVisning';
+import ArbeidIUtlandetVisning from '../arbeid_i_utlandet/components/visning/ArbeidIUtlandetVisning';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -119,10 +122,36 @@ const Oppsummering = () => {
                                         <FormattedMessage id="oppsummering.omArbeidsforhold" />
                                     </Accordion.Header>
                                     <Accordion.Content>
-                                        <ArbeidsforholdInformasjon
-                                            visManglerInfo={false}
-                                            arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, barn.termindato)}
-                                        />
+                                        <Block padBottom="xl">
+                                            <ArbeidsforholdInformasjon
+                                                visManglerInfo={false}
+                                                arbeidsforhold={getAktiveArbeidsforhold(
+                                                    arbeidsforhold,
+                                                    barn.termindato
+                                                )}
+                                            />
+                                            {søknad.søker.harJobbetSomFrilansSiste10Mnd &&
+                                                søknad.søker.frilansInformasjon && (
+                                                    <FrilansVisning
+                                                        frilans={søknad.søker.frilansInformasjon}
+                                                    ></FrilansVisning>
+                                                )}
+                                            {søknad.søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd &&
+                                                søknad.søker.selvstendigNæringsdrivendeInformasjon && (
+                                                    <EgenNæringVisning
+                                                        næring={søknad.søker.selvstendigNæringsdrivendeInformasjon}
+                                                    ></EgenNæringVisning>
+                                                )}
+                                            {søknad.søker.harHattAnnenInntektSiste10Mnd &&
+                                                søknad.søker.andreInntekterSiste10Mnd &&
+                                                søknad.søker.andreInntekterSiste10Mnd.map((arbeid) => {
+                                                    return (
+                                                        <ArbeidIUtlandetVisning
+                                                            arbeidIUtlandet={arbeid}
+                                                        ></ArbeidIUtlandetVisning>
+                                                    );
+                                                })}
+                                        </Block>
                                     </Accordion.Content>
                                 </Accordion.Item>
                                 <Accordion.Item className={bem.element('header-reverse-chevron')}>

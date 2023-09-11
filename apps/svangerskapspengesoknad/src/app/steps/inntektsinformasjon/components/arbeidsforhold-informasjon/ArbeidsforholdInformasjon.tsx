@@ -4,7 +4,6 @@ import HarArbeidsforhold from './HarArbeidsforhold';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 import './arbeidsforholdInformasjon.css';
-import { Block } from '@navikt/fp-common';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -14,7 +13,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
     return (
-        <Block padBottom="xl">
+        <>
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
@@ -25,7 +24,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
                     </BodyShort>
                 </ReadMore>
             )}
-        </Block>
+        </>
     );
 };
 

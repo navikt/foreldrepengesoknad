@@ -1,5 +1,5 @@
 import { BodyShort, Label } from '@navikt/ds-react';
-import { bemUtils, formatDate } from '@navikt/fp-common';
+import { Block, bemUtils, formatDate } from '@navikt/fp-common';
 import { Frilans } from 'app/types/Frilans';
 import { FunctionComponent } from 'react';
 import './frilans-visning.css';
@@ -13,13 +13,15 @@ const FrilansVisning: FunctionComponent<Props> = ({ frilans }) => {
     const tilTekst =
         !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? formatDate(frilans.sluttDato) : 'Pågående';
     return (
-        <div className={bem.block}>
-            <Label className={bem.element('tittel')}>{frilansTekst}</Label>
+        <Block padBottom="l">
+            <div className={bem.block}>
+                <Label className={bem.element('tittel')}>{frilansTekst}</Label>
 
-            <BodyShort className={bem.element('dato')}>
-                {formatDate(frilans.oppstart)} - {tilTekst}
-            </BodyShort>
-        </div>
+                <BodyShort className={bem.element('dato')}>
+                    {formatDate(frilans.oppstart)} - {tilTekst}
+                </BodyShort>
+            </div>
+        </Block>
     );
 };
 

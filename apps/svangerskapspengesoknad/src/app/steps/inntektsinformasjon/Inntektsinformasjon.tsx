@@ -77,9 +77,11 @@ const Inntektsinformasjon = () => {
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
                                 </BodyShort>
                             </Block>
-                            <ArbeidsforholdInformasjon
-                                arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
-                            />
+                            <Block padBottom="xl">
+                                <ArbeidsforholdInformasjon
+                                    arbeidsforhold={getAktiveArbeidsforhold(arbeidsforhold, termindato)}
+                                />
+                            </Block>
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}
@@ -130,17 +132,6 @@ const Inntektsinformasjon = () => {
                                 />
                                 <ArbeidIUtlandetReadMore />
                             </Block>
-                            {/* <Block
-                                visible={visibility.isVisible(InntektsinformasjonFormField.tilrettelegging)}
-                                padBottom="xl"
-                            >
-                                <VelgSøknadsgrunnlag
-                                    formValues={formValues}
-                                    label={intlUtils(intl, 'inntektsinformasjon.grunnlag.label')}
-                                    options={tilretteleggingsValg}
-                                    intl={intl}
-                                />
-                            </Block> */}
                             <Block padBottom="xl">
                                 <InfoTilFiskere />
                             </Block>
