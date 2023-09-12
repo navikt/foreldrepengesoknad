@@ -13,6 +13,7 @@ interface Props {
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
+    setFeilmelding: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
@@ -23,6 +24,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
     addAnnenInntekt,
     editAnnenInntekt,
     setLeggTilNyttArbeidIUtlandet,
+    setFeilmelding,
 }) => {
     return (
         <ArbeidIUtlandetSubformComponents.FormikWrapper
@@ -45,6 +47,7 @@ const ArbeidIUtlandetSubform: FunctionComponent<Props> = ({
                         editAnnenInntekt={editAnnenInntekt}
                         setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
                         validateForm={validateForm}
+                        setFeilmelding={setFeilmelding}
                     />
                 );
             }}
