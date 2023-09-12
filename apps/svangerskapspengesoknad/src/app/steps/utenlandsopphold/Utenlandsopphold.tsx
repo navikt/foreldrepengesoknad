@@ -71,14 +71,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
 
     const handleOnSubmit = (values: Partial<UtenlandsoppholdFormData>) => {
         setSubmitClicked(true);
-        // console.log('sel opphold frem i tid');
-        // console.log(selectedOppholdIFremtid);
-        // console.log('sel opphold tilbake i tid');
-        // console.log(selectedOppholdIFortid);
-        // console.log('ny opphold frem i tid');
-        // console.log(leggerTilNyttOppholdIFremtid);
-        // console.log('ny opphold tilbake i tid');
-        // console.log(leggerTilNyttOppholdIFortid);
         if (
             selectedOppholdIFremtid === undefined &&
             selectedOppholdIFortid === undefined &&
