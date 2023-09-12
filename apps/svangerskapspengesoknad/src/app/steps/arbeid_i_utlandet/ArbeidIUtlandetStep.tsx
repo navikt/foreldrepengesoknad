@@ -72,6 +72,8 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const handleOnClickSubmit = (values: any) => {
         if (leggerTilNyttArbeidIUtlandet) {
             setFeilmelding('Du er ikke ferdig med å legge til informasjon om arbeid i utlandet');
+        } else if (selectedAnnenInntekt) {
+            setFeilmelding('Du er ikke ferdig med å oppdatere informasjon om arbeid i utlandet');
         } else {
             setFeilmelding(undefined);
             handleSubmit(values);
@@ -94,6 +96,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                     deleteAnnenInntekt={deleteAnnenInntekt}
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                     setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
+                    setFeilmelding={setFeilmelding}
                 />
             )}
             {visAlertOmNødvendigInput && (
@@ -112,6 +115,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                     erFørsteInput={arbeidIUtlandet.length === 0}
                     setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
+                    setFeilmelding={setFeilmelding}
                 />
             )}
             {arbeidIUtlandet.length > 0 && !leggerTilNyttArbeidIUtlandet && (
@@ -121,6 +125,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                         variant="secondary"
                         type="button"
                         onClick={handleOnLeggTilArbeidIUtlandet}
+                        disabled={selectedAnnenInntekt !== undefined || leggerTilNyttArbeidIUtlandet}
                     >
                         <FormattedMessage id="inntektsinformasjon.arbeid.leggTil" />
                     </Button>

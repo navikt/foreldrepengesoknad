@@ -29,6 +29,7 @@ interface Props {
     addAnnenInntekt: (inntekt: ArbeidIUtlandet) => void;
     editAnnenInntekt: (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => void;
     setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
+    setFeilmelding: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     formValues,
@@ -42,6 +43,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     addAnnenInntekt,
     editAnnenInntekt,
     setLeggTilNyttArbeidIUtlandet,
+    setFeilmelding,
 }) => {
     const submitButtonId = selectedAnnenInntekt ? 'oppdater' : 'leggTil';
     const intl = useIntl();
@@ -52,6 +54,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     const [tomFeil, setTomFeil] = useState<string | undefined>(undefined);
 
     const handleOnLeggTil = () => {
+        setFeilmelding(undefined);
         setSubmitClicked(true);
         const formIsAnswered = visibility.areAllQuestionsAnswered();
         const formIsValid = !navnFeil && !fomFeil && !tomFeil;
@@ -69,6 +72,7 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     };
 
     const handleOnAvbryt = () => {
+        setFeilmelding(undefined);
         setSelectedAnnenInntekt(undefined);
         setLeggTilNyttArbeidIUtlandet(false);
     };

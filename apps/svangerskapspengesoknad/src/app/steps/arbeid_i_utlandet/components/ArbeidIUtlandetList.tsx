@@ -11,6 +11,7 @@ interface Props {
     deleteAnnenInntekt: (inntektSomSlettes: ArbeidIUtlandet) => void;
     setSelectedAnnenInntekt: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
     setLeggTilNyttArbeidIUtlandet: React.Dispatch<React.SetStateAction<boolean>>;
+    setFeilmelding: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const ArbeidIUtlandetList: FunctionComponent<Props> = ({
@@ -21,6 +22,7 @@ const ArbeidIUtlandetList: FunctionComponent<Props> = ({
     deleteAnnenInntekt,
     setSelectedAnnenInntekt,
     setLeggTilNyttArbeidIUtlandet,
+    setFeilmelding,
 }) => {
     const sorterteArbeidIUtlandet = allArbeidIUtlandet.sort((a, b) => a.id - b.id);
     return (
@@ -37,6 +39,7 @@ const ArbeidIUtlandetList: FunctionComponent<Props> = ({
                     setSelectedAnnenInntekt={setSelectedAnnenInntekt}
                     selectedAnnenInntekt={selectedAnnenInntekt}
                     setLeggTilNyttArbeidIUtlandet={setLeggTilNyttArbeidIUtlandet}
+                    setFeilmelding={setFeilmelding}
                 />
             ))}
         </>
