@@ -9,11 +9,23 @@ import BostedUtlandList from '../BostedUtlandList';
 interface Props {
     alleOpphold: BostedUtland[];
     oppgirIFortid: boolean;
+    selectedOpphold: BostedUtland | undefined;
+    leggerTilNyttOppholdIUtlandet: boolean;
+    setLeggerTilNyttOppholdIUtlandet: Dispatch<SetStateAction<boolean>>;
     setUtenlandsopphold: Dispatch<SetStateAction<BostedUtland[]>>;
+    setSelectedOpphold: Dispatch<SetStateAction<BostedUtland | undefined>>;
+    setSubmitIsClicked: Dispatch<SetStateAction<boolean>>;
 }
-const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpphold, setUtenlandsopphold }) => {
-    const [leggerTilNyttOppholdIUtlandet, setLeggerTilNyttOppholdIUtlandet] = useState(false);
-    const [selectedOpphold, setSelectedOpphold] = useState<BostedUtland | undefined>(undefined);
+const BostedUtlandDetails: FunctionComponent<Props> = ({
+    oppgirIFortid,
+    alleOpphold,
+    selectedOpphold,
+    leggerTilNyttOppholdIUtlandet,
+    setUtenlandsopphold,
+    setSelectedOpphold,
+    setSubmitIsClicked,
+    setLeggerTilNyttOppholdIUtlandet,
+}) => {
     const [erFørsteInput, setErFørsteInput] = useState(true);
     const intl = useIntl();
 
@@ -23,21 +35,25 @@ const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpph
         setSelectedOpphold(undefined);
         setLeggerTilNyttOppholdIUtlandet(false);
         setErFørsteInput(false);
+        setSubmitIsClicked(false);
     };
 
     const deleteOpphold = (oppholdSomSlettes: BostedUtland) => {
         const updatedOpphold = alleOpphold.filter((opphold) => opphold !== oppholdSomSlettes);
         setUtenlandsopphold(updatedOpphold);
         setSelectedOpphold(undefined);
+        setSubmitIsClicked(false);
     };
 
     const editOpphold = (oppholdSomEditeres: BostedUtland, oppdatertOpphold: BostedUtland) => {
         const updatedOpphold = alleOpphold.filter((opphold) => opphold !== oppholdSomEditeres).concat(oppdatertOpphold);
         setSelectedOpphold(undefined);
         setUtenlandsopphold(updatedOpphold);
+        setSubmitIsClicked(false);
     };
 
     const handleOnLeggTilOppholdIUtlandet = () => {
+        setSubmitIsClicked(false);
         setLeggerTilNyttOppholdIUtlandet(true);
         setSelectedOpphold(undefined);
     };
@@ -82,12 +98,13 @@ const BostedUtlandDetails: FunctionComponent<Props> = ({ oppgirIFortid, alleOpph
             {alleOpphold.length > 0 && (
                 <Block padBottom="xl">
                     <Button
+                        disabled={selectedOpphold !== undefined || leggerTilNyttOppholdIUtlandet}
                         aria-label="legg til nytt opphold i utlandet"
                         variant="secondary"
                         type="button"
                         onClick={handleOnLeggTilOppholdIUtlandet}
                     >
-                        <FormattedMessage id="inntektsinformasjon.arbeid.leggTil" />
+                        <FormattedMessage id="utenlandsopphold.leggTil" />
                     </Button>
                 </Block>
             )}
