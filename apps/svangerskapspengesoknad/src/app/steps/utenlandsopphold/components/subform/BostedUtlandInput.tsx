@@ -90,6 +90,7 @@ const BostedUtlandInput: FunctionComponent<Props> = ({
     const handleOnAvbryt = () => {
         setSelectedOpphold(undefined);
         setLeggerTilNyttOppholdIUtlandet(false);
+        setSubmitClicked(false);
     };
     const spmId = oppgirIFortid
         ? 'utenlandsopphold.spørsmål.hvilketLandHarDuBoddI'

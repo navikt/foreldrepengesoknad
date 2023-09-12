@@ -30,7 +30,6 @@ const BostedUtlandVisning: FunctionComponent<Props> = ({ oppholdIUtlandet, setSe
             <Block padBottom="l">
                 <div className={bem.block}>
                     <Label className={bem.element('tittel')}>
-                        {' '}
                         {getCountryName(oppholdIUtlandet.landkode, intl.locale)}
                     </Label>
                     <BodyShort className={bem.element('dato')}>
