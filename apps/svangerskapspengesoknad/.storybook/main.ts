@@ -8,6 +8,9 @@ const config = {
     docs: {
         autodocs: false,
     },
+    core: {
+        builder: '@storybook/builder-vite',
+    },
 };
 
 export default config;

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import dayjs from 'dayjs';
 import * as stories from './FarMedmorFodselOgMorHarIkkeRett.stories';
+import { act } from 'react-dom/test-utils';
 
 const { UttaksplanDerMorIkkeHarRettPåForeldrepenger, UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør } =
     composeStories(stories);
@@ -16,7 +17,9 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('50 uker med 80 prosent foreldrepenger'));
+        await act(async () => {
+            await userEvent.click(screen.getByText('50 uker med 80 prosent foreldrepenger'));
+        });
 
         expect(screen.getAllByText('Periode med foreldrepenger')[0]).toBeInTheDocument();
         expect(screen.getByText('50 uker')).toBeInTheDocument();
@@ -30,7 +33,9 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
+        await act(async () => {
+            await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
+        });
 
         expect(screen.getAllByText('Periode med foreldrepenger')[0]).toBeInTheDocument();
         expect(screen.getByText('40 uker')).toBeInTheDocument();
@@ -43,10 +48,14 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
+        await act(async () => {
+            await userEvent.click(screen.getByText('40 uker med 100 prosent foreldrepenger'));
+        });
         const startDagInput = screen.getByLabelText('Når ønsker du å starte perioden?');
-        await userEvent.type(startDagInput, dayjs().format('DD.MM.YYYY'));
-        await userEvent.tab();
+        await act(async () => {
+            await userEvent.type(startDagInput, dayjs().format('DD.MM.YYYY'));
+        });
+        userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 });

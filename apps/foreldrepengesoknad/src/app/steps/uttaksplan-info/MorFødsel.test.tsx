@@ -24,13 +24,13 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL_IKKE_DELT_UTTAK)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
 
         expect(
             screen.getByText(
-                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel'
-            )
+                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
+            ),
         ).toBeInTheDocument();
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
@@ -44,17 +44,17 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(
             screen.getByText(
-                'Stønadsperioden din er forlenget med 8 uker og 3 dager siden du har født før svangerskapsuke 33.'
-            )
+                'Stønadsperioden din er forlenget med 8 uker og 3 dager siden du har født før svangerskapsuke 33.',
+            ),
         ).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('67.6 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('67.6 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 64.6 uker')).toBeInTheDocument();
 
         expect(
             screen.getByText(
-                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel'
-            )
+                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
+            ),
         ).toBeInTheDocument();
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
@@ -70,7 +70,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
@@ -90,14 +90,14 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         render(<UttaksplanMedDeltUttak />);
         expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(IKKE_FORELDREPENGER_FØR_TERMIN));
+        userEvent.click(screen.getByText(IKKE_FORELDREPENGER_FØR_TERMIN));
         expect(
             await screen.findByText(
-                'Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.'
-            )
+                'Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.',
+            ),
         ).toBeInTheDocument();
     });
 
@@ -105,7 +105,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         render(<UttaksplanMedDeltUttak />);
         expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('66 uker med 100 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('66 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
@@ -132,7 +132,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('15 uker')).toBeInTheDocument();
 
         expect(
-            screen.getByText('Dere har 17 uker med flerbarnsuker som dere kan dele', { exact: false })
+            screen.getByText('Dere har 17 uker med flerbarnsuker som dere kan dele', { exact: false }),
         ).toBeInTheDocument();
         expect(screen.getByText('17 av 33 uker med fellesperiode')).toBeInTheDocument();
 
@@ -150,7 +150,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('80 uker med 80 prosent foreldrepenger'));
+        userEvent.click(screen.getByText('80 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText('3 + 19 uker')).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('19 uker')).toBeInTheDocument();
 
         expect(
-            screen.getByText('Dere har 21 uker med flerbarnsuker som dere kan dele', { exact: false })
+            screen.getByText('Dere har 21 uker med flerbarnsuker som dere kan dele', { exact: false }),
         ).toBeInTheDocument();
         expect(screen.getByText('20 av 39 uker med fellesperiode')).toBeInTheDocument();
 
