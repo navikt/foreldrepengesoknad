@@ -29,6 +29,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     const minidialog = minidialoger ? minidialoger.find((d) => d.saksnr === params.saksnummer) : undefined;
     const [isSendingEttersendelse, setIsSendingEttersendelse] = useState(false);
     const [ettersendelseErSendt, setEttersendelseErSendt] = useState(false);
+    const [ettersendelseError, setEttersendelseError] = useState<string | undefined>(undefined);
     useSetBackgroundColor('blue');
     const intl = useIntl();
 
@@ -40,8 +41,9 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
                 setEttersendelseErSendt(true);
             })
             .catch((_error) => {
-                throw new Error(
-                    `Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.`
+                setIsSendingEttersendelse(false);
+                setEttersendelseError(
+                    'Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.',
                 );
             });
     };
@@ -66,6 +68,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
                 onSubmit={sendEttersendelse}
                 isSendingEttersendelse={isSendingEttersendelse}
                 ettersendelseErSendt={ettersendelseErSendt}
+                ettersendelseError={ettersendelseError}
             />
         </ContentSection>
     );

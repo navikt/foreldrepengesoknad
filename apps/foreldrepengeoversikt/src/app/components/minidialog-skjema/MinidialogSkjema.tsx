@@ -18,6 +18,7 @@ import AttachmentList from '../attachment/AttachmentList';
 import { deleteAttachment, isAttachmentWithError } from 'app/utils/attachmentUtils';
 import { getListOfUniqueSkjemanummer } from 'app/pages/ettersending/EttersendingPage';
 import { Attachment } from 'app/types/Attachment';
+import ScrollToTop from '../scroll-to-top/ScrollToTop';
 
 interface Props {
     ettersendelseErSendt: boolean;
@@ -25,6 +26,7 @@ interface Props {
     minidialog: MinidialogInnslag;
     onSubmit: (ettersendelse: EttersendingDto) => void;
     sakstype: Ytelse;
+    ettersendelseError: string | undefined;
 }
 
 const MinidialogSkjema: React.FunctionComponent<Props> = ({
@@ -32,6 +34,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
     isSendingEttersendelse,
     sakstype,
     minidialog,
+    ettersendelseError,
     onSubmit,
 }) => {
     const intl = useIntl();
@@ -43,8 +46,25 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
     if (ettersendelseErSendt) {
         return (
             <div>
+                <ScrollToTop />
                 <Block padBottom="l">
                     <Alert variant="success"> {intlUtils(intl, 'miniDialog.kvittering.svaretErSendt')}</Alert>
+                </Block>
+                <Block padBottom="l">
+                    <Link to={`/sak/${minidialog.saksnr}`}>
+                        {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
+                    </Link>
+                </Block>
+            </div>
+        );
+    }
+
+    if (ettersendelseError) {
+        return (
+            <div>
+                <ScrollToTop />
+                <Block padBottom="l">
+                    <Alert variant="error"> {ettersendelseError}</Alert>
                 </Block>
                 <Block padBottom="l">
                     <Link to={`/sak/${minidialog.saksnr}`}>
@@ -96,7 +116,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                                 label={intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label')}
                                 validate={validateFritekstFelt(
                                     intl,
-                                    intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label').replace(':', '')
+                                    intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label').replace(':', ''),
                                 )}
                             ></MinidialogFormComponents.Textarea>
                             <FormikFileUploader
@@ -114,13 +134,13 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                                     <div key={skjemanummer}>
                                         <AttachmentList
                                             attachments={values.vedlegg!.filter(
-                                                (a) => !isAttachmentWithError(a) && a.skjemanummer === skjemanummer
+                                                (a) => !isAttachmentWithError(a) && a.skjemanummer === skjemanummer,
                                             )}
                                             showFileSize={true}
                                             onDelete={(file: Attachment) => {
                                                 setFieldValue(
                                                     MinidialogFormField.vedlegg,
-                                                    deleteAttachment(values.vedlegg!, file)
+                                                    deleteAttachment(values.vedlegg!, file),
                                                 );
                                             }}
                                         />
@@ -133,6 +153,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                                 <GuidePanel>{intlUtils(intl, 'minidialog.tilbakekreving.veilederpanel')}</GuidePanel>
                             </div>
                         </Block>
+
                         <Block padBottom="l" visible={values.brukerØnskerÅUttaleSeg !== YesOrNo.UNANSWERED}>
                             <Button
                                 type="submit"
