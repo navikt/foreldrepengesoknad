@@ -36,6 +36,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues }) =>
                     formValues.variertePerioder.length > 0 &&
                     formValues.variertePerioder.map((_p, index) => (
                         <div key={guid()}>
+                            <hr></hr>
                             <Block padBottom="l">
                                 <TilretteleggingFormComponents.DatePicker
                                     key={`variertePerioder.${index}.fom`}
@@ -58,19 +59,26 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues }) =>
                                     label="Stillingsprosent"
                                 />
                             </Block>
-                            <Button type="button" onClick={() => arrayHelpers.remove(index)}>
-                                Slett
-                            </Button>
+                            <Block padBottom="l">
+                                <Button type="button" onClick={() => arrayHelpers.remove(index)}>
+                                    Slett
+                                </Button>
+                            </Block>
+                            <Block padBottom="l">
+                                <hr></hr>
+                            </Block>
                         </div>
                     ))
                 }
             />
-            <Button
-                type="button"
-                onClick={() => formValues.variertePerioder?.push({ ...uferdigDelvisTilretteleggingInput })}
-            >
-                Legg til
-            </Button>
+            <Block padBottom="l">
+                <Button
+                    type="button"
+                    onClick={() => formValues.variertePerioder?.push({ ...uferdigDelvisTilretteleggingInput })}
+                >
+                    Legg til
+                </Button>
+            </Block>
         </>
     );
 };
