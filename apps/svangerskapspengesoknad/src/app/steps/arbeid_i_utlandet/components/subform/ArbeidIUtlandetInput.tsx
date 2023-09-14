@@ -79,7 +79,6 @@ const ArbeidIUtlandetInput: FunctionComponent<Props> = ({
     const navnError = getIn(errors, ArbeidIUtlandetSubformField.arbeidIUtlandetNavnArbeidsgiver);
     const fomError = getIn(errors, ArbeidIUtlandetSubformField.arbeidIUtlandetFom);
     const tomError = getIn(errors, ArbeidIUtlandetSubformField.arbeidIUtlandetTom);
-
     useEffect(() => {
         if (navnError !== undefined) {
             setNavnFeil(navnError);

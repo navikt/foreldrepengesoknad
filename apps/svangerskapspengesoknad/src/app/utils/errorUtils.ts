@@ -1,5 +1,7 @@
 import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/browser';
+import { IntlShape } from 'react-intl';
+import { intlUtils } from '@navikt/fp-common';
 
 export const UKJENT_UUID = 'ukjent uuid';
 
@@ -28,4 +30,12 @@ export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
         errorString = errorString + error.message;
     }
     Sentry.captureMessage(errorString);
+};
+
+export const translateError = (intl: IntlShape, error?: any) => {
+    if (error && error.intlKey) {
+        return intlUtils(intl, error.intlKey, error.values);
+    }
+
+    return typeof error === 'string' ? intlUtils(intl, error) : '';
 };

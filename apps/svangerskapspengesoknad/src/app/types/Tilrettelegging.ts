@@ -15,6 +15,7 @@ export interface ArbeidsforholdForTilrettelegging {
     type: Arbeidsforholdstype;
     navn: string;
     risikofaktorer?: string;
+    tilretteleggingstiltak?: string;
 }
 
 export interface DelvisTilretteleggingDTO {
@@ -34,7 +35,8 @@ export interface IngenTilretteleggingDTO {
 export interface TilretteleggingInput {
     type: Tilretteleggingstype;
     fom: string;
-    stillingsprosent?: number;
+    tom?: string;
+    stillingsprosent?: string;
 }
 
 export interface TilretteleggingDTO {

@@ -1,45 +1,63 @@
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import {
+    DelivisTilretteleggingPeriodeType,
     TilretteleggingFormData,
     TilretteleggingFormField,
-    TilretteleggingPeriodeType,
 } from './tilretteleggingStepFormConfig';
 import { hasValue } from 'app/utils/validationUtils';
-import { Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 
-export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormData, TilretteleggingFormField> = {
-    [TilretteleggingFormField.tilrettelagtArbeidFom]: {
-        isIncluded: () => true,
-        isAnswered: ({ tilrettelagtArbeidFom }) => tilrettelagtArbeidFom !== YesOrNo.UNANSWERED,
-    },
-    [TilretteleggingFormField.tilretteleggingPeriodetype]: {
-        isIncluded: () => true,
-        isAnswered: ({ tilretteleggingPeriodetype }) => hasValue(tilretteleggingPeriodetype),
-    },
-    [TilretteleggingFormField.tilrettelagtArbeidType]: {
-        isIncluded: () => true,
-        isAnswered: ({ tilrettelagtArbeidType }) => hasValue(tilrettelagtArbeidType),
-    },
-    [TilretteleggingFormField.stillingsprosent]: {
-        isIncluded: ({ tilrettelagtArbeidType, tilretteleggingPeriodetype }) =>
-            hasValue(tilrettelagtArbeidType) &&
-            tilrettelagtArbeidType === Tilretteleggingstype.DELVIS &&
-            hasValue(tilretteleggingPeriodetype) &&
-            tilretteleggingPeriodetype === TilretteleggingPeriodeType.EN,
-        isAnswered: ({ stillingsprosent }) => hasValue(stillingsprosent),
-    },
-    // [TilretteleggingFormField.tilretteleggingsFom]: {
-    //     isIncluded: () => true,
-    //     isAnswered: ({ tilretteleggingsFom }) => hasValue(tilretteleggingsFom),
-    // },
-    // [TilretteleggingFormField.tilretteleggingsTom]: {
-    //     isIncluded: () => true,
-    //     isAnswered: ({ tilretteleggingsTom }) => hasValue(tilretteleggingsTom),
-    // },
-};
+export interface TilretteleggingFormQuestionsPayload extends TilretteleggingFormData {
+    arbeidsType: Arbeidsforholdstype;
+}
 
-const tilretteleggingQuestionsConfig = Questions<TilretteleggingFormData, TilretteleggingFormField>(
+export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuestionsPayload, TilretteleggingFormField> =
+    {
+        [TilretteleggingFormField.behovForTilretteleggingFom]: {
+            isIncluded: () => true,
+            isAnswered: ({ behovForTilretteleggingFom }) => behovForTilretteleggingFom !== YesOrNo.UNANSWERED,
+        },
+        [TilretteleggingFormField.tilretteleggingType]: {
+            isIncluded: () => true,
+            isAnswered: ({ tilretteleggingType }) => hasValue(tilretteleggingType),
+        },
+        [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: {
+            isIncluded: ({ tilretteleggingType }) =>
+                hasValue(tilretteleggingType) && tilretteleggingType === Tilretteleggingstype.DELVIS,
+            isAnswered: ({ delvisTilretteleggingPeriodeType }) => hasValue(delvisTilretteleggingPeriodeType),
+        },
+
+        [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: {
+            isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
+                (tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                    delvisTilretteleggingPeriodeType ===
+                        DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN) ||
+                tilretteleggingType === Tilretteleggingstype.INGEN,
+            isAnswered: ({ sammePeriodeFremTilTerminFom }) => hasValue(sammePeriodeFremTilTerminFom),
+        },
+
+        [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: {
+            isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
+                tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+            isAnswered: ({ sammePeriodeFremTilTerminStillingsprosent }) =>
+                hasValue(sammePeriodeFremTilTerminStillingsprosent),
+        },
+        [TilretteleggingFormField.variertePerioder]: {
+            isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
+                tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+            isAnswered: ({ variertePerioder }) => hasValue(variertePerioder),
+        },
+        [TilretteleggingFormField.tilretteleggingstiltak]: {
+            isIncluded: ({ arbeidsType }) =>
+                arbeidsType === Arbeidsforholdstype.FRILANSER || arbeidsType === Arbeidsforholdstype.SELVSTENDIG,
+            isAnswered: ({ tilretteleggingstiltak }) => hasValue(tilretteleggingstiltak),
+        },
+    };
+
+const tilretteleggingQuestionsConfig = Questions<TilretteleggingFormQuestionsPayload, TilretteleggingFormField>(
     TilretteleggingFormConfig
 );
 

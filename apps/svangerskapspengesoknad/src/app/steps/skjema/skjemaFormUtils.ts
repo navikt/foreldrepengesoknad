@@ -3,11 +3,9 @@ import { SkjemaFormData, initialSkjemaFormData } from './skjemaFormTypes';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { IntlShape } from 'react-intl';
-import { hasValue } from 'app/utils/validationUtils';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import { intlUtils, validateTextInputField } from '@navikt/fp-common';
-
-export const RISIKOFAKTORER_MIN_LENGTH = 10;
-export const RISIKOFAKTORER_MAX_LENGTH = 1000;
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 export const getInitialSkjemaValuesFromState = (state: SvangerskapspengerContextState): SkjemaFormData => {
     const alleVedlegg = state.søknad.vedlegg;
@@ -42,10 +40,10 @@ export const mapTilretteleggingMedSkjema = (
     return tilrettelegging.map((t, index) => {
         let risikofaktorer = undefined;
         if (t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER) {
-            risikofaktorer = values.risikofaktorerFrilans;
+            risikofaktorer = replaceInvisibleCharsWithSpace(values.risikofaktorerFrilans);
         }
         if (t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG) {
-            risikofaktorer = values.risikofaktorerNæring;
+            risikofaktorer = replaceInvisibleCharsWithSpace(values.risikofaktorerNæring);
         }
         const arbeid = { ...t.arbeidsforhold, risikofaktorer };
         return {
@@ -66,11 +64,11 @@ export const validateRisikofaktorer =
             return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.${type}.påkrevd`);
         }
 
-        if (risikoFaktorer.length > RISIKOFAKTORER_MAX_LENGTH) {
+        if (risikoFaktorer.length > TEXT_INPUT_MAX_LENGTH) {
             return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forLang`);
         }
 
-        if (risikoFaktorer.length < RISIKOFAKTORER_MIN_LENGTH) {
+        if (risikoFaktorer.length < TEXT_INPUT_MIN_LENGTH) {
             return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forKort`);
         }
 

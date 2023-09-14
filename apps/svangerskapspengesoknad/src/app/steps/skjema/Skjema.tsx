@@ -13,8 +13,6 @@ import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentU
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
 import {
-    RISIKOFAKTORER_MAX_LENGTH,
-    RISIKOFAKTORER_MIN_LENGTH,
     getInitialSkjemaValuesFromState,
     getVedleggForTilrettelegging,
     mapTilretteleggingMedSkjema,
@@ -32,6 +30,7 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -126,8 +125,8 @@ const Skjema: React.FunctionComponent = () => {
                                                                     : SkjemaFormField.risikofaktorerNæring
                                                             }
                                                             label={risikofaktorerLabel}
-                                                            minLength={RISIKOFAKTORER_MIN_LENGTH}
-                                                            maxLength={RISIKOFAKTORER_MAX_LENGTH}
+                                                            minLength={TEXT_INPUT_MIN_LENGTH}
+                                                            maxLength={TEXT_INPUT_MAX_LENGTH}
                                                             validate={validateRisikofaktorer(
                                                                 intl,
                                                                 risikofaktorerLabel,

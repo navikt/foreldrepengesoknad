@@ -1,30 +1,32 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { TilretteleggingInput, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 
-export enum TilretteleggingPeriodeType {
-    'EN' = 'en',
-    'VARIERT' = 'VARIERT',
+export enum DelivisTilretteleggingPeriodeType {
+    'SAMMME_PERIODE_FREM_TIL_TERMIN' = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
+    'VARIERTE_PERIODER' = 'VARIERTE_PERIODER',
 }
 
 export enum TilretteleggingFormField {
-    tilrettelagtArbeidFom = 'tilrettelagtArbeidFom',
-    tilrettelagtArbeidType = 'tilrettelagtArbeidType',
-    tilretteleggingPeriodetype = 'tilretteleggingPeriodetype',
-    tilretteleggingsFom = 'tilretteleggingsFom',
-    tilretteleggingsTom = 'tilretteleggingsTom',
-    stillingsprosent = 'stillingsprosent',
+    behovForTilretteleggingFom = 'behovForTilretteleggingFom',
+    tilretteleggingType = 'tilretteleggingType',
+    delvisTilretteleggingPeriodeType = 'delvisTilretteleggingPeriodeType',
+    sammePeriodeFremTilTerminFom = 'sammePeriodeFremTilTerminFom',
+    sammePeriodeFremTilTerminStillingsprosent = 'sammePeriodeFremTilTerminStillingsprosent',
+    variertePerioder = 'variertePerioder',
+    tilretteleggingstiltak = 'tilretteleggingstiltak',
 }
 
 export interface TilretteleggingFormData {
-    [TilretteleggingFormField.tilrettelagtArbeidFom]: string;
-    [TilretteleggingFormField.tilrettelagtArbeidType]: Tilretteleggingstype;
-    [TilretteleggingFormField.tilretteleggingPeriodetype]: TilretteleggingPeriodeType;
-    // [TilretteleggingFormField.tilretteleggingsFom]: string[];
-    // [TilretteleggingFormField.tilretteleggingsTom]: string[];
-    [TilretteleggingFormField.stillingsprosent]: string;
+    [TilretteleggingFormField.behovForTilretteleggingFom]: string;
+    [TilretteleggingFormField.tilretteleggingType]: Tilretteleggingstype;
+    [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: DelivisTilretteleggingPeriodeType;
+    [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: string;
+    [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: string;
+    [TilretteleggingFormField.variertePerioder]: TilretteleggingInput[];
+    [TilretteleggingFormField.tilretteleggingstiltak]: string;
 }
 
 export const TilretteleggingFormComponents = getTypedFormComponents<
-    TilretteleggingFormField,
+    TilretteleggingFormField | string,
     TilretteleggingFormData
 >();
