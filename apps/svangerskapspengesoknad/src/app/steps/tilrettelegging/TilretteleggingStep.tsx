@@ -7,7 +7,7 @@ import {
     TilretteleggingFormComponents,
     TilretteleggingFormData,
     TilretteleggingFormField,
-    TilretteleggingPeriodeType,
+    DelivisTilretteleggingPeriodeType,
 } from './tilretteleggingStepFormConfig';
 import { getTilretteleggingInitialValues, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -28,8 +28,12 @@ import {
     validateTilrettelagtArbeidType,
     validateTilretteleggingPeriodetype,
 } from 'app/utils/tilretteleggingUtils';
-import tilretteleggingQuestionsConfig from './tilretteleggingStepQuestionsConfig';
-import { validateStillingsprosent } from './tilretteleggingValidation';
+import tilretteleggingQuestionsConfig, {
+    TilretteleggingFormQuestionsPayload,
+} from './tilretteleggingStepQuestionsConfig';
+import { validateStillingsprosent, validateTilretteleggingstiltak } from './tilretteleggingValidation';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+import PerioderMedVariasjon from './components/perioderMedVariasjon/PerioderMedVariasjon';
 
 interface Props {
     id: string;
@@ -64,6 +68,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     }
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
+
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -72,7 +77,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
             renderForm={({ values: formValues }) => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
                     ...formValues,
-                } as TilretteleggingFormData);
+                    arbeidsType: currentTilrettelegging?.arbeidsforhold.type,
+                } as TilretteleggingFormQuestionsPayload);
+                const labelPeriodeFom =
+                    formValues.tilretteleggingType === Tilretteleggingstype.INGEN
+                        ? 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'
+                        : 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis';
+                const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -101,7 +112,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             )}
                             <Block padBottom="xl">
                                 <TilretteleggingFormComponents.DatePicker
-                                    name={TilretteleggingFormField.tilrettelagtArbeidFom}
+                                    name={TilretteleggingFormField.behovForTilretteleggingFom}
                                     label={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label')}
                                     placeholder={'dd.mm.åååå'}
                                     description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')}
@@ -112,7 +123,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             </Block>
                             <Block padBottom="xl">
                                 <TilretteleggingFormComponents.RadioGroup
-                                    name={TilretteleggingFormField.tilrettelagtArbeidType}
+                                    name={TilretteleggingFormField.tilretteleggingType}
                                     legend={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label')}
                                     description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
                                     radios={[
@@ -128,22 +139,27 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     validate={validateTilrettelagtArbeidType(intl)}
                                 />
                             </Block>
-                            <Block padBottom="xl">
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(
+                                    TilretteleggingFormField.delvisTilretteleggingPeriodeType
+                                )}
+                            >
                                 <TilretteleggingFormComponents.RadioGroup
-                                    name={TilretteleggingFormField.tilretteleggingPeriodetype}
+                                    name={TilretteleggingFormField.delvisTilretteleggingPeriodeType}
                                     legend={intlUtils(intl, 'tilrettelegging.tilretteleggingPeriodetype.label')}
                                     description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
                                     radios={[
                                         {
                                             label: intlUtils(intl, 'tilrettelegging.tilretteleggingPeriodetype.en'),
-                                            value: TilretteleggingPeriodeType.EN,
+                                            value: DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                                         },
                                         {
                                             label: intlUtils(
                                                 intl,
                                                 'tilrettelegging.tilretteleggingPeriodetype.variert'
                                             ),
-                                            value: TilretteleggingPeriodeType.VARIERT,
+                                            value: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
                                         },
                                     ]}
                                     validate={validateTilretteleggingPeriodetype(intl)}
@@ -159,15 +175,46 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             </Block>
                             <Block
                                 padBottom="xl"
-                                visible={visibility.isVisible(TilretteleggingFormField.stillingsprosent)}
+                                visible={visibility.isVisible(TilretteleggingFormField.sammePeriodeFremTilTerminFom)}
+                            >
+                                <TilretteleggingFormComponents.DatePicker
+                                    name={TilretteleggingFormField.sammePeriodeFremTilTerminFom}
+                                    label={intlUtils(intl, labelPeriodeFom)}
+                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
+                                    // validate={validateSammePeriodeFremTilTerminFom(intl)}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(
+                                    TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent
+                                )}
                             >
                                 <TilretteleggingFormComponents.NumberInput
-                                    name={TilretteleggingFormField.stillingsprosent}
+                                    name={TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent}
                                     label={intlUtils(intl, 'tilrettelegging.stillingsprosent.label')}
+                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
                                     validate={validateStillingsprosent(intl)}
                                 />
                             </Block>
-                            <Alert variant="warning"> Denne siden er under utvikling </Alert>
+                            <Block
+                                padBottom="l"
+                                visible={visibility.isVisible(TilretteleggingFormField.variertePerioder)}
+                            >
+                                <PerioderMedVariasjon formValues={formValues} />
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
+                            >
+                                <TilretteleggingFormComponents.Textarea
+                                    name={TilretteleggingFormField.tilretteleggingstiltak}
+                                    label={labelTiltak}
+                                    minLength={TEXT_INPUT_MIN_LENGTH}
+                                    maxLength={TEXT_INPUT_MAX_LENGTH}
+                                    validate={validateTilretteleggingstiltak(intl, labelTiltak)}
+                                />
+                            </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
                                     <Button
@@ -194,20 +241,3 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
 };
 
 export default TilretteleggingStep;
-
-// const [tilretteleggingInput, setTilretteleggingInput] = useState<TilretteleggingInput[]>(
-//     currentTilrettelegging && currentTilrettelegging.tilrettelegginger
-//         ? currentTilrettelegging.tilrettelegginger
-//         : []
-// );
-// const allSortertTilrettelegging = tilretteleggingInput.sort((a, b) => {
-//     return dayjs(a.fom).isBefore(b.fom, 'day') ? -1 : 1;
-// });
-
-/* 
-                            <Block>
-                                <DelvisTilretteleggingDetaljer
-                                    tilretteleggingInput={allSortertTilrettelegging}
-                                    setTilretteleggingInput={setTilretteleggingInput}
-                                />
-                            </Block> */
