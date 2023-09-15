@@ -1138,7 +1138,7 @@ importers:
         version: link:../../packages/fp-common
       '@navikt/sif-common-formik-ds':
         specifier: ^0.21.1
-        version: 0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.4.3)(react-intl@6.3.2)(react@18.2.0)
+        version: 0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.2.9)(react-intl@6.3.2)(react@18.2.0)
       '@navikt/sif-common-question-config':
         specifier: ^0.0.7
         version: 0.0.7
@@ -1164,8 +1164,8 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       formik:
-        specifier: ^2.4.3
-        version: 2.4.3(react@18.2.0)
+        specifier: 2.2.9
+        version: 2.2.9(react@18.2.0)
       i18n-iso-countries:
         specifier: ^7.5.0
         version: 7.5.0
@@ -3828,31 +3828,6 @@ packages:
       '@navikt/ds-react': 4.6.1(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
       formik: 2.2.9(react@18.2.0)
-      i18n-iso-countries: 7.6.0
-      lodash: 4.17.21
-      react-fast-compare: 3.2.2
-      react-intl: 6.3.2(react@18.2.0)(typescript@5.0.4)
-      uuid: 9.0.0
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-    dev: false
-
-  /@navikt/sif-common-formik-ds@0.21.1(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.0.35)(formik@2.4.3)(react-intl@6.3.2)(react@18.2.0):
-    resolution: {integrity: sha512-ist2HkSSTwDNZ5JHC8UHuVYbQkOiZhth6KPkpYSkfx3cx8jUhfhWPzPZwj7TJqcbYN+qdRxgnF7PxQYidFaI8A==}
-    peerDependencies:
-      '@navikt/ds-css': '3'
-      '@navikt/ds-datepicker': '>=4.1.7'
-      '@navikt/ds-react': '3'
-      formik: 2.x
-      react-intl: 6.x
-    dependencies:
-      '@navikt/ds-css': 4.6.1
-      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.6.1)(classnames@2.3.2)(date-fns@2.29.3)(dayjs@1.11.7)(react-day-picker@8.7.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0)
-      '@navikt/ds-icons': 3.4.3(@types/react@18.0.35)(react@18.2.0)
-      '@navikt/ds-react': 4.6.1(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)
-      classnames: 2.3.2
-      formik: 2.4.3(react@18.2.0)
       i18n-iso-countries: 7.6.0
       lodash: 4.17.21
       react-fast-compare: 3.2.2
@@ -9532,21 +9507,6 @@ packages:
       react-fast-compare: 2.0.4
       tiny-warning: 1.0.3
       tslib: 1.14.1
-    dev: false
-
-  /formik@2.4.3(react@18.2.0):
-    resolution: {integrity: sha512-2Dy79Szw3zlXmZiokUdKsn+n1ow4G8hRrC/n92cOWHNTWXCRpQXlyvz6HcjW7aSQZrldytvDOavYjhfmDnUq8Q==}
-    peerDependencies:
-      react: '>=16.8.0'
-    dependencies:
-      deepmerge: 2.2.1
-      hoist-non-react-statics: 3.3.2
-      lodash: 4.17.21
-      lodash-es: 4.17.21
-      react: 18.2.0
-      react-fast-compare: 2.0.4
-      tiny-warning: 1.0.3
-      tslib: 2.5.0
     dev: false
 
   /forwarded@0.2.0:
