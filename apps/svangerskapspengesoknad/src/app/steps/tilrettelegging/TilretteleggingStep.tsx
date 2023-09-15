@@ -46,20 +46,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const intl = useIntl();
     const { tilrettelegging: tilretteleggingFraState, søker, barn } = useSøknad();
     const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
-    const { termindato, fødselsdato } = barn;
     const { state } = useSvangerskapspengerContext();
     const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
 
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
-        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
-            id,
-            values,
-            tilretteleggingFraState,
-            termindato,
-            fødselsdato
-        );
+        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(id, values, tilretteleggingFraState);
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
 
@@ -79,7 +72,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getTilretteleggingInitialValues(currentTilrettelegging!, termindato, fødselsdato)}
+            initialValues={getTilretteleggingInitialValues(currentTilrettelegging!)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
@@ -117,7 +110,19 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     </Block>
                                 </>
                             )}
-                            <Block padBottom="xl">
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
+                            >
+                                <TilretteleggingFormComponents.Textarea
+                                    name={TilretteleggingFormField.tilretteleggingstiltak}
+                                    label={labelTiltak}
+                                    minLength={TEXT_INPUT_MIN_LENGTH}
+                                    maxLength={TEXT_INPUT_MAX_LENGTH}
+                                    validate={validateTilretteleggingstiltak(intl, labelTiltak)}
+                                />
+                            </Block>
+                            <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.behovForTilretteleggingFom}
                                     label={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label')}
@@ -128,7 +133,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     validate={validateTilrettelagtArbeidFom(intl, barn.termindato)}
                                 />
                             </Block>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.RadioGroup
                                     name={TilretteleggingFormField.tilretteleggingType}
                                     legend={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label')}
@@ -147,7 +152,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 />
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(
                                     TilretteleggingFormField.delvisTilretteleggingPeriodeType
                                 )}
@@ -181,7 +186,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 </ReadMore>
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(TilretteleggingFormField.sammePeriodeFremTilTerminFom)}
                             >
                                 <TilretteleggingFormComponents.DatePicker
@@ -192,7 +197,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 />
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(
                                     TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent
                                 )}
@@ -212,18 +217,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     formValues={formValues}
                                     fødselsdato={barn.fødselsdato}
                                     termindato={barn.termindato}
-                                />
-                            </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
-                            >
-                                <TilretteleggingFormComponents.Textarea
-                                    name={TilretteleggingFormField.tilretteleggingstiltak}
-                                    label={labelTiltak}
-                                    minLength={TEXT_INPUT_MIN_LENGTH}
-                                    maxLength={TEXT_INPUT_MAX_LENGTH}
-                                    validate={validateTilretteleggingstiltak(intl, labelTiltak)}
                                 />
                             </Block>
                             <Block margin="xl">

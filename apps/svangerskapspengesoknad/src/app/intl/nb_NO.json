@@ -225,6 +225,7 @@
     "valideringsfeil.periode.tom.sisteMåSluttetreUkerFørFødselEllerTermin": "Til - dato på den siste perioden må være datoen som er tre uker før termin, {dato}",
     "valideringsfeil.tomType.påkrevd": "Du må oppgi om du skal jobbe frem til tre uker før termin eller frem til en annen dato",
     "valideringsfeil.periode.overlapper": "Perioden overlapper med perioden {fom} - {tom}.",
+    "valideringsfeil.periode.fom.førBehovForTilretteleggingFom": "Perioden kan ikke begynne før datoen for behov for tilrettelegging",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noe gikk galt prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type",
     "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}KB.",

@@ -49,7 +49,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                             : Arbeidsforholdstype.PRIVAT,
                     navn: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
                 },
-                tilrettelegginger: tilretteleggingFraState?.tilrettelegginger || [],
+                variertePerioder: tilretteleggingFraState?.variertePerioder || [],
                 vedlegg: tilretteleggingFraState?.vedlegg || [],
                 behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
             };
@@ -70,7 +70,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                       vedlegg: næringTilretteleggingFraState?.vedlegg || [],
                       behovForTilretteleggingFom:
                           næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
-                      tilrettelegginger: næringTilretteleggingFraState?.tilrettelegginger || [],
+                      variertePerioder: næringTilretteleggingFraState?.variertePerioder || [],
                   },
               ]
             : [];
@@ -89,7 +89,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                       vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
                       behovForTilretteleggingFom:
                           frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
-                      tilrettelegginger: frilansTilretteleggingFraState?.tilrettelegginger || [],
+                      variertePerioder: frilansTilretteleggingFraState?.variertePerioder || [],
                   },
               ]
             : [];
