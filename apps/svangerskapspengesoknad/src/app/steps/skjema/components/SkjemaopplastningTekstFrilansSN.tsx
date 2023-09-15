@@ -14,7 +14,7 @@ const SkjemaopplastningTekstFrilansSN: React.FunctionComponent<Props> = ({ typeA
             <div>
                 <Label>{intlUtils(intl, labelId)}</Label>
             </div>
-            <FormattedMessage id={intlUtils(intl, 'skjema.vedlegg.description.frilansSN')} />
+            <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
         </div>
     );
 };

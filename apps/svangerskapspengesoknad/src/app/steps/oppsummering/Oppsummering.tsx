@@ -1,5 +1,5 @@
 import { Accordion, BodyShort, Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, bemUtils, formatDate, guid, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsConfig';
@@ -146,6 +146,7 @@ const Oppsummering = () => {
                                                 søknad.søker.andreInntekter.map((arbeid) => {
                                                     return (
                                                         <ArbeidIUtlandetVisning
+                                                            key={guid()}
                                                             arbeidIUtlandet={arbeid}
                                                         ></ArbeidIUtlandetVisning>
                                                     );

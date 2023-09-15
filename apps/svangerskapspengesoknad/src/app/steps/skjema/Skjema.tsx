@@ -104,7 +104,7 @@ const Skjema: React.FunctionComponent = () => {
                                         : t.arbeidsforhold.navn;
                                 const risikofaktorerLabel = intlUtils(
                                     intl,
-                                    `skjema.frilans.risikofaktorer.${t.arbeidsforhold.type}`
+                                    `skjema.risikofaktorer.${t.arbeidsforhold.type}`
                                 );
 
                                 return (
@@ -134,7 +134,7 @@ const Skjema: React.FunctionComponent = () => {
                                                             )}
                                                             description={intlUtils(
                                                                 intl,
-                                                                'skjema.frilansSN.risikofaktorer.description'
+                                                                'skjema.risikofaktorer.description'
                                                             )}
                                                         />
                                                     </Block>
