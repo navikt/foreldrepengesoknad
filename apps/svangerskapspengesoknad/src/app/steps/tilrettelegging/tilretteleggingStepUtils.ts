@@ -4,8 +4,17 @@ import {
     TilretteleggingFormField,
     DelivisTilretteleggingPeriodeType,
 } from './tilretteleggingStepFormConfig';
-import { Tilrettelegging, TilretteleggingInput, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import {
+    Tilrettelegging,
+    PeriodeMedTilrettelegging,
+    Tilretteleggingstype,
+    PeriodeMedVariasjonInput,
+    TilOgMedDatoType,
+} from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { treUkerSiden } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const getInitTilretteleggingFormDataValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.behovForTilretteleggingFom]: '',
@@ -20,9 +29,43 @@ export const getInitTilretteleggingFormDataValues = (): Readonly<Tilrettelegging
             fom: '',
             tom: '',
             stillingsprosent: '',
+            tomType: undefined!,
         },
     ],
 });
+
+const mapVariertPeriodeValuesToState = (
+    inputPeriode: PeriodeMedVariasjonInput,
+    treUkerFørFødselEllerTermin: string
+): PeriodeMedTilrettelegging => {
+    return {
+        fom: inputPeriode.fom,
+        tom:
+            inputPeriode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN
+                ? treUkerFørFødselEllerTermin
+                : inputPeriode.tom,
+        stillingsprosent: inputPeriode.stillingsprosent,
+        type: inputPeriode.type,
+    };
+};
+
+export const mapPeriodeMedTilretteleggingTilVariertPeriode = (
+    periode: PeriodeMedTilrettelegging,
+    termindato: Date,
+    fødselsdato: Date | undefined
+): PeriodeMedVariasjonInput => {
+    const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdato || termindato);
+    const tomErSammeSomTreUkerFørFødselEllerTermin = dayjs(treUkerFørFødselEllerTermin).isSame(dayjs(periode.tom), 'd');
+    return {
+        fom: periode.fom,
+        tom: tomErSammeSomTreUkerFørFødselEllerTermin ? undefined : periode.tom,
+        stillingsprosent: periode.stillingsprosent,
+        type: periode.type,
+        tomType: tomErSammeSomTreUkerFørFødselEllerTermin
+            ? TilOgMedDatoType.TRE_UKER_FØR_TERMIN
+            : TilOgMedDatoType.VALGFRI_DATO,
+    };
+};
 
 export const erTilretteleggingFerdigUtfylt = (tilrettelegging: Tilrettelegging) => {
     return (
@@ -34,7 +77,7 @@ export const erTilretteleggingFerdigUtfylt = (tilrettelegging: Tilrettelegging) 
 
 export const getTilretteleggingInitialValuesEnPeriode = (
     behovFom: string,
-    tilretteleggingPeriode: TilretteleggingInput,
+    tilretteleggingPeriode: PeriodeMedTilrettelegging,
     defaultValues: Readonly<TilretteleggingFormData>,
     tiltak: string | undefined
 ): TilretteleggingFormData => {
@@ -57,28 +100,36 @@ export const getTilretteleggingInitialValuesEnPeriode = (
 
 export const getTilretteleggingInitialVariertePerioder = (
     behovFom: string,
-    tilretteleggingPerioder: TilretteleggingInput[],
+    tilretteleggingPerioder: PeriodeMedTilrettelegging[],
     defaultValues: Readonly<TilretteleggingFormData>,
-    tiltak: string | undefined
+    tiltak: string | undefined,
+    termindato: Date,
+    fødselsdato: Date | undefined
 ): TilretteleggingFormData => {
     const values = {
         ...defaultValues,
         behovForTilretteleggingFom: behovFom,
         tilretteleggingType: Tilretteleggingstype.DELVIS,
         delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        variertePerioder: tilretteleggingPerioder,
+        variertePerioder: tilretteleggingPerioder.map((periode) =>
+            mapPeriodeMedTilretteleggingTilVariertPeriode(periode, termindato, fødselsdato)
+        ),
         tilretteleggingstiltak: tiltak || defaultValues.tilretteleggingstiltak,
     };
     return values;
 };
 
-export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging): TilretteleggingFormData => {
+export const getTilretteleggingInitialValues = (
+    tilrettelegging: Tilrettelegging,
+    termindato: Date,
+    fødselsdato: Date | undefined
+): TilretteleggingFormData => {
     const initValues = getInitTilretteleggingFormDataValues();
     if (!erTilretteleggingFerdigUtfylt(tilrettelegging)) {
         return initValues;
     } else {
         const antallPerioder = tilrettelegging.tilrettelegginger.length;
-        if (antallPerioder === 1) {
+        if (antallPerioder === 1 && tilrettelegging.tilrettelegginger[0].tom === undefined) {
             return getTilretteleggingInitialValuesEnPeriode(
                 tilrettelegging.behovForTilretteleggingFom!,
                 tilrettelegging.tilrettelegginger[0],
@@ -90,7 +141,9 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
                 tilrettelegging.behovForTilretteleggingFom!,
                 tilrettelegging.tilrettelegginger,
                 initValues,
-                tilrettelegging.arbeidsforhold.tilretteleggingstiltak
+                tilrettelegging.arbeidsforhold.tilretteleggingstiltak,
+                termindato,
+                fødselsdato
             );
         }
     }
@@ -107,7 +160,11 @@ const getSkalHaSammePeriodeFremTilTermin = (
     );
 };
 
-const getTilretteleggingsPerioderFromInput = (values: TilretteleggingFormData): TilretteleggingInput[] => {
+const getTilretteleggingsPerioderFromInput = (
+    values: TilretteleggingFormData,
+    termindato: Date,
+    fødselsdato: Date | undefined
+): PeriodeMedTilrettelegging[] => {
     if (getSkalHaSammePeriodeFremTilTermin(values.tilretteleggingType, values.delvisTilretteleggingPeriodeType)) {
         return [
             {
@@ -120,17 +177,26 @@ const getTilretteleggingsPerioderFromInput = (values: TilretteleggingFormData): 
             },
         ];
     } else {
-        return values.variertePerioder;
+        const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdato || termindato);
+        return values.variertePerioder.map((p) =>
+            mapVariertPeriodeValuesToState(p, dateToISOString(treUkerFørFødselEllerTermin))
+        );
     }
 };
 
 export const mapOmTilretteleggingFormDataToState = (
     id: string,
     values: Partial<TilretteleggingFormData>,
-    tilretteleggingFraState: Tilrettelegging[]
+    tilretteleggingFraState: Tilrettelegging[],
+    termindato: Date,
+    fødselsdato: Date | undefined
 ): Tilrettelegging[] => {
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
-    const tilrettelegginsperioder = getTilretteleggingsPerioderFromInput(values as TilretteleggingFormData);
+    const tilrettelegginsperioder = getTilretteleggingsPerioderFromInput(
+        values as TilretteleggingFormData,
+        termindato,
+        fødselsdato
+    );
     const oppdatert = {
         ...tilretteleggingForOppdatering,
         behovForTilretteleggingFom: values.behovForTilretteleggingFom,
