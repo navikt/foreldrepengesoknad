@@ -6,7 +6,7 @@ import {
     TilretteleggingFormData,
     TilretteleggingFormField,
 } from '../../tilretteleggingStepFormConfig';
-import { TilOgMedDatoType, PeriodeMedTilrettelegging } from 'app/types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { Block, guid, hasValue, intlUtils } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
@@ -26,7 +26,9 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
         fom: '',
         tom: '',
         stillingsprosent: '',
-    } as PeriodeMedTilrettelegging;
+        tomType: undefined!,
+        type: Tilretteleggingstype.DELVIS,
+    } as PeriodeMedVariasjon;
 
     const minDato = hasValue(formValues.behovForTilretteleggingFom)
         ? formValues.behovForTilretteleggingFom!
@@ -54,7 +56,13 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
                                     maxDate={treUkerSiden(fødselsdato || termindato)}
                                     name={`variertePerioder.${index}.fom`}
                                     label={intlUtils(intl, 'perioder.varierende.fom.label')}
-                                    validate={validatePeriodeFom(intl, index, formValues.variertePerioder)}
+                                    validate={validatePeriodeFom(
+                                        intl,
+                                        index,
+                                        formValues.variertePerioder,
+                                        formValues.behovForTilretteleggingFom,
+                                        treUkerFørFødselEllerTermin
+                                    )}
                                 />
                             </Block>
                             <Block padBottom="xl">

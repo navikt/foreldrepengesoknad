@@ -1,14 +1,23 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { formatDate, intlUtils, isDateABeforeDateB } from '@navikt/fp-common';
-import { PeriodeMedTilrettelegging } from 'app/types/Tilrettelegging';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { PeriodeMedVariasjon, TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { getTidsperiode, overlapperTidsperioder } from 'app/utils/tidsperiodeUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 export const validatePeriodeFom =
-    (intl: IntlShape, index: number, allePerioder: PeriodeMedTilrettelegging[] | undefined) => (fom: string) => {
+    (
+        intl: IntlShape,
+        index: number,
+        allePerioder: PeriodeMedVariasjon[] | undefined,
+        behovForTilretteleggingFom: string | undefined,
+        treUkerFørFødselEllerTermin: Date
+    ) =>
+    (fom: string) => {
         const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
+        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
         if (!hasValue(fom)) {
             return intlUtils(intl, 'valideringsfeil.periode.fom.påkrevd');
         }
@@ -20,18 +29,35 @@ export const validatePeriodeFom =
             return intlUtils(intl, 'valideringsfeil.periode.fom.førTilDato');
         }
 
-        return validateAtPeriodeIkkeOverlapper(fom, tom, allePerioder, index, intl);
+        if (
+            hasValue(fom) &&
+            hasValue(behovForTilretteleggingFom) &&
+            dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')
+        ) {
+            return intlUtils(intl, 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom');
+        }
+
+        return validateAtPeriodeIkkeOverlapper(
+            fom,
+            tom,
+            tomType,
+            allePerioder,
+            index,
+            intl,
+            treUkerFørFødselEllerTermin
+        );
     };
 
 export const validatePeriodeTom =
     (
         intl: IntlShape,
         index: number,
-        allePerioder: PeriodeMedTilrettelegging[] | undefined,
+        allePerioder: PeriodeMedVariasjon[] | undefined,
         treUkerFørFødselEllerTermin: Date
     ) =>
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;
+        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
 
         if (!hasValue(tom)) {
             return intlUtils(intl, 'valideringsfeil.periode.tom.påkrevd');
@@ -55,28 +81,51 @@ export const validatePeriodeTom =
             });
         }
 
-        return validateAtPeriodeIkkeOverlapper(fom, tom, allePerioder, index, intl);
+        return validateAtPeriodeIkkeOverlapper(
+            fom,
+            tom,
+            tomType,
+            allePerioder,
+            index,
+            intl,
+            treUkerFørFødselEllerTermin
+        );
     };
 
 export const validateAtPeriodeIkkeOverlapper = (
     fom: string | undefined,
     tom: string | undefined,
-    allePerioder: PeriodeMedTilrettelegging[] | undefined,
+    tomType: TilOgMedDatoType | undefined,
+    allePerioder: PeriodeMedVariasjon[] | undefined,
     index: number,
-    intl: IntlShape
+    intl: IntlShape,
+    treUkerFørFødselEllerTermin: Date
 ) => {
-    if (hasValue(tom) && hasValue(fom) && allePerioder && allePerioder.length > 0) {
+    if ((hasValue(tom) || hasValue(tomType)) && hasValue(fom) && allePerioder && allePerioder.length > 0) {
         const andrePerioder = allePerioder.filter((_p, i) => i !== index);
-        const overlappendePerioder = andrePerioder.filter(
-            (p) =>
-                hasValue(p.fom) &&
-                hasValue(p.tom) &&
-                overlapperTidsperioder(getTidsperiode(fom!, tom!), getTidsperiode(p.fom, p.tom!))
-        );
+        const overlappendePerioder = andrePerioder.filter((p) => {
+            let periodeTom = undefined;
+            if (hasValue(p.tomType) && p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {
+                periodeTom = dateToISOString(treUkerFørFødselEllerTermin);
+            }
+            if (hasValue(p.tom)) {
+                periodeTom = p.tom;
+            }
+            if (periodeTom) {
+                return overlapperTidsperioder(
+                    getTidsperiode(fom!, tom || dateToISOString(treUkerFørFødselEllerTermin)),
+                    getTidsperiode(p.fom, periodeTom)
+                );
+            }
+            return false;
+        });
         if (overlappendePerioder.length > 0) {
+            const tilOgMedDato = overlappendePerioder[0].tom
+                ? overlappendePerioder[0].tom
+                : treUkerFørFødselEllerTermin;
             return intlUtils(intl, 'valideringsfeil.periode.overlapper', {
                 fom: formatDate(overlappendePerioder[0].fom),
-                tom: formatDate(overlappendePerioder[0].tom!),
+                tom: formatDate(tilOgMedDato),
             });
         }
     }

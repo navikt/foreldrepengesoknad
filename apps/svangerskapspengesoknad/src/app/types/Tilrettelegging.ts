@@ -1,3 +1,5 @@
+import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
+
 export enum Tilretteleggingstype {
     'INGEN' = 'ingen',
     'DELVIS' = 'delvis',
@@ -22,16 +24,9 @@ export enum TilOgMedDatoType {
     VALGFRI_DATO = 'VALGFRI_DATO',
     TRE_UKER_FØR_TERMIN = 'TRE_UKER_FØR_TERMIN',
 }
-export interface PeriodeMedVariasjonInput {
+export interface PeriodeMedVariasjon {
     type: Tilretteleggingstype;
     tomType: TilOgMedDatoType;
-    fom: string;
-    tom?: string;
-    stillingsprosent?: string;
-}
-
-export interface PeriodeMedTilrettelegging {
-    type: Tilretteleggingstype;
     fom: string;
     tom?: string;
     stillingsprosent?: string;
@@ -41,8 +36,12 @@ export interface Tilrettelegging {
     id: string;
     behovForTilretteleggingFom?: string;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
+    type?: Tilretteleggingstype;
+    sammePeriodeFremTilTerminFom?: string;
+    sammePeriodeFremTilTerminStillingsprosent?: string;
     vedlegg?: string[];
-    tilrettelegginger: PeriodeMedTilrettelegging[];
+    delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
+    variertePerioder?: PeriodeMedVariasjon[];
 }
 
 export default Tilrettelegging;
