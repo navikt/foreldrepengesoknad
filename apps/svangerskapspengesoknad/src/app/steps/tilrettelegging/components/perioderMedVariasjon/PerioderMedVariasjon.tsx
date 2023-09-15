@@ -36,7 +36,6 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues }) =>
                     formValues.variertePerioder.length > 0 &&
                     formValues.variertePerioder.map((_p, index) => (
                         <div key={guid()}>
-                            <hr></hr>
                             <Block padBottom="l">
                                 <TilretteleggingFormComponents.DatePicker
                                     key={`variertePerioder.${index}.fom`}
@@ -59,26 +58,30 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues }) =>
                                     label="Stillingsprosent"
                                 />
                             </Block>
-                            <Block padBottom="l">
-                                <Button type="button" onClick={() => arrayHelpers.remove(index)}>
-                                    Slett
-                                </Button>
-                            </Block>
-                            <Block padBottom="l">
+                            {index !== 0 && (
+                                <Block padBottom="l">
+                                    <Button type="button" onClick={() => arrayHelpers.remove(index)}>
+                                        Slett
+                                    </Button>
+                                </Block>
+                            )}
+                            {formValues.variertePerioder && index === formValues.variertePerioder.length - 1 && (
+                                <Block padBottom="l">
+                                    <Button
+                                        type="button"
+                                        onClick={() => arrayHelpers.push({ ...uferdigDelvisTilretteleggingInput })}
+                                    >
+                                        Legg til
+                                    </Button>
+                                </Block>
+                            )}
+                            <Block padBottom="xxl">
                                 <hr></hr>
                             </Block>
                         </div>
                     ))
                 }
             />
-            <Block padBottom="l">
-                <Button
-                    type="button"
-                    onClick={() => formValues.variertePerioder?.push({ ...uferdigDelvisTilretteleggingInput })}
-                >
-                    Legg til
-                </Button>
-            </Block>
         </>
     );
 };
