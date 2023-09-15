@@ -46,13 +46,20 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const intl = useIntl();
     const { tilrettelegging: tilretteleggingFraState, søker, barn } = useSøknad();
     const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
+    const { termindato, fødselsdato } = barn;
     const { state } = useSvangerskapspengerContext();
     const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
 
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
-        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(id, values, tilretteleggingFraState);
+        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
+            id,
+            values,
+            tilretteleggingFraState,
+            termindato,
+            fødselsdato
+        );
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
 
@@ -72,7 +79,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getTilretteleggingInitialValues(currentTilrettelegging!)}
+            initialValues={getTilretteleggingInitialValues(currentTilrettelegging!, termindato, fødselsdato)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
@@ -201,7 +208,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 padBottom="l"
                                 visible={visibility.isVisible(TilretteleggingFormField.variertePerioder)}
                             >
-                                <PerioderMedVariasjon formValues={formValues} />
+                                <PerioderMedVariasjon
+                                    formValues={formValues}
+                                    fødselsdato={barn.fødselsdato}
+                                    termindato={barn.termindato}
+                                />
                             </Block>
                             <Block
                                 padBottom="xl"

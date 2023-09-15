@@ -18,35 +18,23 @@ export interface ArbeidsforholdForTilrettelegging {
     tilretteleggingstiltak?: string;
 }
 
-export interface DelvisTilretteleggingDTO {
-    tilrettelagtArbeidFom: string;
-    stillingsprosent: number;
+export enum TilOgMedDatoType {
+    VALGFRI_DATO = 'VALGFRI_DATO',
+    TRE_UKER_FØR_TERMIN = 'TRE_UKER_FØR_TERMIN',
 }
-
-export interface HelTilretteleggingDTO {
-    tilrettelagtArbeidFom: string;
-}
-
-//TODO: Kan slettes?
-export interface IngenTilretteleggingDTO {
-    slutteArbeidFom: string;
-}
-
-export interface TilretteleggingInput {
+export interface PeriodeMedVariasjonInput {
     type: Tilretteleggingstype;
+    tomType: TilOgMedDatoType;
     fom: string;
     tom?: string;
     stillingsprosent?: string;
 }
 
-export interface TilretteleggingDTO {
-    id: string;
-    behovForTilretteleggingFom: string;
-    arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    vedlegg: string[];
-    helTilrettelegging?: HelTilretteleggingDTO[];
-    delvisTilrettelegging?: DelvisTilretteleggingDTO[];
-    ingenTilrettelegging?: IngenTilretteleggingDTO[];
+export interface PeriodeMedTilrettelegging {
+    type: Tilretteleggingstype;
+    fom: string;
+    tom?: string;
+    stillingsprosent?: string;
 }
 
 export interface Tilrettelegging {
@@ -54,7 +42,7 @@ export interface Tilrettelegging {
     behovForTilretteleggingFom?: string;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
     vedlegg?: string[];
-    tilrettelegginger: TilretteleggingInput[];
+    tilrettelegginger: PeriodeMedTilrettelegging[];
 }
 
 export default Tilrettelegging;
