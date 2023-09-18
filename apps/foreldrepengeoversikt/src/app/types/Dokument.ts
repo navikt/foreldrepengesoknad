@@ -6,4 +6,6 @@ export interface Dokument {
     saksnummer: string;
     tittel: string;
     url: string;
+    journalpostId: string;
+    dokumentId: string;
 }
