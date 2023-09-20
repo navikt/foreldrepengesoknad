@@ -2,7 +2,7 @@ type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type OppsummeringStepId = 'oppsummering';
-type StepIdWithBackHref = OmBarnetStepId | UtenlandsoppholdStepId | OppsummeringStepId;
+type StepIdWithBackHref = SøkersituasjonStepId | OmBarnetStepId | UtenlandsoppholdStepId | OppsummeringStepId;
 export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
 interface StepConfig {
     id: StepId;
@@ -36,6 +36,9 @@ const stepConfig: StepConfig[] = [
 export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
     let href;
     switch (id) {
+        case 'søkersituasjon':
+            href = '/';
+            break;
         case 'omBarnet':
             href = '/soknad/søkersituasjon';
             break;

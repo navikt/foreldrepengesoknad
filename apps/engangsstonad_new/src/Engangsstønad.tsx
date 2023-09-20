@@ -164,6 +164,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                                 lagretSøkersituasjon={data.lagretSøkersituasjon}
                                 lagreSøkersituasjon={lagre.lagreSøkersituasjonOgGåTilOmBarnet}
                                 avbrytSøknad={avbrytSøknad}
+                                gåTilForrige={() => undefined}
                             />
                         }
                     />

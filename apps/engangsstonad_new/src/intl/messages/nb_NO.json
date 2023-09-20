@@ -240,8 +240,10 @@
     "velkommen.text.startNySøknadPrompt": "Er du sikkert på at du vil starte en ny søknad? Din påbegynte søknad vil bli slettet.",
     "velkommen.text.veiviser": "Du kan få foreldrepenger i stedet for engangsstønad hvis du har hatt inntekt, vært i militæret eller har hatt noen av disse ytelsene fra NAV: arbeidsavklaringspenger, dagpenger, sykepenger, pleie- eller omsorgspenger.",
     "velkommen.text.kunEnStønad": "Velger du å søke om engangsstønad, kan du ikke senere ombestemme deg. Du kan ikke motta både engangsstønad og foreldrepenger for samme barn.",
-    "velkommen.text.veiviser.lenke": "<a>Bruk veiviseren og finn ut hva du kan få</a>",
+    "velkommen.text.veiviser.lenke": "Bruk veiviseren og finn ut hva du kan få",
     "velkommen.text.plikter.apneLabel": "Les om dine plikter",
     "velkommen.under18.boblelenketekst": "Her kan du laste ned papirsøknaden",
-    "velkommen.under18.bobletekst": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten. "
+    "velkommen.under18.bobletekst": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten. ",
+
+    "ValidationMessage.NotEmpty": "Feltet må fylles ut"
 }

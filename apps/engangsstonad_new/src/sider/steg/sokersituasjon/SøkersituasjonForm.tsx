@@ -1,10 +1,10 @@
-import { Radio, Button, Alert } from '@navikt/ds-react';
+import { Radio, Button, Alert, VStack, HStack, Link } from '@navikt/ds-react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, Step } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper } from '@navikt/fp-common';
 
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
-import stepConfig from '../stepConfig';
+import stepConfig, { getPreviousStepHref } from '../stepConfig';
 
 export enum Søkersituasjon {
     FØDSEL = 'fødsel',
@@ -19,6 +19,7 @@ interface OwnProps {
     lagretSøkersituasjon?: FormValues;
     lagreSøkersituasjon: (data: FormValues) => void;
     avbrytSøknad: () => void;
+    gåTilForrige: () => void;
 }
 
 const SøkersituasjonForm: React.FunctionComponent<OwnProps> = ({
@@ -32,8 +33,6 @@ const SøkersituasjonForm: React.FunctionComponent<OwnProps> = ({
         defaultValues: lagretSøkersituasjon,
     });
 
-    const situasjon = formMethods.watch('situasjon');
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -44,10 +43,16 @@ const SøkersituasjonForm: React.FunctionComponent<OwnProps> = ({
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagreSøkersituasjon)}>
-                    <Block margin="xl" padBottom="xl">
+                    <VStack gap="10">
                         <RadioGroupPanel
                             name="situasjon"
                             label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
+                            validate={[
+                                (verdi) =>
+                                    verdi === undefined
+                                        ? intl.formatMessage({ id: 'ValidationMessage.NotEmpty' })
+                                        : null,
+                            ]}
                         >
                             <Radio value={Søkersituasjon.FØDSEL}>
                                 <FormattedMessage id="søkersituasjon.radiobutton.fødsel" />
@@ -56,17 +61,15 @@ const SøkersituasjonForm: React.FunctionComponent<OwnProps> = ({
                                 <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
                             </Radio>
                         </RadioGroupPanel>
-                    </Block>
-                    {!situasjon && (
-                        <Alert variant="info">{intl.formatMessage({ id: 'søknad.footer.spørsmålMåBesvares' })}</Alert>
-                    )}
-                    {situasjon && (
-                        <Block margin="xl">
+                        <StepButtonWrapper>
+                            <Button variant="secondary" as={Link} to={getPreviousStepHref('søkersituasjon')}>
+                                <FormattedMessage id="backlink.label" />
+                            </Button>
                             <Button type="submit">
                                 <FormattedMessage id="søknad.gåVidere" />
                             </Button>
-                        </Block>
-                    )}
+                        </StepButtonWrapper>
+                    </VStack>
                 </form>
             </FormProvider>
         </Step>

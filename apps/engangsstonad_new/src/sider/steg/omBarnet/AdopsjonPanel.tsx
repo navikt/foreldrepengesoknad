@@ -9,6 +9,9 @@ import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
 import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
+import FileUploader from 'fpcommon/uploader/FileUploader';
+import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
+import { useCallback } from 'react';
 
 export type FormValues = {
     adopsjonAvEktefellesBarn?: boolean;
@@ -16,6 +19,7 @@ export type FormValues = {
     antallBarn?: number;
     antallBarnDropDown?: number;
     søkerAdopsjonAlene?: boolean;
+    vedlegg: Attachment[];
 } & FieldArrayFormValues;
 
 const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {
@@ -50,7 +54,11 @@ interface OwnProps {
 
 const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
     const intl = useIntl();
-    const { watch } = useFormContext<FormValues>();
+    const { watch, setValue } = useFormContext<FormValues>();
+
+    const updateAttachments = useCallback((attachments: Attachment[]) => {
+        setValue('vedlegg', attachments);
+    }, []);
 
     const { adopsjonAvEktefellesBarn, adopsjonsdato, antallBarn, antallBarnDropDown } = watch();
 
@@ -149,7 +157,16 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                     </RadioGroupPanel>
                 </Block>
             )}
-            {/* TODO FileUploader */}
+            <FileUploader
+                id="adopsjon"
+                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
+                existingAttachments={[]}
+                updateAttachments={updateAttachments}
+                label={intl.formatMessage({ id: 'vedlegg.lastoppknapp.label' })}
+                legend={intl.formatMessage({ id: 'vedlegg.adopsjon' })}
+                description={intl.formatMessage({ id: 'omBarnet.adopsjon.veilederpanel.adopsjon.text' })}
+            />
         </>
     );
 };

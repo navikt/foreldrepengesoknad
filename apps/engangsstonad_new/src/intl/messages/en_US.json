@@ -240,7 +240,7 @@
     "velkommen.text.startNySøknadPrompt": "Are you sure you want to start a new application? The application you started will be deleted.",
     "velkommen.text.veiviser": "You may be entitled to the parental benefit instead of the lump-sum grant if you have had income, been in the national service or had any of these benefits from NAV: work assessment allowance, unemployment benefit, sickness benefit or benefit for care of sick children.",
     "velkommen.text.kunEnStønad": "If you choose to apply for the lump-sum grant, you cannot change your mind at a later date. You cannot receive both the lump-sum grant and parental benefits for the same child.",
-    "velkommen.text.veiviser.lenke": "<a> Use the wizard to find out what you are entitled to</a>",
+    "velkommen.text.veiviser.lenke": "Use the wizard to find out what you are entitled to",
     "velkommen.text.plikter.apneLabel": "Read about your duties",
     "velkommen.under18.boblelenketekst": "A paper application can be downloaded here.",
     "velkommen.under18.bobletekst": "Because you are under the age of 18, one of your parents or a guardian must sign the application together with you. You therefore have to fill out the application in paper form and send this by mail. "

@@ -2,6 +2,8 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Heading, Link, Label } from '@navikt/ds-react';
 import { lenker } from '../../lenker';
 
+//TODO Kan denne slettast?
+
 const Personopplysninger = () => {
     return (
         <div className="modalContent">
