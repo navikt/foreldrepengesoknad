@@ -18,6 +18,6 @@ export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<st
     return gruppert;
 };
 
-export const lagUrl = (dokument: DokumentType): string => {
+export const lagUrl = (dokument: Dokument): string => {
     return dokument.url ? dokument.url : `${Environment.REST_API_URL}/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
 }
