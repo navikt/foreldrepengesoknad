@@ -14,7 +14,7 @@ import { SakOppslag } from 'app/types/SakOppslag';
 import './routes-wrapper.css';
 import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
 import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { AxiosError } from 'axios';
 import EttersendingPage from 'app/pages/ettersending/EttersendingPage';
 import Snarveier from 'app/components/snarveier/Snarveier';

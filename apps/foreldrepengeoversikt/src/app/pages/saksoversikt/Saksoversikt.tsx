@@ -10,8 +10,7 @@ import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
-import { HendelseType } from 'app/types/HendelseType';
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
@@ -49,11 +48,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
 
     const aktiveMinidialogerForSaken = minidialogerData
         ? minidialogerData.filter(
-              ({ gyldigTil, aktiv, hendelse, saksnr }) =>
-                  aktiv &&
-                  saksnr === gjeldendeSak.saksnummer &&
-                  dayjs(gyldigTil).isSameOrAfter(new Date(), 'days') &&
-                  hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK,
+              ({ gyldigTil, saksnr }) =>
+                  saksnr === gjeldendeSak.saksnummer && dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'),
           )
         : undefined;
     const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
