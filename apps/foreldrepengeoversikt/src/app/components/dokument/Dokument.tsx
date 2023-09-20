@@ -4,7 +4,7 @@ import { FileContent } from '@navikt/ds-icons';
 import { bemUtils, formatDateExtended } from '@navikt/fp-common';
 import { Dokument as DokumentType } from 'app/types/Dokument';
 import DokumentAvsender from 'app/components/dokument-avsender/DokumentAvsender';
-import Environment from 'app/Environment';
+import { lagUrl } from 'app/utils/dokumenterUtils';
 
 import './dokument.css';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
-    const bem = bemUtils('dokument');
+    const bem = bxemUtils('dokument');
     const { tittel, type, mottatt } = dokument;
     const url = lagUrl(dokument);
 
@@ -32,9 +32,5 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
         </div>
     );
 };
-
-function lagUrl(dokument: DokumentType): string {
-    return dokument.url ? dokument.url : `${Environment.REST_API_URL}/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
-}
 
 export default Dokument;
