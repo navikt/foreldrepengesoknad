@@ -34,9 +34,7 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
 };
 
 function lagUrl(dokument: DokumentType): string {
-    return dokument.url && !dokument.url.startsWith('http')
-        ? `${Environment.REST_API_URL}/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`
-        : dokument.url;
+    return dokument.url ? dokument.url : `${Environment.REST_API_URL}/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
 }
 
 export default Dokument;
