@@ -69,8 +69,8 @@ FROM pnpm as prod-deps
 
 COPY --from=prepare /usr/src/app ./
 
-# RUN pnpm install --frozen-lockfile --prod \
-#     && rm -rf "/root/.local/share/pnpm/store"
+RUN pnpm install --frozen-lockfile --prod \
+    && rm -rf "/root/.local/share/pnpm/store"
 
 COPY --from=build  /usr/src/app ./
 
