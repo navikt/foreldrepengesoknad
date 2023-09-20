@@ -10,7 +10,8 @@
                 "mottatt": "2023-01-31T09:06:48",
                 "saksnummer": "352011079",
                 "tittel": "Søknad om foreldrepenger ved fødsel",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115874/624862989"
+                "journalpostId": "598115874",
+                "dokumentId": "624862989"
             }
         ],
         "manglendeVedlegg": []
@@ -26,7 +27,8 @@
                 "mottatt": "2023-01-31T09:09:48",
                 "saksnummer": "352011079",
                 "tittel": "Innvilgelsesbrev Foreldrepenger",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115875/624862990"
+                "journalpostId": "598115875",
+                "dokumentId": "624862990"
             }
         ],
         "vedtakType": "INNVILGELSE"
@@ -42,7 +44,8 @@
                 "mottatt": "2023-01-31T09:17:13",
                 "saksnummer": "352011080",
                 "tittel": "Innvilgelsesbrev Foreldrepenger",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115879/624862995"
+                "journalpostId": "598115879",
+                "dokumentId": "624862995"
             }
         ],
         "vedtakType": "INNVILGELSE"
@@ -58,7 +61,8 @@
                 "mottatt": "2023-01-31T09:17:24",
                 "saksnummer": "352011079",
                 "tittel": "Opphør Foreldrepenger",
-                "url": "https://foreldrepengesoknad-api.dev.nav.no/rest/dokument/hent-dokument/598115880/624862996"
+                "journalpostId": "598115880",
+                "dokumentId": "624862996"
             }
         ],
         "vedtakType": "INNVILGELSE"
