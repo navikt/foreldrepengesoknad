@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
-    const bem = bxemUtils('dokument');
+    const bem = bemUtils('dokument');
     const { tittel, type, mottatt } = dokument;
     const url = lagUrl(dokument);
 
