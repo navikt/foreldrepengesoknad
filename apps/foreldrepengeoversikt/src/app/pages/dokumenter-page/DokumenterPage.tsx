@@ -14,25 +14,19 @@ import { RequestStatus } from 'app/types/RequestStatus';
 
 import './dokumenter-page.css';
 
-interface Props {
-    fnr: string;
-}
-
-const DokumenterPage: React.FunctionComponent<Props> = ({ fnr }) => {
+const DokumenterPage: React.FunctionComponent = () => {
     const bem = bemUtils('dokumenter-page');
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
 
-    const { dokumenterData, dokumenterError, dokumenterStatus } = Api.useGetDokumenter(fnr);
+    const { dokumenterData, dokumenterError, dokumenterStatus } = Api.useGetDokumenter(params.saksnummer!);
 
     if (!dokumenterData && dokumenterStatus !== RequestStatus.FINISHED) {
         return <Loader size="large" aria-label="Henter dokumenter" />;
     }
 
-    const dokumenterForSak = (dokumenterData || []).filter((dok) => dok.saksnummer === params.saksnummer);
-
-    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterForSak);
+    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterData);
 
     return (
         <>
