@@ -1,10 +1,11 @@
-import { Radio, Button, Alert, VStack, HStack, Link } from '@navikt/ds-react';
+import { Radio, Button, VStack, Link, ErrorSummary } from '@navikt/ds-react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, Step, StepButtonWrapper } from '@navikt/fp-common';
+import { Step, StepButtonWrapper } from '@navikt/fp-common';
 
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import stepConfig, { getPreviousStepHref } from '../stepConfig';
+import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 
 export enum Søkersituasjon {
     FØDSEL = 'fødsel',
@@ -44,13 +45,14 @@ const SøkersituasjonForm: React.FunctionComponent<OwnProps> = ({
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagreSøkersituasjon)}>
                     <VStack gap="10">
+                        <ErrorSummaryHookForm />
                         <RadioGroupPanel
                             name="situasjon"
                             label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
                             validate={[
                                 (verdi) =>
                                     verdi === undefined
-                                        ? intl.formatMessage({ id: 'ValidationMessage.NotEmpty' })
+                                        ? intl.formatMessage({ id: 'SøkersituasjonForm.OppgiFodselEllerAdopsjon' })
                                         : null,
                             ]}
                         >

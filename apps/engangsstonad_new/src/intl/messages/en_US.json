@@ -243,5 +243,7 @@
     "velkommen.text.veiviser.lenke": "Use the wizard to find out what you are entitled to",
     "velkommen.text.plikter.apneLabel": "Read about your duties",
     "velkommen.under18.boblelenketekst": "A paper application can be downloaded here.",
-    "velkommen.under18.bobletekst": "Because you are under the age of 18, one of your parents or a guardian must sign the application together with you. You therefore have to fill out the application in paper form and send this by mail. "
+    "velkommen.under18.bobletekst": "Because you are under the age of 18, one of your parents or a guardian must sign the application together with you. You therefore have to fill out the application in paper form and send this by mail. ",
+    "SøkersituasjonForm.OppgiFodselEllerAdopsjon": "You must enter what applies to you",
+    "feiloppsummering.tittel": "You have to correct the following errors:"
 }

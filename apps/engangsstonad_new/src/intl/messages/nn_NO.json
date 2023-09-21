@@ -243,5 +243,7 @@
     "velkommen.text.veiviser.lenke": "Bruk vegvisaren og finn ut kva du kan få",
     "velkommen.text.plikter.apneLabel": "Les om pliktene dine",
     "velkommen.under18.boblelenketekst": "Her kan du laste ned papirsøknaden",
-    "velkommen.under18.bobletekst": "Sidan du er under 18 år, må ein av foreldra dine eller ein føresett skrive under på søknaden saman med deg. Du må derfor fylle ut søknaden på papir og sende han i posten. "
+    "velkommen.under18.bobletekst": "Sidan du er under 18 år, må ein av foreldra dine eller ein føresett skrive under på søknaden saman med deg. Du må derfor fylle ut søknaden på papir og sende han i posten. ",
+    "SøkersituasjonForm.OppgiFodselEllerAdopsjon": "Du må oppgje kva som gjeld for deg",
+    "feiloppsummering.tittel": "Du må rette opp i følgende feil:"
 }

@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useMemo } from 'react';
+import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { RadioGroup } from '@navikt/ds-react';
 import { getError, getValidationRules } from './formUtils';
@@ -8,7 +8,7 @@ interface RadioGroupPanelProps {
     description?: string;
     label?: string | ReactNode;
     validate?: ((value: string | number) => any)[];
-    children: ReactNode[];
+    children: ReactElement[];
 }
 
 const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
@@ -39,7 +39,14 @@ const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
                 field.onChange(value);
             }}
         >
-            {children}
+            {children.map((child, index) => {
+                //TODO Vurder å heller lage ein wrapper til children
+                //Denne map'en legg til ref for å kunna setta fokus ved feil
+                if (index === 0) {
+                    return React.cloneElement(child, { ref: field.ref });
+                }
+                return child;
+            })}
         </RadioGroup>
     );
 };

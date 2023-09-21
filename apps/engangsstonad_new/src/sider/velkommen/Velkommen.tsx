@@ -101,9 +101,11 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                         </BodyShort>
                     </VStack>
                 </ConfirmationPanel>
-                <Button type="button" onClick={bekreft}>
-                    <FormattedMessage id="velkommen.button.startSøknad" />
-                </Button>
+                <HStack justify="center">
+                    <Button type="button" onClick={bekreft}>
+                        <FormattedMessage id="velkommen.button.startSøknad" />
+                    </Button>
+                </HStack>
             </VStack>
         </>
     );
