@@ -37,7 +37,7 @@ router.get(['/rest/sokerinfo'], (req, res) => {
     res.send(MockStorage.getSokerinfo());
 });
 
-router.get(['/rest/dokument/alle'], (req, res) => {
+router.get(['/rest/dokument/alle/v2'], (req, res) => {
     res.send(MockStorage.getDokumenter());
 });
 
