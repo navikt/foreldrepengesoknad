@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -1102,7 +1106,7 @@ importers:
         version: 0.6.1(typescript@5.1.6)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/eslint-config-custom:
     dependencies:
@@ -1264,8 +1268,8 @@ importers:
         specifier: 7.3.1
         version: 7.3.1
       storybook-react-intl:
-        specifier: ^2.0.2
-        version: 2.0.2(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react-intl@6.4.4)(react@18.2.0)
+        specifier: ^2.0.3
+        version: 2.0.3(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react-intl@6.4.4)(react@18.2.0)
       vite:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
@@ -13254,6 +13258,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: true
 
   /pinkie-promise@2.0.1:
@@ -13552,6 +13557,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -14548,6 +14554,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -15027,8 +15034,8 @@ packages:
       react-router-dom: 6.15.0(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
-  /storybook-i18n@2.0.8(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-YJIA1XNLD+ba8H++sMtmgdbza6HgYTWDCrM1QWEPGxpwmIoqEpjXKOnHPFkUzf77VD7+2IpPNsthdmtk7E7F/w==}
+  /storybook-i18n@2.0.13(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-p0VPL5QiHdeS3W9BvV7UnuTKw7Mj1HWLW67LK0EOoh5fpSQIchu7byfrUUe1RbCF1gT0gOOhdNuTSXMoVVoTDw==}
     peerDependencies:
       '@storybook/components': ^7.0.0
       '@storybook/manager-api': ^7.0.0
@@ -15050,8 +15057,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /storybook-react-intl@2.0.2(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react-intl@6.4.4)(react@18.2.0):
-    resolution: {integrity: sha512-8IH943JGBy8Ik2O65k3hKs9MkuxP03uoFuxBBraWK872UNERuAUil8/11+1EN/Am5pz249q1oalwDo8lpefmQg==}
+  /storybook-react-intl@2.0.3(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react-intl@6.4.4)(react@18.2.0):
+    resolution: {integrity: sha512-xfzAGPsV771N2mplC2oPHBCgqyY0IqujcAy/OGGVX16viZTS1KJ7uGL100hixRWYcesXD/HishaHpX1aIb/JWA==}
     peerDependencies:
       '@storybook/components': ^7.0.0
       '@storybook/manager-api': ^7.0.0
@@ -15073,7 +15080,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-intl: 6.4.4(react@18.2.0)(typescript@5.1.6)
-      storybook-i18n: 2.0.8(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react@18.2.0)
+      storybook-i18n: 2.0.13(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
   /storybook@7.3.1:
@@ -16367,6 +16374,72 @@ packages:
       - terser
     dev: true
 
+  /vitest@0.34.2(jsdom@22.1.0)(less@4.2.0):
+    resolution: {integrity: sha512-WgaIvBbjsSYMq/oiMlXUI7KflELmzM43BEvkdC/8b5CAod4ryAiY2z8uR6Crbi5Pjnu5oOmhKa9sy7uk6paBxQ==}
+    engines: {node: '>=v14.18.0'}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@vitest/browser': '*'
+      '@vitest/ui': '*'
+      happy-dom: '*'
+      jsdom: '*'
+      playwright: '*'
+      safaridriver: '*'
+      webdriverio: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+      playwright:
+        optional: true
+      safaridriver:
+        optional: true
+      webdriverio:
+        optional: true
+    dependencies:
+      '@types/chai': 4.3.5
+      '@types/chai-subset': 1.3.3
+      '@types/node': 18.17.1
+      '@vitest/expect': 0.34.2
+      '@vitest/runner': 0.34.2
+      '@vitest/snapshot': 0.34.2
+      '@vitest/spy': 0.34.2
+      '@vitest/utils': 0.34.2
+      acorn: 8.10.0
+      acorn-walk: 8.2.0
+      cac: 6.7.14
+      chai: 4.3.7
+      debug: 4.3.4
+      jsdom: 22.1.0
+      local-pkg: 0.4.3
+      magic-string: 0.30.2
+      pathe: 1.1.1
+      picocolors: 1.0.0
+      std-env: 3.3.3
+      strip-literal: 1.0.1
+      tinybench: 2.5.0
+      tinypool: 0.7.0
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite-node: 0.34.2(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
   /vscode-jsonrpc@6.0.0:
     resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
     engines: {node: '>=8.0.0 || >=10.0.0'}
@@ -16771,7 +16844,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
