@@ -1,13 +1,13 @@
 import { Heading, BodyShort, Button } from '@navikt/ds-react';
 
-import { FieldArray, FieldArrayRenderProps } from 'formik';
+import { FieldArray } from 'formik';
 import {
     TilretteleggingFormComponents,
     TilretteleggingFormData,
     TilretteleggingFormField,
 } from '../../tilretteleggingStepFormConfig';
 import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
-import { Block, guid, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import { treUkerSiden } from 'app/utils/dateUtils';
@@ -44,11 +44,11 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
             <FieldArray
                 validateOnChange={false}
                 name={TilretteleggingFormField.variertePerioder}
-                render={(arrayHelpers: FieldArrayRenderProps) =>
+                render={(arrayHelpers) =>
                     formValues.variertePerioder &&
                     formValues.variertePerioder.length > 0 &&
                     formValues.variertePerioder.map((_p, index) => (
-                        <div key={guid()}>
+                        <div key={index}>
                             <Block padBottom="xl">
                                 <TilretteleggingFormComponents.DatePicker
                                     key={`variertePerioder.${index}.fom`}
@@ -61,7 +61,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
                                         index,
                                         formValues.variertePerioder,
                                         formValues.behovForTilretteleggingFom,
-                                        treUkerFørFødselEllerTermin
+                                        treUkerFørFødselEllerTermin,
                                     )}
                                 />
                             </Block>
@@ -100,13 +100,13 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
                                         intl,
                                         index,
                                         formValues.variertePerioder,
-                                        treUkerFørFødselEllerTermin
+                                        treUkerFørFødselEllerTermin,
                                     )}
                                 />
                             </Block>
 
                             <Block padBottom="xl">
-                                <TilretteleggingFormComponents.TextField
+                                <TilretteleggingFormComponents.NumberInput
                                     key={`variertePerioder.${index}.stillingsprosent`}
                                     name={`variertePerioder.${index}.stillingsprosent`}
                                     label={intlUtils(intl, 'perioder.varierende.stillingsprosent.label')}
