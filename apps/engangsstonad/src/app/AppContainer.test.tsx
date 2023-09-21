@@ -13,7 +13,7 @@ describe('<AppContainer>', () => {
         render(<VisApp />);
 
         expect(
-            await screen.findByText('Husk at hvis barnet ikke er født ennå, må du legge ved en terminbekreftelse.')
+            await screen.findByText('Husk at hvis barnet ikke er født ennå, må du legge ved en terminbekreftelse.'),
         ).toBeInTheDocument();
         expect(screen.getByText('Søknad om engangsstønad')).toBeInTheDocument();
 

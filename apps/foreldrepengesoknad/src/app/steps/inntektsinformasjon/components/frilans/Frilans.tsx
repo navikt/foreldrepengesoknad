@@ -1,4 +1,4 @@
-import { Block, dateToday, intlUtils } from '@navikt/fp-common';
+import { Block, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
 import { FunctionComponent, useState } from 'react';
@@ -76,6 +76,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                             label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
                             validate={validateFrilansoppstartsDato(intl)}
                             maxDate={dateToday}
+                            minDate={date20YearsAgo}
                             showYearSelector={true}
                             placeholder={'dd.mm.åååå'}
                         />
@@ -101,7 +102,7 @@ const Frilans: FunctionComponent<Props> = ({ frilansoppdrag, setFrilansoppdrag, 
                                     if (frilansoppdrag.length === 0) {
                                         return intlUtils(
                                             intl,
-                                            'valideringsfeil.inntektsinformasjon.andreInntekter.måHaFrilansOppdrag'
+                                            'valideringsfeil.inntektsinformasjon.andreInntekter.måHaFrilansOppdrag',
                                         );
                                     }
                                 }

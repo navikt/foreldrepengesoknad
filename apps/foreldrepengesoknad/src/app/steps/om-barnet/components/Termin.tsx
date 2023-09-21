@@ -104,7 +104,7 @@ const Termin: FunctionComponent<Props> = ({
                     validate={validateTermindato(intl)}
                 />
             </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
+            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.termindato) && !søkerErFarMedmor}>
                 <ReadMore header={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
                     <Block padBottom="m">
                         <FormattedMessage id="omBarnet.termindato.innhold.del1" />

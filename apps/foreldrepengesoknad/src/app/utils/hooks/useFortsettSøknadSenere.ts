@@ -1,6 +1,5 @@
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { useCallback } from 'react';
-import Environment from 'app/Environment';
 
 const useFortsettSøknadSenere = () => {
     const useFortsettSøknadSenere = useCallback(() => {
@@ -10,7 +9,7 @@ const useFortsettSøknadSenere = () => {
             hendelse: 'fortsettSenere',
         });
 
-        (window as any).location = Environment.FAMILIE;
+        (window as any).location = 'https://nav.no';
     }, []);
 
     return useFortsettSøknadSenere;

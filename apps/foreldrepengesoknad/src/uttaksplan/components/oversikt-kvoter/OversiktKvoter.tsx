@@ -28,7 +28,7 @@ const bem = bemUtils('oversiktKvoter');
 
 const filtrerBortAnnenPartsKonto = (
     uttakskontoer: StønadskontoUttak[],
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
 ): StønadskontoUttak[] => {
     return erFarEllerMedmor
         ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)
@@ -61,7 +61,10 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
                 </Heading>
                 <TilesList columns={'flex'}>
                     {(erDeltUttakINorge || søkerErMor) && (
-                        <Personkort ikon={<ForelderIkon forelder={svgInfo.mor} />} tittel={navnPåForeldre.mor}>
+                        <Personkort
+                            ikon={<ForelderIkon forelder={svgInfo.mor} />}
+                            tittel={capitalizeFirstLetter(navnPåForeldre.mor)}
+                        >
                             <strong>{getVarighetString(brukteDagerPerForelder.mor.dagerTotalt, intl)}</strong>
                         </Personkort>
                     )}

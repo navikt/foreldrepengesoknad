@@ -1,4 +1,4 @@
-import { bemUtils, Block, guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import { ActionLink, bemUtils, Block, guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
@@ -6,7 +6,6 @@ import { Forelder } from 'app/types/Forelder';
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
-import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'uttaksplan/components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
@@ -75,6 +74,7 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
+    isOpen: boolean;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -96,7 +96,7 @@ const getPeriodeType = (
     konto: StønadskontoType | '',
     familiehendelsedato: Date,
     termindato: Date | undefined,
-    tidsperiode: TidsperiodeDate
+    tidsperiode: TidsperiodeDate,
 ): Periodetype => {
     if (
         erFarEllerMedmor &&
@@ -146,6 +146,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     intl,
+    isOpen,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -165,7 +166,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
     const handleCleanup = (
         values: PeriodeUttakFormData,
-        visibility: QuestionVisibility<PeriodeUttakFormField, undefined>
+        visibility: QuestionVisibility<PeriodeUttakFormField, undefined>,
     ): PeriodeUttakFormData => {
         return cleanPeriodeUttakFormData(
             values,
@@ -175,7 +176,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
             erMorUfør,
             familiehendelsesdato,
             erFarEllerMedmor,
-            annenForelderHarRettIEØS
+            annenForelderHarRettIEØS,
         );
     };
     const erDeltUttakINorge = erDeltUttak && !annenForelderHarRettIEØS;
@@ -196,6 +197,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 
     const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
 
+    if (!isOpen) {
+        return null;
+    }
+
     return (
         <PeriodeUttakFormComponents.FormikWrapper
             initialValues={getPeriodeUttakFormInitialValues(
@@ -205,7 +210,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 erMorUfør,
                 familiehendelsesdato,
                 erFarEllerMedmor,
-                annenForelderHarRettIEØS
+                annenForelderHarRettIEØS,
             )}
             enableReinitialize={false}
             onSubmit={(values: Partial<PeriodeUttakFormData>) => {
@@ -216,7 +221,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         values.konto!,
                         familiehendelsesdato,
                         termindato,
-                        { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                        { fom: values.fom, tom: values.tom } as TidsperiodeDate,
                     );
                     setNyPeriodeFormIsVisible!(false);
                     handleAddPeriode!(
@@ -227,9 +232,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             familiehendelsesdato,
                             erFarEllerMedmor,
                             erDeltUttak,
-                            situasjon
+                            situasjon,
                         ),
-                        familiehendelsesdato
+                        familiehendelsesdato,
                     );
                 } else {
                     return handleUpdatePeriode(
@@ -242,14 +247,14 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 values.konto!,
                                 familiehendelsesdato,
                                 termindato,
-                                { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                                { fom: values.fom, tom: values.tom } as TidsperiodeDate,
                             ),
                             familiehendelsesdato,
                             erFarEllerMedmor,
                             erDeltUttak,
-                            situasjon
+                            situasjon,
                         ),
-                        familiehendelsesdato
+                        familiehendelsesdato,
                     );
                 }
             }}
@@ -260,7 +265,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     values.konto!,
                     familiehendelsesdato,
                     termindato,
-                    { fom: values.fom, tom: values.tom } as TidsperiodeDate
+                    { fom: values.fom, tom: values.tom } as TidsperiodeDate,
                 );
                 const søkerOppgirAnnenForeldersPeriode =
                     (values.hvemSkalTaUttak === 'mor' && erFarEllerMedmor) ||
@@ -371,6 +376,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     navnAnnenForelder={navnPåAnnenForelder}
                                     erEndringssøknad={erEndringssøknad}
                                     valgtOverføringsårsak={values.overføringsårsak!}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block
@@ -382,6 +388,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak!}
                                     navnMor={navnPåForeldre.mor}
                                     vedlegg={values.erMorForSykDokumentasjon!}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
@@ -393,7 +400,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             familiehendelsesdato,
                                             erFarEllerMedmor,
                                             erDeltUttak,
-                                            situasjon
+                                            situasjon,
                                         )}
                                     >
                                         <GuidePanel>
@@ -419,6 +426,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     erMorForSyk={values.erMorForSyk!}
                                     navnMor={navnPåForeldre.mor}
                                     vedlegg={values.erMorForSykDokumentasjon!}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
@@ -427,7 +435,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     navnPåForeldre={navnPåForeldre}
                                     navnPåAnnenForelder={navnPåAnnenForelder}
                                     samtidigUttakProsentVisible={visibility.isVisible(
-                                        PeriodeUttakFormField.samtidigUttakProsent
+                                        PeriodeUttakFormField.samtidigUttakProsent,
                                     )}
                                     familiehendelsesdato={familiehendelsesdato}
                                     situasjon={situasjon}
@@ -444,12 +452,13 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     aktivitetskravVedlegg={values.aktivitetskravMorDokumentasjon!}
                                     FormComponents={PeriodeUttakFormComponents}
                                     vedleggFieldName={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>
                                 <SkalHaGraderingSpørsmål
                                     graderingsprosentVisible={visibility.isVisible(
-                                        PeriodeUttakFormField.stillingsprosent
+                                        PeriodeUttakFormField.stillingsprosent,
                                     )}
                                     arbeidsforhold={arbeidsforhold}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
@@ -465,12 +474,12 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.lukk" />
                                     </Button>
                                     <div className={bem.element('slettPeriodeWrapper')}>
-                                        <LinkButton
+                                        <ActionLink
                                             onClick={() => handleDeletePeriode!(periode.id)}
                                             className={bem.element('slettPeriode')}
                                         >
                                             <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
-                                        </LinkButton>
+                                        </ActionLink>
                                     </div>
                                 </div>
                             </Block>

@@ -3,7 +3,6 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "baseUrl": "./src",
-        "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
             "app/*": ["app/*"],
             "shared/*": ["app/components/shared/*"],
@@ -15,7 +14,8 @@
             "common/*": ["./common/*"],
             "storage/*": ["./storage/*"],
             "intl/*": ["app/intl/*"]
-        }
+        },
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
     "exclude": ["node_modules", "build", "scripts", "config", "src/build", "src/config", "dist"]
 }

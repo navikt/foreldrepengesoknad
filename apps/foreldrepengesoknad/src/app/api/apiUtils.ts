@@ -114,7 +114,7 @@ export const UKJENT_UUID = 'ukjent uuid';
 const getUttaksperiodeForInnsending = (
     uttaksPeriode: UttaksperiodeBase,
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): UttaksPeriodeForInnsending => {
     const cleanedPeriode = changeGradertUttaksPeriode(cleanUttaksperiode(uttaksPeriode));
     if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, uttaksPeriode.tidsperiode.fom)) {
@@ -222,7 +222,7 @@ const changeClientonlyKontotype = (
     annenForelderHarRettPåForeldrepengerINorge: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmor: boolean,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
 ) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
@@ -267,14 +267,17 @@ const changeGradertUttaksPeriode = (periode: UttaksPeriodeForInnsending): Uttaks
 };
 
 const cleanUttaksplan = (
-    uttaksplan: Periode[],
+    plan: Periode[],
     familiehendelsesdato: Date,
     søkerErFarEllerMedmor: boolean,
     ønskerJustertUttakVedFødsel: boolean | undefined,
     termindato: Date | undefined,
     annenForelder?: AnnenForelder,
-    endringstidspunkt?: Date
+    endringstidspunkt?: Date,
 ): PeriodeForInnsending[] => {
+    const uttaksplan = plan.map((periode) => {
+        return { ...periode };
+    });
     const cleanedUttaksplan = uttaksplan
         .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
@@ -285,14 +288,14 @@ const cleanUttaksplan = (
                       !!annenForelder.harRettPåForeldrepengerINorge,
                       !!annenForelder.erUfør,
                       søkerErFarEllerMedmor,
-                      familiehendelsesdato
+                      familiehendelsesdato,
                   )
-                : periode
+                : periode,
         )
         .map((periode) =>
             periode.type === Periodetype.Uttak
                 ? getUttaksperiodeForInnsending(periode, ønskerJustertUttakVedFødsel, termindato)
-                : periode
+                : periode,
         );
 
     if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
@@ -308,13 +311,13 @@ const cleanUttaksplan = (
 
 export const getPeriodeVedTidspunkt = (uttaksplan: Periode[], tidspunkt: Date): Periode | undefined => {
     return uttaksplan.find((periode) =>
-        dayjs(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]')
+        dayjs(tidspunkt).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]'),
     );
 };
 
 export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], endringstidspunkt: Date): Periode[] => {
     const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
-        dayjs(periode.tidsperiode.fom).isAfter(endringstidspunkt, 'day')
+        dayjs(periode.tidsperiode.fom).isAfter(endringstidspunkt, 'day'),
     );
 
     const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
@@ -353,7 +356,7 @@ export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): Søk
         søkerErFarEllerMedmor,
         søknad.ønskerJustertUttakVedFødsel,
         termindato,
-        annenForelder
+        annenForelder,
     );
     const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
     const cleanedSøknad: SøknadForInnsending = {
@@ -385,7 +388,7 @@ export const getSøknadsdataForInnsending = (
     originalSøknad: Søknad,
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
-    endringstidspunkt?: Date
+    endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
     if (søknad.erEndringssøknad) {
@@ -394,7 +397,7 @@ export const getSøknadsdataForInnsending = (
             endringerIUttaksplan,
             familiehendelsesdato,
             søknad.ønskerJustertUttakVedFødsel,
-            endringstidspunkt
+            endringstidspunkt,
         );
     } else {
         return cleanSøknad(søknad, familiehendelsesdato);
@@ -429,7 +432,7 @@ export const cleanEndringssøknad = (
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    endringstidspunkt?: Date
+    endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
     const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
     const termindato = getTermindato(søknad.barn);
@@ -444,7 +447,7 @@ export const cleanEndringssøknad = (
             ønskerJustertUttakVedFødsel,
             termindato,
             søknad.annenForelder,
-            endringstidspunkt
+            endringstidspunkt,
         ),
         vedlegg: cleanAttachments({ søknad }), //TODO: cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
         søker: cleanSøker(søknad.søker, søknad.søkersituasjon),

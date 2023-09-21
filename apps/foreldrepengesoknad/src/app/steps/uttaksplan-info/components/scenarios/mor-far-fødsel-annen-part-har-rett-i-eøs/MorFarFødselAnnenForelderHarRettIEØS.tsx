@@ -92,7 +92,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -112,7 +112,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -120,7 +120,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     if (!shouldRender) {
@@ -142,7 +142,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const antallBarn = barn.antallBarn;
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     const visInfoOmPrematuruker =
@@ -159,7 +159,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             initialValues={getInitialMorFarFødselAnnenForelderHarRettIEØSValues(
                 defaultPermisjonStartdato,
                 lagretUttaksplanInfo,
-                dekningsgrad
+                dekningsgrad,
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
@@ -204,6 +204,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             <StartdatoPermisjonMor
                                 permisjonStartdato={formValues.permisjonStartdato!}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
+                                termindato={termindato}
                             />
                         </Block>
                         <Block

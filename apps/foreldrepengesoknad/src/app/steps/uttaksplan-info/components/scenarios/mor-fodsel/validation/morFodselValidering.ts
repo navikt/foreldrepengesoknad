@@ -6,10 +6,10 @@ import { Uttaksdagen } from '../../../../utils/Uttaksdagen';
 import { uttaksplanDatoavgrensninger } from '../../../../utils/uttaksplanDatoavgrensninger';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isISODateString } from '@navikt/ds-datepicker';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const validateErStartdatoFørTermindato =
-    (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean) => (permisjonStartdato: string) => {
+    (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean, termindato: Date | undefined) =>
+    (permisjonStartdato: string) => {
         if (!(permisjonStartdato === undefined && skalIkkeHaUttakFørTermin)) {
             if (!isISODateString(permisjonStartdato)) {
                 return intlUtils(intl, 'valideringsfeil.uttaksplaninfo.startdatoPermisjon.gyldigDato');
@@ -21,7 +21,7 @@ export const validateErStartdatoFørTermindato =
         }
 
         if (!skalIkkeHaUttakFørTermin) {
-            const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(dateToISOString(familiehendelsedato));
+            const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsedato, termindato);
             if (
                 (avgrensninger.minDate &&
                     avgrensninger.maxDate &&

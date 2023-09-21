@@ -15,7 +15,7 @@ export default {
 const Template: StoryFn<Props> = (args) => (
     <Formik initialValues={{}} onSubmit={() => undefined}>
         <Form>
-            <FormikFileUploader {...args} />;
+            <FormikFileUploader {...args} />
         </Form>
     </Formik>
 );

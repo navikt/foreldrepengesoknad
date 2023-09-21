@@ -13,7 +13,7 @@ export const mapTilrettelegging = (
     valgtTilrettelegging: string[],
     søker: Søker,
     arbeidsforhold: Arbeidsforhold[],
-    termindato: Date
+    termindato: Date,
 ) => {
     const allTilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging,
@@ -22,10 +22,10 @@ export const mapTilrettelegging = (
         søker.frilansInformasjon,
         søker.selvstendigNæringsdrivendeInformasjon,
         arbeidsforhold,
-        termindato
+        termindato,
     );
     const selectedTilrettelegging = allTilretteleggingOptions.filter((o) =>
-        valgtTilrettelegging.find((t) => t === o.id)
+        valgtTilrettelegging.find((t) => t === o.id),
     );
     return selectedTilrettelegging;
 };

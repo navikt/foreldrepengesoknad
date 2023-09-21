@@ -93,7 +93,7 @@ const Oppsummering = () => {
           })
         : '';
     const egenerklæringTekst = intlUtils(intl, 'oppsummering.harGodkjentOppsummering').concat(
-        erklæringOmAnnenForelderInformert
+        erklæringOmAnnenForelderInformert,
     );
     const cleanedSøknad = useMemo(
         () =>
@@ -101,11 +101,11 @@ const Oppsummering = () => {
                 søknad,
                 state.perioderSomSkalSendesInn,
                 familiehendelsesdato!,
-                state.endringstidspunkt
+                state.endringstidspunkt,
             ),
-        [søknad, state.perioderSomSkalSendesInn, familiehendelsesdato, state.endringstidspunkt]
+        [søknad, state.perioderSomSkalSendesInn, familiehendelsesdato, state.endringstidspunkt],
     );
-    useSaveLoadedRoute(SøknadRoutes.OPPSUMMERING);
+    useSaveLoadedRoute(SøknadRoutes.OPPSUMMERING, state.kvittering);
 
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
@@ -143,7 +143,7 @@ const Oppsummering = () => {
                 submitError.response.data &&
                 submitError.response.data.messages &&
                 submitError.response.data.messages.includes(
-                    'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg'
+                    'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
                 )
             ) {
                 throw new Error(FOR_MANGE_VEDLEGG_ERROR);
@@ -187,7 +187,10 @@ const Oppsummering = () => {
                                     </OppsummeringsPanel>
                                     {!erEndringssøknad && (
                                         <OppsummeringsPanel title="Barnet">
-                                            <BarnOppsummering barn={barn} />
+                                            <BarnOppsummering
+                                                barn={barn}
+                                                familiehendelsesdato={familiehendelsesdato!}
+                                            />
                                         </OppsummeringsPanel>
                                     )}
                                     {!erEndringssøknad && (

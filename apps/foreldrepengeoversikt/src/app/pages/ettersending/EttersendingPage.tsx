@@ -69,6 +69,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const bem = bemUtils('ettersending-page');
     const [isEttersending, setIsEttersending] = useState(false);
     const [ettersendingDone, setEttersendingDone] = useState(false);
+    const [ettersendingError, setEttersendingError] = useState<string | undefined>(undefined);
     const intl = useIntl();
     const params = useParams();
     const alleYtelser = getAlleYtelser(saker);
@@ -83,11 +84,34 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
             vedlegg: values.vedlegg!,
         };
 
-        Api.sendEttersending(valuesToSend).then(() => {
-            setIsEttersending(false);
-            setEttersendingDone(true);
-        });
+        Api.sendEttersending(valuesToSend)
+            .then(() => {
+                setIsEttersending(false);
+                setEttersendingDone(true);
+            })
+            .catch((_error) => {
+                setIsEttersending(false);
+                setEttersendingError(
+                    'Vi klarte ikke å sende inn dokumentasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.',
+                );
+            });
     };
+
+    if (ettersendingError) {
+        return (
+            <div>
+                <ScrollToTop />
+                <Block padBottom="l">
+                    <Alert variant="error">{ettersendingError}</Alert>
+                </Block>
+                <Block padBottom="l">
+                    <Link to={`/sak/${sak!.saksnummer}`}>
+                        {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
+                    </Link>
+                </Block>
+            </div>
+        );
+    }
 
     if (ettersendingDone) {
         return (
@@ -154,13 +178,13 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                                         </Heading>
                                         <AttachmentList
                                             attachments={values.vedlegg!.filter(
-                                                (a) => !isAttachmentWithError(a) && a.skjemanummer === skjemanummer
+                                                (a) => !isAttachmentWithError(a) && a.skjemanummer === skjemanummer,
                                             )}
                                             showFileSize={true}
                                             onDelete={(file: Attachment) => {
                                                 setFieldValue(
                                                     EttersendingFormField.vedlegg,
-                                                    deleteAttachment(values.vedlegg!, file)
+                                                    deleteAttachment(values.vedlegg!, file),
                                                 );
                                             }}
                                         />

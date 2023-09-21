@@ -10,6 +10,10 @@ export const validateNavnPåOppdragsgiver = (intl: IntlShape, label: string) => 
         return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.påkrevd');
     }
 
+    if (navn.length > 100) {
+        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.lengde');
+    }
+
     return validateTextInputField(navn, label, intl);
 };
 

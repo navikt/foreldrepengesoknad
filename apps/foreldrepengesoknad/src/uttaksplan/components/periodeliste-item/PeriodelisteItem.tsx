@@ -11,6 +11,7 @@ import {
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
+    isSlettbarAvslåttPeriode,
     Periode,
     Periodetype,
     Utsettelsesperiode,
@@ -28,6 +29,7 @@ import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakFor
 import './periodelisteItem.less';
 import { Accordion } from '@navikt/ds-react';
 import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
+import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
 
 interface Props {
     egenPeriode: boolean;
@@ -81,7 +83,8 @@ const renderPeriodeListeInnhold = (
     termindato: Date | undefined,
     antallBarn: number,
     utsettelserIPlan: Utsettelsesperiode[],
-    intl: IntlShape
+    intl: IntlShape,
+    isOpen: boolean,
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -125,6 +128,7 @@ const renderPeriodeListeInnhold = (
                     antallBarn={antallBarn}
                     utsettelserIPlan={utsettelserIPlan}
                     intl={intl}
+                    isOpen={isOpen}
                 />
             );
         case Periodetype.Utsettelse:
@@ -144,6 +148,7 @@ const renderPeriodeListeInnhold = (
                     situasjon={situasjon}
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}
+                    isOpen={isOpen}
                 />
             );
         case Periodetype.Hull:
@@ -168,8 +173,14 @@ const renderPeriodeListeInnhold = (
             );
         case Periodetype.Info:
             return (
-                periode.visPeriodeIPlan &&
-                !isAvslåttPeriode(periode) && <PeriodeInfo periode={periode} navnPåForeldre={navnPåForeldre} />
+                <>
+                    {periode.visPeriodeIPlan && !isAvslåttPeriode(periode) && (
+                        <PeriodeInfo periode={periode} navnPåForeldre={navnPåForeldre} />
+                    )}
+                    {isSlettbarAvslåttPeriode(periode) && (
+                        <SlettbarAvslåttPeriode periode={periode} handleDeletePeriode={handleDeletePeriode} />
+                    )}
+                </>
             );
         default:
             return <div>Ingen visning</div>;
@@ -280,7 +291,8 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                             termindato,
                             antallBarn,
                             utsettelserIPlan,
-                            intl
+                            intl,
+                            isOpen,
                         )}
                     </Accordion.Content>
                 </Accordion.Item>

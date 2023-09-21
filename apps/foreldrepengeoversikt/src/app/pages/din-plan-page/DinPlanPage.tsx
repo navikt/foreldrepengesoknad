@@ -39,7 +39,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
         annenPartFnr,
         barnFnr,
         familiehendelsesdato,
-        annenPartVedtakIsSuspended
+        annenPartVedtakIsSuspended,
     );
 
     if (
@@ -62,6 +62,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
                     navnPåSøker={navnPåSøker}
                     navnAnnenForelder={navnAnnenForelder}
                     annenPartsPerioder={annenPartsVedtakData?.perioder}
+                    termindato={sak.familiehendelse.termindato}
                 ></DinPlan>
             </ContentSection>
         );

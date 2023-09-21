@@ -52,7 +52,7 @@ const validateDateInRange = (
     date: Date | undefined,
     minDate: Date,
     maxDate: Date,
-    isFomDate: boolean
+    isFomDate: boolean,
 ) => {
     if (date === undefined) {
         if (isFomDate) {
@@ -82,7 +82,7 @@ const getMeldingOmOverlappendeUtsettelser = (
     utsettelserIPlan: Utsettelsesperiode[] | undefined,
     dato: Date | undefined,
     intl: IntlShape,
-    periodeId: string | undefined
+    periodeId: string | undefined,
 ): string | undefined => {
     if (dato === undefined || utsettelserIPlan === undefined) {
         return undefined;
@@ -91,7 +91,7 @@ const getMeldingOmOverlappendeUtsettelser = (
         (up) =>
             dayjs(dato).isSameOrAfter(up.tidsperiode.fom, 'day') &&
             dayjs(dato).isSameOrBefore(up.tidsperiode.tom, 'day') &&
-            up.id !== periodeId
+            up.id !== periodeId,
     );
     if (overlappendeUtsettelsesPerioder.length > 0) {
         return intlUtils(intl, 'valideringsfeil.overlapperEnUtsettelse', {
@@ -124,6 +124,10 @@ const validateFromDateInRange = ({
     utsettelserIPlan?: Utsettelsesperiode[];
     toDate?: Date;
 }): SkjemaelementFeil => {
+    if (toDate && date && dayjs(date).isAfter(toDate, 'day')) {
+        return intlUtils(intl, errorKey);
+    }
+
     const error = validateDateInRange(intl, date, minDate, maxDate, true);
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
@@ -134,9 +138,6 @@ const validateFromDateInRange = ({
         return error;
     }
 
-    if (toDate && dayjs(date).isAfter(toDate, 'day')) {
-        return intlUtils(intl, errorKey);
-    }
     return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);
 };
 
@@ -161,6 +162,10 @@ const validateToDateInRange = ({
     utsettelserIPlan?: Utsettelsesperiode[];
     fromDate?: Date;
 }): SkjemaelementFeil => {
+    if (fromDate && date && dayjs(date).isBefore(fromDate, 'day')) {
+        return intlUtils(intl, errorKey);
+    }
+
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
 
     if (error !== undefined) {
@@ -169,10 +174,6 @@ const validateToDateInRange = ({
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
         return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
-    }
-
-    if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
-        return intlUtils(intl, errorKey);
     }
 
     return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);
@@ -217,7 +218,7 @@ export const isDateInTheFuture = (date: string): boolean => {
 
 export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): RegistrertBarn => {
     return [...registrerteBarn].sort((a, b) =>
-        isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1
+        isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1,
     )[registrerteBarn.length - 1];
 };
 
@@ -246,7 +247,7 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
         { id: 'varighet.dager' },
         {
             dager,
-        }
+        },
     );
     if (uker === 0) {
         return dagerStr;
@@ -289,7 +290,7 @@ export const formaterDatoKompakt = (dato: Date): string => {
 
 export const findEldsteDato = (dateArray: Date[]): DateValue => {
     if (dateArray.length > 0) {
-        return dayjs.min(dateArray.map((date: Date) => dayjs(date))).toDate();
+        return dayjs.min(dateArray.map((date: Date) => dayjs(date)))!.toDate();
     }
     return undefined;
 };
@@ -333,7 +334,7 @@ export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): T
 export const getRelevantFamiliehendelseDato = (
     termindato: string | undefined,
     fødselsdato: string | undefined,
-    omsorgsovertakelsesdato: string | undefined
+    omsorgsovertakelsesdato: string | undefined,
 ): string => {
     if (omsorgsovertakelsesdato !== undefined) {
         return omsorgsovertakelsesdato;
@@ -369,7 +370,7 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
 
 export const getToTetteReglerGjelder = (
     familiehendelsesdato: Date | undefined,
-    familiehendelsesdatoNesteBarn: Date | undefined
+    familiehendelsesdatoNesteBarn: Date | undefined,
 ): boolean => {
     if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
         return false;
@@ -384,7 +385,7 @@ export const getToTetteReglerGjelder = (
 
 export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
     farSinFørsteUttaksdag: Date,
-    morsSisteUttaksdag: Date
+    morsSisteUttaksdag: Date,
 ): boolean => {
     return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste(), 'day');
 };
@@ -392,7 +393,7 @@ export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
 export const getEndringstidspunkt = (
     opprinneligPlan: Periode[] | undefined,
     updatedPlan: Periode[],
-    erEndringssøknad: boolean
+    erEndringssøknad: boolean,
 ): Date | undefined => {
     if (!erEndringssøknad) {
         return undefined;
@@ -412,7 +413,7 @@ export const getEndringstidspunkt = (
 
             const { fom } = periode.tidsperiode;
             const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
-                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day')
+                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day'),
             );
 
             if (opprinneligPeriodeMedSammeFom !== undefined) {
@@ -441,13 +442,13 @@ export const getEndringstidspunkt = (
                 endringstidspunktNyPlan &&
                 isPeriodeUtenUttak(periode) &&
                 dayjs(endringstidspunktNyPlan).isAfter(
-                    søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom
+                    søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom,
                 )
             ) {
                 const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
                     (p) =>
                         (isUttaksperiode(p) || isUtsettelsesperiode(p)) &&
-                        dayjs(p.tidsperiode.fom).isAfter(endringstidspunktNyPlan)
+                        dayjs(p.tidsperiode.fom).isAfter(endringstidspunktNyPlan),
                 );
                 endringstidspunktNyPlan =
                     førsteUttakEllerUtsettelseEtterEndring !== undefined
@@ -463,7 +464,7 @@ export const getEndringstidspunkt = (
 
             const { fom } = periode.tidsperiode;
             const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
-                dayjs(nyPeriode.tidsperiode.fom).isSame(fom, 'day')
+                dayjs(nyPeriode.tidsperiode.fom).isSame(fom, 'day'),
             );
 
             if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
@@ -486,7 +487,7 @@ export const getEndringstidspunkt = (
 
 const getOldestDate = (
     endringstidspunktNyPlan: Date | undefined,
-    endringstidspunktOpprinneligPlan: Date | undefined
+    endringstidspunktOpprinneligPlan: Date | undefined,
 ): Date | undefined => {
     if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
         return undefined;

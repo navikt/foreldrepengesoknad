@@ -11,9 +11,10 @@ interface Props {
     erMorForSyk: YesOrNo;
     vedlegg: Attachment[];
     navnMor: string;
+    isOpen: boolean;
 }
 
-const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSyk, navnMor, vedlegg }) => {
+const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSyk, navnMor, vedlegg, isOpen }) => {
     const intl = useIntl();
 
     return (
@@ -32,7 +33,7 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSy
                 />
             </Block>
             <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>
-                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} />
+                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} isOpen={isOpen} />
             </Block>
         </>
     );

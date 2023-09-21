@@ -7,7 +7,7 @@ import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 import SakLink from 'app/components/sak-link/SakLink';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Heading } from '@navikt/ds-react';
 
 import './forside.css';
 
@@ -16,6 +16,7 @@ interface Props {
     grupperteSaker: GruppertSak[];
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
     oppdatertData: boolean;
+    storageData: any;
 }
 
 const Forside: React.FunctionComponent<Props> = ({
@@ -23,6 +24,7 @@ const Forside: React.FunctionComponent<Props> = ({
     grupperteSaker,
     avslåttSvangerskapspengesak,
     oppdatertData,
+    storageData,
 }) => {
     const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
@@ -35,6 +37,13 @@ const Forside: React.FunctionComponent<Props> = ({
                         Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
+                )}
+            </Block>
+            <Block>
+                {storageData && storageData.søknad.harGodkjentVilkår && (
+                    <Heading level="1" size="large">
+                        Dette er en mellomlagret søknad av typen: {storageData.søknad.type}
+                    </Heading>
                 )}
             </Block>
             {alleYtelser.length > 0 ? (

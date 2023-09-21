@@ -24,7 +24,7 @@ export interface Avgrensninger {
 export const getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    ugyldigeTidsperioder: Tidsperiode[] | undefined
+    ugyldigeTidsperioder: Tidsperiode[] | undefined,
 ): DatoAvgrensninger => {
     const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
     const maksDato = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
@@ -50,21 +50,21 @@ export const getDatoavgrensningerForStønadskonto = (
     tidsperiode: Partial<TidsperiodeDate> | undefined,
     ugyldigeTidsperioder: Tidsperiode[] | undefined,
     erFarEllerMedmor: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): DatoAvgrensninger => {
     if (konto === undefined) {
         return getDatoavgrensningerForPeriodeUtenKonto(
             familiehendelsesdato,
             ugyldigeTidsperioder,
             erFarEllerMedmor,
-            termindato
+            termindato,
         );
     }
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato);
     }
     if (isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(familiehendelsesdato)) {
-        return getDatoavgrensningerForEkstrauttakFørTermin(familiehendelsesdato);
+        return getDatoavgrensningerForEkstrauttakFørTermin(familiehendelsesdato, termindato);
     }
 
     const standardAvgrensninger = standardAvgrensningerForUttakEtterFødsel(familiehendelsesdato);
@@ -85,7 +85,7 @@ const getDatoavgrensningerForPeriodeUtenKonto = (
     familiehendelsesdato: Date,
     ugyldigeTidsperioder: Tidsperiode[] | undefined,
     erFarEllerMedmor: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ) => {
     const minDato = getFørsteMuligeUttaksdag(familiehendelsesdato, erFarEllerMedmor, termindato);
 
@@ -117,7 +117,7 @@ const getDatoavgrensningerForForeldrepengerFørFødsel = (familiehendelsesdato: 
     const avgrensninger: DatepickerLimitations = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(
-            dateToISOString(familiehendelsesdato)
+            dateToISOString(familiehendelsesdato),
         ),
     };
 
@@ -135,10 +135,14 @@ const getDatoavgrensningerForForeldrepengerFørFødsel = (familiehendelsesdato: 
     };
 };
 
-const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date): DatoAvgrensninger => {
+const getDatoavgrensningerForEkstrauttakFørTermin = (
+    familiehendelsesdato: Date,
+    termindato: Date | undefined,
+): DatoAvgrensninger => {
+    const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
     const avgrensninger: DatepickerLimitations = {
         ...standardAvgrensningerForUttakEtterFødsel,
-        ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(dateToISOString(familiehendelsesdato)),
+        ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(dateToISOString(datoÅRegneFra)),
     };
 
     return {
@@ -158,7 +162,7 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (familiehendelsesdato: Date
 export const getDatoavgrensningerForBareFarMedmorHarRettWLB = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    ugyldigeTidsperioder: Tidsperiode[] | undefined
+    ugyldigeTidsperioder: Tidsperiode[] | undefined,
 ): DatoAvgrensninger => {
     const minDato = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
     const maksDato = getSisteMuligeUttaksdag(familiehendelsesdato);

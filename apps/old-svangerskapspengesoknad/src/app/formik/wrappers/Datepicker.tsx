@@ -1,4 +1,4 @@
-import { UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react';
+import { DatePicker, useDatepicker } from '@navikt/ds-react';
 import { DateLimits, dateToISOFormattedDateString } from 'common/util/datoUtils';
 import dayjs from 'dayjs';
 import { FormikProps } from 'formik';
@@ -18,7 +18,7 @@ const Datepicker: FunctionComponent<Props> = ({ error, label, datoAvgrensinger, 
     const formattedFormValue = formValue ? dayjs(formValue, 'YYYY-MM-DD', true).format('DD.MM.YYYY') : '';
     const [selectedValue, setSelectedValue] = useState(formattedFormValue);
 
-    const { datepickerProps } = UNSAFE_useDatepicker({
+    const { datepickerProps } = useDatepicker({
         defaultSelected: formValue ? dayjs(formValue).toDate() : undefined,
         fromDate: datoAvgrensinger
             ? datoAvgrensinger.minDato
@@ -44,8 +44,8 @@ const Datepicker: FunctionComponent<Props> = ({ error, label, datoAvgrensinger, 
     });
 
     return (
-        <UNSAFE_DatePicker {...datepickerProps} strategy="fixed">
-            <UNSAFE_DatePicker.Input
+        <DatePicker {...datepickerProps} strategy="fixed">
+            <DatePicker.Input
                 error={error}
                 label={label}
                 placeholder="dd.mm.åååå"
@@ -62,7 +62,7 @@ const Datepicker: FunctionComponent<Props> = ({ error, label, datoAvgrensinger, 
                     }
                 }}
             />
-        </UNSAFE_DatePicker>
+        </DatePicker>
     );
 };
 

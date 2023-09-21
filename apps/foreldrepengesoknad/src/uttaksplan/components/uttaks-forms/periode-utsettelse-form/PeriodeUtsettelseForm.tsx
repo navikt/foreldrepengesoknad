@@ -1,8 +1,7 @@
-import { bemUtils, Block, guid, hasValue, intlUtils } from '@navikt/fp-common';
+import { bemUtils, Block, guid, hasValue, intlUtils, ActionLink } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import LinkButton from 'uttaksplan/components/link-button/LinkButton';
 import TidsperiodeDisplay from 'uttaksplan/components/tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from 'uttaksplan/components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import { Periode, Utsettelsesperiode } from 'uttaksplan/types/Periode';
@@ -30,7 +29,6 @@ import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/Aktivitetskra
 import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
-
 import './periodeUtsettelseForm.less';
 import { Button } from '@navikt/ds-react';
 import { PeriodeValidState } from 'uttaksplan/Uttaksplan';
@@ -53,6 +51,7 @@ interface Props {
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
+    isOpen: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -72,6 +71,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     situasjon,
     utsettelserIPlan,
     setPerioderErGyldige,
+    isOpen,
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -98,13 +98,13 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 if (!isNyPeriode) {
                     handleUpdatePeriode(
                         mapPeriodeUtsettelseFormToPeriode(values, id, erFarEllerMedmor),
-                        familiehendelsesdato
+                        familiehendelsesdato,
                     );
                 } else {
                     setNyPeriodeFormIsVisible!(false);
                     handleAddPeriode!(
                         mapPeriodeUtsettelseFormToPeriode(values, guid(), erFarEllerMedmor),
-                        familiehendelsesdato
+                        familiehendelsesdato,
                     );
                 }
             }}
@@ -191,6 +191,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     vedlegg={values.vedlegg!}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block
@@ -220,6 +221,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     navnPåForeldre={navnPåForeldre}
                                     FormComponents={PeriodeUtsettelseFormComponents}
                                     vedleggFieldName={PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon}
+                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block
@@ -232,12 +234,12 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         <FormattedMessage id="uttaksplan.lukk" />
                                     </Button>
                                     <div className={bem.element('slettPeriodeWrapper')}>
-                                        <LinkButton
+                                        <ActionLink
                                             onClick={() => handleDeletePeriode!(periode.id)}
                                             className={bem.element('slettPeriode')}
                                         >
                                             <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
-                                        </LinkButton>
+                                        </ActionLink>
                                     </div>
                                 </div>
                             </Block>

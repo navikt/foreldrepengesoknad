@@ -1,7 +1,6 @@
-import { BodyShort, Button, Link, Loader, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 import { Link as LinkInternal, useParams } from 'react-router-dom';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
-import Api from 'app/api/api';
 
 import DokumentHendelse from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
@@ -22,14 +21,29 @@ import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
 import { SakOppslag } from 'app/types/SakOppslag';
 import OversiktRoutes from 'app/routes/routes';
+import { AxiosError } from 'axios';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
+import { Skjemanummer } from 'app/types/Skjemanummer';
 
 interface Params {
     saker: SakOppslag;
     visHeleTidslinjen: boolean;
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
+    tidslinjeHendelserError: AxiosError<any, any> | null;
+    manglendeVedleggError: AxiosError<any, any> | null;
+    tidslinjeHendelserData: Tidslinjehendelse[];
+    manglendeVedleggData: Skjemanummer[];
 }
 
-const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, søkersBarn }) => {
+const Tidslinje: React.FunctionComponent<Params> = ({
+    saker,
+    visHeleTidslinjen,
+    søkersBarn,
+    tidslinjeHendelserData,
+    tidslinjeHendelserError,
+    manglendeVedleggData,
+    manglendeVedleggError,
+}) => {
     const params = useParams();
     const intl = useIntl();
     const sakPath = location.pathname.replace(`/${OversiktRoutes.TIDSLINJEN}`, '');
@@ -39,8 +53,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     const førsteUttaksdagISaken =
         sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
-    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
-    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const erAvslåttForeldrepengesøknad =
         sak.ytelse === Ytelse.FORELDREPENGER &&
@@ -57,7 +70,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
     }
 
     if (!tidslinjeHendelserData || !manglendeVedleggData) {
-        return <Loader size="large" aria-label="Henter status for din søknad" />;
+        return null;
     }
 
     const åpenBehandlingPåVent =
@@ -70,19 +83,19 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
         sak,
         barnFraSak,
         erAvslåttForeldrepengesøknad,
-        intl
+        intl,
     );
 
     const hendelserForVisning = getHendelserForVisning(
         visHeleTidslinjen,
         alleSorterteHendelser,
-        erAvslåttForeldrepengesøknad
+        erAvslåttForeldrepengesøknad,
     );
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
-        dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
+        dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'),
     );
     const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
-        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd')
+        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd'),
     );
     return (
         <div>
@@ -104,7 +117,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({ saker, visHeleTidslinjen, 
                             hendelse.tidligstBehandlingsDato,
                             manglendeVedleggData,
                             barnFraSak,
-                            sak
+                            sak,
                         )}
                         key={guid()}
                         isActiveStep={isActiveStep}

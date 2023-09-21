@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './Utenlandsopphold.stories';
+import { act } from 'react-dom/test-utils';
 
 const { Default } = composeStories(stories);
 
@@ -17,12 +18,12 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
-        await user.click(screen.getByText('Kun bo i Norge'));
+        user.click(screen.getByText('Kun bo i Norge'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        await user.click(screen.getByText('Kun bodd i Norge'));
+        user.click(screen.getByText('Kun bodd i Norge'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -32,33 +33,39 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Bo i utlandet helt eller delvis'));
+        userEvent.click(screen.getByText('Bo i utlandet helt eller delvis'));
 
         expect(await screen.findByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
+        userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
 
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        await userEvent.tab();
+        await act(async () => {
+            await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
+        });
+        userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
-        await userEvent.tab();
+        await act(async () => {
+            await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
+        });
+        userEvent.tab();
 
         expect(await screen.findByText('Hvilket land skal du bo i?')).toBeInTheDocument();
         const hvilkeLandInput = screen.getByLabelText('Hvilket land skal du bo i?');
-        await userEvent.type(hvilkeLandInput, 'Aruba');
+        await act(async () => {
+            await userEvent.type(hvilkeLandInput, 'Aruba');
+        });
 
         expect(await screen.findByText('Legg til')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Legg til'));
+        userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Kun bodd i Norge'));
+        userEvent.click(screen.getByText('Kun bodd i Norge'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -68,33 +75,39 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Kun bo i Norge'));
+        userEvent.click(screen.getByText('Kun bo i Norge'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Bodd i utlandet helt eller delvis'));
+        userEvent.click(screen.getByText('Bodd i utlandet helt eller delvis'));
 
         expect(await screen.findByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
+        userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
 
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        await userEvent.tab();
+        await act(async () => {
+            await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
+        });
+        userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
-        await userEvent.tab();
+        await act(async () => {
+            await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
+        });
+        userEvent.tab();
 
         expect(await screen.findByText('Hvilket land bodde du i?')).toBeInTheDocument();
         const hvilkeLandInput = screen.getByLabelText('Hvilket land bodde du i?');
-        await userEvent.type(hvilkeLandInput, 'Aruba');
+        await act(async () => {
+            await userEvent.type(hvilkeLandInput, 'Aruba');
+        });
 
         expect(await screen.findByText('Legg til')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Legg til'));
+        userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });

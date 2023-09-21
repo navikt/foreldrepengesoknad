@@ -8,7 +8,6 @@ import Api from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
-import { HendelseType } from './types/HendelseType';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import Environment from './Environment';
@@ -32,7 +31,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         queryKey: ['oppdatert'],
         queryFn: async () =>
             await fetch(`${Environment.REST_API_URL}/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then(
-                (response) => response.json()
+                (response) => response.json(),
             ),
         refetchInterval: (data) => {
             if (data) {
@@ -45,6 +44,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
     const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
+    const { storageData } = Api.useGetMellomlagretSøknad();
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
     const { minidialogData, minidialogError } = Api.useGetMinidialog();
@@ -52,13 +52,13 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     useEffect(() => {
         if (søkerinfoError) {
             throw new Error(
-                'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.'
+                'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
 
         if (sakerError) {
             throw new Error(
-                'Vi opplever problemer med å hente informasjon om din sak. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.'
+                'Vi opplever problemer med å hente informasjon om din sak. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
     }, [søkerinfoError, sakerError]);
@@ -86,12 +86,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     }
 
     const aktiveMinidialoger = minidialogData
-        ? minidialogData.filter(
-              ({ gyldigTil, aktiv, hendelse }) =>
-                  aktiv &&
-                  dayjs(gyldigTil).isSameOrAfter(new Date(), 'days') &&
-                  hendelse !== HendelseType.TILBAKEKREVING_FATTET_VEDTAK
-          )
+        ? minidialogData.filter(({ gyldigTil }) => dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'))
         : undefined;
     const defaultSaker: SakOppslag = {
         engangsstønad: [],
@@ -111,6 +106,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                     minidialogerData={aktiveMinidialoger}
                     minidialogerError={minidialogError}
                     oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
+                    storageData={storageData}
                 />
             </BrowserRouter>
         </div>
