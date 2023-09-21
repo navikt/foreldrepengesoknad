@@ -1,4 +1,4 @@
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 
 import { Link } from 'react-router-dom';
 import './oppgaveLenkepanel.css';

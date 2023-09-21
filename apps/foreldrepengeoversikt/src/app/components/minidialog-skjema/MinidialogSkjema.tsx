@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { formatDate, intlUtils, Block } from '@navikt/fp-common';
 import { Alert, Button, Chat, GuidePanel } from '@navikt/ds-react';
 import { Ytelse } from 'app/types/Ytelse';

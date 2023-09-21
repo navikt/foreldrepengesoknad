@@ -1,7 +1,7 @@
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -47,7 +47,7 @@ const useGetAnnenPartsVedtak = (
     annenPartFnr: string | undefined,
     barnFnr: string | undefined,
     familiehendelsesdato: string | undefined,
-    isSuspended: boolean
+    isSuspended: boolean,
 ) => {
     const body = {
         annenPartFødselsnummer: annenPartFnr,
@@ -81,7 +81,7 @@ const useGetDokumenter = (fnr: string) => {
         {
             config: { withCredentials: true },
         },
-        fnr
+        fnr,
     );
 
     return {

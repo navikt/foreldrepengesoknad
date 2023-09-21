@@ -1,6 +1,6 @@
 import { BodyLong, BodyShort, Loader } from '@navikt/ds-react';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { AxiosError } from 'axios';
 
 import { useIntl } from 'react-intl';

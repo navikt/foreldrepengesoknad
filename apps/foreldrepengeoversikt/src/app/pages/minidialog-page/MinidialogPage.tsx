@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { MinidialogInnslag } from 'app/types/HistorikkInnslag';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { useNavigate, useParams } from 'react-router-dom';
