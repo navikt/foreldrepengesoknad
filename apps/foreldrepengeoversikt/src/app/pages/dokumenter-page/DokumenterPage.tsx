@@ -26,7 +26,7 @@ const DokumenterPage: React.FunctionComponent = () => {
         return <Loader size="large" aria-label="Henter dokumenter" />;
     }
 
-    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterData);
+    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterData || []);
 
     return (
         <>
