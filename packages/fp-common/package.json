@@ -44,7 +44,7 @@
         "@storybook/addon-interactions": "^7.3.1",
         "@storybook/addon-links": "^7.2.1",
         "@storybook/builder-vite": "^7.3.1",
-        "@storybook/react": "^7.2.1",
+        "@storybook/react": "^7.4.3",
         "@types/node": "^20.5.0",
         "@types/react": "^18.2.20",
         "@types/react-aria-menubutton": "^6.2.9",
