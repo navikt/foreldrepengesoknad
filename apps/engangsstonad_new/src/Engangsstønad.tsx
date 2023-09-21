@@ -20,6 +20,9 @@ import Person from './types/Person';
 import Kvittering from './types/Kvittering';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
+import FremtidigUtlandsopphold, {
+    FormValues as FremtidigUtenlandsoppholdFormValues,
+} from 'sider/steg/utlandsoppholdFremtidig/FremtidigUtlandsopphold';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -38,6 +41,9 @@ const useDataHåndterer = (locale: Locale) => {
     const [lagretSøkersituasjon, lagreSøkersituasjon] = useState<SøkersituasjonFormValues | undefined>();
     const [lagretOmBarnet, lagreOmBarnet] = useState<OmBarnetFormValues | undefined>();
     const [lagretUtenlandsopphold, lagreUtenlandsopphold] = useState<UtenlandsoppholdFormFormValus | undefined>();
+    const [lagretFremtidigUtenlandsopphold, lagreFremtidigUtenlandsopphold] = useState<
+        FremtidigUtenlandsoppholdFormValues | undefined
+    >();
 
     const lagreSøkersituasjonOgGåTilOmBarnet = useCallback((form: SøkersituasjonFormValues) => {
         lagreSøkersituasjon(form);
@@ -47,10 +53,25 @@ const useDataHåndterer = (locale: Locale) => {
         lagreOmBarnet(form);
         navigate('/soknad/utenlandsopphold');
     }, []);
-    const lagreUtenlandsoppholdOgGåTilOppsummering = useCallback((form: UtenlandsoppholdFormFormValus) => {
+    const lagreUtenlandsoppholdOgGåTilNeste = useCallback((form: UtenlandsoppholdFormFormValus) => {
         lagreUtenlandsopphold(form);
-        navigate('/soknad/oppsummering');
+        if (form.skalBoUtenforNorgeNeste12Mnd) {
+            navigate('/soknad/fremtidig-utenlandsopphold');
+        } else {
+            navigate('/soknad/oppsummering');
+        }
     }, []);
+    const lagreFremtidigUtenlandsoppholdOgGåTilNeste = useCallback(
+        (form: FremtidigUtenlandsoppholdFormValues) => {
+            lagreFremtidigUtenlandsopphold(form);
+            if (lagretUtenlandsopphold?.harBoddUtenforNorgeSiste12Mnd) {
+                navigate('/soknad/fremtidig-utenlandsopphold');
+            } else {
+                navigate('/soknad/oppsummering');
+            }
+        },
+        [lagretUtenlandsopphold],
+    );
 
     const [kvittering, setKvittering] = useState<Kvittering | undefined>();
 
@@ -83,12 +104,14 @@ const useDataHåndterer = (locale: Locale) => {
         lagre: {
             lagreSøkersituasjonOgGåTilOmBarnet,
             lagreOmBarnetOgGårTilUtenlandsopphold,
-            lagreUtenlandsoppholdOgGåTilOppsummering,
+            lagreUtenlandsoppholdOgGåTilNeste,
+            lagreFremtidigUtenlandsoppholdOgGåTilNeste,
         },
         data: {
             lagretSøkersituasjon,
             lagretOmBarnet,
             lagretUtenlandsopphold,
+            lagretFremtidigUtenlandsopphold,
             kvittering,
         },
         avbrytSøknad,
@@ -187,8 +210,20 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                             path="/soknad/utenlandsopphold"
                             element={
                                 <UtenlandsoppholdForm
-                                    lagreUtenlandsopphold={lagre.lagreUtenlandsoppholdOgGåTilOppsummering}
+                                    lagreUtenlandsopphold={lagre.lagreUtenlandsoppholdOgGåTilNeste}
                                     lagretUtenlandsopphold={data.lagretUtenlandsopphold}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                    )}
+                    {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
+                        <Route
+                            path="/soknad/fremtidig-utenlandsopphold"
+                            element={
+                                <FremtidigUtlandsopphold
+                                    lagretFremtidigUtenlandsopphold={data.lagretFremtidigUtenlandsopphold}
+                                    lagreFremtidigUtenlandsopphold={lagre.lagreFremtidigUtenlandsoppholdOgGåTilNeste}
                                     avbrytSøknad={avbrytSøknad}
                                 />
                             }

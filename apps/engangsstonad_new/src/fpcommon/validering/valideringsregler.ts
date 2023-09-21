@@ -2,6 +2,9 @@ import { etterDagensDato, formatDateExtended, hasValue } from '@navikt/fp-common
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
+export const isRequired = (errorMessage: string) => (value: string | number) =>
+    value == undefined || value === null ? errorMessage : null;
+
 const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 };

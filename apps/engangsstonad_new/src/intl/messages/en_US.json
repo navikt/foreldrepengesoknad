@@ -116,6 +116,7 @@
     "søknad.termindato": "Due date",
     "søknad.terminbekreftelsesdato": "Due date confirmation date",
     "søknad.utenlandsopphold": "Stays abroad",
+    "søknad.utenlandsopphold.fremtidig": "Stay abroad",
     "søknadContainer.prompt": "If you leave the page no information will be saved. Do you wish to continue?",
     "søknadSendt.dokumenttittel": "NAV Lump-sum grant - Application sendt",
     "søknadSendt.info.innhold": "We have received your application and you do not need to do anything more. We will contact you if we have questions or if we need more information from you.",
@@ -140,6 +141,7 @@
     "terminbekreftelsen.text.terminbekreftelsen": "You must attach confirmation of the expected date of delivery with your application. This must be dated and signed by a doctor or midwife during your 22nd week of pregnancy or later.",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal være i {land} når du har termin {termindato}. Hvis du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikke får inn opplysninger om fødselen automatisk når du ikke føder i Norge.",
     "utenlandsopphold.knapp.leggTilLand": "Add a new stay abroad",
+    "utenlandsopphold.knapp.SlettOpphold": "Delete stay abroad",
     "utenlandsopphold.leggTilUtenlandsopphold.fraogmed": "As of",
     "utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI": "What country did you live in?",
     "utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandSkalDuBoI": "Which country should you live in?",
@@ -244,6 +246,16 @@
     "velkommen.text.plikter.apneLabel": "Read about your duties",
     "velkommen.under18.boblelenketekst": "A paper application can be downloaded here.",
     "velkommen.under18.bobletekst": "Because you are under the age of 18, one of your parents or a guardian must sign the application together with you. You therefore have to fill out the application in paper form and send this by mail. ",
+
     "SøkersituasjonForm.OppgiFodselEllerAdopsjon": "You must enter what applies to you",
-    "feiloppsummering.tittel": "You have to correct the following errors:"
+    "feiloppsummering.tittel": "You have to correct the following errors:",
+    "utenlandsopphold.neste12Måneder.isRequired": "You must enter where you are going to live for the next 12 months",
+    "utenlandsopphold.stotteFraNav": "Stays abroad and support from NAV",
+    "utenlandsopphold.info.del1": "For å ha rett til støtte frå NAV må du være medlem av norsk folketrygd. Personer som er bosatt i Norge er vanligvis medlemmer i folketrygden",
+    "utenlandsopphold.info.del2": "Om du beholder medlemskapet ditt i folketrygden under opphold i utlandet, avhenger av hvor du skal oppholde deg og hvor lenge du skal være der.",
+    "utenlandsopphold.info.del3": "Når du skal være i utlandet i mer enn 12 måneder, anser vi deg som bosatt i utlandet etter folketrygdlovens regler. Det samme gjelder hvis du i 2 eller flere kalenderår etter hverandre skal være i utlandet mer enn 6 måneder i året.",
+    "utenlandsopphold.info.del4": "Du er ikke lenger medlem i folketrygden når du regnes som bosatt i utlandet.",
+    "utenlandsopphold.info.undertittel": "Ferie og midlertidig opphold i utlandet",
+    "utenlandsopphold.info.del5": "Når du er på ferie i utlandet regnes du som turist og beholder medlemskapet i folketrygden, dersom du ikke har arbeidsinntekt under oppholdet og oppholdet ikke varer lenger enn 12 måneder. Så lenge du er medlem i folketrygden beholder du som hovedregel ytelsen.",
+    "utenlandsopphold.info.del6": "Du kan lese mer om utenlandsopphold på"
 }
