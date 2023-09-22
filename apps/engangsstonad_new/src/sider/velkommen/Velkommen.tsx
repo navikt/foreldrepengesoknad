@@ -14,10 +14,11 @@ import {
 import { LanguageToggle, Locale, useDocumentTitle } from '@navikt/fp-common';
 
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import ContentWrapper from 'fpcommon/components/ContentWrapper';
 import { lenker } from '../../lenker';
 import { PageKeys } from '../PageKeys';
 import Plikter from './Plikter';
-import ContentWrapper from 'fpcommon/components/ContentWrapper';
+import useEsNavigator from '../../useEsNavigator';
 
 interface Props {
     onChangeLocale: (locale: Locale) => void;
@@ -27,6 +28,8 @@ interface Props {
 
 const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad }) => {
     const intl = useIntl();
+
+    const navigator = useEsNavigator();
 
     useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
 
@@ -44,6 +47,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
             setIsError(true);
         } else {
             startSøknad();
+            navigator.goToNextStep();
         }
     }, [isChecked, startSøknad]);
 

@@ -2,15 +2,17 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Button, VStack, Link } from '@navikt/ds-react';
-import { Step, StepButtonWrapper } from '@navikt/fp-common';
+import { Button, VStack } from '@navikt/ds-react';
+import { Step } from '@navikt/fp-common';
 
-import stepConfig, { getPreviousStepHref } from '../stepConfig';
+import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
-import FremtidigPanel from './FremtidigPanel';
+import SisteUtenlandsoppholdPeriode from './SisteUtenlandsoppholdPeriode';
+import StepButtons from 'fpcommon/components/StepButtons';
+import useEsNavigator from '../../../useEsNavigator';
 
 export type FormValues = {
-    utenlandsoppholdNeste12Mnd: {
+    utenlandsoppholdSiste12Mnd: {
         fom?: string;
         tom?: string;
         landkode?: string;
@@ -18,24 +20,26 @@ export type FormValues = {
 };
 
 interface OwnProps {
-    lagretFremtidigUtenlandsopphold?: FormValues;
-    lagreFremtidigUtenlandsopphold: (data: FormValues) => void;
+    lagretSisteUtenlandsopphold?: FormValues;
+    lagreSisteUtenlandsopphold: (data: FormValues) => void;
     avbrytSøknad: () => void;
 }
 
-const FremtidigUtlandsopphold: React.FunctionComponent<OwnProps> = ({
-    lagretFremtidigUtenlandsopphold,
-    lagreFremtidigUtenlandsopphold,
+const SisteUtlandsopphold: React.FunctionComponent<OwnProps> = ({
+    lagretSisteUtenlandsopphold,
+    lagreSisteUtenlandsopphold,
     avbrytSøknad,
 }) => {
     const intl = useIntl();
 
-    const defaultValues = useMemo(() => lagretFremtidigUtenlandsopphold || { utenlandsoppholdNeste12Mnd: [{}] }, []);
+    const navigator = useEsNavigator();
+
+    const defaultValues = useMemo(() => lagretSisteUtenlandsopphold || { utenlandsoppholdSiste12Mnd: [{}] }, []);
     const formMethods = useForm<FormValues>({
         defaultValues,
     });
     const { fields, append, remove } = useFieldArray({
-        name: 'utenlandsoppholdNeste12Mnd',
+        name: 'utenlandsoppholdSiste12Mnd',
         control: formMethods.control,
     });
 
@@ -52,19 +56,19 @@ const FremtidigUtlandsopphold: React.FunctionComponent<OwnProps> = ({
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="utenlandsoppholdFremtidig"
-            pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.fremtidig' })}
+            activeStepId="utenlandsoppholdTidligere"
+            pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.tidligere' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
         >
             <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagreFremtidigUtenlandsopphold)}>
+                <form onSubmit={formMethods.handleSubmit(lagreSisteUtenlandsopphold)}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         <VStack gap="10" align="start">
                             {fields.map((_field, index) => (
                                 <>
-                                    <FremtidigPanel index={index} fjernOpphold={fjernOpphold} />
+                                    <SisteUtenlandsoppholdPeriode index={index} fjernOpphold={fjernOpphold} />
                                     {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
                                 </>
                             ))}
@@ -78,14 +82,7 @@ const FremtidigUtlandsopphold: React.FunctionComponent<OwnProps> = ({
                                 <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                             </Button>
                         </VStack>
-                        <StepButtonWrapper>
-                            <Button variant="secondary" as={Link} to={getPreviousStepHref('utenlandsoppholdFremtidig')}>
-                                <FormattedMessage id="backlink.label" />
-                            </Button>
-                            <Button type="submit">
-                                <FormattedMessage id="søknad.gåVidere" />
-                            </Button>
-                        </StepButtonWrapper>
+                        <StepButtons previousStepHref={navigator.goToPreviousStep()} />
                     </VStack>
                 </form>
             </FormProvider>
@@ -93,4 +90,4 @@ const FremtidigUtlandsopphold: React.FunctionComponent<OwnProps> = ({
     );
 };
 
-export default FremtidigUtlandsopphold;
+export default SisteUtlandsopphold;

@@ -1,19 +1,20 @@
 import { useCallback, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Step, StepButtonWrapper } from '@navikt/fp-common';
-import { Accordion, BodyShort, Button, ConfirmationPanel, Link, VStack } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
+import { Step } from '@navikt/fp-common';
+import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import Person from 'types/Person';
 import { PageKeys } from '../../PageKeys';
-import stepConfig, { getPreviousStepHref } from '../stepConfig';
+import stepConfig, { getPreviousStepHref } from '../../../stepConfig';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
 import { FormValues as UtenlandsoppholdFormFormValus } from '../utenlandsopphold/UtenlandsoppholdForm';
-import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdFremtidig/FremtidigUtlandsopphold';
-import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdTidligere/TidligereUtlandsopphold';
+import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdNeste/NesteUtlandsopphold';
+import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdSiste/SisteUtlandsopphold';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
+import StepButtons from 'fpcommon/components/StepButtons';
 
 const fullNameFormat = (fornavn: string, mellomnavn: string, etternavn: string) => {
     if (mellomnavn) {
@@ -26,8 +27,8 @@ interface Props {
     person: Person;
     omBarnet: OmBarnetFormValues;
     utenlandsopphold: UtenlandsoppholdFormFormValus;
-    utenlandsoppholdFremtidig: UtenlandsoppholdFremtidigFormFormValus;
-    utenlandsoppholdTidligere: UtenlandsoppholdTidligereFormFormValus;
+    utenlandsoppholdFremtidig?: UtenlandsoppholdFremtidigFormFormValus;
+    utenlandsoppholdTidligere?: UtenlandsoppholdTidligereFormFormValus;
     avbrytSøknad: () => void;
     sendSøknad: () => void;
 }
@@ -98,14 +99,11 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         intl.formatMessage({ id: 'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter' })
                     }
                 />
-                <StepButtonWrapper>
-                    <Button variant="secondary" as={Link} to={getPreviousStepHref('oppsummering')}>
-                        <FormattedMessage id="backlink.label" />
-                    </Button>
-                    <Button type="button" onClick={send}>
-                        <FormattedMessage id="oppsummering.button.sendSøknad" />
-                    </Button>
-                </StepButtonWrapper>
+                <StepButtons
+                    previousStepHref={getPreviousStepHref('oppsummering')}
+                    nextText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
+                    nextOnClick={send}
+                />
             </VStack>
         </Step>
     );

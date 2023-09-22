@@ -2,6 +2,7 @@ import { BodyShort, HStack, Heading, Ingress, Label, Link, VStack } from '@navik
 import { UtvidetInformasjon, bemUtils, useDocumentTitle } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { lenker } from 'fpcommon/util/lenker';
+import ContentWrapper from 'fpcommon/components/ContentWrapper';
 import Person from 'types/Person';
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import Kvittering from 'types/Kvittering';
@@ -12,7 +13,6 @@ import StatusBoks from './StatusBoks';
 import SøknadSendtIkon from './ikon/SøknadSendtIkon';
 
 import './søknadSendt.less';
-import ContentWrapper from 'fpcommon/components/ContentWrapper';
 
 interface Props {
     person: Person;

@@ -3,14 +3,12 @@ import { useIntl } from 'react-intl';
 import { Loader } from '@navikt/ds-react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Locale, erMyndig } from '@navikt/fp-common';
-import SøkersituasjonForm, {
-    FormValues as SøkersituasjonFormValues,
-} from './sider/steg/sokersituasjon/SøkersituasjonForm';
+import SøkersituasjonSteg from './sider/steg/sokersituasjon/SøkersituasjonSteg';
 import Velkommen from './sider/velkommen/Velkommen';
 import OmBarnetForm, { FormValues as OmBarnetFormValues } from './sider/steg/omBarnet/OmBarnetForm';
-import UtenlandsoppholdForm, {
+import UtenlandsoppholdSteg, {
     FormValues as UtenlandsoppholdFormFormValus,
-} from './sider/steg/utenlandsopphold/UtenlandsoppholdForm';
+} from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
 import Oppsummering from './sider/steg/oppsummering/Oppsummering';
 import { lenker } from './lenker';
 import { useRequest } from './fpcommon/api/apiHooks';
@@ -19,13 +17,11 @@ import Person from './types/Person';
 import Kvittering from './types/Kvittering';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
-import FremtidigUtlandsopphold, {
-    FormValues as FremtidigUtenlandsoppholdFormValues,
-} from './sider/steg/utlandsoppholdFremtidig/FremtidigUtlandsopphold';
-import TidligereUtlandsopphold, {
-    FormValues as TidligereutenlandsoppholdFormValues,
-} from './sider/steg/utlandsoppholdTidligere/TidligereUtlandsopphold';
+import NesteUtlandsopphold from './sider/steg/utlandsoppholdNeste/NesteUtlandsopphold';
+import SisteUtlandsopphold from './sider/steg/utlandsoppholdSiste/SisteUtlandsopphold';
 import Feilside from 'fpcommon/components/feilside/Feilside';
+import { Søkersituasjon } from 'types/Søkersituasjon';
+import { Path } from './useEsNavigator';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -41,18 +37,14 @@ interface Props {
 const useDataHåndterer = (locale: Locale) => {
     const navigate = useNavigate();
 
-    const [lagretSøkersituasjon, lagreSøkersituasjon] = useState<SøkersituasjonFormValues | undefined>();
+    const [lagretSøkersituasjon, lagreSøkersituasjon] = useState<Søkersituasjon | undefined>();
     const [lagretOmBarnet, lagreOmBarnet] = useState<OmBarnetFormValues | undefined>();
     const [lagretUtenlandsopphold, lagreUtenlandsopphold] = useState<UtenlandsoppholdFormFormValus | undefined>();
-    const [lagretFremtidigUtenlandsopphold, lagreFremtidigUtenlandsopphold] = useState<
-        FremtidigUtenlandsoppholdFormValues | undefined
-    >();
-    const [lagretTidligereUtenlandsopphold, lagreTidligereUtenlandsopphold] = useState<
-        TidligereutenlandsoppholdFormValues | undefined
-    >();
+    const [lagretFremtidigUtenlandsopphold, lagreFremtidigUtenlandsopphold] = useState<any | undefined>();
+    const [lagretTidligereUtenlandsopphold, lagreTidligereUtenlandsopphold] = useState<any | undefined>();
 
-    const lagreSøkersituasjonOgGåTilOmBarnet = useCallback((form: SøkersituasjonFormValues) => {
-        lagreSøkersituasjon(form);
+    const lagreSøkersituasjonOgGåTilOmBarnet = useCallback((søkersituasjon: Søkersituasjon) => {
+        lagreSøkersituasjon(søkersituasjon);
         navigate('/soknad/om-barnet');
     }, []);
     const lagreOmBarnetOgGårTilUtenlandsopphold = useCallback((form: OmBarnetFormValues) => {
@@ -62,31 +54,28 @@ const useDataHåndterer = (locale: Locale) => {
     const lagreUtenlandsoppholdOgGåTilNeste = useCallback((form: UtenlandsoppholdFormFormValus) => {
         lagreUtenlandsopphold(form);
         if (form.skalBoUtenforNorgeNeste12Mnd) {
-            navigate('/soknad/fremtidig-utenlandsopphold');
+            navigate('/soknad/neste-utenlandsopphold');
         } else if (lagretUtenlandsopphold?.harBoddUtenforNorgeSiste12Mnd) {
-            navigate('/soknad/tidligere-utenlandsopphold');
+            navigate('/soknad/siste-utenlandsopphold');
         } else {
             navigate('/soknad/oppsummering');
         }
     }, []);
     const lagreFremtidigUtenlandsoppholdOgGåTilNeste = useCallback(
-        (form: FremtidigUtenlandsoppholdFormValues) => {
+        (form: any) => {
             lagreFremtidigUtenlandsopphold(form);
             if (lagretUtenlandsopphold?.harBoddUtenforNorgeSiste12Mnd) {
-                navigate('/soknad/tidligere-utenlandsopphold');
+                navigate('/soknad/siste-utenlandsopphold');
             } else {
                 navigate('/soknad/oppsummering');
             }
         },
         [lagretUtenlandsopphold],
     );
-    const lagreTidligereUtenlandsoppholdOgGåTilOppsummering = useCallback(
-        (form: TidligereutenlandsoppholdFormValues) => {
-            lagreTidligereUtenlandsopphold(form);
-            navigate('/soknad/oppsummering');
-        },
-        [],
-    );
+    const lagreTidligereUtenlandsoppholdOgGåTilOppsummering = useCallback((form: any) => {
+        lagreTidligereUtenlandsopphold(form);
+        navigate('/soknad/oppsummering');
+    }, []);
 
     const [kvittering, setKvittering] = useState<Kvittering | undefined>();
 
@@ -138,7 +127,6 @@ const useDataHåndterer = (locale: Locale) => {
 
 const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
 
     const [erVelkommen, setVelkommen] = useState(false);
 
@@ -146,7 +134,6 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
 
     const gåTilSøkersituasjon = useCallback(() => {
         setVelkommen(true);
-        navigate('/soknad/søkersituasjon');
     }, []);
 
     const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
@@ -189,28 +176,26 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     return (
         <Routes>
             <Route
-                path="/"
+                path={Path.VELKOMMEN}
                 element={
                     <Velkommen locale={locale} onChangeLocale={onChangeLocale} startSøknad={gåTilSøkersituasjon} />
                 }
             />
-            {!erVelkommen && <Route path="*" element={<Navigate to="/" />} />}
+            {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
             {erVelkommen && (
                 <>
                     <Route
-                        path="/soknad/søkersituasjon"
+                        path={Path.SØKERSITUASJON}
                         element={
-                            <SøkersituasjonForm
+                            <SøkersituasjonSteg
                                 lagretSøkersituasjon={data.lagretSøkersituasjon}
                                 lagreSøkersituasjon={lagre.lagreSøkersituasjonOgGåTilOmBarnet}
-                                avbrytSøknad={avbrytSøknad}
-                                gåTilForrige={() => undefined}
                             />
                         }
                     />
                     {data.lagretSøkersituasjon && (
                         <Route
-                            path="/soknad/om-barnet"
+                            path={Path.OM_BARNET}
                             element={
                                 <OmBarnetForm
                                     kjønn={person.kjønn}
@@ -224,9 +209,9 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     )}
                     {data.lagretOmBarnet && (
                         <Route
-                            path="/soknad/utenlandsopphold"
+                            path={Path.UTENLANDSOPPHOLD}
                             element={
-                                <UtenlandsoppholdForm
+                                <UtenlandsoppholdSteg
                                     lagreUtenlandsopphold={lagre.lagreUtenlandsoppholdOgGåTilNeste}
                                     lagretUtenlandsopphold={data.lagretUtenlandsopphold}
                                     avbrytSøknad={avbrytSøknad}
@@ -236,11 +221,11 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     )}
                     {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
                         <Route
-                            path="/soknad/fremtidig-utenlandsopphold"
+                            path={Path.NESTE_UTENLANDSOPPHOLD}
                             element={
-                                <FremtidigUtlandsopphold
-                                    lagretFremtidigUtenlandsopphold={data.lagretFremtidigUtenlandsopphold}
-                                    lagreFremtidigUtenlandsopphold={lagre.lagreFremtidigUtenlandsoppholdOgGåTilNeste}
+                                <NesteUtlandsopphold
+                                    lagretNesteUtenlandsopphold={data.lagretFremtidigUtenlandsopphold}
+                                    lagreNesteUtenlandsopphold={lagre.lagreFremtidigUtenlandsoppholdOgGåTilNeste}
                                     avbrytSøknad={avbrytSøknad}
                                 />
                             }
@@ -248,13 +233,11 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     )}
                     {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
                         <Route
-                            path="/soknad/tidligere-utenlandsopphold"
+                            path={Path.SISTE_UTENLANDSOPPHOLD}
                             element={
-                                <TidligereUtlandsopphold
-                                    lagretTidligereUtenlandsopphold={data.lagretTidligereUtenlandsopphold}
-                                    lagreTidligereUtenlandsopphold={
-                                        lagre.lagreTidligereUtenlandsoppholdOgGåTilOppsummering
-                                    }
+                                <SisteUtlandsopphold
+                                    lagretSisteUtenlandsopphold={data.lagretTidligereUtenlandsopphold}
+                                    lagreSisteUtenlandsopphold={lagre.lagreTidligereUtenlandsoppholdOgGåTilOppsummering}
                                     avbrytSøknad={avbrytSøknad}
                                 />
                             }
@@ -262,7 +245,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     )}
                     {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
                         <Route
-                            path="/soknad/oppsummering"
+                            path={Path.OPPSUMMERING}
                             element={
                                 <Oppsummering
                                     person={person}
@@ -278,7 +261,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     )}
                     {data.kvittering && (
                         <Route
-                            path="/kvittering"
+                            path={Path.KVITTERING}
                             element={<SøknadSendt person={person} kvittering={data.kvittering} />}
                         />
                     )}

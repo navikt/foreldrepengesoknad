@@ -21,7 +21,7 @@ interface OwnProps {
     fjernOpphold: (index: number) => void;
 }
 
-const TidligerePanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
+const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
     const intl = useIntl();
     const { watch } = useFormContext<{ utenlandsoppholdSiste12Mnd: FormValues[] }>();
 
@@ -138,4 +138,4 @@ const TidligerePanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold
     );
 };
 
-export default TidligerePanel;
+export default SisteUtenlandsoppholdPeriode;

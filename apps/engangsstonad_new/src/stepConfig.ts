@@ -1,15 +1,15 @@
 type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
-type UtenlandsoppholdFremtidigStepId = 'utenlandsoppholdFremtidig';
-type UtenlandsoppholdTidligereStepId = 'utenlandsoppholdTidligere';
+type NesteUtenlandsoppholdStepId = 'nesteUtenlandsopphold';
+type SisteUtenlandsoppholdStepId = 'sisteUtenlandsopphold';
 type OppsummeringStepId = 'oppsummering';
 type StepIdWithBackHref =
     | SøkersituasjonStepId
     | OmBarnetStepId
     | UtenlandsoppholdStepId
-    | UtenlandsoppholdFremtidigStepId
-    | UtenlandsoppholdTidligereStepId
+    | NesteUtenlandsoppholdStepId
+    | SisteUtenlandsoppholdStepId
     | OppsummeringStepId;
 export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
 interface StepConfig {
@@ -36,12 +36,12 @@ const stepConfig: StepConfig[] = [
         label: 'Utenlandsopphold',
     },
     {
-        id: 'utenlandsoppholdFremtidig',
+        id: 'nesteUtenlandsopphold',
         index: 3,
         label: 'Skal bo i utlandet',
     },
     {
-        id: 'utenlandsoppholdTidligere',
+        id: 'sisteUtenlandsopphold',
         index: 4,
         label: 'Har bodd i utlandet',
     },
@@ -63,11 +63,11 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
         case 'utenlandsopphold':
             href = '/soknad/om-barnet';
             break;
-        case 'utenlandsoppholdFremtidig':
-            href = '/soknad/utenlandsopphold';
+        case 'sisteUtenlandsopphold':
+            href = '/soknad/siste-utenlandsopphold';
             break;
-        case 'utenlandsoppholdTidligere':
-            href = '/soknad/fremtidig-utenlandsopphold';
+        case 'nesteUtenlandsopphold':
+            href = '/soknad/neste-utenlandsopphold';
             break;
         case 'oppsummering':
             href = '/soknad/utenlandsopphold';

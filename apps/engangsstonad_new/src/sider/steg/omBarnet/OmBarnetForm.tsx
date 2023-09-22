@@ -4,19 +4,19 @@ import { Button, Link } from '@navikt/ds-react';
 import { Block, Kjønn, Step, StepButtonWrapper, useDocumentTitle } from '@navikt/fp-common';
 
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
-import stepConfig, { getPreviousStepHref } from '../stepConfig';
+import stepConfig, { getPreviousStepHref } from '../../../stepConfig';
 import { PageKeys } from '../../PageKeys';
-import { FormValues as SøkersituasjonFormValues, Søkersituasjon } from '../sokersituasjon/SøkersituasjonForm';
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 
 import './omBarnet.less';
+import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 export type FormValues = FødtFormValues & AdopsjonFormValues;
 
 interface Props {
     kjønn: Kjønn;
-    søkersituasjon: SøkersituasjonFormValues;
+    søkersituasjon: Søkersituasjon;
     lagretOmBarnet?: FormValues;
     lagreOmBarnet: (data: FormValues) => void;
     avbrytSøknad: () => void;
@@ -58,8 +58,8 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagreOmBarnet)}>
-                    {søkersituasjon.situasjon === Søkersituasjon.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}
-                    {søkersituasjon.situasjon === Søkersituasjon.FØDSEL && <FødselPanel />}
+                    {søkersituasjon.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}
+                    {søkersituasjon.situasjon === SøkersituasjonEnum.FØDSEL && <FødselPanel />}
                     <Block margin="xl" textAlignCenter={true}>
                         <StepButtonWrapper>
                             <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>

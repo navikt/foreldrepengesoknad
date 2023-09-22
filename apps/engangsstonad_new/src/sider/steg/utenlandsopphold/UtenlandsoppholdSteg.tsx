@@ -1,27 +1,26 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Step, StepButtonWrapper } from '@navikt/fp-common';
-import { Link, Button, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack } from '@navikt/ds-react';
+import { Step } from '@navikt/fp-common';
+import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
-import stepConfig, { getPreviousStepHref } from '../stepConfig';
+import stepConfig, { getPreviousStepHref } from '../../../stepConfig';
 import { PageKeys } from '../../PageKeys';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
+import { Utenlandsopphold } from 'types/Utenlandsopphold';
+import StepButtons from 'fpcommon/components/StepButtons';
 
-export type FormValues = {
-    harBoddUtenforNorgeSiste12Mnd: boolean;
-    skalBoUtenforNorgeNeste12Mnd: boolean;
-};
+export type FormValues = Utenlandsopphold;
 
 interface OwnProps {
-    lagretUtenlandsopphold?: FormValues;
-    lagreUtenlandsopphold: (data: FormValues) => void;
+    lagretUtenlandsopphold?: Utenlandsopphold;
+    lagreUtenlandsopphold: (data: Utenlandsopphold) => void;
     avbrytSøknad: () => void;
 }
 
-const UtenlandsoppholdForm: React.FunctionComponent<OwnProps> = ({
+const UtenlandsoppholdSteg: React.FunctionComponent<OwnProps> = ({
     lagretUtenlandsopphold,
     lagreUtenlandsopphold,
     avbrytSøknad,
@@ -122,14 +121,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<OwnProps> = ({
                                 </VStack>
                             </ExpansionCard.Content>
                         </ExpansionCard>
-                        <StepButtonWrapper>
-                            <Button variant="secondary" as={Link} to={getPreviousStepHref('utenlandsopphold')}>
-                                <FormattedMessage id="backlink.label" />
-                            </Button>
-                            <Button type="submit">
-                                <FormattedMessage id="søknad.gåVidere" />
-                            </Button>
-                        </StepButtonWrapper>
+                        <StepButtons previousStepHref={getPreviousStepHref('utenlandsopphold')} />
                     </VStack>
                 </form>
             </FormProvider>
@@ -137,4 +129,4 @@ const UtenlandsoppholdForm: React.FunctionComponent<OwnProps> = ({
     );
 };
 
-export default UtenlandsoppholdForm;
+export default UtenlandsoppholdSteg;

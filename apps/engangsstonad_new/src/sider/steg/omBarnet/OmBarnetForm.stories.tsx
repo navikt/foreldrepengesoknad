@@ -3,10 +3,10 @@ import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import OmBarnetForm from './OmBarnetForm';
 import IntlProvider from '../../../intl/IntlProvider';
-import { Søkersituasjon } from '../sokersituasjon/SøkersituasjonForm';
 
 import '@navikt/ds-css';
 import '../../../fpcommon/styles/globals.less';
+import { Søkersituasjon } from 'types/Søkersituasjon';
 
 export default {
     title: 'OmBarnetForm',

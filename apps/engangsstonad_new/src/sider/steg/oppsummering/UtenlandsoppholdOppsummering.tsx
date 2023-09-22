@@ -4,14 +4,14 @@ import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
 import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
 import { FormValues as UtenlandsoppholdFormFormValus } from '../utenlandsopphold/UtenlandsoppholdForm';
-import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdFremtidig/FremtidigUtlandsopphold';
-import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdTidligere/TidligereUtlandsopphold';
+import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdNeste/NesteUtlandsopphold';
+import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdSiste/SisteUtlandsopphold';
 
 interface Props {
     barn: OmBarnetFormValues;
     informasjonOmUtenlandsopphold: UtenlandsoppholdFormFormValus;
-    utenlandsoppholdFremtidig: UtenlandsoppholdFremtidigFormFormValus;
-    utenlandsoppholdTidligere: UtenlandsoppholdTidligereFormFormValus;
+    utenlandsoppholdFremtidig?: UtenlandsoppholdFremtidigFormFormValus;
+    utenlandsoppholdTidligere?: UtenlandsoppholdTidligereFormFormValus;
 }
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {

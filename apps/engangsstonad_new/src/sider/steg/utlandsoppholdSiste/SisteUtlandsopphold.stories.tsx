@@ -1,21 +1,21 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import FremtidigUtlandsopphold from './FremtidigUtlandsopphold';
+import SisteUtlandsopphold from './SisteUtlandsopphold';
 import IntlProvider from 'intl/IntlProvider';
 
 import '@navikt/ds-css';
 import 'fpcommon/styles/globals.less';
 
 export default {
-    title: 'FremtidigUtlandsopphold',
-    component: FremtidigUtlandsopphold,
+    title: 'SisteUtlandsopphold',
+    component: SisteUtlandsopphold,
 };
 
 const Template: StoryFn<any> = () => {
     return (
         <IntlProvider språkkode="nb">
-            <FremtidigUtlandsopphold
-                lagreFremtidigUtenlandsopphold={action('button-click')}
+            <SisteUtlandsopphold
+                lagreSisteUtenlandsopphold={action('button-click')}
                 avbrytSøknad={action('button-click')}
             />
         </IntlProvider>
