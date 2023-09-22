@@ -76,7 +76,7 @@ const useGetAnnenPartsVedtak = (
 };
 
 const useGetDokumenter = (saksnr: string) => {
-    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/dokument/alle/v2',{
+    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/dokument/alle',{
         config: { withCredentials: true, params: { saksnummer: saksnr } },
     });
 
