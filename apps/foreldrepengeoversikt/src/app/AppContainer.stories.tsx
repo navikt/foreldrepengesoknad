@@ -36,7 +36,7 @@ const Template: StoryFn<any> = () => {
     apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
     apiMock.onGet('/innsyn/v2/saker').reply(200, saker);
     apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartsVedtak);
-    apiMock.onGet('/dokument/alle/v2').reply(200, dokumenter);
+    apiMock.onGet('/dokument/alle').reply(200, dokumenter);
     apiMock.onGet('/innsyn/tidslinje').reply(200, tidslinjeHendelser);
     apiMock.onGet('/minidialog').reply(200, miniDialog);
     apiMock.onGet('/historikk/vedlegg').reply(200, manglendeVedlegg);
