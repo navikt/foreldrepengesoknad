@@ -13,7 +13,6 @@ import UtenlandsoppholdForm, {
 } from './sider/steg/utenlandsopphold/UtenlandsoppholdForm';
 import Oppsummering from './sider/steg/oppsummering/Oppsummering';
 import { lenker } from './lenker';
-import Feilside from './sider/feilside/Feilside';
 import { useRequest } from './fpcommon/api/apiHooks';
 import Api from './api';
 import Person from './types/Person';
@@ -26,6 +25,7 @@ import FremtidigUtlandsopphold, {
 import TidligereUtlandsopphold, {
     FormValues as TidligereutenlandsoppholdFormValues,
 } from './sider/steg/utlandsoppholdTidligere/TidligereUtlandsopphold';
+import Feilside from 'fpcommon/components/feilside/Feilside';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>

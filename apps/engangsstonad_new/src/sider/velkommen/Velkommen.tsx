@@ -11,14 +11,13 @@ import {
     ReadMore,
     VStack,
 } from '@navikt/ds-react';
-import { LanguageToggle, Locale, bemUtils, useDocumentTitle } from '@navikt/fp-common';
+import { LanguageToggle, Locale, useDocumentTitle } from '@navikt/fp-common';
 
-import { logAmplitudeEvent } from '../../fpcommon/amplitude/amplitude';
+import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import { lenker } from '../../lenker';
 import { PageKeys } from '../PageKeys';
 import Plikter from './Plikter';
-
-import './velkommen.less';
+import ContentWrapper from 'fpcommon/components/ContentWrapper';
 
 interface Props {
     onChangeLocale: (locale: Locale) => void;
@@ -28,7 +27,6 @@ interface Props {
 
 const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad }) => {
     const intl = useIntl();
-    const bem = bemUtils('velkommen');
 
     useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
 
@@ -56,57 +54,59 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                 availableLocales={['en', 'nb', 'nn']}
                 toggle={(l: Locale) => onChangeLocale(l)}
             />
-            <VStack gap="10" className={bem.block}>
-                <HStack justify="center">
-                    <Heading size="large">
-                        <FormattedMessage id={'velkommen.standard.velkommentittel'} />
-                    </Heading>
-                </HStack>
-                <GuidePanel poster>
-                    <FormattedMessage id="velkommen.standard.ingress" />
-                    <ul>
-                        <li>
-                            <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
-                        </li>
-                        <li>
-                            <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
-                        </li>
-                    </ul>
-                </GuidePanel>
-                <Alert variant="info">
-                    <VStack gap="5">
-                        <FormattedMessage id="velkommen.text.veiviser" />
-                        <a className="lenke" rel="noopener noreferrer" href={lenker.veiviser} target="_blank">
-                            <FormattedMessage id={'velkommen.text.veiviser.lenke'} />
-                        </a>
-                    </VStack>
-                </Alert>
-                <ConfirmationPanel
-                    label={intl.formatMessage({ id: 'velkommen.text.samtykke' })}
-                    onChange={() => setChecked((state) => !state)}
-                    checked={isChecked}
-                    error={
-                        isError &&
-                        !isChecked &&
-                        intl.formatMessage({ id: 'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter' })
-                    }
-                >
-                    <VStack gap="5">
-                        <FormattedMessage id="velkommen.text.samtykkeIntro" />
-                        <ReadMore header={intl.formatMessage({ id: 'velkommen.text.plikter.apneLabel' })}>
-                            <Plikter />
-                        </ReadMore>
-                        <BodyShort>
-                            <FormattedMessage id="velkommen.text.kunEnStønad" />
-                        </BodyShort>
-                    </VStack>
-                </ConfirmationPanel>
-                <HStack justify="center">
-                    <Button type="button" onClick={bekreft}>
-                        <FormattedMessage id="velkommen.button.startSøknad" />
-                    </Button>
-                </HStack>
-            </VStack>
+            <ContentWrapper>
+                <VStack gap="10">
+                    <HStack justify="center">
+                        <Heading size="large">
+                            <FormattedMessage id={'velkommen.standard.velkommentittel'} />
+                        </Heading>
+                    </HStack>
+                    <GuidePanel poster>
+                        <FormattedMessage id="velkommen.standard.ingress" />
+                        <ul>
+                            <li>
+                                <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
+                            </li>
+                            <li>
+                                <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
+                            </li>
+                        </ul>
+                    </GuidePanel>
+                    <Alert variant="info">
+                        <VStack gap="5">
+                            <FormattedMessage id="velkommen.text.veiviser" />
+                            <a className="lenke" rel="noopener noreferrer" href={lenker.veiviser} target="_blank">
+                                <FormattedMessage id={'velkommen.text.veiviser.lenke'} />
+                            </a>
+                        </VStack>
+                    </Alert>
+                    <ConfirmationPanel
+                        label={intl.formatMessage({ id: 'velkommen.text.samtykke' })}
+                        onChange={() => setChecked((state) => !state)}
+                        checked={isChecked}
+                        error={
+                            isError &&
+                            !isChecked &&
+                            intl.formatMessage({ id: 'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter' })
+                        }
+                    >
+                        <VStack gap="5">
+                            <FormattedMessage id="velkommen.text.samtykkeIntro" />
+                            <ReadMore header={intl.formatMessage({ id: 'velkommen.text.plikter.apneLabel' })}>
+                                <Plikter />
+                            </ReadMore>
+                            <BodyShort>
+                                <FormattedMessage id="velkommen.text.kunEnStønad" />
+                            </BodyShort>
+                        </VStack>
+                    </ConfirmationPanel>
+                    <HStack justify="center">
+                        <Button type="button" onClick={bekreft}>
+                            <FormattedMessage id="velkommen.button.startSøknad" />
+                        </Button>
+                    </HStack>
+                </VStack>
+            </ContentWrapper>
         </>
     );
 };

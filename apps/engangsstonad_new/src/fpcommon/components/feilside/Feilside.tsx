@@ -2,14 +2,13 @@ import { FunctionComponent, ReactNode } from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from '@navikt/ds-icons';
 import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
-import { Heading, Ingress } from '@navikt/ds-react';
-import { Locale, bemUtils, Block, LanguageToggle, Sidebanner } from '@navikt/fp-common';
+import { BodyShort, Heading, Ingress, VStack } from '@navikt/ds-react';
+import { Locale, LanguageToggle, Sidebanner } from '@navikt/fp-common';
 import { Språkkode } from 'intl/types';
 
-import './feilside.less';
+import ContentWrapper from '../ContentWrapper';
 
 export interface Props {
-    containerId?: string;
     dokumenttittel: string;
     illustrasjon?: {
         tittel: string;
@@ -27,7 +26,6 @@ export interface Props {
 }
 
 const Feilside: FunctionComponent<Props> = ({
-    containerId,
     dokumenttittel,
     illustrasjon,
     tittel,
@@ -35,8 +33,6 @@ const Feilside: FunctionComponent<Props> = ({
     språkkode,
     setLanguage,
 }) => {
-    const bem = bemUtils('feilside');
-
     return (
         <>
             <DocumentTitle title={dokumenttittel} />
@@ -48,28 +44,24 @@ const Feilside: FunctionComponent<Props> = ({
                     dialog={{
                         title: illustrasjon.tittel,
                         text: (
-                            <>
-                                <Block padBottom="m">{illustrasjon.tekst}</Block>
-                                {illustrasjon.lenke && (
-                                    <Link className="intro-snakkelenke" href={illustrasjon.lenke.url}>
-                                        {illustrasjon.lenke.tekst}
-                                    </Link>
-                                )}
-                            </>
+                            <VStack gap="4">
+                                <div>
+                                    <BodyShort>{illustrasjon.tekst}</BodyShort>
+                                    {illustrasjon.lenke && (
+                                        <Link href={illustrasjon.lenke.url}>{illustrasjon.lenke.tekst}</Link>
+                                    )}
+                                </div>
+                            </VStack>
                         ),
                     }}
                 />
             )}
-            <div id={containerId} className={bem.block}>
-                <div className="responsiveContainer">
-                    <div className="blokk-s">
-                        <Heading size="large">{tittel}</Heading>
-                    </div>
-                    <div className="blokk-l">
-                        <Ingress>{ingress}</Ingress>
-                    </div>
-                </div>
-            </div>
+            <ContentWrapper>
+                <VStack gap="2">
+                    <Heading size="large">{tittel}</Heading>
+                    <Ingress>{ingress}</Ingress>
+                </VStack>
+            </ContentWrapper>
         </>
     );
 };

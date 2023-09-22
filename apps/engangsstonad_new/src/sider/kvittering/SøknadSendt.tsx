@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { lenker } from 'fpcommon/util/lenker';
 import Person from 'types/Person';
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
-import ContentWrapper from 'fpcommon/ContentWrapper';
 import Kvittering from 'types/Kvittering';
 import { PageKeys } from '../PageKeys';
 import KvitteringHeader from './KvitteringHeader';
@@ -13,6 +12,7 @@ import StatusBoks from './StatusBoks';
 import SøknadSendtIkon from './ikon/SøknadSendtIkon';
 
 import './søknadSendt.less';
+import ContentWrapper from 'fpcommon/components/ContentWrapper';
 
 interface Props {
     person: Person;
@@ -21,6 +21,7 @@ interface Props {
 
 const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) => {
     const intl = useIntl();
+
     useDocumentTitle(intl.formatMessage({ id: 'søknadSendt.dokumenttittel' }));
 
     logAmplitudeEvent('sidevisning', {
@@ -39,8 +40,10 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) =>
             <ContentWrapper>
                 <VStack gap="10">
                     <KvitteringHeader søker={person} kvittering={kvittering} />
-                    <HStack gap="4" className={bem.element('suksess')}>
-                        <CheckmarkIkon />
+                    <HStack gap="4" wrap={false} className={bem.element('suksess')}>
+                        <div>
+                            <CheckmarkIkon />
+                        </div>
                         <VStack gap="4">
                             <Heading size="small">
                                 <FormattedMessage id="søknadSendt.info.tittel" />
@@ -51,8 +54,10 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) =>
                         </VStack>
                     </HStack>
                     <section>
-                        <HStack gap="8">
-                            <SøknadSendtIkon type="cash" />
+                        <HStack gap="8" wrap={false}>
+                            <div>
+                                <SøknadSendtIkon type="cash" />
+                            </div>
                             <VStack gap="4">
                                 <VStack gap="1">
                                     <Heading size="small">
