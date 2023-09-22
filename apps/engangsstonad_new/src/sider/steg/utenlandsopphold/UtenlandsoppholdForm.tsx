@@ -78,7 +78,6 @@ const UtenlandsoppholdForm: React.FunctionComponent<OwnProps> = ({
                                 <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet" />
                             </Radio>
                         </RadioGroupPanel>
-
                         <ExpansionCard
                             size="small"
                             aria-label={intl.formatMessage({ id: 'utenlandsopphold.stotteFraNav' })}

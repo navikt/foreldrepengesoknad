@@ -1,7 +1,9 @@
-import { useIntl } from 'react-intl';
-import { Block, DisplayTextWithLabel, formatDate, guid } from '@navikt/fp-common';
-import { BodyLong, Label } from '@navikt/ds-react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { formatDate } from '@navikt/fp-common';
+import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
+import AttachmentList from 'fpcommon/uploader/liste/AttachmentList';
+import { isAttachmentWithError } from 'fpcommon/uploader/fileUtils';
 
 interface Props {
     barn: OmBarnetFormValues;
@@ -27,80 +29,80 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ barn }) => {
     }
 
     return (
-        <div>
-            <Block padBottom="l">
-                <DisplayTextWithLabel
-                    label={intl.formatMessage({ id: 'oppsummering.text.soknadenGjelder' })}
-                    text={antallBarnSummaryText}
-                />
-            </Block>
+        <VStack gap="4">
+            <HStack gap="2">
+                <BodyShort>
+                    <FormattedMessage id={'oppsummering.text.soknadenGjelder'} />
+                </BodyShort>
+                <BodyShort>{antallBarnSummaryText}</BodyShort>
+            </HStack>
             {barn.adopsjonAvEktefellesBarn !== undefined && (
-                <div>
-                    <Block padBottom="l">
-                        <DisplayTextWithLabel
-                            label={intl.formatMessage({ id: 'oppsummering.text.medAdopsjonsdato' })}
-                            text={formatDate(barn.adopsjonsdato!)}
-                        />
-                    </Block>
-                    <Block padBottom="l">
-                        <Label className="textWithLabel__label">
-                            {barn.fødselsdatoer.length > 1
-                                ? intl.formatMessage({ id: 'oppsummering.text.medFødselsdatoer' })
-                                : intl.formatMessage({ id: 'oppsummering.text.medFødselsdato' })}
-                        </Label>
-                        {barn.fødselsdatoer.map((_, index) => {
-                            return (
-                                <Block padBottom="s" key={guid()}>
-                                    <BodyLong>{formatDate(barn.fødselsdatoer[index])}</BodyLong>
-                                </Block>
-                            );
-                        })}
-                    </Block>
-                </div>
+                <>
+                    <HStack gap="2">
+                        <BodyShort>
+                            <FormattedMessage id={'oppsummering.text.medAdopsjonsdato'} />
+                        </BodyShort>
+                        <BodyShort>{formatDate(barn.adopsjonsdato!)}</BodyShort>
+                    </HStack>
+                    <HStack gap="2">
+                        <BodyShort>
+                            <FormattedMessage
+                                id={
+                                    barn.fødselsdatoer.length > 1
+                                        ? intl.formatMessage({ id: 'oppsummering.text.medFødselsdatoer' })
+                                        : intl.formatMessage({ id: 'oppsummering.text.medFødselsdato' })
+                                }
+                            />
+                        </BodyShort>
+                        <BodyLong>
+                            {barn.fødselsdatoer
+                                .map((_, index) => {
+                                    return formatDate(barn.fødselsdatoer[index]);
+                                })
+                                .join(', ')}
+                        </BodyLong>
+                    </HStack>
+                </>
             )}
             {barn.adopsjonAvEktefellesBarn !== undefined && (
-                <Block padBottom="l" className="oppsummering__attachments">
-                    <Label className="textWithLabel__label">
-                        {intl.formatMessage({ id: 'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse' })}
+                <>
+                    <Label>
+                        <FormattedMessage id={'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse'} />
                     </Label>
-                    {/*<AttachmentList
-                        attachments={barn.omsorgsovertakelse.filter((a: Attachment) => !isAttachmentWithError(a))}
-            />*/}
-                </Block>
+                    <AttachmentList attachments={barn.vedlegg.filter((a) => !isAttachmentWithError(a))} />
+                </>
             )}
-            {barn.erBarnetFødt && (
-                <Block padBottom="l">
-                    <DisplayTextWithLabel
-                        label={intl.formatMessage({ id: 'oppsummering.text.medFødselsdato' })}
-                        text={formatDate(barn.fødselsdatoer[0])}
-                    />
-                </Block>
+            {barn.erBarnetFødt && barn.fødselsdatoer && (
+                <HStack gap="2">
+                    <BodyShort>
+                        <FormattedMessage id={'oppsummering.text.medFødselsdato'} />
+                    </BodyShort>
+                    <BodyShort>{formatDate(barn.fødselsdatoer[0])}</BodyShort>
+                </HStack>
             )}
             {barn.erBarnetFødt === false && barn.termindato && barn.terminbekreftelsedato && (
-                <div>
-                    <Block padBottom="l">
-                        <DisplayTextWithLabel
-                            label={intl.formatMessage({ id: 'oppsummering.text.medTermindato' })}
-                            text={formatDate(barn.termindato)}
-                        />
-                    </Block>
-                    <Block padBottom="l" className="oppsummering__attachments">
-                        <Label className="textWithLabel__label">
-                            {intl.formatMessage({ id: 'oppsummering.text.vedlagtTerminbekreftelse' })}
+                <>
+                    <HStack gap="2">
+                        <BodyShort>
+                            <FormattedMessage id={'oppsummering.text.medTermindato'} />
+                        </BodyShort>
+                        <BodyShort>{formatDate(barn.termindato)}</BodyShort>
+                    </HStack>
+                    <HStack gap="2">
+                        <BodyShort>
+                            <FormattedMessage id={'oppsummering.text.somErDatert'} />
+                        </BodyShort>
+                        <BodyShort>{formatDate(barn.terminbekreftelsedato)}</BodyShort>
+                    </HStack>
+                    <>
+                        <Label>
+                            <FormattedMessage id={'oppsummering.text.vedlagtTerminbekreftelse'} />
                         </Label>
-                        {/*<AttachmentList
-                            attachments={barn.terminbekreftelse.filter((a: Attachment) => !isAttachmentWithError(a))}
-            />*/}
-                    </Block>
-                    <Block padBottom="l">
-                        <DisplayTextWithLabel
-                            label={intl.formatMessage({ id: 'oppsummering.text.somErDatert' })}
-                            text={formatDate(barn.terminbekreftelsedato)}
-                        />
-                    </Block>
-                </div>
+                        <AttachmentList attachments={barn.vedlegg.filter((a) => !isAttachmentWithError(a))} />
+                    </>
+                </>
             )}
-        </div>
+        </VStack>
     );
 };
 export default OmBarnetOppsummering;

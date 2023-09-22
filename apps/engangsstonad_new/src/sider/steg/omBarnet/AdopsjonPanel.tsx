@@ -19,7 +19,7 @@ export type FormValues = {
     antallBarn?: number;
     antallBarnDropDown?: number;
     søkerAdopsjonAlene?: boolean;
-    vedlegg: Attachment[];
+    vedlegg?: Attachment[];
 } & FieldArrayFormValues;
 
 const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {

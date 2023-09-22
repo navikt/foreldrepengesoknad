@@ -1,11 +1,12 @@
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
-import { Heading, Label, Link } from '@navikt/ds-react';
-import { bemUtils, Block, VedleggIkon } from '@navikt/fp-common';
+import { HStack, Heading, Label, Link, VStack } from '@navikt/ds-react';
+import { bemUtils, VedleggIkon } from '@navikt/fp-common';
 
 import Person from 'types/Person';
 import Kvittering from 'types/Kvittering';
-import SpotlightLetter from './SpotlightLetter';
+import SpotlightLetter from './ikon/SpotlightLetter';
+import { openPdfPreview } from 'fpcommon/util/pdfUtils';
 
 import './kvitteringHeader.less';
 
@@ -23,51 +24,37 @@ const KvitteringHeader: React.FunctionComponent<Props> = ({ søker, kvittering }
     const bem = bemUtils('kvitteringHeader');
 
     return (
-        <div className={bem.block}>
-            <Block margin="m">
-                <SpotlightLetter className={bem.element('spotlightLetter')} />
-            </Block>
-
-            <Block margin="l">
-                <Heading size="xlarge">
-                    <FormattedMessage
-                        id="søknadSendt.tittel"
-                        values={{
-                            navn: `${søker.fornavn} ${søker.etternavn}`,
-                        }}
-                    />
-                </Heading>
-            </Block>
-
+        <VStack gap="5" align="center">
+            <SpotlightLetter className={bem.element('spotlightLetter')} />
+            <Heading size="xlarge">
+                <FormattedMessage
+                    id="søknadSendt.tittel"
+                    values={{
+                        navn: `${søker.fornavn} ${søker.etternavn}`,
+                    }}
+                />
+            </Heading>
             {pdf && (
-                <Block margin="l">
-                    <div className={bem.element('vedleggWrapper')}>
-                        <VedleggIkon className={bem.element('vedleggIkon')} width={20} height={20} />
-                        <Link
-                            className={bem.element('vedleggLink')}
-                            href={'#'}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //TODO !!!
-                                //openPdfPreview(pdf);
-                            }}
-                        >
-                            <FormattedMessage id={'søknadSendt.pdf'} />
-                        </Link>
-                    </div>
-                </Block>
+                <HStack gap="2">
+                    <VedleggIkon width={20} height={20} />
+                    <Link
+                        href={'#'}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            openPdfPreview(pdf);
+                        }}
+                    >
+                        <FormattedMessage id={'søknadSendt.pdf'} />
+                    </Link>
+                </HStack>
             )}
-
-            <Block margin="l">
-                <div className={bem.element('sendtInnTid')}>
-                    <Label>
-                        <FormattedMessage id="søknadSendt.sendtInn" />
-                        <span style={{ width: '0.25rem' }} />
-                        {dayjs(mottattDato).format('D MMMM YYYY')}, kl. {dayjs(mottattDato).format('HH:mm')}
-                    </Label>
-                </div>
-            </Block>
-        </div>
+            <Label>
+                <HStack gap="2">
+                    <FormattedMessage id="søknadSendt.sendtInn" />
+                    {dayjs(mottattDato).format('D MMMM YYYY')}, kl. {dayjs(mottattDato).format('HH:mm')}
+                </HStack>
+            </Label>
+        </VStack>
     );
 };
 

@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, Step, StepButtonWrapper } from '@navikt/fp-common';
-import { Button, ConfirmationPanel, GuidePanel, Link } from '@navikt/ds-react';
+import { Step, StepButtonWrapper } from '@navikt/fp-common';
+import { Accordion, BodyShort, Button, ConfirmationPanel, Link, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import Person from 'types/Person';
 import { PageKeys } from '../../PageKeys';
 import stepConfig, { getPreviousStepHref } from '../stepConfig';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
-import OmDegOppsummering from './OmDegOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
 import { FormValues as UtenlandsoppholdFormFormValus } from '../utenlandsopphold/UtenlandsoppholdForm';
+import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdFremtidig/FremtidigUtlandsopphold';
+import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdTidligere/TidligereUtlandsopphold';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
 
 const fullNameFormat = (fornavn: string, mellomnavn: string, etternavn: string) => {
@@ -25,6 +26,8 @@ interface Props {
     person: Person;
     omBarnet: OmBarnetFormValues;
     utenlandsopphold: UtenlandsoppholdFormFormValus;
+    utenlandsoppholdFremtidig: UtenlandsoppholdFremtidigFormFormValus;
+    utenlandsoppholdTidligere: UtenlandsoppholdTidligereFormFormValus;
     avbrytSøknad: () => void;
     sendSøknad: () => void;
 }
@@ -33,6 +36,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     person,
     omBarnet,
     utenlandsopphold,
+    utenlandsoppholdFremtidig,
+    utenlandsoppholdTidligere,
     avbrytSøknad,
     sendSøknad,
 }) => {
@@ -45,6 +50,15 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     });
 
     const [isChecked, setChecked] = useState(false);
+    const [isError, setIsError] = useState(false);
+
+    const send = useCallback(() => {
+        if (!isChecked) {
+            setIsError(true);
+        } else {
+            sendSøknad();
+        }
+    }, [isChecked, sendSøknad]);
 
     return (
         <Step
@@ -54,44 +68,45 @@ const Oppsummering: React.FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
         >
-            <Block padBottom="l">
-                <GuidePanel>
-                    <FormattedMessage id="oppsummering.text.lesNoye" />
-                </GuidePanel>
-            </Block>
-            <Block padBottom="l">
-                <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omDeg' })}>
-                    <OmDegOppsummering
-                        søkerNavn={fullNameFormat(person.fornavn, person.mellomnavn, person.etternavn)}
-                        søkerFnr={person.fnr}
-                    />
-                </Oppsummeringspunkt>
-                <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omBarnet' })}>
-                    <OmBarnetOppsummering barn={omBarnet} />
-                </Oppsummeringspunkt>
-                <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
-                    <UtenlandsoppholdOppsummering barn={omBarnet} informasjonOmUtenlandsopphold={utenlandsopphold} />
-                </Oppsummeringspunkt>
-            </Block>
-            <Block margin="xl">
+            <VStack gap="10">
+                <Accordion>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omDeg' })}>
+                        <VStack gap="4">
+                            <BodyShort>{fullNameFormat(person.fornavn, person.mellomnavn, person.etternavn)}</BodyShort>
+                            <BodyShort>{person.fnr}</BodyShort>
+                        </VStack>
+                    </Oppsummeringspunkt>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omBarnet' })}>
+                        <OmBarnetOppsummering barn={omBarnet} />
+                    </Oppsummeringspunkt>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
+                        <UtenlandsoppholdOppsummering
+                            barn={omBarnet}
+                            informasjonOmUtenlandsopphold={utenlandsopphold}
+                            utenlandsoppholdFremtidig={utenlandsoppholdFremtidig}
+                            utenlandsoppholdTidligere={utenlandsoppholdTidligere}
+                        />
+                    </Oppsummeringspunkt>
+                </Accordion>
                 <ConfirmationPanel
                     label={intl.formatMessage({ id: 'oppsummering.text.samtykke' })}
                     onChange={() => setChecked((state) => !state)}
                     checked={isChecked}
+                    error={
+                        isError &&
+                        !isChecked &&
+                        intl.formatMessage({ id: 'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter' })
+                    }
                 />
-            </Block>
-            <Block margin="xl">
                 <StepButtonWrapper>
                     <Button variant="secondary" as={Link} to={getPreviousStepHref('oppsummering')}>
                         <FormattedMessage id="backlink.label" />
                     </Button>
-                    {isChecked && (
-                        <Button type="button" onClick={sendSøknad}>
-                            <FormattedMessage id="oppsummering.button.sendSøknad" />
-                        </Button>
-                    )}
+                    <Button type="button" onClick={send}>
+                        <FormattedMessage id="oppsummering.button.sendSøknad" />
+                    </Button>
                 </StepButtonWrapper>
-            </Block>
+            </VStack>
         </Step>
     );
 };

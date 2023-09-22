@@ -22,7 +22,10 @@ import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
 import FremtidigUtlandsopphold, {
     FormValues as FremtidigUtenlandsoppholdFormValues,
-} from 'sider/steg/utlandsoppholdFremtidig/FremtidigUtlandsopphold';
+} from './sider/steg/utlandsoppholdFremtidig/FremtidigUtlandsopphold';
+import TidligereUtlandsopphold, {
+    FormValues as TidligereutenlandsoppholdFormValues,
+} from './sider/steg/utlandsoppholdTidligere/TidligereUtlandsopphold';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -44,6 +47,9 @@ const useDataHåndterer = (locale: Locale) => {
     const [lagretFremtidigUtenlandsopphold, lagreFremtidigUtenlandsopphold] = useState<
         FremtidigUtenlandsoppholdFormValues | undefined
     >();
+    const [lagretTidligereUtenlandsopphold, lagreTidligereUtenlandsopphold] = useState<
+        TidligereutenlandsoppholdFormValues | undefined
+    >();
 
     const lagreSøkersituasjonOgGåTilOmBarnet = useCallback((form: SøkersituasjonFormValues) => {
         lagreSøkersituasjon(form);
@@ -57,6 +63,8 @@ const useDataHåndterer = (locale: Locale) => {
         lagreUtenlandsopphold(form);
         if (form.skalBoUtenforNorgeNeste12Mnd) {
             navigate('/soknad/fremtidig-utenlandsopphold');
+        } else if (lagretUtenlandsopphold?.harBoddUtenforNorgeSiste12Mnd) {
+            navigate('/soknad/tidligere-utenlandsopphold');
         } else {
             navigate('/soknad/oppsummering');
         }
@@ -65,12 +73,19 @@ const useDataHåndterer = (locale: Locale) => {
         (form: FremtidigUtenlandsoppholdFormValues) => {
             lagreFremtidigUtenlandsopphold(form);
             if (lagretUtenlandsopphold?.harBoddUtenforNorgeSiste12Mnd) {
-                navigate('/soknad/fremtidig-utenlandsopphold');
+                navigate('/soknad/tidligere-utenlandsopphold');
             } else {
                 navigate('/soknad/oppsummering');
             }
         },
         [lagretUtenlandsopphold],
+    );
+    const lagreTidligereUtenlandsoppholdOgGåTilOppsummering = useCallback(
+        (form: TidligereutenlandsoppholdFormValues) => {
+            lagreTidligereUtenlandsopphold(form);
+            navigate('/soknad/oppsummering');
+        },
+        [],
     );
 
     const [kvittering, setKvittering] = useState<Kvittering | undefined>();
@@ -106,12 +121,14 @@ const useDataHåndterer = (locale: Locale) => {
             lagreOmBarnetOgGårTilUtenlandsopphold,
             lagreUtenlandsoppholdOgGåTilNeste,
             lagreFremtidigUtenlandsoppholdOgGåTilNeste,
+            lagreTidligereUtenlandsoppholdOgGåTilOppsummering,
         },
         data: {
             lagretSøkersituasjon,
             lagretOmBarnet,
             lagretUtenlandsopphold,
             lagretFremtidigUtenlandsopphold,
+            lagretTidligereUtenlandsopphold,
             kvittering,
         },
         avbrytSøknad,
@@ -231,12 +248,28 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     )}
                     {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
                         <Route
+                            path="/soknad/tidligere-utenlandsopphold"
+                            element={
+                                <TidligereUtlandsopphold
+                                    lagretTidligereUtenlandsopphold={data.lagretTidligereUtenlandsopphold}
+                                    lagreTidligereUtenlandsopphold={
+                                        lagre.lagreTidligereUtenlandsoppholdOgGåTilOppsummering
+                                    }
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                    )}
+                    {data.lagretOmBarnet && data.lagretUtenlandsopphold && (
+                        <Route
                             path="/soknad/oppsummering"
                             element={
                                 <Oppsummering
                                     person={person}
                                     omBarnet={data.lagretOmBarnet}
                                     utenlandsopphold={data.lagretUtenlandsopphold}
+                                    utenlandsoppholdFremtidig={data.lagretFremtidigUtenlandsopphold}
+                                    utenlandsoppholdTidligere={data.lagretTidligereUtenlandsopphold}
                                     avbrytSøknad={avbrytSøknad}
                                     sendSøknad={sendSøknad}
                                 />

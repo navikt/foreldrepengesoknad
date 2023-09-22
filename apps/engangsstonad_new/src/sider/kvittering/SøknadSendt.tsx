@@ -1,9 +1,18 @@
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import { BodyShort, HStack, Heading, Ingress, Label, Link, VStack } from '@navikt/ds-react';
+import { UtvidetInformasjon, bemUtils, useDocumentTitle } from '@navikt/fp-common';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { lenker } from 'fpcommon/util/lenker';
 import Person from 'types/Person';
+import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import ContentWrapper from 'fpcommon/ContentWrapper';
 import Kvittering from 'types/Kvittering';
 import { PageKeys } from '../PageKeys';
 import KvitteringHeader from './KvitteringHeader';
-import SøknadSendtTittel from './SøknadtSendtTittel';
+import CheckmarkIkon from './ikon/CheckmarkIkon';
+import StatusBoks from './StatusBoks';
+import SøknadSendtIkon from './ikon/SøknadSendtIkon';
+
+import './søknadSendt.less';
 
 interface Props {
     person: Person;
@@ -11,16 +20,76 @@ interface Props {
 }
 
 const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) => {
+    const intl = useIntl();
+    useDocumentTitle(intl.formatMessage({ id: 'søknadSendt.dokumenttittel' }));
+
     logAmplitudeEvent('sidevisning', {
         app: 'engangsstonadny',
         team: 'foreldrepenger',
         pageKey: PageKeys.SøknadSendt,
     });
 
+    const bem = bemUtils('kvittering');
+
     return (
         <>
-            <SøknadSendtTittel />
-            <KvitteringHeader søker={person} kvittering={kvittering} />
+            <div className="søknadSendtTittel" role="main" aria-label="Engangsstønad">
+                <h2 className="typo-undertittel">Engangsstønad</h2>
+            </div>
+            <ContentWrapper>
+                <VStack gap="10">
+                    <KvitteringHeader søker={person} kvittering={kvittering} />
+                    <HStack gap="4" className={bem.element('suksess')}>
+                        <CheckmarkIkon />
+                        <VStack gap="4">
+                            <Heading size="small">
+                                <FormattedMessage id="søknadSendt.info.tittel" />
+                            </Heading>
+                            <BodyShort>
+                                <FormattedMessage id="søknadSendt.info.innhold" />
+                            </BodyShort>
+                        </VStack>
+                    </HStack>
+                    <section>
+                        <HStack gap="8">
+                            <SøknadSendtIkon type="cash" />
+                            <VStack gap="4">
+                                <VStack gap="1">
+                                    <Heading size="small">
+                                        <FormattedMessage id="søknadSendt.pengene.tittel" />
+                                    </Heading>
+                                    <UtvidetInformasjon
+                                        apneLabel={<FormattedMessage id="søknadSendt.pengene.apneLabel" />}
+                                    >
+                                        <FormattedMessage id="søknadSendt.pengene.infoBox" />
+                                    </UtvidetInformasjon>
+                                </VStack>
+                                {person.bankkonto && person.bankkonto.kontonummer ? (
+                                    <VStack gap="1">
+                                        <Label>
+                                            <FormattedMessage id="søknadSendt.pengene.kontonummer" />
+                                        </Label>
+                                        <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
+                                        <Link href={lenker.brukerprofil}>
+                                            <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
+                                        </Link>
+                                    </VStack>
+                                ) : (
+                                    <VStack gap="1">
+                                        <BodyShort>
+                                            <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
+                                        </BodyShort>
+                                        <Link href={lenker.brukerprofil}>
+                                            <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
+                                        </Link>
+                                    </VStack>
+                                )}
+                            </VStack>
+                        </HStack>
+                    </section>
+                    <StatusBoks saksNr={kvittering?.saksNr || ''} />
+                </VStack>
+            </ContentWrapper>
         </>
     );
 };

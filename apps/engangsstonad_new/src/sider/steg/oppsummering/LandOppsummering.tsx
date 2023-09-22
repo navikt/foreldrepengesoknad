@@ -2,10 +2,12 @@ import * as countries from 'i18n-iso-countries';
 import { formatDate } from '@navikt/fp-common';
 import { BodyLong } from '@navikt/ds-react';
 
-import { FormValues as BostedUtlandFormValues } from '../utenlandsopphold/modal/BostadUtlandModal';
-
 interface Props {
-    utenlandsoppholdListe: BostedUtlandFormValues[];
+    utenlandsoppholdListe: {
+        landkode: string;
+        fom: string;
+        tom: string;
+    }[];
 }
 
 const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdListe }) => (

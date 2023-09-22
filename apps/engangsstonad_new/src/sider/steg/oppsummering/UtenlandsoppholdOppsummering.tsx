@@ -1,14 +1,17 @@
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Label } from '@navikt/ds-react';
-import { Block, DisplayTextWithLabel } from '@navikt/fp-common';
+import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
 import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
 import { FormValues as UtenlandsoppholdFormFormValus } from '../utenlandsopphold/UtenlandsoppholdForm';
+import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdFremtidig/FremtidigUtlandsopphold';
+import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdTidligere/TidligereUtlandsopphold';
 
 interface Props {
     barn: OmBarnetFormValues;
     informasjonOmUtenlandsopphold: UtenlandsoppholdFormFormValus;
+    utenlandsoppholdFremtidig: UtenlandsoppholdFremtidigFormFormValus;
+    utenlandsoppholdTidligere: UtenlandsoppholdTidligereFormFormValus;
 }
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
@@ -17,88 +20,104 @@ const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
 
 const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     familiehendelsedato: string,
-    informasjonOmUtenlandsopphold: UtenlandsoppholdFormFormValus,
+    utenlandsoppholdSiste12Mnd: any,
+    utenlandsoppholdNeste12Mnd: any,
 ) => {
     return (
-        informasjonOmUtenlandsopphold.utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
+        utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
             erDatoITidsperiode(familiehendelsedato, tidligereOpphold.fom, tidligereOpphold.tom),
         ) ||
-        informasjonOmUtenlandsopphold.utenlandsoppholdNeste12Mnd.some((senereOpphold) =>
+        utenlandsoppholdNeste12Mnd.some((senereOpphold) =>
             erDatoITidsperiode(familiehendelsedato, senereOpphold.fom, senereOpphold.tom),
         )
     );
 };
 
-const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({ barn, informasjonOmUtenlandsopphold }) => {
+const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
+    barn,
+    informasjonOmUtenlandsopphold,
+    utenlandsoppholdFremtidig,
+    utenlandsoppholdTidligere,
+}) => {
     const intl = useIntl();
 
     return (
-        <Block>
+        <VStack gap="4">
             {informasjonOmUtenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false ? (
-                <Block padBottom="l">
-                    <DisplayTextWithLabel
-                        label={intl.formatMessage({ id: 'oppsummering.text.boddSisteTolv' })}
-                        text={intl.formatMessage({ id: 'norge' })}
-                    />
-                </Block>
+                <HStack gap="2">
+                    <BodyShort>
+                        <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id={'norge'} />
+                    </BodyShort>
+                </HStack>
             ) : (
-                <Block padBottom="l" className="textWithLabel">
+                <div>
                     <Label className="textWithLabel__label">
                         {intl.formatMessage({ id: 'oppsummering.text.boddSisteTolv' })}
                     </Label>
-                    <LandOppsummering
-                        utenlandsoppholdListe={informasjonOmUtenlandsopphold.utenlandsoppholdSiste12Mnd}
-                    />
-                </Block>
+                    <LandOppsummering utenlandsoppholdListe={utenlandsoppholdTidligere.utenlandsoppholdSiste12Mnd} />
+                </div>
             )}
             {informasjonOmUtenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false ? (
-                <Block padBottom="l">
-                    <DisplayTextWithLabel
-                        label={intl.formatMessage({ id: 'oppsummering.text.neste12mnd' })}
-                        text={intl.formatMessage({ id: 'medlemmskap.radiobutton.boNorge' })}
-                    />
-                </Block>
+                <HStack gap="2">
+                    <BodyShort>
+                        <FormattedMessage id={'oppsummering.text.neste12mnd'} />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id={'medlemmskap.radiobutton.boNorge'} />
+                    </BodyShort>
+                </HStack>
             ) : (
-                <Block padBottom="l" className="textWithLabel">
+                <div>
                     <Label className="textWithLabel__label">
                         {intl.formatMessage({ id: 'oppsummering.text.neste12mnd' })}
                     </Label>
-                    <LandOppsummering
-                        utenlandsoppholdListe={informasjonOmUtenlandsopphold.utenlandsoppholdNeste12Mnd}
-                    />
-                </Block>
+                    <LandOppsummering utenlandsoppholdListe={utenlandsoppholdFremtidig.utenlandsoppholdNeste12Mnd} />
+                </div>
             )}
             {barn.erBarnetFødt === false && (
-                <Block padBottom="l">
-                    <DisplayTextWithLabel
-                        label={intl.formatMessage({ id: 'oppsummering.text.ogKommerPåFødselstidspunktet' })}
-                        text={
-                            erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                barn.termindato!,
-                                informasjonOmUtenlandsopphold,
-                            )
-                                ? intl.formatMessage({ id: 'medlemmskap.radiobutton.vareUtlandet' })
-                                : intl.formatMessage({ id: 'medlemmskap.radiobutton.vareNorge' })
-                        }
-                    />
-                </Block>
+                <HStack gap="2">
+                    <BodyShort>
+                        <FormattedMessage id={'oppsummering.text.ogKommerPåFødselstidspunktet'} />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage
+                            id={
+                                erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                    barn.termindato!,
+                                    utenlandsoppholdTidligere.utenlandsoppholdSiste12Mnd,
+                                    utenlandsoppholdFremtidig.utenlandsoppholdNeste12Mnd,
+                                )
+                                    ? intl.formatMessage({ id: 'medlemmskap.radiobutton.vareUtlandet' })
+                                    : intl.formatMessage({ id: 'medlemmskap.radiobutton.vareNorge' })
+                            }
+                        />
+                    </BodyShort>
+                </HStack>
             )}
             {barn.erBarnetFødt && (
-                <Block padBottom="l">
-                    <DisplayTextWithLabel
-                        label={intl.formatMessage({ id: 'oppsummering.text.varPåFødselstidspunktet' })}
-                        text={
-                            erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                barn.fødselsdatoer[0],
-                                informasjonOmUtenlandsopphold,
-                            )
-                                ? intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iUtlandet' })
-                                : intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iNorge' })
-                        }
-                    />
-                </Block>
+                <HStack gap="2">
+                    <BodyShort>
+                        <FormattedMessage id={'oppsummering.text.varPåFødselstidspunktet'} />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage
+                            id={
+                                erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                    barn.fødselsdatoer[0],
+                                    utenlandsoppholdTidligere.utenlandsoppholdSiste12Mnd,
+                                    utenlandsoppholdFremtidig.utenlandsoppholdNeste12Mnd,
+                                )
+                                    ? intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iUtlandet' })
+                                    : intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iNorge' })
+                            }
+                        />
+                    </BodyShort>
+                </HStack>
             )}
-        </Block>
+        </VStack>
     );
 };
 

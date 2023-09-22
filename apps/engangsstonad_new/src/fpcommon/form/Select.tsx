@@ -37,7 +37,6 @@ const Select: FunctionComponent<OwnProps> = ({
 
     return (
         <DsSelect
-            size="small"
             className={className}
             error={getError(errors, name)}
             label={label}
