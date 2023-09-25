@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import stepConfig, { getNextRouteForInntektsinformasjon, getPreviousSetStepHref } from '../stepsConfig';
+import stepConfig, { getBackLinkForArbeidSteg, getNextRouteForInntektsinformasjon } from '../stepsConfig';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import {
     InntektsinformasjonFormComponents,
@@ -39,7 +39,7 @@ import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn, tilrettelegging } = useSøknad();
+    const { søker, barn, tilrettelegging, informasjonOmUtenlandsopphold } = useSøknad();
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.SKJEMA);
     const onAvbrytSøknad = useAvbrytSøknad();
     const { termindato } = barn;
@@ -51,7 +51,7 @@ const Inntektsinformasjon = () => {
                 termindato,
                 arbeidsforhold,
                 updatedSøker.harJobbetSomFrilans,
-                updatedSøker.harJobbetSomSelvstendigNæringsdrivende
+                updatedSøker.harJobbetSomSelvstendigNæringsdrivende,
             ) &&
             aktiveArbeidsforhold.length > 0
         ) {
@@ -60,7 +60,7 @@ const Inntektsinformasjon = () => {
                 [aktiveArbeidsforhold[0].id],
                 updatedSøker,
                 arbeidsforhold,
-                barn.termindato
+                barn.termindato,
             );
 
             return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging(mappedTilretteleggingsValg)];
@@ -115,7 +115,7 @@ const Inntektsinformasjon = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.frilans.påkrevd')
+                                            intlUtils(intl, 'valideringsfeil.frilans.påkrevd'),
                                         )
                                     }
                                 />
@@ -124,22 +124,19 @@ const Inntektsinformasjon = () => {
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isVisible(
-                                    InntektsinformasjonFormField.hattInntektSomNæringsdrivende
+                                    InntektsinformasjonFormField.hattInntektSomNæringsdrivende,
                                 )}
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
                                     legend={intlUtils(
                                         intl,
-                                        'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende'
+                                        'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
                                     )}
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(
-                                                intl,
-                                                'valideringsfeil.utenlandsopphold.hattInntektSomNæringsdrivende.påkrevd'
-                                            )
+                                            intlUtils(intl, 'valideringsfeil.hattArbeidIUtlandet.påkrevd'),
                                         )
                                     }
                                 />
@@ -152,6 +149,12 @@ const Inntektsinformasjon = () => {
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattArbeidIUtlandet}
                                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
+                                    validate={(value) =>
+                                        validateYesOrNoIsAnswered(
+                                            value,
+                                            intlUtils(intl, 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd'),
+                                        )
+                                    }
                                 />
                                 <InfoOmArbeidIUtlandet />
                             </Block>
@@ -166,7 +169,11 @@ const Inntektsinformasjon = () => {
                             </Block>
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousSetStepHref('arbeid')}>
+                                    <Button
+                                        variant="secondary"
+                                        as={Link}
+                                        to={getBackLinkForArbeidSteg(informasjonOmUtenlandsopphold)}
+                                    >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {!kanIkkeSøke && (

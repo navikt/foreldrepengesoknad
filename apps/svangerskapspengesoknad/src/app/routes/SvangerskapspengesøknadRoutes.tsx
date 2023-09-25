@@ -16,6 +16,7 @@ import FrilansStep from 'app/steps/frilans/FrilansStep';
 import ArbeidIUtlandetStep from 'app/steps/arbeid_i_utlandet/ArbeidIUtlandetStep';
 import VelgArbeid from 'app/steps/velgArbeidsforhold/VelgArbeid';
 import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
+import BoIUtlandet from 'app/steps/bo_i_utlandet/BoIUtlandet';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -23,7 +24,7 @@ interface Props {
 
 export const getForrigeTilretteleggingId = (
     tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined
+    currentTilretteleggingId: string | undefined,
 ) => {
     if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
         return tilretteleggingBehov[tilretteleggingBehov.length - 1].id;
@@ -37,7 +38,7 @@ export const getForrigeTilretteleggingId = (
 
 export const getNesteTilretteleggingId = (
     tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined
+    currentTilretteleggingId: string | undefined,
 ) => {
     if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
         return tilretteleggingBehov[0].id;
@@ -53,7 +54,7 @@ export const findNextRoute = (
     currentRoute: SøknadRoutes,
     nextRoute: SøknadRoutes,
     currentTilretteleggingId: string | undefined,
-    tilretteleggingBehov: Tilrettelegging[]
+    tilretteleggingBehov: Tilrettelegging[],
 ): any => {
     if (currentRoute !== SøknadRoutes.SKJEMA && currentRoute !== SøknadRoutes.PERIODE) {
         return nextRoute;
@@ -94,6 +95,15 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
     return (
         <>
             <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
+            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
+            <Route
+                path={SøknadRoutes.HAR_BODD_I_UTLANDET}
+                element={<BoIUtlandet key={'iFortid'} oppgirIFortid={true} />}
+            />
+            <Route
+                path={SøknadRoutes.SKAL_BO_I_UTLANDET}
+                element={<BoIUtlandet key={'iFremtid'} oppgirIFortid={false} />}
+            />
             <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
             <Route path={SøknadRoutes.FRILANS} element={<FrilansStep />} />

@@ -2,6 +2,8 @@ enum SøknadRoutes {
     FORSIDE = '/',
     BARNET = '/barnet',
     UTENLANDSOPPHOLD = '/utenlandsopphold',
+    HAR_BODD_I_UTLANDET = '/har-bodd-i-utlandet',
+    SKAL_BO_I_UTLANDET = '/skal-bo-i-utlandet',
     ARBEID = '/arbeid',
     FRILANS = '/frilans',
     NÆRING = '/næring',

@@ -1,8 +1,8 @@
 import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import stepConfig, { getPreviousSetStepHref } from '../stepsConfig';
-import { Alert, BodyShort, Button } from '@navikt/ds-react';
+import stepConfig, { getNextRouteForUtenlandsopphold, getPreviousSetStepHref } from '../stepsConfig';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
     UtenlandsoppholdField,
@@ -14,80 +14,34 @@ import {
     mapUtenlandsoppholdFormDataToState,
 } from './utenlandsoppholdFormUtils';
 import { utenlandsoppholdFormQuestions } from './utenlandsoppholdFormQuestions';
-import { useState } from 'react';
-import { BostedUtland } from 'app/types/BostedUtland';
-import BostedUtlandDetails from './components/subform/BostedUtlandDetails';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import InformasjonOmUtenlandsopphold from './components/InformasjonOmUtenlandsopphold';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
+import { useState } from 'react';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { informasjonOmUtenlandsopphold, barn } = useSøknad();
-    const [selectedOppholdIFremtid, setSelectedOppholdIFremtid] = useState<BostedUtland | undefined>(undefined);
-    const [selectedOppholdIFortid, setSelectedOppholdIFortid] = useState<BostedUtland | undefined>(undefined);
-    const [leggerTilNyttOppholdIFremtid, setLeggerTilNyttOppholdIFremtid] = useState(false);
-    const [leggerTilNyttOppholdIFortid, setLeggerTilNyttOppholdIFortid] = useState(false);
-    const [submitClicked, setSubmitClicked] = useState(false);
-    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const [bostedUtlandFremtid, setBostedUtlandFremtid] = useState<BostedUtland[]>(
-        informasjonOmUtenlandsopphold.senereOpphold.map((opphold, index) => {
-            return {
-                id: index,
-                fom: opphold.tidsperiode.fom,
-                tom: opphold.tidsperiode.tom,
-                landkode: opphold.land,
-            };
-        })
-    );
+    const { informasjonOmUtenlandsopphold } = useSøknad();
+    const [nextRoute, setNextRoute] = useState(SøknadRoutes.ARBEID);
 
-    const [bostedUtlandFortid, setBostedUtlandFortid] = useState<BostedUtland[]>(
-        informasjonOmUtenlandsopphold.tidligereOpphold.map((opphold, index) => {
-            return {
-                id: index,
-                fom: opphold.tidsperiode.fom,
-                tom: opphold.tidsperiode.tom,
-                landkode: opphold.land,
-            };
-        })
-    );
+    const onAvbrytSøknad = useAvbrytSøknad();
 
     const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
-        const utenlandsopphold = mapUtenlandsoppholdFormDataToState(
-            values,
-            bostedUtlandFremtid,
-            bostedUtlandFortid,
-            familiehendelsedato!
-        );
+        const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values, informasjonOmUtenlandsopphold);
         return [actionCreator.setUtenlandsopphold(utenlandsopphold)];
     };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.ARBEID);
-
-    const handleOnSubmit = (values: Partial<UtenlandsoppholdFormData>) => {
-        setSubmitClicked(true);
-        if (
-            selectedOppholdIFremtid === undefined &&
-            selectedOppholdIFortid === undefined &&
-            leggerTilNyttOppholdIFortid === false &&
-            leggerTilNyttOppholdIFremtid === false
-        ) {
-            handleSubmit(values);
-        }
-    };
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     return (
         <UtenlandsoppholdFormComponents.FormikWrapper
             initialValues={getInitialUtenlandsoppholdValuesFromState(informasjonOmUtenlandsopphold)}
-            onSubmit={handleOnSubmit}
+            onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues as UtenlandsoppholdFormData);
-
+                setNextRoute(getNextRouteForUtenlandsopphold(formValues));
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -110,37 +64,19 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     labels={{
                                         yes: intlUtils(
                                             intl,
-                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge'
+                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge',
                                         ),
                                         no: intlUtils(
                                             intl,
-                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet'
+                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet',
                                         ),
                                     }}
                                     validate={(skalBoINorgeNeste12Mnd) =>
                                         validateYesOrNoIsAnswered(
                                             skalBoINorgeNeste12Mnd,
-                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.skalBoINorge.påkrevd')
+                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.skalBoINorge.påkrevd'),
                                         )
                                     }
-                                    onClick={() => {
-                                        setSubmitClicked(false);
-                                        setLeggerTilNyttOppholdIFremtid(
-                                            !!convertYesOrNoOrUndefinedToBoolean(formValues.skalBoINorgeNeste12Mnd)
-                                        );
-                                    }}
-                                />
-                            </Block>
-                            <Block padBottom="xl" visible={formValues.skalBoINorgeNeste12Mnd === YesOrNo.NO}>
-                                <BostedUtlandDetails
-                                    alleOpphold={bostedUtlandFremtid}
-                                    oppgirIFortid={false}
-                                    setUtenlandsopphold={setBostedUtlandFremtid}
-                                    selectedOpphold={selectedOppholdIFremtid}
-                                    setSelectedOpphold={setSelectedOppholdIFremtid}
-                                    setSubmitIsClicked={setSubmitClicked}
-                                    leggerTilNyttOppholdIUtlandet={leggerTilNyttOppholdIFremtid}
-                                    setLeggerTilNyttOppholdIUtlandet={setLeggerTilNyttOppholdIFremtid}
                                 />
                             </Block>
                             <Block
@@ -153,70 +89,24 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     labels={{
                                         yes: intlUtils(
                                             intl,
-                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge'
+                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge',
                                         ),
                                         no: intlUtils(
                                             intl,
-                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet'
+                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet',
                                         ),
                                     }}
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.harBoddINorge.påkrevd')
+                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.harBoddINorge.påkrevd'),
                                         )
                                     }
-                                    onClick={() => {
-                                        setSubmitClicked(false);
-                                        setLeggerTilNyttOppholdIFortid(
-                                            !!convertYesOrNoOrUndefinedToBoolean(formValues.harBoddINorgeSiste12Mnd)
-                                        );
-                                    }}
-                                />
-                            </Block>
-                            <Block padBottom="xl" visible={formValues.harBoddINorgeSiste12Mnd === YesOrNo.NO}>
-                                <BostedUtlandDetails
-                                    alleOpphold={bostedUtlandFortid}
-                                    oppgirIFortid={true}
-                                    selectedOpphold={selectedOppholdIFortid}
-                                    leggerTilNyttOppholdIUtlandet={leggerTilNyttOppholdIFortid}
-                                    setUtenlandsopphold={setBostedUtlandFortid}
-                                    setSelectedOpphold={setSelectedOppholdIFortid}
-                                    setSubmitIsClicked={setSubmitClicked}
-                                    setLeggerTilNyttOppholdIUtlandet={setLeggerTilNyttOppholdIFortid}
                                 />
                             </Block>
                             <Block padBottom="xl">
                                 <InformasjonOmUtenlandsopphold />
                             </Block>
-                            {submitClicked && selectedOppholdIFremtid && (
-                                <Block padBottom="l">
-                                    <Alert variant="error">
-                                        <FormattedMessage id="utenlandsopphold.duMåEditereFerdig.iFremtid"></FormattedMessage>
-                                    </Alert>
-                                </Block>
-                            )}
-                            {submitClicked && selectedOppholdIFortid && (
-                                <Block padBottom="l">
-                                    <Alert variant="error">
-                                        <FormattedMessage id="utenlandsopphold.duMåEditereFerdig.iFortid"></FormattedMessage>
-                                    </Alert>
-                                </Block>
-                            )}
-                            {submitClicked && leggerTilNyttOppholdIFremtid && (
-                                <Block padBottom="l">
-                                    <Alert variant="error">
-                                        <FormattedMessage id="utenlandsopphold.duMåBliFerdig.iFremtid"></FormattedMessage>
-                                    </Alert>
-                                </Block>
-                            )}
-                            {submitClicked && leggerTilNyttOppholdIFortid && (
-                                <Block padBottom="l">
-                                    <Alert variant="error">
-                                        <FormattedMessage id="utenlandsopphold.duMåBliFerdig.iFortid"></FormattedMessage>
-                                    </Alert>
-                                </Block>
-                            )}
                             <Block>
                                 <StepButtonWrapper>
                                     <Button
