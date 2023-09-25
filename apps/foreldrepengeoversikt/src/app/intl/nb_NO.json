@@ -46,7 +46,6 @@
     "minidialog.tilbakekreving.veilederpanel": "Saken vil bli behandlet med de opplysningene vi har tilgjengelig. Vi sender deg et vedtak når saken er ferdig behandlet.",
     "miniDialog.tilbakekreving.radioPanelGruppe.legend": "Ønsker du å uttale deg i saken før vi behandler den?",
     "miniDialog.lastOppDokumentasjon": "Last opp dokumentasjon",
-    "miniDialog.kvittering.svaretErSendt": "Svaret ditt er sendt.",
     "miniDialog.kvittering.gåTilbakeTilSaken": "Gå tilbake til saken",
     "pictureScanningGuide.apneLabel": "Les mer om hvordan du tar et bra bilde av dokumentet",
     "ettersendelse.select.defaultValue": "Velg type dokument",
