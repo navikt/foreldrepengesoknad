@@ -17,6 +17,7 @@ import ArbeidIUtlandetStep from 'app/steps/arbeid_i_utlandet/ArbeidIUtlandetStep
 import VelgArbeid from 'app/steps/velgArbeidsforhold/VelgArbeid';
 import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
 import BoIUtlandet from 'app/steps/bo_i_utlandet/BoIUtlandet';
+import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 
 interface Props {
     currentRoute: SøknadRoutes;
@@ -113,6 +114,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
             <Route path={SøknadRoutes.SKJEMA} element={<Skjema />} />
             {getTilretteleggingRoutes(tilretteleggingBehov)}
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />
+            <Route path={SøknadRoutes.SØKNAD_SENDT} element={<SøknadSendt />} />
         </>
     );
 };
