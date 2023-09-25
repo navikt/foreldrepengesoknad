@@ -1,11 +1,14 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
+import { intlUtils, isDateABeforeDateB, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
 import { fireUkerSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefined) => (fom: string) => {
+    if (!hasValue(fom)) {
+        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
+    }
     if (hasValue(fom) && !isISODateString(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
     }
@@ -22,6 +25,9 @@ export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefi
 };
 
 export const validateArbeidIUtlandetTom = (intl: IntlShape, fom: string | undefined) => (tom: string) => {
+    if (!hasValue(tom)) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+    }
     if (hasValue(tom) && !isISODateString(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
@@ -40,3 +46,25 @@ export const validateArbeidIUtlandetTom = (intl: IntlShape, fom: string | undefi
 
     return undefined;
 };
+
+export const validateArbeidIUtlandetPågående = (intl: IntlShape) => (pågående: YesOrNo) => {
+    if (!hasValue(pågående)) {
+        return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetPågående.påkrevd');
+    }
+    return undefined;
+};
+
+export const validateArbeidIUtlandetLand = (intl: IntlShape) => (land: string) => {
+    if (!hasValue(land)) {
+        return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetLand.påkrevd');
+    }
+    return undefined;
+};
+
+export const validateArbeidIUtlandetNavnArbeidsgiver =
+    (intl: IntlShape, navnPåArbeidsgiverLabel: string) => (navn: string) => {
+        if (!hasValue(navn)) {
+            return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetNavn.påkrevd');
+        }
+        return validateTextInputField(navn, navnPåArbeidsgiverLabel, intl);
+    };
