@@ -28,6 +28,7 @@ import { redirectToLogin } from 'app/utils/redirectToLogin';
 import EgenNæringVisning from '../../components/egen-næring-visning/EgenNæringVisning';
 import ArbeidIUtlandetVisning from '../../components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
+import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -36,6 +37,7 @@ const Oppsummering = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
     useUpdateCurrentTilretteleggingId(undefined);
+    const onAvbrytSøknad = useAvbrytSøknad();
     const abortSignal = useAbortSignal();
 
     const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
@@ -80,6 +82,7 @@ const Oppsummering = () => {
                             activeStepId="oppsummering"
                             pageTitle="Oppsummering"
                             steps={stepConfig(intl)}
+                            onCancel={onAvbrytSøknad}
                         >
                             <Accordion>
                                 <Accordion.Item className={bem.element('header-reverse-chevron')}>

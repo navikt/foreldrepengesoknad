@@ -22,7 +22,7 @@ import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRo
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsgiverVisning from './components/ArbeidsgiverVisning';
-import { dagenFør, tiMånederSidenDato } from 'app/utils/dateUtils';
+import { dagenFør, tiMånederSidenDato, treUkerSiden } from 'app/utils/dateUtils';
 import {
     validateTilrettelagtArbeidFom,
     validateTilrettelagtArbeidType,
@@ -31,8 +31,12 @@ import {
 import tilretteleggingQuestionsConfig, {
     TilretteleggingFormQuestionsPayload,
 } from './tilretteleggingStepQuestionsConfig';
-import { validateStillingsprosent, validateTilretteleggingstiltak } from './tilretteleggingValidation';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+import {
+    validateSammePeriodeFremTilTerminFom,
+    validateStillingsprosent,
+    validateTilretteleggingstiltak,
+} from './tilretteleggingValidation';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import PerioderMedVariasjon from './components/perioderMedVariasjon/PerioderMedVariasjon';
 
 interface Props {
@@ -45,6 +49,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const { tilrettelegging: tilretteleggingFraState, søker, barn } = useSøknad();
+    const { fødselsdato, termindato } = barn;
     const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
     const { state } = useSvangerskapspengerContext();
     const { arbeidsforhold } = useSøkerinfo();
@@ -62,6 +67,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
         : intlUtils(intl, 'steps.label.periode.en');
 
     const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, state.currentTilretteleggingId);
+
+    const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdato || termindato);
+
     let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
     if (nesteTilretteleggingId) {
         nextRoute = `${SøknadRoutes.PERIODE}/${nesteTilretteleggingId}`;
@@ -84,6 +92,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                         ? 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'
                         : 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis';
                 const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
+
+                const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
+                    ? formValues.behovForTilretteleggingFom!
+                    : '2021-01-01'; //TODO - hva skal man ha som minste dato hvis behov fra ikke oppgitt ennå?
+
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -154,7 +167,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             <Block
                                 padBottom="xxl"
                                 visible={visibility.isVisible(
-                                    TilretteleggingFormField.delvisTilretteleggingPeriodeType
+                                    TilretteleggingFormField.delvisTilretteleggingPeriodeType,
                                 )}
                             >
                                 <TilretteleggingFormComponents.RadioGroup
@@ -169,7 +182,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                         {
                                             label: intlUtils(
                                                 intl,
-                                                'tilrettelegging.tilretteleggingPeriodetype.variert'
+                                                'tilrettelegging.tilretteleggingPeriodetype.variert',
                                             ),
                                             value: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
                                         },
@@ -179,7 +192,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'tilrettelegging.tilretteleggingPeriodetype.readmore.tittel'
+                                        'tilrettelegging.tilretteleggingPeriodetype.readmore.tittel',
                                     )}
                                 >
                                     <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.readmore.description" />
@@ -193,13 +206,20 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     name={TilretteleggingFormField.sammePeriodeFremTilTerminFom}
                                     label={intlUtils(intl, labelPeriodeFom)}
                                     description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
-                                    // validate={validateSammePeriodeFremTilTerminFom(intl)}
+                                    minDate={new Date(minDatoPeriodeFom)}
+                                    maxDate={treUkerSiden(fødselsdato || termindato)}
+                                    validate={validateSammePeriodeFremTilTerminFom(
+                                        intl,
+                                        formValues.behovForTilretteleggingFom,
+                                        treUkerFørFødselEllerTermin,
+                                        fødselsdato,
+                                    )}
                                 />
                             </Block>
                             <Block
                                 padBottom="xxl"
                                 visible={visibility.isVisible(
-                                    TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent
+                                    TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent,
                                 )}
                             >
                                 <TilretteleggingFormComponents.NumberInput
@@ -215,6 +235,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             >
                                 <PerioderMedVariasjon
                                     formValues={formValues}
+                                    minDatoPeriodeFom={minDatoPeriodeFom}
+                                    treUkerFørFødselEllerTermin={treUkerFørFødselEllerTermin}
                                     fødselsdato={barn.fødselsdato}
                                     termindato={barn.termindato}
                                 />
@@ -226,7 +248,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                         as={Link}
                                         to={getBackLinkTilretteleggingEllerSkjemaSteg(
                                             tilretteleggingFraState,
-                                            state.currentTilretteleggingId
+                                            state.currentTilretteleggingId,
                                         )}
                                     >
                                         <FormattedMessage id="backlink.label" />

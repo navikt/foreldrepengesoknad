@@ -17,10 +17,18 @@ import { validateStillingsprosent } from '../../tilretteleggingValidation';
 interface Props {
     formValues: Partial<TilretteleggingFormData>;
     termindato: Date;
+    minDatoPeriodeFom: string;
+    treUkerFørFødselEllerTermin: Date;
     fødselsdato: Date | undefined;
 }
 
-const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, termindato, fødselsdato }) => {
+const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
+    formValues,
+    termindato,
+    fødselsdato,
+    treUkerFørFødselEllerTermin,
+    minDatoPeriodeFom,
+}) => {
     const intl = useIntl();
     const uferdigDelvisTilretteleggingInput = {
         fom: '',
@@ -30,11 +38,6 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
         type: Tilretteleggingstype.DELVIS,
     } as PeriodeMedVariasjon;
 
-    const minDato = hasValue(formValues.behovForTilretteleggingFom)
-        ? formValues.behovForTilretteleggingFom!
-        : '2021-01-01'; //TODO - hva skal man ha som minste dato hvis behov fra ikke oppgitt ennå?
-
-    const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdato || termindato);
     return (
         <>
             <Block padBottom="l">
@@ -52,7 +55,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
                             <Block padBottom="xl">
                                 <TilretteleggingFormComponents.DatePicker
                                     key={`variertePerioder.${index}.fom`}
-                                    minDate={new Date(minDato)}
+                                    minDate={new Date(minDatoPeriodeFom)}
                                     maxDate={treUkerSiden(fødselsdato || termindato)}
                                     name={`variertePerioder.${index}.fom`}
                                     label={intlUtils(intl, 'perioder.varierende.fom.label')}
@@ -62,6 +65,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
                                         formValues.variertePerioder,
                                         formValues.behovForTilretteleggingFom,
                                         treUkerFørFødselEllerTermin,
+                                        fødselsdato,
                                     )}
                                 />
                             </Block>
@@ -101,6 +105,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({ formValues, term
                                         index,
                                         formValues.variertePerioder,
                                         treUkerFørFødselEllerTermin,
+                                        fødselsdato,
                                     )}
                                 />
                             </Block>
