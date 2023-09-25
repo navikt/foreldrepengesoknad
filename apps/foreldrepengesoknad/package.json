@@ -21,7 +21,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/cli": "^7.3.1",
-        "@storybook/react": "^7.3.1",
+        "@storybook/react": "^7.4.5",
         "@storybook/react-vite": "7.3.1",
         "@storybook/testing-react": "^2.0.1",
         "@testing-library/dom": "^9.3.1",
