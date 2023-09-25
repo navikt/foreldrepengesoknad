@@ -1,6 +1,8 @@
+import { isISODateString } from '@navikt/ds-datepicker';
 import { intlUtils, validateTextInputField } from '@navikt/fp-common';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
+import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 export const validateStillingsprosent = (intl: IntlShape) => (value: string) => {
@@ -42,3 +44,34 @@ export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) =
 
     return undefined;
 };
+
+export const validateSammePeriodeFremTilTerminFom =
+    (
+        intl: IntlShape,
+        behovForTilretteleggingFom: string | undefined,
+        treUkerFørFødselEllerTermin: Date,
+        fødselsdato: Date | undefined,
+    ) =>
+    (value: string) => {
+        if (!hasValue(value)) {
+            return intlUtils(intl, 'valideringsfeil.periode.fom.påkrevd');
+        }
+        if (hasValue(value) && !isISODateString(value)) {
+            return intlUtils(intl, 'valideringsfeil.periode.fom.gyldigDato');
+        }
+
+        if (
+            hasValue(value) &&
+            hasValue(behovForTilretteleggingFom) &&
+            dayjs(value).isBefore(dayjs(behovForTilretteleggingFom), 'd')
+        ) {
+            return intlUtils(intl, 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom');
+        }
+
+        if (hasValue(value) && dayjs(value).isSameOrAfter(dayjs(treUkerFørFødselEllerTermin), 'd')) {
+            return fødselsdato
+                ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørFødsel')
+                : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
+        }
+        return undefined;
+    };

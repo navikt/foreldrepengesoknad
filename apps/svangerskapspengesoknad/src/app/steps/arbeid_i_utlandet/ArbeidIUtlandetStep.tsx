@@ -38,12 +38,6 @@ import {
 } from './arbeidIUtlandetValidation';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
-const getIsVisible = (index: number, formValues: any) => {
-    console.log(formValues.arbeidIUtlandet![index]);
-    const vis = formValues.arbeidIUtlandet![index].pågående === YesOrNo.NO;
-    console.log('visible:', vis);
-    return vis;
-};
 const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
@@ -132,7 +126,10 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     validate={validateArbeidIUtlandetPågående(intl)}
                                                 />
                                             </Block>
-                                            <Block padBottom="l" visible={getIsVisible(index, formValues)}>
+                                            <Block
+                                                padBottom="l"
+                                                visible={formValues.arbeidIUtlandet![index].pågående === YesOrNo.NO}
+                                            >
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.tom`}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.tom')}
