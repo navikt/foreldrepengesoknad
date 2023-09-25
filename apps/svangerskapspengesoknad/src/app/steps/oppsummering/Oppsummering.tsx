@@ -26,7 +26,7 @@ import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import EgenNæringVisning from '../../components/egen-næring-visning/EgenNæringVisning';
-import ArbeidIUtlandetVisning from '../arbeid_i_utlandet/components/visning/ArbeidIUtlandetVisning';
+import ArbeidIUtlandetVisning from '../../components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 
 const Oppsummering = () => {

@@ -1,65 +1,57 @@
-import { Alert, Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Button } from '@navikt/ds-react';
+import {
+    Block,
+    Step,
+    StepButtonWrapper,
+    date20YearsAgo,
+    date4WeeksAgo,
+    intlUtils,
+    validateTextInputField,
+} from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useState } from 'react';
-import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import stepConfig, { getBackLinkForArbeidIUtlandetSteg, getVelgArbeidEllerSkjemaRoute } from 'app/steps/stepsConfig';
 import { Link } from 'react-router-dom';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import ArbeidIUtlandetList from './components/ArbeidIUtlandetList';
-import ArbeidIUtlandetSubform from './components/subform/ArbeidIUtlandetSubform';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import {
+    ArbeidIUtlandetFormComponents,
+    ArbeidIUtlandetFormData,
+    ArbeidIUtlandetFormField,
+} from './arbeidIUtlandetFormConfig';
+import { FieldArray } from 'formik';
+import {
+    getInitialArbeidIUtlandetFormData,
+    getUferdigArbeidIUtlandetInput,
+    mapArbeidIUtlandetTilState,
+} from './arbeidIUtlandetFormUtils';
+import dayjs from 'dayjs';
+import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
+import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
+import {
+    validateArbeidIUtlandetFom,
+    validateArbeidIUtlandetLand,
+    validateArbeidIUtlandetPågående,
+    validateArbeidIUtlandetTom,
+} from './arbeidIUtlandetValidation';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
+const getIsVisible = (index: number, formValues: any) => {
+    console.log(formValues.arbeidIUtlandet![index]);
+    const vis = formValues.arbeidIUtlandet![index].pågående === YesOrNo.NO;
+    console.log('visible:', vis);
+    return vis;
+};
 const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn } = useSøknad();
-    const [arbeidIUtlandet, setArbeidIUtlandet] = useState(søker.andreInntekter || []);
-    const [feilmelding, setFeilmelding] = useState<string | undefined>(undefined);
-    const [selectedAnnenInntekt, setSelectedAnnenInntekt] = useState<ArbeidIUtlandet | undefined>(undefined);
-    const [leggerTilNyttArbeidIUtlandet, setLeggerTilNyttArbeidIUtlandet] = useState(
-        !søker.andreInntekter || søker.andreInntekter.length === 0
-    );
-    const [erFørsteInput, setErFørsteInput] = useState(true);
+    const arbeidIUtlandet = søker.andreInntekter;
 
-    const addAnnenInntekt = (annenInntekt: ArbeidIUtlandet) => {
-        const updatedandreInntekterInformasjon = arbeidIUtlandet.concat(annenInntekt);
-        setArbeidIUtlandet(updatedandreInntekterInformasjon);
-        setSelectedAnnenInntekt(undefined);
-        setLeggerTilNyttArbeidIUtlandet(false);
-        setErFørsteInput(false);
-        setFeilmelding(undefined);
-    };
-
-    const deleteAnnenInntekt = (inntektSomSlettes: ArbeidIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet.filter(
-            (inntekt: ArbeidIUtlandet) => inntekt !== inntektSomSlettes
-        );
-        setArbeidIUtlandet(updatedAndreInntekterInformasjon);
-        setSelectedAnnenInntekt(undefined);
-
-        if (updatedAndreInntekterInformasjon.length === 0) {
-            setLeggerTilNyttArbeidIUtlandet(true);
-        }
-    };
-
-    const editAnnenInntekt = (inntektSomEditeres: ArbeidIUtlandet, oppdatertInntekt: ArbeidIUtlandet) => {
-        const updatedAndreInntekterInformasjon = arbeidIUtlandet
-            .filter((inntekt: ArbeidIUtlandet) => inntekt !== inntektSomEditeres)
-            .concat(oppdatertInntekt);
-        setSelectedAnnenInntekt(undefined);
-        setArbeidIUtlandet(updatedAndreInntekterInformasjon);
-    };
-
-    const handleOnLeggTilArbeidIUtlandet = () => {
-        setLeggerTilNyttArbeidIUtlandet(true);
-        setSelectedAnnenInntekt(undefined);
-    };
-
-    const onValidSubmitHandler = () => {
+    const onValidSubmitHandler = (values: Partial<ArbeidIUtlandetFormData>) => {
+        const arbeidIUtlandet = mapArbeidIUtlandetTilState(values);
         const søkerMedArbeidIUtlandet = { ...søker, andreInntekter: arbeidIUtlandet };
         return [actionCreator.setSøker(søkerMedArbeidIUtlandet)];
     };
@@ -67,91 +59,146 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
 
-    const visAlertOmNødvendigInput = !erFørsteInput && arbeidIUtlandet.length === 0;
-
-    const handleOnClickSubmit = (values: any) => {
-        if (leggerTilNyttArbeidIUtlandet) {
-            setFeilmelding('Du er ikke ferdig med å legge til informasjon om arbeid i utlandet');
-        } else if (selectedAnnenInntekt) {
-            setFeilmelding('Du er ikke ferdig med å oppdatere informasjon om arbeid i utlandet');
-        } else {
-            setFeilmelding(undefined);
-            handleSubmit(values);
-        }
-    };
     return (
-        <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId="arbeidIUtlandet"
-            pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
-            onCancel={onAvbrytSøknad}
-            steps={stepConfig(intl)}
-        >
-            {arbeidIUtlandet.length > 0 && (
-                <ArbeidIUtlandetList
-                    selectedAnnenInntekt={selectedAnnenInntekt}
-                    allArbeidIUtlandet={arbeidIUtlandet}
-                    addAnnenInntekt={addAnnenInntekt}
-                    editAnnenInntekt={editAnnenInntekt}
-                    deleteAnnenInntekt={deleteAnnenInntekt}
-                    setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                    setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
-                    setFeilmelding={setFeilmelding}
-                />
-            )}
-            {visAlertOmNødvendigInput && (
-                <Block padBottom="l">
-                    <Alert variant="info" style={{ padding: '0.5rem' }}>
-                        {intlUtils(intl, 'arbeidIUtlandet.duMåOppgiInformasjon')}
-                    </Alert>
-                </Block>
-            )}
-            {leggerTilNyttArbeidIUtlandet && (
-                <ArbeidIUtlandetSubform
-                    allArbeidIUtlandet={arbeidIUtlandet}
-                    selectedAnnenInntekt={selectedAnnenInntekt}
-                    addAnnenInntekt={addAnnenInntekt}
-                    editAnnenInntekt={editAnnenInntekt}
-                    setSelectedAnnenInntekt={setSelectedAnnenInntekt}
-                    erFørsteInput={arbeidIUtlandet.length === 0}
-                    setLeggTilNyttArbeidIUtlandet={setLeggerTilNyttArbeidIUtlandet}
-                    setFeilmelding={setFeilmelding}
-                />
-            )}
-            {arbeidIUtlandet.length > 0 && !leggerTilNyttArbeidIUtlandet && (
-                <Block padBottom="xl">
-                    <Button
-                        aria-label="legg til ny informasjon om arbeid i utlandet"
-                        variant="secondary"
-                        type="button"
-                        onClick={handleOnLeggTilArbeidIUtlandet}
-                        disabled={selectedAnnenInntekt !== undefined || leggerTilNyttArbeidIUtlandet}
+        <ArbeidIUtlandetFormComponents.FormikWrapper
+            enableReinitialize={true}
+            initialValues={getInitialArbeidIUtlandetFormData(arbeidIUtlandet)}
+            onSubmit={handleSubmit}
+            renderForm={({ values: formValues }) => {
+                const navnPåArbeidsgiverLabel = intlUtils(intl, 'arbeidIUtlandet.navn');
+                return (
+                    <Step
+                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        activeStepId="arbeidIUtlandet"
+                        pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
+                        onCancel={onAvbrytSøknad}
+                        steps={stepConfig(intl)}
                     >
-                        <FormattedMessage id="inntektsinformasjon.arbeid.leggTil" />
-                    </Button>
-                </Block>
-            )}
-            {feilmelding && (
-                <Block padBottom="xl">
-                    <Alert variant="error">{feilmelding}</Alert>{' '}
-                </Block>
-            )}
-            <Block margin="xl">
-                <StepButtonWrapper>
-                    <Button variant="secondary" as={Link} to={getBackLinkForArbeidIUtlandetSteg(søker)}>
-                        <FormattedMessage id="backlink.label" />
-                    </Button>
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        loading={isSubmitting}
-                        onClick={(values) => handleOnClickSubmit(values)}
-                    >
-                        {intlUtils(intl, 'søknad.gåVidere')}
-                    </Button>
-                </StepButtonWrapper>
-            </Block>
-        </Step>
+                        <ArbeidIUtlandetFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                            <FieldArray
+                                validateOnChange={false}
+                                name={ArbeidIUtlandetFormField.arbeidIUtlandet}
+                                render={(arrayHelpers) =>
+                                    formValues.arbeidIUtlandet &&
+                                    formValues.arbeidIUtlandet.length > 0 &&
+                                    formValues.arbeidIUtlandet.map((_a, index) => (
+                                        <div key={index}>
+                                            <Block padBottom="l">
+                                                <ArbeidIUtlandetFormComponents.CountrySelect
+                                                    name={`arbeidIUtlandet.${index}.land`}
+                                                    label={intlUtils(intl, 'arbeidIUtlandet.land')}
+                                                    useAlpha3Code={false}
+                                                    validate={validateArbeidIUtlandetLand(intl)}
+                                                />
+                                            </Block>
+                                            <Block padBottom="l">
+                                                <ArbeidIUtlandetFormComponents.TextField
+                                                    name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
+                                                    label={navnPåArbeidsgiverLabel}
+                                                    validate={(val) => {
+                                                        if (!hasValue(val)) {
+                                                            return intlUtils(
+                                                                intl,
+                                                                'valideringsfeil.arbeidIUtlandetNavn.påkrevd',
+                                                            );
+                                                        }
+                                                        return validateTextInputField(
+                                                            val,
+                                                            navnPåArbeidsgiverLabel,
+                                                            intl,
+                                                        );
+                                                    }}
+                                                />
+                                            </Block>
+                                            <Block padBottom="l">
+                                                <ArbeidIUtlandetFormComponents.DatePicker
+                                                    name={`arbeidIUtlandet.${index}.fom`}
+                                                    label={intlUtils(intl, 'arbeidIUtlandet.fom')}
+                                                    placeholder="dd.mm.åååå"
+                                                    fullscreenOverlay={true}
+                                                    showYearSelector={true}
+                                                    validate={validateArbeidIUtlandetFom(
+                                                        intl,
+                                                        formValues.arbeidIUtlandet![index].tom,
+                                                    )}
+                                                    maxDate={dayjs().toDate()}
+                                                    minDate={date20YearsAgo}
+                                                />
+                                            </Block>
+                                            <Block padBottom="l">
+                                                <ArbeidIUtlandetFormComponents.YesOrNoQuestion
+                                                    name={`arbeidIUtlandet.${index}.pågående`}
+                                                    legend={intlUtils(intl, 'egenNæring.startetNæring.pågående')}
+                                                    validate={validateArbeidIUtlandetPågående(intl)}
+                                                />
+                                            </Block>
+                                            <Block padBottom="l" visible={getIsVisible(index, formValues)}>
+                                                <ArbeidIUtlandetFormComponents.DatePicker
+                                                    name={`arbeidIUtlandet.${index}.tom`}
+                                                    label={intlUtils(intl, 'arbeidIUtlandet.tom')}
+                                                    placeholder="dd.mm.åååå"
+                                                    fullscreenOverlay={true}
+                                                    showYearSelector={true}
+                                                    validate={validateArbeidIUtlandetTom(
+                                                        intl,
+                                                        formValues.arbeidIUtlandet![index].fom,
+                                                    )}
+                                                    maxDate={dayjs().toDate()}
+                                                    minDate={getMinInputTilOgMedValue(
+                                                        formValues.arbeidIUtlandet![index].fom,
+                                                        date4WeeksAgo,
+                                                    )}
+                                                />
+                                            </Block>
+                                            {index !== 0 && (
+                                                <Block padBottom="xxxl">
+                                                    <Button
+                                                        icon={<TrashIcon />}
+                                                        type="button"
+                                                        variant="tertiary"
+                                                        onClick={() => arrayHelpers.remove(index)}
+                                                    >
+                                                        {intlUtils(intl, 'perioder.varierende.slett')}
+                                                    </Button>
+                                                </Block>
+                                            )}
+                                            {formValues.arbeidIUtlandet &&
+                                                index === formValues.arbeidIUtlandet.length - 1 && (
+                                                    <Block padBottom="xl">
+                                                        <Button
+                                                            icon={<PlusIcon />}
+                                                            type="button"
+                                                            variant="secondary"
+                                                            onClick={() =>
+                                                                arrayHelpers.push(getUferdigArbeidIUtlandetInput())
+                                                            }
+                                                        >
+                                                            {intlUtils(intl, 'arbeidIUtlandet.tittel.ny')}
+                                                        </Button>
+                                                    </Block>
+                                                )}
+                                            <Block padBottom="xxl">
+                                                <hr></hr>
+                                            </Block>
+                                        </div>
+                                    ))
+                                }
+                            />
+                            <Block margin="xl">
+                                <StepButtonWrapper>
+                                    <Button variant="secondary" as={Link} to={getBackLinkForArbeidIUtlandetSteg(søker)}>
+                                        <FormattedMessage id="backlink.label" />
+                                    </Button>
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    </Button>
+                                </StepButtonWrapper>
+                            </Block>
+                        </ArbeidIUtlandetFormComponents.Form>
+                    </Step>
+                );
+            }}
+        />
     );
 };
 
