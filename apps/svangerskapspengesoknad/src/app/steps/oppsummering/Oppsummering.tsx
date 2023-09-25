@@ -6,7 +6,7 @@ import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsC
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
@@ -29,6 +29,7 @@ import EgenNæringVisning from '../../components/egen-næring-visning/EgenNærin
 import ArbeidIUtlandetVisning from '../../components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import SøknadRoutes from 'app/routes/routes';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -36,6 +37,7 @@ const Oppsummering = () => {
     const { dispatch } = useSvangerskapspengerContext();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
+    const navigate = useNavigate();
     useUpdateCurrentTilretteleggingId(undefined);
     const onAvbrytSøknad = useAvbrytSøknad();
     const abortSignal = useAbortSignal();
@@ -58,7 +60,7 @@ const Oppsummering = () => {
 
             Api.sendSøknad(søknad, abortSignal)
                 .then(() => {
-                    console.log('Søknad sendt inn success');
+                    navigate(SøknadRoutes.SØKNAD_SENDT);
                 })
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
