@@ -31,6 +31,7 @@ import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekst
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -56,7 +57,7 @@ const Skjema: React.FunctionComponent = () => {
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
-        `${SøknadRoutes.PERIODE}/${førsteTilretteleggingId}`
+        `${SøknadRoutes.PERIODE}/${førsteTilretteleggingId}`,
     );
 
     const handleOnSubmit = (values: any) => {
@@ -104,7 +105,7 @@ const Skjema: React.FunctionComponent = () => {
                                         : t.arbeidsforhold.navn;
                                 const risikofaktorerLabel = intlUtils(
                                     intl,
-                                    `skjema.risikofaktorer.${t.arbeidsforhold.type}`
+                                    `skjema.risikofaktorer.${t.arbeidsforhold.type}`,
                                 );
 
                                 return (
@@ -130,11 +131,11 @@ const Skjema: React.FunctionComponent = () => {
                                                             validate={validateRisikofaktorer(
                                                                 intl,
                                                                 risikofaktorerLabel,
-                                                                t.arbeidsforhold.type
+                                                                t.arbeidsforhold.type,
                                                             )}
                                                             description={intlUtils(
                                                                 intl,
-                                                                'skjema.risikofaktorer.description'
+                                                                'skjema.risikofaktorer.description',
                                                             )}
                                                         />
                                                     </Block>
@@ -151,7 +152,7 @@ const Skjema: React.FunctionComponent = () => {
                                                     onDelete={(file: Attachment) => {
                                                         setFieldValue(
                                                             SkjemaFormField.vedlegg,
-                                                            deleteAttachment(formValues.vedlegg!, index, file)
+                                                            deleteAttachment(formValues.vedlegg!, index, file),
                                                         );
                                                     }}
                                                 />
@@ -167,13 +168,13 @@ const Skjema: React.FunctionComponent = () => {
                                                                 name={`${SkjemaFormField.vedlegg}.${index}`}
                                                                 buttonLabel={intlUtils(
                                                                     intl,
-                                                                    'skjema.vedlegg.buttonLabel'
+                                                                    'skjema.vedlegg.buttonLabel',
                                                                 )}
                                                                 legend=""
                                                                 label={`Last opp dokument`}
                                                                 attachments={getVedleggForTilrettelegging(
                                                                     formValues,
-                                                                    index
+                                                                    index,
                                                                 )}
                                                                 attachmentType={AttachmentType.TILRETTELEGGING}
                                                                 skjemanummer={skjemanummer}
@@ -184,9 +185,7 @@ const Skjema: React.FunctionComponent = () => {
                                                 }}
                                             />
                                         </div>
-                                        {index !== tilrettelegging.length - 1 && (
-                                            <hr className={bem.element('line')}></hr>
-                                        )}
+                                        {index !== tilrettelegging.length - 1 && <HorizontalLine />}
                                     </Block>
                                 );
                             })}

@@ -13,6 +13,7 @@ import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import { treUkerSiden } from 'app/utils/dateUtils';
 import { validatePeriodeFom, validatePeriodeTom } from './perioderMedVariasjonValidering';
 import { validateStillingsprosent } from '../../tilretteleggingValidation';
+import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 
 interface Props {
     formValues: Partial<TilretteleggingFormData>;
@@ -120,7 +121,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                 />
                             </Block>
                             {index !== 0 && (
-                                <Block padBottom="xxxl">
+                                <Block>
                                     <Button
                                         icon={<TrashIcon />}
                                         type="button"
@@ -130,6 +131,9 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                         {intlUtils(intl, 'perioder.varierende.slett')}
                                     </Button>
                                 </Block>
+                            )}
+                            {formValues.variertePerioder && formValues.variertePerioder.length > 1 && (
+                                <HorizontalLine />
                             )}
                             {formValues.variertePerioder && index === formValues.variertePerioder.length - 1 && (
                                 <Block padBottom="xl">
@@ -143,9 +147,6 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                     </Button>
                                 </Block>
                             )}
-                            <Block padBottom="xxl">
-                                <hr></hr>
-                            </Block>
                         </div>
                     ))
                 }

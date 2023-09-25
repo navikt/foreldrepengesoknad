@@ -23,6 +23,7 @@ import {
     mapBostedUtland,
 } from './boIUtlandetFormUtils';
 import { validateBostedUtlandLand, validateBostedUtlandFom, validateBostedUtlandTom } from './boIUtlandetValidering';
+import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 
 interface Props {
     oppgirIFortid: boolean;
@@ -132,7 +133,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                 />
                                             </Block>
                                             {index !== 0 && (
-                                                <Block padBottom="xl">
+                                                <Block>
                                                     <Button
                                                         icon={<TrashIcon />}
                                                         type="button"
@@ -143,6 +144,10 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                     </Button>
                                                 </Block>
                                             )}
+                                            {formValues.bostedIUtlandet && formValues.bostedIUtlandet.length > 1 && (
+                                                <HorizontalLine />
+                                            )}
+
                                             {formValues.bostedIUtlandet &&
                                                 index === formValues.bostedIUtlandet.length - 1 && (
                                                     <Block padBottom="xl">
@@ -158,9 +163,6 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                         </Button>
                                                     </Block>
                                                 )}
-                                            <Block padBottom="xxl">
-                                                <hr></hr>
-                                            </Block>
                                         </div>
                                     ))
                                 }

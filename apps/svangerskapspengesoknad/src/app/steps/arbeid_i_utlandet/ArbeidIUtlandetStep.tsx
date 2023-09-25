@@ -37,6 +37,7 @@ import {
     validateArbeidIUtlandetTom,
 } from './arbeidIUtlandetValidation';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 
 const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -148,7 +149,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 />
                                             </Block>
                                             {index !== 0 && (
-                                                <Block padBottom="xxxl">
+                                                <Block>
                                                     <Button
                                                         icon={<TrashIcon />}
                                                         type="button"
@@ -158,6 +159,9 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                         {intlUtils(intl, 'perioder.varierende.slett')}
                                                     </Button>
                                                 </Block>
+                                            )}
+                                            {formValues.arbeidIUtlandet && formValues.arbeidIUtlandet.length > 1 && (
+                                                <HorizontalLine />
                                             )}
                                             {formValues.arbeidIUtlandet &&
                                                 index === formValues.arbeidIUtlandet.length - 1 && (
@@ -174,9 +178,6 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                         </Button>
                                                     </Block>
                                                 )}
-                                            <Block padBottom="xxl">
-                                                <hr></hr>
-                                            </Block>
                                         </div>
                                     ))
                                 }
