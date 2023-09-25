@@ -19,7 +19,7 @@
     },
     "dependencies": {
         "gh-pages": "5.0.0",
-        "glob": "10.3.3",
+        "glob": "10.3.7",
         "husky": "8.0.3",
         "lint-staged": "14.0.0",
         "shelljs": "0.8.5",
