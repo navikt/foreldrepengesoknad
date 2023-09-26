@@ -1,6 +1,7 @@
-import { ArbeidIUtlandet } from './ArbeidIUtlandet';
-import { Frilans } from './Frilans';
-import { Næring } from './Næring';
+import { Språkkode } from 'app/intl/types';
+import { ArbeidIUtlandet, ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
+import { Frilans, FrilansDTO } from './Frilans';
+import { EgenNæring, EgenNæringDTO } from './EgenNæring';
 
 export enum Søkerrolle {
     'MOR' = 'mor',
@@ -11,7 +12,15 @@ export interface Søker {
     harJobbetSomFrilans: boolean;
     frilansInformasjon?: Frilans;
     harJobbetSomSelvstendigNæringsdrivende: boolean;
-    selvstendigNæringsdrivendeInformasjon?: Næring;
+    selvstendigNæringsdrivendeInformasjon?: EgenNæring;
     harHattAnnenInntekt: boolean;
     andreInntekter?: ArbeidIUtlandet[];
+    språkkode: Språkkode;
+}
+
+export interface SøkerDTO
+    extends Omit<Søker, 'frilansInformasjon' | 'selvstendigNæringsdrivendeInformasjon' | 'andreInntekterSiste10Mnd'> {
+    frilansInformasjon?: FrilansDTO;
+    selvstendigNæringsdrivendeInformasjon?: EgenNæringDTO[];
+    andreInntekterSiste10Mnd?: ArbeidIUtlandetDTO[];
 }

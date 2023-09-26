@@ -1,15 +1,14 @@
-import { QuestionVisibility, YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common/src/common/utils/formUtils';
 import { BarnetFormData, BarnetFormField } from './barnetFormConfig';
 import { Barn } from 'app/types/Barn';
-import { ISOStringToDate } from '@navikt/fp-common';
 
 const getInitValues = (): Readonly<BarnetFormData> => ({
     [BarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
-    [BarnetFormField.fødselsdato]: '',
+    [BarnetFormField.fødselsdato]: undefined,
     [BarnetFormField.termindato]: '',
 });
 
@@ -34,15 +33,15 @@ export const getBarnetInitialValues = (barn: Barn | undefined): BarnetFormData =
     return {
         ...initialOmBarnetValues,
         erBarnetFødt: convertBooleanOrUndefinedToYesOrNo(barn.erBarnetFødt),
-        termindato: dateToISOString(barn.termindato),
-        fødselsdato: dateToISOString(barn.fødselsdato),
+        termindato: barn.termindato,
+        fødselsdato: barn.fødselsdato,
     };
 };
 
 export const mapOmBarnetFormDataToState = (values: Partial<BarnetFormData>): Barn => {
     return {
         erBarnetFødt: !!convertYesOrNoOrUndefinedToBoolean(values.erBarnetFødt),
-        termindato: ISOStringToDate(values.termindato)!,
-        fødselsdato: ISOStringToDate(values.fødselsdato),
+        termindato: values.termindato!,
+        fødselsdato: values.fødselsdato,
     };
 };

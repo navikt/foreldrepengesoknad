@@ -26,8 +26,8 @@ describe('SvangerskapspengesøknadReducer', () => {
     it('skal legge barn i state', () => {
         const payload = {
             erBarnetFødt: true,
-            termindato: new Date('10-08-2023'),
-            fødselsdato: new Date('10-07-2023'),
+            termindato: '10-08-2023',
+            fødselsdato: '10-07-2023',
         } as Barn;
 
         const resultState = svangerskapspengerReducer(svangerskapspengerInitialState, {

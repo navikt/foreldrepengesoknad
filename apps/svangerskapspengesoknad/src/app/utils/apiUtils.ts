@@ -1,7 +1,241 @@
-// const getTilretteleggingForInnsending = () => {
-//     console.log('hei');
-// };
+import { ISOStringToDate } from '@navikt/fp-common';
+import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
+import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
+import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
+import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
+import { Barn, BarnDTO } from 'app/types/Barn';
+import { EgenNæring, EgenNæringDTO } from 'app/types/EgenNæring';
+import { Frilans, FrilansDTO } from 'app/types/Frilans';
+import InformasjonOmUtenlandsopphold, {
+    InformasjonOmUtenlandsoppholdDTO,
+    Utenlandsopphold,
+    UtenlandsoppholdDTO,
+} from 'app/types/InformasjonOmUtenlandsopphold';
+import { Søker, SøkerDTO } from 'app/types/Søker';
+import { Søknad, SøknadDTO, Søknadstype } from 'app/types/Søknad';
+import Tilrettelegging, {
+    ArbeidsforholdForTilrettelegging,
+    DelvisTilretteleggingDTO,
+    IngenTilretteleggingDTO,
+    TilretteleggingDTO,
+    Tilretteleggingstype,
+} from 'app/types/Tilrettelegging';
+import { IntlShape } from 'react-intl';
 
-// export const getSøknadForInnsending = (søknad: Søknad) => {
-//     console.log
-// };
+const getArbeidsforholdForInnsending = (arbeidsforhold: ArbeidsforholdForTilrettelegging): ArbeidsforholdDTO => {
+    const arbeidsforholdForInnsending = (({ type, navn, risikofaktorer, tilretteleggingstiltak }) => ({
+        type,
+        navn,
+        risikofaktorer,
+        tilretteleggingstiltak,
+    }))(arbeidsforhold);
+    return arbeidsforholdForInnsending as ArbeidsforholdDTO;
+};
+
+const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold, intl: IntlShape): UtenlandsoppholdDTO => {
+    return {
+        land: getCountryName(utenlandsopphold.land, intl.locale),
+        tidsperiode: {
+            fom: ISOStringToDate(utenlandsopphold.tidsperiode.fom)!,
+            tom: ISOStringToDate(utenlandsopphold.tidsperiode.tom)!,
+        },
+    };
+};
+
+const mapUtenlandsOppholdForInnsending = (
+    utenlandsopphold: InformasjonOmUtenlandsopphold,
+    intl: IntlShape,
+): InformasjonOmUtenlandsoppholdDTO => {
+    return {
+        iNorgePåHendelsestidspunktet: utenlandsopphold.iNorgePåHendelsestidspunktet,
+        iNorgeSiste12Mnd: utenlandsopphold.iNorgeSiste12Mnd,
+        iNorgeNeste12Mnd: utenlandsopphold.iNorgeNeste12Mnd,
+        jobbetINorgeSiste12Mnd: utenlandsopphold.jobbetINorgeSiste12Mnd,
+        tidligereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
+            return mapBostedUtlandTilDTO(opphold, intl);
+        }),
+        senereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
+            return mapBostedUtlandTilDTO(opphold, intl);
+        }),
+    };
+};
+
+const mapBarnForInnsending = (barn: Barn): BarnDTO => {
+    return {
+        ...barn,
+        termindato: ISOStringToDate(barn.termindato)!,
+        fødselsdatoer: barn.fødselsdato ? [ISOStringToDate(barn.fødselsdato)!] : [],
+    };
+};
+const mapDelvisTilretteleggingForInnsending = (
+    tilrettelegging: Tilrettelegging,
+    arbeidsforholdForInnsending: ArbeidsforholdDTO,
+    prosentStilling: number,
+): DelvisTilretteleggingDTO => {
+    return {
+        type: Tilretteleggingstype.DELVIS,
+        behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
+        arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
+        vedlegg: tilrettelegging.vedlegg,
+        tilrettelagtArbeidFom: ISOStringToDate(tilrettelegging.sammePeriodeFremTilTerminFom)!,
+        stillingsprosent: prosentStilling,
+    };
+};
+
+const mapIngenTilretteleggingForInnsending = (
+    tilrettelegging: Tilrettelegging,
+    arbeidsforholdForInnsending: ArbeidsforholdDTO,
+): IngenTilretteleggingDTO => {
+    return {
+        type: Tilretteleggingstype.INGEN,
+        behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
+        arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
+        vedlegg: tilrettelegging.vedlegg,
+        slutteArbeidFom: ISOStringToDate(tilrettelegging.sammePeriodeFremTilTerminFom)!,
+    };
+};
+
+const mapDelvisTilretteleggingMedEnPeriodeForInnsending = (
+    tilrettelegging: Tilrettelegging,
+    arbeidsforholdForInnsending: ArbeidsforholdDTO,
+): DelvisTilretteleggingDTO | IngenTilretteleggingDTO => {
+    const prosentStilling = parseInt(tilrettelegging.sammePeriodeFremTilTerminStillingsprosent!, 10);
+    const jobberDelvis = prosentStilling > 0;
+    if (jobberDelvis) {
+        return mapDelvisTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending, prosentStilling);
+    } else {
+        return mapIngenTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending);
+    }
+};
+
+const mappedTilretteleggingMedEnPeriodeForInnsending = (tilrettelegging: Tilrettelegging): TilretteleggingDTO => {
+    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging.arbeidsforhold);
+
+    if (
+        tilrettelegging.type === Tilretteleggingstype.DELVIS &&
+        tilrettelegging.delvisTilretteleggingPeriodeType ===
+            DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN
+    ) {
+        return mapDelvisTilretteleggingMedEnPeriodeForInnsending(
+            tilrettelegging,
+            arbeidsforholdForInnsending as ArbeidsforholdDTO,
+        );
+    }
+    return mapIngenTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending as ArbeidsforholdDTO);
+};
+
+const mappedTilretteleggingMedFlerePerioderForInnsending = (tilrettelegging: Tilrettelegging): TilretteleggingDTO[] => {
+    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging.arbeidsforhold);
+    const allePerioder = tilrettelegging.variertePerioder!.map((periode) => {
+        const prosentStilling = parseInt(periode.stillingsprosent!, 10);
+        const jobberDelvis = prosentStilling > 0;
+        if (jobberDelvis) {
+            return {
+                type: Tilretteleggingstype.DELVIS,
+                behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
+                arbeidsforhold: arbeidsforholdForInnsending,
+                vedlegg: tilrettelegging.vedlegg,
+                tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
+                stillingsprosent: prosentStilling,
+            } as DelvisTilretteleggingDTO;
+        } else {
+            return {
+                type: Tilretteleggingstype.INGEN,
+                behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
+                arbeidsforhold: arbeidsforholdForInnsending,
+                vedlegg: tilrettelegging.vedlegg,
+                slutteArbeidFom: ISOStringToDate(periode.fom)!,
+            } as IngenTilretteleggingDTO;
+        }
+    });
+    return allePerioder;
+};
+
+const mapTilretteleggingerForInnsending = (tilrettelegging: Tilrettelegging[]): TilretteleggingDTO[] => {
+    const tilretteleggingMedEnPeriode = tilrettelegging.filter(
+        (t) => !t.variertePerioder || t.variertePerioder.length === 0,
+    );
+    const tilretteleggingMedFlerePerioder = tilrettelegging.filter(
+        (t) => t.variertePerioder && t.variertePerioder.length > 0,
+    );
+    const mappedTilretteleggingerMedEnPeriode = tilretteleggingMedEnPeriode.map((t) => {
+        return mappedTilretteleggingMedEnPeriodeForInnsending(t);
+    });
+    const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedFlerePerioder.map((t) => {
+        return mappedTilretteleggingMedFlerePerioderForInnsending(t);
+    });
+    return [...mappedTilretteleggingerMedEnPeriode.flat(1), ...mappedTilretteleggingAvFlerePerioder.flat(1)];
+};
+
+const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
+    if (næring) {
+        return {
+            næringstype: næring.næringstype,
+            tidsperiode: {
+                fom: ISOStringToDate(næring.tidsperiode.fom),
+                tom: ISOStringToDate(næring.tidsperiode.tom),
+            },
+            næringsinntekt: næring.næringsinntekt!,
+            navnPåNæringen: næring.navnPåNæringen,
+            organisasjonsnummer: næring.organisasjonsnummer,
+            registrertINorge: næring.registrertINorge,
+            registrertILand: næring.registrertILand,
+            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene:
+                næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
+        };
+    }
+    return undefined;
+};
+
+const mapFrilansForInnsending = (frilans: Frilans | undefined): FrilansDTO | undefined => {
+    if (frilans) {
+        return {
+            ...frilans,
+            oppstart: ISOStringToDate(frilans.oppstart)!,
+            sluttDato: ISOStringToDate(frilans.sluttDato),
+        };
+    }
+    return undefined;
+};
+
+const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandet): ArbeidIUtlandetDTO => {
+    return {
+        type: AnnenInntektType.JOBB_I_UTLANDET,
+        arbeidsgiverNavn: arbeid.arbeidsgiverNavn,
+        land: arbeid.land,
+        tidsperiode: {
+            fom: ISOStringToDate(arbeid.tidsperiode.fom)!,
+            tom: ISOStringToDate(arbeid.tidsperiode.tom),
+        },
+    };
+};
+
+const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
+    const mappedNæring = mapEgenNæringForInnsending(søker.selvstendigNæringsdrivendeInformasjon);
+    const mappedArbeidIUtlandet = søker.andreInntekter
+        ? søker.andreInntekter.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
+        : [];
+    const mappedSøker: SøkerDTO = {
+        ...søker,
+        frilansInformasjon: mapFrilansForInnsending(søker.frilansInformasjon),
+        selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : [],
+        andreInntekterSiste10Mnd: mappedArbeidIUtlandet,
+    };
+    return mappedSøker;
+};
+
+export const getSøknadForInnsending = (søknad: Søknad, intl: IntlShape): SøknadDTO => {
+    const utenlandsoppholdForInnsending = mapUtenlandsOppholdForInnsending(søknad.informasjonOmUtenlandsopphold, intl);
+    const barnForInnsending = mapBarnForInnsending(søknad.barn);
+    const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(søknad.tilrettelegging);
+    const søkerForInnsending = mapSøkerForInnsending(søknad.søker);
+    return {
+        type: Søknadstype.SVANGERSKAPSPENGER,
+        erEndringssøknad: false,
+        informasjonOmUtenlandsopphold: utenlandsoppholdForInnsending,
+        barn: barnForInnsending,
+        vedlegg: søknad.vedlegg,
+        tilrettelegging: tilretteleggingForInnsending,
+        søker: søkerForInnsending,
+    };
+};

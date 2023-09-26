@@ -1,4 +1,5 @@
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
+import { ArbeidsforholdDTO } from './Arbeidsforhold';
 
 export enum Tilretteleggingstype {
     'INGEN' = 'ingen',
@@ -39,9 +40,28 @@ export interface Tilrettelegging {
     type?: Tilretteleggingstype;
     sammePeriodeFremTilTerminFom?: string;
     sammePeriodeFremTilTerminStillingsprosent?: string;
-    vedlegg?: string[];
+    vedlegg: string[];
     delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
     variertePerioder?: PeriodeMedVariasjon[];
 }
+
+interface TilretteleggingDTOBase {
+    type: Tilretteleggingstype;
+    behovForTilretteleggingFom: Date;
+    arbeidsforhold: ArbeidsforholdDTO;
+    vedlegg: string[];
+}
+export interface DelvisTilretteleggingDTO extends TilretteleggingDTOBase {
+    type: Tilretteleggingstype.DELVIS;
+    tilrettelagtArbeidFom: Date;
+    stillingsprosent: number;
+}
+
+export interface IngenTilretteleggingDTO extends TilretteleggingDTOBase {
+    type: Tilretteleggingstype.INGEN;
+    slutteArbeidFom: Date;
+}
+
+export type TilretteleggingDTO = DelvisTilretteleggingDTO | IngenTilretteleggingDTO;
 
 export default Tilrettelegging;

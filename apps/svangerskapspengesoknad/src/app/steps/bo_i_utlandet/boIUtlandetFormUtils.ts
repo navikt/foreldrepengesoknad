@@ -16,7 +16,7 @@ export const getUferdigBostedUtlandInput = (): UtenlandsoppholdInput => {
 };
 
 const getErINorgePåFamiliehendelsedato = (
-    familiehendelsedato: Date,
+    familiehendelsedato: string,
     tidligereOpphold: Utenlandsopphold[],
     senereOpphold: Utenlandsopphold[],
 ): boolean => {
@@ -57,7 +57,7 @@ export const getInitialBostedIUtlandetFormData = (
 export const mapBostedUtland = (
     formValues: Partial<BoIUtlandetFormData>,
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold,
-    familiehendelsedato: Date,
+    familiehendelsedato: string,
     oppgirIFortid: boolean,
 ): InformasjonOmUtenlandsopphold => {
     const mappedUtenlandsopphold = formValues.bostedIUtlandet!.map((bosted) => {

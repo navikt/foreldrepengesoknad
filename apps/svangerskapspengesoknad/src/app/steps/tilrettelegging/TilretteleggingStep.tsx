@@ -1,4 +1,4 @@
-import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsConfig';
 import { Alert, Button, ReadMore } from '@navikt/ds-react';
@@ -60,6 +60,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
+    const fødselsdatoDate = ISOStringToDate(fødselsdato);
+    const termindatoDate = ISOStringToDate(termindato);
 
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(id, values, tilretteleggingFraState);
@@ -73,7 +75,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
 
     const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, state.currentTilretteleggingId);
 
-    const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdato || termindato);
+    const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdatoDate || termindatoDate!);
 
     let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
     if (nesteTilretteleggingId) {
@@ -100,7 +102,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
-                    : dateToISOString(tiMånederSidenDato(termindato));
+                    : dateToISOString(tiMånederSidenDato(termindatoDate!));
 
                 return (
                     <Step
@@ -138,9 +140,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     label={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label')}
                                     placeholder={'dd.mm.åååå'}
                                     description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')}
-                                    minDate={tiMånederSidenDato(barn.termindato)}
-                                    maxDate={dagenFør(barn.termindato)}
-                                    validate={validateTilrettelagtArbeidFom(intl, barn.termindato)}
+                                    minDate={tiMånederSidenDato(termindatoDate!)}
+                                    maxDate={dagenFør(termindatoDate!)}
+                                    validate={validateTilrettelagtArbeidFom(intl, termindatoDate!)}
                                 />
                             </Block>
                             <Block padBottom="xxl">
@@ -221,7 +223,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     label={intlUtils(intl, labelPeriodeFom)}
                                     description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
                                     minDate={new Date(minDatoPeriodeFom)}
-                                    maxDate={treUkerSiden(fødselsdato || termindato)}
+                                    maxDate={treUkerSiden(fødselsdatoDate || termindatoDate!)}
                                     validate={validateSammePeriodeFremTilTerminFom(
                                         intl,
                                         formValues.behovForTilretteleggingFom,

@@ -1,5 +1,6 @@
-import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
+import { TidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { TidsperiodeDTOMedValgfriSluttdato } from './TidsperiodeDTO';
 
 export enum AnnenInntektType {
     JOBB_I_UTLANDET = 'JOBB_I_UTLANDET',
@@ -21,6 +22,6 @@ export interface ArbeidIUtlandet {
     land: string;
 }
 
-export interface ArbeidIUtlandetInnsending extends Omit<ArbeidIUtlandet, 'tidsperiode'> {
-    tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
+export interface ArbeidIUtlandetDTO extends Omit<ArbeidIUtlandet, 'tidsperiode' | 'pågående'> {
+    tidsperiode: TidsperiodeDTOMedValgfriSluttdato;
 }

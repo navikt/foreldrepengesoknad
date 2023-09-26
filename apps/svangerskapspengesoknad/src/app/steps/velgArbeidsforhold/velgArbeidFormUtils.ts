@@ -1,11 +1,11 @@
 import { VelgArbeidFormData } from './velgArbeidFormConfig';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { Søker } from 'app/types/Søker';
-import { ISOStringToDate, intlUtils } from '@navikt/fp-common';
+import { intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FrilansFormData } from '../frilans/frilansFormConfig';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Næring } from 'app/types/Næring';
+import { EgenNæring } from 'app/types/EgenNæring';
 import { Frilans } from 'app/types/Frilans';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
@@ -21,8 +21,8 @@ export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormD
         ...søker,
         frilansInformasjon: {
             jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
-            oppstart: ISOStringToDate(values.frilansFom)!,
-            sluttDato: ISOStringToDate(values.frilansTom)!,
+            oppstart: values.frilansFom,
+            sluttDato: values.frilansTom,
         },
     };
 };
@@ -32,9 +32,9 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     erFrilanser: boolean,
     harNæring: boolean,
     frilans: Frilans | undefined,
-    næring: Næring | undefined,
+    næring: EgenNæring | undefined,
     arbeidsforhold: Arbeidsforhold[],
-    termindato: Date,
+    termindato: string,
 ): Tilrettelegging[] => {
     const unikeArbeidsforhold = [
         ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => {

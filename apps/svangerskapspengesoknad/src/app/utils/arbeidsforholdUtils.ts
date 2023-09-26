@@ -2,13 +2,13 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 
-export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: Date): Arbeidsforhold[] => {
+export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
         return arbeidsforhold;
     }
 
     return arbeidsforhold.filter((arb) =>
-        arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months')) : true
+        arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months')) : true,
     );
 };
 
@@ -18,7 +18,7 @@ const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
 
 export const getUnikeArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[] | undefined,
-    termindato: Date
+    termindato: string,
 ): Arbeidsforhold[] => {
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
         const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
@@ -37,10 +37,10 @@ export const getUnikeArbeidsforhold = (
 };
 
 export const søkerHarKunEtArbeid = (
-    termindato: Date,
+    termindato: string,
     arbeidsforhold: Arbeidsforhold[],
     erFrilanser: boolean,
-    harEgenNæring: boolean
+    harEgenNæring: boolean,
 ) => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     return (

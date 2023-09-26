@@ -14,7 +14,7 @@ export const validatePeriodeFom =
         allePerioder: PeriodeMedVariasjon[] | undefined,
         behovForTilretteleggingFom: string | undefined,
         treUkerFørFødselEllerTermin: Date,
-        fødselsdato: Date | undefined,
+        fødselsdato: string | undefined,
     ) =>
     (fom: string) => {
         const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
@@ -61,7 +61,7 @@ export const validatePeriodeTom =
         index: number,
         allePerioder: PeriodeMedVariasjon[] | undefined,
         treUkerFørFødselEllerTermin: Date,
-        fødselsdato: Date | undefined,
+        fødselsdato: string | undefined,
     ) =>
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;

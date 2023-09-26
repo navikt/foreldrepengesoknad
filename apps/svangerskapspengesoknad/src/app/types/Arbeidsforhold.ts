@@ -1,3 +1,29 @@
+import { Arbeidsforholdstype } from './Tilrettelegging';
+
+export interface ArbeidsforholdFrilansDTO {
+    type: Arbeidsforholdstype.FRILANSER;
+    risikoFaktorer?: string;
+    tilretteleggingstiltak?: string;
+}
+
+export interface ArbeidsforholdSelvstendigDTO {
+    type: Arbeidsforholdstype.SELVSTENDIG;
+    risikoFaktorer?: string;
+    tilretteleggingstiltak?: string;
+}
+
+export interface ArbeidsforholdVirksomhetDTO {
+    type: Arbeidsforholdstype.VIRKSOMHET;
+    id: string;
+}
+export const isArbeidsforholdVirksomhetDTO = (
+    arbeidsforhold: ArbeidsforholdDTO,
+): arbeidsforhold is ArbeidsforholdVirksomhetDTO => {
+    return arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET;
+};
+
+export type ArbeidsforholdDTO = ArbeidsforholdFrilansDTO | ArbeidsforholdSelvstendigDTO | ArbeidsforholdVirksomhetDTO;
+
 interface Arbeidsforhold {
     id: string;
     arbeidsgiverNavn: string;

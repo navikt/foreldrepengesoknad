@@ -9,7 +9,7 @@ export enum BarnetFormField {
 export interface BarnetFormData {
     [BarnetFormField.erBarnetFødt]: YesOrNo;
     [BarnetFormField.termindato]: string;
-    [BarnetFormField.fødselsdato]: string;
+    [BarnetFormField.fødselsdato]: string | undefined;
 }
 
 export const BarnetFormComponents = getTypedFormComponents<BarnetFormField, BarnetFormData>();

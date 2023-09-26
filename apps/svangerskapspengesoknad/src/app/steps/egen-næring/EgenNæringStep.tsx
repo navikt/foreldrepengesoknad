@@ -4,7 +4,7 @@ import {
     getInitialEgenNæringFormValues,
     mapNæringDataToSøkerState,
 } from './egenNæringFormUtils';
-import { Næringstype } from 'app/types/Næring';
+import { Næringstype } from 'app/types/EgenNæring';
 import { egenNæringFormQuestionsConfig } from './egenNæringFormQuestions';
 import {
     Block,

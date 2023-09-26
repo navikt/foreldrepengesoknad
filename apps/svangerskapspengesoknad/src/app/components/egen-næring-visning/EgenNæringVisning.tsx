@@ -1,5 +1,5 @@
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import { Næring } from 'app/types/Næring';
+import { EgenNæring } from 'app/types/EgenNæring';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
@@ -7,9 +7,9 @@ import './egen-næring-visning.css';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 interface Props {
-    næring: Næring;
-    setSelectedNæring?: React.Dispatch<React.SetStateAction<Næring | undefined>>;
-    deleteNæring?: (næring: Næring) => void;
+    næring: EgenNæring;
+    setSelectedNæring?: React.Dispatch<React.SetStateAction<EgenNæring | undefined>>;
+    deleteNæring?: (næring: EgenNæring) => void;
 }
 
 const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {

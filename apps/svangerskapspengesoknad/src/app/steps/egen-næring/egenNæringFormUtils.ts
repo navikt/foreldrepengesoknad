@@ -1,13 +1,13 @@
-import { ISOStringToDate, hasValue } from '@navikt/fp-common';
+import { hasValue } from '@navikt/fp-common';
 import { EgenNæringFormData, EgenNæringFormField, initialEgenNæringFormData } from './egenNæringFormConfig';
 import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common/src/common/utils/formUtils';
-import { Næring } from 'app/types/Næring';
+import { EgenNæring } from 'app/types/EgenNæring';
 import dayjs from 'dayjs';
 import { date4YearsAgo } from 'app/utils/dateUtils';
-import { QuestionVisibility, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Søker } from 'app/types/Søker';
 
@@ -19,17 +19,15 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
     return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };
 
-export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData): Næring => {
+export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData): EgenNæring => {
     return {
         næringstype: formValues.egenNæringType!,
         tidsperiode: {
-            fom: ISOStringToDate(formValues.egenNæringFom)!,
-            tom: ISOStringToDate(formValues.egenNæringTom),
+            fom: formValues.egenNæringFom!,
+            tom: formValues.egenNæringTom,
         },
         pågående: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringPågående)!,
-        næringsinntekt: hasValue(formValues.egenNæringResultat)
-            ? parseInt(formValues.egenNæringResultat!, 10)
-            : undefined,
+        næringsinntekt: hasValue(formValues.egenNæringResultat) ? formValues.egenNæringResultat : undefined,
         navnPåNæringen: replaceInvisibleCharsWithSpace(formValues.egenNæringNavn!),
         organisasjonsnummer: hasValue(formValues.egenNæringOrgnr) ? formValues.egenNæringOrgnr : undefined,
         registrertINorge: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringRegistrertINorge)!,
@@ -37,30 +35,30 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertYesOrNoOrUndefinedToBoolean(
             formValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
         )!,
-        oppstartsdato: ISOStringToDate(formValues.egenNæringYrkesAktivDato),
+        oppstartsdato: formValues.egenNæringYrkesAktivDato,
     };
 };
 
-export const getInitialEgenNæringFormValues = (næring: Næring | undefined): EgenNæringFormData => {
+export const getInitialEgenNæringFormValues = (næring: EgenNæring | undefined): EgenNæringFormData => {
     if (næring === undefined) {
         return initialEgenNæringFormData;
     }
 
     return {
         ...initialEgenNæringFormData,
-        egenNæringType: næring?.næringstype,
-        egenNæringNavn: næring?.navnPåNæringen || '',
-        egenNæringRegistrertINorge: convertBooleanOrUndefinedToYesOrNo(næring?.registrertINorge),
-        egenNæringLand: næring?.registrertILand || '',
-        egenNæringFom: dateToISOString(næring?.tidsperiode.fom),
-        egenNæringTom: dateToISOString(næring?.tidsperiode.tom) || '',
-        egenNæringOrgnr: næring?.organisasjonsnummer || '',
-        egenNæringPågående: convertBooleanOrUndefinedToYesOrNo(næring?.pågående),
-        egenNæringResultat: næring?.næringsinntekt?.toString() || '',
+        egenNæringType: næring.næringstype,
+        egenNæringNavn: næring.navnPåNæringen || '',
+        egenNæringRegistrertINorge: convertBooleanOrUndefinedToYesOrNo(næring.registrertINorge),
+        egenNæringLand: næring.registrertILand || '',
+        egenNæringFom: næring.tidsperiode.fom,
+        egenNæringTom: næring.tidsperiode.tom,
+        egenNæringOrgnr: næring.organisasjonsnummer || '',
+        egenNæringPågående: convertBooleanOrUndefinedToYesOrNo(næring.pågående),
+        egenNæringResultat: næring.næringsinntekt || '',
         egenNæringBlittYrkesaktivDe3SisteÅrene: convertBooleanOrUndefinedToYesOrNo(
-            næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
+            næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         ),
-        egenNæringYrkesAktivDato: dateToISOString(næring?.oppstartsdato) || '',
+        egenNæringYrkesAktivDato: næring.oppstartsdato || '',
     };
 };
 

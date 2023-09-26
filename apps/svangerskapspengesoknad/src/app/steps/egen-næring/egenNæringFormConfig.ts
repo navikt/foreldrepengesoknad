@@ -1,6 +1,6 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Næringstype } from 'app/types/Næring';
+import { Næringstype } from 'app/types/EgenNæring';
 
 export enum EgenNæringFormField {
     egenNæringType = 'egenNæringType',
