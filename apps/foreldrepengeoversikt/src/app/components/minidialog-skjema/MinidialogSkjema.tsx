@@ -62,7 +62,9 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                 return 1000;
             }
 
-            setAllowedToFetch(false);
+            if (ettersendelseErSendt) {
+                setAllowedToFetch(false);
+            }
             return false;
         },
         enabled: ettersendelseErSendt && fetchCounter < 30 && allowedToFetch,
