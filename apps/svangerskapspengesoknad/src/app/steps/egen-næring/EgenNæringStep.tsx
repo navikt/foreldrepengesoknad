@@ -45,7 +45,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                 barn.termindato,
                 arbeidsforhold,
                 søkerMedNæring.harJobbetSomFrilans,
-                søkerMedNæring.harJobbetSomSelvstendigNæringsdrivende
+                søkerMedNæring.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
             const mappedTilretteleggingsValg = mapTilrettelegging(
@@ -53,7 +53,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                 ['Næring'],
                 søkerMedNæring,
                 arbeidsforhold,
-                barn.termindato
+                barn.termindato,
             );
 
             return [
@@ -88,7 +88,10 @@ const EgenNæringStep: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             // cleanup={(values) => cleanupFrilansFormData(values, visibility)} //TODO
                         >
-                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringType)}>
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(EgenNæringSubformField.egenNæringType)}
+                            >
                                 <EgenNæringSubformComponents.RadioGroup
                                     name={EgenNæringSubformField.egenNæringType}
                                     legend={intlUtils(intl, 'egenNæring.næringstype')}
@@ -118,7 +121,10 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     }}
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringNavn)}>
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(EgenNæringSubformField.egenNæringNavn)}
+                            >
                                 <EgenNæringSubformComponents.TextField
                                     name={EgenNæringSubformField.egenNæringNavn}
                                     label={navnPåNæringLabel}
@@ -131,7 +137,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(EgenNæringSubformField.egenNæringRegistrertINorge)}
                             >
                                 <EgenNæringSubformComponents.YesOrNoQuestion
@@ -142,13 +148,13 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd')
+                                            intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd'),
                                         )
                                     }
                                 />
                             </Block>
                             <OrgnummerEllerLand visibility={visibility} />
-                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringFom)}>
+                            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringSubformField.egenNæringFom)}>
                                 <EgenNæringSubformComponents.DatePicker
                                     name={EgenNæringSubformField.egenNæringFom}
                                     label={intlUtils(intl, 'egenNæring.startetNæring.fom', {
@@ -163,7 +169,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(EgenNæringSubformField.egenNæringPågående)}
                             >
                                 <EgenNæringSubformComponents.YesOrNoQuestion
@@ -174,12 +180,12 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.egenNæringPågående.påkrevd')
+                                            intlUtils(intl, 'valideringsfeil.egenNæringPågående.påkrevd'),
                                         )
                                     }
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringTom)}>
+                            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringSubformField.egenNæringTom)}>
                                 <EgenNæringSubformComponents.DatePicker
                                     name={EgenNæringSubformField.egenNæringTom}
                                     label={intlUtils(intl, 'egenNæring.startetNæring.tom', {
@@ -194,7 +200,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(EgenNæringSubformField.egenNæringResultat)}
                             >
                                 <EgenNæringSubformComponents.TextField
@@ -210,9 +216,9 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 </ReadMore>
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(
-                                    EgenNæringSubformField.egenNæringBlittYrkesaktivDe3SisteÅrene
+                                    EgenNæringSubformField.egenNæringBlittYrkesaktivDe3SisteÅrene,
                                 )}
                             >
                                 <EgenNæringSubformComponents.YesOrNoQuestion
@@ -223,14 +229,14 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                             value,
                                             intlUtils(
                                                 intl,
-                                                'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd'
-                                            )
+                                                'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd',
+                                            ),
                                         )
                                     }
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(EgenNæringSubformField.egenNæringYrkesAktivDato)}
                             >
                                 <EgenNæringSubformComponents.DatePicker
@@ -243,10 +249,10 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     maxDate={dayjs().toDate()}
                                 />
                             </Block>
-                            <Block padBottom="l">
+                            <Block padBottom="xxl">
                                 <Alert variant="info">{intlUtils(intl, 'egenNæring.veileder')}</Alert>
                             </Block>
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getBackLinkForNæringSteg(søker)}>
                                         <FormattedMessage id="backlink.label" />

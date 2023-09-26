@@ -241,7 +241,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     termindato={barn.termindato}
                                 />
                             </Block>
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"

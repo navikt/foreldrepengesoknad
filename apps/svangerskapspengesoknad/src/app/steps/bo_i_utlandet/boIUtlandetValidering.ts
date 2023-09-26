@@ -16,7 +16,8 @@ export const validerOverlappendeUtenlandsperioder = (
     if (!hasValue(fom) || !hasValue(tom) || !utenlandsperioder) {
         return undefined;
     }
-    const overlappendePerioder = utenlandsperioder.filter(
+    const utenlandsperioderMedDatoer = utenlandsperioder.filter((p) => p.fom && p.tom);
+    const overlappendePerioder = utenlandsperioderMedDatoer.filter(
         (tp, index) =>
             (dayjs(fom).isBetween(tp.fom, tp.tom, 'day', '[]') ||
                 dayjs(tom).isBetween(tp.fom, tp.tom, 'day', '[]') ||

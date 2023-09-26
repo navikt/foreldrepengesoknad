@@ -177,7 +177,7 @@ const Oppsummering = () => {
                                     validate={validateHarGodkjentOppsummering(intl)}
                                 />
                             </Block>
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"

@@ -51,12 +51,12 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         steps={stepConfig(intl)}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                            <Block padBottom="l">
+                            <Block padBottom="xxl">
                                 <BodyShort size="medium">{intlUtils(intl, 'utenlandsopphold.infotekst')}</BodyShort>
                             </Block>
                             <Block
                                 visible={visibility.isVisible(UtenlandsoppholdField.skalBoINorgeNeste12Mnd)}
-                                padBottom="l"
+                                padBottom="xxl"
                             >
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
                                     legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
@@ -80,7 +80,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(UtenlandsoppholdField.harBoddINorgeSiste12Mnd)}
                             >
                                 <UtenlandsoppholdFormComponents.YesOrNoQuestion
@@ -104,10 +104,10 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     }
                                 />
                             </Block>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <InformasjonOmUtenlandsopphold />
                             </Block>
-                            <Block>
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"

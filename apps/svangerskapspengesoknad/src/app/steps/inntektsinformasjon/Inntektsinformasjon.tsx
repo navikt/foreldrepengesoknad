@@ -102,11 +102,11 @@ const Inntektsinformasjon = () => {
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
                                 </BodyShort>
                             </Block>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
@@ -122,7 +122,7 @@ const Inntektsinformasjon = () => {
                                 <HvemKanVæreFrilanser />
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(
                                     InntektsinformasjonFormField.hattInntektSomNæringsdrivende,
                                 )}
@@ -143,7 +143,7 @@ const Inntektsinformasjon = () => {
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)}
                             >
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
@@ -158,16 +158,16 @@ const Inntektsinformasjon = () => {
                                 />
                                 <InfoOmArbeidIUtlandet />
                             </Block>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <InfoTilFiskere />
                             </Block>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <InfoOmFørstegangstjeneste />
                             </Block>
                             <Block visible={kanIkkeSøke}>
                                 <BrukerKanIkkeSøke />
                             </Block>
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"

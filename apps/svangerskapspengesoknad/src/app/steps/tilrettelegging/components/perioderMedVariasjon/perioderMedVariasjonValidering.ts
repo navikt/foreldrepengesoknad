@@ -66,7 +66,7 @@ export const validatePeriodeTom =
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;
         const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
-
+        const dagenFørTreUkerFørTermin = dayjs(treUkerFørFødselEllerTermin).subtract(1, 'd').toDate();
         if (!hasValue(tom)) {
             return intlUtils(intl, 'valideringsfeil.periode.tom.påkrevd');
         }
@@ -82,10 +82,10 @@ export const validatePeriodeTom =
             allePerioder &&
             index === allePerioder.length - 1 &&
             hasValue(tom) &&
-            !dayjs(tom).isSame(treUkerFørFødselEllerTermin, 'd')
+            !dayjs(tom).isSame(dagenFørTreUkerFørTermin, 'd')
         ) {
             return intlUtils(intl, 'valideringsfeil.periode.tom.sisteMåSluttetreUkerFørFødselEllerTermin', {
-                dato: formatDate(treUkerFørFødselEllerTermin),
+                dato: formatDate(dagenFørTreUkerFørTermin),
             });
         }
 
