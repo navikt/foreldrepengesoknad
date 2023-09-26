@@ -58,7 +58,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
             );
         },
         refetchInterval: (data) => {
-            if (data?.find((innslag) => innslag.dialogId === minidialog?.dialogId)) {
+            if (!data || (data && data.find((innslag) => innslag.dialogId === minidialog?.dialogId))) {
                 return 1000;
             }
 
