@@ -1,4 +1,3 @@
-// import { Loader } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
@@ -79,18 +78,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
-
-    // if (
-    //     !annenPartVedtakIsSuspended &&
-    //     annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
-    //     !annenPartsVedtakError
-    // ) {
-    //     return (
-    //         <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-    //             <Loader type="XXL" />
-    //         </div>
-    //     );
-    // }
 
     return (
         <div className={bem.block}>

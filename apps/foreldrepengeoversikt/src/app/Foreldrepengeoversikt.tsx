@@ -11,9 +11,10 @@ import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import Environment from './Environment';
+import { MinidialogInnslag } from './types/MinidialogInnslag';
+import { SakOppslag } from './types/SakOppslag';
 
 import './styles/app.css';
-import { SakOppslag } from './types/SakOppslag';
 
 const getSakerSuspended = (oppdatertQuery: UseQueryResult<boolean, unknown>) => {
     if (oppdatertQuery.isLoading) {
@@ -42,12 +43,20 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         },
     });
 
+    const minidialogQuery = useQuery<MinidialogInnslag[]>({
+        queryKey: ['minidialog'],
+        queryFn: async () =>
+            await fetch(`${Environment.REST_API_URL}/minidialog`, { credentials: 'include' }).then((response) =>
+                response.json(),
+            ),
+    });
+
     const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
     const { storageData } = Api.useGetMellomlagretSøknad();
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
-    const { minidialogData, minidialogError } = Api.useGetMinidialog();
+    const { minidialogError } = Api.useGetMinidialog();
 
     useEffect(() => {
         if (søkerinfoError) {
@@ -71,11 +80,13 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         return undefined;
     }, [sakerData]);
 
+    console.log(minidialogQuery.error);
+
     if (
         !søkerinfoData ||
         (!sakerData && !sakerSuspended) ||
         (!saker && !sakerSuspended) ||
-        (!minidialogData && !minidialogError) ||
+        minidialogQuery.isLoading ||
         oppdatertQuery.isLoading
     ) {
         return (
@@ -85,8 +96,8 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         );
     }
 
-    const aktiveMinidialoger = minidialogData
-        ? minidialogData.filter(({ gyldigTil }) => dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'))
+    const aktiveMinidialoger = minidialogQuery.data
+        ? minidialogQuery.data.filter(({ gyldigTil }) => dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'))
         : undefined;
     const defaultSaker: SakOppslag = {
         engangsstønad: [],
