@@ -132,18 +132,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     </Block>
                                 </>
                             )}
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
-                            >
-                                <TilretteleggingFormComponents.Textarea
-                                    name={TilretteleggingFormField.tilretteleggingstiltak}
-                                    label={labelTiltak}
-                                    minLength={TEXT_INPUT_MIN_LENGTH}
-                                    maxLength={TEXT_INPUT_MAX_LENGTH}
-                                    validate={validateTilretteleggingstiltak(intl, labelTiltak)}
-                                />
-                            </Block>
                             <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.behovForTilretteleggingFom}
@@ -172,6 +160,23 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     ]}
                                     validate={validateTilrettelagtArbeidType(intl)}
                                 />
+                            </Block>
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
+                            >
+                                <Block padBottom="m">
+                                    <TilretteleggingFormComponents.Textarea
+                                        name={TilretteleggingFormField.tilretteleggingstiltak}
+                                        label={labelTiltak}
+                                        minLength={TEXT_INPUT_MIN_LENGTH}
+                                        maxLength={TEXT_INPUT_MAX_LENGTH}
+                                        validate={validateTilretteleggingstiltak(intl, labelTiltak)}
+                                    />
+                                </Block>
+                                <ReadMore size="small" header={intlUtils(intl, 'tilrettelegging.tiltak.info.title')}>
+                                    <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="xxl"

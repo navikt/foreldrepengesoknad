@@ -336,6 +336,8 @@
     "tilrettelegging.variertePerioderStillingsprosent.label": "Hvilken stillingsprosent skal du jobbe i denne perioden?",
     "tilrettelegging.skjema.maks40Filer": "Du kan laste opp maksimalt 40 filer. Sett noen filer for å gå videre.",
     "tilrettelegging.tilretteleggingstiltak.label": "Hvilke tiltak for å tilrettelegge arbeidssituasjonen din har du vurdert?",
+    "tilrettelegging.tiltak.info.title": "Hva menes med tiltak?",
+    "tilrettelegging.tiltak.info.description": "Her beskrives aktuelle tiltak du, eventuelt i samråd med lege/jordmor, har vurdert for å tilrettelegge din arbeidssituajson, slik at skadelige påvirkninger på forsteret kan unngås. Ekempelvis en veterinær som, istedenfor å jobbe med hester, en periode kan arbeide med smådyr.",
     "perioder.varierende.heading": "Perioder med forskjellig arbeidsprosent",
     "perioder.varierende.description": "Legg til en periode for hver arbeidssituasjon frem til tre uker før fødsel. Da kan du ha rett til foreldrepenger.",
     "perioder.varierende.fom.label": "Du skal jobbe fra:",
