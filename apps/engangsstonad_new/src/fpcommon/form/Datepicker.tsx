@@ -83,6 +83,7 @@ const Datepicker: FunctionComponent<DatepickerProps> = ({
         <DatePicker {...dpProps} strategy="fixed">
             <DatePicker.Input
                 {...inputProps}
+                ref={field.ref}
                 onChange={onChangeInput}
                 value={fieldValue}
                 label={label}
