@@ -3,10 +3,10 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { validateEgenNæringOrgnr } from '../egenNæringValidation';
-import { EgenNæringSubformComponents, EgenNæringSubformField } from 'app/steps/egen-næring/egenNæringSubformConfig';
+import { EgenNæringFormComponents, EgenNæringFormField } from 'app/steps/egen-næring/egenNæringFormConfig';
 
 interface Props {
-    visibility: QuestionVisibility<EgenNæringSubformField, undefined>;
+    visibility: QuestionVisibility<EgenNæringFormField, undefined>;
 }
 
 const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
@@ -14,16 +14,16 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
 
     return (
         <>
-            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringSubformField.egenNæringOrgnr)}>
-                <EgenNæringSubformComponents.NumberInput
-                    name={EgenNæringSubformField.egenNæringOrgnr}
+            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringOrgnr)}>
+                <EgenNæringFormComponents.NumberInput
+                    name={EgenNæringFormField.egenNæringOrgnr}
                     label={intlUtils(intl, 'egenNæring.orgnr')}
                     validate={validateEgenNæringOrgnr(intl)}
                 />
             </Block>
-            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringSubformField.egenNæringLand)}>
-                <EgenNæringSubformComponents.CountrySelect
-                    name={EgenNæringSubformField.egenNæringLand}
+            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringLand)}>
+                <EgenNæringFormComponents.CountrySelect
+                    name={EgenNæringFormField.egenNæringLand}
                     label={intlUtils(intl, 'egenNæring.registrertILand')}
                     useAlpha3Code={false}
                 />

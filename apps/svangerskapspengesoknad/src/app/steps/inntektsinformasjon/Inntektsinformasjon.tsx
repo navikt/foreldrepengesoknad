@@ -12,7 +12,6 @@ import {
     InntektsinformasjonFormField,
 } from './inntektsinformasjonFormConfig';
 import {
-    cleanupInntektsinformasjonForm,
     getInitialInntektsinformasjonFormValues,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
@@ -29,7 +28,6 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
 import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
@@ -72,13 +70,9 @@ const Inntektsinformasjon = () => {
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
-            initialValues={getInitialInntektsinformasjonFormValues(søker, tilrettelegging)}
+            initialValues={getInitialInntektsinformasjonFormValues(søker)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const visibility = inntektsinforMasjonQuestionsConfig.getVisbility({
-                    ...formValues,
-                } as InntektsinformasjonFormData);
-
                 const kanIkkeSøke =
                     arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
@@ -92,11 +86,7 @@ const Inntektsinformasjon = () => {
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
-                        <InntektsinformasjonFormComponents.Form
-                            includeButtons={false}
-                            includeValidationSummary={true}
-                            cleanup={(values) => cleanupInntektsinformasjonForm(values, visibility)}
-                        >
+                        <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xl">
                                 <BodyShort>
                                     {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
@@ -105,10 +95,7 @@ const Inntektsinformasjon = () => {
                             <Block padBottom="xxl">
                                 <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
                             </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}
-                            >
+                            <Block padBottom="xxl">
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattInntektSomFrilans}
                                     legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilans')}
@@ -121,12 +108,7 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanVæreFrilanser />
                             </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(
-                                    InntektsinformasjonFormField.hattInntektSomNæringsdrivende,
-                                )}
-                            >
+                            <Block padBottom="xxl">
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
                                     legend={intlUtils(
@@ -142,10 +124,7 @@ const Inntektsinformasjon = () => {
                                 />
                                 <HvemKanDriveMedEgenNæring />
                             </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(InntektsinformasjonFormField.hattArbeidIUtlandet)}
-                            >
+                            <Block padBottom="xxl">
                                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                                     name={InntektsinformasjonFormField.hattArbeidIUtlandet}
                                     legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}

@@ -4,6 +4,7 @@ import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common/src/common/utils/formUtils';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export const getInitialUtenlandsoppholdValuesFromState = (
     init: InformasjonOmUtenlandsopphold,
@@ -20,9 +21,15 @@ export const mapUtenlandsoppholdFormDataToState = (
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold,
 ): InformasjonOmUtenlandsopphold => {
     const { harBoddINorgeSiste12Mnd, skalBoINorgeNeste12Mnd } = formValues;
+    const oppdaterteTidligereOpphold =
+        harBoddINorgeSiste12Mnd === YesOrNo.YES ? [] : informasjonOmUtenlandsopphold.tidligereOpphold;
+    const oppdaterteSenereOpphold =
+        skalBoINorgeNeste12Mnd === YesOrNo.YES ? [] : informasjonOmUtenlandsopphold.senereOpphold;
     return {
         ...informasjonOmUtenlandsopphold,
         iNorgeSiste12Mnd: convertYesOrNoOrUndefinedToBoolean(harBoddINorgeSiste12Mnd)!,
         iNorgeNeste12Mnd: convertYesOrNoOrUndefinedToBoolean(skalBoINorgeNeste12Mnd)!,
+        tidligereOpphold: oppdaterteTidligereOpphold,
+        senereOpphold: oppdaterteSenereOpphold,
     };
 };

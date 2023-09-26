@@ -84,11 +84,7 @@ const Skjema: React.FunctionComponent = () => {
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
-                        <SkjemaFormComponents.Form
-                            includeButtons={false}
-                            includeValidationSummary={true}
-                            // cleanup={(values) => cleanupSkjemaFormData(values, visibility)}
-                        >
+                        <SkjemaFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {tilrettelegging.map((t: Tilrettelegging, index: number) => {
                                 const key = t.id;
                                 const skjemanummer =

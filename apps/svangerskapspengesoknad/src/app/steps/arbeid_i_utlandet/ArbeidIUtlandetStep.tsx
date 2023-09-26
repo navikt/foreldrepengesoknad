@@ -23,6 +23,7 @@ import {
 } from './arbeidIUtlandetFormConfig';
 import { FieldArray } from 'formik';
 import {
+    cleanUpArbeidIUtlandetFormData,
     getInitialArbeidIUtlandetFormData,
     getUferdigArbeidIUtlandetInput,
     mapArbeidIUtlandetTilState,
@@ -69,7 +70,11 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
-                        <ArbeidIUtlandetFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                        <ArbeidIUtlandetFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                            cleanup={(values) => cleanUpArbeidIUtlandetFormData(values)}
+                        >
                             <FieldArray
                                 validateOnChange={false}
                                 name={ArbeidIUtlandetFormField.arbeidIUtlandet}

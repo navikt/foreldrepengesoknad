@@ -15,7 +15,7 @@ const getInitValues = (): Readonly<BarnetFormData> => ({
 
 export const cleanupOmBarnetFormData = (
     values: BarnetFormData,
-    visibility: QuestionVisibility<BarnetFormField, undefined>
+    visibility: QuestionVisibility<BarnetFormField, undefined>,
 ): BarnetFormData => {
     const cleanedData: BarnetFormData = {
         erBarnetFødt: visibility.isVisible(BarnetFormField.erBarnetFødt) ? values.erBarnetFødt : YesOrNo.UNANSWERED,

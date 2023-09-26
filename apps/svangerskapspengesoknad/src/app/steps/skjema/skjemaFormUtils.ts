@@ -35,15 +35,19 @@ export const getInitialSkjemaValuesFromState = (state: SvangerskapspengerContext
 
 export const mapTilretteleggingMedSkjema = (
     tilrettelegging: Tilrettelegging[],
-    values: SkjemaFormData
+    values: SkjemaFormData,
 ): Tilrettelegging[] => {
     return tilrettelegging.map((t, index) => {
         let risikofaktorer = undefined;
         if (t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER) {
-            risikofaktorer = replaceInvisibleCharsWithSpace(values.risikofaktorerFrilans);
+            risikofaktorer = values.risikofaktorerFrilans
+                ? replaceInvisibleCharsWithSpace(values.risikofaktorerFrilans)
+                : undefined;
         }
         if (t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG) {
-            risikofaktorer = replaceInvisibleCharsWithSpace(values.risikofaktorerNæring);
+            risikofaktorer = values.risikofaktorerNæring
+                ? replaceInvisibleCharsWithSpace(values.risikofaktorerNæring)
+                : undefined;
         }
         const arbeid = { ...t.arbeidsforhold, risikofaktorer };
         return {

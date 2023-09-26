@@ -9,14 +9,14 @@ export enum SkjemaFormField {
 
 export interface SkjemaFormData {
     [SkjemaFormField.vedlegg]: Attachment[][];
-    [SkjemaFormField.risikofaktorerFrilanser]: string;
-    [SkjemaFormField.risikofaktorerNæring]: string;
+    [SkjemaFormField.risikofaktorerFrilanser]: string | undefined;
+    [SkjemaFormField.risikofaktorerNæring]: string | undefined;
 }
 
 export const initialSkjemaFormData: SkjemaFormData = {
     [SkjemaFormField.vedlegg]: [],
-    [SkjemaFormField.risikofaktorerFrilanser]: '',
-    [SkjemaFormField.risikofaktorerNæring]: '',
+    [SkjemaFormField.risikofaktorerFrilanser]: undefined,
+    [SkjemaFormField.risikofaktorerNæring]: undefined,
 };
 
 export const SkjemaFormComponents = getTypedFormComponents<SkjemaFormField, SkjemaFormData>();
