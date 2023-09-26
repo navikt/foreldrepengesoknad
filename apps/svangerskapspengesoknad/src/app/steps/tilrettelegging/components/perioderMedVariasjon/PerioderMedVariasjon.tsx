@@ -53,7 +53,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                     formValues.variertePerioder.length > 0 &&
                     formValues.variertePerioder.map((_p, index) => (
                         <div key={index}>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.DatePicker
                                     key={`variertePerioder.${index}.fom`}
                                     minDate={new Date(minDatoPeriodeFom)}
@@ -70,7 +70,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                     )}
                                 />
                             </Block>
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.RadioGroup
                                     name={`variertePerioder.${index}.tomType`}
                                     key={`variertePerioder.${index}.tomType`}
@@ -94,7 +94,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block
-                                padBottom="xl"
+                                padBottom="xxl"
                                 visible={formValues.variertePerioder![index].tomType === TilOgMedDatoType.VALGFRI_DATO}
                             >
                                 <TilretteleggingFormComponents.DatePicker
@@ -111,7 +111,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                 />
                             </Block>
 
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.NumberInput
                                     key={`variertePerioder.${index}.stillingsprosent`}
                                     name={`variertePerioder.${index}.stillingsprosent`}

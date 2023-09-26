@@ -33,7 +33,7 @@ const VelgArbeid: React.FunctionComponent = () => {
             values.arbeidMedTilrettelegging!,
             søker,
             arbeidsforhold,
-            barn.termindato
+            barn.termindato,
         );
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
@@ -47,7 +47,7 @@ const VelgArbeid: React.FunctionComponent = () => {
         frilansInformasjon,
         selvstendigNæringsdrivendeInformasjon,
         arbeidsforhold,
-        barn.termindato
+        barn.termindato,
     );
 
     return (
@@ -83,7 +83,7 @@ const VelgArbeid: React.FunctionComponent = () => {
                                 />
                             </Block>
 
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getBackLinkForVelgArbeidSteg(søker)}>
                                         <FormattedMessage id="backlink.label" />

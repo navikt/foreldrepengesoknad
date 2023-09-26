@@ -48,7 +48,7 @@ const Barnet: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
                         >
-                            <Block padBottom="xl">
+                            <Block padBottom="xxl">
                                 <Block padBottom="m">
                                     <BarnetFormComponents.YesOrNoQuestion
                                         name={BarnetFormField.erBarnetFødt}
@@ -56,7 +56,7 @@ const Barnet: React.FunctionComponent = () => {
                                         validate={(value) =>
                                             validateYesOrNoIsAnswered(
                                                 value,
-                                                intlUtils(intl, 'valideringsfeil.barnet.erBarnetFødt.påkrevd')
+                                                intlUtils(intl, 'valideringsfeil.barnet.erBarnetFødt.påkrevd'),
                                             )
                                         }
                                     />
@@ -90,7 +90,7 @@ const Barnet: React.FunctionComponent = () => {
                                     {intlUtils(intl, 'barnet.termindato.merInfo.tekst')}
                                 </ReadMore>
                             </Block>
-                            <Block margin="l">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

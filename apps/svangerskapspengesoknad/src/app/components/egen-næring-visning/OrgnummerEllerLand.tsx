@@ -14,14 +14,14 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
 
     return (
         <>
-            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringOrgnr)}>
+            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringSubformField.egenNæringOrgnr)}>
                 <EgenNæringSubformComponents.NumberInput
                     name={EgenNæringSubformField.egenNæringOrgnr}
                     label={intlUtils(intl, 'egenNæring.orgnr')}
                     validate={validateEgenNæringOrgnr(intl)}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(EgenNæringSubformField.egenNæringLand)}>
+            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringSubformField.egenNæringLand)}>
                 <EgenNæringSubformComponents.CountrySelect
                     name={EgenNæringSubformField.egenNæringLand}
                     label={intlUtils(intl, 'egenNæring.registrertILand')}

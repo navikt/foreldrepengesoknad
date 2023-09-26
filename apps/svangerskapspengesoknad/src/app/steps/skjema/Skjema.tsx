@@ -118,7 +118,7 @@ const Skjema: React.FunctionComponent = () => {
                                         <div className={bem.element(`arbeidsgiverBoks${classVariant}`)}>
                                             {erSNEllerFrilans && (
                                                 <>
-                                                    <Block padBottom="xxxl">
+                                                    <Block padBottom="xxl">
                                                         <SkjemaFormComponents.Textarea
                                                             name={
                                                                 t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
@@ -189,7 +189,7 @@ const Skjema: React.FunctionComponent = () => {
                                     </Block>
                                 );
                             })}
-                            <Block padBottom="l">
+                            <Block padBottom="xxl">
                                 <ReadMore header={'Les om hvordan ta et bra bilde'}>
                                     <div>TODO</div>
                                 </ReadMore>
@@ -197,7 +197,7 @@ const Skjema: React.FunctionComponent = () => {
                             {forMangeFiler && submitClicked && (
                                 <Alert variant="error">{intlUtils(intl, 'skjema.maks40Filer')}</Alert>
                             )}
-                            <Block margin="l">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"

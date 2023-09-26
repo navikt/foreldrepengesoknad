@@ -78,7 +78,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                     formValues.arbeidIUtlandet.length > 0 &&
                                     formValues.arbeidIUtlandet.map((_a, index) => (
                                         <div key={index}>
-                                            <Block padBottom="l">
+                                            <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.CountrySelect
                                                     name={`arbeidIUtlandet.${index}.land`}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.land')}
@@ -86,7 +86,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     validate={validateArbeidIUtlandetLand(intl)}
                                                 />
                                             </Block>
-                                            <Block padBottom="l">
+                                            <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.TextField
                                                     name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
                                                     label={navnPåArbeidsgiverLabel}
@@ -105,7 +105,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     }}
                                                 />
                                             </Block>
-                                            <Block padBottom="l">
+                                            <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.fom`}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.fom')}
@@ -120,7 +120,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     minDate={date20YearsAgo}
                                                 />
                                             </Block>
-                                            <Block padBottom="l">
+                                            <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.YesOrNoQuestion
                                                     name={`arbeidIUtlandet.${index}.pågående`}
                                                     legend={intlUtils(intl, 'egenNæring.startetNæring.pågående')}
@@ -128,7 +128,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 />
                                             </Block>
                                             <Block
-                                                padBottom="l"
+                                                padBottom="xxl"
                                                 visible={formValues.arbeidIUtlandet![index].pågående === YesOrNo.NO}
                                             >
                                                 <ArbeidIUtlandetFormComponents.DatePicker
@@ -182,7 +182,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                     ))
                                 }
                             />
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getBackLinkForArbeidIUtlandetSteg(søker)}>
                                         <FormattedMessage id="backlink.label" />

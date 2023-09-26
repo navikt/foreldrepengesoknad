@@ -87,14 +87,14 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                     formValues.bostedIUtlandet.length > 0 &&
                                     formValues.bostedIUtlandet.map((_opphold, index) => (
                                         <div key={index}>
-                                            <Block padBottom="xl">
+                                            <Block padBottom="xxl">
                                                 <BoIUtlandetFormComponents.CountrySelect
                                                     name={`bostedIUtlandet.${index}.land`}
                                                     label={intlUtils(intl, spmId)}
                                                     validate={validateBostedUtlandLand(intl)}
                                                 />
                                             </Block>
-                                            <Block padBottom="xl">
+                                            <Block padBottom="xxl">
                                                 <BoIUtlandetFormComponents.DatePicker
                                                     name={`bostedIUtlandet.${index}.fom`}
                                                     label={intlUtils(intl, 'boIUtlandet.fraogmed')}
@@ -111,7 +111,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                     placeholder={'dd.mm.åååå'}
                                                 />
                                             </Block>
-                                            <Block padBottom="xl">
+                                            <Block padBottom="xxl">
                                                 <BoIUtlandetFormComponents.DatePicker
                                                     name={`bostedIUtlandet.${index}.tom`}
                                                     label={intlUtils(intl, 'boIUtlandet.tilogmed')}
@@ -150,7 +150,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
 
                                             {formValues.bostedIUtlandet &&
                                                 index === formValues.bostedIUtlandet.length - 1 && (
-                                                    <Block padBottom="xl">
+                                                    <Block padBottom="xxl">
                                                         <Button
                                                             icon={<PlusIcon />}
                                                             type="button"
@@ -167,7 +167,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                     ))
                                 }
                             />
-                            <Block>
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={RouterLink} to={backLink}>
                                         <FormattedMessage id="backlink.label" />

@@ -36,7 +36,7 @@ const FrilansStep: React.FunctionComponent = () => {
                 barn.termindato,
                 arbeidsforhold,
                 søkerMedFrilans.harJobbetSomFrilans,
-                søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende
+                søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
             const mappedTilretteleggingsValg = mapTilrettelegging(
@@ -44,7 +44,7 @@ const FrilansStep: React.FunctionComponent = () => {
                 ['Frilans'],
                 søkerMedFrilans,
                 arbeidsforhold,
-                barn.termindato
+                barn.termindato,
             );
 
             return [
@@ -77,7 +77,7 @@ const FrilansStep: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             // cleanup={(values) => cleanupFrilansFormData(values, visibility)} //TODO
                         >
-                            <Block padBottom="l" visible={visibility.isVisible(FrilansFormField.frilansFom)}>
+                            <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansFom)}>
                                 <FrilansFormComponents.DatePicker
                                     name={FrilansFormField.frilansFom}
                                     label={intlUtils(intl, 'frilans.oppstart')}
@@ -89,7 +89,7 @@ const FrilansStep: React.FunctionComponent = () => {
                                 />
                             </Block>
                             <Block
-                                padBottom="l"
+                                padBottom="xxl"
                                 visible={visibility.isVisible(FrilansFormField.jobberFremdelesSomFrilanser)}
                             >
                                 <FrilansFormComponents.YesOrNoQuestion
@@ -98,12 +98,12 @@ const FrilansStep: React.FunctionComponent = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.jobberFremdelesSomFrilans.påkrevd')
+                                            intlUtils(intl, 'valideringsfeil.jobberFremdelesSomFrilans.påkrevd'),
                                         )
                                     }
                                 />
                             </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(FrilansFormField.frilansTom)}>
+                            <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansTom)}>
                                 <FrilansFormComponents.DatePicker
                                     name={FrilansFormField.frilansTom}
                                     label={intlUtils(intl, 'frilans.slutt')}
@@ -114,11 +114,11 @@ const FrilansStep: React.FunctionComponent = () => {
                                     validate={validateFrilansSlutt(
                                         intl,
                                         formValues.jobberFremdelesSomFrilanser!,
-                                        formValues.frilansFom!
+                                        formValues.frilansFom!,
                                     )}
                                 />
                             </Block>
-                            <Block margin="xl">
+                            <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousSetStepHref('frilans')}>
                                         <FormattedMessage id="backlink.label" />
