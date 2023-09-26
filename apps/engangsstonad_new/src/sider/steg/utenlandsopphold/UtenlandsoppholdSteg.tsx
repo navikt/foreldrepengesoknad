@@ -16,10 +16,10 @@ import { useCallback } from 'react';
 export type FormValues = Utenlandsopphold;
 
 const findPath = (formValues: FormValues) => {
-    if (formValues?.skalBoUtenforNorgeNeste12Mnd) {
-        return Path.NESTE_UTENLANDSOPPHOLD;
+    if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
+        return Path.SISTE_UTENLANDSOPPHOLD;
     }
-    return formValues?.harBoddUtenforNorgeSiste12Mnd ? Path.SISTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
+    return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
 };
 
 const UtenlandsoppholdSteg: React.FunctionComponent = () => {

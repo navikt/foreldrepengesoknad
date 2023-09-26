@@ -43,8 +43,8 @@ const sendSøknad =
     async (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
-        nesteUtenlandsopphold: UtenlandsoppholdNeste,
-        sisteUtenlandsopphold: UtenlandsoppholdSiste,
+        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
+        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => {
         //TODO Treng nok framleis noko mapping (Gjer mappinga i dei ulike komponentane ved neste?)
         const søknad = {

@@ -5,13 +5,6 @@ import LandOppsummering from './LandOppsummering';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 
-interface Props {
-    omBarnet: OmBarnet;
-    utenlandsopphold: Utenlandsopphold;
-    utenlandsoppholdNeste: UtenlandsoppholdNeste;
-    utenlandsoppholdSiste: UtenlandsoppholdSiste;
-}
-
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
 };
@@ -31,11 +24,18 @@ const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     );
 };
 
+interface Props {
+    omBarnet: OmBarnet;
+    utenlandsopphold: Utenlandsopphold;
+    utenlandsoppholdSiste?: UtenlandsoppholdSiste;
+    utenlandsoppholdNeste?: UtenlandsoppholdNeste;
+}
+
 const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     omBarnet,
     utenlandsopphold,
-    utenlandsoppholdNeste,
     utenlandsoppholdSiste,
+    utenlandsoppholdNeste,
 }) => {
     const intl = useIntl();
 

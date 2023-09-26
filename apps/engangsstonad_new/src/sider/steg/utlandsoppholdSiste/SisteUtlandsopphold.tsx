@@ -50,12 +50,8 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
 
     const lagre = useCallback((formValues: FormValues) => {
         lagreSisteUtenlandsopphold(formValues);
-        navigator.goToNextDefaultStep();
-    }, []);
-
-    const goToPreviousStep = useCallback(() => {
-        navigator.goToPreviousStep(
-            utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.UTENLANDSOPPHOLD,
+        navigator.goToNextStep(
+            utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
         );
     }, []);
 
@@ -88,7 +84,7 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
                                 <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                             </Button>
                         </VStack>
-                        <StepButtons goToPreviousStep={goToPreviousStep} />
+                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
                     </VStack>
                 </form>
             </FormProvider>

@@ -157,16 +157,18 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                     </RadioGroupPanel>
                 </Block>
             )}
-            <FileUploader
-                id="adopsjon"
-                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
-                existingAttachments={[]}
-                updateAttachments={updateAttachments}
-                label={intl.formatMessage({ id: 'vedlegg.lastoppknapp.label' })}
-                legend={intl.formatMessage({ id: 'vedlegg.adopsjon' })}
-                description={intl.formatMessage({ id: 'omBarnet.adopsjon.veilederpanel.adopsjon.text' })}
-            />
+            <Block margin="xl">
+                <FileUploader
+                    id="adopsjon"
+                    attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                    skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
+                    existingAttachments={[]}
+                    updateAttachments={updateAttachments}
+                    label={intl.formatMessage({ id: 'vedlegg.lastoppknapp.label' })}
+                    legend={intl.formatMessage({ id: 'vedlegg.adopsjon' })}
+                    description={intl.formatMessage({ id: 'omBarnet.adopsjon.veilederpanel.adopsjon.text' })}
+                />
+            </Block>
         </>
     );
 };

@@ -8,8 +8,8 @@ export enum Path {
     SØKERSITUASJON = '/soknad/søkersituasjon',
     OM_BARNET = '/soknad/om-barnet',
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',
-    NESTE_UTENLANDSOPPHOLD = '/soknad/neste-utenlandsopphold',
     SISTE_UTENLANDSOPPHOLD = '/soknad/siste-utenlandsopphold',
+    NESTE_UTENLANDSOPPHOLD = '/soknad/neste-utenlandsopphold',
     OPPSUMMERING = '/soknad/oppsummering',
     KVITTERING = '/kvittering',
 }
@@ -19,8 +19,8 @@ const PathOrder = [
     Path.SØKERSITUASJON,
     Path.OM_BARNET,
     Path.UTENLANDSOPPHOLD,
-    Path.NESTE_UTENLANDSOPPHOLD,
     Path.SISTE_UTENLANDSOPPHOLD,
+    Path.NESTE_UTENLANDSOPPHOLD,
     Path.OPPSUMMERING,
     Path.KVITTERING,
 ];
@@ -31,8 +31,8 @@ const PageKeys = {
     [Path.SØKERSITUASJON]: 'situasjon',
     [Path.OM_BARNET]: 'om-barnet',
     [Path.UTENLANDSOPPHOLD]: 'utenlandsopphold',
-    [Path.NESTE_UTENLANDSOPPHOLD]: 'neste-utenlandsopphold',
     [Path.SISTE_UTENLANDSOPPHOLD]: 'siste-utenlandsopphold',
+    [Path.NESTE_UTENLANDSOPPHOLD]: 'neste-utenlandsopphold',
     [Path.OPPSUMMERING]: 'oppsummering',
     [Path.KVITTERING]: 'søknad-sendt',
 };

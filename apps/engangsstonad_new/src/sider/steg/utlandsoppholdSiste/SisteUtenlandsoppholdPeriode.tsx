@@ -87,7 +87,7 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
                 />
                 <Datepicker
                     name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
-                    label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
+                    label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.tilogmed" />}
                     disabledDays={[
                         {
                             from: dayjs().subtract(50, 'year').toDate(),

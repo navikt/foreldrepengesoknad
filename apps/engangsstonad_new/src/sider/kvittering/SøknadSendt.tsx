@@ -15,7 +15,7 @@ import './søknadSendt.less';
 
 export interface Props {
     person: Person;
-    kvittering: Kvittering;
+    kvittering?: Kvittering;
 }
 
 const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) => {

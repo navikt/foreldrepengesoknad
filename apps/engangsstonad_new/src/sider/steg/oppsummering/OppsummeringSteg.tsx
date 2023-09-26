@@ -34,8 +34,8 @@ export interface Props {
     sendSøknad: (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
-        nesteUtenlandsopphold: UtenlandsoppholdNeste,
-        sisteUtenlandsopphold: UtenlandsoppholdSiste,
+        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
+        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => void;
 }
 
@@ -45,8 +45,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const navigator = useEsNavigator();
     const omBarnet = notEmpty(useStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD));
-    const nesteUtenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD_NESTE));
-    const sisteUtenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD_SISTE));
+    const sisteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const nesteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -55,7 +55,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         if (!isChecked) {
             setIsError(true);
         } else {
-            sendSøknad(omBarnet, utenlandsopphold, nesteUtenlandsopphold, sisteUtenlandsopphold);
+            sendSøknad(omBarnet, utenlandsopphold, sisteUtenlandsopphold, nesteUtenlandsopphold);
             navigator.goToNextDefaultStep();
         }
     }, [isChecked]);

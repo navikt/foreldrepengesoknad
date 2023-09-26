@@ -18,9 +18,6 @@ import { Path } from './useEsNavigator';
 import { EsDataContext } from './EsDataContext';
 import Kvittering from 'types/Kvittering';
 import FeilsideInfo from './sider/feilside/FeilsideInfo';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
-import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -78,7 +75,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                         />
                         <Route
                             path={Path.KVITTERING}
-                            element={<SøknadSendt person={person} kvittering={notEmpty(kvittering)} />}
+                            element={<SøknadSendt person={person} kvittering={kvittering} />}
                         />
                     </>
                 )}
