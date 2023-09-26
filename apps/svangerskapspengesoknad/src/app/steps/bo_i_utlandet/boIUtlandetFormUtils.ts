@@ -93,7 +93,7 @@ export const mapBostedUtland = (
 
 export const getMinValueTomInput = (oppgirIFortid: boolean, fom: string | undefined, datobegrensning: Date) => {
     if (oppgirIFortid) {
-        return fom && hasValue(fom) ? new Date(fom) : undefined;
+        return fom && hasValue(fom) ? dayjs(fom).add(1, 'd').toDate() : undefined;
     }
     return getMinInputTilOgMedValue(fom, datobegrensning);
 };

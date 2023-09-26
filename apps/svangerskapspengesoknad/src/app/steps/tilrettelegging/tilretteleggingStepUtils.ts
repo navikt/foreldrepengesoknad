@@ -1,15 +1,20 @@
 import { hasValue } from '@navikt/fp-common';
-import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingStepFormConfig';
-import { Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import {
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingFormData,
+    TilretteleggingFormField,
+} from './tilretteleggingStepFormConfig';
+import { TilOgMedDatoType, Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 
 export const getInitTilretteleggingFormDataValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.behovForTilretteleggingFom]: '',
     [TilretteleggingFormField.tilretteleggingType]: undefined!,
     [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: undefined!,
-    [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: '',
-    [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: '',
-    [TilretteleggingFormField.tilretteleggingstiltak]: '',
+    [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: undefined,
+    [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: undefined,
+    [TilretteleggingFormField.tilretteleggingstiltak]: undefined,
     [TilretteleggingFormField.variertePerioder]: [
         {
             type: Tilretteleggingstype.DELVIS,
@@ -45,7 +50,7 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
 export const mapOmTilretteleggingFormDataToState = (
     id: string,
     values: Partial<TilretteleggingFormData>,
-    tilretteleggingFraState: Tilrettelegging[]
+    tilretteleggingFraState: Tilrettelegging[],
 ): Tilrettelegging[] => {
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
 
@@ -62,11 +67,50 @@ export const mapOmTilretteleggingFormDataToState = (
         sammePeriodeFremTilTerminFom: values.sammePeriodeFremTilTerminFom,
         sammePeriodeFremTilTerminStillingsprosent: values.sammePeriodeFremTilTerminStillingsprosent,
         delvisTilretteleggingPeriodeType: values.delvisTilretteleggingPeriodeType,
-        variertePerioder: values.variertePerioder,
+        variertePerioder:
+            values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+                ? values.variertePerioder
+                : [],
     } as Tilrettelegging;
 
     const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {
         return t.id === id ? oppdatert : t;
     });
     return nyTilretteleggingISøknad;
+};
+
+export const cleanUpTilretteleggingStepFormValues = (
+    values: TilretteleggingFormData,
+    visibility: QuestionVisibility<TilretteleggingFormField>,
+): TilretteleggingFormData => {
+    const initValues = getInitTilretteleggingFormDataValues();
+    const cleanedPerioder = visibility.isVisible(TilretteleggingFormField.variertePerioder)
+        ? values.variertePerioder.map((periode) => {
+              return { ...periode, tom: periode.tomType === TilOgMedDatoType.VALGFRI_DATO ? periode.tom : undefined };
+          })
+        : initValues.variertePerioder;
+    const cleanedData: TilretteleggingFormData = {
+        ...values,
+        tilretteleggingstiltak: visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)
+            ? values.tilretteleggingstiltak
+            : initValues.tilretteleggingstiltak,
+        delvisTilretteleggingPeriodeType: visibility.isVisible(
+            TilretteleggingFormField.delvisTilretteleggingPeriodeType,
+        )
+            ? values.delvisTilretteleggingPeriodeType
+            : initValues.delvisTilretteleggingPeriodeType,
+        sammePeriodeFremTilTerminFom: visibility.isVisible(TilretteleggingFormField.sammePeriodeFremTilTerminFom)
+            ? values.sammePeriodeFremTilTerminFom
+            : initValues.sammePeriodeFremTilTerminFom,
+        sammePeriodeFremTilTerminStillingsprosent: visibility.isVisible(
+            TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent,
+        )
+            ? values.sammePeriodeFremTilTerminStillingsprosent
+            : initValues.sammePeriodeFremTilTerminStillingsprosent,
+        variertePerioder: visibility.isVisible(TilretteleggingFormField.variertePerioder)
+            ? cleanedPerioder
+            : initValues.variertePerioder,
+    };
+
+    return cleanedData;
 };

@@ -1,5 +1,5 @@
 import { ISOStringToDate, hasValue } from '@navikt/fp-common';
-import { EgenNæringSubformData, initialEgenNæringSubformData } from './egenNæringSubformConfig';
+import { EgenNæringFormData, EgenNæringFormField, initialEgenNæringFormData } from './egenNæringFormConfig';
 import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
@@ -7,7 +7,7 @@ import {
 import { Næring } from 'app/types/Næring';
 import dayjs from 'dayjs';
 import { date4YearsAgo } from 'app/utils/dateUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Søker } from 'app/types/Søker';
 
@@ -19,7 +19,7 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
     return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };
 
-export const mapEgenNæringFormValuesToState = (formValues: EgenNæringSubformData): Næring => {
+export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData): Næring => {
     return {
         næringstype: formValues.egenNæringType!,
         tidsperiode: {
@@ -35,19 +35,19 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringSubformDa
         registrertINorge: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringRegistrertINorge)!,
         registrertILand: hasValue(formValues.egenNæringLand) ? formValues.egenNæringLand : undefined,
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertYesOrNoOrUndefinedToBoolean(
-            formValues.egenNæringBlittYrkesaktivDe3SisteÅrene
+            formValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
         )!,
         oppstartsdato: ISOStringToDate(formValues.egenNæringYrkesAktivDato),
     };
 };
 
-export const getInitialEgenNæringSubformValues = (næring: Næring | undefined): EgenNæringSubformData => {
+export const getInitialEgenNæringFormValues = (næring: Næring | undefined): EgenNæringFormData => {
     if (næring === undefined) {
-        return initialEgenNæringSubformData;
+        return initialEgenNæringFormData;
     }
 
     return {
-        ...initialEgenNæringSubformData,
+        ...initialEgenNæringFormData,
         egenNæringType: næring?.næringstype,
         egenNæringNavn: næring?.navnPåNæringen || '',
         egenNæringRegistrertINorge: convertBooleanOrUndefinedToYesOrNo(næring?.registrertINorge),
@@ -58,16 +58,32 @@ export const getInitialEgenNæringSubformValues = (næring: Næring | undefined)
         egenNæringPågående: convertBooleanOrUndefinedToYesOrNo(næring?.pågående),
         egenNæringResultat: næring?.næringsinntekt?.toString() || '',
         egenNæringBlittYrkesaktivDe3SisteÅrene: convertBooleanOrUndefinedToYesOrNo(
-            næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+            næring?.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         ),
         egenNæringYrkesAktivDato: dateToISOString(næring?.oppstartsdato) || '',
     };
 };
 
-export const mapNæringDataToSøkerState = (søker: Søker, values: EgenNæringSubformData): Søker => {
+export const mapNæringDataToSøkerState = (søker: Søker, values: EgenNæringFormData): Søker => {
     const næring = mapEgenNæringFormValuesToState(values);
     return {
         ...søker,
         selvstendigNæringsdrivendeInformasjon: næring,
     };
+};
+
+export const cleanupEgenNæringFormData = (
+    values: EgenNæringFormData,
+    visibility: QuestionVisibility<EgenNæringFormField>,
+) => {
+    const cleanedData: EgenNæringFormData = {
+        ...values,
+        egenNæringOrgnr: visibility.isVisible(EgenNæringFormField.egenNæringOrgnr)
+            ? values.egenNæringOrgnr
+            : initialEgenNæringFormData.egenNæringOrgnr,
+        egenNæringLand: visibility.isVisible(EgenNæringFormField.egenNæringLand)
+            ? values.egenNæringLand
+            : initialEgenNæringFormData.egenNæringLand,
+    };
+    return cleanedData;
 };

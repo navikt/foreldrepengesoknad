@@ -5,6 +5,7 @@ import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common/src/common/utils/formUtils';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export const getUferdigArbeidIUtlandetInput = (): ArbeidIUtlandetInput => {
     return {
@@ -48,4 +49,15 @@ export const getInitialArbeidIUtlandetFormData = (
         };
     });
     return { arbeidIUtlandet: mappedArbeid };
+};
+
+export const cleanUpArbeidIUtlandetFormData = (values: ArbeidIUtlandetFormData): ArbeidIUtlandetFormData => {
+    const cleanedArbeidIUtlandet = values.arbeidIUtlandet.map((arbeid) => {
+        return {
+            ...arbeid,
+            tom: arbeid.pågående === YesOrNo.NO ? arbeid.tom : getUferdigArbeidIUtlandetInput().tom,
+        };
+    });
+    const cleanedData: ArbeidIUtlandetFormData = { arbeidIUtlandet: cleanedArbeidIUtlandet };
+    return cleanedData;
 };

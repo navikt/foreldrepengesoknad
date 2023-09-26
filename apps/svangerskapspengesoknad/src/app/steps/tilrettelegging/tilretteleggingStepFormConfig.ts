@@ -19,11 +19,11 @@ export enum TilretteleggingFormField {
 export interface TilretteleggingFormData {
     [TilretteleggingFormField.behovForTilretteleggingFom]: string;
     [TilretteleggingFormField.tilretteleggingType]: Tilretteleggingstype;
-    [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: DelivisTilretteleggingPeriodeType;
-    [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: string;
-    [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: string;
+    [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: DelivisTilretteleggingPeriodeType | undefined;
+    [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: string | undefined;
+    [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: string | undefined;
     [TilretteleggingFormField.variertePerioder]: PeriodeMedVariasjon[];
-    [TilretteleggingFormField.tilretteleggingstiltak]: string;
+    [TilretteleggingFormField.tilretteleggingstiltak]: string | undefined;
 }
 
 export const TilretteleggingFormComponents = getTypedFormComponents<

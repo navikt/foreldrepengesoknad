@@ -34,7 +34,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     frilans: Frilans | undefined,
     næring: Næring | undefined,
     arbeidsforhold: Arbeidsforhold[],
-    termindato: Date
+    termindato: Date,
 ): Tilrettelegging[] => {
     const unikeArbeidsforhold = [
         ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => {
@@ -52,6 +52,12 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                 variertePerioder: tilretteleggingFraState?.variertePerioder || [],
                 vedlegg: tilretteleggingFraState?.vedlegg || [],
                 behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+                type: tilretteleggingFraState?.type || undefined,
+                sammePeriodeFremTilTerminFom: tilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+                sammePeriodeFremTilTerminStillingsprosent:
+                    tilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+                delvisTilretteleggingPeriodeType:
+                    tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
             };
         }),
     ];
@@ -71,6 +77,13 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                       behovForTilretteleggingFom:
                           næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
                       variertePerioder: næringTilretteleggingFraState?.variertePerioder || [],
+                      type: næringTilretteleggingFraState?.type || undefined,
+                      sammePeriodeFremTilTerminFom:
+                          næringTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+                      sammePeriodeFremTilTerminStillingsprosent:
+                          næringTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+                      delvisTilretteleggingPeriodeType:
+                          næringTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
                   },
               ]
             : [];
@@ -90,6 +103,13 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                       behovForTilretteleggingFom:
                           frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
                       variertePerioder: frilansTilretteleggingFraState?.variertePerioder || [],
+                      type: frilansTilretteleggingFraState?.type || undefined,
+                      sammePeriodeFremTilTerminFom:
+                          frilansTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+                      sammePeriodeFremTilTerminStillingsprosent:
+                          frilansTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+                      delvisTilretteleggingPeriodeType:
+                          frilansTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
                   },
               ]
             : [];

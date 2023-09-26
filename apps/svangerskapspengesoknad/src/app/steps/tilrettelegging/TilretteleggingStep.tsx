@@ -9,7 +9,11 @@ import {
     TilretteleggingFormField,
     DelivisTilretteleggingPeriodeType,
 } from './tilretteleggingStepFormConfig';
-import { getTilretteleggingInitialValues, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
+import {
+    cleanUpTilretteleggingStepFormValues,
+    getTilretteleggingInitialValues,
+    mapOmTilretteleggingFormDataToState,
+} from './tilretteleggingStepUtils';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -38,6 +42,7 @@ import {
 } from './tilretteleggingValidation';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import PerioderMedVariasjon from './components/perioderMedVariasjon/PerioderMedVariasjon';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     id: string;
@@ -95,7 +100,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
-                    : '2021-01-01'; //TODO - hva skal man ha som minste dato hvis behov fra ikke oppgitt ennå?
+                    : dateToISOString(tiMånederSidenDato(termindato));
 
                 return (
                     <Step
@@ -105,7 +110,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, erFlereTilrettelegginger ? navn : undefined)}
                     >
-                        <TilretteleggingFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                        <TilretteleggingFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                            cleanup={(values) => cleanUpTilretteleggingStepFormValues(values, visibility)}
+                        >
                             {erFlereTilrettelegginger && (
                                 <>
                                     <Block padBottom="l">

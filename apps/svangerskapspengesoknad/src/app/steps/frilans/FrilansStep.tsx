@@ -1,5 +1,5 @@
 import { FrilansFormComponents, FrilansFormData, FrilansFormField } from './frilansFormConfig';
-import { getInitialFrilansFormValues, mapFrilansDataToSøkerState } from './frilansFormUtils';
+import { cleanupFrilansFormData, getInitialFrilansFormValues, mapFrilansDataToSøkerState } from './frilansFormUtils';
 import frilansSubformQuestionsConfig from './frilansFormQuestionsConfig';
 import {
     Block,
@@ -75,7 +75,7 @@ const FrilansStep: React.FunctionComponent = () => {
                         <FrilansFormComponents.Form
                             includeButtons={false}
                             includeValidationSummary={true}
-                            // cleanup={(values) => cleanupFrilansFormData(values, visibility)} //TODO
+                            cleanup={(values) => cleanupFrilansFormData(values, visibility)}
                         >
                             <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansFom)}>
                                 <FrilansFormComponents.DatePicker
