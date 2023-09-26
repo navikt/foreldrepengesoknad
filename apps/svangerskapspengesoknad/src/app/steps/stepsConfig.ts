@@ -137,7 +137,7 @@ export const getArbeidUtlandRouteIfArbeidUtland = (søker: Søker): SøknadRoute
     }
     return undefined;
 };
-export const getBackLinkForSkjemaSteg = (søker: Søker, termindato: Date, arbeidsforhold: Arbeidsforhold[]) => {
+export const getBackLinkForSkjemaSteg = (søker: Søker, termindato: string, arbeidsforhold: Arbeidsforhold[]) => {
     const harKunEtArbeid = søkerHarKunEtArbeid(
         termindato,
         arbeidsforhold,
@@ -229,7 +229,7 @@ export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
 export default stepConfig;
 
 export const getNextRouteForInntektsinformasjon = (
-    termindato: Date,
+    termindato: string,
     values: Partial<InntektsinformasjonFormData>,
     arbeidsforhold: Arbeidsforhold[],
 ) => {
@@ -271,7 +271,7 @@ export const getNextRouteForBostedIFremtid = (informasjonOmUtenlandsopphold: Inf
     return SøknadRoutes.ARBEID;
 };
 
-export const getVelgArbeidEllerSkjemaRoute = (termindato: Date, arbeidsforhold: Arbeidsforhold[], søker: Søker) => {
+export const getVelgArbeidEllerSkjemaRoute = (termindato: string, arbeidsforhold: Arbeidsforhold[], søker: Søker) => {
     const harKunEtArbeid = søkerHarKunEtArbeid(
         termindato,
         arbeidsforhold,
@@ -284,7 +284,7 @@ export const getVelgArbeidEllerSkjemaRoute = (termindato: Date, arbeidsforhold: 
     return SøknadRoutes.VELG_ARBEID;
 };
 
-export const getNextRouteForFrilans = (søker: Søker, termindato: Date, arbeidsforhold: Arbeidsforhold[]) => {
+export const getNextRouteForFrilans = (søker: Søker, termindato: string, arbeidsforhold: Arbeidsforhold[]) => {
     return (
         getNæringRouteIfNæring(søker) ||
         getArbeidUtlandRouteIfArbeidUtland(søker) ||
@@ -292,7 +292,7 @@ export const getNextRouteForFrilans = (søker: Søker, termindato: Date, arbeids
     );
 };
 
-export const getNextRouteForNæring = (søker: Søker, termindato: Date, arbeidsforhold: Arbeidsforhold[]) => {
+export const getNextRouteForNæring = (søker: Søker, termindato: string, arbeidsforhold: Arbeidsforhold[]) => {
     return (
         getArbeidUtlandRouteIfArbeidUtland(søker) || getVelgArbeidEllerSkjemaRoute(termindato, arbeidsforhold, søker)
     );

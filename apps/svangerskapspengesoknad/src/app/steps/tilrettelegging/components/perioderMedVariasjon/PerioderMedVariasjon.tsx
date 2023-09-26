@@ -7,7 +7,7 @@ import {
     TilretteleggingFormField,
 } from '../../tilretteleggingStepFormConfig';
 import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, hasValue, intlUtils } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import { treUkerSiden } from 'app/utils/dateUtils';
@@ -17,10 +17,10 @@ import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 
 interface Props {
     formValues: Partial<TilretteleggingFormData>;
-    termindato: Date;
+    termindato: string;
     minDatoPeriodeFom: string;
     treUkerFørFødselEllerTermin: Date;
-    fødselsdato: Date | undefined;
+    fødselsdato: string | undefined;
 }
 
 const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
@@ -41,7 +41,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <Heading size="small">{intlUtils(intl, 'perioder.varierende.heading')}</Heading>
                 <BodyShort>{intlUtils(intl, 'perioder.varierende.description')}</BodyShort>
             </Block>
@@ -57,7 +57,7 @@ const PerioderMedVariasjon: React.FunctionComponent<Props> = ({
                                 <TilretteleggingFormComponents.DatePicker
                                     key={`variertePerioder.${index}.fom`}
                                     minDate={new Date(minDatoPeriodeFom)}
-                                    maxDate={treUkerSiden(fødselsdato || termindato)}
+                                    maxDate={treUkerSiden(ISOStringToDate(fødselsdato) || ISOStringToDate(termindato)!)}
                                     name={`variertePerioder.${index}.fom`}
                                     label={intlUtils(intl, 'perioder.varierende.fom.label')}
                                     validate={validatePeriodeFom(

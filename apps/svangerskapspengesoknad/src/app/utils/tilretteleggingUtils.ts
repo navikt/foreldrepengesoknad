@@ -13,7 +13,7 @@ export const mapTilrettelegging = (
     valgtTilrettelegging: string[],
     søker: Søker,
     arbeidsforhold: Arbeidsforhold[],
-    termindato: Date,
+    termindato: string,
 ) => {
     const allTilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging,

@@ -1,8 +1,8 @@
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
-import { Barn } from './Barn';
-import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
-import { Søker } from './Søker';
-import { Tilrettelegging } from './Tilrettelegging';
+import { Barn, BarnDTO as BarnDTO } from './Barn';
+import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdDTO } from './InformasjonOmUtenlandsopphold';
+import { Søker, SøkerDTO } from './Søker';
+import { Tilrettelegging, TilretteleggingDTO } from './Tilrettelegging';
 
 export interface Søknad {
     barn: Barn;
@@ -12,4 +12,16 @@ export interface Søknad {
     tilrettelegging: Tilrettelegging[];
     vedlegg: Attachment[];
     harGodkjentOppsummering: boolean;
+}
+
+export enum Søknadstype {
+    'SVANGERSKAPSPENGER' = 'svangerskapspenger',
+}
+
+export interface SøknadDTO
+    extends Omit<Søknad, 'informasjonOmUtenlandsopphold' | 'barn' | 'tilrettelegging' | 'søker'> {
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
+    barn: BarnDTO;
+    tilrettelegging: TilretteleggingDTO[];
+    søker: SøkerDTO;
 }

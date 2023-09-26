@@ -8,7 +8,7 @@ export enum FrilansFormField {
 
 export interface FrilansFormData {
     [FrilansFormField.frilansFom]: string;
-    [FrilansFormField.frilansTom]: string;
+    [FrilansFormField.frilansTom]: string | undefined;
     [FrilansFormField.jobberFremdelesSomFrilanser]: YesOrNo;
 }
 

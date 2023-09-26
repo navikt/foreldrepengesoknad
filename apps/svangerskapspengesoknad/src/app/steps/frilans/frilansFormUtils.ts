@@ -1,16 +1,15 @@
 import { Frilans } from 'app/types/Frilans';
 import { FrilansFormData, FrilansFormField } from './frilansFormConfig';
-import { QuestionVisibility, YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common/src/common/utils/formUtils';
 import { Søker } from 'app/types/Søker';
-import { ISOStringToDate } from '@navikt/fp-common';
 
 export const initialFrilansFormValues: FrilansFormData = {
     [FrilansFormField.frilansFom]: '',
-    [FrilansFormField.frilansTom]: '',
+    [FrilansFormField.frilansTom]: undefined,
     [FrilansFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
 };
 
@@ -20,8 +19,8 @@ export const getInitialFrilansFormValues = (frilans: Frilans | undefined): Frila
     }
     return {
         ...initialFrilansFormValues,
-        frilansFom: dateToISOString(frilans.oppstart),
-        frilansTom: dateToISOString(frilans.sluttDato),
+        frilansFom: frilans.oppstart,
+        frilansTom: frilans.sluttDato,
         jobberFremdelesSomFrilanser: convertBooleanOrUndefinedToYesOrNo(frilans.jobberFremdelesSomFrilans),
     };
 };
@@ -31,8 +30,8 @@ export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormD
         ...søker,
         frilansInformasjon: {
             jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
-            oppstart: ISOStringToDate(values.frilansFom)!,
-            sluttDato: ISOStringToDate(values.frilansTom)!,
+            oppstart: values.frilansFom!,
+            sluttDato: values.frilansTom!,
         },
     };
 };

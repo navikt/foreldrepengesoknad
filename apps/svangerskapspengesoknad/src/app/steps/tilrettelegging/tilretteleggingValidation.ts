@@ -50,7 +50,7 @@ export const validateSammePeriodeFremTilTerminFom =
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
         treUkerFørFødselEllerTermin: Date,
-        fødselsdato: Date | undefined,
+        fødselsdato: string | undefined,
     ) =>
     (value: string) => {
         if (!hasValue(value)) {

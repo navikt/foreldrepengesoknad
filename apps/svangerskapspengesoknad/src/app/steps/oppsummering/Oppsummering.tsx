@@ -20,7 +20,7 @@ import {
 } from './oppsummeringFormConfig';
 import actionCreator from 'app/context/action/actionCreator';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
 import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
@@ -30,6 +30,7 @@ import ArbeidIUtlandetVisning from '../../components/arbeid-i-utlandet-visning/A
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import SøknadRoutes from 'app/routes/routes';
+import { getSøknadForInnsending } from 'app/utils/apiUtils';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -47,7 +48,7 @@ const Oppsummering = () => {
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
     const bem = bemUtils('oppsummering');
-
+    const søknadForInnsending = useMemo(() => getSøknadForInnsending(søknad, intl), [søknad, intl]);
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
         setFormSubmitted(true);
@@ -58,7 +59,7 @@ const Oppsummering = () => {
         if (formSubmitted && !isSendingSøknad) {
             setIsSendingSøknad(true);
 
-            Api.sendSøknad(søknad, abortSignal)
+            Api.sendSøknad(søknadForInnsending, abortSignal)
                 .then(() => {
                     navigate(SøknadRoutes.SØKNAD_SENDT);
                 })
@@ -170,7 +171,7 @@ const Oppsummering = () => {
                                     </Accordion.Content>
                                 </Accordion.Item>
                             </Accordion>
-                            <Block margin="xl">
+                            <Block margin="xl" padBottom="xl">
                                 <OppsummeringFormComponents.ConfirmationCheckbox
                                     name={OppsummeringFormField.harGodkjentOppsummering}
                                     label={intlUtils(intl, 'oppsummering.bekreft')}
