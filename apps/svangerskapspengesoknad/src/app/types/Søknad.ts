@@ -19,7 +19,17 @@ export enum Søknadstype {
 }
 
 export interface SøknadDTO
-    extends Omit<Søknad, 'informasjonOmUtenlandsopphold' | 'barn' | 'tilrettelegging' | 'søker'> {
+    extends Omit<
+        Søknad,
+        | 'informasjonOmUtenlandsopphold'
+        | 'barn'
+        | 'tilrettelegging'
+        | 'søker'
+        | 'harGodkjentOppsummering'
+        | 'harGodkjentVilkår'
+    > {
+    type: Søknadstype;
+    erEndringssøknad: boolean;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
     barn: BarnDTO;
     tilrettelegging: TilretteleggingDTO[];
