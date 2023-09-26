@@ -45,9 +45,6 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                 illustrasjon={{
                     tittel: intlUtils(intl, 'intro.generellFeil.tittel'),
                     tekst: intlUtils(intl, 'intro.generellFeil.ingress'),
-                    veileder: {
-                        ansikt: 'skeptisk',
-                    },
                     lenke: { tekst: intlUtils(intl, 'intro.generellFeil.brukerstøtte'), url: lenker.brukerstøtte },
                 }}
                 setLanguage={onChangeLocale}

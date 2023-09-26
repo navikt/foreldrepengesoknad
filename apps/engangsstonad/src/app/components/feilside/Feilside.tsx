@@ -1,7 +1,6 @@
 import DocumentTitle from 'react-document-title';
 import { Link } from '@navikt/ds-icons';
 import { Språkkode } from 'intl/types';
-import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
 import { Heading, Ingress } from '@navikt/ds-react';
 import { Locale, bemUtils, Block, LanguageToggle, Sidebanner } from '@navikt/fp-common';
 
@@ -18,7 +17,6 @@ export interface Props {
             url: string;
             tekst: string;
         };
-        veileder?: VeilederProps;
     };
     tittel: ReactNode;
     ingress: ReactNode;
