@@ -1,5 +1,7 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import { useStateResetFn } from './EsDataContext';
 
 export enum Path {
     VELKOMMEN = '/',
@@ -12,90 +14,81 @@ export enum Path {
     KVITTERING = '/kvittering',
 }
 
-const getPreviousStepHref = (path?: Path): string => {
-    let href;
-    switch (path) {
-        case Path.VELKOMMEN:
-            href = '';
-            break;
-        case Path.SØKERSITUASJON:
-            href = Path.VELKOMMEN;
-            break;
-        case Path.OM_BARNET:
-            href = Path.SØKERSITUASJON;
-            break;
-        /* case 'utenlandsopphold':
-            href = '/soknad/om-barnet';
-            break;
-        case 'sisteUtenlandsopphold':
-            href = '/soknad/siste-utenlandsopphold';
-            break;
-        case 'nesteUtenlandsopphold':
-            href = '/soknad/neste-utenlandsopphold';
-            break;
-        case 'oppsummering':
-            href = '/soknad/utenlandsopphold';
-            break; */
-        default:
-            throw new Error('Unreachable code');
-    }
-    return href;
-};
+const PathOrder = [
+    Path.VELKOMMEN,
+    Path.SØKERSITUASJON,
+    Path.OM_BARNET,
+    Path.UTENLANDSOPPHOLD,
+    Path.NESTE_UTENLANDSOPPHOLD,
+    Path.SISTE_UTENLANDSOPPHOLD,
+    Path.OPPSUMMERING,
+    Path.KVITTERING,
+];
 
-const getNextStepHref = (path?: Path): string => {
-    let href;
-    switch (path) {
-        case Path.VELKOMMEN:
-            href = Path.SØKERSITUASJON;
-            break;
-        case Path.SØKERSITUASJON:
-            href = Path.OM_BARNET;
-            break;
-        /* case 'omBarnet':
-            href = '/soknad/søkersituasjon';
-            break;
-        case 'utenlandsopphold':
-            href = '/soknad/om-barnet';
-            break;
-        case 'sisteUtenlandsopphold':
-            href = '/soknad/siste-utenlandsopphold';
-            break;
-        case 'nesteUtenlandsopphold':
-            href = '/soknad/neste-utenlandsopphold';
-            break;
-        case 'oppsummering':
-            href = '/soknad/utenlandsopphold';
-            break; */
-        default:
-            throw new Error('Unreachable code');
-    }
-    return href;
+//TODO Kan denne fjernast og heller logge url i amplitude?
+const PageKeys = {
+    [Path.VELKOMMEN]: 'velkommen',
+    [Path.SØKERSITUASJON]: 'situasjon',
+    [Path.OM_BARNET]: 'om-barnet',
+    [Path.UTENLANDSOPPHOLD]: 'utenlandsopphold',
+    [Path.NESTE_UTENLANDSOPPHOLD]: 'neste-utenlandsopphold',
+    [Path.SISTE_UTENLANDSOPPHOLD]: 'siste-utenlandsopphold',
+    [Path.OPPSUMMERING]: 'oppsummering',
+    [Path.KVITTERING]: 'søknad-sendt',
 };
 
 const useEsNavigator = () => {
+    const resetState = useStateResetFn();
     const navigate = useNavigate();
     const location = useLocation();
-    const path = Object.values(Path).find((v) => v === decodeURIComponent(location.pathname));
+    const currentPath = Object.values(Path).find((v) => v === decodeURIComponent(location.pathname));
 
-    // TODO Må av og til sjå på context for å finna ut kor ein skal gå tilbake
-    const previousStepHref = useMemo(() => getPreviousStepHref(path), [path]);
+    const previousStepHref = useMemo(() => PathOrder[PathOrder.findIndex((p) => p === currentPath) - 1], [currentPath]);
+    const nextStepHref = useMemo(() => PathOrder[PathOrder.findIndex((p) => p === currentPath) + 1], [currentPath]);
 
-    const goToNextStep = useCallback(() => {
-        // TODO For Enkelte sider må ein sjekka context for å finna ut kor ein skal gå
-        // TODO Må ha reglar for om ein skal resette noko gitt kor ein skal gå og kva som er satt fra før
-        navigate(getNextStepHref(path));
-    }, [navigate, path]);
+    useEffect(() => {
+        logAmplitudeEvent('sidevisning', {
+            app: 'engangsstonadny',
+            team: 'foreldrepenger',
+            pageKey: currentPath ? PageKeys[currentPath] : 'NO_PATH_KEY',
+        });
+    }, []);
+
+    const goToPreviousStep = useCallback(
+        (path: Path) => {
+            navigate(path);
+        },
+        [navigate],
+    );
+    const goToPreviousDefaultStep = useCallback(() => {
+        navigate(previousStepHref);
+    }, [navigate, previousStepHref]);
+
+    const goToNextStep = useCallback(
+        (path: Path) => {
+            navigate(path);
+        },
+        [navigate],
+    );
+    const goToNextDefaultStep = useCallback(() => {
+        navigate(nextStepHref);
+    }, [navigate, nextStepHref]);
 
     const avbrytSøknad = useCallback(() => {
-        // TODO Resett context
+        resetState();
         navigate(Path.VELKOMMEN);
     }, []);
 
-    return {
-        previousStepHref,
-        goToNextStep,
-        avbrytSøknad,
-    };
+    return useMemo(
+        () => ({
+            goToPreviousStep,
+            goToPreviousDefaultStep,
+            goToNextStep,
+            goToNextDefaultStep,
+            avbrytSøknad,
+        }),
+        [goToPreviousStep, goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep],
+    );
 };
 
 export default useEsNavigator;

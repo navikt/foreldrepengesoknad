@@ -1,10 +1,9 @@
 import { useIntl } from 'react-intl';
 import { Heading, Link } from '@navikt/ds-react';
 import { bemUtils, intlUtils, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import Person from 'types/Person';
-import { PageKeys } from '../PageKeys';
-import { lenker } from '../../lenker';
+import { lenker } from 'fpcommon/lenker';
+import useEsNavigator from '../../useEsNavigator';
 
 import './umyndig.less';
 
@@ -18,11 +17,7 @@ const Umyndig: React.FunctionComponent<Props> = ({ person }) => {
 
     useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
 
-    logAmplitudeEvent('sidevisning', {
-        app: 'engangsstonadny',
-        team: 'foreldrepenger',
-        pageKey: PageKeys.Umyndig,
-    });
+    useEsNavigator();
 
     return (
         <div className={bem.block}>

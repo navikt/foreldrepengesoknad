@@ -1,31 +1,35 @@
+import { useCallback } from 'react';
 import { Radio, VStack } from '@navikt/ds-react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
-import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import StepButtons from 'fpcommon/components/StepButtons';
+import stepConfig from '../../../stepConfig';
 import useEsNavigator from '../../../useEsNavigator';
+import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
 
 type FormValues = Søkersituasjon;
 
-interface OwnProps {
-    lagretSøkersituasjon?: Søkersituasjon;
-    lagreSøkersituasjon: (data: Søkersituasjon) => void;
-}
-
-const SøkersituasjonSteg: React.FunctionComponent<OwnProps> = ({ lagretSøkersituasjon, lagreSøkersituasjon }) => {
+const SøkersituasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const navigator = useEsNavigator();
+    const søkersituasjon = useStateData(EsDataType.SØKERSITUASJON);
+    const lagreSøkersituasjon = useStateSaveFn(EsDataType.SØKERSITUASJON);
 
     const formMethods = useForm<FormValues>({
-        defaultValues: lagretSøkersituasjon,
+        defaultValues: søkersituasjon,
     });
+
+    const lagre = useCallback((formValues: FormValues) => {
+        lagreSøkersituasjon(formValues);
+        navigator.goToNextDefaultStep();
+    }, []);
 
     return (
         <Step
@@ -36,7 +40,7 @@ const SøkersituasjonSteg: React.FunctionComponent<OwnProps> = ({ lagretSøkersi
             steps={stepConfig}
         >
             <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagreSøkersituasjon)}>
+                <form onSubmit={formMethods.handleSubmit(lagre)}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         <RadioGroupPanel
@@ -53,7 +57,7 @@ const SøkersituasjonSteg: React.FunctionComponent<OwnProps> = ({ lagretSøkersi
                                 <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
                             </Radio>
                         </RadioGroupPanel>
-                        <StepButtons previousStepHref={navigator.previousStepHref} />
+                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
                     </VStack>
                 </form>
             </FormProvider>

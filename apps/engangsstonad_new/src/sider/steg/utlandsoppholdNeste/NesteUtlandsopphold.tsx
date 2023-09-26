@@ -1,14 +1,16 @@
-import { useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 
-import stepConfig, { getPreviousStepHref } from '../../../stepConfig';
+import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import NesteUtenlandsoppholdPanel from './NesteUtenlandsoppholdPanel';
 import StepButtons from 'fpcommon/components/StepButtons';
+import useEsNavigator, { Path } from '../../../useEsNavigator';
+import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
 
 export type FormValues = {
     utenlandsoppholdNeste12Mnd: {
@@ -18,20 +20,15 @@ export type FormValues = {
     }[];
 };
 
-interface OwnProps {
-    lagretNesteUtenlandsopphold?: FormValues;
-    lagreNesteUtenlandsopphold: (data: FormValues) => void;
-    avbrytSøknad: () => void;
-}
-
-const NesteUtlandsopphold: React.FunctionComponent<OwnProps> = ({
-    lagretNesteUtenlandsopphold,
-    lagreNesteUtenlandsopphold,
-    avbrytSøknad,
-}) => {
+const NesteUtlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
 
-    const defaultValues = useMemo(() => lagretNesteUtenlandsopphold || { utenlandsoppholdNeste12Mnd: [{}] }, []);
+    const navigator = useEsNavigator();
+    const utenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD);
+    const nesteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const lagreNesteUtenlandsopphold = useStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
+
+    const defaultValues = useMemo(() => nesteUtenlandsopphold || { utenlandsoppholdNeste12Mnd: [{}] }, []);
     const formMethods = useForm<FormValues>({
         defaultValues,
     });
@@ -50,24 +47,31 @@ const NesteUtlandsopphold: React.FunctionComponent<OwnProps> = ({
         [remove],
     );
 
+    const lagre = useCallback((formValues: FormValues) => {
+        lagreNesteUtenlandsopphold(formValues);
+        navigator.goToNextStep(
+            utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd ? Path.SISTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
+        );
+    }, []);
+
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="utenlandsoppholdFremtidig"
+            activeStepId="nesteUtenlandsopphold"
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.fremtidig' })}
-            onCancel={avbrytSøknad}
+            onCancel={navigator.avbrytSøknad}
             steps={stepConfig}
         >
             <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagreNesteUtenlandsopphold)}>
+                <form onSubmit={formMethods.handleSubmit(lagre)}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         <VStack gap="10" align="start">
-                            {fields.map((_field, index) => (
-                                <>
+                            {fields.map((field, index) => (
+                                <Fragment key={field.id}>
                                     <NesteUtenlandsoppholdPanel index={index} fjernOpphold={fjernOpphold} />
                                     {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
-                                </>
+                                </Fragment>
                             ))}
                             <Button
                                 type="button"
@@ -79,7 +83,7 @@ const NesteUtlandsopphold: React.FunctionComponent<OwnProps> = ({
                                 <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                             </Button>
                         </VStack>
-                        <StepButtons previousStepHref={getPreviousStepHref('nesteUtenlandsopphold')} />
+                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
                     </VStack>
                 </form>
             </FormProvider>

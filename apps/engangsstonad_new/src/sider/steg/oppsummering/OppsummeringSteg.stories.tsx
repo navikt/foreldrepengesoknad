@@ -1,22 +1,22 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import Oppsummering from './Oppsummering';
+import OppsummeringSteg from './OppsummeringSteg';
 import IntlProvider from '../../../intl/IntlProvider';
-import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
-import { FormValues as UtenlandsoppholdFormFormValus } from '../utenlandsopphold/UtenlandsoppholdForm';
-import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdFremtidig/FremtidigUtlandsopphold';
-import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdTidligere/TidligereUtlandsopphold';
-
-import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
 import { AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
+import { OmBarnet } from 'types/OmBarnet';
+import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import { EsDataType } from '../../../EsDataContext';
+import { Kjønn } from 'types/Person';
 
 const person = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',
-    kjønn: 'K',
+    kjønn: Kjønn.KVINNE,
     fødselsdato: '1979-01-28',
+    adresse: 'Testadresse',
     bankkonto: {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
@@ -41,31 +41,34 @@ const utenlandsoppholdTidligereDefault = {
 };
 
 export default {
-    title: 'Oppsummering',
-    component: Oppsummering,
+    title: 'OppsummeringSteg',
+    component: OppsummeringSteg,
+    decorators: [withRouterProvider],
 };
 
 const Template: StoryFn<{
-    omBarnet?: OmBarnetFormValues;
-    utenlandsopphold?: UtenlandsoppholdFormFormValus;
-    utenlandsoppholdFremtidig?: UtenlandsoppholdFremtidigFormFormValus;
-    utenlandsoppholdTidligere?: UtenlandsoppholdTidligereFormFormValus;
+    omBarnet?: OmBarnet;
+    utenlandsopphold?: Utenlandsopphold;
+    nesteUtenlandsopphold?: UtenlandsoppholdNeste;
+    sisteUtenlandsopphold?: UtenlandsoppholdSiste;
 }> = ({
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
-    utenlandsoppholdFremtidig = utenlandsoppholdFremtidigDefault,
-    utenlandsoppholdTidligere = utenlandsoppholdTidligereDefault,
+    nesteUtenlandsopphold = utenlandsoppholdFremtidigDefault,
+    sisteUtenlandsopphold = utenlandsoppholdTidligereDefault,
 }) => {
     return (
         <IntlProvider språkkode="nb">
-            <Oppsummering
-                person={person}
-                omBarnet={omBarnet}
-                utenlandsopphold={utenlandsopphold}
-                utenlandsoppholdFremtidig={utenlandsoppholdFremtidig}
-                utenlandsoppholdTidligere={utenlandsoppholdTidligere}
-                avbrytSøknad={action('button-click')}
-            />
+            <EsContextStorybookHelper
+                initialState={{
+                    [EsDataType.OM_BARNET]: omBarnet,
+                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_NESTE]: nesteUtenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_SISTE]: sisteUtenlandsopphold,
+                }}
+            >
+                <OppsummeringSteg person={person} sendSøknad={action('button-click')} />
+            </EsContextStorybookHelper>
         </IntlProvider>
     );
 };
@@ -143,7 +146,7 @@ HarTidligereOgFremtidigeUtenlandsopphold.args = {
         harBoddUtenforNorgeSiste12Mnd: true,
         skalBoUtenforNorgeNeste12Mnd: true,
     },
-    utenlandsoppholdFremtidig: {
+    nesteUtenlandsopphold: {
         utenlandsoppholdNeste12Mnd: [
             {
                 fom: '2025-01-01',
@@ -157,7 +160,7 @@ HarTidligereOgFremtidigeUtenlandsopphold.args = {
             },
         ],
     },
-    utenlandsoppholdTidligere: {
+    sisteUtenlandsopphold: {
         utenlandsoppholdSiste12Mnd: [
             {
                 fom: '2021-01-01',

@@ -13,51 +13,41 @@ import {
 } from '@navikt/ds-react';
 import { LanguageToggle, Locale, useDocumentTitle } from '@navikt/fp-common';
 
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import { lenker } from 'fpcommon/lenker';
 import ContentWrapper from 'fpcommon/components/ContentWrapper';
-import { lenker } from '../../lenker';
-import { PageKeys } from '../PageKeys';
 import Plikter from './Plikter';
 import useEsNavigator from '../../useEsNavigator';
 
-interface Props {
+export interface Props {
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
-    startSøknad: () => void;
+    startSøknad: (start: boolean) => void;
 }
 
 const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad }) => {
     const intl = useIntl();
+    useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
 
     const navigator = useEsNavigator();
 
-    useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
-
-    logAmplitudeEvent('sidevisning', {
-        app: 'engangsstonadny',
-        team: 'foreldrepenger',
-        pageKey: PageKeys.Velkommen,
-    });
-
-    const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [isChecked, setChecked] = useState(false);
+    const toggleCheck = useCallback(() => setChecked((state) => !state), []);
 
     const bekreft = useCallback(() => {
         if (!isChecked) {
             setIsError(true);
         } else {
-            startSøknad();
-            navigator.goToNextStep();
+            startSøknad(true);
+            navigator.goToNextDefaultStep();
         }
     }, [isChecked, startSøknad]);
 
+    const toggleLocale = useCallback((l: Locale) => onChangeLocale(l), []);
+
     return (
         <>
-            <LanguageToggle
-                locale={locale}
-                availableLocales={['en', 'nb', 'nn']}
-                toggle={(l: Locale) => onChangeLocale(l)}
-            />
+            <LanguageToggle locale={locale} availableLocales={['en', 'nb', 'nn']} toggle={toggleLocale} />
             <ContentWrapper>
                 <VStack gap="10">
                     <HStack justify="center">
@@ -86,7 +76,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                     </Alert>
                     <ConfirmationPanel
                         label={intl.formatMessage({ id: 'velkommen.text.samtykke' })}
-                        onChange={() => setChecked((state) => !state)}
+                        onChange={toggleCheck}
                         checked={isChecked}
                         error={
                             isError &&

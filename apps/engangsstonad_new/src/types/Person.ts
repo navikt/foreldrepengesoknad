@@ -1,11 +1,14 @@
 import Bankkonto from './Bankkonto';
 
-export type Kjønn = 'M' | 'K';
+export enum Kjønn {
+    MANN = 'M',
+    KVINNE = 'K',
+}
 
 type Person = {
     fnr: string;
     fornavn: string;
-    mellomnavn: string;
+    mellomnavn?: string;
     etternavn: string;
     adresse: string;
     kjønn: Kjønn;

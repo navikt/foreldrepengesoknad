@@ -1,20 +1,22 @@
 import { StoryFn } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
 import IntlProvider from '../../../intl/IntlProvider';
-
-import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
+import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import { EsDataType } from '../../../EsDataContext';
 
 export default {
     title: 'SøkersituasjonSteg',
     component: SøkersituasjonSteg,
+    decorators: [withRouterProvider],
 };
 
 const Template: StoryFn<any> = () => {
     return (
         <IntlProvider språkkode="nb">
-            <SøkersituasjonSteg lagreSøkersituasjon={action('button-click')} avbrytSøknad={action('button-click')} />
+            <EsContextStorybookHelper dataTypeToLogWhenChanges={EsDataType.SØKERSITUASJON}>
+                <SøkersituasjonSteg />
+            </EsContextStorybookHelper>
         </IntlProvider>
     );
 };

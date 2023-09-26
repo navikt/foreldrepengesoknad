@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link } from '@navikt/ds-react';
-import { lenker } from '../../lenker';
+import { lenker } from 'fpcommon/lenker';
 
 import './plikter.less';
 

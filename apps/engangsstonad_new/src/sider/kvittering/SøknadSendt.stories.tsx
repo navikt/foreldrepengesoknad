@@ -1,16 +1,16 @@
 import { StoryFn } from '@storybook/react';
 import SøknadSendt from './SøknadSendt';
 import IntlProvider from 'intl/IntlProvider';
-
-import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
+import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import { Kjønn } from 'types/Person';
 
 const person = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',
-    kjønn: 'K',
+    kjønn: Kjønn.KVINNE,
     fødselsdato: '1979-01-28',
+    adresse: 'Gatenavn 1',
     bankkonto: {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
@@ -28,6 +28,7 @@ const kvittering = {
 export default {
     title: 'SøknadSendt',
     component: SøknadSendt,
+    decorators: [withRouterProvider],
 };
 
 const Template: StoryFn<any> = () => {

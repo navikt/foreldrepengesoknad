@@ -11,14 +11,14 @@ type StepIdWithBackHref =
     | NesteUtenlandsoppholdStepId
     | SisteUtenlandsoppholdStepId
     | OppsummeringStepId;
-export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
+export type StepId = StepIdWithBackHref;
 interface StepConfig {
     id: StepId;
     index: number;
     label: string;
 }
 
-//TODO (TOR) Kvifor er label her hardkoda?
+//TODO (TOR) Rekkefølgen her blir ikkje alltid rett grunna implementasjon i Step. Bør fjerna denne fila og heller laga ein ny tellar-mekanisme
 const stepConfig: StepConfig[] = [
     {
         id: 'søkersituasjon',
@@ -51,31 +51,5 @@ const stepConfig: StepConfig[] = [
         label: 'Oppsummering',
     },
 ];
-export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
-    let href;
-    switch (id) {
-        case 'søkersituasjon':
-            href = '/';
-            break;
-        case 'omBarnet':
-            href = '/soknad/søkersituasjon';
-            break;
-        case 'utenlandsopphold':
-            href = '/soknad/om-barnet';
-            break;
-        case 'sisteUtenlandsopphold':
-            href = '/soknad/siste-utenlandsopphold';
-            break;
-        case 'nesteUtenlandsopphold':
-            href = '/soknad/neste-utenlandsopphold';
-            break;
-        case 'oppsummering':
-            href = '/soknad/utenlandsopphold';
-            break;
-        default:
-            throw new Error('Unreachable code');
-    }
-    return href;
-};
 
 export default stepConfig;

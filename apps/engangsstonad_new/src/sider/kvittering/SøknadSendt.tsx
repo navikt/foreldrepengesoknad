@@ -4,17 +4,16 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { lenker } from 'fpcommon/util/lenker';
 import ContentWrapper from 'fpcommon/components/ContentWrapper';
 import Person from 'types/Person';
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import Kvittering from 'types/Kvittering';
-import { PageKeys } from '../PageKeys';
 import KvitteringHeader from './KvitteringHeader';
 import CheckmarkIkon from './ikon/CheckmarkIkon';
 import StatusBoks from './StatusBoks';
 import SøknadSendtIkon from './ikon/SøknadSendtIkon';
+import useEsNavigator from '../../useEsNavigator';
 
 import './søknadSendt.less';
 
-interface Props {
+export interface Props {
     person: Person;
     kvittering: Kvittering;
 }
@@ -24,11 +23,7 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) =>
 
     useDocumentTitle(intl.formatMessage({ id: 'søknadSendt.dokumenttittel' }));
 
-    logAmplitudeEvent('sidevisning', {
-        app: 'engangsstonadny',
-        team: 'foreldrepenger',
-        pageKey: PageKeys.SøknadSendt,
-    });
+    useEsNavigator();
 
     const bem = bemUtils('kvittering');
 

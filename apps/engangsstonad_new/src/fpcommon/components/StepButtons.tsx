@@ -1,17 +1,17 @@
 import { StepButtonWrapper } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
-import { Button, Link } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
-    previousStepHref: string;
+    goToPreviousStep: () => void;
     nextText?: string;
     nextOnClick?: () => void;
 }
 
-const StepButtons: React.FunctionComponent<Props> = ({ previousStepHref, nextText, nextOnClick }) => {
+const StepButtons: React.FunctionComponent<Props> = ({ goToPreviousStep, nextText, nextOnClick }) => {
     return (
         <StepButtonWrapper>
-            <Button variant="secondary" as={Link} to={previousStepHref}>
+            <Button type="button" variant="secondary" onClick={goToPreviousStep}>
                 <FormattedMessage id="backlink.label" />
             </Button>
             <Button type="submit" onClick={nextOnClick}>

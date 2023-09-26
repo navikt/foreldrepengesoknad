@@ -3,89 +3,92 @@ import { useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import StepButtons from 'fpcommon/components/StepButtons';
 import Person from 'types/Person';
-import { PageKeys } from '../../PageKeys';
-import stepConfig, { getPreviousStepHref } from '../../../stepConfig';
+import stepConfig from '../../../stepConfig';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
-import { FormValues as OmBarnetFormValues } from '../omBarnet/OmBarnetForm';
-import { FormValues as UtenlandsoppholdFormFormValus } from '../utenlandsopphold/UtenlandsoppholdForm';
-import { FormValues as UtenlandsoppholdFremtidigFormFormValus } from '../utlandsoppholdNeste/NesteUtlandsopphold';
-import { FormValues as UtenlandsoppholdTidligereFormFormValus } from '../utlandsoppholdSiste/SisteUtlandsopphold';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
-import StepButtons from 'fpcommon/components/StepButtons';
+import useEsNavigator, { Path } from '../../../useEsNavigator';
+import { EsDataType, useStateData } from '../../../EsDataContext';
+import { OmBarnet } from 'types/OmBarnet';
+import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import { notEmpty } from 'fpcommon/validering/valideringUtil';
 
-const fullNameFormat = (fornavn: string, mellomnavn: string, etternavn: string) => {
+const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     if (mellomnavn) {
         return `${fornavn} ${mellomnavn} ${etternavn}`;
     }
     return `${fornavn} ${etternavn}`;
 };
 
-interface Props {
+const findPath = (utenlandsopphold: Utenlandsopphold) => {
+    if (utenlandsopphold.harBoddUtenforNorgeSiste12Mnd) {
+        return Path.SISTE_UTENLANDSOPPHOLD;
+    }
+    return utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.UTENLANDSOPPHOLD;
+};
+
+export interface Props {
     person: Person;
-    omBarnet: OmBarnetFormValues;
-    utenlandsopphold: UtenlandsoppholdFormFormValus;
-    utenlandsoppholdFremtidig?: UtenlandsoppholdFremtidigFormFormValus;
-    utenlandsoppholdTidligere?: UtenlandsoppholdTidligereFormFormValus;
-    avbrytSøknad: () => void;
-    sendSøknad: () => void;
+    sendSøknad: (
+        omBarnet: OmBarnet,
+        utenlandsopphold: Utenlandsopphold,
+        nesteUtenlandsopphold: UtenlandsoppholdNeste,
+        sisteUtenlandsopphold: UtenlandsoppholdSiste,
+    ) => void;
 }
 
-const Oppsummering: React.FunctionComponent<Props> = ({
-    person,
-    omBarnet,
-    utenlandsopphold,
-    utenlandsoppholdFremtidig,
-    utenlandsoppholdTidligere,
-    avbrytSøknad,
-    sendSøknad,
-}) => {
+const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
     const intl = useIntl();
 
-    logAmplitudeEvent('sidevisning', {
-        app: 'engangsstonadny',
-        team: 'foreldrepenger',
-        pageKey: PageKeys.Oppsummering,
-    });
+    const navigator = useEsNavigator();
+    const omBarnet = notEmpty(useStateData(EsDataType.OM_BARNET));
+    const utenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD));
+    const nesteUtenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD_NESTE));
+    const sisteUtenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD_SISTE));
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const send = useCallback(() => {
+    const send = useCallback(async () => {
         if (!isChecked) {
             setIsError(true);
         } else {
-            sendSøknad();
+            sendSøknad(omBarnet, utenlandsopphold, nesteUtenlandsopphold, sisteUtenlandsopphold);
+            navigator.goToNextDefaultStep();
         }
-    }, [isChecked, sendSøknad]);
+    }, [isChecked]);
+
+    const goToPreviousStep = useCallback(() => {
+        navigator.goToPreviousStep(findPath(utenlandsopphold));
+    }, []);
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             activeStepId="oppsummering"
             pageTitle={intl.formatMessage({ id: 'søknad.oppsummering' })}
-            onCancel={avbrytSøknad}
+            onCancel={navigator.avbrytSøknad}
             steps={stepConfig}
         >
             <VStack gap="10">
                 <Accordion>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omDeg' })}>
                         <VStack gap="4">
-                            <BodyShort>{fullNameFormat(person.fornavn, person.mellomnavn, person.etternavn)}</BodyShort>
+                            <BodyShort>{fullNameFormat(person.fornavn, person.etternavn, person.mellomnavn)}</BodyShort>
                             <BodyShort>{person.fnr}</BodyShort>
                         </VStack>
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omBarnet' })}>
-                        <OmBarnetOppsummering barn={omBarnet} />
+                        <OmBarnetOppsummering omBarnet={omBarnet} />
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
                         <UtenlandsoppholdOppsummering
-                            barn={omBarnet}
-                            informasjonOmUtenlandsopphold={utenlandsopphold}
-                            utenlandsoppholdFremtidig={utenlandsoppholdFremtidig}
-                            utenlandsoppholdTidligere={utenlandsoppholdTidligere}
+                            omBarnet={omBarnet}
+                            utenlandsopphold={utenlandsopphold}
+                            utenlandsoppholdNeste={nesteUtenlandsopphold}
+                            utenlandsoppholdSiste={sisteUtenlandsopphold}
                         />
                     </Oppsummeringspunkt>
                 </Accordion>
@@ -100,7 +103,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     }
                 />
                 <StepButtons
-                    previousStepHref={getPreviousStepHref('oppsummering')}
+                    goToPreviousStep={goToPreviousStep}
                     nextText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
                     nextOnClick={send}
                 />
@@ -109,4 +112,4 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     );
 };
 
-export default Oppsummering;
+export default OppsummeringSteg;

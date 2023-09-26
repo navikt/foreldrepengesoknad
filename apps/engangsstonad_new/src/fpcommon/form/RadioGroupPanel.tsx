@@ -43,7 +43,7 @@ const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
                 //TODO Vurder å heller lage ein wrapper til children
                 //Denne map'en legg til ref for å kunna setta fokus ved feil
                 if (index === 0) {
-                    return React.cloneElement(child, { ref: field.ref });
+                    return React.cloneElement(child, { key: child.key, ref: field.ref });
                 }
                 return child;
             })}

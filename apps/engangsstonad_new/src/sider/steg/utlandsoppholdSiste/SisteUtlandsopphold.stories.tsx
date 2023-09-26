@@ -1,23 +1,18 @@
 import { StoryFn } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import SisteUtlandsopphold from './SisteUtlandsopphold';
 import IntlProvider from 'intl/IntlProvider';
-
-import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
+import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import SisteUtlandsopphold from './SisteUtlandsopphold';
 
 export default {
     title: 'SisteUtlandsopphold',
     component: SisteUtlandsopphold,
+    decorators: [withRouterProvider],
 };
 
 const Template: StoryFn<any> = () => {
     return (
         <IntlProvider språkkode="nb">
-            <SisteUtlandsopphold
-                lagreSisteUtenlandsopphold={action('button-click')}
-                avbrytSøknad={action('button-click')}
-            />
+            <SisteUtlandsopphold />
         </IntlProvider>
     );
 };

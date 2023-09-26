@@ -3,50 +3,51 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
-import stepConfig, { getPreviousStepHref } from '../../../stepConfig';
-import { PageKeys } from '../../PageKeys';
+import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import StepButtons from 'fpcommon/components/StepButtons';
+import useEsNavigator, { Path } from '../../../useEsNavigator';
+import { EsDataType, useStateSaveFn, useStateData } from '../../../EsDataContext';
+import { useCallback } from 'react';
 
 export type FormValues = Utenlandsopphold;
 
-interface OwnProps {
-    lagretUtenlandsopphold?: Utenlandsopphold;
-    lagreUtenlandsopphold: (data: Utenlandsopphold) => void;
-    avbrytSøknad: () => void;
-}
+const findPath = (formValues: FormValues) => {
+    if (formValues?.skalBoUtenforNorgeNeste12Mnd) {
+        return Path.NESTE_UTENLANDSOPPHOLD;
+    }
+    return formValues?.harBoddUtenforNorgeSiste12Mnd ? Path.SISTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
+};
 
-const UtenlandsoppholdSteg: React.FunctionComponent<OwnProps> = ({
-    lagretUtenlandsopphold,
-    lagreUtenlandsopphold,
-    avbrytSøknad,
-}) => {
+const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
-    logAmplitudeEvent('sidevisning', {
-        app: 'engangsstonadny',
-        team: 'foreldrepenger',
-        pageKey: PageKeys.Utenlandsopphold,
-    });
+    const navigator = useEsNavigator();
+    const utenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD);
+    const lagreUtenlandsopphold = useStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
 
     const formMethods = useForm<FormValues>({
-        defaultValues: lagretUtenlandsopphold,
+        defaultValues: utenlandsopphold,
     });
+
+    const lagre = useCallback((formValues: FormValues) => {
+        lagreUtenlandsopphold(formValues);
+        navigator.goToNextStep(findPath(formValues));
+    }, []);
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             activeStepId="utenlandsopphold"
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}
-            onCancel={avbrytSøknad}
+            onCancel={navigator.avbrytSøknad}
             steps={stepConfig}
         >
             <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagreUtenlandsopphold)}>
+                <form onSubmit={formMethods.handleSubmit(lagre)}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         <RadioGroupPanel
@@ -121,7 +122,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<OwnProps> = ({
                                 </VStack>
                             </ExpansionCard.Content>
                         </ExpansionCard>
-                        <StepButtons previousStepHref={getPreviousStepHref('utenlandsopphold')} />
+                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
                     </VStack>
                 </form>
             </FormProvider>

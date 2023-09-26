@@ -1,5 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { Locale } from '@navikt/fp-common';
+import { redirectToLogin } from 'fpcommon/util/login';
 import Environment from './Environment';
+import { OmBarnet } from 'types/OmBarnet';
+import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import Kvittering from 'types/Kvittering';
 
 export const foreldrepengersoknadApi = axios.create({
     baseURL: Environment.REST_API_URL,
@@ -23,7 +28,7 @@ foreldrepengersoknadApi.interceptors.response.use(
             error?.config?.url &&
             !error.config.url.includes('/soknad')
         ) {
-            //redirectToLogin();
+            redirectToLogin(Environment.LOGIN_URL);
         }
         return Promise.reject(error);
     },
@@ -33,14 +38,38 @@ const getPerson = () => {
     return foreldrepengersoknadApi.get('/personinfo');
 };
 
-//TODO FIX type
-const sendSøknad = (soknad: any) => {
-    return foreldrepengersoknadApi.post('/soknad', soknad, {
-        headers: {
-            'content-type': 'application/json;',
-        },
-    });
-};
+const sendSøknad =
+    (locale: Locale, setKvittering: (kvittering: Kvittering) => void) =>
+    async (
+        omBarnet: OmBarnet,
+        utenlandsopphold: Utenlandsopphold,
+        nesteUtenlandsopphold: UtenlandsoppholdNeste,
+        sisteUtenlandsopphold: UtenlandsoppholdSiste,
+    ) => {
+        //TODO Treng nok framleis noko mapping (Gjer mappinga i dei ulike komponentane ved neste?)
+        const søknad = {
+            barn: omBarnet,
+            type: 'engangsstønad',
+            erEndringssøknad: false,
+            informasjonOmUtenlandsopphold: {
+                ...utenlandsopphold,
+                ...nesteUtenlandsopphold,
+                ...sisteUtenlandsopphold,
+            },
+            søker: {
+                språkkode: locale,
+            },
+            //TODO Vedlegg
+            vedlegg: [],
+        };
+
+        const response = await foreldrepengersoknadApi.post('/soknad', søknad, {
+            headers: {
+                'content-type': 'application/json;',
+            },
+        });
+        setKvittering(response.data);
+    };
 
 const Api = { getPerson, sendSøknad };
 export default Api;
