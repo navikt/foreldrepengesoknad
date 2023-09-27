@@ -41,7 +41,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = utenlandsoppholdFormQuestions.getVisbility(formValues as UtenlandsoppholdFormData);
-                setNextRoute(getNextRouteForUtenlandsopphold(formValues));
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -116,7 +115,14 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                    <Button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                        onClick={() => {
+                                            setNextRoute(getNextRouteForUtenlandsopphold(formValues));
+                                        }}
+                                    >
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>
                                 </StepButtonWrapper>
