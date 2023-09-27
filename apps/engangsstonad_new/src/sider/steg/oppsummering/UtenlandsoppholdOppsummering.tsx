@@ -11,8 +11,8 @@ const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
 
 const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     familiehendelsedato: string,
-    utenlandsoppholdSiste12Mnd: any,
-    utenlandsoppholdNeste12Mnd: any,
+    utenlandsoppholdSiste12Mnd: any = [],
+    utenlandsoppholdNeste12Mnd: any = [],
 ) => {
     return (
         utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
@@ -85,8 +85,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.termindato!,
-                                    utenlandsoppholdSiste.utenlandsoppholdSiste12Mnd,
-                                    utenlandsoppholdNeste.utenlandsoppholdNeste12Mnd,
+                                    utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
+                                    utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
                                 )
                                     ? intl.formatMessage({ id: 'medlemmskap.radiobutton.vareUtlandet' })
                                     : intl.formatMessage({ id: 'medlemmskap.radiobutton.vareNorge' })
@@ -105,8 +105,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.fødselsdatoer[0],
-                                    utenlandsoppholdSiste.utenlandsoppholdSiste12Mnd,
-                                    utenlandsoppholdNeste.utenlandsoppholdNeste12Mnd,
+                                    utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
+                                    utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
                                 )
                                     ? intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iUtlandet' })
                                     : intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iNorge' })

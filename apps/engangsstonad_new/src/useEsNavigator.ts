@@ -2,6 +2,14 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 import { useStateResetFn } from './EsDataContext';
+import {
+    useVisitedPages,
+    usePageRegister,
+    usePageUnregister,
+    useResetPages,
+    useAdditionalPageRegister,
+    usePagesAddedByVisitedPages,
+} from 'fpcommon/pageContext/PageContext';
 
 export enum Path {
     VELKOMMEN = '/',
@@ -37,10 +45,33 @@ const PageKeys = {
     [Path.KVITTERING]: 'søknad-sendt',
 };
 
+const MINIMUM_PATH = [Path.SØKERSITUASJON, Path.OM_BARNET, Path.UTENLANDSOPPHOLD, Path.OPPSUMMERING];
+
+// TODO Erstatt med tekst_id
+const LABEL_MAPPER = {
+    [Path.SØKERSITUASJON]: 'Din situasjon',
+    [Path.OM_BARNET]: 'Barnet',
+    [Path.UTENLANDSOPPHOLD]: 'Utenlandsopphold',
+    [Path.SISTE_UTENLANDSOPPHOLD]: 'Har bodd i utlandet',
+    [Path.NESTE_UTENLANDSOPPHOLD]: 'Skal bo i utlandet',
+    [Path.OPPSUMMERING]: 'Oppsummering',
+} as Record<string, string>;
+
+const ARRAY = [] as Path[];
+
 const useEsNavigator = () => {
-    const resetState = useStateResetFn();
+    const resetDataState = useStateResetFn();
+
+    const registerPage = usePageRegister();
+    const registerAdditionalPages = useAdditionalPageRegister();
+    const unregisterPage = usePageUnregister();
+    const visitedPages = useVisitedPages();
+    const pagesAddedByVisitingPages = usePagesAddedByVisitedPages();
+    const resetVisitedPages = useResetPages();
+
     const navigate = useNavigate();
     const location = useLocation();
+
     const currentPath = Object.values(Path).find((v) => v === decodeURIComponent(location.pathname));
 
     const previousStepHref = useMemo(() => PathOrder[PathOrder.findIndex((p) => p === currentPath) - 1], [currentPath]);
@@ -54,40 +85,63 @@ const useEsNavigator = () => {
         });
     }, []);
 
-    const goToPreviousStep = useCallback(
-        (path: Path) => {
-            navigate(path);
-        },
-        [navigate],
-    );
     const goToPreviousDefaultStep = useCallback(() => {
-        navigate(previousStepHref);
+        if (currentPath) {
+            unregisterPage(currentPath);
+        }
+        navigate(visitedPages.length < 2 ? Path.VELKOMMEN : visitedPages[visitedPages.length - 2]);
     }, [navigate, previousStepHref]);
 
     const goToNextStep = useCallback(
-        (path: Path) => {
+        (path: Path, additionalPaths: Path[] = ARRAY) => {
+            registerPage(path);
+            if (additionalPaths.length > 0) {
+                registerAdditionalPages(additionalPaths[0], additionalPaths);
+            }
             navigate(path);
         },
         [navigate],
     );
     const goToNextDefaultStep = useCallback(() => {
+        registerPage(nextStepHref);
         navigate(nextStepHref);
     }, [navigate, nextStepHref]);
 
     const avbrytSøknad = useCallback(() => {
-        resetState();
+        resetDataState();
+        resetVisitedPages();
         navigate(Path.VELKOMMEN);
     }, []);
 
+    const currentPagePath = PathOrder.flatMap((p) =>
+        MINIMUM_PATH.includes(p) || visitedPages.includes(p) || pagesAddedByVisitingPages.includes(p) ? [p] : [],
+    );
+
+    const pageInfo = useMemo(
+        () => ({
+            currentStepNr: visitedPages.length,
+            totalStepCount:
+                MINIMUM_PATH.length + visitedPages.filter((p) => !MINIMUM_PATH.some((path) => path === p)).length,
+            // TODO Bør endra step-komponenten og så fjerna desse to. Men avventar til merge til master og avstemming mot andre appar.
+            activeStepId: currentPath || '',
+            stepConfig: currentPagePath.map((p, index) => ({
+                id: p,
+                label: LABEL_MAPPER[p],
+                index,
+            })),
+        }),
+        [visitedPages],
+    );
+
     return useMemo(
         () => ({
-            goToPreviousStep,
+            pageInfo,
             goToPreviousDefaultStep,
             goToNextStep,
             goToNextDefaultStep,
             avbrytSøknad,
         }),
-        [goToPreviousStep, goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep],
+        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, pageInfo],
     );
 };
 

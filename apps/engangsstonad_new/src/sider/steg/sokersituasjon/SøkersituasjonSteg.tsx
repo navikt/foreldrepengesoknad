@@ -9,7 +9,6 @@ import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import StepButtons from 'fpcommon/components/StepButtons';
-import stepConfig from '../../../stepConfig';
 import useEsNavigator from '../../../useEsNavigator';
 import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
 
@@ -34,10 +33,10 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="søkersituasjon"
             pageTitle={intl.formatMessage({ id: 'søknad.søkersituasjon' })}
             onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
+            steps={navigator.pageInfo.stepConfig}
+            activeStepId={navigator.pageInfo.activeStepId}
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagre)}>

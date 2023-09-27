@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack } from '@navikt/ds-react';
 
-import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
@@ -15,11 +14,22 @@ import { useCallback } from 'react';
 
 export type FormValues = Utenlandsopphold;
 
-const findPath = (formValues: FormValues) => {
+const utledNesteSide = (formValues: FormValues): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
         return Path.SISTE_UTENLANDSOPPHOLD;
     }
     return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
+};
+
+const utledAlleUtenlandssiderSomSkalVises = (formValues: FormValues): Path[] => {
+    const paths = [];
+    if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
+        paths.push(Path.SISTE_UTENLANDSOPPHOLD);
+    }
+    if (formValues?.skalBoUtenforNorgeNeste12Mnd) {
+        paths.push(Path.NESTE_UTENLANDSOPPHOLD);
+    }
+    return paths;
 };
 
 const UtenlandsoppholdSteg: React.FunctionComponent = () => {
@@ -35,16 +45,16 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     const lagre = useCallback((formValues: FormValues) => {
         lagreUtenlandsopphold(formValues);
-        navigator.goToNextStep(findPath(formValues));
+        navigator.goToNextStep(utledNesteSide(formValues), utledAlleUtenlandssiderSomSkalVises(formValues));
     }, []);
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="utenlandsopphold"
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}
             onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
+            steps={navigator.pageInfo.stepConfig}
+            activeStepId={navigator.pageInfo.activeStepId}
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagre)}>

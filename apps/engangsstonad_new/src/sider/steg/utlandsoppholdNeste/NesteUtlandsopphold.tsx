@@ -5,7 +5,6 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 
-import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import NesteUtenlandsoppholdPanel from './NesteUtenlandsoppholdPanel';
 import StepButtons from 'fpcommon/components/StepButtons';
@@ -52,19 +51,13 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
         navigator.goToNextDefaultStep();
     }, []);
 
-    const goToPreviousStep = useCallback(() => {
-        navigator.goToPreviousStep(
-            utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd ? Path.SISTE_UTENLANDSOPPHOLD : Path.UTENLANDSOPPHOLD,
-        );
-    }, []);
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="nesteUtenlandsopphold"
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.fremtidig' })}
             onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
+            steps={navigator.pageInfo.stepConfig}
+            activeStepId={navigator.pageInfo.activeStepId}
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagre)}>
@@ -87,7 +80,7 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
                                 <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                             </Button>
                         </VStack>
-                        <StepButtons goToPreviousStep={goToPreviousStep} />
+                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
                     </VStack>
                 </form>
             </FormProvider>

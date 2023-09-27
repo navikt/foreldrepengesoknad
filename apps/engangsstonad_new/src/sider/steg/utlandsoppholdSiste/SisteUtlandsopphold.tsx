@@ -5,7 +5,6 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 
-import stepConfig from '../../../stepConfig';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import SisteUtenlandsoppholdPeriode from './SisteUtenlandsoppholdPeriode';
 import StepButtons from 'fpcommon/components/StepButtons';
@@ -58,10 +57,10 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="sisteUtenlandsopphold"
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.tidligere' })}
             onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
+            steps={navigator.pageInfo.stepConfig}
+            activeStepId={navigator.pageInfo.activeStepId}
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagre)}>

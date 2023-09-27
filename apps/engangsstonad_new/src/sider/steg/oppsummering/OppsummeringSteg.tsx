@@ -5,11 +5,10 @@ import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-reac
 
 import StepButtons from 'fpcommon/components/StepButtons';
 import Person from 'types/Person';
-import stepConfig from '../../../stepConfig';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
-import useEsNavigator, { Path } from '../../../useEsNavigator';
+import useEsNavigator from '../../../useEsNavigator';
 import { EsDataType, useStateData } from '../../../EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
@@ -20,13 +19,6 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
         return `${fornavn} ${mellomnavn} ${etternavn}`;
     }
     return `${fornavn} ${etternavn}`;
-};
-
-const findPath = (utenlandsopphold: Utenlandsopphold) => {
-    if (utenlandsopphold.harBoddUtenforNorgeSiste12Mnd) {
-        return Path.SISTE_UTENLANDSOPPHOLD;
-    }
-    return utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.UTENLANDSOPPHOLD;
 };
 
 export interface Props {
@@ -60,17 +52,13 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         }
     }, [isChecked]);
 
-    const goToPreviousStep = useCallback(() => {
-        navigator.goToPreviousStep(findPath(utenlandsopphold));
-    }, []);
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="oppsummering"
             pageTitle={intl.formatMessage({ id: 'søknad.oppsummering' })}
             onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
+            steps={navigator.pageInfo.stepConfig}
+            activeStepId={navigator.pageInfo.activeStepId}
         >
             <VStack gap="10">
                 <Accordion>
@@ -103,7 +91,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     }
                 />
                 <StepButtons
-                    goToPreviousStep={goToPreviousStep}
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
                     nextText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
                     nextOnClick={send}
                 />

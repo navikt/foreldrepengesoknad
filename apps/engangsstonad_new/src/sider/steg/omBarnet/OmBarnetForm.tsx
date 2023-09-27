@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 import { Block, Kjønn, Step, StepButtonWrapper, useDocumentTitle } from '@navikt/fp-common';
 
-import stepConfig from '../../../stepConfig';
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
@@ -49,10 +48,10 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="omBarnet"
             pageTitle={intl.formatMessage({ id: 'søknad.omBarnet' })}
             onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
+            steps={navigator.pageInfo.stepConfig}
+            activeStepId={navigator.pageInfo.activeStepId}
         >
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(lagre)}>
