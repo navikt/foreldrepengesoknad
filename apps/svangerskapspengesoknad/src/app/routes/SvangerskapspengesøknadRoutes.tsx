@@ -13,10 +13,10 @@ import Skjema from 'app/steps/skjema/Skjema';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import FrilansStep from 'app/steps/frilans/FrilansStep';
-import ArbeidIUtlandetStep from 'app/steps/arbeid_i_utlandet/ArbeidIUtlandetStep';
-import VelgArbeid from 'app/steps/velgArbeidsforhold/VelgArbeid';
+import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
+import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
 import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
-import BoIUtlandet from 'app/steps/bo_i_utlandet/BoIUtlandet';
+import BoIUtlandet from 'app/steps/bo-i-utlandet/BoIUtlandet';
 import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 
 interface Props {

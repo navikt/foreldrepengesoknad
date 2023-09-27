@@ -1,6 +1,6 @@
 import { Alert, Button, Label, ReadMore } from '@navikt/ds-react';
 import { Block, FormikFileUploader, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
-import AttachmentList from 'app/components/attachmentList/AttachmentList';
+import AttachmentList from 'app/components/attachment-list/AttachmentList';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
