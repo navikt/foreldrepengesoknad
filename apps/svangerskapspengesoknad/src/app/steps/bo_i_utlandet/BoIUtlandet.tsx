@@ -15,7 +15,6 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { BoIUtlandetFormComponents, BoIUtlandetFormData, BoIUtlandetFormField } from './boIUtlandetFormConfig';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import { FieldArray } from 'formik';
-import { useState } from 'react';
 import {
     getInitialBostedIUtlandetFormData,
     getMinValueTomInput,
@@ -36,8 +35,9 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
     const utenlandsopphold = oppgirIFortid
         ? informasjonOmUtenlandsopphold.tidligereOpphold
         : informasjonOmUtenlandsopphold.senereOpphold;
-    const [nextRoute, setNextRoute] = useState(SøknadRoutes.ARBEID);
-
+    const nextRoute = oppgirIFortid
+        ? SøknadRoutes.ARBEID
+        : getNextRouteForBostedIFremtid(informasjonOmUtenlandsopphold);
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const backLink = oppgirIFortid
@@ -65,11 +65,6 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
             initialValues={getInitialBostedIUtlandetFormData(utenlandsopphold)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                if (!oppgirIFortid) {
-                    setNextRoute(getNextRouteForBostedIFremtid(informasjonOmUtenlandsopphold));
-                } else {
-                    setNextRoute(SøknadRoutes.ARBEID);
-                }
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}

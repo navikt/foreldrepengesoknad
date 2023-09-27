@@ -77,7 +77,6 @@ const Inntektsinformasjon = () => {
                     arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
                     formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
-                setNextRoute(getNextRouteForInntektsinformasjon(termindato, formValues, aktiveArbeidsforhold));
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -156,7 +155,20 @@ const Inntektsinformasjon = () => {
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {!kanIkkeSøke && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        <Button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            loading={isSubmitting}
+                                            onClick={() =>
+                                                setNextRoute(
+                                                    getNextRouteForInntektsinformasjon(
+                                                        termindato,
+                                                        formValues,
+                                                        aktiveArbeidsforhold,
+                                                    ),
+                                                )
+                                            }
+                                        >
                                             {intlUtils(intl, 'søknad.gåVidere')}
                                         </Button>
                                     )}
