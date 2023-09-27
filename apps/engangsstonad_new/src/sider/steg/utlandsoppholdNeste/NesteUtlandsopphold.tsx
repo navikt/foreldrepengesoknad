@@ -8,8 +8,8 @@ import { Step } from '@navikt/fp-common';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import NesteUtenlandsoppholdPanel from './NesteUtenlandsoppholdPanel';
 import StepButtons from 'fpcommon/components/StepButtons';
-import useEsNavigator, { Path } from '../../../useEsNavigator';
-import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
+import useEsNavigator from '../../../useEsNavigator';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 
 export type FormValues = {
     utenlandsoppholdNeste12Mnd: {
@@ -23,9 +23,8 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const navigator = useEsNavigator();
-    const utenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD);
-    const nesteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
-    const lagreNesteUtenlandsopphold = useStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
     const defaultValues = useMemo(() => nesteUtenlandsopphold || { utenlandsoppholdNeste12Mnd: [{}] }, []);
     const formMethods = useForm<FormValues>({

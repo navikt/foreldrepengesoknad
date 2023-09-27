@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { action } from '@storybook/addon-actions';
-import { EsDataContext, EsDataMap, EsDataType, useStateData } from '../EsDataContext';
+import { EsDataContext, EsDataMap, EsDataType, useEsStateData } from '../EsDataContext';
 
 interface WrapperProps {
     children: ReactElement;
@@ -8,7 +8,7 @@ interface WrapperProps {
 }
 
 const Wrapper: FunctionComponent<WrapperProps> = ({ children, dataTypeToLogWhenChanges }) => {
-    const data = useStateData(dataTypeToLogWhenChanges);
+    const data = useEsStateData(dataTypeToLogWhenChanges);
 
     useEffect(() => {
         if (data) {

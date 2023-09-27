@@ -106,12 +106,12 @@ export const useVisitedPages = () => {
     return state.visitedPages;
 };
 
-export const useAdditionalPageRegister = () => {
+export const useAdditionalPagesRegister = () => {
     const dispatch = useContext(PageDispatchContext);
     return useCallback(
-        (path: string, addAdditionalPaths: string[]) => {
+        (page: string, addAdditionalPages: string[]) => {
             if (dispatch) {
-                dispatch({ type: 'addAdditionalPages', pageData: { [path]: addAdditionalPaths } });
+                dispatch({ type: 'addAdditionalPages', pageData: { [page]: addAdditionalPages } });
             }
         },
         [dispatch],

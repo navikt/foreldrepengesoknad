@@ -55,7 +55,7 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
     );
 };
 
-export function useStateSaveFn<TYPE extends EsDataType>(key: TYPE): (data: EsDataMap[TYPE]) => void {
+export function useEsStateSaveFn<TYPE extends EsDataType>(key: TYPE): (data: EsDataMap[TYPE]) => void {
     const dispatch = useContext(EsDispatchContext);
     return useCallback(
         (data: EsDataMap[TYPE]) => {
@@ -67,7 +67,7 @@ export function useStateSaveFn<TYPE extends EsDataType>(key: TYPE): (data: EsDat
     );
 }
 
-export function useStateResetFn(): () => void {
+export function useEsStateResetFn(): () => void {
     const dispatch = useContext(EsDispatchContext);
     return useCallback(() => {
         if (dispatch) {
@@ -76,7 +76,7 @@ export function useStateResetFn(): () => void {
     }, [dispatch]);
 }
 
-export function useStateData<TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] {
+export function useEsStateData<TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] {
     const state = useContext(EsStateContext);
     return state[key];
 }

@@ -10,7 +10,7 @@ import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import StepButtons from 'fpcommon/components/StepButtons';
 import useEsNavigator from '../../../useEsNavigator';
-import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 
 type FormValues = Søkersituasjon;
 
@@ -18,8 +18,8 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const navigator = useEsNavigator();
-    const søkersituasjon = useStateData(EsDataType.SØKERSITUASJON);
-    const lagreSøkersituasjon = useStateSaveFn(EsDataType.SØKERSITUASJON);
+    const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
+    const lagreSøkersituasjon = useEsStateSaveFn(EsDataType.SØKERSITUASJON);
 
     const formMethods = useForm<FormValues>({
         defaultValues: søkersituasjon,

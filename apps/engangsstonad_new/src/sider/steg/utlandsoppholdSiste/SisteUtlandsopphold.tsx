@@ -9,7 +9,7 @@ import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import SisteUtenlandsoppholdPeriode from './SisteUtenlandsoppholdPeriode';
 import StepButtons from 'fpcommon/components/StepButtons';
 import useEsNavigator, { Path } from '../../../useEsNavigator';
-import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 
 type FormValues = {
     utenlandsoppholdSiste12Mnd: {
@@ -24,9 +24,9 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
 
     const navigator = useEsNavigator();
 
-    const utenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD);
-    const sisteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const lagreSisteUtenlandsopphold = useStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
+    const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
 
     const defaultValues = useMemo(() => sisteUtenlandsopphold || { utenlandsoppholdSiste12Mnd: [{}] }, []);
     const formMethods = useForm<FormValues>({

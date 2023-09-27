@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
-import { useStateResetFn } from './EsDataContext';
+import { useEsStateResetFn } from './EsDataContext';
 import {
     useVisitedPages,
     usePageRegister,
     usePageUnregister,
     useResetPages,
-    useAdditionalPageRegister,
+    useAdditionalPagesRegister,
     usePagesAddedByVisitedPages,
 } from 'fpcommon/pageContext/PageContext';
+import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { useIntl } from 'react-intl';
 
 export enum Path {
     VELKOMMEN = '/',
@@ -22,7 +24,7 @@ export enum Path {
     KVITTERING = '/kvittering',
 }
 
-const PathOrder = [
+const PATH_ORDER = [
     Path.VELKOMMEN,
     Path.SØKERSITUASJON,
     Path.OM_BARNET,
@@ -33,67 +35,53 @@ const PathOrder = [
     Path.KVITTERING,
 ];
 
-//TODO Kan denne fjernast og heller logge url i amplitude?
-const PageKeys = {
-    [Path.VELKOMMEN]: 'velkommen',
-    [Path.SØKERSITUASJON]: 'situasjon',
-    [Path.OM_BARNET]: 'om-barnet',
-    [Path.UTENLANDSOPPHOLD]: 'utenlandsopphold',
-    [Path.SISTE_UTENLANDSOPPHOLD]: 'siste-utenlandsopphold',
-    [Path.NESTE_UTENLANDSOPPHOLD]: 'neste-utenlandsopphold',
-    [Path.OPPSUMMERING]: 'oppsummering',
-    [Path.KVITTERING]: 'søknad-sendt',
-};
+const MINIMUM_APP_PATH = [Path.SØKERSITUASJON, Path.OM_BARNET, Path.UTENLANDSOPPHOLD, Path.OPPSUMMERING];
 
-const MINIMUM_PATH = [Path.SØKERSITUASJON, Path.OM_BARNET, Path.UTENLANDSOPPHOLD, Path.OPPSUMMERING];
-
-// TODO Erstatt med tekst_id
-const LABEL_MAPPER = {
-    [Path.SØKERSITUASJON]: 'Din situasjon',
-    [Path.OM_BARNET]: 'Barnet',
-    [Path.UTENLANDSOPPHOLD]: 'Utenlandsopphold',
-    [Path.SISTE_UTENLANDSOPPHOLD]: 'Har bodd i utlandet',
-    [Path.NESTE_UTENLANDSOPPHOLD]: 'Skal bo i utlandet',
-    [Path.OPPSUMMERING]: 'Oppsummering',
+// TODO Denne skal flyttast vekk
+const PATH_TO_LABEL_MAP = {
+    [Path.SØKERSITUASJON]: 'søknad.søkersituasjon',
+    [Path.OM_BARNET]: 'søknad.omBarnet',
+    [Path.UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold',
+    [Path.SISTE_UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold.tidligere',
+    [Path.NESTE_UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold.fremtidig',
+    [Path.OPPSUMMERING]: 'søknad.oppsummering',
 } as Record<string, string>;
 
-const ARRAY = [] as Path[];
+const PATH_ARRAY = [] as Path[];
 
 const useEsNavigator = () => {
-    const resetDataState = useStateResetFn();
-
-    const registerPage = usePageRegister();
-    const registerAdditionalPages = useAdditionalPageRegister();
-    const unregisterPage = usePageUnregister();
-    const visitedPages = useVisitedPages();
-    const pagesAddedByVisitingPages = usePagesAddedByVisitedPages();
-    const resetVisitedPages = useResetPages();
+    const intl = useIntl();
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const currentPath = Object.values(Path).find((v) => v === decodeURIComponent(location.pathname));
+    const resetEsData = useEsStateResetFn();
 
-    const previousStepHref = useMemo(() => PathOrder[PathOrder.findIndex((p) => p === currentPath) - 1], [currentPath]);
-    const nextStepHref = useMemo(() => PathOrder[PathOrder.findIndex((p) => p === currentPath) + 1], [currentPath]);
+    const registerPage = usePageRegister();
+    const registerAdditionalPages = useAdditionalPagesRegister();
+    const unregisterPage = usePageUnregister();
+    const visitedPages = useVisitedPages();
+    const pagesAddedByVisitingPages = usePagesAddedByVisitedPages();
+    const resetPages = useResetPages();
+
+    const currentPath = notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname)));
+    const nextPath = useMemo(() => PATH_ORDER[PATH_ORDER.findIndex((p) => p === currentPath) + 1], [currentPath]);
 
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
             app: 'engangsstonadny',
             team: 'foreldrepenger',
-            pageKey: currentPath ? PageKeys[currentPath] : 'NO_PATH_KEY',
+            pageKey: currentPath,
         });
     }, []);
 
     const goToPreviousDefaultStep = useCallback(() => {
-        if (currentPath) {
-            unregisterPage(currentPath);
-        }
+        unregisterPage(currentPath);
         navigate(visitedPages.length < 2 ? Path.VELKOMMEN : visitedPages[visitedPages.length - 2]);
-    }, [navigate, previousStepHref]);
+    }, [navigate]);
 
     const goToNextStep = useCallback(
-        (path: Path, additionalPaths: Path[] = ARRAY) => {
+        (path: Path, additionalPaths: Path[] = PATH_ARRAY) => {
             registerPage(path);
             if (additionalPaths.length > 0) {
                 registerAdditionalPages(additionalPaths[0], additionalPaths);
@@ -102,35 +90,35 @@ const useEsNavigator = () => {
         },
         [navigate],
     );
+
     const goToNextDefaultStep = useCallback(() => {
-        registerPage(nextStepHref);
-        navigate(nextStepHref);
-    }, [navigate, nextStepHref]);
+        registerPage(nextPath);
+        navigate(nextPath);
+    }, [navigate, nextPath]);
 
     const avbrytSøknad = useCallback(() => {
-        resetDataState();
-        resetVisitedPages();
+        resetEsData();
+        resetPages();
         navigate(Path.VELKOMMEN);
     }, []);
 
-    const currentPagePath = PathOrder.flatMap((p) =>
-        MINIMUM_PATH.includes(p) || visitedPages.includes(p) || pagesAddedByVisitingPages.includes(p) ? [p] : [],
+    const currentPagePath = PATH_ORDER.flatMap((p) =>
+        MINIMUM_APP_PATH.includes(p) || visitedPages.includes(p) || pagesAddedByVisitingPages.includes(p) ? [p] : [],
     );
 
     const pageInfo = useMemo(
         () => ({
             currentStepNr: visitedPages.length,
-            totalStepCount:
-                MINIMUM_PATH.length + visitedPages.filter((p) => !MINIMUM_PATH.some((path) => path === p)).length,
+            totalStepCount: currentPagePath.length,
             // TODO Bør endra step-komponenten og så fjerna desse to. Men avventar til merge til master og avstemming mot andre appar.
-            activeStepId: currentPath || '',
+            activeStepId: currentPath,
             stepConfig: currentPagePath.map((p, index) => ({
                 id: p,
-                label: LABEL_MAPPER[p],
+                label: intl.formatMessage({ id: PATH_TO_LABEL_MAP[p] }),
                 index,
             })),
         }),
-        [visitedPages],
+        [visitedPages, currentPagePath],
     );
 
     return useMemo(

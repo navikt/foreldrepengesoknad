@@ -9,7 +9,7 @@ import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
 import useEsNavigator from '../../../useEsNavigator';
-import { EsDataType, useStateData } from '../../../EsDataContext';
+import { EsDataType, useEsStateData } from '../../../EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import { notEmpty } from 'fpcommon/validering/valideringUtil';
@@ -35,10 +35,10 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const intl = useIntl();
 
     const navigator = useEsNavigator();
-    const omBarnet = notEmpty(useStateData(EsDataType.OM_BARNET));
-    const utenlandsopphold = notEmpty(useStateData(EsDataType.UTENLANDSOPPHOLD));
-    const sisteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const nesteUtenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
+    const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
+    const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);

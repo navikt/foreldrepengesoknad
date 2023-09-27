@@ -9,7 +9,7 @@ import { isRequired } from 'fpcommon/validering/valideringsregler';
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import StepButtons from 'fpcommon/components/StepButtons';
 import useEsNavigator, { Path } from '../../../useEsNavigator';
-import { EsDataType, useStateSaveFn, useStateData } from '../../../EsDataContext';
+import { EsDataType, useEsStateSaveFn, useEsStateData } from '../../../EsDataContext';
 import { useCallback } from 'react';
 
 export type FormValues = Utenlandsopphold;
@@ -36,8 +36,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const navigator = useEsNavigator();
-    const utenlandsopphold = useStateData(EsDataType.UTENLANDSOPPHOLD);
-    const lagreUtenlandsopphold = useStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
+    const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
+    const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
 
     const formMethods = useForm<FormValues>({
         defaultValues: utenlandsopphold,

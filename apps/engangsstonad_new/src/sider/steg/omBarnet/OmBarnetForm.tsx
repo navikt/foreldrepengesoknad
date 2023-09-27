@@ -7,7 +7,7 @@ import { Block, Kjønn, Step, StepButtonWrapper, useDocumentTitle } from '@navik
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
-import { EsDataType, useStateData, useStateSaveFn } from '../../../EsDataContext';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 import useEsNavigator from '../../../useEsNavigator';
 
 import './omBarnet.less';
@@ -24,9 +24,9 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
     useDocumentTitle(intl.formatMessage({ id: 'søknad.omBarnet' }));
 
     const navigator = useEsNavigator();
-    const omBarnet = useStateData(EsDataType.OM_BARNET);
-    const lagreOmBarnet = useStateSaveFn(EsDataType.OM_BARNET);
-    const søkersituasjon = useStateData(EsDataType.SØKERSITUASJON);
+    const omBarnet = useEsStateData(EsDataType.OM_BARNET);
+    const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
+    const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
 
     const lagre = useCallback((formValues: FormValues) => {
         lagreOmBarnet(formValues);
