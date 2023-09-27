@@ -49,7 +49,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     };
 
     if (!minidialog || !sak) {
-        navigate(OversiktRoutes.SAKSOVERSIKT);
+        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
         return null;
     }
 

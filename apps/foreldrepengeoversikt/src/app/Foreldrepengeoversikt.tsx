@@ -51,8 +51,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
             ),
     });
 
-    console.log(minidialogQuery.data);
-
     const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
     const { storageData } = Api.useGetMellomlagretSøknad();
@@ -81,8 +79,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
         return undefined;
     }, [sakerData]);
-
-    console.log(minidialogQuery.error);
 
     if (
         !søkerinfoData ||
