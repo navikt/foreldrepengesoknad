@@ -1,0 +1,24 @@
+@import './../../styles/variables.css';
+
+.ikke-kvinne {
+    max-width: var(--app-max-width);
+    margin:  var(--app-margin);
+    padding:  var(--app-padding);
+}
+
+.ikke-kvinne__tittel {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+
+@media (max-width: 768px) {
+    .ikke-kvinne {
+        max-width: 100%;
+        padding: 1rem;
+    
+    }
+    .ikke-kvinne____tittel {
+        padding-top: 20px;
+            padding-bottom: 20px
+    }
+}

@@ -1,4 +1,4 @@
-import { erMyndig, guid } from '@navikt/fp-common';
+import { erMyndig, erKvinne, guid } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import dayjs from 'dayjs';
@@ -32,6 +32,7 @@ const mapArbeidsforholdDTOToArbeidsforhold = (
 
 const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person => {
     return {
+        erKvinne: erKvinne(personDTO.kjønn),
         erMyndig: erMyndig(personDTO.fødselsdato),
         etternavn: personDTO.etternavn,
         fornavn: personDTO.fornavn,
