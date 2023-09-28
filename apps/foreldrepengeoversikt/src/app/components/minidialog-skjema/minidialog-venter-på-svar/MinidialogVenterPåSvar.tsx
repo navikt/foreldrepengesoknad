@@ -14,7 +14,7 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
                 <Alert variant="info">
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                         <Loader />
-                        Ditt svar registreres i våre systemer. Du trenger ikke å vente på at dette blir ferdig.
+                        Svaret ditt registreres i våre systemer.
                     </div>
                 </Alert>
             </Block>
@@ -24,7 +24,7 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
     if (fetchCounter < 30 && !allowedToFetch) {
         return (
             <Block padBottom="l">
-                <Alert variant="success">Ditt svar er registrert</Alert>
+                <Alert variant="success">Svaret ditt er registrert.</Alert>
             </Block>
         );
     }
@@ -32,8 +32,8 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
     return (
         <Block padBottom="l">
             <Alert variant="info">
-                Vi har fått ditt svar, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å sende
-                igjen.
+                Vi har fått svaret ditt, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å
+                sende igjen.
             </Alert>
         </Block>
     );
