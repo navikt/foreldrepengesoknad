@@ -17,8 +17,6 @@ export interface ArbeidsforholdForTilrettelegging {
     id?: string;
     type: Arbeidsforholdstype;
     navn: string;
-    risikofaktorer?: string;
-    tilretteleggingstiltak?: string;
 }
 
 export enum TilOgMedDatoType {
@@ -43,6 +41,8 @@ export interface Tilrettelegging {
     vedlegg: string[];
     delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
     variertePerioder?: PeriodeMedVariasjon[];
+    risikofaktorer?: string;
+    tilretteleggingstiltak?: string;
 }
 
 interface TilretteleggingDTOBase {

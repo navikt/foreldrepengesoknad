@@ -16,7 +16,6 @@ import {
     getInitialSkjemaValuesFromState,
     getVedleggForTilrettelegging,
     mapTilretteleggingMedSkjema,
-    validateRisikofaktorer,
 } from './skjemaFormUtils';
 import { Link } from 'react-router-dom';
 import { FieldArray } from 'formik';
@@ -30,7 +29,6 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 
 const MAX_ANTALL_VEDLEGG = 40;
@@ -99,10 +97,6 @@ const Skjema: React.FunctionComponent = () => {
                                     t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
                                         ? intlUtils(intl, 'skjema.tittel.frilanser')
                                         : t.arbeidsforhold.navn;
-                                const risikofaktorerLabel = intlUtils(
-                                    intl,
-                                    `skjema.risikofaktorer.${t.arbeidsforhold.type}`,
-                                );
 
                                 return (
                                     <Block key={key}>
@@ -113,32 +107,7 @@ const Skjema: React.FunctionComponent = () => {
                                         )}
                                         <div className={bem.element(`arbeidsgiverBoks${classVariant}`)}>
                                             {erSNEllerFrilans && (
-                                                <>
-                                                    <Block padBottom="xxl">
-                                                        <SkjemaFormComponents.Textarea
-                                                            name={
-                                                                t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
-                                                                    ? SkjemaFormField.risikofaktorerFrilanser
-                                                                    : SkjemaFormField.risikofaktorerNæring
-                                                            }
-                                                            label={risikofaktorerLabel}
-                                                            minLength={TEXT_INPUT_MIN_LENGTH}
-                                                            maxLength={TEXT_INPUT_MAX_LENGTH}
-                                                            validate={validateRisikofaktorer(
-                                                                intl,
-                                                                risikofaktorerLabel,
-                                                                t.arbeidsforhold.type,
-                                                            )}
-                                                            description={intlUtils(
-                                                                intl,
-                                                                'skjema.risikofaktorer.description',
-                                                            )}
-                                                        />
-                                                    </Block>
-                                                    <SkjemaopplastningTekstFrilansSN
-                                                        typeArbeid={t.arbeidsforhold.type}
-                                                    />
-                                                </>
+                                                <SkjemaopplastningTekstFrilansSN typeArbeid={t.arbeidsforhold.type} />
                                             )}
 
                                             {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}

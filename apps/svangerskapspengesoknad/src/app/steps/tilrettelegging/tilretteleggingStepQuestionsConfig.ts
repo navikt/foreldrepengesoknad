@@ -55,10 +55,15 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
                 arbeidsType === Arbeidsforholdstype.FRILANSER || arbeidsType === Arbeidsforholdstype.SELVSTENDIG,
             isAnswered: ({ tilretteleggingstiltak }) => hasValue(tilretteleggingstiltak),
         },
+        [TilretteleggingFormField.risikofaktorer]: {
+            isIncluded: ({ arbeidsType }) =>
+                arbeidsType === Arbeidsforholdstype.FRILANSER || arbeidsType === Arbeidsforholdstype.SELVSTENDIG,
+            isAnswered: ({ risikofaktorer }) => hasValue(risikofaktorer),
+        },
     };
 
 const tilretteleggingQuestionsConfig = Questions<TilretteleggingFormQuestionsPayload, TilretteleggingFormField>(
-    TilretteleggingFormConfig
+    TilretteleggingFormConfig,
 );
 
 export default tilretteleggingQuestionsConfig;

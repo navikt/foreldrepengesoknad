@@ -14,7 +14,7 @@ import InformasjonOmUtenlandsopphold, {
 import { Søker, SøkerDTO } from 'app/types/Søker';
 import { Søknad, SøknadDTO, Søknadstype } from 'app/types/Søknad';
 import Tilrettelegging, {
-    ArbeidsforholdForTilrettelegging,
+    Arbeidsforholdstype,
     DelvisTilretteleggingDTO,
     IngenTilretteleggingDTO,
     TilretteleggingDTO,
@@ -22,14 +22,21 @@ import Tilrettelegging, {
 } from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
 
-const getArbeidsforholdForInnsending = (arbeidsforhold: ArbeidsforholdForTilrettelegging): ArbeidsforholdDTO => {
-    const arbeidsforholdForInnsending = (({ type, navn, risikofaktorer, tilretteleggingstiltak }) => ({
-        type,
-        navn,
-        risikofaktorer,
-        tilretteleggingstiltak,
-    }))(arbeidsforhold);
-    return arbeidsforholdForInnsending as ArbeidsforholdDTO;
+const getArbeidsforholdForInnsending = (tilrettelegging: Tilrettelegging): ArbeidsforholdDTO => {
+    if (
+        tilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
+        tilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG
+    ) {
+        return {
+            type: tilrettelegging.arbeidsforhold.type,
+            risikoFaktorer: tilrettelegging.risikofaktorer!,
+            tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak!,
+        };
+    }
+    return {
+        id: tilrettelegging.arbeidsforhold.id!,
+        type: tilrettelegging.arbeidsforhold.type,
+    };
 };
 
 const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold, intl: IntlShape): UtenlandsoppholdDTO => {
@@ -109,7 +116,7 @@ const mapDelvisTilretteleggingMedEnPeriodeForInnsending = (
 };
 
 const mappedTilretteleggingMedEnPeriodeForInnsending = (tilrettelegging: Tilrettelegging): TilretteleggingDTO => {
-    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging.arbeidsforhold);
+    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging);
 
     if (
         tilrettelegging.type === Tilretteleggingstype.DELVIS &&
@@ -125,7 +132,7 @@ const mappedTilretteleggingMedEnPeriodeForInnsending = (tilrettelegging: Tilrett
 };
 
 const mappedTilretteleggingMedFlerePerioderForInnsending = (tilrettelegging: Tilrettelegging): TilretteleggingDTO[] => {
-    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging.arbeidsforhold);
+    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging);
     const allePerioder = tilrettelegging.variertePerioder!.map((periode) => {
         const prosentStilling = parseInt(periode.stillingsprosent!, 10);
         const jobberDelvis = prosentStilling > 0;

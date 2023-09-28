@@ -14,6 +14,7 @@ export enum TilretteleggingFormField {
     sammePeriodeFremTilTerminStillingsprosent = 'sammePeriodeFremTilTerminStillingsprosent',
     variertePerioder = 'variertePerioder',
     tilretteleggingstiltak = 'tilretteleggingstiltak',
+    risikofaktorer = 'risikofaktorer',
 }
 
 export interface TilretteleggingFormData {
@@ -24,6 +25,7 @@ export interface TilretteleggingFormData {
     [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: string | undefined;
     [TilretteleggingFormField.variertePerioder]: PeriodeMedVariasjon[];
     [TilretteleggingFormField.tilretteleggingstiltak]: string | undefined;
+    [TilretteleggingFormField.risikofaktorer]: string | undefined;
 }
 
 export const TilretteleggingFormComponents = getTypedFormComponents<

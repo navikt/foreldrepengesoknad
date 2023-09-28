@@ -12,14 +12,6 @@ const SkjemaFormConfig: QuestionConfig<SøkersituasjonQuestionsPayload, SkjemaFo
         isAnswered: ({ vedlegg }) => hasValue(vedlegg),
         isIncluded: () => true,
     },
-    [SkjemaFormField.risikofaktorerFrilanser]: {
-        isAnswered: ({ arbeidsType }) => arbeidsType === Arbeidsforholdstype.FRILANSER,
-        isIncluded: () => true,
-    },
-    [SkjemaFormField.risikofaktorerNæring]: {
-        isAnswered: ({ arbeidsType }) => arbeidsType === Arbeidsforholdstype.SELVSTENDIG,
-        isIncluded: () => true,
-    },
 };
 
 export const skjemaFormQuestions = Questions<SøkersituasjonQuestionsPayload, SkjemaFormField>(SkjemaFormConfig);
