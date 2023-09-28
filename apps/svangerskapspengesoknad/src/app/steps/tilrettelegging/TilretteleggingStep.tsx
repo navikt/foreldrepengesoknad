@@ -85,6 +85,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     const risikofaktorerLabel = intlUtils(intl, `skjema.risikofaktorer.${typeArbeid}`);
+    const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -140,7 +141,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     name={TilretteleggingFormField.behovForTilretteleggingFom}
                                     label={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label')}
                                     placeholder={'dd.mm.åååå'}
-                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')
+                                            : ''
+                                    }
                                     minDate={tiMånederSidenDato(termindatoDate!)}
                                     maxDate={dagenFør(termindatoDate!)}
                                     validate={validateTilrettelagtArbeidFom(intl, termindatoDate!)}
@@ -150,7 +155,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 <TilretteleggingFormComponents.RadioGroup
                                     name={TilretteleggingFormField.tilretteleggingType}
                                     legend={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label')}
-                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                            : ''
+                                    }
                                     radios={[
                                         {
                                             label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.delvis'),
@@ -203,7 +212,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 <TilretteleggingFormComponents.RadioGroup
                                     name={TilretteleggingFormField.delvisTilretteleggingPeriodeType}
                                     legend={intlUtils(intl, 'tilrettelegging.tilretteleggingPeriodetype.label')}
-                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                            : ''
+                                    }
                                     radios={[
                                         {
                                             label: intlUtils(intl, 'tilrettelegging.tilretteleggingPeriodetype.en'),
@@ -235,7 +248,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.sammePeriodeFremTilTerminFom}
                                     label={intlUtils(intl, labelPeriodeFom)}
-                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                            : ''
+                                    }
                                     minDate={new Date(minDatoPeriodeFom)}
                                     maxDate={treUkerSiden(fødselsdatoDate || termindatoDate!)}
                                     validate={validateSammePeriodeFremTilTerminFom(
@@ -255,7 +272,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                 <TilretteleggingFormComponents.NumberInput
                                     name={TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent}
                                     label={intlUtils(intl, 'tilrettelegging.stillingsprosent.label')}
-                                    description={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                            : ''
+                                    }
                                     validate={validateStillingsprosent(intl)}
                                 />
                             </Block>
