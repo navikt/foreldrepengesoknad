@@ -8,7 +8,7 @@ import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
-import StepButtons from 'fpcommon/components/StepButtons';
+import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import useEsNavigator from '../../../useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 
@@ -56,7 +56,10 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                                 <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
                             </Radio>
                         </RadioGroupPanel>
-                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={lagreSøkersituasjon}
+                        />
                     </VStack>
                 </form>
             </FormProvider>

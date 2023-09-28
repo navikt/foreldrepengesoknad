@@ -7,7 +7,7 @@ import { Step } from '@navikt/fp-common';
 
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import NesteUtenlandsoppholdPanel from './NesteUtenlandsoppholdPanel';
-import StepButtons from 'fpcommon/components/StepButtons';
+import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import useEsNavigator from '../../../useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 
@@ -79,7 +79,10 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
                                 <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                             </Button>
                         </VStack>
-                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm<FormValues>
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={lagreNesteUtenlandsopphold}
+                        />
                     </VStack>
                 </form>
             </FormProvider>

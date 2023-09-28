@@ -1,14 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Button } from '@navikt/ds-react';
-import { Block, Kjønn, Step, StepButtonWrapper, useDocumentTitle } from '@navikt/fp-common';
+import { useIntl } from 'react-intl';
+import { Block, Kjønn, Step, useDocumentTitle } from '@navikt/fp-common';
 
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 import useEsNavigator from '../../../useEsNavigator';
+import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 
 import './omBarnet.less';
 
@@ -43,8 +43,6 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
         ),
     });
 
-    const fodselsdatoer = formMethods.watch('fødselsdatoer');
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -58,14 +56,10 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
                     {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}
                     {søkersituasjon?.situasjon === SøkersituasjonEnum.FØDSEL && <FødselPanel />}
                     <Block margin="xl" textAlignCenter={true}>
-                        <StepButtonWrapper>
-                            <Button type="button" variant="secondary" onClick={navigator.goToPreviousDefaultStep}>
-                                <FormattedMessage id="backlink.label" />
-                            </Button>
-                            {fodselsdatoer && (
-                                <Button type="submit">{intl.formatMessage({ id: 'søknad.gåVidere' })}</Button>
-                            )}
-                        </StepButtonWrapper>
+                        <StepButtonsHookForm<FormValues>
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={lagreOmBarnet}
+                        />
                     </Block>
                 </form>
             </FormProvider>

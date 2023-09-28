@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 
-import StepButtons from 'fpcommon/components/StepButtons';
+import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import Person from 'types/Person';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
@@ -13,6 +13,7 @@ import { EsDataType, useEsStateData } from '../../../EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import StepButtons from 'fpcommon/components/StepButtons';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     if (mellomnavn) {
@@ -92,8 +93,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
-                    nextOnClick={send}
+                    nextButtonText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
+                    nextButtonOnClick={send}
                 />
             </VStack>
         </Step>

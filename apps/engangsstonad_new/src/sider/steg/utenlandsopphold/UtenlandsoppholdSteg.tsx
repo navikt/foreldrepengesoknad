@@ -7,7 +7,7 @@ import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
-import StepButtons from 'fpcommon/components/StepButtons';
+import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import useEsNavigator, { Path } from '../../../useEsNavigator';
 import { EsDataType, useEsStateSaveFn, useEsStateData } from '../../../EsDataContext';
 import { useCallback } from 'react';
@@ -132,7 +132,10 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                                 </VStack>
                             </ExpansionCard.Content>
                         </ExpansionCard>
-                        <StepButtons goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm<FormValues>
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={lagreUtenlandsopphold}
+                        />
                     </VStack>
                 </form>
             </FormProvider>
