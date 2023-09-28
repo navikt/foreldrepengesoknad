@@ -9,9 +9,10 @@ import Form from 'fpcommon/form/Form';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import NesteUtenlandsoppholdPanel from './NesteUtenlandsoppholdPanel';
-import useEsNavigator from '../../../useEsNavigator';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import { UtenlandsoppholdNeste } from 'types/Utenlandsopphold';
+import useStepData from 'appData/useStepData';
 
 const DEFAULT_PERIODE = {
     fom: '',
@@ -25,6 +26,7 @@ const DEFAULT_FORM_VALUES = {
 const NesteUtlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
 
+    const stepData = useStepData();
     const navigator = useEsNavigator();
     const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
     const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
@@ -58,8 +60,8 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.fremtidig' })}
             onCancel={navigator.avbrytSøknad}
-            steps={navigator.pageInfo.stepConfig}
-            activeStepId={navigator.pageInfo.activeStepId}
+            steps={stepData.stepConfig}
+            activeStepId={stepData.activeStepId}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">

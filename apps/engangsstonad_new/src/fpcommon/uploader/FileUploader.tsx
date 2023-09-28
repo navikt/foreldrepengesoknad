@@ -19,14 +19,14 @@ const getPendingAttachmentFromFile = (
     return newAttachment;
 };
 
-const uploadAttachment = async (attachment: Attachment): Promise<void> => {
+const uploadAttachment = async (attachment: Attachment, restApiUrl: string): Promise<void> => {
     if (!fileExtensionIsValid(attachment.file.name)) {
         attachment.pending = false;
         return;
     }
 
     try {
-        const response = await AttachmentApi.saveAttachment(attachment);
+        const response = await AttachmentApi.saveAttachment(attachment, restApiUrl);
         attachment.pending = false;
         attachment.url = response.headers.location;
         attachment.uploaded = true;
@@ -54,6 +54,7 @@ interface Props {
     description?: string;
     validate?: any;
     onFileInputClick?: () => void;
+    restApiUrl: string;
 }
 
 const FileUploader: React.FunctionComponent<Props> = ({
@@ -66,6 +67,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
     description,
     attachmentType,
     skjemanummber,
+    restApiUrl,
     ...otherProps
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
@@ -76,7 +78,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
         for (const pendingAttachment of allPendingAttachments) {
-            await uploadAttachment(pendingAttachment);
+            await uploadAttachment(pendingAttachment, restApiUrl);
             setAttachments((currentAttachments) =>
                 currentAttachments.map((a) => (a.filename === pendingAttachment.filename ? pendingAttachment : a)),
             );

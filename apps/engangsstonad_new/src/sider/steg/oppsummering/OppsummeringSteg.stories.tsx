@@ -7,9 +7,9 @@ import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
-import { EsDataType } from '../../../EsDataContext';
+import { EsDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
-import { Path } from '../../../useEsNavigator';
+import { Path } from 'appData/paths';
 
 const person = {
     fnr: '11111111111',

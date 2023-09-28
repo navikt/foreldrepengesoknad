@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
-import { foreldrepengersoknadApi } from './api';
+import { foreldrepengersoknadApi } from 'appData/api';
 import AppContainer from './AppContainer';
 
 const person = {

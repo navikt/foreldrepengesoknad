@@ -12,6 +12,7 @@ import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregle
 import FileUploader from 'fpcommon/uploader/FileUploader';
 import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
 import { useCallback } from 'react';
+import Environment from 'appData/Environment';
 
 export type FormValues = {
     adopsjonAvEktefellesBarn?: boolean;
@@ -167,6 +168,7 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                     label={intl.formatMessage({ id: 'vedlegg.lastoppknapp.label' })}
                     legend={intl.formatMessage({ id: 'vedlegg.adopsjon' })}
                     description={intl.formatMessage({ id: 'omBarnet.adopsjon.veilederpanel.adopsjon.text' })}
+                    restApiUrl={Environment.REST_API_URL}
                 />
             </Block>
         </>

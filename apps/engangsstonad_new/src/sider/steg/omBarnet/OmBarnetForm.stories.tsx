@@ -3,10 +3,10 @@ import { Kjønn } from '@navikt/fp-common';
 import OmBarnetForm from './OmBarnetForm';
 import IntlProvider from '../../../intl/IntlProvider';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
-import { EsDataType } from '../../../EsDataContext';
+import { EsDataType } from 'appData/EsDataContext';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
-import { Path } from '../../../useEsNavigator';
+import { Path } from 'appData/paths';
 
 import '@navikt/ds-css';
 import 'fpcommon/styles/globals.less';

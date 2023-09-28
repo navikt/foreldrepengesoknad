@@ -3,13 +3,13 @@ import { useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 
-import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import Person from 'types/Person';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
-import useEsNavigator from '../../../useEsNavigator';
-import { EsDataType, useEsStateData } from '../../../EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
+import useStepData from 'appData/useStepData';
+import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import { notEmpty } from 'fpcommon/validering/valideringUtil';
@@ -35,6 +35,7 @@ export interface Props {
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
     const intl = useIntl();
 
+    const stepData = useStepData();
     const navigator = useEsNavigator();
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
@@ -58,8 +59,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.oppsummering' })}
             onCancel={navigator.avbrytSøknad}
-            steps={navigator.pageInfo.stepConfig}
-            activeStepId={navigator.pageInfo.activeStepId}
+            steps={stepData.stepConfig}
+            activeStepId={stepData.activeStepId}
         >
             <VStack gap="10">
                 <Accordion>

@@ -3,8 +3,8 @@ import SøkersituasjonSteg from './SøkersituasjonSteg';
 import IntlProvider from '../../../intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
-import { EsDataType } from '../../../EsDataContext';
-import { Path } from '../../../useEsNavigator';
+import { EsDataType } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
 
 export default {
     title: 'SøkersituasjonSteg',

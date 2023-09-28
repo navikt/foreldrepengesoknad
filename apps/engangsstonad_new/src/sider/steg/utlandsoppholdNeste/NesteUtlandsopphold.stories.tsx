@@ -2,7 +2,7 @@ import { StoryFn } from '@storybook/react';
 import IntlProvider from 'intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import NesteUtlandsopphold from './NesteUtlandsopphold';
-import { Path } from '../../../useEsNavigator';
+import { Path } from 'appData/paths';
 
 export default {
     title: 'NesteUtlandsopphold',

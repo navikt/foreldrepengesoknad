@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { action } from '@storybook/addon-actions';
-import { EsDataContext, EsDataMap, EsDataType, useEsStateData } from '../EsDataContext';
+import { EsDataContext, EsDataMap, EsDataType, useEsStateData } from 'appData/EsDataContext';
 
 interface WrapperProps {
     children: ReactElement;

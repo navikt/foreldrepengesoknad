@@ -7,7 +7,7 @@ import { lenker } from 'fpcommon/lenker';
 import './umyndig.less';
 import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 
-interface Props {
+export interface Props {
     person: Person;
 }
 

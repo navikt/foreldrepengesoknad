@@ -16,7 +16,7 @@ import { LanguageToggle, Locale, useDocumentTitle } from '@navikt/fp-common';
 import { lenker } from 'fpcommon/lenker';
 import ContentWrapper from 'fpcommon/components/ContentWrapper';
 import Plikter from './Plikter';
-import useEsNavigator from '../../useEsNavigator';
+import useEsNavigator from 'appData/useEsNavigator';
 
 export interface Props {
     onChangeLocale: (locale: Locale) => void;

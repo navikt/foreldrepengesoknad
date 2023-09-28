@@ -10,13 +10,16 @@ import Form from 'fpcommon/form/Form';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
-import useEsNavigator from '../../../useEsNavigator';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
+import useStepData from 'appData/useStepData';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
+    const stepData = useStepData();
     const navigator = useEsNavigator();
+
     const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
     const lagreSøkersituasjon = useEsStateSaveFn(EsDataType.SØKERSITUASJON);
 
@@ -34,8 +37,8 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.søkersituasjon' })}
             onCancel={navigator.avbrytSøknad}
-            steps={navigator.pageInfo.stepConfig}
-            activeStepId={navigator.pageInfo.activeStepId}
+            steps={stepData.stepConfig}
+            activeStepId={stepData.activeStepId}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">

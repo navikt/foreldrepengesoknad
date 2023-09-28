@@ -9,8 +9,10 @@ import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import SisteUtenlandsoppholdPeriode from './SisteUtenlandsoppholdPeriode';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import Form from 'fpcommon/form/Form';
-import useEsNavigator, { Path } from '../../../useEsNavigator';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
+import { Path } from 'appData/paths';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import useStepData from 'appData/useStepData';
 import { UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 
 const DEFAULT_PERIODE = {
@@ -25,11 +27,11 @@ const DEFAULT_FORM_VALUES = {
 const SisteUtlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
 
+    const stepData = useStepData();
     const navigator = useEsNavigator();
 
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
     const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
 
     const defaultValues = useMemo(() => sisteUtenlandsopphold || DEFAULT_FORM_VALUES, []);
@@ -58,18 +60,13 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
         );
     }, []);
 
-    const goToPreviousStep = useCallback(() => {
-        const erDataPåDenneSiden = !!sisteUtenlandsopphold || Object.keys(formMethods.formState.dirtyFields).length > 0;
-        navigator.goToPreviousStep(!erDataPåDenneSiden && !nesteUtenlandsopphold);
-    }, [formMethods.formState.isDirty]);
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.tidligere' })}
             onCancel={navigator.avbrytSøknad}
-            steps={navigator.pageInfo.stepConfig}
-            activeStepId={navigator.pageInfo.activeStepId}
+            steps={stepData.stepConfig}
+            activeStepId={stepData.activeStepId}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
@@ -92,7 +89,7 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
                         </Button>
                     </VStack>
                     <StepButtonsHookForm<UtenlandsoppholdSiste>
-                        goToPreviousStep={goToPreviousStep}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={lagreSisteUtenlandsopphold}
                     />
                 </VStack>

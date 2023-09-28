@@ -8,8 +8,9 @@ import Form from 'fpcommon/form/Form';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
-import useEsNavigator from '../../../useEsNavigator';
+import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
+import useStepData from 'appData/useStepData';
 
 import './omBarnet.less';
 
@@ -24,6 +25,7 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.omBarnet' }));
 
+    const stepData = useStepData();
     const navigator = useEsNavigator();
     const omBarnet = useEsStateData(EsDataType.OM_BARNET);
     const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
@@ -49,8 +51,8 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.omBarnet' })}
             onCancel={navigator.avbrytSøknad}
-            steps={navigator.pageInfo.stepConfig}
-            activeStepId={navigator.pageInfo.activeStepId}
+            steps={stepData.stepConfig}
+            activeStepId={stepData.activeStepId}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}

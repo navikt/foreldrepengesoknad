@@ -1,8 +1,7 @@
-import Environment from '../../Environment';
 import axios from 'axios';
 import { Attachment } from './typer/Attachment';
 
-function saveAttachment(attachment: Attachment) {
+function saveAttachment(attachment: Attachment, restApiUrl: string) {
     const config = {
         withCredentials: true,
         timeout: 45 * 1000,
@@ -15,7 +14,7 @@ function saveAttachment(attachment: Attachment) {
     formData.append('id', attachment.id);
     formData.append('vedlegg', attachment.file, attachment.filename);
 
-    const url = `${Environment.REST_API_URL}/storage/vedlegg`;
+    const url = `${restApiUrl}/storage/vedlegg`;
     return axios.post(url, formData, config);
 }
 

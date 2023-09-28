@@ -20,6 +20,7 @@ export default defineConfig({
             styles: path.resolve(__dirname, './src/fpcommon/styles/'),
             intl: path.resolve(__dirname, './src/intl/'),
             types: path.resolve(__dirname, './src/types/'),
+            appData: path.resolve(__dirname, './src/appData/'),
         },
     },
     test: {

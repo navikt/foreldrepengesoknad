@@ -10,8 +10,10 @@ import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
-import useEsNavigator, { Path } from '../../../useEsNavigator';
-import { EsDataType, useEsStateSaveFn, useEsStateData } from '../../../EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
+import { Path } from 'appData/paths';
+import { EsDataType, useEsStateSaveFn, useEsStateData } from 'appData/EsDataContext';
+import useStepData from 'appData/useStepData';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
@@ -20,25 +22,13 @@ const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
 };
 
-const utledAlleUtenlandssiderSomSkalVises = (formValues: Utenlandsopphold): Path[] => {
-    const paths = [];
-    if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
-        paths.push(Path.SISTE_UTENLANDSOPPHOLD);
-    }
-    if (formValues?.skalBoUtenforNorgeNeste12Mnd) {
-        paths.push(Path.NESTE_UTENLANDSOPPHOLD);
-    }
-    return paths;
-};
-
 const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
+    const stepData = useStepData();
     const navigator = useEsNavigator();
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
-    const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
     const formMethods = useForm<Utenlandsopphold>({
         defaultValues: utenlandsopphold,
@@ -46,16 +36,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     const lagre = useCallback((formValues: Utenlandsopphold) => {
         lagreUtenlandsopphold(formValues);
-
-        const alleSomSkalVises = utledAlleUtenlandssiderSomSkalVises(formValues);
-        if (!alleSomSkalVises.includes(Path.SISTE_UTENLANDSOPPHOLD)) {
-            lagreSisteUtenlandsopphold(undefined);
-        }
-        if (!alleSomSkalVises.includes(Path.NESTE_UTENLANDSOPPHOLD)) {
-            lagreNesteUtenlandsopphold(undefined);
-        }
-
-        navigator.goToNextStep(utledNesteSide(formValues), alleSomSkalVises);
+        navigator.goToNextStep(utledNesteSide(formValues));
     }, []);
 
     return (
@@ -63,8 +44,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}
             onCancel={navigator.avbrytSøknad}
-            steps={navigator.pageInfo.stepConfig}
-            activeStepId={navigator.pageInfo.activeStepId}
+            steps={stepData.stepConfig}
+            activeStepId={stepData.activeStepId}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">

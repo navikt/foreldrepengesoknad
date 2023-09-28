@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 
-import { Path } from '../../useEsNavigator';
+import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
 
 export default {
