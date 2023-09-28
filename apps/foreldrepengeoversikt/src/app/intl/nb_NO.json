@@ -29,7 +29,6 @@
     "saksoversikt.dokumentoversikt": "Dokumenter",
     "saksoversikt.dinPlan": "Din plan",
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
-    "oppgaver.informasjonTilBruker": "NAV kan ikke behandle søknaden din før vi har fått nødvendig informasjon:",
     "oppgaver.feilVedHentingAvOppgaver": "Vi har problemer med å hente informasjon om oppgavene i saken din.",
     "oppgaver.tittel.tilbakebetaling": "Svar på varsel om tilbakebetaling",
     "miniDialog.tilbakekreving.tittel": "NAV har sendt deg et varsel om at du har fått for mye utbetalte { sakstype }. Før vi behandler saken, kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.",
