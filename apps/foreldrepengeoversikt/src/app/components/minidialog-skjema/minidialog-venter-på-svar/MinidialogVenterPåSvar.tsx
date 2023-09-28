@@ -40,18 +40,10 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
     }
 
     return (
-<<<<<<< HEAD
-        <Block padBottom="l">
-            <Alert variant="info">
-                Vi har fått svaret ditt, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å
-                sende igjen.
-            </Alert>
-        </Block>
-=======
         <>
             <Block padBottom="l">
                 <Alert variant="info">
-                    Vi har fått ditt svar, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å
+                    Vi har fått svaret ditt, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å
                     sende igjen.
                 </Alert>
             </Block>
@@ -59,7 +51,6 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
                 <Link to={`/sak/${saksnummer}`}>{intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}</Link>
             </Block>
         </>
->>>>>>> b7aa31feb (Fjernet link til saken)
     );
 };
 
