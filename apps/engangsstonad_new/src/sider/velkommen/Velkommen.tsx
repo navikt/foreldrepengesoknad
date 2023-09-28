@@ -22,16 +22,17 @@ export interface Props {
     onChangeLocale: (locale: Locale) => void;
     locale: Locale;
     startSøknad: (start: boolean) => void;
+    erVelkommen: boolean;
 }
 
-const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad }) => {
+const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad, erVelkommen }) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
 
     const navigator = useEsNavigator();
 
     const [isError, setIsError] = useState(false);
-    const [isChecked, setChecked] = useState(false);
+    const [isChecked, setChecked] = useState(erVelkommen);
     const toggleCheck = useCallback(() => setChecked((state) => !state), []);
 
     const bekreft = useCallback(() => {

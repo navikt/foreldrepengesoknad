@@ -63,7 +63,12 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     <Route
                         path={Path.VELKOMMEN}
                         element={
-                            <Velkommen locale={locale} onChangeLocale={onChangeLocale} startSøknad={setVelkommen} />
+                            <Velkommen
+                                locale={locale}
+                                onChangeLocale={onChangeLocale}
+                                startSøknad={setVelkommen}
+                                erVelkommen={erVelkommen}
+                            />
                         }
                     />
                     {erVelkommen && (

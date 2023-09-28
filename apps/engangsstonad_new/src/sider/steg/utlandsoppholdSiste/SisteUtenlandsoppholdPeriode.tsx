@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Button, VStack, HStack } from '@navikt/ds-react';
+import { Button, VStack } from '@navikt/ds-react';
 import { date1YearFromNow, dateToday } from '@navikt/fp-common';
 
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
@@ -51,78 +51,76 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
                     </option>
                 ))}
             </Select>
-            <HStack gap="10">
-                <Datepicker
-                    name={`utenlandsoppholdSiste12Mnd.${index}.fom`}
-                    label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
-                    disabledDays={[
-                        {
-                            from: dayjs().subtract(50, 'year').toDate(),
-                            to: dayjs(dateToday).subtract(1, 'day').toDate(),
-                        },
-                        {
-                            from: tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                            to: dayjs().add(50, 'year').toDate(),
-                        },
-                    ]}
-                    validate={[
-                        isRequired(
-                            intl.formatMessage({
-                                id: 'valideringsfeil.leggTilUtenlandsopphold.landFomDuSkalBoIPåkreved',
-                            }),
-                        ),
-                        (fomValue) => {
-                            if (tom && fomValue && dayjs(tom).isSame(fomValue)) {
-                                return intl.formatMessage({ id: 'valideringsfeil.fomErLikTom' });
-                            }
-                            return validateFromDate(
-                                intl,
-                                dayjs(fomValue).toDate(),
-                                dayjs(dateToday).subtract(1, 'day').toDate(),
-                                tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                                dayjs(tom).toDate(),
-                            );
-                        },
-                    ]}
-                />
-                <Datepicker
-                    name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
-                    label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.tilogmed" />}
-                    disabledDays={[
-                        {
-                            from: dayjs().subtract(50, 'year').toDate(),
-                            to: dayjs(fom || dateToday)
+            <Datepicker
+                name={`utenlandsoppholdSiste12Mnd.${index}.fom`}
+                label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
+                disabledDays={[
+                    {
+                        from: dayjs().subtract(50, 'year').toDate(),
+                        to: dayjs(dateToday).subtract(1, 'day').toDate(),
+                    },
+                    {
+                        from: tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                        to: dayjs().add(50, 'year').toDate(),
+                    },
+                ]}
+                validate={[
+                    isRequired(
+                        intl.formatMessage({
+                            id: 'valideringsfeil.leggTilUtenlandsopphold.landFomDuSkalBoIPåkreved',
+                        }),
+                    ),
+                    (fomValue) => {
+                        if (tom && fomValue && dayjs(tom).isSame(fomValue)) {
+                            return intl.formatMessage({ id: 'valideringsfeil.fomErLikTom' });
+                        }
+                        return validateFromDate(
+                            intl,
+                            dayjs(fomValue).toDate(),
+                            dayjs(dateToday).subtract(1, 'day').toDate(),
+                            tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                            dayjs(tom).toDate(),
+                        );
+                    },
+                ]}
+            />
+            <Datepicker
+                name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
+                label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.tilogmed" />}
+                disabledDays={[
+                    {
+                        from: dayjs().subtract(50, 'year').toDate(),
+                        to: dayjs(fom || dateToday)
+                            .subtract(1, 'day')
+                            .toDate(),
+                    },
+                    {
+                        from: dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                        to: dayjs().add(50, 'year').toDate(),
+                    },
+                ]}
+                validate={[
+                    isRequired(
+                        intl.formatMessage({
+                            id: 'valideringsfeil.leggTilUtenlandsopphold.landTomDuHarBoddIPåkreved',
+                        }),
+                    ),
+                    (tomValue) => {
+                        if (tomValue && fom && dayjs(tomValue).isSame(fom)) {
+                            return intl.formatMessage({ id: 'valideringsfeil.tomErLikFom' });
+                        }
+                        return validateToDate(
+                            intl,
+                            dayjs(tomValue).toDate(),
+                            dayjs(fom || dateToday)
                                 .subtract(1, 'day')
                                 .toDate(),
-                        },
-                        {
-                            from: dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                            to: dayjs().add(50, 'year').toDate(),
-                        },
-                    ]}
-                    validate={[
-                        isRequired(
-                            intl.formatMessage({
-                                id: 'valideringsfeil.leggTilUtenlandsopphold.landTomDuHarBoddIPåkreved',
-                            }),
-                        ),
-                        (tomValue) => {
-                            if (tomValue && fom && dayjs(tomValue).isSame(fom)) {
-                                return intl.formatMessage({ id: 'valideringsfeil.tomErLikFom' });
-                            }
-                            return validateToDate(
-                                intl,
-                                dayjs(tomValue).toDate(),
-                                dayjs(fom || dateToday)
-                                    .subtract(1, 'day')
-                                    .toDate(),
-                                dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                                dayjs(fom).toDate(),
-                            );
-                        },
-                    ]}
-                />
-            </HStack>
+                            dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                            dayjs(fom).toDate(),
+                        );
+                    },
+                ]}
+            />
             {index > 0 && (
                 <Button
                     type="button"
