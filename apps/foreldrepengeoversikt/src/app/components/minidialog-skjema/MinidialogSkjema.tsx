@@ -78,12 +78,11 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         return (
             <div>
                 <ScrollToTop />
-                <MinidialogVenterPåSvar fetchCounter={fetchCounter} allowedToFetch={allowedToFetch} />
-                <Block padBottom="l">
-                    <Link to={`/sak/${minidialog.saksnr}`}>
-                        {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
-                    </Link>
-                </Block>
+                <MinidialogVenterPåSvar
+                    fetchCounter={fetchCounter}
+                    allowedToFetch={allowedToFetch}
+                    saksnummer={minidialog.saksnr}
+                />
             </div>
         );
     }
