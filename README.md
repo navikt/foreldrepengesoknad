@@ -31,10 +31,6 @@ Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepe
 
 Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.
 
-### Icon License
-
-This project uses [Streamline Icons](http://www.streamlineicons.com/). If you use nav-frontend-moduler in your project please adhere to the [Streamline Icons license agreement](http://www.streamlineicons.com/license.html).
-
 ### BrowserStack
 
 We test our app with BrowserStack.
