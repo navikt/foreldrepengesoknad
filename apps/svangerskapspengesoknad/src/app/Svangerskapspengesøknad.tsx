@@ -10,7 +10,7 @@ import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
 import { erMyndig } from '@navikt/fp-common';
-import IkkeMyndig from './pages/ikkeMyndig/IkkeMyndig';
+import Umyndig from './pages/umyndig/Umyndig';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -44,7 +44,7 @@ const Svangerskapspengesøknad = () => {
     return (
         <div>
             {!erPersonMyndig ? (
-                <IkkeMyndig fornavn={søkerinfoData.søker.fornavn} />
+                <Umyndig fornavn={søkerinfoData.søker.fornavn} />
             ) : (
                 <BrowserRouter>
                     <SvangerskapspengesøknadRoutes currentRoute={SøknadRoutes.FORSIDE} />
