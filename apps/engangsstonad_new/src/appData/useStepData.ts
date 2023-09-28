@@ -15,7 +15,7 @@ const PATH_TO_LABEL_MAP = {
     [Path.OPPSUMMERING]: 'søknad.oppsummering',
 } as Record<string, string>;
 
-const erEtterUtenlandsopphold = (path) => {
+const erEtterUtenlandsopphold = (path: Path): boolean => {
     return PATH_ORDER.indexOf(path) > PATH_ORDER.indexOf(Path.UTENLANDSOPPHOLD);
 };
 
@@ -29,6 +29,7 @@ const useStepData = () => {
 
     const currentPath = notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname)));
 
+    // TODO Flytt ut og fiks ein hook som hentar generell data-funksjon
     const utledUttak = (pathh) => {
         if (
             pathh === Path.SISTE_UTENLANDSOPPHOLD &&

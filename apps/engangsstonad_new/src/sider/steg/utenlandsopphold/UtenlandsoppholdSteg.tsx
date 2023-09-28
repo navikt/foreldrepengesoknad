@@ -29,6 +29,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const navigator = useEsNavigator();
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
+    const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
     const formMethods = useForm<Utenlandsopphold>({
         defaultValues: utenlandsopphold,
@@ -36,6 +38,13 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     const lagre = useCallback((formValues: Utenlandsopphold) => {
         lagreUtenlandsopphold(formValues);
+
+        if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
+            lagreSisteUtenlandsopphold(undefined);
+        }
+        if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
+            lagreNesteUtenlandsopphold(undefined);
+        }
         navigator.goToNextStep(utledNesteSide(formValues));
     }, []);
 

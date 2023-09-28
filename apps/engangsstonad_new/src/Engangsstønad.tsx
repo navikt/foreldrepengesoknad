@@ -18,7 +18,6 @@ import { Path } from 'appData/paths';
 import { EsDataContext } from 'appData/EsDataContext';
 import Kvittering from 'types/Kvittering';
 import FeilsideInfo from './sider/feilside/FeilsideInfo';
-import { PageContext } from 'fpcommon/pageContext/PageContext';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -56,41 +55,39 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const sendSøknad = Api.sendSøknad(locale, setKvittering);
 
     return (
-        <PageContext>
-            <EsDataContext>
-                <Routes>
-                    {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
-                    <Route
-                        path={Path.VELKOMMEN}
-                        element={
-                            <Velkommen
-                                locale={locale}
-                                onChangeLocale={onChangeLocale}
-                                startSøknad={setVelkommen}
-                                erVelkommen={erVelkommen}
-                            />
-                        }
-                    />
-                    {erVelkommen && (
-                        <>
-                            <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
-                            <Route path={Path.OM_BARNET} element={<OmBarnetForm kjønn={person.kjønn} />} />
-                            <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                            <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtlandsopphold />} />
-                            <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtlandsopphold />} />
-                            <Route
-                                path={Path.OPPSUMMERING}
-                                element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
-                            />
-                            <Route
-                                path={Path.KVITTERING}
-                                element={<SøknadSendt person={person} kvittering={kvittering} />}
-                            />
-                        </>
-                    )}
-                </Routes>
-            </EsDataContext>
-        </PageContext>
+        <EsDataContext>
+            <Routes>
+                {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
+                <Route
+                    path={Path.VELKOMMEN}
+                    element={
+                        <Velkommen
+                            locale={locale}
+                            onChangeLocale={onChangeLocale}
+                            startSøknad={setVelkommen}
+                            erVelkommen={erVelkommen}
+                        />
+                    }
+                />
+                {erVelkommen && (
+                    <>
+                        <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
+                        <Route path={Path.OM_BARNET} element={<OmBarnetForm kjønn={person.kjønn} />} />
+                        <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
+                        <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtlandsopphold />} />
+                        <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtlandsopphold />} />
+                        <Route
+                            path={Path.OPPSUMMERING}
+                            element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
+                        />
+                        <Route
+                            path={Path.KVITTERING}
+                            element={<SøknadSendt person={person} kvittering={kvittering} />}
+                        />
+                    </>
+                )}
+            </Routes>
+        </EsDataContext>
     );
 };
 
