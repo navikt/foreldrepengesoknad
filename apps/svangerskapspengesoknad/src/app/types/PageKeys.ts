@@ -6,4 +6,5 @@ export enum PageKeys {
     Oppsummering = 'oppsummering',
     SøknadSendt = 'søknad-sendt',
     Umyndig = 'umyndig',
+    IkkeKvinne = 'ikkeKvinne',
 }

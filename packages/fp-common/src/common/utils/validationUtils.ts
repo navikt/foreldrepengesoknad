@@ -111,6 +111,16 @@ export const erMyndig = (fødselsdato: string) => {
     return now.diff(momentDate, 'years') >= 18;
 };
 
+export const erKvinne = (kjønn: string) => {
+    const kvinne = 'K';
+
+    if (kjønn !== kvinne) {
+        return false;
+    } else {
+        return true;
+    }
+};
+
 export const getFørsteMuligeTermindato = () => dayjs().subtract(21, 'days').startOf('day').toDate();
 
 interface ItemWithFom {
