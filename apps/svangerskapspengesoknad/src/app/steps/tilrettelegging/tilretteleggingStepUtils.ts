@@ -14,6 +14,7 @@ export const getInitTilretteleggingFormDataValues = (): Readonly<Tilrettelegging
     [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: undefined!,
     [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: undefined,
     [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: undefined,
+    [TilretteleggingFormField.risikofaktorer]: undefined,
     [TilretteleggingFormField.tilretteleggingstiltak]: undefined,
     [TilretteleggingFormField.variertePerioder]: [
         {
@@ -37,8 +38,8 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
             tilrettelegging.variertePerioder && tilrettelegging.variertePerioder.length > 0
                 ? tilrettelegging.variertePerioder
                 : initValues.variertePerioder,
-        tilretteleggingstiltak:
-            tilrettelegging.arbeidsforhold.tilretteleggingstiltak || initValues.tilretteleggingstiltak,
+        risikofaktorer: tilrettelegging.risikofaktorer || initValues.risikofaktorer,
+        tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak || initValues.tilretteleggingstiltak,
         sammePeriodeFremTilTerminFom:
             tilrettelegging.sammePeriodeFremTilTerminFom || initValues.sammePeriodeFremTilTerminFom,
         sammePeriodeFremTilTerminStillingsprosent:
@@ -53,15 +54,11 @@ export const mapOmTilretteleggingFormDataToState = (
     tilretteleggingFraState: Tilrettelegging[],
 ): Tilrettelegging[] => {
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
-
     const oppdatert = {
         ...tilretteleggingForOppdatering,
         behovForTilretteleggingFom: values.behovForTilretteleggingFom,
         arbeidsforhold: {
             ...tilretteleggingForOppdatering!.arbeidsforhold,
-            tilretteleggingstiltak: hasValue(values.tilretteleggingstiltak)
-                ? replaceInvisibleCharsWithSpace(values.tilretteleggingstiltak!)
-                : undefined,
         },
         type: values.tilretteleggingType,
         sammePeriodeFremTilTerminFom: values.sammePeriodeFremTilTerminFom,
@@ -71,6 +68,12 @@ export const mapOmTilretteleggingFormDataToState = (
             values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
                 ? values.variertePerioder
                 : [],
+        risikofaktorer: hasValue(values.risikofaktorer)
+            ? replaceInvisibleCharsWithSpace(values.risikofaktorer!)
+            : undefined,
+        tilretteleggingstiltak: hasValue(values.tilretteleggingstiltak)
+            ? replaceInvisibleCharsWithSpace(values.tilretteleggingstiltak!)
+            : undefined,
     } as Tilrettelegging;
 
     const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {

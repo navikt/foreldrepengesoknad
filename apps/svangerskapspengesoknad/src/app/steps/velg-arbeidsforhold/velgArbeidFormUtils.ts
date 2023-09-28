@@ -84,6 +84,8 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                           næringTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
                       delvisTilretteleggingPeriodeType:
                           næringTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+                      risikofaktorer: næringTilretteleggingFraState?.risikofaktorer || undefined,
+                      tilretteleggingstiltak: næringTilretteleggingFraState?.tilretteleggingstiltak || undefined,
                   },
               ]
             : [];
@@ -110,6 +112,8 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                           frilansTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
                       delvisTilretteleggingPeriodeType:
                           frilansTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+                      risikofaktorer: frilansTilretteleggingFraState?.risikofaktorer || undefined,
+                      tilretteleggingstiltak: frilansTilretteleggingFraState?.tilretteleggingstiltak || undefined,
                   },
               ]
             : [];

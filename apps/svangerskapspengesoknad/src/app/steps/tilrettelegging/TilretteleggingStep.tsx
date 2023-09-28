@@ -36,6 +36,7 @@ import tilretteleggingQuestionsConfig, {
     TilretteleggingFormQuestionsPayload,
 } from './tilretteleggingStepQuestionsConfig';
 import {
+    validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
     validateStillingsprosent,
     validateTilretteleggingstiltak,
@@ -62,7 +63,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const fødselsdatoDate = ISOStringToDate(fødselsdato);
     const termindatoDate = ISOStringToDate(termindato);
-
+    const typeArbeid = currentTilrettelegging!.arbeidsforhold.type;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(id, values, tilretteleggingFraState);
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
@@ -76,7 +77,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, state.currentTilretteleggingId);
 
     const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdatoDate || termindatoDate!);
-
     let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
     if (nesteTilretteleggingId) {
         nextRoute = `${SøknadRoutes.PERIODE}/${nesteTilretteleggingId}`;
@@ -84,6 +84,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
+    const risikofaktorerLabel = intlUtils(intl, `skjema.risikofaktorer.${typeArbeid}`);
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -92,7 +93,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
             renderForm={({ values: formValues }) => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
                     ...formValues,
-                    arbeidsType: currentTilrettelegging?.arbeidsforhold.type,
+                    arbeidsType: typeArbeid,
                 } as TilretteleggingFormQuestionsPayload);
                 const labelPeriodeFom =
                     formValues.tilretteleggingType === Tilretteleggingstype.INGEN
@@ -161,6 +162,19 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                         },
                                     ]}
                                     validate={validateTilrettelagtArbeidType(intl)}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
+                            >
+                                <TilretteleggingFormComponents.Textarea
+                                    name={TilretteleggingFormField.risikofaktorer}
+                                    label={risikofaktorerLabel}
+                                    minLength={TEXT_INPUT_MIN_LENGTH}
+                                    maxLength={TEXT_INPUT_MAX_LENGTH}
+                                    validate={validateRisikofaktorer(intl, risikofaktorerLabel, typeArbeid)}
+                                    description={intlUtils(intl, 'skjema.risikofaktorer.description')}
                                 />
                             </Block>
                             <Block

@@ -1,5 +1,6 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
@@ -74,4 +75,21 @@ export const validateSammePeriodeFremTilTerminFom =
                 : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
         }
         return undefined;
+    };
+
+export const validateRisikofaktorer =
+    (intl: IntlShape, label: string, type: Arbeidsforholdstype) => (risikoFaktorer: string) => {
+        if (!hasValue(risikoFaktorer) || risikoFaktorer.trim() === '') {
+            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.${type}.påkrevd`);
+        }
+
+        if (risikoFaktorer.length > TEXT_INPUT_MAX_LENGTH) {
+            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forLang`);
+        }
+
+        if (risikoFaktorer.length < TEXT_INPUT_MIN_LENGTH) {
+            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forKort`);
+        }
+
+        return validateTextInputField(risikoFaktorer, label, intl);
     };
