@@ -7,7 +7,7 @@ const defaultInitialState = {
 
 type Action =
     | { type: 'addVisitedPage'; page: string }
-    | { type: 'removeVisitedPage'; page: string }
+    | { type: 'removeVisitedPage'; page: string; shouldRemovePaths?: boolean }
     | { type: 'addAdditionalPages'; pageData: Record<string, string[]> }
     | { type: 'reset' };
 type Dispatch = (action: Action) => void;
@@ -34,15 +34,17 @@ export const PageContext: FunctionComponent<OwnProps> = ({ children, initialStat
                 };
             case 'removeVisitedPage':
                 return {
-                    pagesAddedByVisitedPages: Object.keys(oldState.pagesAddedByVisitedPages).reduce((acc, page) => {
-                        if (action.page !== page) {
-                            return {
-                                ...acc,
-                                [page]: oldState.pagesAddedByVisitedPages[page],
-                            };
-                        }
-                        return acc;
-                    }, {}),
+                    pagesAddedByVisitedPages: action.shouldRemovePaths
+                        ? Object.keys(oldState.pagesAddedByVisitedPages).reduce((acc, page) => {
+                              if (action.page !== page) {
+                                  return {
+                                      ...acc,
+                                      [page]: oldState.pagesAddedByVisitedPages[page],
+                                  };
+                              }
+                              return acc;
+                          }, {})
+                        : oldState.pagesAddedByVisitedPages,
                     visitedPages: oldState.visitedPages.filter((p) => p !== action.page),
                 };
             case 'addAdditionalPages':
@@ -83,9 +85,9 @@ export const usePageRegister = () => {
 export const usePageUnregister = () => {
     const dispatch = useContext(PageDispatchContext);
     return useCallback(
-        (page: string) => {
+        (page: string, shouldRemovePaths?: boolean) => {
             if (dispatch) {
-                dispatch({ type: 'removeVisitedPage', page });
+                dispatch({ type: 'removeVisitedPage', page, shouldRemovePaths });
             }
         },
         [dispatch],

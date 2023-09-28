@@ -19,6 +19,16 @@ type FormValues = {
     }[];
 };
 
+const DEFAULT_FORM_VALUES = {
+    utenlandsoppholdSiste12Mnd: [
+        {
+            fom: undefined,
+            tom: undefined,
+            landkode: undefined,
+        },
+    ],
+} as FormValues;
+
 const SisteUtlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
 
@@ -26,9 +36,10 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
 
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
     const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
 
-    const defaultValues = useMemo(() => sisteUtenlandsopphold || { utenlandsoppholdSiste12Mnd: [{}] }, []);
+    const defaultValues = useMemo(() => sisteUtenlandsopphold || DEFAULT_FORM_VALUES, []);
     const formMethods = useForm<FormValues>({
         defaultValues,
     });
@@ -53,6 +64,11 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
             utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
         );
     }, []);
+
+    const goToPreviousStep = useCallback(() => {
+        const erDataPåDenneSiden = !!sisteUtenlandsopphold || Object.keys(formMethods.formState.dirtyFields).length > 0;
+        navigator.goToPreviousStep(!erDataPåDenneSiden && !nesteUtenlandsopphold);
+    }, [formMethods.formState.isDirty]);
 
     return (
         <Step
@@ -84,7 +100,7 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
                             </Button>
                         </VStack>
                         <StepButtonsHookForm<FormValues>
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            goToPreviousStep={goToPreviousStep}
                             saveDataOnPreviousClick={lagreSisteUtenlandsopphold}
                         />
                     </VStack>

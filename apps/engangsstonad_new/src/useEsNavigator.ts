@@ -80,6 +80,14 @@ const useEsNavigator = () => {
         navigate(visitedPages.length < 2 ? Path.VELKOMMEN : visitedPages[visitedPages.length - 2]);
     }, [navigate]);
 
+    const goToPreviousStep = useCallback(
+        (shouldRemovePaths: boolean) => {
+            unregisterPage(currentPath, shouldRemovePaths);
+            navigate(visitedPages.length < 2 ? Path.VELKOMMEN : visitedPages[visitedPages.length - 2]);
+        },
+        [navigate],
+    );
+
     const goToNextStep = useCallback(
         (path: Path, additionalPaths: Path[] = PATH_ARRAY) => {
             registerPage(path);
@@ -125,6 +133,7 @@ const useEsNavigator = () => {
         () => ({
             pageInfo,
             goToPreviousDefaultStep,
+            goToPreviousStep,
             goToNextStep,
             goToNextDefaultStep,
             avbrytSøknad,
