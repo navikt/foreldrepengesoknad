@@ -9,9 +9,9 @@ import KvitteringHeader from './KvitteringHeader';
 import CheckmarkIkon from './ikon/CheckmarkIkon';
 import StatusBoks from './StatusBoks';
 import SøknadSendtIkon from './ikon/SøknadSendtIkon';
-import useEsNavigator from '../../useEsNavigator';
 
 import './søknadSendt.less';
+import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 
 export interface Props {
     person: Person;
@@ -23,7 +23,11 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) =>
 
     useDocumentTitle(intl.formatMessage({ id: 'søknadSendt.dokumenttittel' }));
 
-    useEsNavigator();
+    logAmplitudeEvent('sidevisning', {
+        app: 'engangsstonadny',
+        team: 'foreldrepenger',
+        pageKey: '/kvittering',
+    });
 
     const bem = bemUtils('kvittering');
 

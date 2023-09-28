@@ -6,6 +6,7 @@ import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { EsDataType } from '../../../EsDataContext';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import { Path } from '../../../useEsNavigator';
 
 import '@navikt/ds-css';
 import 'fpcommon/styles/globals.less';
@@ -14,6 +15,9 @@ export default {
     title: 'OmBarnetForm',
     component: OmBarnetForm,
     decorators: [withRouterProvider],
+    parameters: {
+        withRouterDecoratorUrl: Path.OM_BARNET,
+    },
 };
 
 const Template: StoryFn<{ søkersituasjon: SøkersituasjonEnum; kjønn: Kjønn }> = ({ søkersituasjon, kjønn }) => {

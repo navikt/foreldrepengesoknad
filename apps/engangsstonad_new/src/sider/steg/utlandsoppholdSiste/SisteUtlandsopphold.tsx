@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
@@ -8,26 +8,19 @@ import { Step } from '@navikt/fp-common';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import SisteUtenlandsoppholdPeriode from './SisteUtenlandsoppholdPeriode';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
+import Form from 'fpcommon/form/Form';
 import useEsNavigator, { Path } from '../../../useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
+import { UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 
-type FormValues = {
-    utenlandsoppholdSiste12Mnd: {
-        fom?: string;
-        tom?: string;
-        landkode?: string;
-    }[];
+const DEFAULT_PERIODE = {
+    fom: '',
+    tom: '',
+    landkode: '',
 };
-
 const DEFAULT_FORM_VALUES = {
-    utenlandsoppholdSiste12Mnd: [
-        {
-            fom: undefined,
-            tom: undefined,
-            landkode: undefined,
-        },
-    ],
-} as FormValues;
+    utenlandsoppholdSiste12Mnd: [DEFAULT_PERIODE],
+} as UtenlandsoppholdSiste;
 
 const SisteUtlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -40,7 +33,7 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
     const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
 
     const defaultValues = useMemo(() => sisteUtenlandsopphold || DEFAULT_FORM_VALUES, []);
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<UtenlandsoppholdSiste>({
         defaultValues,
     });
     const { fields, append, remove } = useFieldArray({
@@ -49,7 +42,7 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
     });
 
     const leggTilOpphold = useCallback(() => {
-        append({});
+        append(DEFAULT_PERIODE);
     }, [append]);
     const fjernOpphold = useCallback(
         (index: number) => {
@@ -58,7 +51,7 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
         [remove],
     );
 
-    const lagre = useCallback((formValues: FormValues) => {
+    const lagre = useCallback((formValues: UtenlandsoppholdSiste) => {
         lagreSisteUtenlandsopphold(formValues);
         navigator.goToNextStep(
             utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
@@ -78,34 +71,32 @@ const SisteUtlandsopphold: React.FunctionComponent = () => {
             steps={navigator.pageInfo.stepConfig}
             activeStepId={navigator.pageInfo.activeStepId}
         >
-            <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagre)}>
-                    <VStack gap="10">
-                        <ErrorSummaryHookForm />
-                        <VStack gap="10" align="start">
-                            {fields.map((field, index) => (
-                                <Fragment key={field.id}>
-                                    <SisteUtenlandsoppholdPeriode index={index} fjernOpphold={fjernOpphold} />
-                                    {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
-                                </Fragment>
-                            ))}
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                size="small"
-                                icon={<PlusIcon aria-hidden />}
-                                onClick={leggTilOpphold}
-                            >
-                                <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
-                            </Button>
-                        </VStack>
-                        <StepButtonsHookForm<FormValues>
-                            goToPreviousStep={goToPreviousStep}
-                            saveDataOnPreviousClick={lagreSisteUtenlandsopphold}
-                        />
+            <Form formMethods={formMethods} onSubmit={lagre}>
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    <VStack gap="10" align="start">
+                        {fields.map((field, index) => (
+                            <Fragment key={field.id}>
+                                <SisteUtenlandsoppholdPeriode index={index} fjernOpphold={fjernOpphold} />
+                                {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
+                            </Fragment>
+                        ))}
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            size="small"
+                            icon={<PlusIcon aria-hidden />}
+                            onClick={leggTilOpphold}
+                        >
+                            <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
+                        </Button>
                     </VStack>
-                </form>
-            </FormProvider>
+                    <StepButtonsHookForm<UtenlandsoppholdSiste>
+                        goToPreviousStep={goToPreviousStep}
+                        saveDataOnPreviousClick={lagreSisteUtenlandsopphold}
+                    />
+                </VStack>
+            </Form>
         </Step>
     );
 };

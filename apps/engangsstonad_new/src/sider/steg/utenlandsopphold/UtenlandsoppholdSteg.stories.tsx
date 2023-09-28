@@ -2,11 +2,15 @@ import { StoryFn } from '@storybook/react';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import IntlProvider from 'intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import { Path } from '../../../useEsNavigator';
 
 export default {
     title: 'UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
     decorators: [withRouterProvider],
+    parameters: {
+        withRouterDecoratorUrl: Path.UTENLANDSOPPHOLD,
+    },
 };
 
 const Template: StoryFn<any> = () => {

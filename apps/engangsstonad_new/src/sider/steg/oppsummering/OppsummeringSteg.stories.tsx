@@ -9,6 +9,7 @@ import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { EsDataType } from '../../../EsDataContext';
 import { Kjønn } from 'types/Person';
+import { Path } from '../../../useEsNavigator';
 
 const person = {
     fnr: '11111111111',
@@ -44,6 +45,9 @@ export default {
     title: 'OppsummeringSteg',
     component: OppsummeringSteg,
     decorators: [withRouterProvider],
+    parameters: {
+        withRouterDecoratorUrl: Path.OPPSUMMERING,
+    },
 };
 
 const Template: StoryFn<{

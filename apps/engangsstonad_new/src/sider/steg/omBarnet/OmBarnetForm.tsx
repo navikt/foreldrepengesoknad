@@ -1,14 +1,15 @@
 import { useCallback, useMemo } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Block, Kjønn, Step, useDocumentTitle } from '@navikt/fp-common';
 
+import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
+import Form from 'fpcommon/form/Form';
+import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
 import useEsNavigator from '../../../useEsNavigator';
-import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 
 import './omBarnet.less';
 
@@ -51,18 +52,16 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
             steps={navigator.pageInfo.stepConfig}
             activeStepId={navigator.pageInfo.activeStepId}
         >
-            <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagre)}>
-                    {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}
-                    {søkersituasjon?.situasjon === SøkersituasjonEnum.FØDSEL && <FødselPanel />}
-                    <Block margin="xl" textAlignCenter={true}>
-                        <StepButtonsHookForm<FormValues>
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            saveDataOnPreviousClick={lagreOmBarnet}
-                        />
-                    </Block>
-                </form>
-            </FormProvider>
+            <Form formMethods={formMethods} onSubmit={lagre}>
+                {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}
+                {søkersituasjon?.situasjon === SøkersituasjonEnum.FØDSEL && <FødselPanel />}
+                <Block margin="xl" textAlignCenter={true}>
+                    <StepButtonsHookForm<FormValues>
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        saveDataOnPreviousClick={lagreOmBarnet}
+                    />
+                </Block>
+            </Form>
         </Step>
     );
 };

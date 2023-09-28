@@ -1,27 +1,26 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack } from '@navikt/ds-react';
 
+import Form from 'fpcommon/form/Form';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
-import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
+import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import useEsNavigator, { Path } from '../../../useEsNavigator';
 import { EsDataType, useEsStateSaveFn, useEsStateData } from '../../../EsDataContext';
-import { useCallback } from 'react';
 
-export type FormValues = Utenlandsopphold;
-
-const utledNesteSide = (formValues: FormValues): Path => {
+const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
         return Path.SISTE_UTENLANDSOPPHOLD;
     }
     return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
 };
 
-const utledAlleUtenlandssiderSomSkalVises = (formValues: FormValues): Path[] => {
+const utledAlleUtenlandssiderSomSkalVises = (formValues: Utenlandsopphold): Path[] => {
     const paths = [];
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
         paths.push(Path.SISTE_UTENLANDSOPPHOLD);
@@ -38,14 +37,25 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const navigator = useEsNavigator();
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
+    const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
+    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<Utenlandsopphold>({
         defaultValues: utenlandsopphold,
     });
 
-    const lagre = useCallback((formValues: FormValues) => {
+    const lagre = useCallback((formValues: Utenlandsopphold) => {
         lagreUtenlandsopphold(formValues);
-        navigator.goToNextStep(utledNesteSide(formValues), utledAlleUtenlandssiderSomSkalVises(formValues));
+
+        const alleSomSkalVises = utledAlleUtenlandssiderSomSkalVises(formValues);
+        if (!alleSomSkalVises.includes(Path.SISTE_UTENLANDSOPPHOLD)) {
+            lagreSisteUtenlandsopphold(undefined);
+        }
+        if (!alleSomSkalVises.includes(Path.NESTE_UTENLANDSOPPHOLD)) {
+            lagreNesteUtenlandsopphold(undefined);
+        }
+
+        navigator.goToNextStep(utledNesteSide(formValues), alleSomSkalVises);
     }, []);
 
     return (
@@ -56,89 +66,87 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
             steps={navigator.pageInfo.stepConfig}
             activeStepId={navigator.pageInfo.activeStepId}
         >
-            <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagre)}>
-                    <VStack gap="10">
-                        <ErrorSummaryHookForm />
-                        <RadioGroupPanel
-                            name="harBoddUtenforNorgeSiste12Mnd"
-                            label={<FormattedMessage id="utenlandsopphold.siste12Måneder.spørsmål" />}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'utenlandsopphold.siste12Måneder.isRequired' })),
-                            ]}
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet" />
-                            </Radio>
-                        </RadioGroupPanel>
-                        <RadioGroupPanel
-                            name="skalBoUtenforNorgeNeste12Mnd"
-                            label={<FormattedMessage id="utenlandsopphold.neste12Måneder.spørsmål" />}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'utenlandsopphold.neste12Måneder.isRequired' })),
-                            ]}
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet" />
-                            </Radio>
-                        </RadioGroupPanel>
-                        <ExpansionCard
-                            size="small"
-                            aria-label={intl.formatMessage({ id: 'utenlandsopphold.stotteFraNav' })}
-                        >
-                            <ExpansionCard.Header>
-                                <ExpansionCard.Title>
-                                    <FormattedMessage id="utenlandsopphold.stotteFraNav" />
-                                </ExpansionCard.Title>
-                            </ExpansionCard.Header>
-                            <ExpansionCard.Content>
-                                <VStack gap="10">
-                                    <VStack gap="5">
-                                        <BodyLong>
-                                            <FormattedMessage id="utenlandsopphold.info.del1" />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage id="utenlandsopphold.info.del2" />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage id="utenlandsopphold.info.del3" />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage id="utenlandsopphold.info.del4" />
-                                        </BodyLong>
-                                    </VStack>
-                                    <VStack gap="5">
-                                        <Heading size="small">
-                                            <FormattedMessage id="utenlandsopphold.info.undertittel" />
-                                        </Heading>
-                                        <BodyLong>
-                                            <FormattedMessage id="utenlandsopphold.info.del5" />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <HStack gap="1">
-                                                <FormattedMessage id="utenlandsopphold.info.del6" />
-                                                <Link href="https://www.nav.no/foreldrepenger#utland">
-                                                    nav.no/foreldrepenger#utland
-                                                </Link>
-                                            </HStack>
-                                        </BodyLong>
-                                    </VStack>
+            <Form formMethods={formMethods} onSubmit={lagre}>
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    <RadioGroupPanel
+                        name="harBoddUtenforNorgeSiste12Mnd"
+                        label={<FormattedMessage id="utenlandsopphold.siste12Måneder.spørsmål" />}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'utenlandsopphold.siste12Måneder.isRequired' })),
+                        ]}
+                    >
+                        <Radio value={false}>
+                            <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge" />
+                        </Radio>
+                        <Radio value={true}>
+                            <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet" />
+                        </Radio>
+                    </RadioGroupPanel>
+                    <RadioGroupPanel
+                        name="skalBoUtenforNorgeNeste12Mnd"
+                        label={<FormattedMessage id="utenlandsopphold.neste12Måneder.spørsmål" />}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'utenlandsopphold.neste12Måneder.isRequired' })),
+                        ]}
+                    >
+                        <Radio value={false}>
+                            <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge" />
+                        </Radio>
+                        <Radio value={true}>
+                            <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet" />
+                        </Radio>
+                    </RadioGroupPanel>
+                    <ExpansionCard
+                        size="small"
+                        aria-label={intl.formatMessage({ id: 'utenlandsopphold.stotteFraNav' })}
+                    >
+                        <ExpansionCard.Header>
+                            <ExpansionCard.Title>
+                                <FormattedMessage id="utenlandsopphold.stotteFraNav" />
+                            </ExpansionCard.Title>
+                        </ExpansionCard.Header>
+                        <ExpansionCard.Content>
+                            <VStack gap="10">
+                                <VStack gap="5">
+                                    <BodyLong>
+                                        <FormattedMessage id="utenlandsopphold.info.del1" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <FormattedMessage id="utenlandsopphold.info.del2" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <FormattedMessage id="utenlandsopphold.info.del3" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <FormattedMessage id="utenlandsopphold.info.del4" />
+                                    </BodyLong>
                                 </VStack>
-                            </ExpansionCard.Content>
-                        </ExpansionCard>
-                        <StepButtonsHookForm<FormValues>
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            saveDataOnPreviousClick={lagreUtenlandsopphold}
-                        />
-                    </VStack>
-                </form>
-            </FormProvider>
+                                <VStack gap="5">
+                                    <Heading size="small">
+                                        <FormattedMessage id="utenlandsopphold.info.undertittel" />
+                                    </Heading>
+                                    <BodyLong>
+                                        <FormattedMessage id="utenlandsopphold.info.del5" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <HStack gap="1">
+                                            <FormattedMessage id="utenlandsopphold.info.del6" />
+                                            <Link href="https://www.nav.no/foreldrepenger#utland">
+                                                nav.no/foreldrepenger#utland
+                                            </Link>
+                                        </HStack>
+                                    </BodyLong>
+                                </VStack>
+                            </VStack>
+                        </ExpansionCard.Content>
+                    </ExpansionCard>
+                    <StepButtonsHookForm<Utenlandsopphold>
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        saveDataOnPreviousClick={lagreUtenlandsopphold}
+                    />
+                </VStack>
+            </Form>
         </Step>
     );
 };

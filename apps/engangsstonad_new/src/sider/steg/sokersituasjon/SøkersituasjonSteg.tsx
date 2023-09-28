@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
 import { Radio, VStack } from '@navikt/ds-react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
-import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
+import Form from 'fpcommon/form/Form';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
+import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from '../../../useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from '../../../EsDataContext';
-
-type FormValues = Søkersituasjon;
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -21,11 +20,11 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
     const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
     const lagreSøkersituasjon = useEsStateSaveFn(EsDataType.SØKERSITUASJON);
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<Søkersituasjon>({
         defaultValues: søkersituasjon,
     });
 
-    const lagre = useCallback((formValues: FormValues) => {
+    const lagre = useCallback((formValues: Søkersituasjon) => {
         lagreSøkersituasjon(formValues);
         navigator.goToNextDefaultStep();
     }, []);
@@ -38,31 +37,29 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
             steps={navigator.pageInfo.stepConfig}
             activeStepId={navigator.pageInfo.activeStepId}
         >
-            <FormProvider {...formMethods}>
-                <form onSubmit={formMethods.handleSubmit(lagre)}>
-                    <VStack gap="10">
-                        <ErrorSummaryHookForm />
-                        <RadioGroupPanel
-                            name="situasjon"
-                            label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'SøkersituasjonForm.OppgiFodselEllerAdopsjon' })),
-                            ]}
-                        >
-                            <Radio value={SøkersituasjonEnum.FØDSEL}>
-                                <FormattedMessage id="søkersituasjon.radiobutton.fødsel" />
-                            </Radio>
-                            <Radio value={SøkersituasjonEnum.ADOPSJON}>
-                                <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
-                            </Radio>
-                        </RadioGroupPanel>
-                        <StepButtonsHookForm
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            saveDataOnPreviousClick={lagreSøkersituasjon}
-                        />
-                    </VStack>
-                </form>
-            </FormProvider>
+            <Form formMethods={formMethods} onSubmit={lagre}>
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    <RadioGroupPanel
+                        name="situasjon"
+                        label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'SøkersituasjonForm.OppgiFodselEllerAdopsjon' })),
+                        ]}
+                    >
+                        <Radio value={SøkersituasjonEnum.FØDSEL}>
+                            <FormattedMessage id="søkersituasjon.radiobutton.fødsel" />
+                        </Radio>
+                        <Radio value={SøkersituasjonEnum.ADOPSJON}>
+                            <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
+                        </Radio>
+                    </RadioGroupPanel>
+                    <StepButtonsHookForm
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        saveDataOnPreviousClick={lagreSøkersituasjon}
+                    />
+                </VStack>
+            </Form>
         </Step>
     );
 };
