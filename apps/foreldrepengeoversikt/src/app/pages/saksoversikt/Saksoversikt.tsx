@@ -15,7 +15,6 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { AxiosError } from 'axios';
-import dayjs from 'dayjs';
 
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -46,10 +45,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
 
     const aktiveMinidialogerForSaken = minidialogerData
-        ? minidialogerData.filter(
-              ({ gyldigTil, saksnr }) =>
-                  saksnr === gjeldendeSak.saksnummer && dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'),
-          )
+        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
         : undefined;
     const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
