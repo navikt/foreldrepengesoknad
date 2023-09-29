@@ -55,28 +55,47 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
     );
 };
 
-export function useEsStateSaveFn<TYPE extends EsDataType>(key: TYPE): (data: EsDataMap[TYPE]) => void {
+/** Hook returns save function for one particular data type */
+export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: EsDataMap[TYPE]) => void) => {
     const dispatch = useContext(EsDispatchContext);
-    return useCallback(
-        (data: EsDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch],
-    );
-}
+    return useCallback((data: EsDataMap[TYPE]) => {
+        if (dispatch) {
+            dispatch({ type: 'update', key, data });
+        }
+    }, []);
+};
 
-export function useEsStateResetFn(): () => void {
+/** Hook returns save function usable with all data types  */
+export const useAllStateSaveFn = () => {
+    const dispatch = useContext(EsDispatchContext);
+    return useCallback(<TYPE extends EsDataType>(key: TYPE, data: EsDataMap[TYPE]) => {
+        if (dispatch) {
+            dispatch({ type: 'update', key, data });
+        }
+    }, []);
+};
+
+/** Hook returns state reset function  */
+export const useEsStateResetFn = () => {
     const dispatch = useContext(EsDispatchContext);
     return useCallback(() => {
         if (dispatch) {
             dispatch({ type: 'reset' });
         }
-    }, [dispatch]);
-}
+    }, []);
+};
 
-export function useEsStateData<TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] {
+/** Hook returns data for one particular data type  */
+export const useEsStateData = <TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] => {
     const state = useContext(EsStateContext);
     return state[key];
-}
+};
+
+/** Hook returns function capable of getting all types of data from context state  */
+export const useEsStateAllDataFn = () => {
+    const state = useContext(EsStateContext);
+
+    return useCallback(<TYPE extends EsDataType>(key: TYPE) => {
+        return state[key];
+    }, []);
+};

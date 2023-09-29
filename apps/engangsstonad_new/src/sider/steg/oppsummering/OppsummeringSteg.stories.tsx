@@ -34,12 +34,6 @@ const utenlandsoppholdDefault = {
     harBoddUtenforNorgeSiste12Mnd: false,
     skalBoUtenforNorgeNeste12Mnd: false,
 };
-const utenlandsoppholdFremtidigDefault = {
-    utenlandsoppholdNeste12Mnd: [],
-};
-const utenlandsoppholdTidligereDefault = {
-    utenlandsoppholdSiste12Mnd: [],
-};
 
 export default {
     title: 'OppsummeringSteg',
@@ -58,8 +52,8 @@ const Template: StoryFn<{
 }> = ({
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
-    nesteUtenlandsopphold = utenlandsoppholdFremtidigDefault,
-    sisteUtenlandsopphold = utenlandsoppholdTidligereDefault,
+    nesteUtenlandsopphold,
+    sisteUtenlandsopphold,
 }) => {
     return (
         <IntlProvider språkkode="nb">

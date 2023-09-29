@@ -3,6 +3,13 @@ import IntlProvider from 'intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import SisteUtlandsopphold from './SisteUtlandsopphold';
 import { Path } from 'appData/paths';
+import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import { EsDataType } from 'appData/EsDataContext';
+
+const utenlandsopphold = {
+    harBoddUtenforNorgeSiste12Mnd: true,
+    skalBoUtenforNorgeNeste12Mnd: false,
+};
 
 export default {
     title: 'SisteUtlandsopphold',
@@ -16,7 +23,13 @@ export default {
 const Template: StoryFn<any> = () => {
     return (
         <IntlProvider språkkode="nb">
-            <SisteUtlandsopphold />
+            <EsContextStorybookHelper
+                initialState={{
+                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                }}
+            >
+                <SisteUtlandsopphold />
+            </EsContextStorybookHelper>
         </IntlProvider>
     );
 };
