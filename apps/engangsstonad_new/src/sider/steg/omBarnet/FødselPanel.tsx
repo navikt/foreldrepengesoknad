@@ -131,15 +131,8 @@ const FødselPanel: React.FunctionComponent = () => {
                     <Datepicker
                         name="termindato"
                         label={<FormattedMessage id="søknad.termindato" />}
-                        disabledDays={[
-                            {
-                                from: dayjs().subtract(50, 'year').toDate(),
-                                to: dayjs().subtract(3, 'week').toDate(),
-                            },
-                            {
-                                from: dayjs().add(18, 'weeks').add(3, 'days').toDate(),
-                            },
-                        ]}
+                        minDate={dayjs().subtract(3, 'week').toDate()}
+                        maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={[(value) => validateTerminDate(value, intl)]}
                     />
                 </Block>
@@ -150,15 +143,8 @@ const FødselPanel: React.FunctionComponent = () => {
                     <Datepicker
                         name="terminbekreftelsedato"
                         label={<FormattedMessage id="søknad.terminbekreftelsesdato" />}
-                        disabledDays={[
-                            {
-                                from: dayjs().subtract(50, 'year').toDate(),
-                                to: dayjs(termindato).subtract(18, 'week').subtract(3, 'day').toDate(),
-                            },
-                            {
-                                from: dayjs().toDate(),
-                            },
-                        ]}
+                        minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
+                        maxDate={dayjs().toDate()}
                         validate={[
                             (terminBekreftelseDato) =>
                                 valideringAvTerminbekreftelsesdato(terminBekreftelseDato, termindato, intl),
@@ -171,15 +157,8 @@ const FødselPanel: React.FunctionComponent = () => {
                     <Datepicker
                         name="fødselsdatoer.0"
                         label={<FormattedMessage id="søknad.fødselsdato" />}
-                        disabledDays={[
-                            {
-                                from: dayjs().subtract(50, 'year').toDate(),
-                                to: dayjs().subtract(6, 'month').toDate(),
-                            },
-                            {
-                                from: dayjs().toDate(),
-                            },
-                        ]}
+                        minDate={dayjs().subtract(6, 'month').toDate()}
+                        maxDate={dayjs().toDate()}
                         validate={[(value) => validateFødselDate(value, intl)]}
                     />
                 </Block>

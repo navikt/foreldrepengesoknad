@@ -91,11 +91,7 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                                 }
                             />
                         }
-                        disabledDays={[
-                            {
-                                from: dayjs().subtract(6, 'month').toDate(),
-                            },
-                        ]}
+                        minDate={dayjs().subtract(6, 'month').toDate()}
                         validate={[
                             adopsjonAvEktefellesBarn
                                 ? (value) => validateEktefellensBarnAdopsjonDate(value, intl)

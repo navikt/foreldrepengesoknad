@@ -54,16 +54,8 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
-                disabledDays={[
-                    {
-                        from: dayjs().subtract(50, 'year').toDate(),
-                        to: dayjs(dateToday).subtract(1, 'day').toDate(),
-                    },
-                    {
-                        from: tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                        to: dayjs().add(50, 'year').toDate(),
-                    },
-                ]}
+                minDate={dayjs(dateToday).subtract(1, 'day').toDate()}
+                maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate()}
                 validate={[
                     isRequired(
                         intl.formatMessage({
@@ -87,18 +79,8 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
                 label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.tilogmed" />}
-                disabledDays={[
-                    {
-                        from: dayjs().subtract(50, 'year').toDate(),
-                        to: dayjs(fom || dateToday)
-                            .subtract(1, 'day')
-                            .toDate(),
-                    },
-                    {
-                        from: dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                        to: dayjs().add(50, 'year').toDate(),
-                    },
-                ]}
+                minDate={fom ? dayjs(fom).toDate() : dayjs(dateToday).subtract(1, 'day').toDate()}
+                maxDate={dayjs(date1YearFromNow).add(1, 'day').toDate()}
                 validate={[
                     (tomValue) => {
                         if (tomValue && fom && dayjs(tomValue).isSame(fom)) {

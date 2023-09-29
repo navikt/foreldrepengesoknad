@@ -1,6 +1,5 @@
 import React, { useState, FunctionComponent, ReactNode, useMemo, useCallback } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
-import { Matcher } from 'react-day-picker';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from 'dayjs';
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
@@ -12,13 +11,34 @@ dayjs.extend(customParseFormat);
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
 export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
 
+const TIDENES_MORGEN = dayjs('1000-01-01').toDate();
+const TIDENES_ENDE = dayjs('9999-31-12').toDate();
+
+const findDisabledDays = (minDate?: Date, maxDate?: Date): { from: Date; to?: Date }[] => {
+    const disabledDays = [];
+    if (minDate) {
+        disabledDays.push({
+            from: dayjs(TIDENES_MORGEN).toDate(),
+            to: dayjs(minDate).toDate(),
+        });
+    }
+    if (maxDate) {
+        disabledDays.push({
+            from: dayjs(maxDate).toDate(),
+            to: dayjs(TIDENES_ENDE).toDate(),
+        });
+    }
+    return disabledDays;
+};
+
 export interface DatepickerProps {
     name: string;
     label?: string | ReactNode;
     description?: string;
     validate?: ((value: string) => any)[];
     onChange?: (value: any) => void;
-    disabledDays?: Matcher[];
+    minDate?: Date;
+    maxDate?: Date;
     defaultMonth?: Date;
 }
 
@@ -28,7 +48,8 @@ const Datepicker: FunctionComponent<DatepickerProps> = ({
     description,
     validate = [],
     onChange,
-    disabledDays,
+    minDate,
+    maxDate,
     defaultMonth,
 }): JSX.Element => {
     const {
@@ -74,13 +95,13 @@ const Datepicker: FunctionComponent<DatepickerProps> = ({
         [setFieldValue, onChange, field],
     );
 
-    const dpProps = {
-        ...datepickerProps,
-        disabled: disabledDays,
-    };
+    const disabledDays = useMemo(
+        () => (minDate || maxDate ? findDisabledDays(minDate, maxDate) : undefined),
+        [minDate, maxDate],
+    );
 
     return (
-        <DatePicker {...dpProps} strategy="fixed">
+        <DatePicker {...datepickerProps} disabled={disabledDays} strategy="fixed">
             <DatePicker.Input
                 {...inputProps}
                 ref={field.ref}

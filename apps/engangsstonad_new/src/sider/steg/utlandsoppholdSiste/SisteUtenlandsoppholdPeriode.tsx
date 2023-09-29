@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { date1YearFromNow, dateToday } from '@navikt/fp-common';
+import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/fp-common';
 
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
 import Datepicker from 'fpcommon/form/Datepicker';
@@ -54,16 +54,8 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
             <Datepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
-                disabledDays={[
-                    {
-                        from: dayjs().subtract(50, 'year').toDate(),
-                        to: dayjs(dateToday).subtract(1, 'day').toDate(),
-                    },
-                    {
-                        from: tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                        to: dayjs().add(50, 'year').toDate(),
-                    },
-                ]}
+                minDate={dayjs(date1YearAgo).subtract(1, 'day').toDate()}
+                maxDate={tom ? dayjs(tom).toDate() : dayjs(dateToday).add(1, 'day').toDate()}
                 validate={[
                     isRequired(
                         intl.formatMessage({
@@ -87,18 +79,8 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
             <Datepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
                 label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.tilogmed" />}
-                disabledDays={[
-                    {
-                        from: dayjs().subtract(50, 'year').toDate(),
-                        to: dayjs(fom || dateToday)
-                            .subtract(1, 'day')
-                            .toDate(),
-                    },
-                    {
-                        from: dayjs(date1YearFromNow).add(1, 'day').toDate(),
-                        to: dayjs().add(50, 'year').toDate(),
-                    },
-                ]}
+                minDate={fom ? dayjs(fom).toDate() : dayjs(date1YearAgo).subtract(1, 'day').toDate()}
+                maxDate={dayjs(dateToday).add(1, 'day').toDate()}
                 validate={[
                     isRequired(
                         intl.formatMessage({

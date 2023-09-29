@@ -56,15 +56,8 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                 <Block margin="xl" key={field.id}>
                     <Datepicker
                         name={`fødselsdatoer.${index}.dato`}
-                        disabledDays={[
-                            {
-                                from: dayjs().subtract(50, 'year').toDate(),
-                                to: dayjs().subtract(15, 'year').toDate(),
-                            },
-                            {
-                                from: dayjs().toDate(),
-                            },
-                        ]}
+                        minDate={dayjs().subtract(15, 'year').toDate()}
+                        maxDate={dayjs().toDate()}
                         label={
                             <FormattedMessage
                                 id={
