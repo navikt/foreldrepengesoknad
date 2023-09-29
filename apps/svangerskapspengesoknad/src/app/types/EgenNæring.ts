@@ -9,16 +9,12 @@ export enum Næringstype {
 }
 
 export interface EndringAvNæringsinntektInformasjonDTO {
-    dato: string;
+    dato: Date;
     næringsinntektEtterEndring: string;
     forklaring: string;
 }
 
-export interface EndringAvNæringsinntektInformasjon {
-    dato: string;
-    næringsinntektEtterEndring: string;
-    forklaring: string;
-}
+export interface EndringAvNæringsinntektInformasjon {}
 
 export interface EgenNæring {
     næringstype: Næringstype;
@@ -32,11 +28,21 @@ export interface EgenNæring {
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
     oppstartsdato?: string;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
-    endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
+    varigEndringDato?: string;
+    varigEndringInntektEtterEndring?: string;
+    varigEndringBeskrivelse?: string;
 }
 
 export interface EgenNæringDTO
-    extends Omit<EgenNæring, 'tidsperiode' | 'pågående' | 'endringAvNæringsinntektInformasjon'> {
+    extends Omit<
+        EgenNæring,
+        | 'tidsperiode'
+        | 'pågående'
+        | 'endringAvNæringsinntektInformasjon'
+        | 'varigEndringDato'
+        | 'varigEndringInntektEtterEndring'
+        | 'varigEndringBeskrivelse'
+    > {
     tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdato>;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
 }

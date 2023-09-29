@@ -20,6 +20,7 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
 };
 
 export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData): EgenNæring => {
+    const hattVarigEndring = convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringHattVarigEndringDeSiste4Årene);
     return {
         næringstype: formValues.egenNæringType!,
         tidsperiode: {
@@ -36,6 +37,12 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
             formValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
         )!,
         oppstartsdato: formValues.egenNæringYrkesAktivDato,
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår: hattVarigEndring,
+        varigEndringBeskrivelse: hattVarigEndring
+            ? replaceInvisibleCharsWithSpace(formValues.egenNæringVarigEndringBeskrivelse!)
+            : undefined,
+        varigEndringDato: formValues.egenNæringVarigEndringDato,
+        varigEndringInntektEtterEndring: formValues.egenNæringVarigEndringInntektEtterEndring,
     };
 };
 
@@ -59,6 +66,12 @@ export const getInitialEgenNæringFormValues = (næring: EgenNæring | undefined
             næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         ),
         egenNæringYrkesAktivDato: næring.oppstartsdato || '',
+        egenNæringHattVarigEndringDeSiste4Årene: convertBooleanOrUndefinedToYesOrNo(
+            næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
+        ),
+        egenNæringVarigEndringDato: næring.varigEndringDato,
+        egenNæringVarigEndringBeskrivelse: næring.varigEndringBeskrivelse,
+        egenNæringVarigEndringInntektEtterEndring: næring.varigEndringInntektEtterEndring,
     };
 };
 
@@ -82,6 +95,36 @@ export const cleanupEgenNæringFormData = (
         egenNæringLand: visibility.isVisible(EgenNæringFormField.egenNæringLand)
             ? values.egenNæringLand
             : initialEgenNæringFormData.egenNæringLand,
+        egenNæringTom: visibility.isVisible(EgenNæringFormField.egenNæringTom)
+            ? values.egenNæringTom
+            : initialEgenNæringFormData.egenNæringTom,
+        egenNæringResultat: visibility.isVisible(EgenNæringFormField.egenNæringResultat)
+            ? values.egenNæringResultat
+            : initialEgenNæringFormData.egenNæringResultat,
+        egenNæringHattVarigEndringDeSiste4Årene: visibility.isVisible(
+            EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene,
+        )
+            ? values.egenNæringHattVarigEndringDeSiste4Årene
+            : initialEgenNæringFormData.egenNæringHattVarigEndringDeSiste4Årene,
+        egenNæringVarigEndringDato: visibility.isVisible(EgenNæringFormField.egenNæringVarigEndringDato)
+            ? values.egenNæringVarigEndringDato
+            : initialEgenNæringFormData.egenNæringVarigEndringDato,
+        egenNæringVarigEndringBeskrivelse: visibility.isVisible(EgenNæringFormField.egenNæringVarigEndringBeskrivelse)
+            ? values.egenNæringVarigEndringBeskrivelse
+            : initialEgenNæringFormData.egenNæringVarigEndringBeskrivelse,
+        egenNæringVarigEndringInntektEtterEndring: visibility.isVisible(
+            EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring,
+        )
+            ? values.egenNæringVarigEndringInntektEtterEndring
+            : initialEgenNæringFormData.egenNæringVarigEndringInntektEtterEndring,
+        egenNæringBlittYrkesaktivDe3SisteÅrene: visibility.isVisible(
+            EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene,
+        )
+            ? values.egenNæringBlittYrkesaktivDe3SisteÅrene
+            : initialEgenNæringFormData.egenNæringBlittYrkesaktivDe3SisteÅrene,
+        egenNæringYrkesAktivDato: visibility.isVisible(EgenNæringFormField.egenNæringYrkesAktivDato)
+            ? values.egenNæringYrkesAktivDato
+            : initialEgenNæringFormData.egenNæringYrkesAktivDato,
     };
     return cleanedData;
 };

@@ -33,9 +33,9 @@ export interface EgenNæringFormData {
     [EgenNæringFormField.egenNæringResultat]: string;
     [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo;
     [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: YesOrNo;
-    [EgenNæringFormField.egenNæringVarigEndringDato]: string;
-    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: string;
-    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: string;
+    [EgenNæringFormField.egenNæringVarigEndringDato]: string | undefined;
+    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: string | undefined;
+    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: string | undefined;
 }
 
 export const initialEgenNæringFormData: EgenNæringFormData = {

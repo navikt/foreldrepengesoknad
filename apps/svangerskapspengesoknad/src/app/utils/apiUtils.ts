@@ -176,20 +176,34 @@ const mapTilretteleggingerForInnsending = (tilrettelegging: Tilrettelegging[]): 
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
     if (næring) {
-        return {
+        const hattVarigEndring = næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår;
+
+        const mappedNæring = {
             næringstype: næring.næringstype,
             tidsperiode: {
                 fom: ISOStringToDate(næring.tidsperiode.fom),
                 tom: ISOStringToDate(næring.tidsperiode.tom),
             },
-            næringsinntekt: næring.næringsinntekt!,
+            næringsinntekt: næring.næringsinntekt,
             navnPåNæringen: næring.navnPåNæringen,
             organisasjonsnummer: næring.organisasjonsnummer,
             registrertINorge: næring.registrertINorge,
             registrertILand: næring.registrertILand,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene:
                 næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
+            hattVarigEndringAvNæringsinntektSiste4Kalenderår: hattVarigEndring,
         };
+        if (hattVarigEndring) {
+            return {
+                ...mappedNæring,
+                endringAvNæringsinntektInformasjon: {
+                    dato: ISOStringToDate(næring.varigEndringDato)!,
+                    næringsinntektEtterEndring: næring.varigEndringInntektEtterEndring!,
+                    forklaring: næring.varigEndringBeskrivelse!,
+                },
+            };
+        }
+        return mappedNæring;
     }
     return undefined;
 };
