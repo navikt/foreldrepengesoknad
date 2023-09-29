@@ -37,6 +37,7 @@ import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerE
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
 import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
+import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
 
 const EgenNæringStep: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -197,6 +198,10 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     minDate={getMinInputTilOgMedValue(formValues.egenNæringFom, date4WeeksAgo)}
                                 />
                             </Block>
+                            <VarigEndringSpørsmål
+                                visibility={visibility}
+                                formValues={formValues}
+                            ></VarigEndringSpørsmål>
                             <Block
                                 padBottom="xxl"
                                 visible={visibility.isVisible(EgenNæringFormField.egenNæringResultat)}

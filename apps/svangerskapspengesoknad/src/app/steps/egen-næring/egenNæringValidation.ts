@@ -5,11 +5,12 @@ import {
     intlUtils,
     isDateABeforeDateB,
     isDateInTheFuture,
+    validateStringAsNumberInput,
 } from '@navikt/fp-common';
 import { erGyldigNorskOrgnummer } from '@navikt/fp-common/src/common/utils/organisasjonUtils';
 import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
-import { fireUkerSiden } from 'app/utils/dateUtils';
-import { hasValue } from 'app/utils/validationUtils';
+import { date4YearsAgo, fireUkerSiden } from 'app/utils/dateUtils';
+import { hasValue, validateTextAreaInput } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
@@ -106,14 +107,58 @@ export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) 
     return undefined;
 };
 
-export const validateNumber = (intl: IntlShape, errorKey: string) => (value: string) => {
-    if (hasValue(value)) {
-        const valueNumber = getNumberFromNumberInputValue(value);
+export const validateNumber =
+    (intl: IntlShape, errorKey: string) =>
+    (value: string): SkjemaelementFeil => {
+        if (hasValue(value)) {
+            const valueNumber = getNumberFromNumberInputValue(value);
 
-        if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
-            return intlUtils(intl, errorKey);
+            if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
+                return intlUtils(intl, errorKey);
+            }
         }
-    }
 
-    return undefined;
-};
+        return undefined;
+    };
+
+export const validateEgenNæringVarigEndringDato =
+    (intl: IntlShape, fom: string, tom: string | undefined) =>
+    (endringDato: string): SkjemaelementFeil => {
+        if (!hasValue(endringDato)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringDato.påkrevd');
+        }
+
+        if (!isISODateString(endringDato)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringDato.gyldigDato');
+        }
+
+        if (isDateInTheFuture(endringDato)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringDato.erIFremtiden');
+        }
+        if (isDateABeforeDateB(dateToISOString(date4YearsAgo), endringDato)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringDato.mindreEnn4ÅrSiden');
+        }
+
+        if (isDateABeforeDateB(endringDato, fom)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringDato.førFraDato');
+        }
+        if (hasValue(tom) && isDateABeforeDateB(endringDato, tom!)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringDato.etterTilDato');
+        }
+
+        return undefined;
+    };
+
+export const validateEgenNæringVarigEndringInntekt =
+    (intl: IntlShape) =>
+    (value: string): SkjemaelementFeil => {
+        if (!hasValue(value)) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.påkrevd');
+        }
+        return validateStringAsNumberInput(value, intl, 'valideringsfeil.varigEndringInntekt.ugyldigFormat');
+    };
+
+export const validateEgenNæringVarigEndringBeskrivelse =
+    (intl: IntlShape, label: string, fieldName: string) => (value: string) => {
+        return validateTextAreaInput(value, intl, label, fieldName);
+    };

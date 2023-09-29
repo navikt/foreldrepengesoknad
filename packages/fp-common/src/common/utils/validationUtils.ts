@@ -3,7 +3,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { YesOrNo, DateRange } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo, DateRange, getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { IntlShape } from 'react-intl';
 import { textGyldigRegex, textRegex } from './regexUtils';
 import { intlUtils } from './../../common';
@@ -222,4 +222,13 @@ export const validateRequiredTextInputField =
 
 export const containsWhiteSpace = (s: string): boolean => {
     return /\s/.test(s);
+};
+
+export const validateStringAsNumberInput = (value: string, intl: IntlShape, errorKey: string) => {
+    const valueNumber = getNumberFromNumberInputValue(value);
+
+    if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
+        return intlUtils(intl, errorKey);
+    }
+    return undefined;
 };

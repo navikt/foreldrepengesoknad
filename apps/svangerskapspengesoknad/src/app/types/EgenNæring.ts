@@ -8,6 +8,18 @@ export enum Næringstype {
     ANNET = 'ANNEN',
 }
 
+export interface EndringAvNæringsinntektInformasjonDTO {
+    dato: string;
+    næringsinntektEtterEndring: string;
+    forklaring: string;
+}
+
+export interface EndringAvNæringsinntektInformasjon {
+    dato: string;
+    næringsinntektEtterEndring: string;
+    forklaring: string;
+}
+
 export interface EgenNæring {
     næringstype: Næringstype;
     tidsperiode: Tidsperiode;
@@ -19,8 +31,12 @@ export interface EgenNæring {
     registrertILand?: string;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
     oppstartsdato?: string;
+    hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
+    endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
 }
 
-export interface EgenNæringDTO extends Omit<EgenNæring, 'tidsperiode' | 'pågående'> {
+export interface EgenNæringDTO
+    extends Omit<EgenNæring, 'tidsperiode' | 'pågående' | 'endringAvNæringsinntektInformasjon'> {
     tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdato>;
+    endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
 }

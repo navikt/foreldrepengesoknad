@@ -1,5 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { hasValue, intlUtils } from '@navikt/fp-common';
+import { hasValue, intlUtils, validateStringAsNumberInput } from '@navikt/fp-common';
 import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { isDateABeforeDateB, isDateInTheFuture } from 'app/utils/dateUtils';
@@ -106,11 +106,5 @@ export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato:
 };
 
 export const validateNumber = (intl: IntlShape, errorKey: string) => (value: string) => {
-    const valueNumber = getNumberFromNumberInputValue(value);
-
-    if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
-        return intlUtils(intl, errorKey);
-    }
-
-    return undefined;
+    return validateStringAsNumberInput(value, intl, errorKey);
 };

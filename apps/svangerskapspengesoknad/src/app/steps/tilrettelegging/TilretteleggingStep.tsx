@@ -182,7 +182,12 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     label={risikofaktorerLabel}
                                     minLength={TEXT_INPUT_MIN_LENGTH}
                                     maxLength={TEXT_INPUT_MAX_LENGTH}
-                                    validate={validateRisikofaktorer(intl, risikofaktorerLabel, typeArbeid)}
+                                    validate={validateRisikofaktorer(
+                                        intl,
+                                        risikofaktorerLabel,
+                                        typeArbeid,
+                                        TilretteleggingFormField.risikofaktorer,
+                                    )}
                                     description={intlUtils(intl, 'skjema.risikofaktorer.description')}
                                 />
                             </Block>
@@ -196,7 +201,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                         label={labelTiltak}
                                         minLength={TEXT_INPUT_MIN_LENGTH}
                                         maxLength={TEXT_INPUT_MAX_LENGTH}
-                                        validate={validateTilretteleggingstiltak(intl, labelTiltak)}
+                                        validate={validateTilretteleggingstiltak(
+                                            intl,
+                                            labelTiltak,
+                                            TilretteleggingFormField.tilretteleggingstiltak,
+                                        )}
                                     />
                                 </Block>
                                 <ReadMore size="small" header={intlUtils(intl, 'tilrettelegging.tiltak.info.title')}>
@@ -232,14 +241,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     ]}
                                     validate={validateTilretteleggingPeriodetype(intl)}
                                 />
-                                <ReadMore
-                                    header={intlUtils(
-                                        intl,
-                                        'tilrettelegging.tilretteleggingPeriodetype.readmore.tittel',
-                                    )}
-                                >
-                                    <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.readmore.description" />
-                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="xxl"
