@@ -6,7 +6,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { YesOrNo, DateRange, getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { IntlShape } from 'react-intl';
 import { textGyldigRegex, textRegex } from './regexUtils';
-import { intlUtils } from './../../common';
+import { Kjønn, intlUtils } from './../../common';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
@@ -111,14 +111,8 @@ export const erMyndig = (fødselsdato: string) => {
     return now.diff(momentDate, 'years') >= 18;
 };
 
-export const erKvinne = (kjønn: string) => {
-    const kvinne = 'K';
-
-    if (kjønn !== kvinne) {
-        return false;
-    } else {
-        return true;
-    }
+export const erKvinne = (kjønn: Kjønn) => {
+    return kjønn === 'K';
 };
 
 export const getFørsteMuligeTermindato = () => dayjs().subtract(21, 'days').startOf('day').toDate();
