@@ -9,8 +9,9 @@ import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
-import { erMyndig } from '@navikt/fp-common';
+import { erMyndig, erKvinne } from '@navikt/fp-common';
 import Umyndig from './pages/umyndig/Umyndig';
+import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -32,7 +33,7 @@ const Svangerskapspengesøknad = () => {
         if (søkerinfoError) {
             sendErrorMessageToSentry(søkerinfoError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
     }, [søkerinfoError]);
@@ -40,6 +41,13 @@ const Svangerskapspengesøknad = () => {
     if (søkerinfoData === undefined) {
         return renderSpinner();
     }
+
+    const erPersonKvinne = erKvinne(søkerinfoData.søker.kjønn);
+
+    if (!erPersonKvinne) {
+        return <IkkeKvinne fornavn={søkerinfoData.søker.fornavn} />;
+    }
+
     const erPersonMyndig = erMyndig(søkerinfoData.søker.fødselsdato);
     return (
         <div>

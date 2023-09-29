@@ -12,6 +12,7 @@ export interface PersonBase {
 
 interface Person extends PersonBase {
     erMyndig: boolean;
+    erKvinne: boolean;
 }
 
 export interface RegistrertBarn extends PersonBase {
