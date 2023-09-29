@@ -142,7 +142,7 @@ export const validateEgenNæringVarigEndringDato =
         if (isDateABeforeDateB(endringDato, fom)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.førFraDato');
         }
-        if (hasValue(tom) && isDateABeforeDateB(endringDato, tom!)) {
+        if (hasValue(tom) && isDateABeforeDateB(tom!, endringDato)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.etterTilDato');
         }
 
