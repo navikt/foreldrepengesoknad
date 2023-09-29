@@ -1,8 +1,8 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { intlUtils } from '@navikt/fp-common';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
+import { hasValue, validateTextAreaInput } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -28,23 +28,10 @@ export const validateStillingsprosent = (intl: IntlShape) => (value: string) => 
     return undefined;
 };
 
-export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) => (value: string) => {
-    if (!hasValue(value) || value.trim() === '') {
-        return intlUtils(intl, `valideringsfeil.tilretteleggingstiltak.påkrevd`);
-    }
-
-    if (value.length > TEXT_INPUT_MAX_LENGTH) {
-        return intlUtils(intl, `valideringsfeil.tilretteleggingstiltak.forLang`);
-    }
-
-    if (value.length < TEXT_INPUT_MIN_LENGTH) {
-        return intlUtils(intl, `valideringsfeil.tilretteleggingstiltak.forKort`);
-    }
-
-    return validateTextInputField(value, label, intl);
-
-    return undefined;
-};
+export const validateTilretteleggingstiltak =
+    (intl: IntlShape, label: string, fieldName: string) => (value: string) => {
+        return validateTextAreaInput(value, intl, label, fieldName);
+    };
 
 export const validateSammePeriodeFremTilTerminFom =
     (
@@ -78,18 +65,6 @@ export const validateSammePeriodeFremTilTerminFom =
     };
 
 export const validateRisikofaktorer =
-    (intl: IntlShape, label: string, type: Arbeidsforholdstype) => (risikoFaktorer: string) => {
-        if (!hasValue(risikoFaktorer) || risikoFaktorer.trim() === '') {
-            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.${type}.påkrevd`);
-        }
-
-        if (risikoFaktorer.length > TEXT_INPUT_MAX_LENGTH) {
-            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forLang`);
-        }
-
-        if (risikoFaktorer.length < TEXT_INPUT_MIN_LENGTH) {
-            return intlUtils(intl, `valideringsfeil.skjema.risikofaktorer.forKort`);
-        }
-
-        return validateTextInputField(risikoFaktorer, label, intl);
+    (intl: IntlShape, label: string, type: Arbeidsforholdstype, fieldName: string) => (risikoFaktorer: string) => {
+        return validateTextAreaInput(risikoFaktorer, intl, label, `${fieldName}.${type}`);
     };

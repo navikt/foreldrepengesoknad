@@ -14,6 +14,10 @@ export enum EgenNæringFormField {
     egenNæringYrkesAktivDato = 'egenNæringYrkesAktivDato',
     egenNæringResultat = 'egenNæringResultat',
     egenNæringBlittYrkesaktivDe3SisteÅrene = 'egenNæringBlittYrkesaktivDe3SisteÅrene',
+    egenNæringHattVarigEndringDeSiste4Årene = 'egenNæringHattVarigEndringDeSiste4Årene',
+    egenNæringVarigEndringDato = 'egenNæringVarigEndringDato',
+    egenNæringVarigEndringInntektEtterEndring = 'egenNæringVarigEndringInntektEtterEndring',
+    egenNæringVarigEndringBeskrivelse = 'egenNæringVarigEndringBeskrivelse',
 }
 
 export interface EgenNæringFormData {
@@ -28,6 +32,10 @@ export interface EgenNæringFormData {
     [EgenNæringFormField.egenNæringYrkesAktivDato]: string;
     [EgenNæringFormField.egenNæringResultat]: string;
     [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo;
+    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: YesOrNo;
+    [EgenNæringFormField.egenNæringVarigEndringDato]: string;
+    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: string;
+    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: string;
 }
 
 export const initialEgenNæringFormData: EgenNæringFormData = {
@@ -42,6 +50,10 @@ export const initialEgenNæringFormData: EgenNæringFormData = {
     [EgenNæringFormField.egenNæringResultat]: '',
     [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo.UNANSWERED,
     [EgenNæringFormField.egenNæringYrkesAktivDato]: '',
+    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: YesOrNo.UNANSWERED,
+    [EgenNæringFormField.egenNæringVarigEndringDato]: '',
+    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: '',
+    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: '',
 };
 
 export const EgenNæringFormComponents = getTypedFormComponents<EgenNæringFormField, EgenNæringFormData>();

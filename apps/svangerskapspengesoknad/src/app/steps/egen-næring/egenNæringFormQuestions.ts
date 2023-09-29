@@ -54,6 +54,30 @@ const EgenNæringSubformConfig: QuestionConfig<EgenNæringFormData, EgenNæringF
             egenNæringBlittYrkesaktivDe3SisteÅrene === YesOrNo.YES,
         isAnswered: ({ egenNæringYrkesAktivDato }) => hasValue(egenNæringYrkesAktivDato),
     },
+    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: {
+        isIncluded: ({ egenNæringFom }) =>
+            hasValue(egenNæringFom) && !erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(egenNæringFom)),
+        isAnswered: ({ egenNæringHattVarigEndringDeSiste4Årene }) => hasValue(egenNæringHattVarigEndringDeSiste4Årene),
+    },
+    [EgenNæringFormField.egenNæringVarigEndringDato]: {
+        isIncluded: ({ egenNæringHattVarigEndringDeSiste4Årene }) =>
+            hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
+            egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES,
+        isAnswered: ({ egenNæringVarigEndringDato }) => hasValue(egenNæringVarigEndringDato),
+    },
+    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: {
+        isIncluded: ({ egenNæringHattVarigEndringDeSiste4Årene }) =>
+            hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
+            egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES,
+        isAnswered: ({ egenNæringVarigEndringBeskrivelse }) => hasValue(egenNæringVarigEndringBeskrivelse),
+    },
+    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: {
+        isIncluded: ({ egenNæringHattVarigEndringDeSiste4Årene }) =>
+            hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
+            egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES,
+        isAnswered: ({ egenNæringVarigEndringInntektEtterEndring }) =>
+            hasValue(egenNæringVarigEndringInntektEtterEndring),
+    },
 };
 
 export const egenNæringFormQuestionsConfig = Questions<EgenNæringFormData, EgenNæringFormField>(
