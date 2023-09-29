@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
-import { foreldrepengersoknadApi } from 'appData/api';
+import { engangsstønadApi } from 'appData/api';
 import AppContainer from './AppContainer';
 
 const person = {
@@ -29,7 +29,7 @@ export default {
 };
 
 const Template: StoryFn<any> = () => {
-    const apiMock = new MockAdapter(foreldrepengersoknadApi);
+    const apiMock = new MockAdapter(engangsstønadApi);
     apiMock.onGet('/personinfo').reply(200, person);
     apiMock.onPost('/soknad').reply(200, kvittering);
 

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Attachment } from './typer/Attachment';
 
+export const attachmentApi = axios.create();
+
 function saveAttachment(attachment: Attachment, restApiUrl: string) {
     const config = {
         withCredentials: true,
@@ -15,7 +17,7 @@ function saveAttachment(attachment: Attachment, restApiUrl: string) {
     formData.append('vedlegg', attachment.file, attachment.filename);
 
     const url = `${restApiUrl}/storage/vedlegg`;
-    return axios.post(url, formData, config);
+    return attachmentApi.post(url, formData, config);
 }
 
 const AttachmentApi = { saveAttachment };

@@ -5,6 +5,9 @@ import { IntlShape } from 'react-intl';
 export const isRequired = (errorMessage: string) => (value: string | number) =>
     value == undefined || value === null || value === '' ? errorMessage : null;
 
+export const validateDatesNotEqual = (errorMessage: string, date1?: string) => (date2?: string) =>
+    date1 && date2 && dayjs(date1).isSame(date2) ? errorMessage : null;
+
 const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 };
@@ -34,7 +37,7 @@ const validateDateInRange = (
         );
     }
 
-    return undefined;
+    return null;
 };
 
 export const validateFromDate = (

@@ -2,6 +2,7 @@ export enum Path {
     VELKOMMEN = '/',
     SØKERSITUASJON = '/soknad/søkersituasjon',
     OM_BARNET = '/soknad/om-barnet',
+    DOKUMENTASJON = '/soknad/dokumentasjon',
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',
     SISTE_UTENLANDSOPPHOLD = '/soknad/siste-utenlandsopphold',
     NESTE_UTENLANDSOPPHOLD = '/soknad/neste-utenlandsopphold',
@@ -13,6 +14,7 @@ export const PATH_ORDER = [
     Path.VELKOMMEN,
     Path.SØKERSITUASJON,
     Path.OM_BARNET,
+    Path.DOKUMENTASJON,
     Path.UTENLANDSOPPHOLD,
     Path.SISTE_UTENLANDSOPPHOLD,
     Path.NESTE_UTENLANDSOPPHOLD,
@@ -20,4 +22,10 @@ export const PATH_ORDER = [
     Path.KVITTERING,
 ];
 
-export const REQUIRED_APP_STEPS = [Path.SØKERSITUASJON, Path.OM_BARNET, Path.UTENLANDSOPPHOLD, Path.OPPSUMMERING];
+export const REQUIRED_APP_STEPS = [
+    Path.SØKERSITUASJON,
+    Path.OM_BARNET,
+    Path.DOKUMENTASJON,
+    Path.UTENLANDSOPPHOLD,
+    Path.OPPSUMMERING,
+];

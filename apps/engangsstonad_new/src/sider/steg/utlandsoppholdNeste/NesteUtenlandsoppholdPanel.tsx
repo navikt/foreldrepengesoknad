@@ -8,7 +8,12 @@ import { createCountryOptions } from 'fpcommon/util/countryUtils';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
 import dayjs from 'dayjs';
-import { isRequired, validateFromDate, validateToDate } from 'fpcommon/validering/valideringsregler';
+import {
+    isRequired,
+    validateDatesNotEqual,
+    validateFromDate,
+    validateToDate,
+} from 'fpcommon/validering/valideringsregler';
 
 export type FormValues = {
     fom?: string;
@@ -29,6 +34,14 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
 
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
+
+    const minDateFom = dayjs(dateToday).subtract(1, 'day').toDate();
+    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate();
+
+    const minDateTom = dayjs(fom || dateToday)
+        .subtract(1, 'day')
+        .toDate();
+    const maxDateTom = dayjs(date1YearFromNow).add(1, 'day').toDate();
 
     return (
         <VStack gap="5" align="start">
@@ -62,15 +75,18 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
                             id: 'valideringsfeil.leggTilUtenlandsopphold.landFomDuSkalBoIPåkreved',
                         }),
                     ),
+                    validateDatesNotEqual(
+                        intl.formatMessage({
+                            id: 'valideringsfeil.fomErLikTom',
+                        }),
+                        tom,
+                    ),
                     (fomValue) => {
-                        if (tom && fomValue && dayjs(tom).isSame(fomValue)) {
-                            return intl.formatMessage({ id: 'valideringsfeil.fomErLikTom' });
-                        }
                         return validateFromDate(
                             intl,
                             dayjs(fomValue).toDate(),
-                            dayjs(dateToday).subtract(1, 'day').toDate(),
-                            tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                            minDateFom,
+                            maxDateFom,
                             dayjs(tom).toDate(),
                         );
                     },
@@ -79,13 +95,16 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
                 label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.tilogmed" />}
-                minDate={fom ? dayjs(fom).toDate() : dayjs(dateToday).subtract(1, 'day').toDate()}
-                maxDate={dayjs(date1YearFromNow).add(1, 'day').toDate()}
+                minDate={minDateTom}
+                maxDate={maxDateTom}
                 validate={[
+                    validateDatesNotEqual(
+                        intl.formatMessage({
+                            id: 'valideringsfeil.tomErLikFom',
+                        }),
+                        fom,
+                    ),
                     (tomValue) => {
-                        if (tomValue && fom && dayjs(tomValue).isSame(fom)) {
-                            return intl.formatMessage({ id: 'valideringsfeil.tomErLikFom' });
-                        }
                         return validateToDate(
                             intl,
                             dayjs(tomValue).toDate(),

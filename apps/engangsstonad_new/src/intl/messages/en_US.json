@@ -214,6 +214,7 @@
     "vedlegg.tomFil.flereFeil": "{filename} - You can not upload an empty file",
     "vedlegg.virus": "The attachment did not pass our virus scan",
     "vedlegg.virus.flereFeil": "{filename} - The attachment did not pass our virus scan",
+    "vedlegg.hvordanTaBilder": "How to take pictures of attachments with your phone",
     "velkommen.button.fortsettSøknad": "Continue with the application",
     "velkommen.button.startSøknad": "Start with the application",
     "velkommen.erMann.boblelenketekst": "The application for the father can be found here.",

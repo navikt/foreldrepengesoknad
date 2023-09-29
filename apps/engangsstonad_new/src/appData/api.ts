@@ -6,18 +6,18 @@ import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
 
-export const foreldrepengersoknadApi = axios.create({
+export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,
     withCredentials: true,
 });
 
-foreldrepengersoknadApi.interceptors.request.use((config) => {
+engangsstønadApi.interceptors.request.use((config) => {
     config.withCredentials = true;
     config.timeout = 60 * 1000;
     return config;
 });
 
-foreldrepengersoknadApi.interceptors.response.use(
+engangsstønadApi.interceptors.response.use(
     (response: AxiosResponse) => {
         return response;
     },
@@ -35,7 +35,7 @@ foreldrepengersoknadApi.interceptors.response.use(
 );
 
 const getPerson = () => {
-    return foreldrepengersoknadApi.get('/personinfo');
+    return engangsstønadApi.get('/personinfo');
 };
 
 const sendSøknad =
@@ -63,7 +63,7 @@ const sendSøknad =
             vedlegg: [],
         };
 
-        const response = await foreldrepengersoknadApi.post('/soknad', søknad, {
+        const response = await engangsstønadApi.post('/soknad', søknad, {
             headers: {
                 'content-type': 'application/json;',
             },

@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 const PATH_TO_LABEL_MAP = {
     [Path.SØKERSITUASJON]: 'søknad.søkersituasjon',
     [Path.OM_BARNET]: 'søknad.omBarnet',
+    [Path.DOKUMENTASJON]: 'søknad.termin',
     [Path.UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold',
     [Path.SISTE_UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold.tidligere',
     [Path.NESTE_UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold.fremtidig',

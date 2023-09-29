@@ -32,6 +32,7 @@ const uploadAttachment = async (attachment: Attachment, restApiUrl: string): Pro
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } catch (error) {
+        debugger;
         attachment.pending = false;
     }
 };
@@ -44,31 +45,21 @@ const fileExtensionIsValid = (filename: string): boolean => {
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
 interface Props {
-    id: string;
     label: string;
-    legend: string;
     updateAttachments: (attachments: Attachment[]) => void;
     attachmentType: AttachmentType;
     skjemanummber: Skjemanummer;
     existingAttachments?: Attachment[];
-    description?: string;
-    validate?: any;
-    onFileInputClick?: () => void;
     restApiUrl: string;
 }
 
 const FileUploader: React.FunctionComponent<Props> = ({
-    id,
     existingAttachments = EMPTY_ATTACHMENT_LIST,
     updateAttachments,
-    onFileInputClick,
     label,
-    legend,
-    description,
     attachmentType,
     skjemanummber,
     restApiUrl,
-    ...otherProps
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
 
@@ -101,16 +92,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="8">
-            <FileInput
-                id={id}
-                accept={VALID_EXTENSIONS.join(', ')}
-                onFilesSelect={saveFiles}
-                onClick={onFileInputClick}
-                legend={legend}
-                buttonLabel={label}
-                description={description}
-                {...otherProps}
-            />
+            <FileInput accept={VALID_EXTENSIONS.join(', ')} onFilesSelect={saveFiles} buttonLabel={label} />
             <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
         </VStack>
     );
