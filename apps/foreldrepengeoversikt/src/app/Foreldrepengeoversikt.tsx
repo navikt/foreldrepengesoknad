@@ -1,7 +1,6 @@
 import { Loader } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
-import dayjs from 'dayjs';
 import { useEffect, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
@@ -94,9 +93,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         );
     }
 
-    const aktiveMinidialoger = minidialogQuery.data
-        ? minidialogQuery.data.filter(({ gyldigTil }) => dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'))
-        : undefined;
     const defaultSaker: SakOppslag = {
         engangsstønad: [],
         foreldrepenger: [],
@@ -112,7 +108,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 <ForeldrepengeoversiktRoutes
                     søkerinfo={søkerinfoData}
                     saker={saker || defaultSaker}
-                    minidialogerData={aktiveMinidialoger}
+                    minidialogerData={minidialogQuery.data}
                     minidialogerError={minidialogError}
                     oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
                     storageData={storageData}
