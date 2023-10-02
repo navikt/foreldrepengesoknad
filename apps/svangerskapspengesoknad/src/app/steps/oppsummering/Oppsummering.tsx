@@ -2,7 +2,7 @@ import { Accordion, BodyShort, Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, formatDate, guid, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsConfig';
+import stepConfig, { getBackLinkTilretteleggingPeriodeEllerSkjemaSteg } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -182,7 +182,10 @@ const Oppsummering = () => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getBackLinkTilretteleggingEllerSkjemaSteg(tilrettelegging, undefined)}
+                                        to={getBackLinkTilretteleggingPeriodeEllerSkjemaSteg(
+                                            tilrettelegging,
+                                            undefined,
+                                        )}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

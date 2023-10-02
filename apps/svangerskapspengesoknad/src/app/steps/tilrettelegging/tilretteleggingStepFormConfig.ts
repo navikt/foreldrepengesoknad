@@ -1,5 +1,5 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { Tilretteleggingstype, PeriodeMedVariasjon } from 'app/types/Tilrettelegging';
+import { Tilretteleggingstype } from 'app/types/Tilrettelegging';
 
 export enum DelivisTilretteleggingPeriodeType {
     'SAMMME_PERIODE_FREM_TIL_TERMIN' = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
@@ -12,7 +12,6 @@ export enum TilretteleggingFormField {
     delvisTilretteleggingPeriodeType = 'delvisTilretteleggingPeriodeType',
     sammePeriodeFremTilTerminFom = 'sammePeriodeFremTilTerminFom',
     sammePeriodeFremTilTerminStillingsprosent = 'sammePeriodeFremTilTerminStillingsprosent',
-    variertePerioder = 'variertePerioder',
     tilretteleggingstiltak = 'tilretteleggingstiltak',
     risikofaktorer = 'risikofaktorer',
 }
@@ -23,12 +22,11 @@ export interface TilretteleggingFormData {
     [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: DelivisTilretteleggingPeriodeType | undefined;
     [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: string | undefined;
     [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: string | undefined;
-    [TilretteleggingFormField.variertePerioder]: PeriodeMedVariasjon[];
     [TilretteleggingFormField.tilretteleggingstiltak]: string | undefined;
     [TilretteleggingFormField.risikofaktorer]: string | undefined;
 }
 
 export const TilretteleggingFormComponents = getTypedFormComponents<
-    TilretteleggingFormField | string,
+    TilretteleggingFormField,
     TilretteleggingFormData
 >();
