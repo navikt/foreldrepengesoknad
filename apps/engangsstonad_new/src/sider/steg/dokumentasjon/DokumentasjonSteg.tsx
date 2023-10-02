@@ -55,6 +55,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
 
     const updateAttachments = useCallback((attachments: Attachment[]) => {
         // TODO Må truleg kalle validering her òg
+        //TODO Ikkje kall denne om det er feil på vedlegg
         formMethods.setValue('vedlegg', attachments);
     }, []);
 

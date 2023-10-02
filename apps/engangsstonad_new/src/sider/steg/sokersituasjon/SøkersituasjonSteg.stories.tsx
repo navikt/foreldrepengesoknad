@@ -25,4 +25,4 @@ const Template: StoryFn<any> = () => {
     );
 };
 
-export const VisSide = Template.bind({});
+export const Default = Template.bind({});

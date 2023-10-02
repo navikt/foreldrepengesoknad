@@ -58,7 +58,7 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
     );
 };
 
-/** Hook returns save function for one particular data type */
+/** Hook returns save function for one specific data type */
 export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: EsDataMap[TYPE]) => void) => {
     const dispatch = useContext(EsDispatchContext);
     return useCallback((data: EsDataMap[TYPE]) => {
@@ -88,7 +88,7 @@ export const useEsStateResetFn = () => {
     }, []);
 };
 
-/** Hook returns data for one particular data type  */
+/** Hook returns data for one specific data type  */
 export const useEsStateData = <TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] => {
     const state = useContext(EsStateContext);
     return state[key];

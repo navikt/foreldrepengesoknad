@@ -3,7 +3,13 @@ import dayjs from 'dayjs';
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import {
+    UtenlandsoppholdPeriode,
+    Utenlandsopphold,
+    UtenlandsoppholdNeste,
+    UtenlandsoppholdSiste,
+} from 'types/Utenlandsopphold';
+import { notEmpty } from 'fpcommon/validering/valideringUtil';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
@@ -11,8 +17,8 @@ const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
 
 const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     familiehendelsedato: string,
-    utenlandsoppholdSiste12Mnd: any = [],
-    utenlandsoppholdNeste12Mnd: any = [],
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[] = [],
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] = [],
 ) => {
     return (
         utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
@@ -55,7 +61,9 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                     <Label className="textWithLabel__label">
                         {intl.formatMessage({ id: 'oppsummering.text.boddSisteTolv' })}
                     </Label>
-                    <LandOppsummering utenlandsoppholdListe={utenlandsoppholdSiste.utenlandsoppholdSiste12Mnd} />
+                    <LandOppsummering
+                        utenlandsoppholdListe={notEmpty(utenlandsoppholdSiste).utenlandsoppholdSiste12Mnd}
+                    />
                 </div>
             )}
             {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false ? (
@@ -72,7 +80,9 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                     <Label className="textWithLabel__label">
                         {intl.formatMessage({ id: 'oppsummering.text.neste12mnd' })}
                     </Label>
-                    <LandOppsummering utenlandsoppholdListe={utenlandsoppholdNeste.utenlandsoppholdNeste12Mnd} />
+                    <LandOppsummering
+                        utenlandsoppholdListe={notEmpty(utenlandsoppholdNeste).utenlandsoppholdNeste12Mnd}
+                    />
                 </div>
             )}
             {omBarnet.erBarnetFødt === false && (

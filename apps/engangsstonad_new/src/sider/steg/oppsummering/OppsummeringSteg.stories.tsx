@@ -10,6 +10,7 @@ import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybo
 import { EsDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
+import Dokumentasjon from 'types/Dokumentasjon';
 
 const person = {
     fnr: '11111111111',
@@ -35,6 +36,10 @@ const utenlandsoppholdDefault = {
     skalBoUtenforNorgeNeste12Mnd: false,
 };
 
+const vedleggDefault = {
+    vedlegg: [],
+};
+
 export default {
     title: 'OppsummeringSteg',
     component: OppsummeringSteg,
@@ -49,11 +54,13 @@ const Template: StoryFn<{
     utenlandsopphold?: Utenlandsopphold;
     nesteUtenlandsopphold?: UtenlandsoppholdNeste;
     sisteUtenlandsopphold?: UtenlandsoppholdSiste;
+    dokumentasjon?: Dokumentasjon;
 }> = ({
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
     nesteUtenlandsopphold,
     sisteUtenlandsopphold,
+    dokumentasjon = vedleggDefault,
 }) => {
     return (
         <IntlProvider språkkode="nb">
@@ -63,6 +70,7 @@ const Template: StoryFn<{
                     [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                     [EsDataType.UTENLANDSOPPHOLD_NESTE]: nesteUtenlandsopphold,
                     [EsDataType.UTENLANDSOPPHOLD_SISTE]: sisteUtenlandsopphold,
+                    [EsDataType.DOKUMENTASJON]: dokumentasjon,
                 }}
             >
                 <OppsummeringSteg person={person} sendSøknad={action('button-click')} />
@@ -80,6 +88,8 @@ AdopsjonAvEktefellesBarn.args = {
         antallBarn: 1,
         adopsjonsdato: '2023-01-01',
         fødselsdatoer: ['2023-01-01'],
+    },
+    dokumentasjon: {
         vedlegg: [
             {
                 id: '1',
@@ -94,6 +104,7 @@ AdopsjonAvEktefellesBarn.args = {
         ],
     },
 };
+
 export const AdopsjonAvEktefellesFlereBarn = Template.bind({});
 AdopsjonAvEktefellesFlereBarn.args = {
     omBarnet: {
@@ -101,6 +112,8 @@ AdopsjonAvEktefellesFlereBarn.args = {
         antallBarn: 1,
         adopsjonsdato: '2023-01-01',
         fødselsdatoer: ['2023-01-01', '2020-01-01'],
+    },
+    dokumentasjon: {
         vedlegg: [
             {
                 id: '1',
@@ -123,6 +136,8 @@ BarnetErIkkeFodt.args = {
         antallBarn: 1,
         termindato: '2023-01-02',
         terminbekreftelsedato: '2023-01-01',
+    },
+    dokumentasjon: {
         vedlegg: [
             {
                 id: '1',

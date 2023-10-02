@@ -1,4 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
+import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
@@ -7,19 +8,13 @@ import { date1YearAgo, dateToday } from '@navikt/fp-common';
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
-import dayjs from 'dayjs';
 import {
     validateDatesNotEqual,
     isRequired,
     validateFromDate,
     validateToDate,
 } from 'fpcommon/validering/valideringsregler';
-
-export type FormValues = {
-    fom?: string;
-    tom?: string;
-    landkode?: string;
-};
+import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
 interface OwnProps {
     index: number;
@@ -28,7 +23,8 @@ interface OwnProps {
 
 const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
     const intl = useIntl();
-    const { watch } = useFormContext<{ utenlandsoppholdSiste12Mnd: FormValues[] }>();
+
+    const { watch } = useFormContext<{ utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[] }>();
 
     const fom = watch(`utenlandsoppholdSiste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
@@ -78,6 +74,7 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
                         tom,
                     ),
                     (fomValue) => {
+                        //TODO Del opp denne funksjonen
                         return validateFromDate(
                             intl,
                             dayjs(fomValue).toDate(),
@@ -106,6 +103,7 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
                         fom,
                     ),
                     (tomValue) => {
+                        //TODO Del opp denne funksjonen
                         return validateToDate(
                             intl,
                             dayjs(tomValue).toDate(),

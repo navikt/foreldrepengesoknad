@@ -3,18 +3,16 @@ export type Utenlandsopphold = {
     skalBoUtenforNorgeNeste12Mnd: boolean;
 };
 
+export type UtenlandsoppholdPeriode = {
+    fom: string;
+    tom: string;
+    landkode: string;
+};
+
 export type UtenlandsoppholdNeste = {
-    utenlandsoppholdNeste12Mnd: {
-        fom: string;
-        tom: string;
-        landkode: string;
-    }[];
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
 };
 
 export type UtenlandsoppholdSiste = {
-    utenlandsoppholdSiste12Mnd: {
-        fom: string;
-        tom: string;
-        landkode: string;
-    }[];
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
 };

@@ -1,13 +1,10 @@
 import * as countries from 'i18n-iso-countries';
 import { formatDate } from '@navikt/fp-common';
 import { BodyLong } from '@navikt/ds-react';
+import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
 interface Props {
-    utenlandsoppholdListe: {
-        landkode: string;
-        fom: string;
-        tom: string;
-    }[];
+    utenlandsoppholdListe: UtenlandsoppholdPeriode[];
 }
 
 const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdListe }) => (

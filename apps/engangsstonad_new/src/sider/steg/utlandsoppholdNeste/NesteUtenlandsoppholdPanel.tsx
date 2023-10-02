@@ -1,5 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import dayjs from 'dayjs';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { date1YearFromNow, dateToday } from '@navikt/fp-common';
@@ -7,19 +8,13 @@ import { date1YearFromNow, dateToday } from '@navikt/fp-common';
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
-import dayjs from 'dayjs';
 import {
     isRequired,
     validateDatesNotEqual,
     validateFromDate,
     validateToDate,
 } from 'fpcommon/validering/valideringsregler';
-
-export type FormValues = {
-    fom?: string;
-    tom?: string;
-    landkode?: string;
-};
+import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
 interface OwnProps {
     index: number;
@@ -28,9 +23,8 @@ interface OwnProps {
 
 const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
     const intl = useIntl();
-    const { watch } = useFormContext<{ utenlandsoppholdNeste12Mnd: FormValues[] }>();
 
-    // TODO Manglar validering på tvers av periodar
+    const { watch } = useFormContext<{ utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] }>();
 
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);

@@ -27,6 +27,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
+
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
     const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
@@ -45,6 +46,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
         if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
             lagreNesteUtenlandsopphold(undefined);
         }
+
         navigator.goToNextStep(utledNesteSide(formValues));
     }, []);
 

@@ -15,11 +15,11 @@ export default {
     },
 };
 
-const Template: StoryFn<any> = () => {
+const Template: StoryFn<{ startSøknad: (start: boolean) => void }> = ({ startSøknad }) => {
     return (
         <IntlProvider språkkode="nb">
             <Velkommen
-                startSøknad={action('button-click')}
+                startSøknad={startSøknad}
                 onChangeLocale={action('button-click')}
                 locale="nb"
                 erVelkommen={false}
@@ -28,4 +28,7 @@ const Template: StoryFn<any> = () => {
     );
 };
 
-export const VisSide = Template.bind({});
+export const Default = Template.bind({});
+Default.args = {
+    startSøknad: action('button-click'),
+};

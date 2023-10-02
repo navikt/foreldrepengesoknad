@@ -13,13 +13,13 @@ import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import useStepData from 'appData/useStepData';
-import { UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import { UtenlandsoppholdSiste, UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
 const DEFAULT_PERIODE = {
     fom: '',
     tom: '',
     landkode: '',
-};
+} as UtenlandsoppholdPeriode;
 const DEFAULT_FORM_VALUES = {
     utenlandsoppholdSiste12Mnd: [DEFAULT_PERIODE],
 } as UtenlandsoppholdSiste;

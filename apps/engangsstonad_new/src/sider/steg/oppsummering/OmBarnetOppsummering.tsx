@@ -4,12 +4,14 @@ import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import AttachmentList from 'fpcommon/uploader/liste/AttachmentList';
 import { isAttachmentWithError } from 'fpcommon/uploader/fileUtils';
 import { OmBarnet } from 'types/OmBarnet';
+import Dokumentasjon from 'types/Dokumentasjon';
 
 interface Props {
     omBarnet: OmBarnet;
+    vedlegg: Dokumentasjon;
 }
 
-const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
+const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedlegg }) => {
     const intl = useIntl();
 
     let antallBarnSummaryText;
@@ -69,7 +71,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                     <Label>
                         <FormattedMessage id={'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse'} />
                     </Label>
-                    <AttachmentList attachments={omBarnet.vedlegg.filter((a) => !isAttachmentWithError(a))} />
+                    <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !isAttachmentWithError(a))} />
                 </>
             )}
             {omBarnet.erBarnetFødt && omBarnet.fødselsdatoer && (
@@ -98,7 +100,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                         <Label>
                             <FormattedMessage id={'oppsummering.text.vedlagtTerminbekreftelse'} />
                         </Label>
-                        <AttachmentList attachments={omBarnet.vedlegg.filter((a) => !isAttachmentWithError(a))} />
+                        <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !isAttachmentWithError(a))} />
                     </>
                 </>
             )}

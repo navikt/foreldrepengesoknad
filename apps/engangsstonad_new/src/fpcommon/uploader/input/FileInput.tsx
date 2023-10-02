@@ -23,7 +23,7 @@ const FileInput: React.FunctionComponent<Props> = ({ buttonLabel, multiple, acce
         [onFilesSelect],
     );
 
-    const inputElement = useRef<HTMLInputElement>();
+    const inputElement = useRef<HTMLInputElement>(null);
 
     const openFileDialog = useCallback(() => {
         if (inputElement.current) {

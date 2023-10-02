@@ -3,8 +3,14 @@ import { Locale } from '@navikt/fp-common';
 import { redirectToLogin } from 'fpcommon/util/login';
 import Environment from './Environment';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import {
+    Utenlandsopphold,
+    UtenlandsoppholdNeste,
+    UtenlandsoppholdPeriode,
+    UtenlandsoppholdSiste,
+} from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
+import Dokumentasjon from 'types/Dokumentasjon';
 
 export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,
@@ -38,29 +44,45 @@ const getPerson = () => {
     return engangsstønadApi.get('/personinfo');
 };
 
+const mapBostedUtlandTilUtenlandsopphold = (
+    perioder: UtenlandsoppholdPeriode[] = [],
+): {
+    land: string;
+    tidsperiode: { tom: string; fom: string };
+}[] => {
+    return perioder.map((periode) => ({
+        land: periode.landkode,
+        tidsperiode: {
+            fom: periode.fom,
+            tom: periode.tom,
+        },
+    }));
+};
+
 const sendSøknad =
     (locale: Locale, setKvittering: (kvittering: Kvittering) => void) =>
     async (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
+        vedlegg: Dokumentasjon,
         sisteUtenlandsopphold?: UtenlandsoppholdSiste,
         nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => {
-        //TODO Treng nok framleis noko mapping (Gjer mappinga i dei ulike komponentane ved neste?)
+        //TODO Bør få vekk mappinga her. Bruk samme navngiving på variablane frontend og backend.
         const søknad = {
             barn: omBarnet,
             type: 'engangsstønad',
             erEndringssøknad: false,
             informasjonOmUtenlandsopphold: {
-                ...utenlandsopphold,
-                ...nesteUtenlandsopphold,
-                ...sisteUtenlandsopphold,
+                iNorgeSiste12Mnd: utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
+                iNorgeNeste12Mnd: utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
+                tidligereOpphold: mapBostedUtlandTilUtenlandsopphold(sisteUtenlandsopphold?.utenlandsoppholdSiste12Mnd),
+                senereOpphold: mapBostedUtlandTilUtenlandsopphold(nesteUtenlandsopphold?.utenlandsoppholdNeste12Mnd),
             },
             søker: {
                 språkkode: locale,
             },
-            //TODO Vedlegg
-            vedlegg: [],
+            vedlegg,
         };
 
         const response = await engangsstønadApi.post('/soknad', søknad, {

@@ -14,6 +14,7 @@ import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import { notEmpty } from 'fpcommon/validering/valideringUtil';
 import StepButtons from 'fpcommon/components/StepButtons';
+import Dokumentasjon from 'types/Dokumentasjon';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     if (mellomnavn) {
@@ -27,6 +28,7 @@ export interface Props {
     sendSøknad: (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
+        vedlegg: Dokumentasjon,
         sisteUtenlandsopphold?: UtenlandsoppholdSiste,
         nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => void;
@@ -37,19 +39,21 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
+
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
+    const vedlegg = notEmpty(useEsStateData(EsDataType.DOKUMENTASJON));
     const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
     const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const send = useCallback(async () => {
+    const send = useCallback(() => {
         if (!isChecked) {
             setIsError(true);
         } else {
-            sendSøknad(omBarnet, utenlandsopphold, sisteUtenlandsopphold, nesteUtenlandsopphold);
+            sendSøknad(omBarnet, utenlandsopphold, vedlegg, sisteUtenlandsopphold, nesteUtenlandsopphold);
             navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
@@ -71,7 +75,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                         </VStack>
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omBarnet' })}>
-                        <OmBarnetOppsummering omBarnet={omBarnet} />
+                        <OmBarnetOppsummering omBarnet={omBarnet} vedlegg={vedlegg} />
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
                         <UtenlandsoppholdOppsummering

@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useMemo } from 'react';
+import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Select as DsSelect } from '@navikt/ds-react';
 import { getError, getValidationRules } from './formUtils';
@@ -35,6 +35,16 @@ const Select: FunctionComponent<OwnProps> = ({
         },
     });
 
+    const onChangeFn = useCallback(
+        (evt: React.ChangeEvent) => {
+            if (onChange) {
+                onChange(evt);
+            }
+            field.onChange(evt);
+        },
+        [field, onChange],
+    );
+
     return (
         <DsSelect
             ref={field.ref}
@@ -44,12 +54,7 @@ const Select: FunctionComponent<OwnProps> = ({
             description={description}
             value={field.value}
             disabled={disabled}
-            onChange={(evt) => {
-                if (onChange) {
-                    onChange(evt);
-                }
-                field.onChange(evt);
-            }}
+            onChange={onChangeFn}
         >
             <option style={{ display: 'none' }} />,{children}
         </DsSelect>
