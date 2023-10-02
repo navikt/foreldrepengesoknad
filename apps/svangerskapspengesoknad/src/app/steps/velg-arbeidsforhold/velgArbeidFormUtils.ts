@@ -48,7 +48,10 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                         forhold.arbeidsgiverIdType === 'orgnr'
                             ? Arbeidsforholdstype.VIRKSOMHET
                             : Arbeidsforholdstype.PRIVAT,
-                    navn: forhold.arbeidsgiverNavn || intlUtils(intl, 'privat.arbeidsgiver'),
+                    navn:
+                        forhold.arbeidsgiverIdType === 'orgnr'
+                            ? forhold.arbeidsgiverNavn
+                            : intlUtils(intl, 'privat.arbeidsgiver'),
                 },
                 variertePerioder: tilretteleggingFraState?.variertePerioder || [],
                 vedlegg: tilretteleggingFraState?.vedlegg || [],
