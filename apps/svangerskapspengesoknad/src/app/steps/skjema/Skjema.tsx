@@ -1,4 +1,4 @@
-import { Alert, Button, Label, ReadMore } from '@navikt/ds-react';
+import { Alert, Button, Label } from '@navikt/ds-react';
 import { Block, FormikFileUploader, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachment-list/AttachmentList';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
@@ -30,6 +30,7 @@ import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekst
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
+import InfoScanneDokument from './components/scanne-dokument/InfoScanneDokument';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -155,9 +156,7 @@ const Skjema: React.FunctionComponent = () => {
                                 );
                             })}
                             <Block padBottom="xxl">
-                                <ReadMore header={'Les om hvordan ta et bra bilde'}>
-                                    <div>TODO</div>
-                                </ReadMore>
+                                <InfoScanneDokument />
                             </Block>
                             {forMangeFiler && submitClicked && (
                                 <Alert variant="error">{intlUtils(intl, 'skjema.maks40Filer')}</Alert>
