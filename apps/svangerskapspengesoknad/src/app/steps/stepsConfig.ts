@@ -1,4 +1,4 @@
-import { hasValue, intlUtils } from '@navikt/fp-common';
+import { intlUtils } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtils';
 import { getForrigeTilrettelegging, getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from 'app/routes/routes';
@@ -16,6 +16,7 @@ import {
     DelivisTilretteleggingPeriodeType,
     TilretteleggingFormData,
 } from './tilrettelegging/tilretteleggingStepFormConfig';
+import { hasValue } from 'app/utils/validationUtils';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
