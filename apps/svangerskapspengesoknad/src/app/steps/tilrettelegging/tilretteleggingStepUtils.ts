@@ -1,8 +1,8 @@
-import { hasValue } from '@navikt/fp-common';
 import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingStepFormConfig';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
+import { hasValue } from 'app/utils/validationUtils';
 
 export const getInitTilretteleggingFormDataValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.behovForTilretteleggingFom]: '',

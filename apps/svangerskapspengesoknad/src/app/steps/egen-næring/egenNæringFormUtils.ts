@@ -1,4 +1,3 @@
-import { hasValue } from '@navikt/fp-common';
 import { EgenNæringFormData, EgenNæringFormField, initialEgenNæringFormData } from './egenNæringFormConfig';
 import {
     convertBooleanOrUndefinedToYesOrNo,
@@ -10,6 +9,7 @@ import { date4YearsAgo } from 'app/utils/dateUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Søker } from 'app/types/Søker';
+import { hasValue } from 'app/utils/validationUtils';
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
     if (!oppstartsdato) {

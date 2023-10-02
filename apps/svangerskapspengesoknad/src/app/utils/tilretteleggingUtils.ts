@@ -1,5 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { SkjemaelementFeil, hasValue, intlUtils } from '@navikt/fp-common';
+import { SkjemaelementFeil, intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
@@ -7,6 +7,7 @@ import { dagenFør, tiMånederSidenDato } from './dateUtils';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { mapArbeidsforholdToVelgArbeidOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
 import { Søker } from 'app/types/Søker';
+import { hasValue } from './validationUtils';
 
 export const mapTilrettelegging = (
     tilrettelegging: Tilrettelegging[],
