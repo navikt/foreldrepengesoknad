@@ -415,4 +415,13 @@
     "ikkeKvinne.tekst": "Du har dessverre ikke rett på svangerskapspenger. Svangerskapspenger er ment for kvinner som er gravide og som må gå ut av arbeidet sitt da arbeidet kan føre til skade hos fosteret.",
     "ikkeKvinne.knappetekst": "Gå til nav.no",
     "send.søknad": "Send søknaden"
+    "ikkeKvinne.knappetekst": "Gå til nav.no",
+    "scanneDokument.tittel": "Hvordan ta bilde av vedlegg med mobilen?",
+    "scanneDokument.del1": "Har du et dokument på papir, kan du ta et bilde av dokumentet for å sende det til oss.",
+    "scanneDokument.liste.punkt1": "Ta bilde av dokumentet med smarttelefonen eller nettbrettet.",
+    "scanneDokument.liste.punkt2": "Sjekk at dokumentet er lett å lese.",
+    "scanneDokument.liste.punkt3": "Bruker du PC eller Mac, kan du sende bilde(ne) til din private e-postkonto og lagre bildet på enheten din.",
+    "scanneDokument.liste.punkt4": "Last opp bildene.",
+    "scanneDokument.del2": "Har du skanner, kan du skanne dokumenter.",
+    "scanneDokument.link": "Mer informasjon om å sende vedlegg på nav.no"
 }
