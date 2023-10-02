@@ -25,7 +25,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                     <div className={bem.block}>
                         <div className={bem.element('topRow')}>
                             <Label>
-                                {arbforhold.arbeidsgiverIdType === 'orgnr'
+                                {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn
                                     ? arbforhold.arbeidsgiverNavn
                                     : intlUtils(intl, 'privat.arbeidsgiver')}
                             </Label>

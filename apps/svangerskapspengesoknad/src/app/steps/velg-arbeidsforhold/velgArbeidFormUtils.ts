@@ -49,7 +49,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                             ? Arbeidsforholdstype.VIRKSOMHET
                             : Arbeidsforholdstype.PRIVAT,
                     navn:
-                        forhold.arbeidsgiverIdType === 'orgnr'
+                        forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
                             ? forhold.arbeidsgiverNavn
                             : intlUtils(intl, 'privat.arbeidsgiver'),
                 },
