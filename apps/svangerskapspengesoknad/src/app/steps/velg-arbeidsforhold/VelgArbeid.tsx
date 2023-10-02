@@ -34,6 +34,7 @@ const VelgArbeid: React.FunctionComponent = () => {
             søker,
             arbeidsforhold,
             barn.termindato,
+            intl,
         );
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
@@ -48,6 +49,7 @@ const VelgArbeid: React.FunctionComponent = () => {
         selvstendigNæringsdrivendeInformasjon,
         arbeidsforhold,
         barn.termindato,
+        intl,
     );
 
     return (

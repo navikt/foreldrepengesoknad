@@ -59,6 +59,7 @@ const Inntektsinformasjon = () => {
                 updatedSøker,
                 arbeidsforhold,
                 barn.termindato,
+                intl,
             );
 
             return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging(mappedTilretteleggingsValg)];

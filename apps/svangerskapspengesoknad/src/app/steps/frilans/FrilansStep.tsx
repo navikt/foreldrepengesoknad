@@ -45,6 +45,7 @@ const FrilansStep: React.FunctionComponent = () => {
                 søkerMedFrilans,
                 arbeidsforhold,
                 barn.termindato,
+                intl,
             );
 
             return [

@@ -27,7 +27,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                             <Label>
                                 {arbforhold.arbeidsgiverIdType === 'orgnr'
                                     ? arbforhold.arbeidsgiverNavn
-                                    : intlUtils(intl, 'arbeidsgiver')}
+                                    : intlUtils(intl, 'privat.arbeidsgiver')}
                             </Label>
                             <BodyShort className={bem.element('stillingsprosent')}>
                                 {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
