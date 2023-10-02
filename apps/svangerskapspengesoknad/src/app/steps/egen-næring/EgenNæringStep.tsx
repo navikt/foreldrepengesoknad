@@ -59,6 +59,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                 søkerMedNæring,
                 arbeidsforhold,
                 barn.termindato,
+                intl,
             );
 
             return [

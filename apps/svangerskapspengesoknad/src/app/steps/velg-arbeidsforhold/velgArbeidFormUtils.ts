@@ -35,6 +35,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     næring: EgenNæring | undefined,
     arbeidsforhold: Arbeidsforhold[],
     termindato: string,
+    intl: IntlShape,
 ): Tilrettelegging[] => {
     const unikeArbeidsforhold = [
         ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => {
@@ -47,7 +48,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
                         forhold.arbeidsgiverIdType === 'orgnr'
                             ? Arbeidsforholdstype.VIRKSOMHET
                             : Arbeidsforholdstype.PRIVAT,
-                    navn: forhold.arbeidsgiverNavn || 'privat arbeidsgiver',
+                    navn: forhold.arbeidsgiverNavn || intlUtils(intl, 'privat.arbeidsgiver'),
                 },
                 variertePerioder: tilretteleggingFraState?.variertePerioder || [],
                 vedlegg: tilretteleggingFraState?.vedlegg || [],
