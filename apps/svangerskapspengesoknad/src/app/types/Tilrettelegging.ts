@@ -14,7 +14,7 @@ export enum Arbeidsforholdstype {
 }
 
 export interface ArbeidsforholdForTilrettelegging {
-    id?: string;
+    arbeidsgiverId?: string;
     type: Arbeidsforholdstype;
     navn: string;
 }

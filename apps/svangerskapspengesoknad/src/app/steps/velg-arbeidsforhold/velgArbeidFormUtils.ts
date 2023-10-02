@@ -43,7 +43,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
             return {
                 id: tilretteleggingFraState?.id || forhold.id,
                 arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
-                    id: forhold.id,
+                    arbeidsgiverId: forhold.arbeidsgiverId,
                     type:
                         forhold.arbeidsgiverIdType === 'orgnr'
                             ? Arbeidsforholdstype.VIRKSOMHET

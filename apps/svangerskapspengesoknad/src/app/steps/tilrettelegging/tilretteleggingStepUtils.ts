@@ -1,5 +1,9 @@
-import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingStepFormConfig';
-import { Tilrettelegging } from 'app/types/Tilrettelegging';
+import {
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingFormData,
+    TilretteleggingFormField,
+} from './tilretteleggingStepFormConfig';
+import { Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 import { hasValue } from 'app/utils/validationUtils';
@@ -37,8 +41,14 @@ export const mapOmTilretteleggingFormDataToState = (
     tilretteleggingFraState: Tilrettelegging[],
 ): Tilrettelegging[] => {
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
+    const oppdaterteVarierendePerioder =
+        values.tilretteleggingType === Tilretteleggingstype.DELVIS &&
+        values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+            ? tilretteleggingForOppdatering?.variertePerioder
+            : [];
     const oppdatert = {
         ...tilretteleggingForOppdatering,
+        variertePerioder: oppdaterteVarierendePerioder,
         behovForTilretteleggingFom: values.behovForTilretteleggingFom,
         arbeidsforhold: {
             ...tilretteleggingForOppdatering!.arbeidsforhold,
