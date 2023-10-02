@@ -35,7 +35,7 @@ const getArbeidsforholdForInnsending = (tilrettelegging: Tilrettelegging): Arbei
         };
     }
     return {
-        id: tilrettelegging.arbeidsforhold.id!,
+        id: tilrettelegging.arbeidsforhold.arbeidsgiverId!,
         type: tilrettelegging.arbeidsforhold.type,
     };
 };
