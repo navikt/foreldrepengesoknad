@@ -25,10 +25,11 @@ const getArbeidsgiverNavn = (
     intl: IntlShape,
 ): string => {
     let navnArbeid: string | undefined = '';
-    if (periode.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET) {
+    if (
+        periode.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET ||
+        periode.arbeidsforhold.type === Arbeidsforholdstype.PRIVAT
+    ) {
         navnArbeid = getArbeidsgiverNavnForVirksomhet(søkerinfo.arbeidsforhold, periode.arbeidsforhold.id);
-    } else if (periode.arbeidsforhold.type === Arbeidsforholdstype.PRIVAT) {
-        navnArbeid = intlUtils(intl, 'privat.arbeidsgiver');
     } else if (periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG) {
         navnArbeid = søknad.søker.selvstendigNæringsdrivendeInformasjon?.navnPåNæringen;
     } else {
