@@ -384,6 +384,8 @@
     "oppsummering.utenlandsopphold.skalBoINorge.utenlands": "Du skal bo i {land} i løpet av de neste 12 månedene",
     "oppsummering.utenlandsopphold.harBoddINorge.utenlands": "Du har bodd i {land} i løpet av de siste 12 månedene",
     "oppsummering.bekreft": "Opplysningene jeg har oppgitt stemmer og jeg har gjort meg kjent med vilkårene for å motta svangerskapspenger.",
+    "oppsummering.periode.fra": "Fra {dato}",
+    "oppsummering.periode.stillingsprosent": "Du skal jobbe {stillingsprosent}% ",
     "umyndig.tittel": "Fordi du er under 18 år, må du sende papirsøknad",
     "umyndig.tekst": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden din sammen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til NAV.",
     "umyndig.knapp.papirsøknad": "Gå til papirsøknad",

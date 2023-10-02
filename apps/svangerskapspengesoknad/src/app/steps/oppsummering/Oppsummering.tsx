@@ -31,6 +31,7 @@ import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import SøknadRoutes from 'app/routes/routes';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
+import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 
 const Oppsummering = () => {
     const søknad = useSøknad();
@@ -165,9 +166,7 @@ const Oppsummering = () => {
                                         <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
                                     </Accordion.Header>
                                     <Accordion.Content>
-                                        <Block margin="m">
-                                            <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
-                                        </Block>
+                                        <PeriodeOppsummering perioder={søknadForInnsending.tilrettelegging} />
                                     </Accordion.Content>
                                 </Accordion.Item>
                             </Accordion>

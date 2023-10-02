@@ -20,6 +20,7 @@ import Tilrettelegging, {
     TilretteleggingDTO,
     Tilretteleggingstype,
 } from 'app/types/Tilrettelegging';
+import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 const getArbeidsforholdForInnsending = (tilrettelegging: Tilrettelegging): ArbeidsforholdDTO => {
@@ -158,6 +159,13 @@ const mappedTilretteleggingMedFlerePerioderForInnsending = (tilrettelegging: Til
     return allePerioder;
 };
 
+export const sorterTilretteleggingsperioder = (p1: TilretteleggingDTO, p2: TilretteleggingDTO) => {
+    const p1Fom = p1.type === Tilretteleggingstype.DELVIS ? p1.tilrettelagtArbeidFom : p1.slutteArbeidFom;
+    const p2Fom = p2.type === Tilretteleggingstype.DELVIS ? p2.behovForTilretteleggingFom : p2.slutteArbeidFom;
+
+    return dayjs(p1Fom).isBefore(p2Fom, 'day') ? -1 : 1;
+};
+
 const mapTilretteleggingerForInnsending = (tilrettelegging: Tilrettelegging[]): TilretteleggingDTO[] => {
     const tilretteleggingMedEnPeriode = tilrettelegging.filter(
         (t) => !t.variertePerioder || t.variertePerioder.length === 0,
@@ -171,7 +179,12 @@ const mapTilretteleggingerForInnsending = (tilrettelegging: Tilrettelegging[]): 
     const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedFlerePerioder.map((t) => {
         return mappedTilretteleggingMedFlerePerioderForInnsending(t);
     });
-    return [...mappedTilretteleggingerMedEnPeriode.flat(1), ...mappedTilretteleggingAvFlerePerioder.flat(1)];
+    const allePerioder = [
+        ...mappedTilretteleggingerMedEnPeriode.flat(1),
+        ...mappedTilretteleggingAvFlerePerioder.flat(1),
+    ];
+    const sortertePerioder = allePerioder.sort(sorterTilretteleggingsperioder);
+    return sortertePerioder;
 };
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
