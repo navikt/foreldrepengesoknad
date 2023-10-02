@@ -1,10 +1,6 @@
 import { hasValue } from '@navikt/fp-common';
-import {
-    DelivisTilretteleggingPeriodeType,
-    TilretteleggingFormData,
-    TilretteleggingFormField,
-} from './tilretteleggingStepFormConfig';
-import { TilOgMedDatoType, Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { TilretteleggingFormData, TilretteleggingFormField } from './tilretteleggingStepFormConfig';
+import { Tilrettelegging } from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 
@@ -16,15 +12,6 @@ export const getInitTilretteleggingFormDataValues = (): Readonly<Tilrettelegging
     [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: undefined,
     [TilretteleggingFormField.risikofaktorer]: undefined,
     [TilretteleggingFormField.tilretteleggingstiltak]: undefined,
-    [TilretteleggingFormField.variertePerioder]: [
-        {
-            type: Tilretteleggingstype.DELVIS,
-            fom: '',
-            tom: '',
-            stillingsprosent: '',
-            tomType: undefined!,
-        },
-    ],
 });
 
 export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging): TilretteleggingFormData => {
@@ -34,10 +21,6 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
         tilretteleggingType: tilrettelegging.type || initValues.tilretteleggingType,
         delvisTilretteleggingPeriodeType:
             tilrettelegging.delvisTilretteleggingPeriodeType || initValues.delvisTilretteleggingPeriodeType,
-        variertePerioder:
-            tilrettelegging.variertePerioder && tilrettelegging.variertePerioder.length > 0
-                ? tilrettelegging.variertePerioder
-                : initValues.variertePerioder,
         risikofaktorer: tilrettelegging.risikofaktorer || initValues.risikofaktorer,
         tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak || initValues.tilretteleggingstiltak,
         sammePeriodeFremTilTerminFom:
@@ -64,10 +47,6 @@ export const mapOmTilretteleggingFormDataToState = (
         sammePeriodeFremTilTerminFom: values.sammePeriodeFremTilTerminFom,
         sammePeriodeFremTilTerminStillingsprosent: values.sammePeriodeFremTilTerminStillingsprosent,
         delvisTilretteleggingPeriodeType: values.delvisTilretteleggingPeriodeType,
-        variertePerioder:
-            values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-                ? values.variertePerioder
-                : [],
         risikofaktorer: hasValue(values.risikofaktorer)
             ? replaceInvisibleCharsWithSpace(values.risikofaktorer!)
             : undefined,
@@ -87,11 +66,6 @@ export const cleanUpTilretteleggingStepFormValues = (
     visibility: QuestionVisibility<TilretteleggingFormField>,
 ): TilretteleggingFormData => {
     const initValues = getInitTilretteleggingFormDataValues();
-    const cleanedPerioder = visibility.isVisible(TilretteleggingFormField.variertePerioder)
-        ? values.variertePerioder.map((periode) => {
-              return { ...periode, tom: periode.tomType === TilOgMedDatoType.VALGFRI_DATO ? periode.tom : undefined };
-          })
-        : initValues.variertePerioder;
     const cleanedData: TilretteleggingFormData = {
         ...values,
         tilretteleggingstiltak: visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)
@@ -110,9 +84,6 @@ export const cleanUpTilretteleggingStepFormValues = (
         )
             ? values.sammePeriodeFremTilTerminStillingsprosent
             : initValues.sammePeriodeFremTilTerminStillingsprosent,
-        variertePerioder: visibility.isVisible(TilretteleggingFormField.variertePerioder)
-            ? cleanedPerioder
-            : initValues.variertePerioder,
     };
 
     return cleanedData;

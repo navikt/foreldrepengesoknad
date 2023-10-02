@@ -44,12 +44,6 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
             isAnswered: ({ sammePeriodeFremTilTerminStillingsprosent }) =>
                 hasValue(sammePeriodeFremTilTerminStillingsprosent),
         },
-        [TilretteleggingFormField.variertePerioder]: {
-            isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
-                tilretteleggingType === Tilretteleggingstype.DELVIS &&
-                delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-            isAnswered: ({ variertePerioder }) => hasValue(variertePerioder),
-        },
         [TilretteleggingFormField.tilretteleggingstiltak]: {
             isIncluded: ({ arbeidsType }) =>
                 arbeidsType === Arbeidsforholdstype.FRILANSER || arbeidsType === Arbeidsforholdstype.SELVSTENDIG,

@@ -10,7 +10,8 @@ enum SøknadRoutes {
     ARBEID_I_UTLANDET = '/arbeid-i-utlandet',
     VELG_ARBEID = '/velg-arbeid',
     SKJEMA = '/skjema',
-    PERIODE = '/periode',
+    TILRETTELEGGING = '/tilrettelegging',
+    PERIODER = '/perioder',
     OPPSUMMERING = '/oppsummering',
     SØKNAD_SENDT = '/soknad/soknad-sendt',
 }

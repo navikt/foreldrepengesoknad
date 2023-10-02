@@ -55,7 +55,7 @@ const Skjema: React.FunctionComponent = () => {
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
-        `${SøknadRoutes.PERIODE}/${førsteTilretteleggingId}`,
+        `${SøknadRoutes.TILRETTELEGGING}/${førsteTilretteleggingId}`,
     );
 
     const handleOnSubmit = (values: any) => {

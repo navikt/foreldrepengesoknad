@@ -1,9 +1,9 @@
 import { hasValue, intlUtils } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtils';
-import { getForrigeTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
+import { getForrigeTilrettelegging, getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from 'app/routes/routes';
 import { Søker } from 'app/types/Søker';
-import Tilrettelegging from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
 import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -12,12 +12,17 @@ import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { UtenlandsoppholdFormData } from './utenlandsopphold/utenlandsoppholdFormTypes';
 import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
+import {
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingFormData,
+} from './tilrettelegging/tilretteleggingStepFormConfig';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
 type FrilansStepId = 'frilans';
 type NæringStepId = 'næring';
 type ArbeidIUtlandetStepId = 'arbeidIUtlandet';
+type TilretteleggingStepId = 'tilrettelegging';
 type PeriodeStepId = 'periode';
 type VelgArbeidStepId = 'velgArbeid';
 type SkjemaStepId = 'skjema';
@@ -35,6 +40,7 @@ type StepIdWithComputedBackHref =
     | ArbeidIUtlandetStepId
     | VelgArbeidStepId
     | SkjemaStepId
+    | TilretteleggingStepId
     | PeriodeStepId
     | OppsummeringStepId;
 
@@ -100,15 +106,22 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, navn: string | undefined
         label: intlUtils(intl, 'steps.label.skjema'),
     },
     {
-        id: 'periode',
+        id: 'tilrettelegging',
         index: 10,
+        label: navn
+            ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
+            : intlUtils(intl, 'steps.label.tilrettelegging.en'),
+    },
+    {
+        id: 'periode',
+        index: 11,
         label: navn
             ? intlUtils(intl, 'steps.label.periode.flere', { navn })
             : intlUtils(intl, 'steps.label.periode.en'),
     },
     {
         id: 'oppsummering',
-        index: 11,
+        index: 12,
         label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
@@ -150,18 +163,29 @@ export const getBackLinkForSkjemaSteg = (søker: Søker, termindato: string, arb
     return SøknadRoutes.VELG_ARBEID;
 };
 
-export const getBackLinkTilretteleggingEllerSkjemaSteg = (
+export const getBackLinkTilretteleggingPeriodeEllerSkjemaSteg = (
     tilrettelegginger: Tilrettelegging[] | undefined,
     currentTilretteleggingId: string | undefined,
 ) => {
     if (!tilrettelegginger) {
         return SøknadRoutes.ARBEID;
     }
-    const forrigeTilrettelegging = getForrigeTilretteleggingId(tilrettelegginger, currentTilretteleggingId);
+    const forrigeTilrettelegging = getForrigeTilrettelegging(tilrettelegginger, currentTilretteleggingId);
     if (forrigeTilrettelegging) {
-        return `${SøknadRoutes.PERIODE}/${forrigeTilrettelegging}`;
+        if (
+            forrigeTilrettelegging.type === Tilretteleggingstype.DELVIS &&
+            forrigeTilrettelegging.delvisTilretteleggingPeriodeType ===
+                DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+        ) {
+            return `${SøknadRoutes.PERIODER}/${forrigeTilrettelegging.id}`;
+        }
+        return `${SøknadRoutes.TILRETTELEGGING}/${forrigeTilrettelegging.id}`;
     }
     return SøknadRoutes.SKJEMA;
+};
+
+export const getBackLinkPerioderSteg = (currentTilretteleggingId: string | undefined) => {
+    return `${SøknadRoutes.TILRETTELEGGING}/${currentTilretteleggingId}`;
 };
 
 export const getBackLinkForNæringSteg = (søker: Søker | undefined) => {
@@ -227,6 +251,25 @@ export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
 };
 
 export default stepConfig;
+
+export const getNextRouteForTilretteleggingSteg = (
+    values: Partial<TilretteleggingFormData>,
+    tilrettelegging: Tilrettelegging[],
+    currentTilretteleggingId: string,
+): string => {
+    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
+
+    let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
+    if (
+        values.tilretteleggingType === Tilretteleggingstype.DELVIS &&
+        values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+    ) {
+        nextRoute = `${SøknadRoutes.PERIODER}/${currentTilretteleggingId}`;
+    } else if (nesteTilretteleggingId) {
+        nextRoute = `${SøknadRoutes.TILRETTELEGGING}/${nesteTilretteleggingId}`;
+    }
+    return nextRoute;
+};
 
 export const getNextRouteForInntektsinformasjon = (
     termindato: string,

@@ -1,6 +1,9 @@
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
-import stepConfig, { getBackLinkTilretteleggingEllerSkjemaSteg } from '../stepsConfig';
+import stepConfig, {
+    getBackLinkTilretteleggingPeriodeEllerSkjemaSteg,
+    getNextRouteForTilretteleggingSteg,
+} from '../stepsConfig';
 import { Alert, Button, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -19,10 +22,9 @@ import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { Arbeidsforholdstype, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsgiverVisning from './components/ArbeidsgiverVisning';
@@ -42,7 +44,6 @@ import {
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
-import PerioderMedVariasjon from './components/perioderMedVariasjon/PerioderMedVariasjon';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
@@ -54,6 +55,7 @@ interface Props {
 const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
+    const [nextRoute, setNextRoute] = useState(SøknadRoutes.OPPSUMMERING.toString());
     const { tilrettelegging: tilretteleggingFraState, søker, barn } = useSøknad();
     const { fødselsdato, termindato } = barn;
     const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
@@ -71,16 +73,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
 
     const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
     const sideTittel = erFlereTilrettelegginger
-        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
-        : intlUtils(intl, 'steps.label.periode.en');
-
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, state.currentTilretteleggingId);
+        ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
+        : intlUtils(intl, 'steps.label.tilrettelegging.en');
 
     const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdatoDate || termindatoDate!);
-    let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
-    if (nesteTilretteleggingId) {
-        nextRoute = `${SøknadRoutes.PERIODE}/${nesteTilretteleggingId}`;
-    }
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
@@ -109,7 +105,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="periode"
+                        activeStepId="tilrettelegging"
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, erFlereTilrettelegginger ? navn : undefined)}
@@ -121,7 +117,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                         >
                             {erFlereTilrettelegginger && (
                                 <>
-                                    <Block padBottom="l">
+                                    <Block padBottom="m">
                                         <Alert variant="info">
                                             <FormattedMessage id="tilrettelegging.flereTilrettelegginger.info" />
                                         </Alert>
@@ -281,31 +277,32 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     validate={validateStillingsprosent(intl)}
                                 />
                             </Block>
-                            <Block
-                                padBottom="l"
-                                visible={visibility.isVisible(TilretteleggingFormField.variertePerioder)}
-                            >
-                                <PerioderMedVariasjon
-                                    formValues={formValues}
-                                    minDatoPeriodeFom={minDatoPeriodeFom}
-                                    treUkerFørFødselEllerTermin={treUkerFørFødselEllerTermin}
-                                    fødselsdato={barn.fødselsdato}
-                                    termindato={barn.termindato}
-                                />
-                            </Block>
                             <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getBackLinkTilretteleggingEllerSkjemaSteg(
+                                        to={getBackLinkTilretteleggingPeriodeEllerSkjemaSteg(
                                             tilretteleggingFraState,
                                             state.currentTilretteleggingId,
                                         )}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                    <Button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                        onClick={() =>
+                                            setNextRoute(
+                                                getNextRouteForTilretteleggingSteg(
+                                                    formValues,
+                                                    tilretteleggingFraState,
+                                                    currentTilrettelegging!.id,
+                                                ),
+                                            )
+                                        }
+                                    >
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>
                                 </StepButtonWrapper>
