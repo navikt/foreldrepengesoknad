@@ -32,10 +32,10 @@ type BoIUtlandetIFortidStepId = 'boIUtlandetIFortid';
 type BoIUtlandetIFremtidStepId = 'boIUtlandetIFremtid';
 type OppsummeringStepId = 'oppsummering';
 
-type StepIdWithSetBackHref = UtenlandsoppholdStepId | BoIUtlandetIFremtidStepId | FrilansStepId;
+type StepIdWithSetBackHref = UtenlandsoppholdStepId | BoIUtlandetIFortidStepId | FrilansStepId;
 
 type StepIdWithComputedBackHref =
-    | BoIUtlandetIFortidStepId
+    | BoIUtlandetIFremtidStepId
     | InntektsinformasjonStepId
     | NæringStepId
     | ArbeidIUtlandetStepId
@@ -215,19 +215,19 @@ export const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined) => {
     );
 };
 
-export const getBackLinkForBostedIFortid = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
-    if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
-        return SøknadRoutes.SKAL_BO_I_UTLANDET;
+export const getBackLinkForBostedIFremtid = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
+    if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
+        return SøknadRoutes.HAR_BODD_I_UTLANDET;
     }
     return SøknadRoutes.UTENLANDSOPPHOLD;
 };
 
 export const getBackLinkForArbeidSteg = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
-    if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
-        return SøknadRoutes.HAR_BODD_I_UTLANDET;
-    }
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
         return SøknadRoutes.SKAL_BO_I_UTLANDET;
+    }
+    if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
+        return SøknadRoutes.HAR_BODD_I_UTLANDET;
     }
     return SøknadRoutes.UTENLANDSOPPHOLD;
 };
@@ -238,7 +238,7 @@ export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
         case 'utenlandsopphold':
             href = SøknadRoutes.BARNET;
             break;
-        case 'boIUtlandetIFremtid':
+        case 'boIUtlandetIFortid':
             href = SøknadRoutes.UTENLANDSOPPHOLD;
             break;
         case 'frilans':
@@ -299,18 +299,18 @@ export const getNextRouteForInntektsinformasjon = (
 };
 
 export const getNextRouteForUtenlandsopphold = (values: Partial<UtenlandsoppholdFormData>) => {
-    if (hasValue(values.skalBoINorgeNeste12Mnd) && values.skalBoINorgeNeste12Mnd === YesOrNo.NO) {
-        return SøknadRoutes.SKAL_BO_I_UTLANDET;
-    }
     if (hasValue(values.harBoddINorgeSiste12Mnd) && values.harBoddINorgeSiste12Mnd === YesOrNo.NO) {
         return SøknadRoutes.HAR_BODD_I_UTLANDET;
+    }
+    if (hasValue(values.skalBoINorgeNeste12Mnd) && values.skalBoINorgeNeste12Mnd === YesOrNo.NO) {
+        return SøknadRoutes.SKAL_BO_I_UTLANDET;
     }
     return SøknadRoutes.ARBEID;
 };
 
-export const getNextRouteForBostedIFremtid = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
-    if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
-        return SøknadRoutes.HAR_BODD_I_UTLANDET;
+export const getNextRouteForBostedIFortid = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
+    if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
+        return SøknadRoutes.SKAL_BO_I_UTLANDET;
     }
     return SøknadRoutes.ARBEID;
 };
