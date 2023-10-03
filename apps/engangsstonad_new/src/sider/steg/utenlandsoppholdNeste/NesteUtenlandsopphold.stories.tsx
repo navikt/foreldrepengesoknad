@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import NesteUtenlandsopphold from './NesteUtenlandsopphold';
 import { Path } from 'appData/paths';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
@@ -15,7 +15,7 @@ const utenlandsopphold = {
 export default {
     title: 'NesteUtenlandsopphold',
     component: NesteUtenlandsopphold,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.NESTE_UTENLANDSOPPHOLD,
     },

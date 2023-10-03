@@ -5,7 +5,7 @@ import IntlProvider from '../../../intl/IntlProvider';
 import { AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { EsDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
@@ -43,7 +43,7 @@ const vedleggDefault = {
 export default {
     title: 'OppsummeringSteg',
     component: OppsummeringSteg,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.OPPSUMMERING,
     },

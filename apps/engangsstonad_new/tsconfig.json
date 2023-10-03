@@ -4,10 +4,10 @@
         "jsx": "react-jsx",
         "baseUrl": "./src",
         "paths": {
-            "styles/*": ["styles/*"],
             "intl/*": ["intl/*"],
             "types/*": ["types/*"],
-            "appData/*": ["appData/*"]
+            "appData/*": ["appData/*"],
+            "storybookHelpers/*": ["storybookHelpers/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals"]
     },

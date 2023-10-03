@@ -5,7 +5,7 @@ import OmBarnetForm from './OmBarnetForm';
 import IntlProvider from '../../../intl/IntlProvider';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { Action, EsDataType } from 'appData/EsDataContext';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
 
@@ -15,7 +15,7 @@ import 'fpcommon/styles/globals.less';
 export default {
     title: 'OmBarnetForm',
     component: OmBarnetForm,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.OM_BARNET,
     },

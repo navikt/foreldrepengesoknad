@@ -17,10 +17,10 @@ export default defineConfig({
     resolve: {
         alias: {
             fpcommon: path.resolve(__dirname, './src/fpcommon'),
-            styles: path.resolve(__dirname, './src/fpcommon/styles/'),
             intl: path.resolve(__dirname, './src/intl/'),
             types: path.resolve(__dirname, './src/types/'),
             appData: path.resolve(__dirname, './src/appData/'),
+            storybookHelpers: path.resolve(__dirname, './src/storybookHelpers/'),
         },
     },
     test: {

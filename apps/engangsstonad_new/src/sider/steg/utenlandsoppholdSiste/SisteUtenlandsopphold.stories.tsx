@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import SisteUtenlandsopphold from './SisteUtenlandsopphold';
 import { Path } from 'appData/paths';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
@@ -15,7 +15,7 @@ const utenlandsopphold = {
 export default {
     title: 'SisteUtenlandsopphold',
     component: SisteUtenlandsopphold,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.SISTE_UTENLANDSOPPHOLD,
     },

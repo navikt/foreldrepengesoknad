@@ -10,7 +10,7 @@ if (Modal.setAppElement) {
     Modal.setAppElement('body');
 }
 
-vi.mock('./../src/app/Environment.ts', async () => {
+vi.mock('./../src/appData/Environment.ts', async () => {
     return {
         default: {
             REST_API_URL: 'http://localhost:8888/rest',

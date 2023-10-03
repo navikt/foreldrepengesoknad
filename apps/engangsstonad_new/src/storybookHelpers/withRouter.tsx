@@ -6,7 +6,7 @@ const getElement = (currentPath: string, path: Path, Story: any) => {
     return currentPath === path ? <Story /> : <div>Neste side: {path}</div>;
 };
 
-const withRouterProvider = (Story: any, context: StoryContext) => {
+const withRouter = (Story: any, context: StoryContext) => {
     const { routerDecoratorInitUrl } = context.parameters;
     const currentPath = routerDecoratorInitUrl || 'test';
 
@@ -17,6 +17,7 @@ const withRouterProvider = (Story: any, context: StoryContext) => {
                 <Route path={Path.VELKOMMEN} element={getElement(currentPath, Path.VELKOMMEN, Story)} />
                 <Route path={Path.SØKERSITUASJON} element={getElement(currentPath, Path.SØKERSITUASJON, Story)} />
                 <Route path={Path.OM_BARNET} element={getElement(currentPath, Path.OM_BARNET, Story)} />
+                <Route path={Path.DOKUMENTASJON} element={getElement(currentPath, Path.DOKUMENTASJON, Story)} />
                 <Route path={Path.UTENLANDSOPPHOLD} element={getElement(currentPath, Path.UTENLANDSOPPHOLD, Story)} />
                 <Route
                     path={Path.SISTE_UTENLANDSOPPHOLD}
@@ -33,4 +34,4 @@ const withRouterProvider = (Story: any, context: StoryContext) => {
     );
 };
 
-export default withRouterProvider;
+export default withRouter;

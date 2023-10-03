@@ -14,6 +14,7 @@ import Umyndig from './sider/umyndig/Umyndig';
 import NesteUtenlandsopphold from './sider/steg/utenlandsoppholdNeste/NesteUtenlandsopphold';
 import SisteUtenlandsopphold from './sider/steg/utenlandsoppholdSiste/SisteUtenlandsopphold';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
+import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import { Path } from 'appData/paths';
 import { EsDataContext } from 'appData/EsDataContext';
 import Kvittering from 'types/Kvittering';
@@ -73,6 +74,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                     <>
                         <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
                         <Route path={Path.OM_BARNET} element={<OmBarnetForm kjønn={person.kjønn} />} />
+                        <Route path={Path.DOKUMENTASJON} element={<DokumentasjonSteg />} />
                         <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
                         <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtenlandsopphold />} />
                         <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtenlandsopphold />} />

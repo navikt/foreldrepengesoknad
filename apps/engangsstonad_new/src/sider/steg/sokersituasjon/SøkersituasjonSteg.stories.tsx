@@ -2,7 +2,7 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
 import IntlProvider from '../../../intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
 import { Action } from 'appData/EsDataContext';
@@ -10,7 +10,7 @@ import { Action } from 'appData/EsDataContext';
 export default {
     title: 'SøkersituasjonSteg',
     component: SøkersituasjonSteg,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.SØKERSITUASJON,
     },

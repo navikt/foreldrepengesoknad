@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 
 import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
@@ -9,7 +9,7 @@ import Velkommen from './Velkommen';
 export default {
     title: 'Velkommen',
     component: Velkommen,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.VELKOMMEN,
     },

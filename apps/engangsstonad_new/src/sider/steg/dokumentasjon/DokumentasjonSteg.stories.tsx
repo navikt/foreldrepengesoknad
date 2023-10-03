@@ -3,13 +3,13 @@ import MockAdapter from 'axios-mock-adapter';
 import { Path } from 'appData/paths';
 import DokumentasjonSteg from './DokumentasjonSteg';
 import IntlProvider from '../../../intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import { attachmentApi } from 'fpcommon/uploader/attachmentApi';
 
 export default {
     title: 'DokumentasjonSteg',
     component: DokumentasjonSteg,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.DOKUMENTASJON,
     },

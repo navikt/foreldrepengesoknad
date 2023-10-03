@@ -2,7 +2,7 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import IntlProvider from 'intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import { Path } from 'appData/paths';
 import { Action } from 'appData/EsDataContext';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
@@ -10,7 +10,7 @@ import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybo
 export default {
     title: 'UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.UTENLANDSOPPHOLD,
     },

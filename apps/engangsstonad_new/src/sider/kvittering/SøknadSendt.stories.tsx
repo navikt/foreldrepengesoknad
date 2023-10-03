@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import SøknadSendt from './SøknadSendt';
 import IntlProvider from 'intl/IntlProvider';
-import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
+import withRouter from 'storybookHelpers/withRouter';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 
@@ -29,7 +29,7 @@ const kvittering = {
 export default {
     title: 'SøknadSendt',
     component: SøknadSendt,
-    decorators: [withRouterProvider],
+    decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.KVITTERING,
     },
