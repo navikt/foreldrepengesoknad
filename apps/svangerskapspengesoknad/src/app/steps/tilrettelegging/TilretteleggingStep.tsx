@@ -66,6 +66,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const fødselsdatoDate = ISOStringToDate(fødselsdato);
     const termindatoDate = ISOStringToDate(termindato);
     const typeArbeid = currentTilrettelegging!.arbeidsforhold.type;
+    const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(id, values, tilretteleggingFraState);
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
@@ -81,6 +82,23 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     const risikofaktorerLabel = intlUtils(intl, `skjema.risikofaktorer.${typeArbeid}`);
+
+    let tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.en');
+    let behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.en');
+
+    if (erFlereTilrettelegginger && typeArbeid !== Arbeidsforholdstype.FRILANSER) {
+        tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.flere', {
+            navnArbeidsgiver,
+        });
+        behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.flere', {
+            navnArbeidsgiver,
+        });
+    }
+    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+        tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.frilanser');
+        behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.frilanser');
+    }
+    const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
     return (
         <TilretteleggingFormComponents.FormikWrapper
@@ -96,7 +114,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                     formValues.tilretteleggingType === Tilretteleggingstype.INGEN
                         ? 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'
                         : 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis';
-                const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
@@ -135,7 +152,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.behovForTilretteleggingFom}
-                                    label={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label')}
+                                    label={behovForTilretteleggingFomLabel}
                                     placeholder={'dd.mm.åååå'}
                                     description={
                                         harSkjema
@@ -145,28 +162,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     minDate={tiMånederSidenDato(termindatoDate!)}
                                     maxDate={dagenFør(termindatoDate!)}
                                     validate={validateTilrettelagtArbeidFom(intl, termindatoDate!)}
-                                />
-                            </Block>
-                            <Block padBottom="xxl">
-                                <TilretteleggingFormComponents.RadioGroup
-                                    name={TilretteleggingFormField.tilretteleggingType}
-                                    legend={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label')}
-                                    description={
-                                        harSkjema
-                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
-                                            : ''
-                                    }
-                                    radios={[
-                                        {
-                                            label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.delvis'),
-                                            value: Tilretteleggingstype.DELVIS,
-                                        },
-                                        {
-                                            label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.ingen'),
-                                            value: Tilretteleggingstype.INGEN,
-                                        },
-                                    ]}
-                                    validate={validateTilrettelagtArbeidType(intl)}
                                 />
                             </Block>
                             <Block
@@ -208,6 +203,29 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
                                 </ReadMore>
                             </Block>
+                            <Block padBottom="xxl">
+                                <TilretteleggingFormComponents.RadioGroup
+                                    name={TilretteleggingFormField.tilretteleggingType}
+                                    legend={tilretteleggingTypeLabel}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                            : ''
+                                    }
+                                    radios={[
+                                        {
+                                            label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.delvis'),
+                                            value: Tilretteleggingstype.DELVIS,
+                                        },
+                                        {
+                                            label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.ingen'),
+                                            value: Tilretteleggingstype.INGEN,
+                                        },
+                                    ]}
+                                    validate={validateTilrettelagtArbeidType(intl)}
+                                />
+                            </Block>
+
                             <Block
                                 padBottom="xxl"
                                 visible={visibility.isVisible(

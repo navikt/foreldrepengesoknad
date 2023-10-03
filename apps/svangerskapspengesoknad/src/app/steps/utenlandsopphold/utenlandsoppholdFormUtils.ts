@@ -25,11 +25,15 @@ export const mapUtenlandsoppholdFormDataToState = (
         harBoddINorgeSiste12Mnd === YesOrNo.YES ? [] : informasjonOmUtenlandsopphold.tidligereOpphold;
     const oppdaterteSenereOpphold =
         skalBoINorgeNeste12Mnd === YesOrNo.YES ? [] : informasjonOmUtenlandsopphold.senereOpphold;
+    const iNorgePåHendelsestidspunktet =
+        harBoddINorgeSiste12Mnd === YesOrNo.YES && skalBoINorgeNeste12Mnd === YesOrNo.YES;
+
     return {
         ...informasjonOmUtenlandsopphold,
         iNorgeSiste12Mnd: convertYesOrNoOrUndefinedToBoolean(harBoddINorgeSiste12Mnd)!,
         iNorgeNeste12Mnd: convertYesOrNoOrUndefinedToBoolean(skalBoINorgeNeste12Mnd)!,
         tidligereOpphold: oppdaterteTidligereOpphold,
         senereOpphold: oppdaterteSenereOpphold,
+        iNorgePåHendelsestidspunktet: iNorgePåHendelsestidspunktet,
     };
 };

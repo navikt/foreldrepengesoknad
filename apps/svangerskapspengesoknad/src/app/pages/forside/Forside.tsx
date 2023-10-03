@@ -78,21 +78,40 @@ const Forside = () => {
                                 visible={visibility.isVisible(ForsideFormField.harForståttRettigheterOgPlikter)}
                             >
                                 <Alert variant="info">
-                                    <FormattedMessage
-                                        id="forside.tilrettelegging.info"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <a
-                                                    className="lenke"
-                                                    rel="noopener noreferrer"
-                                                    href={links.tilretteleggingsskjema}
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </a>
-                                            ),
-                                        }}
-                                    />
+                                    <Block padBottom="l">
+                                        <FormattedMessage
+                                            id="forside.tilrettelegging.info.del1"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href={links.tilretteleggingsskjema}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </Block>
+                                    <Block>
+                                        <FormattedMessage
+                                            id="forside.tilrettelegging.info.del2"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        className="lenke"
+                                                        rel="noopener noreferrer"
+                                                        href={links.tilretteleggingsskjema}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </Block>
                                 </Alert>
                             </Block>
                             <Block

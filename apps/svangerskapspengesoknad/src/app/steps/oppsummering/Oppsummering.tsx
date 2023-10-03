@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getBackLinkTilretteleggingPeriodeEllerSkjemaSteg } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { Link, useNavigate } from 'react-router-dom';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
@@ -158,6 +158,15 @@ const Oppsummering = () => {
                                                         ></ArbeidIUtlandetVisning>
                                                     );
                                                 })}
+                                            {(!søknad.søker.harJobbetSomFrilans ||
+                                                !søknad.søker.harJobbetSomSelvstendigNæringsdrivende ||
+                                                !søknad.søker.harHattAnnenInntekt) && (
+                                                <Block padBottom="m">
+                                                    <BodyShort>
+                                                        {getTekstOmManglendeArbeidsforhold(søknad.søker, intl)}
+                                                    </BodyShort>
+                                                </Block>
+                                            )}
                                         </Block>
                                     </Accordion.Content>
                                 </Accordion.Item>
@@ -196,7 +205,7 @@ const Oppsummering = () => {
                                         disabled={formSubmitted}
                                         loading={formSubmitted}
                                     >
-                                        Send inn søknad
+                                        {intlUtils(intl, 'send.søknad')}
                                     </Button>
                                 </StepButtonWrapper>
                             </Block>

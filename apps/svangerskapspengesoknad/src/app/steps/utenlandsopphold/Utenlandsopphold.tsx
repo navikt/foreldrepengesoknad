@@ -54,31 +54,6 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                 <BodyShort size="medium">{intlUtils(intl, 'utenlandsopphold.infotekst')}</BodyShort>
                             </Block>
                             <Block
-                                visible={visibility.isVisible(UtenlandsoppholdField.skalBoINorgeNeste12Mnd)}
-                                padBottom="xxl"
-                            >
-                                <UtenlandsoppholdFormComponents.YesOrNoQuestion
-                                    legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
-                                    name={UtenlandsoppholdField.skalBoINorgeNeste12Mnd}
-                                    labels={{
-                                        yes: intlUtils(
-                                            intl,
-                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge',
-                                        ),
-                                        no: intlUtils(
-                                            intl,
-                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet',
-                                        ),
-                                    }}
-                                    validate={(skalBoINorgeNeste12Mnd) =>
-                                        validateYesOrNoIsAnswered(
-                                            skalBoINorgeNeste12Mnd,
-                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.skalBoINorge.påkrevd'),
-                                        )
-                                    }
-                                />
-                            </Block>
-                            <Block
                                 padBottom="xxl"
                                 visible={visibility.isVisible(UtenlandsoppholdField.harBoddINorgeSiste12Mnd)}
                             >
@@ -103,6 +78,32 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     }
                                 />
                             </Block>
+                            <Block
+                                visible={visibility.isVisible(UtenlandsoppholdField.skalBoINorgeNeste12Mnd)}
+                                padBottom="xxl"
+                            >
+                                <UtenlandsoppholdFormComponents.YesOrNoQuestion
+                                    legend={intlUtils(intl, 'utenlandsopphold.neste12Måneder.spørsmål')}
+                                    name={UtenlandsoppholdField.skalBoINorgeNeste12Mnd}
+                                    labels={{
+                                        yes: intlUtils(
+                                            intl,
+                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge',
+                                        ),
+                                        no: intlUtils(
+                                            intl,
+                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet',
+                                        ),
+                                    }}
+                                    validate={(skalBoINorgeNeste12Mnd) =>
+                                        validateYesOrNoIsAnswered(
+                                            skalBoINorgeNeste12Mnd,
+                                            intlUtils(intl, 'valideringsfeil.utenlandsopphold.skalBoINorge.påkrevd'),
+                                        )
+                                    }
+                                />
+                            </Block>
+
                             <Block padBottom="xxl">
                                 <InformasjonOmUtenlandsopphold />
                             </Block>
