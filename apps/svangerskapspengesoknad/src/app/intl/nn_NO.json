@@ -310,7 +310,7 @@
     "skjema.vedlegg.description": "Last opp skjema for krav til svangerskapspenger til frilans",
     "skjema.vedlegg.buttonLabel": "Last opp skjema",
     "skjema.vedlegg.description.frilansSN": "Her skal du laste opp bekreftelsen som er skrevet av din lege eller jordmor.",
-    "skjema.vedlegg.description.arbeidsgiver": "Her skal du laste opp <a>skjemaet for risiko of tilrettelegging i svangerskapet</a> som er fylt ut av din lege eller jordmor, og din arbeidsgiver.",
+    "skjema.vedlegg.description.arbeidsgiver": "Her skal du laste opp <a>skjemaet for risiko og tilrettelegging i svangerskapet</a> som er fylt ut av dine lege eller jordmor, og din arbeidsgiver.",
     "skjema.risikofaktorer.virksomhet": "Beskriv hva som kan skade det ufødte barnet i jobben din som frilanser",
     "skjema.risikofaktorer.frilanser": "Beskriv hva som kan skade det ufødte barnet i jobben din som frilanser",
     "skjema.risikofaktorer.selvstendig": "Beskriv hva som kan skade det ufødte barnet i jobben din som selvstendig næringsdrivende",
@@ -414,5 +414,13 @@
     "ikkeKvinne.tittel": "Kun kvinner har rett på svangerskapspenger",
     "ikkeKvinne.tekst": "Du har dessverre ikke rett på svangerskapspenger. Svangerskapspenger er ment for kvinner som er gravide og som må gå ut av arbeidet sitt da arbeidet kan føre til skade hos fosteret.",
     "ikkeKvinne.knappetekst": "Gå til nav.no",
-    "send.søknad": "Send søknaden"
+    "send.søknad": "Send søknaden",
+    "scanneDokument.tittel": "Hvordan ta bilde av vedlegg med mobilen?",
+    "scanneDokument.del1": "Har du et dokument på papir, kan du ta et bilde av dokumentet for å sende det til oss.",
+    "scanneDokument.liste.punkt1": "Ta bilde av dokumentet med smarttelefonen eller nettbrettet.",
+    "scanneDokument.liste.punkt2": "Sjekk at dokumentet er lett å lese.",
+    "scanneDokument.liste.punkt3": "Bruker du PC eller Mac, kan du sende bilde(ne) til din private e-postkonto og lagre bildet på enheten din.",
+    "scanneDokument.liste.punkt4": "Last opp bildene.",
+    "scanneDokument.del2": "Har du skanner, kan du skanne dokumenter.",
+    "scanneDokument.link": "Mer informasjon om å sende vedlegg på nav.no"
 }
