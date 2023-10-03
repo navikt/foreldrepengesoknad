@@ -210,6 +210,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 <EgenNæringFormComponents.TextField
                                     name={EgenNæringFormField.egenNæringResultat}
                                     label={intlUtils(intl, 'egenNæring.næringsinntekt')}
+                                    description={intlUtils(intl, 'egenNæring.næringsinntekt.description')}
                                     validate={validateEgenNæringResultat(intl)}
                                 />
 

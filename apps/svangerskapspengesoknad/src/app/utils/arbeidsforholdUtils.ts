@@ -1,6 +1,9 @@
+import { intlUtils } from '@navikt/fp-common';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Søker } from 'app/types/Søker';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
+import { IntlShape } from 'react-intl';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -48,4 +51,29 @@ export const søkerHarKunEtArbeid = (
         (aktiveArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
         (aktiveArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
     );
+};
+
+export const getTekstOmManglendeArbeidsforhold = (søker: Søker, intl: IntlShape): string => {
+    const erFrilanser = søker.harJobbetSomFrilans;
+    const harNæring = søker.harJobbetSomSelvstendigNæringsdrivende;
+    const harJobbetIUtlandet = søker.harHattAnnenInntekt;
+    if (erFrilanser && !harNæring && !harJobbetIUtlandet) {
+        return intlUtils(intl, 'oppsummering.harIkkeNæringEllerJobbIUtlandet');
+    }
+    if (!erFrilanser && harNæring && !harJobbetIUtlandet) {
+        return intlUtils(intl, 'oppsummering.erIkkeFrilanserEllerJobbIUtlandet');
+    }
+    if (!erFrilanser && !harNæring && harJobbetIUtlandet) {
+        return intlUtils(intl, 'oppsummering.erIkkeFrilanserEllerNæringsdrivende');
+    }
+    if (erFrilanser && harNæring && !harJobbetIUtlandet) {
+        return intlUtils(intl, 'oppsummering.harIkkeJobbIUtlandet');
+    }
+    if (erFrilanser && !harNæring && harJobbetIUtlandet) {
+        return intlUtils(intl, 'oppsummering.harIkkeNæring');
+    }
+    if (!erFrilanser && !harNæring && !harJobbetIUtlandet) {
+        return intlUtils(intl, 'oppsummering.erIkkeFrilanserHarIkkeNæringJobbetIkkeIUtlandet');
+    }
+    return intlUtils(intl, 'oppsummering.erIkkeFrilanser');
 };

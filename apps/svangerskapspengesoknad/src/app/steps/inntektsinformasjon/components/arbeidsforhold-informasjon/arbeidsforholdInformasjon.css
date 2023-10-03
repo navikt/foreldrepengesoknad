@@ -10,7 +10,7 @@
 .arbeidsforholdInfoBox__arbeidsforholdList {
     list-style: none;
     padding: 0;
-
+    margin-top: 0rem;
     li {
         margin-bottom: 1rem;
     }
