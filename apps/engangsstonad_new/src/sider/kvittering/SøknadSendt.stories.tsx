@@ -3,6 +3,7 @@ import SøknadSendt from './SøknadSendt';
 import IntlProvider from 'intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import { Kjønn } from 'types/Person';
+import { Path } from 'appData/paths';
 
 const person = {
     fnr: '11111111111',
@@ -29,6 +30,9 @@ export default {
     title: 'SøknadSendt',
     component: SøknadSendt,
     decorators: [withRouterProvider],
+    parameters: {
+        routerDecoratorInitUrl: Path.KVITTERING,
+    },
 };
 
 const Template: StoryFn<any> = () => {

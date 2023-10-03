@@ -9,9 +9,9 @@ import KvitteringHeader from './KvitteringHeader';
 import CheckmarkIkon from './ikon/CheckmarkIkon';
 import StatusBoks from './StatusBoks';
 import SøknadSendtIkon from './ikon/SøknadSendtIkon';
+import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 
 import './søknadSendt.less';
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
 
 export interface Props {
     person: Person;

@@ -30,7 +30,7 @@ const DEFAULT_FORM_VALUES = {
     utenlandsoppholdNeste12Mnd: [DEFAULT_PERIODE],
 } as UtenlandsoppholdNeste;
 
-const NesteUtlandsopphold: React.FunctionComponent = () => {
+const NesteUtenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const stepData = useStepData();
@@ -63,6 +63,7 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
         if (harPerioderOverlapp(formValues.utenlandsoppholdNeste12Mnd)) {
             setOverlapp(true);
         } else {
+            // TODO Bør nok mappe '' til undefined for tom som ikkje er oppgitt
             lagreNesteUtenlandsopphold(formValues);
             navigator.goToNextDefaultStep();
         }
@@ -111,4 +112,4 @@ const NesteUtlandsopphold: React.FunctionComponent = () => {
     );
 };
 
-export default NesteUtlandsopphold;
+export default NesteUtenlandsopphold;

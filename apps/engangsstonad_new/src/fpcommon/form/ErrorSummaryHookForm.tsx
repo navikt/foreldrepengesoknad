@@ -17,7 +17,7 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
         if (Array.isArray(fieldValue)) {
             const alle = fieldValue.reduce((acc, f) => {
                 return {
-                    ...findAllErrors(f),
+                    ...(!!f ? findAllErrors(f) : {}),
                     ...acc,
                 };
             }, {});

@@ -11,7 +11,7 @@ export default {
     component: DokumentasjonSteg,
     decorators: [withRouterProvider],
     parameters: {
-        withRouterDecoratorUrl: Path.DOKUMENTASJON,
+        routerDecoratorInitUrl: Path.DOKUMENTASJON,
     },
 };
 

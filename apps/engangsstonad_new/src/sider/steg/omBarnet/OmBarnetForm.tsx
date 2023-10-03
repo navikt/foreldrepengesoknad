@@ -16,7 +16,7 @@ import './omBarnet.less';
 
 type FormValues = FødtFormValues & AdopsjonFormValues;
 
-interface Props {
+export interface Props {
     kjønn: Kjønn;
 }
 

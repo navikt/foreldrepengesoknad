@@ -1,5 +1,5 @@
 export enum Path {
-    VELKOMMEN = '/',
+    VELKOMMEN = '/velkommen',
     SØKERSITUASJON = '/soknad/søkersituasjon',
     OM_BARNET = '/soknad/om-barnet',
     DOKUMENTASJON = '/soknad/dokumentasjon',

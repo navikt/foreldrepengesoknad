@@ -19,8 +19,9 @@ const useEsNavigator = () => {
     }, []);
 
     const goToPreviousDefaultStep = useCallback(() => {
-        const previousPath = stepConfig[stepConfig.findIndex((s) => s.id === activeStepId) - 1];
-        navigate(previousPath.id);
+        const index = stepConfig.findIndex((s) => s.id === activeStepId) - 1;
+        const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
+        navigate(previousPath);
     }, [navigate, stepConfig, activeStepId]);
 
     const goToNextStep = useCallback(
@@ -31,8 +32,9 @@ const useEsNavigator = () => {
     );
 
     const goToNextDefaultStep = useCallback(() => {
-        const nextPath = stepConfig[stepConfig.findIndex((s) => s.id === activeStepId) + 1];
-        navigate(nextPath.id);
+        const index = stepConfig.findIndex((s) => s.id === activeStepId) + 1;
+        const nextPath = stepConfig[index]?.id || Path.KVITTERING;
+        navigate(nextPath);
     }, [navigate, stepConfig, activeStepId]);
 
     const avbrytSøknad = useCallback(() => {

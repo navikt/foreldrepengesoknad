@@ -53,6 +53,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         if (!isChecked) {
             setIsError(true);
         } else {
+            console.log(sisteUtenlandsopphold);
             sendSøknad(omBarnet, utenlandsopphold, vedlegg, sisteUtenlandsopphold, nesteUtenlandsopphold);
             navigator.goToNextDefaultStep();
         }

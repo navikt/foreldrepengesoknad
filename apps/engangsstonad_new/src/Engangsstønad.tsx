@@ -11,8 +11,8 @@ import Api from 'appData/api';
 import Person from './types/Person';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
-import NesteUtlandsopphold from './sider/steg/utlandsoppholdNeste/NesteUtlandsopphold';
-import SisteUtlandsopphold from './sider/steg/utlandsoppholdSiste/SisteUtlandsopphold';
+import NesteUtenlandsopphold from './sider/steg/utenlandsoppholdNeste/NesteUtenlandsopphold';
+import SisteUtenlandsopphold from './sider/steg/utenlandsoppholdSiste/SisteUtenlandsopphold';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
 import { Path } from 'appData/paths';
 import { EsDataContext } from 'appData/EsDataContext';
@@ -74,8 +74,8 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                         <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
                         <Route path={Path.OM_BARNET} element={<OmBarnetForm kjønn={person.kjønn} />} />
                         <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                        <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtlandsopphold />} />
-                        <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtlandsopphold />} />
+                        <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtenlandsopphold />} />
+                        <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtenlandsopphold />} />
                         <Route
                             path={Path.OPPSUMMERING}
                             element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}

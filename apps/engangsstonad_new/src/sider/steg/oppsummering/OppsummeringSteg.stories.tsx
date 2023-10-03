@@ -45,17 +45,25 @@ export default {
     component: OppsummeringSteg,
     decorators: [withRouterProvider],
     parameters: {
-        withRouterDecoratorUrl: Path.OPPSUMMERING,
+        routerDecoratorInitUrl: Path.OPPSUMMERING,
     },
 };
 
 const Template: StoryFn<{
+    sendSøknad: (
+        omBarnet: OmBarnet,
+        utenlandsopphold: Utenlandsopphold,
+        vedlegg: Dokumentasjon,
+        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
+        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
+    ) => void;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
     nesteUtenlandsopphold?: UtenlandsoppholdNeste;
     sisteUtenlandsopphold?: UtenlandsoppholdSiste;
     dokumentasjon?: Dokumentasjon;
 }> = ({
+    sendSøknad,
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
     nesteUtenlandsopphold,
@@ -73,16 +81,20 @@ const Template: StoryFn<{
                     [EsDataType.DOKUMENTASJON]: dokumentasjon,
                 }}
             >
-                <OppsummeringSteg person={person} sendSøknad={action('button-click')} />
+                <OppsummeringSteg person={person} sendSøknad={sendSøknad} />
             </EsContextStorybookHelper>
         </IntlProvider>
     );
 };
 
 export const BarnetErFodt = Template.bind({});
+BarnetErFodt.args = {
+    sendSøknad: action('button-click'),
+};
 
 export const AdopsjonAvEktefellesBarn = Template.bind({});
 AdopsjonAvEktefellesBarn.args = {
+    sendSøknad: action('button-click'),
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -107,6 +119,7 @@ AdopsjonAvEktefellesBarn.args = {
 
 export const AdopsjonAvEktefellesFlereBarn = Template.bind({});
 AdopsjonAvEktefellesFlereBarn.args = {
+    sendSøknad: action('button-click'),
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -131,6 +144,7 @@ AdopsjonAvEktefellesFlereBarn.args = {
 
 export const BarnetErIkkeFodt = Template.bind({});
 BarnetErIkkeFodt.args = {
+    sendSøknad: action('button-click'),
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
@@ -155,6 +169,7 @@ BarnetErIkkeFodt.args = {
 
 export const HarTidligereOgFremtidigeUtenlandsopphold = Template.bind({});
 HarTidligereOgFremtidigeUtenlandsopphold.args = {
+    sendSøknad: action('button-click'),
     utenlandsopphold: {
         harBoddUtenforNorgeSiste12Mnd: true,
         skalBoUtenforNorgeNeste12Mnd: true,

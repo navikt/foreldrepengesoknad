@@ -24,7 +24,7 @@ export type EsDataMap = {
 
 const defaultInitialState = {} as EsDataMap;
 
-type Action = { type: 'update'; key: EsDataType; data: any } | { type: 'reset' };
+export type Action = { type: 'update'; key: EsDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 type State = EsDataMap;
 
@@ -34,9 +34,10 @@ const EsDispatchContext = createContext<Dispatch | undefined>(undefined);
 interface OwnProps {
     children: ReactNode;
     initialState?: EsDataMap;
+    testDispatcher?: (action: Action) => void;
 }
 
-export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState }): JSX.Element => {
+export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState, testDispatcher }): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: State, action: Action) => {
         switch (action.type) {
             case 'update':
@@ -51,9 +52,16 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
         }
     }, initialState || defaultInitialState);
 
+    const dispatchWrapper = useCallback((a: Action) => {
+        if (testDispatcher) {
+            testDispatcher(a);
+        }
+        dispatch(a);
+    }, []);
+
     return (
         <EsStateContext.Provider value={state}>
-            <EsDispatchContext.Provider value={dispatch}>{children}</EsDispatchContext.Provider>
+            <EsDispatchContext.Provider value={dispatchWrapper}>{children}</EsDispatchContext.Provider>
         </EsStateContext.Provider>
     );
 };

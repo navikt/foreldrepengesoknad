@@ -1,9 +1,10 @@
 import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import OmBarnetForm from './OmBarnetForm';
 import IntlProvider from '../../../intl/IntlProvider';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
-import { EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataType } from 'appData/EsDataContext';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
@@ -16,16 +17,20 @@ export default {
     component: OmBarnetForm,
     decorators: [withRouterProvider],
     parameters: {
-        withRouterDecoratorUrl: Path.OM_BARNET,
+        routerDecoratorInitUrl: Path.OM_BARNET,
     },
 };
 
-const Template: StoryFn<{ søkersituasjon: SøkersituasjonEnum; kjønn: Kjønn }> = ({ søkersituasjon, kjønn }) => {
+const Template: StoryFn<{
+    søkersituasjon: SøkersituasjonEnum;
+    kjønn: Kjønn;
+    gåTilNesteSide: (action: Action) => void;
+}> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
     return (
         <IntlProvider språkkode="nb">
             <EsContextStorybookHelper
                 initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
-                dataTypeToLogWhenChanges={EsDataType.OM_BARNET}
+                onDispatch={gåTilNesteSide}
             >
                 <OmBarnetForm kjønn={kjønn} />
             </EsContextStorybookHelper>
@@ -37,15 +42,18 @@ export const VisSideForAdopsjonKvinne = Template.bind({});
 VisSideForAdopsjonKvinne.args = {
     søkersituasjon: SøkersituasjonEnum.ADOPSJON,
     kjønn: 'K',
+    gåTilNesteSide: action('button-click'),
 };
 
 export const VisSideForAdopsjonMann = Template.bind({});
 VisSideForAdopsjonMann.args = {
     søkersituasjon: SøkersituasjonEnum.ADOPSJON,
     kjønn: 'M',
+    gåTilNesteSide: action('button-click'),
 };
 
 export const VisSideForFodsel = Template.bind({});
 VisSideForFodsel.args = {
     søkersituasjon: SøkersituasjonEnum.FØDSEL,
+    gåTilNesteSide: action('button-click'),
 };

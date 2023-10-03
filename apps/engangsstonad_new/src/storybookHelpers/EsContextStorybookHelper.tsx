@@ -1,37 +1,16 @@
-import { FunctionComponent, ReactElement, useEffect } from 'react';
-import { action } from '@storybook/addon-actions';
-import { EsDataContext, EsDataMap, EsDataType, useEsStateData } from 'appData/EsDataContext';
-
-interface WrapperProps {
-    children: ReactElement;
-    dataTypeToLogWhenChanges: EsDataType;
-}
-
-const Wrapper: FunctionComponent<WrapperProps> = ({ children, dataTypeToLogWhenChanges }) => {
-    const data = useEsStateData(dataTypeToLogWhenChanges);
-
-    useEffect(() => {
-        if (data) {
-            action('button-click')(data);
-        }
-    }, [data]);
-
-    return <>{children}</>;
-};
+import { FunctionComponent, ReactElement } from 'react';
+import { Action, EsDataContext, EsDataMap } from 'appData/EsDataContext';
 
 interface Props {
     children: ReactElement;
-    dataTypeToLogWhenChanges?: EsDataType;
     initialState?: EsDataMap;
+    onDispatch?: (action: Action) => void;
 }
 
-const EsContextStorybookHelper: FunctionComponent<Props> = ({ children, dataTypeToLogWhenChanges, initialState }) => {
+const EsContextStorybookHelper: FunctionComponent<Props> = ({ children, onDispatch, initialState }) => {
     return (
-        <EsDataContext initialState={initialState}>
-            {dataTypeToLogWhenChanges && (
-                <Wrapper dataTypeToLogWhenChanges={dataTypeToLogWhenChanges}>{children}</Wrapper>
-            )}
-            {!dataTypeToLogWhenChanges && children}
+        <EsDataContext initialState={initialState} testDispatcher={onDispatch}>
+            {children}
         </EsDataContext>
     );
 };

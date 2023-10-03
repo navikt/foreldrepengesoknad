@@ -1,24 +1,25 @@
 import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
 import IntlProvider from '../../../intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
-import { EsDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { Action } from 'appData/EsDataContext';
 
 export default {
     title: 'SøkersituasjonSteg',
     component: SøkersituasjonSteg,
     decorators: [withRouterProvider],
     parameters: {
-        withRouterDecoratorUrl: Path.SØKERSITUASJON,
+        routerDecoratorInitUrl: Path.SØKERSITUASJON,
     },
 };
 
-const Template: StoryFn<any> = () => {
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
     return (
         <IntlProvider språkkode="nb">
-            <EsContextStorybookHelper dataTypeToLogWhenChanges={EsDataType.SØKERSITUASJON}>
+            <EsContextStorybookHelper onDispatch={gåTilNesteSide}>
                 <SøkersituasjonSteg />
             </EsContextStorybookHelper>
         </IntlProvider>
@@ -26,3 +27,6 @@ const Template: StoryFn<any> = () => {
 };
 
 export const Default = Template.bind({});
+Default.args = {
+    gåTilNesteSide: action('button-click'),
+};

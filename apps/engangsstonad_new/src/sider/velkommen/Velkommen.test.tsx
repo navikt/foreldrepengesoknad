@@ -22,5 +22,7 @@ describe('<Velkommen>', () => {
 
         await waitFor(() => expect(startSøknad).toHaveBeenCalledTimes(1));
         expect(startSøknad).toHaveBeenNthCalledWith(1, true);
+
+        expect(await screen.findByText('Neste side: /soknad/søkersituasjon')).toBeInTheDocument();
     });
 });

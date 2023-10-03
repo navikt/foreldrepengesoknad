@@ -1,37 +1,42 @@
 import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import withRouterProvider from 'fpcommon/storybookHelpers/withRouter';
-import NesteUtlandsopphold from './NesteUtlandsopphold';
+import SisteUtenlandsopphold from './SisteUtenlandsopphold';
 import { Path } from 'appData/paths';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
-import { EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataType } from 'appData/EsDataContext';
 
 const utenlandsopphold = {
-    harBoddUtenforNorgeSiste12Mnd: false,
-    skalBoUtenforNorgeNeste12Mnd: true,
+    harBoddUtenforNorgeSiste12Mnd: true,
+    skalBoUtenforNorgeNeste12Mnd: false,
 };
 
 export default {
-    title: 'NesteUtlandsopphold',
-    component: NesteUtlandsopphold,
+    title: 'SisteUtenlandsopphold',
+    component: SisteUtenlandsopphold,
     decorators: [withRouterProvider],
     parameters: {
-        withRouterDecoratorUrl: Path.NESTE_UTENLANDSOPPHOLD,
+        routerDecoratorInitUrl: Path.SISTE_UTENLANDSOPPHOLD,
     },
 };
 
-const Template: StoryFn<any> = () => {
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
     return (
         <IntlProvider språkkode="nb">
             <EsContextStorybookHelper
+                onDispatch={gåTilNesteSide}
                 initialState={{
                     [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
-                <NesteUtlandsopphold />
+                <SisteUtenlandsopphold />
             </EsContextStorybookHelper>
         </IntlProvider>
     );
 };
 
-export const VisSide = Template.bind({});
+export const Default = Template.bind({});
+Default.args = {
+    gåTilNesteSide: action('button-click'),
+};

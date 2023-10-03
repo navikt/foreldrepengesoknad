@@ -11,7 +11,7 @@ export default {
     component: Velkommen,
     decorators: [withRouterProvider],
     parameters: {
-        withRouterDecoratorUrl: Path.VELKOMMEN,
+        routerDecoratorInitUrl: Path.VELKOMMEN,
     },
 };
 
