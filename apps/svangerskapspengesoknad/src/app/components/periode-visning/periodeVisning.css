@@ -1,0 +1,40 @@
+@import './../../styles/variables.css';
+
+.periodeVisningInfoBox {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--a-deepblue-50);
+    border-radius: 0.25rem;
+}
+
+.periodeVisningInfoBox__periodeVisningList {
+    list-style: none;
+    padding: 0;
+
+    li {
+        margin-bottom: 1rem;
+    }
+
+    li:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.periodeVisningInfoBox__topRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.periodeVisningInfoBox__stillingsprosent {
+    margin-left: auto;
+}
+
+@media (max-width: var(mobile-breakpoint)) {
+    .periodeVisningInfoBox {
+        margin-left: -1rem;
+        margin-right: -1rem;
+        border-radius: 0;
+    }
+}
