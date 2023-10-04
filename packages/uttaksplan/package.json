@@ -1,0 +1,14 @@
+{
+    "name": "@navikt/uttaksplan",
+    "version": "1.0.0",
+    "private": true,
+    "license": "MIT",
+    "type": "module",
+    "dependencies": {
+        "@navikt/fp-common": "workspace:*",
+        "@navikt/sif-common-question-config": "^0.0.7",
+        "react-intl": "^6.4.7",
+        "react": "^18.2.0",
+        "typescript": "^5.2.2"
+    }
+}

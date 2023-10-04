@@ -1,0 +1,20 @@
+@import '../../../../app/styles/variables.less';
+
+.kontostatus {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    &__ikon {
+        flex-grow: 0;
+        padding-right: 1rem;
+    }
+    &__content {
+        flex-grow: 1;
+    }
+    &__kontoOvertrukket {
+        color: @c-red;
+    }
+    &__dagerOvertrukket {
+        color: @c-red;
+    }
+}
