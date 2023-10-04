@@ -1,0 +1,10 @@
+import{j as o}from"./jsx-runtime-69eee039.js";import{A as n}from"./Environment-07523402.js";import{w as u}from"./withIntl-17b5525d.js";import{F as f,a as g}from"./validationUtils-5694e48a.js";import{F as l}from"./FormikFileUploader-ad18b957.js";import{S as d}from"./Skjemanummer-77149054.js";import"./index-7c191284.js";import"./IntlProvider-f163e949.js";import"./index-e13aeee6.js";import"./extends-2a43ab49.js";import"./index-ecbee218.js";import"./index-b3a39e30.js";import"./Link-00530630.js";import"./clsx.m-266f4de0.js";import"./Label-2ad8abda.js";import"./v4-a960c1f4.js";import"./apiInterceptor-dfae0758.js";import"./AttachmentList-652e948e.js";import"./Attachment-b99bcfcb.js";import"./globalUtil-c820f73d.js";import"./vedleggUtils-9787ac0f.js";import"./Attachment-a8e5b8d1.js";const I={title:"components/FormikFileUploader",component:l,decorators:[u]},c=F=>o.jsx(f,{initialValues:{},onSubmit:()=>{},children:o.jsx(g,{children:o.jsx(l,{...F})})}),r=c.bind({});r.args={attachments:[],name:"field_name",label:"Last opp vedlegg",attachmentType:n.ADOPSJONSVEDTAK,skjemanummer:d.ANNET};const e=c.bind({});e.args={attachments:[{id:"1",pending:!1,filename:"Fil som er lastet opp"}],name:"field_name",label:"Last opp vedlegg",attachmentType:n.ADOPSJONSVEDTAK,skjemanummer:d.ANNET};var m,t,a;r.parameters={...r.parameters,docs:{...(m=r.parameters)==null?void 0:m.docs,source:{originalSource:`args => <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />
+        </Form>
+    </Formik>`,...(a=(t=r.parameters)==null?void 0:t.docs)==null?void 0:a.source}}};var i,s,p;e.parameters={...e.parameters,docs:{...(i=e.parameters)==null?void 0:i.docs,source:{originalSource:`args => <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />
+        </Form>
+    </Formik>`,...(p=(s=e.parameters)==null?void 0:s.docs)==null?void 0:p.source}}};const R=["Default","FilSomErLastetOpp"];export{r as Default,e as FilSomErLastetOpp,R as __namedExportsOrder,I as default};
+//# sourceMappingURL=FormikFileUploader.stories-80a59221.js.map
