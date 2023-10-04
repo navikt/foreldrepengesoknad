@@ -22,6 +22,7 @@ export interface StepProps {
     cancelOrContinueLaterAriaLabel?: string;
     pageAriaLabel?: string;
     infoMessage?: React.ReactNode;
+    useNoTempSavingText?: boolean;
 }
 
 const Step: React.FunctionComponent<StepProps> = ({
@@ -36,6 +37,7 @@ const Step: React.FunctionComponent<StepProps> = ({
     children,
     pageAriaLabel,
     infoMessage,
+    useNoTempSavingText,
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId);
     const bem = bemUtils('step');
@@ -74,7 +76,11 @@ const Step: React.FunctionComponent<StepProps> = ({
                         role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
                         aria-label={cancelOrContinueLaterAriaLabel}
                     >
-                        <StepFooter onAvbrytOgSlett={onCancel} onAvbrytOgFortsettSenere={onContinueLater} />
+                        <StepFooter
+                            onAvbrytOgSlett={onCancel}
+                            onAvbrytOgFortsettSenere={onContinueLater}
+                            useNoTempSavingText={useNoTempSavingText}
+                        />
                     </div>
                 )}
             </section>

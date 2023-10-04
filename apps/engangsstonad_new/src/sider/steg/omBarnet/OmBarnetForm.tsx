@@ -53,6 +53,7 @@ const OmBarnetForm: React.FunctionComponent<Props> = ({ kjønn }) => {
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
+            useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}

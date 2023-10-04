@@ -1,17 +1,18 @@
 import React, { useCallback, useRef } from 'react';
 import { Button } from '@navikt/ds-react';
+import { FormattedMessage } from 'react-intl';
 import { UploadIcon } from '@navikt/aksel-icons';
 
 import './fileInput.less';
 
 interface Props {
-    buttonLabel: string;
     onFilesSelect: (files: File[]) => void;
     multiple?: boolean;
     accept: string;
+    hasUplodedAttachements: boolean;
 }
 
-const FileInput: React.FunctionComponent<Props> = ({ buttonLabel, multiple, accept, onFilesSelect }) => {
+const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSelect, hasUplodedAttachements }) => {
     const onFileSelect = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.files) {
@@ -43,13 +44,15 @@ const FileInput: React.FunctionComponent<Props> = ({ buttonLabel, multiple, acce
             />
             <Button
                 className="upload_button"
-                variant="primary"
+                variant={hasUplodedAttachements ? 'secondary' : 'primary'}
                 type="button"
                 onClick={openFileDialog}
                 icon={<UploadIcon />}
                 iconPosition="right"
             >
-                {buttonLabel}
+                <FormattedMessage
+                    id={hasUplodedAttachements ? 'vedlegg.lastoppknapp.flere.label' : 'vedlegg.lastoppknapp.label'}
+                />
             </Button>
         </>
     );

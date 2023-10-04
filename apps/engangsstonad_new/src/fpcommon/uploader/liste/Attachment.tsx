@@ -1,7 +1,8 @@
 import classnames from 'classnames';
-import { Link, Loader } from '@navikt/ds-react';
+import { Link, Loader, HStack, Spacer } from '@navikt/ds-react';
 import { useIntl } from 'react-intl';
-import { bemUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
+import { bemUtils, VedleggIkon } from '@navikt/fp-common';
+import { XMarkIcon } from '@navikt/aksel-icons';
 
 import { Attachment as AttachmentType } from '../typer/Attachment';
 import { bytesString } from '../fileUtils';
@@ -24,32 +25,34 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
     });
 
     return (
-        <div className={cls}>
-            {attachment.pending && (
-                <div className={bem.element('spinner')}>
-                    <Loader type="S" />
-                </div>
-            )}
-            <VedleggIkon className={bem.element('icon')} width={20} height={20} />
-            <div className={bem.element('filename')}>
-                {attachment.url ? (
-                    <Link href={attachment.url} target="_blank">
-                        {attachment.filename}
-                    </Link>
-                ) : (
-                    <span>{attachment.filename}</span>
-                )}
-                {showFileSize && <div>{bytesString(attachment.filesize)}</div>}
+        <HStack gap="4">
+            <div>
+                {attachment.pending && <Loader type="S" />}
+                <VedleggIkon width={20} height={20} />
             </div>
-            {onDelete && (
-                <span className={bem.element('deleteButton')}>
-                    <SlettKnapp
-                        onClick={() => onDelete(attachment)}
-                        ariaLabel={intl.formatMessage({ id: 'vedlegg.arialabel.slett' }, { navn: attachment.filename })}
-                    />
-                </span>
+            {attachment.url ? (
+                <Link href={attachment.url} target="_blank">
+                    {attachment.filename}
+                </Link>
+            ) : (
+                <span>{attachment.filename}</span>
             )}
-        </div>
+            {onDelete && (
+                <>
+                    <Spacer />
+                    <XMarkIcon
+                        onClick={() => onDelete(attachment)}
+                        height={25}
+                        width={25}
+                        cursor="pointer"
+                        aria-label={intl.formatMessage(
+                            { id: 'vedlegg.arialabel.slett' },
+                            { navn: attachment.filename },
+                        )}
+                    />
+                </>
+            )}
+        </HStack>
     );
 };
 

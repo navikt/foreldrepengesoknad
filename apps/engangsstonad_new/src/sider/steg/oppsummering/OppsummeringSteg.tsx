@@ -66,6 +66,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
+            useNoTempSavingText
         >
             <VStack gap="10">
                 <Accordion>

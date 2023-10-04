@@ -205,6 +205,7 @@
     "vedlegg.forStort.flereFeil": "{filename} - The attachment must be less than 9MB",
     "vedlegg.lastoppknapp.arialabel": "Click to upload attachment",
     "vedlegg.lastoppknapp.label": "Upload documentation",
+    "vedlegg.lastoppknapp.flere.label": "Upload more documents",
     "vedlegg.adopsjon": "Confirmation of adoption",
     "vedlegg.terminbekreftelse": "Confirmation of due date",
     "vedlegg.liste.tittel": "Selected attachments ({størrelse})",

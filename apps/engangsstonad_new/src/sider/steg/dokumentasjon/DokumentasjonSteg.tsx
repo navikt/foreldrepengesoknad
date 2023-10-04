@@ -66,6 +66,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
+            useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
@@ -80,7 +81,6 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                             </BodyLong>
                         </div>
                         <FileUploader
-                            label={intl.formatMessage({ id: 'vedlegg.lastoppknapp.label' })}
                             attachmentType={AttachmentType.TERMINBEKREFTELSE}
                             skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
                             existingAttachments={dokumentasjon?.vedlegg}

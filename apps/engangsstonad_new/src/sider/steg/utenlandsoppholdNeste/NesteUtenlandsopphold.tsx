@@ -76,6 +76,7 @@ const NesteUtenlandsopphold: React.FunctionComponent = () => {
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
+            useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">

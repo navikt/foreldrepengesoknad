@@ -161,7 +161,6 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                     skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
                     existingAttachments={[]}
                     updateAttachments={updateAttachments}
-                    label={intl.formatMessage({ id: 'vedlegg.lastoppknapp.label' })}
                     legend={intl.formatMessage({ id: 'vedlegg.adopsjon' })}
                     description={intl.formatMessage({ id: 'omBarnet.adopsjon.veilederpanel.adopsjon.text' })}
                     restApiUrl={Environment.REST_API_URL}

@@ -205,6 +205,7 @@
     "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må vera mindre enn 9MB",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.label": "Last opp dokumentasjon",
+    "vedlegg.lastoppknapp.flere.label": "Last opp meir",
     "vedlegg.adopsjon": "Stadfesting på adopsjon",
     "vedlegg.terminbekreftelse": "Stadfesting på termindato",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",

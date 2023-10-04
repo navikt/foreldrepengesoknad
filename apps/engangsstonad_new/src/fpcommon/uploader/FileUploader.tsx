@@ -45,7 +45,6 @@ const fileExtensionIsValid = (filename: string): boolean => {
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
 interface Props {
-    label: string;
     updateAttachments: (attachments: Attachment[]) => void;
     attachmentType: AttachmentType;
     skjemanummber: Skjemanummer;
@@ -56,7 +55,6 @@ interface Props {
 const FileUploader: React.FunctionComponent<Props> = ({
     existingAttachments = EMPTY_ATTACHMENT_LIST,
     updateAttachments,
-    label,
     attachmentType,
     skjemanummber,
     restApiUrl,
@@ -91,9 +89,13 @@ const FileUploader: React.FunctionComponent<Props> = ({
     const uploadedAttachments = useMemo(() => attachments.filter((a) => !isAttachmentWithError(a)), [attachments]);
 
     return (
-        <VStack gap="8">
-            <FileInput accept={VALID_EXTENSIONS.join(', ')} onFilesSelect={saveFiles} buttonLabel={label} />
+        <VStack gap="1">
             <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
+            <FileInput
+                accept={VALID_EXTENSIONS.join(', ')}
+                onFilesSelect={saveFiles}
+                hasUplodedAttachements={uploadedAttachments.length > 0}
+            />
         </VStack>
     );
 };
