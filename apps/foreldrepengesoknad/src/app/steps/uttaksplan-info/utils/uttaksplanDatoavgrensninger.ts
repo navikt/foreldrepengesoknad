@@ -31,16 +31,29 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
 const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitations => {
     const termindatoMinus12Uker =
         termindato !== undefined
-            ? Uttaksdagen(termindato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1)
+            ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'weeks')
             : undefined;
-    const erFødselsdatoFørTermindatoMinus12Uker = dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker);
-    const datoÅRegneFra = erFødselsdatoFørTermindatoMinus12Uker !== undefined ? familiehendelsesdato : termindato;
-    const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).forrige();
-    const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
-    return {
-        ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
-        weekendsNotSelectable: true,
-    };
+    const erFødselsdatoFørTermindatoMinus12Uker =
+        termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker) : false;
+
+    if (erFødselsdatoFørTermindatoMinus12Uker) {
+        const maksDato = Uttaksdagen(dayjs(termindato).toDate()).forrige();
+        const minDato = Uttaksdagen(familiehendelsesdato).denneEllerForrige();
+        return {
+            ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
+            weekendsNotSelectable: true,
+        };
+    } else {
+        const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).forrige();
+        const minDato = Uttaksdagen(maksDato).trekkFra(
+            uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1,
+        );
+        return {
+            ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
+            weekendsNotSelectable: true,
+        };
+    }
 };
 
 const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: string): DatepickerLimitations => {

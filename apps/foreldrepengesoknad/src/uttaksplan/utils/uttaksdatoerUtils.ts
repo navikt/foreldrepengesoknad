@@ -31,7 +31,7 @@ export const uttaksdatoer = (familiehendelsesdato: Date, erFarEllerMedmor: boole
 export const getUttaksdatoer = (
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): Uttaksdatoer => {
     const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
@@ -62,14 +62,14 @@ export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Da
 
 export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: Date): Date {
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
-        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
+        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
 }
 
 export function getFørsteMuligeUttaksdag(
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): Date {
     if (erFarEllerMedmor) {
         if (andreAugust2022ReglerGjelder(familiehendelsesdato)) {
@@ -79,9 +79,21 @@ export function getFørsteMuligeUttaksdag(
         }
     }
 
+    const termindatoMinus12Uker =
+        termindato !== undefined
+            ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'weeks')
+            : undefined;
+    const erFødselsdatoFørTermindatoMinus12Uker =
+        termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker) : false;
+
+    if (erFødselsdatoFørTermindatoMinus12Uker) {
+        return Uttaksdagen(familiehendelsesdato).denneEllerForrige();
+    }
+
     const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(datoÅRegneFra)).trekkFra(
-        uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
+        uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
 }
 
@@ -90,7 +102,7 @@ export function getSisteMuligeUttaksdag(familiehendelsesdato: Date): Date {
         dayjs(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato))
             .add(uttaksConstants.MAKS_PERMISJONSLENGDE_I_ÅR, 'year')
             .subtract(1, 'day')
-            .toDate()
+            .toDate(),
     ).denneEllerNeste();
 }
 
@@ -98,7 +110,7 @@ export const erInnenFørsteSeksUkerFødselFarMedmor = (
     tidsperiode: TidsperiodeDate,
     situasjon: Situasjon,
     søkerErFarEllerMedmor: boolean,
-    førsteUttaksdagEtterSeksUker: Date
+    førsteUttaksdagEtterSeksUker: Date,
 ): boolean => {
     if (
         situasjon !== 'fødsel' ||
