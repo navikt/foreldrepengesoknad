@@ -212,7 +212,7 @@
     "annenForelder.spørsmål.erAnnenForelderInformert": "Har du orientert {navn} om søknaden din?",
     "annenForelder.erMorUfør": "Mottar {navn} uføretrygd?",
     "annenForelder.erMorUfør.veileder.apneLabel": "Hvordan kan dette innvirke på foreldrepengene?",
-    "annenForelder.erMorUfør.veileder": "Hvis mor har uføretrygd får far/medmor hele perioden med foreldrepenger, utenom de 9 ukene som er satt av til mor rett før og etter fødsel.",
+    "annenForelder.erMorUfør.veileder": "Du svarer ja dersom {navnAnnenForelder} mottar uføretrygd fra NAV eller utenlandsk trygdemyndighet. Da kan du ta ut inntil 15 uker med 100 prosent foreldrepenger, eller 19 uker med 80 prosent foreldrepenger, uten at det er aktivitetskrav til {navnAnnenForelder}. Uttak av foreldrepenger utover disse ukene må {navnAnnenForelder} være i jobb, studere eller i annen godkjent aktivitet.",
     "annenForelder.datoForAleneomsorg": "Dato du ble alene om omsorgen",
     "annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp": "Trykk her for å laste opp dokumentasjon om aleneomsorg",

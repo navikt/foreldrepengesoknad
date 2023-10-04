@@ -104,13 +104,13 @@ const AnnenForelder = () => {
                 actionCreator.setOmBarnet(newBarn),
             ];
         },
-        [søker, barn]
+        [søker, barn],
     );
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN_INFO,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onForstettSøknadSenere = useFortsettSøknadSenere();
@@ -123,7 +123,7 @@ const AnnenForelder = () => {
                 barn,
                 søker,
                 annenForelderFraRegistrertBarn,
-                intl
+                intl,
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
@@ -238,7 +238,7 @@ const AnnenForelder = () => {
                                         legend="Dokumentasjon for aleneomsorg"
                                         label={intlUtils(
                                             intl,
-                                            'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
+                                            'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp',
                                         )}
                                         name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
                                         attachments={formValues.dokumentasjonAvAleneomsorg || []}
@@ -260,7 +260,7 @@ const AnnenForelder = () => {
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel'
+                                        'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel',
                                     )}
                                 >
                                     <Block padBottom="m">
@@ -341,7 +341,7 @@ const AnnenForelder = () => {
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel'
+                                        'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
                                     )}
                                 >
                                     <Block padBottom="l">
@@ -393,7 +393,10 @@ const AnnenForelder = () => {
                                 />
                                 <ReadMore header={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}>
                                     <Block>
-                                        <FormattedMessage id="annenForelder.erMorUfør.veileder" />
+                                        <FormattedMessage
+                                            id="annenForelder.erMorUfør.veileder"
+                                            values={{ navnAnnenForelder: formValues.fornavn }}
+                                        />
                                     </Block>
                                 </ReadMore>
                             </Block>
