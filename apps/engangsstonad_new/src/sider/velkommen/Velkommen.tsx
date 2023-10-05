@@ -8,6 +8,7 @@ import {
     GuidePanel,
     HStack,
     Heading,
+    Link,
     ReadMore,
     VStack,
 } from '@navikt/ds-react';
@@ -86,10 +87,18 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                         }
                     >
                         <VStack gap="5">
-                            <FormattedMessage id="velkommen.text.samtykkeIntro" />
-                            <ReadMore header={intl.formatMessage({ id: 'velkommen.text.plikter.apneLabel' })}>
-                                <Plikter />
-                            </ReadMore>
+                            <BodyShort>
+                                <HStack gap="1">
+                                    <FormattedMessage id="velkommen.text.plikter.apneLabel" />
+                                    <Link
+                                        href={lenker.plikter}
+                                        target="_blank"
+                                        style={{ color: 'var(--a-text-action)' }}
+                                    >
+                                        <FormattedMessage id="rettigheter.text.lestOgForstått.link" />
+                                    </Link>
+                                </HStack>
+                            </BodyShort>
                             <BodyShort>
                                 <FormattedMessage id="velkommen.text.kunEnStønad" />
                             </BodyShort>

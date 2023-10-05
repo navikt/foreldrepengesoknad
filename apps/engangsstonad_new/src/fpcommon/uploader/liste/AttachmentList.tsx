@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+import { VStack } from '@navikt/ds-react';
 import { Attachment } from '../typer/Attachment';
 import AttachmentComponent from './Attachment';
 import './attachment.less';
@@ -12,15 +14,21 @@ interface Props {
 const AttachmentList: React.FunctionComponent<Props> = (props) => {
     const { attachments, showFileSize, onDelete } = props;
     return (
-        <ul className="attachmentList">
-            {attachments.map((attachment, index) => (
-                <li key={guid()}>
-                    {index === 0 && <hr />}
-                    <AttachmentComponent attachment={attachment} onDelete={onDelete} showFileSize={showFileSize} />
-                    <hr />
-                </li>
-            ))}
-        </ul>
+        <>
+            {attachments.length > 0 && (
+                <VStack gap="2">
+                    {attachments.map((attachment) => (
+                        <Fragment key={guid()}>
+                            <AttachmentComponent
+                                attachment={attachment}
+                                onDelete={onDelete}
+                                showFileSize={showFileSize}
+                            />
+                        </Fragment>
+                    ))}
+                </VStack>
+            )}
+        </>
     );
 };
 export default AttachmentList;

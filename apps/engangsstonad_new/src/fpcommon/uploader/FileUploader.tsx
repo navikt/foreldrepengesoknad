@@ -5,9 +5,13 @@ import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
 import { Attachment, AttachmentType, Skjemanummer } from './typer/Attachment';
 import AttachmentApi from './attachmentApi';
-import { isAttachmentWithError, mapFileToAttachment } from './fileUtils';
+import { mapFileToAttachment } from './fileUtils';
+import FailedAttachmentList from './liste/FailedAttachmentList';
+import { FileUploadError } from './typer/FileUploadError';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
+const MAX_FIL_STØRRELSE_KB = 16777;
+const KILOBYTES_IN_BYTE = 0.0009765625;
 
 const getPendingAttachmentFromFile = (
     file: File,
@@ -19,9 +23,25 @@ const getPendingAttachmentFromFile = (
     return newAttachment;
 };
 
+const fileExtensionIsValid = (filename: string): boolean => {
+    const ext = filename.split('.').pop();
+    return VALID_EXTENSIONS.includes(`.${ext!.toLowerCase()}`);
+};
+
+const fileSizeIsValid = (filesizeInB: number): boolean => {
+    const filesizeInKb = filesizeInB * KILOBYTES_IN_BYTE;
+    return filesizeInKb <= MAX_FIL_STØRRELSE_KB;
+};
+
 const uploadAttachment = async (attachment: Attachment, restApiUrl: string): Promise<void> => {
     if (!fileExtensionIsValid(attachment.file.name)) {
         attachment.pending = false;
+        attachment.error = FileUploadError.VALID_EXTENSION;
+        return;
+    }
+    if (!fileSizeIsValid(attachment.filesize)) {
+        attachment.pending = false;
+        attachment.error = FileUploadError.MAX_SIZE;
         return;
     }
 
@@ -32,14 +52,10 @@ const uploadAttachment = async (attachment: Attachment, restApiUrl: string): Pro
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } catch (error) {
-        debugger;
+        // TODO Burde få ut feilmelding frå backend og vise denne
         attachment.pending = false;
+        attachment.error = FileUploadError.GENERAL;
     }
-};
-
-const fileExtensionIsValid = (filename: string): boolean => {
-    const ext = filename.split('.').pop();
-    return VALID_EXTENSIONS.includes(`.${ext!.toLowerCase()}`);
 };
 
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
@@ -86,16 +102,18 @@ const FileUploader: React.FunctionComponent<Props> = ({
         setAttachments((currentAttachments) => currentAttachments.filter((a) => a.filename !== file.filename));
     }, []);
 
-    const uploadedAttachments = useMemo(() => attachments.filter((a) => !isAttachmentWithError(a)), [attachments]);
+    const uploadedAttachments = useMemo(() => attachments.filter((a) => !a.error), [attachments]);
+    const failedAttachments = useMemo(() => attachments.filter((a) => !!a.error), [attachments]);
 
     return (
-        <VStack gap="1">
+        <VStack gap="6">
             <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
             <FileInput
                 accept={VALID_EXTENSIONS.join(', ')}
                 onFilesSelect={saveFiles}
                 hasUplodedAttachements={uploadedAttachments.length > 0}
             />
+            <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
         </VStack>
     );
 };

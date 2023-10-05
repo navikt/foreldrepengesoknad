@@ -42,6 +42,3 @@ export const mapFileToAttachment = (file: File, type: AttachmentType, skjemanumm
         skjemanummer,
     };
 };
-
-export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>
-    (pending === false && uploaded === false) || filesize === 0;

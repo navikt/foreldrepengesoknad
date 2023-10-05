@@ -2,7 +2,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { formatDate } from '@navikt/fp-common';
 import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import AttachmentList from 'fpcommon/uploader/liste/AttachmentList';
-import { isAttachmentWithError } from 'fpcommon/uploader/fileUtils';
 import { OmBarnet } from 'types/OmBarnet';
 import Dokumentasjon from 'types/Dokumentasjon';
 
@@ -71,7 +70,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedleg
                     <Label>
                         <FormattedMessage id={'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse'} />
                     </Label>
-                    <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !isAttachmentWithError(a))} />
+                    <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !a.error)} />
                 </>
             )}
             {omBarnet.erBarnetFødt && omBarnet.fødselsdatoer && (
@@ -100,7 +99,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedleg
                         <Label>
                             <FormattedMessage id={'oppsummering.text.vedlagtTerminbekreftelse'} />
                         </Label>
-                        <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !isAttachmentWithError(a))} />
+                        <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !a.error)} />
                     </>
                 </>
             )}

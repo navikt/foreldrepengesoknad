@@ -15,18 +15,6 @@ import Datepicker from 'fpcommon/form/Datepicker';
 import FileUploader from 'fpcommon/uploader/FileUploader';
 import Environment from 'appData/Environment';
 import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
-import { isAttachmentWithError } from 'fpcommon/uploader/fileUtils';
-import ErrorMessageHookForm from 'fpcommon/form/ErrorMessageHookForm';
-
-const validerVedlegg = (vedlegg: Attachment[]): string | undefined => {
-    const feilmeldinger = [] as string[];
-    vedlegg.filter(isAttachmentWithError).forEach((error) => {
-        if (error.filesize === 0) {
-            feilmeldinger.push('vedlegg.tomFil');
-        }
-    });
-    return feilmeldinger.length > 0 ? feilmeldinger[0] : undefined;
-};
 
 const DokumentasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -42,10 +30,9 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
     });
 
     const lagre = useCallback((formValues: Dokumentasjon) => {
-        const vedleggFeilmelding = validerVedlegg(formValues.vedlegg);
-        if (vedleggFeilmelding) {
+        if (formValues.vedlegg.length === 0) {
             formMethods.setError('vedlegg', {
-                message: vedleggFeilmelding,
+                message: intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokument' }),
             });
         } else {
             lagreDokumentasjon(formValues);
@@ -54,9 +41,8 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
     }, []);
 
     const updateAttachments = useCallback((attachments: Attachment[]) => {
-        // TODO Må truleg kalle validering her òg
-        //TODO Ikkje kall denne om det er feil på vedlegg
         formMethods.setValue('vedlegg', attachments);
+        formMethods.clearErrors('vedlegg');
     }, []);
 
     return (
@@ -87,7 +73,6 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                             updateAttachments={updateAttachments}
                             restApiUrl={Environment.REST_API_URL}
                         />
-                        <ErrorMessageHookForm name="vedlegg" />
                     </VStack>
                     <Datepicker
                         name={`terminbekreftelse`}

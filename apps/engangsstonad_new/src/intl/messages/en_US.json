@@ -95,7 +95,7 @@
     "personopplysninger.text.svarPåSøknaden.ingress": "Once the application has been processed, you will receive a decision letter.  This will inform you of the",
     "rettigheter.sectionheading": "Your duties",
     "rettigheter.text.2": "I understand that if I provide incorrect information or withhold information, this may have consequences for my entitlement to the lump-sum grant.",
-    "rettigheter.text.lestOgForstått.link": "nav.no/rettogplikt",
+    "rettigheter.text.lestOgForstått.link": "here",
     "rettigheter.text.lestOgForstått": "I have read and understood what is stated at {link}",
     "sesjonUtløpt.avslutt": "No, I would like to exit",
     "sesjonUtløpt.fortsett": "Yes, I would like to continue",
@@ -197,6 +197,9 @@
     "valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert": "You have not entered a stay abroad for the next 12 months",
     "valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert": "You have not entered a stay abroad for the last 12 months",
     "valideringsfeil.utenlandsoppholdUtenforPeriode": "You cannot add a stay in the chosen period of time",
+    "vedlegg.feilmelding.opplasting.feilet": "{filename} - Something went wrong. Try again..",
+    "vedlegg.feilmelding.ugyldig.type": "{filename} - Attachment type is not valid",
+    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - The attachment must be less than {maxStørrelse} KB.",
     "vedlegg.arialabel.slett": "Remove attachment {navn}",
     "vedlegg.feilmelding": "Something went wrong. Try again...",
     "vedlegg.feilmelding.flereFeil": "{filename} - Something went wrong. Try again...",
@@ -242,7 +245,6 @@
     "velkommen.text.nySøknadAdvarsel": "Your existing application will be deleted.",
     "velkommen.text.personopplysningene.link": "Read about how NAV processes your personal data",
     "velkommen.text.samtykke": "I confirm that I have read and understood",
-    "velkommen.text.samtykkeIntro": "To proceed with the application, you must confirm that you have read and understood your duties.",
     "velkommen.text.startNySøknad": "start a new application",
     "velkommen.text.startNySøknadPrompt": "Are you sure you want to start a new application? The application you started will be deleted.",
     "velkommen.text.veiviser": "You may be entitled to the parental benefit instead of the lump-sum grant if you have had income, been in the national service or had any of these benefits from NAV: work assessment allowance, unemployment benefit, sickness benefit or benefit for care of sick children.",
@@ -262,5 +264,6 @@
     "utenlandsopphold.info.del4": "Du er ikke lenger medlem i folketrygden når du regnes som bosatt i utlandet.",
     "utenlandsopphold.info.undertittel": "Ferie og midlertidig opphold i utlandet",
     "utenlandsopphold.info.del5": "Når du er på ferie i utlandet regnes du som turist og beholder medlemskapet i folketrygden, dersom du ikke har arbeidsinntekt under oppholdet og oppholdet ikke varer lenger enn 12 måneder. Så lenge du er medlem i folketrygden beholder du som hovedregel ytelsen.",
-    "utenlandsopphold.info.del6": "Du kan lese mer om utenlandsopphold på"
+    "utenlandsopphold.info.del6": "Du kan lese mer om utenlandsopphold på",
+    "DokumentasjonSteg.MinstEttDokument": "Du må laste opp bekreftelse på adopsjon"
 }
