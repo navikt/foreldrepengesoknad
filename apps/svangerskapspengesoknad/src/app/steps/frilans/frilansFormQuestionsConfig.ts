@@ -12,10 +12,10 @@ const FrilansFormConfig: QuestionConfig<FrilansFormData, FrilansFormField> = {
         isIncluded: () => true,
         isAnswered: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser !== YesOrNo.UNANSWERED,
     },
-    [FrilansFormField.frilansTom]: {
-        isIncluded: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser === YesOrNo.NO,
-        isAnswered: ({ frilansTom }) => hasValue(frilansTom),
-    },
+    // [FrilansFormField.frilansTom]: {
+    //     isIncluded: ({ jobberFremdelesSomFrilanser }) => jobberFremdelesSomFrilanser === YesOrNo.NO,
+    //     isAnswered: ({ frilansTom }) => hasValue(frilansTom),
+    // },
 };
 
 const frilansSubformQuestionsConfig = Questions<FrilansFormData, FrilansFormField>(FrilansFormConfig);

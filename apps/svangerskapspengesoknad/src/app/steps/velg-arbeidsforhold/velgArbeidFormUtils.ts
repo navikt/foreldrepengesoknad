@@ -22,7 +22,7 @@ export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormD
         frilansInformasjon: {
             jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
             oppstart: values.frilansFom,
-            sluttDato: values.frilansTom,
+            // sluttDato: values.frilansTom,
         },
     };
 };

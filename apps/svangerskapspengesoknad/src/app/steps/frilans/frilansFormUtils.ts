@@ -9,7 +9,7 @@ import { Søker } from 'app/types/Søker';
 
 export const initialFrilansFormValues: FrilansFormData = {
     [FrilansFormField.frilansFom]: '',
-    [FrilansFormField.frilansTom]: undefined,
+    // [FrilansFormField.frilansTom]: undefined,
     [FrilansFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
 };
 
@@ -20,7 +20,7 @@ export const getInitialFrilansFormValues = (frilans: Frilans | undefined): Frila
     return {
         ...initialFrilansFormValues,
         frilansFom: frilans.oppstart,
-        frilansTom: frilans.sluttDato,
+        // frilansTom: frilans.sluttDato,
         jobberFremdelesSomFrilanser: convertBooleanOrUndefinedToYesOrNo(frilans.jobberFremdelesSomFrilans),
     };
 };
@@ -31,7 +31,7 @@ export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormD
         frilansInformasjon: {
             jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
             oppstart: values.frilansFom!,
-            sluttDato: values.frilansTom!,
+            // sluttDato: values.frilansTom!,
         },
     };
 };
@@ -44,9 +44,9 @@ export const cleanupFrilansFormData = (
         frilansFom: visibility.isVisible(FrilansFormField.frilansFom)
             ? values.frilansFom
             : initialFrilansFormValues.frilansFom,
-        frilansTom: visibility.isVisible(FrilansFormField.frilansTom)
-            ? values.frilansTom
-            : initialFrilansFormValues.frilansTom,
+        // frilansTom: visibility.isVisible(FrilansFormField.frilansTom)
+        //     ? values.frilansTom
+        //     : initialFrilansFormValues.frilansTom,
         jobberFremdelesSomFrilanser: visibility.isVisible(FrilansFormField.jobberFremdelesSomFrilanser)
             ? values.jobberFremdelesSomFrilanser
             : initialFrilansFormValues.jobberFremdelesSomFrilanser,

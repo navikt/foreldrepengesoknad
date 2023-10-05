@@ -5,7 +5,7 @@ import { fireUkerSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 
-export const validateFrilansStart = (intl: IntlShape, tom: string) => (fom: string) => {
+export const validateFrilansStart = (intl: IntlShape) => (fom: string) => {
     if (!hasValue(fom)) {
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
     }
@@ -18,9 +18,9 @@ export const validateFrilansStart = (intl: IntlShape, tom: string) => (fom: stri
         return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
     }
 
-    if (hasValue(tom) && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
-    }
+    // if (hasValue(tom) && isISODateString(tom) && isDateABeforeDateB(tom, fom)) {
+    //     return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
+    // }
 
     return undefined;
 };

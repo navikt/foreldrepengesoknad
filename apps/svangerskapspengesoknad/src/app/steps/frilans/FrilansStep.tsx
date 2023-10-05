@@ -6,7 +6,6 @@ import {
     Step,
     StepButtonWrapper,
     date20YearsAgo,
-    date4WeeksAgo,
     dateToday,
     intlUtils,
     validateYesOrNoIsAnswered,
@@ -14,9 +13,8 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import stepConfig, { getNextRouteForFrilans, getPreviousSetStepHref } from 'app/steps/stepsConfig';
-import { validateFrilansSlutt, validateFrilansStart } from './frilansValidation';
+import { validateFrilansStart } from './frilansValidation';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { Button } from '@navikt/ds-react';
@@ -71,7 +69,7 @@ const FrilansStep: React.FunctionComponent = () => {
                                 <FrilansFormComponents.DatePicker
                                     name={FrilansFormField.frilansFom}
                                     label={intlUtils(intl, 'frilans.oppstart')}
-                                    validate={validateFrilansStart(intl, formValues.frilansTom!)}
+                                    validate={validateFrilansStart(intl)}
                                     maxDate={dateToday}
                                     minDate={date20YearsAgo}
                                     showYearSelector={true}
@@ -93,7 +91,7 @@ const FrilansStep: React.FunctionComponent = () => {
                                     }
                                 />
                             </Block>
-                            <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansTom)}>
+                            {/* <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansTom)}>
                                 <FrilansFormComponents.DatePicker
                                     name={FrilansFormField.frilansTom}
                                     label={intlUtils(intl, 'frilans.slutt')}
@@ -107,7 +105,7 @@ const FrilansStep: React.FunctionComponent = () => {
                                         formValues.frilansFom!,
                                     )}
                                 />
-                            </Block>
+                            </Block> */}
                             <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button variant="secondary" as={Link} to={getPreviousSetStepHref('frilans')}>

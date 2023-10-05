@@ -2,13 +2,13 @@ import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/li
 
 export enum FrilansFormField {
     frilansFom = 'frilansFom',
-    frilansTom = 'frilansTom',
+    // frilansTom = 'frilansTom',
     jobberFremdelesSomFrilanser = 'jobberFremdelesSomFrilanser',
 }
 
 export interface FrilansFormData {
     [FrilansFormField.frilansFom]: string;
-    [FrilansFormField.frilansTom]: string | undefined;
+    // [FrilansFormField.frilansTom]: string | undefined;
     [FrilansFormField.jobberFremdelesSomFrilanser]: YesOrNo;
 }
 
