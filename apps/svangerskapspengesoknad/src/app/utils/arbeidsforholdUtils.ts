@@ -4,6 +4,11 @@ import { Søker } from 'app/types/Søker';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
+import { hasValue } from './validationUtils';
+import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
+import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
+import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
+import Tilrettelegging from 'app/types/Tilrettelegging';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -39,7 +44,7 @@ export const getUnikeArbeidsforhold = (
     return [];
 };
 
-export const søkerHarKunEtArbeid = (
+export const søkerHarKunEtAktivtArbeid = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
     erFrilanser: boolean,
@@ -51,6 +56,48 @@ export const søkerHarKunEtArbeid = (
         (aktiveArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
         (aktiveArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
     );
+};
+
+export const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
+    formValues: Partial<InntektsinformasjonFormData>,
+    aktiveArbeidsforhold: Arbeidsforhold[],
+    termindato: string,
+) => {
+    return (
+        hasValue(formValues.hattInntektSomFrilans) &&
+        hasValue(formValues.hattInntektSomNæringsdrivende) &&
+        søkerHarKunEtAktivtArbeid(
+            termindato,
+            aktiveArbeidsforhold,
+            !!convertYesOrNoOrUndefinedToBoolean(formValues.hattInntektSomFrilans),
+            !!convertYesOrNoOrUndefinedToBoolean(formValues.hattInntektSomNæringsdrivende),
+        ) &&
+        aktiveArbeidsforhold.length > 0
+    );
+};
+
+export const getAutomatiskValgtTilretteleggingHvisKunEtArbeid = (
+    formValues: Partial<InntektsinformasjonFormData>,
+    aktiveArbeidsforhold: Arbeidsforhold[],
+    termindato: string,
+    tilrettelegging: Tilrettelegging[],
+    intl: IntlShape,
+) => {
+    let automatiskValgtTilrettelegging = undefined;
+    const kunEtAregArbeidsforholdForTilrettelegging = søkerHarKunEttARegArbeidsforholdForTilrettelegging(
+        formValues,
+        aktiveArbeidsforhold,
+        termindato,
+    );
+    if (kunEtAregArbeidsforholdForTilrettelegging) {
+        automatiskValgtTilrettelegging = getArbeidsforholdTilretteleggingOptions(
+            aktiveArbeidsforhold,
+            tilrettelegging,
+            termindato,
+            intl,
+        )[0];
+    }
+    return automatiskValgtTilrettelegging;
 };
 
 export const getTekstOmManglendeArbeidsforhold = (søker: Søker, intl: IntlShape): string => {

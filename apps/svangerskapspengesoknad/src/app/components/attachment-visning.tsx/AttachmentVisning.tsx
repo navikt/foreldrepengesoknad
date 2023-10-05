@@ -1,4 +1,4 @@
-import { FileIcon, XMarkIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleIcon, FileIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button, Loader, Link } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { FunctionComponent } from 'react';
@@ -10,6 +10,16 @@ interface Props {
     onDelete: (vedlegg: Attachment) => void;
 }
 
+const getAttachmentIcon = (bem: any, vedlegg: Attachment) => {
+    if (vedlegg.error) {
+        return <ExclamationmarkTriangleIcon className={bem.element('icon')} title="Feil med fil" />;
+    } else if (vedlegg.pending) {
+        return <Loader className={bem.element('icon')} size="small" />;
+    } else {
+        return <FileIcon className={bem.element('icon')} title="Opplastet fil" />;
+    }
+};
+
 const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
     const bem = bemUtils('attachmentVisning');
     const filstørrelseKB = Math.round(vedlegg.filesize * 0.001);
@@ -18,8 +28,7 @@ const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
     };
     return (
         <div className={bem.block}>
-            {vedlegg.pending && <Loader className={bem.element('icon')} size="small" />}
-            {!vedlegg.pending && <FileIcon className={bem.element('icon')} title="Opplastet fil" />}
+            {getAttachmentIcon(bem, vedlegg)}
             <div>
                 <Block padBottom="s">
                     {vedlegg.url ? (

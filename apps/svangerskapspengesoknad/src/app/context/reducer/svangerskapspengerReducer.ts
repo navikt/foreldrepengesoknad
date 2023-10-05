@@ -3,7 +3,7 @@ import { SvangerskapspengerContextAction, SvangerskapspengerContextActionKeys } 
 
 const svangerskapspengerReducer = (
     state: SvangerskapspengerContextState,
-    action: SvangerskapspengerContextAction
+    action: SvangerskapspengerContextAction,
 ): SvangerskapspengerContextState => {
     switch (action.type) {
         case SvangerskapspengerContextActionKeys.SET_BARN:
@@ -60,14 +60,6 @@ const svangerskapspengerReducer = (
                 søknad: {
                     ...state.søknad,
                     tilrettelegging: action.payload,
-                },
-            };
-        case SvangerskapspengerContextActionKeys.SET_VEDLEGG:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    vedlegg: action.payload,
                 },
             };
         case SvangerskapspengerContextActionKeys.AVBRYT_SØKNAD:

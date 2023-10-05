@@ -2,7 +2,7 @@ import { Accordion, BodyShort, Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, formatDate, guid, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getBackLinkTilretteleggingPeriodeEllerSkjemaSteg } from '../stepsConfig';
+import stepConfig, { getBackLinkForOppsummeringSteg } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -34,7 +34,9 @@ import { getSøknadForInnsending } from 'app/utils/apiUtils';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 
 const Oppsummering = () => {
+    useUpdateCurrentTilretteleggingId(undefined);
     const søknad = useSøknad();
+    const { søker, tilrettelegging } = søknad;
     const søkerinfo = useSøkerinfo();
     const { dispatch } = useSvangerskapspengerContext();
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -44,7 +46,7 @@ const Oppsummering = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const abortSignal = useAbortSignal();
 
-    const { barn, informasjonOmUtenlandsopphold, tilrettelegging } = søknad;
+    const { barn, informasjonOmUtenlandsopphold } = søknad;
     const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
@@ -137,20 +139,18 @@ const Oppsummering = () => {
                                                     arbeidsforhold={aktiveArbeidsforhold}
                                                 />
                                             )}
-                                            {søknad.søker.harJobbetSomFrilans && søknad.søker.frilansInformasjon && (
-                                                <FrilansVisning
-                                                    frilans={søknad.søker.frilansInformasjon}
-                                                ></FrilansVisning>
+                                            {søker.harJobbetSomFrilans && søker.frilansInformasjon && (
+                                                <FrilansVisning frilans={søker.frilansInformasjon}></FrilansVisning>
                                             )}
-                                            {søknad.søker.harJobbetSomSelvstendigNæringsdrivende &&
-                                                søknad.søker.selvstendigNæringsdrivendeInformasjon && (
+                                            {søker.harJobbetSomSelvstendigNæringsdrivende &&
+                                                søker.selvstendigNæringsdrivendeInformasjon && (
                                                     <EgenNæringVisning
-                                                        næring={søknad.søker.selvstendigNæringsdrivendeInformasjon}
+                                                        næring={søker.selvstendigNæringsdrivendeInformasjon}
                                                     ></EgenNæringVisning>
                                                 )}
-                                            {søknad.søker.harHattAnnenInntekt &&
-                                                søknad.søker.andreInntekter &&
-                                                søknad.søker.andreInntekter.map((arbeid) => {
+                                            {søker.harHattAnnenInntekt &&
+                                                søker.andreInntekter &&
+                                                søker.andreInntekter.map((arbeid) => {
                                                     return (
                                                         <ArbeidIUtlandetVisning
                                                             key={guid()}
@@ -158,12 +158,12 @@ const Oppsummering = () => {
                                                         ></ArbeidIUtlandetVisning>
                                                     );
                                                 })}
-                                            {(!søknad.søker.harJobbetSomFrilans ||
-                                                !søknad.søker.harJobbetSomSelvstendigNæringsdrivende ||
-                                                !søknad.søker.harHattAnnenInntekt) && (
+                                            {(!søker.harJobbetSomFrilans ||
+                                                !søker.harJobbetSomSelvstendigNæringsdrivende ||
+                                                !søker.harHattAnnenInntekt) && (
                                                 <Block padBottom="m">
                                                     <BodyShort>
-                                                        {getTekstOmManglendeArbeidsforhold(søknad.søker, intl)}
+                                                        {getTekstOmManglendeArbeidsforhold(søker, intl)}
                                                     </BodyShort>
                                                 </Block>
                                             )}
@@ -191,10 +191,7 @@ const Oppsummering = () => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getBackLinkTilretteleggingPeriodeEllerSkjemaSteg(
-                                            tilrettelegging,
-                                            undefined,
-                                        )}
+                                        to={getBackLinkForOppsummeringSteg(tilrettelegging)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

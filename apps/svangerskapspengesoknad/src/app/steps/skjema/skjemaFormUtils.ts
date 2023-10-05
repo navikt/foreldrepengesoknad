@@ -1,18 +1,8 @@
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import { SkjemaFormData, initialSkjemaFormData } from './skjemaFormTypes';
 import Tilrettelegging from 'app/types/Tilrettelegging';
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 
-export const getInitialSkjemaValuesFromState = (state: SvangerskapspengerContextState): SkjemaFormData => {
-    const alleVedlegg = state.søknad.vedlegg;
-    const tilrettelegginger = state.søknad.tilrettelegging;
-
-    const vedleggForTilrettelegging = tilrettelegginger.map((tilrettelegging: Tilrettelegging) => {
-        return tilrettelegging.vedlegg?.map((vedleggId: string) => {
-            return alleVedlegg.find((vedlegg: Attachment) => vedlegg.id === vedleggId);
-        });
-    }) as Attachment[][];
-
+export const getInitialSkjemaValuesFromState = (currentTilrettelegging: Tilrettelegging): SkjemaFormData => {
+    const vedleggForTilrettelegging = currentTilrettelegging.vedlegg;
     return {
         ...initialSkjemaFormData,
         vedlegg: vedleggForTilrettelegging,
@@ -20,17 +10,17 @@ export const getInitialSkjemaValuesFromState = (state: SvangerskapspengerContext
 };
 
 export const mapTilretteleggingMedSkjema = (
-    tilrettelegging: Tilrettelegging[],
+    tilretteleggingFraState: Tilrettelegging[],
+    currentTilrettelegging: Tilrettelegging,
     values: SkjemaFormData,
 ): Tilrettelegging[] => {
-    return tilrettelegging.map((t, index) => {
-        return {
-            ...t,
-            vedlegg: values.vedlegg ? values.vedlegg[index].map((v) => v.id) : [],
-        };
-    });
-};
+    const oppdatert = {
+        ...currentTilrettelegging,
+        vedlegg: values.vedlegg,
+    } as Tilrettelegging;
 
-export const getVedleggForTilrettelegging = (values: Partial<SkjemaFormData>, index: number): Attachment[] => {
-    return values.vedlegg && values.vedlegg.length > index && values.vedlegg[index] ? values.vedlegg[index] : [] || [];
+    const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {
+        return t.id === currentTilrettelegging.id ? oppdatert : t;
+    });
+    return nyTilretteleggingISøknad;
 };

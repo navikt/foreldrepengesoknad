@@ -10,7 +10,7 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType
+    innsendingsType?: InnsendingsType,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,
@@ -32,8 +32,8 @@ export const bytesString = (bytes: number): string => {
     });
 };
 
-export const deleteAttachment = (alleVedlegg: Attachment[][], index: number, deleted: Attachment): Attachment[][] => {
-    alleVedlegg[index] = alleVedlegg[index].filter((att) => att !== deleted);
+export const deleteAttachment = (alleVedlegg: Attachment[], deleted: Attachment): Attachment[] => {
+    alleVedlegg = alleVedlegg.filter((att) => att !== deleted);
     return alleVedlegg;
 };
 

@@ -84,7 +84,7 @@ const mapDelvisTilretteleggingForInnsending = (
         type: Tilretteleggingstype.DELVIS,
         behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
         arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
-        vedlegg: tilrettelegging.vedlegg,
+        vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
         tilrettelagtArbeidFom: ISOStringToDate(tilrettelegging.sammePeriodeFremTilTerminFom)!,
         stillingsprosent: prosentStilling,
     };
@@ -98,7 +98,7 @@ const mapIngenTilretteleggingForInnsending = (
         type: Tilretteleggingstype.INGEN,
         behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
         arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
-        vedlegg: tilrettelegging.vedlegg,
+        vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
         slutteArbeidFom: ISOStringToDate(tilrettelegging.sammePeriodeFremTilTerminFom)!,
     };
 };
@@ -142,7 +142,7 @@ const mappedTilretteleggingMedFlerePerioderForInnsending = (tilrettelegging: Til
                 type: Tilretteleggingstype.DELVIS,
                 behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
                 arbeidsforhold: arbeidsforholdForInnsending,
-                vedlegg: tilrettelegging.vedlegg,
+                vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
                 tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
                 stillingsprosent: prosentStilling,
             } as DelvisTilretteleggingDTO;
@@ -151,7 +151,7 @@ const mappedTilretteleggingMedFlerePerioderForInnsending = (tilrettelegging: Til
                 type: Tilretteleggingstype.INGEN,
                 behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
                 arbeidsforhold: arbeidsforholdForInnsending,
-                vedlegg: tilrettelegging.vedlegg,
+                vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
                 slutteArbeidFom: ISOStringToDate(periode.fom)!,
             } as IngenTilretteleggingDTO;
         }
@@ -268,7 +268,7 @@ export const getSøknadForInnsending = (søknad: Søknad, intl: IntlShape): Søk
         erEndringssøknad: false,
         informasjonOmUtenlandsopphold: utenlandsoppholdForInnsending,
         barn: barnForInnsending,
-        vedlegg: søknad.vedlegg,
+        vedlegg: søknad.tilrettelegging.map((t) => t.vedlegg).flat(1),
         tilrettelegging: tilretteleggingForInnsending,
         søker: søkerForInnsending,
     };

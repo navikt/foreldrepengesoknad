@@ -1,5 +1,6 @@
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
+import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 
 export enum Tilretteleggingstype {
     'INGEN' = 'ingen',
@@ -38,7 +39,7 @@ export interface Tilrettelegging {
     type?: Tilretteleggingstype;
     sammePeriodeFremTilTerminFom?: string;
     sammePeriodeFremTilTerminStillingsprosent?: string;
-    vedlegg: string[];
+    vedlegg: Attachment[];
     delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
     variertePerioder?: PeriodeMedVariasjon[];
     risikofaktorer?: string;

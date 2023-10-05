@@ -12,7 +12,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import stepConfig, { getBackLinkForArbeidIUtlandetSteg, getVelgArbeidEllerSkjemaRoute } from 'app/steps/stepsConfig';
+import stepConfig, {
+    getBackLinkForArbeidIUtlandetSteg,
+    getNextRouteValgAvArbeidEllerSkjema,
+} from 'app/steps/stepsConfig';
 import { Link } from 'react-router-dom';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -51,7 +54,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
         const søkerMedArbeidIUtlandet = { ...søker, andreInntekter: arbeidIUtlandet };
         return [actionCreator.setSøker(søkerMedArbeidIUtlandet)];
     };
-    const nextRoute = getVelgArbeidEllerSkjemaRoute(barn.termindato, arbeidsforhold, søker);
+    const nextRoute = getNextRouteValgAvArbeidEllerSkjema(barn.termindato, arbeidsforhold, søker);
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
 

@@ -39,8 +39,8 @@ export const mapOmTilretteleggingFormDataToState = (
     id: string,
     values: Partial<TilretteleggingFormData>,
     tilretteleggingFraState: Tilrettelegging[],
+    tilretteleggingForOppdatering: Tilrettelegging,
 ): Tilrettelegging[] => {
-    const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
     const oppdaterteVarierendePerioder =
         values.tilretteleggingType === Tilretteleggingstype.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER

@@ -4,29 +4,12 @@ import Tilrettelegging, { Tilretteleggingstype } from 'app/types/Tilrettelegging
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { dagenFør, tiMånederSidenDato } from './dateUtils';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { mapArbeidsforholdToVelgArbeidOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
-import { Søker } from 'app/types/Søker';
 import { hasValue } from './validationUtils';
 
-export const mapTilrettelegging = (
-    tilrettelegging: Tilrettelegging[],
+export const getValgtTilrettelegging = (
+    allTilretteleggingOptions: Tilrettelegging[],
     valgtTilrettelegging: string[],
-    søker: Søker,
-    arbeidsforhold: Arbeidsforhold[],
-    termindato: string,
-    intl: IntlShape,
 ) => {
-    const allTilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
-        tilrettelegging,
-        søker.harJobbetSomFrilans,
-        søker.harJobbetSomSelvstendigNæringsdrivende,
-        søker.frilansInformasjon,
-        søker.selvstendigNæringsdrivendeInformasjon,
-        arbeidsforhold,
-        termindato,
-        intl,
-    );
     const selectedTilrettelegging = allTilretteleggingOptions.filter((o) =>
         valgtTilrettelegging.find((t) => t === o.id),
     );

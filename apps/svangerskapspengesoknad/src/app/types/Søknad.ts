@@ -10,7 +10,6 @@ export interface Søknad {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
     søker: Søker;
     tilrettelegging: Tilrettelegging[];
-    vedlegg: Attachment[];
     harGodkjentOppsummering: boolean;
 }
 
@@ -34,4 +33,5 @@ export interface SøknadDTO
     barn: BarnDTO;
     tilrettelegging: TilretteleggingDTO[];
     søker: SøkerDTO;
+    vedlegg: Attachment[];
 }

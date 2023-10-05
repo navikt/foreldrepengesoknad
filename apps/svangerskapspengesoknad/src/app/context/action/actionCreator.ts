@@ -1,4 +1,3 @@
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { Barn } from 'app/types/Barn';
 import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
 import { Søker } from 'app/types/Søker';
@@ -14,7 +13,6 @@ export enum SvangerskapspengerContextActionKeys {
     SET_CURRENT_TILRETTELEGGING_ID = 'setCurrentTilretteleggingId',
     SET_HARGODKJENTVILKÅR = 'setHarGodkjentVilkår',
     SET_UTENLANDSOPPHOLD = 'setUtenlandsopphold',
-    SET_VEDLEGG = 'setVedlegg',
     AVBRYT_SØKNAD = 'avbrytSøknad',
     GODKJENT_OPPSUMMERING = 'godkjentOppsummering',
 }
@@ -98,16 +96,6 @@ const setUtenlandsopphold = (payload: InformasjonOmUtenlandsopphold): SetUtenlan
     payload,
 });
 
-interface SetVedlegg {
-    type: SvangerskapspengerContextActionKeys.SET_VEDLEGG;
-    payload: Attachment[];
-}
-
-const setVedlegg = (payload: Attachment[]): SetVedlegg => ({
-    type: SvangerskapspengerContextActionKeys.SET_VEDLEGG,
-    payload,
-});
-
 interface AvbrytSøknad {
     type: SvangerskapspengerContextActionKeys.AVBRYT_SØKNAD;
 }
@@ -135,7 +123,6 @@ export type SvangerskapspengerContextAction =
     | SetSøkerinfo
     | SetHarGodkjentVilkår
     | SetUtenlandsopphold
-    | SetVedlegg
     | AvbrytSøknad
     | GodkjentOppsummering;
 
@@ -148,7 +135,6 @@ export default {
     setSøkerinfo,
     setHarGodkjentVilkår,
     setUtenlandsopphold,
-    setVedlegg,
     avbrytSøknad,
     setGodkjentOppsummering,
 };
