@@ -43,6 +43,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
     const navigator = useEsNavigator();
     const omBarnet = useEsStateData(EsDataType.OM_BARNET);
     const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
+    const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
     const søkersituasjon = notEmpty(useEsStateData(EsDataType.SØKERSITUASJON));
 
     const lagre = useCallback((formValues: FormValues) => {
@@ -52,6 +53,9 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
                 ? Number.parseInt(formValues.antallBarnDropDown, 10)
                 : formValues.antallBarn,
         });
+        if (formValues.erBarnetFødt === true) {
+            lagreDokumentasjon(undefined);
+        }
         navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
     }, []);
 
