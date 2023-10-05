@@ -3,11 +3,11 @@ export const frilansId = 'frilans';
 export interface Frilans {
     jobberFremdelesSomFrilans: boolean;
     oppstart: string;
-    sluttDato: string | undefined;
+    // sluttDato: string | undefined;
 }
 
 export interface FrilansDTO {
     jobberFremdelesSomFrilans: boolean;
     oppstart: Date;
-    sluttDato: Date | undefined;
+    // sluttDato: Date | undefined;
 }

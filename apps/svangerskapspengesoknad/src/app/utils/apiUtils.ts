@@ -226,7 +226,7 @@ const mapFrilansForInnsending = (frilans: Frilans | undefined): FrilansDTO | und
         return {
             ...frilans,
             oppstart: ISOStringToDate(frilans.oppstart)!,
-            sluttDato: ISOStringToDate(frilans.sluttDato),
+            // sluttDato: ISOStringToDate(frilans.sluttDato),
         };
     }
     return undefined;

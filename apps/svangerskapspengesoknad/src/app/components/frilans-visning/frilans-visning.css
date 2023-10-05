@@ -11,6 +11,7 @@
 .frilans-visning__tittel {
     grid-column: 1;
     grid-row: 1;
+    padding-bottom: 0.5rem;
 }
 
 .frilans-visning__dato {

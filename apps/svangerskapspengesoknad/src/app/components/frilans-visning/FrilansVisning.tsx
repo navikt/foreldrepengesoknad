@@ -10,15 +10,14 @@ interface Props {
 const FrilansVisning: FunctionComponent<Props> = ({ frilans }) => {
     const bem = bemUtils('frilans-visning');
     const frilansTekst = 'Arbeid som frilanser';
-    const tilTekst =
-        !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? formatDate(frilans.sluttDato) : 'Pågående';
+    // const tilTekst = !frilans.jobberFremdelesSomFrilans && frilans.sluttDato ? formatDate(frilans.sluttDato) : 'Pågående';
+    const tilTekst = !frilans.jobberFremdelesSomFrilans ? '(Avsluttet)' : '(Pågående)';
     return (
         <Block padBottom="l">
             <div className={bem.block}>
                 <Label className={bem.element('tittel')}>{frilansTekst}</Label>
-
                 <BodyShort className={bem.element('dato')}>
-                    {formatDate(frilans.oppstart)} - {tilTekst}
+                    {`Startet: ${formatDate(frilans.oppstart)} ${tilTekst}`}
                 </BodyShort>
             </div>
         </Block>
