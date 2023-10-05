@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Locale, erMyndig } from '@navikt/fp-common';
 import SøkersituasjonSteg from './sider/steg/sokersituasjon/SøkersituasjonSteg';
 import Velkommen from './sider/velkommen/Velkommen';
-import OmBarnetForm from './sider/steg/omBarnet/OmBarnetForm';
+import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
 import UtenlandsoppholdSteg from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { useRequest } from './fpcommon/api/apiHooks';
 import Api from 'appData/api';
@@ -73,8 +73,9 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                 {erVelkommen && (
                     <>
                         <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
-                        <Route path={Path.OM_BARNET} element={<OmBarnetForm kjønn={person.kjønn} />} />
-                        <Route path={Path.DOKUMENTASJON} element={<DokumentasjonSteg />} />
+                        <Route path={Path.OM_BARNET} element={<OmBarnetSteg kjønn={person.kjønn} />} />
+                        <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
+                        <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
                         <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtenlandsopphold />} />
                         <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtenlandsopphold />} />

@@ -3,7 +3,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { Radio } from '@navikt/ds-react';
 import {
-    Block,
     erMindreEnn3UkerSiden,
     etterDagensDato,
     hasValue,
@@ -16,15 +15,11 @@ import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import Select from 'fpcommon/form/Select';
 import Datepicker from 'fpcommon/form/Datepicker';
 import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
+import { Fødsel } from 'types/OmBarnet';
 
 export type FormValues = {
-    erBarnetFødt?: boolean;
-    antallBarn?: number;
-    antallBarnDropDown?: number;
-    fødselsdatoer?: string[];
-    termindato?: string;
-    terminbekreftelsedato?: string;
-};
+    antallBarnDropDown?: string;
+} & Fødsel;
 
 export const validateFødselDate = (dato: string, intl: IntlShape) => {
     if (!hasValue(dato)) {
@@ -90,78 +85,54 @@ const FødselPanel: React.FunctionComponent = () => {
 
     return (
         <>
-            <Block margin="xl" padBottom="xl">
-                <RadioGroupPanel name="erBarnetFødt" label={<FormattedMessage id="omBarnet.spørsmål.erBarnetFødt" />}>
-                    <Radio value={true}>
-                        <FormattedMessage id="omBarnet.radiobutton.ja" />
-                    </Radio>
-                    <Radio value={false}>
-                        <FormattedMessage id="omBarnet.radiobutton.nei" />
-                    </Radio>
-                </RadioGroupPanel>
-            </Block>
-            {erBarnetFødt !== undefined && (
-                <RadioGroupPanel name="antallBarn" label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}>
-                    <Radio value="1">
-                        <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
-                    </Radio>
-                    <Radio value="2">
-                        <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
-                    </Radio>
-                    <Radio value="3">
-                        <FormattedMessage id="omBarnet.radiobutton.flere" />
-                    </Radio>
-                </RadioGroupPanel>
+            <RadioGroupPanel name="erBarnetFødt" label={<FormattedMessage id="omBarnet.spørsmål.erBarnetFødt" />}>
+                <Radio value={true}>
+                    <FormattedMessage id="omBarnet.radiobutton.ja" />
+                </Radio>
+                <Radio value={false}>
+                    <FormattedMessage id="omBarnet.radiobutton.nei" />
+                </Radio>
+            </RadioGroupPanel>
+            {erBarnetFødt && (
+                <Datepicker
+                    name="fødselsdatoer.0"
+                    label={<FormattedMessage id="søknad.fødselsdato" />}
+                    minDate={dayjs().subtract(6, 'month').toDate()}
+                    maxDate={dayjs().toDate()}
+                    validate={[(value) => validateFødselDate(value, intl)]}
+                />
             )}
-            {antallBarn && antallBarn >= 3 && (
-                <Block margin="xl">
-                    <Select name="antallBarnDropDown" label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                    </Select>
-                </Block>
+            {erBarnetFødt === false && (
+                <Datepicker
+                    name="termindato"
+                    label={<FormattedMessage id="søknad.termindato" />}
+                    minDate={dayjs().subtract(3, 'week').toDate()}
+                    maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                    validate={[(value) => validateTerminDate(value, intl)]}
+                />
             )}
-            {erBarnetFødt === false && antallBarn && (
-                <Block margin="xl">
-                    <Datepicker
-                        name="termindato"
-                        label={<FormattedMessage id="søknad.termindato" />}
-                        minDate={dayjs().subtract(3, 'week').toDate()}
-                        maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
-                        validate={[(value) => validateTerminDate(value, intl)]}
-                    />
-                </Block>
-            )}
-            {/* FileUploader */}
-            {termindato && (
-                <Block margin="xl">
-                    <Datepicker
-                        name="terminbekreftelsedato"
-                        label={<FormattedMessage id="søknad.terminbekreftelsesdato" />}
-                        minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
-                        maxDate={dayjs().toDate()}
-                        validate={[
-                            (terminBekreftelseDato) =>
-                                valideringAvTerminbekreftelsesdato(terminBekreftelseDato, termindato, intl),
-                        ]}
-                    />
-                </Block>
-            )}
-            {erBarnetFødt && antallBarn && (
-                <Block margin="xl">
-                    <Datepicker
-                        name="fødselsdatoer.0"
-                        label={<FormattedMessage id="søknad.fødselsdato" />}
-                        minDate={dayjs().subtract(6, 'month').toDate()}
-                        maxDate={dayjs().toDate()}
-                        validate={[(value) => validateFødselDate(value, intl)]}
-                    />
-                </Block>
+
+            <RadioGroupPanel name="antallBarn" label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}>
+                <Radio value={1}>
+                    <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
+                </Radio>
+                <Radio value={2}>
+                    <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
+                </Radio>
+                <Radio value={3}>
+                    <FormattedMessage id="omBarnet.radiobutton.flere" />
+                </Radio>
+            </RadioGroupPanel>
+            {antallBarn >= 3 && (
+                <Select name="antallBarnDropDown" label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </Select>
             )}
         </>
     );

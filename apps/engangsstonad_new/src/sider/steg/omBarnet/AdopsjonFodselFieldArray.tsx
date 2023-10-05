@@ -15,7 +15,7 @@ export type FormValues = {
 
 interface Props {
     antallBarn?: number;
-    antallBarnDropDown?: number;
+    antallBarnDropDown?: string;
     adopsjonsdato?: string;
 }
 
@@ -33,10 +33,10 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
     });
 
     useEffect(() => {
-        if (!antallBarn) {
+        if (!antallBarn || (antallBarn === 3 && !antallBarnDropDown)) {
             return;
         }
-        const antall = antallBarn < 3 || !antallBarnDropDown ? antallBarn : antallBarnDropDown;
+        const antall = antallBarn < 3 || !antallBarnDropDown ? antallBarn : Number.parseInt(antallBarnDropDown, 10);
         const diff = fields.length - antall;
         if (diff > 0) {
             [...new Array(diff)].forEach((_unused, index) => {
@@ -61,7 +61,7 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                         label={
                             <FormattedMessage
                                 id={
-                                    index === 0
+                                    fields.length === 1
                                         ? 'søknad.fødselsdato'
                                         : `omBarnet.adopsjon.spørsmål.fødselsdato.${index + 1}`
                                 }

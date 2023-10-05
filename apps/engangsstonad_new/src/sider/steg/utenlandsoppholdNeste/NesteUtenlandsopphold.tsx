@@ -1,10 +1,9 @@
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import dayjs from 'dayjs';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Button, ErrorMessage, VStack } from '@navikt/ds-react';
-import { Step, dateRangesCollide } from '@navikt/fp-common';
+import { Button, VStack } from '@navikt/ds-react';
+import { Step } from '@navikt/fp-common';
 
 import Form from 'fpcommon/form/Form';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
@@ -14,11 +13,6 @@ import useEsNavigator from 'appData/useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import { UtenlandsoppholdNeste, UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 import useStepData from 'appData/useStepData';
-
-const harPerioderOverlapp = (perioder: UtenlandsoppholdPeriode[]): boolean => {
-    const dateRanges = perioder.map((u) => ({ from: dayjs(u.fom).toDate(), to: dayjs(u.tom).toDate() }));
-    return dateRangesCollide(dateRanges);
-};
 
 const DEFAULT_PERIODE = {
     fom: '',
@@ -50,6 +44,7 @@ const NesteUtenlandsopphold: React.FunctionComponent = () => {
     const leggTilOpphold = useCallback(() => {
         append(DEFAULT_PERIODE);
     }, [append]);
+
     const fjernOpphold = useCallback(
         (index: number) => {
             remove(index);
@@ -57,16 +52,9 @@ const NesteUtenlandsopphold: React.FunctionComponent = () => {
         [remove],
     );
 
-    const [harOverlapp, setOverlapp] = useState(false);
-
     const lagre = useCallback((formValues: UtenlandsoppholdNeste) => {
-        if (harPerioderOverlapp(formValues.utenlandsoppholdNeste12Mnd)) {
-            setOverlapp(true);
-        } else {
-            // TODO Bør nok mappe '' til undefined for tom som ikkje er oppgitt
-            lagreNesteUtenlandsopphold(formValues);
-            navigator.goToNextDefaultStep();
-        }
+        lagreNesteUtenlandsopphold(formValues);
+        navigator.goToNextDefaultStep();
     }, []);
 
     return (
@@ -97,11 +85,6 @@ const NesteUtenlandsopphold: React.FunctionComponent = () => {
                         >
                             <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                         </Button>
-                        {harOverlapp && (
-                            <ErrorMessage>
-                                <FormattedMessage id="valideringsfeil.utenlandsopphold.overlapp" />
-                            </ErrorMessage>
-                        )}
                     </VStack>
                     <StepButtonsHookForm<UtenlandsoppholdNeste>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}

@@ -1,9 +1,9 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { date1YearFromNow, dateToday } from '@navikt/fp-common';
+import { date1YearFromNow, dateRangesCollide, dateToday } from '@navikt/fp-common';
 
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
 import Datepicker from 'fpcommon/form/Datepicker';
@@ -16,6 +16,32 @@ import {
 } from 'fpcommon/validering/valideringsregler';
 import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
+const TIDENES_ENDE = dayjs('9999-31-12').toDate();
+
+const validerPeriodeOverlapp = (
+    intl: IntlShape,
+    alleAndrePerioder: UtenlandsoppholdPeriode[],
+    fom: string,
+    tom?: string,
+): string | null => {
+    const dateRanges = alleAndrePerioder.map((u) => ({
+        from: dayjs(u.fom).toDate(),
+        to: u.tom ? dayjs(u.tom).toDate() : TIDENES_ENDE,
+    }));
+
+    const allDateRanges = dateRanges.concat({
+        from: dayjs(fom).toDate(),
+        to: tom ? dayjs(tom).toDate() : TIDENES_ENDE,
+    });
+
+    if (dateRangesCollide(allDateRanges)) {
+        return intl.formatMessage({
+            id: 'valideringsfeil.utenlandsopphold.overlapp',
+        });
+    }
+    return null;
+};
+
 interface OwnProps {
     index: number;
     fjernOpphold: (index: number) => void;
@@ -24,8 +50,13 @@ interface OwnProps {
 const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
     const intl = useIntl();
 
-    const { watch } = useFormContext<{ utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] }>();
+    const {
+        watch,
+        trigger,
+        formState: { isSubmitted },
+    } = useFormContext<{ utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] }>();
 
+    const alleAndreUtenlandsopphold = watch(`utenlandsoppholdNeste12Mnd`).filter((_u, i) => i !== index);
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
 
@@ -84,7 +115,11 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
                             dayjs(tom).toDate(),
                         );
                     },
+                    (fomValue) => {
+                        return validerPeriodeOverlapp(intl, alleAndreUtenlandsopphold, fomValue, tom);
+                    },
                 ]}
+                onChange={() => isSubmitted && trigger()}
             />
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
@@ -99,9 +134,10 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
                         fom,
                     ),
                     (tomValue) => {
+                        const tom = tomValue || TIDENES_ENDE;
                         return validateToDate(
                             intl,
-                            dayjs(tomValue).toDate(),
+                            dayjs(tom).toDate(),
                             dayjs(fom || dateToday)
                                 .subtract(1, 'day')
                                 .toDate(),
@@ -109,7 +145,11 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
                             dayjs(fom).toDate(),
                         );
                     },
+                    (tomValue) => {
+                        return validerPeriodeOverlapp(intl, alleAndreUtenlandsopphold, fom, tomValue);
+                    },
                 ]}
+                onChange={() => isSubmitted && trigger()}
             />
             {index > 0 && (
                 <Button

@@ -8,6 +8,10 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
         const fieldValue = errors[fieldKey];
 
         if (fieldValue?.message && !acc[fieldKey]) {
+            const shouldNotAdd = Object.keys(acc).some((key) => acc[key]?.message === fieldValue?.message);
+            if (shouldNotAdd) {
+                return acc;
+            }
             return {
                 ...acc,
                 [fieldKey]: errors[fieldKey],
@@ -15,13 +19,16 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
         }
 
         if (Array.isArray(fieldValue)) {
-            const alle = fieldValue.reduce((acc, f) => {
+            const alle = fieldValue.reduce((a, f) => {
                 return {
                     ...(!!f ? findAllErrors(f) : {}),
-                    ...acc,
+                    ...a,
                 };
             }, {});
-            return alle;
+            return {
+                ...acc,
+                ...alle,
+            };
         }
         return acc;
     }, {});

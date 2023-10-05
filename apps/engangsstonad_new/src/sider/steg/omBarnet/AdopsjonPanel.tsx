@@ -2,26 +2,18 @@ import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Radio } from '@navikt/ds-react';
-import { Block, Kjønn, hasValue, sisteMuligeDatoForOvertaOmsorg } from '@navikt/fp-common';
+import { Kjønn, hasValue, sisteMuligeDatoForOvertaOmsorg } from '@navikt/fp-common';
 
-import AdopsjonFodselFieldArray, { FormValues as FieldArrayFormValues } from './AdopsjonFodselFieldArray';
+import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import Datepicker from 'fpcommon/form/Datepicker';
 import Select from 'fpcommon/form/Select';
-import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
-import FileUploader from 'fpcommon/uploader/FileUploader';
-import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
-import { useCallback } from 'react';
-import Environment from 'appData/Environment';
+import { isRequired, isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
+import { Adopsjon } from 'types/OmBarnet';
 
 export type FormValues = {
-    adopsjonAvEktefellesBarn?: boolean;
-    adopsjonsdato?: string;
-    antallBarn?: number;
-    antallBarnDropDown?: number;
-    søkerAdopsjonAlene?: boolean;
-    vedlegg?: Attachment[];
-} & FieldArrayFormValues;
+    antallBarnDropDown?: string;
+} & Adopsjon;
 
 const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {
     if (!hasValue(dato)) {
@@ -49,26 +41,88 @@ const validateOvertaOmsorgAdopsjonDate = (dato: string, intl: IntlShape) => {
     return undefined;
 };
 
-interface OwnProps {
+interface Props {
     kjønn: Kjønn;
 }
 
-const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
+const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
-    const { watch, setValue } = useFormContext<FormValues>();
-
-    const updateAttachments = useCallback((attachments: Attachment[]) => {
-        setValue('vedlegg', attachments);
-    }, []);
+    const { watch } = useFormContext<FormValues>();
 
     const { adopsjonAvEktefellesBarn, adopsjonsdato, antallBarn, antallBarnDropDown } = watch();
 
     return (
         <>
-            <Block margin="xl">
+            <RadioGroupPanel
+                name="adopsjonAvEktefellesBarn"
+                label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.stebarnsadopsjon" />}
+                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.spørsmål.required' }))]}
+            >
+                <Radio value={true}>
+                    <FormattedMessage id="omBarnet.adopsjon.text.ja" />
+                </Radio>
+                <Radio value={false}>
+                    <FormattedMessage id="omBarnet.adopsjon.text.nei" />
+                </Radio>
+            </RadioGroupPanel>
+            <Datepicker
+                name="adopsjonsdato"
+                label={
+                    <FormattedMessage
+                        id={
+                            adopsjonAvEktefellesBarn
+                                ? 'omBarnet.adopsjon.spørsmål.stebarnsadopsjondato'
+                                : 'omBarnet.adopsjon.spørsmål.overtaomsorgdato'
+                        }
+                    />
+                }
+                minDate={dayjs().subtract(6, 'month').toDate()}
+                validate={[
+                    adopsjonAvEktefellesBarn
+                        ? (value) => validateEktefellensBarnAdopsjonDate(value, intl)
+                        : (value) => validateOvertaOmsorgAdopsjonDate(value, intl),
+                ]}
+            />
+            <RadioGroupPanel
+                name="antallBarn"
+                label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.antallBarnAdoptert" />}
+                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.antallbarn.required' }))]}
+            >
+                <Radio value={1}>
+                    <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
+                </Radio>
+                <Radio value={2}>
+                    <FormattedMessage id="omBarnet.radiobutton.toBarn" />
+                </Radio>
+                <Radio value={3}>
+                    <FormattedMessage id="omBarnet.radiobutton.flere" />
+                </Radio>
+            </RadioGroupPanel>
+            {antallBarn && antallBarn >= 3 && (
+                <Select
+                    name="antallBarnDropDown"
+                    label={<FormattedMessage id="omBarnet.text.antallBarn.omsorgsovertakelse" />}
+                    validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.antallbarndropdown.required' }))]}
+                >
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </Select>
+            )}
+            <AdopsjonFodselFieldArray
+                adopsjonsdato={adopsjonsdato}
+                antallBarn={antallBarn}
+                antallBarnDropDown={antallBarnDropDown}
+            />
+            {kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
                 <RadioGroupPanel
-                    name="adopsjonAvEktefellesBarn"
-                    label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.stebarnsadopsjon" />}
+                    name="søkerAdopsjonAlene"
+                    label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.adoptererDuAlene" />}
+                    validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.adoptererDuAlene.required' }))]}
                 >
                     <Radio value={true}>
                         <FormattedMessage id="omBarnet.adopsjon.text.ja" />
@@ -77,95 +131,7 @@ const AdopsjonPanel: React.FunctionComponent<OwnProps> = ({ kjønn }) => {
                         <FormattedMessage id="omBarnet.adopsjon.text.nei" />
                     </Radio>
                 </RadioGroupPanel>
-            </Block>
-            {adopsjonAvEktefellesBarn && (
-                <Block margin="xl">
-                    <Datepicker
-                        name="adopsjonsdato"
-                        label={
-                            <FormattedMessage
-                                id={
-                                    adopsjonAvEktefellesBarn
-                                        ? 'omBarnet.adopsjon.spørsmål.stebarnsadopsjondato'
-                                        : 'omBarnet.adopsjon.spørsmål.overtaomsorgdato'
-                                }
-                            />
-                        }
-                        minDate={dayjs().subtract(6, 'month').toDate()}
-                        validate={[
-                            adopsjonAvEktefellesBarn
-                                ? (value) => validateEktefellensBarnAdopsjonDate(value, intl)
-                                : (value) => validateOvertaOmsorgAdopsjonDate(value, intl),
-                        ]}
-                    />
-                </Block>
             )}
-            {adopsjonsdato && (
-                <Block margin="xl">
-                    <RadioGroupPanel
-                        name="antallBarn"
-                        label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.antallBarnAdoptert" />}
-                    >
-                        <Radio value="1">
-                            <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
-                        </Radio>
-                        <Radio value="2">
-                            <FormattedMessage id="omBarnet.radiobutton.toBarn" />
-                        </Radio>
-                        <Radio value="3">
-                            <FormattedMessage id="omBarnet.radiobutton.flere" />
-                        </Radio>
-                    </RadioGroupPanel>
-                </Block>
-            )}
-            {antallBarn && antallBarn >= 3 && (
-                <Block margin="xl">
-                    <Select
-                        name="antallBarnDropDown"
-                        label={<FormattedMessage id="omBarnet.text.antallBarn.omsorgsovertakelse" />}
-                    >
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                    </Select>
-                </Block>
-            )}
-            <AdopsjonFodselFieldArray
-                adopsjonsdato={adopsjonsdato}
-                antallBarn={antallBarn}
-                antallBarnDropDown={antallBarnDropDown}
-            />
-            {antallBarn && kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
-                <Block margin="xl">
-                    <RadioGroupPanel
-                        name="søkerAdopsjonAlene"
-                        label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.adoptererDuAlene" />}
-                    >
-                        <Radio value={true}>
-                            <FormattedMessage id="omBarnet.adopsjon.text.ja" />
-                        </Radio>
-                        <Radio value={false}>
-                            <FormattedMessage id="omBarnet.adopsjon.text.nei" />
-                        </Radio>
-                    </RadioGroupPanel>
-                </Block>
-            )}
-            <Block margin="xl">
-                <FileUploader
-                    id="adopsjon"
-                    attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                    skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
-                    existingAttachments={[]}
-                    updateAttachments={updateAttachments}
-                    legend={intl.formatMessage({ id: 'vedlegg.adopsjon' })}
-                    description={intl.formatMessage({ id: 'omBarnet.adopsjon.veilederpanel.adopsjon.text' })}
-                    restApiUrl={Environment.REST_API_URL}
-                />
-            </Block>
         </>
     );
 };

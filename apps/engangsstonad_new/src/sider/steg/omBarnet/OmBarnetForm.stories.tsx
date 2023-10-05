@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
-import OmBarnetForm from './OmBarnetForm';
+import OmBarnetSteg from './OmBarnetSteg';
 import IntlProvider from '../../../intl/IntlProvider';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { Action, EsDataType } from 'appData/EsDataContext';
@@ -13,8 +13,8 @@ import '@navikt/ds-css';
 import 'fpcommon/styles/globals.less';
 
 export default {
-    title: 'OmBarnetForm',
-    component: OmBarnetForm,
+    title: 'OmBarnetSteg',
+    component: OmBarnetSteg,
     decorators: [withRouter],
     parameters: {
         routerDecoratorInitUrl: Path.OM_BARNET,
@@ -32,7 +32,7 @@ const Template: StoryFn<{
                 initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
                 onDispatch={gåTilNesteSide}
             >
-                <OmBarnetForm kjønn={kjønn} />
+                <OmBarnetSteg kjønn={kjønn} />
             </EsContextStorybookHelper>
         </IntlProvider>
     );

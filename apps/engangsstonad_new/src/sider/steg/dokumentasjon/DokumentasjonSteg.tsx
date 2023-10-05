@@ -57,6 +57,22 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
+                    <Datepicker
+                        name={`terminbekreftelse`}
+                        label={<FormattedMessage id="DokumentasjonSteg.Terminbekreftelse" />}
+                    />
+                    {/* {termindato && (
+                <Datepicker
+                    name="terminbekreftelsedato"
+                    label={<FormattedMessage id="søknad.terminbekreftelsesdato" />}
+                    minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
+                    maxDate={dayjs().toDate()}
+                    validate={[
+                        (terminBekreftelseDato) =>
+                            valideringAvTerminbekreftelsesdato(terminBekreftelseDato, termindato, intl),
+                    ]}
+                />
+            )} */}
                     <VStack gap="4">
                         <div>
                             <Label>
@@ -74,10 +90,6 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                             restApiUrl={Environment.REST_API_URL}
                         />
                     </VStack>
-                    <Datepicker
-                        name={`terminbekreftelse`}
-                        label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
-                    />
                     <ExpansionCard size="small" aria-label="">
                         <ExpansionCard.Header>
                             <ExpansionCard.Title>

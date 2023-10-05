@@ -22,6 +22,7 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
 
     const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
     const lagreSøkersituasjon = useEsStateSaveFn(EsDataType.SØKERSITUASJON);
+    const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
 
     const formMethods = useForm<Søkersituasjon>({
         defaultValues: søkersituasjon,
@@ -29,6 +30,9 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
 
     const lagre = useCallback((formValues: Søkersituasjon) => {
         lagreSøkersituasjon(formValues);
+        if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
+            lagreOmBarnet(undefined);
+        }
         navigator.goToNextDefaultStep();
     }, []);
 

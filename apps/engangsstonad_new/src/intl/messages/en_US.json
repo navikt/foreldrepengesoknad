@@ -109,6 +109,8 @@
     "søknad.forrige": "Previous step",
     "søknad.gåVidere": "Next step",
     "søknad.omBarnet": "The Child",
+    "søknad.termin": "Confirm expected date of delivery",
+    "søknad.adopsjon": "Confirm adoption",
     "søknad.omDeg": "You",
     "søknad.oppsummering": "Summary",
     "søknad.pageheading": "Application for lump-sum grant",
@@ -193,7 +195,7 @@
     "valideringsfeil.utenlandsopphold.etterFraDato": "The date has to be after the from date",
     "valideringsfeil.utenlandsopphold.førTilDato": "The date has to before the to date",
     "valideringsfeil.utenlandsopphold.ikkeRegistrert": "You have not entered a stay abroad for the last 12 months",
-    "valideringsfeil.utenlandsopphold.overlapp": "You have already booked a stay abroad during this period",
+    "valideringsfeil.utenlandsopphold.overlapp": "You can't have several stays abroad during the same period",
     "valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert": "You have not entered a stay abroad for the next 12 months",
     "valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert": "You have not entered a stay abroad for the last 12 months",
     "valideringsfeil.utenlandsoppholdUtenforPeriode": "You cannot add a stay in the chosen period of time",
@@ -265,5 +267,10 @@
     "utenlandsopphold.info.undertittel": "Ferie og midlertidig opphold i utlandet",
     "utenlandsopphold.info.del5": "Når du er på ferie i utlandet regnes du som turist og beholder medlemskapet i folketrygden, dersom du ikke har arbeidsinntekt under oppholdet og oppholdet ikke varer lenger enn 12 måneder. Så lenge du er medlem i folketrygden beholder du som hovedregel ytelsen.",
     "utenlandsopphold.info.del6": "Du kan lese mer om utenlandsopphold på",
-    "DokumentasjonSteg.MinstEttDokument": "Du må laste opp bekreftelse på adopsjon"
+    "DokumentasjonSteg.MinstEttDokument": "Du må laste opp bekreftelse på adopsjon",
+    "DokumentasjonSteg.Terminbekreftelse": "When did you receive confirmation of the expected date of delivery?",
+    "omBarnet.adopsjon.spørsmål.required": "You must enter if you are adopting your spouse's children or not",
+    "omBarnet.adopsjon.antallbarn.required": "You must enter how many children you will adopt",
+    "omBarnet.adopsjon.antallbarndropdown.required": "You must enter how many children you are taking over the care for",
+    "omBarnet.adopsjon.adoptererDuAlene.required": "You must enter if you are adopting alone or not"
 }

@@ -1,24 +1,25 @@
-import { Attachment } from 'fpcommon/uploader/typer/Attachment';
-
-export type Født = {
-    erBarnetFødt?: boolean;
-    antallBarn?: number;
-    antallBarnDropDown?: number;
-    fødselsdatoer?: string[];
-    termindato?: string;
-    terminbekreftelsedato?: string;
+type BarnetErFødt = {
+    erBarnetFødt: true;
+    antallBarn: number;
+    fødselsdatoer: string[];
 };
+
+type BarnetErIkkeFødt = {
+    erBarnetFødt: false;
+    antallBarn: number;
+    termindato: string;
+};
+
+export type Fødsel = BarnetErFødt | BarnetErIkkeFødt;
 
 export type Adopsjon = {
-    adopsjonAvEktefellesBarn?: boolean;
-    adopsjonsdato?: string;
-    antallBarn?: number;
-    antallBarnDropDown?: number;
+    adopsjonAvEktefellesBarn: boolean;
+    adopsjonsdato: string;
+    antallBarn: number;
     søkerAdopsjonAlene?: boolean;
-    fødselsdatoer?: {
-        dato?: string;
+    fødselsdatoer: {
+        dato: string;
     }[];
-    vedlegg?: Attachment[];
 };
 
-export type OmBarnet = Født | Adopsjon;
+export type OmBarnet = Fødsel | Adopsjon;
