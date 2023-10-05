@@ -48,7 +48,7 @@ const harGyldigTidsperiode = (periode: Periode): boolean => {
 const slåSammenLikePerioder = (
     perioder: Periode[],
     familiehendelsesdato: Date,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     if (perioder.length <= 1) {
         return perioder;
@@ -134,7 +134,7 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
 };
 
 export const getUtsettelseÅrsakFromSaksperiode = (
-    årsak: UtsettelseÅrsakTypeDTO | undefined
+    årsak: UtsettelseÅrsakTypeDTO | undefined,
 ): UtsettelseÅrsakType | undefined => {
     switch (årsak) {
         case UtsettelseÅrsakTypeDTO.Arbeid:
@@ -178,7 +178,7 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsa
 const beregnSamtidigUttaksProsent = (
     egenProsent: number | undefined,
     andrePartsProsent: number | undefined,
-    graderingsprosent: number | undefined
+    graderingsprosent: number | undefined,
 ): string | undefined => {
     if (egenProsent) {
         return egenProsent.toString();
@@ -199,7 +199,7 @@ const getErMorForSyk = (
     erFarEllerMedmor: boolean,
     saksperiode: Saksperiode,
     familiehendelsesdato: string,
-    konto: StønadskontoType | undefined
+    konto: StønadskontoType | undefined,
 ) => {
     if (
         erFarEllerMedmor &&
@@ -219,7 +219,7 @@ const getErMorForSyk = (
 export const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
-    innvilgedePerioder: Saksperiode[]
+    innvilgedePerioder: Saksperiode[],
 ): Periode => {
     const gradert = saksperiode.gradering !== undefined && saksperiode.resultat.innvilget;
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
@@ -235,7 +235,7 @@ export const mapUttaksperiodeFromSaksperiode = (
                   (ip) =>
                       (Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) ||
                           Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).overlapper(tidsperiodeDate)) &&
-                      ip.guid !== saksperiode.guid
+                      ip.guid !== saksperiode.guid,
               )
             : undefined;
 
@@ -248,7 +248,7 @@ export const mapUttaksperiodeFromSaksperiode = (
     const samtidigUttakProsent = beregnSamtidigUttaksProsent(
         saksperiode.samtidigUttak,
         samtidigUttakProsentAnnenPart,
-        saksperiode.gradering?.arbeidstidprosent
+        saksperiode.gradering?.arbeidstidprosent,
     );
 
     const { termindato, fødselsdato, omsorgsovertakelsesdato } = grunnlag;
@@ -317,7 +317,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     erFarEllerMedmor: boolean,
     termindato: string | undefined,
-    innvilgedePerioder?: Saksperiode[]
+    innvilgedePerioder?: Saksperiode[],
 ): UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode | AvslåttPeriode => {
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
 
@@ -340,7 +340,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             (ip) =>
                 (Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) ||
                     Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).overlapper(tidsperiodeDate)) &&
-                ip.guid !== saksperiode.guid
+                ip.guid !== saksperiode.guid,
         );
     const årsak = getOppholdÅrsakFromSaksperiode(saksperiode);
 
@@ -350,7 +350,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
                   (ip) =>
                       (Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).erLik(tidsperiodeDate) ||
                           Tidsperioden(convertTidsperiodeToTidsperiodeDate(ip.periode)).overlapper(tidsperiodeDate)) &&
-                      ip.guid !== saksperiode.guid
+                      ip.guid !== saksperiode.guid,
               )
             : undefined;
     let samtidigUttakProsentAnnenPart;
@@ -362,7 +362,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
     const samtidigUttakProsent = beregnSamtidigUttaksProsent(
         saksperiode.samtidigUttak,
         samtidigUttakProsentAnnenPart,
-        saksperiode.gradering?.arbeidstidprosent
+        saksperiode.gradering?.arbeidstidprosent,
     );
 
     if (erAnnenPartsAvslåttePrematurePeriode(saksperiode, termindato)) {
@@ -399,7 +399,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
 
 const mapOverføringsperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
 ): Overføringsperiode => {
     return {
         id: guid(),
@@ -414,17 +414,17 @@ const mapOverføringsperiodeFromSaksperiode = (
 const mapPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
-    gyldigePerioder: Saksperiode[]
+    gyldigePerioder: Saksperiode[],
 ): Periode => {
     const innvilgedePerioder = gyldigePerioder.filter(
-        (p) => !erAnnenPartsAvslåttePrematurePeriode(p, grunnlag.termindato)
+        (p) => !erAnnenPartsAvslåttePrematurePeriode(p, grunnlag.termindato),
     );
     if (saksperiode.gjelderAnnenPart) {
         return mapAnnenPartInfoPeriodeFromSaksperiode(
             saksperiode,
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.termindato,
-            innvilgedePerioder
+            innvilgedePerioder,
         );
     }
 
@@ -475,7 +475,7 @@ export const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string
 export const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     perioder: Periode[],
     familiehendelsesdato: Date,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const nyePerioder = [] as Periode[];
     perioder.forEach((p) => {
@@ -498,7 +498,7 @@ export const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const gyldigePerioder = saksperioder.filter((periode) => gyldigeSaksperioder(periode, grunnlag.termindato));
     const perioder = gyldigePerioder.map((periode) => mapPeriodeFromSaksperiode(periode, grunnlag, gyldigePerioder));
@@ -507,7 +507,7 @@ const mapSaksperioderTilUttaksperioder = (
     const splittedePerioder = getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag(
         perioder,
         familiehendelsesdato,
-        førsteUttaksdagNesteBarnsSak
+        førsteUttaksdagNesteBarnsSak,
     );
 
     const sammenslåddePerioder: Periode[] = slåSammenLikePerioder(
@@ -518,7 +518,7 @@ const mapSaksperioderTilUttaksperioder = (
             .filter(harGyldigTidsperiode)
             .filter(harUttaksdager),
         familiehendelsesdato,
-        førsteUttaksdagNesteBarnsSak
+        førsteUttaksdagNesteBarnsSak,
     );
 
     const kunFarMedmorHarRett =
@@ -537,7 +537,7 @@ const mapSaksperioderTilUttaksperioder = (
         erAdopsjon,
         kunFarMedmorHarRett,
         grunnlag.søkerErFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak
+        førsteUttaksdagNesteBarnsSak,
     );
 
     return finnOgSettInnHull(
@@ -545,14 +545,14 @@ const mapSaksperioderTilUttaksperioder = (
             perioderUtenAnnenPartsSamtidigUttakMedHull,
             annenPartsUttak,
             familiehendelsesdato,
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         ),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
         kunFarMedmorHarRett,
         grunnlag.søkerErFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak
+        førsteUttaksdagNesteBarnsSak,
     );
 };
 

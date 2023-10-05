@@ -102,7 +102,7 @@ const prettifyProsent = (pst: string | undefined): number | undefined => {
 
 export const getUttaksprosentFromStillingsprosent = (
     stillingsPst: number | undefined,
-    samtidigUttakPst: number | undefined
+    samtidigUttakPst: number | undefined,
 ): number | undefined => {
     if (samtidigUttakPst) {
         return samtidigUttakPst;
@@ -120,7 +120,7 @@ export const getOppholdskontoNavn = (
     intl: IntlShape,
     årsak: OppholdÅrsakType,
     foreldernavn: string,
-    erMor: boolean
+    erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     return erMor
@@ -187,7 +187,7 @@ const getPeriodeTittelUttaksPeriode = (
     termindato: Date | undefined,
     situasjon: Situasjon,
     erFarEllerMedmor?: boolean,
-    erAleneOmOmsorg?: boolean
+    erAleneOmOmsorg?: boolean,
 ) => {
     const tittelMedNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
@@ -196,7 +196,7 @@ const getPeriodeTittelUttaksPeriode = (
         periode,
         situasjon,
         familiehendelsesdato,
-        termindato
+        termindato,
     );
     if (
         (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
@@ -205,7 +205,7 @@ const getPeriodeTittelUttaksPeriode = (
         return `${tittel} ${intlUtils(intl, 'gradering.prosent', {
             stillingsprosent: getUttaksprosentFromStillingsprosent(
                 prettifyProsent(periode.stillingsprosent),
-                periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
+                periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined,
             ),
         })}`;
     }
@@ -216,7 +216,7 @@ const getPeriodeTittelInfoPeriode = (
     intl: IntlShape,
     periode: InfoPeriode,
     navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor?: boolean
+    erFarEllerMedmor?: boolean,
 ) => {
     switch (periode.infotype) {
         case PeriodeInfoType.uttakAnnenPart:
@@ -225,7 +225,7 @@ const getPeriodeTittelInfoPeriode = (
                 getStønadskontoFromOppholdsårsak(periode.årsak),
                 periode.forelder,
                 navnPåForeldre,
-                periode.samtidigUttakProsent
+                periode.samtidigUttakProsent,
             );
         case PeriodeInfoType.utsettelseAnnenPart:
             return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
@@ -252,7 +252,7 @@ export const getPeriodeTittel = (
     termindato: Date | undefined,
     situasjon: Situasjon,
     erFarEllerMedmor?: boolean,
-    erAleneOmOmsorg?: boolean
+    erAleneOmOmsorg?: boolean,
 ): string => {
     switch (periode.type) {
         case Periodetype.Uttak: {
@@ -264,7 +264,7 @@ export const getPeriodeTittel = (
                 termindato,
                 situasjon,
                 erFarEllerMedmor,
-                erAleneOmOmsorg
+                erAleneOmOmsorg,
             );
         }
         case Periodetype.PeriodeUtenUttak:
@@ -283,7 +283,7 @@ export const getPeriodeTittel = (
                 intl,
                 periode.årsak,
                 getForelderNavn(periode.forelder, navnPåForeldre),
-                periode.forelder === 'mor'
+                periode.forelder === 'mor',
             );
         case Periodetype.Hull:
             return intlUtils(intl, 'uttaksplan.periodetype.hull.tittel');
@@ -307,7 +307,7 @@ export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: Eksistere
 
 const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
     return ekisterendeSak.saksperioder.find((saksperiode) =>
-        erTidsperioderLike(convertTidsperiodeToTidsperiodeDate(saksperiode.periode), periode.tidsperiode)
+        erTidsperioderLike(convertTidsperiodeToTidsperiodeDate(saksperiode.periode), periode.tidsperiode),
     );
 };
 
@@ -341,7 +341,7 @@ export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartIn
 
 export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
     perioder: Periode[],
-    uttakFellesperiode: StønadskontoUttak | undefined
+    uttakFellesperiode: StønadskontoUttak | undefined,
 ): Periode[] => {
     if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
         return perioder;
@@ -484,7 +484,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
                     isUttakAnnenPart(p) &&
                     dayjs(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
                     p.ønskerSamtidigUttak === true &&
-                    p.id !== periode.id
+                    p.id !== periode.id,
             );
 
         return samtidigUttak !== undefined ? samtidigUttak : undefined;
