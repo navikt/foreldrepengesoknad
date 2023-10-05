@@ -21,37 +21,26 @@ import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
-import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
+import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 const FrilansStep: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn, tilrettelegging } = useSøknad();
+
     const onValidSubmitHandler = (values: Partial<FrilansFormData>) => {
         const søkerMedFrilans = mapFrilansDataToSøkerState(søker, values as FrilansFormData);
-        if (
-            søkerHarKunEtArbeid(
-                barn.termindato,
-                arbeidsforhold,
-                søkerMedFrilans.harJobbetSomFrilans,
-                søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende,
-            )
-        ) {
-            const mappedTilretteleggingsValg = mapTilrettelegging(
-                tilrettelegging,
-                ['Frilans'],
-                søkerMedFrilans,
-                arbeidsforhold,
-                barn.termindato,
-                intl,
-            );
-
-            return [
-                actionCreator.setSøker(søkerMedFrilans),
-                actionCreator.setTilrettelegging(mappedTilretteleggingsValg),
-            ];
+        const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
+            barn.termindato,
+            arbeidsforhold,
+            søkerMedFrilans.harJobbetSomFrilans,
+            søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende,
+        );
+        if (harKunEtAktivtArbeid) {
+            const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegging)];
+            return [actionCreator.setSøker(søkerMedFrilans), actionCreator.setTilrettelegging(tilretteleggingOptions)];
         }
         return [actionCreator.setSøker(søkerMedFrilans)];
     };

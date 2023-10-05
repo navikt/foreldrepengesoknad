@@ -5,10 +5,10 @@ import { intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FrilansFormData } from '../frilans/frilansFormConfig';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { EgenNæring } from 'app/types/EgenNæring';
-import { Frilans } from 'app/types/Frilans';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
+import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
+import { frilansId } from 'app/types/Frilans';
 
 export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[]): VelgArbeidFormData => {
     return {
@@ -27,100 +27,110 @@ export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormD
     };
 };
 
+export const getNæringTilretteleggingOption = (
+    tilrettelegginger: Tilrettelegging[],
+    næring: EgenNæring,
+): Tilrettelegging => {
+    const næringTilretteleggingFraState = tilrettelegginger.find((t) => t.id == egenNæringId);
+    return {
+        id: egenNæringId,
+        arbeidsforhold: næringTilretteleggingFraState?.arbeidsforhold || {
+            arbeidsgiverId: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
+            type: Arbeidsforholdstype.SELVSTENDIG,
+            navn: næring.navnPåNæringen,
+        },
+        vedlegg: næringTilretteleggingFraState?.vedlegg || [],
+        behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+        variertePerioder: næringTilretteleggingFraState?.variertePerioder || [],
+        type: næringTilretteleggingFraState?.type || undefined,
+        sammePeriodeFremTilTerminFom: næringTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+        sammePeriodeFremTilTerminStillingsprosent:
+            næringTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+        delvisTilretteleggingPeriodeType: næringTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+        risikofaktorer: næringTilretteleggingFraState?.risikofaktorer || undefined,
+        tilretteleggingstiltak: næringTilretteleggingFraState?.tilretteleggingstiltak || undefined,
+    };
+};
+
+export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilrettelegging[]): Tilrettelegging => {
+    const frilansTilretteleggingFraState = tilrettelegginger.find((t) => t.id == frilansId);
+    return {
+        id: frilansId,
+        arbeidsforhold: frilansTilretteleggingFraState?.arbeidsforhold || {
+            arbeidsgiverId: frilansId,
+            navn: frilansId,
+            type: Arbeidsforholdstype.FRILANSER,
+        },
+        vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
+        behovForTilretteleggingFom: frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+        variertePerioder: frilansTilretteleggingFraState?.variertePerioder || [],
+        type: frilansTilretteleggingFraState?.type || undefined,
+        sammePeriodeFremTilTerminFom: frilansTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+        sammePeriodeFremTilTerminStillingsprosent:
+            frilansTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+        delvisTilretteleggingPeriodeType: frilansTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+        risikofaktorer: frilansTilretteleggingFraState?.risikofaktorer || undefined,
+        tilretteleggingstiltak: frilansTilretteleggingFraState?.tilretteleggingstiltak || undefined,
+    };
+};
+
+export const getArbeidsforholdTilretteleggingOptions = (
+    arbeidsforhold: Arbeidsforhold[],
+    tilrettelegginger: Tilrettelegging[],
+    termindato: string,
+    intl: IntlShape,
+): Tilrettelegging[] => {
+    const unikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
+    const arbeidsforholdOptions = unikeArbeidsforhold.map((forhold) => {
+        const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == forhold.id);
+        return {
+            id: tilretteleggingFraState?.id || forhold.id,
+            arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
+                arbeidsgiverId: forhold.arbeidsgiverId,
+                type:
+                    forhold.arbeidsgiverIdType === 'orgnr'
+                        ? Arbeidsforholdstype.VIRKSOMHET
+                        : Arbeidsforholdstype.PRIVAT,
+                navn:
+                    forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
+                        ? forhold.arbeidsgiverNavn
+                        : intlUtils(intl, 'privat.arbeidsgiver'),
+            },
+            variertePerioder: tilretteleggingFraState?.variertePerioder || [],
+            vedlegg: tilretteleggingFraState?.vedlegg || [],
+            behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
+            type: tilretteleggingFraState?.type || undefined,
+            sammePeriodeFremTilTerminFom: tilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+            sammePeriodeFremTilTerminStillingsprosent:
+                tilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+            delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+        };
+    });
+    return arbeidsforholdOptions;
+};
+
 export const mapArbeidsforholdToVelgArbeidOptions = (
     tilrettelegginger: Tilrettelegging[],
-    erFrilanser: boolean,
-    harNæring: boolean,
-    frilans: Frilans | undefined,
-    næring: EgenNæring | undefined,
+    søker: Søker,
     arbeidsforhold: Arbeidsforhold[],
     termindato: string,
     intl: IntlShape,
 ): Tilrettelegging[] => {
-    const unikeArbeidsforhold = [
-        ...getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => {
-            const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == forhold.id);
-            return {
-                id: tilretteleggingFraState?.id || forhold.id,
-                arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
-                    arbeidsgiverId: forhold.arbeidsgiverId,
-                    type:
-                        forhold.arbeidsgiverIdType === 'orgnr'
-                            ? Arbeidsforholdstype.VIRKSOMHET
-                            : Arbeidsforholdstype.PRIVAT,
-                    navn:
-                        forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
-                            ? forhold.arbeidsgiverNavn
-                            : intlUtils(intl, 'privat.arbeidsgiver'),
-                },
-                variertePerioder: tilretteleggingFraState?.variertePerioder || [],
-                vedlegg: tilretteleggingFraState?.vedlegg || [],
-                behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
-                type: tilretteleggingFraState?.type || undefined,
-                sammePeriodeFremTilTerminFom: tilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
-                sammePeriodeFremTilTerminStillingsprosent:
-                    tilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
-                delvisTilretteleggingPeriodeType:
-                    tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
-            };
-        }),
-    ];
+    const harNæring = søker.harJobbetSomSelvstendigNæringsdrivende;
+    const erFrilanser = søker.harJobbetSomFrilans;
+    const næring = søker.selvstendigNæringsdrivendeInformasjon;
+    const frilans = søker.frilansInformasjon;
+    const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(
+        arbeidsforhold,
+        tilrettelegginger,
+        termindato,
+        intl,
+    );
 
-    const næringTilretteleggingFraState = tilrettelegginger.find((t) => t.id == 'Næring');
-    const næringValg =
-        harNæring && næring
-            ? [
-                  {
-                      id: 'Næring',
-                      arbeidsforhold: næringTilretteleggingFraState?.arbeidsforhold || {
-                          id: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
-                          type: Arbeidsforholdstype.SELVSTENDIG,
-                          navn: næring.navnPåNæringen,
-                      },
-                      vedlegg: næringTilretteleggingFraState?.vedlegg || [],
-                      behovForTilretteleggingFom:
-                          næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
-                      variertePerioder: næringTilretteleggingFraState?.variertePerioder || [],
-                      type: næringTilretteleggingFraState?.type || undefined,
-                      sammePeriodeFremTilTerminFom:
-                          næringTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
-                      sammePeriodeFremTilTerminStillingsprosent:
-                          næringTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
-                      delvisTilretteleggingPeriodeType:
-                          næringTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
-                      risikofaktorer: næringTilretteleggingFraState?.risikofaktorer || undefined,
-                      tilretteleggingstiltak: næringTilretteleggingFraState?.tilretteleggingstiltak || undefined,
-                  },
-              ]
-            : [];
+    const næringValg = harNæring && næring ? [getNæringTilretteleggingOption(tilrettelegginger, næring)] : [];
 
-    const frilansTilretteleggingFraState = tilrettelegginger.find((t) => t.id == 'Frilans');
     const frilansValg =
-        erFrilanser && frilans !== undefined
-            ? [
-                  {
-                      id: 'Frilans',
-                      arbeidsforhold: frilansTilretteleggingFraState?.arbeidsforhold || {
-                          id: 'Frilans',
-                          navn: 'Frilans',
-                          type: Arbeidsforholdstype.FRILANSER,
-                      },
-                      vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
-                      behovForTilretteleggingFom:
-                          frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
-                      variertePerioder: frilansTilretteleggingFraState?.variertePerioder || [],
-                      type: frilansTilretteleggingFraState?.type || undefined,
-                      sammePeriodeFremTilTerminFom:
-                          frilansTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
-                      sammePeriodeFremTilTerminStillingsprosent:
-                          frilansTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
-                      delvisTilretteleggingPeriodeType:
-                          frilansTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
-                      risikofaktorer: frilansTilretteleggingFraState?.risikofaktorer || undefined,
-                      tilretteleggingstiltak: frilansTilretteleggingFraState?.tilretteleggingstiltak || undefined,
-                  },
-              ]
-            : [];
+        erFrilanser && frilans !== undefined ? [getFrilansTilretteleggingOption(tilrettelegginger)] : [];
     return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
 };
 

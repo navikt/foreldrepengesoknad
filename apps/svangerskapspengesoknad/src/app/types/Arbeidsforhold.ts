@@ -22,12 +22,6 @@ export interface ArbeidsforholdPrivatDTO {
     id: string;
 }
 
-export const isArbeidsforholdVirksomhetDTO = (
-    arbeidsforhold: ArbeidsforholdDTO,
-): arbeidsforhold is ArbeidsforholdVirksomhetDTO => {
-    return arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET;
-};
-
 export type ArbeidsforholdDTO =
     | ArbeidsforholdFrilansDTO
     | ArbeidsforholdSelvstendigDTO

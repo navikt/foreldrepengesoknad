@@ -1,3 +1,5 @@
+export const frilansId = 'frilans';
+
 export interface Frilans {
     jobberFremdelesSomFrilans: boolean;
     oppstart: string;

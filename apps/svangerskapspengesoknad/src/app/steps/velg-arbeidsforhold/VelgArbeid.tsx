@@ -1,4 +1,4 @@
-import { VelgArbeidFormComponents, VelgArbeidFormData, VelgArbeidFormField } from './velgArbeidFormConfig';
+import { VelgArbeidFormComponents, VelgArbeidFormField } from './velgArbeidFormConfig';
 import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -9,48 +9,37 @@ import { Link } from 'react-router-dom';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
+import { getValgtTilrettelegging } from 'app/utils/tilretteleggingUtils';
 import SøknadRoutes from 'app/routes/routes';
 import {
     getInitialVelgArbeidFormValues,
     mapArbeidsforholdToVelgArbeidOptions,
     validateVelgArbeidIsAnswered,
 } from './velgArbeidFormUtils';
+import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
+import { useMemo, useState } from 'react';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 const VelgArbeid: React.FunctionComponent = () => {
+    useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
     const { søker, tilrettelegging, barn } = useSøknad();
+    const { termindato } = barn;
     const { arbeidsforhold } = useSøkerinfo();
-    const {
-        frilansInformasjon,
-        selvstendigNæringsdrivendeInformasjon,
-        harJobbetSomFrilans,
-        harJobbetSomSelvstendigNæringsdrivende,
-    } = søker;
-    const onValidSubmitHandler = (values: Partial<VelgArbeidFormData>) => {
-        const mappedTilrettelegging = mapTilrettelegging(
-            tilrettelegging,
-            values.arbeidMedTilrettelegging!,
-            søker,
-            arbeidsforhold,
-            barn.termindato,
-            intl,
-        );
-        return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
+
+    const [nextRoute, setNextRoute] = useState(SøknadRoutes.SKJEMA.toString());
+    const [valgtTilrettelegging, setValgtTilrettelegging] = useState<Tilrettelegging[]>([]);
+    const tilretteleggingOptions = useMemo(
+        () => mapArbeidsforholdToVelgArbeidOptions(tilrettelegging, søker, arbeidsforhold, termindato, intl),
+        [tilrettelegging, søker, arbeidsforhold, barn.termindato, intl],
+    );
+    const onValidSubmitHandler = () => {
+        return [actionCreator.setTilrettelegging(valgtTilrettelegging)];
     };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.SKJEMA);
+    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
-    const options = mapArbeidsforholdToVelgArbeidOptions(
-        tilrettelegging,
-        harJobbetSomFrilans,
-        harJobbetSomSelvstendigNæringsdrivende,
-        frilansInformasjon,
-        selvstendigNæringsdrivendeInformasjon,
-        arbeidsforhold,
-        barn.termindato,
-        intl,
-    );
 
     return (
         <VelgArbeidFormComponents.FormikWrapper
@@ -65,21 +54,17 @@ const VelgArbeid: React.FunctionComponent = () => {
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                     >
-                        <VelgArbeidFormComponents.Form
-                            includeButtons={false}
-                            includeValidationSummary={true}
-                            // cleanup={(values) => cleanupFrilansFormData(values, visibility)} //TODO
-                        >
+                        <VelgArbeidFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">
                                 <VelgArbeidFormComponents.CheckboxGroup
                                     name={VelgArbeidFormField.arbeidMedTilrettelegging}
                                     legend={intlUtils(intl, 'velgArbeid.hvor')}
-                                    checkboxes={options.map((option) => ({
-                                        label: option.arbeidsforhold.navn,
+                                    checkboxes={tilretteleggingOptions.map((option) => ({
+                                        label:
+                                            option.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
+                                                ? capitalizeFirstLetter(option.arbeidsforhold.navn)
+                                                : option.arbeidsforhold.navn,
                                         value: option.id,
-                                        defaultChecked: !!(
-                                            formValues && formValues.arbeidMedTilrettelegging!.includes(option.id)
-                                        ),
                                     }))}
                                     validate={(value) => validateVelgArbeidIsAnswered(value, intl)}
                                 />
@@ -90,7 +75,23 @@ const VelgArbeid: React.FunctionComponent = () => {
                                     <Button variant="secondary" as={Link} to={getBackLinkForVelgArbeidSteg(søker)}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                    <Button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                        onClick={() => {
+                                            const tilretteleggingValg = getValgtTilrettelegging(
+                                                tilretteleggingOptions,
+                                                formValues.arbeidMedTilrettelegging!,
+                                            );
+                                            setValgtTilrettelegging(tilretteleggingValg);
+                                            const førsteTilretteleggingId =
+                                                tilretteleggingValg.length > 0 ? tilretteleggingValg[0].id : undefined;
+                                            if (førsteTilretteleggingId) {
+                                                setNextRoute(`${SøknadRoutes.SKJEMA}/${førsteTilretteleggingId}`);
+                                            }
+                                        }}
+                                    >
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>
                                 </StepButtonWrapper>

@@ -1,10 +1,7 @@
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
-import stepConfig, {
-    getBackLinkTilretteleggingPeriodeEllerSkjemaSteg,
-    getNextRouteForTilretteleggingSteg,
-} from '../stepsConfig';
-import { Alert, Button, ReadMore } from '@navikt/ds-react';
+import stepConfig, { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg } from '../stepsConfig';
+import { Button, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     TilretteleggingFormComponents,
@@ -48,11 +45,11 @@ import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     id: string;
-    type: Arbeidsforholdstype;
+    typeArbeid: Arbeidsforholdstype;
     navn: string;
 }
 
-const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
+const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.OPPSUMMERING.toString());
@@ -65,10 +62,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const fødselsdatoDate = ISOStringToDate(fødselsdato);
     const termindatoDate = ISOStringToDate(termindato);
-    const typeArbeid = currentTilrettelegging!.arbeidsforhold.type;
     const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
-        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(id, values, tilretteleggingFraState);
+        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
+            id,
+            values,
+            tilretteleggingFraState,
+            currentTilrettelegging!,
+        );
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
 
@@ -133,21 +134,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                             cleanup={(values) => cleanUpTilretteleggingStepFormValues(values, visibility)}
                         >
                             {erFlereTilrettelegginger && (
-                                <>
-                                    <Block padBottom="m">
-                                        <Alert variant="info">
-                                            <FormattedMessage id="tilrettelegging.flereTilrettelegginger.info" />
-                                        </Alert>
-                                    </Block>
-                                    <Block padBottom="xxl">
-                                        <ArbeidsgiverVisning
-                                            currentTilrettelegging={currentTilrettelegging!}
-                                            arbeidsforhold={arbeidsforhold}
-                                            frilans={frilansInformasjon}
-                                            egenNæring={selvstendigNæringsdrivendeInformasjon}
-                                        />
-                                    </Block>
-                                </>
+                                <Block padBottom="xxl">
+                                    <ArbeidsgiverVisning
+                                        currentTilrettelegging={currentTilrettelegging!}
+                                        arbeidsforhold={arbeidsforhold}
+                                        frilans={frilansInformasjon}
+                                        egenNæring={selvstendigNæringsdrivendeInformasjon}
+                                    />
+                                </Block>
                             )}
                             <Block padBottom="xxl">
                                 <TilretteleggingFormComponents.DatePicker
@@ -300,10 +294,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getBackLinkTilretteleggingPeriodeEllerSkjemaSteg(
-                                            tilretteleggingFraState,
-                                            state.currentTilretteleggingId,
-                                        )}
+                                        to={getBackLinkForTilretteleggingSteg(state.currentTilretteleggingId)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

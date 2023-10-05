@@ -36,7 +36,6 @@ export const svangerskapspengerInitialState: SvangerskapspengerContextState = {
             tidligereOpphold: [],
             senereOpphold: [],
         },
-        vedlegg: [],
         harGodkjentOppsummering: false,
     },
 };

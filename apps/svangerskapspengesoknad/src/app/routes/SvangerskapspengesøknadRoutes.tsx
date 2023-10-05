@@ -72,6 +72,25 @@ export const findNextRoute = (
     }
 };
 
+const getSkjemaRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
+    return tilretteleggingValg?.map((tilrettelegging) => {
+        return (
+            <Route
+                key={tilrettelegging.id}
+                path={`${SøknadRoutes.SKJEMA}/${tilrettelegging.id}`}
+                element={
+                    <Skjema
+                        key={tilrettelegging.id}
+                        id={tilrettelegging.id}
+                        typeArbeid={tilrettelegging.arbeidsforhold.type}
+                        navn={tilrettelegging.arbeidsforhold.navn}
+                    />
+                }
+            />
+        );
+    });
+};
+
 const getPerioderRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
     return tilretteleggingValg
         ?.filter(
@@ -106,7 +125,7 @@ const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undef
                     <TilretteleggingStep
                         key={tilrettelegging.id}
                         id={tilrettelegging.id}
-                        type={tilrettelegging.arbeidsforhold.type}
+                        typeArbeid={tilrettelegging.arbeidsforhold.type}
                         navn={tilrettelegging.arbeidsforhold.navn}
                     />
                 }
@@ -137,7 +156,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
             <Route path={SøknadRoutes.NÆRING} element={<EgenNæringStep />} />
             <Route path={SøknadRoutes.ARBEID_I_UTLANDET} element={<ArbeidIUtlandetStep />} />
             <Route path={SøknadRoutes.VELG_ARBEID} element={<VelgArbeid />} />
-            <Route path={SøknadRoutes.SKJEMA} element={<Skjema />} />
+            {getSkjemaRoutes(tilretteleggingBehov)}
             {getTilretteleggingRoutes(tilretteleggingBehov)}
             {getPerioderRoutes(tilretteleggingBehov)}
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />

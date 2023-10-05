@@ -1,7 +1,7 @@
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
-import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
+import { BodyShort, Button, Heading } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 
@@ -58,7 +58,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdatoDate || termindatoDate!);
     let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
     if (nesteTilretteleggingId) {
-        nextRoute = `${SøknadRoutes.TILRETTELEGGING}/${nesteTilretteleggingId}`;
+        nextRoute = `${SøknadRoutes.SKJEMA}/${nesteTilretteleggingId}`;
     }
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
@@ -89,21 +89,14 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                     >
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {erFlereTilrettelegginger && (
-                                <>
-                                    <Block padBottom="m">
-                                        <Alert variant="info">
-                                            <FormattedMessage id="tilrettelegging.flereTilrettelegginger.perioder.info" />
-                                        </Alert>
-                                    </Block>
-                                    <Block padBottom="xxl">
-                                        <ArbeidsgiverVisning
-                                            currentTilrettelegging={currentTilrettelegging!}
-                                            arbeidsforhold={arbeidsforhold}
-                                            frilans={søker.frilansInformasjon}
-                                            egenNæring={søker.selvstendigNæringsdrivendeInformasjon}
-                                        />
-                                    </Block>
-                                </>
+                                <Block padBottom="xxl">
+                                    <ArbeidsgiverVisning
+                                        currentTilrettelegging={currentTilrettelegging!}
+                                        arbeidsforhold={arbeidsforhold}
+                                        frilans={søker.frilansInformasjon}
+                                        egenNæring={søker.selvstendigNæringsdrivendeInformasjon}
+                                    />
+                                </Block>
                             )}
                             <Block padBottom="xl">
                                 <Heading size="small">{intlUtils(intl, 'perioder.varierende.heading')}</Heading>

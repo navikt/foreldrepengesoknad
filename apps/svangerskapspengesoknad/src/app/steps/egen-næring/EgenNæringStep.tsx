@@ -35,9 +35,9 @@ import {
 } from './egenNæringValidation';
 import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerEllerLand';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
-import { søkerHarKunEtArbeid } from 'app/utils/arbeidsforholdUtils';
+import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
+import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 
 const EgenNæringStep: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -46,25 +46,20 @@ const EgenNæringStep: React.FunctionComponent = () => {
     const onValidSubmitHandler = (values: Partial<EgenNæringFormData>) => {
         const søkerMedNæring = mapNæringDataToSøkerState(søker, values as EgenNæringFormData);
         if (
-            søkerHarKunEtArbeid(
+            søkerHarKunEtAktivtArbeid(
                 barn.termindato,
                 arbeidsforhold,
                 søkerMedNæring.harJobbetSomFrilans,
                 søkerMedNæring.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
-            const mappedTilretteleggingsValg = mapTilrettelegging(
-                tilrettelegging,
-                ['Næring'],
-                søkerMedNæring,
-                arbeidsforhold,
-                barn.termindato,
-                intl,
-            );
+            const automatiskValgtTilrettelegging = [
+                getNæringTilretteleggingOption(tilrettelegging, søkerMedNæring.selvstendigNæringsdrivendeInformasjon!),
+            ];
 
             return [
                 actionCreator.setSøker(søkerMedNæring),
-                actionCreator.setTilrettelegging(mappedTilretteleggingsValg),
+                actionCreator.setTilrettelegging(automatiskValgtTilrettelegging),
             ];
         }
 

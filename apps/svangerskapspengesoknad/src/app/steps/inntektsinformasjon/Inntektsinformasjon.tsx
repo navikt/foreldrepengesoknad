@@ -20,7 +20,7 @@ import { BodyShort, Button, Label } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import {
     getAktiveArbeidsforhold,
-    søkerHarKunEtArbeid as søkerHarKunEtAktivtArbeid,
+    getAutomatiskValgtTilretteleggingHvisKunEtArbeid,
 } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
@@ -32,37 +32,21 @@ import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
-import { mapTilrettelegging } from 'app/utils/tilretteleggingUtils';
+import Tilrettelegging from 'app/types/Tilrettelegging';
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn, tilrettelegging, informasjonOmUtenlandsopphold } = useSøknad();
-    const [nextRoute, setNextRoute] = useState(SøknadRoutes.SKJEMA);
+    const [nextRoute, setNextRoute] = useState(SøknadRoutes.ARBEID.toString());
+    const [autoValgtTilrettelegging, setAutoValgtTilrettelegging] = useState<Tilrettelegging | undefined>(undefined);
     const onAvbrytSøknad = useAvbrytSøknad();
     const { termindato } = barn;
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
-        if (
-            søkerHarKunEtAktivtArbeid(
-                termindato,
-                arbeidsforhold,
-                updatedSøker.harJobbetSomFrilans,
-                updatedSøker.harJobbetSomSelvstendigNæringsdrivende,
-            ) &&
-            aktiveArbeidsforhold.length > 0
-        ) {
-            const mappedTilretteleggingsValg = mapTilrettelegging(
-                tilrettelegging,
-                [aktiveArbeidsforhold[0].id],
-                updatedSøker,
-                arbeidsforhold,
-                barn.termindato,
-                intl,
-            );
-
-            return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging(mappedTilretteleggingsValg)];
+        if (autoValgtTilrettelegging) {
+            return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging([autoValgtTilrettelegging])];
         }
 
         return [actionCreator.setSøker(updatedSøker)];
@@ -146,7 +130,7 @@ const Inntektsinformasjon = () => {
                             <Block padBottom="xxl">
                                 <InfoTilFiskere />
                             </Block>
-                            <Block visible={kanIkkeSøke}>
+                            <Block padBottom="l" visible={kanIkkeSøke}>
                                 <BrukerKanIkkeSøke />
                             </Block>
                             <Block padBottom="l">
@@ -163,15 +147,23 @@ const Inntektsinformasjon = () => {
                                             type="submit"
                                             disabled={isSubmitting}
                                             loading={isSubmitting}
-                                            onClick={() =>
-                                                setNextRoute(
-                                                    getNextRouteForInntektsinformasjon(
-                                                        termindato,
+                                            onClick={() => {
+                                                let automatiskValgtTilrettelegging =
+                                                    getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
                                                         formValues,
                                                         aktiveArbeidsforhold,
+                                                        termindato,
+                                                        tilrettelegging,
+                                                        intl,
+                                                    );
+                                                setAutoValgtTilrettelegging(automatiskValgtTilrettelegging);
+                                                setNextRoute(
+                                                    getNextRouteForInntektsinformasjon(
+                                                        automatiskValgtTilrettelegging,
+                                                        formValues,
                                                     ),
-                                                )
-                                            }
+                                                );
+                                            }}
                                         >
                                             {intlUtils(intl, 'søknad.gåVidere')}
                                         </Button>
