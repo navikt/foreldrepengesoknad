@@ -2,7 +2,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
 import { redirectToLogin } from 'fpcommon/util/login';
 import Environment from './Environment';
-import { OmBarnet } from 'types/OmBarnet';
+import { OmBarnet, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
     Utenlandsopphold,
     UtenlandsoppholdNeste,
@@ -10,7 +10,7 @@ import {
     UtenlandsoppholdSiste,
 } from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
-import Dokumentasjon from 'types/Dokumentasjon';
+import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,
@@ -64,13 +64,22 @@ const sendSøknad =
     async (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
-        vedlegg: Dokumentasjon,
+        dokumentasjon?: Dokumentasjon,
         sisteUtenlandsopphold?: UtenlandsoppholdSiste,
         nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => {
         //TODO Bør få vekk mappinga her. Bruk samme navngiving på variablane frontend og backend.
+
+        const barn =
+            dokumentasjon && erTerminDokumentasjon(dokumentasjon)
+                ? {
+                      ...omBarnet,
+                      terminbekreftelsedato: dokumentasjon.terminbekreftelsedato,
+                  }
+                : omBarnet;
+
         const søknad = {
-            barn: omBarnet,
+            barn,
             type: 'engangsstønad',
             erEndringssøknad: false,
             informasjonOmUtenlandsopphold: {
@@ -82,7 +91,7 @@ const sendSøknad =
             søker: {
                 språkkode: locale,
             },
-            vedlegg,
+            vedlegg: dokumentasjon?.vedlegg || [],
         };
 
         const response = await engangsstønadApi.post('/soknad', søknad, {

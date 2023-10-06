@@ -7,7 +7,7 @@ import FileUploader from 'fpcommon/uploader/FileUploader';
 import Environment from 'appData/Environment';
 import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
-import { isAfterToday, isRequired, hasValidDate } from 'fpcommon/validering/valideringsregler';
+import { isAfterToday, isRequired, isValidDate } from 'fpcommon/validering/valideringsregler';
 import { useMemo } from 'react';
 
 const ukerAaTrekkeFraTerminDato = 18;
@@ -33,7 +33,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
     const terminbekreftelseValidatorer = useMemo(
         () => [
             isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' })),
-            hasValidDate(intl.formatMessage({ id: 'invalidFormatErrorKey.terminBekreftelsedato' })),
+            isValidDate(intl.formatMessage({ id: 'invalidFormatErrorKey.terminBekreftelsedato' })),
             isAfterToday(
                 intl.formatMessage({
                     id: 'valideringsfeil.omBarnet.terminbekreftelseDato.måVæreIdagEllerTidligere',

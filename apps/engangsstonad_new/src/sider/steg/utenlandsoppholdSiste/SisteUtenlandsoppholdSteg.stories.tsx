@@ -2,22 +2,22 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
-import NesteUtenlandsopphold from './NesteUtenlandsopphold';
+import SisteUtenlandsoppholdSteg from './SisteUtenlandsoppholdSteg';
 import { Path } from 'appData/paths';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { Action, EsDataType } from 'appData/EsDataContext';
 
 const utenlandsopphold = {
-    harBoddUtenforNorgeSiste12Mnd: false,
-    skalBoUtenforNorgeNeste12Mnd: true,
+    harBoddUtenforNorgeSiste12Mnd: true,
+    skalBoUtenforNorgeNeste12Mnd: false,
 };
 
 export default {
-    title: 'NesteUtenlandsopphold',
-    component: NesteUtenlandsopphold,
+    title: 'SisteUtenlandsoppholdSteg',
+    component: SisteUtenlandsoppholdSteg,
     decorators: [withRouter],
     parameters: {
-        routerDecoratorInitUrl: Path.NESTE_UTENLANDSOPPHOLD,
+        routerDecoratorInitUrl: Path.SISTE_UTENLANDSOPPHOLD,
     },
 };
 
@@ -30,7 +30,7 @@ const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåT
                     [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
-                <NesteUtenlandsopphold />
+                <SisteUtenlandsoppholdSteg />
             </EsContextStorybookHelper>
         </IntlProvider>
     );

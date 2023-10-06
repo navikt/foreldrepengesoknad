@@ -13,3 +13,10 @@ export type AdopsjonDokumentasjon = Vedlegg;
 type Dokumentasjon = TerminDokumentasjon | AdopsjonDokumentasjon;
 
 export default Dokumentasjon;
+
+export const erTerminDokumentasjon = (dokumentasjon: Dokumentasjon): dokumentasjon is TerminDokumentasjon => {
+    if ((dokumentasjon as TerminDokumentasjon).terminbekreftelsedato) {
+        return true;
+    }
+    return false;
+};

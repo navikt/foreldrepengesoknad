@@ -2,23 +2,28 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { formatDate } from '@navikt/fp-common';
 import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import AttachmentList from 'fpcommon/uploader/liste/AttachmentList';
-import { OmBarnet } from 'types/OmBarnet';
-import Dokumentasjon from 'types/Dokumentasjon';
+import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 interface Props {
     omBarnet: OmBarnet;
-    vedlegg: Dokumentasjon;
+    dokumentasjon?: Dokumentasjon;
 }
 
-const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedlegg }) => {
+const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokumentasjon }) => {
     const intl = useIntl();
+
+    const harAdoptert = erAdopsjon(omBarnet);
+    const harTermin = erBarnetIkkeFødt(omBarnet);
+    const harFødt = erBarnetFødt(omBarnet);
 
     let antallBarnSummaryText;
     if (omBarnet.antallBarn === 1) {
         antallBarnSummaryText = intl.formatMessage({ id: 'oppsummering.omBarnet.ettBarn' });
-    } else if (omBarnet.antallBarn === 2 && omBarnet.adopsjonAvEktefellesBarn === undefined) {
+    } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
         antallBarnSummaryText = intl.formatMessage({ id: 'oppsummering.omBarnet.tvillinger' });
-    } else if (omBarnet.antallBarn === 2 && omBarnet.adopsjonAvEktefellesBarn !== undefined) {
+    } else if (omBarnet.antallBarn === 2 && harAdoptert) {
         antallBarnSummaryText = intl.formatMessage({ id: 'oppsummering.omBarnet.toBarn' });
     } else {
         antallBarnSummaryText = intl.formatMessage(
@@ -37,7 +42,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedleg
                 </BodyShort>
                 <BodyShort>{antallBarnSummaryText}</BodyShort>
             </HStack>
-            {omBarnet.adopsjonAvEktefellesBarn !== undefined && (
+            {harAdoptert && (
                 <>
                     <HStack gap="2">
                         <BodyShort>
@@ -58,30 +63,26 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedleg
                         <BodyLong>
                             {omBarnet.fødselsdatoer
                                 .map((_, index) => {
-                                    return formatDate(omBarnet.fødselsdatoer[index]);
+                                    return formatDate(omBarnet.fødselsdatoer[index].dato);
                                 })
                                 .join(', ')}
                         </BodyLong>
                     </HStack>
-                </>
-            )}
-            {omBarnet.adopsjonAvEktefellesBarn !== undefined && (
-                <>
                     <Label>
                         <FormattedMessage id={'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse'} />
                     </Label>
-                    <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !a.error)} />
+                    <AttachmentList attachments={notEmpty(dokumentasjon).vedlegg} />
                 </>
             )}
-            {omBarnet.erBarnetFødt && omBarnet.fødselsdatoer && (
+            {harFødt && (
                 <HStack gap="2">
                     <BodyShort>
                         <FormattedMessage id={'oppsummering.text.medFødselsdato'} />
                     </BodyShort>
-                    <BodyShort>{formatDate(omBarnet.fødselsdatoer[0])}</BodyShort>
+                    <BodyShort>{formatDate(omBarnet.fødselsdatoer[0].dato)}</BodyShort>
                 </HStack>
             )}
-            {omBarnet.erBarnetFødt === false && omBarnet.termindato && omBarnet.terminbekreftelsedato && (
+            {harTermin && dokumentasjon && erTerminDokumentasjon(dokumentasjon) && (
                 <>
                     <HStack gap="2">
                         <BodyShort>
@@ -93,14 +94,12 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, vedleg
                         <BodyShort>
                             <FormattedMessage id={'oppsummering.text.somErDatert'} />
                         </BodyShort>
-                        <BodyShort>{formatDate(omBarnet.terminbekreftelsedato)}</BodyShort>
+                        <BodyShort>{formatDate(dokumentasjon.terminbekreftelsedato)}</BodyShort>
                     </HStack>
-                    <>
-                        <Label>
-                            <FormattedMessage id={'oppsummering.text.vedlagtTerminbekreftelse'} />
-                        </Label>
-                        <AttachmentList attachments={vedlegg.vedlegg.filter((a) => !a.error)} />
-                    </>
+                    <Label>
+                        <FormattedMessage id={'oppsummering.text.vedlagtTerminbekreftelse'} />
+                    </Label>
+                    <AttachmentList attachments={dokumentasjon.vedlegg} />
                 </>
             )}
         </VStack>

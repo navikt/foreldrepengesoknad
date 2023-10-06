@@ -86,6 +86,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
             <RadioGroupPanel
                 name="antallBarn"
                 label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.antallBarnAdoptert" />}
+                description={<FormattedMessage id="omBarnet.adopsjon.spørsmål.antallBarnAdoptert.beskrivelse" />}
                 validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.antallbarn.required' }))]}
             >
                 <Radio value={1}>

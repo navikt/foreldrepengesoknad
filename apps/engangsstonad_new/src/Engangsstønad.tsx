@@ -11,8 +11,8 @@ import Api from 'appData/api';
 import Person from './types/Person';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
-import NesteUtenlandsopphold from './sider/steg/utenlandsoppholdNeste/NesteUtenlandsopphold';
-import SisteUtenlandsopphold from './sider/steg/utenlandsoppholdSiste/SisteUtenlandsopphold';
+import NesteUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdNeste/NesteUtenlandsoppholdSteg';
+import SisteUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSiste/SisteUtenlandsoppholdSteg';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import { Path } from 'appData/paths';
@@ -77,8 +77,8 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                         <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                        <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtenlandsopphold />} />
-                        <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtenlandsopphold />} />
+                        <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtenlandsoppholdSteg />} />
+                        <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtenlandsoppholdSteg />} />
                         <Route
                             path={Path.OPPSUMMERING}
                             element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}

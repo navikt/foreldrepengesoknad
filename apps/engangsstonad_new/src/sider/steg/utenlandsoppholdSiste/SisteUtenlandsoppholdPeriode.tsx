@@ -58,11 +58,11 @@ const SisteUtenlandsoppholdPeriode: React.FunctionComponent<OwnProps> = ({ index
     const fom = watch(`utenlandsoppholdSiste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
 
-    const minDateFom = dayjs(date1YearAgo).subtract(1, 'day').toDate();
-    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(dateToday).add(1, 'day').toDate();
+    const minDateFom = dayjs(date1YearAgo).toDate();
+    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(dateToday).toDate();
 
-    const minDateTom = fom ? dayjs(fom).toDate() : dayjs(date1YearAgo).subtract(1, 'day').toDate();
-    const maxDateTom = dayjs(dateToday).add(1, 'day').toDate();
+    const minDateTom = fom ? dayjs(fom).toDate() : dayjs(date1YearAgo).toDate();
+    const maxDateTom = dayjs(dateToday).toDate();
 
     return (
         <VStack gap="5" align="start">

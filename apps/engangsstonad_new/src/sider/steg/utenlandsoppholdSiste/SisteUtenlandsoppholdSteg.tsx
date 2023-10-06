@@ -24,7 +24,7 @@ const DEFAULT_FORM_VALUES = {
     utenlandsoppholdSiste12Mnd: [DEFAULT_PERIODE],
 } as UtenlandsoppholdSiste;
 
-const SisteUtenlandsopphold: React.FunctionComponent = () => {
+const SisteUtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const stepData = useStepData();
@@ -99,4 +99,4 @@ const SisteUtenlandsopphold: React.FunctionComponent = () => {
     );
 };
 
-export default SisteUtenlandsopphold;
+export default SisteUtenlandsoppholdSteg;

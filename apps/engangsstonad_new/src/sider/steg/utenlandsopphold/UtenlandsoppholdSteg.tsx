@@ -62,6 +62,9 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
+                    <BodyLong>
+                        <FormattedMessage id="utenlandsopphold.info" />
+                    </BodyLong>
                     <RadioGroupPanel
                         name="harBoddUtenforNorgeSiste12Mnd"
                         label={<FormattedMessage id="utenlandsopphold.siste12Måneder.spørsmål" />}

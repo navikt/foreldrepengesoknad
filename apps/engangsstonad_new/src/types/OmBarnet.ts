@@ -39,3 +39,10 @@ export const erBarnetIkkeFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeF
     }
     return false;
 };
+
+export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
+    if ((omBarnet as BarnetErFødt).erBarnetFødt === true) {
+        return true;
+    }
+    return false;
+};

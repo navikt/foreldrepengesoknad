@@ -6,6 +6,7 @@ import { Block } from '@navikt/fp-common';
 
 import Datepicker from 'fpcommon/form/Datepicker';
 import { validateAdopsjonFødselDate } from 'fpcommon/validering/valideringsregler';
+import { VStack } from '@navikt/ds-react';
 
 export type FormValues = {
     fødselsdatoer?: {
@@ -51,27 +52,26 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
     }, [antallBarn, antallBarnDropDown]);
 
     return (
-        <>
+        <VStack gap="10">
             {fields.map((field, index) => (
-                <Block margin="xl" key={field.id}>
-                    <Datepicker
-                        name={`fødselsdatoer.${index}.dato`}
-                        minDate={dayjs().subtract(15, 'year').toDate()}
-                        maxDate={dayjs().toDate()}
-                        label={
-                            <FormattedMessage
-                                id={
-                                    fields.length === 1
-                                        ? 'søknad.fødselsdato'
-                                        : `omBarnet.adopsjon.spørsmål.fødselsdato.${index + 1}`
-                                }
-                            />
-                        }
-                        validate={[(fødselsdato) => validateAdopsjonFødselDate(fødselsdato, adopsjonsdato, intl)]}
-                    />
-                </Block>
+                <Datepicker
+                    key={field.id}
+                    name={`fødselsdatoer.${index}.dato`}
+                    minDate={dayjs().subtract(15, 'year').toDate()}
+                    maxDate={dayjs().toDate()}
+                    label={
+                        <FormattedMessage
+                            id={
+                                fields.length === 1
+                                    ? 'søknad.fødselsdato'
+                                    : `omBarnet.adopsjon.spørsmål.fødselsdato.${index + 1}`
+                            }
+                        />
+                    }
+                    validate={[(fødselsdato) => validateAdopsjonFødselDate(fødselsdato, adopsjonsdato, intl)]}
+                />
             ))}
-        </>
+        </VStack>
     );
 };
 

@@ -16,7 +16,7 @@ export const isRequired =
     (value?: string | number): FormValidationResult =>
         isEmpty(value) ? errorMessage : null;
 
-export const hasValidDate =
+export const isValidDate =
     (errorMessage: string) =>
     (text: string): FormValidationResult =>
         isEmpty(text) || isoDateRegex.test(text) ? null : errorMessage;

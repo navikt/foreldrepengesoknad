@@ -60,13 +60,11 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
 
-    const minDateFom = dayjs(dateToday).subtract(1, 'day').toDate();
-    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate();
+    const minDateFom = dayjs(dateToday).toDate();
+    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate();
 
-    const minDateTom = dayjs(fom || dateToday)
-        .subtract(1, 'day')
-        .toDate();
-    const maxDateTom = dayjs(date1YearFromNow).add(1, 'day').toDate();
+    const minDateTom = dayjs(fom || dateToday).toDate();
+    const maxDateTom = dayjs(date1YearFromNow).toDate();
 
     return (
         <VStack gap="5" align="start">
@@ -92,8 +90,8 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="utenlandsopphold.leggTilUtenlandsopphold.fraogmed" />}
-                minDate={dayjs(dateToday).subtract(1, 'day').toDate()}
-                maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).add(1, 'day').toDate()}
+                minDate={dayjs(dateToday).toDate()}
+                maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate()}
                 validate={[
                     isRequired(
                         intl.formatMessage({
@@ -138,10 +136,8 @@ const NesteUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, 
                         return validateToDate(
                             intl,
                             dayjs(tom).toDate(),
-                            dayjs(fom || dateToday)
-                                .subtract(1, 'day')
-                                .toDate(),
-                            dayjs(date1YearFromNow).add(1, 'day').toDate(),
+                            dayjs(fom || dateToday).toDate(),
+                            dayjs(date1YearFromNow).toDate(),
                             dayjs(fom).toDate(),
                         );
                     },

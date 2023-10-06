@@ -5,7 +5,7 @@ import { getError, getValidationRules } from './formUtils';
 
 interface RadioGroupPanelProps {
     name: string;
-    description?: string;
+    description?: string | ReactNode;
     label?: string | ReactNode;
     validate?: ((value: string | number) => any)[];
     children: ReactElement[];

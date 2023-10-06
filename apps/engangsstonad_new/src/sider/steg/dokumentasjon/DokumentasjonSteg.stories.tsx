@@ -1,14 +1,15 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter';
+
 import { Path } from 'appData/paths';
-import DokumentasjonSteg from './DokumentasjonSteg';
-import IntlProvider from '../../../intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
 import { attachmentApi } from 'fpcommon/uploader/attachmentApi';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Action, EsDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
+import IntlProvider from 'intl/IntlProvider';
+import DokumentasjonSteg from './DokumentasjonSteg';
 
 export default {
     title: 'DokumentasjonSteg',
@@ -20,9 +21,12 @@ const Template: StoryFn<{
     routerDecoratorInitUrl: string;
     gåTilNesteSide: (action: Action) => void;
     omBarnet: OmBarnet;
-}> = ({ gåTilNesteSide, omBarnet }) => {
+    skalFeileOpplasting?: boolean;
+}> = ({ gåTilNesteSide, omBarnet, skalFeileOpplasting = false }) => {
     const apiMock = new MockAdapter(attachmentApi);
-    apiMock.onPost('/storage/vedlegg').reply(200);
+    if (!skalFeileOpplasting) {
+        apiMock.onPost('/storage/vedlegg').reply(200);
+    }
 
     return (
         <IntlProvider språkkode="nb">
@@ -52,6 +56,19 @@ Terminbekreftelse.args = {
 export const Adopsjonsbekreftelse = Template.bind({});
 Adopsjonsbekreftelse.args = {
     gåTilNesteSide: action('button-click'),
+    routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
+    omBarnet: {
+        adopsjonAvEktefellesBarn: true,
+        adopsjonsdato: '2020-01-01',
+        antallBarn: 1,
+        fødselsdatoer: [{ dato: '2020-01-01' }],
+    },
+};
+
+export const FeilerOpplastinger = Template.bind({});
+FeilerOpplastinger.args = {
+    gåTilNesteSide: action('button-click'),
+    skalFeileOpplasting: true,
     routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,

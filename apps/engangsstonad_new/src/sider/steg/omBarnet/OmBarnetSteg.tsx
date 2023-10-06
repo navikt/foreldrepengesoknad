@@ -2,21 +2,20 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Kjønn, Step, useDocumentTitle } from '@navikt/fp-common';
+import { VStack } from '@navikt/ds-react';
 
 import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import { notEmpty } from 'fpcommon/validering/valideringUtil';
 import Form from 'fpcommon/form/Form';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
-import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
-import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
-
-import './omBarnet.less';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
 import { Path } from 'appData/paths';
-import { VStack } from '@navikt/ds-react';
+import { omitOne } from 'fpcommon/util/objectUtils';
+import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
+import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 
 type FormValues = FødtFormValues & AdopsjonFormValues;
 
@@ -47,11 +46,10 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
     const søkersituasjon = notEmpty(useEsStateData(EsDataType.SØKERSITUASJON));
 
     const lagre = useCallback((formValues: FormValues) => {
+        const { antallBarnDropDown } = formValues;
         lagreOmBarnet({
-            ...formValues,
-            antallBarn: formValues.antallBarnDropDown
-                ? Number.parseInt(formValues.antallBarnDropDown, 10)
-                : formValues.antallBarn,
+            ...omitOne(formValues, 'antallBarnDropDown'),
+            antallBarn: antallBarnDropDown ? Number.parseInt(antallBarnDropDown, 10) : formValues.antallBarn,
         });
         if (formValues.erBarnetFødt === true) {
             lagreDokumentasjon(undefined);

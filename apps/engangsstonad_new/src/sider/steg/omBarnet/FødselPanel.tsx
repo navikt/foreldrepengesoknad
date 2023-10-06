@@ -1,79 +1,18 @@
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { Radio } from '@navikt/ds-react';
-import {
-    erMindreEnn3UkerSiden,
-    etterDagensDato,
-    hasValue,
-    sisteDatoBarnetKanVæreFødt,
-    sisteMuligeTermindato,
-    utstedtDatoErIUke22,
-} from '@navikt/fp-common';
+import { erMindreEnn3UkerSiden, sisteDatoBarnetKanVæreFødt, sisteMuligeTermindato } from '@navikt/fp-common';
 
 import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
 import Select from 'fpcommon/form/Select';
 import Datepicker from 'fpcommon/form/Datepicker';
-import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
+import { isAfterToday, isRequired, isValidDate } from 'fpcommon/validering/valideringsregler';
 import { Fødsel } from 'types/OmBarnet';
 
 export type FormValues = {
     antallBarnDropDown?: string;
 } & Fødsel;
-
-export const validateFødselDate = (dato: string, intl: IntlShape) => {
-    if (!hasValue(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.duMåOppgi' });
-    }
-    if (etterDagensDato(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere' });
-    }
-    if (sisteDatoBarnetKanVæreFødt(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn6MånederTilbake' });
-    }
-    return undefined;
-};
-
-export const validateTerminDate = (dato: string, intl: IntlShape) => {
-    if (!hasValue(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' });
-    }
-    if (!isValidFormattedDateString(dato)) {
-        return intl.formatMessage({ id: 'invalidFormatErrorKey.termindato' });
-    }
-    if (!erMindreEnn3UkerSiden(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag' });
-    }
-    if (sisteMuligeTermindato(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22' });
-    }
-    return undefined;
-};
-
-export const valideringAvTerminbekreftelsesdato = (
-    dato: string | undefined,
-    termindato: string | undefined,
-    intl: IntlShape,
-) => {
-    if (!hasValue(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' });
-    }
-    if (!dato || !termindato) {
-        return undefined;
-    }
-
-    if (!isValidFormattedDateString(dato)) {
-        return intl.formatMessage({ id: 'invalidFormatErrorKey.terminBekreftelsedato' });
-    }
-
-    if (etterDagensDato(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.måVæreIdagEllerTidligere' });
-    }
-    if (!utstedtDatoErIUke22(dato, termindato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåVæreIUke22' });
-    }
-    return undefined;
-};
 
 const FødselPanel: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -81,11 +20,14 @@ const FødselPanel: React.FunctionComponent = () => {
 
     const erBarnetFødt = watch('erBarnetFødt');
     const antallBarn = watch('antallBarn');
-    const termindato = watch('termindato');
 
     return (
         <>
-            <RadioGroupPanel name="erBarnetFødt" label={<FormattedMessage id="omBarnet.spørsmål.erBarnetFødt" />}>
+            <RadioGroupPanel
+                name="erBarnetFødt"
+                label={<FormattedMessage id="omBarnet.spørsmål.erBarnetFødt" />}
+                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.spørsmål.erBarnetFødt.required' }))]}
+            >
                 <Radio value={true}>
                     <FormattedMessage id="omBarnet.radiobutton.ja" />
                 </Radio>
@@ -99,20 +41,54 @@ const FødselPanel: React.FunctionComponent = () => {
                     label={<FormattedMessage id="søknad.fødselsdato" />}
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
-                    validate={[(value) => validateFødselDate(value, intl)]}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' }),
+                        ),
+                        isValidDate(intl.formatMessage({ id: 'invalidFormatErrorKey.fødselsdato' })),
+                        isAfterToday(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere' }),
+                        ),
+                        (dato) => {
+                            if (sisteDatoBarnetKanVæreFødt(dato)) {
+                                return intl.formatMessage({
+                                    id: 'valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn6MånederTilbake',
+                                });
+                            }
+                            return undefined;
+                        },
+                    ]}
                 />
             )}
-            {erBarnetFødt === false && (
+            {!erBarnetFødt && (
                 <Datepicker
                     name="termindato"
                     label={<FormattedMessage id="søknad.termindato" />}
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
-                    validate={[(value) => validateTerminDate(value, intl)]}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
+                        isValidDate(intl.formatMessage({ id: 'invalidFormatErrorKey.termindato' })),
+                        (dato) => {
+                            if (!erMindreEnn3UkerSiden(dato)) {
+                                return intl.formatMessage({
+                                    id: 'valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag',
+                                });
+                            }
+                            if (sisteMuligeTermindato(dato)) {
+                                return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22' });
+                            }
+                            return undefined;
+                        },
+                    ]}
                 />
             )}
 
-            <RadioGroupPanel name="antallBarn" label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}>
+            <RadioGroupPanel
+                name="antallBarn"
+                label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}
+                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.text.antallBarn.født.required' }))]}
+            >
                 <Radio value={1}>
                     <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
                 </Radio>
@@ -124,7 +100,11 @@ const FødselPanel: React.FunctionComponent = () => {
                 </Radio>
             </RadioGroupPanel>
             {antallBarn >= 3 && (
-                <Select name="antallBarnDropDown" label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}>
+                <Select
+                    name="antallBarnDropDown"
+                    label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}
+                    validate={[isRequired(intl.formatMessage({ id: 'omBarnet.text.antallBarn.født.required' }))]}
+                >
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>

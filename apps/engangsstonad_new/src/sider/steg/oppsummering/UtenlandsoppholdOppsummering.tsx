@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
-import { OmBarnet } from 'types/OmBarnet';
+import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
     UtenlandsoppholdPeriode,
     Utenlandsopphold,
@@ -45,6 +45,9 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
+    const harTermin = erBarnetIkkeFødt(omBarnet);
+    const harFødt = erBarnetFødt(omBarnet);
+
     return (
         <VStack gap="4">
             {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false ? (
@@ -85,7 +88,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                     />
                 </div>
             )}
-            {omBarnet.erBarnetFødt === false && (
+            {harTermin && (
                 <HStack gap="2">
                     <BodyShort>
                         <FormattedMessage id={'oppsummering.text.ogKommerPåFødselstidspunktet'} />
@@ -105,7 +108,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                     </BodyShort>
                 </HStack>
             )}
-            {omBarnet.erBarnetFødt && (
+            {harFødt && (
                 <HStack gap="2">
                     <BodyShort>
                         <FormattedMessage id={'oppsummering.text.varPåFødselstidspunktet'} />
@@ -114,7 +117,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                         <FormattedMessage
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    omBarnet.fødselsdatoer[0],
+                                    omBarnet.fødselsdatoer[0].dato,
                                     utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
                                     utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
                                 )
