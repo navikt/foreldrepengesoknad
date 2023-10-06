@@ -296,6 +296,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         treUkerFørFødselEllerTermin,
                                         fødselsdato,
                                         formValues.enPeriodeMedTilretteleggingTom,
+                                        formValues.tilretteleggingType!,
                                     )}
                                 />
                             </Block>
@@ -321,7 +322,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     ]}
                                     validate={(value: string) => {
                                         if (!hasValue(value)) {
-                                            return intlUtils(intl, 'valideringsfeil.tomType.påkrevd');
+                                            return formValues.tilretteleggingType === Tilretteleggingstype.DELVIS
+                                                ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis')
+                                                : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen');
                                         }
                                         return undefined;
                                     }}

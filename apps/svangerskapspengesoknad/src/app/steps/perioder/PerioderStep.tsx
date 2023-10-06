@@ -152,7 +152,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                     ]}
                                                     validate={(value: string) => {
                                                         if (!hasValue(value)) {
-                                                            return intlUtils(intl, 'valideringsfeil.tomType.påkrevd');
+                                                            return intlUtils(
+                                                                intl,
+                                                                'valideringsfeil.tomType.påkrevd.delvis',
+                                                            );
                                                         }
                                                         return undefined;
                                                     }}
