@@ -1,10 +1,12 @@
 type BarnetErFødt = {
     erBarnetFødt: true;
     antallBarn: number;
-    fødselsdatoer: string[];
+    fødselsdatoer: {
+        dato: string;
+    }[];
 };
 
-type BarnetErIkkeFødt = {
+export type BarnetErIkkeFødt = {
     erBarnetFødt: false;
     antallBarn: number;
     termindato: string;
@@ -23,3 +25,17 @@ export type Adopsjon = {
 };
 
 export type OmBarnet = Fødsel | Adopsjon;
+
+export const erAdopsjon = (omBarnet: OmBarnet): omBarnet is Adopsjon => {
+    if ((omBarnet as Adopsjon).adopsjonsdato) {
+        return true;
+    }
+    return false;
+};
+
+export const erBarnetIkkeFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
+    if ((omBarnet as BarnetErIkkeFødt).termindato) {
+        return true;
+    }
+    return false;
+};

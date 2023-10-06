@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { BodyLong, ExpansionCard, Label, VStack } from '@navikt/ds-react';
+import { ExpansionCard, VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PictureScanningGuide, Step } from '@navikt/fp-common';
@@ -11,10 +11,11 @@ import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import Dokumentasjon from 'types/Dokumentasjon';
-import Datepicker from 'fpcommon/form/Datepicker';
-import FileUploader from 'fpcommon/uploader/FileUploader';
-import Environment from 'appData/Environment';
-import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
+import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { Attachment } from 'fpcommon/uploader/typer/Attachment';
+import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import AdopsjonDokPanel from './AdopsjonDokPanel';
+import TerminDokPanel from './TerminDokPanel';
 
 const DokumentasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
@@ -24,6 +25,10 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
 
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
     const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
+    const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
+
+    const erBarnetAdoptert = erAdopsjon(omBarnet);
+    const harTermindato = erBarnetIkkeFødt(omBarnet);
 
     const formMethods = useForm<Dokumentasjon>({
         defaultValues: dokumentasjon,
@@ -48,7 +53,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.søkersituasjon' })}
+            pageTitle={stepData.stepConfig.find((c) => c.id === stepData.activeStepId)?.label || '-'}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
@@ -57,39 +62,16 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <Datepicker
-                        name={`terminbekreftelse`}
-                        label={<FormattedMessage id="DokumentasjonSteg.Terminbekreftelse" />}
-                    />
-                    {/* {termindato && (
-                <Datepicker
-                    name="terminbekreftelsedato"
-                    label={<FormattedMessage id="søknad.terminbekreftelsesdato" />}
-                    minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
-                    maxDate={dayjs().toDate()}
-                    validate={[
-                        (terminBekreftelseDato) =>
-                            valideringAvTerminbekreftelsesdato(terminBekreftelseDato, termindato, intl),
-                    ]}
-                />
-            )} */}
-                    <VStack gap="4">
-                        <div>
-                            <Label>
-                                <FormattedMessage id="vedlegg.adopsjon" />
-                            </Label>
-                            <BodyLong>
-                                <FormattedMessage id="omBarnet.adopsjon.veilederpanel.adopsjon.text" />
-                            </BodyLong>
-                        </div>
-                        <FileUploader
-                            attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                            skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
-                            existingAttachments={dokumentasjon?.vedlegg}
+                    {erBarnetAdoptert && (
+                        <AdopsjonDokPanel attachments={dokumentasjon?.vedlegg} updateAttachments={updateAttachments} />
+                    )}
+                    {harTermindato && (
+                        <TerminDokPanel
+                            attachments={dokumentasjon?.vedlegg}
                             updateAttachments={updateAttachments}
-                            restApiUrl={Environment.REST_API_URL}
+                            omBarnet={omBarnet}
                         />
-                    </VStack>
+                    )}
                     <ExpansionCard size="small" aria-label="">
                         <ExpansionCard.Header>
                             <ExpansionCard.Title>

@@ -29,6 +29,7 @@
     "omBarnet.adopsjon.text.ja": "Yes",
     "omBarnet.adopsjon.text.nei": "No",
     "omBarnet.adopsjon.veilederpanel.adopsjon.text": "You must attach confirmation of the date you took over care of the child, and adoption permit if you have received this.",
+    "omBarnet.dok.storrelse": "The file cannot be larger than 9MB and must be in one of the folloving formats: pdf, png or jpg.",
     "omBarnet.radiobutton.ettbarn": "One child",
     "omBarnet.radiobutton.flere": "Triplets or more",
     "omBarnet.radiobutton.ja": "Yes",

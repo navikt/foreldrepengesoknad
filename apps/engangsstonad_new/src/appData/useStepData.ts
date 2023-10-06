@@ -17,46 +17,49 @@ const PATH_TO_LABEL_MAP = {
     [Path.OPPSUMMERING]: 'søknad.oppsummering',
 } as Record<string, string>;
 
-const erEtter = (afterPath: Path, currentPath: Path): boolean => {
-    return PATH_ORDER.indexOf(currentPath) > PATH_ORDER.indexOf(afterPath);
+const isAfterStep = (previousStepPath: Path, currentStepPath: Path): boolean => {
+    return PATH_ORDER.indexOf(currentStepPath) > PATH_ORDER.indexOf(previousStepPath);
 };
 
-const skalViseUtenlandsoppholdside = (
+const isVisible = (
+    shouldGoToStep: boolean,
+    dataTypeStep: EsDataType,
+    previousStepPath: Path,
+    currentPath: Path,
+    getStateData: <TYPE extends EsDataType>(key: TYPE) => EsDataMap[TYPE],
+) => {
+    return (shouldGoToStep && isAfterStep(previousStepPath, currentPath)) || !!getStateData(dataTypeStep);
+};
+
+const showUtenlandsoppholdStep = (
     path: Path,
     currentPath: Path,
     getData: <TYPE extends EsDataType>(key: TYPE) => EsDataMap[TYPE],
-) => {
-    const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
-
+): boolean => {
     if (path === Path.SISTE_UTENLANDSOPPHOLD) {
-        const harBoddUtenforNorgeOgHarVærtPåUtenlandsforholdSide =
-            utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd && erEtter(Path.UTENLANDSOPPHOLD, currentPath);
-        if (harBoddUtenforNorgeOgHarVærtPåUtenlandsforholdSide || !!getData(EsDataType.UTENLANDSOPPHOLD_SISTE)) {
-            return true;
-        }
+        const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
+        const boddErSatt = !!utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd;
+        return isVisible(boddErSatt, EsDataType.UTENLANDSOPPHOLD_SISTE, Path.UTENLANDSOPPHOLD, currentPath, getData);
     }
     if (path === Path.NESTE_UTENLANDSOPPHOLD) {
-        const skalBoUtenforNorgeOgHarVærtPåUtenlandsforholdSide =
-            utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd && erEtter(Path.UTENLANDSOPPHOLD, currentPath);
-        if (skalBoUtenforNorgeOgHarVærtPåUtenlandsforholdSide || !!getData(EsDataType.UTENLANDSOPPHOLD_NESTE)) {
-            return true;
-        }
+        const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
+        const skalBoErSatt = !!utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd;
+        return isVisible(skalBoErSatt, EsDataType.UTENLANDSOPPHOLD_NESTE, Path.UTENLANDSOPPHOLD, currentPath, getData);
     }
-
     return false;
 };
 
-const skalViseDokumentasjonside = (
+const showDokumentasjonStep = (
     path: Path,
     currentPath: Path,
-    getData: <TYPE extends EsDataType>(key: TYPE) => EsDataMap[TYPE],
-) => {
-    const omBarnet = getData(EsDataType.OM_BARNET);
+    getStateData: <TYPE extends EsDataType>(key: TYPE) => EsDataMap[TYPE],
+): boolean => {
+    const omBarnet = getStateData(EsDataType.OM_BARNET);
     if (path === Path.TERMINBEKREFTELSE && omBarnet && 'erBarnetFødt' in omBarnet) {
-        return (!omBarnet.erBarnetFødt && erEtter(Path.OM_BARNET, currentPath)) || !!getData(EsDataType.DOKUMENTASJON);
+        return isVisible(!omBarnet.erBarnetFødt, EsDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
     if (path === Path.ADOPSJONSBEKREFTELSE && omBarnet && 'adopsjonAvEktefellesBarn' in omBarnet) {
-        return erEtter(Path.OM_BARNET, currentPath) || !!getData(EsDataType.DOKUMENTASJON);
+        return isVisible(true, EsDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
     return false;
 };
@@ -64,7 +67,7 @@ const skalViseDokumentasjonside = (
 const useStepData = () => {
     const intl = useIntl();
     const location = useLocation();
-    const getData = useEsStateAllDataFn();
+    const getStateData = useEsStateAllDataFn();
 
     const currentPath = useMemo(
         () => notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname))),
@@ -75,8 +78,8 @@ const useStepData = () => {
         () =>
             PATH_ORDER.flatMap((path) =>
                 REQUIRED_APP_STEPS.includes(path) ||
-                skalViseUtenlandsoppholdside(path, currentPath, getData) ||
-                skalViseDokumentasjonside(path, currentPath, getData)
+                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
+                showDokumentasjonStep(path, currentPath, getStateData)
                     ? [path]
                     : [],
             ),

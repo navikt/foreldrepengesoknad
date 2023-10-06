@@ -19,12 +19,12 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): { from: Date; to?: Da
     if (minDate) {
         disabledDays.push({
             from: dayjs(TIDENES_MORGEN).toDate(),
-            to: dayjs(minDate).toDate(),
+            to: dayjs(minDate).subtract(1, 'day').toDate(),
         });
     }
     if (maxDate) {
         disabledDays.push({
-            from: dayjs(maxDate).toDate(),
+            from: dayjs(maxDate).add(1, 'day').toDate(),
             to: dayjs(TIDENES_ENDE).toDate(),
         });
     }

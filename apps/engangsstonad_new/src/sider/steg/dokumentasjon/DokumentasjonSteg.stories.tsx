@@ -8,7 +8,7 @@ import withRouter from 'storybookHelpers/withRouter';
 import { attachmentApi } from 'fpcommon/uploader/attachmentApi';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Action, EsDataType } from 'appData/EsDataContext';
-import { Fødsel } from 'types/OmBarnet';
+import { OmBarnet } from 'types/OmBarnet';
 
 export default {
     title: 'DokumentasjonSteg',
@@ -19,7 +19,7 @@ export default {
 const Template: StoryFn<{
     routerDecoratorInitUrl: string;
     gåTilNesteSide: (action: Action) => void;
-    omBarnet: Fødsel;
+    omBarnet: OmBarnet;
 }> = ({ gåTilNesteSide, omBarnet }) => {
     const apiMock = new MockAdapter(attachmentApi);
     apiMock.onPost('/storage/vedlegg').reply(200);
@@ -45,7 +45,7 @@ Terminbekreftelse.args = {
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
-        termindato: '2020-01-01',
+        termindato: '2023-10-06',
     },
 };
 
