@@ -18,6 +18,7 @@ export interface ArbeidsforholdForTilrettelegging {
     arbeidsgiverId?: string;
     type: Arbeidsforholdstype;
     navn: string;
+    opprinneligstillingsprosent: number;
 }
 
 export enum TilOgMedDatoType {

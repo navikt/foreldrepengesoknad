@@ -25,7 +25,7 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsgiverVisning from './components/ArbeidsgiverVisning';
-import { dagenFør, tiMånederSidenDato, treUkerSiden } from 'app/utils/dateUtils';
+import { dagenFør, dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato, treUkerSiden } from 'app/utils/dateUtils';
 import {
     validateTilrettelagtArbeidFom,
     validateTilrettelagtArbeidType,
@@ -55,12 +55,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const intl = useIntl();
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.OPPSUMMERING.toString());
     const { tilrettelegging: tilretteleggingFraState, søker, barn } = useSøknad();
-    const { fødselsdato, termindato } = barn;
+    const { termindato, fødselsdato, erBarnetFødt } = barn;
     const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
     const { state } = useSvangerskapspengerContext();
     const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
+    const familiehendelsedato = erBarnetFødt ? fødselsdato! : termindato;
+    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato);
     const fødselsdatoDate = ISOStringToDate(fødselsdato);
     const termindatoDate = ISOStringToDate(termindato);
     const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
@@ -78,8 +80,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const sideTittel = erFlereTilrettelegginger
         ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
         : intlUtils(intl, 'steps.label.tilrettelegging.en');
-
-    const treUkerFørFødselEllerTermin = treUkerSiden(fødselsdatoDate || termindatoDate!);
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
@@ -102,6 +102,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     }
     const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
+    const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -164,7 +165,12 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     }
                                     minDate={tiMånederSidenDato(termindatoDate!)}
                                     maxDate={dagenFør(termindatoDate!)}
-                                    validate={validateTilrettelagtArbeidFom(intl, termindatoDate!)}
+                                    validate={validateTilrettelagtArbeidFom(
+                                        intl,
+                                        sisteDagForSvangerskapspenger,
+                                        termindatoDate!,
+                                        erBarnetFødt,
+                                    )}
                                 />
                             </Block>
                             <Block
@@ -273,7 +279,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
                                             : ''
                                     }
-                                    validate={validateStillingsprosent(intl)}
+                                    validate={validateStillingsprosent(intl, opprinneligStillingsprosent)}
                                 />
                             </Block>
                             <Block
@@ -293,7 +299,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     validate={validateSammePeriodeFremTilTerminFom(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
-                                        treUkerFørFødselEllerTermin,
+                                        sisteDagForSvangerskapspenger,
                                         fødselsdato,
                                         formValues.enPeriodeMedTilretteleggingTom,
                                         formValues.tilretteleggingType!,
@@ -346,7 +352,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     validate={validateSammePeriodeFremTilTerminTom(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
-                                        treUkerFørFødselEllerTermin,
+                                        sisteDagForSvangerskapspenger,
                                         fødselsdato,
                                         formValues.enPeriodeMedTilretteleggingFom,
                                     )}

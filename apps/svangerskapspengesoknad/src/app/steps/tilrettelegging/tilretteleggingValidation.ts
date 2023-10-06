@@ -1,12 +1,17 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { intlUtils } from '@navikt/fp-common';
-import { Arbeidsforholdstype, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { formatDate, intlUtils } from '@navikt/fp-common';
+import { Arbeidsforholdstype, PeriodeMedVariasjon, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { hasValue, validateTextAreaInput } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-export const validateStillingsprosent = (intl: IntlShape) => (value: string) => {
+export const validerStillingsprosentInput = (
+    intl: IntlShape,
+    value: string,
+    opprinneligStillingsProsent: number,
+    lovÅOppgiOpprinneligStillingsprosent: boolean,
+) => {
     const stillingsprosent = getFloatFromString(value);
 
     if (!hasValue(value) || value.trim() === '') {
@@ -21,13 +26,43 @@ export const validateStillingsprosent = (intl: IntlShape) => (value: string) => 
         return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
     }
 
-    if (stillingsprosent >= 100) {
-        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnn100');
+    if (lovÅOppgiOpprinneligStillingsprosent && stillingsprosent > opprinneligStillingsProsent) {
+        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
+            prosent: opprinneligStillingsProsent,
+        });
+    }
+    if (!lovÅOppgiOpprinneligStillingsprosent && stillingsprosent >= opprinneligStillingsProsent) {
+        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnnOpprinneligStillingsprosent', {
+            prosent: opprinneligStillingsProsent,
+        });
     }
 
     return undefined;
 };
 
+export const validateStillingsprosentPerioder =
+    (
+        intl: IntlShape,
+        opprinneligStillingsProsent: number,
+        måSøkeSendeNySøknad: boolean,
+        periodeDerTilbakeIFullJobb: PeriodeMedVariasjon | undefined,
+    ) =>
+    (value: string) => {
+        const valideringsFeil = validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, true);
+        if (valideringsFeil) {
+            return valideringsFeil;
+        }
+        if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
+            return intlUtils(intl, 'valideringsfeil.perioder.stillingsprosent.nySøknad', {
+                fom: formatDate(periodeDerTilbakeIFullJobb.fom),
+            });
+        }
+        return undefined;
+    };
+
+export const validateStillingsprosent = (intl: IntlShape, opprinneligStillingsProsent: number) => (value: string) => {
+    return validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, false);
+};
 export const validateTilretteleggingstiltak =
     (intl: IntlShape, label: string, fieldName: string) => (value: string) => {
         return validateTextAreaInput(value, intl, label, fieldName);
@@ -37,7 +72,7 @@ export const validateSammePeriodeFremTilTerminFom =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
-        treUkerFørFødselEllerTermin: Date,
+        sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
         tom: string | undefined,
         tilretteleggingstype: Tilretteleggingstype,
@@ -64,7 +99,7 @@ export const validateSammePeriodeFremTilTerminFom =
             return intlUtils(intl, 'valideringsfeil.enPeriodeMedTilretteleggingFom.etterTom');
         }
 
-        if (hasValue(value) && dayjs(value).isSameOrAfter(dayjs(treUkerFørFødselEllerTermin), 'd')) {
+        if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             return fødselsdato
                 ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørFødsel')
                 : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
@@ -76,7 +111,7 @@ export const validateSammePeriodeFremTilTerminTom =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
-        treUkerFørFødselEllerTermin: Date,
+        sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
         fom: string | undefined,
     ) =>
@@ -99,7 +134,7 @@ export const validateSammePeriodeFremTilTerminTom =
             return intlUtils(intl, 'valideringsfeil.periode.tom.etterTilDato');
         }
 
-        if (hasValue(value) && dayjs(value).isSameOrAfter(dayjs(treUkerFørFødselEllerTermin), 'd')) {
+        if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             return fødselsdato
                 ? intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørFødsel')
                 : intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin');
