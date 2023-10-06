@@ -38,6 +38,7 @@ export const getNæringTilretteleggingOption = (
             arbeidsgiverId: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
             type: Arbeidsforholdstype.SELVSTENDIG,
             navn: næring.navnPåNæringen,
+            opprinneligstillingsprosent: 100,
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
@@ -60,6 +61,7 @@ export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilretteleggi
             arbeidsgiverId: frilansId,
             navn: frilansId,
             type: Arbeidsforholdstype.FRILANSER,
+            opprinneligstillingsprosent: 100,
         },
         vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
@@ -95,6 +97,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
                     forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
                         ? forhold.arbeidsgiverNavn
                         : intlUtils(intl, 'privat.arbeidsgiver'),
+                opprinneligstillingsprosent: forhold.stillingsprosent,
             },
             variertePerioder: tilretteleggingFraState?.variertePerioder || [],
             vedlegg: tilretteleggingFraState?.vedlegg || [],

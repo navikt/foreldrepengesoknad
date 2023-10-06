@@ -13,8 +13,8 @@ export const validatePeriodeFom =
         index: number,
         allePerioder: PeriodeMedVariasjon[] | undefined,
         behovForTilretteleggingFom: string | undefined,
-        treUkerFørFødselEllerTermin: Date,
-        fødselsdato: string | undefined,
+        sisteDagForSvangerskapspenger: Date,
+        erBarnetFødt: boolean,
     ) =>
     (fom: string) => {
         const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
@@ -38,8 +38,8 @@ export const validatePeriodeFom =
             return intlUtils(intl, 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom');
         }
 
-        if (hasValue(fom) && dayjs(fom).isSameOrAfter(dayjs(treUkerFørFødselEllerTermin), 'd')) {
-            return fødselsdato
+        if (hasValue(fom) && dayjs(fom).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
+            return erBarnetFødt
                 ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørFødsel')
                 : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
         }
@@ -51,7 +51,7 @@ export const validatePeriodeFom =
             allePerioder,
             index,
             intl,
-            treUkerFørFødselEllerTermin,
+            sisteDagForSvangerskapspenger,
         );
     };
 
@@ -60,13 +60,12 @@ export const validatePeriodeTom =
         intl: IntlShape,
         index: number,
         allePerioder: PeriodeMedVariasjon[] | undefined,
-        treUkerFørFødselEllerTermin: Date,
+        sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
     ) =>
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;
         const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
-        const dagenFørTreUkerFørTermin = dayjs(treUkerFørFødselEllerTermin).subtract(1, 'd').toDate();
         if (!hasValue(tom)) {
             return intlUtils(intl, 'valideringsfeil.periode.tom.påkrevd');
         }
@@ -78,18 +77,7 @@ export const validatePeriodeTom =
             return intlUtils(intl, 'valideringsfeil.periode.tom.etterTilDato');
         }
 
-        if (
-            allePerioder &&
-            index === allePerioder.length - 1 &&
-            hasValue(tom) &&
-            !dayjs(tom).isSame(dagenFørTreUkerFørTermin, 'd')
-        ) {
-            return intlUtils(intl, 'valideringsfeil.periode.tom.sisteMåSluttetreUkerFørFødselEllerTermin', {
-                dato: formatDate(dagenFørTreUkerFørTermin),
-            });
-        }
-
-        if (hasValue(tom) && dayjs(tom).isSameOrAfter(dayjs(treUkerFørFødselEllerTermin), 'd')) {
+        if (hasValue(tom) && dayjs(tom).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             return fødselsdato
                 ? intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørFødsel')
                 : intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin');
@@ -102,7 +90,7 @@ export const validatePeriodeTom =
             allePerioder,
             index,
             intl,
-            treUkerFørFødselEllerTermin,
+            sisteDagForSvangerskapspenger,
         );
     };
 
@@ -113,21 +101,21 @@ export const validateAtPeriodeIkkeOverlapper = (
     allePerioder: PeriodeMedVariasjon[] | undefined,
     index: number,
     intl: IntlShape,
-    treUkerFørFødselEllerTermin: Date,
+    sisteDagForSvangerskapspenger: Date,
 ) => {
     if ((hasValue(tom) || hasValue(tomType)) && hasValue(fom) && allePerioder && allePerioder.length > 0) {
         const andrePerioder = allePerioder.filter((_p, i) => i !== index);
         const overlappendePerioder = andrePerioder.filter((p) => {
             let periodeTom = undefined;
             if (hasValue(p.tomType) && p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {
-                periodeTom = dateToISOString(treUkerFørFødselEllerTermin);
+                periodeTom = dateToISOString(sisteDagForSvangerskapspenger);
             }
             if (hasValue(p.tom)) {
                 periodeTom = p.tom;
             }
             if (periodeTom) {
                 return overlapperTidsperioder(
-                    getTidsperiode(fom!, tom || dateToISOString(treUkerFørFødselEllerTermin)),
+                    getTidsperiode(fom!, tom || dateToISOString(sisteDagForSvangerskapspenger)),
                     getTidsperiode(p.fom, periodeTom),
                 );
             }
@@ -136,7 +124,7 @@ export const validateAtPeriodeIkkeOverlapper = (
         if (overlappendePerioder.length > 0) {
             const tilOgMedDato = overlappendePerioder[0].tom
                 ? overlappendePerioder[0].tom
-                : treUkerFørFødselEllerTermin;
+                : sisteDagForSvangerskapspenger;
             return intlUtils(intl, 'valideringsfeil.periode.overlapper', {
                 fom: formatDate(overlappendePerioder[0].fom),
                 tom: formatDate(tilOgMedDato),

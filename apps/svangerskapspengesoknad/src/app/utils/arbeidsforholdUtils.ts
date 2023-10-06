@@ -15,8 +15,10 @@ export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termin
         return arbeidsforhold;
     }
 
-    return arbeidsforhold.filter((arb) =>
-        arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months')) : true,
+    return arbeidsforhold.filter(
+        (arb) =>
+            arb.stillingsprosent > 0 &&
+            (arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months')) : true),
     );
 };
 
