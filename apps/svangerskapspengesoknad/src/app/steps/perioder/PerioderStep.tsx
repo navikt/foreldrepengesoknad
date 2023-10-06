@@ -21,12 +21,11 @@ import { validatePeriodeFom, validatePeriodeTom } from './perioderValidation';
 import { FieldArray } from 'formik';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
-import { getPerioderInitialValues, mapPerioderFormDataToState } from './perioderStepUtils';
+import { getMåSendeNySøknad, getPerioderInitialValues, mapPerioderFormDataToState } from './perioderStepUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleggingValidation';
 import ArbeidsgiverVisning from '../tilrettelegging/components/ArbeidsgiverVisning';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import dayjs from 'dayjs';
 
 interface Props {
     id: string;
@@ -116,12 +115,11 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     formValues.variertePerioder &&
                                     formValues.variertePerioder.length > 0 &&
                                     formValues.variertePerioder.map((p, index) => {
-                                        const måSøkeSendeNySøknad =
-                                            !!periodeDerSøkerErTilbakeIOpprinneligStilling &&
-                                            hasValue(p.fom) &&
-                                            hasValue(p.stillingsprosent) &&
-                                            dayjs(p.fom).isAfter(periodeDerSøkerErTilbakeIOpprinneligStilling.fom) &&
-                                            parseInt(p.stillingsprosent!, 10) < opprinneligStillingsprosent;
+                                        const måSøkeSendeNySøknad = getMåSendeNySøknad(
+                                            periodeDerSøkerErTilbakeIOpprinneligStilling,
+                                            p,
+                                            opprinneligStillingsprosent,
+                                        );
                                         return (
                                             <div key={index}>
                                                 <Block padBottom="xxl">

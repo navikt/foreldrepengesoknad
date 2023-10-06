@@ -11,6 +11,7 @@ export const validerStillingsprosentInput = (
     value: string,
     opprinneligStillingsProsent: number,
     lovÅOppgiOpprinneligStillingsprosent: boolean,
+    lovÅOppgiNullStillingsprosent: boolean,
 ) => {
     const stillingsprosent = getFloatFromString(value);
 
@@ -22,7 +23,7 @@ export const validerStillingsprosentInput = (
         return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreEtTall');
     }
 
-    if (stillingsprosent <= 0) {
+    if (!lovÅOppgiNullStillingsprosent && stillingsprosent <= 0) {
         return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
     }
 
@@ -49,7 +50,7 @@ export const validateStillingsprosentPerioder =
         allePerioder: PeriodeMedVariasjon[] | undefined,
     ) =>
     (value: string) => {
-        const valideringsFeil = validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, true);
+        const valideringsFeil = validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, true, true);
         if (valideringsFeil) {
             return valideringsFeil;
         }
@@ -74,7 +75,7 @@ export const validateStillingsprosentPerioder =
     };
 
 export const validateStillingsprosent = (intl: IntlShape, opprinneligStillingsProsent: number) => (value: string) => {
-    return validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, false);
+    return validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, false, false);
 };
 export const validateTilretteleggingstiltak =
     (intl: IntlShape, label: string, fieldName: string) => (value: string) => {
