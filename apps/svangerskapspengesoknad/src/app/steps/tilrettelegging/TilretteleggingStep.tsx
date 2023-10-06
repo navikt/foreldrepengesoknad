@@ -17,7 +17,7 @@ import {
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { Arbeidsforholdstype, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
 import { FunctionComponent, useState } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -37,6 +37,7 @@ import tilretteleggingQuestionsConfig, {
 import {
     validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
+    validateSammePeriodeFremTilTerminTom,
     validateStillingsprosent,
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
@@ -115,6 +116,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     formValues.tilretteleggingType === Tilretteleggingstype.INGEN
                         ? 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'
                         : 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis';
+                const labelPeriodeTomType =
+                    formValues.tilretteleggingType === Tilretteleggingstype.INGEN
+                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen'
+                        : 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis';
+                const labelPeriodeTom =
+                    formValues.tilretteleggingType === Tilretteleggingstype.INGEN
+                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.ingen'
+                        : 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.delvis';
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
@@ -160,7 +169,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             </Block>
                             <Block
                                 padBottom="xxl"
-                                visible={visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)}
+                                visible={visibility.isVisible(TilretteleggingFormField.risikofaktorer)}
                             >
                                 <TilretteleggingFormComponents.Textarea
                                     name={TilretteleggingFormField.risikofaktorer}
@@ -252,10 +261,27 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             </Block>
                             <Block
                                 padBottom="xxl"
-                                visible={visibility.isVisible(TilretteleggingFormField.sammePeriodeFremTilTerminFom)}
+                                visible={visibility.isVisible(
+                                    TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent,
+                                )}
+                            >
+                                <TilretteleggingFormComponents.NumberInput
+                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent}
+                                    label={intlUtils(intl, 'tilrettelegging.stillingsprosent.label')}
+                                    description={
+                                        harSkjema
+                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                            : ''
+                                    }
+                                    validate={validateStillingsprosent(intl)}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(TilretteleggingFormField.enPeriodeMedTilretteleggingFom)}
                             >
                                 <TilretteleggingFormComponents.DatePicker
-                                    name={TilretteleggingFormField.sammePeriodeFremTilTerminFom}
+                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingFom}
                                     label={intlUtils(intl, labelPeriodeFom)}
                                     description={
                                         harSkjema
@@ -269,24 +295,58 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.behovForTilretteleggingFom,
                                         treUkerFørFødselEllerTermin,
                                         fødselsdato,
+                                        formValues.enPeriodeMedTilretteleggingTom,
                                     )}
+                                />
+                            </Block>
+
+                            <Block
+                                padBottom="xxl"
+                                visible={visibility.isVisible(
+                                    TilretteleggingFormField.enPeriodeMedTilretteleggingTomType,
+                                )}
+                            >
+                                <TilretteleggingFormComponents.RadioGroup
+                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingTomType}
+                                    legend={intlUtils(intl, labelPeriodeTomType)}
+                                    radios={[
+                                        {
+                                            label: intlUtils(intl, 'perioder.varierende.tomType.valgfriDato'),
+                                            value: TilOgMedDatoType.VALGFRI_DATO,
+                                        },
+                                        {
+                                            label: intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin'),
+                                            value: TilOgMedDatoType.TRE_UKER_FØR_TERMIN,
+                                        },
+                                    ]}
+                                    validate={(value: string) => {
+                                        if (!hasValue(value)) {
+                                            return intlUtils(intl, 'valideringsfeil.tomType.påkrevd');
+                                        }
+                                        return undefined;
+                                    }}
                                 />
                             </Block>
                             <Block
                                 padBottom="xxl"
-                                visible={visibility.isVisible(
-                                    TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent,
-                                )}
+                                visible={visibility.isVisible(TilretteleggingFormField.enPeriodeMedTilretteleggingTom)}
                             >
-                                <TilretteleggingFormComponents.NumberInput
-                                    name={TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent}
-                                    label={intlUtils(intl, 'tilrettelegging.stillingsprosent.label')}
-                                    description={
-                                        harSkjema
-                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
-                                            : ''
+                                <TilretteleggingFormComponents.DatePicker
+                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingTom}
+                                    label={intlUtils(intl, labelPeriodeTom)}
+                                    minDate={
+                                        hasValue(formValues.enPeriodeMedTilretteleggingFom)
+                                            ? new Date(formValues.enPeriodeMedTilretteleggingFom!)
+                                            : new Date(formValues.behovForTilretteleggingFom!)
                                     }
-                                    validate={validateStillingsprosent(intl)}
+                                    maxDate={treUkerSiden(fødselsdatoDate || termindatoDate!)}
+                                    validate={validateSammePeriodeFremTilTerminTom(
+                                        intl,
+                                        formValues.behovForTilretteleggingFom,
+                                        treUkerFørFødselEllerTermin,
+                                        fødselsdato,
+                                        formValues.enPeriodeMedTilretteleggingFom,
+                                    )}
                                 />
                             </Block>
                             <Block padBottom="l">

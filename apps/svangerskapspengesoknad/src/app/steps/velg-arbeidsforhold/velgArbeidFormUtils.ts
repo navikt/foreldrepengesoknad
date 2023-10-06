@@ -43,9 +43,9 @@ export const getNæringTilretteleggingOption = (
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
         variertePerioder: næringTilretteleggingFraState?.variertePerioder || [],
         type: næringTilretteleggingFraState?.type || undefined,
-        sammePeriodeFremTilTerminFom: næringTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
-        sammePeriodeFremTilTerminStillingsprosent:
-            næringTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+        enPeriodeMedTilretteleggingFom: næringTilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
+        enPeriodeMedTilretteleggingStillingsprosent:
+            næringTilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent || undefined,
         delvisTilretteleggingPeriodeType: næringTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
         risikofaktorer: næringTilretteleggingFraState?.risikofaktorer || undefined,
         tilretteleggingstiltak: næringTilretteleggingFraState?.tilretteleggingstiltak || undefined,
@@ -65,9 +65,9 @@ export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilretteleggi
         behovForTilretteleggingFom: frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined,
         variertePerioder: frilansTilretteleggingFraState?.variertePerioder || [],
         type: frilansTilretteleggingFraState?.type || undefined,
-        sammePeriodeFremTilTerminFom: frilansTilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
-        sammePeriodeFremTilTerminStillingsprosent:
-            frilansTilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+        enPeriodeMedTilretteleggingFom: frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
+        enPeriodeMedTilretteleggingStillingsprosent:
+            frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent || undefined,
         delvisTilretteleggingPeriodeType: frilansTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
         risikofaktorer: frilansTilretteleggingFraState?.risikofaktorer || undefined,
         tilretteleggingstiltak: frilansTilretteleggingFraState?.tilretteleggingstiltak || undefined,
@@ -100,9 +100,9 @@ export const getArbeidsforholdTilretteleggingOptions = (
             vedlegg: tilretteleggingFraState?.vedlegg || [],
             behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined,
             type: tilretteleggingFraState?.type || undefined,
-            sammePeriodeFremTilTerminFom: tilretteleggingFraState?.sammePeriodeFremTilTerminFom || undefined,
+            sammePeriodeFremTilTerminFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
             sammePeriodeFremTilTerminStillingsprosent:
-                tilretteleggingFraState?.sammePeriodeFremTilTerminStillingsprosent || undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent || undefined,
             delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
         };
     });
