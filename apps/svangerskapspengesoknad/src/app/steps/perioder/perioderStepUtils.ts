@@ -1,5 +1,21 @@
-import { Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { PeriodeMedVariasjon, Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
+import { hasValue } from 'app/utils/validationUtils';
+import dayjs from 'dayjs';
+
+export const getMåSendeNySøknad = (
+    periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
+    currentPeriode: PeriodeMedVariasjon,
+    opprinneligStillingsprosent: number,
+): boolean => {
+    return (
+        !!periodeDerSøkerErTilbakeIOpprinneligStilling &&
+        hasValue(currentPeriode.fom) &&
+        hasValue(currentPeriode.stillingsprosent) &&
+        dayjs(currentPeriode.fom).isAfter(periodeDerSøkerErTilbakeIOpprinneligStilling.fom) &&
+        parseInt(currentPeriode.stillingsprosent!, 10) < opprinneligStillingsprosent
+    );
+};
 
 export const getInitPerioderFormDataValues = (): Readonly<PerioderFormData> => ({
     [PerioderFormField.variertePerioder]: [
