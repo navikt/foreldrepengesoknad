@@ -46,14 +46,27 @@ export const validateStillingsprosentPerioder =
         opprinneligStillingsProsent: number,
         måSøkeSendeNySøknad: boolean,
         periodeDerTilbakeIFullJobb: PeriodeMedVariasjon | undefined,
+        allePerioder: PeriodeMedVariasjon[] | undefined,
     ) =>
     (value: string) => {
         const valideringsFeil = validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, true);
         if (valideringsFeil) {
             return valideringsFeil;
         }
+        if (
+            allePerioder &&
+            allePerioder?.every(
+                (periode) =>
+                    hasValue(periode.stillingsprosent) &&
+                    parseInt(periode.stillingsprosent!, 10) === opprinneligStillingsProsent,
+            )
+        ) {
+            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kunFullTilrettelegging', {
+                prosent: opprinneligStillingsProsent,
+            });
+        }
         if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
-            return intlUtils(intl, 'valideringsfeil.perioder.stillingsprosent.nySøknad', {
+            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.nySøknad', {
                 fom: formatDate(periodeDerTilbakeIFullJobb.fom),
             });
         }

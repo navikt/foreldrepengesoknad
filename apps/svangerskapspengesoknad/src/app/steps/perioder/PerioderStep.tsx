@@ -206,6 +206,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             opprinneligStillingsprosent,
                                                             måSøkeSendeNySøknad,
                                                             periodeDerSøkerErTilbakeIOpprinneligStilling,
+                                                            formValues.variertePerioder,
                                                         )}
                                                         onClick={(e: any) => e.preventDefault()}
                                                     />
