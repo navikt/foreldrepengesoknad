@@ -12,8 +12,10 @@ export const getInitTilretteleggingFormDataValues = (): Readonly<Tilrettelegging
     [TilretteleggingFormField.behovForTilretteleggingFom]: '',
     [TilretteleggingFormField.tilretteleggingType]: undefined!,
     [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: undefined!,
-    [TilretteleggingFormField.sammePeriodeFremTilTerminFom]: undefined,
-    [TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent]: undefined,
+    [TilretteleggingFormField.enPeriodeMedTilretteleggingFom]: undefined,
+    [TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent]: undefined,
+    [TilretteleggingFormField.enPeriodeMedTilretteleggingTomType]: undefined!,
+    [TilretteleggingFormField.enPeriodeMedTilretteleggingTom]: undefined,
     [TilretteleggingFormField.risikofaktorer]: undefined,
     [TilretteleggingFormField.tilretteleggingstiltak]: undefined,
 });
@@ -27,11 +29,15 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
             tilrettelegging.delvisTilretteleggingPeriodeType || initValues.delvisTilretteleggingPeriodeType,
         risikofaktorer: tilrettelegging.risikofaktorer || initValues.risikofaktorer,
         tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak || initValues.tilretteleggingstiltak,
-        sammePeriodeFremTilTerminFom:
-            tilrettelegging.sammePeriodeFremTilTerminFom || initValues.sammePeriodeFremTilTerminFom,
-        sammePeriodeFremTilTerminStillingsprosent:
-            tilrettelegging.sammePeriodeFremTilTerminStillingsprosent ||
-            initValues.sammePeriodeFremTilTerminStillingsprosent,
+        enPeriodeMedTilretteleggingFom:
+            tilrettelegging.enPeriodeMedTilretteleggingFom || initValues.enPeriodeMedTilretteleggingFom,
+        enPeriodeMedTilretteleggingStillingsprosent:
+            tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent ||
+            initValues.enPeriodeMedTilretteleggingStillingsprosent,
+        enPeriodeMedTilretteleggingTomType:
+            tilrettelegging.enPeriodeMedTilretteleggingTomType || initValues.enPeriodeMedTilretteleggingTomType,
+        enPeriodeMedTilretteleggingTom:
+            tilrettelegging.enPeriodeMedTilretteleggingTom || initValues.enPeriodeMedTilretteleggingTom,
     };
 };
 
@@ -54,8 +60,10 @@ export const mapOmTilretteleggingFormDataToState = (
             ...tilretteleggingForOppdatering!.arbeidsforhold,
         },
         type: values.tilretteleggingType,
-        sammePeriodeFremTilTerminFom: values.sammePeriodeFremTilTerminFom,
-        sammePeriodeFremTilTerminStillingsprosent: values.sammePeriodeFremTilTerminStillingsprosent,
+        enPeriodeMedTilretteleggingFom: values.enPeriodeMedTilretteleggingFom,
+        enPeriodeMedTilretteleggingStillingsprosent: values.enPeriodeMedTilretteleggingStillingsprosent,
+        enPeriodeMedTilretteleggingTomType: values.enPeriodeMedTilretteleggingTomType,
+        enPeriodeMedTilretteleggingTom: values.enPeriodeMedTilretteleggingTom,
         delvisTilretteleggingPeriodeType: values.delvisTilretteleggingPeriodeType,
         risikofaktorer: hasValue(values.risikofaktorer)
             ? replaceInvisibleCharsWithSpace(values.risikofaktorer!)
@@ -86,14 +94,22 @@ export const cleanUpTilretteleggingStepFormValues = (
         )
             ? values.delvisTilretteleggingPeriodeType
             : initValues.delvisTilretteleggingPeriodeType,
-        sammePeriodeFremTilTerminFom: visibility.isVisible(TilretteleggingFormField.sammePeriodeFremTilTerminFom)
-            ? values.sammePeriodeFremTilTerminFom
-            : initValues.sammePeriodeFremTilTerminFom,
-        sammePeriodeFremTilTerminStillingsprosent: visibility.isVisible(
-            TilretteleggingFormField.sammePeriodeFremTilTerminStillingsprosent,
+        enPeriodeMedTilretteleggingFom: visibility.isVisible(TilretteleggingFormField.enPeriodeMedTilretteleggingFom)
+            ? values.enPeriodeMedTilretteleggingFom
+            : initValues.enPeriodeMedTilretteleggingFom,
+        enPeriodeMedTilretteleggingStillingsprosent: visibility.isVisible(
+            TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent,
         )
-            ? values.sammePeriodeFremTilTerminStillingsprosent
-            : initValues.sammePeriodeFremTilTerminStillingsprosent,
+            ? values.enPeriodeMedTilretteleggingStillingsprosent
+            : initValues.enPeriodeMedTilretteleggingStillingsprosent,
+        enPeriodeMedTilretteleggingTomType: visibility.isVisible(
+            TilretteleggingFormField.enPeriodeMedTilretteleggingTomType,
+        )
+            ? values.enPeriodeMedTilretteleggingTomType
+            : initValues.enPeriodeMedTilretteleggingTomType,
+        enPeriodeMedTilretteleggingTom: visibility.isVisible(TilretteleggingFormField.enPeriodeMedTilretteleggingTom)
+            ? values.enPeriodeMedTilretteleggingTom
+            : initValues.enPeriodeMedTilretteleggingTom,
     };
 
     return cleanedData;

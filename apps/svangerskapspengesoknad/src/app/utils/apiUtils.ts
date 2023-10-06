@@ -85,7 +85,7 @@ const mapDelvisTilretteleggingForInnsending = (
         behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
         arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
         vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
-        tilrettelagtArbeidFom: ISOStringToDate(tilrettelegging.sammePeriodeFremTilTerminFom)!,
+        tilrettelagtArbeidFom: ISOStringToDate(tilrettelegging.enPeriodeMedTilretteleggingFom)!,
         stillingsprosent: prosentStilling,
     };
 };
@@ -99,7 +99,7 @@ const mapIngenTilretteleggingForInnsending = (
         behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
         arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
         vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
-        slutteArbeidFom: ISOStringToDate(tilrettelegging.sammePeriodeFremTilTerminFom)!,
+        slutteArbeidFom: ISOStringToDate(tilrettelegging.enPeriodeMedTilretteleggingFom)!,
     };
 };
 
@@ -107,7 +107,7 @@ const mapDelvisTilretteleggingMedEnPeriodeForInnsending = (
     tilrettelegging: Tilrettelegging,
     arbeidsforholdForInnsending: ArbeidsforholdDTO,
 ): DelvisTilretteleggingDTO | IngenTilretteleggingDTO => {
-    const prosentStilling = parseInt(tilrettelegging.sammePeriodeFremTilTerminStillingsprosent!, 10);
+    const prosentStilling = parseInt(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent!, 10);
     const jobberDelvis = prosentStilling > 0;
     if (jobberDelvis) {
         return mapDelvisTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending, prosentStilling);

@@ -37,8 +37,10 @@ export interface Tilrettelegging {
     behovForTilretteleggingFom?: string;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
     type?: Tilretteleggingstype;
-    sammePeriodeFremTilTerminFom?: string;
-    sammePeriodeFremTilTerminStillingsprosent?: string;
+    enPeriodeMedTilretteleggingFom?: string;
+    enPeriodeMedTilretteleggingStillingsprosent?: string;
+    enPeriodeMedTilretteleggingTomType?: TilOgMedDatoType;
+    enPeriodeMedTilretteleggingTom?: string;
     vedlegg: Attachment[];
     delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
     variertePerioder?: PeriodeMedVariasjon[];
