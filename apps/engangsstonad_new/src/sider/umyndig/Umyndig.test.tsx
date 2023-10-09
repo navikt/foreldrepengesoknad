@@ -14,6 +14,6 @@ describe('<Umyndig>', () => {
             ),
         ).toBeInTheDocument();
         expect(screen.getByText('Her kan du laste ned papirsøknaden')).toBeInTheDocument();
-        expect(screen.getByText('Søknad om Engangsstønad')).toBeInTheDocument();
+        expect(screen.getByText('Søknad om engangsstønad')).toBeInTheDocument();
     });
 });

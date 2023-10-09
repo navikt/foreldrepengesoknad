@@ -2,7 +2,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
 import { redirectToLogin } from 'fpcommon/util/login';
 import Environment from './Environment';
-import { OmBarnet, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
     Utenlandsopphold,
     UtenlandsoppholdNeste,
@@ -11,6 +11,7 @@ import {
 } from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
+import { notEmpty } from 'fpcommon/validering/valideringUtil';
 
 export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,
@@ -44,6 +45,21 @@ const getPerson = () => {
     return engangsstønadApi.get('/personinfo');
 };
 
+const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
+    if (erAdopsjon(omBarnet) || erBarnetFødt(omBarnet)) {
+        return {
+            ...omBarnet,
+            fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
+        };
+    }
+
+    if (erBarnetIkkeFødt(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
+        return { ...omBarnet, terminbekreftelsedato: dokumentasjon.terminbekreftelsedato };
+    }
+
+    throw Error('Det er feil i data om barnet');
+};
+
 const mapBostedUtlandTilUtenlandsopphold = (
     perioder: UtenlandsoppholdPeriode[] = [],
 ): {
@@ -68,18 +84,11 @@ const sendSøknad =
         sisteUtenlandsopphold?: UtenlandsoppholdSiste,
         nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => {
+        notEmpty(utenlandsopphold);
+
         //TODO Bør få vekk mappinga her. Bruk samme navngiving på variablane frontend og backend.
-
-        const barn =
-            dokumentasjon && erTerminDokumentasjon(dokumentasjon)
-                ? {
-                      ...omBarnet,
-                      terminbekreftelsedato: dokumentasjon.terminbekreftelsedato,
-                  }
-                : omBarnet;
-
         const søknad = {
-            barn,
+            barn: mapBarn(omBarnet, dokumentasjon),
             type: 'engangsstønad',
             erEndringssøknad: false,
             informasjonOmUtenlandsopphold: {

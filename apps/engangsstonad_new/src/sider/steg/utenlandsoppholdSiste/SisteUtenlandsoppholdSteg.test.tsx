@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './SisteUtenlandsoppholdSteg.stories';
 import dayjs from 'dayjs';
-import { DDMMYYYY_DATE_FORMAT } from 'fpcommon/form/Datepicker';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from 'fpcommon/form/Datepicker';
 
 const { Default } = composeStories(stories);
 
@@ -13,7 +13,7 @@ describe('<SisteUtenlandsoppholdSteg>', () => {
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         expect(screen.getByText('Har bodd i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 5 av 6')).toBeInTheDocument();
+        expect(screen.getByText('Steg 4 av 5')).toBeInTheDocument();
 
         expect(screen.getByText('Hvilket land bodde du i?')).toBeInTheDocument();
         expect(screen.getByText('Fra og med')).toBeInTheDocument();
@@ -75,13 +75,13 @@ describe('<SisteUtenlandsoppholdSteg>', () => {
                 utenlandsoppholdSiste12Mnd: [
                     {
                         landkode: 'CA',
-                        fom: '2023-09-03',
-                        tom: '2023-09-08',
+                        fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                     {
                         landkode: 'AS',
-                        fom: '2023-09-11',
-                        tom: '2023-09-23',
+                        fom: dayjs().subtract(22, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },

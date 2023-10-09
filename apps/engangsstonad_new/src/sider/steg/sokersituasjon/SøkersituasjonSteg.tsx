@@ -38,8 +38,8 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.søkersituasjon' })}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
+            pageTitle={intl.formatMessage({ id: 'SøkersituasjonSteg.Søkersituasjon' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
@@ -50,16 +50,18 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                     <ErrorSummaryHookForm />
                     <RadioGroupPanel
                         name="situasjon"
-                        label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
+                        label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
                         validate={[
-                            isRequired(intl.formatMessage({ id: 'SøkersituasjonForm.OppgiFodselEllerAdopsjon' })),
+                            isRequired(
+                                intl.formatMessage({ id: 'SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon' }),
+                            ),
                         ]}
                     >
                         <Radio value={SøkersituasjonEnum.FØDSEL}>
-                            <FormattedMessage id="søkersituasjon.radiobutton.fødsel" />
+                            <FormattedMessage id="SøkersituasjonSteg.Fødsel" />
                         </Radio>
                         <Radio value={SøkersituasjonEnum.ADOPSJON}>
-                            <FormattedMessage id="søkersituasjon.radiobutton.adopsjon" />
+                            <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
                         </Radio>
                     </RadioGroupPanel>
                     <StepButtonsHookForm

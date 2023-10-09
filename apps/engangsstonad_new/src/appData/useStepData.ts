@@ -7,8 +7,8 @@ import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
 
 // TODO Denne bør flyttast ut
 const PATH_TO_LABEL_MAP = {
-    [Path.SØKERSITUASJON]: 'søknad.søkersituasjon',
-    [Path.OM_BARNET]: 'søknad.omBarnet',
+    [Path.SØKERSITUASJON]: 'SøkersituasjonSteg.Søkersituasjon',
+    [Path.OM_BARNET]: 'OmBarnetSteg.OmBarnet',
     [Path.TERMINBEKREFTELSE]: 'søknad.termin',
     [Path.ADOPSJONSBEKREFTELSE]: 'søknad.adopsjon',
     [Path.UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold',

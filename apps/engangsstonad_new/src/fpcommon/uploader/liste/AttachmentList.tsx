@@ -13,6 +13,7 @@ interface Props {
 
 const AttachmentList: React.FunctionComponent<Props> = (props) => {
     const { attachments, showFileSize, onDelete } = props;
+
     return (
         <>
             {attachments.length > 0 && (

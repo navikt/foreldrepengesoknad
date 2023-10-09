@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './NesteUtenlandsoppholdSteg.stories';
 import dayjs from 'dayjs';
-import { DDMMYYYY_DATE_FORMAT } from 'fpcommon/form/Datepicker';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from 'fpcommon/form/Datepicker';
 
 const { Default } = composeStories(stories);
 
@@ -13,7 +13,7 @@ describe('<NesteUtenlandsoppholdSteg>', () => {
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         expect(screen.getByText('Skal bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 5 av 6')).toBeInTheDocument();
+        expect(screen.getByText('Steg 4 av 5')).toBeInTheDocument();
 
         expect(screen.getByText('Hvilket land skal du bo i?')).toBeInTheDocument();
         expect(screen.getByText('Fra og med')).toBeInTheDocument();
@@ -69,12 +69,12 @@ describe('<NesteUtenlandsoppholdSteg>', () => {
                 utenlandsoppholdNeste12Mnd: [
                     {
                         landkode: 'CA',
-                        fom: '2023-10-04',
-                        tom: '2023-10-23',
+                        fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                     },
                     {
                         landkode: 'AS',
-                        fom: '2023-10-25',
+                        fom: dayjs().add(22, 'day').format(ISO_DATE_FORMAT),
                         tom: '',
                     },
                 ],

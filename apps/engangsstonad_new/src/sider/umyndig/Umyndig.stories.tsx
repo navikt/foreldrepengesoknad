@@ -2,6 +2,7 @@ import { StoryFn } from '@storybook/react';
 import IntlProvider from 'intl/IntlProvider';
 import Umyndig from './Umyndig';
 import { Kjønn } from 'types/Person';
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 
 export default {
     title: 'Umyndig',
@@ -9,6 +10,7 @@ export default {
 };
 
 const Template: StoryFn<any> = () => {
+    initAmplitude();
     return (
         <IntlProvider språkkode="nb">
             <Umyndig

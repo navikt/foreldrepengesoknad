@@ -1,16 +1,18 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import OppsummeringSteg from './OppsummeringSteg';
-import IntlProvider from '../../../intl/IntlProvider';
+import IntlProvider from 'intl/IntlProvider';
 import { AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
-import { OmBarnet } from 'types/OmBarnet';
+import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import withRouter from 'storybookHelpers/withRouter';
-import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { EsDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
+
+import OppsummeringSteg from './OppsummeringSteg';
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 
 const person = {
     fnr: '11111111111',
@@ -28,8 +30,8 @@ const person = {
 const barnet = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdatoer: ['2023-01-01'],
-};
+    fødselsdatoer: [{ dato: '2023-01-01' }],
+} as BarnetErFødt;
 
 const utenlandsoppholdDefault = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -53,7 +55,7 @@ const Template: StoryFn<{
     sendSøknad: (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
-        vedlegg: Dokumentasjon,
+        dokumentasjon?: Dokumentasjon,
         sisteUtenlandsopphold?: UtenlandsoppholdSiste,
         nesteUtenlandsopphold?: UtenlandsoppholdNeste,
     ) => void;
@@ -70,6 +72,7 @@ const Template: StoryFn<{
     sisteUtenlandsopphold,
     dokumentasjon = vedleggDefault,
 }) => {
+    initAmplitude();
     return (
         <IntlProvider språkkode="nb">
             <EsContextStorybookHelper
@@ -99,7 +102,7 @@ AdopsjonAvEktefellesBarn.args = {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
         adopsjonsdato: '2023-01-01',
-        fødselsdatoer: ['2023-01-01'],
+        fødselsdatoer: [{ dato: '2023-01-01' }],
     },
     dokumentasjon: {
         vedlegg: [
@@ -124,7 +127,7 @@ AdopsjonAvEktefellesFlereBarn.args = {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
         adopsjonsdato: '2023-01-01',
-        fødselsdatoer: ['2023-01-01', '2020-01-01'],
+        fødselsdatoer: [{ dato: '2023-01-01' }, { dato: '2020-01-01' }],
     },
     dokumentasjon: {
         vedlegg: [
@@ -149,9 +152,9 @@ BarnetErIkkeFodt.args = {
         erBarnetFødt: false,
         antallBarn: 1,
         termindato: '2023-01-02',
-        terminbekreftelsedato: '2023-01-01',
     },
     dokumentasjon: {
+        terminbekreftelsedato: '2023-01-01',
         vedlegg: [
             {
                 id: '1',

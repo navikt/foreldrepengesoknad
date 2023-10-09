@@ -1,7 +1,5 @@
-import classnames from 'classnames';
 import { VStack, Link, Loader, HStack, Spacer } from '@navikt/ds-react';
 import { useIntl } from 'react-intl';
-import { bemUtils, VedleggIkon } from '@navikt/fp-common';
 import { XMarkIcon, FileCheckmarkIcon } from '@navikt/aksel-icons';
 
 import { Attachment as AttachmentType } from '../typer/Attachment';

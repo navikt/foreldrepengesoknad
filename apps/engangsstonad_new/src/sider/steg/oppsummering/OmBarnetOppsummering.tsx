@@ -55,8 +55,8 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                             <FormattedMessage
                                 id={
                                     omBarnet.fødselsdatoer.length > 1
-                                        ? intl.formatMessage({ id: 'oppsummering.text.medFødselsdatoer' })
-                                        : intl.formatMessage({ id: 'oppsummering.text.medFødselsdato' })
+                                        ? 'oppsummering.text.medFødselsdatoer'
+                                        : 'oppsummering.text.medFødselsdato'
                                 }
                             />
                         </BodyShort>

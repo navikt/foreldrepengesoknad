@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
 
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
 
@@ -16,6 +17,7 @@ export default {
 };
 
 const Template: StoryFn<{ startSøknad: (start: boolean) => void }> = ({ startSøknad }) => {
+    initAmplitude();
     return (
         <IntlProvider språkkode="nb">
             <Velkommen

@@ -37,7 +37,7 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
-        expect(await screen.findByText('Du må bekrefte at du har lest og forstått')).toBeInTheDocument();
+        expect(await screen.findByText('Du må bekrefte at du har oppgitt rigtige opplysninger')).toBeInTheDocument();
 
         await userEvent.click(
             screen.getByText(
@@ -53,7 +53,7 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: ['2023-01-01'],
+                fødselsdatoer: [{ dato: '2023-01-01' }],
             },
             { harBoddUtenforNorgeSiste12Mnd: false, skalBoUtenforNorgeNeste12Mnd: false },
             { vedlegg: [] },
@@ -93,7 +93,7 @@ describe('<OppsummeringSteg>', () => {
                 adopsjonAvEktefellesBarn: true,
                 adopsjonsdato: '2023-01-01',
                 antallBarn: 1,
-                fødselsdatoer: ['2023-01-01'],
+                fødselsdatoer: [{ dato: '2023-01-01' }],
             },
             { harBoddUtenforNorgeSiste12Mnd: false, skalBoUtenforNorgeNeste12Mnd: false },
             {
@@ -146,11 +146,11 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: false,
-                terminbekreftelsedato: '2023-01-01',
                 termindato: '2023-01-02',
             },
             { harBoddUtenforNorgeSiste12Mnd: false, skalBoUtenforNorgeNeste12Mnd: false },
             {
+                terminbekreftelsedato: '2023-01-01',
                 vedlegg: [
                     {
                         file: {},
@@ -205,7 +205,7 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: ['2023-01-01'],
+                fødselsdatoer: [{ dato: '2023-01-01' }],
             },
             { harBoddUtenforNorgeSiste12Mnd: true, skalBoUtenforNorgeNeste12Mnd: true },
             {

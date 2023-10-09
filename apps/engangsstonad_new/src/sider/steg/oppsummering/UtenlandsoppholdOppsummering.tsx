@@ -1,4 +1,4 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
@@ -43,8 +43,6 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     utenlandsoppholdSiste,
     utenlandsoppholdNeste,
 }) => {
-    const intl = useIntl();
-
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
 
@@ -62,7 +60,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
             ) : (
                 <div>
                     <Label className="textWithLabel__label">
-                        {intl.formatMessage({ id: 'oppsummering.text.boddSisteTolv' })}
+                        <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
                     </Label>
                     <LandOppsummering
                         utenlandsoppholdListe={notEmpty(utenlandsoppholdSiste).utenlandsoppholdSiste12Mnd}
@@ -72,16 +70,16 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
             {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false ? (
                 <HStack gap="2">
                     <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.neste12mnd'} />
+                        <FormattedMessage id="oppsummering.text.neste12mnd" />
                     </BodyShort>
                     <BodyShort>
-                        <FormattedMessage id={'medlemmskap.radiobutton.boNorge'} />
+                        <FormattedMessage id="medlemmskap.radiobutton.boNorge" />
                     </BodyShort>
                 </HStack>
             ) : (
                 <div>
                     <Label className="textWithLabel__label">
-                        {intl.formatMessage({ id: 'oppsummering.text.neste12mnd' })}
+                        <FormattedMessage id="oppsummering.text.neste12mnd" />
                     </Label>
                     <LandOppsummering
                         utenlandsoppholdListe={notEmpty(utenlandsoppholdNeste).utenlandsoppholdNeste12Mnd}
@@ -101,8 +99,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                                     utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
                                     utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
                                 )
-                                    ? intl.formatMessage({ id: 'medlemmskap.radiobutton.vareUtlandet' })
-                                    : intl.formatMessage({ id: 'medlemmskap.radiobutton.vareNorge' })
+                                    ? 'medlemmskap.radiobutton.vareUtlandet'
+                                    : 'medlemmskap.radiobutton.vareNorge'
                             }
                         />
                     </BodyShort>
@@ -121,8 +119,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                                     utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
                                     utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
                                 )
-                                    ? intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iUtlandet' })
-                                    : intl.formatMessage({ id: 'oppsummering.utenlandsopphold.iNorge' })
+                                    ? 'oppsummering.utenlandsopphold.iUtlandet'
+                                    : 'oppsummering.utenlandsopphold.iNorge'
                             }
                         />
                     </BodyShort>

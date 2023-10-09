@@ -36,7 +36,7 @@ export interface Props {
 const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
 
-    useDocumentTitle(intl.formatMessage({ id: 'søknad.omBarnet' }));
+    useDocumentTitle(intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' }));
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -63,8 +63,8 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.omBarnet' })}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
+            pageTitle={intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}

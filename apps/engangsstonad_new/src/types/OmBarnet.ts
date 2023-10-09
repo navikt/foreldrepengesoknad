@@ -1,4 +1,4 @@
-type BarnetErFødt = {
+export type BarnetErFødt = {
     erBarnetFødt: true;
     antallBarn: number;
     fødselsdatoer: {

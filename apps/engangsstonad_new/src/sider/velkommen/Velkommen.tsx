@@ -26,7 +26,8 @@ export interface Props {
 
 const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad, erVelkommen }) => {
     const intl = useIntl();
-    useDocumentTitle(intl.formatMessage({ id: 'velkommen.standard.dokumenttittel' }));
+
+    useDocumentTitle(intl.formatMessage({ id: 'Velkommen.Dokumenttittel' }));
 
     const navigator = useEsNavigator();
 
@@ -51,59 +52,59 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
             <ContentWrapper>
                 <VStack gap="4">
                     <Heading size="large">
-                        <FormattedMessage id={'velkommen.standard.velkommentittel'} />
+                        <FormattedMessage id={'Søknad.Pageheading'} />
                     </Heading>
                     <VStack gap="10">
                         <GuidePanel poster>
-                            <FormattedMessage id="velkommen.standard.ingress" />
+                            <FormattedMessage id="Velkommen.Ingress" />
                             <ul>
                                 <li>
-                                    <FormattedMessage id={'velkommen.standard.bobletekst.del1'} />
+                                    <FormattedMessage id={'Velkommen.Bobletekst.Del1'} />
                                 </li>
                                 <li>
-                                    <FormattedMessage id={'velkommen.standard.bobletekst.del2'} />
+                                    <FormattedMessage id={'Velkommen.Bobletekst.Del2'} />
                                 </li>
                             </ul>
                         </GuidePanel>
                         <Alert variant="info">
                             <VStack gap="5">
-                                <FormattedMessage id="velkommen.text.veiviser" />
+                                <FormattedMessage id="Velkommen.Veiviser" />
                                 <a className="lenke" rel="noopener noreferrer" href={lenker.veiviser} target="_blank">
-                                    <FormattedMessage id={'velkommen.text.veiviser.lenke'} />
+                                    <FormattedMessage id={'Velkommen.Veiviser.Lenke'} />
                                 </a>
                             </VStack>
                         </Alert>
                         <ConfirmationPanel
-                            label={intl.formatMessage({ id: 'velkommen.text.samtykke' })}
+                            label={intl.formatMessage({ id: 'Velkommen.Samtykke' })}
                             onChange={toggleCheck}
                             checked={isChecked}
                             error={
                                 isError &&
                                 !isChecked &&
-                                intl.formatMessage({ id: 'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter' })
+                                intl.formatMessage({ id: 'Velkommen.Validering.BekreftLestOgForståttRettigheter' })
                             }
                         >
                             <VStack gap="5">
                                 <BodyShort>
                                     <HStack gap="1">
-                                        <FormattedMessage id="velkommen.text.plikter.apneLabel" />
+                                        <FormattedMessage id="Velkommen.Plikter.ApneLabel" />
                                         <Link
                                             href={lenker.plikter}
                                             target="_blank"
                                             style={{ color: 'var(--a-text-action)' }}
                                         >
-                                            <FormattedMessage id="rettigheter.text.lestOgForstått.link" />
+                                            <FormattedMessage id="Velkommen.LestOgForstått.Link" />
                                         </Link>
                                     </HStack>
                                 </BodyShort>
                                 <BodyShort>
-                                    <FormattedMessage id="velkommen.text.kunEnStønad" />
+                                    <FormattedMessage id="Velkommen.KunEnStønad" />
                                 </BodyShort>
                             </VStack>
                         </ConfirmationPanel>
                         <HStack justify="center">
                             <Button type="button" onClick={bekreft}>
-                                <FormattedMessage id="velkommen.button.startSøknad" />
+                                <FormattedMessage id="Velkommen.StartSøknad" />
                             </Button>
                         </HStack>
                     </VStack>

@@ -41,6 +41,7 @@ const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSe
                 accept={accept}
                 onChange={(e) => onFileSelect(e)}
                 multiple={multiple === true}
+                data-testid="file-upload"
             />
             <Button
                 className="upload_button"

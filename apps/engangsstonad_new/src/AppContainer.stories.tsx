@@ -3,18 +3,8 @@ import MockAdapter from 'axios-mock-adapter';
 
 import { engangsstønadApi } from 'appData/api';
 import AppContainer from './AppContainer';
-
-const person = {
-    fnr: '11111111111',
-    fornavn: 'Henrikke',
-    etternavn: 'Ibsen',
-    kjønn: 'K',
-    fødselsdato: '1979-01-28',
-    bankkonto: {
-        kontonummer: '49875234987',
-        banknavn: 'Storebank',
-    },
-};
+import Person, { Kjønn } from 'types/Person';
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -24,11 +14,13 @@ const kvittering = {
 };
 
 export default {
-    title: 'AppContainer',
+    title: 'Applikasjon - Engangsstønad (AppContainer)',
     component: AppContainer,
 };
 
-const Template: StoryFn<any> = () => {
+const Template: StoryFn<{ person: Person }> = ({ person }) => {
+    initAmplitude();
+
     const apiMock = new MockAdapter(engangsstønadApi);
     apiMock.onGet('/personinfo').reply(200, person);
     apiMock.onPost('/soknad').reply(200, kvittering);
@@ -36,4 +28,34 @@ const Template: StoryFn<any> = () => {
     return <AppContainer />;
 };
 
-export const VisApp = Template.bind({});
+export const SøkerErKvinne = Template.bind({});
+SøkerErKvinne.args = {
+    person: {
+        fnr: '11111111111',
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+        kjønn: Kjønn.KVINNE,
+        fødselsdato: '1979-01-28',
+        adresse: 'Oslo 123',
+        bankkonto: {
+            kontonummer: '49875234987',
+            banknavn: 'Storebank',
+        },
+    },
+};
+
+export const SøkerErMann = Template.bind({});
+SøkerErMann.args = {
+    person: {
+        fnr: '1231111111',
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        kjønn: Kjønn.MANN,
+        fødselsdato: '1979-01-28',
+        adresse: 'Oslo 123',
+        bankkonto: {
+            kontonummer: '49875234987',
+            banknavn: 'Storebank',
+        },
+    },
+};

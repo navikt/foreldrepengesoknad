@@ -37,7 +37,11 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
     const lagre = useCallback((formValues: Dokumentasjon) => {
         if (formValues.vedlegg.length === 0) {
             formMethods.setError('vedlegg', {
-                message: intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokument' }),
+                message: intl.formatMessage({
+                    id: erBarnetAdoptert
+                        ? 'DokumentasjonSteg.MinstEttDokumentAdopsjon'
+                        : 'DokumentasjonSteg.MinstEttDokumentTermin',
+                }),
             });
         } else {
             lagreDokumentasjon(formValues);
@@ -52,7 +56,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             pageTitle={stepData.stepConfig.find((c) => c.id === stepData.activeStepId)?.label || '-'}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}

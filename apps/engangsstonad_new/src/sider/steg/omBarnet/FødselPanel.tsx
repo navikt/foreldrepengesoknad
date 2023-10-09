@@ -86,8 +86,20 @@ const FødselPanel: React.FunctionComponent = () => {
 
             <RadioGroupPanel
                 name="antallBarn"
-                label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}
-                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.text.antallBarn.født.required' }))]}
+                label={
+                    <FormattedMessage
+                        id={erBarnetFødt ? 'omBarnet.text.antallBarn.født' : 'omBarnet.text.antallBarn.termin'}
+                    />
+                }
+                validate={[
+                    isRequired(
+                        intl.formatMessage({
+                            id: erBarnetFødt
+                                ? 'omBarnet.text.antallBarn.født.required'
+                                : 'omBarnet.text.antallBarn.venter.required',
+                        }),
+                    ),
+                ]}
             >
                 <Radio value={1}>
                     <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
@@ -102,8 +114,20 @@ const FødselPanel: React.FunctionComponent = () => {
             {antallBarn >= 3 && (
                 <Select
                     name="antallBarnDropDown"
-                    label={<FormattedMessage id="omBarnet.text.antallBarn.født" />}
-                    validate={[isRequired(intl.formatMessage({ id: 'omBarnet.text.antallBarn.født.required' }))]}
+                    label={
+                        <FormattedMessage
+                            id={erBarnetFødt ? 'omBarnet.text.antallBarn.født' : 'omBarnet.text.antallBarn.termin'}
+                        />
+                    }
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({
+                                id: erBarnetFødt
+                                    ? 'omBarnet.text.antallBarn.født.required'
+                                    : 'omBarnet.text.antallBarn.venter.required',
+                            }),
+                        ),
+                    ]}
                 >
                     <option value="3">3</option>
                     <option value="4">4</option>

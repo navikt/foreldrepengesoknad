@@ -8,9 +8,7 @@ import { Action, EsDataType } from 'appData/EsDataContext';
 import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
-
-import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 
 export default {
     title: 'OmBarnetSteg',
@@ -26,6 +24,7 @@ const Template: StoryFn<{
     kjønn: Kjønn;
     gåTilNesteSide: (action: Action) => void;
 }> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
+    initAmplitude();
     return (
         <IntlProvider språkkode="nb">
             <EsContextStorybookHelper

@@ -12,17 +12,17 @@ const FeilsideInfo: React.FunctionComponent<Props> = ({ locale, onChangeLocale }
     const intl = useIntl();
     return (
         <Feilside
-            dokumenttittel="NAV Engangsstønad"
+            dokumenttittel={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             ingress=""
             tittel=""
             illustrasjon={{
-                tittel: intl.formatMessage({ id: 'intro.generellFeil.tittel' }),
-                tekst: intl.formatMessage({ id: 'intro.generellFeil.ingress' }),
+                tittel: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Tittel' }),
+                tekst: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Ingress' }),
                 veileder: {
                     ansikt: 'skeptisk',
                 },
                 lenke: {
-                    tekst: intl.formatMessage({ id: 'intro.generellFeil.brukerstøtte' }),
+                    tekst: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Brukerstøtte' }),
                     url: lenker.brukerstøtte,
                 },
             }}

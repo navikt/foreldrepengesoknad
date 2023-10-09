@@ -13,7 +13,7 @@ describe('<SøkersituasjonSteg>', () => {
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getByText('Din situasjon')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 5')).toBeInTheDocument();
+        expect(screen.getByText('Steg 1 av 4')).toBeInTheDocument();
         expect(screen.getByText('Hva gjelder for deg?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));

@@ -16,7 +16,7 @@ describe('<Velkommen>', () => {
 
         expect(await screen.findByText('Du må bekrefte at du har lest og forstått')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
+        await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));
 
         await userEvent.click(screen.getByText('Start søknaden'));
 

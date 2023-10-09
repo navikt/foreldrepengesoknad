@@ -62,7 +62,7 @@ const SisteUtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.tidligere' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { Block } from '@navikt/fp-common';
 
 import Datepicker from 'fpcommon/form/Datepicker';
 import { validateAdopsjonFødselDate } from 'fpcommon/validering/valideringsregler';

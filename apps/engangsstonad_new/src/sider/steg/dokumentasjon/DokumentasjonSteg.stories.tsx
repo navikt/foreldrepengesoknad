@@ -10,6 +10,7 @@ import { Action, EsDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import IntlProvider from 'intl/IntlProvider';
 import DokumentasjonSteg from './DokumentasjonSteg';
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 
 export default {
     title: 'DokumentasjonSteg',
@@ -23,9 +24,12 @@ const Template: StoryFn<{
     omBarnet: OmBarnet;
     skalFeileOpplasting?: boolean;
 }> = ({ gåTilNesteSide, omBarnet, skalFeileOpplasting = false }) => {
+    initAmplitude();
+
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
-        apiMock.onPost('/storage/vedlegg').reply(200);
+        apiMock.onPost('/storage/vedlegg').reply(200); //story
+        apiMock.onPost('http://localhost:8888/rest/storage/vedlegg').reply(200); //test
     }
 
     return (

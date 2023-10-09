@@ -57,7 +57,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             pageTitle={intl.formatMessage({ id: 'søknad.oppsummering' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
@@ -72,7 +72,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                             <BodyShort>{person.fnr}</BodyShort>
                         </VStack>
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omBarnet' })}>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' })}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
@@ -91,12 +91,12 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     error={
                         isError &&
                         !isChecked &&
-                        intl.formatMessage({ id: 'valideringsfeil.velkommen.bekreftLestOgForståttRettigheter' })
+                        intl.formatMessage({ id: 'OppsummeringSteg.Validering.BekrefteOpplysninger' })
                     }
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
+                    nextButtonText="oppsummering.button.sendSøknad"
                     nextButtonOnClick={send}
                 />
             </VStack>

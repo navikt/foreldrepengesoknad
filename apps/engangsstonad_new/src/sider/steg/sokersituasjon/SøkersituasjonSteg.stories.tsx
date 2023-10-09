@@ -6,6 +6,7 @@ import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
 import { Action } from 'appData/EsDataContext';
+import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 
 export default {
     title: 'SøkersituasjonSteg',
@@ -17,6 +18,7 @@ export default {
 };
 
 const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
+    initAmplitude();
     return (
         <IntlProvider språkkode="nb">
             <EsContextStorybookHelper onDispatch={gåTilNesteSide}>
