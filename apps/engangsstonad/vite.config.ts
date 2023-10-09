@@ -16,14 +16,11 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            app: path.resolve(__dirname, './src/app'),
-            uttaksplan: path.resolve(__dirname, './src/uttaksplan'),
-            assets: path.resolve(__dirname, './src/app/assets/'),
-            components: path.resolve(__dirname, './src/app/components/'),
-            styles: path.resolve(__dirname, './src/app/styles/'),
-            util: path.resolve(__dirname, './src/app/util/'),
-            common: path.resolve(__dirname, './src/common/'),
-            intl: path.resolve(__dirname, './src/app/intl/'),
+            fpcommon: path.resolve(__dirname, './src/fpcommon'),
+            intl: path.resolve(__dirname, './src/intl/'),
+            types: path.resolve(__dirname, './src/types/'),
+            appData: path.resolve(__dirname, './src/appData/'),
+            storybookHelpers: path.resolve(__dirname, './src/storybookHelpers/'),
         },
     },
     test: {

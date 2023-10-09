@@ -4,16 +4,10 @@
         "jsx": "react-jsx",
         "baseUrl": "./src",
         "paths": {
-            "app/*": ["app/*"],
-            "shared/*": ["app/components/shared/*"],
-            "assets/*": ["app/assets/*"],
-            "components/*": ["app/components/*"],
-            "connectedComponents/*": ["app/connected-components"],
-            "styles/*": ["app/styles/*"],
-            "util/*": ["app/util/*"],
-            "common/*": ["./common/*"],
-            "storage/*": ["./storage/*"],
-            "intl/*": ["app/intl/*"]
+            "intl/*": ["intl/*"],
+            "types/*": ["types/*"],
+            "appData/*": ["appData/*"],
+            "storybookHelpers/*": ["storybookHelpers/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals"]
     },

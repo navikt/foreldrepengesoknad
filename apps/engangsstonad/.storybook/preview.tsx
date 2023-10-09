@@ -1,5 +1,8 @@
 import React from 'react';
 
+import '@navikt/ds-css';
+import 'fpcommon/styles/globals.less';
+
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
