@@ -44,7 +44,7 @@ export const validatePeriodeFom =
                 : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
         }
 
-        return validateAtPeriodeIkkeOverlapper(
+        const overlappendePerioderFeil = validateAtPeriodeIkkeOverlapper(
             fom,
             tom,
             tomType,
@@ -53,6 +53,11 @@ export const validatePeriodeFom =
             intl,
             sisteDagForSvangerskapspenger,
         );
+        if (overlappendePerioderFeil) {
+            return overlappendePerioderFeil;
+        }
+
+        return validateSammenhengendePerioderFom(fom, allePerioder, sisteDagForSvangerskapspenger, intl);
     };
 
 export const validatePeriodeTom =
@@ -130,6 +135,37 @@ export const validateAtPeriodeIkkeOverlapper = (
                 tom: formatDate(tilOgMedDato),
             });
         }
+    }
+    return undefined;
+};
+
+export const validateSammenhengendePerioderFom = (
+    fom: string | undefined,
+    allePerioder: PeriodeMedVariasjon[] | undefined,
+    sisteDagForSvangerskapspenger: Date,
+    intl: IntlShape,
+) => {
+    const alleFom = allePerioder
+        ? allePerioder.filter((p) => p.fom && isISODateString(p.fom)).map((periode) => dayjs(periode.fom))
+        : undefined;
+    const minAlleFom = alleFom ? dayjs.min(alleFom) : undefined;
+    if (minAlleFom && dayjs(fom).isSameOrBefore(minAlleFom)) {
+        return undefined;
+    }
+    const alleTom = allePerioder
+        ? allePerioder
+              .filter((p) => (p.tom && isISODateString(p.tom)) || p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN)
+              .map((periode) => {
+                  return periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN
+                      ? dayjs(sisteDagForSvangerskapspenger)
+                      : dayjs(periode.tom);
+              })
+        : undefined;
+    const tomSomErDagenFørFom = alleTom
+        ? alleTom.find((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom)))
+        : undefined;
+    if (!tomSomErDagenFørFom) {
+        return intlUtils(intl, 'valideringsfeil.periode.ikkeSammenhengende');
     }
     return undefined;
 };

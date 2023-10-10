@@ -12,6 +12,7 @@ import { IntlShape } from 'react-intl';
 import { dagenFør, tiMånederSidenDato } from './dateUtils';
 import { hasValue } from './validationUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 
 export const getValgtTilrettelegging = (
     allTilretteleggingOptions: Tilrettelegging[],
@@ -163,4 +164,25 @@ export const mapTilretteleggingTilPerioder = (
     ];
     const sortertePerioder = allePerioder.sort(sorterTilretteleggingsperioder);
     return sortertePerioder;
+};
+
+export const getNesteDagEtterSistePeriode = (
+    formvalues: Partial<PerioderFormData>,
+    sisteDagForSvangerskapspenger: Date,
+): string => {
+    if (!formvalues.variertePerioder || formvalues.variertePerioder.length === 0) {
+        return '';
+    }
+    const alleTomDatoer = formvalues.variertePerioder
+        .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN)
+        .map((periode) => {
+            if (periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {
+                return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');
+            } else {
+                return dayjs(periode.tom);
+            }
+        });
+
+    const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;
+    return maxTomDato ? dateToISOString(maxTomDato.add(1, 'd').toDate()) : '';
 };
