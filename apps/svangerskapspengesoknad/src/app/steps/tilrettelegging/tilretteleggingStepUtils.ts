@@ -50,11 +50,11 @@ export const mapOmTilretteleggingFormDataToState = (
     const oppdaterteVarierendePerioder =
         values.tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-            ? tilretteleggingForOppdatering?.variertePerioder
+            ? tilretteleggingForOppdatering?.varierendePerioder
             : [];
     const oppdatert = {
         ...tilretteleggingForOppdatering,
-        variertePerioder: oppdaterteVarierendePerioder,
+        varierendePerioder: oppdaterteVarierendePerioder,
         behovForTilretteleggingFom: values.behovForTilretteleggingFom,
         arbeidsforhold: {
             ...tilretteleggingForOppdatering!.arbeidsforhold,

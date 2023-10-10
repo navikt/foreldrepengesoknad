@@ -14,13 +14,13 @@ export const validateTermindato = (intl: IntlShape, fødselsdato: string | undef
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.ugyldigDatoFormat');
     }
 
-    if (dayjs(termindato).isSameOrAfter(niMånederFremITid(new Date()))) {
+    if (dayjs(termindato).isSameOrAfter(niMånederFremITid(new Date()), 'day')) {
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtFremITid');
     }
-    if (dayjs(termindato).isBefore(enMånedSiden(new Date())) && !fødselsdato) {
+    if (dayjs(termindato).isBefore(enMånedSiden(new Date()), 'day') && !fødselsdato) {
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato');
     }
-    if (dayjs(termindato).isBefore(etÅrSiden(new Date()))) {
+    if (dayjs(termindato).isBefore(etÅrSiden(new Date()), 'day')) {
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtTilbakeITid');
     }
     if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
@@ -46,7 +46,7 @@ export const validateFødselsdato = (intl: IntlShape) => (fødselsdato: string) 
         return intlUtils(intl, 'valideringsfeil.barnet.fødselsdato.måVæreIdagEllerTidligere');
     }
 
-    if (dayjs(fødselsdato).isBefore(halvannetÅrSiden(new Date()))) {
+    if (dayjs(fødselsdato).isBefore(halvannetÅrSiden(new Date()), 'day')) {
         return intlUtils(intl, 'valideringsfeil.barnet.termindato.forLangtTilbakeITid');
     }
 

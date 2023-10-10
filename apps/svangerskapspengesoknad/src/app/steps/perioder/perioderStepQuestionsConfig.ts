@@ -3,9 +3,9 @@ import { hasValue } from 'app/utils/validationUtils';
 import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 
 export const PerioderFormConfig: QuestionConfig<PerioderFormData, PerioderFormField> = {
-    [PerioderFormField.variertePerioder]: {
+    [PerioderFormField.varierendePerioder]: {
         isIncluded: () => true,
-        isAnswered: ({ variertePerioder }) => hasValue(variertePerioder),
+        isAnswered: ({ varierendePerioder }) => hasValue(varierendePerioder),
     },
 };
 

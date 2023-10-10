@@ -63,7 +63,7 @@ export interface Tilrettelegging {
     enPeriodeMedTilretteleggingTom?: string;
     vedlegg: Attachment[];
     delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
-    variertePerioder?: PeriodeMedVariasjon[];
+    varierendePerioder?: PeriodeMedVariasjon[];
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
 }

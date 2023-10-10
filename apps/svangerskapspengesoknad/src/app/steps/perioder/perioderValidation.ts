@@ -70,7 +70,6 @@ export const validatePeriodeTom =
     ) =>
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;
-        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
         if (!hasValue(tom)) {
             return intlUtils(intl, 'valideringsfeil.periode.tom.påkrevd');
         }
@@ -88,15 +87,7 @@ export const validatePeriodeTom =
                 : intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin');
         }
 
-        return validateAtPeriodeIkkeOverlapper(
-            fom,
-            tom,
-            tomType,
-            allePerioder,
-            index,
-            intl,
-            sisteDagForSvangerskapspenger,
-        );
+        return undefined;
     };
 
 export const validateAtPeriodeIkkeOverlapper = (
@@ -148,8 +139,8 @@ export const validateSammenhengendePerioderFom = (
     const alleFom = allePerioder
         ? allePerioder.filter((p) => p.fom && isISODateString(p.fom)).map((periode) => dayjs(periode.fom))
         : undefined;
-    const minAlleFom = alleFom ? dayjs.min(alleFom) : undefined;
-    if (minAlleFom && dayjs(fom).isSameOrBefore(minAlleFom)) {
+    const minstAvAlleFom = alleFom ? dayjs.min(alleFom) : undefined;
+    if (minstAvAlleFom && dayjs(fom).isSameOrBefore(minstAvAlleFom, 'day')) {
         return undefined;
     }
     const alleTom = allePerioder
@@ -162,7 +153,7 @@ export const validateSammenhengendePerioderFom = (
               })
         : undefined;
     const tomSomErDagenFørFom = alleTom
-        ? alleTom.find((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom)))
+        ? alleTom.find((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom), 'day'))
         : undefined;
     if (!tomSomErDagenFørFom) {
         return intlUtils(intl, 'valideringsfeil.periode.ikkeSammenhengende');
