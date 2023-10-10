@@ -1,9 +1,9 @@
 export type BarnetErFødt = {
     erBarnetFødt: true;
     antallBarn: number;
-    fødselsdatoer: {
+    fødselsdatoer: Array<{
         dato: string;
-    }[];
+    }>;
 };
 
 export type BarnetErIkkeFødt = {
@@ -19,9 +19,9 @@ export type Adopsjon = {
     adopsjonsdato: string;
     antallBarn: number;
     søkerAdopsjonAlene?: boolean;
-    fødselsdatoer: {
+    fødselsdatoer: Array<{
         dato: string;
-    }[];
+    }>;
 };
 
 export type OmBarnet = Fødsel | Adopsjon;

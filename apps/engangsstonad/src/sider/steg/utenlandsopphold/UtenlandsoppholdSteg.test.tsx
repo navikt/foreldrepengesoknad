@@ -11,7 +11,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
-        expect(screen.getByText('Steg 4 av 5')).toBeInTheDocument();
+        expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
 
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();

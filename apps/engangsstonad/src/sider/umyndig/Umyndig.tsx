@@ -30,7 +30,7 @@ const Umyndig: React.FunctionComponent<Props> = ({ person }) => {
                             name: person.fornavn.toLowerCase(),
                         },
                     ),
-                    text: (
+                    textRich: (
                         <VStack gap="4" align="center">
                             <FormattedMessage id="Umyndig.Under18.Bobletekst" />
                             <Link href={lenker.papirsøknad}>

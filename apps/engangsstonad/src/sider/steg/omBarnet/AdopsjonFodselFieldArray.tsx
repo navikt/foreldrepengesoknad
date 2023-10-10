@@ -8,9 +8,9 @@ import { validateAdopsjonFødselDate } from 'fpcommon/validering/valideringsregl
 import { VStack } from '@navikt/ds-react';
 
 export type FormValues = {
-    fødselsdatoer?: {
+    fødselsdatoer?: Array<{
         dato?: string;
-    }[];
+    }>;
 };
 
 interface Props {

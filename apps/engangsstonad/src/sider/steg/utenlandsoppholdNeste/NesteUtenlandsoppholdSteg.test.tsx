@@ -61,6 +61,10 @@ describe('<NesteUtenlandsoppholdSteg>', () => {
         await userEvent.type(fraOgMedP2, dayjs().add(22, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMedP2);
 
+        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1];
+        await userEvent.type(tilOgMedP2, dayjs().add(30, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(tilOgMedP2);
+
         await userEvent.click(screen.getByText('Neste steg'));
 
         await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(1));
@@ -75,7 +79,7 @@ describe('<NesteUtenlandsoppholdSteg>', () => {
                     {
                         landkode: 'AS',
                         fom: dayjs().add(22, 'day').format(ISO_DATE_FORMAT),
-                        tom: '',
+                        tom: dayjs().add(30, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },
@@ -117,9 +121,8 @@ describe('<NesteUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(
-            await screen.findByText('Du har allerede lagt inn utenlandsopphold i denne perioden'),
-        ).toBeInTheDocument();
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Det kan ikke være flere utenlandsopphold i samme periode')).toHaveLength(5);
     });
 
     it('skal legge til periode og så fjerne den', async () => {

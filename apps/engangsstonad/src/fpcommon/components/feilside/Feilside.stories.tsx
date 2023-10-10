@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import Feilside from './Feilside';
 import IntlProvider from 'intl/IntlProvider';
-import { useIntl } from 'react-intl';
 import { lenker } from 'fpcommon/util/lenker';
 
 import '@navikt/ds-css';
@@ -13,20 +12,19 @@ export default {
 };
 
 const Wrapper = () => {
-    const intl = useIntl();
     return (
         <Feilside
             dokumenttittel="NAV Engangsstønad"
             ingress="Dette er en ingress"
             tittel="Dette er en tittel"
             illustrasjon={{
-                tittel: intl.formatMessage({ id: 'intro.generellFeil.tittel' }),
-                tekst: intl.formatMessage({ id: 'intro.generellFeil.ingress' }),
+                tittel: 'Oops,',
+                tekst: 'Noe gikk dessverre galt. Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil kontakt brukerstøtte.',
                 veileder: {
                     ansikt: 'skeptisk',
                 },
                 lenke: {
-                    tekst: intl.formatMessage({ id: 'intro.generellFeil.brukerstøtte' }),
+                    tekst: 'Kontakt brukerstøtte her',
                     url: lenker.brukerstøtte,
                 },
             }}

@@ -60,12 +60,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
-const mapBostedUtlandTilUtenlandsopphold = (
-    perioder: UtenlandsoppholdPeriode[] = [],
-): {
-    land: string;
-    tidsperiode: { tom: string; fom: string };
-}[] => {
+const mapBostedUtlandTilUtenlandsopphold = (perioder: UtenlandsoppholdPeriode[] = []) => {
     return perioder.map((periode) => ({
         land: periode.landkode,
         tidsperiode: {

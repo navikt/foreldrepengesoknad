@@ -7,7 +7,7 @@ export interface OwnProps {
     name: string;
     label: string | ReactNode;
     onChange?: (event: any) => void;
-    validate?: ((value: string) => any)[];
+    validate?: Array<(value: string) => any>;
     children: React.ReactElement[];
     description?: ReactNode;
     disabled?: boolean;

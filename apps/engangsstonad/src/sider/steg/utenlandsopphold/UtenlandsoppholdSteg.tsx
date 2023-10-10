@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
-import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack } from '@navikt/ds-react';
+import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
 
 import Form from 'fpcommon/form/Form';
 import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
@@ -125,14 +125,16 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                                     <BodyLong>
                                         <FormattedMessage id="utenlandsopphold.info.del5" />
                                     </BodyLong>
-                                    <BodyLong>
-                                        <HStack gap="1">
+                                    <HStack gap="1">
+                                        <BodyShort>
                                             <FormattedMessage id="utenlandsopphold.info.del6" />
+                                        </BodyShort>
+                                        <BodyShort>
                                             <Link href="https://www.nav.no/foreldrepenger#utland">
                                                 nav.no/foreldrepenger#utland
                                             </Link>
-                                        </HStack>
-                                    </BodyLong>
+                                        </BodyShort>
+                                    </HStack>
                                 </VStack>
                             </VStack>
                         </ExpansionCard.Content>

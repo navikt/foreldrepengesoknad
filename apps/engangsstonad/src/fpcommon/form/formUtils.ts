@@ -1,4 +1,4 @@
-export const getValidationRules = (validate: ((value: any) => any)[]) =>
+export const getValidationRules = (validate: Array<(value: any) => any>) =>
     validate.reduce(
         (acc, fn, index) => ({
             ...acc,

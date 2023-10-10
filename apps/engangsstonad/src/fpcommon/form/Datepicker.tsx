@@ -14,7 +14,7 @@ export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
 const TIDENES_MORGEN = dayjs('1000-01-01').toDate();
 const TIDENES_ENDE = dayjs('9999-31-12').toDate();
 
-const findDisabledDays = (minDate?: Date, maxDate?: Date): { from: Date; to?: Date }[] => {
+const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; to?: Date }> => {
     const disabledDays = [];
     if (minDate) {
         disabledDays.push({
@@ -35,7 +35,7 @@ export interface DatepickerProps {
     name: string;
     label?: string | ReactNode;
     description?: string;
-    validate?: ((value: string) => any)[];
+    validate?: Array<(value: string) => any>;
     onChange?: (value: any) => void;
     minDate?: Date;
     maxDate?: Date;

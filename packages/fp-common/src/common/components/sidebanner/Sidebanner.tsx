@@ -10,7 +10,8 @@ export interface SidebannerProps {
 
 interface Dialog {
     title: string;
-    text: string | React.ReactNode;
+    text?: string | React.ReactNode;
+    textRich?: React.ReactNode;
 }
 
 const Sidebanner: React.FunctionComponent<SidebannerProps> = ({ dialog }) => {
@@ -24,7 +25,8 @@ const Sidebanner: React.FunctionComponent<SidebannerProps> = ({ dialog }) => {
                             <Heading size="small" level="2">
                                 {dialog.title}
                             </Heading>
-                            <BodyShort>{dialog.text}</BodyShort>
+                            {dialog.textRich}
+                            {dialog.text && <BodyShort>{dialog.text}</BodyShort>}
                         </GuidePanel>
                     </Block>
                 </div>

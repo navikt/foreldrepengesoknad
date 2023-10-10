@@ -85,9 +85,11 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                             }
                         >
                             <VStack gap="5">
-                                <BodyShort>
-                                    <HStack gap="1">
+                                <HStack gap="1">
+                                    <BodyShort>
                                         <FormattedMessage id="Velkommen.Plikter.ApneLabel" />
+                                    </BodyShort>
+                                    <BodyShort>
                                         <Link
                                             href={lenker.plikter}
                                             target="_blank"
@@ -95,8 +97,8 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                                         >
                                             <FormattedMessage id="Velkommen.LestOgForstått.Link" />
                                         </Link>
-                                    </HStack>
-                                </BodyShort>
+                                    </BodyShort>
+                                </HStack>
                                 <BodyShort>
                                     <FormattedMessage id="Velkommen.KunEnStønad" />
                                 </BodyShort>

@@ -43,7 +43,7 @@ const Feilside: FunctionComponent<Props> = ({
                 <Sidebanner
                     dialog={{
                         title: illustrasjon.tittel,
-                        text: (
+                        textRich: (
                             <VStack gap="4">
                                 <div>
                                     <BodyShort>{illustrasjon.tekst}</BodyShort>
