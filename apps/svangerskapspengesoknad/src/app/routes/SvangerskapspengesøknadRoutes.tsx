@@ -10,7 +10,7 @@ import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import Skjema from 'app/steps/skjema/Skjema';
-import Tilrettelegging, { Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import FrilansStep from 'app/steps/frilans/FrilansStep';
 import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
@@ -95,7 +95,7 @@ const getPerioderRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) =
     return tilretteleggingValg
         ?.filter(
             (t) =>
-                t.type === Tilretteleggingstype.DELVIS &&
+                t.type === TilretteleggingstypeOptions.DELVIS &&
                 t.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
         )
         .map((tilrettelegging) => {

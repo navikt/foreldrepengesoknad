@@ -135,7 +135,7 @@ export const validateEgenNæringVarigEndringDato =
         if (isDateInTheFuture(endringDato)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.erIFremtiden');
         }
-        if (isDateABeforeDateB(dateToISOString(date4YearsAgo), endringDato)) {
+        if (isDateABeforeDateB(endringDato, dateToISOString(date4YearsAgo))) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.mindreEnn4ÅrSiden');
         }
 

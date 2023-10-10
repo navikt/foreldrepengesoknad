@@ -1,14 +1,15 @@
 import PeriodeVisning from 'app/components/periode-visning/PeriodeVisning';
-import { TilretteleggingDTO } from 'app/types/Tilrettelegging';
+import { TilretteleggingPeriode } from 'app/types/Tilrettelegging';
 import { FunctionComponent } from 'react';
 
 interface Props {
-    perioder: TilretteleggingDTO[];
+    perioder: TilretteleggingPeriode[];
+    sisteDagForSvangerskapspenger: Date;
 }
 
-const PeriodeOppsummering: FunctionComponent<Props> = ({ perioder }) => {
+const PeriodeOppsummering: FunctionComponent<Props> = ({ perioder, sisteDagForSvangerskapspenger }) => {
     return perioder.map((periode) => {
-        return <PeriodeVisning periode={periode} />;
+        return <PeriodeVisning periode={periode} sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />;
     });
 };
 

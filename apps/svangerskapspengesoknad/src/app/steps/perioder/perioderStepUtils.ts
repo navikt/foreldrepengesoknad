@@ -1,4 +1,4 @@
-import { PeriodeMedVariasjon, Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { PeriodeMedVariasjon, Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
@@ -20,7 +20,7 @@ export const getMåSendeNySøknad = (
 export const getInitPerioderFormDataValues = (): Readonly<PerioderFormData> => ({
     [PerioderFormField.variertePerioder]: [
         {
-            type: Tilretteleggingstype.DELVIS,
+            type: TilretteleggingstypeOptions.DELVIS,
             fom: '',
             tom: '',
             stillingsprosent: '',

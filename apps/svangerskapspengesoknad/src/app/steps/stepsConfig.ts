@@ -3,7 +3,7 @@ import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil
 import { getForrigeTilrettelegging, getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from 'app/routes/routes';
 import { Søker } from 'app/types/Søker';
-import Tilrettelegging, { Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
 import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -160,7 +160,7 @@ export const getBackLinkForTilretteleggingSteg = (currentTilretteleggingId: stri
 export const getBackLinkForOppsummeringSteg = (tilrettelegging: Tilrettelegging[]) => {
     const sisteTilrettelegging = tilrettelegging[tilrettelegging?.length - 1];
     if (
-        sisteTilrettelegging.type === Tilretteleggingstype.DELVIS &&
+        sisteTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
         sisteTilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         return `${SøknadRoutes.PERIODER}/${sisteTilrettelegging.id}`;
@@ -181,7 +181,7 @@ export const getBackLinkForSkjemaSteg = (
     const forrigeTilrettelegging = getForrigeTilrettelegging(tilrettelegginger, currentTilretteleggingId);
     if (forrigeTilrettelegging) {
         if (
-            forrigeTilrettelegging.type === Tilretteleggingstype.DELVIS &&
+            forrigeTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
             forrigeTilrettelegging.delvisTilretteleggingPeriodeType ===
                 DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
         ) {
@@ -278,7 +278,7 @@ export const getNextRouteForTilretteleggingSteg = (
 
     let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
     if (
-        values.tilretteleggingType === Tilretteleggingstype.DELVIS &&
+        values.tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         nextRoute = `${SøknadRoutes.PERIODER}/${currentTilretteleggingId}`;

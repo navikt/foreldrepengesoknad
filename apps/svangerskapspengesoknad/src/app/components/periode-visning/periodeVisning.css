@@ -27,14 +27,22 @@
     margin-bottom: 0.5rem;
 }
 
+.periodeVisningInfoBox__arbeidsgiverNavn {
+    width: 40%;
+    text-align: right;
+}
+
 .periodeVisningInfoBox__stillingsprosent {
     margin-left: auto;
 }
 
-@media (max-width: var(mobile-breakpoint)) {
-    .periodeVisningInfoBox {
-        margin-left: -1rem;
-        margin-right: -1rem;
-        border-radius: 0;
+@media (max-width: 768px) {
+    .periodeVisningInfoBox__topRow {
+        display: block;
+    }
+    .periodeVisningInfoBox__arbeidsgiverNavn {
+        padding: 0.5rem 0;
+        width: 100%;
+        text-align: left;
     }
 }

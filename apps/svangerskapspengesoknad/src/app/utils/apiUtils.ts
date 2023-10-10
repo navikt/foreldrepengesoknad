@@ -1,6 +1,5 @@
 import { ISOStringToDate } from '@navikt/fp-common';
 import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
-import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { Barn, BarnDTO } from 'app/types/Barn';
@@ -13,30 +12,31 @@ import InformasjonOmUtenlandsopphold, {
 } from 'app/types/InformasjonOmUtenlandsopphold';
 import { Søker, SøkerDTO } from 'app/types/Søker';
 import { Søknad, SøknadDTO, Søknadstype } from 'app/types/Søknad';
-import Tilrettelegging, {
+import {
     Arbeidsforholdstype,
     DelvisTilretteleggingDTO,
+    HelTilretteleggingDTO,
     IngenTilretteleggingDTO,
     TilretteleggingDTO,
+    TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'app/types/Tilrettelegging';
-import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-const getArbeidsforholdForInnsending = (tilrettelegging: Tilrettelegging): ArbeidsforholdDTO => {
+const getArbeidsforholdForInnsending = (periode: TilretteleggingPeriode): ArbeidsforholdDTO => {
     if (
-        tilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
-        tilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG
+        periode.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
+        periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG
     ) {
         return {
-            type: tilrettelegging.arbeidsforhold.type,
-            risikoFaktorer: tilrettelegging.risikofaktorer!,
-            tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak!,
+            type: periode.arbeidsforhold.type,
+            risikoFaktorer: periode.risikofaktorer!,
+            tilretteleggingstiltak: periode.tilretteleggingstiltak!,
         };
     }
     return {
-        id: tilrettelegging.arbeidsforhold.arbeidsgiverId!,
-        type: tilrettelegging.arbeidsforhold.type,
+        id: periode.arbeidsforhold.arbeidsgiverId!,
+        type: periode.arbeidsforhold.type,
     };
 };
 
@@ -75,116 +75,65 @@ const mapBarnForInnsending = (barn: Barn): BarnDTO => {
         fødselsdatoer: barn.fødselsdato ? [ISOStringToDate(barn.fødselsdato)!] : [],
     };
 };
+
+const mapHelTilretteleggingForInnsending = (
+    periode: TilretteleggingPeriode,
+    arbeidsforhold: ArbeidsforholdDTO,
+): HelTilretteleggingDTO => {
+    return {
+        type: Tilretteleggingstype.HEL,
+        tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
+        arbeidsforhold,
+        vedlegg: periode.vedlegg,
+        behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
+    };
+};
+
 const mapDelvisTilretteleggingForInnsending = (
-    tilrettelegging: Tilrettelegging,
-    arbeidsforholdForInnsending: ArbeidsforholdDTO,
-    prosentStilling: number,
+    periode: TilretteleggingPeriode,
+    arbeidsforhold: ArbeidsforholdDTO,
 ): DelvisTilretteleggingDTO => {
     return {
         type: Tilretteleggingstype.DELVIS,
-        behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
-        arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
-        vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
-        tilrettelagtArbeidFom: ISOStringToDate(tilrettelegging.enPeriodeMedTilretteleggingFom)!,
-        stillingsprosent: prosentStilling,
+        tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
+        arbeidsforhold,
+        vedlegg: periode.vedlegg,
+        behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
+        stillingsprosent: periode.stillingsprosent,
     };
 };
 
 const mapIngenTilretteleggingForInnsending = (
-    tilrettelegging: Tilrettelegging,
-    arbeidsforholdForInnsending: ArbeidsforholdDTO,
+    periode: TilretteleggingPeriode,
+    arbeidsforhold: ArbeidsforholdDTO,
 ): IngenTilretteleggingDTO => {
     return {
         type: Tilretteleggingstype.INGEN,
-        behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
-        arbeidsforhold: arbeidsforholdForInnsending as ArbeidsforholdDTO,
-        vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
-        slutteArbeidFom: ISOStringToDate(tilrettelegging.enPeriodeMedTilretteleggingFom)!,
+        slutteArbeidFom: ISOStringToDate(periode.fom)!,
+        arbeidsforhold,
+        vedlegg: periode.vedlegg,
+        behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
     };
 };
 
-const mapDelvisTilretteleggingMedEnPeriodeForInnsending = (
-    tilrettelegging: Tilrettelegging,
-    arbeidsforholdForInnsending: ArbeidsforholdDTO,
-): DelvisTilretteleggingDTO | IngenTilretteleggingDTO => {
-    const prosentStilling = parseInt(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent!, 10);
-    const jobberDelvis = prosentStilling > 0;
-    if (jobberDelvis) {
-        return mapDelvisTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending, prosentStilling);
-    } else {
-        return mapIngenTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending);
+const mapTilretteleggingPeriodeForInnsending = (periode: TilretteleggingPeriode): TilretteleggingDTO => {
+    const mappedArbeid = getArbeidsforholdForInnsending(periode);
+    if (periode.type === Tilretteleggingstype.HEL) {
+        return mapHelTilretteleggingForInnsending(periode, mappedArbeid);
     }
-};
-
-const mappedTilretteleggingMedEnPeriodeForInnsending = (tilrettelegging: Tilrettelegging): TilretteleggingDTO => {
-    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging);
-
-    if (
-        tilrettelegging.type === Tilretteleggingstype.DELVIS &&
-        tilrettelegging.delvisTilretteleggingPeriodeType ===
-            DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN
-    ) {
-        return mapDelvisTilretteleggingMedEnPeriodeForInnsending(
-            tilrettelegging,
-            arbeidsforholdForInnsending as ArbeidsforholdDTO,
-        );
+    if (periode.type === Tilretteleggingstype.DELVIS) {
+        return mapDelvisTilretteleggingForInnsending(periode, mappedArbeid);
     }
-    return mapIngenTilretteleggingForInnsending(tilrettelegging, arbeidsforholdForInnsending as ArbeidsforholdDTO);
+    return mapIngenTilretteleggingForInnsending(periode, mappedArbeid);
 };
 
-const mappedTilretteleggingMedFlerePerioderForInnsending = (tilrettelegging: Tilrettelegging): TilretteleggingDTO[] => {
-    const arbeidsforholdForInnsending = getArbeidsforholdForInnsending(tilrettelegging);
-    const allePerioder = tilrettelegging.variertePerioder!.map((periode) => {
-        const prosentStilling = parseInt(periode.stillingsprosent!, 10);
-        const jobberDelvis = prosentStilling > 0;
-        if (jobberDelvis) {
-            return {
-                type: Tilretteleggingstype.DELVIS,
-                behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
-                arbeidsforhold: arbeidsforholdForInnsending,
-                vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
-                tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
-                stillingsprosent: prosentStilling,
-            } as DelvisTilretteleggingDTO;
-        } else {
-            return {
-                type: Tilretteleggingstype.INGEN,
-                behovForTilretteleggingFom: ISOStringToDate(tilrettelegging.behovForTilretteleggingFom)!,
-                arbeidsforhold: arbeidsforholdForInnsending,
-                vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
-                slutteArbeidFom: ISOStringToDate(periode.fom)!,
-            } as IngenTilretteleggingDTO;
-        }
+const mapTilretteleggingerForInnsending = (
+    tilretteleggingsPerioder: TilretteleggingPeriode[],
+): TilretteleggingDTO[] => {
+    console.log(tilretteleggingsPerioder);
+    return tilretteleggingsPerioder.map((p: TilretteleggingPeriode) => {
+        return mapTilretteleggingPeriodeForInnsending(p);
     });
-    return allePerioder;
-};
-
-export const sorterTilretteleggingsperioder = (p1: TilretteleggingDTO, p2: TilretteleggingDTO) => {
-    const p1Fom = p1.type === Tilretteleggingstype.DELVIS ? p1.tilrettelagtArbeidFom : p1.slutteArbeidFom;
-    const p2Fom = p2.type === Tilretteleggingstype.DELVIS ? p2.behovForTilretteleggingFom : p2.slutteArbeidFom;
-
-    return dayjs(p1Fom).isBefore(p2Fom, 'day') ? -1 : 1;
-};
-
-const mapTilretteleggingerForInnsending = (tilrettelegging: Tilrettelegging[]): TilretteleggingDTO[] => {
-    const tilretteleggingMedEnPeriode = tilrettelegging.filter(
-        (t) => !t.variertePerioder || t.variertePerioder.length === 0,
-    );
-    const tilretteleggingMedFlerePerioder = tilrettelegging.filter(
-        (t) => t.variertePerioder && t.variertePerioder.length > 0,
-    );
-    const mappedTilretteleggingerMedEnPeriode = tilretteleggingMedEnPeriode.map((t) => {
-        return mappedTilretteleggingMedEnPeriodeForInnsending(t);
-    });
-    const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedFlerePerioder.map((t) => {
-        return mappedTilretteleggingMedFlerePerioderForInnsending(t);
-    });
-    const allePerioder = [
-        ...mappedTilretteleggingerMedEnPeriode.flat(1),
-        ...mappedTilretteleggingAvFlerePerioder.flat(1),
-    ];
-    const sortertePerioder = allePerioder.sort(sorterTilretteleggingsperioder);
-    return sortertePerioder;
 };
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
@@ -258,10 +207,14 @@ const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
     return mappedSøker;
 };
 
-export const getSøknadForInnsending = (søknad: Søknad, intl: IntlShape): SøknadDTO => {
+export const getSøknadForInnsending = (
+    søknad: Søknad,
+    tilretteleggingsPerioder: TilretteleggingPeriode[],
+    intl: IntlShape,
+): SøknadDTO => {
     const utenlandsoppholdForInnsending = mapUtenlandsOppholdForInnsending(søknad.informasjonOmUtenlandsopphold, intl);
     const barnForInnsending = mapBarnForInnsending(søknad.barn);
-    const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(søknad.tilrettelegging);
+    const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilretteleggingsPerioder);
     const søkerForInnsending = mapSøkerForInnsending(søknad.søker);
     return {
         type: Søknadstype.SVANGERSKAPSPENGER,

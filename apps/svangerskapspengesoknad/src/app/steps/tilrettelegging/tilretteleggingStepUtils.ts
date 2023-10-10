@@ -3,15 +3,15 @@ import {
     TilretteleggingFormData,
     TilretteleggingFormField,
 } from './tilretteleggingStepFormConfig';
-import { Tilrettelegging, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 import { hasValue } from 'app/utils/validationUtils';
 
 export const getInitTilretteleggingFormDataValues = (): Readonly<TilretteleggingFormData> => ({
-    [TilretteleggingFormField.behovForTilretteleggingFom]: '',
+    [TilretteleggingFormField.behovForTilretteleggingFom]: undefined!,
     [TilretteleggingFormField.tilretteleggingType]: undefined!,
-    [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: undefined!,
+    [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: undefined,
     [TilretteleggingFormField.enPeriodeMedTilretteleggingFom]: undefined,
     [TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent]: undefined,
     [TilretteleggingFormField.enPeriodeMedTilretteleggingTomType]: undefined!,
@@ -48,7 +48,7 @@ export const mapOmTilretteleggingFormDataToState = (
     tilretteleggingForOppdatering: Tilrettelegging,
 ): Tilrettelegging[] => {
     const oppdaterteVarierendePerioder =
-        values.tilretteleggingType === Tilretteleggingstype.DELVIS &&
+        values.tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
             ? tilretteleggingForOppdatering?.variertePerioder
             : [];

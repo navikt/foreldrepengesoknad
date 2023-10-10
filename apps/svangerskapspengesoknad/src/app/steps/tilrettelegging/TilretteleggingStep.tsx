@@ -17,7 +17,7 @@ import {
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { Arbeidsforholdstype, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, TilOgMedDatoType, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
 import { FunctionComponent, useState } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -114,15 +114,15 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     arbeidsType: typeArbeid,
                 } as TilretteleggingFormQuestionsPayload);
                 const labelPeriodeFom =
-                    formValues.tilretteleggingType === Tilretteleggingstype.INGEN
+                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
                         ? 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'
                         : 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis';
                 const labelPeriodeTomType =
-                    formValues.tilretteleggingType === Tilretteleggingstype.INGEN
+                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
                         ? 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen'
                         : 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis';
                 const labelPeriodeTom =
-                    formValues.tilretteleggingType === Tilretteleggingstype.INGEN
+                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
                         ? 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.ingen'
                         : 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.delvis';
 
@@ -224,11 +224,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     radios={[
                                         {
                                             label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.delvis'),
-                                            value: Tilretteleggingstype.DELVIS,
+                                            value: TilretteleggingstypeOptions.DELVIS,
                                         },
                                         {
                                             label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.ingen'),
-                                            value: Tilretteleggingstype.INGEN,
+                                            value: TilretteleggingstypeOptions.INGEN,
                                         },
                                     ]}
                                     validate={validateTilrettelagtArbeidType(intl)}
@@ -328,7 +328,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     ]}
                                     validate={(value: string) => {
                                         if (!hasValue(value)) {
-                                            return formValues.tilretteleggingType === Tilretteleggingstype.DELVIS
+                                            return formValues.tilretteleggingType === TilretteleggingstypeOptions.DELVIS
                                                 ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis')
                                                 : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen');
                                         }

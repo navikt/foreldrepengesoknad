@@ -6,7 +6,7 @@ import {
     TilretteleggingFormField,
 } from './tilretteleggingStepFormConfig';
 import { hasValue } from 'app/utils/validationUtils';
-import { Arbeidsforholdstype, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, TilOgMedDatoType, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 
 export interface TilretteleggingFormQuestionsPayload extends TilretteleggingFormData {
     arbeidsType: Arbeidsforholdstype;
@@ -24,22 +24,22 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
         },
         [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: {
             isIncluded: ({ tilretteleggingType }) =>
-                hasValue(tilretteleggingType) && tilretteleggingType === Tilretteleggingstype.DELVIS,
+                hasValue(tilretteleggingType) && tilretteleggingType === TilretteleggingstypeOptions.DELVIS,
             isAnswered: ({ delvisTilretteleggingPeriodeType }) => hasValue(delvisTilretteleggingPeriodeType),
         },
 
         [TilretteleggingFormField.enPeriodeMedTilretteleggingFom]: {
             isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
-                (tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                (tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
                     delvisTilretteleggingPeriodeType ===
                         DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN) ||
-                tilretteleggingType === Tilretteleggingstype.INGEN,
+                tilretteleggingType === TilretteleggingstypeOptions.INGEN,
             isAnswered: ({ enPeriodeMedTilretteleggingFom }) => hasValue(enPeriodeMedTilretteleggingFom),
         },
 
         [TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent]: {
             isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
-                tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
                 delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
             isAnswered: ({ enPeriodeMedTilretteleggingStillingsprosent }) =>
                 hasValue(enPeriodeMedTilretteleggingStillingsprosent),
@@ -47,8 +47,8 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
 
         [TilretteleggingFormField.enPeriodeMedTilretteleggingTomType]: {
             isIncluded: ({ tilretteleggingType, delvisTilretteleggingPeriodeType }) =>
-                tilretteleggingType === Tilretteleggingstype.INGEN ||
-                (tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                tilretteleggingType === TilretteleggingstypeOptions.INGEN ||
+                (tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
                     delvisTilretteleggingPeriodeType ===
                         DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN),
             isAnswered: ({ enPeriodeMedTilretteleggingTomType }) => hasValue(enPeriodeMedTilretteleggingTomType),
@@ -59,8 +59,8 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
                 delvisTilretteleggingPeriodeType,
                 enPeriodeMedTilretteleggingTomType,
             }) =>
-                (tilretteleggingType === Tilretteleggingstype.INGEN ||
-                    (tilretteleggingType === Tilretteleggingstype.DELVIS &&
+                (tilretteleggingType === TilretteleggingstypeOptions.INGEN ||
+                    (tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
                         delvisTilretteleggingPeriodeType ===
                             DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN)) &&
                 enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO,
