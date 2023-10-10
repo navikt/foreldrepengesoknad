@@ -18,12 +18,12 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText('Kun bo i Norge'));
+        await user.click(screen.getByText('Kun bo i Norge'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        user.click(screen.getByText('Kun bodd i Norge'));
+        await user.click(screen.getByText('Kun bodd i Norge'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -33,11 +33,11 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Bo i utlandet helt eller delvis'));
+        await userEvent.click(screen.getByText('Bo i utlandet helt eller delvis'));
 
         expect(await screen.findByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
+        await userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
 
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
@@ -61,11 +61,11 @@ describe('<Utenlandsopphold>', () => {
         });
 
         expect(await screen.findByText('Legg til')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Legg til'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Kun bodd i Norge'));
+        await userEvent.click(screen.getByText('Kun bodd i Norge'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -75,15 +75,15 @@ describe('<Utenlandsopphold>', () => {
 
         expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Kun bo i Norge'));
+        await userEvent.click(screen.getByText('Kun bo i Norge'));
 
         expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Bodd i utlandet helt eller delvis'));
+        await userEvent.click(screen.getByText('Bodd i utlandet helt eller delvis'));
 
         expect(await screen.findByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
+        await userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
 
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
@@ -107,7 +107,7 @@ describe('<Utenlandsopphold>', () => {
         });
 
         expect(await screen.findByText('Legg til')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Legg til'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });

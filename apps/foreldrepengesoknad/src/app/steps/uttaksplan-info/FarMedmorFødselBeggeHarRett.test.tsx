@@ -23,7 +23,7 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 19 uker')).toBeInTheDocument();
 
         expect(screen.getByText('18 uker')).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 15 uker')).toBeInTheDocument();
 
         expect(screen.getByText('16 uker')).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 15 uker')).toBeInTheDocument();
 
         expect(screen.getByText('16 uker')).toBeInTheDocument();

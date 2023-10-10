@@ -31,11 +31,11 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
             expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
             expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-            userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+            await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
             expect(await screen.findByText(NÅR_ØNSKER_DU_Å_STARTE)).toBeInTheDocument();
 
-            userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
+            await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
 
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 
@@ -50,7 +50,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText(NÅR_FØRSTE_DAG)).toBeInTheDocument();
 
@@ -70,7 +70,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(await screen.findByText('Stønadsperioden din er forlenget med', { exact: false }));
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText(NÅR_ØNSKER_DU_Å_STARTE)).toBeInTheDocument();
         expect(await screen.findByText('Jeg tok ikke ut foreldrepenger før termin')).toBeInTheDocument();
