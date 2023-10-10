@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './Utenlandsopphold.stories';
-import { act } from 'react-dom/test-utils';
 
 const { Default } = composeStories(stories);
 
@@ -42,23 +41,17 @@ describe('<Utenlandsopphold>', () => {
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await act(async () => {
-            await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        });
+        await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
         userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await act(async () => {
-            await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText('Hvilket land skal du bo i?')).toBeInTheDocument();
         const hvilkeLandInput = screen.getByLabelText('Hvilket land skal du bo i?');
-        await act(async () => {
-            await userEvent.type(hvilkeLandInput, 'Aruba');
-        });
+        await userEvent.type(hvilkeLandInput, 'Aruba');
 
         expect(await screen.findByText('Legg til')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Legg til'));
@@ -88,23 +81,17 @@ describe('<Utenlandsopphold>', () => {
         expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
-        await act(async () => {
-            await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
-        await act(async () => {
-            await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText('Hvilket land bodde du i?')).toBeInTheDocument();
         const hvilkeLandInput = screen.getByLabelText('Hvilket land bodde du i?');
-        await act(async () => {
-            await userEvent.type(hvilkeLandInput, 'Aruba');
-        });
+        await userEvent.type(hvilkeLandInput, 'Aruba');
 
         expect(await screen.findByText('Legg til')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Legg til'));
