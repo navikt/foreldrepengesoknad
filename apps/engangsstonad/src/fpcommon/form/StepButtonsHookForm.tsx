@@ -1,0 +1,39 @@
+import { FieldValues, useFormContext } from 'react-hook-form';
+import { useCallback } from 'react';
+import StepButtons from 'fpcommon/components/StepButtons';
+
+interface Props<DATA_TYPE extends FieldValues> {
+    goToPreviousStep: () => void;
+    saveDataOnPreviousClick?: (data: DATA_TYPE) => void;
+    nextButtonText?: string;
+    nextButtonOnClick?: () => void;
+}
+
+const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
+    goToPreviousStep,
+    saveDataOnPreviousClick,
+    nextButtonText,
+    nextButtonOnClick,
+}: Props<DATA_TYPE>) => {
+    const {
+        getValues,
+        formState: { dirtyFields },
+    } = useFormContext<DATA_TYPE>();
+
+    const onBackButtonClick = useCallback(() => {
+        if (saveDataOnPreviousClick && Object.keys(dirtyFields).length > 0) {
+            saveDataOnPreviousClick(getValues());
+        }
+        goToPreviousStep();
+    }, [dirtyFields]);
+
+    return (
+        <StepButtons
+            goToPreviousStep={onBackButtonClick}
+            nextButtonText={nextButtonText}
+            nextButtonOnClick={nextButtonOnClick}
+        />
+    );
+};
+
+export default StepButtonsHookForm;
