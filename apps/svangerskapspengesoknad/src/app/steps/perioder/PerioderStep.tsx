@@ -1,4 +1,4 @@
-import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
 import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
@@ -27,6 +27,7 @@ import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleg
 import ArbeidsgiverVisning from '../tilrettelegging/components/ArbeidsgiverVisning';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 interface Props {
     id: string;
@@ -71,8 +72,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const minDatoPeriodeFom = currentTilrettelegging!.behovForTilretteleggingFom!;
-                const periodeDerSøkerErTilbakeIOpprinneligStilling = formValues.variertePerioder
-                    ? formValues.variertePerioder.find(
+                const periodeDerSøkerErTilbakeIOpprinneligStilling = formValues.varierendePerioder
+                    ? formValues.varierendePerioder.find(
                           (p) =>
                               hasValue(p.stillingsprosent) &&
                               parseInt(p.stillingsprosent!, 10) === opprinneligStillingsprosent,
@@ -110,29 +111,35 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                             </Block>
                             <FieldArray
                                 validateOnChange={false}
-                                name={PerioderFormField.variertePerioder}
+                                name={PerioderFormField.varierendePerioder}
                                 render={(arrayHelpers) =>
-                                    formValues.variertePerioder &&
-                                    formValues.variertePerioder.length > 0 &&
-                                    formValues.variertePerioder.map((p, index) => {
+                                    formValues.varierendePerioder &&
+                                    formValues.varierendePerioder.length > 0 &&
+                                    formValues.varierendePerioder.map((p, index) => {
                                         const måSøkeSendeNySøknad = getMåSendeNySøknad(
                                             periodeDerSøkerErTilbakeIOpprinneligStilling,
                                             p,
                                             opprinneligStillingsprosent,
                                         );
+                                        const fomInputDate =
+                                            formValues.varierendePerioder && formValues.varierendePerioder[index].fom;
+                                        const minDatoTom =
+                                            fomInputDate && isISODateString(fomInputDate)
+                                                ? ISOStringToDate(fomInputDate)
+                                                : undefined;
                                         return (
                                             <div key={index}>
                                                 <Block padBottom="xxl">
                                                     <PerioderFormComponents.DatePicker
-                                                        key={`variertePerioder.${index}.fom`}
+                                                        key={`varierendePerioder.${index}.fom`}
                                                         minDate={new Date(minDatoPeriodeFom)}
                                                         maxDate={sisteDagForSvangerskapspenger}
-                                                        name={`variertePerioder.${index}.fom`}
+                                                        name={`varierendePerioder.${index}.fom`}
                                                         label={intlUtils(intl, 'perioder.varierende.fom.label')}
                                                         validate={validatePeriodeFom(
                                                             intl,
                                                             index,
-                                                            formValues.variertePerioder,
+                                                            formValues.varierendePerioder,
                                                             currentTilrettelegging!.behovForTilretteleggingFom,
                                                             sisteDagForSvangerskapspenger,
                                                             barn.erBarnetFødt,
@@ -141,8 +148,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                 </Block>
                                                 <Block padBottom="xxl">
                                                     <PerioderFormComponents.RadioGroup
-                                                        name={`variertePerioder.${index}.tomType`}
-                                                        key={`variertePerioder.${index}.tomType`}
+                                                        name={`varierendePerioder.${index}.tomType`}
+                                                        key={`varierendePerioder.${index}.tomType`}
                                                         legend={intlUtils(intl, 'perioder.varierende.tomType.label')}
                                                         radios={[
                                                             {
@@ -174,27 +181,28 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                 <Block
                                                     padBottom="xxl"
                                                     visible={
-                                                        formValues.variertePerioder![index].tomType ===
+                                                        formValues.varierendePerioder![index].tomType ===
                                                         TilOgMedDatoType.VALGFRI_DATO
                                                     }
                                                 >
                                                     <PerioderFormComponents.DatePicker
-                                                        key={`variertePerioder.${index}.tom`}
-                                                        name={`variertePerioder.${index}.tom`}
+                                                        key={`varierendePerioder.${index}.tom`}
+                                                        name={`varierendePerioder.${index}.tom`}
                                                         label={intlUtils(intl, 'perioder.varierende.tom.label')}
                                                         validate={validatePeriodeTom(
                                                             intl,
                                                             index,
-                                                            formValues.variertePerioder,
+                                                            formValues.varierendePerioder,
                                                             sisteDagForSvangerskapspenger,
                                                             barn.fødselsdato,
                                                         )}
+                                                        minDate={minDatoTom}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
                                                     <PerioderFormComponents.NumberInput
-                                                        key={`variertePerioder.${index}.stillingsprosent`}
-                                                        name={`variertePerioder.${index}.stillingsprosent`}
+                                                        key={`varierendePerioder.${index}.stillingsprosent`}
+                                                        name={`varierendePerioder.${index}.stillingsprosent`}
                                                         label={intlUtils(
                                                             intl,
                                                             'perioder.varierende.stillingsprosent.label',
@@ -204,7 +212,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             opprinneligStillingsprosent,
                                                             måSøkeSendeNySøknad,
                                                             periodeDerSøkerErTilbakeIOpprinneligStilling,
-                                                            formValues.variertePerioder,
+                                                            formValues.varierendePerioder,
                                                         )}
                                                         onClick={(e: any) => e.preventDefault()}
                                                     />
@@ -238,10 +246,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         </Button>
                                                     </Block>
                                                 )}
-                                                {formValues.variertePerioder &&
-                                                    formValues.variertePerioder.length > 1 && <HorizontalLine />}
-                                                {formValues.variertePerioder &&
-                                                    index === formValues.variertePerioder.length - 1 && (
+                                                {formValues.varierendePerioder &&
+                                                    formValues.varierendePerioder.length > 1 && <HorizontalLine />}
+                                                {formValues.varierendePerioder &&
+                                                    index === formValues.varierendePerioder.length - 1 && (
                                                         <Block padBottom="xl">
                                                             <Button
                                                                 icon={<PlusIcon />}

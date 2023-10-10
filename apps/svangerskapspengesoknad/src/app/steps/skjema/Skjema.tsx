@@ -78,6 +78,8 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
             initialValues={getInitialSkjemaValuesFromState(currentTilrettelegging!)}
             onSubmit={handleOnSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
+                const hasPendingVedlegg = formValues.vedlegg && !!formValues.vedlegg.find((v) => v.pending);
+                const disableButtons = isSubmitting || hasPendingVedlegg;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -145,6 +147,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                             <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button
+                                        disabled={disableButtons}
                                         variant="secondary"
                                         as={Link}
                                         to={getBackLinkForSkjemaSteg(
@@ -159,7 +162,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                                     </Button>
                                     <Button
                                         type="submit"
-                                        disabled={isSubmitting}
+                                        disabled={disableButtons}
                                         loading={isSubmitting}
                                         onClick={() => {
                                             const antallVedleggAndreTilrettelegginger = tilrettelegging

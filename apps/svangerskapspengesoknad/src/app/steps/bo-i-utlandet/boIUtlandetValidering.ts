@@ -52,7 +52,7 @@ export const validateBostedUtlandFom =
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fraOgMedDato.gyldigDato');
         }
 
-        if (tom && fom && dayjs(tom).isSame(fom)) {
+        if (tom && fom && dayjs(tom).isSame(fom, 'day')) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fom.sammeSomTom');
         }
 
@@ -68,7 +68,7 @@ export const validateBostedUtlandFom =
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fom.førDagensDato');
         }
 
-        if (!oppgirIFortid && hasValue(fom) && dayjs(fom).isAfter(date1YearFromNow)) {
+        if (!oppgirIFortid && hasValue(fom) && dayjs(fom).isAfter(date1YearFromNow, 'day')) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fom.merEnn1ÅrFremITid');
         }
 
@@ -90,7 +90,7 @@ export const validateBostedUtlandTom =
         if (hasValue(tom) && !isISODateString(tom)) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.tilOgMedDato.gyldigDato');
         }
-        if (tom && fom && dayjs(fom).isSame(tom)) {
+        if (tom && fom && dayjs(fom).isSame(tom, 'day')) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.tom.sammeSomFom');
         }
 
@@ -105,7 +105,7 @@ export const validateBostedUtlandTom =
         if (!oppgirIFortid && tom && dayjs(tom).isBefore(dayjs(), 'day')) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.tom.førDagensDato');
         }
-        if (oppgirIFortid && hasValue(tom) && dayjs(tom).isBefore(date1YearAgo)) {
+        if (oppgirIFortid && hasValue(tom) && dayjs(tom).isBefore(date1YearAgo, 'day')) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.tom.merEnn1ÅrSiden');
         }
 

@@ -12,13 +12,13 @@ export const getMåSendeNySøknad = (
         !!periodeDerSøkerErTilbakeIOpprinneligStilling &&
         hasValue(currentPeriode.fom) &&
         hasValue(currentPeriode.stillingsprosent) &&
-        dayjs(currentPeriode.fom).isAfter(periodeDerSøkerErTilbakeIOpprinneligStilling.fom) &&
+        dayjs(currentPeriode.fom).isAfter(periodeDerSøkerErTilbakeIOpprinneligStilling.fom, 'day') &&
         parseInt(currentPeriode.stillingsprosent!, 10) < opprinneligStillingsprosent
     );
 };
 
 export const getInitPerioderFormDataValues = (): Readonly<PerioderFormData> => ({
-    [PerioderFormField.variertePerioder]: [
+    [PerioderFormField.varierendePerioder]: [
         {
             type: TilretteleggingstypeOptions.DELVIS,
             fom: '',
@@ -32,10 +32,10 @@ export const getInitPerioderFormDataValues = (): Readonly<PerioderFormData> => (
 export const getPerioderInitialValues = (tilrettelegging: Tilrettelegging): PerioderFormData => {
     const initValues = getInitPerioderFormDataValues();
     return {
-        variertePerioder:
-            tilrettelegging.variertePerioder && tilrettelegging.variertePerioder.length > 0
-                ? tilrettelegging.variertePerioder
-                : initValues.variertePerioder,
+        varierendePerioder:
+            tilrettelegging.varierendePerioder && tilrettelegging.varierendePerioder.length > 0
+                ? tilrettelegging.varierendePerioder
+                : initValues.varierendePerioder,
     };
 };
 
@@ -47,7 +47,7 @@ export const mapPerioderFormDataToState = (
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
     const oppdatert = {
         ...tilretteleggingForOppdatering,
-        variertePerioder: values.variertePerioder,
+        varierendePerioder: values.varierendePerioder,
     } as Tilrettelegging;
 
     const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {

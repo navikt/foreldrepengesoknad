@@ -130,7 +130,6 @@ const mapTilretteleggingPeriodeForInnsending = (periode: TilretteleggingPeriode)
 const mapTilretteleggingerForInnsending = (
     tilretteleggingsPerioder: TilretteleggingPeriode[],
 ): TilretteleggingDTO[] => {
-    console.log(tilretteleggingsPerioder);
     return tilretteleggingsPerioder.map((p: TilretteleggingPeriode) => {
         return mapTilretteleggingPeriodeForInnsending(p);
     });

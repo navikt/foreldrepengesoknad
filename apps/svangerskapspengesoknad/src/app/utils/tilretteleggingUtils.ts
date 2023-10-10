@@ -1,7 +1,6 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { SkjemaelementFeil, intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, {
-    PeriodeMedVariasjon,
     TilOgMedDatoType,
     TilretteleggingPeriode,
     Tilretteleggingstype,
@@ -70,10 +69,6 @@ export const validateTilretteleggingPeriodetype =
         return undefined;
     };
 
-export const sorterPerioderMedVariasjon = (p1: PeriodeMedVariasjon, p2: PeriodeMedVariasjon) => {
-    return dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1;
-};
-
 const mapTilretteleggingTilPeriode = (
     tilrettelegging: Tilrettelegging,
     type: Tilretteleggingstype,
@@ -94,10 +89,28 @@ const mapTilretteleggingTilPeriode = (
     };
 };
 
+const getPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
+    sistePeriode: TilretteleggingPeriode,
+    sisteDagForSvangerskapspenger: Date,
+): TilretteleggingPeriode => {
+    return {
+        type: Tilretteleggingstype.HEL,
+        behovForTilretteleggingFom: sistePeriode.behovForTilretteleggingFom,
+        fom: dateToISOString(dayjs(sistePeriode.tom).add(1, 'd').toDate()),
+        tom: dateToISOString(sisteDagForSvangerskapspenger),
+        arbeidsforhold: sistePeriode.arbeidsforhold,
+        vedlegg: sistePeriode.vedlegg,
+        risikofaktorer: sistePeriode.risikofaktorer,
+        tilretteleggingstiltak: sistePeriode.tilretteleggingstiltak,
+        stillingsprosent: 100,
+    };
+};
+
 const mappedTilretteleggingMedEnPeriode = (
     tilrettelegging: Tilrettelegging,
     sisteDagForSvangerskapspenger: Date,
-): TilretteleggingPeriode => {
+): TilretteleggingPeriode[] => {
+    const perioder = [] as TilretteleggingPeriode[];
     const stillingsprosent =
         tilrettelegging.type === TilretteleggingstypeOptions.DELVIS
             ? parseInt(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent!, 10)
@@ -111,14 +124,19 @@ const mappedTilretteleggingMedEnPeriode = (
         tilrettelegging.type === TilretteleggingstypeOptions.DELVIS
             ? Tilretteleggingstype.DELVIS
             : Tilretteleggingstype.INGEN;
-    return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent, fom, tom);
+    const mappedPeriode = mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent, fom, tom);
+    perioder.push(mappedPeriode);
+    if (!dayjs(mappedPeriode.tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
+        perioder.push(getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(mappedPeriode, sisteDagForSvangerskapspenger));
+    }
+    return perioder;
 };
 
-const mappedTilretteleggingMedFlerePerioder = (
+const mappedTilretteleggingMedVarierendePerioder = (
     tilrettelegging: Tilrettelegging,
     sisteDagForSvangerskapspenger: Date,
 ): TilretteleggingPeriode[] => {
-    const allePerioder = tilrettelegging.variertePerioder!.map((periode) => {
+    const allePerioder = tilrettelegging.varierendePerioder!.map((periode) => {
         const stillingsprosent = parseInt(periode.stillingsprosent, 10);
         let type =
             periode.type === TilretteleggingstypeOptions.DELVIS
@@ -135,11 +153,23 @@ const mappedTilretteleggingMedFlerePerioder = (
                 : periode.tom!;
         return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent, periode.fom, tom);
     });
+    const sistePeriode = allePerioder[allePerioder.length - 1];
+    if (!dayjs(sistePeriode.tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
+        allePerioder.push(
+            getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(sistePeriode, sisteDagForSvangerskapspenger),
+        );
+    }
     return allePerioder;
 };
 
 export const sorterTilretteleggingsperioder = (p1: TilretteleggingPeriode, p2: TilretteleggingPeriode) => {
-    return dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1;
+    if (dayjs(p1.fom).isBefore(p2.fom, 'day')) {
+        return -1;
+    }
+    if (dayjs(p1.fom).isSame(p2.fom, 'day')) {
+        return dayjs(p1.tom).isBefore(p2.tom, 'day') ? -1 : 1;
+    }
+    return 1;
 };
 
 export const mapTilretteleggingTilPerioder = (
@@ -147,22 +177,23 @@ export const mapTilretteleggingTilPerioder = (
     sisteDagForSvangerskapspenger: Date,
 ): TilretteleggingPeriode[] => {
     const tilretteleggingMedEnPeriode = tilrettelegging.filter(
-        (t) => !t.variertePerioder || t.variertePerioder.length === 0,
+        (t) => !t.varierendePerioder || t.varierendePerioder.length === 0,
     );
-    const tilretteleggingMedVariertePerioder = tilrettelegging.filter(
-        (t) => t.variertePerioder && t.variertePerioder.length > 0,
+    const tilretteleggingMedVarierendePerioder = tilrettelegging.filter(
+        (t) => t.varierendePerioder && t.varierendePerioder.length > 0,
     );
     const mappedTilretteleggingerMedEnPeriode = tilretteleggingMedEnPeriode.map((t) => {
         return mappedTilretteleggingMedEnPeriode(t, sisteDagForSvangerskapspenger);
     });
-    const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedVariertePerioder.map((t) => {
-        return mappedTilretteleggingMedFlerePerioder(t, sisteDagForSvangerskapspenger);
+    const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedVarierendePerioder.map((t) => {
+        return mappedTilretteleggingMedVarierendePerioder(t, sisteDagForSvangerskapspenger);
     });
     const allePerioder = [
         ...mappedTilretteleggingerMedEnPeriode.flat(1),
         ...mappedTilretteleggingAvFlerePerioder.flat(1),
     ];
     const sortertePerioder = allePerioder.sort(sorterTilretteleggingsperioder);
+
     return sortertePerioder;
 };
 
@@ -170,10 +201,10 @@ export const getNesteDagEtterSistePeriode = (
     formvalues: Partial<PerioderFormData>,
     sisteDagForSvangerskapspenger: Date,
 ): string => {
-    if (!formvalues.variertePerioder || formvalues.variertePerioder.length === 0) {
+    if (!formvalues.varierendePerioder || formvalues.varierendePerioder.length === 0) {
         return '';
     }
-    const alleTomDatoer = formvalues.variertePerioder
+    const alleTomDatoer = formvalues.varierendePerioder
         .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN)
         .map((periode) => {
             if (periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {

@@ -15,8 +15,8 @@ interface Props {
 const PeriodeVisning: FunctionComponent<Props> = ({ periode, sisteDagForSvangerskapspenger }) => {
     const intl = useIntl();
 
-    const tilTreUkerFørFødsel = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger);
-    const labelText = tilTreUkerFørFødsel
+    const tilTreUkerFørFødsel = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger, 'd');
+    const labelText = !tilTreUkerFørFødsel
         ? intlUtils(intl, 'oppsummering.periode.fraTil', {
               fraDato: formatDate(periode.fom),
               tilDato: formatDate(periode.tom),

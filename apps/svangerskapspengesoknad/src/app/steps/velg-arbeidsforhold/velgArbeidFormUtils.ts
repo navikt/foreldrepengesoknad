@@ -42,7 +42,7 @@ export const getNæringTilretteleggingOption = (
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
-        variertePerioder: næringTilretteleggingFraState?.variertePerioder || [],
+        varierendePerioder: næringTilretteleggingFraState?.varierendePerioder || [],
         type: næringTilretteleggingFraState?.type || undefined!,
         enPeriodeMedTilretteleggingFom: næringTilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
         enPeriodeMedTilretteleggingStillingsprosent:
@@ -65,7 +65,7 @@ export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilretteleggi
         },
         vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
-        variertePerioder: frilansTilretteleggingFraState?.variertePerioder || [],
+        varierendePerioder: frilansTilretteleggingFraState?.varierendePerioder || [],
         type: frilansTilretteleggingFraState?.type || undefined!,
         enPeriodeMedTilretteleggingFom: frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
         enPeriodeMedTilretteleggingStillingsprosent:
@@ -99,7 +99,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
                         : intlUtils(intl, 'privat.arbeidsgiver'),
                 opprinneligstillingsprosent: forhold.stillingsprosent,
             },
-            variertePerioder: tilretteleggingFraState?.variertePerioder || [],
+            varierendePerioder: tilretteleggingFraState?.varierendePerioder || [],
             vedlegg: tilretteleggingFraState?.vedlegg || [],
             behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
             type: tilretteleggingFraState?.type || undefined!,
