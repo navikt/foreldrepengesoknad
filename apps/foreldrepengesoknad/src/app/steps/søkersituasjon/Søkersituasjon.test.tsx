@@ -12,10 +12,10 @@ describe('<Søkersituasjon>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText('Fødsel'));
 
         expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Mor'));
+        await userEvent.click(screen.getByText('Mor'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -24,10 +24,10 @@ describe('<Søkersituasjon>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText('Fødsel'));
 
         expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Medmor'));
+        await userEvent.click(screen.getByText('Medmor'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -36,10 +36,10 @@ describe('<Søkersituasjon>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Adopsjon'));
+        await userEvent.click(screen.getByText('Adopsjon'));
 
         expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Mor'));
+        await userEvent.click(screen.getByText('Mor'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -48,10 +48,10 @@ describe('<Søkersituasjon>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Adopsjon'));
+        await userEvent.click(screen.getByText('Adopsjon'));
 
         expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Medmor'));
+        await userEvent.click(screen.getByText('Medmor'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
