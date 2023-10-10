@@ -26,6 +26,7 @@ import { hasValue } from 'app/utils/validationUtils';
 import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleggingValidation';
 import ArbeidsgiverVisning from '../tilrettelegging/components/ArbeidsgiverVisning';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
 
 interface Props {
     id: string;
@@ -63,14 +64,6 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
-    const uferdigDelvisTilretteleggingInput = {
-        fom: '',
-        tom: '',
-        stillingsprosent: '',
-        tomType: undefined!,
-        type: TilretteleggingstypeOptions.DELVIS,
-    } as PeriodeMedVariasjon;
-
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -85,6 +78,13 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                               parseInt(p.stillingsprosent!, 10) === opprinneligStillingsprosent,
                       )
                     : undefined;
+                const uferdigDelvisTilretteleggingInput = {
+                    fom: getNesteDagEtterSistePeriode(formValues, sisteDagForSvangerskapspenger),
+                    tom: '',
+                    stillingsprosent: '',
+                    tomType: undefined!,
+                    type: TilretteleggingstypeOptions.DELVIS,
+                } as PeriodeMedVariasjon;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
