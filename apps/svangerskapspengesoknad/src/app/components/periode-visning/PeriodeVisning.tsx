@@ -1,51 +1,38 @@
 import { FunctionComponent } from 'react';
-import { Arbeidsforholdstype, TilretteleggingDTO, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { TilretteleggingPeriode } from 'app/types/Tilrettelegging';
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { IntlShape, useIntl } from 'react-intl';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import { Søknad } from 'app/types/Søknad';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './periodeVisning.css';
+import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
 
 interface Props {
-    periode: TilretteleggingDTO;
+    periode: TilretteleggingPeriode;
+    sisteDagForSvangerskapspenger: Date;
 }
 
-const getArbeidsgiverNavnForVirksomhet = (alleArbeidsforhold: Arbeidsforhold[], id: string) => {
-    const arbeidsgiver = alleArbeidsforhold.find((arbeid) => arbeid.id && arbeid.id === id);
-    return arbeidsgiver?.arbeidsgiverNavn;
-};
-
-const getArbeidsgiverNavn = (
-    periode: TilretteleggingDTO,
-    søkerinfo: Søkerinfo,
-    søknad: Søknad,
-    intl: IntlShape,
-): string => {
-    let navnArbeid: string | undefined = '';
-    if (
-        periode.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET ||
-        periode.arbeidsforhold.type === Arbeidsforholdstype.PRIVAT
-    ) {
-        navnArbeid = getArbeidsgiverNavnForVirksomhet(søkerinfo.arbeidsforhold, periode.arbeidsforhold.id);
-    } else if (periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG) {
-        navnArbeid = søknad.søker.selvstendigNæringsdrivendeInformasjon?.navnPåNæringen;
-    } else {
-        navnArbeid = intlUtils(intl, 'inntektsinformasjon.frilansArbeid.tittel');
-    }
-    return navnArbeid || 'Arbeidsgiver';
-};
-
-const PeriodeVisning: FunctionComponent<Props> = ({ periode }) => {
+const PeriodeVisning: FunctionComponent<Props> = ({ periode, sisteDagForSvangerskapspenger }) => {
     const intl = useIntl();
-    const søknad = useSøknad();
-    const søkerinfo = useSøkerinfo();
-    const fom = periode.type === Tilretteleggingstype.INGEN ? periode.slutteArbeidFom : periode.tilrettelagtArbeidFom;
-    const arbeidsgiverNavn = getArbeidsgiverNavn(periode, søkerinfo, søknad, intl);
+
+    const tilTreUkerFørFødsel = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger);
+    const labelText = tilTreUkerFørFødsel
+        ? intlUtils(intl, 'oppsummering.periode.fraTil', {
+              fraDato: formatDate(periode.fom),
+              tilDato: formatDate(periode.tom),
+          })
+        : intlUtils(intl, 'oppsummering.periode.fraTilFødsel', {
+              fraDato: formatDate(periode.fom),
+          });
+    let stillingsprosentText = intlUtils(intl, 'oppsummering.periode.stillingsprosent', {
+        stillingsprosent: periode.stillingsprosent,
+    });
+    if (periode.stillingsprosent === 0) {
+        stillingsprosentText = intlUtils(intl, 'oppsummering.periode.ikkeJobbe');
+    }
+    if (periode.stillingsprosent === periode.arbeidsforhold.opprinneligstillingsprosent) {
+        stillingsprosentText = intlUtils(intl, 'oppsummering.periode.tilbakeIFullJobb');
+    }
     const bem = bemUtils('periodeVisningInfoBox');
 
     return (
@@ -53,21 +40,15 @@ const PeriodeVisning: FunctionComponent<Props> = ({ periode }) => {
             <li>
                 <div className={bem.block}>
                     <div className={bem.element('topRow')}>
-                        <Label>{intlUtils(intl, 'oppsummering.periode.fra', { dato: formatDate(fom) })}</Label>
-                        <BodyShort>
-                            {periode.type === Tilretteleggingstype.DELVIS && periode.stillingsprosent && (
-                                <BodyShort>{arbeidsgiverNavn}</BodyShort>
-                            )}
-                        </BodyShort>
+                        <Label>{labelText}</Label>
+                        <div className={bem.element('arbeidsgiverNavn')}>
+                            <BodyShort>
+                                <BodyShort>{periode.arbeidsforhold.navn.toUpperCase()}</BodyShort>
+                            </BodyShort>
+                        </div>
                     </div>
                     <Block padBottom="m">
-                        {periode.type === Tilretteleggingstype.DELVIS && periode.stillingsprosent && (
-                            <BodyShort className={bem.element('stillingsprosent')}>
-                                {intlUtils(intl, 'oppsummering.periode.stillingsprosent', {
-                                    stillingsprosent: periode.stillingsprosent,
-                                })}
-                            </BodyShort>
-                        )}
+                        <BodyShort className={bem.element('stillingsprosent')}>{stillingsprosentText}</BodyShort>
                     </Block>
                 </div>
             </li>

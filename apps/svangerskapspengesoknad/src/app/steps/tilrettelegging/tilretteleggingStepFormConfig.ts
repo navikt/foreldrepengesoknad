@@ -1,5 +1,5 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { TilOgMedDatoType, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 
 export enum DelivisTilretteleggingPeriodeType {
     'SAMMME_PERIODE_FREM_TIL_TERMIN' = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
@@ -20,7 +20,7 @@ export enum TilretteleggingFormField {
 
 export interface TilretteleggingFormData {
     [TilretteleggingFormField.behovForTilretteleggingFom]: string;
-    [TilretteleggingFormField.tilretteleggingType]: Tilretteleggingstype;
+    [TilretteleggingFormField.tilretteleggingType]: TilretteleggingstypeOptions;
     [TilretteleggingFormField.delvisTilretteleggingPeriodeType]: DelivisTilretteleggingPeriodeType | undefined;
     [TilretteleggingFormField.enPeriodeMedTilretteleggingFom]: string | undefined;
     [TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent]: string | undefined;

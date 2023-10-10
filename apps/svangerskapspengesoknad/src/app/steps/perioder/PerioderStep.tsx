@@ -8,7 +8,7 @@ import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './p
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
 import { FunctionComponent } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -68,7 +68,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
         tom: '',
         stillingsprosent: '',
         tomType: undefined!,
-        type: Tilretteleggingstype.DELVIS,
+        type: TilretteleggingstypeOptions.DELVIS,
     } as PeriodeMedVariasjon;
 
     return (

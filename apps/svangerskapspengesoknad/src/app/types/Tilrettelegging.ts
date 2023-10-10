@@ -2,9 +2,15 @@ import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/til
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 
+export enum TilretteleggingstypeOptions {
+    'INGEN' = 'ingen',
+    'DELVIS' = 'delvis',
+}
+
 export enum Tilretteleggingstype {
     'INGEN' = 'ingen',
     'DELVIS' = 'delvis',
+    'HEL' = 'hel',
 }
 
 export enum Arbeidsforholdstype {
@@ -25,19 +31,32 @@ export enum TilOgMedDatoType {
     VALGFRI_DATO = 'VALGFRI_DATO',
     TRE_UKER_FØR_TERMIN = 'TRE_UKER_FØR_TERMIN',
 }
-export interface PeriodeMedVariasjon {
+
+export interface TilretteleggingPeriode {
     type: Tilretteleggingstype;
+    behovForTilretteleggingFom: string;
+    fom: string;
+    tom: string;
+    stillingsprosent: number;
+    arbeidsforhold: ArbeidsforholdForTilrettelegging;
+    vedlegg: string[];
+    risikofaktorer?: string;
+    tilretteleggingstiltak?: string;
+}
+
+export interface PeriodeMedVariasjon {
+    type: TilretteleggingstypeOptions;
     tomType: TilOgMedDatoType;
     fom: string;
     tom?: string;
-    stillingsprosent?: string;
+    stillingsprosent: string;
 }
 
 export interface Tilrettelegging {
     id: string;
-    behovForTilretteleggingFom?: string;
+    behovForTilretteleggingFom: string;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    type?: Tilretteleggingstype;
+    type: TilretteleggingstypeOptions;
     enPeriodeMedTilretteleggingFom?: string;
     enPeriodeMedTilretteleggingStillingsprosent?: string;
     enPeriodeMedTilretteleggingTomType?: TilOgMedDatoType;
@@ -66,6 +85,11 @@ export interface IngenTilretteleggingDTO extends TilretteleggingDTOBase {
     slutteArbeidFom: Date;
 }
 
-export type TilretteleggingDTO = DelvisTilretteleggingDTO | IngenTilretteleggingDTO;
+export interface HelTilretteleggingDTO extends TilretteleggingDTOBase {
+    type: Tilretteleggingstype.HEL;
+    tilrettelagtArbeidFom: Date;
+}
+
+export type TilretteleggingDTO = DelvisTilretteleggingDTO | IngenTilretteleggingDTO | HelTilretteleggingDTO;
 
 export default Tilrettelegging;

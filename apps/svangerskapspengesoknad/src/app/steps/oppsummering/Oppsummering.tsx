@@ -32,6 +32,8 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import SøknadRoutes from 'app/routes/routes';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
+import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
+import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -51,7 +53,16 @@ const Oppsummering = () => {
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
     const bem = bemUtils('oppsummering');
-    const søknadForInnsending = useMemo(() => getSøknadForInnsending(søknad, intl), [søknad, intl]);
+    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
+    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato!);
+    const allePerioderMedFomOgTom = useMemo(
+        () => mapTilretteleggingTilPerioder(søknad.tilrettelegging, sisteDagForSvangerskapspenger),
+        [søknad.tilrettelegging, sisteDagForSvangerskapspenger],
+    );
+    const søknadForInnsending = useMemo(
+        () => getSøknadForInnsending(søknad, allePerioderMedFomOgTom, intl),
+        [søknad, intl],
+    );
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
         setFormSubmitted(true);
@@ -175,7 +186,10 @@ const Oppsummering = () => {
                                         <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
                                     </Accordion.Header>
                                     <Accordion.Content>
-                                        <PeriodeOppsummering perioder={søknadForInnsending.tilrettelegging} />
+                                        <PeriodeOppsummering
+                                            perioder={allePerioderMedFomOgTom}
+                                            sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+                                        />
                                     </Accordion.Content>
                                 </Accordion.Item>
                             </Accordion>

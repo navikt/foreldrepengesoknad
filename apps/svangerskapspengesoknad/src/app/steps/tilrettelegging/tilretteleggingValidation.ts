@@ -1,6 +1,6 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { formatDate, intlUtils } from '@navikt/fp-common';
-import { Arbeidsforholdstype, PeriodeMedVariasjon, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, PeriodeMedVariasjon, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { hasValue, validateTextAreaInput } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
@@ -89,11 +89,11 @@ export const validateSammePeriodeFremTilTerminFom =
         sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
         tom: string | undefined,
-        tilretteleggingstype: Tilretteleggingstype,
+        tilretteleggingstype: TilretteleggingstypeOptions,
     ) =>
     (value: string) => {
         if (!hasValue(value)) {
-            return tilretteleggingstype === Tilretteleggingstype.DELVIS
+            return tilretteleggingstype === TilretteleggingstypeOptions.DELVIS
                 ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis')
                 : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.ingen');
         }
