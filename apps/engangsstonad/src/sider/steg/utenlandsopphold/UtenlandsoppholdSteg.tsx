@@ -4,11 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
 
-import Form from 'fpcommon/form/Form';
-import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
-import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
+import { Form, ErrorSummaryHookForm, RadioGroupPanel, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
-import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';

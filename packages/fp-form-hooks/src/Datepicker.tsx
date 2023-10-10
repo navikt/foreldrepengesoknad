@@ -8,6 +8,7 @@ import { getError, getValidationRules } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
+// TODO Flytt konstantar til anna pakke
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
 export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
 

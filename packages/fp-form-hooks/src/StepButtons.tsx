@@ -9,6 +9,8 @@ interface Props {
     nextButtonOnClick?: () => void;
 }
 
+// TODO Denne skal ikkje ligga i denne pakka!
+
 const StepButtons: FunctionComponent<Props> = ({ goToPreviousStep, nextButtonText, nextButtonOnClick }) => {
     return (
         <StepButtonWrapper>

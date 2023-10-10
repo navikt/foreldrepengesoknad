@@ -32,6 +32,18 @@
 
     "DokumentasjonSteg.MinstEttDokumentAdopsjon": "Du må laste opp bekreftelse på adopsjon",
     "DokumentasjonSteg.MinstEttDokumentTermin": "Du må laste opp bekreftelse på termindato",
+    "DokumentasjonSteg.HvordanTaBilder": "Hvordan ta bilde av vedlegg med mobilen",
+    "TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi": "Du må oppgi terminbekreftelse dato",
+    "TerminDokPanel.Validering.TerminBekreftelsedato": "TerminBekreftelsedato må være en gyldig dato på formatet dd.mm.åååå",
+    "TerminDokPanel.Validering.TerminBekreftelsedato.MåVæreIdagEllerTidligere": "Datoen på terminbekreftelsen kan ikke være frem i tid.",
+    "TerminDokPanel.Validering.TerminBekreftelsedato.DuMåVæreIUke22": "Terminbekreftelsen må vise at du er i 22. svangerskapsuke eller senere",
+    "TerminDokPanel.Terminbekreftelsesdato": "Når fikk du terminbekreftelsen?",
+    "TerminDokPanel.Vedlegg.Terminbekreftelse": "Last opp bekreftelse på termindato",
+    "TerminDokPanel.Vedlegg.Terminbekreftelse.Info": "Terminbekreftelsen får du hos jordmor eller legen din. Den må være datert i 22. svangerskapsuke eller senere. Hvis barnet er født i utlandet og ikke er registrert i folkeregisteret, må du legge ved fødselsattesten til barnet.",
+    "TerminDokPanel.Dok.Storrelse": "Filen kan ikke være større enn 9MB og kan være i formatene pdf, png og jpg.",
+    "AdopsjonDokPanel.Vedlegg.Adopsjon": "Bekreftelse på adopsjon",
+    "AdopsjonDokPanel.Veilederpanel.Text": "Du må legge ved bekreftelse på datoen du overtok omsorgen for barnet, og adopsjonsbevilling hvis du har mottatt dette.",
+    "AdopsjonDokPanel.Dok.Storrelse": "Filen kan ikke være større enn 9MB og kan være i formatene pdf, png og jpg.",
 
     "OppsummeringSteg.Validering.BekrefteOpplysninger": "Du må bekrefte at du har oppgitt rigtige opplysninger",
 
@@ -39,7 +51,6 @@
     "invalidFormatErrorKey.adopsjonsdato": "Adopsjonsdato må være en gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.fødselsdato": "Fødseldato må være en gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.termindato": "Termindato må være en gyldig dato på formatet dd.mm.åååå",
-    "invalidFormatErrorKey.terminBekreftelsedato": "TerminBekreftelsedato må være en gyldig dato på formatet dd.mm.åååå",
     "medlemmskap.radiobutton.boNorge": "Kun bo i Norge",
     "medlemmskap.radiobutton.vareNorge": "Være i Norge",
     "omBarnet.adopsjon.spørsmål.adoptertFraUtland": "Adopterer du fra utlandet?",
@@ -62,8 +73,7 @@
     "omBarnet.adopsjon.spørsmål.stebarnsadopsjondato": "Fra hvilken dato adopterer du din ektefelles barn?",
     "omBarnet.adopsjon.text.ja": "Ja",
     "omBarnet.adopsjon.text.nei": "Nei",
-    "omBarnet.adopsjon.veilederpanel.adopsjon.text": "Du må legge ved bekreftelse på datoen du overtok omsorgen for barnet, og adopsjonsbevilling hvis du har mottatt dette.",
-    "omBarnet.dok.storrelse": "Filen kan ikke være større enn 9MB og kan være i formatene pdf, png og jpg.",
+
     "omBarnet.radiobutton.ettbarn": "Ett barn",
     "omBarnet.radiobutton.flere": "Tre eller flere barn",
     "omBarnet.radiobutton.ja": "Ja",
@@ -150,7 +160,7 @@
     "søknad.oppsummering": "Oppsummering",
 
     "søknad.termindato": "Termindato",
-    "søknad.terminbekreftelsesdato": "Når fikk du terminbekreftelsen?",
+
     "søknad.utenlandsopphold": "Utenlandsopphold",
     "søknad.utenlandsopphold.fremtidig": "Skal bo i utlandet",
     "søknad.utenlandsopphold.tidligere": "Har bodd i utlandet",
@@ -215,9 +225,7 @@
     "valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn15ÅrTilbake": "Du kan ikke søke om engangsstønad for barn som er eldre enn 15 år",
     "valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
     "valideringsfeil.omBarnet.overtaomsorgdato.duMåOppgi": "Du må oppgi overta omsorg dato",
-    "valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi": "Du må oppgi terminbekreftelse dato",
-    "valideringsfeil.omBarnet.terminbekreftelseDato.duMåVæreIUke22": "Terminbekreftelsen må vise at du er i 22. svangerskapsuke eller senere",
-    "valideringsfeil.omBarnet.terminbekreftelseDato.måVæreIdagEllerTidligere": "Datoen på terminbekreftelsen kan ikke være frem i tid.",
+
     "valideringsfeil.omBarnet.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.omBarnet.termindato.duMåVæreIUke22": "Du kan tidligst søke når du er i 22. svangerskapsuke",
     "valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag": "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
@@ -246,9 +254,7 @@
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.label": "Last opp fil",
     "vedlegg.lastoppknapp.flere.label": "Last opp flere filer",
-    "vedlegg.adopsjon": "Bekreftelse på adopsjon",
-    "vedlegg.terminbekreftelse": "Last opp bekreftelse på termindato",
-    "vedlegg.terminbekreftelse.info": "Terminbekreftelsen får du hos jordmor eller legen din. Den må være datert i 22. svangerskapsuke eller senere. Hvis barnet er født i utlandet og ikke er registrert i folkeregisteret, må du legge ved fødselsattesten til barnet.",
+
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.passordbeskyttet": "Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
     "vedlegg.passordbeskyttet.flereFeil": "{filename} - Vedlegget du forsøker å laste opp er passordbeskyttet. Du må endre vedlegget slik at det ikke er passordbeskyttet eller laste opp et annet vedlegg.",
@@ -256,7 +262,7 @@
     "vedlegg.tomFil.flereFeil": "{filename} - Du kan ikke laste opp en tom fil",
     "vedlegg.virus": "Vedlegget inneholder noe vi ikke vil ha",
     "vedlegg.virus.flereFeil": "{filename} - Vedlegget inneholder noe vi ikke vil ha",
-    "vedlegg.hvordanTaBilder": "Hvordan ta bilde av vedlegg med mobilen",
+
     "velkommen.button.fortsettSøknad": "Fortsett med søknaden",
 
     "velkommen.erMann.boblelenketekst": "Du finner søknaden for far her.",

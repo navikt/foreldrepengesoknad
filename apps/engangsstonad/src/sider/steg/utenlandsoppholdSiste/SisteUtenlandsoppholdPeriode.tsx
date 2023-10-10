@@ -6,8 +6,7 @@ import { Button, VStack } from '@navikt/ds-react';
 import { date1YearAgo, dateRangesCollide, dateToday } from '@navikt/fp-common';
 
 import { createCountryOptions } from 'fpcommon/util/countryUtils';
-import Datepicker from 'fpcommon/form/Datepicker';
-import Select from 'fpcommon/form/Select';
+import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import {
     validateDatesNotEqual,
     isRequired,

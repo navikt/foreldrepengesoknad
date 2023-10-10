@@ -1,9 +1,9 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
-import IntlProvider from '../../../intl/IntlProvider';
+import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
-import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
 import { Action } from 'appData/EsDataContext';
 import { initAmplitude } from 'fpcommon/amplitude/amplitude';

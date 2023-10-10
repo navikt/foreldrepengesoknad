@@ -4,11 +4,8 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 
-import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
-import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
-import Form from 'fpcommon/form/Form';
+import { RadioGroupPanel, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired } from 'fpcommon/validering/valideringsregler';
-import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
