@@ -1,5 +1,6 @@
 import { ISOStringToDate } from '@navikt/fp-common';
 import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
+import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { Barn, BarnDTO } from 'app/types/Barn';
@@ -137,7 +138,7 @@ const mapTilretteleggingerForInnsending = (
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
     if (næring) {
-        const hattVarigEndring = næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår;
+        const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næring.tidsperiode.fom));
 
         const mappedNæring = {
             næringstype: næring.næringstype,
@@ -147,21 +148,34 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
             },
             næringsinntekt: næring.næringsinntekt,
             navnPåNæringen: næring.navnPåNæringen,
-            organisasjonsnummer: næring.organisasjonsnummer,
+            organisasjonsnummer: næring.organisasjonsnummer ? næring.organisasjonsnummer : undefined,
             registrertINorge: næring.registrertINorge,
-            registrertILand: næring.registrertILand,
+            registrertILand: næring.registrertILand ? næring.registrertILand : undefined,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene:
                 næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
-            hattVarigEndringAvNæringsinntektSiste4Kalenderår: hattVarigEndring,
         };
-        if (hattVarigEndring) {
+        if (erNyoppstartet) {
             return {
                 ...mappedNæring,
-                endringAvNæringsinntektInformasjon: {
-                    dato: ISOStringToDate(næring.varigEndringDato)!,
-                    næringsinntektEtterEndring: næring.varigEndringInntektEtterEndring!,
-                    forklaring: næring.varigEndringBeskrivelse!,
-                },
+                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene:
+                    næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
+                oppstartsdato: næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                    ? næring.oppstartsdato
+                    : undefined,
+            };
+        }
+        if (!erNyoppstartet) {
+            return {
+                ...mappedNæring,
+                hattVarigEndringAvNæringsinntektSiste4Kalenderår:
+                    næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
+                endringAvNæringsinntektInformasjon: næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                    ? {
+                          dato: ISOStringToDate(næring.varigEndringDato)!,
+                          næringsinntektEtterEndring: næring.varigEndringInntektEtterEndring!,
+                          forklaring: næring.varigEndringBeskrivelse!,
+                      }
+                    : undefined,
             };
         }
         return mappedNæring;
