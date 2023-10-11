@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactNode } from 'react';
 import DocumentTitle from 'react-document-title';
 import { LinkIcon } from '@navikt/aksel-icons';
-import { VeilederProps } from '@navikt/fp-common/lib/components/veileder/Veileder';
+import { VeilederProps } from '@navikt/fp-common';
 import { BodyShort, Heading, Ingress, VStack } from '@navikt/ds-react';
 import { Locale, LanguageToggle, Sidebanner } from '@navikt/fp-common';
 import { Språkkode } from 'intl/types';

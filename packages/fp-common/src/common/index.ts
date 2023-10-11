@@ -29,3 +29,5 @@ export * from './utils/localeUtils';
 export * from './utils/dateUtils';
 export * from './utils/validationUtils';
 export { guid } from './utils/guid';
+
+export type { VeilederProps } from './components/veileder/Veileder';
