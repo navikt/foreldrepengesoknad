@@ -65,7 +65,7 @@ describe('morFodselValidering', () => {
         expect(resultat).toBeUndefined();
     });
 
-    it('skal tillate persmisjonsstartdato 12 uker før termin selv om termin er før fødsel, når termin er oppgitt', () => {
+    it('skal tillate permisjonsstartdato 12 uker før termin selv om termin er før fødsel, når termin er oppgitt', () => {
         const familiehendelsedato = dayjs('2023-06-15').toDate();
         const termindato = dayjs('2023-06-13').toDate();
         const skalIkkeHaUttakFørTermin = false;
@@ -81,7 +81,7 @@ describe('morFodselValidering', () => {
         expect(resultat).toBeUndefined();
     });
 
-    it('skal ikke tillate persmisjonsstartdato mer enn 12 uker før termin når termin er oppgitt', () => {
+    it('skal ikke tillate permisjonsstartdato mer enn 12 uker før termin når termin er oppgitt', () => {
         const familiehendelsedato = dayjs('2023-06-15').toDate();
         const termindato = dayjs('2023-06-13').toDate();
         const skalIkkeHaUttakFørTermin = false;

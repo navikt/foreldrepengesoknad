@@ -79,7 +79,19 @@ export function getFørsteMuligeUttaksdag(
         }
     }
 
+    const termindatoMinus12Uker =
+        termindato !== undefined
+            ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'weeks')
+            : undefined;
+    const erFødselsdatoFørTermindatoMinus12Uker =
+        termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker) : false;
+
+    if (erFødselsdatoFørTermindatoMinus12Uker) {
+        return Uttaksdagen(familiehendelsesdato).denneEllerForrige();
+    }
+
     const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(datoÅRegneFra)).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );

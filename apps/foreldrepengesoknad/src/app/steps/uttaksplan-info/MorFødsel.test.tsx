@@ -24,7 +24,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL_IKKE_DELT_UTTAK)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
 
         expect(
@@ -48,7 +48,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
             ),
         ).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('67.6 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('67.6 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 64.6 uker')).toBeInTheDocument();
 
         expect(
@@ -70,7 +70,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
@@ -90,10 +90,10 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         render(<UttaksplanMedDeltUttak />);
         expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(IKKE_FORELDREPENGER_FØR_TERMIN));
+        await userEvent.click(screen.getByText(IKKE_FORELDREPENGER_FØR_TERMIN));
         expect(
             await screen.findByText(
                 'Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.',
@@ -105,7 +105,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         render(<UttaksplanMedDeltUttak />);
         expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('66 uker med 100 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('66 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
@@ -150,7 +150,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('80 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('80 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
         expect(screen.getByText('3 + 19 uker')).toBeInTheDocument();

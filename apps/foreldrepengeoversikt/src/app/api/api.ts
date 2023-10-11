@@ -75,14 +75,10 @@ const useGetAnnenPartsVedtak = (
     };
 };
 
-const useGetDokumenter = (fnr: string) => {
-    const { data, error, requestStatus } = useGetRequest<Dokument[]>(
-        '/dokument/alle',
-        {
-            config: { withCredentials: true },
-        },
-        fnr,
-    );
+const useGetDokumenter = (saksnr: string) => {
+    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/dokument/alle', {
+        config: { withCredentials: true, params: { saksnummer: saksnr } },
+    });
 
     return {
         dokumenterData: data,

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 export const skalViseInfoOmPrematuruker = (
     fødselsdato: Date | undefined,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ): boolean => {
     if (fødselsdato === undefined || termindato === undefined || situasjon !== 'fødsel') {
         return false;
@@ -14,4 +14,11 @@ export const skalViseInfoOmPrematuruker = (
         dayjs(fødselsdato).add(7, 'weeks').add(3, 'days').isBefore(dayjs(termindato), 'days') &&
         fødselsdatoEtterEllerLikFørsteJuli
     );
+};
+
+export const getSamtidigUttaksprosent = (
+    gradertPeriode: boolean | undefined,
+    stillingsprosent: string | undefined,
+): string => {
+    return gradertPeriode && stillingsprosent ? (100 - parseInt(stillingsprosent, 10)).toString() : '100';
 };

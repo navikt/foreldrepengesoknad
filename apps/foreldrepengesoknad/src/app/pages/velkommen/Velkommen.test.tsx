@@ -56,7 +56,7 @@ describe('<Velkommen>', () => {
         const user = userEvent.setup();
         render(<HarOpprettetFPSakFødselMedBarnetIPDL />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Evig Lykkelig')).toBeInTheDocument();
         expect(await screen.findByText('Født', { exact: false })).toBeInTheDocument();
@@ -85,11 +85,11 @@ describe('<Velkommen>', () => {
         render(<HarOpprettetFPSakFødselMedBarnetIPDL />);
         expect(await screen.findByText('Evig Lykkelig')).toBeInTheDocument();
         expect(
-            screen.queryByText('For å komme videre, må du velge et av alternativene ovenfor.')
+            screen.queryByText('For å komme videre, må du velge et av alternativene ovenfor.'),
         ).not.toBeInTheDocument();
         await user.click(screen.getByText(START_SØKNADEN));
         expect(
-            await screen.findByText('For å komme videre, må du velge et av alternativene ovenfor.')
+            await screen.findByText('For å komme videre, må du velge et av alternativene ovenfor.'),
         ).toBeInTheDocument();
     });
 
@@ -282,7 +282,7 @@ describe('<Velkommen>', () => {
     it('skal vise velkommen-side med sak på fødsel tvillinger der den ene er død. Navn skal ikke vises', async () => {
         render(<HarSakMedEnLevendeOgEnDødfødtTvilling />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Tvillinger født', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
@@ -294,7 +294,7 @@ describe('<Velkommen>', () => {
         MockDate.set(new Date('2023-04-01'));
         render(<HarSakMedEtDødtBarn />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Barn født', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
@@ -307,7 +307,7 @@ describe('<Velkommen>', () => {
         MockDate.set(new Date('2022-12-10'));
         render(<HarSakMedEtDødtBarn />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Barn født', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
@@ -320,7 +320,7 @@ describe('<Velkommen>', () => {
     it('skal vise velkommen-side med sak på adopsjon der barnet døde. Navn skal ikke vises', async () => {
         render(<HarSakAdopsjonMedEtDødtBarn />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Barn adoptert', { exact: false })).toBeInTheDocument();
         expect(await screen.findByText('Saksnummer: 123456')).toBeInTheDocument();
@@ -332,7 +332,7 @@ describe('<Velkommen>', () => {
     it('skal vise velkommen-side med sak på tvillinger som lever. Navn skal  vises', async () => {
         render(<HarSakMedOppgittBarnTvillingerAlleLever />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Oriental og Vakker')).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
@@ -341,7 +341,7 @@ describe('<Velkommen>', () => {
     it('skal vise velkommen-side med sak på tvillinger som der en er dødfødt. Navn skal ikkevises', async () => {
         render(<HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Tvillinger født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();
@@ -350,7 +350,7 @@ describe('<Velkommen>', () => {
     it('skal vise velkommen-side med sak på trillinger som der en er død. Navn skal ikkevises', async () => {
         render(<HarSakMedTrillingerEnErDød />);
         expect(
-            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false })
+            await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
         ).toBeInTheDocument();
         expect(await screen.findByText('Trillinger født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText(SØKNADEN_MIN_GJELDER_ET_ANNET_BARN)).toBeInTheDocument();

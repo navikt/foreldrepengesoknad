@@ -19,6 +19,10 @@ import { deleteAttachment, isAttachmentWithError } from 'app/utils/attachmentUti
 import { getListOfUniqueSkjemanummer } from 'app/pages/ettersending/EttersendingPage';
 import { Attachment } from 'app/types/Attachment';
 import ScrollToTop from '../scroll-to-top/ScrollToTop';
+import { useQuery } from '@tanstack/react-query';
+import Environment from 'app/Environment';
+import { useState } from 'react';
+import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
 
 interface Props {
     ettersendelseErSendt: boolean;
@@ -42,19 +46,43 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         const submitData = mapMinidialogInputTilDTO(values, minidialog.saksnr, sakstype, minidialog.dialogId);
         onSubmit(submitData);
     };
+    const [fetchCounter, setFetchCounter] = useState(0);
+    const [allowedToFetch, setAllowedToFetch] = useState(true);
+
+    const minidialogQuery = useQuery<MinidialogInnslag[]>({
+        queryKey: ['minidialog'],
+        queryFn: async () => {
+            setFetchCounter((prev) => prev + 1);
+            return await fetch(`${Environment.REST_API_URL}/minidialog`, { credentials: 'include' }).then((response) =>
+                response.json(),
+            );
+        },
+        refetchInterval: (data) => {
+            if (!data || (data && data.find((innslag) => innslag.dialogId === minidialog?.dialogId))) {
+                return 1000;
+            }
+
+            if (ettersendelseErSendt) {
+                setAllowedToFetch(false);
+            }
+            return false;
+        },
+        enabled: ettersendelseErSendt && fetchCounter < 30 && allowedToFetch,
+    });
+
+    if (!minidialogQuery.isLoading) {
+        console.log(minidialogQuery.data);
+    }
 
     if (ettersendelseErSendt) {
         return (
             <div>
                 <ScrollToTop />
-                <Block padBottom="l">
-                    <Alert variant="success"> {intlUtils(intl, 'miniDialog.kvittering.svaretErSendt')}</Alert>
-                </Block>
-                <Block padBottom="l">
-                    <Link to={`/sak/${minidialog.saksnr}`}>
-                        {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
-                    </Link>
-                </Block>
+                <MinidialogVenterPåSvar
+                    fetchCounter={fetchCounter}
+                    allowedToFetch={allowedToFetch}
+                    saksnummer={minidialog.saksnr}
+                />
             </div>
         );
     }

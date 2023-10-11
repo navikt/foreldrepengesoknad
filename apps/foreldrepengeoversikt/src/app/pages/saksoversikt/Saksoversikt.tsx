@@ -1,4 +1,3 @@
-// import { Loader } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
@@ -16,7 +15,6 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { AxiosError } from 'axios';
-import dayjs from 'dayjs';
 
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -47,10 +45,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
 
     const aktiveMinidialogerForSaken = minidialogerData
-        ? minidialogerData.filter(
-              ({ gyldigTil, saksnr }) =>
-                  saksnr === gjeldendeSak.saksnummer && dayjs(gyldigTil).isSameOrAfter(new Date(), 'days'),
-          )
+        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
         : undefined;
     const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
@@ -79,18 +74,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
-
-    // if (
-    //     !annenPartVedtakIsSuspended &&
-    //     annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
-    //     !annenPartsVedtakError
-    // ) {
-    //     return (
-    //         <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-    //             <Loader type="XXL" />
-    //         </div>
-    //     );
-    // }
 
     return (
         <div className={bem.block}>

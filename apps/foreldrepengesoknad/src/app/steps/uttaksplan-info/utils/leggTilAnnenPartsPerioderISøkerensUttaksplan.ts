@@ -5,6 +5,7 @@ import {
 } from 'uttaksplan/builder/uttaksplanbuilderUtils';
 import { isUttakAnnenPart, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import { Periodene } from './Periodene';
+import { getSamtidigUttaksprosent } from 'app/utils/uttaksplanInfoUtils';
 
 export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     annenPartsPerioder: Periode[],
@@ -14,11 +15,11 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(
         uttaksplan,
-        annenPartsPerioder
+        annenPartsPerioder,
     );
 
     if (normaliserteAnnenPartsPerioder.length > 0) {
@@ -32,11 +33,14 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
                 if (overlappendePeriodeAnnenPart !== undefined && isUttakAnnenPart(overlappendePeriodeAnnenPart)) {
                     if (!p.ønskerSamtidigUttak) {
                         p.ønskerSamtidigUttak = true;
-                        p.samtidigUttakProsent = '100';
+                        p.samtidigUttakProsent = getSamtidigUttaksprosent(p.gradert, p.stillingsprosent);
                     }
                     if (!overlappendePeriodeAnnenPart.ønskerSamtidigUttak) {
                         overlappendePeriodeAnnenPart.ønskerSamtidigUttak = true;
-                        overlappendePeriodeAnnenPart.samtidigUttakProsent = '100';
+                        overlappendePeriodeAnnenPart.samtidigUttakProsent = getSamtidigUttaksprosent(
+                            overlappendePeriodeAnnenPart.gradert,
+                            overlappendePeriodeAnnenPart.stillingsprosent,
+                        );
                     }
                 }
             }
@@ -46,14 +50,14 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
                 normaliserteEgnePerioder,
                 normaliserteAnnenPartsPerioder,
                 familiehendelsedato,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             ),
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsedato,
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor,
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
     }
 

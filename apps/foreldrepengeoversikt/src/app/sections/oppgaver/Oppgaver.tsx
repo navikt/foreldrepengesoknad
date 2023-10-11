@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, Loader } from '@navikt/ds-react';
+import { BodyShort, Loader } from '@navikt/ds-react';
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { AxiosError } from 'axios';
@@ -24,20 +24,13 @@ const Oppgaver: React.FunctionComponent<Props> = ({ minidialogerData, minidialog
 
     return (
         <div className={bem.block}>
-            <div className={bem.element('header')}>
-                <div>
-                    <BodyLong>{intlUtils(intl, 'oppgaver.informasjonTilBruker')}</BodyLong>
-                </div>
-            </div>
-            <>
-                {minidialogerData.map((minidialog) => (
-                    <OppgaveLenkepanel
-                        key={guid()}
-                        tittel={intlUtils(intl, 'oppgaver.tittel.tilbakebetaling')}
-                        minidialogInnslag={minidialog}
-                    />
-                ))}
-            </>
+            {minidialogerData.map((minidialog) => (
+                <OppgaveLenkepanel
+                    key={guid()}
+                    tittel={intlUtils(intl, 'oppgaver.tittel.tilbakebetaling')}
+                    minidialogInnslag={minidialog}
+                />
+            ))}
         </div>
     );
 };

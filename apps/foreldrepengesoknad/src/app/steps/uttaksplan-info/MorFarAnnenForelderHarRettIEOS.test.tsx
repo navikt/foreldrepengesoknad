@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
@@ -31,11 +31,11 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
             expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
             expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-            userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+            await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
             expect(await screen.findByText(NÅR_ØNSKER_DU_Å_STARTE)).toBeInTheDocument();
 
-            userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
+            await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
 
             expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 
@@ -50,15 +50,13 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText(NÅR_FØRSTE_DAG)).toBeInTheDocument();
 
         const førsteDagInput = screen.getByLabelText(NÅR_FØRSTE_DAG);
-        await act(async () => {
-            await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
-        });
-        userEvent.tab();
+        await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
+        await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(await screen.findByText('uker med flerbarnsuker', { exact: false }));
         expect(screen.queryByText('Fellesperiode', { exact: false })).not.toBeInTheDocument();
@@ -70,16 +68,14 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(await screen.findByText('Stønadsperioden din er forlenget med', { exact: false }));
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText(NÅR_ØNSKER_DU_Å_STARTE)).toBeInTheDocument();
         expect(await screen.findByText('Jeg tok ikke ut foreldrepenger før termin')).toBeInTheDocument();
 
         const førsteDagInput = screen.getByLabelText(NÅR_ØNSKER_DU_Å_STARTE);
-        await act(async () => {
-            await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
-        });
-        userEvent.tab();
+        await userEvent.type(førsteDagInput, dayjs().format('15.09.2021'));
+        await userEvent.tab();
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 
         expect(screen.queryByText('Fellesperiode', { exact: false })).not.toBeInTheDocument();

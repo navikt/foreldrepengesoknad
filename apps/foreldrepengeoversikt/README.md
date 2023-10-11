@@ -4,7 +4,7 @@ Kildekoden til frontend-appen for ny innsynsløsning for foreldrepengesøknad, e
 
 # Komme i gang
 
-For å kjøre opp appen i dev:
+For å kjøre opp appen lokalt:
 
 1.  `pnpm install`.
 2.  `pnpm run dev-api`.
@@ -17,7 +17,3 @@ Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepe
 ## For NAV-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.
-
-### Icon License
-
-This project uses [Streamline Icons](http://www.streamlineicons.com/). If you use nav-frontend-moduler in your project please adhere to the [Streamline Icons license agreement](http://www.streamlineicons.com/license.html).
