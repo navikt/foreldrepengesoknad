@@ -4,9 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PictureScanningGuide, Step } from '@navikt/fp-common';
 
-import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
-import Form from 'fpcommon/form/Form';
-import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
+import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
@@ -79,7 +77,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                     <ExpansionCard size="small" aria-label="">
                         <ExpansionCard.Header>
                             <ExpansionCard.Title>
-                                <FormattedMessage id="vedlegg.hvordanTaBilder" />
+                                <FormattedMessage id="DokumentasjonSteg.HvordanTaBilder" />
                             </ExpansionCard.Title>
                         </ExpansionCard.Header>
                         <ExpansionCard.Content>

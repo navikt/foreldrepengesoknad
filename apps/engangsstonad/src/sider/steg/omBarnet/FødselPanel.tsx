@@ -4,9 +4,7 @@ import dayjs from 'dayjs';
 import { Radio } from '@navikt/ds-react';
 import { erMindreEnn3UkerSiden, sisteDatoBarnetKanVæreFødt, sisteMuligeTermindato } from '@navikt/fp-common';
 
-import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
-import Select from 'fpcommon/form/Select';
-import Datepicker from 'fpcommon/form/Datepicker';
+import { RadioGroupPanel, Select, Datepicker } from '@navikt/fp-form-hooks';
 import { isAfterToday, isRequired, isValidDate } from 'fpcommon/validering/valideringsregler';
 import { Fødsel } from 'types/OmBarnet';
 

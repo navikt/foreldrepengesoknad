@@ -15,14 +15,14 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
         <VStack gap="4">
             <div>
                 <Label>
-                    <FormattedMessage id="vedlegg.adopsjon" />
+                    <FormattedMessage id="AdopsjonDokPanel.Vedlegg.Adopsjon" />
                 </Label>
                 <BodyLong>
-                    <FormattedMessage id="omBarnet.adopsjon.veilederpanel.adopsjon.text" />
+                    <FormattedMessage id="AdopsjonDokPanel.Veilederpanel.Text" />
                 </BodyLong>
             </div>
             <BodyLong>
-                <FormattedMessage id="omBarnet.dok.storrelse" />
+                <FormattedMessage id="AdopsjonDokPanel.Dok.Storrelse" />
             </BodyLong>
             <FileUploader
                 attachmentType={AttachmentType.TERMINBEKREFTELSE}

@@ -2,11 +2,11 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import OmBarnetSteg from './OmBarnetSteg';
-import IntlProvider from '../../../intl/IntlProvider';
+import IntlProvider from 'intl/IntlProvider';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { Action, EsDataType } from 'appData/EsDataContext';
 import withRouter from 'storybookHelpers/withRouter';
-import EsContextStorybookHelper from '../../../storybookHelpers/EsContextStorybookHelper';
+import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
 import { initAmplitude } from 'fpcommon/amplitude/amplitude';
 

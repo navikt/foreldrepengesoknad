@@ -5,9 +5,7 @@ import { Radio } from '@navikt/ds-react';
 import { Kjønn, hasValue, sisteMuligeDatoForOvertaOmsorg } from '@navikt/fp-common';
 
 import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
-import RadioGroupPanel from 'fpcommon/form/RadioGroupPanel';
-import Datepicker from 'fpcommon/form/Datepicker';
-import Select from 'fpcommon/form/Select';
+import { RadioGroupPanel, Datepicker, Select } from '@navikt/fp-form-hooks';
 import { isRequired, isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
 import { Adopsjon } from 'types/OmBarnet';
 

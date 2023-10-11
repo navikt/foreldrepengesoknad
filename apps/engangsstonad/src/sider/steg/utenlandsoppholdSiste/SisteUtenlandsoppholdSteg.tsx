@@ -5,10 +5,8 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 
-import ErrorSummaryHookForm from 'fpcommon/form/ErrorSummaryHookForm';
+import { ErrorSummaryHookForm, StepButtonsHookForm, Form } from '@navikt/fp-form-hooks';
 import SisteUtenlandsoppholdPeriode from './SisteUtenlandsoppholdPeriode';
-import StepButtonsHookForm from 'fpcommon/form/StepButtonsHookForm';
-import Form from 'fpcommon/form/Form';
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';

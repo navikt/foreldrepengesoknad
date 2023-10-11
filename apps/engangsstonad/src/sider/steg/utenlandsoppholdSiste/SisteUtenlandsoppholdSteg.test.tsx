@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './SisteUtenlandsoppholdSteg.stories';
 import dayjs from 'dayjs';
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from 'fpcommon/form/Datepicker';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-form-hooks';
 
 const { Default } = composeStories(stories);
 
