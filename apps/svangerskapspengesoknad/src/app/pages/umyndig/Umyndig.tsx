@@ -8,11 +8,7 @@ import './umyndig.css';
 import { lenker } from 'app/util/lenker';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 
-export interface UmyndigProps {
-    fornavn: string;
-}
-
-const Umyndig: React.FunctionComponent<UmyndigProps> = ({}) => {
+const Umyndig: React.FunctionComponent = () => {
     const bem = bemUtils('umyndig');
     const intl = useIntl();
     useDocumentTitle(intlUtils(intl, 'søknad.pageheading'));

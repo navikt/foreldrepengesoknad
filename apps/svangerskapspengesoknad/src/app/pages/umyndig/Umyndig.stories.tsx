@@ -1,5 +1,5 @@
 import { StoryFn } from '@storybook/react';
-import Umyndig, { UmyndigProps } from './Umyndig';
+import Umyndig from './Umyndig';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import SvangerskapspengerContextProvider from 'app/context/SvangerskapspengerContext';
 import IntlProvider from 'app/intl/IntlProvider';
@@ -13,17 +13,15 @@ export default {
     decorators: [withRouter],
 };
 
-const Template: StoryFn<any> = (args: UmyndigProps) => {
+const Template: StoryFn<any> = () => {
     return (
         <SvangerskapspengerContextProvider>
             <IntlProvider locale="nb">
-                <Umyndig {...args}></Umyndig>;
+                <Umyndig></Umyndig>;
             </IntlProvider>
         </SvangerskapspengerContextProvider>
     );
 };
 
 export const Default = Template.bind({});
-Default.args = {
-    fornavn: 'Vakker',
-};
+Default.args = {};

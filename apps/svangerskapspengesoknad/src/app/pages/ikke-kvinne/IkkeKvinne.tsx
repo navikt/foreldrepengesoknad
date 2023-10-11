@@ -8,11 +8,7 @@ import './ikkeKvinne.css';
 import { lenker } from 'app/util/lenker';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 
-export interface IkkeKvinneProps {
-    fornavn: string;
-}
-
-const IkkeKvinne: React.FunctionComponent<IkkeKvinneProps> = ({}) => {
+const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');
     const intl = useIntl();
     useDocumentTitle(intlUtils(intl, 'søknad.pageheading'));

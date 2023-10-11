@@ -21,7 +21,8 @@ const ArbeidsgiverVisning: FunctionComponent<Props> = ({
     egenNæring,
 }) => {
     switch (currentTilrettelegging.arbeidsforhold.type) {
-        case Arbeidsforholdstype.VIRKSOMHET || Arbeidsforholdstype.PRIVAT:
+        case Arbeidsforholdstype.VIRKSOMHET:
+        case Arbeidsforholdstype.PRIVAT:
             const currentArbeidsForhold = arbeidsforhold.find(
                 (a) => a.arbeidsgiverNavn === currentTilrettelegging?.arbeidsforhold.navn,
             );
