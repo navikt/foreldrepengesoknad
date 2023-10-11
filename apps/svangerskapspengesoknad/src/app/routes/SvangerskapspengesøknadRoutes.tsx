@@ -170,17 +170,16 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
     const { tilrettelegging } = useSøknad();
     const navigate = useNavigate();
     const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
-    const erMyndig = true; // TODO: state.søkerinfo.person?.erMyndig;
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
 
     useEffect(() => {
-        if (currentRoute && erMyndig && harGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (currentRoute && harGodkjentVilkår && isFirstTimeLoadingApp) {
             setIsFirstTimeLoadingApp(false);
             if (isAvailable(currentRoute, harGodkjentVilkår)) {
                 navigate(currentRoute);
             }
         }
-    }, [currentRoute, erMyndig, harGodkjentVilkår, navigate, isFirstTimeLoadingApp]);
+    }, [currentRoute, harGodkjentVilkår, navigate, isFirstTimeLoadingApp]);
 
     return (
         <Routes>
