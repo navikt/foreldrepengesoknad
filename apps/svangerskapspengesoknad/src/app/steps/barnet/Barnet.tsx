@@ -7,11 +7,10 @@ import { cleanupOmBarnetFormData, getBarnetInitialValues, mapOmBarnetFormDataToS
 import barnetQuestionsConfig from './barnetQuestionsConfig';
 import stepConfig from '../stepsConfig';
 import actionCreator from 'app/context/action/actionCreator';
-import { Button } from '@navikt/ds-react';
+import { Button, ReadMore } from '@navikt/ds-react';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
 import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { ReadMore } from '@navikt/ds-react';
 import { niMånederFremITid, halvannetÅrSiden, etÅrSiden } from 'app/utils/dateUtils';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 

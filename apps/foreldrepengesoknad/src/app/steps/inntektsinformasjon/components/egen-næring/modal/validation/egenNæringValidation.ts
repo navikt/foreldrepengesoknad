@@ -1,6 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { hasValue, intlUtils, validateStringAsNumberInput } from '@navikt/fp-common';
-import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { isDateABeforeDateB, isDateInTheFuture } from 'app/utils/dateUtils';
 import { erGyldigNorskOrgnummer } from 'app/utils/numberUtils';

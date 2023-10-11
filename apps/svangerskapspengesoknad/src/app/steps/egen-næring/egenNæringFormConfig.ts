@@ -1,5 +1,4 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Næringstype } from 'app/types/EgenNæring';
 
 export enum EgenNæringFormField {
@@ -21,7 +20,7 @@ export enum EgenNæringFormField {
 }
 
 export interface EgenNæringFormData {
-    [EgenNæringFormField.egenNæringType]: Næringstype | undefined;
+    [EgenNæringFormField.egenNæringType]: Næringstype;
     [EgenNæringFormField.egenNæringNavn]: string;
     [EgenNæringFormField.egenNæringRegistrertINorge]: YesOrNo;
     [EgenNæringFormField.egenNæringOrgnr]: string;
@@ -39,7 +38,7 @@ export interface EgenNæringFormData {
 }
 
 export const initialEgenNæringFormData: EgenNæringFormData = {
-    [EgenNæringFormField.egenNæringType]: undefined,
+    [EgenNæringFormField.egenNæringType]: undefined!,
     [EgenNæringFormField.egenNæringNavn]: '',
     [EgenNæringFormField.egenNæringRegistrertINorge]: YesOrNo.UNANSWERED,
     [EgenNæringFormField.egenNæringOrgnr]: '',

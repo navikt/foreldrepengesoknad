@@ -24,12 +24,12 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
     return {
         næringstyper: [formValues.egenNæringType!],
         tidsperiode: {
-            fom: formValues.egenNæringFom!,
+            fom: formValues.egenNæringFom,
             tom: formValues.egenNæringTom,
         },
         pågående: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringPågående)!,
         næringsinntekt: hasValue(formValues.egenNæringResultat) ? formValues.egenNæringResultat : undefined,
-        navnPåNæringen: replaceInvisibleCharsWithSpace(formValues.egenNæringNavn!),
+        navnPåNæringen: replaceInvisibleCharsWithSpace(formValues.egenNæringNavn),
         organisasjonsnummer: hasValue(formValues.egenNæringOrgnr) ? formValues.egenNæringOrgnr : undefined,
         registrertINorge: convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringRegistrertINorge)!,
         registrertILand: hasValue(formValues.egenNæringLand) ? formValues.egenNæringLand : undefined,
@@ -38,9 +38,10 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
         )!,
         oppstartsdato: formValues.egenNæringYrkesAktivDato,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: hattVarigEndring,
-        varigEndringBeskrivelse: hattVarigEndring
-            ? replaceInvisibleCharsWithSpace(formValues.egenNæringVarigEndringBeskrivelse!)
-            : undefined,
+        varigEndringBeskrivelse:
+            hattVarigEndring && formValues.egenNæringVarigEndringBeskrivelse
+                ? replaceInvisibleCharsWithSpace(formValues.egenNæringVarigEndringBeskrivelse)
+                : undefined,
         varigEndringDato: formValues.egenNæringVarigEndringDato,
         varigEndringInntektEtterEndring: formValues.egenNæringVarigEndringInntektEtterEndring,
     };

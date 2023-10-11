@@ -28,7 +28,7 @@ export const mapArbeidIUtlandetTilState = (formValues: Partial<ArbeidIUtlandetFo
             tidsperiode: { fom: arbeid.fom, tom: arbeid.tom },
             pågående: !!convertYesOrNoOrUndefinedToBoolean(arbeid.pågående),
             arbeidsgiverNavn: arbeid.arbeidsgiverNavn,
-            land: arbeid.land!,
+            land: arbeid.land,
         };
     });
     return mappedAbeid;
