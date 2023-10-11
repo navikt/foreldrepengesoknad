@@ -29,7 +29,7 @@ const Forside = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.BARNET);
     return (
         <ForsideFormComponents.FormikWrapper
-            initialValues={getInitialForsideValues(false)} //{getInitialForsideValues(søknad.harGodkjentVilkår)}
+            initialValues={getInitialForsideValues(false)}
             onSubmit={handleSubmit}
             renderForm={({ values }) => {
                 const visibility = forsideFormQuestions.getVisbility({

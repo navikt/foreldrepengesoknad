@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import '@navikt/ds-css';
 import AppContainer from './AppContainer';
-// import { initAmplitude } from './amplitude/amplitude';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import * as countries from 'i18n-iso-countries';
@@ -11,6 +10,7 @@ import '@formatjs/intl-pluralrules/locale-data/nb';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import dayjs from 'dayjs';
+import { initAmplitude } from './amplitude/amplitude';
 dayjs.locale('nb');
 
 countries.registerLocale(langNB);
@@ -23,7 +23,7 @@ Sentry.init({
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
 
-// initAmplitude();
+initAmplitude();
 
 const container = document.getElementById('app');
 const root = createRoot(container!);

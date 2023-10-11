@@ -1,5 +1,5 @@
 import { StoryFn } from '@storybook/react';
-import IkkeKvinne, { IkkeKvinneProps } from './IkkeKvinne';
+import IkkeKvinne from './IkkeKvinne';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import SvangerskapspengerContextProvider from 'app/context/SvangerskapspengerContext';
 import IntlProvider from 'app/intl/IntlProvider';
@@ -13,17 +13,15 @@ export default {
     decorators: [withRouter],
 };
 
-const Template: StoryFn<any> = (args: IkkeKvinneProps) => {
+const Template: StoryFn<any> = () => {
     return (
         <SvangerskapspengerContextProvider>
             <IntlProvider locale="nb">
-                <IkkeKvinne {...args}></IkkeKvinne>;
+                <IkkeKvinne></IkkeKvinne>;
             </IntlProvider>
         </SvangerskapspengerContextProvider>
     );
 };
 
 export const Default = Template.bind({});
-Default.args = {
-    fornavn: 'Vakker',
-};
+Default.args = {};

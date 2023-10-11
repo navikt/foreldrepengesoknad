@@ -45,14 +45,14 @@ const Svangerskapspengesøknad = () => {
     const erPersonKvinne = erKvinne(søkerinfoData.søker.kjønn);
 
     if (!erPersonKvinne) {
-        return <IkkeKvinne fornavn={søkerinfoData.søker.fornavn} />;
+        return <IkkeKvinne />;
     }
 
     const erPersonMyndig = erMyndig(søkerinfoData.søker.fødselsdato);
     return (
         <div>
             {!erPersonMyndig ? (
-                <Umyndig fornavn={søkerinfoData.søker.fornavn} />
+                <Umyndig />
             ) : (
                 <BrowserRouter>
                     <SvangerskapspengesøknadRoutes currentRoute={SøknadRoutes.FORSIDE} />

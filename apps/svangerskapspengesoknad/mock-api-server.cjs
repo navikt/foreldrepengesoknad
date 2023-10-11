@@ -4,8 +4,6 @@ const router = express.Router();
 const multer = require('multer');
 const MockStorage = require('./mock-storage.cjs');
 
-// require('dotenv').config();
-
 app.disable('x-powered-by');
 
 const allowCrossDomain = function (req, res, next) {

@@ -4,6 +4,7 @@ import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle }
 import './feilside.css';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
+import actionCreator from 'app/context/action/actionCreator';
 
 export interface FeilsideProps {
     containerId?: string;
@@ -45,14 +46,13 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
         }
 
         logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
+            app: 'svangerskapspengesoknad',
             team: 'foreldrepenger',
             hendelse: 'avbrutt',
         });
 
-        //TODO
-        // dispatch(actionCreator.avbrytSøknad());
-        // await Api.deleteStoredAppState(søkerinfo.person.fnr);
+        dispatch(actionCreator.avbrytSøknad());
+
         window.location.href = 'https://nav.no';
     }, [dispatch, søkerinfo]);
 
