@@ -1,12 +1,10 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
-import { Forelder } from 'app/types/Forelder';
+import { Attachment, Forelder, TidsperiodeDate } from '@navikt/fp-common';
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
-import { StønadskontoType } from './StønadskontoType';
+import { StønadskontoType } from '@navikt/fp-common/src/common/types/StønadskontoType';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
 export enum Periodetype {

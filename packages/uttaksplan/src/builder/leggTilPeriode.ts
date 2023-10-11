@@ -9,9 +9,8 @@ import {
     Periode,
     Uttaksperiode,
 } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
-import { guid } from '@navikt/fp-common';
+import { StønadskontoType, guid } from '@navikt/fp-common';
 
 const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {
     const dagerIBerørtPeriode = Tidsperioden(berørtPeriode.tidsperiode).getAntallUttaksdager();

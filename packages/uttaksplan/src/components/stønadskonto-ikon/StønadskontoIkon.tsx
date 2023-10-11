@@ -1,13 +1,10 @@
-import { Forelder } from 'app/types/Forelder';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { Situasjon } from 'app/types/Situasjon';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { getStønadskontoFarge } from 'utils/styleUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
+import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
 
 export interface Props {
     konto: StønadskontoType;

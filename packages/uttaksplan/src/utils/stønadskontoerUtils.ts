@@ -1,10 +1,7 @@
-import { intlUtils } from '@navikt/fp-common';
-import { Forelder } from 'app/types/Forelder';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Forelder, NavnPåForeldre, StønadskontoType, intlUtils } from '@navikt/fp-common';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { IntlShape } from 'react-intl';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { getForelderNavn } from './periodeUtils';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>

@@ -12,6 +12,17 @@
         "rootDir": "src",
         "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
+    "include": [
+        "src/app/**/*",
+        "src/@types",
+        "src/uttaksplan/**/*",
+        "src/storybook",
+        "../../packages/fp-common/src/common/types/Barn.ts",
+        "../../packages/fp-common/src/common/types/Attachment.ts",
+        "../../packages/fp-common/src/common/types/AttachmentType.ts",
+        "../../packages/fp-common/src/common/types/Skjemanummer.ts",
+        "../../packages/fp-common/src/common/types/Situasjon.ts",
+        "../../packages/fp-common/src/common/types/NavnPåForeldre.ts"
+    ],
     "exclude": ["src/common/**/*", "node_modules"]
 }

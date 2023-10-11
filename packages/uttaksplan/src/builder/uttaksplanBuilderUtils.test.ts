@@ -1,8 +1,7 @@
-import { Forelder } from 'app/types/Forelder';
 import { Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 import { OppholdÅrsakType } from 'types/OppholdÅrsakType';
+import { Forelder, StønadskontoType } from '@navikt/fp-common';
 
 const perioder: Periode[] = [
     {

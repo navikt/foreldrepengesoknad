@@ -1,11 +1,8 @@
-import Barn, { BarnType, isUfødtBarn } from 'app/context/types/Barn';
+import { Barn, BarnType, Forelder, Situasjon, StønadskontoType, isUfødtBarn } from '@navikt/fp-common';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Forelder } from 'app/types/Forelder';
-import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { isUttaksperiode, Periode } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 
 export const getKanPeriodenRundtFødselJusteres = (
     periodeRundtFødsel: Periode,

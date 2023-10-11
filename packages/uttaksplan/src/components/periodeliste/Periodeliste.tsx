@@ -1,11 +1,10 @@
 import { FunctionComponent, useState } from 'react';
-import { bemUtils, Block, formatDate } from '@navikt/fp-common';
+import { bemUtils, Block, formatDate, NavnPåForeldre } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 
 import './periodeliste.less';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';

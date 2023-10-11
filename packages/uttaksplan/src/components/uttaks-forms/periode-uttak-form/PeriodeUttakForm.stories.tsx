@@ -1,16 +1,13 @@
 import { Dispatch, SetStateAction } from 'react';
 import { StoryFn } from '@storybook/react';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { Periode, Utsettelsesperiode, Periodetype } from 'types/Periode';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Situasjon } from 'app/types/Situasjon';
 import withIntlProvider from 'storybook/decorators/withIntl';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { IntlShape } from 'react-intl';
 import PeriodeUttakForm from './PeriodeUttakForm';
 import { PeriodeValidState } from 'Uttaksplan';
+import { NavnPåForeldre, Situasjon, StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 const stønadskonto100MorFar = [
     { konto: StønadskontoType.Mødrekvote, dager: 75 },

@@ -1,6 +1,14 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
+import {
+    NavnPåForeldre,
+    Situasjon,
+    StønadskontoType,
+    TilgjengeligStønadskonto,
+    bemUtils,
+    guid,
+    intlUtils,
+} from '@navikt/fp-common';
 import Personkort from 'app/components/personkort/Personkort';
 import ForelderIkon from 'app/components/foreldrepar/ForelderIkon';
 import { getVarighetString } from 'app/utils/dateUtils';
@@ -10,16 +18,12 @@ import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'app/utils/personUtils';
 import { getSituasjonForelderSvg } from 'app/utils/foreldreparSituasjonUtils';
 import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Periode } from 'types/Periode';
 import { BrukteDager, getBrukteDager } from 'utils/brukteDagerUtils';
 import { getUttaksstatus, Uttaksstatus } from 'utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import TilesList from './tilesList/TilesList';
 import './oversiktKvoter.less';
-import { Situasjon } from 'app/types/Situasjon';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { Heading } from '@navikt/ds-react';

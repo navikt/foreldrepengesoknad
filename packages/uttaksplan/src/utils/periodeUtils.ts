@@ -1,8 +1,8 @@
-import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { Forelder, intlUtils, NavnPåForeldre, Situasjon, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 import { OppholdÅrsakType } from '../types/OppholdÅrsakType';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
-import { StønadskontoType } from '../types/StønadskontoType';
+import { StønadskontoType } from '@navikt/fp-common/src/common/types/StønadskontoType';
 import {
     InfoPeriode,
     isAnnenPartInfoPeriode,
@@ -18,8 +18,6 @@ import {
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
 } from '../types/Periode';
-import { NavnPåForeldre } from '../../app/types/NavnPåForeldre';
-import { Forelder } from '../../app/types/Forelder';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import { erTidsperioderLike, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
@@ -37,7 +35,6 @@ import { MorsAktivitet } from 'types/MorsAktivitet';
 import { OverføringÅrsakType } from 'types/OverføringÅrsakType';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
-import { Situasjon } from 'app/types/Situasjon';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { PeriodeValidState } from 'Uttaksplan';

@@ -6,7 +6,7 @@ import { Situasjon } from 'app/types/Situasjon';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Søkerrolle } from 'app/types/Søkerrolle';
 import { Periode } from 'uttaksplan/types/Periode';
-import { BarnFraNesteSak } from './types/Barn';
+import { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import { Søknad } from './types/Søknad';
 import UttaksplanInfo from './types/UttaksplanInfo';
 

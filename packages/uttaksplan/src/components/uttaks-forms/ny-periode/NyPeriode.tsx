@@ -1,14 +1,12 @@
-import { Block } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import AnnenForelder from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Periode, Periodetype, Utsettelsesperiode } from 'types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import { FormattedMessage, IntlShape } from 'react-intl';
-import { Situasjon } from 'app/types/Situasjon';
 import { Heading } from '@navikt/ds-react';
 import { PeriodeValidState } from 'Uttaksplan';
 

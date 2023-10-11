@@ -1,6 +1,4 @@
-import { hasValue, intlUtils } from '@navikt/fp-common';
-import { Forelder } from 'app/types/Forelder';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Forelder, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';

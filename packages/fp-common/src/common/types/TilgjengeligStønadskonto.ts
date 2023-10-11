@@ -1,4 +1,4 @@
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { StønadskontoType } from './StønadskontoType';
 
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;

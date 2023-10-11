@@ -2,7 +2,7 @@ import { Attachment } from 'app/types/Attachment';
 import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Periode } from 'uttaksplan/types/Periode';
 import AnnenForelder from './AnnenForelder';
-import Barn from './Barn';
+import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
 import Søker from './Søker';
 import Søkersituasjon from './Søkersituasjon';

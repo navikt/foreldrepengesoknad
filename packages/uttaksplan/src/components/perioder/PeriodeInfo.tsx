@@ -1,7 +1,5 @@
 import { BodyShort } from '@navikt/ds-react';
-import { intlUtils } from '@navikt/fp-common';
-import { Forelder } from 'app/types/Forelder';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Forelder, NavnPåForeldre, intlUtils } from '@navikt/fp-common';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';

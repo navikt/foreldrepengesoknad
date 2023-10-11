@@ -1,5 +1,4 @@
-import { bemUtils } from '@navikt/fp-common';
-import Barn, { isAdoptertBarn, isFødtBarn } from 'app/context/types/Barn';
+import { Barn, bemUtils, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
 import { formaterDatoUtenDag } from 'app/utils/dateUtils';
 import { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';

@@ -1,5 +1,4 @@
-import { bemUtils, intlUtils } from '@navikt/fp-common';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType, bemUtils, intlUtils } from '@navikt/fp-common';
 import { getUkerOgDagerFromDager, måned, måned3bokstaver, år } from 'app/utils/dateUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -11,7 +10,6 @@ import {
     Periode,
     Periodetype,
 } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
 import { getForelderNavn, getPeriodeTittel } from 'utils/periodeUtils';
@@ -21,8 +19,6 @@ import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
 import { getIkonForVeilederMelding } from 'validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from 'validering/veilederInfo/types';
 import UttaksplanAdvarselIkon from 'assets/UttaksplanAdvarselIkon';
-import { Forelder } from 'app/types/Forelder';
-import { Situasjon } from 'app/types/Situasjon';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './periodelisteItemHeader.less';

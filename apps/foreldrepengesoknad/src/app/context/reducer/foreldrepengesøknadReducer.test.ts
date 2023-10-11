@@ -7,7 +7,7 @@ import { Periode, Periodetype } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 import { AnnenForelderOppgitt } from '../types/AnnenForelder';
-import Barn, { BarnFraNesteSak } from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -37,7 +37,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 harGodkjentVilkår: payload,
-            })
+            }),
         );
     });
 
@@ -52,7 +52,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 erEndringssøknad: payload,
-            })
+            }),
         );
     });
 
@@ -69,7 +69,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 søkersituasjon: payload,
-            })
+            }),
         );
     });
 
@@ -86,7 +86,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 barn: payload,
-            })
+            }),
         );
     });
 
@@ -103,7 +103,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 annenForelder: payload,
-            })
+            }),
         );
     });
 
@@ -223,7 +223,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 søker: payload,
-            })
+            }),
         );
     });
 
@@ -271,7 +271,7 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual(
             leggTil({
                 dekningsgrad: dekningsgrad,
-            })
+            }),
         );
     });
     it('skal sette eksisterendeSak i state', () => {

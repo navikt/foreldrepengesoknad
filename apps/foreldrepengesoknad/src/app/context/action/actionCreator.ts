@@ -9,7 +9,7 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import AnnenForelder from '../types/AnnenForelder';
-import Barn, { BarnFraNesteSak } from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import Søkersituasjon from '../types/Søkersituasjon';
@@ -158,7 +158,7 @@ interface SetInformasjonOmUtenlandsopphold {
 }
 
 const setInformasjonOmUtenlandsopphold = (
-    payload: InformasjonOmUtenlandsopphold
+    payload: InformasjonOmUtenlandsopphold,
 ): SetInformasjonOmUtenlandsopphold => ({
     type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD,
     payload,

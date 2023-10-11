@@ -1,4 +1,4 @@
-import { Attachment } from 'app/types/Attachment';
+import { Attachment } from './Attachment';
 
 export enum BarnType {
     FØDT = 'født',

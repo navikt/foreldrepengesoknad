@@ -11,7 +11,6 @@ import {
     Uttaksperiode,
 } from './types/Periode';
 import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Situasjon } from 'app/types/Situasjon';
@@ -39,6 +38,7 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
+import { NavnPåForeldre } from '@navikt/fp-common';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;

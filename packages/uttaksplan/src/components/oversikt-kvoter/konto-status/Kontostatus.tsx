@@ -1,15 +1,12 @@
 import { FunctionComponent } from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
-import { bemUtils } from '@navikt/fp-common';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
+import { bemUtils, NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
 import { getVarighetString } from 'app/utils/dateUtils';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import StønadskontoIkon from 'components/stønadskonto-ikon/StønadskontoIkon';
-import './kontostatus.less';
-import { Situasjon } from 'app/types/Situasjon';
 import { BodyShort } from '@navikt/ds-react';
+import './kontostatus.less';
 
 export interface Props {
     uttak: StønadskontoUttak;

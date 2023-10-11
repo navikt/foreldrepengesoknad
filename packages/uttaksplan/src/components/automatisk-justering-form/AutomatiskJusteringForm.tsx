@@ -1,5 +1,5 @@
 import { Alert } from '@navikt/ds-react';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, StønadskontoType, intlUtils } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import actionCreator from 'app/context/action/actionCreator';
@@ -11,7 +11,6 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isOverføringsperiode, isUttaksperiode, Periode } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 
 interface Props {
     termindato: Date;

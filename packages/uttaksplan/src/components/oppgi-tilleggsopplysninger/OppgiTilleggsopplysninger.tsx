@@ -1,8 +1,7 @@
 import throttle from 'lodash.throttle';
 import { injectIntl, IntlShape } from 'react-intl';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Attachment, Block, intlUtils } from '@navikt/fp-common';
 import { tilleggsopplysningerMaxLength } from 'validering/tester/erTilleggsopplysningerGyldigTest';
-import { Attachment } from 'app/types/Attachment';
 import { BodyLong, Label, ReadMore, Textarea } from '@navikt/ds-react';
 import { ChangeEvent, Component } from 'react';
 

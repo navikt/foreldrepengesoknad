@@ -1,4 +1,4 @@
-import { StønadskontoType } from './StønadskontoType';
+import { StønadskontoType } from '@navikt/fp-common';
 
 export interface StønadskontoUttak {
     konto: StønadskontoType;

@@ -10,8 +10,14 @@
             "app/*": ["./app/*"]
         },
         "rootDir": "src",
-        "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/**/*", "src/@types", "src/storybook"],
+    "include": [
+        "src/**/*",
+        "src/@types",
+        "src/storybook",
+        "../fp-common/src/common/types/StønadskontoType.ts",
+        "../fp-common/src/common/types/NavnPåForeldre.ts"
+    ],
     "exclude": ["node_modules"]
 }

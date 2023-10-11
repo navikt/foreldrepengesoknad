@@ -1,10 +1,14 @@
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
+import {
+    Attachment,
+    AttachmentType,
+    Block,
+    NavnPåForeldre,
+    Skjemanummer,
+    hasValue,
+    intlUtils,
+} from '@navikt/fp-common';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import links from 'app/links/links';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { MorsAktivitet } from 'types/MorsAktivitet';

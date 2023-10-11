@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-
-import './iconBox.less';
 import { UttaksplanColor } from 'types/UttaksplanColor';
 import { bemUtils } from '@navikt/fp-common';
+
+import './iconBox.less';
 
 export interface Props {
     color: UttaksplanColor;

@@ -1,4 +1,4 @@
-import { bemUtils, Block, guid, hasValue, intlUtils, ActionLink } from '@navikt/fp-common';
+import { bemUtils, Block, guid, hasValue, intlUtils, ActionLink, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -26,12 +26,10 @@ import {
 import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
 import { førsteOktober2021ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Situasjon } from 'app/types/Situasjon';
-import './periodeUtsettelseForm.less';
 import { Button } from '@navikt/ds-react';
 import { PeriodeValidState } from 'Uttaksplan';
+import './periodeUtsettelseForm.less';
 
 interface Props {
     periode: Periode;

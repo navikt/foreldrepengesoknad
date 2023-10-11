@@ -1,10 +1,18 @@
-import { ActionLink, bemUtils, Block, guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import {
+    ActionLink,
+    bemUtils,
+    Block,
+    Forelder,
+    guid,
+    intlUtils,
+    NavnPåForeldre,
+    Situasjon,
+    TidsperiodeDate,
+    TilgjengeligStønadskonto,
+} from '@navikt/fp-common';
 import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Forelder } from 'app/types/Forelder';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -35,7 +43,6 @@ import {
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { getIsValidStateForPerioder, getSlettPeriodeTekst } from 'utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Situasjon } from 'app/types/Situasjon';
 import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import {

@@ -1,5 +1,4 @@
-import { AttachmentType } from './AttachmentType';
-import { Skjemanummer } from './Skjemanummer';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-common';
 
 export interface MissingAttachment {
     index?: number;

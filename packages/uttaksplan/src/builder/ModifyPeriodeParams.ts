@@ -1,4 +1,4 @@
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { Periode } from 'types/Periode';
 import { Uttaksstatus } from 'utils/uttaksstatus';
 
