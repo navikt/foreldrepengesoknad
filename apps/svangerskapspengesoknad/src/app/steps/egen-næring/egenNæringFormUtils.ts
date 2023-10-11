@@ -22,7 +22,7 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefine
 export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData): EgenNæring => {
     const hattVarigEndring = convertYesOrNoOrUndefinedToBoolean(formValues.egenNæringHattVarigEndringDeSiste4Årene);
     return {
-        næringstype: formValues.egenNæringType!,
+        næringstyper: [formValues.egenNæringType!],
         tidsperiode: {
             fom: formValues.egenNæringFom!,
             tom: formValues.egenNæringTom,
@@ -53,7 +53,7 @@ export const getInitialEgenNæringFormValues = (næring: EgenNæring | undefined
 
     return {
         ...initialEgenNæringFormData,
-        egenNæringType: næring.næringstype,
+        egenNæringType: næring.næringstyper[0],
         egenNæringNavn: næring.navnPåNæringen || '',
         egenNæringRegistrertINorge: convertBooleanOrUndefinedToYesOrNo(næring.registrertINorge),
         egenNæringLand: næring.registrertILand || '',

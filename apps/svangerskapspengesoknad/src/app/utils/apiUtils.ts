@@ -71,9 +71,9 @@ const mapUtenlandsOppholdForInnsending = (
 
 const mapBarnForInnsending = (barn: Barn): BarnDTO => {
     return {
-        ...barn,
+        erBarnetFødt: barn.erBarnetFødt,
         termindato: ISOStringToDate(barn.termindato)!,
-        fødselsdatoer: barn.fødselsdato ? [ISOStringToDate(barn.fødselsdato)!] : [],
+        fødselsdatoer: barn.fødselsdato ? [ISOStringToDate(barn.fødselsdato)!] : undefined,
     };
 };
 
@@ -141,7 +141,7 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
         const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næring.tidsperiode.fom));
 
         const mappedNæring = {
-            næringstype: næring.næringstype,
+            næringstyper: næring.næringstyper,
             tidsperiode: {
                 fom: ISOStringToDate(næring.tidsperiode.fom),
                 tom: ISOStringToDate(næring.tidsperiode.tom),
@@ -210,11 +210,15 @@ const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
     const mappedNæring = mapEgenNæringForInnsending(søker.selvstendigNæringsdrivendeInformasjon);
     const mappedArbeidIUtlandet = søker.andreInntekter
         ? søker.andreInntekter.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
-        : [];
+        : undefined;
     const mappedSøker: SøkerDTO = {
-        ...søker,
-        frilansInformasjon: mapFrilansForInnsending(søker.frilansInformasjon),
-        selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : [],
+        rolle: søker.rolle,
+        språkkode: søker.språkkode,
+        harJobbetSomFrilansSiste10Mnd: søker.harJobbetSomFrilans,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: søker.harJobbetSomSelvstendigNæringsdrivende,
+        harHattAnnenInntektSiste10Mnd: søker.harHattAnnenInntekt,
+        frilansInformasjon: søker.harJobbetSomFrilans ? mapFrilansForInnsending(søker.frilansInformasjon) : undefined,
+        selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : undefined,
         andreInntekterSiste10Mnd: mappedArbeidIUtlandet,
     };
     return mappedSøker;

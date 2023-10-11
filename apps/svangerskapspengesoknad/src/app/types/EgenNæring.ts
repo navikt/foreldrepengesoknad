@@ -19,7 +19,7 @@ export interface EndringAvNæringsinntektInformasjonDTO {
 export interface EndringAvNæringsinntektInformasjon {}
 
 export interface EgenNæring {
-    næringstype: Næringstype;
+    næringstyper: Næringstype[];
     tidsperiode: Tidsperiode;
     næringsinntekt?: string;
     pågående: boolean;

@@ -19,8 +19,19 @@ export interface Søker {
 }
 
 export interface SøkerDTO
-    extends Omit<Søker, 'frilansInformasjon' | 'selvstendigNæringsdrivendeInformasjon' | 'andreInntekterSiste10Mnd'> {
+    extends Omit<
+        Søker,
+        | 'frilansInformasjon'
+        | 'selvstendigNæringsdrivendeInformasjon'
+        | 'andreInntekter'
+        | 'harJobbetSomFrilans'
+        | 'harJobbetSomSelvstendigNæringsdrivende'
+        | 'harHattAnnenInntekt'
+    > {
     frilansInformasjon?: FrilansDTO;
     selvstendigNæringsdrivendeInformasjon?: EgenNæringDTO[];
     andreInntekterSiste10Mnd?: ArbeidIUtlandetDTO[];
+    harJobbetSomFrilansSiste10Mnd: boolean;
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
+    harHattAnnenInntektSiste10Mnd: boolean;
 }
