@@ -25,7 +25,7 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsgiverVisning from './components/ArbeidsgiverVisning';
-import { dagenFør, dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato, treUkerSiden } from 'app/utils/dateUtils';
+import { dagenFør, dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato } from 'app/utils/dateUtils';
 import {
     validateTilrettelagtArbeidFom,
     validateTilrettelagtArbeidType,
@@ -63,7 +63,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const familiehendelsedato = erBarnetFødt ? fødselsdato! : termindato;
     const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato);
-    const fødselsdatoDate = ISOStringToDate(fødselsdato);
     const termindatoDate = ISOStringToDate(termindato);
     const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
@@ -295,7 +294,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             : ''
                                     }
                                     minDate={new Date(minDatoPeriodeFom)}
-                                    maxDate={treUkerSiden(fødselsdatoDate || termindatoDate!)}
+                                    maxDate={sisteDagForSvangerskapspenger}
                                     validate={validateSammePeriodeFremTilTerminFom(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
@@ -348,7 +347,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             ? new Date(formValues.enPeriodeMedTilretteleggingFom!)
                                             : new Date(formValues.behovForTilretteleggingFom!)
                                     }
-                                    maxDate={treUkerSiden(fødselsdatoDate || termindatoDate!)}
+                                    maxDate={sisteDagForSvangerskapspenger}
                                     validate={validateSammePeriodeFremTilTerminTom(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
