@@ -31,7 +31,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
     const intl = useIntl();
     const { informasjonOmUtenlandsopphold, barn } = useSøknad();
 
-    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato! : barn.termindato!;
+    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
     const utenlandsopphold = oppgirIFortid
         ? informasjonOmUtenlandsopphold.tidligereOpphold
         : informasjonOmUtenlandsopphold.senereOpphold;
@@ -50,7 +50,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
         const utenlandsopphold = mapBostedUtland(
             values,
             informasjonOmUtenlandsopphold,
-            familiehendelsedato,
+            familiehendelsedato!,
             oppgirIFortid,
         );
         return [actionCreator.setUtenlandsopphold(utenlandsopphold)];

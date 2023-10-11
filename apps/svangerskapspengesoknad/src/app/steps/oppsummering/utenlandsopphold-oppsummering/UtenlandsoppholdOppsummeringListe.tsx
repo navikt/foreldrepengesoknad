@@ -19,7 +19,7 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
         <>
             {utenlandsopphold.map((opphold, index) => {
                 return (
-                    <Block padBottom={index !== utenlandsopphold.length - 1 ? 'l' : 'none'}>
+                    <Block key={index} padBottom={index !== utenlandsopphold.length - 1 ? 'l' : 'none'}>
                         <div className={bem.block}>
                             <Block padBottom="m">
                                 {tidligereOpphold ? (

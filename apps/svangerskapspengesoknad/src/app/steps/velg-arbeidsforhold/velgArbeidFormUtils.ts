@@ -1,9 +1,7 @@
 import { VelgArbeidFormData } from './velgArbeidFormConfig';
-import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { Søker } from 'app/types/Søker';
 import { intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import { FrilansFormData } from '../frilans/frilansFormConfig';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
@@ -13,17 +11,6 @@ import { frilansId } from 'app/types/Frilans';
 export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[]): VelgArbeidFormData => {
     return {
         arbeidMedTilrettelegging: tilretteleggingsBehov.map((t) => t.id),
-    };
-};
-
-export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormData): Søker => {
-    return {
-        ...søker,
-        frilansInformasjon: {
-            jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
-            oppstart: values.frilansFom,
-            // sluttDato: values.frilansTom,
-        },
     };
 };
 

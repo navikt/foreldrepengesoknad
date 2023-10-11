@@ -30,7 +30,7 @@ export const mapFrilansDataToSøkerState = (søker: Søker, values: FrilansFormD
         ...søker,
         frilansInformasjon: {
             jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
-            oppstart: values.frilansFom!,
+            oppstart: values.frilansFom,
             // sluttDato: values.frilansTom!,
         },
     };

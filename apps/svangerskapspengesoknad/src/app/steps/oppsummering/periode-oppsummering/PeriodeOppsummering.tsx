@@ -8,8 +8,14 @@ interface Props {
 }
 
 const PeriodeOppsummering: FunctionComponent<Props> = ({ perioder, sisteDagForSvangerskapspenger }) => {
-    return perioder.map((periode) => {
-        return <PeriodeVisning periode={periode} sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />;
+    return perioder.map((periode, index) => {
+        return (
+            <PeriodeVisning
+                key={index}
+                periode={periode}
+                sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+            />
+        );
     });
 };
 
