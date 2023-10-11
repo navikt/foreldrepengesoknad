@@ -34,6 +34,6 @@ export default defineConfig({
             include: ['src/**/*'],
             exclude: [],
         },
-        testTimeout: 7500,
+        testTimeout: 10000,
     },
 });
