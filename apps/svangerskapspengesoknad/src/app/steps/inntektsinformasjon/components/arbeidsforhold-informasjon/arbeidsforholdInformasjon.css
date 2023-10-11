@@ -11,13 +11,6 @@
     list-style: none;
     padding: 0;
     margin-top: 0rem;
-    li {
-        margin-bottom: 1rem;
-    }
-
-    li:last-child {
-        margin-bottom: 0;
-    }
 }
 
 .arbeidsforholdInfoBox__topRow {
