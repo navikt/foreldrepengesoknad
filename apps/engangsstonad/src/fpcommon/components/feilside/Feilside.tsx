@@ -17,6 +17,7 @@ export interface Props {
             url: string;
             tekst: string;
         };
+        veileder?: VeilederProps;
     };
     tittel: ReactNode;
     ingress: ReactNode;
