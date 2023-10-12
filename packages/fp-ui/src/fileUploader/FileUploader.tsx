@@ -7,13 +7,14 @@ import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
 import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
+import UiIntlProvider from '../i18n/UiIntlProvider';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_KB = 16777;
 const KILOBYTES_IN_BYTE = 0.0009765625;
 
 // TODO Fjern any her utan å måtte dra inn axios i denne pakka
-type SaveAttachment = (attachment: Attachment, restApiUrl: string) => Promise<any>;
+type SaveAttachment = (attachment: Attachment) => Promise<any>;
 
 const getPendingAttachmentFromFile = (
     file: File,
@@ -35,11 +36,7 @@ const fileSizeIsValid = (filesizeInB: number): boolean => {
     return filesizeInKb <= MAX_FIL_STØRRELSE_KB;
 };
 
-const uploadAttachment = async (
-    attachment: Attachment,
-    restApiUrl: string,
-    saveAttachment: SaveAttachment,
-): Promise<void> => {
+const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
     if (!fileExtensionIsValid(attachment.file.name)) {
         attachment.pending = false;
         attachment.error = FileUploadError.VALID_EXTENSION;
@@ -52,7 +49,7 @@ const uploadAttachment = async (
     }
 
     try {
-        const response = await saveAttachment(attachment, restApiUrl);
+        const response = await saveAttachment(attachment);
         attachment.pending = false;
         attachment.url = response.headers.location;
         attachment.uploaded = true;
@@ -66,12 +63,11 @@ const uploadAttachment = async (
 
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
-interface Props {
+export interface Props {
     updateAttachments: (attachments: Attachment[]) => void;
     attachmentType: AttachmentType;
     skjemanummber: Skjemanummer;
     existingAttachments?: Attachment[];
-    restApiUrl: string;
     saveAttachment: SaveAttachment;
 }
 
@@ -80,7 +76,6 @@ const FileUploader: React.FunctionComponent<Props> = ({
     updateAttachments,
     attachmentType,
     skjemanummber,
-    restApiUrl,
     saveAttachment,
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
@@ -91,7 +86,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
         for (const pendingAttachment of allPendingAttachments) {
-            await uploadAttachment(pendingAttachment, restApiUrl, saveAttachment);
+            await uploadAttachment(pendingAttachment, saveAttachment);
             setAttachments((currentAttachments) =>
                 currentAttachments.map((a) => (a.filename === pendingAttachment.filename ? pendingAttachment : a)),
             );
@@ -114,15 +109,17 @@ const FileUploader: React.FunctionComponent<Props> = ({
     const failedAttachments = useMemo(() => attachments.filter((a) => !!a.error), [attachments]);
 
     return (
-        <VStack gap="6">
-            <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
-            <FileInput
-                accept={VALID_EXTENSIONS.join(', ')}
-                onFilesSelect={saveFiles}
-                hasUplodedAttachements={uploadedAttachments.length > 0}
-            />
-            <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
-        </VStack>
+        <UiIntlProvider>
+            <VStack gap="6">
+                <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
+                <FileInput
+                    accept={VALID_EXTENSIONS.join(', ')}
+                    onFilesSelect={saveFiles}
+                    hasUplodedAttachements={uploadedAttachments.length > 0}
+                />
+                <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
+            </VStack>
+        </UiIntlProvider>
     );
 };
 

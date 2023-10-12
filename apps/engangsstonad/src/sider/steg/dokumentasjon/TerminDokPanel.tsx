@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
-import { saveAttachment } from '@navikt/fp-api';
+import { getSaveAttachment } from '@navikt/fp-api';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { FileUploader } from '@navikt/fp-ui';
 import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
@@ -76,8 +76,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}
-                    restApiUrl={Environment.REST_API_URL}
-                    saveAttachment={saveAttachment}
+                    saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                 />
             </VStack>
         </>

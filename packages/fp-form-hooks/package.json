@@ -46,7 +46,6 @@
         "@vitejs/plugin-react": "^4.0.4",
         "cross-env": "^7.0.3",
         "storybook": "7.3.1",
-        "storybook-react-intl": "^2.0.2",
         "tsconfig": "workspace:*",
         "typescript": "^5.1.6",
         "vite": "^4.4.9",
@@ -54,8 +53,6 @@
         "vitest": "^0.34.2"
     },
     "peerDependencies": {
-        "intl": "^1.2.5",
-        "react": "^18.2.0",
-        "react-intl": "^6.4.4"
+        "react": "^18.2.0"
     }
 }

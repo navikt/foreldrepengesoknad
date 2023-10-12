@@ -2,7 +2,10 @@ import { useForm } from 'react-hook-form';
 import { Radio, VStack } from '@navikt/ds-react';
 import dayjs from 'dayjs';
 import { StoryFn } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { Form, Datepicker, Select, RadioGroupPanel } from '../../index';
+import Form from './Form';
+import Datepicker from './Datepicker';
+import Select from './Select';
+import RadioGroupPanel from './RadioGroupPanel';
 
 export default {
     title: 'FormHooks',

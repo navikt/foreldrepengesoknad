@@ -3,7 +3,7 @@ import { Attachment } from '@navikt/fp-types';
 
 export const attachmentApi = axios.create();
 
-const saveAttachment = (attachment: Attachment, restApiUrl: string) => {
+const getSaveAttachment = (restApiUrl: string) => (attachment: Attachment) => {
     const config = {
         withCredentials: true,
         timeout: 45 * 1000,
@@ -20,4 +20,4 @@ const saveAttachment = (attachment: Attachment, restApiUrl: string) => {
     return attachmentApi.post(url, formData, config);
 };
 
-export default saveAttachment;
+export default getSaveAttachment;

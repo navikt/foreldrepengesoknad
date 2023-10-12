@@ -1,0 +1,13 @@
+{
+    "feiloppsummering.tittel": "Du må rette opp i følgende feil:",
+
+    "vedlegg.lastoppknapp.label": "Last opp fil",
+    "vedlegg.lastoppknapp.flere.label": "Last opp flere filer",
+    "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
+    "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
+    "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
+    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}KB.",
+
+    "StepButtons.Forrige": "Forrige steg",
+    "StepButtons.Neste": "Neste steg"
+}

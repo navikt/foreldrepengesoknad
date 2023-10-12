@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
-import { ErrorSummary } from '@navikt/ds-react';
+import { ErrorSummaryFp } from '@navikt/fp-ui';
 
 const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValues> => {
     return Object.keys(errors).reduce<FieldErrors<FieldValues>>((acc, fieldKey) => {
@@ -35,7 +34,6 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
 };
 
 const ErrorSummaryHookForm: React.FunctionComponent = () => {
-    const intl = useIntl();
     const errorRef = useRef<HTMLDivElement>(null);
 
     const {
@@ -50,30 +48,15 @@ const ErrorSummaryHookForm: React.FunctionComponent = () => {
 
     const flattenAndUniqueErrors = findAllErrors(errors);
 
+    // TODO Denne er ikkje optimal
+    const mappedErrors = Object.values(flattenAndUniqueErrors).map((error) => ({
+        message: error?.message?.toString(),
+        //@ts-ignore TODO Burde nok heller bruka setFocus her
+        focus: error?.ref?.focus,
+    }));
+
     return (
-        <>
-            {Object.keys(flattenAndUniqueErrors).length > 0 && (
-                <ErrorSummary
-                    size="small"
-                    ref={errorRef}
-                    heading={intl.formatMessage({ id: 'feiloppsummering.tittel' })}
-                >
-                    {Object.values(flattenAndUniqueErrors).map((error) => (
-                        <ErrorSummary.Item
-                            key={error?.message?.toString()}
-                            onClick={() => {
-                                if (error?.ref) {
-                                    //@ts-ignore TODO Burde nok heller bruka setFocus her
-                                    error.ref.focus();
-                                }
-                            }}
-                        >
-                            {error?.message?.toString()}
-                        </ErrorSummary.Item>
-                    ))}
-                </ErrorSummary>
-            )}
-        </>
+        Object.keys(flattenAndUniqueErrors).length > 0 && <ErrorSummaryFp errorRef={errorRef} errors={mappedErrors} />
     );
 };
 

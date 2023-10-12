@@ -2,7 +2,7 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
 import { FileUploader } from '@navikt/fp-ui';
 import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
-import { saveAttachment } from '@navikt/fp-api';
+import { getSaveAttachment } from '@navikt/fp-api';
 
 import Environment from 'appData/Environment';
 
@@ -30,8 +30,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
                 skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                restApiUrl={Environment.REST_API_URL}
-                saveAttachment={saveAttachment}
+                saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
             />
         </VStack>
     );

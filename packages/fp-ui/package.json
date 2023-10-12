@@ -4,13 +4,16 @@
     "types": "index.ts",
     "scripts": {
         "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "build-storybook": "storybook build -o .storybook-static-build",
+        "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
         "@navikt/aksel-icons": "^4.12.1",
+        "@navikt/ds-css": "4.12.1",
+        "@navikt/ds-react": "4.12.1",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "@navikt/ds-react": "4.12.1",
         "@sentry/browser": "^7.64.0",
         "bytes": "^3.1.2",
         "react": "^18.2.0",
@@ -18,9 +21,16 @@
         "react-intl": "^6.4.4"
     },
     "devDependencies": {
+        "@storybook/addon-essentials": "^7.3.1",
+        "@storybook/addon-interactions": "^7.3.1",
+        "@storybook/addon-links": "^7.2.1",
+        "@storybook/builder-vite": "^7.3.1",
+        "@storybook/react": "^7.2.1",
+        "@storybook/testing-react": "^2.0.1",
         "@testing-library/jest-dom": "^6.0.0",
         "@types/bytes": "^3.1.1",
         "@types/react": "^18.2.20",
+        "storybook": "7.3.1",
         "tsconfig": "workspace:*"
     }
 }

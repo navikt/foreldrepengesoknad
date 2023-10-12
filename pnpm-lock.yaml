@@ -1286,9 +1286,6 @@ importers:
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
-      intl:
-        specifier: ^1.2.5
-        version: 1.2.5
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1298,9 +1295,6 @@ importers:
       react-hook-form:
         specifier: 7.45.4
         version: 7.45.4(react@18.2.0)
-      react-intl:
-        specifier: ^6.4.4
-        version: 6.4.4(react@18.2.0)(typescript@5.1.6)
     devDependencies:
       '@navikt/ds-codemod':
         specifier: 3.4.2
@@ -1344,9 +1338,6 @@ importers:
       storybook:
         specifier: 7.3.1
         version: 7.3.1
-      storybook-react-intl:
-        specifier: ^2.0.2
-        version: 2.0.2(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react-intl@6.4.4)(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1389,6 +1380,9 @@ importers:
       '@navikt/aksel-icons':
         specifier: ^4.12.1
         version: 4.12.1
+      '@navikt/ds-css':
+        specifier: 4.12.1
+        version: 4.12.1
       '@navikt/ds-react':
         specifier: 4.12.1
         version: 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -1414,6 +1408,24 @@ importers:
         specifier: ^6.4.4
         version: 6.4.4(react@18.2.0)(typescript@5.1.6)
     devDependencies:
+      '@storybook/addon-essentials':
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-links':
+        specifier: ^7.2.1
+        version: 7.2.1(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/builder-vite':
+        specifier: ^7.3.1
+        version: 7.3.1(typescript@5.1.6)(vite@4.4.9)
+      '@storybook/react':
+        specifier: ^7.2.1
+        version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
+      '@storybook/testing-react':
+        specifier: ^2.0.1
+        version: 2.0.1(@storybook/client-logger@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/react@7.3.1)(@storybook/types@7.3.1)(react@18.2.0)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
         version: 6.0.0(vitest@0.34.2)
@@ -1423,6 +1435,9 @@ importers:
       '@types/react':
         specifier: ^18.2.20
         version: 18.2.20
+      storybook:
+        specifier: 7.3.1
+        version: 7.3.1
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3549,7 +3564,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.1.6)
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
@@ -5726,7 +5741,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -6627,7 +6642,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6642,7 +6657,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.10)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -16336,7 +16351,7 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.8

@@ -163,8 +163,6 @@
 
     "søknad.footer.spørsmålMåBesvares": "To move forward, you must answer all of the above questions.",
     "søknad.fødselsdato": "Date of birth",
-    "søknad.forrige": "Previous step",
-    "søknad.gåVidere": "Next step",
 
     "søknad.termin": "Confirm expected date of delivery",
     "søknad.adopsjon": "Confirm adoption",
@@ -235,7 +233,7 @@
     "valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn15ÅrTilbake": "You can not apply for the lump-sum grant benefit for children older than 15 years.",
     "valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere": "The birth date must be today’s date or earlier",
     "valideringsfeil.omBarnet.overtaomsorgdato.duMåOppgi": "You must state the take over care date",
-
+    "valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi": "You must enter the term confirmation date",
     "valideringsfeil.omBarnet.termindato.duMåOppgi": "You must enter a due date",
     "valideringsfeil.omBarnet.termindato.duMåVæreIUke22": "The earliest at which you can submit an application is when you are in the 22nd week of pregnancy",
     "valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag": "The expected date of delivery cannot be earlier than 3 weeks from the present date",
@@ -252,18 +250,12 @@
     "valideringsfeil.utenlandsopphold.neste12Måneder.ikkeRegistrert": "You have not entered a stay abroad for the next 12 months",
     "valideringsfeil.utenlandsopphold.siste12Måneder.ikkeRegistrert": "You have not entered a stay abroad for the last 12 months",
     "valideringsfeil.utenlandsoppholdUtenforPeriode": "You cannot add a stay in the chosen period of time",
-    "vedlegg.feilmelding.opplasting.feilet": "{filename} - Something went wrong. Try again..",
-    "vedlegg.feilmelding.ugyldig.type": "{filename} - Attachment type is not valid",
-    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - The attachment must be less than {maxStørrelse} KB.",
-    "vedlegg.arialabel.slett": "Remove attachment {navn}",
     "vedlegg.feilmelding": "Something went wrong. Try again...",
     "vedlegg.feilmelding.flereFeil": "{filename} - Something went wrong. Try again...",
     "vedlegg.feilmelding.tittel.flereFeil": "An error has occured in the following uploads:",
     "vedlegg.forStort": "The attachment must be less than 9MB",
     "vedlegg.forStort.flereFeil": "{filename} - The attachment must be less than 9MB",
     "vedlegg.lastoppknapp.arialabel": "Click to upload attachment",
-    "vedlegg.lastoppknapp.label": "Upload documentation",
-    "vedlegg.lastoppknapp.flere.label": "Upload more documents",
 
     "vedlegg.liste.tittel": "Selected attachments ({størrelse})",
     "vedlegg.passordbeskyttet": "The attachment seems to be password protected. You must remove the password protection or upload another attachment.",
@@ -298,7 +290,6 @@
     "velkommen.text.startNySøknad": "start a new application",
     "velkommen.text.startNySøknadPrompt": "Are you sure you want to start a new application? The application you started will be deleted.",
 
-    "feiloppsummering.tittel": "You have to correct the following errors:",
     "utenlandsopphold.neste12Måneder.isRequired": "You must enter where you are going to live for the next 12 months",
     "utenlandsopphold.stotteFraNav": "Stays abroad and support from NAV",
     "utenlandsopphold.info.del1": "To be entitled to support from NAV, you must be a member of Norwegian National Insurance. People who live in Norway are usually members of the Norwegian National Insurance",

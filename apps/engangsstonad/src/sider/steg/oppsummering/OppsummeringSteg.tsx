@@ -96,7 +96,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText="oppsummering.button.sendSøknad"
+                    nextButtonText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
                     nextButtonOnClick={send}
                 />
             </VStack>
