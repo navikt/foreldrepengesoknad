@@ -2,3 +2,7 @@
     flex-direction: row-reverse;
     justify-content: space-between;
 }
+
+.oppsummering__label {
+    font-weight: bold;
+}

@@ -87,6 +87,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <SkjemaFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block key={key}>

@@ -69,6 +69,7 @@ const Inntektsinformasjon = () => {
                         pageTitle={intlUtils(intl, 'steps.label.arbeid')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xl">
