@@ -115,7 +115,9 @@ jobs:
             - name: Tag image
               run: |
                   docker buildx imagetools create \
-                    ghcr.io/navikt/foreldrepengesoknad/svangerskapspengesoknad-rework:${{ needs.create-build-version.outputs.build-version }}
+                    ghcr.io/navikt/foreldrepengesoknad/svangerskapspengesoknad-rework:amd64-${{ github.sha }} \
+                    -t ghcr.io/navikt/foreldrepengesoknad/svangerskapspengesoknad-rework:${{ needs.create-build-version.outputs.build-version }}
+
 
     promote-svangerskapspengesoknad-dev:
         name: Deploy svangerskapspengesoknad rework til dev
