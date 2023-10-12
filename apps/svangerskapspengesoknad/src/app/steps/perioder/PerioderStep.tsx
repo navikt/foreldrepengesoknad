@@ -44,8 +44,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
 
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
-    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato! : barn.termindato!;
-    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato);
+    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
+    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato!);
 
     const onValidSubmitHandler = (values: Partial<PerioderFormData>) => {
         const mappedTilrettelegging = mapPerioderFormDataToState(id, values, tilretteleggingFraState);
