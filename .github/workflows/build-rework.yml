@@ -40,14 +40,11 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
 
-            - name: cd til svp
-              run: cd apps/svangerskapspengesoknad
-
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
-
-            - name: Run tests
-              run: pnpm exec turbo test
+            - name: Install dependencies & Run tests
+              run: |
+                  cd apps/svangerskapspengesoknad
+                  pnpm install --frozen-lockfile
+                  pnpm exec turbo test
 
     create-build-version:
         name: Create build version
