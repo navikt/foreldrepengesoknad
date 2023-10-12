@@ -443,5 +443,8 @@
     "scanneDokument.liste.punkt3": "Bruker du PC eller Mac, kan du sende bilde(ne) til din private e-postkonto og lagre bildet på enheten din.",
     "scanneDokument.liste.punkt4": "Last opp bildene.",
     "scanneDokument.del2": "Har du skanner, kan du skanne dokumenter.",
-    "scanneDokument.link": "Mer informasjon om å sende vedlegg på nav.no"
+    "scanneDokument.link": "Mer informasjon om å sende vedlegg på nav.no",
+    "bedriftsbanner.detail": "Om ditt arbeidsforhold i",
+    "bedriftsbanner.detail.frilans": "Om ditt arbeid som",
+    "bedriftsbanner.tittel.frilansarbeid": "Frilanser"
 }

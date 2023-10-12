@@ -23,8 +23,6 @@ import { FunctionComponent, useState } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import ArbeidsgiverVisning from './components/ArbeidsgiverVisning';
 import { dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato } from 'app/utils/dateUtils';
 import {
     validateTilrettelagtArbeidFom,
@@ -43,6 +41,7 @@ import {
 } from './tilretteleggingValidation';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 
 interface Props {
     id: string;
@@ -54,11 +53,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.OPPSUMMERING.toString());
-    const { tilrettelegging: tilretteleggingFraState, søker, barn } = useSøknad();
+    const { tilrettelegging: tilretteleggingFraState, barn } = useSøknad();
     const { termindato, fødselsdato, erBarnetFødt } = barn;
-    const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
     const { state } = useSvangerskapspengerContext();
-    const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const familiehendelsedato = erBarnetFødt ? fødselsdato! : termindato;
@@ -144,12 +141,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                         >
                             {erFlereTilrettelegginger && (
                                 <Block padBottom="xxl">
-                                    <ArbeidsgiverVisning
-                                        currentTilrettelegging={currentTilrettelegging!}
-                                        arbeidsforhold={arbeidsforhold}
-                                        frilans={frilansInformasjon}
-                                        egenNæring={selvstendigNæringsdrivendeInformasjon}
-                                    />
+                                    <Bedriftsbanner arbeid={currentTilrettelegging!.arbeidsforhold} />
                                 </Block>
                             )}
                             <Block padBottom="xxl">

@@ -24,10 +24,9 @@ import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import { getMåSendeNySøknad, getPerioderInitialValues, mapPerioderFormDataToState } from './perioderStepUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleggingValidation';
-import ArbeidsgiverVisning from '../tilrettelegging/components/ArbeidsgiverVisning';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
 import { isISODateString } from '@navikt/ds-datepicker';
+import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 
 interface Props {
     id: string;
@@ -37,9 +36,8 @@ interface Props {
 const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
-    const { tilrettelegging: tilretteleggingFraState, barn, søker } = useSøknad();
+    const { tilrettelegging: tilretteleggingFraState, barn } = useSøknad();
     const { state } = useSvangerskapspengerContext();
-    const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
@@ -98,12 +96,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {erFlereTilrettelegginger && (
                                 <Block padBottom="xxl">
-                                    <ArbeidsgiverVisning
-                                        currentTilrettelegging={currentTilrettelegging!}
-                                        arbeidsforhold={arbeidsforhold}
-                                        frilans={søker.frilansInformasjon}
-                                        egenNæring={søker.selvstendigNæringsdrivendeInformasjon}
-                                    />
+                                    <Bedriftsbanner arbeid={currentTilrettelegging!.arbeidsforhold} />
                                 </Block>
                             )}
                             <Block padBottom="xl">
