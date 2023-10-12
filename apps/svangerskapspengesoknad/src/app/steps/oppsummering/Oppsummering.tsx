@@ -34,6 +34,7 @@ import { getSøknadForInnsending } from 'app/utils/apiUtils';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -68,7 +69,10 @@ const Oppsummering = () => {
         setFormSubmitted(true);
     };
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, barn.termindato);
-
+    const tilretteleggingMedFrilans = tilrettelegging.find(
+        (t) => t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER,
+    );
+    const tilretteleggingMedSN = tilrettelegging.find((t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG);
     useEffect(() => {
         if (formSubmitted && !isSendingSøknad) {
             setIsSendingSøknad(true);
@@ -100,6 +104,7 @@ const Oppsummering = () => {
                             pageTitle="Oppsummering"
                             steps={stepConfig(intl)}
                             onCancel={onAvbrytSøknad}
+                            useNoTempSavingText={true}
                         >
                             <Accordion>
                                 <Accordion.Item className={bem.element('header-reverse-chevron')}>
@@ -186,6 +191,40 @@ const Oppsummering = () => {
                                         <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
                                     </Accordion.Header>
                                     <Accordion.Content>
+                                        {tilretteleggingMedFrilans && (
+                                            <>
+                                                <Block padBottom="l">
+                                                    <BodyShort className={bem.element('label')}>
+                                                        {'Risikofaktorer i jobben din som frilanser:'}
+                                                    </BodyShort>
+                                                    <BodyShort>${tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
+                                                </Block>
+                                                <Block padBottom="l">
+                                                    <BodyShort className={bem.element('label')}>
+                                                        {'Tilretteleggingstiltak i jobben din som frilanser:'}
+                                                    </BodyShort>
+                                                    <BodyShort>
+                                                        {tilretteleggingMedFrilans.tilretteleggingstiltak}
+                                                    </BodyShort>
+                                                </Block>
+                                            </>
+                                        )}
+                                        {tilretteleggingMedSN && (
+                                            <>
+                                                <Block padBottom="l">
+                                                    <BodyShort
+                                                        className={bem.element('label')}
+                                                    >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
+                                                    <BodyShort>${tilretteleggingMedSN.risikofaktorer}</BodyShort>
+                                                </Block>
+                                                <Block padBottom="l">
+                                                    <BodyShort className={bem.element('label')}>
+                                                        {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
+                                                    </BodyShort>
+                                                    <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
+                                                </Block>
+                                            </>
+                                        )}
                                         <PeriodeOppsummering
                                             perioder={allePerioderMedFomOgTom}
                                             sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}

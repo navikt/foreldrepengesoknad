@@ -83,6 +83,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.næring')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <EgenNæringFormComponents.Form
                             includeButtons={false}

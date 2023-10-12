@@ -53,6 +53,7 @@ const VelgArbeid: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.velgArbeid')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <VelgArbeidFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">

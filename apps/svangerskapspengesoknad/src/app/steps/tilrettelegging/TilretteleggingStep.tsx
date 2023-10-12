@@ -25,7 +25,7 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsgiverVisning from './components/ArbeidsgiverVisning';
-import { dagenFør, dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato } from 'app/utils/dateUtils';
+import { dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato } from 'app/utils/dateUtils';
 import {
     validateTilrettelagtArbeidFom,
     validateTilrettelagtArbeidType,
@@ -128,7 +128,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
                     : dateToISOString(tiMånederSidenDato(termindatoDate!));
-
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -136,6 +135,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, erFlereTilrettelegginger ? navn : undefined)}
+                        useNoTempSavingText={true}
                     >
                         <TilretteleggingFormComponents.Form
                             includeButtons={false}
@@ -163,7 +163,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             : ''
                                     }
                                     minDate={tiMånederSidenDato(termindatoDate!)}
-                                    maxDate={dagenFør(termindatoDate!)}
+                                    maxDate={sisteDagForSvangerskapspenger}
                                     validate={validateTilrettelagtArbeidFom(
                                         intl,
                                         sisteDagForSvangerskapspenger,

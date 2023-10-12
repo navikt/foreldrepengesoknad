@@ -48,6 +48,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xxl">

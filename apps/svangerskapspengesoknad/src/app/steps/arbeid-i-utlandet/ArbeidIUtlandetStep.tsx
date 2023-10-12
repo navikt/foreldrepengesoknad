@@ -72,6 +72,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <ArbeidIUtlandetFormComponents.Form
                             includeButtons={false}

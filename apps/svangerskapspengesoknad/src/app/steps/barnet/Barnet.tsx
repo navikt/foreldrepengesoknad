@@ -41,6 +41,7 @@ const Barnet: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.barnet')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <BarnetFormComponents.Form
                             includeButtons={false}

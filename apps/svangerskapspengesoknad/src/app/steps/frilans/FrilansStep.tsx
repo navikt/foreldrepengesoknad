@@ -59,6 +59,7 @@ const FrilansStep: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.frilans')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <FrilansFormComponents.Form
                             includeButtons={false}

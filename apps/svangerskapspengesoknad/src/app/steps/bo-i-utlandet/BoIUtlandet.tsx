@@ -70,6 +70,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                         pageTitle={intlUtils(intl, `steps.label.${stepId}`)}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
+                        useNoTempSavingText={true}
                     >
                         <BoIUtlandetFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <FieldArray
