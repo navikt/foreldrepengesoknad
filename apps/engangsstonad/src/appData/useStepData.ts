@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { notEmpty } from '@navikt/fp-validation';
 import { EsDataType, EsDataMap, useEsStateAllDataFn } from './EsDataContext';
 import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
 

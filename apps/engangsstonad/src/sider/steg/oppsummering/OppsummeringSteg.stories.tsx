@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
-import { AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-types';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
 import withRouter from 'storybookHelpers/withRouter';
@@ -12,7 +12,7 @@ import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
 
 import OppsummeringSteg from './OppsummeringSteg';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const person = {
     fnr: '11111111111',

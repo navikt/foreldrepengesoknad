@@ -2,7 +2,7 @@ import { StoryFn } from '@storybook/react';
 import IntlProvider from 'intl/IntlProvider';
 import Umyndig from './Umyndig';
 import { Kjønn } from 'types/Person';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 export default {
     title: 'Umyndig',

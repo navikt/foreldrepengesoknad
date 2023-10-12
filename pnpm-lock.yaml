@@ -37,18 +37,33 @@ importers:
       '@navikt/ds-react':
         specifier: 4.12.1
         version: 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/eslint-config-fp-selvbetjening':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-custom
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../../packages/fp-constants
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/fp-form-hooks
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../../packages/fp-types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../../packages/fp-ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../../packages/fp-utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../../packages/fp-validation
       '@sentry/browser':
         specifier: ^7.64.0
         version: 7.64.0
-      amplitude-js:
-        specifier: ^8.21.9
-        version: 8.21.9
       axios:
         specifier: ^1.4.0
         version: 1.4.0
@@ -58,9 +73,6 @@ importers:
       compression:
         specifier: ^1.7.4
         version: 1.7.4
-      date-holidays:
-        specifier: ^3.21.3
-        version: 3.21.3
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -110,9 +122,12 @@ importers:
         specifier: ^2.88.2
         version: 2.88.2
     devDependencies:
-      '@navikt/eslint-config-fp-selvbetjening':
+      '@navikt/fp-api':
         specifier: workspace:*
-        version: link:../../packages/eslint-config-custom
+        version: link:../../packages/fp-api
+      '@navikt/fp-metrics':
+        specifier: workspace:*
+        version: link:../../packages/fp-metrics
       '@storybook/addon-essentials':
         specifier: ^7.3.1
         version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -137,9 +152,6 @@ importers:
       '@testing-library/user-event':
         specifier: ^14.4.3
         version: 14.4.3(@testing-library/dom@9.3.1)
-      '@types/amplitude-js':
-        specifier: ^8.16.2
-        version: 8.16.2
       '@types/bytes':
         specifier: ^3.1.1
         version: 3.1.1
@@ -1068,6 +1080,31 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2
 
+  packages/fp-api:
+    dependencies:
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../fp-types
+      axios:
+        specifier: ^1.4.0
+        version: 1.4.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(vitest@0.34.2)
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/fp-common:
     dependencies:
       '@navikt/ds-css':
@@ -1201,6 +1238,19 @@ importers:
         specifier: ^0.6.1
         version: 0.6.1(typescript@5.1.6)(vite@4.4.9)
 
+  packages/fp-constants:
+    dependencies:
+      dayjs:
+        specifier: ^1.11.9
+        version: 1.11.9
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(vitest@0.34.2)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/fp-form-hooks:
     dependencies:
       '@hookform/error-message':
@@ -1221,6 +1271,12 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../fp-constants
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../fp-ui
       '@types/react':
         specifier: ^18.2.20
         version: 18.2.20
@@ -1230,9 +1286,6 @@ importers:
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
-      intl:
-        specifier: ^1.2.5
-        version: 1.2.5
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1242,9 +1295,6 @@ importers:
       react-hook-form:
         specifier: 7.45.4
         version: 7.45.4(react@18.2.0)
-      react-intl:
-        specifier: ^6.4.4
-        version: 6.4.4(react@18.2.0)(typescript@5.1.6)
     devDependencies:
       '@navikt/ds-codemod':
         specifier: 3.4.2
@@ -1288,9 +1338,6 @@ importers:
       storybook:
         specifier: 7.3.1
         version: 7.3.1
-      storybook-react-intl:
-        specifier: ^2.0.2
-        version: 2.0.2(@storybook/components@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/types@7.3.1)(react-dom@18.2.0)(react-intl@6.4.4)(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1306,6 +1353,147 @@ importers:
       vitest:
         specifier: ^0.34.2
         version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+
+  packages/fp-metrics:
+    dependencies:
+      amplitude-js:
+        specifier: ^8.21.9
+        version: 8.21.9
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(vitest@0.34.2)
+      '@types/amplitude-js':
+        specifier: ^8.16.2
+        version: 8.16.2
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/fp-types: {}
+
+  packages/fp-ui:
+    dependencies:
+      '@navikt/aksel-icons':
+        specifier: ^4.12.1
+        version: 4.12.1
+      '@navikt/ds-css':
+        specifier: 4.12.1
+        version: 4.12.1
+      '@navikt/ds-react':
+        specifier: 4.12.1
+        version: 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/fp-common':
+        specifier: workspace:*
+        version: link:../fp-common
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../fp-types
+      '@sentry/browser':
+        specifier: ^7.64.0
+        version: 7.64.0
+      bytes:
+        specifier: ^3.1.2
+        version: 3.1.2
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-intl:
+        specifier: ^6.4.4
+        version: 6.4.4(react@18.2.0)(typescript@5.1.6)
+    devDependencies:
+      '@storybook/addon-essentials':
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-links':
+        specifier: ^7.2.1
+        version: 7.2.1(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/builder-vite':
+        specifier: ^7.3.1
+        version: 7.3.1(typescript@5.1.6)(vite@4.4.9)
+      '@storybook/react':
+        specifier: ^7.2.1
+        version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
+      '@storybook/testing-react':
+        specifier: ^2.0.1
+        version: 2.0.1(@storybook/client-logger@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/react@7.3.1)(@storybook/types@7.3.1)(react@18.2.0)
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(vitest@0.34.2)
+      '@types/bytes':
+        specifier: ^3.1.1
+        version: 3.1.1
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      storybook:
+        specifier: 7.3.1
+        version: 7.3.1
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/fp-utils:
+    dependencies:
+      detect-browser:
+        specifier: ^5.3.0
+        version: 5.3.0
+      i18n-iso-countries:
+        specifier: ^7.6.0
+        version: 7.6.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(vitest@0.34.2)
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/fp-validation:
+    dependencies:
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../fp-constants
+      dayjs:
+        specifier: ^1.11.9
+        version: 1.11.9
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(vitest@0.34.2)
+      '@types/bytes':
+        specifier: ^3.1.1
+        version: 3.1.1
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/tsconfig: {}
 

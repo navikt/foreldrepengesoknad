@@ -1,0 +1,13 @@
+{
+    "feiloppsummering.tittel": "You have to correct the following errors:",
+
+    "vedlegg.lastoppknapp.label": "Upload file",
+    "vedlegg.lastoppknapp.flere.label": "Upload more files",
+    "vedlegg.arialabel.slett": "Remove attachment {navn}",
+    "vedlegg.feilmelding.opplasting.feilet": "{filename} - Something went wrong. Try again..",
+    "vedlegg.feilmelding.ugyldig.type": "{filename} - Attachment type is not valid",
+    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - The attachment must be less than {maxStørrelse} KB.",
+
+    "StepButtons.Forrige": "Previous step",
+    "StepButtons.Neste": "Next step"
+}

@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import { HStack, Heading, Ingress, Label, LinkPanel, Tag, VStack } from '@navikt/ds-react';
-import { lenker } from 'fpcommon/util/lenker';
+import { links } from '@navikt/fp-constants';
 
 interface Props {
     saksNr: string;
@@ -12,7 +12,7 @@ const StatusBoks: React.FunctionComponent<Props> = ({ saksNr }) => {
             <Heading size="medium">
                 <FormattedMessage id="søknadSendt.status.tittel" />
             </Heading>
-            <LinkPanel href={lenker.innsyn} border={true} className="statusBoks__lenkepanel">
+            <LinkPanel href={links.innsyn} border={true} className="statusBoks__lenkepanel">
                 <HStack gap="10" justify="space-between">
                     <VStack gap="4">
                         <Heading size="small">

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
-import { redirectToLogin } from 'fpcommon/util/login';
+import { redirectToLogin } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
@@ -11,7 +12,6 @@ import {
 } from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
 
 export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,

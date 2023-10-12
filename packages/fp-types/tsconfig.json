@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "jsx": "react-jsx",
+        "rootDir": "src",
+        "esModuleInterop": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}

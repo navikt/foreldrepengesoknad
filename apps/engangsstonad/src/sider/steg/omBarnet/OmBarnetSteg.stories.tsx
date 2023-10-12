@@ -8,7 +8,7 @@ import { Action, EsDataType } from 'appData/EsDataContext';
 import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 export default {
     title: 'OmBarnetSteg',

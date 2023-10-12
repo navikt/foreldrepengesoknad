@@ -1,10 +1,7 @@
 {
     "name": "@navikt/fp-form-hooks",
-    "module": "./dist/index.es.js",
-    "types": "./dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
+    "main": "index.ts",
+    "types": "index.ts",
     "scripts": {
         "test": "vitest run",
         "test:watch": "vitest --watch=true",
@@ -13,9 +10,6 @@
         "eslint": "eslint \"src/**/*.ts*\" --color",
         "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color",
         "prettier": "prettier --write src",
-        "dev": "vite build --watch --mode development",
-        "build": "vite build",
-        "clean": "rm -rf ./dist ./node_modules ./.storybook-static-build",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003"
     },
@@ -25,7 +19,9 @@
         "@navikt/ds-datepicker": "^4.2.0",
         "@navikt/ds-icons": "3.4.3",
         "@navikt/ds-react": "4.12.1",
+        "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-ui": "workspace:*",
         "@types/react": "^18.2.20",
         "@types/react-dom": "^18.2.7",
         "dayjs": "^1.11.9",
@@ -50,7 +46,6 @@
         "@vitejs/plugin-react": "^4.0.4",
         "cross-env": "^7.0.3",
         "storybook": "7.3.1",
-        "storybook-react-intl": "^2.0.2",
         "tsconfig": "workspace:*",
         "typescript": "^5.1.6",
         "vite": "^4.4.9",
@@ -58,26 +53,6 @@
         "vitest": "^0.34.2"
     },
     "peerDependencies": {
-        "intl": "^1.2.5",
-        "react": "^18.2.0",
-        "react-intl": "^6.4.4"
-    },
-    "exports": {
-        ".": {
-            "import": "./dist/index.es.js"
-        },
-        "./dist/style.css": "./dist/style.css"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
+        "react": "^18.2.0"
     }
 }

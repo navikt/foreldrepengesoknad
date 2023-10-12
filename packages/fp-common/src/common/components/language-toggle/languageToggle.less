@@ -4,10 +4,17 @@
 }
 
 .languageToggle {
-    background-color: var(--a-surface-subtle);
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem;
+    &__background {
+        background-color: var(--a-surface-subtle);
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
+    }
+    &__without_background {
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
+    }
 
     @media print {
         display: none;

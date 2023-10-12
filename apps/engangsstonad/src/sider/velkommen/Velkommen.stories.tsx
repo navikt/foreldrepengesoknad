@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
 
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
 

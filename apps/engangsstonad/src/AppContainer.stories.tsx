@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { engangsstønadApi } from 'appData/api';
 import AppContainer from './AppContainer';
 import Person, { Kjønn } from 'types/Person';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',

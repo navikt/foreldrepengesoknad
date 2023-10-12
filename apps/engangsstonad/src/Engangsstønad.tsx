@@ -6,7 +6,7 @@ import SøkersituasjonSteg from './sider/steg/sokersituasjon/SøkersituasjonSteg
 import Velkommen from './sider/velkommen/Velkommen';
 import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
 import UtenlandsoppholdSteg from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
-import { useRequest } from './fpcommon/api/apiHooks';
+import { useRequest } from '@navikt/fp-api';
 import Api from 'appData/api';
 import Person from './types/Person';
 import SøknadSendt from './sider/kvittering/SøknadSendt';

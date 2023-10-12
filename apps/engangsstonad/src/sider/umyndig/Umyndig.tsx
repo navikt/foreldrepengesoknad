@@ -2,8 +2,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { HStack, Heading, Link, VStack } from '@navikt/ds-react';
 import { Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import Person from 'types/Person';
-import { lenker } from 'fpcommon/lenker';
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import { links } from '@navikt/fp-constants';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 export interface Props {
     person: Person;
@@ -33,7 +33,7 @@ const Umyndig: React.FunctionComponent<Props> = ({ person }) => {
                     textRich: (
                         <VStack gap="4" align="center">
                             <FormattedMessage id="Umyndig.Under18.Bobletekst" />
-                            <Link href={lenker.papirsøknad}>
+                            <Link href={links.papirsøknad}>
                                 <FormattedMessage id="Umyndig.Under18.Boblelenketekst" />
                             </Link>
                         </VStack>

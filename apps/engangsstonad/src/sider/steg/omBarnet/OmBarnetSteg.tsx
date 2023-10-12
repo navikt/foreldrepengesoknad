@@ -5,13 +5,13 @@ import { Kjønn, Step, useDocumentTitle } from '@navikt/fp-common';
 import { VStack } from '@navikt/ds-react';
 
 import { StepButtonsHookForm, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { notEmpty } from '@navikt/fp-validation';
+import { omitOne } from '@navikt/fp-utils';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { Path } from 'appData/paths';
-import { omitOne } from 'fpcommon/util/objectUtils';
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
 
