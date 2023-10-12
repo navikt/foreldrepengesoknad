@@ -36,7 +36,7 @@ spec:
             memory: 256Mi
     env:
         - name: APPRES_CMS_URL
-          value: 'dekoratoren.ekstern.dev.nav.no'
+          value: 'https://dekoratoren.ekstern.dev.nav.no'
         - name: FORELDREPENGESOKNAD_API_URL
           value: 'https://foreldrepengesoknad-api.intern.dev.nav.no/rest'
         - name: LOGINSERVICE_URL
