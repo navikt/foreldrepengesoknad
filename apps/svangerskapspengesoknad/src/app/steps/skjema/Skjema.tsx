@@ -21,8 +21,8 @@ import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekst
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import InfoScanneDokument from './components/scanne-dokument/InfoScanneDokument';
-import ArbeidsgiverVisning from '../tilrettelegging/components/ArbeidsgiverVisning';
 import SøknadRoutes from 'app/routes/routes';
+import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;
 interface Props {
@@ -36,7 +36,6 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn, tilrettelegging } = useSøknad();
-    const { frilansInformasjon, selvstendigNæringsdrivendeInformasjon } = søker;
     const onAvbrytSøknad = useAvbrytSøknad();
     const [antallForMangeVedlegg, setAntallForMangeVedlegg] = useState(0);
     const [submitClicked, setSubmitClicked] = useState(false);
@@ -93,12 +92,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                             <Block key={key}>
                                 {flereTilrettelegginger && (
                                     <Block padBottom="xxl">
-                                        <ArbeidsgiverVisning
-                                            currentTilrettelegging={currentTilrettelegging!}
-                                            arbeidsforhold={arbeidsforhold}
-                                            frilans={frilansInformasjon}
-                                            egenNæring={selvstendigNæringsdrivendeInformasjon}
-                                        />
+                                        <Bedriftsbanner arbeid={currentTilrettelegging!.arbeidsforhold} />
                                     </Block>
                                 )}
                                 <div>

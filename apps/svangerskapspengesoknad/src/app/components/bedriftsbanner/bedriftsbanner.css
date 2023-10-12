@@ -1,0 +1,15 @@
+.bedriftsbanner {
+    border-radius: 2px;
+    border: 2px solid var(--surface-alt-3-moderate, #99c4dd);
+    background: var(--global-deepblue-50, #e6f1f8);
+    padding: 1rem;
+}
+
+.bedriftsbanner__ikon {
+    margin: auto 0rem;
+    color: var(--surface-alt-3-moderate, #99c4dd);
+}
+
+.bedriftsbanner__tekst {
+    display: block;
+}
