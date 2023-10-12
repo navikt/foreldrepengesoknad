@@ -40,6 +40,9 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
 
+            - name: cd til svp
+              run: cd apps/svangerskapspengesoknad
+
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
