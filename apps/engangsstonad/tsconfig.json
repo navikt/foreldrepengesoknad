@@ -4,6 +4,7 @@
         "jsx": "react-jsx",
         "baseUrl": "./src",
         "paths": {
+            "styles/*": ["styles/*"],
             "intl/*": ["intl/*"],
             "types/*": ["types/*"],
             "appData/*": ["appData/*"],

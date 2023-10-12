@@ -11,7 +11,7 @@ import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import * as langEN from 'i18n-iso-countries/langs/en.json';
 
 import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
+import 'styles/globals.less';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);

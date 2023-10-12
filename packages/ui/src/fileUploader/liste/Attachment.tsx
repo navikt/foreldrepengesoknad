@@ -44,7 +44,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                             width={24}
                             cursor="pointer"
                             aria-label={intl.formatMessage(
-                                { id: 'vedlegg.arialabel.slett' },
+                                { id: 'Attachment.Vedlegg.Slett' },
                                 { navn: attachment.filename },
                             )}
                         />

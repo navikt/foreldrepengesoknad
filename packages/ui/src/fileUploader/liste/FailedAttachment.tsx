@@ -16,19 +16,19 @@ const FailedAttachment: React.FunctionComponent<OwnProps> = ({ failedAttachment,
         <Alert variant="warning" closeButton onClose={() => onDelete(failedAttachment)}>
             {failedAttachment.error === FileUploadError.GENERAL && (
                 <FormattedMessage
-                    id="vedlegg.feilmelding.opplasting.feilet"
+                    id="FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet"
                     values={{ filename: failedAttachment.filename }}
                 />
             )}
             {failedAttachment.error === FileUploadError.MAX_SIZE && (
                 <FormattedMessage
-                    id="vedlegg.feilmelding.ugyldig.størrelse"
+                    id="FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse"
                     values={{ filename: failedAttachment.filename, maxStørrelse: MAX_FIL_STØRRELSE_KB }}
                 />
             )}
             {failedAttachment.error === FileUploadError.VALID_EXTENSION && (
                 <FormattedMessage
-                    id="vedlegg.feilmelding.ugyldig.type"
+                    id="FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type"
                     values={{ filename: failedAttachment.filename }}
                 />
             )}
