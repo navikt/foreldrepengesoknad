@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { validateAdopsjonFødselDate } from 'fpcommon/validering/valideringsregler';
+import { validateAdopsjonFødselDate } from '../../../fpcommon/validering/valideringsregler';
 import { VStack } from '@navikt/ds-react';
 
 export type FormValues = {

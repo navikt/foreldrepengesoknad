@@ -8,7 +8,7 @@ import { date1YearFromNow, dateRangesCollide, dateToday } from '@navikt/fp-commo
 import { createCountryOptions } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import { isRequired, validateDatesNotEqual } from '@navikt/fp-validation';
-import { validateFromDate, validateToDate } from 'fpcommon/validering/valideringsregler';
+import { validateFromDate, validateToDate } from '../../../fpcommon/validering/valideringsregler';
 import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
 const TIDENES_ENDE = dayjs('9999-31-12').toDate();

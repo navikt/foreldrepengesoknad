@@ -8,7 +8,7 @@ import { date1YearAgo, dateRangesCollide, dateToday } from '@navikt/fp-common';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import { validateDatesNotEqual, isRequired } from '@navikt/fp-validation';
-import { validateFromDate, validateToDate } from 'fpcommon/validering/valideringsregler';
+import { validateFromDate, validateToDate } from '../../../fpcommon/validering/valideringsregler';
 import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 
 const validerPeriodeOverlapp = (
