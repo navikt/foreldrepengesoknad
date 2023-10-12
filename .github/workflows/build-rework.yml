@@ -80,6 +80,7 @@ jobs:
         permissions:
             contents: read
             packages: write
+            id-token: write
         uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm.yml@main
         with:
             push-image: true
