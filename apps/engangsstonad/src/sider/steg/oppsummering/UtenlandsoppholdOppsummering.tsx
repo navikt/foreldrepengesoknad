@@ -9,7 +9,7 @@ import {
     UtenlandsoppholdNeste,
     UtenlandsoppholdSiste,
 } from 'types/Utenlandsopphold';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { notEmpty } from '@navikt/fp-validation';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');

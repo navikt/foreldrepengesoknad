@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 
 import { RadioGroupPanel, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired } from 'fpcommon/validering/valideringsregler';
+import { isRequired } from '@navikt/fp-validation';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';

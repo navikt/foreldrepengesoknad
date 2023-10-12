@@ -6,7 +6,7 @@ import withRouter from 'storybookHelpers/withRouter';
 import { Path } from 'appData/paths';
 import { Action } from 'appData/EsDataContext';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 export default {
     title: 'UtenlandsoppholdSteg',

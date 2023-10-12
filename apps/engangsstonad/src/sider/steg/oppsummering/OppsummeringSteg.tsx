@@ -12,8 +12,8 @@ import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
-import { StepButtons } from '@navikt/fp-form-hooks';
+import { notEmpty } from '@navikt/fp-validation';
+import { StepButtons } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {

@@ -1,0 +1,16 @@
+{
+    "name": "@navikt/fp-constants",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {
+        "eslint": "eslint \"src/**/*.ts*\" --color",
+        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.9"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.0.0",
+        "tsconfig": "workspace:*"
+    }
+}

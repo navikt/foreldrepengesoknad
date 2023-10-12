@@ -1,6 +1,6 @@
 import { FieldValues, useFormContext } from 'react-hook-form';
 import { useCallback } from 'react';
-import StepButtons from './StepButtons';
+import { StepButtons } from '@navikt/fp-ui';
 
 interface Props<DATA_TYPE extends FieldValues> {
     goToPreviousStep: () => void;

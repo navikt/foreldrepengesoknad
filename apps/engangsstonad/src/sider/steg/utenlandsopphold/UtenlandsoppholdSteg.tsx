@@ -5,7 +5,7 @@ import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
 
 import { Form, ErrorSummaryHookForm, RadioGroupPanel, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired } from 'fpcommon/validering/valideringsregler';
+import { isRequired } from '@navikt/fp-validation';
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
@@ -95,7 +95,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                         aria-label={intl.formatMessage({ id: 'utenlandsopphold.stotteFraNav' })}
                     >
                         <ExpansionCard.Header>
-                            <ExpansionCard.Title>
+                            <ExpansionCard.Title size="small">
                                 <FormattedMessage id="utenlandsopphold.stotteFraNav" />
                             </ExpansionCard.Title>
                         </ExpansionCard.Header>

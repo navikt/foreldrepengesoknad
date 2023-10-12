@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { Locale } from '@navikt/fp-common';
-import { lenker } from 'fpcommon/util/lenker';
-import Feilside from 'fpcommon/components/feilside/Feilside';
+import { links } from '@navikt/fp-constants';
+import Feilside from 'fpcommon/feilside/Feilside';
 
 export interface Props {
     locale: Locale;
@@ -23,7 +23,7 @@ const FeilsideInfo: React.FunctionComponent<Props> = ({ locale, onChangeLocale }
                 },
                 lenke: {
                     tekst: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Brukerstøtte' }),
-                    url: lenker.brukerstøtte,
+                    url: links.brukerstøtte,
                 },
             }}
             setLanguage={onChangeLocale}

@@ -6,7 +6,7 @@ import NesteUtenlandsoppholdSteg from './NesteUtenlandsoppholdSteg';
 import { Path } from 'appData/paths';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Action, EsDataType } from 'appData/EsDataContext';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,

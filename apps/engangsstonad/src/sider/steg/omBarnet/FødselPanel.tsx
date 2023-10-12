@@ -5,7 +5,7 @@ import { Radio } from '@navikt/ds-react';
 import { erMindreEnn3UkerSiden, sisteDatoBarnetKanVæreFødt, sisteMuligeTermindato } from '@navikt/fp-common';
 
 import { RadioGroupPanel, Select, Datepicker } from '@navikt/fp-form-hooks';
-import { isAfterToday, isRequired, isValidDate } from 'fpcommon/validering/valideringsregler';
+import { isAfterToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import { Fødsel } from 'types/OmBarnet';
 
 export type FormValues = {

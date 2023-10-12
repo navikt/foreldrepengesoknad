@@ -1,4 +1,4 @@
-import { Attachment } from 'fpcommon/uploader/typer/Attachment';
+import { Attachment } from '@navikt/fp-types';
 
 type Vedlegg = {
     vedlegg: Attachment[];
