@@ -4,6 +4,8 @@ import HarArbeidsforhold from './HarArbeidsforhold';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 import './arbeidsforholdInformasjon.css';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { intlUtils } from '@navikt/fp-common';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -11,16 +13,16 @@ interface Props {
 }
 const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforhold, visManglerInfo = true }) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
+    const intl = useIntl();
 
     return (
         <>
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
-                <ReadMore header="Finner du feil eller mangler?">
+                <ReadMore header={intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.info')}>
                     <BodyShort>
-                        Informasjonen er hentet fra Arbeidsgiver- og arbeidstakerregisteret. Derfor må du be din
-                        arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.
+                        <FormattedMessage id="inntektsinformasjon.arbeidsforhold.tekst" />
                     </BodyShort>
                 </ReadMore>
             )}
