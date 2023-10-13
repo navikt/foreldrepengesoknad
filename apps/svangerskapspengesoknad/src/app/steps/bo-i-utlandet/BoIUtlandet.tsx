@@ -86,6 +86,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                     name={`bostedIUtlandet.${index}.land`}
                                                     label={intlUtils(intl, spmId)}
                                                     validate={validateBostedUtlandLand(intl)}
+                                                    useAlpha3Code={false}
                                                 />
                                             </Block>
                                             <Block padBottom="xxl">
