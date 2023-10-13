@@ -1,5 +1,5 @@
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { Attachment } from 'app/types/Attachment';
 
 export enum SkjemaFormField {
     vedlegg = 'vedlegg',

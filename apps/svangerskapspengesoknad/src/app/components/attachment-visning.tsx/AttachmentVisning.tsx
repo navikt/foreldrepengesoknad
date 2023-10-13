@@ -1,10 +1,10 @@
 import { ExclamationmarkTriangleIcon, FileIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button, Loader, Link } from '@navikt/ds-react';
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { FunctionComponent } from 'react';
 import { Block, bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
 import './attachmentVisning.css';
+import { Attachment } from 'app/types/Attachment';
 interface Props {
     vedlegg: Attachment;
     onDelete: (vedlegg: Attachment) => void;

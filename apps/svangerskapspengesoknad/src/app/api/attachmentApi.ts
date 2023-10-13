@@ -1,6 +1,6 @@
-import Environment from './../../Environment';
-import { Attachment } from './../types/Attachment';
+import Environment from 'app/Environment';
 import getAxiosInstance from './apiInterceptor';
+import { Attachment } from 'app/types/Attachment';
 
 function saveAttachment(attachment: Attachment) {
     const config = {
