@@ -1,5 +1,4 @@
 import { ISOStringToDate } from '@navikt/fp-common';
-import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
@@ -22,7 +21,6 @@ import {
     TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'app/types/Tilrettelegging';
-import { IntlShape } from 'react-intl';
 
 const getArbeidsforholdForInnsending = (periode: TilretteleggingPeriode): ArbeidsforholdDTO => {
     if (
@@ -41,9 +39,9 @@ const getArbeidsforholdForInnsending = (periode: TilretteleggingPeriode): Arbeid
     };
 };
 
-const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold, intl: IntlShape): UtenlandsoppholdDTO => {
+const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold): UtenlandsoppholdDTO => {
     return {
-        land: getCountryName(utenlandsopphold.land, intl.locale),
+        land: utenlandsopphold.land,
         tidsperiode: {
             fom: ISOStringToDate(utenlandsopphold.tidsperiode.fom)!,
             tom: ISOStringToDate(utenlandsopphold.tidsperiode.tom)!,
@@ -53,7 +51,6 @@ const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold, intl: IntlSha
 
 const mapUtenlandsOppholdForInnsending = (
     utenlandsopphold: InformasjonOmUtenlandsopphold,
-    intl: IntlShape,
 ): InformasjonOmUtenlandsoppholdDTO => {
     return {
         iNorgePåHendelsestidspunktet: utenlandsopphold.iNorgePåHendelsestidspunktet,
@@ -61,10 +58,10 @@ const mapUtenlandsOppholdForInnsending = (
         iNorgeNeste12Mnd: utenlandsopphold.iNorgeNeste12Mnd,
         jobbetINorgeSiste12Mnd: utenlandsopphold.jobbetINorgeSiste12Mnd,
         tidligereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
-            return mapBostedUtlandTilDTO(opphold, intl);
+            return mapBostedUtlandTilDTO(opphold);
         }),
         senereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
-            return mapBostedUtlandTilDTO(opphold, intl);
+            return mapBostedUtlandTilDTO(opphold);
         }),
     };
 };
@@ -227,9 +224,8 @@ const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
 export const getSøknadForInnsending = (
     søknad: Søknad,
     tilretteleggingsPerioder: TilretteleggingPeriode[],
-    intl: IntlShape,
 ): SøknadDTO => {
-    const utenlandsoppholdForInnsending = mapUtenlandsOppholdForInnsending(søknad.informasjonOmUtenlandsopphold, intl);
+    const utenlandsoppholdForInnsending = mapUtenlandsOppholdForInnsending(søknad.informasjonOmUtenlandsopphold);
     const barnForInnsending = mapBarnForInnsending(søknad.barn);
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilretteleggingsPerioder);
     const søkerForInnsending = mapSøkerForInnsending(søknad.søker);
