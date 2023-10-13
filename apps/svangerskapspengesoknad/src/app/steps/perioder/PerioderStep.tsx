@@ -1,7 +1,7 @@
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
-import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Heading, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 
@@ -194,22 +194,33 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
-                                                    <PerioderFormComponents.NumberInput
-                                                        key={`varierendePerioder.${index}.stillingsprosent`}
-                                                        name={`varierendePerioder.${index}.stillingsprosent`}
-                                                        label={intlUtils(
+                                                    <Block padBottom="m">
+                                                        <PerioderFormComponents.NumberInput
+                                                            key={`varierendePerioder.${index}.stillingsprosent`}
+                                                            name={`varierendePerioder.${index}.stillingsprosent`}
+                                                            label={intlUtils(
+                                                                intl,
+                                                                'perioder.varierende.stillingsprosent.label',
+                                                            )}
+                                                            validate={validateStillingsprosentPerioder(
+                                                                intl,
+                                                                opprinneligStillingsprosent,
+                                                                måSøkeSendeNySøknad,
+                                                                periodeDerSøkerErTilbakeIOpprinneligStilling,
+                                                                formValues.varierendePerioder,
+                                                            )}
+                                                            onClick={(e: any) => e.preventDefault()}
+                                                        />
+                                                    </Block>
+                                                    <ReadMore
+                                                        size="small"
+                                                        header={intlUtils(
                                                             intl,
-                                                            'perioder.varierende.stillingsprosent.label',
+                                                            'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                                         )}
-                                                        validate={validateStillingsprosentPerioder(
-                                                            intl,
-                                                            opprinneligStillingsprosent,
-                                                            måSøkeSendeNySøknad,
-                                                            periodeDerSøkerErTilbakeIOpprinneligStilling,
-                                                            formValues.varierendePerioder,
-                                                        )}
-                                                        onClick={(e: any) => e.preventDefault()}
-                                                    />
+                                                    >
+                                                        <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
+                                                    </ReadMore>
                                                 </Block>
                                                 {måSøkeSendeNySøknad && (
                                                     <Block padBottom="xxl">
