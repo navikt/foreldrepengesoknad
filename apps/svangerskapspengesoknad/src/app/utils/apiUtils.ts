@@ -143,7 +143,7 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
                 fom: ISOStringToDate(næring.tidsperiode.fom),
                 tom: ISOStringToDate(næring.tidsperiode.tom),
             },
-            næringsinntekt: næring.næringsinntekt,
+            næringsinntekt: næring.næringsinntekt ? parseInt(næring.næringsinntekt!, 10) : undefined,
             navnPåNæringen: næring.navnPåNæringen,
             organisasjonsnummer: næring.organisasjonsnummer ? næring.organisasjonsnummer : undefined,
             registrertINorge: næring.registrertINorge,
@@ -169,7 +169,7 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
                 endringAvNæringsinntektInformasjon: næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
                     ? {
                           dato: ISOStringToDate(næring.varigEndringDato)!,
-                          næringsinntektEtterEndring: næring.varigEndringInntektEtterEndring!,
+                          næringsinntektEtterEndring: parseInt(næring.varigEndringInntektEtterEndring!),
                           forklaring: næring.varigEndringBeskrivelse!,
                       }
                     : undefined,
