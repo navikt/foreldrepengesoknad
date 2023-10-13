@@ -376,6 +376,8 @@
     "tilrettelegging.tilrettelagtArbeidType.description": "Dette er oppgitt av arbeidsgiveren i skjemaet",
     "tilrettelegging.tilrettelagtArbeidType.delvis": "Jeg kan jobbe med redusert arbeidstid",
     "tilrettelegging.tilrettelagtArbeidType.ingen": "Jeg kan ikke jobbe",
+    "tilrettelegging.expansion.tittel": "Du trenger ikke å søke hvis du skal jobbe i samme prosent som du har gjort før",
+    "tilrettelegging.expansion.tekst": "Hvis arbeidsgiveren din kan tilrettelegge på arbeidsplassen og du kan arbeide i samme prosent som før svangerskapet, trenger du ikke å søke gjennom NAV. Dette blir da en avtale mellom deg og arbeidsgiveren din. Dette er oppgitt av arbeidsgiveren din i skjemaet som <em>full</em> eller <em>hel tilrettelegging</em>.",
     "tilrettelegging.tilretteleggingPeriodetype.label": "Skal du ha den samme stillingsprosenten gjennom hele svangerskapet?",
     "tilrettelegging.tilretteleggingPeriodetype.description": "Dersom du skal veksle på stillingsprosent, må du oppgi hvilke perioder du skal jobbe i hvilken prosent.",
     "tilrettelegging.tilretteleggingPeriodetype.en": "Ja",
