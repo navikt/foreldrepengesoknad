@@ -37,6 +37,9 @@ export const getNæringTilretteleggingOption = (
         delvisTilretteleggingPeriodeType: næringTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
         risikofaktorer: næringTilretteleggingFraState?.risikofaktorer || undefined,
         tilretteleggingstiltak: næringTilretteleggingFraState?.tilretteleggingstiltak || undefined,
+        enPeriodeMedTilretteleggingTomType:
+            næringTilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
+        enPeriodeMedTilretteleggingTom: næringTilretteleggingFraState?.enPeriodeMedTilretteleggingTom || undefined,
     };
 };
 
@@ -60,6 +63,9 @@ export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilretteleggi
         delvisTilretteleggingPeriodeType: frilansTilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
         risikofaktorer: frilansTilretteleggingFraState?.risikofaktorer || undefined,
         tilretteleggingstiltak: frilansTilretteleggingFraState?.tilretteleggingstiltak || undefined,
+        enPeriodeMedTilretteleggingTomType:
+            frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
+        enPeriodeMedTilretteleggingTom: frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingTom || undefined,
     };
 };
 
@@ -90,10 +96,13 @@ export const getArbeidsforholdTilretteleggingOptions = (
             vedlegg: tilretteleggingFraState?.vedlegg || [],
             behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
             type: tilretteleggingFraState?.type || undefined!,
-            sammePeriodeFremTilTerminFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
-            sammePeriodeFremTilTerminStillingsprosent:
+            enPeriodeMedTilretteleggingFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
+            enPeriodeMedTilretteleggingStillingsprosent:
                 tilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent || undefined,
             delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+            enPeriodeMedTilretteleggingTomType:
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
+            enPeriodeMedTilretteleggingTom: tilretteleggingFraState?.enPeriodeMedTilretteleggingTom || undefined,
         };
     });
     return arbeidsforholdOptions;
