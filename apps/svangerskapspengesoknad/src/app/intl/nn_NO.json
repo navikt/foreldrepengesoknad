@@ -401,7 +401,7 @@
     "perioder.varierende.description": "Legg til en periode for hver arbeidsprosent frem til senest tre uker før fødsel. Da kan du ha rett til foreldrepenger.",
     "perioder.varierende.fom.label": "Du skal jobbe fra:",
     "perioder.varierende.tom.label": "Til og med dato",
-    "perioder.varierende.stillingsprosent.label": "I denne arbeidsprosenten:",
+    "perioder.varierende.stillingsprosent.label": "Hvilken stillingsprosent skal du jobbe i denne perioden?",
     "perioder.varierende.slett": "Slett perioden",
     "perioder.varierende.leggTil": "Legg til ny periode",
     "perioder.varierende.tom.settTil3UkerFørTermin": "Sett til 3 uker før termin",
