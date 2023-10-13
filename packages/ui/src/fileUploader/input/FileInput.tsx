@@ -52,7 +52,11 @@ const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSe
                 iconPosition="right"
             >
                 <FormattedMessage
-                    id={hasUplodedAttachements ? 'vedlegg.lastoppknapp.flere.label' : 'vedlegg.lastoppknapp.label'}
+                    id={
+                        hasUplodedAttachements
+                            ? 'FileInput.Vedlegg.Lastoppknapp.Flere'
+                            : 'FileInput.Vedlegg.Lastoppknapp'
+                    }
                 />
             </Button>
         </>

@@ -7,7 +7,7 @@ import { Kjønn, hasValue, sisteMuligeDatoForOvertaOmsorg } from '@navikt/fp-com
 import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
 import { RadioGroupPanel, Datepicker, Select } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
-import { isValidFormattedDateString } from 'fpcommon/validering/valideringsregler';
+import { isValidFormattedDateString } from '../../../fpcommon/validering/valideringsregler';
 import { Adopsjon } from 'types/OmBarnet';
 
 export type FormValues = {

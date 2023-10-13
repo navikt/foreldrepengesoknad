@@ -8,6 +8,7 @@ interface RadioGroupPanelProps {
     description?: string | ReactNode;
     label?: string | ReactNode;
     validate?: Array<(value: string | number) => any>;
+    onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
 }
 
@@ -16,6 +17,7 @@ const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
     description,
     name,
     validate = [],
+    onChange,
     children,
 }) => {
     const {
@@ -36,6 +38,9 @@ const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
             description={description}
             error={getError(errors, name)}
             onChange={(value) => {
+                if (onChange) {
+                    onChange(value);
+                }
                 field.onChange(value);
             }}
         >

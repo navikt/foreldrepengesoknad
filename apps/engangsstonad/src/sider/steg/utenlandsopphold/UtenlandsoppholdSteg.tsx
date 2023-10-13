@@ -12,13 +12,6 @@ import { Path } from 'appData/paths';
 import { EsDataType, useEsStateSaveFn, useEsStateData } from 'appData/EsDataContext';
 import useStepData from 'appData/useStepData';
 
-const utledNesteSide = (formValues: Utenlandsopphold): Path => {
-    if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
-        return Path.SISTE_UTENLANDSOPPHOLD;
-    }
-    return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
-};
-
 const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
@@ -27,8 +20,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
-    const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const lagreUtenlandsoppholdPerioder = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_PERIODER);
 
     const formMethods = useForm<Utenlandsopphold>({
         defaultValues: utenlandsopphold,
@@ -37,14 +29,11 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const lagre = useCallback((formValues: Utenlandsopphold) => {
         lagreUtenlandsopphold(formValues);
 
-        if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
-            lagreSisteUtenlandsopphold(undefined);
-        }
-        if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
-            lagreNesteUtenlandsopphold(undefined);
+        if (formValues.harKunBoddINorge) {
+            lagreUtenlandsoppholdPerioder(undefined);
         }
 
-        navigator.goToNextStep(utledNesteSide(formValues));
+        navigator.goToNextStep(formValues?.harKunBoddINorge ? Path.OPPSUMMERING : Path.UTENLANDSOPPHOLD_PERIODER);
     }, []);
 
     return (
@@ -63,31 +52,17 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                         <FormattedMessage id="utenlandsopphold.info" />
                     </BodyLong>
                     <RadioGroupPanel
-                        name="harBoddUtenforNorgeSiste12Mnd"
-                        label={<FormattedMessage id="utenlandsopphold.siste12Måneder.spørsmål" />}
+                        name="harKunBoddINorge"
+                        label={<FormattedMessage id="UtenlandsoppholdSteg.Periode.Spørsmål" />}
                         validate={[
-                            isRequired(intl.formatMessage({ id: 'utenlandsopphold.siste12Måneder.isRequired' })),
+                            isRequired(intl.formatMessage({ id: 'UtenlandsoppholdSteg.Siste12Måneder.IsRequired' })),
                         ]}
                     >
-                        <Radio value={false}>
-                            <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge" />
-                        </Radio>
                         <Radio value={true}>
-                            <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet" />
+                            <FormattedMessage id="UtenlandsoppholdSteg.Ja" />
                         </Radio>
-                    </RadioGroupPanel>
-                    <RadioGroupPanel
-                        name="skalBoUtenforNorgeNeste12Mnd"
-                        label={<FormattedMessage id="utenlandsopphold.neste12Måneder.spørsmål" />}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'utenlandsopphold.neste12Måneder.isRequired' })),
-                        ]}
-                    >
                         <Radio value={false}>
-                            <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge" />
-                        </Radio>
-                        <Radio value={true}>
-                            <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet" />
+                            <FormattedMessage id="UtenlandsoppholdSteg.BoddIUtlandet" />
                         </Radio>
                     </RadioGroupPanel>
                     <ExpansionCard

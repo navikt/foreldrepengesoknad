@@ -2,15 +2,14 @@ import { createContext, useReducer, FunctionComponent, ReactNode, useContext, us
 import Dokumentasjon from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 import { Søkersituasjon } from 'types/Søkersituasjon';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdPerioder } from 'types/Utenlandsopphold';
 
 export enum EsDataType {
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     DOKUMENTASJON = 'DOKUMENTASJON',
     UTENLANDSOPPHOLD = 'UTENLANDSOPPHOLD',
-    UTENLANDSOPPHOLD_NESTE = 'UTENLANDSOPPHOLD_NESTE',
-    UTENLANDSOPPHOLD_SISTE = 'UTENLANDSOPPHOLD_SISTE',
+    UTENLANDSOPPHOLD_PERIODER = 'UTENLANDSOPPHOLD_PERIODER',
 }
 
 export type EsDataMap = {
@@ -18,8 +17,7 @@ export type EsDataMap = {
     [EsDataType.OM_BARNET]?: OmBarnet;
     [EsDataType.DOKUMENTASJON]?: Dokumentasjon;
     [EsDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
-    [EsDataType.UTENLANDSOPPHOLD_NESTE]?: UtenlandsoppholdNeste;
-    [EsDataType.UTENLANDSOPPHOLD_SISTE]?: UtenlandsoppholdSiste;
+    [EsDataType.UTENLANDSOPPHOLD_PERIODER]?: UtenlandsoppholdPerioder;
 };
 
 const defaultInitialState = {} as EsDataMap;

@@ -1,18 +1,15 @@
 export type Utenlandsopphold = {
-    harBoddUtenforNorgeSiste12Mnd: boolean;
-    skalBoUtenforNorgeNeste12Mnd: boolean;
+    harKunBoddINorge: boolean;
 };
 
-export type UtenlandsoppholdPeriode = {
+export type Periode = {
+    harFlyttetUtForMerEnn12MånderSiden: boolean;
+    skalBoIUtlandetMerEnEttÅrFremover: boolean;
     fom: string;
     tom: string;
     landkode: string;
 };
 
-export type UtenlandsoppholdNeste = {
-    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
-};
-
-export type UtenlandsoppholdSiste = {
-    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
+export type UtenlandsoppholdPerioder = {
+    perioder: Periode[];
 };

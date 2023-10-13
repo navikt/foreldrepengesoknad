@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { Locale } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import Feilside from 'fpcommon/feilside/Feilside';
+import Feilside from '../../fpcommon/feilside/Feilside';
 
 export interface Props {
     locale: Locale;

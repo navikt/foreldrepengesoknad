@@ -1,5 +1,6 @@
 {
     "name": "@navikt/fp-form-hooks",
+    "description": "Overbygg over react-hook-form. Tilbyr form-komponenter som radioknapp og textarea",
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
