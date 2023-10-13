@@ -12,7 +12,7 @@ export enum Næringstype {
 
 export interface EndringAvNæringsinntektInformasjonDTO {
     dato: Date;
-    næringsinntektEtterEndring: string;
+    næringsinntektEtterEndring: number;
     forklaring: string;
 }
 
@@ -44,7 +44,9 @@ export interface EgenNæringDTO
         | 'varigEndringDato'
         | 'varigEndringInntektEtterEndring'
         | 'varigEndringBeskrivelse'
+        | 'næringsinntekt'
     > {
     tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdato>;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
+    næringsinntekt?: number;
 }
