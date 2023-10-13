@@ -58,6 +58,8 @@
     "barnet.termindato.merInfo.tittel": "Du kan få svangerskapspengar fram til tre veker før termin.",
     "barnet.termindato.merInfo.tekst": "Du kan få svangerskapspengar frå tidspunktet du må slutte å jobbe fram til tre veker før termin. Frå tre veker før termin kan du få foreldrepengar dersom du har rett på det.",
     "inntektsinformasjon.arbeidsforhold.label": "Dine arbeidsforhold",
+    "inntektsinformasjon.arbeidsforhold.info": "Finner du feil eller mangler?",
+    "inntektsinformasjon.arbeidsforhold.tekst": "Informasjonen er hentet fra Arbeidsgiver- og arbeidstakerregisteret. Derfor må du be din arbeidsgiver oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": " Hvis du får utbetalingar frå NAV, treng du ikkje å opplyse om det i søknaden.",
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikkje registrert med nokre arbeidsforhold.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org nr: {organisasjonsnummer}",
