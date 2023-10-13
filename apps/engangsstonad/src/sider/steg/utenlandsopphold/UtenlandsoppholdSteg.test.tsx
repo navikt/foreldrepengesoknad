@@ -6,142 +6,71 @@ import * as stories from './UtenlandsoppholdSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<UtenlandsoppholdSteg>', () => {
-    it('skal vise feilmeldinger når en prøver å gå videre uten å oppgi obligatoriske felter', async () => {
+    it('skal vise feilmeldinger når en prøver å gå videre uten å oppgi obligatorisk felt', async () => {
         render(<Default />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
+        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
         expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
 
-        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
-        expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Har du kun bodd i Norge de forrige 12 og neste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Utenlandsopphold og støtte fra NAV')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Du må oppgi hvor du har bodd de siste 12 månedene')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi hvor du skal bo de neste 12 månedene')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi hvor du har bodd de forrige 12 og neste 12 månedene')).toHaveLength(2);
     });
 
-    it('skal oppgi at en har bodd i Norge og skal bo i Norge', async () => {
+    it('skal svare at en kun har bodd i Norge og så gå videre', async () => {
         const nesteStegFn = vi.fn();
 
         render(<Default gåTilNesteSide={nesteStegFn} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
-        await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
+        await userEvent.click(screen.getByText('Ja'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(2));
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
+                harKunBoddINorge: true,
             },
             key: 'UTENLANDSOPPHOLD',
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: 'UTENLANDSOPPHOLD_SISTE',
-            type: 'update',
-        });
-        expect(nesteStegFn).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: 'UTENLANDSOPPHOLD_NESTE',
+            key: 'UTENLANDSOPPHOLD_PERIODER',
             type: 'update',
         });
 
         expect(await screen.findByText('Neste side: /soknad/oppsummering')).toBeInTheDocument();
     });
 
-    it('skal oppgi at en har bodd i utlandet og skal bo i Norge', async () => {
+    it('skal svare at en har bodd i utlandet og så gå videre', async () => {
         const nesteStegFn = vi.fn();
 
         render(<Default gåTilNesteSide={nesteStegFn} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
-        await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(2));
-        expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
-            data: {
-                harBoddUtenforNorgeSiste12Mnd: true,
-                skalBoUtenforNorgeNeste12Mnd: false,
-            },
-            key: 'UTENLANDSOPPHOLD',
-            type: 'update',
-        });
-        expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: 'UTENLANDSOPPHOLD_NESTE',
-            type: 'update',
-        });
-
-        expect(await screen.findByText('Neste side: /soknad/siste-utenlandsopphold')).toBeInTheDocument();
-    });
-
-    it('skal oppgi at en har bodd i Norge og skal bo i utlandet', async () => {
-        const nesteStegFn = vi.fn();
-
-        render(<Default gåTilNesteSide={nesteStegFn} />);
-
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
-        await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(2));
-        expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
-            data: {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: true,
-            },
-            key: 'UTENLANDSOPPHOLD',
-            type: 'update',
-        });
-        expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: 'UTENLANDSOPPHOLD_SISTE',
-            type: 'update',
-        });
-
-        expect(await screen.findByText('Neste side: /soknad/neste-utenlandsopphold')).toBeInTheDocument();
-    });
-
-    it('skal oppgi at en har bodd i utlandet og skal bo i utlandet', async () => {
-        const nesteStegFn = vi.fn();
-
-        render(<Default gåTilNesteSide={nesteStegFn} />);
-
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
-        await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
+        await userEvent.click(screen.getByText('Nei, jeg har bodd eller skal bo i utlandet'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(1));
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
-                harBoddUtenforNorgeSiste12Mnd: true,
-                skalBoUtenforNorgeNeste12Mnd: true,
+                harKunBoddINorge: false,
             },
             key: 'UTENLANDSOPPHOLD',
             type: 'update',
         });
 
-        expect(await screen.findByText('Neste side: /soknad/siste-utenlandsopphold')).toBeInTheDocument();
+        expect(await screen.findByText('Neste side: /soknad/utenlandsopphold-perioder')).toBeInTheDocument();
     });
 });

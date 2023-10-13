@@ -1,41 +1,41 @@
-import { Fragment, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Button, VStack } from '@navikt/ds-react';
+import { Button, HStack, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 
 import { Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import NesteUtenlandsoppholdPanel from './NesteUtenlandsoppholdPanel';
+import UtenlandsoppholdPeriodePanel from './UtenlandsoppholdPeriodePanel';
 import useEsNavigator from 'appData/useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
-import { UtenlandsoppholdNeste, UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
+import { UtenlandsoppholdPerioder, Periode } from 'types/Utenlandsopphold';
 import useStepData from 'appData/useStepData';
 
 const DEFAULT_PERIODE = {
     fom: '',
     tom: '',
     landkode: '',
-} as UtenlandsoppholdPeriode;
+} as Periode;
 
 const DEFAULT_FORM_VALUES = {
-    utenlandsoppholdNeste12Mnd: [DEFAULT_PERIODE],
-} as UtenlandsoppholdNeste;
+    perioder: [DEFAULT_PERIODE],
+} as UtenlandsoppholdPerioder;
 
-const NesteUtenlandsoppholdSteg: React.FunctionComponent = () => {
+const UtenlandsoppholdPeriodeSteg: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
-    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
-    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const utenlandsoppholdPerioder = useEsStateData(EsDataType.UTENLANDSOPPHOLD_PERIODER);
+    const lagreUtenlandsoppholdPerioder = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_PERIODER);
 
-    const defaultValues = useMemo(() => nesteUtenlandsopphold || DEFAULT_FORM_VALUES, []);
-    const formMethods = useForm<UtenlandsoppholdNeste>({
+    const defaultValues = useMemo(() => utenlandsoppholdPerioder || DEFAULT_FORM_VALUES, []);
+    const formMethods = useForm<UtenlandsoppholdPerioder>({
         defaultValues,
     });
     const { fields, append, remove } = useFieldArray({
-        name: 'utenlandsoppholdNeste12Mnd',
+        name: 'perioder',
         control: formMethods.control,
     });
 
@@ -50,15 +50,15 @@ const NesteUtenlandsoppholdSteg: React.FunctionComponent = () => {
         [remove],
     );
 
-    const lagre = useCallback((formValues: UtenlandsoppholdNeste) => {
-        lagreNesteUtenlandsopphold(formValues);
+    const lagre = useCallback((formValues: UtenlandsoppholdPerioder) => {
+        lagreUtenlandsoppholdPerioder(formValues);
         navigator.goToNextDefaultStep();
     }, []);
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold.fremtidig' })}
+            pageTitle={intl.formatMessage({ id: 'UtenlandsoppholdPeriodeSteg.Title' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
@@ -67,13 +67,10 @@ const NesteUtenlandsoppholdSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <VStack gap="10" align="start">
-                        {fields.map((field, index) => (
-                            <Fragment key={field.id}>
-                                <NesteUtenlandsoppholdPanel index={index} fjernOpphold={fjernOpphold} />
-                                {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
-                            </Fragment>
-                        ))}
+                    {fields.map((field, index) => (
+                        <UtenlandsoppholdPeriodePanel key={field.id} index={index} fjernOpphold={fjernOpphold} />
+                    ))}
+                    <HStack>
                         <Button
                             type="button"
                             variant="secondary"
@@ -83,10 +80,10 @@ const NesteUtenlandsoppholdSteg: React.FunctionComponent = () => {
                         >
                             <FormattedMessage id="utenlandsopphold.knapp.leggTilLand" />
                         </Button>
-                    </VStack>
-                    <StepButtonsHookForm<UtenlandsoppholdNeste>
+                    </HStack>
+                    <StepButtonsHookForm<UtenlandsoppholdPerioder>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={lagreNesteUtenlandsopphold}
+                        saveDataOnPreviousClick={lagreUtenlandsoppholdPerioder}
                     />
                 </VStack>
             </Form>
@@ -94,4 +91,4 @@ const NesteUtenlandsoppholdSteg: React.FunctionComponent = () => {
     );
 };
 
-export default NesteUtenlandsoppholdSteg;
+export default UtenlandsoppholdPeriodeSteg;

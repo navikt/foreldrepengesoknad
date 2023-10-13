@@ -1,4 +1,10 @@
-export { notEmpty } from './src/other/validation';
+export {
+    notEmpty,
+    isAfterToday as isAfterTodayTemp,
+    isBeforeToday,
+    isSameOrAfterToday,
+    isSameOrBeforeToday,
+} from './src/other/validation';
 export {
     isRequired,
     isValidDate,

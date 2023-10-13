@@ -11,7 +11,7 @@ import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdPerioder } from 'types/Utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
 import { StepButtons } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
@@ -26,8 +26,7 @@ export interface Props {
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
-        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
+        utenlandsoppholdPerioder?: UtenlandsoppholdPerioder,
     ) => void;
 }
 
@@ -40,8 +39,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
-    const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const utenlandsoppholdPerioder = useEsStateData(EsDataType.UTENLANDSOPPHOLD_PERIODER);
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -50,7 +48,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         if (!isChecked) {
             setIsError(true);
         } else {
-            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, sisteUtenlandsopphold, nesteUtenlandsopphold);
+            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, utenlandsoppholdPerioder);
             navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
@@ -79,8 +77,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                         <UtenlandsoppholdOppsummering
                             omBarnet={omBarnet}
                             utenlandsopphold={utenlandsopphold}
-                            utenlandsoppholdNeste={nesteUtenlandsopphold}
-                            utenlandsoppholdSiste={sisteUtenlandsopphold}
+                            utenlandsoppholdPerioder={utenlandsoppholdPerioder}
                         />
                     </Oppsummeringspunkt>
                 </Accordion>

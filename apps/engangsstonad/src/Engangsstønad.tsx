@@ -11,8 +11,7 @@ import Api from 'appData/api';
 import Person from './types/Person';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
-import NesteUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdNeste/NesteUtenlandsoppholdSteg';
-import SisteUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSiste/SisteUtenlandsoppholdSteg';
+import UtenlandsoppholdPeriodeSteg from './sider/steg/utenlandsoppholdPeriode/UtenlandsoppholdPeriodeSteg';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import { Path } from 'appData/paths';
@@ -77,8 +76,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                         <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                        <Route path={Path.SISTE_UTENLANDSOPPHOLD} element={<SisteUtenlandsoppholdSteg />} />
-                        <Route path={Path.NESTE_UTENLANDSOPPHOLD} element={<NesteUtenlandsoppholdSteg />} />
+                        <Route path={Path.UTENLANDSOPPHOLD_PERIODER} element={<UtenlandsoppholdPeriodeSteg />} />
                         <Route
                             path={Path.OPPSUMMERING}
                             element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
