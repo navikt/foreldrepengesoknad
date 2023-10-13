@@ -63,13 +63,14 @@ export const validateEgenNæringTom =
 export const validateEgenNæringOrgnr =
     (intl: IntlShape) =>
     (orgnr: string): SkjemaelementFeil => {
-        if (!hasValue(orgnr)) {
+        const trimmedOrgNr = orgnr.trim();
+        if (!hasValue(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.påkrevd');
         }
-        if (containsWhiteSpace(orgnr)) {
+        if (containsWhiteSpace(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom');
         }
-        if (!erGyldigNorskOrgnummer(orgnr)) {
+        if (!erGyldigNorskOrgnummer(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.ugyldigFormat');
         }
 
