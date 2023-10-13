@@ -226,28 +226,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                 />
                             </Block>
 
-                            <Block padBottom="xxl">
-                                <ExpansionCard size="small" aria-label="">
-                                    <ExpansionCard.Header>
-                                        <ExpansionCard.Title size="small" as="h2">
-                                            <FormattedMessage id="tilrettelegging.expansion.tittel" />
-                                        </ExpansionCard.Title>
-                                    </ExpansionCard.Header>
-                                    <ExpansionCard.Content>
-                                        <Block padBottom="l">
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="tilrettelegging.expansion.tekst"
-                                                    values={{
-                                                        em: (msg: any) => <em>{msg}</em>,
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                        </Block>
-                                    </ExpansionCard.Content>
-                                </ExpansionCard>
-                            </Block>
-
                             <Block
                                 padBottom="xxl"
                                 visible={visibility.isVisible(
@@ -370,6 +348,27 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.enPeriodeMedTilretteleggingFom,
                                     )}
                                 />
+                            </Block>
+                            <Block padBottom="xxl">
+                                <ExpansionCard size="small" aria-label="">
+                                    <ExpansionCard.Header>
+                                        <ExpansionCard.Title size="small" as="h2">
+                                            <FormattedMessage id="tilrettelegging.expansion.tittel" />
+                                        </ExpansionCard.Title>
+                                    </ExpansionCard.Header>
+                                    <ExpansionCard.Content>
+                                        <Block padBottom="l">
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="tilrettelegging.expansion.tekst"
+                                                    values={{
+                                                        em: (msg: any) => <em>{msg}</em>,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        </Block>
+                                    </ExpansionCard.Content>
+                                </ExpansionCard>
                             </Block>
                             <Block padBottom="l">
                                 <StepButtonWrapper>
