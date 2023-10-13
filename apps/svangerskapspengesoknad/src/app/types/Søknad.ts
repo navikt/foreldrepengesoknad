@@ -1,4 +1,4 @@
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
+import { Attachment } from './Attachment';
 import { Barn, BarnDTO as BarnDTO } from './Barn';
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdDTO } from './InformasjonOmUtenlandsopphold';
 import { Søker, SøkerDTO } from './Søker';

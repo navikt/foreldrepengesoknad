@@ -1,13 +1,11 @@
 import { Alert, Button } from '@navikt/ds-react';
-import { Block, FormikFileUploader, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachment-list/AttachmentList';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { SkjemaFormComponents, SkjemaFormData, SkjemaFormField } from './skjemaFormTypes';
 import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
-import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
-import { deleteAttachment } from '@navikt/fp-common/src/common/utils/attachmentUtils';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
 import { getInitialSkjemaValuesFromState, mapTilretteleggingMedSkjema } from './skjemaFormUtils';
@@ -23,6 +21,9 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import InfoScanneDokument from './components/scanne-dokument/InfoScanneDokument';
 import SøknadRoutes from 'app/routes/routes';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
+import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+import { deleteAttachment } from 'app/utils/attachmentUtils';
+import { Attachment } from 'app/types/Attachment';
 
 const MAX_ANTALL_VEDLEGG = 40;
 interface Props {
