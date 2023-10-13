@@ -1,13 +1,13 @@
 import { Block, Step, StepButtonWrapper, intlUtils, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { BarnetFormComponents, BarnetFormData, BarnetFormField } from './barnetFormConfig';
 import { cleanupOmBarnetFormData, getBarnetInitialValues, mapOmBarnetFormDataToState } from './barnetUtils';
 import barnetQuestionsConfig from './barnetQuestionsConfig';
 import stepConfig from '../stepsConfig';
 import actionCreator from 'app/context/action/actionCreator';
-import { Button, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
 import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -61,8 +61,10 @@ const Barnet: React.FunctionComponent = () => {
                                         }
                                     />
                                 </Block>
-                                <ReadMore size="small" header={intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tittel')}>
-                                    {intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tekst')}
+                                <ReadMore header={intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tittel')}>
+                                    <BodyShort>
+                                        <FormattedMessage id="barnet.erBarnetFødt.merInfo.tekst" />
+                                    </BodyShort>
                                 </ReadMore>
                             </Block>
                             <Block padBottom="xxl" visible={visibility.isVisible(BarnetFormField.fødselsdato)}>
@@ -86,8 +88,10 @@ const Barnet: React.FunctionComponent = () => {
                                         validate={validateTermindato(intl, formValues.fødselsdato)}
                                     />
                                 </Block>
-                                <ReadMore size="small" header={intlUtils(intl, 'barnet.termindato.merInfo.tittel')}>
-                                    {intlUtils(intl, 'barnet.termindato.merInfo.tekst')}
+                                <ReadMore header={intlUtils(intl, 'barnet.termindato.merInfo.tittel')}>
+                                    <BodyShort>
+                                        <FormattedMessage id="barnet.termindato.merInfo.tekst" />
+                                    </BodyShort>
                                 </ReadMore>
                             </Block>
                             <Block padBottom="l">

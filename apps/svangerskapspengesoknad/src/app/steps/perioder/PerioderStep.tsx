@@ -217,13 +217,15 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         />
                                                     </Block>
                                                     <ReadMore
-                                                        size="small"
+                                                        size="medium"
                                                         header={intlUtils(
                                                             intl,
                                                             'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                                         )}
                                                     >
-                                                        <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
+                                                        <BodyShort>
+                                                            <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
+                                                        </BodyShort>
                                                     </ReadMore>
                                                 </Block>
                                                 {måSøkeSendeNySøknad && (
