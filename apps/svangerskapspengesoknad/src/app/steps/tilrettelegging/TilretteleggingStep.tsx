@@ -1,7 +1,7 @@
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg } from '../stepsConfig';
-import { BodyLong, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     TilretteleggingFormComponents,
@@ -200,30 +200,41 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     />
                                 </Block>
                                 <ReadMore size="small" header={intlUtils(intl, 'tilrettelegging.tiltak.info.title')}>
-                                    <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
+                                    <BodyShort>
+                                        <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
+                                    </BodyShort>
                                 </ReadMore>
                             </Block>
                             <Block padBottom="xxl">
-                                <TilretteleggingFormComponents.RadioGroup
-                                    name={TilretteleggingFormField.tilretteleggingType}
-                                    legend={tilretteleggingTypeLabel}
-                                    description={
-                                        harSkjema
-                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
-                                            : ''
-                                    }
-                                    radios={[
-                                        {
-                                            label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.delvis'),
-                                            value: TilretteleggingstypeOptions.DELVIS,
-                                        },
-                                        {
-                                            label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.ingen'),
-                                            value: TilretteleggingstypeOptions.INGEN,
-                                        },
-                                    ]}
-                                    validate={validateTilrettelagtArbeidType(intl)}
-                                />
+                                <Block padBottom="m">
+                                    <TilretteleggingFormComponents.RadioGroup
+                                        name={TilretteleggingFormField.tilretteleggingType}
+                                        legend={tilretteleggingTypeLabel}
+                                        description={
+                                            harSkjema
+                                                ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                                : ''
+                                        }
+                                        radios={[
+                                            {
+                                                label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.delvis'),
+                                                value: TilretteleggingstypeOptions.DELVIS,
+                                            },
+                                            {
+                                                label: intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.ingen'),
+                                                value: TilretteleggingstypeOptions.INGEN,
+                                            },
+                                        ]}
+                                        validate={validateTilrettelagtArbeidType(intl)}
+                                    />
+                                </Block>
+                                <ReadMore
+                                    header={intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.info.tittel')}
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>
+                                    </BodyShort>
+                                </ReadMore>
                             </Block>
 
                             <Block
@@ -275,13 +286,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     />
                                 </Block>
                                 <ReadMore
-                                    size="small"
                                     header={intlUtils(
                                         intl,
                                         'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                     )}
                                 >
-                                    <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
+                                    <BodyShort>
+                                        <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
+                                    </BodyShort>
                                 </ReadMore>
                             </Block>
                             <Block
