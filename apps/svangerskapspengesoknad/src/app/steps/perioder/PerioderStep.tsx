@@ -202,6 +202,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                                 intl,
                                                                 'perioder.varierende.stillingsprosent.label',
                                                             )}
+                                                            description={intlUtils(
+                                                                intl,
+                                                                'tilrettelegging.tilrettelagtArbeidType.description',
+                                                            )}
                                                             validate={validateStillingsprosentPerioder(
                                                                 intl,
                                                                 opprinneligStillingsprosent,
