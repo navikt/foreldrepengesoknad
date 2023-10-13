@@ -1,7 +1,7 @@
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg } from '../stepsConfig';
-import { Button, ReadMore } from '@navikt/ds-react';
+import { BodyLong, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     TilretteleggingFormComponents,
@@ -224,6 +224,28 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     ]}
                                     validate={validateTilrettelagtArbeidType(intl)}
                                 />
+                            </Block>
+
+                            <Block padBottom="xxl">
+                                <ExpansionCard size="small" aria-label="">
+                                    <ExpansionCard.Header>
+                                        <ExpansionCard.Title size="small" as="h2">
+                                            <FormattedMessage id="tilrettelegging.expansion.tittel" />
+                                        </ExpansionCard.Title>
+                                    </ExpansionCard.Header>
+                                    <ExpansionCard.Content>
+                                        <Block padBottom="l">
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="tilrettelegging.expansion.tekst"
+                                                    values={{
+                                                        em: (msg: any) => <em>{msg}</em>,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        </Block>
+                                    </ExpansionCard.Content>
+                                </ExpansionCard>
                             </Block>
 
                             <Block
