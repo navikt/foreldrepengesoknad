@@ -262,16 +262,27 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent,
                                 )}
                             >
-                                <TilretteleggingFormComponents.NumberInput
-                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent}
-                                    label={intlUtils(intl, 'tilrettelegging.stillingsprosent.label')}
-                                    description={
-                                        harSkjema
-                                            ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
-                                            : ''
-                                    }
-                                    validate={validateStillingsprosent(intl, opprinneligStillingsprosent)}
-                                />
+                                <Block padBottom="m">
+                                    <TilretteleggingFormComponents.NumberInput
+                                        name={TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent}
+                                        label={intlUtils(intl, 'tilrettelegging.stillingsprosent.label')}
+                                        description={
+                                            harSkjema
+                                                ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
+                                                : ''
+                                        }
+                                        validate={validateStillingsprosent(intl, opprinneligStillingsprosent)}
+                                    />
+                                </Block>
+                                <ReadMore
+                                    size="small"
+                                    header={intlUtils(
+                                        intl,
+                                        'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
+                                    )}
+                                >
+                                    <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="xxl"
