@@ -10,7 +10,7 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType
+    innsendingsType?: InnsendingsType,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,
@@ -18,10 +18,30 @@ export const mapFilTilVedlegg = (
     filesize: file.size,
     uploaded: false,
     pending: false,
+    isDuplicate: false,
     type,
     skjemanummer,
     innsendingsType,
+    get byteHash() {
+        if (this._byteHash) {
+            return Promise.resolve(this._byteHash);
+        }
+
+        return computeHash(this.file).then((hash) => {
+            this._byteHash = hash;
+            return hash;
+        });
+    },
 });
+
+async function computeHash(file: File) {
+    const buffer = await file.arrayBuffer();
+    const hashArray = await crypto.subtle.digest('SHA-256', buffer);
+    const hash = Array.from(new Uint8Array(hashArray))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+    return hash;
+}
 
 export const bytesString = (bytes: number): string => {
     return Bytes(bytes, {

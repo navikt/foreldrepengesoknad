@@ -19,4 +19,7 @@ export interface Attachment {
     uploaded: boolean;
     url?: string;
     uuid?: string;
+    isDuplicate: boolean;
+    _byteHash?: string;
+    readonly byteHash?: Promise<string>;
 }

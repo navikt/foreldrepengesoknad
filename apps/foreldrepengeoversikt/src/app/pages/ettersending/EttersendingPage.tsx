@@ -10,6 +10,7 @@ import OversiktRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import EttersendingDto from 'app/types/EttersendingDTO';
+import { AttachmentDto } from 'app/types/EttersendingDTO';
 import { Sak } from 'app/types/Sak';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -78,10 +79,22 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const onSubmit = (values: Partial<EttersendingFormData>) => {
         setIsEttersending(true);
 
+        const vedleggToSend: AttachmentDto[] = values
+            .vedlegg!.filter((a) => !a.isDuplicate)
+            .map((a) => {
+                return {
+                    id: a.id,
+                    beskrivelse: a.beskrivelse,
+                    skjemanummer: a.skjemanummer,
+                    uuid: a.uuid,
+                    url: a.url,
+                };
+            });
+
         const valuesToSend: EttersendingDto = {
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
-            vedlegg: values.vedlegg!,
+            vedlegg: vedleggToSend,
         };
 
         Api.sendEttersending(valuesToSend)
