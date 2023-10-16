@@ -15,4 +15,5 @@ export const links = {
     engangsstonad: 'https://www.nav.no/engangsstonad',
     farMedmor: 'https://www.nav.no/engangsstonad#far_medmor',
     barn: 'https://www.nav.no/barn',
+    foreldrepengerUtland: 'https://www.nav.no/foreldrepenger#utland',
 };
