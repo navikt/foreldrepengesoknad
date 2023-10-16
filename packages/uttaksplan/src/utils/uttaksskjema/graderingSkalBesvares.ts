@@ -1,9 +1,8 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
+import { StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import { Periodetype } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 
 export const graderingSkalBesvares = (
     periodetype: Periodetype,

@@ -1,10 +1,9 @@
 import { BodyShort } from '@navikt/ds-react';
-import { Forelder, NavnPåForeldre, intlUtils } from '@navikt/fp-common';
+import { Forelder, NavnPåForeldre, intlUtils, UtsettelseÅrsakType } from '@navikt/fp-common';
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { isUttakAnnenPart, UtsettelseAnnenPartInfoPeriode, UttakAnnenPartInfoPeriode } from 'types/Periode';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
 import { getForelderNavn, getOppholdskontoNavn } from 'utils/periodeUtils';
 
 export interface Props {

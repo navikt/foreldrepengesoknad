@@ -1,6 +1,5 @@
 import { Label } from '@navikt/ds-react';
-import Fieldset from 'app/components/fieldset/Fieldset';
-import { Block, bemUtils, guid } from '@navikt/fp-common';
+import { Block, Fieldset, bemUtils, guid } from '@navikt/fp-common';
 import NumberStepper, { Props as NumberStepperProps } from './../number-stepper/NumberStepper';
 
 import './ukerDagerTeller.less';

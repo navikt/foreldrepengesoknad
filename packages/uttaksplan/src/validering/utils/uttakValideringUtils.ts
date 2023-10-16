@@ -1,17 +1,19 @@
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { Forelder } from 'app/types/Forelder';
-import { Situasjon } from 'app/types/Situasjon';
 import { isPeriodeUtenUttak, Periode, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { uttaksdatoer } from 'utils/uttaksdatoerUtils';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
-import { MorsAktivitet } from 'types/MorsAktivitet';
-import { OverføringÅrsakType } from 'types/OverføringÅrsakType';
 import { erPeriodeFørDato } from 'utils/periodeUtils';
-import AnnenForelder from 'app/context/types/AnnenForelder';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import {
+    AnnenForelder,
+    Forelder,
+    MorsAktivitet,
+    Situasjon,
+    StønadskontoType,
+    UtsettelseÅrsakType,
+    OverføringÅrsakType,
+} from '@navikt/fp-common';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 

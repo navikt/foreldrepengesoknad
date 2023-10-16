@@ -1,7 +1,6 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, Situasjon, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Situasjon } from 'app/types/Situasjon';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';

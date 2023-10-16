@@ -1,7 +1,11 @@
-import { Block, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    Block,
+    NavnPåForeldre,
+    Situasjon,
+    TilgjengeligStønadskonto,
+} from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
 import { Periode, Periodetype, Utsettelsesperiode } from 'types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';

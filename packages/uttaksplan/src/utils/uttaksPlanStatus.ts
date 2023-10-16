@@ -1,5 +1,4 @@
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import {
     AvslåttPeriode,
@@ -19,6 +18,7 @@ import {
 import { PeriodeInfoType } from 'types/PeriodeInfoType';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
+import { TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const dager = Perioden(periode).getAntallUttaksdager();

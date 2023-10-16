@@ -1,18 +1,15 @@
-import { hasValue, TidsperiodeDate } from '@navikt/fp-common';
+import { AnnenForelder, hasValue, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import AnnenForelder from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Situasjon } from 'app/types/Situasjon';
-import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel, getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
-import { StønadskontoType } from 'types/StønadskontoType';
 import hvemSkalTaUttakSkalBesvares from 'utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
 import getUttakSkjemaregler, { UttakSkjemaregler, UttakSkjemaReglerProps } from 'utils/uttaksskjema/uttakSkjemaregler';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
 import { Periodetype } from 'types/Periode';
+import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;

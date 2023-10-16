@@ -2,8 +2,8 @@ import uttaksConstants from 'app/constants';
 import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import dayjs from 'dayjs';
 import { ForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
+import { StønadskontoType } from '@navikt/fp-common';
 
 export const initialValues: PeriodeFørFødselFormData = {
     [PeriodeFørFødselFormField.fom]: undefined,

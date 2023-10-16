@@ -1,9 +1,9 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { beregnGjenståendeUttaksdager } from 'utils/uttaksPlanStatus';
 import { Periode } from 'types/Periode';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
+import { TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],

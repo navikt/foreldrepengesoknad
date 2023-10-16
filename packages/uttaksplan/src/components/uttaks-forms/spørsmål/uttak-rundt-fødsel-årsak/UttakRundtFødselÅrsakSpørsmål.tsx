@@ -1,11 +1,9 @@
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
-import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
+import { Attachment, Block, hasValue, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-
-import { Attachment } from 'app/types/Attachment';
 import MorErForSykDokumentasjonOpplastning from '../er-mor-for-syk-dokumentasjon/MorErForSykDokumentasjonOpplastning';
+import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 
 interface Props {
     fieldName: PeriodeUttakFormField;

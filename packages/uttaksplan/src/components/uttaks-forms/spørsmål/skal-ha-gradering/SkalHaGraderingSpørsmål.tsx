@@ -1,5 +1,4 @@
-import { intlUtils, Block, hasValue, TidsperiodeDate } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { intlUtils, Block, hasValue, TidsperiodeDate, Arbeidsforhold } from '@navikt/fp-common';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';

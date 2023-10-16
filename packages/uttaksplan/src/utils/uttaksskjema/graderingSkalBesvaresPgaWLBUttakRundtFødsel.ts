@@ -1,8 +1,6 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
-import { Situasjon } from 'app/types/Situasjon';
+import { Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from 'app/utils/wlbUtils';
 import { Periodetype } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 
 export const graderingSkalBesvaresPgaWLBUttakRundtFødsel = (
     tidperiode: TidsperiodeDate,

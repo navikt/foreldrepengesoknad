@@ -1,10 +1,9 @@
-import { intlUtils } from '@navikt/fp-common';
+import { intlUtils, UtsettelseÅrsakType } from '@navikt/fp-common';
 
 import { useIntl } from 'react-intl';
 import { getUtsettelseFarge } from 'utils/styleUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
 
 export interface Props {
     årsak: UtsettelseÅrsakType;

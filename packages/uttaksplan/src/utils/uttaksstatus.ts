@@ -1,8 +1,7 @@
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { Periode } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import { beregnGjenståendeUttaksdager } from './uttaksPlanStatus';
+import { StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 export interface Uttaksstatus {
     gjelderDagerBrukt: boolean;

@@ -1,6 +1,6 @@
-import { Tidsperiode } from '@navikt/fp-common';
 import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { SaksperiodeDTO } from './SaksperiodeDTO';
+import { Tidsperiode } from './Tidsperiode';
 
 export interface Saksperiode extends Omit<SaksperiodeDTO, 'fom' | 'tom' | 'oppholdÅrsak'> {
     guid: string;

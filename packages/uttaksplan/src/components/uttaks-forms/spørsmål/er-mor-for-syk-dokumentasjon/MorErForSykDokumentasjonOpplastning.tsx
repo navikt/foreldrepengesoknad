@@ -1,8 +1,5 @@
-import { Block } from '@navikt/fp-common';
+import { Attachment, AttachmentType, Block, Skjemanummer } from '@navikt/fp-common';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';

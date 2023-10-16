@@ -1,7 +1,13 @@
 import { IntlShape } from 'react-intl';
-import { bemUtils, Block, NavnPåForeldre, Situasjon, TilgjengeligStønadskonto } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    bemUtils,
+    Block,
+    NavnPåForeldre,
+    Situasjon,
+    TilgjengeligStønadskonto,
+} from '@navikt/fp-common';
 import classNames from 'classnames';
 import { FunctionComponent } from 'react';
 import {

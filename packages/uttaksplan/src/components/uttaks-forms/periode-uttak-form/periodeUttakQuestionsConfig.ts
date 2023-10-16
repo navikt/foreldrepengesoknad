@@ -1,6 +1,5 @@
-import { hasValue } from '@navikt/fp-common';
+import { Søkerrolle, hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { Søkerrolle } from 'app/types/Søkerrolle';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 
 export interface PeriodeUttakQuestionPayload extends PeriodeUttakFormData {

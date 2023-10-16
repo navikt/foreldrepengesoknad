@@ -10,6 +10,7 @@ export { default as UtvidetInformasjon } from './components/utvidet-informasjon/
 export { default as PictureScanningGuide } from './components/picture-scanning-guide/PictureScanningGuide';
 export { default as InfoBlock } from './components/info-block/InfoBlock';
 export { default as StepButtonWrapper } from './components/step/StepButtonWrapper';
+export { default as Fieldset } from './components/fieldset/Fieldset';
 
 export { default as AdvarselIkon } from './assets/advarsel-ikon/AdvarselIkon';
 export { default as ScanningIkon } from './assets/scanning-ikon/ScanningIkon';

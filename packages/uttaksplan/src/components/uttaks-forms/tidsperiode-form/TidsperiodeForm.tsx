@@ -1,4 +1,4 @@
-import { intlUtils, Tidsperiode, Block, TidsperiodeDate } from '@navikt/fp-common';
+import { intlUtils, Tidsperiode, Block, TidsperiodeDate, Situasjon } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isUtsettelsesperiode, isUttaksperiode, Periode, Utsettelsesperiode } from 'types/Periode';
@@ -12,7 +12,6 @@ import {
 import { mapTidsperiodeStringToTidsperiode } from 'utils/periodeUtils';
 import { getFørsteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from 'utils/uttaksdatoerUtils';
 import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from 'app/utils/wlbUtils';
-import { Situasjon } from 'app/types/Situasjon';
 import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { Button } from '@navikt/ds-react';
 

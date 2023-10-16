@@ -1,10 +1,10 @@
-import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { OverføringÅrsakType } from 'uttaksplan/types/OverføringÅrsakType';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { GraderingDTO } from './GraderingDTO';
-import { PeriodeResultatDTO } from './PeriodeResultatDTO';
-import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
+import { MorsAktivitet } from './MorsAktivitet';
+import { StønadskontoType } from './StønadskontoType';
 import { OppholdÅrsakTypeDTO } from './OppholdÅrsakTypeDTO';
+import { OverføringÅrsakType } from './OverføringÅrsakType';
+import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
+import { PeriodeResultatDTO } from './PeriodeResultatDTO';
+import { GraderingDTO } from './GraderingDTO';
 
 export interface SaksperiodeDTO {
     fom: string;

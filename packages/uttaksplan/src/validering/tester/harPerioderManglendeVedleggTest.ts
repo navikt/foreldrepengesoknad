@@ -1,10 +1,10 @@
 import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { MissingAttachment } from 'app/types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from 'app/utils/manglendeVedleggUtils';
 import dayjs from 'dayjs';
 import { isInfoPeriode } from 'types/Periode';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import { MissingAttachment } from '@navikt/fp-common';
 
 export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const manglendeVedlegg: MissingAttachment[] = findMissingAttachmentsForPerioder(grunnlag);

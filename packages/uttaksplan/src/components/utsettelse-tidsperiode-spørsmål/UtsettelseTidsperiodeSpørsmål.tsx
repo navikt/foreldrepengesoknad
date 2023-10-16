@@ -1,4 +1,4 @@
-import { intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { intlUtils, Situasjon, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'types/Periode';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
-import { Situasjon } from 'app/types/Situasjon';
 import { Modal } from '@navikt/ds-react';
 
 interface Props {

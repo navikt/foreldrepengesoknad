@@ -1,6 +1,17 @@
-import { Forelder, intlUtils, NavnPåForeldre, Situasjon, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import {
+    EksisterendeSak,
+    Forelder,
+    intlUtils,
+    NavnPåForeldre,
+    Situasjon,
+    Tidsperiode,
+    TidsperiodeDate,
+    OppholdÅrsakType,
+    MorsAktivitet,
+    UtsettelseÅrsakType,
+    OverføringÅrsakType,
+} from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
-import { OppholdÅrsakType } from '../types/OppholdÅrsakType';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
 import { StønadskontoType } from '@navikt/fp-common/src/common/types/StønadskontoType';
 import {
@@ -30,10 +41,6 @@ import {
     ISOStringToDate,
 } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
-import { MorsAktivitet } from 'types/MorsAktivitet';
-import { OverføringÅrsakType } from 'types/OverføringÅrsakType';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from 'app/utils/wlbUtils';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';

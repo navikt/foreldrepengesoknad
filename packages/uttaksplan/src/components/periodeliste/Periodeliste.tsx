@@ -1,22 +1,29 @@
 import { FunctionComponent, useState } from 'react';
-import { bemUtils, Block, formatDate, NavnPåForeldre } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    Barn,
+    BarnFraNesteSak,
+    bemUtils,
+    Block,
+    formatDate,
+    NavnPåForeldre,
+    Situasjon,
+    TilgjengeligStønadskonto,
+} from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 import { isInfoPeriode, Periode, Utsettelsesperiode } from 'types/Periode';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 
-import './periodeliste.less';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Situasjon } from 'app/types/Situasjon';
 import { VeiledermeldingerPerPeriode } from 'validering/veilederInfo/types';
 import { getAnnenForelderSamtidigUttakPeriode } from 'utils/periodeUtils';
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
-import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Alert } from '@navikt/ds-react';
 import { PeriodeValidState } from 'Uttaksplan';
+
+import './periodeliste.less';
 
 interface Props {
     uttaksplan: Periode[];

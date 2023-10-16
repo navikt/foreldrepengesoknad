@@ -1,23 +1,24 @@
 import {
     ActionLink,
+    AnnenForelder,
+    Arbeidsforhold,
     bemUtils,
     Block,
     Forelder,
     guid,
     intlUtils,
+    isAnnenForelderOppgitt,
     NavnPåForeldre,
     Situasjon,
+    StønadskontoType,
     TidsperiodeDate,
     TilgjengeligStønadskonto,
 } from '@navikt/fp-common';
-import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { Periode, Periodetype, Utsettelsesperiode } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { getVelgbareStønadskontotyper } from 'utils/stønadskontoerUtils';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';

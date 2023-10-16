@@ -1,9 +1,13 @@
-import { Barn, NavnPåForeldre, TilgjengeligStønadskonto } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    Barn,
+    Dekningsgrad,
+    NavnPåForeldre,
+    Søkersituasjon,
+    TilgjengeligStønadskonto,
+    Tilleggsopplysninger,
+} from '@navikt/fp-common';
 import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Periode } from 'types/Periode';
 

@@ -1,18 +1,20 @@
-import { hasValue } from '@navikt/fp-common';
+import {
+    Attachment,
+    AttachmentType,
+    Forelder,
+    MorsAktivitet,
+    Situasjon,
+    Skjemanummer,
+    StønadskontoType,
+    OverføringÅrsakType,
+    hasValue,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Forelder } from 'app/types/Forelder';
-import { Situasjon } from 'app/types/Situasjon';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { getMorsAktivitet, getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
 import { trimNumberValue } from 'app/utils/numberUtils';
 import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import dayjs from 'dayjs';
-import { MorsAktivitet } from 'types/MorsAktivitet';
-import { OverføringÅrsakType } from 'types/OverføringÅrsakType';
 import {
     Arbeidsform,
     isOppholdsperiode,
@@ -24,7 +26,6 @@ import {
     Periodetype,
     Uttaksperiode,
 } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
@@ -32,6 +33,7 @@ import {
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 
 const getInitialKonto = (
     erDeltUttak: boolean,

@@ -1,5 +1,4 @@
-import { formatDate } from '@navikt/fp-common';
-import { isUfødtBarn } from 'app/context/types/Barn';
+import { formatDate, isUfødtBarn } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getUgyldigUttakMor } from '../utils/uttakValideringUtils';

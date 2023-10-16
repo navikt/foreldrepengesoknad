@@ -3,9 +3,9 @@ import { formaterDatoUtenDag } from 'app/utils/dateUtils';
 import { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import HjerteIkon from 'assets/HjerteIkon';
+import { BodyShort } from '@navikt/ds-react';
 
 import './familiehendelsesdatoDisplay.less';
-import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     familiehendelsedato: Date;

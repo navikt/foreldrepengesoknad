@@ -2,7 +2,7 @@ import { Periodetype } from 'types/Periode';
 import { erPeriodeInnvilget, erSenUtsettelsePgaFerieEllerArbeid } from 'utils/periodeUtils';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
+import { UtsettelseÅrsakType } from '@navikt/fp-common';
 
 export function inneholderSenUtsettelsePgaFerieTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const seneUtsettelsePgaFerie = grunnlag.perioder

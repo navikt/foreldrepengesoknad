@@ -1,6 +1,5 @@
-import { Forelder } from 'app/types/Forelder';
+import { Forelder, StønadskontoType } from '@navikt/fp-common';
 import { Oppholdsperiode, Periode, Periodetype } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { UttaksplanColor } from 'types/UttaksplanColor';
 
 export const getForelderFarge = (forelder: Forelder) => {

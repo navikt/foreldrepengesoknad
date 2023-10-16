@@ -1,8 +1,6 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
-import { Situasjon } from 'app/types/Situasjon';
+import { Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { Periodetype } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const samtidigUttakSkalBesvares = (

@@ -3,10 +3,9 @@ import { isForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode }
 import dayjs from 'dayjs';
 import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
-import { Block, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { Block, intlUtils, Situasjon, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
-import { Situasjon } from 'app/types/Situasjon';
 import { Modal } from '@navikt/ds-react';
 
 interface Props {

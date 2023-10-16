@@ -1,10 +1,8 @@
 import { beregnBrukteUttaksdager, getAllePerioderMedUttaksinfoFraUttaksplan } from 'utils/uttaksPlanStatus';
-import { StønadskontoType } from 'types/StønadskontoType';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { isUttaksperiode, Periode, Uttaksperiode } from 'types/Periode';
-import { Forelder } from 'app/types/Forelder';
 import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { Forelder, StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 interface ForeldersBrukteDager {
     førTermin: StønadskontoUttak[];

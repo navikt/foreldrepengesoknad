@@ -1,10 +1,7 @@
-import { MorsAktivitet } from 'types/MorsAktivitet';
-import { OppholdÅrsakType } from 'types/OppholdÅrsakType';
 import { Periode, Periodetype, Uttaksperiode } from 'types/Periode';
 import { PeriodeInfoType } from 'types/PeriodeInfoType';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
-import { Forelder, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, StønadskontoType, OppholdÅrsakType, MorsAktivitet, UtsettelseÅrsakType } from '@navikt/fp-common';
 
 const perioder: Periode[] = [
     {

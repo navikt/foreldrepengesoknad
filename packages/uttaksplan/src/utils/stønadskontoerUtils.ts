@@ -1,5 +1,4 @@
-import { Forelder, NavnPåForeldre, StønadskontoType, intlUtils } from '@navikt/fp-common';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { Forelder, NavnPåForeldre, StønadskontoType, TilgjengeligStønadskonto, intlUtils } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { IntlShape } from 'react-intl';
 import { getForelderNavn } from './periodeUtils';

@@ -1,4 +1,4 @@
-import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
+import { PeriodeResultatÅrsak } from './PeriodeResultatÅrsak';
 
 export interface PeriodeResultatDTO {
     innvilget: boolean;

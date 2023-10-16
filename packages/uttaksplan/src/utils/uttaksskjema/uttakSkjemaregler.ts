@@ -1,11 +1,8 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import { AnnenForelder, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Situasjon } from 'app/types/Situasjon';
 import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { PeriodeUttakFormData } from 'components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
 import { Periodetype } from 'types/Periode';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { getUttaksdatoer } from '../uttaksdatoerUtils';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';

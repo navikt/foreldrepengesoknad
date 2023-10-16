@@ -1,4 +1,4 @@
-interface Arbeidsforhold {
+export interface Arbeidsforhold {
     arbeidsgiverNavn: string;
     arbeidsgiverId: string;
     arbeidsgiverIdType: string;
@@ -6,5 +6,3 @@ interface Arbeidsforhold {
     tom?: Date;
     stillingsprosent: number;
 }
-
-export default Arbeidsforhold;

@@ -1,9 +1,19 @@
-import { bemUtils, InfoBlock, intlUtils, Block, ActionLink, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
+import {
+    bemUtils,
+    InfoBlock,
+    intlUtils,
+    Block,
+    ActionLink,
+    NavnPåForeldre,
+    Situasjon,
+    TilgjengeligStønadskonto,
+    Arbeidsforhold,
+    Barn,
+    BarnFraNesteSak,
+    AnnenForelder,
+    isAnnenForelderOppgitt,
+} from '@navikt/fp-common';
 import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Periode, Utsettelsesperiode } from 'types/Periode';

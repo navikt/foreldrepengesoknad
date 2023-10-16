@@ -1,7 +1,7 @@
 import { Periodetype } from 'types/Periode';
 import MockDate from 'mockdate';
-import { StønadskontoType } from 'types/StønadskontoType';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
+import { StønadskontoType } from '@navikt/fp-common';
 
 describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
     beforeAll(() => {

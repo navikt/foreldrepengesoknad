@@ -4,6 +4,9 @@
     "private": true,
     "license": "MIT",
     "type": "module",
+    "scripts": {
+        "build": "vite build"
+    },
     "dependencies": {
         "@navikt/ds-react": "^5.6.4",
         "@navikt/fp-common": "workspace:*",
@@ -12,6 +15,7 @@
         "@types/react": "^18.2.20",
         "classnames": "^2.3.2",
         "dayjs": "^1.11.9",
+        "formik": "^2.4.3",
         "lodash": "^4.17.21",
         "react": "^18.2.0",
         "react-intl": "^6.4.4",

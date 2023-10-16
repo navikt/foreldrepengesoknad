@@ -1,8 +1,7 @@
-import { hasValue } from '@navikt/fp-common';
+import { hasValue, UtsettelseÅrsakType } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
 
 export interface PeriodeUtsettelseFormConfigPayload {
     values: PeriodeUtsettelseFormData;

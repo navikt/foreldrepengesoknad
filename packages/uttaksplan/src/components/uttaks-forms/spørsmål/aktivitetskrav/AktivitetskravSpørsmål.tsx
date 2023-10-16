@@ -2,6 +2,7 @@ import {
     Attachment,
     AttachmentType,
     Block,
+    MorsAktivitet,
     NavnPåForeldre,
     Skjemanummer,
     hasValue,
@@ -11,7 +12,6 @@ import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUp
 import links from 'app/links/links';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { MorsAktivitet } from 'types/MorsAktivitet';
 import { getNavnGenitivEierform } from 'utils/stønadskontoerUtils';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';

@@ -1,11 +1,7 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Attachment, AttachmentType, Block, intlUtils, Skjemanummer, UtsettelseÅrsakType } from '@navikt/fp-common';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { UtsettelseÅrsakType } from 'types/UtsettelseÅrsakType';
 import {
     PeriodeUtsettelseFormComponents,
     PeriodeUtsettelseFormField,

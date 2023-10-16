@@ -18,7 +18,7 @@ export interface AnnenForelderOppgitt extends Common {
 
 export type AnnenForelderIkkeOppgitt = Common;
 
-type AnnenForelder = AnnenForelderIkkeOppgitt | AnnenForelderOppgitt;
+export type AnnenForelder = AnnenForelderIkkeOppgitt | AnnenForelderOppgitt;
 
 export const isAnnenForelderOppgitt = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
     return annenForelder.kanIkkeOppgis === false;
@@ -27,5 +27,3 @@ export const isAnnenForelderOppgitt = (annenForelder: AnnenForelder): annenForel
 export const isAnnenForelderIkkeOppgitt = (annenForelder: AnnenForelder): annenForelder is AnnenForelderIkkeOppgitt => {
     return annenForelder.kanIkkeOppgis === true;
 };
-
-export default AnnenForelder;
