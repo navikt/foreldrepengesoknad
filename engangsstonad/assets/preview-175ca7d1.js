@@ -1,2 +1,0 @@
-import{j as e}from"./jsx-runtime-69eee039.js";/* empty css                */import"./index-7c191284.js";const t=document.createElement("script");t.type="text/json";t.id="nav:appSettings";t.innerHTML=JSON.stringify({REST_API_URL:""});document.head.appendChild(t);const r=[i=>e.jsx("div",{id:"app",style:{backgroundColor:"white",padding:"40px"},children:e.jsx(i,{})})];export{r as decorators};
-//# sourceMappingURL=preview-175ca7d1.js.map
