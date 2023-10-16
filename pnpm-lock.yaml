@@ -766,9 +766,18 @@ importers:
       '@babel/plugin-proposal-object-rest-spread':
         specifier: ^7.20.7
         version: 7.20.7(@babel/core@7.22.10)
+      '@formatjs/intl-datetimeformat':
+        specifier: ^6.10.0
+        version: 6.10.0
+      '@formatjs/intl-numberformat':
+        specifier: ^8.7.0
+        version: 8.7.0
       '@formatjs/intl-pluralrules':
         specifier: ^5.2.4
         version: 5.2.4
+      '@formatjs/intl-relativetimeformat':
+        specifier: ^11.2.4
+        version: 11.2.4
       '@navikt/aksel-icons':
         specifier: ^4.12.1
         version: 4.12.1

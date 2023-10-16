@@ -9,9 +9,14 @@ import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
-import { erMyndig, erKvinne } from '@navikt/fp-common';
+import { erMyndig, erKvinne, Locale } from '@navikt/fp-common';
 import Umyndig from './pages/umyndig/Umyndig';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
+
+interface Props {
+    locale: Locale;
+    onChangeLocale: any;
+}
 
 const renderSpinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -19,7 +24,7 @@ const renderSpinner = () => (
     </div>
 );
 
-const Svangerskapspengesøknad = () => {
+const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { dispatch } = useSvangerskapspengerContext();
 
@@ -55,7 +60,11 @@ const Svangerskapspengesøknad = () => {
                 <Umyndig />
             ) : (
                 <BrowserRouter>
-                    <SvangerskapspengesøknadRoutes currentRoute={SøknadRoutes.FORSIDE} />
+                    <SvangerskapspengesøknadRoutes
+                        currentRoute={SøknadRoutes.FORSIDE}
+                        locale={locale}
+                        onChangeLocale={onChangeLocale}
+                    />
                 </BrowserRouter>
             )}
         </div>

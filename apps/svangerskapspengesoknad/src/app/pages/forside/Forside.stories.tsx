@@ -13,6 +13,6 @@ const defaultExport = {
 export default defaultExport;
 
 const Template: StoryFn = () => {
-    return <Forside />;
+    return <Forside onChangeLocale={() => undefined} locale="nb" />;
 };
 export const Default = Template.bind({});

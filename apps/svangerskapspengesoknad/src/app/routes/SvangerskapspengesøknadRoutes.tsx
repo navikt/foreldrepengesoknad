@@ -1,3 +1,4 @@
+import { Locale } from '@navikt/fp-common';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import SøknadRoutes from './routes';
@@ -23,6 +24,8 @@ import PerioderStep from 'app/steps/perioder/PerioderStep';
 
 interface Props {
     currentRoute: SøknadRoutes;
+    locale: Locale;
+    onChangeLocale: (locale: Locale) => void;
 }
 
 export const getForrigeTilrettelegging = (
@@ -165,7 +168,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: 
     );
 };
 
-const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute }) => {
+const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute, locale, onChangeLocale }) => {
     const { state } = useSvangerskapspengerContext();
     const { tilrettelegging } = useSøknad();
     const navigate = useNavigate();
@@ -183,7 +186,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
 
     return (
         <Routes>
-            <Route path={SøknadRoutes.FORSIDE} element={<Forside />} />
+            <Route path={SøknadRoutes.FORSIDE} element={<Forside locale={locale} onChangeLocale={onChangeLocale} />} />
 
             {renderSøknadRoutes(harGodkjentVilkår, tilrettelegging)}
         </Routes>

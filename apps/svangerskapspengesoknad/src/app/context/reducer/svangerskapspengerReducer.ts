@@ -75,6 +75,17 @@ const svangerskapspengerReducer = (
                     harGodkjentOppsummering: true,
                 },
             };
+        case SvangerskapspengerContextActionKeys.SET_SPRÅKKODE:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    søker: {
+                        ...state.søknad.søker,
+                        språkkode: action.payload,
+                    },
+                },
+            };
         default:
             return state;
     }

@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
-import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
+import { Block, LanguageToggle, bemUtils, intlUtils, Locale } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     ForsideFormComponents,
@@ -14,10 +14,24 @@ import { validateHarForståttRettigheterOgPlikter } from './forsideValidation';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator, { SvangerskapspengerContextAction } from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
+import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
+import { useEffect } from 'react';
 
-const Forside = () => {
+interface Props {
+    onChangeLocale: (locale: Locale) => void;
+    locale: Locale;
+}
+
+const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
     const bem = bemUtils('forside');
+    const { dispatch, state } = useSvangerskapspengerContext();
+
+    useEffect(() => {
+        if (state.søknad.søker.språkkode !== locale) {
+            dispatch(actionCreator.setSpråkkode(locale));
+        }
+    }, [dispatch, locale, state.søknad.søker.språkkode]);
 
     const onValidSubmitHandler = (values: Partial<ForsideFormData>) => {
         const actionsToDispatch: SvangerskapspengerContextAction[] = [
@@ -37,11 +51,13 @@ const Forside = () => {
                 } as ForsideFormData);
                 return (
                     <ForsideFormComponents.Form includeButtons={false}>
-                        {/* <LanguageToggle
-                            locale={locale}
-                            availableLocales={['nb', 'nn']}
-                            toggle={(l: Locale) => onChangeLocale(l)}
-                        /> */}
+                        <Block padBottom="l">
+                            <LanguageToggle
+                                locale={locale}
+                                availableLocales={['nb', 'nn']}
+                                toggle={(l: Locale) => onChangeLocale(l)}
+                            />
+                        </Block>
                         <div className={bem.block}>
                             <Block>
                                 <Heading size="xlarge" className={`${bem.element('tittel')}`}>

@@ -1,6 +1,7 @@
 import { IntlProvider as Provider } from 'react-intl';
 import dayjs from 'dayjs';
 import nbMessages from './nb_NO.json';
+import nnMessages from './nn_NO.json';
 import { allCommonMessages, Locale } from '@navikt/fp-common';
 
 interface Props {
@@ -10,8 +11,12 @@ interface Props {
 
 dayjs.locale('nb');
 
-const getLanguageMessages = (_locale: Locale) => {
-    return { ...nbMessages, ...allCommonMessages.nb };
+const getLanguageMessages = (locale: Locale) => {
+    if (locale === 'nb') {
+        return { ...nbMessages, ...allCommonMessages.nb };
+    } else {
+        return { ...nnMessages, ...allCommonMessages.nn };
+    }
 };
 
 const IntlProvider: React.FunctionComponent<Props> = ({ locale, children }) => {
