@@ -10,7 +10,6 @@ import OversiktRoutes from 'app/routes/routes';
 import { Attachment } from 'app/types/Attachment';
 import { AttachmentType } from 'app/types/AttachmentType';
 import EttersendingDto from 'app/types/EttersendingDTO';
-import { AttachmentDto } from 'app/types/EttersendingDTO';
 import { Sak } from 'app/types/Sak';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { Skjemanummer } from 'app/types/Skjemanummer';
@@ -79,7 +78,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const onSubmit = (values: Partial<EttersendingFormData>) => {
         setIsEttersending(true);
 
-        const vedleggToSend: AttachmentDto[] = values
+        const vedleggToSend = values
             .vedlegg!.filter((a) => !a.isDuplicate)
             .map((a) => {
                 return {
