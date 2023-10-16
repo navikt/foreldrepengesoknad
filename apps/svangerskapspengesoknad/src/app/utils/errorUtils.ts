@@ -4,6 +4,8 @@ import { IntlShape } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
 
 export const UKJENT_UUID = 'ukjent uuid';
+export const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
 export const getErrorCallId = (error: AxiosError<any>): string => {
     return error.response && error.response.data && error.response.data.uuid ? error.response.data.uuid : UKJENT_UUID;

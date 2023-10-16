@@ -35,6 +35,7 @@ import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -44,6 +45,7 @@ const Oppsummering = () => {
     const { dispatch } = useSvangerskapspengerContext();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
+    const [submitError, setSubmitError] = useState<any>(undefined);
     const navigate = useNavigate();
     useUpdateCurrentTilretteleggingId(undefined);
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -81,12 +83,22 @@ const Oppsummering = () => {
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                         redirectToLogin();
+                    } else {
+                        setSubmitError(error);
                     }
-
-                    console.log('Søknad innsending error');
                 });
         }
     });
+
+    useEffect(() => {
+        if (submitError !== undefined) {
+            sendErrorMessageToSentry(submitError);
+            const submitErrorCallId = getErrorCallId(submitError);
+            const callIdForBruker =
+                submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
+            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+        }
+    }, [submitError]);
 
     return (
         <OppsummeringFormComponents.FormikWrapper
