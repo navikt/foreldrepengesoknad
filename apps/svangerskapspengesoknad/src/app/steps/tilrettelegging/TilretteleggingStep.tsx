@@ -291,9 +291,16 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                     )}
                                 >
-                                    <BodyShort>
-                                        <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst"></FormattedMessage>
-                                    </BodyShort>
+                                    <Block padBottom="l">
+                                        <BodyShort>
+                                            <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
+                                        </BodyShort>
+                                    </Block>
+                                    <Block>
+                                        <BodyShort>
+                                            <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del2"></FormattedMessage>
+                                        </BodyShort>
+                                    </Block>
                                 </ReadMore>
                             </Block>
                             <Block
