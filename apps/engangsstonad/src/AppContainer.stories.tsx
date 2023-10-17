@@ -2,6 +2,7 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import { engangsstønadApi } from 'appData/api';
+import { attachmentApi } from '@navikt/fp-api';
 import AppContainer from './AppContainer';
 import Person, { Kjønn } from 'types/Person';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -24,6 +25,10 @@ const Template: StoryFn<{ person: Person }> = ({ person }) => {
     const apiMock = new MockAdapter(engangsstønadApi);
     apiMock.onGet('/personinfo').reply(200, person);
     apiMock.onPost('/soknad').reply(200, kvittering);
+
+    const attachmentApiMock = new MockAdapter(attachmentApi);
+    attachmentApiMock.onPost('/storage/vedlegg').reply(200); //story
+    attachmentApiMock.onPost('http://localhost:8888/rest/storage/vedlegg').reply(200); //test
 
     return <AppContainer />;
 };

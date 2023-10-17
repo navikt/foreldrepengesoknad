@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { VStack } from '@navikt/ds-react';
 import { useFormValidators } from '@navikt/fp-validation';
@@ -65,18 +64,18 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                         <FormattedMessage
                             id={
                                 fields.length === 1
-                                    ? 'søknad.fødselsdato'
-                                    : `omBarnet.adopsjon.spørsmål.fødselsdato.${index + 1}`
+                                    ? 'AdopsjonFodselFieldArray.Fødselsdato'
+                                    : `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}`
                             }
                         />
                     }
                     validate={[
-                        isRequired('valideringsfeil.omBarnet.fodselsdato.duMåOppgi'),
-                        isValidDate('invalidFormatErrorKey.fødselsdato'),
+                        isRequired('AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi'),
+                        isValidDate('AdopsjonFodselFieldArray.Fødselsdato.Gyldig'),
                         (fødselsdato) => {
                             return !fødselsdato || !adopsjonsdato
                                 ? undefined
-                                : isBeforeTodayOrToday('valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere')(
+                                : isBeforeTodayOrToday('AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere')(
                                       fødselsdato,
                                   );
                         },

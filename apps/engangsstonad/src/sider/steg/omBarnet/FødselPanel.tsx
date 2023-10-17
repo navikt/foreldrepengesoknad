@@ -32,43 +32,41 @@ const FødselPanel: React.FunctionComponent = () => {
         <>
             <RadioGroupPanel
                 name="erBarnetFødt"
-                label={<FormattedMessage id="omBarnet.spørsmål.erBarnetFødt" />}
-                validate={[isRequired('omBarnet.spørsmål.erBarnetFødt.required')]}
+                label={<FormattedMessage id="FødselPanel.Spørsmål.ErBarnetFødt" />}
+                validate={[isRequired('FødselPanel.Spørsmål.ErBarnetFødt.Required')]}
             >
                 <Radio value={true}>
-                    <FormattedMessage id="omBarnet.radiobutton.ja" />
+                    <FormattedMessage id="FødselPanel.Radiobutton.Ja" />
                 </Radio>
                 <Radio value={false}>
-                    <FormattedMessage id="omBarnet.radiobutton.nei" />
+                    <FormattedMessage id="FødselPanel.Radiobutton.Nei" />
                 </Radio>
             </RadioGroupPanel>
             {erBarnetFødt && (
                 <Datepicker
                     name="fødselsdatoer.0"
-                    label={<FormattedMessage id="søknad.fødselsdato" />}
+                    label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
                     validate={[
-                        isRequired('valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi'),
-                        isValidDate('invalidFormatErrorKey.fødselsdato'),
-                        isBeforeTodayOrToday('valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere'),
-                        isAfterOrSameAsSixMonthsAgo('valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn6MånederTilbake'),
+                        isRequired('FødselPanel.Fødselsdato.DuMåOppgi'),
+                        isValidDate('FødselPanel.Fødselsdato.Gyldig'),
+                        isBeforeTodayOrToday('FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere'),
+                        isAfterOrSameAsSixMonthsAgo('FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake'),
                     ]}
                 />
             )}
             {!erBarnetFødt && (
                 <Datepicker
                     name="termindato"
-                    label={<FormattedMessage id="søknad.termindato" />}
+                    label={<FormattedMessage id="FødselPanel.Termindato" />}
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     validate={[
-                        isRequired('valideringsfeil.omBarnet.termindato.duMåOppgi'),
-                        isValidDate('invalidFormatErrorKey.termindato'),
-                        isLessThanThreeWeeksAgo(
-                            'valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag',
-                        ),
-                        erI22SvangerskapsukeEllerSenere('valideringsfeil.omBarnet.termindato.duMåVæreIUke22'),
+                        isRequired('FødselPanel.Termindato.DuMåOppgi'),
+                        isValidDate('FødselPanel.Termindato.Gyldig'),
+                        isLessThanThreeWeeksAgo('FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag'),
+                        erI22SvangerskapsukeEllerSenere('FødselPanel.Termindato.DuMåVæreIUke22'),
                     ]}
                 />
             )}
@@ -77,25 +75,25 @@ const FødselPanel: React.FunctionComponent = () => {
                 name="antallBarn"
                 label={
                     <FormattedMessage
-                        id={erBarnetFødt ? 'omBarnet.text.antallBarn.født' : 'omBarnet.text.antallBarn.termin'}
+                        id={erBarnetFødt ? 'FødselPanel.AntallBarn.Født' : 'FødselPanel.AntallBarn.Termin'}
                     />
                 }
                 validate={[
                     isRequired(
                         erBarnetFødt
-                            ? 'omBarnet.text.antallBarn.født.required'
-                            : 'omBarnet.text.antallBarn.venter.required',
+                            ? 'FødselPanel.AntallBarn.Født.Required'
+                            : 'FødselPanel.AntallBarn.Venter.Required',
                     ),
                 ]}
             >
                 <Radio value={1}>
-                    <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
+                    <FormattedMessage id="FødselPanel.Radiobutton.Ettbarn" />
                 </Radio>
                 <Radio value={2}>
-                    <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
+                    <FormattedMessage id="FødselPanel.Radiobutton.Tvillinger" />
                 </Radio>
                 <Radio value={3}>
-                    <FormattedMessage id="omBarnet.radiobutton.flere" />
+                    <FormattedMessage id="FødselPanel.Radiobutton.Flere" />
                 </Radio>
             </RadioGroupPanel>
             {antallBarn >= 3 && (
@@ -103,14 +101,14 @@ const FødselPanel: React.FunctionComponent = () => {
                     name="antallBarnDropDown"
                     label={
                         <FormattedMessage
-                            id={erBarnetFødt ? 'omBarnet.text.antallBarn.født' : 'omBarnet.text.antallBarn.termin'}
+                            id={erBarnetFødt ? 'FødselPanel.AntallBarn.Født' : 'FødselPanel.AntallBarn.Termin'}
                         />
                     }
                     validate={[
                         isRequired(
                             erBarnetFødt
-                                ? 'omBarnet.text.antallBarn.født.required'
-                                : 'omBarnet.text.antallBarn.venter.required',
+                                ? 'FødselPanel.AntallBarn.Født.Required'
+                                : 'FødselPanel.AntallBarn.Venter.Required',
                         ),
                     ]}
                 >

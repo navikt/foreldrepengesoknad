@@ -81,7 +81,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
     const [attachments, setAttachments] = useState(existingAttachments);
 
     useEffect(() => {
-        updateAttachments(attachments);
+        updateAttachments(attachments.filter((a) => !a.error && a.pending === false));
     }, [attachments]);
 
     const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
