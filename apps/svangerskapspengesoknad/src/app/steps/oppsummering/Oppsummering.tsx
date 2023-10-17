@@ -62,6 +62,7 @@ const Oppsummering = () => {
         () => mapTilretteleggingTilPerioder(søknad.tilrettelegging, sisteDagForSvangerskapspenger),
         [søknad.tilrettelegging, sisteDagForSvangerskapspenger],
     );
+    console.log('ENV: ', process.env.NODE_ENV);
     const søknadForInnsending = useMemo(() => getSøknadForInnsending(søknad, allePerioderMedFomOgTom), [søknad, intl]);
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
