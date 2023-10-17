@@ -62,7 +62,7 @@ const Oppsummering = () => {
         () => mapTilretteleggingTilPerioder(søknad.tilrettelegging, sisteDagForSvangerskapspenger),
         [søknad.tilrettelegging, sisteDagForSvangerskapspenger],
     );
-    console.log('ENV: ', process.env.NODE_ENV);
+
     const søknadForInnsending = useMemo(() => getSøknadForInnsending(søknad, allePerioderMedFomOgTom), [søknad, intl]);
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
@@ -103,12 +103,12 @@ const Oppsummering = () => {
 
     useEffect(() => {
         if (sendtSøknad) {
-            const isProd = process.env.NODE_ENV !== 'development';
-            let navigateTo = isProd ? links.innsyn : links.innsynDev;
+            const isDev = window.location.href.indexOf('intern.dev') > -1;
+            let navigateTo = isDev ? links.innsynDev : links.innsyn;
             if (sendtSøknad.saksNr) {
-                navigateTo = isProd
-                    ? links.innsynSak + `${sendtSøknad.saksNr}`
-                    : links.innsynDevSak + `${sendtSøknad.saksNr}`;
+                navigateTo = isDev
+                    ? links.innsynDevSak + `${sendtSøknad.saksNr}`
+                    : links.innsynSak + `${sendtSøknad.saksNr}`;
             }
             redirect(navigateTo);
         }
