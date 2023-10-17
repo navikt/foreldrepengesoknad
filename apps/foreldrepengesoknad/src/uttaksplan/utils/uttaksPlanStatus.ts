@@ -52,7 +52,7 @@ export const getAllePerioderMedUttaksinfoFraUttaksplan = (perioder: Periode[]): 
 export const beregnGjenståendeUttaksdager = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     uttaksplan: Periode[],
-    beregnDagerBrukt: boolean
+    beregnDagerBrukt: boolean,
 ): StønadskontoUttak[] => {
     const alleUttakIUttaksplan = getAllePerioderMedUttaksinfoFraUttaksplan(uttaksplan);
     return tilgjengeligeStønadskontoer.map((konto): StønadskontoUttak => {
@@ -79,7 +79,7 @@ export const beregnGjenståendeUttaksdager = (
 
 export const beregnBrukteUttaksdager = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    uttaksplan: Periode[]
+    uttaksplan: Periode[],
 ): StønadskontoUttak[] => {
     return beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, true);
 };
@@ -95,7 +95,7 @@ const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttak
             type: Periodetype.Uttak,
             konto: getStønadskontoFromOppholdsårsak(opphold.årsak)!,
             forelder: opphold.forelder,
-        })
+        }),
     );
 };
 const getUttakFraOverføringsperioder = (overføringer: Overføringsperiode[]): Uttaksperiode[] => {
@@ -109,7 +109,7 @@ const getUttakFraOverføringsperioder = (overføringer: Overføringsperiode[]): 
             type: Periodetype.Uttak,
             konto: overføring.konto,
             forelder: overføring.forelder,
-        })
+        }),
     );
 };
 
@@ -141,7 +141,7 @@ const getUttakFraAvslåttePerioder = (perioder: AvslåttPeriode[]): Uttaksperiod
     }
 
     return perioder
-        .filter((p) => p.avslåttPeriodeType === Periodetype.Uttak)
+        .filter((p) => p.avslåttPeriodeType === Periodetype.Uttak || p.avslåttPeriodeType === Periodetype.Utsettelse)
         .map(
             (periode): Uttaksperiode => ({
                 type: Periodetype.Uttak,
@@ -149,6 +149,6 @@ const getUttakFraAvslåttePerioder = (perioder: AvslåttPeriode[]): Uttaksperiod
                 tidsperiode: periode.tidsperiode,
                 id: periode.id,
                 forelder: periode.forelder,
-            })
+            }),
         );
 };

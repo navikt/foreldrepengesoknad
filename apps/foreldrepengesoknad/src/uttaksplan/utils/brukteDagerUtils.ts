@@ -52,7 +52,7 @@ const getBrukteDagerForForelder = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     perioder: Uttaksperiode[],
     familiehendelsesdato: Date,
-    forelder: Forelder
+    forelder: Forelder,
 ): ForeldersBrukteDager => {
     const perioderFørTermin = Periodene(perioder)
         .getPerioderFørFamiliehendelsesdato(familiehendelsesdato)
@@ -84,7 +84,7 @@ const getBrukteDagerForForelder = (
 export const getBrukteDager = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     perioder: Periode[],
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
 ): BrukteDager => {
     const perioderMedUttak = getAllePerioderMedUttaksinfoFraUttaksplan(perioder);
     return {
@@ -92,13 +92,13 @@ export const getBrukteDager = (
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isMorsPeriode),
             familiehendelsesdato,
-            Forelder.mor
+            Forelder.mor,
         ),
         farMedmor: getBrukteDagerForForelder(
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isFarsPeriode),
             familiehendelsesdato,
-            Forelder.farMedmor
+            Forelder.farMedmor,
         ),
         alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder),
     };
