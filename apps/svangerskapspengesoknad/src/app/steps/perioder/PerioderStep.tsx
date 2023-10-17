@@ -1,7 +1,7 @@
-import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
-import { Alert, BodyShort, Button, Heading, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Heading, ReadMore, Tag } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 
@@ -27,7 +27,8 @@ import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleg
 import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
 import { isISODateString } from '@navikt/ds-datepicker';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
-
+import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
+import './perioderStep.css';
 interface Props {
     id: string;
     navn: string;
@@ -36,6 +37,7 @@ interface Props {
 const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
+    const bem = bemUtils('perioderStep');
     const { tilrettelegging: tilretteleggingFraState, barn } = useSøknad();
     const { state } = useSvangerskapspengerContext();
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -124,6 +126,27 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                         return (
                                             <div key={index}>
                                                 <Block padBottom="xxl">
+                                                    <HorizontalLine />
+                                                    <Block padBottom="l" className={bem.element('info')}>
+                                                        <Tag variant="info" className={bem.element('tag')}>
+                                                            {getPeriodeInfoTekst(
+                                                                formValues,
+                                                                index,
+                                                                sisteDagForSvangerskapspenger,
+                                                                intl,
+                                                            )}
+                                                        </Tag>
+                                                        {index !== 0 && (
+                                                            <Button
+                                                                icon={<TrashIcon />}
+                                                                type="button"
+                                                                variant="tertiary"
+                                                                onClick={() => arrayHelpers.remove(index)}
+                                                            >
+                                                                {intlUtils(intl, 'perioder.varierende.slett')}
+                                                            </Button>
+                                                        )}
+                                                    </Block>
                                                     <PerioderFormComponents.DatePicker
                                                         key={`varierendePerioder.${index}.fom`}
                                                         minDate={new Date(minDatoPeriodeFom)}
@@ -252,20 +275,6 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         </Alert>
                                                     </Block>
                                                 )}
-                                                {index !== 0 && (
-                                                    <Block>
-                                                        <Button
-                                                            icon={<TrashIcon />}
-                                                            type="button"
-                                                            variant="tertiary"
-                                                            onClick={() => arrayHelpers.remove(index)}
-                                                        >
-                                                            {intlUtils(intl, 'perioder.varierende.slett')}
-                                                        </Button>
-                                                    </Block>
-                                                )}
-                                                {formValues.varierendePerioder &&
-                                                    formValues.varierendePerioder.length > 1 && <HorizontalLine />}
                                                 {formValues.varierendePerioder &&
                                                     index === formValues.varierendePerioder.length - 1 && (
                                                         <Block padBottom="xl">

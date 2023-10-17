@@ -4,8 +4,8 @@ const HorizontalLine = () => {
             style={{
                 backgroundColor: '#99C4DD',
                 height: '2px',
-                marginTop: '2.5rem',
-                marginBottom: '2.5rem',
+                marginTop: '1.5rem',
+                marginBottom: '2rem',
                 border: 'none',
             }}
         ></div>
