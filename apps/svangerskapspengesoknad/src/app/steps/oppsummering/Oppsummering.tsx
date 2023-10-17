@@ -6,7 +6,7 @@ import stepConfig, { getBackLinkForOppsummeringSteg } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
@@ -24,18 +24,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
 import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
-import { redirectToLogin } from 'app/utils/redirectToLogin';
+import { redirect, redirectToLogin } from 'app/utils/redirectUtils';
 import EgenNæringVisning from '../../components/egen-næring-visning/EgenNæringVisning';
 import ArbeidIUtlandetVisning from '../../components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import SøknadRoutes from 'app/routes/routes';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
+import links from 'app/links/links';
+import { SendtSøknad } from 'app/types/SendtSøknad';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -46,11 +47,10 @@ const Oppsummering = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSendingSøknad, setIsSendingSøknad] = useState(false);
     const [submitError, setSubmitError] = useState<any>(undefined);
-    const navigate = useNavigate();
+    const [sendtSøknad, setSendtSøknad] = useState<undefined | SendtSøknad>(undefined);
     useUpdateCurrentTilretteleggingId(undefined);
     const onAvbrytSøknad = useAvbrytSøknad();
     const abortSignal = useAbortSignal();
-
     const { barn, informasjonOmUtenlandsopphold } = søknad;
     const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
@@ -77,8 +77,8 @@ const Oppsummering = () => {
             setIsSendingSøknad(true);
 
             Api.sendSøknad(søknadForInnsending, abortSignal)
-                .then(() => {
-                    navigate(SøknadRoutes.SØKNAD_SENDT);
+                .then((response) => {
+                    setSendtSøknad(response.data);
                 })
                 .catch((error) => {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -99,6 +99,19 @@ const Oppsummering = () => {
             throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
         }
     }, [submitError]);
+
+    useEffect(() => {
+        if (sendtSøknad) {
+            const isProd = process.env.NODE_ENV !== 'development';
+            let navigateTo = isProd ? links.innsyn : links.innsynDev;
+            if (sendtSøknad.saksNr) {
+                navigateTo = isProd
+                    ? links.innsynSak + `${sendtSøknad.saksNr}`
+                    : links.innsynDevSak + `${sendtSøknad.saksNr}`;
+            }
+            redirect(navigateTo);
+        }
+    }, [sendtSøknad]);
 
     return (
         <OppsummeringFormComponents.FormikWrapper

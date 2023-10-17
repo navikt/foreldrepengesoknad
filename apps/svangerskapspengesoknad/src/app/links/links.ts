@@ -15,4 +15,8 @@ export default {
     omLottOgHyre: 'https://www.skatteetaten.no/rettskilder/type/handboker/skatte-abc/2019/fiske/F-14.014/F-14.048/',
     arbeidstilsynetSkjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
+    innsyn: 'https://foreldrepenger.nav.no',
+    innsynSak: 'https://foreldrepenger.nav.no/sak/',
+    innsynDev: 'https://foreldrepenger.intern.dev.nav.no',
+    innsynDevSak: 'https://foreldrepenger.intern.dev.nav.no/sak/',
 };

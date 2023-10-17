@@ -2,7 +2,7 @@ import getAxiosInstance from 'app/api/apiInterceptor';
 import { RequestStatus } from 'app/types/RequestStatus';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
-import { redirectToLogin } from '../redirectToLogin';
+import { redirectToLogin } from '../redirectUtils';
 
 type Options = {
     config?: AxiosRequestConfig;
