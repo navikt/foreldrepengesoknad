@@ -18,7 +18,5 @@ export const isAfterToday = (date: string): boolean => dayjs(date).isAfter(DATE_
 export const isBeforeToday = (date: string): boolean => dayjs(date).isBefore(DATE_TODAY, 'day');
 export const isSameOrAfterToday = (date: string): boolean => dayjs(date).isSameOrAfter(DATE_TODAY);
 export const isSameOrBeforeToday = (date: string): boolean => dayjs(date).isSameOrBefore(DATE_TODAY);
-
-export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
-    return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
-};
+export const isDateWithinRange = (date: Date, minDate: Date, maxDate: Date): boolean =>
+    dayjs(date).isBetween(minDate, maxDate, 'day', '[]');

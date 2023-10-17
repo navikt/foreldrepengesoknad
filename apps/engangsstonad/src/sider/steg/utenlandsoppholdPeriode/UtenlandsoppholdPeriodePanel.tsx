@@ -9,8 +9,8 @@ import { Datepicker, RadioGroupPanel, Select } from '@navikt/fp-form-hooks';
 import { useFormValidators } from '@navikt/fp-validation';
 import { ISO_DATE_FORMAT, TIDENES_ENDE } from '@navikt/fp-constants';
 
-import { validateFromDate, validateToDate } from '../../../fpcommon/validering/valideringsregler';
 import { Periode } from 'types/Utenlandsopphold';
+import { validateFromDate, validateToDate } from './valideringsregler';
 
 const validerPeriodeOverlapp = (
     intl: IntlShape,
@@ -45,7 +45,7 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
     const intl = useIntl();
     const {
         isRequired,
-        date: { isDatesValidAndTheSame },
+        date: { isDatesNotTheSame },
     } = useFormValidators();
 
     const {
@@ -129,7 +129,7 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                         maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate()}
                         validate={[
                             isRequired('UtenlandsoppholdPeriodePanel.Validering.Fraogmed.Required'),
-                            isDatesValidAndTheSame('valideringsfeil.fomErLikTom', tom),
+                            isDatesNotTheSame('valideringsfeil.fomErLikTom', tom),
                             (fomValue) => {
                                 return validateFromDate(
                                     intl,
@@ -174,7 +174,7 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                         maxDate={maxDateTom}
                         validate={[
                             isRequired('UtenlandsoppholdPeriodePanel.Validering.Tilogmed.Required'),
-                            isDatesValidAndTheSame('valideringsfeil.tomErLikFom', fom),
+                            isDatesNotTheSame('valideringsfeil.tomErLikFom', fom),
                             (tomValue) => {
                                 const tom = tomValue || TIDENES_ENDE;
                                 return validateToDate(

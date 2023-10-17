@@ -80,6 +80,7 @@
 
     "norge": "Noreg",
     "invalidFormatErrorKey.adopsjonsdato": "Adopsjonsdato må vera ein gyldig dato på formatet dd.mm.åååå",
+    "invalidFormatErrorKey.omsorgsovertakelsen": "Omsorgsovertakingsdato må vera ein gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.fødselsdato": "Fødselsdato må vera ein gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.termindato": "Termindato må vera ein gyldig dato på formatet dd.mm.åååå",
 
@@ -118,7 +119,7 @@
     "omBarnet.text.antallBarn.født.required": "Du må oppgje kor mange barn du har fått",
     "omBarnet.text.antallBarn.venter.required": "Du må oppgje kor mange barn du ventar",
     "omBarnet.text.antallBarn.termin": "Kor mange barn ventar du?",
-    "omBarnet.text.antallBarn.omsorgsovertakelse": "Kor mange barn ovetar du omsorga for?",
+    "omBarnet.text.antallBarn.omsorgsovertakelse": "Kor mange barn overtar du omsorga for?",
     "omBarnet.vedlegg.feilmelding.forstorefiler": "{antall, plural, one {Vedlegget} other {Vedleggene}} er for {antall, plural, one {stort} other {store}}. Maks samlet størrelse er {maks}.",
     "omBarnet.vedlegg.feilmelding.vedleggMangler": "Terminbekreftelse er ikke lastet opp",
     "oppsummering.button.sendSøknad": "Send søknad",

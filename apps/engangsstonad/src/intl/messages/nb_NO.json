@@ -81,6 +81,7 @@
 
     "norge": "Norge",
     "invalidFormatErrorKey.adopsjonsdato": "Adopsjonsdato må være en gyldig dato på formatet dd.mm.åååå",
+    "invalidFormatErrorKey.omsorgsovertakelsen": "Omsorgsovertakelsedato må være en gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.fødselsdato": "Fødseldato må være en gyldig dato på formatet dd.mm.åååå",
     "invalidFormatErrorKey.termindato": "Termindato må være en gyldig dato på formatet dd.mm.åååå",
     "medlemmskap.radiobutton.boNorge": "Kun bo i Norge",

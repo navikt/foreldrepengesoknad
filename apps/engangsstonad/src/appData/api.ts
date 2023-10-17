@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
 import { redirectToLogin } from '@navikt/fp-utils';
-import { isAfterTodayTemp, notEmpty } from '@navikt/fp-validation';
+import { isAfterToday, notEmpty } from '@navikt/fp-validation';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import { Periode, Utenlandsopphold, UtenlandsoppholdPerioder } from 'types/Utenlandsopphold';
@@ -91,10 +91,10 @@ export const mapUtenlandsforhold = (
         .filter((p) => isBeforeToday(p.fom))
         .map((p) => ({
             ...p,
-            tom: isAfterTodayTemp(p.tom) ? iDag : p.tom,
+            tom: isAfterToday(p.tom) ? iDag : p.tom,
         }));
     const senereOpphold = perioder
-        .filter((p) => isAfterTodayTemp(p.tom))
+        .filter((p) => isAfterToday(p.tom))
         .map((p) => ({
             ...p,
             fom: isBeforeToday(p.fom) ? iDag : p.fom,

@@ -1,11 +1,10 @@
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import { Radio } from '@navikt/ds-react';
-import { erMindreEnn3UkerSiden, sisteDatoBarnetKanVæreFødt, sisteMuligeTermindato } from '@navikt/fp-common';
-
 import { RadioGroupPanel, Select, Datepicker } from '@navikt/fp-form-hooks';
-import { isAfterToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { useFormValidators } from '@navikt/fp-validation';
+
 import { Fødsel } from 'types/OmBarnet';
 
 export type FormValues = {
@@ -13,7 +12,17 @@ export type FormValues = {
 } & Fødsel;
 
 const FødselPanel: React.FunctionComponent = () => {
-    const intl = useIntl();
+    const {
+        isRequired,
+        date: {
+            isValidDate,
+            isBeforeTodayOrToday,
+            isAfterOrSameAsSixMonthsAgo,
+            isLessThanThreeWeeksAgo,
+            erI22SvangerskapsukeEllerSenere,
+        },
+    } = useFormValidators();
+
     const { watch } = useFormContext<FormValues>();
 
     const erBarnetFødt = watch('erBarnetFødt');
@@ -24,7 +33,7 @@ const FødselPanel: React.FunctionComponent = () => {
             <RadioGroupPanel
                 name="erBarnetFødt"
                 label={<FormattedMessage id="omBarnet.spørsmål.erBarnetFødt" />}
-                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.spørsmål.erBarnetFødt.required' }))]}
+                validate={[isRequired('omBarnet.spørsmål.erBarnetFødt.required')]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="omBarnet.radiobutton.ja" />
@@ -40,21 +49,10 @@ const FødselPanel: React.FunctionComponent = () => {
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
                     validate={[
-                        isRequired(
-                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' }),
-                        ),
-                        isValidDate(intl.formatMessage({ id: 'invalidFormatErrorKey.fødselsdato' })),
-                        isAfterToday(
-                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere' }),
-                        ),
-                        (dato) => {
-                            if (sisteDatoBarnetKanVæreFødt(dato)) {
-                                return intl.formatMessage({
-                                    id: 'valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn6MånederTilbake',
-                                });
-                            }
-                            return undefined;
-                        },
+                        isRequired('valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi'),
+                        isValidDate('invalidFormatErrorKey.fødselsdato'),
+                        isBeforeTodayOrToday('valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere'),
+                        isAfterOrSameAsSixMonthsAgo('valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn6MånederTilbake'),
                     ]}
                 />
             )}
@@ -65,19 +63,12 @@ const FødselPanel: React.FunctionComponent = () => {
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
-                        isValidDate(intl.formatMessage({ id: 'invalidFormatErrorKey.termindato' })),
-                        (dato) => {
-                            if (!erMindreEnn3UkerSiden(dato)) {
-                                return intl.formatMessage({
-                                    id: 'valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag',
-                                });
-                            }
-                            if (sisteMuligeTermindato(dato)) {
-                                return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22' });
-                            }
-                            return undefined;
-                        },
+                        isRequired('valideringsfeil.omBarnet.termindato.duMåOppgi'),
+                        isValidDate('invalidFormatErrorKey.termindato'),
+                        isLessThanThreeWeeksAgo(
+                            'valideringsfeil.omBarnet.termindato.termindatoKanIkkeVære3UkerFraIdag',
+                        ),
+                        erI22SvangerskapsukeEllerSenere('valideringsfeil.omBarnet.termindato.duMåVæreIUke22'),
                     ]}
                 />
             )}
@@ -91,11 +82,9 @@ const FødselPanel: React.FunctionComponent = () => {
                 }
                 validate={[
                     isRequired(
-                        intl.formatMessage({
-                            id: erBarnetFødt
-                                ? 'omBarnet.text.antallBarn.født.required'
-                                : 'omBarnet.text.antallBarn.venter.required',
-                        }),
+                        erBarnetFødt
+                            ? 'omBarnet.text.antallBarn.født.required'
+                            : 'omBarnet.text.antallBarn.venter.required',
                     ),
                 ]}
             >
@@ -119,11 +108,9 @@ const FødselPanel: React.FunctionComponent = () => {
                     }
                     validate={[
                         isRequired(
-                            intl.formatMessage({
-                                id: erBarnetFødt
-                                    ? 'omBarnet.text.antallBarn.født.required'
-                                    : 'omBarnet.text.antallBarn.venter.required',
-                            }),
+                            erBarnetFødt
+                                ? 'omBarnet.text.antallBarn.født.required'
+                                : 'omBarnet.text.antallBarn.venter.required',
                         ),
                     ]}
                 >
