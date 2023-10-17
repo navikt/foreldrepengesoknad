@@ -60,7 +60,7 @@ const mapUtenlandsOppholdForInnsending = (
         tidligereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
             return mapBostedUtlandTilDTO(opphold);
         }),
-        senereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
+        senereOpphold: utenlandsopphold.senereOpphold.map((opphold) => {
             return mapBostedUtlandTilDTO(opphold);
         }),
     };
