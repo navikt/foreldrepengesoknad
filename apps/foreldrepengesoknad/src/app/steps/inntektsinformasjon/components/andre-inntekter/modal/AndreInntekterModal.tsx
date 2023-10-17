@@ -80,7 +80,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                 onSubmit={onValidSubmit}
                 renderForm={({ values: formValues }) => {
                     const visibility = andreInntekterModalQuestionsConfig.getVisbility(
-                        formValues as AndreInntekterFormData
+                        formValues as AndreInntekterFormData,
                     );
 
                     return (

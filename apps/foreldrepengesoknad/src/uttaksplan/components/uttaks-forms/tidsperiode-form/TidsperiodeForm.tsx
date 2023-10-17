@@ -52,7 +52,7 @@ const getDatoAvgrensninger = (
     erFarEllerMedmor: boolean,
     morHarRett: boolean,
     situasjon: Situasjon,
-    erFarMedmorOgHarAleneomsorg: boolean
+    erFarMedmorOgHarAleneomsorg: boolean,
 ): DatoAvgrensninger => {
     if (periode && !isUtsettelsesperiode(periode)) {
         if (
@@ -63,7 +63,7 @@ const getDatoAvgrensninger = (
             return getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB(
                 familiehendelsesdato,
                 termindato,
-                ugyldigeTidsperioder
+                ugyldigeTidsperioder,
             );
         }
         if (
@@ -74,7 +74,7 @@ const getDatoAvgrensninger = (
             return getDatoavgrensningerForBareFarMedmorHarRettWLB(
                 familiehendelsesdato,
                 termindato,
-                ugyldigeTidsperioder
+                ugyldigeTidsperioder,
             );
         }
         return getDatoavgrensningerForStønadskonto(
@@ -83,7 +83,7 @@ const getDatoAvgrensninger = (
             mapTidsperiodeStringToTidsperiode({ fom, tom }),
             ugyldigeTidsperioder,
             erFarEllerMedmor,
-            termindato
+            termindato,
         );
     }
 
@@ -143,7 +143,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                     erFarEllerMedmor,
                     morHarRett,
                     situasjon,
-                    erFarMedmorOgHarAleneomsorg
+                    erFarMedmorOgHarAleneomsorg,
                 );
 
                 return (

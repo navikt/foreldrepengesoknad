@@ -13,7 +13,7 @@ export const harMorSøktUgyldigUttakFørsteSeksUkerTest: RegelTest = (grunnlag: 
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.termindato,
             grunnlag.erFlerbarnssøknad,
-            'førsteSeksUkerForMor'
+            'førsteSeksUkerForMor',
         );
         const passerer = ugyldigePerioder.length === 0;
         return {

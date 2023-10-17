@@ -5,7 +5,7 @@ import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { isUttaksperiode } from 'uttaksplan/types/Periode';
 
 export const harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     const søkerErMor = !grunnlag.søkerErFarEllerMedmor;
     if (søkerErMor && grunnlag.søkersituasjon.situasjon === 'fødsel') {
@@ -16,7 +16,7 @@ export const harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest: R
                 dayjs(p.tidsperiode.fom).isSameOrBefore(sisteUttaksdagEtterSeksUker, 'day') &&
                 p.ønskerSamtidigUttak === true &&
                 p.samtidigUttakProsent !== undefined &&
-                parseInt(p.samtidigUttakProsent, 10) < 100
+                parseInt(p.samtidigUttakProsent, 10) < 100,
         );
 
         return {

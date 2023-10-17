@@ -11,7 +11,7 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo
     const { perioder, navnPåForeldre } = grunnlag;
     const perioderUtenUttakAnnenPart = perioder.filter((p) => !isUttakAnnenPart(p));
     const perioderSomHarOverlapp = perioderUtenUttakAnnenPart.filter(
-        (periode) => Periodene(perioderUtenUttakAnnenPart).finnOverlappendePerioder(periode).length > 0
+        (periode) => Periodene(perioderUtenUttakAnnenPart).finnOverlappendePerioder(periode).length > 0,
     );
 
     const passerer = perioderSomHarOverlapp.length === 0;
@@ -30,7 +30,7 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo
                             navnPåForeldre,
                             grunnlag.familiehendelsesdato,
                             grunnlag.termindato,
-                            grunnlag.søkersituasjon.situasjon
+                            grunnlag.søkersituasjon.situasjon,
                         ),
                     tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                     forelder: (intl: IntlShape) =>

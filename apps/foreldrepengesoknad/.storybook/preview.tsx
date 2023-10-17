@@ -4,11 +4,9 @@ const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
-    FORELDREPENGESOKNAD_API_URL: 'test',
-    FP_UTTAK_SERVICE_URL: 'uttak-url',
-    LOGINSERVICE_URL: 'test',
+    REST_API_URL: 'test',
+    LOGIN_URL: 'test',
     APP_VERSION: 'test',
-    FAMILIE: 'test',
     FEATURE_VIS_FEILSIDE: 'off',
     FEATURE_VIS_ALERTSTRIPE: 'on',
 });

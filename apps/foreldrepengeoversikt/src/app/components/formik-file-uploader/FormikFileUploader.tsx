@@ -33,7 +33,7 @@ const KILOBYTES_IN_BYTE = 0.0009765625;
 const mapFilerTilPendingVedlegg = (
     filer: File[],
     attachmentType: AttachmentType,
-    skjemanummer: Skjemanummer | 'default'
+    skjemanummer: Skjemanummer | 'default',
 ): Attachment[] | undefined => {
     if (skjemanummer === 'default') {
         return undefined;
@@ -58,13 +58,13 @@ const fileSizeIsValid = (filesizeInB: number): boolean => {
 const sjekkVedlegg = (
     alleNyeVedlegg: Attachment[],
     setErrors: React.Dispatch<React.SetStateAction<string[]>>,
-    intl: IntlShape
+    intl: IntlShape,
 ): Attachment[] => {
     return alleNyeVedlegg.filter((vedlegg) => {
         const erGyldigFiltype = fileExtensionIsValid(vedlegg.filename);
         if (!erGyldigFiltype) {
             setErrors((oldState) =>
-                oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename }))
+                oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename })),
             );
         }
         const erGyldigFilstørrelse = fileSizeIsValid(vedlegg.filesize);
@@ -74,8 +74,8 @@ const sjekkVedlegg = (
                     intlUtils(intl, 'vedlegg.feilmelding.ugyldig.størrelse', {
                         filename: vedlegg.filename,
                         maxStørrelse: MAX_FIL_STØRRELSE_KB,
-                    })
-                )
+                    }),
+                ),
             );
         }
         return erGyldigFiltype && erGyldigFilstørrelse;
@@ -88,7 +88,7 @@ const lastOppVedlegg = (
     removeFn: FieldArrayRemoveFn,
     setErrors: React.Dispatch<React.SetStateAction<string[]>>,
     antallEksisterendeVedlegg: number,
-    intl: IntlShape
+    intl: IntlShape,
 ): void => {
     alleNyeVedlegg.forEach(async (vedlegg, index) => {
         try {
@@ -102,8 +102,8 @@ const lastOppVedlegg = (
             removeFn(antallEksisterendeVedlegg + index);
             setErrors((oldState) =>
                 oldState.concat(
-                    intlUtils(intl, 'vedlegg.feilmelding.opplasting.feilet', { filename: vedlegg.filename })
-                )
+                    intlUtils(intl, 'vedlegg.feilmelding.opplasting.feilet', { filename: vedlegg.filename }),
+                ),
             );
         }
     });

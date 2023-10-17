@@ -23,10 +23,10 @@ export const periodeDeFørsteSeksUkeneHarUlovligUttakBFHR: RegelTest = (grunnlag
             starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
                 periode.tidsperiode,
                 grunnlag.familiehendelsesdato,
-                grunnlag.termindato
+                grunnlag.termindato,
             ) &&
             periode.konto === StønadskontoType.Foreldrepenger &&
-            periode.erMorForSyk === false
+            periode.erMorForSyk === false,
     );
 
     return {

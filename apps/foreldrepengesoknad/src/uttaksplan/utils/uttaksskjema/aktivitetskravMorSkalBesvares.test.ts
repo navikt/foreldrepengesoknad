@@ -28,7 +28,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-08T00:00:00.000Z'), //termindato
             'fødsel',
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -48,7 +48,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-01T00:00:00.000Z'), //termindato
             'fødsel',
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(true);
     });
@@ -68,7 +68,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel',
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });

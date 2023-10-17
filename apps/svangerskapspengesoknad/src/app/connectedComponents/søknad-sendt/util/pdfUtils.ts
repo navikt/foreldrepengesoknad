@@ -12,7 +12,7 @@ export const openPdfPreview = (base64: string) => {
         URL.createObjectURL(
             new Blob([base64ToArrayBuffer(base64)], {
                 type: 'application/pdf',
-            })
-        )
+            }),
+        ),
     );
 };

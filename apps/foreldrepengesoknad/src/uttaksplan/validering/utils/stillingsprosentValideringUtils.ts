@@ -12,7 +12,7 @@ import { Validator } from './types/validatorTypes';
 export const getStillingsprosentRegler = (
     erSamtidigUttak: boolean,
     stillingsprosent: string,
-    intl?: IntlShape
+    intl?: IntlShape,
 ): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [

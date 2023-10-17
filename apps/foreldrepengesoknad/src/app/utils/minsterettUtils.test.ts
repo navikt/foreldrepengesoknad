@@ -26,7 +26,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ikke ufør', 
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(8);
@@ -37,7 +37,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ikke ufør', 
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(8);
@@ -48,7 +48,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ikke ufør', 
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(17);
@@ -59,7 +59,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ikke ufør', 
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(21);
@@ -70,7 +70,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ikke ufør', 
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(46);
@@ -81,7 +81,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ikke ufør', 
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(56);
@@ -103,7 +103,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ufør', () =>
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(15);
@@ -114,7 +114,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ufør', () =>
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(19);
@@ -125,7 +125,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ufør', () =>
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(32);
@@ -136,7 +136,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ufør', () =>
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(40);
@@ -147,7 +147,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ufør', () =>
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(61);
@@ -158,7 +158,7 @@ describe('Minsterett når bare far har rett (WLB gjelder) - mor er ufør', () =>
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(75);
@@ -180,7 +180,7 @@ describe('Minsterett når bare far har rett (WLB gjelder ikke)', () => {
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(0);
@@ -191,7 +191,7 @@ describe('Minsterett når bare far har rett (WLB gjelder ikke)', () => {
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(15);
@@ -202,7 +202,7 @@ describe('Minsterett når bare far har rett (WLB gjelder ikke)', () => {
             morErUfør,
             familiehendelsesdato,
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(19);
@@ -213,7 +213,7 @@ describe('Minsterett når bare far har rett (WLB gjelder ikke)', () => {
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(0);
@@ -224,7 +224,7 @@ describe('Minsterett når bare far har rett (WLB gjelder ikke)', () => {
             morErIkkeUfør,
             familiehendelsesdato,
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(0);
@@ -238,7 +238,7 @@ describe('Minsterett når begge har rett', () => {
             morErIkkeUfør,
             new Date('2022-08-02'),
             Dekningsgrad.HUNDRE_PROSENT,
-            ikkeBareFarHarRett
+            ikkeBareFarHarRett,
         );
 
         expect(antallUker).toEqual(0);
@@ -252,7 +252,7 @@ describe('Flerbarnsuker når bare far har rett og når WLB gjelder', () => {
             1,
             new Date('2022-08-02'),
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(0);
@@ -272,7 +272,7 @@ describe('Flerbarnsuker når bare far har rett og når WLB ikke gjelder', () => 
             2,
             new Date('2021-12-12'),
             Dekningsgrad.HUNDRE_PROSENT,
-            ikkeBareFarHarRett
+            ikkeBareFarHarRett,
         );
 
         expect(antallUker).toEqual(0);
@@ -283,7 +283,7 @@ describe('Flerbarnsuker når bare far har rett og når WLB ikke gjelder', () => 
             2,
             new Date('2021-12-12'),
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(17);
@@ -293,7 +293,7 @@ describe('Flerbarnsuker når bare far har rett og når WLB ikke gjelder', () => 
             2,
             new Date('2021-12-12'),
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(21);
@@ -303,7 +303,7 @@ describe('Flerbarnsuker når bare far har rett og når WLB ikke gjelder', () => 
             3,
             new Date('2021-12-12'),
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(46);
@@ -313,7 +313,7 @@ describe('Flerbarnsuker når bare far har rett og når WLB ikke gjelder', () => 
             3,
             new Date('2021-12-12'),
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(56);
@@ -326,7 +326,7 @@ describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', (
             1,
             new Date('2021-12-12'),
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(46);
@@ -336,7 +336,7 @@ describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', (
             1,
             new Date('2021-12-12'),
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(56);
@@ -346,7 +346,7 @@ describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', (
             2,
             new Date('2021-12-12'),
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(63);
@@ -356,7 +356,7 @@ describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', (
             2,
             new Date('2021-12-12'),
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(77);
@@ -366,7 +366,7 @@ describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', (
             3,
             new Date('2021-12-12'),
             Dekningsgrad.HUNDRE_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(92);
@@ -376,7 +376,7 @@ describe('getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB', (
             3,
             new Date('2021-12-12'),
             Dekningsgrad.ÅTTI_PROSENT,
-            bareFarHarRett
+            bareFarHarRett,
         );
 
         expect(antallUker).toEqual(112);

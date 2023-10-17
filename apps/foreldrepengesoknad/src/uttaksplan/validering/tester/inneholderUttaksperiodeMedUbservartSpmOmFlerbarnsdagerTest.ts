@@ -6,7 +6,7 @@ import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { UttakRundtFødselÅrsak } from 'app/types/UttakRundtFødselÅrsak';
 
 export const inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p)) as Uttaksperiode[];
     const erFlerbarnssøknad = grunnlag.antallBarn > 1;
@@ -28,8 +28,8 @@ export const inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest = (
                 grunnlag.antallBarn,
                 grunnlag.søkerErAleneOmOmsorg,
                 !!erDeltUttakINorge,
-                p.erMorForSyk ? UttakRundtFødselÅrsak.morErForSyk : undefined
-            )
+                p.erMorForSyk ? UttakRundtFødselÅrsak.morErForSyk : undefined,
+            ),
         )
         .filter((p) => p.gradert === undefined);
 

@@ -18,7 +18,7 @@ export const finnStartdatoAdopsjon = (
     annenStartdatoAdopsjon?: string,
     adopsjonsdato?: string,
     ankomstdato?: string,
-    søkersFørsteDag?: string
+    søkersFørsteDag?: string,
 ): string => {
     if (hasValue(søkersFørsteDag)) {
         return søkersFørsteDag!;

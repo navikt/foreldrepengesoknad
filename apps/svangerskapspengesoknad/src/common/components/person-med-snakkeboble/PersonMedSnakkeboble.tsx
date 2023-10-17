@@ -30,7 +30,7 @@ const PersonMedSnakkeboble: React.FunctionComponent<Props> = ({
             className={classnames(
                 bem.block,
                 fyltBakgrunn ? bem.modifier('fyltBakgrunn') : undefined,
-                stil ? bem.modifier(stil) : undefined
+                stil ? bem.modifier(stil) : undefined,
             )}
         >
             {dialog && (

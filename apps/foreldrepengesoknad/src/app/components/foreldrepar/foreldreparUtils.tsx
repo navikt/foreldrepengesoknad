@@ -21,7 +21,7 @@ export const getForeldreparIkon = (
     forelder: ForeldreparForelder,
     className: string,
     width: number,
-    height: number
+    height: number,
 ): any => {
     switch (forelder) {
         case 'far1':

@@ -26,7 +26,7 @@ const FrilansoppdragModalFormConfig: QuestionConfig<FrilansoppdragModalFormData,
 };
 
 const frilansoppdragModalQuestionsConfig = Questions<FrilansoppdragModalFormData, FrilansoppdragModalFormField>(
-    FrilansoppdragModalFormConfig
+    FrilansoppdragModalFormConfig,
 );
 
 export default frilansoppdragModalQuestionsConfig;

@@ -66,7 +66,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
     const termindato = getTermindato(barn);
     const førsteUttaksdagNesteBarnsSak =
@@ -74,7 +74,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const onValidSubmitHandler = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
             values,
-            dateToISOString(datoForAleneomsorg)
+            dateToISOString(datoForAleneomsorg),
         );
         const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)];
         const antallUker = getAntallUker(kontoerForValgtDekningsgrad);
@@ -91,7 +91,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: erFødsel ? 'fødsel' : 'adopsjon',
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -109,7 +109,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg: true,
                     }),
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -117,7 +117,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
@@ -137,12 +137,12 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             initialValues={getInitialFarMedmorAleneomsorgFødselValues(
                 lagretUttaksplanInfo,
                 dateToISOString(datoForAleneomsorg),
-                dekningsgrad
+                dekningsgrad,
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(
-                    formValues as FarMedmorAleneomsorgFødselFormData
+                    formValues as FarMedmorAleneomsorgFødselFormData,
                 );
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
@@ -173,7 +173,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                     tilgjengeligeDager={getTilgjengeligeDager(
                                         valgtStønadskonto,
                                         false,
-                                        Forelder.farMedmor
+                                        Forelder.farMedmor,
                                     )}
                                 />
                             )}
@@ -181,7 +181,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         <Block
                             padBottom="xl"
                             visible={visibility.isVisible(
-                                FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse
+                                FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse,
                             )}
                         >
                             <FarMedmorAleneomsorgFødselFormComponents.YesOrNoQuestion
@@ -193,7 +193,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                         'uttaksplaninfo.startdatoAdopsjon.alternativ.omsorgsovertakelse',
                                         {
                                             dato: formaterDatoUtenDag(datoForAleneomsorg!),
-                                        }
+                                        },
                                     ),
                                     no: intlUtils(intl, 'uttaksplaninfo.startdatoAleneomsorgFarMedmor.annenDato'),
                                 }}

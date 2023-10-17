@@ -5,7 +5,7 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export const cleanUttaksplanFormData = (
     values: UttaksplanFormData,
-    visibility: QuestionVisibility<UttaksplanFormField, undefined>
+    visibility: QuestionVisibility<UttaksplanFormField, undefined>,
 ): UttaksplanFormData => {
     const cleanedData: UttaksplanFormData = {
         ønskerAutomatiskJustering: visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)

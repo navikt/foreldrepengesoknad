@@ -18,8 +18,8 @@ const extractDecoratorFragments = (html) => {
         NAV_HEADING: document.getElementById('header-withmenu')[prop],
         NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
         APP_SETTINGS: JSON.stringify({
-            REST_API_URL: process.env.FORELDREPENGESOKNAD_API_URL,
-            LOGIN_URL: process.env.LOGINSERVICE_URL,
+            REST_API_URL: process.env.REST_API_URL,
+            LOGIN_URL: process.env.LOGIN_URL,
             APP_VERSION: process.env.APP_VERSION,
         }),
     };

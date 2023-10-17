@@ -4,7 +4,7 @@ import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/
 
 export const erSamtidigUttakGyldig: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) =>
-        samtidigUttaksperiodeErUgyldig(periode, grunnlag.søkerErFarEllerMedmor)
+        samtidigUttaksperiodeErUgyldig(periode, grunnlag.søkerErFarEllerMedmor),
     );
     return {
         passerer: perioderMedUgyldigTidsperiode.length === 0,

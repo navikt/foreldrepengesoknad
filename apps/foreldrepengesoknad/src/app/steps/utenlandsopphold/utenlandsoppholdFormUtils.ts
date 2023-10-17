@@ -11,7 +11,7 @@ const mapUtenlandsoppholdTilBostedUtland = (opphold: Utenlandsopphold): BostedUt
 });
 
 export const getInitialUtenlandsoppholdValuesFromState = (
-    init: InformasjonOmUtenlandsopphold
+    init: InformasjonOmUtenlandsopphold,
 ): UtenlandsoppholdFormData => {
     return {
         ...initialUtenlandsoppholdFormData,
@@ -33,7 +33,7 @@ const mapBostedUtlandToUtenlandsopphold = (bostedUtland: BostedUtland[]): Utenla
 };
 
 export const mapUtenlandsoppholdFormDataToState = (
-    formValues: Partial<UtenlandsoppholdFormData>
+    formValues: Partial<UtenlandsoppholdFormData>,
 ): InformasjonOmUtenlandsopphold => {
     const { harBoddINorgeSiste12Mnd, skalBoINorgeNeste12Mnd, utenlandsoppholdNeste12Mnd, utenlandsoppholdSiste12Mnd } =
         formValues;

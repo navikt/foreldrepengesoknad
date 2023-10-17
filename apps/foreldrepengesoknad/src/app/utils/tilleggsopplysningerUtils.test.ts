@@ -8,13 +8,13 @@ const tilleggsopplysningerMedBegrunnelse = {
 describe('TilleggsopplysningerUtils', () => {
     it('skal erstatte alle ulovlige blanke tegn fra Tilleggsopplysninger med space', async () => {
         const cleanedTilleggsopplysning = cleanupInvisibleCharsFromTilleggsopplysninger(
-            tilleggsopplysningerMedBegrunnelse
+            tilleggsopplysningerMedBegrunnelse,
         );
         expect(cleanedTilleggsopplysning.begrunnelseForSenEndring!.tekst).toEqual('Begrunnelse med blanke tegn.');
     });
     it('skal ikke feile med manglende info om tilleggsopplysninger', async () => {
         const cleanedManglendeTilleggsopplysning = cleanupInvisibleCharsFromTilleggsopplysninger(
-            {} as Tilleggsopplysninger
+            {} as Tilleggsopplysninger,
         );
         expect(cleanedManglendeTilleggsopplysning).toEqual({});
     });

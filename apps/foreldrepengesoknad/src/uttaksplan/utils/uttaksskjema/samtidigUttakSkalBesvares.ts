@@ -21,7 +21,7 @@ const samtidigUttakSkalBesvares = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
 ): boolean => {
     if (erAleneOmsorg || !erDeltUttakINorge || søkerHarMidlertidigOmsorg) {
         return false;
@@ -41,7 +41,7 @@ const samtidigUttakSkalBesvares = (
             familiehendelsesdato,
             termindato,
             situasjon,
-            bareFarMedmorHarRett
+            bareFarMedmorHarRett,
         )
     ) {
         return false;

@@ -19,7 +19,7 @@ const SøkersituasjonFormConfig: QuestionConfig<SøkersituasjonQuestionsPayload,
 };
 
 const søkersituasjonQuestionsConfig = Questions<SøkersituasjonQuestionsPayload, SøkersituasjonFormField>(
-    SøkersituasjonFormConfig
+    SøkersituasjonFormConfig,
 );
 
 export default søkersituasjonQuestionsConfig;

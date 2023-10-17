@@ -89,7 +89,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
-        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5
+        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -99,7 +99,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
@@ -112,7 +112,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             erEnkelEndringssøknad: erEndringssøknad,
             familiehendelsesdato: familiehendelsesdatoDate!,
             førsteUttaksdagEtterSeksUker: Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(
-                30
+                30,
             ),
             situasjon: erFødsel ? 'fødsel' : 'adopsjon',
             søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -148,7 +148,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                 erAdopsjon,
                 false,
                 false,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             );
         } else if (eksisterendeSakFar) {
             uttaksplanMedAnnenPart = eksisterendeSakFar.uttaksplan;
@@ -165,7 +165,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     return (
@@ -201,7 +201,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                     tilgjengeligeDager={getTilgjengeligeDager(
                                         valgtStønadskonto,
                                         false,
-                                        Forelder.farMedmor
+                                        Forelder.farMedmor,
                                     )}
                                 />
                             )}

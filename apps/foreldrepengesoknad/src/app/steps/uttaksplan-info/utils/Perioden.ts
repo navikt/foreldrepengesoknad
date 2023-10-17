@@ -38,11 +38,11 @@ function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, i
     if (isForeldrepengerFørFødselUttaksperiode(p1) && isForeldrepengerFørFødselUttaksperiode(p2)) {
         const fff1 = getPeriodeFootprint(
             { ...p1, skalIkkeHaUttakFørTermin: p1.skalIkkeHaUttakFørTermin || false },
-            inkluderTidsperiode
+            inkluderTidsperiode,
         );
         const fff2 = getPeriodeFootprint(
             { ...p2, skalIkkeHaUttakFørTermin: p2.skalIkkeHaUttakFørTermin || false },
-            inkluderTidsperiode
+            inkluderTidsperiode,
         );
         return fff1 === fff2;
     }

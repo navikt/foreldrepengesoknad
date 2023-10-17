@@ -4,7 +4,7 @@ import { Søknadsinfo } from 'uttaksplan/validering/utils/types/Søknadsinfo';
 
 export const harUttaksperiodeStønadskonto: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const uttaksperioderUtenStønadskonto = grunnlag.perioder.filter(
-        (periode) => isUttaksperiode(periode) && periode.konto === undefined
+        (periode) => isUttaksperiode(periode) && periode.konto === undefined,
     );
     return {
         passerer: uttaksperioderUtenStønadskonto.length === 0,

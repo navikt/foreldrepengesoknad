@@ -47,7 +47,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
 
     const handleCleanup = (
         values: PeriodeFørFødselFormData,
-        _visibility: QuestionVisibility<PeriodeFørFødselFormField, undefined>
+        _visibility: QuestionVisibility<PeriodeFørFødselFormField, undefined>,
     ): PeriodeFørFødselFormData => {
         return values;
     };

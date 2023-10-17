@@ -33,7 +33,7 @@ export const initialAnnenForelderValues: AnnenForelderFormData = {
 export const cleanAnnenForelderFormData = (
     values: AnnenForelderFormData,
     visibility: QuestionVisibility<AnnenForelderFormField, undefined>,
-    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined
+    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
 ): AnnenForelderFormData => {
     const cleanedData: AnnenForelderFormData = {
         aleneOmOmsorg: visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg)
@@ -47,7 +47,7 @@ export const cleanAnnenForelderFormData = (
             ? lagSendSenereDokumentNårIngenAndreFinnes(
                   values.dokumentasjonAvAleneomsorg,
                   AttachmentType.ALENEOMSORG,
-                  Skjemanummer.DOK_AV_ALENEOMSORG
+                  Skjemanummer.DOK_AV_ALENEOMSORG,
               )
             : [],
         erInformertOmSøknaden: visibility.isVisible(AnnenForelderFormField.erInformertOmSøknaden)
@@ -116,13 +116,13 @@ export const getAnnenForelderFormInitialValues = (
     barn: Barn,
     søker: Søker,
     annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
-    intl: IntlShape
+    intl: IntlShape,
 ): AnnenForelderFormData => {
     if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
             ...initialAnnenForelderValues,
             harRettPåForeldrepengerINorge: convertBooleanOrUndefinedToYesOrNo(
-                annenForelder.harRettPåForeldrepengerINorge
+                annenForelder.harRettPåForeldrepengerINorge,
             ),
             harOppholdtSegIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harOppholdtSegIEØS),
             harRettPåForeldrepengerIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harRettPåForeldrepengerIEØS),

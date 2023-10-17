@@ -76,7 +76,7 @@ const FrilansSpørsmål: FunctionComponent<Props> = (props: Props) => {
                                     listName="søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd"
                                     legend={getMessage(
                                         intl,
-                                        'arbeidsforhold.frilans.oppdragForNæreVennerEllerFamilieSiste10Mnd'
+                                        'arbeidsforhold.frilans.oppdragForNæreVennerEllerFamilieSiste10Mnd',
                                     )}
                                     buttonLabel={getMessage(intl, 'leggtil')}
                                     summaryListElementComponent={FrilansListElement}

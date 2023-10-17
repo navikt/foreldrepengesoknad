@@ -130,7 +130,6 @@
     margin: 0;
 }
 
-
 @media (max-width: 768px) {
     .periode__innhold {
         display: grid;
@@ -143,4 +142,3 @@
         border-left: 0;
     }
 }
-

@@ -26,14 +26,14 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
         grunnlag.antallBarn,
         grunnlag.familiehendelsesdato,
         grunnlag.dekningsgrad,
-        !grunnlag.morHarRett
+        !grunnlag.morHarRett,
     );
     const bareFarHarRett = grunnlag.søkerErFarEllerMedmor && !grunnlag.morHarRett;
     const antallUkerPåÅTaUtDager = getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB(
         grunnlag.antallBarn,
         grunnlag.familiehendelsesdato,
         grunnlag.dekningsgrad,
-        bareFarHarRett
+        bareFarHarRett,
     );
 
     return {
@@ -44,12 +44,11 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
             values: {
                 antallUker: flerbarnsUker,
                 antallUkerÅTaUtFlerbarnsdager: antallUkerPåÅTaUtDager,
-                a: (_intl: IntlShape) => (msg: any) =>
-                    (
-                        <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
-                            {msg}
-                        </a>
-                    ),
+                a: (_intl: IntlShape) => (msg: any) => (
+                    <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
+                        {msg}
+                    </a>
+                ),
             },
         },
     };

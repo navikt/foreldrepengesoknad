@@ -21,7 +21,7 @@ export function inneholderBareUtsettelserTest(grunnlag: Søknadsinfo): RegelTest
             values: {
                 sisteDag: formaterDato(
                     Uttaksdagen(Periodene(grunnlag.perioder).getFørsteUttaksdagEtterSistePeriode()!).forrige(),
-                    'D. MMMM YYYY'
+                    'D. MMMM YYYY',
                 ),
             },
         },

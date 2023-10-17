@@ -14,7 +14,7 @@ export function inneholderTapteDagerTest(grunnlag: Søknadsinfo): RegelTestresul
         grunnlag.morHarRett === false,
         grunnlag.morErUfør,
         !!(søkerErFarEllerMedmor && grunnlag.annenForelder.kanIkkeOppgis),
-        !!(søkerErFarEllerMedmor && grunnlag.søkerErAleneOmOmsorg)
+        !!(søkerErFarEllerMedmor && grunnlag.søkerErAleneOmOmsorg),
     );
 
     const planInneholderTapteDager =

@@ -19,7 +19,7 @@ export interface Props {
 
 export const getÅrsakDersomUgyldigStartdato = (
     startdato: Date | undefined,
-    førsteMuligeStartdato: Date | undefined
+    førsteMuligeStartdato: Date | undefined,
 ): ugyldigStartdatoÅrsak => {
     if (startdato === undefined) {
         return;

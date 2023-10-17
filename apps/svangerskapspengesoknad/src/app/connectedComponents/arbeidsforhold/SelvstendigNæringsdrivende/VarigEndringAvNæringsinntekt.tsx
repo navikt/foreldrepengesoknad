@@ -35,7 +35,7 @@ const VarigEndringAvNæringsinntekt: FunctionComponent<Props> = (props: Props) =
                     name="hattVarigEndringAvNæringsinntektSiste4Kalenderår"
                     legend={getMessage(
                         intl,
-                        'arbeidsforhold.selvstendig.endringAvNæringsinntektInformasjon.hattVarigEndringAvNæringsinntektSiste4Kalenderår'
+                        'arbeidsforhold.selvstendig.endringAvNæringsinntektInformasjon.hattVarigEndringAvNæringsinntektSiste4Kalenderår',
                     )}
                 />
             </Block>
@@ -52,7 +52,7 @@ const VarigEndringAvNæringsinntekt: FunctionComponent<Props> = (props: Props) =
                     name="endringAvNæringsinntektInformasjon.næringsinntektEtterEndring"
                     label={getMessage(
                         intl,
-                        'arbeidsforhold.selvstendig.endringAvNæringsinntektInformasjon.næringsinntektEtterEndring'
+                        'arbeidsforhold.selvstendig.endringAvNæringsinntektInformasjon.næringsinntektEtterEndring',
                     )}
                     required={true}
                 />

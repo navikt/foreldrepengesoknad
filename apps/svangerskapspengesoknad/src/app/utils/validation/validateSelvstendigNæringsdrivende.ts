@@ -57,7 +57,7 @@ const validateSelvstendigNæringsdrivende =
                 set(
                     errors,
                     ['endringAvNæringsinntektInformasjon', 'forklaring'],
-                    'valideringsfeil.feltetKanVæreMax1000Tegn'
+                    'valideringsfeil.feltetKanVæreMax1000Tegn',
                 );
             }
 
@@ -70,7 +70,7 @@ const validateSelvstendigNæringsdrivende =
                 set(
                     errors,
                     ['endringAvNæringsinntektInformasjon', 'næringsinntektEtterEndring'],
-                    Valideringsfeil.MÅ_VÆRE_HELTALL
+                    Valideringsfeil.MÅ_VÆRE_HELTALL,
                 );
             }
         }

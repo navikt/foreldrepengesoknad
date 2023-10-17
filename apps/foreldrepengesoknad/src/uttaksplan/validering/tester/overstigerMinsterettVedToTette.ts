@@ -6,7 +6,7 @@ import { laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn } from './periodeva
 export const overstigerMinsterettVedToTette = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const { familiehendelsesdato, perioder, stønadskontoer, søkerErFarEllerMedmor, minsterettUkerToTette } = grunnlag;
     const perioderEtterFørsteStønadsperiodeNyttBarn = perioder.filter((periode) =>
-        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak),
     );
     if (
         minsterettUkerToTette === undefined ||
@@ -18,7 +18,7 @@ export const overstigerMinsterettVedToTette = (grunnlag: Søknadsinfo): RegelTes
         };
     }
     const perioderFørFørsteStønadsperiodeNyttBarn = perioder.filter(
-        (periode) => !laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+        (periode) => !laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak),
     );
     const minsterettMaxAntallUker = minsterettUkerToTette;
     const minsterettMaxAntallDager = minsterettMaxAntallUker * 5;
@@ -26,7 +26,7 @@ export const overstigerMinsterettVedToTette = (grunnlag: Søknadsinfo): RegelTes
     const brukteDagerPerForelderFørFørsteStønadsdagNyttBarn = getBrukteDager(
         stønadskontoer,
         perioderFørFørsteStønadsperiodeNyttBarn,
-        familiehendelsesdato
+        familiehendelsesdato,
     );
     const uttaksdagerFremTilNyttBarnStønadsdag = søkerErFarEllerMedmor
         ? brukteDagerPerForelderFørFørsteStønadsdagNyttBarn.farMedmor.dagerEgneKvoter +
@@ -39,7 +39,7 @@ export const overstigerMinsterettVedToTette = (grunnlag: Søknadsinfo): RegelTes
     const brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn = getBrukteDager(
         stønadskontoer,
         perioderEtterFørsteStønadsperiodeNyttBarn,
-        familiehendelsesdato
+        familiehendelsesdato,
     );
     const uttaksdagerEtterNyttBarnStønadsdag = søkerErFarEllerMedmor
         ? brukteDagerPerForelderEtterFørsteStønadsdagNyttBarn.farMedmor.dagerEgneKvoter +

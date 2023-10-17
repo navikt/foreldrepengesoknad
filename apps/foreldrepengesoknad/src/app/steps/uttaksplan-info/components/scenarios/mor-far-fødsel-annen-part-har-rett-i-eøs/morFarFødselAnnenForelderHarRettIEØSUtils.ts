@@ -12,7 +12,7 @@ const initialMorFarFødselAnnenForelderHarRettIEØSValues: MorFarFødselAnnenFor
     [MorFarFødselAnnenForelderHarRettIEØSFormField.skalIkkeHaUttakFørTermin]: undefined,
 };
 export const mapMorFarFødselAnnenForelderHarRettIEØSFormToState = (
-    values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>
+    values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>,
 ): MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo => {
     return {
         dekningsgrad: values.dekningsgrad!,
@@ -23,7 +23,7 @@ export const mapMorFarFødselAnnenForelderHarRettIEØSFormToState = (
 export const getInitialMorFarFødselAnnenForelderHarRettIEØSValues = (
     defaultPermisjonStartdato: Date,
     lagretUttaksplanInfo: MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): MorFarFødselAnnenForelderHarRettIEØSFormData => {
     if (lagretUttaksplanInfo) {
         return {

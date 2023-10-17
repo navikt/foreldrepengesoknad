@@ -5,7 +5,7 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getUgyldigUttakMor } from '../utils/uttakValideringUtils';
 
 export const ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     const søkerErMor = !grunnlag.søkerErFarEllerMedmor;
     if (søkerErMor && isUfødtBarn(grunnlag.barn)) {
@@ -16,7 +16,7 @@ export const ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest: Reg
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.termindato,
             grunnlag.erFlerbarnssøknad,
-            'mellomSyvOgÅtteUkerForMor'
+            'mellomSyvOgÅtteUkerForMor',
         );
 
         const passerer = ugyldigePerioder.length === 0;

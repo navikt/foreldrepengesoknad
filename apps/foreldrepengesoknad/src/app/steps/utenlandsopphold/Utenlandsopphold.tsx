@@ -46,7 +46,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.INNTEKTSINFORMASJON,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -80,17 +80,17 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     labels={{
                                         yes: intlUtils(
                                             intl,
-                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge'
+                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge',
                                         ),
                                         no: intlUtils(
                                             intl,
-                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet'
+                                            'utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet',
                                         ),
                                     }}
                                     validate={(skalBoINorgeNeste12Mnd) =>
                                         validateYesOrNoIsAnswered(
                                             skalBoINorgeNeste12Mnd,
-                                            'valideringsfeil.utenlandsopphold.skalBoINorgePåkrevd'
+                                            'valideringsfeil.utenlandsopphold.skalBoINorgePåkrevd',
                                         )
                                     }
                                 />
@@ -122,17 +122,17 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     labels={{
                                         yes: intlUtils(
                                             intl,
-                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge'
+                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge',
                                         ),
                                         no: intlUtils(
                                             intl,
-                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet'
+                                            'utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet',
                                         ),
                                     }}
                                     validate={(harBoddINorgeSiste12Mnd) =>
                                         validateYesOrNoIsAnswered(
                                             harBoddINorgeSiste12Mnd,
-                                            'valideringsfeil.utenlandsopphold.harBoddINorgePåkrevd'
+                                            'valideringsfeil.utenlandsopphold.harBoddINorgePåkrevd',
                                         )
                                     }
                                 />

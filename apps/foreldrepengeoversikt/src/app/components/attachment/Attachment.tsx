@@ -39,7 +39,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                 <div
                     className={classNames(
                         bem.element('delete-button'),
-                        attachment.pending ? bem.modifier('pending') : undefined
+                        attachment.pending ? bem.modifier('pending') : undefined,
                     )}
                 >
                     <Button variant="tertiary" icon={<XMarkIcon aria-hidden />} onClick={() => onDelete(attachment)} />

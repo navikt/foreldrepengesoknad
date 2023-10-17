@@ -9,14 +9,14 @@ import {
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 
 export const starterUttaksperiodeRundtFødselEtter2UkerFørFødsel: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     if (
         !gjelderWLBReglerFarMedmorRundtFødsel(
             grunnlag.familiehendelsesdato,
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.morHarRett,
-            grunnlag.søkersituasjon.situasjon
+            grunnlag.søkersituasjon.situasjon,
         )
     ) {
         return {
@@ -31,12 +31,12 @@ export const starterUttaksperiodeRundtFødselEtter2UkerFørFødsel: RegelTest = 
                 !starterTidsperiodeEtter2UkerFørFødsel(
                     p.tidsperiode,
                     grunnlag.familiehendelsesdato,
-                    grunnlag.termindato
-                )
+                    grunnlag.termindato,
+                ),
         );
 
     const førsteUttaksdagToUkerFørFødsel = formaterDatoKompakt(
-        getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato)
+        getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato),
     );
     return {
         passerer: perioderFarMedmorSomStarterFør2UkerFørFødsel.length === 0,

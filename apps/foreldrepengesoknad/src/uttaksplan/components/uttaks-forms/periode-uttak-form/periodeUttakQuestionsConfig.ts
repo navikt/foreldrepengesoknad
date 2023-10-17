@@ -24,7 +24,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakQuestionPayload, Period
 };
 
 const uttakPeriodeQuestionsConfig = Questions<PeriodeUttakQuestionPayload, PeriodeUttakFormField>(
-    PeriodeUttakFormConfig
+    PeriodeUttakFormConfig,
 );
 
 export default uttakPeriodeQuestionsConfig;

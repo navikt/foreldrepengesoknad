@@ -20,7 +20,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.farOgMor);
@@ -40,7 +40,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.morOgMedmor);
@@ -60,7 +60,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.morOgMedmor);
@@ -80,7 +80,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.farOgFar);
@@ -100,7 +100,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.aleneomsorg);
@@ -120,7 +120,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.bareMor);
@@ -140,7 +140,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.aleneomsorg);
@@ -160,7 +160,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.bareFar);
@@ -179,7 +179,7 @@ describe('foreldreparSituasjonUtils', () => {
             erDeltUttak,
             morErAleneOmOmsorg,
             farMedmorErAleneOmOmsorg,
-            rolle
+            rolle,
         );
 
         expect(situasjon).toBe(ForeldreparSituasjon.aleneomsorgMedmor);

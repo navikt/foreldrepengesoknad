@@ -16,7 +16,7 @@ const areDefined = (...items: any[]) => items.some((item) => item !== undefined)
 
 const korrigerTilretteleggingArbeidsforhold = (
     tilrettelegging: UferdigTilrettelegging,
-    arbeidsforhold: Arbeidsforhold[]
+    arbeidsforhold: Arbeidsforhold[],
 ): UferdigTilrettelegging => {
     const forhold = tilrettelegging.arbeidsforhold.id
         ? arbeidsforhold.find((a) => a.guid === tilrettelegging.arbeidsforhold.id)
@@ -57,7 +57,7 @@ export const processUtfyltSøknad = (
     utfyltSøknad: UferdigSøknad,
     vedlegg: Attachment[],
     arbeidsforhold: Arbeidsforhold[],
-    språkkode: Språkkode
+    språkkode: Språkkode,
 ): SøknadDTO | undefined => {
     const { informasjonOmUtenlandsopphold: utland } = utfyltSøknad;
     const { fødselsdato: barnetsFødselsdato, ...utfyltBarn } = utfyltSøknad.barn;
@@ -74,7 +74,7 @@ export const processUtfyltSøknad = (
     const tilrettelegging: TilretteleggingDTO[] = mapTilretteleggingerTilDTO(
         fjernForkastetTilrettelegging(utfyltSøknad.tilrettelegging, utfyltSøknad.søknadsgrunnlag).map((t) => {
             return korrigerTilretteleggingArbeidsforhold(t, arbeidsforhold);
-        })
+        }),
     );
 
     return {
@@ -86,10 +86,10 @@ export const processUtfyltSøknad = (
             iNorgeNeste12Mnd: !!utland.iNorgeNeste12Mnd,
             jobbetINorgeSiste12Mnd: !!utland.jobbetINorgeSiste12Mnd,
             tidligereOpphold: konverterStringDatoerIObjektTilDate<Utenlandsopphold[], UtenlandsoppholdDTO[]>(
-                utland.tidligereOpphold
+                utland.tidligereOpphold,
             ),
             senereOpphold: konverterStringDatoerIObjektTilDate<Utenlandsopphold[], UtenlandsoppholdDTO[]>(
-                utland.senereOpphold
+                utland.senereOpphold,
             ),
         },
         barn: {

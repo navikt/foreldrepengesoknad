@@ -20,7 +20,7 @@ const getSpørsmålsTekst = (
     erOppholdsperiode: boolean,
     intl: IntlShape,
     navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
 ): string => {
     if (erOppholdsperiode) {
         const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -47,7 +47,7 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
         (konto): FormikRadioProp => ({
             label: getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg),
             value: `${konto}`,
-        })
+        }),
     );
 
     return (

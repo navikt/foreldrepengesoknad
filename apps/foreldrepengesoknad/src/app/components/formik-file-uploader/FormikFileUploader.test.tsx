@@ -20,7 +20,7 @@ describe('<FormikFileUploader>', () => {
                         skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
                     />
                 </IntlProvider>
-            </Formik>
+            </Formik>,
         );
 
         expect(screen.getByText('Opplastingsikon')).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe('<FormikFileUploader>', () => {
                         skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
                     />
                 </IntlProvider>
-            </Formik>
+            </Formik>,
         );
 
         expect(screen.getByText('Dette er et filnavn')).toBeInTheDocument();

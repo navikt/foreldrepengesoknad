@@ -23,7 +23,6 @@ const extractDecoratorFragments = (html) => {
             LOGIN_URL: `${process.env.LOGIN_URL}`,
             LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
             APP_VERSION: `${process.env.APP_VERSION}`,
-            FEATURE_WLB_GJELDER_FRA_FORSTE_JAN: `${process.env.FEATURE_WLB_GJELDER_FRA_FORSTE_JAN}`,
         }),
     };
 };

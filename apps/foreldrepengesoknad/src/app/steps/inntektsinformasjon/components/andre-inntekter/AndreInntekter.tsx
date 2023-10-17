@@ -42,7 +42,7 @@ const AndreInntekter: FunctionComponent<Props> = ({
 
     const deleteAnnenInntekt = (annenInntekt: AnnenInntekt) => {
         const updatedAndreInntekterInformasjon = andreInntekterInformasjon.filter(
-            (inntekt) => inntekt !== annenInntekt
+            (inntekt) => inntekt !== annenInntekt,
         );
 
         setAndreInntekterInformasjon(updatedAndreInntekterInformasjon);
@@ -72,7 +72,7 @@ const AndreInntekter: FunctionComponent<Props> = ({
                             if (andreInntekterInformasjon.length === 0) {
                                 return intlUtils(
                                     intl,
-                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag'
+                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag',
                                 );
                             }
                         }

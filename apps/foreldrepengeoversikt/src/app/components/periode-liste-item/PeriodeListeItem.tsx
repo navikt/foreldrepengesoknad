@@ -66,7 +66,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
             className={classNames(
                 `${bem.block} ${bem.element('box')} ${
                     isAvslåttPeriode(periode) || periode.gjelderAnnenPart ? bem.modifier('grå') : bem.modifier('hvit')
-                }`
+                }`,
             )}
         >
             <div>
@@ -115,7 +115,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                     <div
                         className={classNames(
                             bem.element('samtidig-uttak'),
-                            bem.modifier(`bg-${erFarEllerMedmor ? 'mor' : 'farMedmor'}`)
+                            bem.modifier(`bg-${erFarEllerMedmor ? 'mor' : 'farMedmor'}`),
                         )}
                     >
                         <div className={bem.element('annen_part_innhold')}>
@@ -124,7 +124,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                                     periode,
                                     overlappendePeriodeAnnenPart,
                                     intl,
-                                    navnPåForeldre
+                                    navnPåForeldre,
                                 )}
                             </BodyShort>
                             <div className={bem.element('beskrivelse')}>

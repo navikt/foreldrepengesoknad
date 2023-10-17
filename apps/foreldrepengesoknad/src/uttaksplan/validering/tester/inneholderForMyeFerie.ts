@@ -9,11 +9,11 @@ import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const inneholderForMyeFerie: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const ferieUtsettelser = grunnlag.perioder.filter(
-        (p) => isUtsettelsesperiode(p) && p.årsak === UtsettelseÅrsakType.Ferie
+        (p) => isUtsettelsesperiode(p) && p.årsak === UtsettelseÅrsakType.Ferie,
     );
     const ferieDager = ferieUtsettelser.reduce(
         (sumFerieDager, periode) => sumFerieDager + Perioden(periode).getAntallUttaksdager(),
-        0
+        0,
     );
 
     return {

@@ -82,7 +82,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({
                             intl,
                             familiehendelsesdatoDate,
                             skalIkkeHaUttakFørTermin,
-                            termindato
+                            termindato,
                         )}
                         disableWeekend
                         placeholder={'dd.mm.åååå'}
