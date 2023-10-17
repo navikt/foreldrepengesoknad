@@ -1,51 +1,28 @@
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Radio } from '@navikt/ds-react';
-import { Kjønn, hasValue, sisteMuligeDatoForOvertaOmsorg } from '@navikt/fp-common';
+import { Kjønn } from '@navikt/fp-common';
+import { RadioGroupPanel, Datepicker, Select } from '@navikt/fp-form-hooks';
+import { useFormValidators } from '@navikt/fp-validation';
 
 import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
-import { RadioGroupPanel, Datepicker, Select } from '@navikt/fp-form-hooks';
-import { isRequired } from '@navikt/fp-validation';
-import { isValidFormattedDateString } from '../../../fpcommon/validering/valideringsregler';
 import { Adopsjon } from 'types/OmBarnet';
 
 export type FormValues = {
     antallBarnDropDown?: string;
 } & Adopsjon;
 
-const validateEktefellensBarnAdopsjonDate = (dato: string, intl: IntlShape) => {
-    if (!hasValue(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.ektefellensBarn.duMåOppgi' });
-    }
-
-    if (!isValidFormattedDateString(dato)) {
-        return intl.formatMessage({ id: 'invalidFormatErrorKey.adopsjonsdato' });
-    }
-
-    if (sisteMuligeDatoForOvertaOmsorg(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.forLangtFremITid' });
-    }
-
-    return undefined;
-};
-
-const validateOvertaOmsorgAdopsjonDate = (dato: string, intl: IntlShape) => {
-    if (!hasValue(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.overtaOmsorg.duMåOppgi' });
-    }
-    if (sisteMuligeDatoForOvertaOmsorg(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonDato.forLangtFremITid' });
-    }
-    return undefined;
-};
-
 interface Props {
     kjønn: Kjønn;
 }
 
 const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
-    const intl = useIntl();
+    const {
+        isRequired,
+        date: { isValidDate, isMaxOneYearIntoTheFuture },
+    } = useFormValidators();
+
     const { watch } = useFormContext<FormValues>();
 
     const { adopsjonAvEktefellesBarn, adopsjonsdato, antallBarn, antallBarnDropDown } = watch();
@@ -54,14 +31,14 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
         <>
             <RadioGroupPanel
                 name="adopsjonAvEktefellesBarn"
-                label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.stebarnsadopsjon" />}
-                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.spørsmål.required' }))]}
+                label={<FormattedMessage id="AdopsjonPanel.Spørsmål.Stebarnsadopsjon" />}
+                validate={[isRequired('AdopsjonPanel.Spørsmål.Required')]}
             >
                 <Radio value={true}>
-                    <FormattedMessage id="omBarnet.adopsjon.text.ja" />
+                    <FormattedMessage id="AdopsjonPanel.Ja" />
                 </Radio>
                 <Radio value={false}>
-                    <FormattedMessage id="omBarnet.adopsjon.text.nei" />
+                    <FormattedMessage id="AdopsjonPanel.Nei" />
                 </Radio>
             </RadioGroupPanel>
             <Datepicker
@@ -70,39 +47,47 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                     <FormattedMessage
                         id={
                             adopsjonAvEktefellesBarn
-                                ? 'omBarnet.adopsjon.spørsmål.stebarnsadopsjondato'
-                                : 'omBarnet.adopsjon.spørsmål.overtaomsorgdato'
+                                ? 'AdopsjonPanel.Spørsmål.Stebarnsadopsjondato'
+                                : 'AdopsjonPanel.Spørsmål.Overtaomsorgdato'
                         }
                     />
                 }
                 minDate={dayjs().subtract(6, 'month').toDate()}
                 validate={[
-                    adopsjonAvEktefellesBarn
-                        ? (value) => validateEktefellensBarnAdopsjonDate(value, intl)
-                        : (value) => validateOvertaOmsorgAdopsjonDate(value, intl),
+                    isRequired(
+                        adopsjonAvEktefellesBarn
+                            ? 'AdopsjonPanel.EktefellensBarn.DuMåOppgi'
+                            : 'AdopsjonPanel.OvertaOmsorg.DuMåOppgi',
+                    ),
+                    isValidDate(
+                        adopsjonAvEktefellesBarn
+                            ? 'AdopsjonPanel.Adopsjonsdato.GyldigFormat'
+                            : 'AdopsjonPanel.Omsorgsovertakelsen.GyldigFormat',
+                    ),
+                    isMaxOneYearIntoTheFuture('AdopsjonPanel.AdopsjonDato.ForLangtFremITid'),
                 ]}
             />
             <RadioGroupPanel
                 name="antallBarn"
-                label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.antallBarnAdoptert" />}
-                description={<FormattedMessage id="omBarnet.adopsjon.spørsmål.antallBarnAdoptert.beskrivelse" />}
-                validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.antallbarn.required' }))]}
+                label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert" />}
+                description={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert.Beskrivelse" />}
+                validate={[isRequired('AdopsjonPanel.Antallbarn.Required')]}
             >
                 <Radio value={1}>
-                    <FormattedMessage id="omBarnet.radiobutton.ettbarn" />
+                    <FormattedMessage id="AdopsjonPanel.Radiobutton.Ettbarn" />
                 </Radio>
                 <Radio value={2}>
-                    <FormattedMessage id="omBarnet.radiobutton.toBarn" />
+                    <FormattedMessage id="AdopsjonPanel.Radiobutton.ToBarn" />
                 </Radio>
                 <Radio value={3}>
-                    <FormattedMessage id="omBarnet.radiobutton.flere" />
+                    <FormattedMessage id="AdopsjonPanel.Radiobutton.Flere" />
                 </Radio>
             </RadioGroupPanel>
             {antallBarn && antallBarn >= 3 && (
                 <Select
                     name="antallBarnDropDown"
-                    label={<FormattedMessage id="omBarnet.text.antallBarn.omsorgsovertakelse" />}
-                    validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.antallbarndropdown.required' }))]}
+                    label={<FormattedMessage id="AdopsjonPanel.AntallBarn.Omsorgsovertakelse" />}
+                    validate={[isRequired('AdopsjonPanel.Antallbarndropdown.Required')]}
                 >
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -121,14 +106,14 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
             {kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
                 <RadioGroupPanel
                     name="søkerAdopsjonAlene"
-                    label={<FormattedMessage id="omBarnet.adopsjon.spørsmål.adoptererDuAlene" />}
-                    validate={[isRequired(intl.formatMessage({ id: 'omBarnet.adopsjon.adoptererDuAlene.required' }))]}
+                    label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AdoptererDuAlene" />}
+                    validate={[isRequired('AdopsjonPanel.AdoptererDuAlene.Required')]}
                 >
                     <Radio value={true}>
-                        <FormattedMessage id="omBarnet.adopsjon.text.ja" />
+                        <FormattedMessage id="AdopsjonPanel.Ja" />
                     </Radio>
                     <Radio value={false}>
-                        <FormattedMessage id="omBarnet.adopsjon.text.nei" />
+                        <FormattedMessage id="AdopsjonPanel.Nei" />
                     </Radio>
                 </RadioGroupPanel>
             )}

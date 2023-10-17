@@ -6,11 +6,11 @@ import { Button, HStack, Radio, Tag, VStack } from '@navikt/ds-react';
 import { date1YearAgo, date1YearFromNow, dateRangesCollide, dateToday } from '@navikt/fp-common';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { Datepicker, RadioGroupPanel, Select } from '@navikt/fp-form-hooks';
-import { isRequired, validateDatesNotEqual } from '@navikt/fp-validation';
+import { useFormValidators } from '@navikt/fp-validation';
 import { ISO_DATE_FORMAT, TIDENES_ENDE } from '@navikt/fp-constants';
 
-import { validateFromDate, validateToDate } from '../../../fpcommon/validering/valideringsregler';
 import { Periode } from 'types/Utenlandsopphold';
+import { validateFromDate, validateToDate } from './valideringsregler';
 
 const validerPeriodeOverlapp = (
     intl: IntlShape,
@@ -43,6 +43,10 @@ interface OwnProps {
 
 const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
     const intl = useIntl();
+    const {
+        isRequired,
+        date: { isDatesNotTheSame },
+    } = useFormValidators();
 
     const {
         watch,
@@ -89,13 +93,7 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                 <Select
                     name={`perioder.${index}.landkode`}
                     label={<FormattedMessage id={'UtenlandsoppholdPeriodePanel.Land'} />}
-                    validate={[
-                        isRequired(
-                            intl.formatMessage({
-                                id: 'UtenlandsoppholdPeriodePanel.Validering.Land.Required',
-                            }),
-                        ),
-                    ]}
+                    validate={[isRequired('UtenlandsoppholdPeriodePanel.Validering.Land.Required')]}
                 >
                     {createCountryOptions().map((o: Record<string, any>) => (
                         <option key={o[0]} value={o[0]}>
@@ -106,9 +104,7 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                 <RadioGroupPanel
                     name={`perioder.${index}.harFlyttetUtForMerEnn12MånderSiden`}
                     label={<FormattedMessage id="UtenlandsoppholdPeriodePanel.Historisk.Spørsmål" />}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'UtenlandsoppholdPeriodePanel.Historisk.IsRequired' })),
-                    ]}
+                    validate={[isRequired('UtenlandsoppholdPeriodePanel.Historisk.IsRequired')]}
                     onChange={(value) => {
                         if (value) {
                             const ettÅrSiden = dayjs(date1YearAgo).format(ISO_DATE_FORMAT);
@@ -132,17 +128,8 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                         minDate={minDateFom}
                         maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate()}
                         validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'UtenlandsoppholdPeriodePanel.Validering.Fraogmed.Required',
-                                }),
-                            ),
-                            validateDatesNotEqual(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.fomErLikTom',
-                                }),
-                                tom,
-                            ),
+                            isRequired('UtenlandsoppholdPeriodePanel.Validering.Fraogmed.Required'),
+                            isDatesNotTheSame('valideringsfeil.fomErLikTom', tom),
                             (fomValue) => {
                                 return validateFromDate(
                                     intl,
@@ -162,9 +149,7 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                 <RadioGroupPanel
                     name={`perioder.${index}.skalBoIUtlandetMerEnEttÅrFremover`}
                     label={<FormattedMessage id="UtenlandsoppholdPeriodePanel.Fremtidig.Spørsmål" />}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'UtenlandsoppholdPeriodePanel.Fremtidig.IsRequired' })),
-                    ]}
+                    validate={[isRequired('UtenlandsoppholdPeriodePanel.Fremtidig.IsRequired')]}
                     onChange={(value) => {
                         if (value) {
                             const ettÅrFrem = dayjs(date1YearFromNow).format(ISO_DATE_FORMAT);
@@ -188,17 +173,8 @@ const UtenlandsoppholdPeriodePanel: React.FunctionComponent<OwnProps> = ({ index
                         minDate={minDateTom}
                         maxDate={maxDateTom}
                         validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'UtenlandsoppholdPeriodePanel.Validering.Tilogmed.Required',
-                                }),
-                            ),
-                            validateDatesNotEqual(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.tomErLikFom',
-                                }),
-                                fom,
-                            ),
+                            isRequired('UtenlandsoppholdPeriodePanel.Validering.Tilogmed.Required'),
+                            isDatesNotTheSame('valideringsfeil.tomErLikFom', fom),
                             (tomValue) => {
                                 const tom = tomValue || TIDENES_ENDE;
                                 return validateToDate(

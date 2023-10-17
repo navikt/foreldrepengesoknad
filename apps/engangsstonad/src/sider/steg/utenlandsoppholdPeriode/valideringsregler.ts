@@ -1,5 +1,5 @@
-import { etterDagensDato, formatDateExtended, hasValue } from '@navikt/fp-common';
-import { dateIsWithinRange } from '@navikt/fp-validation';
+import { formatDateExtended } from '@navikt/fp-common';
+import { isDateWithinRange } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -18,7 +18,7 @@ const validateDateInRange = (
         return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
     }
 
-    if (!dateIsWithinRange(date, minDate, maxDate)) {
+    if (!isDateWithinRange(date, minDate, maxDate)) {
         return intl.formatMessage(
             { id: 'valideringsfeil.dateOutsideRange' },
             {
@@ -63,33 +63,6 @@ export const validateToDate = (
     if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
         // TODO Bør ha generell id
         return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.etterFraDato' });
-    }
-    return undefined;
-};
-
-export const isValidFormattedDateString = (dateString = ''): boolean => {
-    return /\d{1,2}.\d{1,2}.(\d{2}|\d{4})$/.test(dateString);
-};
-
-//TODO Denne kan vel skrivast meir generell og ha generelle feilmeldingar?
-export const validateAdopsjonFødselDate = (
-    dato: string | undefined,
-    adopsjonsdato: string | undefined,
-    intl: IntlShape,
-) => {
-    if (!hasValue(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.duMåOppgi' });
-    }
-
-    if (!isValidFormattedDateString(dato)) {
-        return intl.formatMessage({ id: 'invalidFormatErrorKey.fødselsdato' });
-    }
-
-    if (!dato || !adopsjonsdato) {
-        return undefined;
-    }
-    if (etterDagensDato(dato)) {
-        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.fodselsdato.måVæreIdagEllerTidligere' });
     }
     return undefined;
 };

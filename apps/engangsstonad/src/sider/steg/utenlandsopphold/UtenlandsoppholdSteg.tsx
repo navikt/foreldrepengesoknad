@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
-
 import { Form, ErrorSummaryHookForm, RadioGroupPanel, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired } from '@navikt/fp-validation';
+import { useFormValidators } from '@navikt/fp-validation';
+import { links } from '@navikt/fp-constants';
+
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
@@ -14,6 +15,7 @@ import useStepData from 'appData/useStepData';
 
 const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
+    const { isRequired } = useFormValidators();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -33,7 +35,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
             lagreUtenlandsoppholdPerioder(undefined);
         }
 
-        navigator.goToNextStep(formValues?.harKunBoddINorge ? Path.OPPSUMMERING : Path.UTENLANDSOPPHOLD_PERIODER);
+        navigator.goToNextStep(formValues.harKunBoddINorge ? Path.OPPSUMMERING : Path.UTENLANDSOPPHOLD_PERIODER);
     }, []);
 
     return (
@@ -54,9 +56,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                     <RadioGroupPanel
                         name="harKunBoddINorge"
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Periode.Spørsmål" />}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'UtenlandsoppholdSteg.Siste12Måneder.IsRequired' })),
-                        ]}
+                        validate={[isRequired('UtenlandsoppholdSteg.Siste12Måneder.IsRequired')]}
                     >
                         <Radio value={true}>
                             <FormattedMessage id="UtenlandsoppholdSteg.Ja" />
@@ -102,9 +102,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                                             <FormattedMessage id="utenlandsopphold.info.del6" />
                                         </BodyShort>
                                         <BodyShort>
-                                            <Link href="https://www.nav.no/foreldrepenger#utland">
-                                                nav.no/foreldrepenger#utland
-                                            </Link>
+                                            <Link href={links.foreldrepengerUtland}>nav.no/foreldrepenger#utland</Link>
                                         </BodyShort>
                                     </HStack>
                                 </VStack>
