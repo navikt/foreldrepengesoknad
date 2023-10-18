@@ -79,7 +79,7 @@ export const validateEgenNæringOrgnr =
 
 export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato: string) => {
     if (!hasValue(dato)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+        return intlUtils(intl, 'valideringsfeil.yrkesaktiv.påkrevd');
     }
 
     if (!isISODateString(dato)) {
@@ -87,7 +87,7 @@ export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato:
     }
 
     if (isDateInTheFuture(dato)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+        return intlUtils(intl, 'valideringsfeil.yrkesaktiv.erIFremtiden');
     }
 
     return undefined;
