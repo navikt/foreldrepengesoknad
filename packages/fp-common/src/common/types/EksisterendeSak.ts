@@ -1,6 +1,6 @@
-import { Periode } from 'uttaksplan/types/Periode';
 import { Saksperiode } from './Saksperiode';
 import { Saksgrunnlag } from './Saksgrunnlag';
+import { Periode } from './Periode';
 
 export interface EksisterendeSak {
     saksnummer: string;

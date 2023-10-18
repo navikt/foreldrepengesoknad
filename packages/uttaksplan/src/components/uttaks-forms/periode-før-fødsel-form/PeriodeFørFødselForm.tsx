@@ -1,12 +1,18 @@
-import { Block, Situasjon, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    ForeldrepengerFørFødselUttaksperiode,
+    ISOStringToDate,
+    Periode,
+    Situasjon,
+    Utsettelsesperiode,
+    intlUtils,
+    isValidTidsperiode,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-import { ForeldrepengerFørFødselUttaksperiode, Periode, Utsettelsesperiode } from 'types/Periode';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import {

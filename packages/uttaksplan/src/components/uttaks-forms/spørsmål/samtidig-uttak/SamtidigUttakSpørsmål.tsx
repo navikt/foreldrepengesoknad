@@ -1,10 +1,8 @@
 import { FunctionComponent } from 'react';
-import { Block, NavnPåForeldre, Situasjon, intlUtils } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Situasjon, andreAugust2022ReglerGjelder, intlUtils, links } from '@navikt/fp-common';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { FormattedMessage, useIntl } from 'react-intl';
-import links from 'app/links/links';
 import { prosentValideringSamtidigUttak } from 'utils/prosentValidering';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { GuidePanel, Link } from '@navikt/ds-react';
 

@@ -8,25 +8,25 @@ import {
     StønadskontoType,
     OverføringÅrsakType,
     hasValue,
+    Periode,
+    isUttaksperiode,
+    isOverføringsperiode,
+    isOppholdsperiode,
+    getStønadskontoFromOppholdsårsak,
+    Arbeidsform,
+    trimNumberValue,
+    Periodetype,
+    Overføringsperiode,
+    Oppholdsperiode,
+    getOppholdsÅrsakFromStønadskonto,
+    Uttaksperiode,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+    getMorsAktivitet,
 } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { getMorsAktivitet, getMorsAktivitetSkjemanummer } from 'app/utils/morsAktivitetUtils';
-import { trimNumberValue } from 'app/utils/numberUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import dayjs from 'dayjs';
-import {
-    Arbeidsform,
-    isOppholdsperiode,
-    isOverføringsperiode,
-    isUttaksperiode,
-    Oppholdsperiode,
-    Overføringsperiode,
-    Periode,
-    Periodetype,
-    Uttaksperiode,
-} from 'types/Periode';
-import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from 'utils/periodeUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     erSamtidigUttakFarMedmorFørFødselWLB,
@@ -34,6 +34,7 @@ import {
 } from './periodeUttakFormQuestionsConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
+import { getMorsAktivitetSkjemanummer } from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 
 const getInitialKonto = (
     erDeltUttak: boolean,

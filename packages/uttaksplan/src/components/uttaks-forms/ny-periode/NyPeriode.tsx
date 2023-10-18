@@ -3,11 +3,13 @@ import {
     Arbeidsforhold,
     Block,
     NavnPåForeldre,
+    Periode,
+    Periodetype,
     Situasjon,
     TilgjengeligStønadskonto,
+    Utsettelsesperiode,
 } from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import { Periode, Periodetype, Utsettelsesperiode } from 'types/Periode';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import { FormattedMessage, IntlShape } from 'react-intl';

@@ -16,7 +16,8 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "baseUrl": "./src",
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src"],
     "references": [{ "path": "./tsconfig.node.json" }]

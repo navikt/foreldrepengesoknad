@@ -12,18 +12,19 @@ import {
     BarnFraNesteSak,
     AnnenForelder,
     isAnnenForelderOppgitt,
+    Periode,
+    Periodene,
+    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Periode, Utsettelsesperiode } from 'types/Periode';
 import { VeiledermeldingerPerPeriode } from 'validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
-
-import './planlegger.less';
 import { Button, Heading } from '@navikt/ds-react';
 import { PeriodeValidState } from 'Uttaksplan';
+
+import './planlegger.less';
 
 interface Props {
     uttaksplan: Periode[];

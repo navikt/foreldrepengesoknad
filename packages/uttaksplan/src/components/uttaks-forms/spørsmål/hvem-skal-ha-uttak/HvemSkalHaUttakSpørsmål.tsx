@@ -1,8 +1,8 @@
 import { Forelder, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
-import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 interface Props {
     fieldName: PeriodeUttakFormField;

@@ -33,7 +33,7 @@ import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import AutomatiskJusteringForm from './components/automatisk-justering-form/AutomatiskJusteringForm';
+import AutomatiskJusteringForm from '../../../apps/foreldrepengesoknad/src/app/steps/uttaksplan/automatisk-justering-form/AutomatiskJusteringForm';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';

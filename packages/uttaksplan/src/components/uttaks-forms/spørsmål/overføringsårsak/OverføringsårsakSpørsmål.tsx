@@ -6,14 +6,14 @@ import {
     OverføringÅrsakType,
     AttachmentType,
     Skjemanummer,
+    getNavnGenitivEierform,
 } from '@navikt/fp-common';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getNavnGenitivEierform } from 'utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { capitalizeFirstLetter } from 'app/utils/stringUtils';
 import { GuidePanel } from '@navikt/ds-react';
+import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 interface Props {
     vedlegg: Attachment[];
     navnAnnenForelder: string;

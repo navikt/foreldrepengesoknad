@@ -1,8 +1,7 @@
-import { intlUtils, Block, hasValue, TidsperiodeDate, Arbeidsforhold } from '@navikt/fp-common';
+import { intlUtils, Block, hasValue, TidsperiodeDate, Arbeidsforhold, Arbeidsform } from '@navikt/fp-common';
 import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidsform } from 'types/Periode';
 import { prosentValideringGradering } from 'utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { BodyShort, ReadMore } from '@navikt/ds-react';

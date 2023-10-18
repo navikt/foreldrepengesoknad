@@ -1,6 +1,14 @@
-import { isUtsettelsePgaArbeid, isUtsettelsesperiode, Periode, Periodetype } from 'types/Periode';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
-import { Attachment, AttachmentType, Forelder, UtsettelseÅrsakType } from '@navikt/fp-common';
+import {
+    Attachment,
+    AttachmentType,
+    Forelder,
+    Periode,
+    Periodetype,
+    UtsettelseÅrsakType,
+    isUtsettelsePgaArbeid,
+    isUtsettelsesperiode,
+} from '@navikt/fp-common';
 
 export const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.fom]: undefined,

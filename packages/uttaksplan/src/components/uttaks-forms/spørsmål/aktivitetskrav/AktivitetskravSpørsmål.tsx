@@ -5,14 +5,14 @@ import {
     MorsAktivitet,
     NavnPåForeldre,
     Skjemanummer,
+    getNavnGenitivEierform,
     hasValue,
     intlUtils,
+    links,
 } from '@navikt/fp-common';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import links from 'app/links/links';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { getNavnGenitivEierform } from 'utils/stønadskontoerUtils';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { BodyShort, GuidePanel } from '@navikt/ds-react';

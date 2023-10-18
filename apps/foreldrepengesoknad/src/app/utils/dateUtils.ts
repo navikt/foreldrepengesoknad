@@ -1,29 +1,33 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import advanced from 'dayjs/plugin/advancedFormat';
 import { IntlShape } from 'react-intl';
-import { formatDate, formatDateExtended, hasValue, intlUtils, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
-import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
-import { RegistrertBarn } from 'app/types/Person';
-import { Alder } from 'app/types/Alder';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import {
+    formatDate,
+    formatDateExtended,
+    hasValue,
+    intlUtils,
     isInfoPeriode,
+    ISOStringToDate,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
     isUttaksperiode,
     Periode,
+    Perioden,
+    RegistrertBarn,
     Utsettelsesperiode,
-} from 'uttaksplan/types/Periode';
-import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
+} from '@navikt/fp-common';
+import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
+import { Alder } from 'app/types/Alder';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import FeatureToggle from 'app/FeatureToggle';
 import { isFeatureEnabled } from './toggleUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
+import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -32,16 +36,6 @@ dayjs.extend(timezone);
 dayjs.extend(advanced);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
-
-export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
-    if (dateString === undefined) {
-        return undefined;
-    }
-    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
-        return dayjs.utc(dateString).toDate();
-    }
-    return undefined;
-};
 
 export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
     return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
@@ -196,26 +190,6 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     return false;
 };
 
-export const isDateToday = (date: string): boolean => {
-    if (dayjs().isSame(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const isDateTodayOrInTheFuture = (date: string): boolean => {
-    return isDateInTheFuture(date) || isDateToday(date);
-};
-
-export const isDateInTheFuture = (date: string): boolean => {
-    if (dayjs().isBefore(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
 export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): RegistrertBarn => {
     return [...registrerteBarn].sort((a, b) =>
         isDateABeforeDateB(dateToISOString(a.fødselsdato)!, dateToISOString(b.fødselsdato)!) ? 1 : -1,
@@ -231,44 +205,6 @@ export const getEldsteDato = (dato: Date[]) => {
     return sorterDatoEtterEldst(dato)[0];
 };
 
-type VarighetFormat = 'full' | 'normal';
-
-export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
-    const uker = Math.floor(dager / 5);
-    return {
-        dager: dager - uker * 5,
-        uker,
-    };
-};
-
-export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
-    const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
-    const dagerStr = intl.formatMessage(
-        { id: 'varighet.dager' },
-        {
-            dager,
-        },
-    );
-    if (uker === 0) {
-        return dagerStr;
-    }
-    const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
-    if (dager > 0) {
-        return `${ukerStr}${intl.formatMessage({
-            id: `varighet.separator--${format}`,
-        })}${dagerStr}`;
-    }
-    return ukerStr;
-};
-
-export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
-    return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
-};
-
-export const formaterDatoUtenDag = (dato: string | Date): string => {
-    return dayjs(dato).format('D. MMMM YYYY');
-};
-
 type DateValue = Date | undefined;
 
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
@@ -282,10 +218,6 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }
     return true;
-};
-
-export const formaterDatoKompakt = (dato: Date): string => {
-    return formaterDato(dato, 'DD.MM.YYYY');
 };
 
 export const findEldsteDato = (dateArray: Date[]): DateValue => {
@@ -309,25 +241,6 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
         år,
         måneder,
         dager,
-    };
-};
-
-export const måned = (dato: Dayjs): string => {
-    return dato.format('MMMM');
-};
-
-export const måned3bokstaver = (dato: Dayjs): string => {
-    return dato.format('MMM').substr(0, 3);
-};
-
-export const år = (dato: Dayjs): string => {
-    return dato.format('YYYY');
-};
-
-export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): TidsperiodeDate => {
-    return {
-        fom: ISOStringToDate(tidsperiode.fom)!,
-        tom: ISOStringToDate(tidsperiode.tom)!,
     };
 };
 
@@ -516,11 +429,4 @@ export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Dat
     }
 
     return undefined;
-};
-
-export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
-    dayjs(date).isBetween(fom, tom, 'day', '[]');
-
-export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: Date): boolean => {
-    return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
 };

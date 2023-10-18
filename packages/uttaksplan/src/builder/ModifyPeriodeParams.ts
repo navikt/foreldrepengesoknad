@@ -1,5 +1,4 @@
-import { TilgjengeligStønadskonto } from '@navikt/fp-common';
-import { Periode } from 'types/Periode';
+import { Periode, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { Uttaksstatus } from 'utils/uttaksstatus';
 
 interface ModifyPeriodeParams {

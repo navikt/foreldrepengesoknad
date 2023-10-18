@@ -1,9 +1,13 @@
-import { Situasjon, TidsperiodeDate } from '@navikt/fp-common';
-import uttaksConstants from 'app/constants';
-import { getTidsperiode, isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
-import { getFørsteUttaksdag2UkerFørFødsel } from 'app/utils/wlbUtils';
+import {
+    Situasjon,
+    TidsperiodeDate,
+    Uttaksdagen,
+    andreAugust2022ReglerGjelder,
+    getFørsteUttaksdag2UkerFørFødsel,
+    getTidsperiode,
+    isValidTidsperiode,
+    uttaksConstants,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
 
 export interface Uttaksdatoer {

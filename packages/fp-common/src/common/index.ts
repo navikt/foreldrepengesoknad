@@ -11,21 +11,50 @@ export { default as PictureScanningGuide } from './components/picture-scanning-g
 export { default as InfoBlock } from './components/info-block/InfoBlock';
 export { default as StepButtonWrapper } from './components/step/StepButtonWrapper';
 export { default as Fieldset } from './components/fieldset/Fieldset';
+export { default as Personkort } from './components/personkort/Personkort';
+export { default as ForelderIkon } from './components/foreldrepar/ForelderIkon';
+export { default as Foreldrepar } from './components/foreldrepar/Foreldrepar';
+export { default as Sirkelmaske } from './components/sirkelmaske/Sirkelmaske';
+export { default as UkerSirkel } from './components/uker-sirkel/UkerSirkel';
+export { default as SituasjonSirkel } from './components/situasjon-sirkel/SituasjonSirkel';
+export { default as InnholdMedIllustrasjon } from './components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
+export * from './components/foreldrepar/foreldreparUtils';
 
 export { default as AdvarselIkon } from './assets/advarsel-ikon/AdvarselIkon';
 export { default as ScanningIkon } from './assets/scanning-ikon/ScanningIkon';
 export { default as StatusIkon } from './assets/status-ikon/StatusIkon';
 export { default as TrashcanIkon } from './assets/trashcan-ikon/TrashcanIkon';
 export { default as VedleggIkon } from './assets/vedlegg-ikon/VedleggIkon';
+export { default as CheckmarkIkon } from './assets/checkmark-ikon/CheckmarkIkon';
+export { default as KalenderBakgrunnIkon } from './assets/kalender-bakgrunn-ikon/KalenderBakgrunnIkon';
 
 export { default as allCommonMessages } from './i18n/allCommonMessages';
 
 export * from './types';
 
+export { default as uttaksConstants } from './constants/constants';
+
 export { default as bemUtils } from './utils/bemUtils';
 export { default as intlUtils } from './utils/intlUtils';
 export { default as useDocumentTitle } from './utils/useDocumentTitle';
+export { default as isFarEllerMedmor } from './utils/isFarEllerMedmor';
+export * from './utils/uttaksPlanStatus';
 export * from './utils/localeUtils';
+export * from './utils/personUtils';
+export * from './utils/stønadskontoerUtils';
+export * from './utils/foreldreparSituasjonUtils';
 export * from './utils/dateUtils';
 export * from './utils/validationUtils';
+export * from './utils/periodeUtils';
+export * from './utils/Perioden';
+export * from './utils/Periodene';
+export * from './utils/Uttaksdagen';
+export * from './utils/Tidsperioden';
+export * from './utils/wlbUtils';
+export * from './utils/annenForelderUtils';
+export * from './utils/numberUtils';
+export * from './utils/formUtils';
+export * from './utils/morsAktivitetUtils';
+export * from './utils/vedleggUtils';
+export { default as links } from './links/links';
 export { guid } from './utils/guid';

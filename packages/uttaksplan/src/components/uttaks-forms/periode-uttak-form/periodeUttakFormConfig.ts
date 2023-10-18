@@ -1,6 +1,12 @@
-import { Attachment, Forelder, MorsAktivitet, StønadskontoType, OverføringÅrsakType } from '@navikt/fp-common';
+import {
+    Attachment,
+    Forelder,
+    MorsAktivitet,
+    StønadskontoType,
+    OverføringÅrsakType,
+    Arbeidsform,
+} from '@navikt/fp-common';
 import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { Arbeidsform } from 'types/Periode';
 import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 
 export enum PeriodeUttakFormField {

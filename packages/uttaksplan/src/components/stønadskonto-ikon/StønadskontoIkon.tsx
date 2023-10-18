@@ -1,10 +1,9 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { getStønadskontoFarge } from 'utils/styleUtils';
-import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
-import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType, getStønadskontoNavn } from '@navikt/fp-common';
 
 export interface Props {
     konto: StønadskontoType;

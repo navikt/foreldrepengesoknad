@@ -1,8 +1,6 @@
-import { ActionLink, bemUtils } from '@navikt/fp-common';
+import { ActionLink, InfoPeriode, bemUtils, getSlettPeriodeTekst } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InfoPeriode } from 'types/Periode';
-import { getSlettPeriodeTekst } from 'utils/periodeUtils';
 import './slettbarAvslåttPeriode.less';
 
 interface Props {

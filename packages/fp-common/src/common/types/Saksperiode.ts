@@ -1,6 +1,6 @@
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
 import { SaksperiodeDTO } from './SaksperiodeDTO';
 import { Tidsperiode } from './Tidsperiode';
+import { OppholdÅrsakType } from './OppholdÅrsakType';
 
 export interface Saksperiode extends Omit<SaksperiodeDTO, 'fom' | 'tom' | 'oppholdÅrsak'> {
     guid: string;

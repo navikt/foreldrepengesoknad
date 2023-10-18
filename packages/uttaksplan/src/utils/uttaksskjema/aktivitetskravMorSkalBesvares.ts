@@ -1,8 +1,12 @@
-import { Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
-import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
+import {
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    StønadskontoUttak,
+    TidsperiodeDate,
+    getSisteUttaksdag6UkerEtterFødsel,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { Periodetype } from 'types/Periode';
-import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import kontoSkalBesvares from './kontoSkalBesvarer';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 

@@ -1,25 +1,35 @@
 import {
     ActionLink,
+    andreAugust2022ReglerGjelder,
     AnnenForelder,
     Arbeidsforhold,
     bemUtils,
     Block,
     Forelder,
+    formaterDatoKompakt,
+    getFørsteUttaksdag2UkerFørFødsel,
+    getIsValidStateForPerioder,
+    getSisteUttaksdag6UkerEtterFødsel,
+    getSlettPeriodeTekst,
+    getVelgbareStønadskontotyper,
     guid,
     intlUtils,
     isAnnenForelderOppgitt,
+    ISOStringToDate,
+    isValidTidsperiode,
     NavnPåForeldre,
+    Periode,
+    Periodetype,
     Situasjon,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     StønadskontoType,
     TidsperiodeDate,
     TilgjengeligStønadskonto,
+    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from 'components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-import { Periode, Periodetype, Utsettelsesperiode } from 'types/Periode';
-import { getVelgbareStønadskontotyper } from 'utils/stønadskontoerUtils';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
@@ -42,15 +52,8 @@ import {
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
 import { FormattedMessage, IntlShape } from 'react-intl';
-import { getIsValidStateForPerioder, getSlettPeriodeTekst } from 'utils/periodeUtils';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { andreAugust2022ReglerGjelder, formaterDatoKompakt, ISOStringToDate } from 'app/utils/dateUtils';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import {
-    getFørsteUttaksdag2UkerFørFødsel,
-    getSisteUttaksdag6UkerEtterFødsel,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-} from 'app/utils/wlbUtils';
 
 import './periodeUttakForm.less';
 import { Button, GuidePanel } from '@navikt/ds-react';

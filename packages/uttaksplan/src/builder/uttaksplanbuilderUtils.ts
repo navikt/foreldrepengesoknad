@@ -1,31 +1,28 @@
-import { TidsperiodeDate, guid } from '@navikt/fp-common';
-import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { Periodene, sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
 import {
-    // ANTALL_UTTAKSDAGER_SEKS_UKER,
-    isValidTidsperiode,
+    Periode,
+    PeriodeHull,
+    PeriodeHullÅrsak,
+    PeriodeUtenUttak,
+    Perioden,
+    Periodene,
+    Periodetype,
+    TidsperiodeDate,
     Tidsperioden,
-} from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import {
     andreAugust2022ReglerGjelder,
     førsteOktober2021ReglerGjelder,
-    tidperiodeOverlapperDato,
-} from 'app/utils/dateUtils';
-import dayjs from 'dayjs';
-import {
+    guid,
     isHull,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
     isUttaksperiode,
-    Periode,
-    PeriodeHull,
-    Periodetype,
-    PeriodeUtenUttak,
-} from 'types/Periode';
-import { PeriodeHullÅrsak } from 'types/PeriodeHullÅrsak';
+    isValidTidsperiode,
+    sorterPerioder,
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-common';
+import dayjs from 'dayjs';
 import { splittPeriodePåDato } from './leggTilPeriode';
+import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 
 export const slåSammenLikePerioder = (
     perioder: Periode[],

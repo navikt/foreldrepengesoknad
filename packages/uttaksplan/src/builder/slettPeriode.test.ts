@@ -1,7 +1,6 @@
-import { Periode, Periodetype } from 'types/Periode';
 import { slettPeriode } from './slettPeriode';
 import MockDate from 'mockdate';
-import { Forelder, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
 
 const perioder: Periode[] = [
     {

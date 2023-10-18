@@ -12,12 +12,6 @@
         "rootDir": "src",
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": [
-        "src/**/*",
-        "src/@types",
-        "src/storybook",
-        "../fp-common/src/common/types/StønadskontoType.ts",
-        "../fp-common/src/common/types/NavnPåForeldre.ts"
-    ],
+    "include": ["src/**/*", "src/@types", "src/storybook"],
     "exclude": ["node_modules"]
 }

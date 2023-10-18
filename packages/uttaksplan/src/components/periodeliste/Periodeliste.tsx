@@ -7,23 +7,25 @@ import {
     bemUtils,
     Block,
     formatDate,
+    isInfoPeriode,
+    isValidTidsperiode,
     NavnPåForeldre,
+    Periode,
     Situasjon,
     TilgjengeligStønadskonto,
+    Utsettelsesperiode,
 } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
-import { isInfoPeriode, Periode, Utsettelsesperiode } from 'types/Periode';
 
 import { VeiledermeldingerPerPeriode } from 'validering/veilederInfo/types';
-import { getAnnenForelderSamtidigUttakPeriode } from 'utils/periodeUtils';
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import { FormattedMessage, IntlShape } from 'react-intl';
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { Alert } from '@navikt/ds-react';
 import { PeriodeValidState } from 'Uttaksplan';
 
 import './periodeliste.less';
+import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
 
 interface Props {
     uttaksplan: Periode[];

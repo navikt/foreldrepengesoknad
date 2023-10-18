@@ -1,20 +1,28 @@
-import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType, bemUtils, intlUtils } from '@navikt/fp-common';
-import { getUkerOgDagerFromDager, måned, måned3bokstaver, år } from 'app/utils/dateUtils';
-import classNames from 'classnames';
-import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import {
+    Forelder,
+    NavnPåForeldre,
+    Periode,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    Tidsperioden,
+    bemUtils,
+    getUkerOgDagerFromDager,
+    getValidTidsperiode,
+    intlUtils,
     isForeldrepengerFørFødselUttaksperiode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
-    Periode,
-    Periodetype,
-} from 'types/Periode';
+    måned,
+    måned3bokstaver,
+    år,
+} from '@navikt/fp-common';
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
-import { getForelderNavn, getPeriodeTittel } from 'utils/periodeUtils';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { getValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
 import { getIkonForVeilederMelding } from 'validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from 'validering/veilederInfo/types';
@@ -22,6 +30,7 @@ import UttaksplanAdvarselIkon from 'assets/UttaksplanAdvarselIkon';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './periodelisteItemHeader.less';
+import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
 
 interface Props {
     egenPeriode: boolean;
