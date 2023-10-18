@@ -83,7 +83,7 @@ export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato:
     }
 
     if (!isISODateString(dato)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        return intlUtils(intl, 'valideringsfeil.yrkesaktiv.gyldigDato');
     }
 
     if (isDateInTheFuture(dato)) {
