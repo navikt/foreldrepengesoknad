@@ -20,6 +20,7 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import { useMemo, useState } from 'react';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import FlereArbeidsforholdGuidePanel from './components/guidepanel/FlereArbeidsforholdGuidePanel';
 
 const VelgArbeid: React.FunctionComponent = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -46,6 +47,7 @@ const VelgArbeid: React.FunctionComponent = () => {
             initialValues={getInitialVelgArbeidFormValues(tilrettelegging)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
+                const visInfo = formValues.arbeidMedTilrettelegging && formValues.arbeidMedTilrettelegging.length > 1;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -70,6 +72,7 @@ const VelgArbeid: React.FunctionComponent = () => {
                                     validate={(value) => validateVelgArbeidIsAnswered(value, intl)}
                                 />
                             </Block>
+                            {visInfo && <FlereArbeidsforholdGuidePanel />}
 
                             <Block padBottom="l">
                                 <StepButtonWrapper>
