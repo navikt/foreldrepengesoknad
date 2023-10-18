@@ -6,6 +6,4 @@ export default {
     FAMILIE: 'https://familie.dev.nav.no',
     FEATURE_VIS_FEILSIDE: 'off',
     FEATURE_VIS_ALERTSTRIPE: 'off',
-    FEATURE_VIS_PERIODER_SOM_SENDES_INN: 'on',
-    FEATURE_WLB_GJELDER_FRA_FORSTE_JAN: 'on',
 };

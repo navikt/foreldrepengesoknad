@@ -11,8 +11,6 @@ scriptTag.innerHTML = JSON.stringify({
     FAMILIE: 'test',
     FEATURE_VIS_FEILSIDE: 'off',
     FEATURE_VIS_ALERTSTRIPE: 'on',
-    FEATURE_VIS_PERIODER_SOM_SENDES_INN: 'on',
-    FEATURE_WLB_GJELDER_FRA_FORSTE_JAN: 'off',
 });
 document.head.appendChild(scriptTag);
 
