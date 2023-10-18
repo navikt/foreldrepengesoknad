@@ -6,6 +6,8 @@ on:
       - 'master'
     paths:
       - 'server_for_redirect/**'
+      - '.github/workflows/build-redirect.yml'
+      - '.deploy/planlegger_redirect.yaml'
 env:
   APP_NAME: fp-planlegger-redirect
 
