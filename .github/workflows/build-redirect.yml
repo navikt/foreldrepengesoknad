@@ -51,7 +51,7 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ steps.login.outputs.registry }}/${{ github.repository }}/$APP_NAME
+            ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.APP_NAME}}
           tags: |
             type=raw,value=${{ steps.generate-build-version.outputs.build-version }}
           flavor: |
@@ -89,5 +89,5 @@ jobs:
           PRINT_PAYLOAD: true
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          IMAGE: ${{ steps.login.outputs.registry }}/${{ github.repository }}/$APP_NAME:${{ steps.build.outputs.build-version }}
+          IMAGE: ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.APP_NAME}}:${{ steps.build.outputs.build-version }}
           RESOURCE: .deploy/planlegger_redirect.yaml
