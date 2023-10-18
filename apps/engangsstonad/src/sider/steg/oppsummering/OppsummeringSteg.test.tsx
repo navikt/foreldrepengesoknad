@@ -53,8 +53,12 @@ describe('<OppsummeringSteg>', () => {
                 erBarnetFødt: true,
                 fødselsdatoer: [{ dato: '2023-01-01' }],
             },
-            { harKunBoddINorge: true },
+            {
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: false,
+            },
             { vedlegg: [] },
+            undefined,
             undefined,
         );
     });
@@ -92,7 +96,10 @@ describe('<OppsummeringSteg>', () => {
                 antallBarn: 1,
                 fødselsdatoer: [{ dato: '2023-01-01' }],
             },
-            { harKunBoddINorge: true },
+            {
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: false,
+            },
             {
                 vedlegg: [
                     {
@@ -107,6 +114,7 @@ describe('<OppsummeringSteg>', () => {
                     },
                 ],
             },
+            undefined,
             undefined,
         );
     });
@@ -144,7 +152,10 @@ describe('<OppsummeringSteg>', () => {
                 erBarnetFødt: false,
                 termindato: '2023-01-02',
             },
-            { harKunBoddINorge: true },
+            {
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: false,
+            },
             {
                 terminbekreftelsedato: '2023-01-01',
                 vedlegg: [
@@ -161,6 +172,7 @@ describe('<OppsummeringSteg>', () => {
                 ],
             },
             undefined,
+            undefined,
         );
     });
 
@@ -175,11 +187,11 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Utenlandsperioder:')).toBeInTheDocument();
         expect(screen.getByText('Island')).toBeInTheDocument();
-        expect(screen.getByText('27.03.2023 - 05.04.2023')).toBeInTheDocument();
+        expect(screen.getByText('01.01.2021 - 01.01.2022')).toBeInTheDocument();
         expect(screen.getByText('Sverige')).toBeInTheDocument();
-        expect(screen.getByText('22.12.2023 - 21.01.2024')).toBeInTheDocument();
+        expect(screen.getByText('01.01.2025 - 01.01.2026')).toBeInTheDocument();
         expect(screen.getByText('Danmark')).toBeInTheDocument();
-        expect(screen.getByText('27.05.2023 - 05.07.2023')).toBeInTheDocument();
+        expect(screen.getByText('01.01.2027 - 01.01.2028')).toBeInTheDocument();
 
         expect(screen.getByText('og var på fødselstidspunktet')).toBeInTheDocument();
         expect(screen.getByText('i Norge')).toBeInTheDocument();
@@ -200,32 +212,33 @@ describe('<OppsummeringSteg>', () => {
                 erBarnetFødt: true,
                 fødselsdatoer: [{ dato: '2023-01-01' }],
             },
-            { harKunBoddINorge: false },
+            {
+                harBoddUtenforNorgeSiste12Mnd: true,
+                skalBoUtenforNorgeNeste12Mnd: true,
+            },
             {
                 vedlegg: [],
             },
             {
-                perioder: [
+                utenlandsoppholdSiste12Mnd: [
                     {
-                        fom: '2023-12-22',
-                        harFlyttetUtForMerEnn12MånderSiden: false,
-                        landkode: 'SE',
-                        skalBoIUtlandetMerEnEttÅrFremover: false,
-                        tom: '2024-01-21',
-                    },
-                    {
-                        fom: '2023-05-27',
-                        harFlyttetUtForMerEnn12MånderSiden: false,
-                        landkode: 'DK',
-                        skalBoIUtlandetMerEnEttÅrFremover: false,
-                        tom: '2023-07-05',
-                    },
-                    {
-                        fom: '2023-03-27',
-                        harFlyttetUtForMerEnn12MånderSiden: false,
+                        fom: '2021-01-01',
                         landkode: 'IS',
-                        skalBoIUtlandetMerEnEttÅrFremover: false,
-                        tom: '2023-04-05',
+                        tom: '2022-01-01',
+                    },
+                ],
+            },
+            {
+                utenlandsoppholdNeste12Mnd: [
+                    {
+                        fom: '2025-01-01',
+                        landkode: 'SE',
+                        tom: '2026-01-01',
+                    },
+                    {
+                        fom: '2027-01-01',
+                        landkode: 'DK',
+                        tom: '2028-01-01',
                     },
                 ],
             },

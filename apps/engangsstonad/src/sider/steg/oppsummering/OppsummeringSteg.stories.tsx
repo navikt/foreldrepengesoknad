@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-types';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdPerioder } from 'types/Utenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { EsDataType } from 'appData/EsDataContext';
@@ -34,7 +34,8 @@ const barnet = {
 } as BarnetErFødt;
 
 const utenlandsoppholdDefault = {
-    harKunBoddINorge: true,
+    harBoddUtenforNorgeSiste12Mnd: false,
+    skalBoUtenforNorgeNeste12Mnd: false,
 };
 
 const vedleggDefault = {
@@ -55,17 +56,20 @@ const Template: StoryFn<{
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        utenlandsoppholdPerioder?: UtenlandsoppholdPerioder,
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => void;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
-    utenlandsoppholdPerioder?: UtenlandsoppholdPerioder;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
 }> = ({
     sendSøknad,
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
-    utenlandsoppholdPerioder,
+    senereUtenlandsopphold,
+    tidligereUtenlandsopphold,
     dokumentasjon = vedleggDefault,
 }) => {
     initAmplitude();
@@ -75,7 +79,8 @@ const Template: StoryFn<{
                 initialState={{
                     [EsDataType.OM_BARNET]: omBarnet,
                     [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_PERIODER]: utenlandsoppholdPerioder,
+                    [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
                     [EsDataType.DOKUMENTASJON]: dokumentasjon,
                 }}
             >
@@ -169,29 +174,28 @@ export const HarTidligereOgFremtidigeUtenlandsopphold = Template.bind({});
 HarTidligereOgFremtidigeUtenlandsopphold.args = {
     sendSøknad: action('button-click'),
     utenlandsopphold: {
-        harKunBoddINorge: false,
+        harBoddUtenforNorgeSiste12Mnd: true,
+        skalBoUtenforNorgeNeste12Mnd: true,
     },
-    utenlandsoppholdPerioder: {
-        perioder: [
+    senereUtenlandsopphold: {
+        utenlandsoppholdNeste12Mnd: [
             {
-                harFlyttetUtForMerEnn12MånderSiden: false,
-                skalBoIUtlandetMerEnEttÅrFremover: false,
-                fom: '2023-12-22',
-                tom: '2024-01-21',
+                fom: '2025-01-01',
+                tom: '2026-01-01',
                 landkode: 'SE',
             },
             {
-                harFlyttetUtForMerEnn12MånderSiden: false,
-                skalBoIUtlandetMerEnEttÅrFremover: false,
-                fom: '2023-05-27',
-                tom: '2023-07-05',
+                fom: '2027-01-01',
+                tom: '2028-01-01',
                 landkode: 'DK',
             },
+        ],
+    },
+    tidligereUtenlandsopphold: {
+        utenlandsoppholdSiste12Mnd: [
             {
-                harFlyttetUtForMerEnn12MånderSiden: false,
-                skalBoIUtlandetMerEnEttÅrFremover: false,
-                fom: '2023-03-27',
-                tom: '2023-04-05',
+                fom: '2021-01-01',
+                tom: '2022-01-01',
                 landkode: 'IS',
             },
         ],

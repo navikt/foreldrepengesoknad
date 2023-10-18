@@ -14,7 +14,7 @@ const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
 const dagerForTerminbekreftelse = ukerAaTrekkeFraTerminDato * 7 + ekstraDagerAaTrekkeFraTerminDato;
 
-const isUtstedtDatoIUkte22 = (termindato: string, intl: IntlShape) => (terminBekreftelseDato: string) => {
+const isUtstedtDatoIUke22 = (termindato: string, intl: IntlShape) => (terminBekreftelseDato: string) => {
     const utstedtDato = dayjs(terminBekreftelseDato).startOf('day');
     const terminDato = dayjs(termindato).startOf('day');
     const uke22 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
@@ -51,7 +51,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     isRequired('TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi'),
                     isValidDate('TerminDokPanel.Validering.TerminBekreftelsedato'),
                     isBeforeTodayOrToday('TerminDokPanel.Validering.TerminBekreftelsedato.MåVæreIdagEllerTidligere'),
-                    isUtstedtDatoIUkte22(omBarnet.termindato, intl),
+                    isUtstedtDatoIUke22(omBarnet.termindato, intl),
                 ]}
             />
             <VStack gap="4">

@@ -11,7 +11,7 @@ import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdPerioder } from 'types/Utenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
 import { StepButtons } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
@@ -26,7 +26,8 @@ export interface Props {
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        utenlandsoppholdPerioder?: UtenlandsoppholdPerioder,
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => void;
 }
 
@@ -39,7 +40,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
-    const utenlandsoppholdPerioder = useEsStateData(EsDataType.UTENLANDSOPPHOLD_PERIODER);
+    const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -48,7 +50,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         if (!isChecked) {
             setIsError(true);
         } else {
-            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, utenlandsoppholdPerioder);
+            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
             navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
@@ -73,11 +75,12 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' })}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.Utenlandsopphold' })}>
                         <UtenlandsoppholdOppsummering
                             omBarnet={omBarnet}
                             utenlandsopphold={utenlandsopphold}
-                            utenlandsoppholdPerioder={utenlandsoppholdPerioder}
+                            tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                            senereUtenlandsopphold={senereUtenlandsopphold}
                         />
                     </Oppsummeringspunkt>
                 </Accordion>
