@@ -106,7 +106,7 @@ const Inntektsinformasjon = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.hattArbeidIUtlandet.påkrevd'),
+                                            intlUtils(intl, 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd'),
                                         )
                                     }
                                 />
@@ -119,7 +119,7 @@ const Inntektsinformasjon = () => {
                                     validate={(value) =>
                                         validateYesOrNoIsAnswered(
                                             value,
-                                            intlUtils(intl, 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd'),
+                                            intlUtils(intl, 'valideringsfeil.hattArbeidIUtlandet.påkrevd'),
                                         )
                                     }
                                 />
