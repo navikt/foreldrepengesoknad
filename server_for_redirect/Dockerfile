@@ -1,6 +1,6 @@
 FROM gcr.io/distroless/nodejs20-debian11:nonroot
 
-LABEL org.opencontainers.image.source=https://github.com/navikt/fp-planlegger-redirect-produktside
+LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad/fp-planlegger-redirect
 ENV TZ="Europe/Oslo"
 ENV NODE_ENV production
 
