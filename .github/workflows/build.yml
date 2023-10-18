@@ -10,6 +10,9 @@ on:
             - '.editorconfig'
             - 'LICENCE'
             - 'CODEOWNERS'
+            - 'server_for_redirect/**'
+            - '.github/workflows/build-redirect.yml'
+            - '.deploy/planlegger_redirect.yaml'
 
 jobs:
     test:
