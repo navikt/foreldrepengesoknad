@@ -5,8 +5,8 @@ import { PageKeys } from 'app/types/PageKeys';
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
 
 import './ikkeKvinne.css';
-import { lenker } from 'app/util/lenker';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
+import links from 'app/links/links';
 
 const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');
@@ -38,7 +38,7 @@ const IkkeKvinne: React.FunctionComponent = () => {
 
                 <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
                     <Block padBottom="xxxl">
-                        <Button as="a" icon={<ArrowRightIcon />} iconPosition="right" href={lenker.nav}>
+                        <Button as="a" icon={<ArrowRightIcon />} iconPosition="right" href={links.nav}>
                             <FormattedMessage id="ikkeKvinne.knappetekst" />
                         </Button>
                     </Block>

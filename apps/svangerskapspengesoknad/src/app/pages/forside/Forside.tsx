@@ -119,7 +119,7 @@ const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => 
                                                     <a
                                                         className="lenke"
                                                         rel="noopener noreferrer"
-                                                        href={links.tilretteleggingsskjema}
+                                                        href={links.slikSøkerDu}
                                                         target="_blank"
                                                     >
                                                         {msg}

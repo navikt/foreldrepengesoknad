@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { BodyLong, ExpansionCard, Link } from '@navikt/ds-react';
 import Block from '@navikt/fp-common/src/common/components/block/Block';
-import { lenker } from 'app/util/lenker';
+import links from 'app/links/links';
 
 const InfoScanneDokument = () => {
     return (
@@ -34,7 +34,7 @@ const InfoScanneDokument = () => {
                 </Block>
                 <Block>
                     <BodyLong>
-                        <Link href={lenker.scanneDokument} target="_blank">
+                        <Link href={links.scanneDokument} target="_blank">
                             <FormattedMessage id="scanneDokument.link" />
                         </Link>
                     </BodyLong>

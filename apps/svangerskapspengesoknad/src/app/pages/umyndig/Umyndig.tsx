@@ -5,8 +5,8 @@ import { PageKeys } from 'app/types/PageKeys';
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
 
 import './umyndig.css';
-import { lenker } from 'app/util/lenker';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
+import links from 'app/links/links';
 
 const Umyndig: React.FunctionComponent = () => {
     const bem = bemUtils('umyndig');
@@ -38,12 +38,7 @@ const Umyndig: React.FunctionComponent = () => {
 
                 <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
                     <Block padBottom="xxxl">
-                        <Button
-                            as="a"
-                            icon={<ArrowRightIcon />}
-                            iconPosition="right"
-                            href={lenker.papirsøknadForeldrepenger}
-                        >
+                        <Button as="a" icon={<ArrowRightIcon />} iconPosition="right" href={links.papirsøknad}>
                             <FormattedMessage id="umyndig.knapp.papirsøknad" />
                         </Button>
                     </Block>
