@@ -1,0 +1,93 @@
+name: Bygg og deploy planlegger redirect
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'server_for_redirect/**'
+      - '.github/workflows/build-redirect.yml'
+      - '.deploy/planlegger_redirect.yaml'
+env:
+  APP_NAME: fp-planlegger-redirect
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      build-version: ${{ steps.generate-build-version.outputs.build-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # ratchet:actions/checkout@v4
+
+      - name: Generate build version
+        id: generate-build-version
+        run: |
+          echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      - name: Print build version
+        run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # ratchet:docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # ratchet:docker/setup-buildx-action@v2
+
+      - name: NAIS login
+        uses: nais/login@104bca34b70d1d00fe837bcd0689633978eca744 # ratchet:nais/login@v0
+        id: login
+        with:
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          team: teamforeldrepenger
+
+      - name: Docker meta
+        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # ratchet:docker/metadata-action@v4
+        id: meta
+        with:
+          images: |
+            ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.APP_NAME}}
+          tags: |
+            type=raw,value=${{ steps.generate-build-version.outputs.build-version }}
+          flavor: |
+            latest=true
+
+      - name: Build and push
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # ratchet:docker/build-push-action@v4
+        with:
+          context: server_for_redirect
+          platforms: linux/amd64
+          pull: true
+          push: ${{ github.ref_name == 'master' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  promote-prod:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # ratchet:actions/checkout@v4
+      - uses: nais/login@104bca34b70d1d00fe837bcd0689633978eca744 # ratchet:nais/login@v0
+        id: login
+        with:
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          team: teamforeldrepenger
+      - name: Deploy til prod-gcp fra GAR
+        uses: nais/deploy/actions/deploy@0bca2c7e607d30fd757a2a23fb7d07b3ff96d540 # ratchet:nais/deploy/actions/deploy@v1
+        env:
+          PRINT_PAYLOAD: true
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          IMAGE: ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.APP_NAME}}:${{ needs.build.outputs.build-version }}
+          RESOURCE: .deploy/planlegger_redirect.yaml

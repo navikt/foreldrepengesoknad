@@ -1,0 +1,24 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: fp-planlegger-redirect
+  namespace: teamforeldrepenger
+  labels:
+    team: teamforeldrepenger
+spec:
+  image: {{image}}
+  liveness:
+      path: /health/isAlive
+      initialDelay: 10
+  readiness:
+      path: /health/isReady
+      initialDelay: 10
+  ingresses:
+    - 'https://foreldrepengeplanlegger.nav.no'
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi

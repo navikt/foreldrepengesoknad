@@ -3,8 +3,16 @@ name: "CodeQL"
 on:
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - 'server_for_redirect/**'
+      - '.github/workflows/build-redirect.yml'
+      - '.deploy/planlegger_redirect.yaml'
   pull_request:
     branches: [ "master" ]
+    paths-ignore:
+      - 'server_for_redirect/**'
+      - '.github/workflows/build-redirect.yml'
+      - '.deploy/planlegger_redirect.yaml'
   schedule:
     - cron: '0 0 * * 0,4'
 
