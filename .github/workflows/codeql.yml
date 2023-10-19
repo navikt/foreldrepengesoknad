@@ -13,6 +13,8 @@ on:
       - 'server_for_redirect/**'
       - '.github/workflows/build-redirect.yml'
       - '.deploy/planlegger_redirect.yaml'
+      - 'server/**'
+      - '.github/workflows/build-server.yml'
   schedule:
     - cron: '0 0 * * 0,4'
 
