@@ -16,7 +16,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
     const intl = useIntl();
 
     return (
-        <>
+        <div style={{ marginTop: '1rem' }}>
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
@@ -26,7 +26,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
                     </BodyShort>
                 </ReadMore>
             )}
-        </>
+        </div>
     );
 };
 
