@@ -1,25 +1,25 @@
-name: Bygg og deploy planlegger redirect
+name: Bygg server
 on:
   workflow_dispatch:
   push:
     branches:
       - 'master'
     paths:
-      - 'server_for_redirect/**'
-      - '.github/workflows/build-redirect.yml'
-      - '.deploy/planlegger_redirect.yaml'
+      - 'server'
+      - '.github/workflows/build-server.yml'
+  schedule:
+    - cron: '45 23 28 * *' # "At 11:45 PM, on day 28 of the month"
+
 env:
-  APP_NAME: fp-planlegger-redirect
+  NAME: server
 
 jobs:
-  build:
-    name: Build
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
-      id-token: write
-    outputs:
-      build-version: ${{ steps.generate-build-version.outputs.build-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # ratchet:actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.APP_NAME}}
+            ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.NAME}}
           tags: |
             type=raw,value=${{ steps.generate-build-version.outputs.build-version }}
           flavor: |
@@ -59,34 +59,35 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # ratchet:docker/build-push-action@v4
+        id: build_push
         with:
-          context: server_for_redirect
-          platforms: linux/amd64
+          context: server
+          platforms: linux/amd64,linux/arm64
           pull: true
           push: ${{ github.ref_name == 'master' }}
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  promote-prod:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # ratchet:actions/checkout@v4
-      - uses: nais/login@104bca34b70d1d00fe837bcd0689633978eca744 # ratchet:nais/login@v0
-        id: login
+      - name: Check for errors
+        if: ${{ failure() && steps.build_push.outcome == 'failure' }}
+        shell: bash
+        run: |
+          echo "::error ::Failed during image build. Is your docker_context set to where your build files are?"
+          exit 1
+      - name: Generate SBOM, attest and sign image
+        if: ${{ github.ref_name == 'master' }}
+        id: attest-sign
+        uses: nais/attest-sign@v1.1.0
         with:
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          team: teamforeldrepenger
-      - name: Deploy til prod-gcp fra GAR
-        uses: nais/deploy/actions/deploy@0bca2c7e607d30fd757a2a23fb7d07b3ff96d540 # ratchet:nais/deploy/actions/deploy@v1
-        env:
-          PRINT_PAYLOAD: true
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          IMAGE: ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.APP_NAME}}:${{ needs.build.outputs.build-version }}
-          RESOURCE: .deploy/planlegger_redirect.yaml
+          image_ref: ${{ steps.login.outputs.registry }}/${{ github.repository }}/${{env.NAME}}@${{ steps.build_push.outputs.digest }}
+          sbom: 'auto-generate-for-me-please.json'
+
+      - name: Set outputs
+        shell: bash
+        id: set-outputs
+        run: |
+          echo "NEW_VERSION=${{ steps.meta.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "IMAGE=${{ fromJSON(steps.meta.outputs.json).tags[0] }}" >> $GITHUB_STEP_SUMMARY
+          echo "DIGEST=${{ steps.build_push.outputs.digest }}" >> $GITHUB_STEP_SUMMARY
+          echo "SALSA=${{ steps.attest-sign.outputs.sbom }}" >> $GITHUB_STEP_SUMMARY
