@@ -153,7 +153,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringFom)}>
                                 <EgenNæringFormComponents.DatePicker
                                     name={EgenNæringFormField.egenNæringFom}
-                                    label={intlUtils(intl, 'egenNæring.startetNæring.fom', {
+                                    label={intlUtils(intl, 'egenNæring.næring.fom', {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
                                     placeholder="dd.mm.åååå"
@@ -170,7 +170,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                             >
                                 <EgenNæringFormComponents.YesOrNoQuestion
                                     name={EgenNæringFormField.egenNæringPågående}
-                                    legend={intlUtils(intl, 'egenNæring.startetNæring.pågående', {
+                                    legend={intlUtils(intl, 'egenNæring.næring.pågående', {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
                                     validate={(value) =>
@@ -184,9 +184,10 @@ const EgenNæringStep: React.FunctionComponent = () => {
                             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringTom)}>
                                 <EgenNæringFormComponents.DatePicker
                                     name={EgenNæringFormField.egenNæringTom}
-                                    label={intlUtils(intl, 'egenNæring.startetNæring.tom', {
+                                    label={intlUtils(intl, 'egenNæring.næring.tom', {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
+                                    description={intlUtils(intl, 'egenNæring.næring.tom.description')}
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
                                     showYearSelector={true}

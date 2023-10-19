@@ -132,7 +132,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.YesOrNoQuestion
                                                     name={`arbeidIUtlandet.${index}.pågående`}
-                                                    legend={intlUtils(intl, 'egenNæring.startetNæring.pågående')}
+                                                    legend={intlUtils(intl, 'egenNæring.næring.pågående')}
                                                     validate={validateArbeidIUtlandetPågående(intl)}
                                                 />
                                             </Block>
