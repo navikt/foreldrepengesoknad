@@ -43,3 +43,8 @@ spec:
           value: 'https://login.ekstern.dev.nav.no/oauth2/login'
         - name: LOG_VALIDATION
           value: 'false'
+        - name: INNSYN
+          value: 'https://foreldrepenger.intern.dev.nav.no'        
+        - name: INNSYN_SAK
+          value: 'https://foreldrepenger.intern.dev.nav.no/sak/'
+          
