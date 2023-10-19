@@ -97,6 +97,9 @@ export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) 
     if (!hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringInntekt.påkrevd');
     } else {
+        if (value.length > 9) {
+            return intlUtils(intl, 'valideringsfeil.næringsinntekt.forLang');
+        }
         const valueNumber = getNumberFromNumberInputValue(value);
         if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
             return intlUtils(intl, 'valideringsfeil.næringsinntekt.ugyldigFormat');
@@ -156,6 +159,9 @@ export const validateEgenNæringVarigEndringInntekt =
     (value: string): SkjemaelementFeil => {
         if (!hasValue(value)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.påkrevd');
+        }
+        if (value.length > 9) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.forLang');
         }
         const valueNumber = getNumberFromNumberInputValue(value);
         if (valueNumber && valueNumber < 0) {
