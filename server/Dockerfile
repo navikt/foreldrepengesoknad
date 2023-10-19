@@ -15,8 +15,8 @@ ENV NODE_ENV production
 
 WORKDIR /app
 
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY ./src/decorator.cjs ./src
+COPY --from=deps /usr/src/app/node_modules ./node_modules/
+COPY ./src/decorator.cjs ./src/
 COPY ./server.cjs ./
 
 EXPOSE 8080
