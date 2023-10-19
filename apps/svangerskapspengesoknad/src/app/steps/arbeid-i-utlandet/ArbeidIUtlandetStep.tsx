@@ -90,6 +90,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.CountrySelect
                                                     name={`arbeidIUtlandet.${index}.land`}
+                                                    style={{ width: 'var(--app-text-input-width)' }}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.land')}
                                                     useAlpha3Code={false}
                                                     validate={validateArbeidIUtlandetLand(intl)}
@@ -98,6 +99,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.TextField
                                                     name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
+                                                    style={{ width: 'var(--app-text-input-width)' }}
                                                     label={navnPåArbeidsgiverLabel}
                                                     validate={(val) => {
                                                         if (!hasValue(val)) {

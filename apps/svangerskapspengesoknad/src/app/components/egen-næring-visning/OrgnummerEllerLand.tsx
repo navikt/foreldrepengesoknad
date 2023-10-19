@@ -16,6 +16,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
         <>
             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringOrgnr)}>
                 <EgenNæringFormComponents.NumberInput
+                    style={{ width: 'var(--app-text-input-width)' }}
                     name={EgenNæringFormField.egenNæringOrgnr}
                     label={intlUtils(intl, 'egenNæring.orgnr')}
                     validate={validateEgenNæringOrgnr(intl)}
@@ -23,6 +24,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
             </Block>
             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringLand)}>
                 <EgenNæringFormComponents.CountrySelect
+                    style={{ width: 'var(--app-text-input-width)' }}
                     name={EgenNæringFormField.egenNæringLand}
                     label={intlUtils(intl, 'egenNæring.registrertILand')}
                     useAlpha3Code={false}

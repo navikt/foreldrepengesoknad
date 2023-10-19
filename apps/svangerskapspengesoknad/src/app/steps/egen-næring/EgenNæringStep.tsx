@@ -124,6 +124,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 <EgenNæringFormComponents.TextField
                                     name={EgenNæringFormField.egenNæringNavn}
                                     label={navnPåNæringLabel}
+                                    style={{ width: 'var(--app-text-input-width)' }}
                                     maxLength={100}
                                     validate={(value) =>
                                         !hasValue(value)
@@ -205,6 +206,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 visible={visibility.isVisible(EgenNæringFormField.egenNæringResultat)}
                             >
                                 <EgenNæringFormComponents.TextField
+                                    style={{ width: 'var(--app-text-input-width)' }}
                                     name={EgenNæringFormField.egenNæringResultat}
                                     label={intlUtils(intl, 'egenNæring.næringsinntekt')}
                                     description={intlUtils(intl, 'egenNæring.næringsinntekt.description')}

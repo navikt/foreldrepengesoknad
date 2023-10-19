@@ -98,9 +98,11 @@ export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) 
         return intlUtils(intl, 'valideringsfeil.egenNæringInntekt.påkrevd');
     } else {
         const valueNumber = getNumberFromNumberInputValue(value);
-
         if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
             return intlUtils(intl, 'valideringsfeil.næringsinntekt.ugyldigFormat');
+        }
+        if (valueNumber && valueNumber < 0) {
+            return intlUtils(intl, 'valideringsfeil.næringsinntekt.mindreEnnNull');
         }
     }
 
@@ -154,6 +156,10 @@ export const validateEgenNæringVarigEndringInntekt =
     (value: string): SkjemaelementFeil => {
         if (!hasValue(value)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.påkrevd');
+        }
+        const valueNumber = getNumberFromNumberInputValue(value);
+        if (valueNumber && valueNumber < 0) {
+            return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.mindreEnnNull');
         }
         return validateStringAsNumberInput(value, intl, 'valideringsfeil.varigEndringInntekt.ugyldigFormat');
     };

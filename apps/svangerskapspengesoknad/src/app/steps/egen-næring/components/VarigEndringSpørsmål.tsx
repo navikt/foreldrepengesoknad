@@ -65,6 +65,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ visibility, formValu
                     label={intlUtils(intl, 'egenNæring.egenNæringVarigEndringInntektEtterEndring')}
                     description={intlUtils(intl, 'egenNæring.egenNæringVarigEndringInntektEtterEndring.description')}
                     validate={validateEgenNæringVarigEndringInntekt(intl)}
+                    style={{ width: 'var(--app-text-input-width)' }}
                 />
             </Block>
             <Block

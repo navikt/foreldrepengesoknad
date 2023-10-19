@@ -83,6 +83,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                         <div key={index}>
                                             <Block padBottom="xxl">
                                                 <BoIUtlandetFormComponents.CountrySelect
+                                                    style={{ width: 'var(--app-text-input-width)' }}
                                                     name={`bostedIUtlandet.${index}.land`}
                                                     label={intlUtils(intl, spmId)}
                                                     validate={validateBostedUtlandLand(intl)}
