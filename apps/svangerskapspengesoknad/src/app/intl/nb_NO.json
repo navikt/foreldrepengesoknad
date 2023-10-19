@@ -229,7 +229,7 @@
     "valideringsfeil.bostedUtland.tom.etterDagensDato": "Til og med dato kan ikke være etter dagens dato.",
     "valideringsfeil.bostedUtland.tom.førDagensDato": "Til og med dato kan ikke før dagens dato.",
     "valideringsfeil.bostedUtland.tom.merEnn1ÅrSiden": "Datoen er mer enn 1 år siden. Det er ikke relevant for svangerskapspenger dersom du ikke har bodd i utlandet det siste året.",
-    "valideringsfeil.bostedUtland.fom.merEnn1ÅrFremITid": "Datoen er mer enn 1 år frem i tid. Det er ikke relevant for svangerskapspenger dersom du ikke skal bo i utlandet det neste året.",
+    "valideringsfeil.bostedUtland.fom.merEnn1ÅrFremITid": "Datoen er mer enn 1 år frem i tid. Det er kun relevant for svangerskapspenger dersom du skal bo i utlandet det neste året.",
     "valideringsfeil.bostedUtland.tilOgMedDato.påkrevd": "Du må oppgi en til og med dato.",
     "valideringsfeil.bostedUtland.fraOgMedDato.påkrevd": "Du må oppgi en fra og med dato.",
     "valideringsfeil.bostedUtland.fraOgMedDato.gyldigDato": "Fra og med dato må være en gyldig dato på formatet dd.mm.åååå.",
