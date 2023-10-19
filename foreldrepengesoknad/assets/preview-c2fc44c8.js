@@ -1,0 +1,2 @@
+import{j as e}from"./jsx-runtime-69eee039.js";/* empty css            */import"./index-7c191284.js";const t=document.createElement("script");t.type="text/json";t.id="nav:appSettings";t.innerHTML=JSON.stringify({REST_API_URL:"test",LOGIN_URL:"test",APP_VERSION:"test",FEATURE_VIS_FEILSIDE:"off",FEATURE_VIS_ALERTSTRIPE:"on"});document.head.appendChild(t);const o=[s=>e.jsx("div",{id:"app",style:{padding:"40px"},children:e.jsx(s,{})})];export{o as decorators};
+//# sourceMappingURL=preview-c2fc44c8.js.map

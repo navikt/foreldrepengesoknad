@@ -1,2 +1,0 @@
-import{j as e}from"./index-bfc23c5b.js";import"./index-7c191284.js";const t=document.createElement("script");t.type="text/json";t.id="nav:appSettings";t.innerHTML=JSON.stringify({FORELDREPENGESOKNAD_API_URL:"test",LOGINSERVICE_URL:"test",FP_UTTAK_SERVICE_URL:"uttak-url",KLAGE_URL:"klage-url"});document.head.appendChild(t);const p=[s=>e.jsx("div",{id:"app",style:{padding:"40px"},children:e.jsx(s,{})})];export{p as decorators};
-//# sourceMappingURL=preview-65bb13e9.js.map

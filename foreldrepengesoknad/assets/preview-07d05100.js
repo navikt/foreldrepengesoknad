@@ -1,2 +1,0 @@
-import{j as e}from"./jsx-runtime-69eee039.js";/* empty css            */import"./index-7c191284.js";const t=document.createElement("script");t.type="text/json";t.id="nav:appSettings";t.innerHTML=JSON.stringify({FORELDREPENGESOKNAD_API_URL:"test",FP_UTTAK_SERVICE_URL:"uttak-url",LOGINSERVICE_URL:"test",APP_VERSION:"test",FAMILIE:"test",FEATURE_VIS_FEILSIDE:"off",FEATURE_VIS_ALERTSTRIPE:"on"});document.head.appendChild(t);const p=[E=>e.jsx("div",{id:"app",style:{padding:"40px"},children:e.jsx(E,{})})];export{p as decorators};
-//# sourceMappingURL=preview-07d05100.js.map
