@@ -15,8 +15,9 @@ on:
             - '.editorconfig'
             - 'LICENCE'
             - 'CODEOWNERS'
-            - 'server_for_redirect/**'
             - 'server/**'
+            - '.github/workflows/build-server.yml'
+            - 'server_for_redirect/**'
             - '.github/workflows/build-redirect.yml'
             - '.deploy/planlegger_redirect.yaml'
 
