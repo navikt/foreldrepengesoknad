@@ -1,3 +1,5 @@
+import FeatureToggle from './FeatureToggle';
+
 const Environment = () => {
     const settingsNode = document.getElementById('nav:appSettings') as HTMLScriptElement;
     const appSettings = JSON.parse(settingsNode.text);
@@ -6,6 +8,8 @@ const Environment = () => {
         REST_API_URL: appSettings.REST_API_URL,
         LOGIN_URL: appSettings.LOGIN_URL,
         APP_VERSION: appSettings.APP_VERSION,
+        [FeatureToggle.visFeilside]: appSettings[FeatureToggle.visFeilside],
+        [FeatureToggle.visAlertstripe]: appSettings[FeatureToggle.visAlertstripe],
     };
 };
 

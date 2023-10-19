@@ -20,8 +20,8 @@ vi.mock('./../src/app/Environment.ts', async () => {
             REST_API_URL: 'http://localhost:8888/rest',
             LOGIN_URL: 'http://localhost:8888/local/cookie',
             APP_VERSION: 'dev',
-            FEATURE_VIS_FEILSIDE: 'off',
-            FEATURE_VIS_ALERTSTRIPE: 'on',
+            FEATURE_VIS_FEILSIDE: 'on',
+            FEATURE_VIS_ALERTSTRIPE: 'off',
         },
     };
 });
