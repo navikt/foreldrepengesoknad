@@ -1,5 +1,10 @@
 name: Bygg og deploy
 on:
+    # Only trigger, when the build workflow succeeded
+    workflow_run:
+        workflows: [ "Bygg server" ]
+        types:
+            - completed
     push:
         branches-ignore: # Kan legge til disse store feature branchene her
             - 'uttaksplanbuilder-rework'
@@ -11,6 +16,7 @@ on:
             - 'LICENCE'
             - 'CODEOWNERS'
             - 'server_for_redirect/**'
+            - 'server/**'
             - '.github/workflows/build-redirect.yml'
             - '.deploy/planlegger_redirect.yaml'
 
