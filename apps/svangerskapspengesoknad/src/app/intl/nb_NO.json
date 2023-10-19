@@ -111,7 +111,7 @@
     "egenNæring.navnPåNæring": "Hva heter virksomheten?",
     "egenNæring.næring.fom": "Når startet du virksomheten?",
     "egenNæring.næring.tom": "Når avsluttet du virksomheten?",
-    "egenNæring.næring.tom.description": "Det er ikke relevant for svangerskapspenger dersom du avsluttet virksomheten for mer enn 4 uker siden.",
+    "egenNæring.næring.tom.description": "Hvis det er mer enn 4 uker siden vil ikke arbeidsforholdet virke inn på søknaden om svangerskapspenger.",
     "egenNæring.næring.pågående": "Jobber du der fortsatt?",
     "egenNæring.erNæringenRegistrertINorge": "Er virksomheten registrert i Norge?",
     "egenNæring.registrertILand": "I hvilket land er virksomheten din registrert i?",
