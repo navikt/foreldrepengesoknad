@@ -3,6 +3,8 @@ import { isDateWithinRange } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
+// TODO Flytt desse
+
 const validateDateInRange = (
     intl: IntlShape,
     date: Date | undefined,

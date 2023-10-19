@@ -3,41 +3,52 @@ import dayjs from 'dayjs';
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdPerioder, Periode } from 'types/Utenlandsopphold';
+import {
+    Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
+} from 'types/Utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
 };
 
-const EMPTY_ARRAY = [] as Periode[];
-
 const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     familiehendelsedato: string,
-    utenlandsoppholdPerioder = EMPTY_ARRAY,
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[] = [],
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] = [],
 ) => {
-    return utenlandsoppholdPerioder.some((opphold) =>
-        erDatoITidsperiode(familiehendelsedato, opphold.fom, opphold.tom),
+    return (
+        utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
+            erDatoITidsperiode(familiehendelsedato, tidligereOpphold.fom, tidligereOpphold.tom),
+        ) ||
+        utenlandsoppholdNeste12Mnd.some((senereOpphold) =>
+            erDatoITidsperiode(familiehendelsedato, senereOpphold.fom, senereOpphold.tom),
+        )
     );
 };
 
 interface Props {
     omBarnet: OmBarnet;
     utenlandsopphold: Utenlandsopphold;
-    utenlandsoppholdPerioder?: UtenlandsoppholdPerioder;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
 }
 
 const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     omBarnet,
     utenlandsopphold,
-    utenlandsoppholdPerioder,
+    tidligereUtenlandsopphold,
+    senereUtenlandsopphold,
 }) => {
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
 
     return (
         <VStack gap="4">
-            {utenlandsopphold.harKunBoddINorge ? (
+            {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false ? (
                 <HStack gap="2">
                     <BodyShort>
                         <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
@@ -51,7 +62,28 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                     <Label className="textWithLabel__label">
                         <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
                     </Label>
-                    <LandOppsummering utenlandsoppholdListe={notEmpty(utenlandsoppholdPerioder).perioder} />
+                    <LandOppsummering
+                        utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
+                    />
+                </div>
+            )}
+            {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false ? (
+                <HStack gap="2">
+                    <BodyShort>
+                        <FormattedMessage id="oppsummering.text.neste12mnd" />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="medlemmskap.radiobutton.boNorge" />
+                    </BodyShort>
+                </HStack>
+            ) : (
+                <div>
+                    <Label className="textWithLabel__label">
+                        <FormattedMessage id="oppsummering.text.neste12mnd" />
+                    </Label>
+                    <LandOppsummering
+                        utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
+                    />
                 </div>
             )}
             {harTermin && (
@@ -64,7 +96,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.termindato!,
-                                    utenlandsoppholdPerioder?.perioder,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )
                                     ? 'medlemmskap.radiobutton.vareUtlandet'
                                     : 'medlemmskap.radiobutton.vareNorge'
@@ -83,7 +116,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.fødselsdatoer[0].dato,
-                                    utenlandsoppholdPerioder?.perioder,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )
                                     ? 'oppsummering.utenlandsopphold.iUtlandet'
                                     : 'oppsummering.utenlandsopphold.iNorge'

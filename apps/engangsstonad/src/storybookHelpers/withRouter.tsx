@@ -29,8 +29,12 @@ const withRouter = (Story: any, context: StoryContext) => {
                 <Route path={Path.TERMINBEKREFTELSE} element={getElement(currentPath, Path.TERMINBEKREFTELSE, Story)} />
                 <Route path={Path.UTENLANDSOPPHOLD} element={getElement(currentPath, Path.UTENLANDSOPPHOLD, Story)} />
                 <Route
-                    path={Path.UTENLANDSOPPHOLD_PERIODER}
-                    element={getElement(currentPath, Path.UTENLANDSOPPHOLD_PERIODER, Story)}
+                    path={Path.SENERE_UTENLANDSOPPHOLD}
+                    element={getElement(currentPath, Path.SENERE_UTENLANDSOPPHOLD, Story)}
+                />
+                <Route
+                    path={Path.TIDLIGERE_UTENLANDSOPPHOLD}
+                    element={getElement(currentPath, Path.TIDLIGERE_UTENLANDSOPPHOLD, Story)}
                 />
                 <Route path={Path.OPPSUMMERING} element={getElement(currentPath, Path.OPPSUMMERING, Story)} />
                 <Route path={Path.KVITTERING} element={getElement(currentPath, Path.KVITTERING, Story)} />

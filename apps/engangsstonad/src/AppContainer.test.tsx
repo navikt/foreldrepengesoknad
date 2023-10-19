@@ -31,7 +31,8 @@ describe('<AppContainer>', () => {
 
         expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
         expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
+        await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();

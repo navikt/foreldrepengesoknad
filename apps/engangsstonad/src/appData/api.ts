@@ -1,15 +1,17 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
 import { redirectToLogin } from '@navikt/fp-utils';
-import { isAfterToday, notEmpty } from '@navikt/fp-validation';
+import { notEmpty } from '@navikt/fp-validation';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
-import { Periode, Utenlandsopphold, UtenlandsoppholdPerioder } from 'types/Utenlandsopphold';
+import {
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { isBeforeToday } from '@navikt/fp-validation';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import dayjs from 'dayjs';
 
 // TODO Flytt generell api-logikk til api-pakka
 
@@ -60,7 +62,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
-const mapBostedUtlandTilUtenlandsopphold = (perioder: Periode[] = []) => {
+const mapBostedUtlandTilUtenlandsopphold = (perioder: UtenlandsoppholdPeriode[] = []) => {
     return perioder.map((periode) => ({
         land: periode.landkode,
         tidsperiode: {
@@ -70,51 +72,14 @@ const mapBostedUtlandTilUtenlandsopphold = (perioder: Periode[] = []) => {
     }));
 };
 
-export const mapUtenlandsforhold = (
-    utenlandsopphold: Utenlandsopphold,
-    utenlandsoppholdPerioder?: UtenlandsoppholdPerioder,
-) => {
-    if (utenlandsopphold.harKunBoddINorge) {
-        return {
-            iNorgeSiste12Mnd: true,
-            iNorgeNeste12Mnd: true,
-            tidligereOpphold: [],
-            senereOpphold: [],
-        };
-    }
-
-    const { perioder } = notEmpty(utenlandsoppholdPerioder);
-
-    const iDag = dayjs().format(ISO_DATE_FORMAT);
-
-    const tidligereOpphold = perioder
-        .filter((p) => isBeforeToday(p.fom))
-        .map((p) => ({
-            ...p,
-            tom: isAfterToday(p.tom) ? iDag : p.tom,
-        }));
-    const senereOpphold = perioder
-        .filter((p) => isAfterToday(p.tom))
-        .map((p) => ({
-            ...p,
-            fom: isBeforeToday(p.fom) ? iDag : p.fom,
-        }));
-
-    return {
-        iNorgeSiste12Mnd: tidligereOpphold.length > 0,
-        iNorgeNeste12Mnd: senereOpphold.length > 0,
-        tidligereOpphold: mapBostedUtlandTilUtenlandsopphold(tidligereOpphold),
-        senereOpphold: mapBostedUtlandTilUtenlandsopphold(senereOpphold),
-    };
-};
-
 const sendSøknad =
     (locale: Locale, setKvittering: (kvittering: Kvittering) => void) =>
     async (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        utenlandsoppholdPerioder?: UtenlandsoppholdPerioder,
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => {
         notEmpty(utenlandsopphold);
 
@@ -123,7 +88,14 @@ const sendSøknad =
             barn: mapBarn(omBarnet, dokumentasjon),
             type: 'engangsstønad',
             erEndringssøknad: false,
-            informasjonOmUtenlandsopphold: mapUtenlandsforhold(utenlandsopphold, utenlandsoppholdPerioder),
+            informasjonOmUtenlandsopphold: {
+                iNorgeSiste12Mnd: utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
+                iNorgeNeste12Mnd: utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
+                tidligereOpphold: mapBostedUtlandTilUtenlandsopphold(
+                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                ),
+                senereOpphold: mapBostedUtlandTilUtenlandsopphold(senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd),
+            },
             søker: {
                 språkkode: locale,
             },

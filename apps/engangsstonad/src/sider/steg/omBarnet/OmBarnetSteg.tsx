@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { Kjønn, Step, useDocumentTitle } from '@navikt/fp-common';
+import { Kjønn, Step } from '@navikt/fp-common';
 import { VStack } from '@navikt/ds-react';
 
 import { StepButtonsHookForm, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
@@ -33,8 +33,6 @@ export interface Props {
 
 const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
     const intl = useIntl();
-
-    useDocumentTitle(intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' }));
 
     const stepData = useStepData();
     const navigator = useEsNavigator();

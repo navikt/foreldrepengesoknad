@@ -11,13 +11,14 @@ import Api from 'appData/api';
 import Person from './types/Person';
 import SøknadSendt from './sider/kvittering/SøknadSendt';
 import Umyndig from './sider/umyndig/Umyndig';
-import UtenlandsoppholdPeriodeSteg from './sider/steg/utenlandsoppholdPeriode/UtenlandsoppholdPeriodeSteg';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import { Path } from 'appData/paths';
 import { EsDataContext } from 'appData/EsDataContext';
 import Kvittering from 'types/Kvittering';
 import FeilsideInfo from './sider/feilside/FeilsideInfo';
+import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -76,7 +77,8 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                         <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
                         <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                        <Route path={Path.UTENLANDSOPPHOLD_PERIODER} element={<UtenlandsoppholdPeriodeSteg />} />
+                        <Route path={Path.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
+                        <Route path={Path.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
                         <Route
                             path={Path.OPPSUMMERING}
                             element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}

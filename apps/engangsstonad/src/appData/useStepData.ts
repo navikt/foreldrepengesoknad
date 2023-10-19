@@ -11,8 +11,9 @@ const PATH_TO_LABEL_MAP = {
     [Path.OM_BARNET]: 'OmBarnetSteg.OmBarnet',
     [Path.TERMINBEKREFTELSE]: 'søknad.termin',
     [Path.ADOPSJONSBEKREFTELSE]: 'søknad.adopsjon',
-    [Path.UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold',
-    [Path.UTENLANDSOPPHOLD_PERIODER]: 'søknad.utenlandsopphold.periode',
+    [Path.UTENLANDSOPPHOLD]: 'UtenlandsoppholdSteg.Utenlandsopphold',
+    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: 'TidligereUtenlandsoppholdSteg.Tidligere',
+    [Path.SENERE_UTENLANDSOPPHOLD]: 'SenereUtenlandsoppholdSteg.Fremtidig',
     [Path.OPPSUMMERING]: 'søknad.oppsummering',
 } as Record<string, string>;
 
@@ -35,10 +36,21 @@ const showUtenlandsoppholdStep = (
     currentPath: Path,
     getData: <TYPE extends EsDataType>(key: TYPE) => EsDataMap[TYPE],
 ): boolean => {
-    if (path === Path.UTENLANDSOPPHOLD_PERIODER) {
+    if (path === Path.TIDLIGERE_UTENLANDSOPPHOLD) {
         const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
-        const boddErSatt = !utenlandsopphold?.harKunBoddINorge;
-        return isVisible(boddErSatt, EsDataType.UTENLANDSOPPHOLD_PERIODER, Path.UTENLANDSOPPHOLD, currentPath, getData);
+        const boddErSatt = !!utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd;
+        return isVisible(
+            boddErSatt,
+            EsDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            Path.UTENLANDSOPPHOLD,
+            currentPath,
+            getData,
+        );
+    }
+    if (path === Path.SENERE_UTENLANDSOPPHOLD) {
+        const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
+        const skalBoErSatt = !!utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd;
+        return isVisible(skalBoErSatt, EsDataType.UTENLANDSOPPHOLD_SENERE, Path.UTENLANDSOPPHOLD, currentPath, getData);
     }
     return false;
 };
