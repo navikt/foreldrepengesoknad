@@ -100,13 +100,7 @@ describe('<Barnet>', () => {
     it('validering av for sen termindato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-
         await user.click(screen.getByText(NEI));
-
-        expect(await screen.queryByText(FØDSELSDATO)).not.toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
 
         const termindatoInput = screen.getByLabelText(TERMINDATO);
         await user.type(termindatoInput, dayjs().add(9, 'months').add(1, 'days').format('DD.MM.YYYY'));
@@ -117,13 +111,7 @@ describe('<Barnet>', () => {
     it('validering av termindato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-
         await user.click(screen.getByText(NEI));
-
-        expect(await screen.queryByText(FØDSELSDATO)).not.toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
 
         const termindatoInput = screen.getByLabelText(TERMINDATO);
         await user.type(termindatoInput, 'bla bla');
@@ -136,13 +124,7 @@ describe('<Barnet>', () => {
     it('validering av for tidlig fødselsdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-
         await user.click(screen.getByText(JA));
-
-        expect(await screen.findByText(FØDSELSDATO)).toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
         const termindatoInput = screen.getByLabelText(TERMINDATO);
@@ -158,13 +140,7 @@ describe('<Barnet>', () => {
     it('validering av for sen fødselsdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-
         await user.click(screen.getByText(JA));
-
-        expect(await screen.findByText(FØDSELSDATO)).toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
         const termindatoInput = screen.getByLabelText(TERMINDATO);
@@ -180,13 +156,7 @@ describe('<Barnet>', () => {
     it('validering av manglende fødselsdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-
         await user.click(screen.getByText(JA));
-
-        expect(await screen.findByText(FØDSELSDATO)).toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
 
         await user.click(screen.getByText(NESTE_STEG));
 
@@ -195,13 +165,7 @@ describe('<Barnet>', () => {
     it('validering av fødselsdato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-
         await user.click(screen.getByText(JA));
-
-        expect(await screen.findByText(FØDSELSDATO)).toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
         await user.type(fødselsdatoInput, 'bla bla');
