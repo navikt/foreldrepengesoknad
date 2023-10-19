@@ -207,7 +207,7 @@
     "valideringsfeil.egenNæringOrgnr.inneholderMellomrom": "Organisasjonsnummeret kan ikke inneholde mellomrom.",
     "valideringsfeil.egenNæringInntekt.påkrevd": "Du må oppgi næringsresultat de siste 12 månedene.",
     "valideringsfeil.arbeidIUtlandetNavn.påkrevd": "Du må oppgi navn på arbeidsgiver i utlandet.",
-    "valideringsfeil.arbeidIUtlandetLand.påkrevd": "Du må oppgi land på arbeidsgiver i utlandet.",
+    "valideringsfeil.arbeidIUtlandetLand.påkrevd": "Du må oppgi land du har jobbet i.",
     "valideringsfeil.arbeidIUtlandetFom.påkrevd": "Du må oppgi startdatoen på arbeidet i utlandet.",
     "valideringsfeil.arbeidIUtlandetTom.påkrevd": "Du må oppgi sluttdatoen på arbeidet i utlandet.",
     "valideringsfeil.arbeidIUtlandetPågående.påkrevd": "Du må svare på om du fortsatt jobber i utlandet.",
