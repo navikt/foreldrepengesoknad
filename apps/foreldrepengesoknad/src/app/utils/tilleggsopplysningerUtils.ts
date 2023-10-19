@@ -30,7 +30,7 @@ export const beskrivTilleggsopplysning = (tilleggsopplysning: Tilleggsopplysning
 };
 
 export const cleanupInvisibleCharsFromTilleggsopplysninger = (
-    tilleggsopplysninger: Tilleggsopplysninger
+    tilleggsopplysninger: Tilleggsopplysninger,
 ): Tilleggsopplysninger => {
     return tilleggsopplysninger.begrunnelseForSenEndring
         ? {

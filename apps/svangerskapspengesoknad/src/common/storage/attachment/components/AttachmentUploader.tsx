@@ -42,7 +42,7 @@ export default class AttachmentsUploader extends Component<AttachmentsUploaderPr
                     file.uploaded = false;
                     file.error = error;
                     onFileUploadFinish(file);
-                })
+                }),
         );
     }
 

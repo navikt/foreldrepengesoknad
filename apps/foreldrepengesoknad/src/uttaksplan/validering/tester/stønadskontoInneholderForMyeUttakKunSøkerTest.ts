@@ -37,10 +37,10 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
                             uttak.konto,
                             navnPåForeldre,
                             søkerErFarEllerMedmor,
-                            søkerErAleneOmOmsorg
+                            søkerErAleneOmOmsorg,
                         ),
                 },
-            })
+            }),
         ),
     };
 };

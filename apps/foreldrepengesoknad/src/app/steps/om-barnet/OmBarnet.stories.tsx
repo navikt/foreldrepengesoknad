@@ -36,7 +36,7 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
             { data: {} },
             {
                 location: '',
-            }
+            },
         );
         apiMock.onPost('/storage').reply(200, undefined);
     };

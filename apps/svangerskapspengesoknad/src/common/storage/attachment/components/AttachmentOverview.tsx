@@ -47,14 +47,14 @@ class AttachmentOverview extends Component<Props, State> {
                     <FormattedMessage
                         id={multipleErrors ? 'vedlegg.forStort.flereFeil' : 'vedlegg.forStort'}
                         values={{ filename: a.filename }}
-                    />
+                    />,
                 );
             } else {
                 errorMessages.push(
                     <FormattedMessage
                         id={multipleErrors ? 'vedlegg.feilmelding.flereFeil' : 'vedlegg.feilmelding'}
                         values={{ filename: a.filename }}
-                    />
+                    />,
                 );
             }
         });
@@ -97,7 +97,7 @@ class AttachmentOverview extends Component<Props, State> {
                         <Block margin="xs" visible={showErrorMessage} animated={false}>
                             <AlertstripeWithCloseButton
                                 errorMessages={this.createErrorMessagesForFailedAttachments(
-                                    this.props.attachments.filter(isAttachmentWithError)
+                                    this.props.attachments.filter(isAttachmentWithError),
                                 )}
                                 onClose={this.deleteFailedAttachments}
                             />
@@ -114,7 +114,9 @@ class AttachmentOverview extends Component<Props, State> {
                                             id="vedlegg.liste.tittel"
                                             values={{
                                                 størrelse: bytesString(
-                                                    getTotalFileSize(attachmentsToRender.map((a: Attachment) => a.file))
+                                                    getTotalFileSize(
+                                                        attachmentsToRender.map((a: Attachment) => a.file),
+                                                    ),
                                                 ),
                                             }}
                                         />

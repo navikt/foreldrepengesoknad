@@ -27,7 +27,7 @@ const createMissingAttachment = (
     index: number,
     skjemanummer: Skjemanummer,
     type: AttachmentType,
-    periodeId?: string
+    periodeId?: string,
 ): MissingAttachment => {
     return {
         index,
@@ -45,7 +45,7 @@ const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType):
 export const shouldPeriodeHaveAttachment = (
     periode: Periode,
     søkerErFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ): boolean => {
     switch (periode.type) {
         case Periodetype.Overføring:
@@ -53,7 +53,7 @@ export const shouldPeriodeHaveAttachment = (
         case Periodetype.Utsettelse:
             return dokumentasjonBehøvesForUtsettelsesperiode(
                 periode,
-                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder)
+                aktivitetskravMorUtil.skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder),
             );
         case Periodetype.Uttak:
             return dokumentasjonBehøvesForUttaksperiode(periode);
@@ -66,7 +66,7 @@ export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søk
     const shouldHave = shouldPeriodeHaveAttachment(
         periode,
         søknadsinfo.søkerErFarEllerMedmor,
-        søknadsinfo.annenForelder
+        søknadsinfo.annenForelder,
     );
 
     return (
@@ -93,14 +93,19 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         index,
                         getMorsAktivitetSkjemanummer(periode.morsAktivitetIPerioden),
                         AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                        periode.id
-                    )
+                        periode.id,
+                    ),
                 );
             } else {
                 if (isUtsettelsesperiode(periode)) {
                     if (periode.årsak === UtsettelseÅrsakType.HvØvelse) {
                         missingAttachments.push(
-                            createMissingAttachment(index, Skjemanummer.HV_ØVELSE, AttachmentType.HV_ØVELSE, periode.id)
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.HV_ØVELSE,
+                                AttachmentType.HV_ØVELSE,
+                                periode.id,
+                            ),
                         );
                     }
 
@@ -115,8 +120,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                                 index,
                                 Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
                                 AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                                periode.id
-                            )
+                                periode.id,
+                            ),
                         );
                     }
 
@@ -126,8 +131,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                                 index,
                                 Skjemanummer.NAV_TILTAK,
                                 AttachmentType.NAV_TILTAK,
-                                periode.id
-                            )
+                                periode.id,
+                            ),
                         );
                     }
 
@@ -140,8 +145,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                                 index,
                                 Skjemanummer.DOK_INNLEGGELSE,
                                 AttachmentType.UTSETTELSE_SYKDOM,
-                                periode.id
-                            )
+                                periode.id,
+                            ),
                         );
                     }
 
@@ -151,8 +156,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                                 index,
                                 Skjemanummer.DOK_OVERFØRING_FOR_SYK,
                                 AttachmentType.UTSETTELSE_SYKDOM,
-                                periode.id
-                            )
+                                periode.id,
+                            ),
                         );
                     }
                 }
@@ -167,8 +172,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                                 index,
                                 Skjemanummer.DOK_OVERFØRING_FOR_SYK,
                                 AttachmentType.OVERFØRING_KVOTE,
-                                periode.id
-                            )
+                                periode.id,
+                            ),
                         );
                     }
                 }
@@ -180,8 +185,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                                 index,
                                 Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
                                 AttachmentType.UTSETTELSE_SYKDOM,
-                                periode.id
-                            )
+                                periode.id,
+                            ),
                         );
                     }
                 }
@@ -204,7 +209,7 @@ const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean 
 
 const dokumentasjonBehøvesForUtsettelsesperiode = (
     { årsak }: Utsettelsesperiode | PeriodeUtenUttakUtsettelse,
-    harMorAktivitetskrav: boolean
+    harMorAktivitetskrav: boolean,
 ): boolean => {
     return (
         harMorAktivitetskrav ||
@@ -216,14 +221,14 @@ const dokumentasjonBehøvesForUtsettelsesperiode = (
 
 export const dokumentasjonBehøvesForOverføringsperiode = (
     erFarEllerMedmor: boolean,
-    periode: Overføringsperiode
+    periode: Overføringsperiode,
 ): boolean =>
     (erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg) &&
     periode.årsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
 
 const missingAttachmentForAktivitetskrav = (
     periode: Utsettelsesperiode | Uttaksperiode,
-    søknadsinfo: Søknadsinfo
+    søknadsinfo: Søknadsinfo,
 ): boolean => {
     const søkerErMor = !søknadsinfo.søkerErFarEllerMedmor;
     const ønskerFlerBarnsdager = isUttaksperiode(periode) ? periode.ønskerFlerbarnsdager : undefined;
@@ -246,11 +251,11 @@ const missingAttachmentForAktivitetskrav = (
             søknadsinfo.termindato,
             søknadsinfo.søkersituasjon.situasjon,
             søknadsinfo.stønadskontoer,
-            !søknadsinfo.morHarRett
+            !søknadsinfo.morHarRett,
         ) &&
         isAttachmentMissing(
             periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE),
-            AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+            AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
         )
     );
 };

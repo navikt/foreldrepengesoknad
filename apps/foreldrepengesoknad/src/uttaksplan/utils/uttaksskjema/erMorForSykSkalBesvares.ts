@@ -20,7 +20,7 @@ const erMorForForSykSkalBesvares = (
     søkerHarMidlertidigOmsorg: boolean,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
 ): boolean => {
     const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
         periodetype,
@@ -33,7 +33,7 @@ const erMorForForSykSkalBesvares = (
         familiehendelsesdato,
         termindato,
         situasjon,
-        bareFarMedmorHarRett
+        bareFarMedmorHarRett,
     );
 
     if (
@@ -54,7 +54,7 @@ const erMorForForSykSkalBesvares = (
                 tidsperiode,
                 situasjon,
                 søkerErFarEllerMedmor,
-                uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
+                uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker,
             )
         ) {
             if (erFlerbarnssøknad) {

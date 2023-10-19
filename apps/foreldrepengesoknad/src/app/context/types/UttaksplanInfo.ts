@@ -53,7 +53,7 @@ export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo extends Ut
 }
 
 export const isFarMedmorFødselBeggeHarRettUttaksplanInfo = (
-    uttaksplanInfo: UttaksplanInfo
+    uttaksplanInfo: UttaksplanInfo,
 ): uttaksplanInfo is FarMedmorFødselBeggeHarRettUttaksplanInfo => {
     return 'morsSisteDag' in uttaksplanInfo;
 };

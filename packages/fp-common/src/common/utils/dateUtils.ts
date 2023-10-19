@@ -23,7 +23,7 @@ export const doesTidsperiodeContainDate = (tidsperiode: Tidsperiode, date: strin
 
 export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
     tidsperiode: TidsperiodeMedValgfriSluttdato,
-    date: string
+    date: string,
 ) => {
     if (tidsperiode.tom === undefined) {
         return false;

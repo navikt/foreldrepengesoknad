@@ -139,7 +139,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         søkerErAleneOmOmsorg: erAleneOmOmsorg,
     });
     const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter(
-        (p) => !(isAnnenPartInfoPeriode(p) && !p.visPeriodeIPlan)
+        (p) => !(isAnnenPartInfoPeriode(p) && !p.visPeriodeIPlan),
     );
     const bareFarHarRett = !morHarRett;
     const annenForelderHarRettINorge =
@@ -154,7 +154,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         bareFarHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
-        opprinneligPlan
+        opprinneligPlan,
     );
 
     const handleDeletePeriode = (periodeId: string) => {
@@ -171,12 +171,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 oppdatertPeriode,
                 familiehendelsesdato,
                 morHarRett,
-                termindato
+                termindato,
             )
         ) {
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 oppdatertPeriode as Uttaksperiode,
-                familiehendelsesdato
+                familiehendelsesdato,
             );
 
             resultat = builder.oppdaterPerioder(perioder);
@@ -203,12 +203,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 nyPeriode,
                 familiehendelsesdato,
                 morHarRett,
-                termindato
+                termindato,
             )
         ) {
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 nyPeriode as Uttaksperiode,
-                familiehendelsesdato
+                familiehendelsesdato,
             );
 
             resultat = builder.leggTilPerioder(perioder);

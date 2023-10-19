@@ -32,7 +32,7 @@ export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormD
 
 export const getInitialMorFarAdopsjonValues = (
     lagretUttaksplanInfo: MorFarAdopsjonUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): MorFarAdopsjonFormData => {
     if (lagretUttaksplanInfo) {
         return {

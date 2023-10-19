@@ -132,11 +132,11 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     erFremtidigOpphold
                                         ? intlUtils(
                                               intl,
-                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandSkalDuBoI'
+                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandSkalDuBoI',
                                           )
                                         : intlUtils(
                                               intl,
-                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI'
+                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI',
                                           )
                                 }
                                 validate={(country) =>
@@ -146,8 +146,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                             intl,
                                             erFremtidigOpphold
                                                 ? 'valideringsfeil.utenlandsopphold.landDuSkalBoIPåkrevd'
-                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd'
-                                        )
+                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd',
+                                        ),
                                     )
                                 }
                                 useAlpha3Code={false}

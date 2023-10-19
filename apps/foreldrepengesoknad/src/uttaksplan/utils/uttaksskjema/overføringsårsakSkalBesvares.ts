@@ -7,7 +7,7 @@ const overføringsårsakSkalBesvares = (
     periodetype: Periodetype,
     erFarEllerMedmor: boolean,
     kontoValue: StønadskontoType,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ): boolean => {
     const annenForelderHarRettIEØS = harAnnenForelderRettIEØS(annenForelder);
     return (

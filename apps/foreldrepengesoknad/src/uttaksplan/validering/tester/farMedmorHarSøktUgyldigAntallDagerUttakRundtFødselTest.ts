@@ -15,45 +15,45 @@ import dayjs from 'dayjs';
 
 const overskridelseUttakRundtFødselAntallDager = (
     perioderRundtFødsel: Periode[],
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
 ): number => {
     const sisteUttak6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
     const perioderAvkortetTilÅSlutte6UkerEtterFødsel = perioderRundtFødsel.map((p) =>
         dayjs(p.tidsperiode.tom).isAfter(dayjs(sisteUttak6UkerEtterFødsel), 'day')
             ? { ...p, tidsperiode: { fom: p.tidsperiode.fom, tom: sisteUttak6UkerEtterFødsel } }
-            : p
+            : p,
     );
     const antallDager = getSumUttaksdagerÅTrekkeIPeriodene(perioderAvkortetTilÅSlutte6UkerEtterFødsel);
     return ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL - antallDager;
 };
 
 export const farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     if (
         gjelderWLBReglerFarMedmorRundtFødsel(
             grunnlag.familiehendelsesdato,
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.morHarRett,
-            grunnlag.søkersituasjon.situasjon
+            grunnlag.søkersituasjon.situasjon,
         )
     ) {
         const perioderUttakRundtFødsel = getFarMedmorUttakRundtFødsel(
             grunnlag.perioder,
             grunnlag.familiehendelsesdato,
-            grunnlag.termindato
+            grunnlag.termindato,
         );
         const antallDagerForMye = overskridelseUttakRundtFødselAntallDager(
             perioderUttakRundtFødsel,
-            grunnlag.familiehendelsesdato
+            grunnlag.familiehendelsesdato,
         );
 
         const slutterEnAvPeriodeneForSent = perioderUttakRundtFødsel.some(
-            (p) => !slutterTidsperiodeInnen6UkerEtterFødsel(p.tidsperiode, grunnlag.familiehendelsesdato)
+            (p) => !slutterTidsperiodeInnen6UkerEtterFødsel(p.tidsperiode, grunnlag.familiehendelsesdato),
         );
         let info;
         const fraDato = formaterDatoKompakt(
-            getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato)
+            getFørsteUttaksdag2UkerFørFødsel(grunnlag.familiehendelsesdato, grunnlag.termindato),
         );
         const tilDato = formaterDatoKompakt(getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato));
         if (slutterEnAvPeriodeneForSent) {

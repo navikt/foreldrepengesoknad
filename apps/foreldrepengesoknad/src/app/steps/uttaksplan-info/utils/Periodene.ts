@@ -116,7 +116,7 @@ function getHull(perioder: Periode[]): PeriodeHull[] {
 
 function getHullOgInfoOgPerioderUtenUttak(perioder: Periode[]): Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak> {
     return perioder.filter(
-        (periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode)
+        (periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode),
     ) as Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak>;
 }
 
@@ -210,7 +210,7 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 
             if (dagerIPerioden > uttaksdagerCurrent) {
                 const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(
-                    uttaksdagerCurrent
+                    uttaksdagerCurrent,
                 );
                 const justertPeriode: Periode = {
                     ...periode,
@@ -252,7 +252,7 @@ function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendels
         (periode) =>
             isForeldrepengerFørFødselUttaksperiode(periode) ||
             (isValidTidsperiode(periode.tidsperiode) &&
-                dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day'))
+                dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day')),
     );
 }
 
@@ -261,13 +261,13 @@ function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendel
         (periode) =>
             isValidTidsperiode(periode.tidsperiode) &&
             dayjs(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
-            isForeldrepengerFørFødselUttaksperiode(periode) === false
+            isForeldrepengerFørFødselUttaksperiode(periode) === false,
     );
 }
 
 function getFørstePeriodeEtterFamiliehendelsesdato(
     perioder: Periode[],
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
 ): Periode | undefined {
     const aktuellePerioder = getPerioderEtterFamiliehendelsesdato(perioder, familiehendelsesdato).sort(sorterPerioder);
     return aktuellePerioder.length > 0 ? aktuellePerioder[0] : undefined;
@@ -277,7 +277,7 @@ function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {
     return perioder.filter(
         (periode) =>
             isValidTidsperiode(periode.tidsperiode) === false &&
-            isForeldrepengerFørFødselUttaksperiode(periode) === false
+            isForeldrepengerFørFødselUttaksperiode(periode) === false,
     );
 }
 
@@ -299,7 +299,7 @@ function getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder: Periode[]
                 p.tidsperiode.fom !== undefined &&
                 !isInfoPeriode(p) &&
                 !isPeriodeUtenUttak(p) &&
-                !isPeriodeUtenUttakUtsettelse(p)
+                !isPeriodeUtenUttakUtsettelse(p),
         )
         .sort(sorterPerioder)
         .shift();
@@ -328,7 +328,7 @@ function getPerioderMedFerieForForelder(perioder: Periode[], forelder: Forelder)
 
 function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFødselUttaksperiode | undefined {
     const periode: Periode | undefined = perioder.find(
-        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.ForeldrepengerFørFødsel
+        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.ForeldrepengerFørFødsel,
     );
     return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
 }

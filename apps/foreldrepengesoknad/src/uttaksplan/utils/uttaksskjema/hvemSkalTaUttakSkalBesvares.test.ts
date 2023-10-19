@@ -20,7 +20,7 @@ describe('hvemSkalTaUttakSkalBesvares - når WLB gjelder', () => {
             erDeltUttakINorge,
             new Date('2022-08-10T00:00:00.000Z'),
             erFarEllerMedmor,
-            fødsel
+            fødsel,
         );
         expect(result).toEqual(false);
     });
@@ -30,7 +30,7 @@ describe('hvemSkalTaUttakSkalBesvares - når WLB gjelder', () => {
             erDeltUttakINorge,
             new Date('2022-08-10T00:00:00.000Z'),
             erFarEllerMedmor,
-            fødsel
+            fødsel,
         );
         expect(result).toEqual(false);
     });
@@ -40,7 +40,7 @@ describe('hvemSkalTaUttakSkalBesvares - når WLB gjelder', () => {
             erDeltUttakINorge,
             new Date('2022-08-10T00:00:00.000Z'),
             erFarEllerMedmor,
-            fødsel
+            fødsel,
         );
         expect(result).toEqual(true);
     });
@@ -50,7 +50,7 @@ describe('hvemSkalTaUttakSkalBesvares - når WLB gjelder', () => {
             !erDeltUttakINorge,
             new Date('2022-08-10T00:00:00.000Z'),
             erFarEllerMedmor,
-            fødsel
+            fødsel,
         );
         expect(result).toEqual(false);
     });
@@ -60,7 +60,7 @@ describe('hvemSkalTaUttakSkalBesvares - når WLB gjelder', () => {
             !erDeltUttakINorge,
             new Date('2022-08-10T00:00:00.000Z'),
             !erFarEllerMedmor,
-            fødsel
+            fødsel,
         );
         expect(result).toEqual(false);
     });

@@ -43,7 +43,7 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
         { id: 'varighet.dager' },
         {
             dager,
-        }
+        },
     );
 
     if (uker === 0) {

@@ -28,7 +28,7 @@ const bem = bemUtils('oversiktKvoter');
 
 const filtrerBortAnnenPartsKonto = (
     uttakskontoer: StønadskontoUttak[],
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
 ): StønadskontoUttak[] => {
     return erFarEllerMedmor
         ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)

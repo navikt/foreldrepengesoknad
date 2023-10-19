@@ -9,7 +9,7 @@ import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 export const getKanPeriodenRundtFødselJusteres = (
     periodeRundtFødsel: Periode,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): boolean => {
     return (
         termindato !== undefined &&
@@ -26,7 +26,7 @@ export const getKanJustereAutomatiskVedFødsel = (
     perioderMedUttakRundtFødsel: Periode[],
     termindato: Date | undefined,
     erFarEllerMedmor: boolean,
-    barn: Barn
+    barn: Barn,
 ): boolean => {
     return (
         barn.type === BarnType.UFØDT &&
@@ -43,7 +43,7 @@ export const getVisAutomatiskJusteringForm = (
     perioderMedUttakRundtFødsel: Periode[],
     barn: Barn,
     termindato: Date | undefined,
-    bareFarHarRett: boolean
+    bareFarHarRett: boolean,
 ): boolean => {
     return (
         erFarEllerMedmor &&

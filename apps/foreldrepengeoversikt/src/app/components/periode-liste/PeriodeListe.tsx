@@ -42,7 +42,7 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
                             isUttaksperiode(periode) &&
                             annenPartsOverlappendePerioder
                                 ? annenPartsOverlappendePerioder.find((p) =>
-                                      Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode))
+                                      Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode)),
                                   )
                                 : undefined;
                         return (

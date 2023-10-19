@@ -40,7 +40,7 @@ export const getPeriodeUtsettelseFormInitialValues = (periode: Periode): Periode
 
 const getVedleggFraFormState = (
     morsAktivitetIPeriodenDokumentasjon: Attachment[],
-    vedlegg: Attachment[]
+    vedlegg: Attachment[],
 ): Attachment[] => {
     return [...morsAktivitetIPeriodenDokumentasjon, ...vedlegg];
 };
@@ -48,7 +48,7 @@ const getVedleggFraFormState = (
 export const mapPeriodeUtsettelseFormToPeriode = (
     values: Partial<PeriodeUtsettelseFormData>,
     id: string,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
 ): Periode => {
     return {
         id,

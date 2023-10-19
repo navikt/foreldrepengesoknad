@@ -85,7 +85,7 @@ describe('getIllegalChars', () => {
     });
     it('should return \uFFFD (replacement char) as invalid char', () => {
         const result = getIllegalChars(
-            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \uFFFDer ikke lov'
+            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \uFFFDer ikke lov',
         );
         expect(result).toEqual('\uFFFD');
     });

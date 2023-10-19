@@ -18,7 +18,7 @@ const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illust
         <div
             className={bem.classNames(
                 bem.block,
-                bem.modifierConditional('medIllustrasjoner', illustrasjoner !== undefined)
+                bem.modifierConditional('medIllustrasjoner', illustrasjoner !== undefined),
             )}
         >
             <div className={bem.element('contentWrapper')}>

@@ -24,7 +24,7 @@ export const getUttaksstatus = ({
     const uttak: StønadskontoUttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
         uttaksplan,
-        gjelderDagerBrukt
+        gjelderDagerBrukt,
     );
     return {
         gjelderDagerBrukt,

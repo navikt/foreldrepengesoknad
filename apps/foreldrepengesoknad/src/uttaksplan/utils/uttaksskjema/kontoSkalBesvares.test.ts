@@ -19,7 +19,7 @@ describe('kontoSkalBesvares - når WLB gjelder', () => {
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }] as StønadskontoUttak[], //stønadskontoer
             new Date('2022-08-10T00:00:00.000Z'), //familiehendelsesdato
-            true //erFarEllerMedmor
+            true, //erFarEllerMedmor
         );
         expect(result).toEqual(false);
     });
@@ -29,7 +29,7 @@ describe('kontoSkalBesvares - når WLB gjelder', () => {
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             [{ konto: StønadskontoType.Fedrekvote, dager: 50 }] as StønadskontoUttak[], //stønadskontoer
             new Date('2022-08-08T00:00:00.000Z'), //familiehendelsesdato
-            true //erFarEllerMedmor
+            true, //erFarEllerMedmor
         );
         expect(result).toEqual(true);
     });

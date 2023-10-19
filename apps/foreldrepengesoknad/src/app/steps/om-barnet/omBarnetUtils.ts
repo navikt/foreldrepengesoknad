@@ -37,7 +37,7 @@ const getInitValues = (): Readonly<OmBarnetFormData> => ({
 
 export const cleanupOmBarnetFormData = (
     values: OmBarnetFormData,
-    visibility: QuestionVisibility<OmBarnetFormField, undefined>
+    visibility: QuestionVisibility<OmBarnetFormField, undefined>,
 ): OmBarnetFormData => {
     const cleanedData: OmBarnetFormData = {
         erBarnetFødt: visibility.isVisible(OmBarnetFormField.erBarnetFødt) ? values.erBarnetFødt : YesOrNo.UNANSWERED,
@@ -67,7 +67,7 @@ export const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
     situasjon: Situasjon,
     values: Partial<OmBarnetFormData>,
-    barnSøktOmFørMenIkkeRegistrert: boolean
+    barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
     if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
         return {
@@ -82,7 +82,7 @@ export const mapOmDetValgteBarnetFormDataToState = (
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
         values.omsorgsovertakelse!,
         AttachmentType.OMSORGSOVERTAKELSE,
-        Skjemanummer.OMSORGSOVERTAKELSESDATO
+        Skjemanummer.OMSORGSOVERTAKELSESDATO,
     );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
@@ -109,14 +109,14 @@ export const mapOmBarnetFormDataToState = (
     arbeidsforhold: Arbeidsforhold[],
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
-    barnSøktOmFørMenIkkeRegistrert: boolean
+    barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
     if (valgtRegistrertBarn !== undefined) {
         return mapOmDetValgteBarnetFormDataToState(
             valgtRegistrertBarn as FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
             situasjon,
             values,
-            barnSøktOmFørMenIkkeRegistrert
+            barnSøktOmFørMenIkkeRegistrert,
         );
     }
     const antallBarn =
@@ -137,7 +137,7 @@ export const mapOmBarnetFormDataToState = (
         const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
             values.terminbekreftelse!,
             AttachmentType.TERMINBEKREFTELSE,
-            Skjemanummer.TERMINBEKREFTELSE
+            Skjemanummer.TERMINBEKREFTELSE,
         );
 
         if (arbeidsforhold.length === 0) {
@@ -159,7 +159,7 @@ export const mapOmBarnetFormDataToState = (
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
         values.omsorgsovertakelse!,
         AttachmentType.OMSORGSOVERTAKELSE,
-        Skjemanummer.OMSORGSOVERTAKELSESDATO
+        Skjemanummer.OMSORGSOVERTAKELSESDATO,
     );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {

@@ -14,7 +14,7 @@ export const farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkke
     konto: StønadskontoType | undefined,
     erMorForSyk: boolean | undefined,
     tidsperiode: TidsperiodeDate,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ) => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(famDato);
     return (
@@ -41,7 +41,7 @@ export const aktivitetskravMorSkalBesvares = (
     termindato: Date | undefined,
     situasjon: Situasjon,
     stønadskontoer: StønadskontoUttak[],
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
 ): boolean => {
     if (
         søkerErMor ||
@@ -60,7 +60,7 @@ export const aktivitetskravMorSkalBesvares = (
             familiehendelsesdato,
             termindato,
             situasjon,
-            bareFarMedmorHarRett
+            bareFarMedmorHarRett,
         ) ||
         !kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, !søkerErMor) ||
         farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk(
@@ -69,7 +69,7 @@ export const aktivitetskravMorSkalBesvares = (
             kontotype,
             erMorForSyk,
             tidsperiode,
-            situasjon
+            situasjon,
         )
     ) {
         return false;

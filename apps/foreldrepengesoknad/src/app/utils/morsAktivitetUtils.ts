@@ -40,7 +40,7 @@ export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skj
 
 export const getMorsAktivitet = (
     aktivitetskravMorValue: string | undefined,
-    erMorForSykValue: boolean | undefined
+    erMorForSykValue: boolean | undefined,
 ): MorsAktivitet | undefined => {
     if (hasValue(aktivitetskravMorValue)) {
         return aktivitetskravMorValue as MorsAktivitet;

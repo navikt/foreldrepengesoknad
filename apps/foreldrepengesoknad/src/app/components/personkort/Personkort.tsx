@@ -20,7 +20,7 @@ const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, in
             className={bem.classNames(
                 bem.block,
                 bem.modifierConditional('invertert', invertert === true),
-                bem.modifier(`valign-${textValign}`)
+                bem.modifier(`valign-${textValign}`),
             )}
         >
             {ikon && <div className={bem.element('ikon')}>{ikon}</div>}

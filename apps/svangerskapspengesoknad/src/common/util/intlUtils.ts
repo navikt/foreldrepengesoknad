@@ -7,7 +7,7 @@ export const getVarighetString = (antallDager: number, intl: IntlShape): string 
         { id: 'common.varighet.dager' },
         {
             dager,
-        }
+        },
     );
     if (uker === 0) {
         return dagerStr;

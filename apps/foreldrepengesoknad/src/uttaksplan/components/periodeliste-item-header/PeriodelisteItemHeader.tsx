@@ -48,7 +48,7 @@ export const getPeriodeIkon = (
     harMidlertidigOmsorg?: boolean,
     erFarEllerMedmor?: boolean,
     situasjon?: Situasjon,
-    erAleneOmOmsorg?: boolean
+    erAleneOmOmsorg?: boolean,
 ): React.ReactNode | undefined => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -104,7 +104,7 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
         { id: 'common.varighet.dager' },
         {
             dager,
-        }
+        },
     );
     if (uker === 0) {
         return dagerStr;
@@ -169,7 +169,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
             getValidTidsperiode(annenForelderSamtidigUttakPeriode.tidsperiode)
                 ? Tidsperioden(annenForelderSamtidigUttakPeriode.tidsperiode).getAntallUttaksdager()
                 : 0,
-            intl
+            intl,
         );
     }
 
@@ -188,7 +188,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
                                 termindato,
                                 situasjon,
                                 erFarEllerMedmor,
-                                erAleneOmOmsorg
+                                erAleneOmOmsorg,
                             )}
                         </Label>
                         <BodyShort>{varighetString}</BodyShort>

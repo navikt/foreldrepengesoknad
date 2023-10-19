@@ -32,7 +32,7 @@ const includeTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
     valgteRegistrerteBarn: RegistrertBarn[] | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {
         return false;
@@ -65,7 +65,7 @@ const includeTerminbekreftelse = (
     erBarnetFødt: YesOrNo,
     arbeidsforhold: Arbeidsforhold[],
     rolle: Søkerrolle,
-    termindato: string
+    termindato: string,
 ) => {
     return erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0 && kanSøkePåTermin(rolle, termindato);
 };
@@ -103,7 +103,7 @@ const skalViseOmsorgsovertakelse = (
     adoptertIUtlandet: YesOrNo,
     ankomstdato: string,
     søknadGjelderEtNyttBarn: boolean,
-    fødselsdatoer: string[] | undefined
+    fødselsdatoer: string[] | undefined,
 ) => {
     if (søknadGjelderEtNyttBarn) {
         return (
@@ -190,7 +190,7 @@ const OmBarnetFormConfig: QuestionConfig<OmBarnetQuestionPayload, OmBarnetFormFi
                 adoptertIUtlandet,
                 ankomstdato,
                 søknadGjelderEtNyttBarn,
-                fødselsdatoer
+                fødselsdatoer,
             ),
     },
     [OmBarnetFormField.termindato]: {

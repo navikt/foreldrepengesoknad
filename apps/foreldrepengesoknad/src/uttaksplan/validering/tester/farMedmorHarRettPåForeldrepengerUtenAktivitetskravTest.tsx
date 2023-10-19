@@ -10,7 +10,7 @@ import {
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;
     if (
@@ -28,17 +28,16 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
         grunnlag.morErUfør,
         grunnlag.familiehendelsesdato,
         grunnlag.dekningsgrad,
-        !grunnlag.morHarRett
+        !grunnlag.morHarRett,
     );
 
     const testPasserer = kontoUtenAktivitetskravUker === 0;
     const renderAsHtml = true;
-    const link = (_intl: IntlShape) => (msg: any) =>
-        (
-            <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
-                {msg}
-            </a>
-        );
+    const link = (_intl: IntlShape) => (msg: any) => (
+        <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
+            {msg}
+        </a>
+    );
 
     if (andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato)) {
         return {
@@ -58,7 +57,7 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
             grunnlag.antallBarn,
             grunnlag.familiehendelsesdato,
             grunnlag.dekningsgrad,
-            bareFarHarRett
+            bareFarHarRett,
         );
         return {
             passerer: testPasserer,

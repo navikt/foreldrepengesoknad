@@ -41,7 +41,7 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 periode.årsak !== UtsettelseÅrsakType.Fri && (
                     <OppsummeringAvDokumentasjon
                         vedlegg={(vedlegg || []).filter(
-                            (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                            (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                         )}
                     />
                 )}
@@ -55,7 +55,7 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 <MorsAktivitetDetaljer
                     morsAktivitet={morsAktivitetIPerioden}
                     dokumentasjonAvMorsAktivitet={(vedlegg || []).filter(
-                        (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                        (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     )}
                     visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
                 />

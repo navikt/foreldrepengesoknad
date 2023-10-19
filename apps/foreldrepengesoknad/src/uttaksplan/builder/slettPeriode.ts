@@ -36,8 +36,8 @@ export const slettPeriode = ({
                     erAdopsjon,
                     bareFarHarRett,
                     erFarEllerMedmor,
-                    førsteUttaksdagNesteBarnsSak
-                )
+                    førsteUttaksdagNesteBarnsSak,
+                ),
             );
             return res;
         }

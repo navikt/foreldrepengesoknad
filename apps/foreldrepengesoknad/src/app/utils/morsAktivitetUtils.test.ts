@@ -13,7 +13,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             true,
-            omAnnenForelder as AnnenForelder
+            omAnnenForelder as AnnenForelder,
         );
         expect(aktivitetskravIsRequired).toBe(true);
     });
@@ -26,7 +26,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             false,
-            omAnnenForelder as AnnenForelder
+            omAnnenForelder as AnnenForelder,
         );
         expect(aktivitetskravIsRequired).toBe(false);
     });
@@ -39,7 +39,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             true,
-            omAnnenForelder as AnnenForelder
+            omAnnenForelder as AnnenForelder,
         );
         expect(aktivitetskravIsRequired).toBe(false);
     });
@@ -52,23 +52,23 @@ describe('getMorsAktivitetSkjemanummer', () => {
 
     it('should require Skjemanummer.BEKREFTELS_DELTAR_KVALIFISERINGSPROGRAM when morsAktivitet=Kvalifiseringsprogrammet', () => {
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Kvalifiseringsprogrammet)).toBe(
-            Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+            Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM,
         );
     });
 
     it('should require Skjemanummer.ANNET_SKJEMA_IKKE_NAV when morsAktivitet=Introduksjonsprogrammet', () => {
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Introduksjonsprogrammet)).toBe(
-            Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+            Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET,
         );
     });
 
     it('should require Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM when morsAktivitet is ArbeidOgUtdanning, Arbeid or TrengerHjelp', () => {
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Arbeid)).toBe(Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM);
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.ArbeidOgUtdanning)).toBe(
-            Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
+            Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
         );
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.TrengerHjelp)).toBe(
-            Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
+            Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
         );
     });
 

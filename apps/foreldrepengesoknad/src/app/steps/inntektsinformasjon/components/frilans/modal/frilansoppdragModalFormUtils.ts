@@ -15,7 +15,7 @@ export const initialFrilansoppdragModalValues: FrilansoppdragModalFormData = {
 
 export const cleanupFrilansoppdragForm = (
     values: FrilansoppdragModalFormData,
-    visibility: QuestionVisibility<FrilansoppdragModalFormField, undefined>
+    visibility: QuestionVisibility<FrilansoppdragModalFormField, undefined>,
 ): FrilansoppdragModalFormData => {
     return {
         navnOppdragsgiver: visibility.isVisible(FrilansoppdragModalFormField.navnOppdragsgiver)
@@ -41,7 +41,7 @@ export const mapFrilansoppdragModalValuesToState = (values: Partial<Frilansoppdr
 };
 
 export const getInitialFrilansoppdragModalValues = (
-    oppdrag: FrilansOppdrag | undefined
+    oppdrag: FrilansOppdrag | undefined,
 ): FrilansoppdragModalFormData => {
     if (!oppdrag) {
         return {

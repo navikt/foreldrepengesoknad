@@ -46,13 +46,13 @@ export type UferdigTilrettelegging = Tilrettelegging & {
     helTilrettelegging?: [
         {
             tilrettelagtArbeidFom?: string;
-        }
+        },
     ];
     delvisTilrettelegging?: DelvisTilrettelegging[];
     ingenTilrettelegging?: [
         {
             slutteArbeidFom?: string;
-        }
+        },
     ];
     risikoFaktorer?: string;
     tilretteleggingstiltak?: string;

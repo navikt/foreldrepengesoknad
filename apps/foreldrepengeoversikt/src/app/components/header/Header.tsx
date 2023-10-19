@@ -34,7 +34,7 @@ const renderHeaderContent = (
     selectedRoute: OversiktRoutes,
     sak: Sak | undefined,
     barn: BarnGruppering | undefined,
-    intl: IntlShape
+    intl: IntlShape,
 ) => {
     const bem = bemUtils('header');
 
@@ -114,7 +114,7 @@ const renderHeaderContent = (
             !!barn?.alleBarnaLever,
             sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
             intl,
-            situasjon
+            situasjon,
         );
 
         return (

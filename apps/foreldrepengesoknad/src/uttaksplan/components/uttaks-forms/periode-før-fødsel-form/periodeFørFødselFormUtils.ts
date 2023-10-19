@@ -13,11 +13,11 @@ export const initialValues: PeriodeFørFødselFormData = {
 
 export const getPeriodeFørFødselFormInitialValues = (
     periode: ForeldrepengerFørFødselUttaksperiode,
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
 ): PeriodeFørFødselFormData => {
     const sisteUttaksagFørFødsel = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
     const førsteUttaksdag3UkerFørFødsel = Uttaksdagen(sisteUttaksagFørFødsel).trekkFra(
-        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1
+        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1,
     );
     const fom = periode.tidsperiode.fom !== undefined ? periode.tidsperiode.fom : førsteUttaksdag3UkerFørFødsel;
     const tom = periode.tidsperiode.tom !== undefined ? periode.tidsperiode.tom : sisteUttaksagFørFødsel;
@@ -31,7 +31,7 @@ export const getPeriodeFørFødselFormInitialValues = (
 
 export const mapPeriodeFørFødselFormToPeriode = (
     values: Partial<PeriodeFørFødselFormData>,
-    periode: ForeldrepengerFørFødselUttaksperiode
+    periode: ForeldrepengerFørFødselUttaksperiode,
 ): Periode => {
     return {
         type: Periodetype.Uttak,

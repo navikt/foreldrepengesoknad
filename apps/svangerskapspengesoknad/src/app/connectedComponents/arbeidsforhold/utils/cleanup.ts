@@ -49,7 +49,7 @@ export const cleanupNæring = (næring: Partial<Næring>): DeepPartial<Næring> 
         : relevanteFelter.push(
               'næringsinntekt',
               'oppstartsdato',
-              'harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene'
+              'harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene',
           );
 
     if (næring.harRegnskapsfører === true) {

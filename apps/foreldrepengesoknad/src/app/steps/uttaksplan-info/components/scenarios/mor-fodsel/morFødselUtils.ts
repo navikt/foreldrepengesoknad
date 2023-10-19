@@ -21,7 +21,7 @@ export const mapMorFødselFormToState = (values: Partial<MorFødselFormData>): M
 export const getInitialMorFødselValues = (
     defaultPermisjonStartdato: Date,
     lagretUttaksplanInfo: MorFødselUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): MorFødselFormData => {
     if (lagretUttaksplanInfo) {
         return {
