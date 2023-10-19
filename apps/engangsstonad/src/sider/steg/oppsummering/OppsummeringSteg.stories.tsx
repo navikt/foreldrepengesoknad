@@ -1,9 +1,9 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
-import { AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-types';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { EsDataType } from 'appData/EsDataContext';
@@ -12,7 +12,7 @@ import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
 
 import OppsummeringSteg from './OppsummeringSteg';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const person = {
     fnr: '11111111111',
@@ -56,20 +56,20 @@ const Template: StoryFn<{
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
-        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => void;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
-    nesteUtenlandsopphold?: UtenlandsoppholdNeste;
-    sisteUtenlandsopphold?: UtenlandsoppholdSiste;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
 }> = ({
     sendSøknad,
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
-    nesteUtenlandsopphold,
-    sisteUtenlandsopphold,
+    senereUtenlandsopphold,
+    tidligereUtenlandsopphold,
     dokumentasjon = vedleggDefault,
 }) => {
     initAmplitude();
@@ -79,8 +79,8 @@ const Template: StoryFn<{
                 initialState={{
                     [EsDataType.OM_BARNET]: omBarnet,
                     [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_NESTE]: nesteUtenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_SISTE]: sisteUtenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
                     [EsDataType.DOKUMENTASJON]: dokumentasjon,
                 }}
             >
@@ -177,7 +177,7 @@ HarTidligereOgFremtidigeUtenlandsopphold.args = {
         harBoddUtenforNorgeSiste12Mnd: true,
         skalBoUtenforNorgeNeste12Mnd: true,
     },
-    nesteUtenlandsopphold: {
+    senereUtenlandsopphold: {
         utenlandsoppholdNeste12Mnd: [
             {
                 fom: '2025-01-01',
@@ -191,7 +191,7 @@ HarTidligereOgFremtidigeUtenlandsopphold.args = {
             },
         ],
     },
-    sisteUtenlandsopphold: {
+    tidligereUtenlandsopphold: {
         utenlandsoppholdSiste12Mnd: [
             {
                 fom: '2021-01-01',

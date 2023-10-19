@@ -4,13 +4,13 @@ import MockAdapter from 'axios-mock-adapter';
 
 import { Path } from 'appData/paths';
 import withRouter from 'storybookHelpers/withRouter';
-import { attachmentApi } from 'fpcommon/uploader/attachmentApi';
+import { attachmentApi } from '@navikt/fp-api';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Action, EsDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import IntlProvider from 'intl/IntlProvider';
 import DokumentasjonSteg from './DokumentasjonSteg';
-import { initAmplitude } from 'fpcommon/amplitude/amplitude';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 export default {
     title: 'DokumentasjonSteg',

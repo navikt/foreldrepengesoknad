@@ -10,7 +10,7 @@ spec:
         outbound:
             external:
                 - host: dekoratoren.ekstern.dev.nav.no
-    image: {{image}}
+    image: { { image } }
     port: 8080
     replicas:
         min: 2

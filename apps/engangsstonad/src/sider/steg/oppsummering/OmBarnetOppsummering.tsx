@@ -1,8 +1,8 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { formatDate } from '@navikt/fp-common';
 import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
-import AttachmentList from 'fpcommon/uploader/liste/AttachmentList';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { AttachmentList } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 

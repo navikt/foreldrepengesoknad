@@ -10,8 +10,8 @@ import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
-import { Attachment } from 'fpcommon/uploader/typer/Attachment';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { Attachment } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
 

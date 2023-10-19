@@ -1,24 +1,30 @@
-import { useMemo } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
-
+import { getSaveAttachment } from '@navikt/fp-api';
 import { Datepicker } from '@navikt/fp-form-hooks';
-import FileUploader from 'fpcommon/uploader/FileUploader';
+import { FileUploader } from '@navikt/fp-ui';
+import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { useFormValidators } from '@navikt/fp-validation';
+
 import Environment from 'appData/Environment';
-import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
-import { isAfterToday, isRequired, isValidDate } from 'fpcommon/validering/valideringsregler';
 
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
 const dagerForTerminbekreftelse = ukerAaTrekkeFraTerminDato * 7 + ekstraDagerAaTrekkeFraTerminDato;
 
-const utstedtDatoErIUke22 = (utstedtDatoString: string, terminDatoString: string): boolean => {
-    const utstedtDato = dayjs(utstedtDatoString).startOf('day');
-    const terminDato = dayjs(terminDatoString).startOf('day');
+const isUtstedtDatoIUke22 = (termindato: string, intl: IntlShape) => (terminBekreftelseDato: string) => {
+    const utstedtDato = dayjs(terminBekreftelseDato).startOf('day');
+    const terminDato = dayjs(termindato).startOf('day');
     const uke22 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    return dayjs.max(uke22, utstedtDato)!.isSame(utstedtDato);
+    const erUtstedtDataIUke22 = dayjs.max(uke22, utstedtDato)!.isSame(utstedtDato);
+
+    return erUtstedtDataIUke22
+        ? null
+        : intl.formatMessage({
+              id: 'TerminDokPanel.Validering.TerminBekreftelsedato.DuMåVæreIUke22',
+          });
 };
 
 interface Props {
@@ -29,25 +35,10 @@ interface Props {
 
 const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAttachments, omBarnet }) => {
     const intl = useIntl();
-
-    const terminbekreftelseValidatorer = useMemo(
-        () => [
-            isRequired(intl.formatMessage({ id: 'TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi' })),
-            isValidDate(intl.formatMessage({ id: 'TerminDokPanel.Validering.TerminBekreftelsedato' })),
-            isAfterToday(
-                intl.formatMessage({
-                    id: 'TerminDokPanel.Validering.TerminBekreftelsedato.MåVæreIdagEllerTidligere',
-                }),
-            ),
-            (terminBekreftelseDato: string) =>
-                utstedtDatoErIUke22(terminBekreftelseDato, omBarnet.termindato)
-                    ? null
-                    : intl.formatMessage({
-                          id: 'TerminDokPanel.Validering.TerminBekreftelsedato.DuMåVæreIUke22',
-                      }),
-        ],
-        [],
-    );
+    const {
+        isRequired,
+        date: { isValidDate, isBeforeTodayOrToday },
+    } = useFormValidators();
 
     return (
         <>
@@ -56,7 +47,12 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                 label={<FormattedMessage id="TerminDokPanel.Terminbekreftelsesdato" />}
                 minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
                 maxDate={dayjs().toDate()}
-                validate={terminbekreftelseValidatorer}
+                validate={[
+                    isRequired('TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi'),
+                    isValidDate('TerminDokPanel.Validering.TerminBekreftelsedato'),
+                    isBeforeTodayOrToday('TerminDokPanel.Validering.TerminBekreftelsedato.MåVæreIdagEllerTidligere'),
+                    isUtstedtDatoIUke22(omBarnet.termindato, intl),
+                ]}
             />
             <VStack gap="4">
                 <div>
@@ -75,7 +71,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}
-                    restApiUrl={Environment.REST_API_URL}
+                    saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                 />
             </VStack>
         </>

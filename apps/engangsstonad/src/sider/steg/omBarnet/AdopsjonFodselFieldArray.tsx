@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { validateAdopsjonFødselDate } from 'fpcommon/validering/valideringsregler';
 import { VStack } from '@navikt/ds-react';
+import { useFormValidators } from '@navikt/fp-validation';
 
 export type FormValues = {
     fødselsdatoer?: Array<{
@@ -24,7 +23,10 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
     antallBarn,
     antallBarnDropDown,
 }) => {
-    const intl = useIntl();
+    const {
+        isRequired,
+        date: { isValidDate, isBeforeTodayOrToday },
+    } = useFormValidators();
 
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
@@ -62,12 +64,22 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                         <FormattedMessage
                             id={
                                 fields.length === 1
-                                    ? 'søknad.fødselsdato'
-                                    : `omBarnet.adopsjon.spørsmål.fødselsdato.${index + 1}`
+                                    ? 'AdopsjonFodselFieldArray.Fødselsdato'
+                                    : `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}`
                             }
                         />
                     }
-                    validate={[(fødselsdato) => validateAdopsjonFødselDate(fødselsdato, adopsjonsdato, intl)]}
+                    validate={[
+                        isRequired('AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi'),
+                        isValidDate('AdopsjonFodselFieldArray.Fødselsdato.Gyldig'),
+                        (fødselsdato) => {
+                            return !fødselsdato || !adopsjonsdato
+                                ? undefined
+                                : isBeforeTodayOrToday('AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere')(
+                                      fødselsdato,
+                                  );
+                        },
+                    ]}
                 />
             ))}
         </VStack>

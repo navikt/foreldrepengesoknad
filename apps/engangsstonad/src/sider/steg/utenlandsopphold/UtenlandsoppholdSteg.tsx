@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
-
 import { Form, ErrorSummaryHookForm, RadioGroupPanel, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired } from 'fpcommon/validering/valideringsregler';
+import { useFormValidators } from '@navikt/fp-validation';
+import { links } from '@navikt/fp-constants';
+
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
@@ -14,21 +15,22 @@ import useStepData from 'appData/useStepData';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
-        return Path.SISTE_UTENLANDSOPPHOLD;
+        return Path.TIDLIGERE_UTENLANDSOPPHOLD;
     }
-    return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.NESTE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
+    return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
 };
 
 const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const intl = useIntl();
+    const { isRequired } = useFormValidators();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
 
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
-    const lagreSisteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const lagreNesteUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const lagreSenereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SENERE);
 
     const formMethods = useForm<Utenlandsopphold>({
         defaultValues: utenlandsopphold,
@@ -38,10 +40,10 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
         lagreUtenlandsopphold(formValues);
 
         if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
-            lagreSisteUtenlandsopphold(undefined);
+            lagreTidligereUtenlandsopphold(undefined);
         }
         if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
-            lagreNesteUtenlandsopphold(undefined);
+            lagreSenereUtenlandsopphold(undefined);
         }
 
         navigator.goToNextStep(utledNesteSide(formValues));
@@ -50,7 +52,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}
+            pageTitle={intl.formatMessage({ id: 'UtenlandsoppholdSteg.Utenlandsopphold' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
@@ -60,76 +62,70 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <BodyLong>
-                        <FormattedMessage id="utenlandsopphold.info" />
+                        <FormattedMessage id="UtenlandsoppholdSteg.Info" />
                     </BodyLong>
                     <RadioGroupPanel
                         name="harBoddUtenforNorgeSiste12Mnd"
-                        label={<FormattedMessage id="utenlandsopphold.siste12Måneder.spørsmål" />}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'utenlandsopphold.siste12Måneder.isRequired' })),
-                        ]}
+                        label={<FormattedMessage id="UtenlandsoppholdSteg.Siste12Måneder.Spørsmål" />}
+                        validate={[isRequired('UtenlandsoppholdSteg.Siste12Måneder.IsRequired')]}
                     >
                         <Radio value={false}>
-                            <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddINorge" />
+                            <FormattedMessage id="UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge" />
                         </Radio>
                         <Radio value={true}>
-                            <FormattedMessage id="utenlandsopphold.siste12MånederInfotekst.radiobutton.boddIUtlandet" />
+                            <FormattedMessage id="UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
                     </RadioGroupPanel>
                     <RadioGroupPanel
                         name="skalBoUtenforNorgeNeste12Mnd"
-                        label={<FormattedMessage id="utenlandsopphold.neste12Måneder.spørsmål" />}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'utenlandsopphold.neste12Måneder.isRequired' })),
-                        ]}
+                        label={<FormattedMessage id="UtenlandsoppholdSteg.Neste12Måneder.Spørsmål" />}
+                        validate={[isRequired('UtenlandsoppholdSteg.Neste12Måneder.IsRequired')]}
                     >
                         <Radio value={false}>
-                            <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge" />
+                            <FormattedMessage id="UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddINorge" />
                         </Radio>
                         <Radio value={true}>
-                            <FormattedMessage id="utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet" />
+                            <FormattedMessage id="UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
                     </RadioGroupPanel>
                     <ExpansionCard
                         size="small"
-                        aria-label={intl.formatMessage({ id: 'utenlandsopphold.stotteFraNav' })}
+                        aria-label={intl.formatMessage({ id: 'UtenlandsoppholdSteg.StotteFraNav' })}
                     >
                         <ExpansionCard.Header>
-                            <ExpansionCard.Title>
-                                <FormattedMessage id="utenlandsopphold.stotteFraNav" />
+                            <ExpansionCard.Title size="small">
+                                <FormattedMessage id="UtenlandsoppholdSteg.StotteFraNav" />
                             </ExpansionCard.Title>
                         </ExpansionCard.Header>
                         <ExpansionCard.Content>
                             <VStack gap="10">
                                 <VStack gap="5">
                                     <BodyLong>
-                                        <FormattedMessage id="utenlandsopphold.info.del1" />
+                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del1" />
                                     </BodyLong>
                                     <BodyLong>
-                                        <FormattedMessage id="utenlandsopphold.info.del2" />
+                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del2" />
                                     </BodyLong>
                                     <BodyLong>
-                                        <FormattedMessage id="utenlandsopphold.info.del3" />
+                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del3" />
                                     </BodyLong>
                                     <BodyLong>
-                                        <FormattedMessage id="utenlandsopphold.info.del4" />
+                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del4" />
                                     </BodyLong>
                                 </VStack>
                                 <VStack gap="5">
                                     <Heading size="small">
-                                        <FormattedMessage id="utenlandsopphold.info.undertittel" />
+                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Undertittel" />
                                     </Heading>
                                     <BodyLong>
-                                        <FormattedMessage id="utenlandsopphold.info.del5" />
+                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del5" />
                                     </BodyLong>
                                     <HStack gap="1">
                                         <BodyShort>
-                                            <FormattedMessage id="utenlandsopphold.info.del6" />
+                                            <FormattedMessage id="UtenlandsoppholdSteg.Info.Del6" />
                                         </BodyShort>
                                         <BodyShort>
-                                            <Link href="https://www.nav.no/foreldrepenger#utland">
-                                                nav.no/foreldrepenger#utland
-                                            </Link>
+                                            <Link href={links.foreldrepengerUtland}>nav.no/foreldrepenger#utland</Link>
                                         </BodyShort>
                                     </HStack>
                                 </VStack>

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { notEmpty } from '@navikt/fp-validation';
 import { EsDataType, EsDataMap, useEsStateAllDataFn } from './EsDataContext';
 import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
 
@@ -11,9 +11,9 @@ const PATH_TO_LABEL_MAP = {
     [Path.OM_BARNET]: 'OmBarnetSteg.OmBarnet',
     [Path.TERMINBEKREFTELSE]: 'søknad.termin',
     [Path.ADOPSJONSBEKREFTELSE]: 'søknad.adopsjon',
-    [Path.UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold',
-    [Path.SISTE_UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold.tidligere',
-    [Path.NESTE_UTENLANDSOPPHOLD]: 'søknad.utenlandsopphold.fremtidig',
+    [Path.UTENLANDSOPPHOLD]: 'UtenlandsoppholdSteg.Utenlandsopphold',
+    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: 'TidligereUtenlandsoppholdSteg.Tidligere',
+    [Path.SENERE_UTENLANDSOPPHOLD]: 'SenereUtenlandsoppholdSteg.Fremtidig',
     [Path.OPPSUMMERING]: 'søknad.oppsummering',
 } as Record<string, string>;
 
@@ -36,15 +36,21 @@ const showUtenlandsoppholdStep = (
     currentPath: Path,
     getData: <TYPE extends EsDataType>(key: TYPE) => EsDataMap[TYPE],
 ): boolean => {
-    if (path === Path.SISTE_UTENLANDSOPPHOLD) {
+    if (path === Path.TIDLIGERE_UTENLANDSOPPHOLD) {
         const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
         const boddErSatt = !!utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd;
-        return isVisible(boddErSatt, EsDataType.UTENLANDSOPPHOLD_SISTE, Path.UTENLANDSOPPHOLD, currentPath, getData);
+        return isVisible(
+            boddErSatt,
+            EsDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            Path.UTENLANDSOPPHOLD,
+            currentPath,
+            getData,
+        );
     }
-    if (path === Path.NESTE_UTENLANDSOPPHOLD) {
+    if (path === Path.SENERE_UTENLANDSOPPHOLD) {
         const utenlandsopphold = getData(EsDataType.UTENLANDSOPPHOLD);
         const skalBoErSatt = !!utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd;
-        return isVisible(skalBoErSatt, EsDataType.UTENLANDSOPPHOLD_NESTE, Path.UTENLANDSOPPHOLD, currentPath, getData);
+        return isVisible(skalBoErSatt, EsDataType.UTENLANDSOPPHOLD_SENERE, Path.UTENLANDSOPPHOLD, currentPath, getData);
     }
     return false;
 };

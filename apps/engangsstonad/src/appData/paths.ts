@@ -5,8 +5,8 @@ export enum Path {
     TERMINBEKREFTELSE = '/soknad/terminbekreftelse',
     ADOPSJONSBEKREFTELSE = '/soknad/adopsjonsbekreftelse',
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',
-    SISTE_UTENLANDSOPPHOLD = '/soknad/siste-utenlandsopphold',
-    NESTE_UTENLANDSOPPHOLD = '/soknad/neste-utenlandsopphold',
+    TIDLIGERE_UTENLANDSOPPHOLD = '/soknad/tidligere-utenlandsopphold',
+    SENERE_UTENLANDSOPPHOLD = '/soknad/senere-utenlandsopphold',
     OPPSUMMERING = '/soknad/oppsummering',
     KVITTERING = '/kvittering',
 }
@@ -18,8 +18,8 @@ export const PATH_ORDER = [
     Path.TERMINBEKREFTELSE,
     Path.ADOPSJONSBEKREFTELSE,
     Path.UTENLANDSOPPHOLD,
-    Path.SISTE_UTENLANDSOPPHOLD,
-    Path.NESTE_UTENLANDSOPPHOLD,
+    Path.TIDLIGERE_UTENLANDSOPPHOLD,
+    Path.SENERE_UTENLANDSOPPHOLD,
     Path.OPPSUMMERING,
     Path.KVITTERING,
 ];

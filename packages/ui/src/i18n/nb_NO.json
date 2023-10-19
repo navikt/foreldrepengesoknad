@@ -1,0 +1,13 @@
+{
+    "ErrorSummaryFp.Tittel": "Du må rette opp i følgende feil:",
+
+    "FileInput.Vedlegg.Lastoppknapp": "Last opp fil",
+    "FileInput.Vedlegg.Lastoppknapp.Flere": "Last opp flere filer",
+    "Attachment.Vedlegg.Slett": "Fjern vedlegg {navn}",
+    "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "{filename} - Ops noe gikk galt prøv igjen",
+    "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - Vedlegg er ikke av gyldig type",
+    "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}KB.",
+
+    "StepButtons.Forrige": "Forrige steg",
+    "StepButtons.Neste": "Neste steg"
+}

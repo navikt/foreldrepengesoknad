@@ -4,12 +4,12 @@ import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
-    UtenlandsoppholdPeriode,
     Utenlandsopphold,
-    UtenlandsoppholdNeste,
-    UtenlandsoppholdSiste,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
 } from 'types/Utenlandsopphold';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+import { notEmpty } from '@navikt/fp-validation';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
@@ -33,15 +33,15 @@ const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
 interface Props {
     omBarnet: OmBarnet;
     utenlandsopphold: Utenlandsopphold;
-    utenlandsoppholdSiste?: UtenlandsoppholdSiste;
-    utenlandsoppholdNeste?: UtenlandsoppholdNeste;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
 }
 
 const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     omBarnet,
     utenlandsopphold,
-    utenlandsoppholdSiste,
-    utenlandsoppholdNeste,
+    tidligereUtenlandsopphold,
+    senereUtenlandsopphold,
 }) => {
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
@@ -63,7 +63,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                         <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
                     </Label>
                     <LandOppsummering
-                        utenlandsoppholdListe={notEmpty(utenlandsoppholdSiste).utenlandsoppholdSiste12Mnd}
+                        utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
                     />
                 </div>
             )}
@@ -82,7 +82,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                         <FormattedMessage id="oppsummering.text.neste12mnd" />
                     </Label>
                     <LandOppsummering
-                        utenlandsoppholdListe={notEmpty(utenlandsoppholdNeste).utenlandsoppholdNeste12Mnd}
+                        utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
                     />
                 </div>
             )}
@@ -96,8 +96,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.termindato!,
-                                    utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
-                                    utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )
                                     ? 'medlemmskap.radiobutton.vareUtlandet'
                                     : 'medlemmskap.radiobutton.vareNorge'
@@ -116,8 +116,8 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                             id={
                                 erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.fødselsdatoer[0].dato,
-                                    utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
-                                    utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )
                                     ? 'oppsummering.utenlandsopphold.iUtlandet'
                                     : 'oppsummering.utenlandsopphold.iNorge'

@@ -10,7 +10,7 @@ describe('<UtenlandsoppholdSteg>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
+        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
         expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
 
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
@@ -48,12 +48,12 @@ describe('<UtenlandsoppholdSteg>', () => {
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: 'UTENLANDSOPPHOLD_SISTE',
+            key: 'UTENLANDSOPPHOLD_TIDLIGERE',
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(3, {
             data: undefined,
-            key: 'UTENLANDSOPPHOLD_NESTE',
+            key: 'UTENLANDSOPPHOLD_SENERE',
             type: 'update',
         });
 
@@ -83,11 +83,11 @@ describe('<UtenlandsoppholdSteg>', () => {
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: 'UTENLANDSOPPHOLD_NESTE',
+            key: 'UTENLANDSOPPHOLD_SENERE',
             type: 'update',
         });
 
-        expect(await screen.findByText('Neste side: /soknad/siste-utenlandsopphold')).toBeInTheDocument();
+        expect(await screen.findByText('Neste side: /soknad/tidligere-utenlandsopphold')).toBeInTheDocument();
     });
 
     it('skal oppgi at en har bodd i Norge og skal bo i utlandet', async () => {
@@ -113,11 +113,11 @@ describe('<UtenlandsoppholdSteg>', () => {
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: 'UTENLANDSOPPHOLD_SISTE',
+            key: 'UTENLANDSOPPHOLD_TIDLIGERE',
             type: 'update',
         });
 
-        expect(await screen.findByText('Neste side: /soknad/neste-utenlandsopphold')).toBeInTheDocument();
+        expect(await screen.findByText('Neste side: /soknad/senere-utenlandsopphold')).toBeInTheDocument();
     });
 
     it('skal oppgi at en har bodd i utlandet og skal bo i utlandet', async () => {
@@ -142,6 +142,6 @@ describe('<UtenlandsoppholdSteg>', () => {
             type: 'update',
         });
 
-        expect(await screen.findByText('Neste side: /soknad/siste-utenlandsopphold')).toBeInTheDocument();
+        expect(await screen.findByText('Neste side: /soknad/tidligere-utenlandsopphold')).toBeInTheDocument();
     });
 });

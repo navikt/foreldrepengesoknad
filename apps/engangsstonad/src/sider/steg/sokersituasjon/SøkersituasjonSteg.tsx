@@ -5,14 +5,15 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 
 import { RadioGroupPanel, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired } from 'fpcommon/validering/valideringsregler';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { useFormValidators } from '@navikt/fp-validation';
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
     const intl = useIntl();
+    const { isRequired } = useFormValidators();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -48,11 +49,7 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                     <RadioGroupPanel
                         name="situasjon"
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon' }),
-                            ),
-                        ]}
+                        validate={[isRequired('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon')]}
                     >
                         <Radio value={SøkersituasjonEnum.FØDSEL}>
                             <FormattedMessage id="SøkersituasjonSteg.Fødsel" />

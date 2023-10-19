@@ -1,9 +1,10 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
+import { FileUploader } from '@navikt/fp-ui';
+import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { getSaveAttachment } from '@navikt/fp-api';
 
 import Environment from 'appData/Environment';
-import { Attachment, AttachmentType, Skjemanummer } from 'fpcommon/uploader/typer/Attachment';
-import FileUploader from 'fpcommon/uploader/FileUploader';
 
 interface Props {
     attachments?: Attachment[];
@@ -29,7 +30,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
                 skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                restApiUrl={Environment.REST_API_URL}
+                saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
             />
         </VStack>
     );

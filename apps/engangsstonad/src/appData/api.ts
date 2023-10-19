@@ -1,17 +1,19 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
-import { redirectToLogin } from 'fpcommon/util/login';
+import { redirectToLogin } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
     Utenlandsopphold,
-    UtenlandsoppholdNeste,
     UtenlandsoppholdPeriode,
-    UtenlandsoppholdSiste,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
 } from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
+
+// TODO Flytt generell api-logikk til api-pakka
 
 export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,
@@ -76,8 +78,8 @@ const sendSøknad =
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
-        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => {
         notEmpty(utenlandsopphold);
 
@@ -89,8 +91,10 @@ const sendSøknad =
             informasjonOmUtenlandsopphold: {
                 iNorgeSiste12Mnd: utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
                 iNorgeNeste12Mnd: utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
-                tidligereOpphold: mapBostedUtlandTilUtenlandsopphold(sisteUtenlandsopphold?.utenlandsoppholdSiste12Mnd),
-                senereOpphold: mapBostedUtlandTilUtenlandsopphold(nesteUtenlandsopphold?.utenlandsoppholdNeste12Mnd),
+                tidligereOpphold: mapBostedUtlandTilUtenlandsopphold(
+                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                ),
+                senereOpphold: mapBostedUtlandTilUtenlandsopphold(senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd),
             },
             søker: {
                 språkkode: locale,

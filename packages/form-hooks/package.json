@@ -1,0 +1,59 @@
+{
+    "name": "@navikt/fp-form-hooks",
+    "description": "Overbygg over react-hook-form. Tilbyr form-komponenter som radioknapp og textarea",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {
+        "test": "vitest run",
+        "test:watch": "vitest --watch=true",
+        "test:coverage": "vitest --coverage",
+        "tsc": "tsc --pretty",
+        "eslint": "eslint \"src/**/*.ts*\" --color",
+        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "prettier": "prettier --write src",
+        "build-storybook": "storybook build -o .storybook-static-build",
+        "storybook": "storybook dev --quiet -p 7003"
+    },
+    "dependencies": {
+        "@hookform/error-message": "^2.0.1",
+        "@navikt/ds-css": "4.12.1",
+        "@navikt/ds-datepicker": "^4.2.0",
+        "@navikt/ds-icons": "3.4.3",
+        "@navikt/ds-react": "4.12.1",
+        "@navikt/fp-constants": "workspace:*",
+        "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-ui": "workspace:*",
+        "@types/react": "^18.2.20",
+        "@types/react-dom": "^18.2.7",
+        "dayjs": "^1.11.9",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-hook-form": "7.45.4"
+    },
+    "devDependencies": {
+        "@navikt/ds-codemod": "3.4.2",
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
+        "@storybook/addon-essentials": "^7.3.1",
+        "@storybook/addon-interactions": "^7.3.1",
+        "@storybook/addon-links": "^7.2.1",
+        "@storybook/builder-vite": "^7.3.1",
+        "@storybook/react": "^7.2.1",
+        "@storybook/testing-react": "^2.0.1",
+        "@testing-library/jest-dom": "^6.0.0",
+        "@testing-library/react": "^14.0.0",
+        "@testing-library/user-event": "^14.4.3",
+        "@types/react": "^18.2.20",
+        "@types/react-dom": "^18.2.7",
+        "@vitejs/plugin-react": "^4.0.4",
+        "cross-env": "^7.0.3",
+        "storybook": "7.3.1",
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6",
+        "vite": "^4.4.9",
+        "vite-plugin-checker": "^0.6.1",
+        "vitest": "^0.34.2"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0"
+    }
+}

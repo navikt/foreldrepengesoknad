@@ -12,8 +12,6 @@ const Environment = () => {
         FAMILIE: appSettings.FAMILIE,
         [FeatureToggle.visFeilside]: appSettings[FeatureToggle.visFeilside],
         [FeatureToggle.visAlertstripe]: appSettings[FeatureToggle.visAlertstripe],
-        [FeatureToggle.visPerioderSomSendesInn]: appSettings[FeatureToggle.visPerioderSomSendesInn],
-        [FeatureToggle.wlbGjelderFraFørsteJanuar2022]: appSettings[FeatureToggle.wlbGjelderFraFørsteJanuar2022],
     };
 };
 

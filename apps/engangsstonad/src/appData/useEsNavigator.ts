@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useEsStateResetFn } from './EsDataContext';
 import { Path } from './paths';
 import useStepData from './useStepData';

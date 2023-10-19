@@ -11,9 +11,9 @@ import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
-import { notEmpty } from 'fpcommon/validering/valideringUtil';
-import { StepButtons } from '@navikt/fp-form-hooks';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
+import { notEmpty } from '@navikt/fp-validation';
+import { StepButtons } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
@@ -26,8 +26,8 @@ export interface Props {
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
-        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => void;
 }
 
@@ -40,8 +40,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
-    const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SISTE);
-    const nesteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_NESTE);
+    const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -50,7 +50,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         if (!isChecked) {
             setIsError(true);
         } else {
-            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, sisteUtenlandsopphold, nesteUtenlandsopphold);
+            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
             navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
@@ -75,12 +75,12 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' })}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.utenlandsopphold' })}>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.Utenlandsopphold' })}>
                         <UtenlandsoppholdOppsummering
                             omBarnet={omBarnet}
                             utenlandsopphold={utenlandsopphold}
-                            utenlandsoppholdNeste={nesteUtenlandsopphold}
-                            utenlandsoppholdSiste={sisteUtenlandsopphold}
+                            tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                            senereUtenlandsopphold={senereUtenlandsopphold}
                         />
                     </Oppsummeringspunkt>
                 </Accordion>
@@ -96,7 +96,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText="oppsummering.button.sendSøknad"
+                    nextButtonText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
                     nextButtonOnClick={send}
                 />
             </VStack>

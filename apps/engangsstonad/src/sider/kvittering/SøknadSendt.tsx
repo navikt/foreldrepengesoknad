@@ -1,15 +1,15 @@
 import { BodyShort, HStack, Heading, Ingress, Label, Link, VStack } from '@navikt/ds-react';
 import { UtvidetInformasjon, bemUtils, useDocumentTitle } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { lenker } from 'fpcommon/util/lenker';
-import ContentWrapper from 'fpcommon/components/ContentWrapper';
+import { links } from '@navikt/fp-constants';
+import { ContentWrapper } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import Kvittering from 'types/Kvittering';
 import KvitteringHeader from './KvitteringHeader';
 import CheckmarkIkon from './ikon/CheckmarkIkon';
 import StatusBoks from './StatusBoks';
 import SøknadSendtIkon from './ikon/SøknadSendtIkon';
-import { logAmplitudeEvent } from 'fpcommon/amplitude/amplitude';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import './søknadSendt.less';
 
@@ -74,7 +74,7 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) =>
                                             <FormattedMessage id="søknadSendt.pengene.kontonummer" />
                                         </Label>
                                         <Ingress>{person.bankkonto && person.bankkonto.kontonummer}</Ingress>
-                                        <Link href={lenker.brukerprofil}>
+                                        <Link href={links.brukerprofil}>
                                             <FormattedMessage id="søknadSendt.pengene.kontonummer.endre" />
                                         </Link>
                                     </VStack>
@@ -83,7 +83,7 @@ const SøknadSendt: React.FunctionComponent<Props> = ({ person, kvittering }) =>
                                         <BodyShort>
                                             <FormattedMessage id="søknadSendt.pengene.ingenKontonummer" />
                                         </BodyShort>
-                                        <Link href={lenker.brukerprofil}>
+                                        <Link href={links.brukerprofil}>
                                             <FormattedMessage id="søknadSendt.pengene.kontonummer.leggTil" />
                                         </Link>
                                     </VStack>

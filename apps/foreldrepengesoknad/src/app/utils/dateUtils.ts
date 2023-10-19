@@ -20,8 +20,6 @@ import {
 } from 'uttaksplan/types/Periode';
 import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import FeatureToggle from 'app/FeatureToggle';
-import { isFeatureEnabled } from './toggleUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
 
@@ -358,10 +356,7 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
 
 export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
-    const førsteJanuar2022 = new Date('2022-01-01');
-    if (isFeatureEnabled(FeatureToggle.wlbGjelderFraFørsteJanuar2022)) {
-        return dayjs(familiehendelsesdato).isSameOrAfter(førsteJanuar2022, 'day');
-    }
+
     return (
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
         dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')

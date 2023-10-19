@@ -6,7 +6,7 @@ import { bemUtils, VedleggIkon } from '@navikt/fp-common';
 import Person from 'types/Person';
 import Kvittering from 'types/Kvittering';
 import SpotlightLetter from './ikon/SpotlightLetter';
-import { openPdfPreview } from 'fpcommon/util/pdfUtils';
+import { openPdfPreview } from '@navikt/fp-utils';
 
 import './kvitteringHeader.less';
 

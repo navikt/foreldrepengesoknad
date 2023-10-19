@@ -28,8 +28,6 @@ const extractDecoratorFragments = (html) => {
             FAMILIE: `${process.env.FAMILIE}`,
             FEATURE_VIS_FEILSIDE: `${process.env.FEATURE_VIS_FEILSIDE}`,
             FEATURE_VIS_ALERTSTRIPE: `${process.env.FEATURE_VIS_ALERTSTRIPE}`,
-            FEATURE_VIS_PERIODER_SOM_SENDES_INN: `${process.env.FEATURE_VIS_PERIODER_SOM_SENDES_INN}`,
-            FEATURE_WLB_GJELDER_FRA_FORSTE_JAN: `${process.env.FEATURE_WLB_GJELDER_FRA_FORSTE_JAN}`,
             APP_VERSION: `${process.env.APP_VERSION}`,
             IS_TEST: `${process.env.IS_TEST}`,
         }),

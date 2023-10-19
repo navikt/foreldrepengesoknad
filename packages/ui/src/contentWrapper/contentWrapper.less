@@ -1,0 +1,16 @@
+@mobile-breakpoint: 576px;
+@tablet-breakpoint: 68px;
+
+.content {
+    max-width: 704px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    @media (max-width: @tablet-breakpoint) {
+        max-width: 100%;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        padding: 1rem;
+    }
+}
