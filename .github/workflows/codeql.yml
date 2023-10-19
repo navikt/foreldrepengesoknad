@@ -7,6 +7,8 @@ on:
       - 'server_for_redirect/**'
       - '.github/workflows/build-redirect.yml'
       - '.deploy/planlegger_redirect.yaml'
+      - 'server/**'
+      - '.github/workflows/build-server.yml'
   pull_request:
     branches: [ "master" ]
     paths-ignore:
