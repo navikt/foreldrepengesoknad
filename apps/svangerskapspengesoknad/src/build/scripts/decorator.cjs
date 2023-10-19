@@ -24,6 +24,8 @@ const getDecorator = () =>
                         REST_API_URL: `${process.env.FORELDREPENGESOKNAD_API_URL}`,
                         LOGIN_URL: `${process.env.LOGINSERVICE_URL}`,
                         LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
+                        INNSYN: `${process.env.INNSYN}`,
+                        INNSYN_SAK: `${process.env.INNSYN_SAK}`,
                     }),
                 };
                 resolve(data);

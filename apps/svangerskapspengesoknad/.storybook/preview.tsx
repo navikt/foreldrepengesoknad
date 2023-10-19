@@ -6,6 +6,8 @@ scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     REST_API_URL: 'rest-api',
     LOGIN_URL: '',
+    INNSYN: 'test',
+    INSYN_SAK: 'test',
 });
 document.head.appendChild(scriptTag);
 

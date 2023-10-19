@@ -35,8 +35,8 @@ import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
-import links from 'app/links/links';
 import { SendtSøknad } from 'app/types/SendtSøknad';
+import Environment from 'app/Environment';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -103,12 +103,9 @@ const Oppsummering = () => {
 
     useEffect(() => {
         if (sendtSøknad) {
-            const isDev = window.location.href.indexOf('intern.dev') > -1;
-            let navigateTo = isDev ? links.innsynDev : links.innsyn;
+            let navigateTo = Environment.INNSYN;
             if (sendtSøknad.saksNr) {
-                navigateTo = isDev
-                    ? links.innsynDevSak + `${sendtSøknad.saksNr}`
-                    : links.innsynSak + `${sendtSøknad.saksNr}`;
+                navigateTo = `${Environment.INNSYN_SAK}${sendtSøknad.saksNr}`;
             }
             redirect(navigateTo);
         }

@@ -6,6 +6,8 @@ const Environment = () => {
         REST_API_URL: appSettings.REST_API_URL,
         LOGIN_URL: appSettings.LOGIN_URL,
         LOG_VALIDATION: appSettings.LOG_VALIDATION,
+        INNSYN: appSettings.INNSYN,
+        INNSYN_SAK: appSettings.INNSYN_SAK,
     };
 };
 
