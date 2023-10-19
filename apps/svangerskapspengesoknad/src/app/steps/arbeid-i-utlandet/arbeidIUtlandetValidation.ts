@@ -66,5 +66,8 @@ export const validateArbeidIUtlandetNavnArbeidsgiver =
         if (!hasValue(navn)) {
             return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetNavn.påkrevd');
         }
+        if (navn.length > 100) {
+            return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetNavn.forLang');
+        }
         return validateTextInputField(navn, navnPåArbeidsgiverLabel, intl);
     };

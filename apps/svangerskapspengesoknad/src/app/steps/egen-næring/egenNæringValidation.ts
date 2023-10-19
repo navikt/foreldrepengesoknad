@@ -6,6 +6,7 @@ import {
     isDateABeforeDateB,
     isDateInTheFuture,
     validateStringAsNumberInput,
+    validateTextInputField,
 } from '@navikt/fp-common';
 import { erGyldigNorskOrgnummer } from '@navikt/fp-common/src/common/utils/organisasjonUtils';
 import { getNumberFromNumberInputValue, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -174,3 +175,13 @@ export const validateEgenNæringVarigEndringBeskrivelse =
     (intl: IntlShape, label: string, fieldName: string) => (value: string) => {
         return validateTextAreaInput(value, intl, label, fieldName);
     };
+
+export const validateEgenNæringNavn = (intl: IntlShape, label: string) => (value: string) => {
+    if (!hasValue(value)) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringNavn.påkrevd');
+    }
+    if (value.length > 9) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringNavn.forLang');
+    }
+    return validateTextInputField(value, label, intl);
+};

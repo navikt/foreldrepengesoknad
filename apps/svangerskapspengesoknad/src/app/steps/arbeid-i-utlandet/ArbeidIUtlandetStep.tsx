@@ -1,13 +1,5 @@
 import { Button } from '@navikt/ds-react';
-import {
-    Block,
-    Step,
-    StepButtonWrapper,
-    date20YearsAgo,
-    date4WeeksAgo,
-    intlUtils,
-    validateTextInputField,
-} from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, date20YearsAgo, date4WeeksAgo, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -32,11 +24,12 @@ import {
     mapArbeidIUtlandetTilState,
 } from './arbeidIUtlandetFormUtils';
 import dayjs from 'dayjs';
-import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
+import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import {
     validateArbeidIUtlandetFom,
     validateArbeidIUtlandetLand,
+    validateArbeidIUtlandetNavnArbeidsgiver,
     validateArbeidIUtlandetPågående,
     validateArbeidIUtlandetTom,
 } from './arbeidIUtlandetValidation';
@@ -101,19 +94,10 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
                                                     style={{ width: 'var(--app-text-input-width)' }}
                                                     label={navnPåArbeidsgiverLabel}
-                                                    validate={(val) => {
-                                                        if (!hasValue(val)) {
-                                                            return intlUtils(
-                                                                intl,
-                                                                'valideringsfeil.arbeidIUtlandetNavn.påkrevd',
-                                                            );
-                                                        }
-                                                        return validateTextInputField(
-                                                            val,
-                                                            navnPåArbeidsgiverLabel,
-                                                            intl,
-                                                        );
-                                                    }}
+                                                    validate={validateArbeidIUtlandetNavnArbeidsgiver(
+                                                        intl,
+                                                        navnPåArbeidsgiverLabel,
+                                                    )}
                                                 />
                                             </Block>
                                             <Block padBottom="xxl">

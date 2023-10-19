@@ -13,7 +13,6 @@ import {
     date20YearsAgo,
     date4WeeksAgo,
     intlUtils,
-    validateTextInputField,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
 import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
@@ -29,6 +28,7 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { Link } from 'react-router-dom';
 import {
     validateEgenNæringFom,
+    validateEgenNæringNavn,
     validateEgenNæringResultat,
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
@@ -126,11 +126,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     label={navnPåNæringLabel}
                                     style={{ width: 'var(--app-text-input-width)' }}
                                     maxLength={100}
-                                    validate={(value) =>
-                                        !hasValue(value)
-                                            ? intlUtils(intl, 'valideringsfeil.egenNæringNavn.påkrevd')
-                                            : validateTextInputField(value, navnPåNæringLabel, intl)
-                                    }
+                                    validate={validateEgenNæringNavn(intl, navnPåNæringLabel)}
                                 />
                             </Block>
                             <Block
