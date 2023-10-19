@@ -5,7 +5,7 @@ on:
     branches:
       - 'master'
     paths:
-      - 'server'
+      - 'server/**'
       - '.github/workflows/build-server.yml'
   schedule:
     - cron: '45 23 28 * *' # "At 11:45 PM, on day 28 of the month"
