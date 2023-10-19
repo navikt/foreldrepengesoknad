@@ -3,7 +3,12 @@ import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BarnetFormComponents, BarnetFormData, BarnetFormField } from './barnetFormConfig';
-import { cleanupOmBarnetFormData, getBarnetInitialValues, mapOmBarnetFormDataToState } from './barnetUtils';
+import {
+    cleanupOmBarnetFormData,
+    getBarnetInitialValues,
+    getMinDatoTermin,
+    mapOmBarnetFormDataToState,
+} from './barnetUtils';
 import barnetQuestionsConfig from './barnetQuestionsConfig';
 import stepConfig from '../stepsConfig';
 import actionCreator from 'app/context/action/actionCreator';
@@ -11,7 +16,7 @@ import { BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
 import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { niMånederFremITid, halvannetÅrSiden, etÅrSiden } from 'app/utils/dateUtils';
+import { niMånederFremITid, halvannetÅrSiden } from 'app/utils/dateUtils';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 
 const Barnet: React.FunctionComponent = () => {
@@ -33,7 +38,7 @@ const Barnet: React.FunctionComponent = () => {
                 const visibility = barnetQuestionsConfig.getVisbility({
                     ...formValues,
                 } as BarnetFormData);
-
+                const minDatoTermin = getMinDatoTermin(formValues.erBarnetFødt!, formValues.fødselsdato!);
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -83,7 +88,7 @@ const Barnet: React.FunctionComponent = () => {
                                         name={BarnetFormField.termindato}
                                         label={intlUtils(intl, 'barnet.termindato')}
                                         placeholder={'dd.mm.åååå'}
-                                        minDate={etÅrSiden(new Date())}
+                                        minDate={minDatoTermin}
                                         maxDate={niMånederFremITid(new Date())}
                                         validate={validateTermindato(intl, formValues.fødselsdato)}
                                     />

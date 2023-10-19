@@ -5,6 +5,9 @@ import {
 } from '@navikt/fp-common/src/common/utils/formUtils';
 import { BarnetFormData, BarnetFormField } from './barnetFormConfig';
 import { Barn } from 'app/types/Barn';
+import { enMånedSiden } from 'app/utils/dateUtils';
+import { isValidDate } from '@navikt/ds-react/esm/date/utils';
+import { hasValue } from 'app/utils/validationUtils';
 
 const getInitValues = (): Readonly<BarnetFormData> => ({
     [BarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
@@ -44,4 +47,12 @@ export const mapOmBarnetFormDataToState = (values: Partial<BarnetFormData>): Bar
         termindato: values.termindato!,
         fødselsdato: values.fødselsdato,
     };
+};
+
+export const getMinDatoTermin = (erBarnetFødt: YesOrNo, fødselsdato: string): Date => {
+    if (erBarnetFødt === YesOrNo.YES)
+        if (hasValue(fødselsdato) && isValidDate(new Date(fødselsdato))) {
+            return enMånedSiden(new Date(fødselsdato));
+        }
+    return enMånedSiden(new Date());
 };
