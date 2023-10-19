@@ -15,11 +15,11 @@ env:
 
 jobs:
   test:
-    name: Run tests
+    name: Build
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # ratchet:actions/checkout@v4
