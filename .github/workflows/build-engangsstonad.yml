@@ -27,6 +27,7 @@ jobs:
       app: engangsstonad
     secrets: inherit
 
+
   deploy-dev:
     name: Deploy dev
     permissions:
