@@ -128,12 +128,12 @@ describe('<Barnet>', () => {
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
         const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(fødselsdatoInput, '2024-05-19');
-        await user.type(termindatoInput, '2023-10-18');
+        await user.type(fødselsdatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
         await user.click(screen.getByText(NESTE_STEG));
 
         expect(
-            await screen.getAllByText('Termindatoen kan ikke være tidligere enn 1 måned før fødselsdatoen')[0],
+            await screen.getAllByText('Termindatoen kan ikke være tidligere enn 1 måned før fødselsdatoen.')[0],
         ).toBeInTheDocument();
         vi.useRealTimers();
     });
@@ -144,12 +144,12 @@ describe('<Barnet>', () => {
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
         const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(fødselsdatoInput, '2023-10-18');
-        await user.type(termindatoInput, '2024-05-19');
+        await user.type(fødselsdatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
+        await user.type(termindatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
         await user.click(screen.getByText(NESTE_STEG));
 
         expect(
-            await screen.getAllByText('Termindatoen kan ikke være senere enn 6 måneder etter fødselsdatoen')[0],
+            await screen.getAllByText('Termindatoen kan ikke være senere enn 6 måneder etter fødselsdatoen.')[0],
         ).toBeInTheDocument();
         vi.useRealTimers();
     });
