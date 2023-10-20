@@ -4,14 +4,9 @@
     "ingresses": ["https://engangsstonad.intern.dev.nav.no"],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.ekstern.dev.nav.no",
-<<<<<<< Updated upstream
         "REST_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
-        "LOGIN_URL": "https://login.ekstern.dev.nav.no/oauth2/login"
-=======
-        "FORELDREPENGESOKNAD_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
-        "LOGINSERVICE_URL": "https://login.ekstern.dev.nav.no/oauth2/login",
+        "LOGIN_URL": "https://login.ekstern.dev.nav.no/oauth2/login",
         "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "INNSYN_SAK": "https://foreldrepenger.intern.dev.nav.no/sak/"
->>>>>>> Stashed changes
     }
 }
