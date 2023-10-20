@@ -18,7 +18,6 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm-monorepo.yml@main
     with:
-      runs-on: 'ubuntu-latest-8-cores'
       node-version: '18.8.0'
       build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
       push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
