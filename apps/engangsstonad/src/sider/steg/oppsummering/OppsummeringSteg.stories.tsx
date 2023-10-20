@@ -60,7 +60,7 @@ const Template: StoryFn<{
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => void;
+    ) => Promise<void>;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
@@ -94,12 +94,12 @@ const Template: StoryFn<{
 
 export const BarnetErFodt = Template.bind({});
 BarnetErFodt.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
 };
 
 export const AdopsjonAvEktefellesBarn = Template.bind({});
 AdopsjonAvEktefellesBarn.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -124,7 +124,7 @@ AdopsjonAvEktefellesBarn.args = {
 
 export const AdopsjonAvEktefellesFlereBarn = Template.bind({});
 AdopsjonAvEktefellesFlereBarn.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -149,7 +149,7 @@ AdopsjonAvEktefellesFlereBarn.args = {
 
 export const BarnetErIkkeFodt = Template.bind({});
 BarnetErIkkeFodt.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
@@ -174,7 +174,7 @@ BarnetErIkkeFodt.args = {
 
 export const HarTidligereOgFremtidigeUtenlandsopphold = Template.bind({});
 HarTidligereOgFremtidigeUtenlandsopphold.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     utenlandsopphold: {
         harBoddUtenforNorgeSiste12Mnd: true,
         skalBoUtenforNorgeNeste12Mnd: true,
