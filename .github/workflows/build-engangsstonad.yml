@@ -12,7 +12,7 @@ on:
       - '.github/workflows/build-engangsstonad.yml'
 
 env:
-  APP: 'engangsstonad'
+  NAME: engangsstonad
 
 jobs:
   build-app:
@@ -24,7 +24,7 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
       push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
-      app: ${{env.APP}}
+      app: ${{ env.NAME }}
     secrets: inherit
 
   deploy-dev:
@@ -38,7 +38,7 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: dev-gcp
-      app: /${{env.APP}}
+      app: /${{ env.NAME }}
     secrets: inherit
 
   deploy-prod:
@@ -52,5 +52,5 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: prod-gcp
-      app: /${{ env.APP }}
+      app: /${{ env.NAME }}
     secrets: inherit
