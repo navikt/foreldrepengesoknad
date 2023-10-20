@@ -117,10 +117,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
                         ? 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen'
                         : 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis';
-                const labelPeriodeTom =
-                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.ingen'
-                        : 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.delvis';
+                const labelPeriodeTom = 'tilrettelegging.enPeriodeMedTilretteleggingTom.label';
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
@@ -322,7 +319,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,
                                         fødselsdato,
-                                        formValues.enPeriodeMedTilretteleggingTom,
                                         formValues.tilretteleggingType!,
                                     )}
                                 />
@@ -376,6 +372,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         sisteDagForSvangerskapspenger,
                                         fødselsdato,
                                         formValues.enPeriodeMedTilretteleggingFom,
+                                        formValues.tilretteleggingType!,
                                     )}
                                 />
                             </Block>

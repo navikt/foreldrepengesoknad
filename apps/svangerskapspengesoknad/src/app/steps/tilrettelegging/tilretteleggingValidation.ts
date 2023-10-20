@@ -88,7 +88,6 @@ export const validateSammePeriodeFremTilTerminFom =
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
-        tom: string | undefined,
         tilretteleggingstype: TilretteleggingstypeOptions,
     ) =>
     (value: string) => {
@@ -109,10 +108,6 @@ export const validateSammePeriodeFremTilTerminFom =
             return intlUtils(intl, 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom');
         }
 
-        if (hasValue(tom) && dayjs(value).isAfter(dayjs(tom), 'd')) {
-            return intlUtils(intl, 'valideringsfeil.enPeriodeMedTilretteleggingFom.etterTom');
-        }
-
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             return fødselsdato
                 ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørFødsel')
@@ -128,6 +123,7 @@ export const validateSammePeriodeFremTilTerminTom =
         sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
         fom: string | undefined,
+        type: TilretteleggingstypeOptions,
     ) =>
     (value: string) => {
         if (!hasValue(value)) {
@@ -145,7 +141,7 @@ export const validateSammePeriodeFremTilTerminTom =
             return intlUtils(intl, 'valideringsfeil.periode.tom.førBehovForTilretteleggingFom');
         }
         if (hasValue(fom) && dayjs(value).isBefore(dayjs(fom), 'd')) {
-            return intlUtils(intl, 'valideringsfeil.periode.tom.etterTilDato');
+            return intlUtils(intl, `valideringsfeil.periode.tom.etterTilDato.${type}`);
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
