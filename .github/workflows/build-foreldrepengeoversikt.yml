@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'master'
+      - 'felles_server_decorator'
     paths:
       - 'apps/foreldrepengeoversikt/**'
       - 'packages/**'
@@ -19,8 +19,8 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
     with:
-      build-image: ${{ github.ref_name == 'master' }} # default: true
-      push-image: ${{ github.ref_name == 'master' }} # default: false
+      build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
+      push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
       app: foreldrepengeoversikt
     secrets: inherit
 
@@ -29,7 +29,7 @@ jobs:
     name: Deploy dev
     permissions:
       id-token: write
-    if: github.ref_name == 'master'
+    if: github.ref_name == 'felles_server_decorator'
     needs: build-app
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
