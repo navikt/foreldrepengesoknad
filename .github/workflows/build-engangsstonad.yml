@@ -9,7 +9,7 @@ on:
       - 'packages/**'
       - '.deploy/engangsstonad/**'
       - '.deploy/naiserator.yaml'
-      - '.github/workflows/build-engangsstønad.yml'
+      - '.github/workflows/build-engangsstonad.yml'
 
 env:
   APP: engangsstonad
