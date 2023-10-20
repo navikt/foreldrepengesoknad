@@ -20,9 +20,8 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm-monorepo.yml@main
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
     with:
-      node-version: '18.8.0'
       build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
       push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
       app: ${{ env.APP }}
