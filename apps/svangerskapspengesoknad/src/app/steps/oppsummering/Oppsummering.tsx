@@ -215,13 +215,13 @@ const Oppsummering = () => {
                                             <>
                                                 <Block padBottom="l">
                                                     <BodyShort className={bem.element('label')}>
-                                                        {'Risikofaktorer i jobben din som frilanser:'}
+                                                        {intlUtils(intl, 'oppsummering.risikofaktorer.frilans')}
                                                     </BodyShort>
-                                                    <BodyShort>${tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
+                                                    <BodyShort>{tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
                                                 </Block>
                                                 <Block padBottom="l">
                                                     <BodyShort className={bem.element('label')}>
-                                                        {'Tilretteleggingstiltak i jobben din som frilanser:'}
+                                                        {intlUtils(intl, 'oppsummering.tilretteleggingstiltak.frilans')}
                                                     </BodyShort>
                                                     <BodyShort>
                                                         {tilretteleggingMedFrilans.tilretteleggingstiltak}
@@ -232,14 +232,18 @@ const Oppsummering = () => {
                                         {tilretteleggingMedSN && (
                                             <>
                                                 <Block padBottom="l">
-                                                    <BodyShort
-                                                        className={bem.element('label')}
-                                                    >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
-                                                    <BodyShort>${tilretteleggingMedSN.risikofaktorer}</BodyShort>
+                                                    <BodyShort className={bem.element('label')}>
+                                                        {intlUtils(intl, 'oppsummering.risikofaktorer.SN', {
+                                                            navn: tilretteleggingMedSN.arbeidsforhold.navn,
+                                                        })}
+                                                    </BodyShort>
+                                                    <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
                                                 </Block>
                                                 <Block padBottom="l">
                                                     <BodyShort className={bem.element('label')}>
-                                                        {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
+                                                        {intlUtils(intl, 'oppsummering.tilretteleggingstiltak.SN', {
+                                                            navn: tilretteleggingMedSN.arbeidsforhold.navn,
+                                                        })}
                                                     </BodyShort>
                                                     <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
                                                 </Block>
