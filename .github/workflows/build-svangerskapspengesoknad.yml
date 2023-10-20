@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'felles_server_decorator'
+      - '**'
     paths:
       - 'apps/svangerskapspengesoknad/**'
       - 'packages/**'
@@ -24,8 +24,8 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
     with:
-      build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
-      push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
+      build-image: ${{ github.ref_name == 'master' }} # default: true
+      push-image: ${{ github.ref_name == 'master' }} # default: false
       app: svangerskapspengesoknad
     secrets: inherit
 
@@ -34,7 +34,7 @@ jobs:
     name: Deploy dev
     permissions:
       id-token: write
-    if: github.ref_name == 'felles_server_decorator'
+    if: github.ref_name == 'master'
     needs: build-app
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
