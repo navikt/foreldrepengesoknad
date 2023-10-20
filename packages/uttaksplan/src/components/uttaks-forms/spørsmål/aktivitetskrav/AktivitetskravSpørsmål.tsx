@@ -2,6 +2,7 @@ import {
     Attachment,
     AttachmentType,
     Block,
+    FormikFileUploader,
     MorsAktivitet,
     NavnPåForeldre,
     Skjemanummer,
@@ -10,7 +11,6 @@ import {
     intlUtils,
     links,
 } from '@navikt/fp-common';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
@@ -27,6 +27,7 @@ interface Props {
     aktivitetskravMorValue: MorsAktivitet | '';
     aktivitetskravVedlegg: Attachment[];
     isOpen: boolean;
+    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const getVeilederTekst = (
@@ -165,6 +166,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
     aktivitetskravVedlegg,
     FormComponents,
     isOpen,
+    saveAttachment,
 }) => {
     const intl = useIntl();
 
@@ -217,6 +219,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                     attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                     skjemanummer={getMorsAktivitetSkjemanummer(aktivitetskravMorValue as MorsAktivitet)}
                     attachments={aktivitetskravVedlegg}
+                    saveAttachment={saveAttachment}
                 />
             </Block>
         </>

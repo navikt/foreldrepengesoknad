@@ -1,13 +1,13 @@
+import {
+    andreAugust2022ReglerGjelder,
+    getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
+    getBareFarHarRettKontoUtenAktivitetskravUker,
+    links,
+} from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
-import links from 'app/links/links';
 import { IntlShape } from 'react-intl';
-import {
-    getBareFarHarRettKontoUtenAktivitetskravUker,
-    getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
-} from 'app/utils/minsterettUtils';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 
 export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest = (
     grunnlag: Søknadsinfo,

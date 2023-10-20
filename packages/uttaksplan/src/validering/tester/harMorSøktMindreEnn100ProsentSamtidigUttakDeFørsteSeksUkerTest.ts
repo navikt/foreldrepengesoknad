@@ -1,8 +1,7 @@
-import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import dayjs from 'dayjs';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { isUttaksperiode } from 'types/Periode';
+import { getSisteUttaksdag6UkerEtterFødsel, isUttaksperiode } from '@navikt/fp-common';
 
 export const harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest: RegelTest = (
     grunnlag: Søknadsinfo,

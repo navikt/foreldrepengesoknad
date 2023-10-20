@@ -1,44 +1,46 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Block, intlUtils } from '@navikt/fp-common';
-import Planlegger from './components/planlegger/Planlegger';
-import { ForeldreparSituasjon } from 'app/types/ForeldreparSituasjonTypes';
-import { Forelder } from 'app/types/Forelder';
 import {
-    isAnnenPartInfoPeriode,
-    isUtsettelsesperiode,
+    AnnenForelder,
+    Arbeidsforhold,
+    Attachment,
+    Barn,
+    BarnFraNesteSak,
+    Block,
+    Dekningsgrad,
+    EksisterendeSak,
+    Forelder,
+    ForeldreparSituasjon,
+    ISOStringToDate,
     Periode,
+    Situasjon,
+    Søkersituasjon,
+    TilgjengeligStønadskonto,
+    Tilleggsopplysninger,
     Utsettelsesperiode,
     Uttaksperiode,
-} from './types/Periode';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { Situasjon } from 'app/types/Situasjon';
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    getSeneEndringerSomKreverBegrunnelse,
+    getToTetteReglerGjelder,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isAnnenPartInfoPeriode,
+    isUtsettelsesperiode,
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-common';
+import Planlegger from './components/planlegger/Planlegger';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
-import { getToTetteReglerGjelder, ISOStringToDate, tidperiodeOverlapperDato } from 'app/utils/dateUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { useIntl } from 'react-intl';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/OppgiTilleggsopplysninger';
-import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
 import { SenEndringÅrsak } from './types/SenEndringÅrsak';
-import { getSeneEndringerSomKreverBegrunnelse } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
-import Barn, { BarnFraNesteSak } from 'app/context/types/Barn';
-import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from 'app/utils/wlbUtils';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
-import AutomatiskJusteringForm from '../../../apps/foreldrepengesoknad/src/app/steps/uttaksplan/automatisk-justering-form/AutomatiskJusteringForm';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { NavnPåForeldre } from '@navikt/fp-common';
+import { getHarAktivitetskravIPeriodeUtenUttak } from 'utils/uttaksplanUtils';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -74,13 +76,13 @@ interface Props {
     handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
     handleResetUttaksplan: () => void;
-    visibility: QuestionVisibility<UttaksplanFormField, undefined>;
     visAutomatiskJusteringForm: boolean;
     perioderMedUttakRundtFødsel: Uttaksperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
     minsterettUkerToTette: number | undefined;
+    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 export interface PeriodeValidState {
@@ -120,13 +122,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
     handleSlettUttaksplan,
     handleResetUttaksplan,
     barn,
-    visibility,
-    visAutomatiskJusteringForm,
-    perioderMedUttakRundtFødsel,
     barnFraNesteSak,
     familiehendelsesdatoNesteSak,
     førsteUttaksdagNesteBarnsSak,
     minsterettUkerToTette,
+    saveAttachment,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -298,14 +298,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
     return (
         <>
             <Block padBottom="l">
-                <InfoOmSøknaden
-                    eksisterendeSak={eksisterendeSak}
-                    erIUttaksplanenSteg={true}
-                    tilgjengeligeStønadskontoer={stønadskontoer}
-                    minsterettUkerToTette={minsterettUkerToTette}
-                />
-            </Block>
-            <Block padBottom="l">
                 <Planlegger
                     uttaksplan={uttaksplan}
                     familiehendelsesdato={familiehendelsesdatoDate}
@@ -332,9 +324,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     utsettelserIPlan={utsettelserIPlan}
                     barnFraNesteSak={barnFraNesteSak}
                     perioderErGyldige={perioderErGyldige}
+                    saveAttachment={saveAttachment}
                 />
             </Block>
-            {visAutomatiskJusteringForm && (
+            {/* {visAutomatiskJusteringForm && (
                 <Block padBottom="l">
                     <AutomatiskJusteringForm
                         termindato={termindato!}
@@ -343,7 +336,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                         visibility={visibility}
                     />
                 </Block>
-            )}
+            )} */}
             <Block padBottom="xl">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}

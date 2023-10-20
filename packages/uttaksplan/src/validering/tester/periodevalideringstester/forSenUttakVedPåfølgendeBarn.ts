@@ -1,9 +1,7 @@
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
 import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import dayjs from 'dayjs';
-import { isUttakAnnenPart, Periode, Periodetype } from 'types/Periode';
-import { formatDate } from '@navikt/fp-common';
+import { Periode, Periodetype, Uttaksdagen, formatDate, isUttakAnnenPart } from '@navikt/fp-common';
 
 export const laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn = (
     periode: Periode,

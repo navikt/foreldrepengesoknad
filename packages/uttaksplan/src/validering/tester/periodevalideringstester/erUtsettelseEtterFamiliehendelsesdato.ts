@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { isUtsettelsesperiode } from 'types/Periode';
 import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
+import { isUtsettelsesperiode } from '@navikt/fp-common';
 
 export const erUtsettelseEtterFamiliehendelsesdato: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const ugyldigeUtsettelser = grunnlag.perioder

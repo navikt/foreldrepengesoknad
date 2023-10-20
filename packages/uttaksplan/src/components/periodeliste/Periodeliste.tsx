@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import {
     AnnenForelder,
     Arbeidsforhold,
+    Attachment,
     Barn,
     BarnFraNesteSak,
     bemUtils,
@@ -53,6 +54,7 @@ interface Props {
     barnFraNesteSak: BarnFraNesteSak | undefined;
     intl: IntlShape;
     perioderErGyldige: PeriodeValidState[];
+    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
@@ -94,6 +96,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     barnFraNesteSak,
     intl,
     perioderErGyldige,
+    saveAttachment,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
     const bem = bemUtils('periodeliste');
@@ -167,6 +170,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                             utsettelserIPlan={utsettelserIPlan}
                             intl={intl}
                             periodeErGyldig={periodeErGyldig}
+                            saveAttachment={saveAttachment}
                         />
                         {erAllePerioderIPlanenFørFødsel && index === uttaksplan.length - 1 ? (
                             <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />

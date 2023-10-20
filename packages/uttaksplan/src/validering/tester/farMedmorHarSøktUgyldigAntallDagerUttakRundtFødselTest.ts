@@ -1,16 +1,16 @@
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { formaterDatoKompakt } from 'app/utils/dateUtils';
-import { Periode } from 'types/Periode';
 import {
+    ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
+    Periode,
+    formaterDatoKompakt,
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
+    getSumUttaksdagerÅTrekkeIPeriodene,
     gjelderWLBReglerFarMedmorRundtFødsel,
     slutterTidsperiodeInnen6UkerEtterFødsel,
-    ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
-} from 'app/utils/wlbUtils';
-import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
+} from '@navikt/fp-common';
+import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import dayjs from 'dayjs';
 
 const overskridelseUttakRundtFødselAntallDager = (

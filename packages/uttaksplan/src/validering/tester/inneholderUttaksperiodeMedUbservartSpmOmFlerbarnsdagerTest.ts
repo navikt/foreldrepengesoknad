@@ -1,9 +1,8 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { isUttaksperiode, Periode, Uttaksperiode } from 'types/Periode';
 import { ønskerFlerbarnsdagerSkalBesvares } from 'utils/uttaksskjema/ønskerFlerbarnsdagerSkalBesvares';
 import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
-import { isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Periode, Uttaksperiode, isAnnenForelderOppgitt, isUttaksperiode } from '@navikt/fp-common';
 
 export const inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest = (
     grunnlag: Søknadsinfo,

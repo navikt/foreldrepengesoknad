@@ -1,9 +1,6 @@
+import { Periodene, Uttaksdagen, formaterDato, isOverskrivbarPeriode, isUtsettelsesperiode } from '@navikt/fp-common';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { isOverskrivbarPeriode, isUtsettelsesperiode } from 'types/Periode';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { formaterDato } from 'app/utils/dateUtils';
 
 export function inneholderBareUtsettelserTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const ikkeOverskrivbarePerioder = grunnlag.perioder.filter((p) => !isOverskrivbarPeriode(p));

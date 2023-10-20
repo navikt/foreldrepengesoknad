@@ -67,6 +67,7 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Alert, Button, Loader } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
+import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -126,7 +127,7 @@ const UttaksplanStep = () => {
     const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
         søkersituasjon.rolle,
         erFarEllerMedmor,
-        annenForelder
+        annenForelder,
     );
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
@@ -145,7 +146,7 @@ const UttaksplanStep = () => {
             annenForelderFnr,
             barnFnr,
             familiehendelsesdato,
-            eksisterendeSakAnnenPartRequestIsSuspended
+            eksisterendeSakAnnenPartRequestIsSuspended,
         );
 
     const eksisterendeVedtakAnnenPart = useMemo(
@@ -155,19 +156,19 @@ const UttaksplanStep = () => {
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             ),
-        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,
-        eksisterendeVedtakAnnenPart?.grunnlag.termindato
+        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
         barn.antallBarn,
-        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
     );
     useEffect(() => {
         if (erFarEllerMedmor && søknad.barn.antallBarn !== saksgrunnlagsAntallBarn) {
@@ -195,7 +196,7 @@ const UttaksplanStep = () => {
         annenForelderFnrNesteSak,
         førsteBarnFraNesteSakFnr,
         dateToISOString(familieHendelseDatoNesteSak),
-        nesteBarnsSakAnnenPartRequestIsSuspended
+        nesteBarnsSakAnnenPartRequestIsSuspended,
     );
 
     const førsteUttaksdagAnnenPart = getStartdatoFørstePeriodeAnnenPart(nesteSakAnnenPartData);
@@ -233,13 +234,13 @@ const UttaksplanStep = () => {
             opprinneligPlan.forEach((p) => {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
-                        eksisterendeVedtakAnnenPart.uttaksplan
+                        eksisterendeVedtakAnnenPart.uttaksplan,
                     ).finnOverlappendePerioder(p);
 
                     if (
                         overlappendePerioderAnnenPart.length !== 0 &&
                         overlappendePerioderAnnenPart.find(
-                            (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true
+                            (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true,
                         )
                     ) {
                         if (!p.ønskerSamtidigUttak) {
@@ -256,14 +257,14 @@ const UttaksplanStep = () => {
                     eksisterendeVedtakAnnenPart.uttaksplan,
                     familiehendelsesdatoDate!,
                     førsteUttaksdagNesteBarnsSak,
-                    true
+                    true,
                 ),
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdatoDate!,
                 erAdopsjon,
                 bareFarMedmorHarRett,
                 erFarEllerMedmor,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             );
             const eksisterendeSakMedAnnenPartsPlan = {
                 ...eksisterendeSak,
@@ -321,7 +322,7 @@ const UttaksplanStep = () => {
                 erEndringssøknad,
                 erFarEllerMedmor,
                 opprinneligPlan,
-                tidspunktForEndring
+                tidspunktForEndring,
             );
             setPerioderSomSkalSendesInn(perioderForÅSendeInn);
             dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
@@ -331,13 +332,13 @@ const UttaksplanStep = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         nextRoute,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         søknad.uttaksplan,
         familiehendelsesdatoDate!,
-        termindato
+        termindato,
     );
 
     const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
@@ -347,14 +348,14 @@ const UttaksplanStep = () => {
         perioderMedUttakRundtFødsel,
         barn,
         termindato,
-        bareFarMedmorHarRett
+        bareFarMedmorHarRett,
     );
 
     const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(
         perioderMedUttakRundtFødsel,
         termindato,
         erFarEllerMedmor,
-        barn
+        barn,
     );
 
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
@@ -398,7 +399,7 @@ const UttaksplanStep = () => {
         erDeltUttak,
         morErAleneOmOmsorg,
         farMedmorErAleneOmOmsorg,
-        rolle
+        rolle,
     );
     const kontoRequestIsSuspended =
         (eksisterendeSakAnnenPartRequestIsSuspended
@@ -417,9 +418,9 @@ const UttaksplanStep = () => {
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
                 saksgrunnlagsAntallBarn,
-                saksgrunnlagsTermindato
+                saksgrunnlagsTermindato,
             ),
-            kontoRequestIsSuspended
+            kontoRequestIsSuspended,
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -431,9 +432,9 @@ const UttaksplanStep = () => {
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
             saksgrunnlagsAntallBarn,
-            saksgrunnlagsTermindato
+            saksgrunnlagsTermindato,
         ),
-        kontoRequestIsSuspended
+        kontoRequestIsSuspended,
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
@@ -447,7 +448,7 @@ const UttaksplanStep = () => {
             erEndringssøknad,
             erFarEllerMedmor,
             opprinneligPlan,
-            tidspunktForEndring
+            tidspunktForEndring,
         );
         setPerioderSomSkalSendesInn(perioderForÅSendeInn);
         dispatch(actionCreator.setPerioderSomSkalSendesInn(perioderForÅSendeInn));
@@ -457,20 +458,20 @@ const UttaksplanStep = () => {
         if (tilgjengeligeStønadskontoerError) {
             sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
             throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
         if (eksisterendeSakAnnenPartError) {
             sendErrorMessageToSentry(eksisterendeSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
 
         if (nesteSakAnnenPartError) {
             sendErrorMessageToSentry(nesteSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);
@@ -500,7 +501,7 @@ const UttaksplanStep = () => {
 
     const handleSlettUttaksplan = () => {
         const slettetPlanUtenomFpFørFødsel = søknad.uttaksplan.filter((periode) =>
-            isUttakAvForeldrepengerFørFødsel(periode)
+            isUttakAvForeldrepengerFørFødsel(periode),
         );
         dispatch(actionCreator.slettUttaksplan(slettetPlanUtenomFpFørFødsel));
         dispatch(actionCreator.setUttaksplanSlettet(true));
@@ -535,6 +536,14 @@ const UttaksplanStep = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl, erEndringssøknad)}
                     >
+                        <Block padBottom="l">
+                            <InfoOmSøknaden
+                                eksisterendeSak={eksisterendeSak}
+                                erIUttaksplanenSteg={true}
+                                tilgjengeligeStønadskontoer={valgteStønadskontoer}
+                                minsterettUkerToTette={minsterettUkerToTette}
+                            />
+                        </Block>
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}
                             forelderVedAleneomsorg={forelderVedAleneomsorg}
@@ -549,7 +558,7 @@ const UttaksplanStep = () => {
                                 arbeidsforhold,
                                 erAdopsjon,
                                 erFarEllerMedmor,
-                                ISOStringToDate(familiehendelsesdato)
+                                ISOStringToDate(familiehendelsesdato),
                             )}
                             erEndringssøknad={erEndringssøknad}
                             erFarEllerMedmor={erFarEllerMedmor}

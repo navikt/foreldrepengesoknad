@@ -1,11 +1,11 @@
-import { intlUtils } from '@navikt/fp-common';
-import { getFloatFromString } from 'app/utils/numberUtils';
-import { IntlShape } from 'react-intl';
 import {
+    getFloatFromString,
+    intlUtils,
     samtidigUttakProsentIsMax100,
     stillingsprosentIsLessThan100,
     stillingsprosentIsMoreThan0,
-} from 'utils/periodeUtils';
+} from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
 import { hasValueRule } from './regelUtils';
 import { Validator } from './types/validatorTypes';
 

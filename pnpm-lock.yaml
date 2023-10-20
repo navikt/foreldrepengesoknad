@@ -1169,6 +1169,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.7
+      bytes:
+        specifier: ^3.1.2
+        version: 3.1.2
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
@@ -1245,6 +1248,9 @@ importers:
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@types/bytes':
+        specifier: ^3.1.1
+        version: 3.1.1
       '@types/lodash':
         specifier: ^4.14.197
         version: 4.14.197

@@ -1,4 +1,4 @@
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import { andreAugust2022ReglerGjelder } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getUgyldigUttakMor } from '../utils/uttakValideringUtils';

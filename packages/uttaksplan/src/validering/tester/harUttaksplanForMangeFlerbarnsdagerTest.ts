@@ -1,4 +1,4 @@
-import { uttaksplanHarForMangeFlerbarnsdager } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
+import { uttaksplanHarForMangeFlerbarnsdager } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 

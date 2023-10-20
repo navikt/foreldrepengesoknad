@@ -1,8 +1,12 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import {
+    Periode,
+    TidsperiodeDate,
+    UtsettelseFormPeriodeType,
+    Uttaksdagen,
+    isForeldrepengerFørFødselUttaksperiode,
+    isValidTidsperiode,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { isForeldrepengerFørFødselUttaksperiode, Periode, UtsettelseFormPeriodeType } from 'types/Periode';
 import { uttaksdatoer } from 'utils/uttaksdatoerUtils';
 import { DatoValidatorer, Validator } from './types/validatorTypes';
 import { allValidatorsPass } from './validatorUtils';

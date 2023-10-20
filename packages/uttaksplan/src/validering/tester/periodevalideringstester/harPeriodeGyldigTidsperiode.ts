@@ -1,7 +1,7 @@
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { Periodetype } from 'types/Periode';
 import { utsettelseTidsperiodeErGyldig, uttakTidsperiodeErGyldig } from '../../utils/tidsperiodeValideringUtils';
 import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
+import { Periodetype } from '@navikt/fp-common';
 
 export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) => {

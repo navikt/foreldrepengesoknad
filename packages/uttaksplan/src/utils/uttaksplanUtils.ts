@@ -1,4 +1,4 @@
-import { isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
+import { Periode, isUttaksperiode } from '@navikt/fp-common';
 
 interface HarAktivitetskravIPeriodeUtenUttakParams {
     erDeltUttak: boolean;

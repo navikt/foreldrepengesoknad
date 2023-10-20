@@ -1,4 +1,4 @@
-import { uttaksplanStarterMedOpphold } from 'app/steps/uttaksplan-info/utils/Periodene';
+import { uttaksplanStarterMedOpphold } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 

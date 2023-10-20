@@ -167,3 +167,18 @@ export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdat
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
 }
+
+export const getToTetteReglerGjelder = (
+    familiehendelsesdato: Date | undefined,
+    familiehendelsesdatoNesteBarn: Date | undefined,
+): boolean => {
+    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
+        return false;
+    }
+    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
+        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
+    );
+};

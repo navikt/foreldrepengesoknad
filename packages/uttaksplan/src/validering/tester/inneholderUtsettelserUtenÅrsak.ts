@@ -1,5 +1,4 @@
-import { hasValue } from '@navikt/fp-common';
-import { isUtsettelsesperiode } from 'types/Periode';
+import { hasValue, isUtsettelsesperiode } from '@navikt/fp-common';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 

@@ -1,4 +1,4 @@
-import { erPeriodeInnvilget, erSentGradertUttak } from 'utils/periodeUtils';
+import { erPeriodeInnvilget, erSentGradertUttak } from '@navikt/fp-common';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 

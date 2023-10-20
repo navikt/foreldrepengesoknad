@@ -1,5 +1,4 @@
-import { Periode, isUttaksperiode } from 'uttaksplan/types/Periode';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { Dekningsgrad, Periode, isUttaksperiode } from 'common/types';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const getFlerbarnsuker = (dekningsgrad: string, antallBarn: number): number => {
@@ -21,7 +20,7 @@ export const getFlerbarnsuker = (dekningsgrad: string, antallBarn: number): numb
 export const uttaksplanHarForMangeFlerbarnsdager = (
     uttaksplan: Periode[],
     dekningsgrad: Dekningsgrad,
-    antallBarn: number
+    antallBarn: number,
 ) => {
     const result: number = uttaksplan
         .slice()

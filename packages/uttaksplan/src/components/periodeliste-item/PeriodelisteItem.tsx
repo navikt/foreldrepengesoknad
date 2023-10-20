@@ -2,6 +2,7 @@ import { IntlShape } from 'react-intl';
 import {
     AnnenForelder,
     Arbeidsforhold,
+    Attachment,
     bemUtils,
     Block,
     isAvslåttPeriode,
@@ -60,6 +61,7 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
     periodeErGyldig: boolean;
+    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const renderPeriodeListeInnhold = (
@@ -86,6 +88,7 @@ const renderPeriodeListeInnhold = (
     utsettelserIPlan: Utsettelsesperiode[],
     intl: IntlShape,
     isOpen: boolean,
+    saveAttachment: (vedlegg: Attachment) => void,
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -130,6 +133,7 @@ const renderPeriodeListeInnhold = (
                     utsettelserIPlan={utsettelserIPlan}
                     intl={intl}
                     isOpen={isOpen}
+                    saveAttachment={saveAttachment}
                 />
             );
         case Periodetype.Utsettelse:
@@ -150,6 +154,7 @@ const renderPeriodeListeInnhold = (
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}
                     isOpen={isOpen}
+                    saveAttachment={saveAttachment}
                 />
             );
         case Periodetype.Hull:
@@ -216,6 +221,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     utsettelserIPlan,
     intl,
     periodeErGyldig,
+    saveAttachment,
 }) => {
     const bem = bemUtils('periodelisteItem');
     let melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -294,6 +300,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                             utsettelserIPlan,
                             intl,
                             isOpen,
+                            saveAttachment,
                         )}
                     </Accordion.Content>
                 </Accordion.Item>

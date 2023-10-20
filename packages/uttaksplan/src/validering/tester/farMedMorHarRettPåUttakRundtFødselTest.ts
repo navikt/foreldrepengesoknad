@@ -1,14 +1,14 @@
 import {
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
+    formaterDatoKompakt,
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
+    getSumUttaksdagerÅTrekkeIPeriodene,
     gjelderWLBReglerFarMedmorRundtFødsel,
-} from 'app/utils/wlbUtils';
+} from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { formaterDatoKompakt } from 'app/utils/dateUtils';
-import { getSumUttaksdagerÅTrekkeIPeriodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 import dayjs from 'dayjs';
 

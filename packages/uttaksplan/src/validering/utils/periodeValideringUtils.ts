@@ -1,4 +1,4 @@
-import { Periode, Periodetype } from 'types/Periode';
+import { Periode, Periodetype } from '@navikt/fp-common';
 import { getStillingsprosentRegler } from './stillingsprosentValideringUtils';
 
 export const gradertUttaksperiodeErUgyldig = (periode: Periode) => {

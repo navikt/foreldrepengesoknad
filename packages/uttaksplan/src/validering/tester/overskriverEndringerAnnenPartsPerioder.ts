@@ -1,11 +1,16 @@
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import { IntlShape } from 'react-intl';
-import { isAvslåttPeriode, isInfoPeriode, isUttaksperiode, Periode } from 'types/Periode';
-import { getPeriodeTittel } from 'utils/periodeUtils';
-import { getNavnGenitivEierform } from 'utils/stønadskontoerUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import {
+    Periode,
+    Periodene,
+    Tidsperioden,
+    getNavnGenitivEierform,
+    getPeriodeTittel,
+    isAvslåttPeriode,
+    isInfoPeriode,
+    isUttaksperiode,
+} from '@navikt/fp-common';
 
 export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const eksisterendeUttaksplan =

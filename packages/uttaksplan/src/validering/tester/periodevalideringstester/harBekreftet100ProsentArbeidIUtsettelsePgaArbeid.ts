@@ -1,5 +1,5 @@
+import { isUtsettelsePgaArbeid } from '@navikt/fp-common';
 import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { isUtsettelsePgaArbeid } from 'types/Periode';
 import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
 
 export const harBekreftet100ProsentArbeidIUtsettelsePgaArbeid: RegelTest = (

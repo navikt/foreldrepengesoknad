@@ -1,4 +1,4 @@
-import { Attachment } from 'app/types/Attachment';
+import { Attachment } from 'common/types';
 import { bytesString, deleteAttachment } from './globalUtil';
 
 describe('globalUtil', () => {

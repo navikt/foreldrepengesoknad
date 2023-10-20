@@ -1,11 +1,14 @@
 import { IntlShape } from 'react-intl';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
-import { isUttakAnnenPart } from 'types/Periode';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { getPeriodeForelderNavn, getPeriodeTittel } from 'utils/periodeUtils';
-import { getNavnGenitivEierform } from 'app/utils/personUtils';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import {
+    Periodene,
+    Tidsperioden,
+    getNavnGenitivEierform,
+    getPeriodeForelderNavn,
+    getPeriodeTittel,
+    isUttakAnnenPart,
+} from '@navikt/fp-common';
 
 export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const { perioder, navnPåForeldre } = grunnlag;

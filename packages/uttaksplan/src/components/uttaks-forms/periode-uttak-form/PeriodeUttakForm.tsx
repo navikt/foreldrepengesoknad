@@ -3,6 +3,7 @@ import {
     andreAugust2022ReglerGjelder,
     AnnenForelder,
     Arbeidsforhold,
+    Attachment,
     bemUtils,
     Block,
     Forelder,
@@ -86,6 +87,7 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
     isOpen: boolean;
+    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -158,6 +160,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     utsettelserIPlan,
     intl,
     isOpen,
+    saveAttachment,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -464,6 +467,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     FormComponents={PeriodeUttakFormComponents}
                                     vedleggFieldName={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
                                     isOpen={isOpen}
+                                    saveAttachment={saveAttachment}
                                 />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>

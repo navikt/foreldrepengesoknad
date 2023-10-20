@@ -3,13 +3,13 @@ import {
     Arbeidsforhold,
     Barn,
     Dekningsgrad,
+    EksisterendeSak,
     NavnPåForeldre,
+    Periode,
     Søkersituasjon,
     TilgjengeligStønadskonto,
     Tilleggsopplysninger,
 } from '@navikt/fp-common';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { Periode } from 'types/Periode';
 
 export interface Søknadsinfo {
     søkersituasjon: Søkersituasjon;

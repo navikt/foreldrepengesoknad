@@ -1,4 +1,4 @@
-import { getIllegalChars, validateTextHasLegalChars } from 'app/utils/validationUtil';
+import { getIllegalChars, validateTextHasLegalChars } from '@navikt/fp-common';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 

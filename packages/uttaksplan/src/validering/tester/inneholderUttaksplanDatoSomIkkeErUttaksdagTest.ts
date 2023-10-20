@@ -1,6 +1,5 @@
+import { erUttaksdag, isInfoPeriode } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
-import { isInfoPeriode } from 'types/Periode';
-import { erUttaksdag } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

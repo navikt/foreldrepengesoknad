@@ -1,5 +1,5 @@
+import { isUtsettelsePgaFerie } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { isUtsettelsePgaFerie } from 'types/Periode';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const harSøktOmFerieUtenArbeidsforhold: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

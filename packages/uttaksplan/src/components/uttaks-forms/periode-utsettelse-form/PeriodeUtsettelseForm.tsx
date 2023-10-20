@@ -16,6 +16,7 @@ import {
     isValidTidsperiode,
     ISOStringToDate,
     getSlettPeriodeTekst,
+    Attachment,
 } from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -63,6 +64,7 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     isOpen: boolean;
+    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -83,6 +85,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     utsettelserIPlan,
     setPerioderErGyldige,
     isOpen,
+    saveAttachment,
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -233,6 +236,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     FormComponents={PeriodeUtsettelseFormComponents}
                                     vedleggFieldName={PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon}
                                     isOpen={isOpen}
+                                    saveAttachment={saveAttachment}
                                 />
                             </Block>
                             <Block

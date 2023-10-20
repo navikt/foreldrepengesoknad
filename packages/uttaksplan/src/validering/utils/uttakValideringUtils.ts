@@ -1,10 +1,4 @@
-import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { isPeriodeUtenUttak, Periode, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'types/Periode';
 import { uttaksdatoer } from 'utils/uttaksdatoerUtils';
-import { erPeriodeFørDato } from 'utils/periodeUtils';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import {
     AnnenForelder,
     Forelder,
@@ -13,6 +7,17 @@ import {
     StønadskontoType,
     UtsettelseÅrsakType,
     OverføringÅrsakType,
+    Periode,
+    Periodene,
+    Uttaksdagen,
+    getTidsperiode,
+    Tidsperioden,
+    erPeriodeFørDato,
+    Utsettelsesperiode,
+    Uttaksperiode,
+    andreAugust2022ReglerGjelder,
+    Periodetype,
+    isPeriodeUtenUttak,
 } from '@navikt/fp-common';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;

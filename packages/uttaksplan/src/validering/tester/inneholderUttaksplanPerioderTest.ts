@@ -1,6 +1,5 @@
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
+import { isHull, isInfoPeriode, isPeriodeUtenUttak, isValidTidsperiode } from '@navikt/fp-common';
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { isHull, isInfoPeriode, isPeriodeUtenUttak } from 'types/Periode';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const inneholderUttaksplanPerioderTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

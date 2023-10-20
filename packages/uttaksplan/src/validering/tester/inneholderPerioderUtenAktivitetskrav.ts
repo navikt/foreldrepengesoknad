@@ -1,7 +1,6 @@
 import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { isUttaksperiode } from 'types/Periode';
-import { StønadskontoType, hasValue } from '@navikt/fp-common';
+import { StønadskontoType, hasValue, isUttaksperiode } from '@navikt/fp-common';
 import { farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk } from 'utils/uttaksskjema/aktivitetskravMorSkalBesvares';
 
 export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): RegelTestresultat => {
