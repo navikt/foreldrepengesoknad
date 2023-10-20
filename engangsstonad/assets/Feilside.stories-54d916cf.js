@@ -1,6 +1,0 @@
-import{j as t}from"./jsx-runtime-69eee039.js";import{F as i}from"./Feilside-a1ac262e.js";import{I as n}from"./IntlProvider-4e33f46c.js";import{l as p}from"./links-b4497713.js";import"./index-7c191284.js";import"./index-b3a39e30.js";import"./StepButtons-a9eb5602.js";import"./extends-2f8ee675.js";import"./index-ecbee218.js";import"./v4-a960c1f4.js";const x={title:"Feilside",component:i},a=()=>t.jsx(i,{dokumenttittel:"NAV Engangsstønad",ingress:"Dette er en ingress",tittel:"Dette er en tittel",illustrasjon:{tittel:"Oops,",tekst:"Noe gikk dessverre galt. Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil kontakt brukerstøtte.",veileder:{ansikt:"skeptisk"},lenke:{tekst:"Kontakt brukerstøtte her",url:p.brukerstøtte}},setLanguage:()=>{},språkkode:"nb"}),d=()=>t.jsx(n,{språkkode:"nb",children:t.jsx(a,{})}),e=d.bind({});var r,s,o;e.parameters={...e.parameters,docs:{...(r=e.parameters)==null?void 0:r.docs,source:{originalSource:`() => {
-  return <IntlProvider språkkode="nb">
-            <Wrapper />
-        </IntlProvider>;
-}`,...(o=(s=e.parameters)==null?void 0:s.docs)==null?void 0:o.source}}};const F=["VisSide"];export{e as VisSide,F as __namedExportsOrder,x as default};
-//# sourceMappingURL=Feilside.stories-54d916cf.js.map
