@@ -1,0 +1,59 @@
+name: Bygg og deploy Engangsstønad
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'apps/engangsstonad/**'
+      - 'packages/**'
+      - '.deploy/engangsstonad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-engangsstonad.yml'
+  # Only trigger, when the build workflow succeeded
+  workflow_run:
+    workflows: [ "Bygg server" ]
+    types:
+      - completed
+
+jobs:
+  build-app:
+    name: Build
+    permissions:
+      packages: write
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
+    with:
+      build-image: ${{ github.ref_name == 'master' }} # default: true
+      push-image: ${{ github.ref_name == 'master' }} # default: false
+      app: engangsstonad
+    secrets: inherit
+
+
+  deploy-dev:
+    name: Deploy dev
+    permissions:
+      id-token: write
+    if: github.ref_name == 'master'
+    needs: build-app
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
+    with:
+      gar: true
+      image: ${{ needs.build-app.outputs.build-version }}
+      cluster: dev-gcp
+      app: /engangsstonad
+    secrets: inherit
+
+  deploy-prod:
+    name: Deploy prod
+    permissions:
+      id-token: write
+    if: github.ref_name == 'master'
+    needs: [build-app, deploy-dev]
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
+    with:
+      gar: true
+      image: ${{ needs.build-app.outputs.build-version }}
+      cluster: prod-gcp
+      app: /engangsstonad
+    secrets: inherit
