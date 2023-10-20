@@ -9,6 +9,7 @@ on:
       - 'packages/**'
       - '.deploy/engangsstonad/**'
       - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-engangsstønad.yml'
 
 jobs:
   build-app:
