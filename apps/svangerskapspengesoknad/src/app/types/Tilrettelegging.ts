@@ -60,7 +60,7 @@ export interface Tilrettelegging {
     enPeriodeMedTilretteleggingFom?: string;
     enPeriodeMedTilretteleggingStillingsprosent?: string;
     enPeriodeMedTilretteleggingTomType?: TilOgMedDatoType;
-    enPeriodeMedTilretteleggingTom?: string;
+    enPeriodeMedTilretteleggingTilbakeIJobbDato?: string;
     vedlegg: Attachment[];
     delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
     varierendePerioder?: PeriodeMedVariasjon[];

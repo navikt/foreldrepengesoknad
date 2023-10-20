@@ -15,7 +15,7 @@ export const getInitTilretteleggingFormDataValues = (): Readonly<Tilrettelegging
     [TilretteleggingFormField.enPeriodeMedTilretteleggingFom]: undefined,
     [TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent]: undefined,
     [TilretteleggingFormField.enPeriodeMedTilretteleggingTomType]: undefined!,
-    [TilretteleggingFormField.enPeriodeMedTilretteleggingTom]: undefined,
+    [TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato]: undefined,
     [TilretteleggingFormField.risikofaktorer]: undefined,
     [TilretteleggingFormField.tilretteleggingstiltak]: undefined,
 });
@@ -36,8 +36,9 @@ export const getTilretteleggingInitialValues = (tilrettelegging: Tilrettelegging
             initValues.enPeriodeMedTilretteleggingStillingsprosent,
         enPeriodeMedTilretteleggingTomType:
             tilrettelegging.enPeriodeMedTilretteleggingTomType || initValues.enPeriodeMedTilretteleggingTomType,
-        enPeriodeMedTilretteleggingTom:
-            tilrettelegging.enPeriodeMedTilretteleggingTom || initValues.enPeriodeMedTilretteleggingTom,
+        enPeriodeMedTilretteleggingTilbakeIJobbDato:
+            tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato ||
+            initValues.enPeriodeMedTilretteleggingTilbakeIJobbDato,
     };
 };
 
@@ -63,7 +64,7 @@ export const mapOmTilretteleggingFormDataToState = (
         enPeriodeMedTilretteleggingFom: values.enPeriodeMedTilretteleggingFom,
         enPeriodeMedTilretteleggingStillingsprosent: values.enPeriodeMedTilretteleggingStillingsprosent,
         enPeriodeMedTilretteleggingTomType: values.enPeriodeMedTilretteleggingTomType,
-        enPeriodeMedTilretteleggingTom: values.enPeriodeMedTilretteleggingTom,
+        enPeriodeMedTilretteleggingTilbakeIJobbDato: values.enPeriodeMedTilretteleggingTilbakeIJobbDato,
         delvisTilretteleggingPeriodeType: values.delvisTilretteleggingPeriodeType,
         risikofaktorer: hasValue(values.risikofaktorer)
             ? replaceInvisibleCharsWithSpace(values.risikofaktorer!)
@@ -107,9 +108,11 @@ export const cleanUpTilretteleggingStepFormValues = (
         )
             ? values.enPeriodeMedTilretteleggingTomType
             : initValues.enPeriodeMedTilretteleggingTomType,
-        enPeriodeMedTilretteleggingTom: visibility.isVisible(TilretteleggingFormField.enPeriodeMedTilretteleggingTom)
-            ? values.enPeriodeMedTilretteleggingTom
-            : initValues.enPeriodeMedTilretteleggingTom,
+        enPeriodeMedTilretteleggingTilbakeIJobbDato: visibility.isVisible(
+            TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato,
+        )
+            ? values.enPeriodeMedTilretteleggingTilbakeIJobbDato
+            : initValues.enPeriodeMedTilretteleggingTilbakeIJobbDato,
     };
 
     return cleanedData;

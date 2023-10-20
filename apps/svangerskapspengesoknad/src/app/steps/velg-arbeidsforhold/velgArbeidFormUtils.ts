@@ -39,7 +39,8 @@ export const getNæringTilretteleggingOption = (
         tilretteleggingstiltak: næringTilretteleggingFraState?.tilretteleggingstiltak || undefined,
         enPeriodeMedTilretteleggingTomType:
             næringTilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
-        enPeriodeMedTilretteleggingTom: næringTilretteleggingFraState?.enPeriodeMedTilretteleggingTom || undefined,
+        enPeriodeMedTilretteleggingTilbakeIJobbDato:
+            næringTilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato || undefined,
     };
 };
 
@@ -65,7 +66,8 @@ export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilretteleggi
         tilretteleggingstiltak: frilansTilretteleggingFraState?.tilretteleggingstiltak || undefined,
         enPeriodeMedTilretteleggingTomType:
             frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
-        enPeriodeMedTilretteleggingTom: frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingTom || undefined,
+        enPeriodeMedTilretteleggingTilbakeIJobbDato:
+            frilansTilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato || undefined,
     };
 };
 
@@ -102,7 +104,8 @@ export const getArbeidsforholdTilretteleggingOptions = (
             delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
             enPeriodeMedTilretteleggingTomType:
                 tilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
-            enPeriodeMedTilretteleggingTom: tilretteleggingFraState?.enPeriodeMedTilretteleggingTom || undefined,
+            enPeriodeMedTilretteleggingTilbakeIJobbDato:
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato || undefined,
         };
     });
     return arbeidsforholdOptions;

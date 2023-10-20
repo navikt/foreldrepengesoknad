@@ -35,13 +35,14 @@ import tilretteleggingQuestionsConfig, {
 import {
     validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
-    validateSammePeriodeFremTilTerminTom,
+    validateSammePeriodeFremTilTerminTilbakeIJobbDato,
     validateStillingsprosent,
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
+import dayjs from 'dayjs';
 
 interface Props {
     id: string;
@@ -119,8 +120,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                         : 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis';
                 const labelPeriodeTom =
                     formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.ingen'
-                        : 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.delvis';
+                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen'
+                        : 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis';
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
@@ -358,18 +359,20 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             </Block>
                             <Block
                                 padBottom="xxl"
-                                visible={visibility.isVisible(TilretteleggingFormField.enPeriodeMedTilretteleggingTom)}
+                                visible={visibility.isVisible(
+                                    TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato,
+                                )}
                             >
                                 <TilretteleggingFormComponents.DatePicker
-                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingTom}
+                                    name={TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato}
                                     label={intlUtils(intl, labelPeriodeTom)}
                                     minDate={
                                         hasValue(formValues.enPeriodeMedTilretteleggingFom)
-                                            ? new Date(formValues.enPeriodeMedTilretteleggingFom!)
+                                            ? dayjs(formValues.enPeriodeMedTilretteleggingFom!).add(1, 'day').toDate()
                                             : new Date(formValues.behovForTilretteleggingFom!)
                                     }
                                     maxDate={sisteDagForSvangerskapspenger}
-                                    validate={validateSammePeriodeFremTilTerminTom(
+                                    validate={validateSammePeriodeFremTilTerminTilbakeIJobbDato(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,

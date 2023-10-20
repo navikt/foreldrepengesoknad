@@ -123,7 +123,7 @@ export const validateSammePeriodeFremTilTerminFom =
         return undefined;
     };
 
-export const validateSammePeriodeFremTilTerminTom =
+export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
@@ -149,6 +149,9 @@ export const validateSammePeriodeFremTilTerminTom =
         }
         if (hasValue(fom) && dayjs(value).isBefore(dayjs(fom), 'd')) {
             return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.${type}`);
+        }
+        if (hasValue(fom) && dayjs(value).isSame(dayjs(fom), 'd')) {
+            return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.sammeSomFomDato.${type}`);
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {

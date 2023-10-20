@@ -13,7 +13,7 @@ export enum TilretteleggingFormField {
     enPeriodeMedTilretteleggingFom = 'enPeriodeMedTilretteleggingFom',
     enPeriodeMedTilretteleggingStillingsprosent = 'enPeriodeMedTilretteleggingStillingsprosent',
     enPeriodeMedTilretteleggingTomType = 'enPeriodeMedTilretteleggingTomType',
-    enPeriodeMedTilretteleggingTom = 'enPeriodeMedTilretteleggingTom',
+    enPeriodeMedTilretteleggingTilbakeIJobbDato = 'enPeriodeMedTilretteleggingTilbakeIJobbDato',
     tilretteleggingstiltak = 'tilretteleggingstiltak',
     risikofaktorer = 'risikofaktorer',
 }
@@ -25,7 +25,7 @@ export interface TilretteleggingFormData {
     [TilretteleggingFormField.enPeriodeMedTilretteleggingFom]: string | undefined;
     [TilretteleggingFormField.enPeriodeMedTilretteleggingStillingsprosent]: string | undefined;
     [TilretteleggingFormField.enPeriodeMedTilretteleggingTomType]: TilOgMedDatoType | undefined;
-    [TilretteleggingFormField.enPeriodeMedTilretteleggingTom]: string | undefined;
+    [TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato]: string | undefined;
     [TilretteleggingFormField.tilretteleggingstiltak]: string | undefined;
     [TilretteleggingFormField.risikofaktorer]: string | undefined;
 }

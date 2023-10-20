@@ -114,7 +114,7 @@ const mappedTilretteleggingMedEnPeriode = (
     const fom = tilrettelegging.enPeriodeMedTilretteleggingFom!;
     const tom =
         tilrettelegging.enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO
-            ? tilrettelegging.enPeriodeMedTilretteleggingTom!
+            ? dayjs(tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato).subtract(1, 'day').toString()!
             : dateToISOString(sisteDagForSvangerskapspenger);
     const type =
         tilrettelegging.type === TilretteleggingstypeOptions.DELVIS

@@ -53,7 +53,7 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
                         DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN),
             isAnswered: ({ enPeriodeMedTilretteleggingTomType }) => hasValue(enPeriodeMedTilretteleggingTomType),
         },
-        [TilretteleggingFormField.enPeriodeMedTilretteleggingTom]: {
+        [TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato]: {
             isIncluded: ({
                 tilretteleggingType,
                 delvisTilretteleggingPeriodeType,
@@ -64,7 +64,8 @@ export const TilretteleggingFormConfig: QuestionConfig<TilretteleggingFormQuesti
                         delvisTilretteleggingPeriodeType ===
                             DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN)) &&
                 enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO,
-            isAnswered: ({ enPeriodeMedTilretteleggingTom }) => hasValue(enPeriodeMedTilretteleggingTom),
+            isAnswered: ({ enPeriodeMedTilretteleggingTilbakeIJobbDato }) =>
+                hasValue(enPeriodeMedTilretteleggingTilbakeIJobbDato),
         },
         [TilretteleggingFormField.tilretteleggingstiltak]: {
             isIncluded: ({ arbeidsType }) =>
