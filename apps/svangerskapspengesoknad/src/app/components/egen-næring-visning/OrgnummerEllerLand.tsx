@@ -2,7 +2,7 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { validateEgenNæringOrgnr } from '../../steps/egen-næring/egenNæringValidation';
+import { validateEgenNæringLand, validateEgenNæringOrgnr } from '../../steps/egen-næring/egenNæringValidation';
 import { EgenNæringFormComponents, EgenNæringFormField } from 'app/steps/egen-næring/egenNæringFormConfig';
 
 interface Props {
@@ -28,6 +28,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
                     name={EgenNæringFormField.egenNæringLand}
                     label={intlUtils(intl, 'egenNæring.registrertILand')}
                     useAlpha3Code={false}
+                    validate={validateEgenNæringLand(intl)}
                 />
             </Block>
         </>

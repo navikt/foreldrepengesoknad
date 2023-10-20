@@ -92,12 +92,10 @@ export const validateSammePeriodeFremTilTerminFom =
     ) =>
     (value: string) => {
         if (!hasValue(value)) {
-            return tilretteleggingstype === TilretteleggingstypeOptions.DELVIS
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.ingen');
+            return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.${tilretteleggingstype}`);
         }
         if (hasValue(value) && !isISODateString(value)) {
-            return intlUtils(intl, 'valideringsfeil.periode.fom.gyldigDato');
+            return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.${tilretteleggingstype}`);
         }
 
         if (
@@ -105,13 +103,22 @@ export const validateSammePeriodeFremTilTerminFom =
             hasValue(behovForTilretteleggingFom) &&
             dayjs(value).isBefore(dayjs(behovForTilretteleggingFom), 'd')
         ) {
-            return intlUtils(intl, 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom');
+            return intlUtils(
+                intl,
+                `valideringsfeil.sammePeriodeFremTilTerminFom.førBehovForTilretteleggingFom.${tilretteleggingstype}`,
+            );
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             return fødselsdato
-                ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørFødsel')
-                : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
+                ? intlUtils(
+                      intl,
+                      `valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørFødsel.${tilretteleggingstype}`,
+                  )
+                : intlUtils(
+                      intl,
+                      `valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.${tilretteleggingstype}`,
+                  );
         }
         return undefined;
     };
@@ -127,10 +134,10 @@ export const validateSammePeriodeFremTilTerminTom =
     ) =>
     (value: string) => {
         if (!hasValue(value)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+            return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.${type}`);
         }
         if (hasValue(value) && !isISODateString(value)) {
-            return intlUtils(intl, 'valideringsfeil.periode.tom.gyldigDato');
+            return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.${type}`);
         }
 
         if (
@@ -138,16 +145,16 @@ export const validateSammePeriodeFremTilTerminTom =
             hasValue(behovForTilretteleggingFom) &&
             dayjs(value).isBefore(dayjs(behovForTilretteleggingFom), 'd')
         ) {
-            return intlUtils(intl, 'valideringsfeil.periode.tom.førBehovForTilretteleggingFom');
+            return intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.førBehovForTilretteleggingFom');
         }
         if (hasValue(fom) && dayjs(value).isBefore(dayjs(fom), 'd')) {
-            return intlUtils(intl, `valideringsfeil.periode.tom.etterTilDato.${type}`);
+            return intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.${type}`);
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             return fødselsdato
-                ? intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørFødsel')
-                : intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin');
+                ? intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørFødsel.${type}`)
+                : intlUtils(intl, `valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.${type}`);
         }
         return undefined;
     };

@@ -180,8 +180,15 @@ export const validateEgenNæringNavn = (intl: IntlShape, label: string) => (valu
     if (!hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringNavn.påkrevd');
     }
-    if (value.length > 9) {
+    if (value.length > 100) {
         return intlUtils(intl, 'valideringsfeil.egenNæringNavn.forLang');
     }
     return validateTextInputField(value, label, intl);
+};
+
+export const validateEgenNæringLand = (intl: IntlShape) => (value: string) => {
+    if (!hasValue(value)) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringLand.påkrevd');
+    }
+    return undefined;
 };

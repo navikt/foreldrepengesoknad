@@ -117,7 +117,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
                         ? 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen'
                         : 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis';
-                const labelPeriodeTom = 'tilrettelegging.enPeriodeMedTilretteleggingTom.label';
+                const labelPeriodeTom =
+                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
+                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.ingen'
+                        : 'tilrettelegging.enPeriodeMedTilretteleggingTom.label.delvis';
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!

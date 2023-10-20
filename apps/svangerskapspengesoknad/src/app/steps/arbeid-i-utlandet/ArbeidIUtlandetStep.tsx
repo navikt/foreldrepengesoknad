@@ -98,6 +98,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                         intl,
                                                         navnPåArbeidsgiverLabel,
                                                     )}
+                                                    maxLength={100}
                                                 />
                                             </Block>
                                             <Block padBottom="xxl">
