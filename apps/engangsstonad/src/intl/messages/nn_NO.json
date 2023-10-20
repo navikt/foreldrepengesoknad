@@ -156,7 +156,7 @@
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
 
     "OppsummeringSteg.Validering.BekrefteOpplysninger": "Du må stadfeste at du har oppgitt korrekte opplysningar",
-    "OppsummeringSteg.Fremtidig": "Skal bu i utlandet",
+    "OppsummeringSteg.Utenlandsopphold": "Bu i utlandet",
     "UtenlandsoppholdOppsummering.Text.OgKommerPåFødselstidspunktet": "På fødselstidspunktet kjem du til å bu i {country}",
     "UtenlandsoppholdOppsummering.Norge": "Noreg",
     "UtenlandsoppholdOppsummering.Utlandet": "utlandet",
@@ -267,8 +267,6 @@
     "valideringsfeil.dateOutsideRange": "Ugyldig dato",
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må gi opp fødselsdato",
     "valideringsfeil.fraOgMedDato.gyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "valideringsfeil.leggTilUtenlandsopphold.landDuHarBoddIPåkrevd": "Du må velja landet du oppheld deg i",
-    "valideringsfeil.leggTilUtenlandsopphold.landDuSkalBoIPåkreved": "Du må velge et land du skal oppholde deg i.",
     "valideringsfeil.omBarnet.fødselsdato.barnetErIkkeFødtFørAdopsjonsDato": "Barnet er ikkje fødd før adopsjonsdato",
     "valideringsfeil.omBarnet.fodselsdato.ikkeMerEnn15ÅrTilbake": "Du kan ikkje søka om engangsstønad for barn som er eldre enn 15 årr",
     "valideringsfeil.omBarnet.overtaomsorgdato.duMåOppgi": "Du må gi opp overta omsorg dato",
