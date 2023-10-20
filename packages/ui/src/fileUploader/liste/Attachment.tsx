@@ -20,11 +20,9 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
 
     return (
         <div className="attachmentPanel">
-            <HStack gap="4" align="center">
-                <div>
-                    {attachment.pending && <Loader type="S" />}
-                    {!attachment.pending && <FileCheckmarkIcon width={24} height={24} />}
-                </div>
+            <HStack gap="4">
+                {attachment.pending && <Loader type="S" />}
+                {!attachment.pending && <FileCheckmarkIcon width={24} height={24} />}
                 <VStack gap="1">
                     {attachment.url ? (
                         <Link href={attachment.url} target="_blank">

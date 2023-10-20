@@ -13,6 +13,8 @@ import Dokumentasjon from 'types/Dokumentasjon';
 
 import OppsummeringSteg from './OppsummeringSteg';
 import { initAmplitude } from '@navikt/fp-metrics';
+import dayjs from 'dayjs';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const person = {
     fnr: '11111111111',
@@ -30,7 +32,7 @@ const person = {
 const barnet = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdatoer: [{ dato: '2023-01-01' }],
+    fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
 } as BarnetErFødt;
 
 const utenlandsoppholdDefault = {
@@ -180,13 +182,13 @@ HarTidligereOgFremtidigeUtenlandsopphold.args = {
     senereUtenlandsopphold: {
         utenlandsoppholdNeste12Mnd: [
             {
-                fom: '2025-01-01',
-                tom: '2026-01-01',
+                fom: dayjs().format(ISO_DATE_FORMAT),
+                tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
                 landkode: 'SE',
             },
             {
-                fom: '2027-01-01',
-                tom: '2028-01-01',
+                fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
                 landkode: 'DK',
             },
         ],
@@ -194,8 +196,8 @@ HarTidligereOgFremtidigeUtenlandsopphold.args = {
     tidligereUtenlandsopphold: {
         utenlandsoppholdSiste12Mnd: [
             {
-                fom: '2021-01-01',
-                tom: '2022-01-01',
+                fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().format(ISO_DATE_FORMAT),
                 landkode: 'IS',
             },
         ],

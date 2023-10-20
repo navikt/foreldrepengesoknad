@@ -28,7 +28,7 @@ export interface Props {
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => void;
+    ) => Promise<void>;
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
@@ -51,7 +51,6 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
             setIsError(true);
         } else {
             sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
-            navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
 
@@ -65,7 +64,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
             useNoTempSavingText
         >
             <VStack gap="10">
-                <Accordion>
+                <Accordion indent={false}>
                     <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omDeg' })}>
                         <VStack gap="4">
                             <BodyShort>{fullNameFormat(person.fornavn, person.etternavn, person.mellomnavn)}</BodyShort>
