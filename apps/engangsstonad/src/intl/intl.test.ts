@@ -1,3 +1,6 @@
+import { extract } from '@formatjs/cli-lib';
+import glob from 'fast-glob';
+
 import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
 import en from './messages/en_US.json';
@@ -34,5 +37,20 @@ describe('intl messages', () => {
 
         expect(missingKeysNynorsk.length).toBe(0);
         expect(missingKeysEnglish.length).toBe(0);
+    });
+
+    //TODO Denne sjekkar ikkje alle strings. Greier kun å henta ein del frå kode, men ikkje alle.
+    // Hadde ein henta alle så kunne ein sjekka begge vegar.
+    it('Check that i18n strings in code exists in nb_NO language file', async () => {
+        const files = await glob('src/**/*.{ts,tsx}');
+        const foundTranslations = await extract(files, {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        });
+
+        const foundKeys = Object.keys(JSON.parse(foundTranslations));
+
+        const missingKeysBokmål = foundKeys.filter((key) => !Object.keys(nb).includes(key));
+        missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in nn_NO.json.'));
+        expect(missingKeysBokmål.length).toBe(0);
     });
 });
