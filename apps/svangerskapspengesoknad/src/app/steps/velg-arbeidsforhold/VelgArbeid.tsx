@@ -12,6 +12,7 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { getValgtTilrettelegging } from 'app/utils/tilretteleggingUtils';
 import SøknadRoutes from 'app/routes/routes';
 import {
+    cleanupOmValgArbeidFormData,
     getInitialVelgArbeidFormValues,
     mapArbeidsforholdToVelgArbeidOptions,
     validateVelgArbeidIsAnswered,
@@ -57,7 +58,11 @@ const VelgArbeid: React.FunctionComponent = () => {
                         steps={stepConfig(intl)}
                         useNoTempSavingText={true}
                     >
-                        <VelgArbeidFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                        <VelgArbeidFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                            cleanup={(values) => cleanupOmValgArbeidFormData(values, tilretteleggingOptions)}
+                        >
                             <Block padBottom="l">
                                 <VelgArbeidFormComponents.CheckboxGroup
                                     name={VelgArbeidFormField.arbeidMedTilrettelegging}

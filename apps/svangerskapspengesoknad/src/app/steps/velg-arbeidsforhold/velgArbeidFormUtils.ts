@@ -142,3 +142,13 @@ export const validateVelgArbeidIsAnswered = (value: string, intl: IntlShape) => 
     }
     return undefined;
 };
+
+export const cleanupOmValgArbeidFormData = (
+    values: VelgArbeidFormData,
+    options: Tilrettelegging[],
+): VelgArbeidFormData => {
+    const filteredValues = values.arbeidMedTilrettelegging!.filter((val) =>
+        options.find((tilrettelegging) => tilrettelegging.id === val),
+    );
+    return { arbeidMedTilrettelegging: filteredValues };
+};
