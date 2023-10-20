@@ -87,6 +87,9 @@ export const cleanUpTilretteleggingStepFormValues = (
     const initValues = getInitTilretteleggingFormDataValues();
     const cleanedData: TilretteleggingFormData = {
         ...values,
+        risikofaktorer: visibility.isVisible(TilretteleggingFormField.risikofaktorer)
+            ? values.risikofaktorer
+            : initValues.risikofaktorer,
         tilretteleggingstiltak: visibility.isVisible(TilretteleggingFormField.tilretteleggingstiltak)
             ? values.tilretteleggingstiltak
             : initValues.tilretteleggingstiltak,
