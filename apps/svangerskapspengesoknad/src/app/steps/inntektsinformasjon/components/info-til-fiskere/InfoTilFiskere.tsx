@@ -95,7 +95,7 @@ const InfoTilFiskere = () => {
                 <Block margin="none">
                     <BodyLong>
                         <FormattedMessage
-                            id="inntektsinformasjon.infoTilFiskere.del5"
+                            id="inntektsinformasjon.infoTilFiskere.del10"
                             values={{
                                 a: (msg: any) => (
                                     <a href={links.omLottOgHyre} target="_blank" rel="noreferrer" className="lenke">

@@ -13,7 +13,7 @@ export default {
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
     hvordanSendeInntektsmelding:
         'https://www.nav.no/no/bedrift/tjenester-og-skjemaer/nav-og-altinn-tjenester/foreldrepenger-og-svangerskapspenger2',
-    omLottOgHyre: 'https://www.skatteetaten.no/rettskilder/type/handboker/skatte-abc/2019/fiske/F-14.014/F-14.048/',
+    omLottOgHyre: 'https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2021/fiske/F-13.014/F-13.048/',
     arbeidstilsynetSkjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
     brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
