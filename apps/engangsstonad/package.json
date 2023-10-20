@@ -9,8 +9,8 @@
     "repository": "https://github.com/navikt/fp-engangsstonad.git",
     "scripts": {
         "build": "vite build",
-        "dev-api": "node ./mock-api-server.cjs",
-        "dev": "cross-env NODE_ENV=development node ./server.cjs",
+        "dev-api": "node ./mock-api/mock-api-server.cjs",
+        "dev": "node ./dev-server.cjs",
         "test": "vitest run",
         "lint": "eslint src/**",
         "prettier": "prettier --write src",

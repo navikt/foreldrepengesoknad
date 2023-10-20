@@ -1,0 +1,26 @@
+name: Bygg og deploy Engangsstønad
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'felles_server_decorator'
+    paths:
+      - 'apps/engangsstonad/**'
+      - 'packages/**'
+      - '.deploy/engangsstonad/**'
+      - '.deploy/naiserator.yaml'
+
+jobs:
+  build-app:
+    name: Build
+    permissions:
+      packages: write
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-pnpm-monorepo.yml@main
+    with:
+      runs-on: 'ubuntu-latest-8-cores'
+      node-version: '18.8.0'
+      build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
+      push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
+      app: 'engangsstonad'
+    secrets: inherit

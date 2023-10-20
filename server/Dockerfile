@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY ./package.json ./package-lock.json ./
 RUN npm ci --frozen-lockfile --ignore-scripts
 
-FROM gcr.io/distroless/nodejs20-debian11:nonroot
+FROM gcr.io/distroless/nodejs18-debian11:nonroot
 
 ENV TZ="Europe/Oslo"
 ENV NODE_ENV production
