@@ -24,7 +24,7 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: true
       push-image: ${{ github.ref_name == 'felles_server_decorator' }} # default: false
-      app: ${{ env.NAME }}
+      app: $NAME
     secrets: inherit
 
 
