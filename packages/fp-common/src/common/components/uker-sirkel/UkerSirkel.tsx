@@ -1,6 +1,6 @@
-import bemUtils from 'common/utils/bemUtils';
 import AntallUkerKalenderIkon from './antallUkerKalenderIkon/AntallUkerKalenderIkon';
 import Sirkelmaske from '../sirkelmaske/Sirkelmaske';
+import bemUtils from '../../utils/bemUtils';
 
 import './ukerSirkel.less';
 

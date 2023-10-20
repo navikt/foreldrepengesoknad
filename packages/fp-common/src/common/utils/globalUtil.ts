@@ -1,5 +1,5 @@
 import Bytes from 'bytes';
-import { Attachment } from 'common/types';
+import { Attachment } from '../types';
 
 export const assertUnreachable = (_x: never, message?: string): never => {
     throw new Error(message === undefined ? 'This should never happen.' : message);

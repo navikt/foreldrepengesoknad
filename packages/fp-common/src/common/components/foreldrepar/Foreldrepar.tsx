@@ -1,7 +1,8 @@
-import { ForeldreparForelder, ForeldreparIllustrasjonsvariant } from 'common/types';
-import './foreldrepar.less';
+import { ForeldreparForelder, ForeldreparIllustrasjonsvariant } from '../../types';
+import bemUtils from '../../utils/bemUtils';
 import { getForeldreparIkon } from './foreldreparUtils';
-import bemUtils from 'common/utils/bemUtils';
+
+import './foreldrepar.less';
 
 interface Props {
     forelder1: ForeldreparForelder;

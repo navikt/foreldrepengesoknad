@@ -6,7 +6,7 @@ import Medmor2 from './assets/Medmor2';
 import Medmor1 from './assets/Medmor1';
 import Mor1 from './assets/Mor1';
 import Mor2 from './assets/Mor2';
-import { ForeldreparForelder } from 'common/types';
+import { ForeldreparForelder } from '../../types';
 
 const getForeldreparIkonProps = (className: string, width: number, height: number) => ({
     focusable: 'false',

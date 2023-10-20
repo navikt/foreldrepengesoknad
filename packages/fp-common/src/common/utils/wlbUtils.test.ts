@@ -1,4 +1,4 @@
-import { Forelder, Periode, Periodetype, StønadskontoType } from 'common/types';
+import { Forelder, Periode, Periodetype, StønadskontoType } from '../types';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getFørsteUttaksdag2UkerFørFødsel,

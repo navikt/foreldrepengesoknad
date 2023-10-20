@@ -1,6 +1,5 @@
-import bemUtils from 'common/utils/bemUtils';
-import KalenderBakgrunnIkon from 'common/assets/kalender-bakgrunn-ikon/KalenderBakgrunnIkon';
-
+import KalenderBakgrunnIkon from '../../../assets/kalender-bakgrunn-ikon/KalenderBakgrunnIkon';
+import bemUtils from '../../../utils/bemUtils';
 import './antallUkerKalenderIkon.less';
 
 interface Props {

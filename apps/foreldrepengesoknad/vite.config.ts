@@ -18,7 +18,6 @@ export default defineConfig({
             'utils-test': path.resolve(__dirname, './src/utils-test'),
             stories: path.resolve(__dirname, './src/storybook/stories'),
             storybook: path.resolve(__dirname, './src/storybook'),
-            common: path.resolve(__dirname, './../../packages/fp-common/src/common'),
         },
     },
     build: {

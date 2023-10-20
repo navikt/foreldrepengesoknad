@@ -1,6 +1,6 @@
-import { MorsAktivitet, Skjemanummer, isAnnenForelderOppgitt, AnnenForelder } from 'common/types';
 import dayjs from 'dayjs';
 import { hasValue } from './validationUtils';
+import { isAnnenForelderOppgitt, AnnenForelder, MorsAktivitet, Skjemanummer } from '../types';
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {

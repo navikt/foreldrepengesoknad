@@ -1,4 +1,4 @@
-import { ForeldreparForelder } from 'common/types';
+import { ForeldreparForelder } from '../../types';
 import { getForeldreparIkon } from './foreldreparUtils';
 
 interface Props {

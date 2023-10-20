@@ -1178,6 +1178,9 @@ importers:
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
+      date-holidays:
+        specifier: ^3.21.3
+        version: 3.21.3
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9

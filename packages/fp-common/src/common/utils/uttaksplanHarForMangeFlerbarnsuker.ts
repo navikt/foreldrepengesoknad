@@ -1,4 +1,4 @@
-import { Dekningsgrad, Periode, isUttaksperiode } from 'common/types';
+import { Dekningsgrad, Periode, isUttaksperiode } from '../types';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const getFlerbarnsuker = (dekningsgrad: string, antallBarn: number): number => {

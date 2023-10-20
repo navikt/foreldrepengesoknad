@@ -1,7 +1,7 @@
-import { intlUtils } from 'common';
-import { AnnenForelder, AnnenForelderOppgitt, Sak, isAnnenForelderOppgitt } from 'common/types';
-import { RettighetType } from 'common/types/RettighetType';
 import { IntlShape } from 'react-intl';
+import { AnnenForelder, AnnenForelderOppgitt, Sak, isAnnenForelderOppgitt } from '../types';
+import intlUtils from './intlUtils';
+import { RettighetType } from '../types/RettighetType';
 
 export const getErMorUfør = (annenForelder: AnnenForelder, erFarEllerMedmor: boolean) => {
     if (isAnnenForelderOppgitt(annenForelder) && erFarEllerMedmor) {

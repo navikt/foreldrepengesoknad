@@ -1,7 +1,8 @@
 import * as React from 'react';
 import AttachmentComponent from './Attachment';
-import { Attachment } from 'common/types';
-import { guid } from 'common/utils/guid';
+import { Attachment } from '../../types';
+import { guid } from '../../utils/guid';
+
 import './attachment.less';
 
 export interface Props {

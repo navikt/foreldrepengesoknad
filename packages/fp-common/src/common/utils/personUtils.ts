@@ -1,8 +1,8 @@
-import { intlUtils } from 'common';
-import { AnnenForelder, Kjønn, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from 'common/types';
-import Person from 'common/types/Person';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+import { AnnenForelder, Kjønn, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '../types';
+import Person from '../types/Person';
+import intlUtils from './intlUtils';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {

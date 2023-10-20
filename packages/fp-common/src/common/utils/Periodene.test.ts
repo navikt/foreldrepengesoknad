@@ -1,14 +1,4 @@
 import {
-    Forelder,
-    InfoPeriode,
-    Oppholdsperiode,
-    Periode,
-    Periodetype,
-    StønadskontoType,
-    Uttaksperiode,
-    OppholdÅrsakType,
-} from 'common/types';
-import {
     uttaksplanErBareOpphold,
     uttaksplanSlutterMedOpphold,
     uttaksplanStarterMedOpphold,
@@ -16,6 +6,16 @@ import {
 } from './Periodene';
 import { Uttaksdagen } from './Uttaksdagen';
 import { getTidsperiode } from './Tidsperioden';
+import {
+    Forelder,
+    InfoPeriode,
+    Oppholdsperiode,
+    OppholdÅrsakType,
+    Periode,
+    Periodetype,
+    StønadskontoType,
+    Uttaksperiode,
+} from '../types';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();

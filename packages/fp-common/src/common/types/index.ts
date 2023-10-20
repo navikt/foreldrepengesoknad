@@ -36,6 +36,7 @@ export * from './Sak';
 export * from './Saksgrunnlag';
 export * from './Saksperiode';
 export * from './SaksperiodeDTO';
+export * from './SenEndringÅrsak';
 export * from './Situasjon';
 export * from './SituasjonForelderSvg';
 export * from './Sivilstand';

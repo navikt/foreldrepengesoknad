@@ -11,10 +11,11 @@ import {
     Uttaksperiode,
     isOverføringsperiode,
     isUttaksperiode,
-} from 'common/types';
+} from './../types';
 import { Uttaksdagen } from './Uttaksdagen';
 import { isValidTidsperiode } from './Tidsperioden';
-import { finnAntallDagerÅTrekke, intlUtils } from 'common';
+import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
+import intlUtils from './intlUtils';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 const ANTALL_DAGER_TO_UKER = 2 * 7;

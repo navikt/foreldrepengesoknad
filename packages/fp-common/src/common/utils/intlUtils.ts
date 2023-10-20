@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-const intlHelper = (
+const intlUtils = (
     intl: IntlShape,
     id: string,
     value?: Record<string, string | number | boolean | null | undefined | Date>,
@@ -20,4 +20,4 @@ export const intlHasKey = (intl: IntlShape, key: string) => {
     return intl.messages[key] !== undefined;
 };
 
-export default intlHelper;
+export default intlUtils;

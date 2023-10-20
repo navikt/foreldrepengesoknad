@@ -6,11 +6,7 @@
         "build": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "build-storybook": "storybook build -o .storybook-static-build",
         "prettier": "prettier --write src",
-        "storybook": "storybook dev --quiet -p 6006",
-        "build-lib": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
-        "clean-lib": "rm -rf ./lib",
-        "compile-lib-script": "tsc -p tsconfig-build-lib.json",
-        "copy-files-to-lib": "copyfiles -u 2 \"src/common/**/*.less\" lib/ && copyfiles -u 2 \"src/common/**/*.json\" lib/"
+        "storybook": "storybook dev --quiet -p 6006"
     },
     "dependencies": {
         "@navikt/ds-css": "4.12.1",
@@ -25,6 +21,7 @@
         "bytes": "^3.1.2",
         "classnames": "^2.3.2",
         "date-fns": "^2.30.0",
+        "date-holidays": "^3.21.3",
         "dayjs": "^1.11.9",
         "formik": "^2.4.3",
         "history": "^5.3.0",

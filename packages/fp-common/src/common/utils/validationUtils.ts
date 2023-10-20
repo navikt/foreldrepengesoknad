@@ -5,7 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { YesOrNo, DateRange } from '@navikt/sif-common-formik-ds/lib';
 import { IntlShape } from 'react-intl';
-import { intlUtils } from 'common';
+import intlUtils from './intlUtils';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);

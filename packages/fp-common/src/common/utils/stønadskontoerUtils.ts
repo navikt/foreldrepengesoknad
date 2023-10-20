@@ -1,8 +1,9 @@
 import { IntlShape } from 'react-intl';
 import { getForelderNavn } from './periodeUtils';
-import { Forelder, NavnPåForeldre, StønadskontoType, TilgjengeligStønadskonto } from 'common/types';
 import { capitalizeFirstLetter } from './stringUtils';
-import { getNavnGenitivEierform, intlUtils } from 'common';
+import { Forelder, NavnPåForeldre, StønadskontoType, TilgjengeligStønadskonto } from '../types';
+import { getNavnGenitivEierform } from './personUtils';
+import intlUtils from './intlUtils';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper

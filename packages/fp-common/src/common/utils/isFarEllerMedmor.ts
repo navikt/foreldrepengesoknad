@@ -1,4 +1,4 @@
-import { Søkerrolle } from 'common/types';
+import { Søkerrolle } from '../types';
 
 const isFarEllerMedmor = (rolle: Søkerrolle) => {
     if (rolle === 'far' || rolle === 'medmor') {

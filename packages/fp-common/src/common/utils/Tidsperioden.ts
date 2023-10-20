@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { HolidaysTypes } from 'date-holidays';
-import { getOffentligeFridager } from 'app/utils/fridagerUtils';
-import { formaterDatoUtenDag, dateIsSameOrBefore, dateIsSameOrAfter } from 'app/utils/dateUtils';
 import { Uttaksdagen } from './Uttaksdagen';
-import { TidsperiodeDate } from '@navikt/fp-common';
+import { TidsperiodeDate } from '../types';
+import { dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from './dateUtils';
+import { getOffentligeFridager } from './fridagerUtils';
 
 export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 

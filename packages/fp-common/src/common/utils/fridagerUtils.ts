@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import DateHolidays, { HolidaysTypes } from 'date-holidays';
-import { TidsperiodeDate } from '@navikt/fp-common';
+import { TidsperiodeDate } from '../types';
 
 const holidays = new DateHolidays('no');
 

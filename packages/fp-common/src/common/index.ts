@@ -62,5 +62,6 @@ export * from './utils/morsAktivitetUtils';
 export * from './utils/vedleggUtils';
 export * from './utils/minsterettUtils';
 export * from './utils/uttaksplanHarForMangeFlerbarnsuker';
+export * from './utils/fridagerUtils';
 export { default as links } from './links/links';
 export { guid } from './utils/guid';

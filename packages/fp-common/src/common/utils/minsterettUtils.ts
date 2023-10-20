@@ -1,6 +1,6 @@
-import { Dekningsgrad } from 'common/types';
+import uttaksConstants from '../constants/constants';
+import { Dekningsgrad } from '../types';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
-import uttaksConstants from 'common/constants/constants';
 
 export const getBareFarHarRettKontoUtenAktivitetskravUker = (
     antallBarn: number,

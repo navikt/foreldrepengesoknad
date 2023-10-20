@@ -1,6 +1,10 @@
-import { Forelder } from 'app/types/Forelder';
 import dayjs from 'dayjs';
+import { Perioden } from './Perioden';
+import { datoErInnenforTidsperiode, isValidTidsperiode, Tidsperioden } from './Tidsperioden';
+import { Uttaksdagen } from './Uttaksdagen';
+import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 import {
+    Forelder,
     ForeldrepengerFørFødselUttaksperiode,
     InfoPeriode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -19,10 +23,11 @@ import {
     PeriodeHull,
     Periodetype,
     PeriodeUtenUttak,
+    SenEndringÅrsak,
+    StønadskontoType,
     Utsettelsesperiode,
     Uttaksperiode,
-} from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+} from '../types';
 import {
     erUtsettelse,
     erUtsettelseGrunnetPgaArbeid,
@@ -31,12 +36,7 @@ import {
     erUttakEllerOppholdMerEnnTreMånederSiden,
     erUttakGrunnetSykdom,
     erUttakTilbakeITid,
-} from 'uttaksplan/utils/periodeUtils';
-import { Perioden } from './Perioden';
-import { datoErInnenforTidsperiode, isValidTidsperiode, Tidsperioden } from './Tidsperioden';
-import { Uttaksdagen } from './Uttaksdagen';
-import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
-import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
+} from './periodeUtils';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),

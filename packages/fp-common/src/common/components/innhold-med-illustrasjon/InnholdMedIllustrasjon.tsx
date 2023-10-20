@@ -1,7 +1,8 @@
 import { Heading } from '@navikt/ds-react';
 import { Children } from 'react';
-import bemUtils from 'common/utils/bemUtils';
-import { guid } from 'common/utils/guid';
+
+import bemUtils from '../../utils/bemUtils';
+import { guid } from '../../utils/guid';
 
 import './innholdMedIllustrasjon.less';
 

@@ -1,6 +1,6 @@
-import { getAntallForeldreISituasjon, getSituasjonForelderSvg } from 'common/utils/foreldreparSituasjonUtils';
-import { Forelder, ForeldreparSituasjon } from 'common/types';
-import bemUtils from 'common/utils/bemUtils';
+import { Forelder, ForeldreparSituasjon } from '../../types';
+import bemUtils from '../../utils/bemUtils';
+import { getAntallForeldreISituasjon, getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
 import Foreldrepar from '../foreldrepar/Foreldrepar';
 import Sirkelmaske from '../sirkelmaske/Sirkelmaske';
 

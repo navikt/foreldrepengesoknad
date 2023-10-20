@@ -4,10 +4,12 @@ import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
 import AttachmentList from '../attachment/AttachmentList';
 import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
-import { Attachment, AttachmentType, Skjemanummer } from 'common/types';
-import { isAttachmentWithError, mapFilTilVedlegg } from 'common/utils/vedleggUtils';
-import { Block, PictureScanningGuide, intlUtils } from 'common';
-import { deleteAttachment } from 'common/utils/globalUtil';
+import { Attachment, AttachmentType, Skjemanummer } from '../../types';
+import { isAttachmentWithError, mapFilTilVedlegg } from '../../utils/vedleggUtils';
+import intlUtils from '../../utils/intlUtils';
+import Block from '../block/Block';
+import { deleteAttachment } from '../../utils/globalUtil';
+import PictureScanningGuide from '../picture-scanning-guide/PictureScanningGuide';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;

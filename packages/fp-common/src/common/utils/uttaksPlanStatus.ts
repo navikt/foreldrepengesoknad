@@ -1,3 +1,6 @@
+import { Perioden } from './Perioden';
+import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
+import { getFloatFromString } from './numberUtils';
 import {
     AvslåttPeriode,
     InfoPeriode,
@@ -15,10 +18,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isUttaksperiode,
-} from 'common/types';
-import { Perioden } from './Perioden';
-import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
-import { getFloatFromString } from './numberUtils';
+} from '../types';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const dager = Perioden(periode).getAntallUttaksdager();

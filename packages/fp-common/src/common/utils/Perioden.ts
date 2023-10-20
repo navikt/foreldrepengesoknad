@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
-import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from 'common/types';
 import { formaterDatoKompakt } from './dateUtils';
+import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from '../types';
 
 export const Perioden = (periode: Periode) => ({
     setStartdato: (fom: Date) => flyttPeriode(periode, fom),

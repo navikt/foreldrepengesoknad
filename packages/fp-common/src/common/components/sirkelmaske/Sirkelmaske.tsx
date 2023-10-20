@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
-import { UttaksplanHexColor } from 'common/types';
-import bemUtils from 'common/utils/bemUtils';
+
+import { UttaksplanHexColor } from '../../types';
+import bemUtils from '../../utils/bemUtils';
 
 import './sirkelmaske.less';
 

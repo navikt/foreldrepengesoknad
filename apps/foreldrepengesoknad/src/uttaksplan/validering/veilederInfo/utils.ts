@@ -1,15 +1,15 @@
 import { VeiledermeldingerPerPeriode, VeilederMessage } from './types';
 import { IntlShape } from 'react-intl';
 import { RegelAvvik } from '../utils/types/regelTypes';
-import { intlHasKey } from 'app/intl/utils';
 import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../utils/regelUtils';
 import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
 import { groupBy } from 'lodash';
+import { intlHasKey } from '@navikt/fp-common';
 
 export const veilederMessageAvsnitt = (
     førsteTekst: VeilederMessage[],
     andreTekst: VeilederMessage[],
-    visInfoOmPrematuruker: boolean
+    visInfoOmPrematuruker: boolean,
 ): VeilederMessage[] => {
     return visInfoOmPrematuruker === false ? førsteTekst : førsteTekst.concat(andreTekst);
 };
@@ -33,7 +33,7 @@ const mapAvvikTilMessage = (avvik: RegelAvvik, intl: IntlShape): VeilederMessage
 export const getUttaksplanVeilederinfo = (
     avvik: RegelAvvik[],
     intl: IntlShape,
-    grupperAvvik: boolean
+    grupperAvvik: boolean,
 ): VeilederMessage[] => {
     return trimRelaterteRegelAvvik(avvik, grupperAvvik).map((a) => mapAvvikTilMessage(a, intl));
 };

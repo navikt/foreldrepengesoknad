@@ -1,11 +1,11 @@
-import { TidsperiodeDate } from 'common/types';
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
 import { isISODateString } from '@navikt/ds-datepicker';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 import { Uttaksdagen } from './Uttaksdagen';
-import uttaksConstants from 'common/constants/constants';
+import { TidsperiodeDate } from '../types';
+import uttaksConstants from '../constants/constants';
 
 dayjs.extend(utc);
 
@@ -154,6 +154,19 @@ export const år = (dato: Dayjs): string => {
 };
 
 type DateValue = Date | undefined;
+
+export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrBefore(otherDate, 'day');
+    }
+    return true;
+};
+export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrAfter(otherDate, 'day');
+    }
+    return true;
+};
 
 export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
     dayjs(date).isBetween(fom, tom, 'day', '[]');

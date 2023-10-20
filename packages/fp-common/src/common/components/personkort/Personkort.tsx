@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { BodyShort } from '@navikt/ds-react';
-import bemUtils from 'common/utils/bemUtils';
 
 import './personkort.less';
+import bemUtils from '../../utils/bemUtils';
 
 interface Props {
     tittel?: string;

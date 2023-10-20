@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 
 import Personkort from './Personkort';
-import CheckmarkIkon from 'common/assets/checkmark-ikon/CheckmarkIkon';
+import CheckmarkIkon from '../../assets/checkmark-ikon/CheckmarkIkon';
 
 export default {
     title: 'components/Personkort',

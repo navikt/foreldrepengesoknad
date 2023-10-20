@@ -1,4 +1,4 @@
-import { ForeldreparSituasjon, Kjønn, SituasjonForelderSvg, Søkerrolle } from 'common/types';
+import { ForeldreparSituasjon, Kjønn, SituasjonForelderSvg, Søkerrolle } from '../types';
 
 export const getForeldreparSituasjon = (
     søkerKjønn: Kjønn,

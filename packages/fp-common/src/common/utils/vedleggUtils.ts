@@ -1,5 +1,5 @@
 import { guid } from './guid';
-import { Attachment, AttachmentType, InnsendingsType, Periode, Skjemanummer } from 'common/types';
+import { Attachment, AttachmentType, InnsendingsType, Periode, Skjemanummer } from '../types';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
