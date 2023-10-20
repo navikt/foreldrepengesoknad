@@ -9,3 +9,4 @@ export {
 export { openPdfPreview } from './src/pdfUtils';
 export { omitOne, omitMany } from './src/objectUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
+export { formatDate } from './src/dateUtils';

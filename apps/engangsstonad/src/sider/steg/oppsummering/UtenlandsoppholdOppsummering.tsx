@@ -1,6 +1,6 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import LandOppsummering from './LandOppsummering';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
@@ -43,88 +43,77 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
 }) => {
+    const intl = useIntl();
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
 
     return (
-        <VStack gap="4">
-            {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false ? (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage id={'norge'} />
-                    </BodyShort>
-                </HStack>
-            ) : (
-                <div>
-                    <Label className="textWithLabel__label">
-                        <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
-                    </Label>
+        <VStack gap="5">
+            <VStack gap="2">
+                {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd && (
                     <LandOppsummering
                         utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
                     />
-                </div>
-            )}
-            {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false ? (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id="oppsummering.text.neste12mnd" />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage id="medlemmskap.radiobutton.boNorge" />
-                    </BodyShort>
-                </HStack>
-            ) : (
-                <div>
-                    <Label className="textWithLabel__label">
-                        <FormattedMessage id="oppsummering.text.neste12mnd" />
-                    </Label>
+                )}
+                {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd && (
                     <LandOppsummering
                         utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
                     />
-                </div>
+                )}
+            </VStack>
+            {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false && (
+                <BodyShort>
+                    <FormattedMessage
+                        id={'UtenlandsoppholdOppsummering.BoddSisteTolv'}
+                        values={{ country: intl.formatMessage({ id: 'UtenlandsoppholdOppsummering.Norge' }) }}
+                    />
+                </BodyShort>
+            )}
+            {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false && (
+                <BodyShort>
+                    <FormattedMessage
+                        id="UtenlandsoppholdOppsummering.BoNesteTolv"
+                        values={{ country: intl.formatMessage({ id: 'UtenlandsoppholdOppsummering.Norge' }) }}
+                    />
+                </BodyShort>
             )}
             {harTermin && (
                 <HStack gap="2">
                     <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.ogKommerPåFødselstidspunktet'} />
-                    </BodyShort>
-                    <BodyShort>
                         <FormattedMessage
-                            id={
-                                erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    omBarnet.termindato!,
-                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                                )
-                                    ? 'medlemmskap.radiobutton.vareUtlandet'
-                                    : 'medlemmskap.radiobutton.vareNorge'
-                            }
+                            id={'UtenlandsoppholdOppsummering.Text.OgKommerPåFødselstidspunktet'}
+                            values={{
+                                country: intl.formatMessage({
+                                    id: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                        omBarnet.termindato!,
+                                        tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                        senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                                    )
+                                        ? 'UtenlandsoppholdOppsummering.Utlandet'
+                                        : 'UtenlandsoppholdOppsummering.Norge',
+                                }),
+                            }}
                         />
                     </BodyShort>
                 </HStack>
             )}
             {harFødt && (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.varPåFødselstidspunktet'} />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage
-                            id={
-                                erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                <BodyShort>
+                    <FormattedMessage
+                        id={'UtenlandsoppholdOppsummering.VarPåFødselstidspunktet'}
+                        values={{
+                            country: intl.formatMessage({
+                                id: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.fødselsdatoer[0].dato,
                                     tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
                                     senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )
-                                    ? 'oppsummering.utenlandsopphold.iUtlandet'
-                                    : 'oppsummering.utenlandsopphold.iNorge'
-                            }
-                        />
-                    </BodyShort>
-                </HStack>
+                                    ? 'UtenlandsoppholdOppsummering.Utlandet'
+                                    : 'UtenlandsoppholdOppsummering.Norge',
+                            }),
+                        }}
+                    />
+                </BodyShort>
             )}
         </VStack>
     );
