@@ -5,7 +5,6 @@ import SvangerskapspengerContextProvider from 'app/context/SvangerskapspengerCon
 import IntlProvider from 'app/intl/IntlProvider';
 
 import '@navikt/ds-css';
-import '../../styles/globals.less';
 
 export default {
     title: 'pages/IkkeMyndig/IkkeKvinne',
