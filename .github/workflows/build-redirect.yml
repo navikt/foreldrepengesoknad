@@ -14,23 +14,15 @@ env:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
-    outputs:
-      build-version: ${{ steps.generate-build-version.outputs.build-version }}
-    steps:
-      - uses: navikt/fp-gha-workflows/.github/workflows/build-docker@main # ratchet:exclude
-        id: generate-build-version
-        with:
-          build-version: ${{ steps.generate-build-version.outputs.build-version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-image: ${{ github.ref_name == 'master' }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          docker_context: ./server_for_redirect
-          app_name: /${{env.APP_NAME}}
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker.yml@main
+    with:
+      push-image: ${{ github.ref_name == 'master' }}
+      docker_context: ./server_for_redirect
+      app_name: /${{env.APP_NAME}}
+    secrets: inherit
 
   promote-prod:
     name: Deploy
@@ -38,11 +30,11 @@ jobs:
     needs: build
     permissions:
       id-token: write
-    steps:
-      - uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main # ratchet:exclude
-        with:
-          gar: true
-          image: ${{ needs.build.outputs.build-version }}
-          cluster: prod-gcp
-          app: /${{env.APP_NAME}}
-          naiserator_file: planlegger_redirect.yaml
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main # ratchet:exclude
+    with:
+      gar: true
+      image: ${{ needs.build.outputs.build-version }}
+      cluster: prod-gcp
+      app: /${{env.APP_NAME}}
+      naiserator_file: planlegger_redirect.yaml
+    secrets: inherit
