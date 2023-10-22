@@ -24,11 +24,10 @@ jobs:
 
   promote-prod:
     name: Deploy
-    runs-on: ubuntu-latest
     needs: build
     permissions:
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main # ratchet:exclude
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
       image: ${{ needs.build.outputs.build-version }}
