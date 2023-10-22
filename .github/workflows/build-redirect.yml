@@ -21,8 +21,8 @@ jobs:
     outputs:
       build-version: ${{ steps.generate-build-version.outputs.build-version }}
     steps:
-      - name: Bygg og push docker image
-        uses: navikt/fp-gha-workflows/.github/workflows/build-docker@main # ratchet:exclude
+      - uses: navikt/fp-gha-workflows/.github/workflows/build-docker@main # ratchet:exclude
+        id: generate-build-version
         with:
           build-version: ${{ steps.generate-build-version.outputs.build-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
