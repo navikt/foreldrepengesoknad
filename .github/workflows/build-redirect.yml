@@ -13,14 +13,12 @@ jobs:
   build:
     name: Build
     permissions:
-      contents: read
       packages: write
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-docker.yml@main
     with:
       push-image: ${{ github.ref_name == 'master' }}
-      dockerfile: './server_for_redirect/Dockerfile'
-      docker_context: './server_for_redirect/'
+      docker_context: './server_for_redirect'
       app_name: /fp-planlegger-redirect
     secrets: inherit
 
