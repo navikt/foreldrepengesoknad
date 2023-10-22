@@ -8,8 +8,6 @@ on:
       - 'server_for_redirect/**'
       - '.github/workflows/build-redirect.yml'
       - '.deploy/planlegger_redirect.yaml'
-env:
-  APP_NAME: fp-planlegger-redirect
 
 jobs:
   build:
@@ -21,7 +19,7 @@ jobs:
     with:
       push-image: ${{ github.ref_name == 'master' }}
       docker_context: ./server_for_redirect
-      app_name: /${{env.APP_NAME}}
+      app_name: /fp-planlegger-redirect
     secrets: inherit
 
   promote-prod:
@@ -35,6 +33,6 @@ jobs:
       gar: true
       image: ${{ needs.build.outputs.build-version }}
       cluster: prod-gcp
-      app: /${{env.APP_NAME}}
+      app: /fp-planlegger-redirect
       naiserator_file: planlegger_redirect.yaml
     secrets: inherit
