@@ -14,7 +14,7 @@ spec:
       path: /health/isReady
       initialDelay: 10
   ingresses:
-    - 'https://foreldrepengeplanlegger.nav.no'
+    - {{ingress}}
   resources:
     limits:
       cpu: 500m
@@ -22,3 +22,6 @@ spec:
     requests:
       cpu: 100m
       memory: 128Mi
+  env:
+    - name: APP_VERSION
+      value: {{image}}
