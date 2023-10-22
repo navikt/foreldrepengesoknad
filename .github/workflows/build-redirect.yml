@@ -21,19 +21,8 @@ jobs:
     outputs:
       build-version: ${{ steps.generate-build-version.outputs.build-version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # ratchet:actions/checkout@v4
-
-      - name: Generate build version
-        id: generate-build-version
-        run: |
-          echo "build-version=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
-
-      - name: Print build version
-        run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
-
       - name: Bygg og push docker image
-        uses: navikt/fp-gha-workflows/.github/actions/build-push-docker-image@main # ratchet:exclude
+        uses: navikt/fp-gha-workflows/.github/workflows/build-docker@main # ratchet:exclude
         with:
           build-version: ${{ steps.generate-build-version.outputs.build-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
