@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { ExpansionCard, VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { PictureScanningGuide, Step } from '@navikt/fp-common';
 
 import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
@@ -14,9 +14,10 @@ import { Attachment } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
+import { useCustomIntl } from '@navikt/fp-ui';
 
 const DokumentasjonSteg: React.FunctionComponent = () => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -35,11 +36,9 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
     const lagre = useCallback((formValues: Dokumentasjon) => {
         if (formValues.vedlegg.length === 0) {
             formMethods.setError('vedlegg', {
-                message: intl.formatMessage({
-                    id: erBarnetAdoptert
-                        ? 'DokumentasjonSteg.MinstEttDokumentAdopsjon'
-                        : 'DokumentasjonSteg.MinstEttDokumentTermin',
-                }),
+                message: erBarnetAdoptert
+                    ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
+                    : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
             });
         } else {
             lagreDokumentasjon(formValues);
@@ -54,7 +53,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
+            bannerTitle={i18n('Søknad.Pageheading')}
             pageTitle={stepData.stepConfig.find((c) => c.id === stepData.activeStepId)?.label || '-'}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}

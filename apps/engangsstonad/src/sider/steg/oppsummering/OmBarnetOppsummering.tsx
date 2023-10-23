@@ -1,7 +1,7 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { formatDate } from '@navikt/fp-common';
 import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
-import { AttachmentList } from '@navikt/fp-ui';
+import { AttachmentList, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokumentasjon }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
@@ -20,18 +20,15 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
 
     let antallBarnSummaryText;
     if (omBarnet.antallBarn === 1) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.EttBarn' });
+        antallBarnSummaryText = i18n('OmBarnetOppsummering.EttBarn');
     } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.Tvillinger' });
+        antallBarnSummaryText = i18n('OmBarnetOppsummering.Tvillinger');
     } else if (omBarnet.antallBarn === 2 && harAdoptert) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.ToBarn' });
+        antallBarnSummaryText = i18n('OmBarnetOppsummering.ToBarn');
     } else {
-        antallBarnSummaryText = intl.formatMessage(
-            { id: 'OmBarnetOppsummering.FlereBarn' },
-            {
-                antall: omBarnet.antallBarn,
-            },
-        );
+        antallBarnSummaryText = i18n('OmBarnetOppsummering.FlereBarn', {
+            antall: omBarnet.antallBarn,
+        });
     }
 
     return (
@@ -52,13 +49,9 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                     </HStack>
                     <HStack gap="2">
                         <BodyShort>
-                            <FormattedMessage
-                                id={
-                                    omBarnet.fødselsdatoer.length > 1
-                                        ? 'OmBarnetOppsummering.MedFødselsdatoer'
-                                        : 'OmBarnetOppsummering.MedFødselsdato'
-                                }
-                            />
+                            {omBarnet.fødselsdatoer.length > 1
+                                ? i18n('OmBarnetOppsummering.MedFødselsdatoer')
+                                : i18n('OmBarnetOppsummering.MedFødselsdato')}
                         </BodyShort>
                         <BodyLong>
                             {omBarnet.fødselsdatoer

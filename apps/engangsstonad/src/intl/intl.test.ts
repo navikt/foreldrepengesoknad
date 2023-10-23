@@ -40,7 +40,7 @@ describe('intl messages', () => {
         expect(missingKeysEnglish.length).toBe(0);
     });
 
-    const regex = /(?<=(isRequired|isValidDate|isMaxOneYearIntoTheFuture)\(')[^']*/gm;
+    const regex = /(?<=(i18n)\(')[^']*/gm;
     //const regex = /(?<=(intlUtils\(intl,\s'))[^']*/gm;
 
     const getAdditionalIntlString = (fileLoc: string) => {
