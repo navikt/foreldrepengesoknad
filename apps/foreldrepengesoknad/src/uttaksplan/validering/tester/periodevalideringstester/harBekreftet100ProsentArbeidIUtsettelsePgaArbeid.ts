@@ -3,7 +3,7 @@ import { isUtsettelsePgaArbeid } from 'uttaksplan/types/Periode';
 import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/regelTypes';
 
 export const harBekreftet100ProsentArbeidIUtsettelsePgaArbeid: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     const utsettelserPgaArbeidUtenBekreftelse = grunnlag.perioder
         .filter(isUtsettelsePgaArbeid)

@@ -21,7 +21,7 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
             <div
                 className={bem.classNames(
                     bem.element('suksess'),
-                    bem.modifierConditional('mangler-vedlegg', isMissingAttachments)
+                    bem.modifierConditional('mangler-vedlegg', isMissingAttachments),
                 )}
             >
                 <div className={bem.element('ikon')}>{isMissingAttachments ? <AdvarselIkon /> : <CheckmarkIkon />}</div>

@@ -115,12 +115,11 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: Søknadsinfo
                 intlKey: infoTekstKey,
                 renderAsHtml: true,
                 values: {
-                    a: (_intl: IntlShape) => (msg: any) =>
-                        (
-                            <a href={links.graderingInfo} className="lenke" rel="noreferrer" target="_blank">
-                                {msg}
-                            </a>
-                        ),
+                    a: (_intl: IntlShape) => (msg: any) => (
+                        <a href={links.graderingInfo} className="lenke" rel="noreferrer" target="_blank">
+                            {msg}
+                        </a>
+                    ),
                 },
             },
         };

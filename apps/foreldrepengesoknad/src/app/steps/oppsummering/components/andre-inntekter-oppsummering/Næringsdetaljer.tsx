@@ -64,7 +64,7 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                     <OppsummeringsPunkt
                         title={intlUtils(
                             intl,
-                            'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt'
+                            'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt',
                         )}
                     >
                         <BodyShort>{formatDate(endringAvNæringsinntektInformasjon!.dato)}</BodyShort>
@@ -94,7 +94,7 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                     <OppsummeringsPunkt
                         title={intlUtils(
                             intl,
-                            'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie'
+                            'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie',
                         )}
                     >
                         <BodyShort>

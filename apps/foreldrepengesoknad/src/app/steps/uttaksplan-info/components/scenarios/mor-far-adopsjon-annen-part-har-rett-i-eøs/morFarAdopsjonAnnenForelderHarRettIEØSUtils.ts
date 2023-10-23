@@ -12,7 +12,7 @@ const initialMorFarAdopsjonAnnenForelderHarRettIEØSValues: MorFarAdopsjonAnnenF
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.annenStartdatoAdopsjon]: '',
 };
 export const mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState = (
-    values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>
+    values: Partial<MorFarAdopsjonAnnenForelderHarRettIEØSFormData>,
 ): MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo => {
     return {
         dekningsgrad: values.dekningsgrad!,
@@ -22,14 +22,14 @@ export const mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState = (
 };
 export const getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues = (
     lagretUttaksplanInfo: MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): MorFarAdopsjonAnnenForelderHarRettIEØSFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
             [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad]: dekningsgrad,
             [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg]: finnEnum(
-                lagretUttaksplanInfo.startdatoAdopsjonValg
+                lagretUttaksplanInfo.startdatoAdopsjonValg,
             ),
         };
     }

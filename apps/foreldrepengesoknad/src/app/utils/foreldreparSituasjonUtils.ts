@@ -9,7 +9,7 @@ export const getForeldreparSituasjon = (
     erDeltUttak: boolean,
     morErAleneOmOmsorg: boolean,
     farMedmorErAleneOmOmsorg: boolean,
-    rolle: Søkerrolle
+    rolle: Søkerrolle,
 ): ForeldreparSituasjon => {
     if (erDeltUttak) {
         if (annenForelderKjønn === undefined && rolle === 'medmor') {

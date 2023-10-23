@@ -28,7 +28,7 @@ export const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
     bareFarMedmorHarRett: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmorOgAnnenForelderKanIkkeOppgis: boolean,
-    søkerErFarEllerMedmorOgErAleneOmOmsorgen: boolean
+    søkerErFarEllerMedmorOgErAleneOmOmsorgen: boolean,
 ): InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor | undefined => {
     if (søkerErFarEllerMedmor === false || bareFarMedmorHarRett === false || morErUfør === true) {
         return undefined;
@@ -70,7 +70,7 @@ export const getUgyldigUttakMor = (
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     flerbarnsFødsel?: boolean,
-    value?: string
+    value?: string,
 ): Periode[] => {
     if (situasjon == 'adopsjon') {
         return [];
@@ -79,7 +79,7 @@ export const getUgyldigUttakMor = (
     const førsteUttaksdag = uttaksdatoer(
         familiehendelsesdato,
         erFarEllerMedmor,
-        termindato
+        termindato,
     ).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
     const førsteUttaksdagEtterÅtteUker = Uttaksdagen(førsteUttaksdag).leggTil(40);
@@ -107,7 +107,7 @@ export const getUgyldigUttakMor = (
             .filter(
                 (p) =>
                     p.forelder === Forelder.mor &&
-                    (p.årsak === UtsettelseÅrsakType.Ferie || p.årsak === UtsettelseÅrsakType.Arbeid)
+                    (p.årsak === UtsettelseÅrsakType.Ferie || p.årsak === UtsettelseÅrsakType.Arbeid),
             );
     } else if (value === 'førsteSeksUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
@@ -117,7 +117,7 @@ export const getUgyldigUttakMor = (
                     p.forelder === Forelder.mor &&
                     p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
                     p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
-                    p.årsak !== UtsettelseÅrsakType.Sykdom
+                    p.årsak !== UtsettelseÅrsakType.Sykdom,
             );
     }
     const gradertePerioder = Periodene(ugyldigPeriode)
@@ -177,7 +177,7 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigO
 const erFarsUttakFørsteSeksUkerGyldig = (
     periode: Uttaksperiode,
     antallBarn: number,
-    harMidlertidigOmsorg: boolean
+    harMidlertidigOmsorg: boolean,
 ): boolean => {
     const unntak = unntakFarFørsteSeksUker(periode, harMidlertidigOmsorg);
     return (
@@ -194,7 +194,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     erAleneOmOmsorg: boolean,
     harMidlertidigOmsorg: boolean,
     erFarEllerMedmor: boolean,
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): Periode[] => {
     if (situasjon === 'adopsjon' || annenForelder.kanIkkeOppgis || erAleneOmOmsorg) {
         return [];
@@ -203,7 +203,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     const førsteUttaksdag = uttaksdatoer(
         familiehendelsesdato,
         erFarEllerMedmor,
-        termindato
+        termindato,
     ).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 
@@ -221,7 +221,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
         .filter(
             (p) =>
                 p.årsak !== OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
-                p.årsak !== OverføringÅrsakType.sykdomAnnenForelder
+                p.årsak !== OverføringÅrsakType.sykdomAnnenForelder,
         );
 
     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)

@@ -29,7 +29,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
         });
 
         const perioderSomOverlapperUtenSamtidigUttak = perioderSomOverlapper.filter(
-            (p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak)
+            (p) => !(isUttaksperiode(p) && p.ønskerSamtidigUttak),
         );
 
         const passerer = perioderSomOverlapperUtenSamtidigUttak.length === 0;
@@ -48,7 +48,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                                 grunnlag.navnPåForeldre,
                                 grunnlag.familiehendelsesdato,
                                 grunnlag.termindato,
-                                grunnlag.søkersituasjon.situasjon
+                                grunnlag.søkersituasjon.situasjon,
                             ),
                         tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: fornavnAnnenForelder,

@@ -22,7 +22,7 @@ export interface ArbeidsforholdVirksomhetDTO {
     id: string;
 }
 export const isArbeidsforholdVirksomhetDTO = (
-    arbeidsforhold: ArbeidsforholdDTO
+    arbeidsforhold: ArbeidsforholdDTO,
 ): arbeidsforhold is ArbeidsforholdVirksomhetDTO => {
     return arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET;
 };

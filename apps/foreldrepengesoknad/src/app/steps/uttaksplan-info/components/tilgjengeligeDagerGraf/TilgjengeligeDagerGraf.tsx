@@ -20,7 +20,7 @@ interface Props {
 
 export const getProsentFordelingPerDel = (
     tilgjengeligeDager: TilgjengeligeDager,
-    inkluderForeldrepengerFørTermin: boolean
+    inkluderForeldrepengerFørTermin: boolean,
 ): {
     pstMor: number;
     pstFelles: number;
@@ -56,7 +56,7 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({
             ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${tilgjengeligeDager.dagerMor / 5} ${intlUtils(
                   intl,
                   'uker',
-                  { uker: 15 }
+                  { uker: 15 },
               )}`
             : getVarighetString(tilgjengeligeDager.dagerMor, intl);
     return (

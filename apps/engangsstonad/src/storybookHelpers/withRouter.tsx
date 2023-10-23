@@ -37,7 +37,6 @@ const withRouter = (Story: any, context: StoryContext) => {
                     element={getElement(currentPath, Path.TIDLIGERE_UTENLANDSOPPHOLD, Story)}
                 />
                 <Route path={Path.OPPSUMMERING} element={getElement(currentPath, Path.OPPSUMMERING, Story)} />
-                <Route path={Path.KVITTERING} element={getElement(currentPath, Path.KVITTERING, Story)} />
             </Routes>
         </MemoryRouter>
     );

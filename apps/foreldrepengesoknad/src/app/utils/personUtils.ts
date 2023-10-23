@@ -51,7 +51,7 @@ export const getKjønnFromFnrString = (fnr: string): Kjønn | undefined => {
 export const getMorErAleneOmOmsorg = (
     søkerErMor: boolean,
     søkerErAleneOmOmsorg: boolean,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ) => {
     return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
 };
@@ -59,7 +59,7 @@ export const getMorErAleneOmOmsorg = (
 export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
     rolle: Søkerrolle,
     søkerErFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ) => {
     if (søkerErFarEllerMedmor === true && isAnnenForelderOppgitt(annenForelder)) {
         return (
@@ -72,7 +72,7 @@ export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
 export const getMorHarRettPåForeldrepengerIEØS = (
     rolle: Søkerrolle,
     søkerErFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ) => {
     if (søkerErFarEllerMedmor === true && isAnnenForelderOppgitt(annenForelder)) {
         return annenForelder.harRettPåForeldrepengerINorge === true;
@@ -83,7 +83,7 @@ export const getMorHarRettPåForeldrepengerIEØS = (
 export const getFarMedmorErAleneOmOmsorg = (
     søkerErFarMedmor: boolean,
     søkerErAleneOmOmsorg: boolean,
-    annenForelder: AnnenForelder
+    annenForelder: AnnenForelder,
 ) => {
     return søkerErFarMedmor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
 };
@@ -92,7 +92,7 @@ export const getNavnPåForeldre = (
     person: Person,
     annenForelder: AnnenForelder,
     erFarEllerMedmor: boolean,
-    intl: IntlShape
+    intl: IntlShape,
 ): NavnPåForeldre => {
     const navnSøker = person.fornavn;
     const navnAnnenForelder =

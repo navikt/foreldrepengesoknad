@@ -11,7 +11,7 @@ const initialFarMedmorFødselOgMorHarIkkeRettValues: FarMedmorFødselOgMorHarIkk
 };
 
 export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
-    values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>
+    values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>,
 ): FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo => {
     return {
         permisjonStartdato: values.permisjonStartdato!,
@@ -20,7 +20,7 @@ export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
 
 export const getInitialFarMedmorFødselOgMorHarIkkeRettValues = (
     dekningsgrad: Dekningsgrad,
-    lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined
+    lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined,
 ): FarMedmorFødselOgMorHarIkkeRettFormData => {
     if (lagretUttaksplanInfo) {
         return {

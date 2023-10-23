@@ -1,0 +1,12 @@
+{
+    "app": "foreldrepengesoknad",
+    "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
+    "ingresses": [
+        "https://foreldrepengesoknad.intern.dev.nav.no"
+    ],
+    "env": {
+        "APPRES_CMS_URL": "https://dekoratoren.ekstern.dev.nav.no",
+        "REST_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
+        "LOGIN_URL": "https://login.ekstern.dev.nav.no/oauth2/login"
+    }
+}

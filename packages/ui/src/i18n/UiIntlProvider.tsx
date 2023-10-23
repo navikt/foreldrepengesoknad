@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { IntlProvider as Provider, useIntl } from 'react-intl';
-import nbMessages from './nb_NO.json';
-import nnMessages from './nn_NO.json';
-import enMessages from './en_US.json';
+import nbMessages from './messages/nb_NO.json';
+import nnMessages from './messages/nn_NO.json';
+import enMessages from './messages/en_US.json';
 
 interface Props {
     children: React.ReactNode;

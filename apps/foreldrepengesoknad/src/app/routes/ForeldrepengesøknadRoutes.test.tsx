@@ -55,7 +55,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         currentRoute={SøknadRoutes.VELKOMMEN}
                     />
                 </IntlProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         );
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         currentRoute={SøknadRoutes.OM_BARNET}
                     />
                 </IntlProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         );
 
         expect(await screen.findByText('Barnet')).toBeInTheDocument();

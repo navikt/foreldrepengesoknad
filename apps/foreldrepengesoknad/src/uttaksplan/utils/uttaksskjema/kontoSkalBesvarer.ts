@@ -10,7 +10,7 @@ const kontoSkalBesvares = (
     tidsperiode: TidsperiodeDate,
     stønadskontoer: StønadskontoUttak[],
     familiehendelsesdato: Date,
-    erFarEllerMedmor: boolean
+    erFarEllerMedmor: boolean,
 ): boolean => {
     if (
         !isValidTidsperiode(tidsperiode) ||

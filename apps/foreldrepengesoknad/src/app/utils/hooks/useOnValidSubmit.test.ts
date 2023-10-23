@@ -32,8 +32,8 @@ describe('useOnValidSubmit', () => {
 
         const { result: lagre } = renderHook(() =>
             useOnValidSubmit(submitHandler, SøknadRoutes.ANNEN_FORELDER, (state: ForeldrepengesøknadContextState) =>
-                storeAppState(state)
-            )
+                storeAppState(state),
+            ),
         );
 
         expect(lagre).not.toBeUndefined;
@@ -62,8 +62,8 @@ describe('useOnValidSubmit', () => {
 
         const { result } = renderHook(() =>
             useOnValidSubmit(submitHandler, SøknadRoutes.ANNEN_FORELDER, (state: ForeldrepengesøknadContextState) =>
-                storeAppState(state)
-            )
+                storeAppState(state),
+            ),
         );
 
         await waitFor(async () => {

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 
@@ -13,7 +12,7 @@ import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
-import { StepButtons } from '@navikt/fp-ui';
+import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
@@ -28,11 +27,11 @@ export interface Props {
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => void;
+    ) => Promise<void>;
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -51,31 +50,30 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
             setIsError(true);
         } else {
             sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
-            navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.oppsummering' })}
+            bannerTitle={i18n('Søknad.Pageheading')}
+            pageTitle={i18n('OppsummeringSteg.Oppsummering')}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
             useNoTempSavingText
         >
             <VStack gap="10">
-                <Accordion>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omDeg' })}>
+                <Accordion indent={false}>
+                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmDeg')}>
                         <VStack gap="4">
                             <BodyShort>{fullNameFormat(person.fornavn, person.etternavn, person.mellomnavn)}</BodyShort>
                             <BodyShort>{person.fnr}</BodyShort>
                         </VStack>
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' })}>
+                    <Oppsummeringspunkt tittel={i18n('OmBarnetSteg.OmBarnet')}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.Utenlandsopphold' })}>
+                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.Utenlandsopphold')}>
                         <UtenlandsoppholdOppsummering
                             omBarnet={omBarnet}
                             utenlandsopphold={utenlandsopphold}
@@ -85,18 +83,14 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     </Oppsummeringspunkt>
                 </Accordion>
                 <ConfirmationPanel
-                    label={intl.formatMessage({ id: 'oppsummering.text.samtykke' })}
+                    label={i18n('OppsummeringSteg.Samtykke')}
                     onChange={() => setChecked((state) => !state)}
                     checked={isChecked}
-                    error={
-                        isError &&
-                        !isChecked &&
-                        intl.formatMessage({ id: 'OppsummeringSteg.Validering.BekrefteOpplysninger' })
-                    }
+                    error={isError && !isChecked && i18n('OppsummeringSteg.Validering.BekrefteOpplysninger')}
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
+                    nextButtonText={i18n('OppsummeringSteg.Button.SendSøknad')}
                     nextButtonOnClick={send}
                 />
             </VStack>

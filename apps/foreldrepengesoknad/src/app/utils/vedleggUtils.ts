@@ -11,7 +11,7 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType
+    innsendingsType?: InnsendingsType,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,
@@ -34,7 +34,7 @@ export const lagSendSenereDokument = (type: AttachmentType, skjemanummer: Skjema
 export const lagSendSenereDokumentNårIngenAndreFinnes = (
     dokumenter: Attachment[],
     type: AttachmentType,
-    skjema: Skjemanummer
+    skjema: Skjemanummer,
 ): Attachment[] => {
     if (dokumenter.length === 0) {
         return [lagSendSenereDokument(type, skjema)];
@@ -50,14 +50,14 @@ export const isArrayOfAttachments = (object: any): object is readonly Attachment
         Array.isArray(object) &&
         object[0] !== null &&
         object.every(
-            (element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
+            (element) => element && (element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE),
         )
     );
 };
 
 export const removeAttachmentsWithUploadError = (attachments: readonly Attachment[]) =>
     attachments.filter(
-        (a: Attachment) => !isAttachmentWithError(a) || a.innsendingsType === InnsendingsType.SEND_SENERE
+        (a: Attachment) => !isAttachmentWithError(a) || a.innsendingsType === InnsendingsType.SEND_SENERE,
     );
 
 const isPOJO = (arg: unknown): arg is Record<string, unknown> => {
@@ -108,7 +108,7 @@ const extractAttachments = (søknad: unknown, foundAttachments: Attachment[]): a
 };
 
 export const mapAttachmentsToSøknadForInnsending = (
-    søknad: SøknadForInnsending | EndringssøknadForInnsending
+    søknad: SøknadForInnsending | EndringssøknadForInnsending,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     const vedlegg: Attachment[] = [];
     const søknadCopy = extractAttachments(søknad, vedlegg);

@@ -156,7 +156,7 @@ export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
 }
 
 export const isForeldrepengerFørFødselUttaksperiode = (
-    periode: Periode
+    periode: Periode,
 ): periode is ForeldrepengerFørFødselUttaksperiode => {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 };

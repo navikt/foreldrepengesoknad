@@ -7,7 +7,7 @@ export const getBareFarHarRettKontoUtenAktivitetskravUker = (
     morErUfør: boolean,
     familiehendelsesdato: Date,
     dekningsgrad: Dekningsgrad,
-    bareFarHarRett: boolean
+    bareFarHarRett: boolean,
 ): number => {
     if (!bareFarHarRett) {
         return 0;
@@ -38,7 +38,7 @@ export const getBareFarHarRettFlerbarnsdagerUker = (
     antallBarn: number,
     familiehendelsesdato: Date,
     dekningsgrad: Dekningsgrad,
-    bareFarHarRett: boolean
+    bareFarHarRett: boolean,
 ): number => {
     if (!bareFarHarRett || antallBarn === 1) {
         return 0;
@@ -70,7 +70,7 @@ export const getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB 
     antallBarn: number,
     familiehendelsesdato: Date,
     dekningsgrad: Dekningsgrad,
-    bareFarHarRett: boolean
+    bareFarHarRett: boolean,
 ) => {
     if (!bareFarHarRett) {
         return 0;
@@ -84,7 +84,7 @@ export const getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB 
         antallBarn,
         familiehendelsesdato,
         dekningsgrad,
-        bareFarHarRett
+        bareFarHarRett,
     );
 
     return antallUkerEtterFødselMor + antallUkerForeldrepengerFar + flerbarnsUker;

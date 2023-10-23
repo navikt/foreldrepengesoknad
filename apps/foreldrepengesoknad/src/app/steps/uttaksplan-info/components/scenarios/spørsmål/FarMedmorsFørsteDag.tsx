@@ -34,10 +34,10 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const maxDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).maxDate
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).maxDate,
     );
     const minDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).minDate
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).minDate,
     );
 
     return (

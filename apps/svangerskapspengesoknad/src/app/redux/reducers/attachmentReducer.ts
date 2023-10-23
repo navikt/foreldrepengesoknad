@@ -43,7 +43,7 @@ const attachmentReducer = (state = getDefaultAttachmentState(), action: Attachme
                     uuid,
                     pending: false,
                     uploaded: true,
-                })
+                }),
             );
 
             return { ...state, vedlegg };
@@ -54,7 +54,7 @@ const attachmentReducer = (state = getDefaultAttachmentState(), action: Attachme
             const vedlegg = state.vedlegg.map(
                 modifyAttachmentWithId(attachment.id, {
                     error: error ? error.message : '',
-                })
+                }),
             );
 
             return { ...state, vedlegg };
@@ -65,7 +65,7 @@ const attachmentReducer = (state = getDefaultAttachmentState(), action: Attachme
             const vedlegg = state.vedlegg.map(
                 modifyAttachmentWithId(attachment.id, {
                     pending: true,
-                })
+                }),
             );
 
             return { ...state, vedlegg };
@@ -84,7 +84,7 @@ const attachmentReducer = (state = getDefaultAttachmentState(), action: Attachme
                 modifyAttachmentWithId(attachment.id, {
                     pending: false,
                     error: error ? error.message : '',
-                })
+                }),
             );
 
             return { ...state, vedlegg };

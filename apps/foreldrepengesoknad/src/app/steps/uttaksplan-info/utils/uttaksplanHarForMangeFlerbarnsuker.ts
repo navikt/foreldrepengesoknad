@@ -21,7 +21,7 @@ export const getFlerbarnsuker = (dekningsgrad: string, antallBarn: number): numb
 export const uttaksplanHarForMangeFlerbarnsdager = (
     uttaksplan: Periode[],
     dekningsgrad: Dekningsgrad,
-    antallBarn: number
+    antallBarn: number,
 ) => {
     const result: number = uttaksplan
         .slice()

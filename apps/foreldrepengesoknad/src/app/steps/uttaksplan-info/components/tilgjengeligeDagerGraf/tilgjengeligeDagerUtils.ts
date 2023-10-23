@@ -30,7 +30,7 @@ const kontoErEtterTermin = (konto: TilgjengeligStønadskonto): boolean => {
 export const getTilgjengeligeDager = (
     kontoer: TilgjengeligStønadskonto[],
     erDeltUttak: boolean,
-    forelderVedAleneomsorg: Forelder | undefined
+    forelderVedAleneomsorg: Forelder | undefined,
 ): TilgjengeligeDager => {
     const kontoerEtterTermin = kontoer.filter(kontoErEtterTermin);
 

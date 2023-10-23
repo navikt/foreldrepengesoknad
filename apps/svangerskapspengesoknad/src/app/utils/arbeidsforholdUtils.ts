@@ -10,7 +10,7 @@ import { guid } from '@navikt/fp-common';
 
 export const getArbeidsforholdNavnFromId = (
     id: string | undefined,
-    arbeidsforhold: Arbeidsforhold[]
+    arbeidsforhold: Arbeidsforhold[],
 ): string | undefined => {
     const arbForhold = arbeidsforhold.find((forhold) => forhold.guid === id);
 
@@ -33,7 +33,7 @@ export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termin
     }
 
     return arbeidsforhold.filter((arb) =>
-        arb.tom ? moment(arb.tom).isSameOrAfter(moment(termindato).subtract(9, 'months')) : true
+        arb.tom ? moment(arb.tom).isSameOrAfter(moment(termindato).subtract(9, 'months')) : true,
     );
 };
 
@@ -47,7 +47,7 @@ export const mapArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
                 guid: guid(),
                 arbeidsgiverNavn:
                     forhold.arbeidsgiverNavn !== undefined ? normalizeName(forhold.arbeidsgiverNavn) : undefined,
-            })
+            }),
         );
     }
 
@@ -56,7 +56,7 @@ export const mapArbeidsforhold = (arbeidsforhold: SøkerinfoDTOArbeidsforhold[] 
 
 export const getUnikeArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[] | undefined,
-    termindato: string
+    termindato: string,
 ): Arbeidsforhold[] => {
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
         const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, new Date(termindato));

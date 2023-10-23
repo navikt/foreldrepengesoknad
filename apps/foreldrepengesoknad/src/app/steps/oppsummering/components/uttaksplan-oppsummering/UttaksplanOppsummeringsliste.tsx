@@ -69,7 +69,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             periode,
             situasjon,
             familiehendelsesdato,
-            termindato
+            termindato,
         );
     };
 
@@ -86,7 +86,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
     const createOppsummeringslisteelementPropsForUttaksperiode = (
         periode: Uttaksperiode,
-        periodeErNyEllerEndret = true
+        periodeErNyEllerEndret = true,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: getUttaksperiodeNavn(periode),
@@ -104,7 +104,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
 
     const createOppsummeringslisteelementPropsForOppholdsperiode = (
-        periode: Oppholdsperiode
+        periode: Oppholdsperiode,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: getPeriodeTittel(
@@ -113,7 +113,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
                 navnPåForeldre,
                 familiehendelsesdato,
                 termindato,
-                situasjon
+                situasjon,
             ),
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
         };
@@ -121,7 +121,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
 
     const createOppsummeringslisteelementPropsForUtsettelsesperiode = (
         periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse,
-        periodeErNyEllerEndret: boolean
+        periodeErNyEllerEndret: boolean,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: intlUtils(intl, 'oppsummering.utsettelse.pga'),
@@ -140,7 +140,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
 
     const createOppsummeringslisteelementPropsForOverføringsperiode = (
         periode: Overføringsperiode,
-        periodeErNyEllerEndret: boolean
+        periodeErNyEllerEndret: boolean,
     ): OppsummeringslisteelementProps => {
         const kontonavn = getStønadskontoNavnFromKonto(periode.konto);
         return {
@@ -160,7 +160,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
 
     const createOppsummeringslisteelementPropsForBegrunnelseForSenEndring = (
-        begrunnelse: TilleggsopplysningMedBeskrivelse
+        begrunnelse: TilleggsopplysningMedBeskrivelse,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: begrunnelse.beskrivelse,

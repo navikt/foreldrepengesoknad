@@ -148,7 +148,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             morsPerioder,
             annenPartsUttakIMidten,
             new Date('2022-01-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
 
         expect(result.length).toBe(6);
@@ -247,7 +247,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             søkerensPerioder,
             annenPartsUttak,
             new Date('2022-01-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
 
         expect(result.length).toBe(8);
@@ -336,7 +336,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             [],
             kunAnnenPartsUttak,
             new Date('2022-01-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(1);
         expect(result[0]).toEqual(kunAnnenPartsUttak[0]);
@@ -372,18 +372,18 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
             new Date('2020-12-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(3);
         expect(result[0].tidsperiode.fom).toEqual(
-            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom,
         );
         expect(result[0].tidsperiode.tom).toEqual(new Date('2021-01-04'));
         expect(result[0].type).toEqual(Periodetype.Info);
         expect(result[1]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
         expect(result[2].tidsperiode.fom).toEqual(new Date('2021-01-07'));
         expect(result[2].tidsperiode.tom).toEqual(
-            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.tom
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.tom,
         );
         expect(result[2].type).toEqual(Periodetype.Info);
     });
@@ -419,7 +419,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
             new Date('2020-12-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(1);
         expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
@@ -456,11 +456,11 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
             new Date('2020-12-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(2);
         expect(result[0].tidsperiode.fom).toEqual(
-            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.fom,
         );
         expect(result[0].tidsperiode.tom).toEqual(new Date('2021-01-01'));
         expect(result[0].type).toEqual(Periodetype.Info);
@@ -497,12 +497,12 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             [utsettelseSomOverlapperMedMidtenTilAnnenPart],
             annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode,
             new Date('2020-12-21'),
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(2);
         expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
         expect(result[1].tidsperiode.tom).toEqual(
-            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.tom
+            annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tidsperiode.tom,
         );
         expect(result[1].tidsperiode.fom).toEqual(new Date('2021-01-08'));
         expect(result[1].type).toEqual(Periodetype.Info);

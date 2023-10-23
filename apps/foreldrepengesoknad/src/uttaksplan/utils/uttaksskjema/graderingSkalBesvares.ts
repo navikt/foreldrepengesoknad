@@ -11,7 +11,7 @@ export const graderingSkalBesvares = (
     familiehendelsesdato: Date,
     erFarMedmor: boolean,
     morErForSyk: boolean | undefined,
-    tidsperiode: TidsperiodeDate
+    tidsperiode: TidsperiodeDate,
 ): boolean => {
     const farMedmorSøkerDeFørsteSeksUkeneFørWLBOgMorErIkkeSyk =
         !andreAugust2022ReglerGjelder(familiehendelsesdato) && erFarMedmor && morErForSyk === false;

@@ -114,14 +114,14 @@ const saksperiodeErInnvilget = (saksperiode: Saksperiode): boolean => saksperiod
 const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     periode: Saksperiode,
     _index: number,
-    saksperioder: Saksperiode[]
+    saksperioder: Saksperiode[],
 ) => {
     const likePerioder = saksperioder.filter(
         (periode2) =>
             periode.guid !== periode2.guid &&
             Tidsperioden(convertTidsperiodeToTidsperiodeDate(periode.periode)).erLik(
-                convertTidsperiodeToTidsperiodeDate(periode2.periode)
-            )
+                convertTidsperiodeToTidsperiodeDate(periode2.periode),
+            ),
     );
 
     if (likePerioder.length === 0) {
@@ -138,7 +138,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 };
 
 export const getStartdatoFørstePeriodeAnnenPart = (
-    annenPartsSak: AnnenPartVedtakDTO | undefined | ''
+    annenPartsSak: AnnenPartVedtakDTO | undefined | '',
 ): Date | undefined => {
     if (
         annenPartsSak === undefined ||
@@ -156,7 +156,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
     if (
         eksisterendeSakAnnenPart === undefined ||
@@ -207,7 +207,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
         saksperioderAnnenPart,
         grunnlagForAnnenPart,
-        førsteUttaksdagNesteBarnsSak
+        førsteUttaksdagNesteBarnsSak,
     );
 
     return {
@@ -221,7 +221,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 
 export const mapSøkerensEksisterendeSakFromDTO = (
     eksisterendeSak: Sak | undefined | '',
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
         return undefined;
@@ -295,7 +295,7 @@ const getSøkerFromSaksgrunnlag = (grunnlag: Saksgrunnlag, erFarEllerMedmor: boo
 const getSøkerrolleFromSaksgrunnlag = (
     person: Person,
     situasjon: Situasjon,
-    grunnlag: Saksgrunnlag
+    grunnlag: Saksgrunnlag,
 ): Søkerrolle | undefined => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = person.kjønn === 'K';
@@ -323,7 +323,7 @@ const getFødselsdatoer = (valgteBarn: SelectableBarn | undefined, sak: Saksgrun
 const getBarnFromSaksgrunnlag = (
     situasjon: Situasjon,
     sak: Saksgrunnlag,
-    valgteBarn: SelectableBarn | undefined
+    valgteBarn: SelectableBarn | undefined,
 ): Barn | undefined => {
     switch (situasjon) {
         case 'fødsel':
@@ -362,7 +362,7 @@ const getAnnenForelderFromSaksgrunnlag = (
     grunnlag: Saksgrunnlag,
     annenPart: RegistrertAnnenForelder,
     erFarEllerMedmor: boolean,
-    intl: IntlShape
+    intl: IntlShape,
 ): AnnenForelder | undefined => {
     switch (situasjon) {
         case 'fødsel':
@@ -406,7 +406,7 @@ const finnAnnenForelderForSaken = (
     situasjon: Situasjon,
     intl: IntlShape,
     valgtBarnFnr: string[] | undefined,
-    annenForeldersFnrFraSaken: string | undefined
+    annenForeldersFnrFraSaken: string | undefined,
 ): AnnenForelder | undefined => {
     if ((valgtBarnFnr === undefined && fødselsdato === undefined) || !annenForeldersFnrFraSaken) {
         return undefined;
@@ -418,7 +418,7 @@ const finnAnnenForelderForSaken = (
     const barnMedGittFødselsdato =
         fødselsdato !== undefined
             ? barn.find(
-                  (b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined
+                  (b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined,
               )
             : undefined;
 
@@ -499,7 +499,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     grunnlag: Saksgrunnlag,
     søkerinfo: Søkerinfo,
     situasjon: Situasjon,
-    valgteBarnFnr: string[] | undefined
+    valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
     const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
 
@@ -521,7 +521,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
         situasjon,
         intl,
         valgteBarnFnr,
-        fnrAnnenForelderFraSak
+        fnrAnnenForelderFraSak,
     );
     return annenForelderFraSak || mockAnnenForelder;
 };
@@ -529,7 +529,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 export const opprettSøknadFraValgteBarnMedSak = (
     valgteBarn: SelectableBarn,
     intl: IntlShape,
-    søkerinfo: Søkerinfo
+    søkerinfo: Søkerinfo,
 ): Partial<Søknad> | undefined => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined);
     const { grunnlag } = eksisterendeSak!;
@@ -541,7 +541,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
         grunnlag,
         søkerinfo,
         situasjon,
-        valgteBarn.fnr
+        valgteBarn.fnr,
     );
     const søknad: Partial<Søknad> = {
         barn,
@@ -564,7 +564,7 @@ export const opprettSøknadFraEksisterendeSak = (
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
-    valgteBarn: SelectableBarn | undefined
+    valgteBarn: SelectableBarn | undefined,
 ): Partial<Søknad> | undefined => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
@@ -589,7 +589,7 @@ export const opprettSøknadFraEksisterendeSak = (
         grunnlag,
         søkerinfo,
         situasjon,
-        valgteBarn?.fnr
+        valgteBarn?.fnr,
     );
 
     const søknad: Partial<Søknad> = {

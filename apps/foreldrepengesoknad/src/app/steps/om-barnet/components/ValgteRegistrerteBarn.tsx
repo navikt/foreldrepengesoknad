@@ -52,7 +52,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                                     undefined,
                                     fødselsdatoer,
                                     valgteBarn.length,
-                                    intl
+                                    intl,
                                 )}
                                 visEtternavn={false}
                             />

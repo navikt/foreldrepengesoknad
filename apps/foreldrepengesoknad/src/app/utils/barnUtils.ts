@@ -27,13 +27,13 @@ const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[] | undefined, 
 
 export const getRegistrerteBarnOmDeFinnes = (
     barn: Barn,
-    registrerteBarn: RegistrertBarn[]
+    registrerteBarn: RegistrertBarn[],
 ): RegistrertBarn[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
                   barn.fnr?.includes(regBarn.fnr) ||
-                  barnFødselsdatoLikSakFødselsdato(barn.fødselsdatoer, regBarn.fødselsdato)
+                  barnFødselsdatoLikSakFødselsdato(barn.fødselsdatoer, regBarn.fødselsdato),
           )
         : undefined;
 };
@@ -71,7 +71,7 @@ export const getLeverBarnet = (barn: RegistrertBarn) => {
 export const getAndreBarnFødtSammenMedBarnet = (
     barnFnr: string | undefined,
     barnFødselsdato: Date,
-    registrerteBarn: RegistrertBarn[]
+    registrerteBarn: RegistrertBarn[],
 ) => {
     const dagenFørFødsel = dayjs(barnFødselsdato).subtract(1, 'day');
     const dagenEtterFødsel = dayjs(barnFødselsdato).add(1, 'day');
@@ -79,7 +79,7 @@ export const getAndreBarnFødtSammenMedBarnet = (
         (b) =>
             b.fnr !== barnFnr &&
             dayjs(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
-            dayjs(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day')
+            dayjs(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day'),
     );
 };
 
@@ -87,7 +87,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     omsorgsovertagelsesdato: Date | undefined,
     fødselsdatoer: Date[] | undefined,
     antallBarn: number,
-    intl: IntlShape
+    intl: IntlShape,
 ): string => {
     if (omsorgsovertagelsesdato !== undefined) {
         return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
@@ -112,7 +112,7 @@ export const formaterNavnPåBarn = (
     omsorgsovertagelsesdato: Date | undefined,
     alleBarnaLever: boolean,
     antallBarn: number,
-    intl: IntlShape
+    intl: IntlShape,
 ): string => {
     if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
         return getTittelBarnNårNavnSkalIkkeVises(omsorgsovertagelsesdato, fødselsdatoer, antallBarn, intl);

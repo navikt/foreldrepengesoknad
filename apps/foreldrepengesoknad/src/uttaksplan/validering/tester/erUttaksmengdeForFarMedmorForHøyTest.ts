@@ -8,7 +8,7 @@ import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    farEllerMedmor: boolean
+    farEllerMedmor: boolean,
 ): boolean => {
     if (farEllerMedmor === true) {
         const kontoUttak = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, false);
@@ -24,7 +24,7 @@ export const erUttaksmengdeForFarMedmorForHøyTest: RegelTest = (grunnlag: Søkn
             erUttaksmengdeForFarMedmorForHøy(
                 grunnlag.perioder,
                 grunnlag.stønadskontoer,
-                grunnlag.søkerErFarEllerMedmor
+                grunnlag.søkerErFarEllerMedmor,
             ) === false,
     };
 };

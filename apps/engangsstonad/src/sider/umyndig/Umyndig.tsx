@@ -1,6 +1,7 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { HStack, Heading, Link, VStack } from '@navikt/ds-react';
 import { Sidebanner, useDocumentTitle } from '@navikt/fp-common';
+import { useCustomIntl } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
@@ -10,9 +11,9 @@ export interface Props {
 }
 
 const Umyndig: React.FunctionComponent<Props> = ({ person }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
-    useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pageheading' }));
+    useDocumentTitle(i18n('Søknad.Pageheading'));
 
     logAmplitudeEvent('sidevisning', {
         app: 'engangsstonadny',
@@ -24,12 +25,9 @@ const Umyndig: React.FunctionComponent<Props> = ({ person }) => {
         <>
             <Sidebanner
                 dialog={{
-                    title: intl.formatMessage(
-                        { id: 'Umyndig.Bobletittel' },
-                        {
-                            name: person.fornavn.toLowerCase(),
-                        },
-                    ),
+                    title: i18n('Umyndig.Bobletittel', {
+                        name: person.fornavn.toLowerCase(),
+                    }),
                     textRich: (
                         <VStack gap="4" align="center">
                             <FormattedMessage id="Umyndig.Under18.Bobletekst" />

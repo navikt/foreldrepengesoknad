@@ -7,7 +7,8 @@
         "eslint": "eslint \"src/**/*.ts*\" --color",
         "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color",
         "build-storybook": "storybook build -o .storybook-static-build",
-        "storybook": "storybook dev --quiet -p 7003"
+        "storybook": "storybook dev --quiet -p 7003",
+        "test": "vitest run"
     },
     "dependencies": {
         "@navikt/aksel-icons": "^4.12.1",
@@ -17,11 +18,13 @@
         "@navikt/fp-types": "workspace:*",
         "@sentry/browser": "^7.64.0",
         "bytes": "^3.1.2",
+        "intl-messageformat": "^10.5.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-intl": "^6.4.4"
     },
     "devDependencies": {
+        "@formatjs/cli-lib": "6.3.0",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/addon-interactions": "^7.3.1",
         "@storybook/addon-links": "^7.2.1",
@@ -29,9 +32,16 @@
         "@storybook/react": "^7.2.1",
         "@storybook/testing-react": "^2.0.1",
         "@testing-library/jest-dom": "^6.0.0",
+        "@testing-library/react": "^14.0.0",
+        "@testing-library/user-event": "^14.4.3",
         "@types/bytes": "^3.1.1",
         "@types/react": "^18.2.20",
+        "@vitejs/plugin-react": "^4.0.4",
+        "fast-glob": "^3.3.1",
         "storybook": "7.3.1",
-        "tsconfig": "workspace:*"
+        "tsconfig": "workspace:*",
+        "vite": "^4.4.9",
+        "vite-plugin-checker": "^0.6.1",
+        "vitest": "^0.34.2"
     }
 }

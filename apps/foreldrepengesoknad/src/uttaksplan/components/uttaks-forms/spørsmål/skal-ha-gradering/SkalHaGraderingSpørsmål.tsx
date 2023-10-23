@@ -18,7 +18,7 @@ interface Props {
 
 export const getArbeidsOptions = (
     arbeidsforhold: Arbeidsforhold[],
-    tidsperiode: TidsperiodeDate
+    tidsperiode: TidsperiodeDate,
 ): FormikRadioProp[] => {
     const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode);
 
@@ -36,7 +36,7 @@ export const getArbeidsOptions = (
 
     if (aktiveArbeidsforholdIPerioden.length > 0) {
         aktiveArbeidsforholdIPerioden.forEach((arb) =>
-            eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` })
+            eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` }),
         );
     }
 

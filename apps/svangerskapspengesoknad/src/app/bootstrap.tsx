@@ -43,5 +43,5 @@ root.render(
                 </BrowserRouter>
             </IntlProvider>
         </Provider>
-    </ErrorBoundary>
+    </ErrorBoundary>,
 );

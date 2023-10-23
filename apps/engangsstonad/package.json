@@ -9,13 +9,14 @@
     "repository": "https://github.com/navikt/fp-engangsstonad.git",
     "scripts": {
         "build": "vite build",
-        "dev-api": "node ./mock-api-server.cjs",
-        "dev": "cross-env NODE_ENV=development node ./server.cjs",
+        "dev-api": "node ./mock-api/mock-api-server.cjs",
+        "dev": "node ./dev-server.cjs",
         "test": "vitest run",
         "lint": "eslint src/**",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
-        "storybook": "storybook dev --quiet -p 9001"
+        "storybook": "storybook dev --quiet -p 9001",
+        "extract": "formatjs extract"
     },
     "dependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
@@ -51,6 +52,7 @@
         "request": "^2.88.2"
     },
     "devDependencies": {
+        "@formatjs/cli-lib": "6.3.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/cli": "^7.3.1",
@@ -68,6 +70,7 @@
         "autoprefixer": "^10.4.15",
         "axios-mock-adapter": "1.21.5",
         "cross-env": "^7.0.3",
+        "fast-glob": "^3.3.1",
         "less": "^4.2.0",
         "multer": "1.4.5-lts.1",
         "mustache-loader": "^1.4.3",

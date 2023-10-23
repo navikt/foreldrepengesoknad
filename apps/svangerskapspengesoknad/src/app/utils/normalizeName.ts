@@ -33,9 +33,9 @@ const normalizeName = (name: string) => {
                     word
                         .split(HYPHEN)
                         .map(normalizeWord(wordIndex === 0))
-                        .join(HYPHEN)
+                        .join(HYPHEN),
                 )
-                .join(SPACE)
+                .join(SPACE),
         )
         .join(COMMA);
 };

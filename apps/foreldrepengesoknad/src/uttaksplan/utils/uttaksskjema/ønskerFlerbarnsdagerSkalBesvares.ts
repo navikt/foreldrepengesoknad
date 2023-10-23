@@ -16,7 +16,7 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     antallBarn: number,
     erAleneOmOmsorg: boolean,
     erDeltUttakINorge: boolean,
-    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | undefined
+    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | undefined,
 ): boolean => {
     if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
         return false;

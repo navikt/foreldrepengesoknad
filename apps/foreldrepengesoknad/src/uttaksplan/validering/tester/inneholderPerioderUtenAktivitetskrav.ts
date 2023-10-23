@@ -33,9 +33,9 @@ export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): Re
                 p.konto,
                 p.erMorForSyk,
                 p.tidsperiode,
-                søkersituasjon.situasjon
+                søkersituasjon.situasjon,
             ) &&
-            (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger)
+            (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger),
     );
 
     return {

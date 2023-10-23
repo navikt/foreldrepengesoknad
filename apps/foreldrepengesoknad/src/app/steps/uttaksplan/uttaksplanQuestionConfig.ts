@@ -10,7 +10,7 @@ export interface UttaksplanQuestionPayload extends UttaksplanFormData {
 }
 const includeAutomatiskJusteringSpørsmål = (
     perioderMedUttakRundtFødsel: Periode[],
-    termindato: Date | undefined
+    termindato: Date | undefined,
 ): boolean => {
     if (perioderMedUttakRundtFødsel.length !== 1 || termindato === undefined) {
         return false;

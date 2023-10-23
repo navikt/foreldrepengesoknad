@@ -24,7 +24,7 @@ import './søknadSendt.less';
 const getBehandlingsFrist = (uttaksplan: Periode[]): string => {
     const førsteUttaksdag = dayjs(Periodene(uttaksplan).getFørsteUttaksdagEksluderInfoperioderOgFrittUttak()).subtract(
         4,
-        'weeks'
+        'weeks',
     );
 
     const førsteMuligeBehandlingsfrist = dayjs(new Date()).isSameOrAfter(førsteUttaksdag, 'day')

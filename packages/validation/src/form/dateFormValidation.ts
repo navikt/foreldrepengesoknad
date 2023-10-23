@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
 import { DATE_TODAY, SIX_MONTHS_AGO } from '@navikt/fp-constants';
 import isBetween from 'dayjs/plugin/isBetween';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
@@ -12,50 +11,38 @@ const ONE_YEAR_AFTER_TODAY = dayjs().add(1, 'year').startOf('day').toDate();
 
 const ISO_DATE_REGEX = /(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|1\d|2\d|3[01])$/;
 
-export const getDateValidators = (intl: IntlShape) => {
-    const isValidDate =
-        (i18nId: string) =>
-        (date: string): FormValidationResult =>
-            isEmpty(date) || ISO_DATE_REGEX.test(date) ? null : intl.formatMessage({ id: i18nId });
+export const isValidDate =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        isEmpty(date) || ISO_DATE_REGEX.test(date) ? null : i18nText;
 
-    const isBeforeTodayOrToday =
-        (i18nId: string) =>
-        (date: string): FormValidationResult =>
-            dayjs(date).isAfter(DATE_TODAY) ? intl.formatMessage({ id: i18nId }) : null;
+export const isBeforeTodayOrToday =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        dayjs(date).isAfter(DATE_TODAY) ? i18nText : null;
 
-    const isAfterOrSameAsSixMonthsAgo =
-        (i18nId: string) =>
-        (date: string): FormValidationResult =>
-            dayjs(date).isBefore(SIX_MONTHS_AGO) ? intl.formatMessage({ id: i18nId }) : null;
+export const isAfterOrSameAsSixMonthsAgo =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        dayjs(date).isBefore(SIX_MONTHS_AGO) ? i18nText : null;
 
-    const isDatesNotTheSame =
-        (i18nId: string, date1?: string) =>
-        (date2?: string): FormValidationResult =>
-            date1 && date2 && dayjs(date1).isSame(date2) ? intl.formatMessage({ id: i18nId }) : null;
+export const isDatesNotTheSame =
+    (i18nText: string, date1?: string) =>
+    (date2?: string): FormValidationResult =>
+        date1 && date2 && dayjs(date1).isSame(date2) ? i18nText : null;
 
-    const isLessThanThreeWeeksAgo =
-        (i18nId: string) =>
-        (date: string): FormValidationResult => {
-            return dayjs(date).isBefore(DATO_FOR_3_UKER_SIDEN) ? intl.formatMessage({ id: i18nId }) : null;
-        };
-
-    const erI22SvangerskapsukeEllerSenere =
-        (i18nId: string) =>
-        (date: string): FormValidationResult =>
-            dayjs(date).isAfter(ATTEN_UKER_TRE_DAGER) ? intl.formatMessage({ id: i18nId }) : null;
-
-    const isMaxOneYearIntoTheFuture =
-        (i18nId: string) =>
-        (date: string): FormValidationResult =>
-            dayjs(date).isAfter(ONE_YEAR_AFTER_TODAY) ? intl.formatMessage({ id: i18nId }) : null;
-
-    return {
-        isValidDate,
-        isBeforeTodayOrToday,
-        isAfterOrSameAsSixMonthsAgo,
-        isDatesNotTheSame,
-        isLessThanThreeWeeksAgo,
-        erI22SvangerskapsukeEllerSenere,
-        isMaxOneYearIntoTheFuture,
+export const isLessThanThreeWeeksAgo =
+    (i18nText: string) =>
+    (date: string): FormValidationResult => {
+        return dayjs(date).isBefore(DATO_FOR_3_UKER_SIDEN) ? i18nText : null;
     };
-};
+
+export const erI22SvangerskapsukeEllerSenere =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        dayjs(date).isAfter(ATTEN_UKER_TRE_DAGER) ? i18nText : null;
+
+export const isMaxOneYearIntoTheFuture =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        dayjs(date).isAfter(ONE_YEAR_AFTER_TODAY) ? i18nText : null;

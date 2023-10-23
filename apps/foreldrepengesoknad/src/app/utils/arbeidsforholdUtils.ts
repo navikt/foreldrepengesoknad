@@ -8,14 +8,14 @@ import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'uttaksplan/utils/u
 
 const getArbeidsforholdFromOrgnummer = (
     orgnummer: string,
-    arbeidsforhold: Arbeidsforhold[]
+    arbeidsforhold: Arbeidsforhold[],
 ): Arbeidsforhold | undefined => {
     return arbeidsforhold.find((forhold) => forhold.arbeidsgiverId === orgnummer);
 };
 
 export const getSamletStillingsprosentForArbeidsforhold = (
     orgnumre: string[],
-    arbeidsforhold: Arbeidsforhold[]
+    arbeidsforhold: Arbeidsforhold[],
 ): number => {
     return orgnumre
         .map((orgnr) => getArbeidsforholdFromOrgnummer(orgnr, arbeidsforhold))
@@ -28,7 +28,7 @@ export const getSamletStillingsprosentForArbeidsforhold = (
 export const getFraDatoForAktiveArbeidsforhold = (
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
-    familiehendelsesdato: Date | undefined
+    familiehendelsesdato: Date | undefined,
 ): Date | undefined => {
     if (familiehendelsesdato === undefined) {
         return undefined;
@@ -46,14 +46,14 @@ export const getAktiveArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[],
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
-    familiehendelsesdato?: Date
+    familiehendelsesdato?: Date,
 ): Arbeidsforhold[] => {
     const fraDato = getFraDatoForAktiveArbeidsforhold(erAdopsjon, erFarEllerMedmor, familiehendelsesdato);
     return arbeidsforhold.filter(
         (a) =>
             a.tom === undefined ||
             a.tom === null ||
-            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(a.tom, 'days'))
+            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(a.tom, 'days')),
     );
 };
 
@@ -74,7 +74,7 @@ const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
 
 export const getKunArbeidsforholdForValgtTidsperiode = (
     arbeidsforhold: Arbeidsforhold[],
-    tidsperiode: TidsperiodeDate
+    tidsperiode: TidsperiodeDate,
 ): Arbeidsforhold[] => {
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {

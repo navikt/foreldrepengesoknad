@@ -14,7 +14,7 @@ export const getTotalFileSize = (files: File[]): number => {
         (a, b) =>
             ({
                 size: a.size + b.size,
-            } as any),
-        { size: 0 }
+            }) as any,
+        { size: 0 },
     ).size;
 };

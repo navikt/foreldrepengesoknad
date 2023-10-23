@@ -2,6 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './OppsummeringSteg.stories';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import dayjs from 'dayjs';
 
 const { BarnetErFodt, AdopsjonAvEktefellesBarn, BarnetErIkkeFodt, HarTidligereOgFremtidigeUtenlandsopphold } =
     composeStories(stories);
@@ -25,13 +27,12 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Søknaden gjelder:')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
         expect(screen.getByText('Med fødselsdato:')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2023')).toBeInTheDocument();
+        expect(screen.getByText(dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT))).toBeInTheDocument();
 
         expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Utenlandsperioder:')).toBeInTheDocument();
-        expect(screen.getByText('Norge')).toBeInTheDocument();
-        expect(screen.getByText('og var på fødselstidspunktet')).toBeInTheDocument();
-        expect(screen.getByText('i Norge')).toBeInTheDocument();
+        expect(screen.getByText('Du har bodd i Norge de siste 12 månedene')).toBeInTheDocument();
+        expect(screen.getByText('Du skal bo i Norge de neste 12 månadene')).toBeInTheDocument();
+        expect(screen.getByText('På fødselstidspunktet bodde du i Norge')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknad'));
 
@@ -51,7 +52,7 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: [{ dato: '2023-01-01' }],
+                fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
             },
             {
                 harBoddUtenforNorgeSiste12Mnd: false,
@@ -185,16 +186,24 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
 
-        expect(screen.getByText('Utenlandsperioder:')).toBeInTheDocument();
-        expect(screen.getByText('Island')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2021 - 01.01.2022')).toBeInTheDocument();
-        expect(screen.getByText('Sverige')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2025 - 01.01.2026')).toBeInTheDocument();
-        expect(screen.getByText('Danmark')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2027 - 01.01.2028')).toBeInTheDocument();
+        expect(screen.getByText('Du har bodd i Island i løpet av de forrige 12 månedene')).toBeInTheDocument();
+        expect(
+            screen.getByText(dayjs().subtract(100, 'day').format(DDMMYYYY_DATE_FORMAT) + ' - i dag'),
+        ).toBeInTheDocument();
 
-        expect(screen.getByText('og var på fødselstidspunktet')).toBeInTheDocument();
-        expect(screen.getByText('i Norge')).toBeInTheDocument();
+        expect(screen.getByText('Du skal bo i Sverige i løpet av de neste 12 månedene')).toBeInTheDocument();
+        expect(screen.getByText('i dag - ' + dayjs().add(100, 'day').format(DDMMYYYY_DATE_FORMAT))).toBeInTheDocument();
+
+        expect(screen.getByText('Du skal bo i Danmark i løpet av de neste 12 månedene')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                dayjs().add(101, 'day').format(DDMMYYYY_DATE_FORMAT) +
+                    ' - ' +
+                    dayjs().add(200, 'day').format(DDMMYYYY_DATE_FORMAT),
+            ),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('På fødselstidspunktet bodde du i utlandet')).toBeInTheDocument();
 
         await userEvent.click(
             screen.getByText(
@@ -210,7 +219,7 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: [{ dato: '2023-01-01' }],
+                fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
             },
             {
                 harBoddUtenforNorgeSiste12Mnd: true,
@@ -222,23 +231,23 @@ describe('<OppsummeringSteg>', () => {
             {
                 utenlandsoppholdSiste12Mnd: [
                     {
-                        fom: '2021-01-01',
+                        fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
                         landkode: 'IS',
-                        tom: '2022-01-01',
+                        tom: dayjs().format(ISO_DATE_FORMAT),
                     },
                 ],
             },
             {
                 utenlandsoppholdNeste12Mnd: [
                     {
-                        fom: '2025-01-01',
+                        fom: dayjs().format(ISO_DATE_FORMAT),
                         landkode: 'SE',
-                        tom: '2026-01-01',
+                        tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
                     },
                     {
-                        fom: '2027-01-01',
+                        fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
                         landkode: 'DK',
-                        tom: '2028-01-01',
+                        tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },

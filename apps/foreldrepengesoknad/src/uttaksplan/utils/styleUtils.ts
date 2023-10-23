@@ -11,7 +11,7 @@ export const getStønadskontoFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
     forIkon?: boolean,
-    harMidlertidigOmsorg?: boolean
+    harMidlertidigOmsorg?: boolean,
 ): UttaksplanColor => {
     if (forIkon && konto === StønadskontoType.Fellesperiode) {
         return UttaksplanColor.purpleBlue;
@@ -50,7 +50,7 @@ export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
 export const getPeriodeFarge = (
     periode: Periode,
     forelder?: Forelder,
-    harMidlertidligOmsorg?: boolean
+    harMidlertidligOmsorg?: boolean,
 ): UttaksplanColor | undefined => {
     if (harMidlertidligOmsorg) {
         return UttaksplanColor.purple;

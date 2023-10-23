@@ -44,7 +44,7 @@ const AndreInntekterModalFormConfig: QuestionConfig<AndreInntekterFormData, Andr
 };
 
 const andreInntekterModalQuestionsConfig = Questions<AndreInntekterFormData, AndreInntekterFormField>(
-    AndreInntekterModalFormConfig
+    AndreInntekterModalFormConfig,
 );
 
 export default andreInntekterModalQuestionsConfig;

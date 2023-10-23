@@ -43,7 +43,7 @@ const getHvem = (
     intl: IntlShape,
     erDeltUttak: boolean,
     navnAnnenForelder: string | undefined,
-    erAnnenPartsEksisterendeSak?: boolean
+    erAnnenPartsEksisterendeSak?: boolean,
 ): string => {
     if (erDeltUttak && navnAnnenForelder !== undefined) {
         return erAnnenPartsEksisterendeSak
@@ -90,7 +90,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         erDeltUttak,
         morErAleneOmOmsorg,
         farMedmorErAleneOmOmsorg,
-        rolle
+        rolle,
     );
     const skalViseInfoOmMorsSak = hasValue(annenForelderNavn) && erFarEllerMedmor && erDeltUttak;
 
@@ -100,7 +100,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         intl,
         erDeltUttakINorge,
         annenForelderNavn,
-        eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false
+        eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false,
     );
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsedatoNesteBarn =

@@ -16,12 +16,12 @@ const ManglendeVedleggFormConfig: QuestionConfig<ManglendeVedleggQuestionsPayloa
                       vedlegg
                           .filter((vedlegg) => !!vedlegg)
                           .flat()
-                          .some((v) => v.type === type)
+                          .some((v) => v.type === type),
                   ),
         isIncluded: () => true,
     },
 };
 
 export const manglendeVedleggQuestionsConfig = Questions<ManglendeVedleggQuestionsPayload, ManglendeVedleggFormField>(
-    ManglendeVedleggFormConfig
+    ManglendeVedleggFormConfig,
 );

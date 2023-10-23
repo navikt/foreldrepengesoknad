@@ -44,7 +44,7 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
                     !!gruppering.barn?.alleBarnaLever,
                     gruppering.antallBarn,
                     intl,
-                    gruppering.type
+                    gruppering.type,
                 );
                 return (
                     <div className={bem.block} key={gruppering.familiehendelsedato}>

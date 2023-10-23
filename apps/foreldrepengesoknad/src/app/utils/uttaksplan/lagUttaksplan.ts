@@ -87,7 +87,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erAdopsjon,
                 false,
                 søkerErFarEllerMedmor,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             );
         } else {
             const forslag = ikkeDeltUttak(
@@ -99,7 +99,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 annenForelderErUfør,
                 bareFarMedmorHarRett,
                 termindato,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             );
 
             return finnOgSettInnHull(
@@ -109,7 +109,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erAdopsjon,
                 søkerErFarEllerMedmor,
                 søkerErFarEllerMedmor,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             );
         }
     }

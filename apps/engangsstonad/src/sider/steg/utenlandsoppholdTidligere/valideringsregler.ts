@@ -1,12 +1,12 @@
 import { formatDateExtended } from '@navikt/fp-common';
-import { isDateWithinRange } from '@navikt/fp-validation';
+import { I18nFn } from '@navikt/fp-ui';
+import { isDateWithinRange } from '@navikt/fp-utils';
 import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
 
 // TODO Flytt desse
 
 const validateDateInRange = (
-    intl: IntlShape,
+    i18n: I18nFn,
     date: Date | undefined,
     minDate: Date,
     maxDate: Date,
@@ -14,57 +14,42 @@ const validateDateInRange = (
 ) => {
     if (date === undefined) {
         if (isFomDate) {
-            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' });
+            return i18n('Valideringsfeil.FraOgMedDato.GyldigDato');
         }
 
-        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
+        return i18n('Valideringsfeil.TilOgMedDato.GyldigDato');
     }
 
     if (!isDateWithinRange(date, minDate, maxDate)) {
-        return intl.formatMessage(
-            { id: 'valideringsfeil.dateOutsideRange' },
-            {
-                fom: formatDateExtended(minDate),
-                tom: formatDateExtended(maxDate),
-            },
-        );
+        return i18n('Valideringsfeil.DateOutsideRange', {
+            fom: formatDateExtended(minDate),
+            tom: formatDateExtended(maxDate),
+        });
     }
 
     return null;
 };
 
-export const validateFromDate = (
-    intl: IntlShape,
-    date: Date | undefined,
-    minDate: Date,
-    maxDate: Date,
-    toDate?: Date,
-) => {
-    const error = validateDateInRange(intl, date, minDate, maxDate, true);
+export const validateFromDate = (i18n: I18nFn, date: Date | undefined, minDate: Date, maxDate: Date, toDate?: Date) => {
+    const error = validateDateInRange(i18n, date, minDate, maxDate, true);
     if (error !== undefined) {
         return error;
     }
     if (toDate && dayjs(date).isAfter(toDate, 'day')) {
         // TODO Bør ha generell id
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.førTilDato' });
+        return i18n('Valideringsfeil.Utenlandsopphold.FørTilDato');
     }
     return undefined;
 };
 
-export const validateToDate = (
-    intl: IntlShape,
-    date: Date | undefined,
-    minDate: Date,
-    maxDate: Date,
-    fromDate?: Date,
-) => {
-    const error = validateDateInRange(intl, date, minDate, maxDate, false);
+export const validateToDate = (i18n: I18nFn, date: Date | undefined, minDate: Date, maxDate: Date, fromDate?: Date) => {
+    const error = validateDateInRange(i18n, date, minDate, maxDate, false);
     if (error !== undefined) {
         return error;
     }
     if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
         // TODO Bør ha generell id
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.etterFraDato' });
+        return i18n('Valideringsfeil.Utenlandsopphold.EtterFraDato');
     }
     return undefined;
 };

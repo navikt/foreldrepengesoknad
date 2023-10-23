@@ -10,7 +10,7 @@ const finnVedleggAvType = (type: AttachmentType, alleVedlegg: Attachment[]): Att
 
 const foreldrepengesøknadReducer = (
     state: ForeldrepengesøknadContextState,
-    action: ForeldrepengesøknadContextAction
+    action: ForeldrepengesøknadContextAction,
 ): ForeldrepengesøknadContextState => {
     switch (action.type) {
         case ForeldrepengesøknadContextActionKeys.SET_HARGODKJENTVILKÅR:

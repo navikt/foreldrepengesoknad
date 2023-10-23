@@ -51,7 +51,7 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
 
 export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     termindatoSaksgrunnlag?: string,
-    termindatoSaksgrunnlagAnnenPart?: string
+    termindatoSaksgrunnlagAnnenPart?: string,
 ) => {
     if (termindatoSaksgrunnlagAnnenPart) {
         return termindatoSaksgrunnlagAnnenPart;
@@ -63,7 +63,7 @@ export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
 export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     erFarEllerMedmor: boolean,
     antallBarnSaksgrunnlag: number,
-    antallBarnSaksgrunnlagAnnenPart?: number
+    antallBarnSaksgrunnlagAnnenPart?: number,
 ): number => {
     if (erFarEllerMedmor && antallBarnSaksgrunnlagAnnenPart) {
         return antallBarnSaksgrunnlagAnnenPart;
@@ -81,7 +81,7 @@ const getStønadskontoParams = (
     morHarAleneomsorg: boolean,
     familieHendelseDatoNesteSak: string | undefined,
     antallBarn: number,
-    oppgittTermindato?: string
+    oppgittTermindato?: string,
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));

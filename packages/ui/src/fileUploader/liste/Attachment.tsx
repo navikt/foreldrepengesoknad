@@ -1,7 +1,7 @@
 import { VStack, Link, Loader, HStack, Spacer } from '@navikt/ds-react';
-import { useIntl } from 'react-intl';
 import { XMarkIcon, FileCheckmarkIcon } from '@navikt/aksel-icons';
 
+import { useCustomIntl } from '../../i18n/hooks/useCustomI18n';
 import { Attachment as AttachmentType } from '@navikt/fp-types';
 import { bytesString } from '../fileUtils';
 
@@ -16,15 +16,13 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, onDelete }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
     return (
         <div className="attachmentPanel">
-            <HStack gap="4" align="center">
-                <div>
-                    {attachment.pending && <Loader type="S" />}
-                    {!attachment.pending && <FileCheckmarkIcon width={24} height={24} />}
-                </div>
+            <HStack gap="4">
+                {attachment.pending && <Loader type="S" />}
+                {!attachment.pending && <FileCheckmarkIcon width={24} height={24} />}
                 <VStack gap="1">
                     {attachment.url ? (
                         <Link href={attachment.url} target="_blank">
@@ -43,10 +41,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                             height={24}
                             width={24}
                             cursor="pointer"
-                            aria-label={intl.formatMessage(
-                                { id: 'Attachment.Vedlegg.Slett' },
-                                { navn: attachment.filename },
-                            )}
+                            aria-label={i18n('Attachment.Vedlegg.Slett', { navn: attachment.filename })}
                         />
                     </>
                 )}

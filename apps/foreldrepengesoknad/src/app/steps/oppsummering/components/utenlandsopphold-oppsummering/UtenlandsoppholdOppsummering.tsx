@@ -16,7 +16,7 @@ interface Props {
 const getErINorgePåFamiliehendelsedato = (
     familiehendelsedato: string,
     tidligereOpphold: Utenlandsopphold[],
-    senereOpphold: Utenlandsopphold[]
+    senereOpphold: Utenlandsopphold[],
 ): boolean => {
     let erINorge = true;
 
@@ -46,7 +46,7 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
     const erINorgePåFamiliehendelsedato = getErINorgePåFamiliehendelsedato(
         familiehendelsedato,
         tidligereOpphold,
-        senereOpphold
+        senereOpphold,
     );
 
     return (

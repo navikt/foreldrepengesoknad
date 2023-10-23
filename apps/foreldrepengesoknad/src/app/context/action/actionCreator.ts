@@ -158,7 +158,7 @@ interface SetInformasjonOmUtenlandsopphold {
 }
 
 const setInformasjonOmUtenlandsopphold = (
-    payload: InformasjonOmUtenlandsopphold
+    payload: InformasjonOmUtenlandsopphold,
 ): SetInformasjonOmUtenlandsopphold => ({
     type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD,
     payload,

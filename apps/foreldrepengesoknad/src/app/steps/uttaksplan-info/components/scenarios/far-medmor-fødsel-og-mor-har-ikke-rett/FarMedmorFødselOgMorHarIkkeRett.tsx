@@ -106,7 +106,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -124,7 +124,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg: false,
                     }),
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -132,7 +132,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarIkkeRett;
@@ -150,7 +150,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
         familiehendelsesdatoDate!,
         termindato,
-        søkersituasjon.situasjon
+        søkersituasjon.situasjon,
     );
     const fødselsdato = getFødselsdato(barn);
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
@@ -160,7 +160,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     return (
@@ -205,7 +205,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                     tilgjengeligeDager={getTilgjengeligeDager(
                                         valgtStønadskonto,
                                         erDeltUttak,
-                                        Forelder.farMedmor
+                                        Forelder.farMedmor,
                                     )}
                                 />
                             )}
@@ -235,7 +235,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 validate={validateStartdatoFarMedmor(
                                     intl,
                                     ISOStringToDate(datoAvgrensinger.minDate)!,
-                                    ISOStringToDate(datoAvgrensinger.maxDate)!
+                                    ISOStringToDate(datoAvgrensinger.maxDate)!,
                                 )}
                                 placeholder={'dd.mm.åååå'}
                             />

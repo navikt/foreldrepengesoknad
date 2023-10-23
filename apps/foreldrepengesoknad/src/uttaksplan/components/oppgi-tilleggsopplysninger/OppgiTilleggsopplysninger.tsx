@@ -49,7 +49,7 @@ class OppgiTilleggsopplysninger extends Component<Props, State> {
             {
                 begrunnelse: e.target.value,
             },
-            this.throttledOnChange
+            this.throttledOnChange,
         );
     };
 
@@ -84,7 +84,7 @@ class OppgiTilleggsopplysninger extends Component<Props, State> {
                                 <Label>
                                     {intlUtils(
                                         intl,
-                                        'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift'
+                                        'uttaksplan.tilleggsopplysninger.utsettelsearbeidellergradering.overskrift',
                                     )}
                                 </Label>
                                 <BodyLong>

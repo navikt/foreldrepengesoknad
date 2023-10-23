@@ -53,7 +53,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
     const { values } = formikProps;
 
     const visAdvarselOmManglendeDokumentasjon = values.tilrettelegging.some(
-        (t: Tilrettelegging) => t.vedlegg.length === 0
+        (t: Tilrettelegging) => t.vedlegg.length === 0,
     );
 
     const sendSøknad = () => {
@@ -112,7 +112,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                     <ArbeidsforholdOppsummering
                         arbeidsforhold={getAktiveArbeidsforhold(
                             arbeidsforhold,
-                            dayjs(formikProps.values.barn.termindato).toDate()
+                            dayjs(formikProps.values.barn.termindato).toDate(),
                         )}
                         frilansInformasjon={values.søker.frilansInformasjon}
                         selvstendigInformasjon={values.søker.selvstendigNæringsdrivendeInformasjon}
@@ -133,7 +133,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                         tilrettelegging={values.tilrettelegging}
                         arbeidsforhold={getAktiveArbeidsforhold(
                             arbeidsforhold,
-                            dayjs(formikProps.values.barn.termindato).toDate()
+                            dayjs(formikProps.values.barn.termindato).toDate(),
                         )}
                     />
                 </Oppsummeringspunkt>
