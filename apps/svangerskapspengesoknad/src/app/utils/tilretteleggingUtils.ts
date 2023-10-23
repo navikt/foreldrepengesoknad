@@ -16,13 +16,9 @@ import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 export const getValgtTilrettelegging = (
     allTilretteleggingOptions: Tilrettelegging[],
     valgtTilrettelegging: string[],
-    søker: Søker,
-    arbeidsforhold: Arbeidsforhold[],
-    termindato: Date,
-    intl: IntlShape,
 ) => {
     const selectedTilrettelegging = allTilretteleggingOptions.filter((o) =>
-        valgtTilrettelegging.find((t) => t === o.id)
+        valgtTilrettelegging.find((t) => t === o.id),
     );
     return selectedTilrettelegging;
 };

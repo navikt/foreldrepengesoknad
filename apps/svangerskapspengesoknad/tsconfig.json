@@ -1,18 +1,17 @@
 {
     "extends": "tsconfig/vite.json",
     "compilerOptions": {
-        "baseUrl": "src",
         "jsx": "react-jsx",
+        "baseUrl": "./src",
         "paths": {
             "common/*": ["./common/*"],
             "stories/*": ["./storybook/stories/*"],
             "app/*": ["./app/*"]
         },
         "rootDir": "src",
-        "typeRoots": ["./node_modules/@types", "./src/@types"],
-        "types": [  "@testing-library/jest-dom"]
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
-    
-    "include": ["src/app/**/*",  "src/@types", "src/storybook"],
+
+    "include": ["src/app/**/*", "src/@types", "src/storybook"],
     "exclude": ["node_modules"]
 }
