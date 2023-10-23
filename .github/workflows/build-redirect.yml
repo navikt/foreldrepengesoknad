@@ -19,6 +19,7 @@ jobs:
     with:
       push-image: ${{ github.ref_name == 'master' }}
       docker_context: './server_for_redirect'
+      dockerfile: './server_for_redirect/Dockerfile'
       app_name: '/fp-planlegger-redirect'
     secrets: inherit
 
