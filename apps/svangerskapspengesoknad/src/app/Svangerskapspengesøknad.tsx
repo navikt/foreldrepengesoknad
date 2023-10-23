@@ -26,7 +26,7 @@ const renderSpinner = () => (
 
 const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
-    const { dispatch } = useSvangerskapspengerContext();
+    const { dispatch, state } = useSvangerskapspengerContext();
 
     useEffect(() => {
         if (søkerinfoData !== undefined) {
@@ -43,7 +43,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         }
     }, [søkerinfoError]);
 
-    if (søkerinfoData === undefined) {
+    if (!state.søkerinfo || !søkerinfoData) {
         return renderSpinner();
     }
 

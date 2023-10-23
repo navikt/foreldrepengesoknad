@@ -1,3 +1,4 @@
+import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import actionCreator from 'app/context/action/actionCreator';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
@@ -6,22 +7,22 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 interface Props {
     children: any;
-    // søknad: SvangerskapspengerContextState;
+    søknad: SvangerskapspengerContextState;
     søkerinfo: SøkerinfoDTO;
 }
 
-const SvangerskapspengerStateMock: FunctionComponent<Props> = ({ children, søkerinfo }) => {
+const SvangerskapspengerStateMock: FunctionComponent<Props> = ({ children, søknad, søkerinfo }) => {
     const [erFerdig, setFerdig] = useState(false);
     const { dispatch } = useSvangerskapspengerContext();
 
     useEffect(() => {
         if (!erFerdig) {
             Promise.all([
-                // dispatch(actionCreator.applyStoredState(søknad)),
+                dispatch(actionCreator.applyStoredState(søknad)),
                 dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfo))),
             ]).then(() => setFerdig(true));
         }
-    }, [dispatch, søkerinfo, erFerdig]);
+    }, [dispatch, søkerinfo, erFerdig, søknad]);
 
     return erFerdig ? children : null;
 };

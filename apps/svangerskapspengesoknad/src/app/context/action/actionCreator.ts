@@ -4,6 +4,7 @@ import { Søker } from 'app/types/Søker';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
 import { Locale } from '@navikt/fp-common';
+import { SvangerskapspengerContextState } from '../SvangerskapspengerContextConfig';
 
 export enum SvangerskapspengerContextActionKeys {
     SET_BARN = 'setBarn',
@@ -17,6 +18,7 @@ export enum SvangerskapspengerContextActionKeys {
     AVBRYT_SØKNAD = 'avbrytSøknad',
     GODKJENT_OPPSUMMERING = 'godkjentOppsummering',
     SET_SPRÅKKODE = 'setSpråkkode',
+    APPLY_STORED_STATE = 'applyStoredState',
 }
 interface SetBarn {
     type: SvangerskapspengerContextActionKeys.SET_BARN;
@@ -126,6 +128,16 @@ const setSpråkkode = (payload: Locale): SetSpråkkode => ({
     payload,
 });
 
+interface ApplyStoredState {
+    type: SvangerskapspengerContextActionKeys.APPLY_STORED_STATE;
+    payload: SvangerskapspengerContextState;
+}
+
+const applyStoredState = (payload: SvangerskapspengerContextState): ApplyStoredState => ({
+    type: SvangerskapspengerContextActionKeys.APPLY_STORED_STATE,
+    payload,
+});
+
 export type SvangerskapspengerContextAction =
     | SetBarn
     | SetSøker
@@ -137,7 +149,8 @@ export type SvangerskapspengerContextAction =
     | SetUtenlandsopphold
     | AvbrytSøknad
     | GodkjentOppsummering
-    | SetSpråkkode;
+    | SetSpråkkode
+    | ApplyStoredState;
 
 export default {
     setBarn,
@@ -151,4 +164,5 @@ export default {
     avbrytSøknad,
     setGodkjentOppsummering,
     setSpråkkode,
+    applyStoredState,
 };

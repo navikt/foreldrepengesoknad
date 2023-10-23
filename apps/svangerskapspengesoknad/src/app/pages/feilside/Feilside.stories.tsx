@@ -13,6 +13,7 @@ const defaultExport = {
 
 export default defaultExport;
 
+const søknad = {} as any;
 const søkerinfo = {
     søker: {
         fnr: '19047815714',
@@ -26,7 +27,7 @@ const søkerinfo = {
 
 const Template: StoryFn<FeilsideProps> = (args: FeilsideProps) => {
     return (
-        <SvangerskapspengerStateMock søkerinfo={søkerinfo}>
+        <SvangerskapspengerStateMock søknad={søknad} søkerinfo={søkerinfo}>
             <Feilside {...args}></Feilside>
         </SvangerskapspengerStateMock>
     );

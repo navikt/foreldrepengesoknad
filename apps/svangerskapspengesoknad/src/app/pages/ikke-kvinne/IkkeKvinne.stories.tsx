@@ -7,7 +7,7 @@ import IntlProvider from 'app/intl/IntlProvider';
 import '@navikt/ds-css';
 
 export default {
-    title: 'pages/IkkeMyndig/IkkeKvinne',
+    title: 'pages/IkkeKvinne',
     component: IkkeKvinne,
     decorators: [withRouter],
 };
