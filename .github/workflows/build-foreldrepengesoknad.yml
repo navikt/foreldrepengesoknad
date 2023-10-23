@@ -2,8 +2,6 @@ name: Bygg og deploy Foreldrepengesøknad
 on:
   workflow_dispatch:
   push:
-    branches:
-      - '**'
     paths:
       - 'apps/foreldrepengesoknad/**'
       - 'packages/**'
@@ -25,11 +23,11 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
     with:
+      runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
       image_suffix: 'foreldrepengesoknad'
     secrets: inherit
-
 
   deploy-dev:
     name: Deploy dev
