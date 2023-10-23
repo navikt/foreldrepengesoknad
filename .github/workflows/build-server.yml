@@ -20,7 +20,8 @@ jobs:
     with:
       push-image: ${{ github.ref_name == 'master' }}
       docker_context: './server'
-      app_name: '/server'
+      dockerfile: './server/Dockerfile'
+      image_suffix: '/server'
     secrets: inherit
 
   summary:
@@ -32,6 +33,4 @@ jobs:
       shell: bash
       id: set-outputs
       run: |
-        echo "New server version build: ${{ needs.build.outputs.version }} 🎸" >> $GITHUB_STEP_SUMMARY
-        echo "Digest: ${{ needs.build.outputs.digest }}" >> $GITHUB_STEP_SUMMARY
-        echo "Salsa: ${{ needs.attest-sign.outputs.sbom }}" >> $GITHUB_STEP_SUMMARY
+        echo "New server version build: ${{ needs.build.outputs.build-version  }} 🎸" >> $GITHUB_STEP_SUMMARY

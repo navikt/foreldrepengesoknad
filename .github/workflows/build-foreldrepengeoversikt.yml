@@ -13,6 +13,7 @@ on:
   # Only trigger, when the build workflow succeeded
   workflow_run:
     workflows: [ "Bygg server" ]
+    branches: 'master'
     types:
       - completed
 
@@ -26,7 +27,7 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      app: foreldrepengeoversikt
+      image_suffix: 'foreldrepengeoversikt'
     secrets: inherit
 
 
@@ -41,7 +42,8 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: dev-gcp
-      app: /foreldrepengeoversikt
+      image_suffix: '/foreldrepengeoversikt'
+      deploy_context: '/foreldrepengeoversikt'
     secrets: inherit
 
   deploy-prod:
@@ -55,5 +57,6 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: prod-gcp
-      app: /foreldrepengeoversikt
+      image_suffix: '/foreldrepengeoversikt'
+      deploy_context: '/foreldrepengeoversikt'
     secrets: inherit
