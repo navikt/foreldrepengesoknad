@@ -73,9 +73,6 @@ importers:
       compression:
         specifier: ^1.7.4
         version: 1.7.4
-      date-holidays:
-        specifier: ^3.21.3
-        version: 3.21.3
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -612,9 +609,6 @@ importers:
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
-      date-holidays:
-        specifier: ^3.21.3
-        version: 3.21.3
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -880,9 +874,6 @@ importers:
       compression:
         specifier: ^1.7.4
         version: 1.7.4
-      date-holidays:
-        specifier: ^3.21.3
-        version: 3.21.3
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -3644,7 +3635,7 @@ packages:
       lodash: 4.17.21
       react-dropzone: 14.2.3(react@18.2.0)
       react-fast-compare: 3.2.2
-      react-intl: 6.4.4(react@18.2.0)(typescript@5.2.2)
+      react-intl: 6.4.4(react@18.2.0)(typescript@5.1.6)
       uuid: 9.0.0
     transitivePeerDependencies:
       - '@types/react'
