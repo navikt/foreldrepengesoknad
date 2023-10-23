@@ -214,6 +214,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             barn.fødselsdato,
                                                         )}
                                                         minDate={minDatoTom}
+                                                        maxDate={sisteDagForSvangerskapspenger}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
