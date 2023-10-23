@@ -1,5 +1,6 @@
 import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
+import fs from 'fs';
 
 import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
@@ -39,18 +40,56 @@ describe('intl messages', () => {
         expect(missingKeysEnglish.length).toBe(0);
     });
 
-    //TODO Denne sjekkar ikkje alle strings. Greier kun å henta ein del frå kode, men ikkje alle.
-    // Hadde ein henta alle så kunne ein sjekka begge vegar.
+    const regex = /(?<=(isRequired|isValidDate|isMaxOneYearIntoTheFuture)\(')[^']*/gm;
+    //const regex = /(?<=(getMessage\(intl,\s'))[^']*/gm;
+
+    const getAdditionalIntlString = (fileLoc: string) => {
+        let matches = [] as string[];
+        const fileBuffer = fs.readFileSync(fileLoc);
+        const m = fileBuffer.toString().match(regex);
+        if (m) {
+            matches = m;
+        }
+        return matches;
+    };
+
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
+        const files = await glob('src/**/*.{ts,tsx}');
+
+        const foundTranslations = await extract(files, {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        });
+        const additionalTranslations = files.reduce(
+            (prev, fileLoc) => prev.concat(getAdditionalIntlString(fileLoc)),
+            [] as string[],
+        );
+
+        const allTranslationsCodes = Object.keys(JSON.parse(foundTranslations)).concat(additionalTranslations);
+
+        const missingKeysBokmål = allTranslationsCodes.filter((key) => !Object.keys(nb).includes(key));
+        if (missingKeysBokmål.length > 0) {
+            console.log('Not found in nb_NO.json:');
+        }
+        missingKeysBokmål.forEach((key) => console.log('key ' + key));
+        expect(missingKeysBokmål.length).toBe(0);
+    });
+
+    it('Check that all i18n strings nb_NO language file exists in code', async () => {
         const files = await glob('src/**/*.{ts,tsx}');
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
         });
+        const additionalTranslations = files.reduce(
+            (prev, fileLoc) => prev.concat(getAdditionalIntlString(fileLoc)),
+            [] as string[],
+        );
+        const allTranslationsCode = Object.keys(JSON.parse(foundTranslations)).concat(additionalTranslations);
 
-        const foundKeys = Object.keys(JSON.parse(foundTranslations));
-
-        const missingKeysBokmål = foundKeys.filter((key) => !Object.keys(nb).includes(key));
-        missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in nn_NO.json.'));
-        expect(missingKeysBokmål.length).toBe(0);
+        const missingKeysCode = Object.keys(nb).filter((key) => !allTranslationsCode.includes(key));
+        if (missingKeysCode.length > 0) {
+            console.log('Not found in code:');
+        }
+        missingKeysCode.forEach((key) => console.log('key ' + key));
+        expect(missingKeysCode.length).toBe(0);
     });
 });
