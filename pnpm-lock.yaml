@@ -1394,6 +1394,9 @@ importers:
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
+      intl-messageformat:
+        specifier: ^10.5.4
+        version: 10.5.4
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1440,6 +1443,9 @@ importers:
 
   packages/utils:
     dependencies:
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../constants
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -1480,9 +1486,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-intl:
-        specifier: ^6.4.4
-        version: 6.4.4(react@18.2.0)(typescript@5.1.6)
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.0.0
@@ -3206,7 +3209,6 @@ packages:
     dependencies:
       '@formatjs/intl-localematcher': 0.4.2
       tslib: 2.5.0
-    dev: true
 
   /@formatjs/fast-memoize@2.2.0:
     resolution: {integrity: sha512-hnk/nY8FyrL5YxwP9e4r9dqeM6cAbo8PeU9UjyXojZMNvVad2Z06FAVHyR3Ecw6fza+0GH7vdJgiKIVXTMbSBA==}
@@ -3226,7 +3228,6 @@ packages:
       '@formatjs/ecma402-abstract': 1.17.2
       '@formatjs/icu-skeleton-parser': 1.6.2
       tslib: 2.5.0
-    dev: true
 
   /@formatjs/icu-skeleton-parser@1.6.0:
     resolution: {integrity: sha512-eMmxNpoX/J1IPUjPGSZwo0Wh+7CEvdEMddP2Jxg1gQJXfGfht/FdW2D5XDFj3VMbOTUQlDIdZJY7uC6O6gjPoA==}
@@ -3239,7 +3240,6 @@ packages:
     dependencies:
       '@formatjs/ecma402-abstract': 1.17.2
       tslib: 2.5.0
-    dev: true
 
   /@formatjs/intl-datetimeformat@6.10.0:
     resolution: {integrity: sha512-5tJWZxOyP5D4PDrqv27h0LWAPHhQM9BHR0pDBTZOKWFEZNrS2IgREbyalSGwQLtN1tZaDrt3YeNfNLbZk1wSUw==}
@@ -3272,7 +3272,6 @@ packages:
     resolution: {integrity: sha512-BGdtJFmaNJy5An/Zan4OId/yR9Ih1OojFjcduX/xOvq798OgWSyDtd6Qd5jqJXwJs1ipe4Fxu9+cshic5Ox2tA==}
     dependencies:
       tslib: 2.5.0
-    dev: true
 
   /@formatjs/intl-numberformat@8.7.0:
     resolution: {integrity: sha512-LuJXld4hjVKXUAGjtqz0t4DhZJDI0fkIAUHKrhIyb0qomudd/G0v9GzCnOLt6pQ93OBFTHmqzp1qN5n1tJJ4sg==}
@@ -10879,6 +10878,15 @@ packages:
       '@formatjs/fast-memoize': 2.2.0
       '@formatjs/icu-messageformat-parser': 2.6.0
       tslib: 2.5.0
+
+  /intl-messageformat@10.5.4:
+    resolution: {integrity: sha512-z+hrFdiJ/heRYlzegrdFYqU1m/KOMOVMqNilIArj+PbsuU8TNE7v4TWdQgSoxlxbT4AcZH3Op3/Fu15QTp+W1w==}
+    dependencies:
+      '@formatjs/ecma402-abstract': 1.17.2
+      '@formatjs/fast-memoize': 2.2.0
+      '@formatjs/icu-messageformat-parser': 2.7.0
+      tslib: 2.5.0
+    dev: false
 
   /intl@1.2.5:
     resolution: {integrity: sha512-rK0KcPHeBFBcqsErKSpvZnrOmWOj+EmDkyJ57e90YWaQNqbcivcqmKDlHEeNprDWOsKzPsh1BfSpPQdDvclHVw==}

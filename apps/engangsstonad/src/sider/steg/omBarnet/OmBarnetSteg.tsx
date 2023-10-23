@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 import { Kjønn, Step } from '@navikt/fp-common';
 import { VStack } from '@navikt/ds-react';
-
+import { useCustomIntl } from '@navikt/fp-ui';
 import { StepButtonsHookForm, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
 import { omitOne } from '@navikt/fp-utils';
+
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
@@ -32,10 +32,11 @@ export interface Props {
 }
 
 const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
+
     const omBarnet = useEsStateData(EsDataType.OM_BARNET);
     const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
     const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
@@ -59,8 +60,8 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'OmBarnetSteg.OmBarnet' })}
+            bannerTitle={i18n('Søknad.Pageheading')}
+            pageTitle={i18n('OmBarnetSteg.OmBarnet')}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}

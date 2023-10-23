@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useMemo } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
@@ -11,6 +11,7 @@ import useEsNavigator from 'appData/useEsNavigator';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import { UtenlandsoppholdSenere, UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
 import useStepData from 'appData/useStepData';
+import { useCustomIntl } from '@navikt/fp-ui';
 
 const DEFAULT_PERIODE = {
     fom: '',
@@ -23,7 +24,7 @@ const DEFAULT_FORM_VALUES = {
 } as UtenlandsoppholdSenere;
 
 const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -57,8 +58,8 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.Fremtidig' })}
+            bannerTitle={i18n('Søknad.Pageheading')}
+            pageTitle={i18n('SenereUtenlandsoppholdSteg.Fremtidig')}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}

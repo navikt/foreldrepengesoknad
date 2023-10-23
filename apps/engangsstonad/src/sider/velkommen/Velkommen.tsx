@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import {
     BodyShort,
     Button,
@@ -12,9 +12,9 @@ import {
     VStack,
 } from '@navikt/ds-react';
 import { LanguageToggle, Locale, useDocumentTitle } from '@navikt/fp-common';
-
 import { links } from '@navikt/fp-constants';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
+
 import useEsNavigator from 'appData/useEsNavigator';
 
 export interface Props {
@@ -25,9 +25,9 @@ export interface Props {
 }
 
 const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad, erVelkommen }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
 
-    useDocumentTitle(intl.formatMessage({ id: 'Velkommen.Dokumenttittel' }));
+    useDocumentTitle(i18n('Velkommen.Dokumenttittel'));
 
     const navigator = useEsNavigator();
 
@@ -84,7 +84,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                             </Link>
                         </VStack>
                     </GuidePanel>
-                    <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'Velkommen.Info.Header' })}>
+                    <ExpansionCard size="medium" aria-label={i18n('Velkommen.Info.Header')}>
                         <ExpansionCard.Header>
                             <ExpansionCard.Title size="small">
                                 <FormattedMessage id="Velkommen.Info.Header" />
@@ -121,14 +121,10 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                         </ExpansionCard.Content>
                     </ExpansionCard>
                     <ConfirmationPanel
-                        label={intl.formatMessage({ id: 'Velkommen.Samtykke' })}
+                        label={i18n('Velkommen.Samtykke')}
                         onChange={toggleCheck}
                         checked={isChecked}
-                        error={
-                            isError &&
-                            !isChecked &&
-                            intl.formatMessage({ id: 'Velkommen.Validering.BekreftLestOgForståttRettigheter' })
-                        }
+                        error={isError && !isChecked && i18n('Velkommen.Validering.BekreftLestOgForståttRettigheter')}
                     >
                         <VStack gap="5">
                             <HStack gap="1">

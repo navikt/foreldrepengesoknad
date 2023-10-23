@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { VStack } from '@navikt/ds-react';
-import { useFormValidators } from '@navikt/fp-validation';
+import { useCustomIntl } from '@navikt/fp-ui';
+import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 export type FormValues = {
     fødselsdatoer?: Array<{
@@ -23,11 +23,7 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
     antallBarn,
     antallBarnDropDown,
 }) => {
-    const {
-        isRequired,
-        date: { isValidDate, isBeforeTodayOrToday },
-    } = useFormValidators();
-
+    const { i18n } = useCustomIntl();
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
         control,
@@ -61,23 +57,19 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                     minDate={dayjs().subtract(15, 'year').toDate()}
                     maxDate={dayjs().toDate()}
                     label={
-                        <FormattedMessage
-                            id={
-                                fields.length === 1
-                                    ? 'AdopsjonFodselFieldArray.Fødselsdato'
-                                    : `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}`
-                            }
-                        />
+                        fields.length === 1
+                            ? i18n('AdopsjonFodselFieldArray.Fødselsdato')
+                            : i18n(`AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}`)
                     }
                     validate={[
-                        isRequired('AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi'),
-                        isValidDate('AdopsjonFodselFieldArray.Fødselsdato.Gyldig'),
+                        isRequired(i18n('AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi')),
+                        isValidDate(i18n('AdopsjonFodselFieldArray.Fødselsdato.Gyldig')),
                         (fødselsdato) => {
                             return !fødselsdato || !adopsjonsdato
                                 ? undefined
-                                : isBeforeTodayOrToday('AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere')(
-                                      fødselsdato,
-                                  );
+                                : isBeforeTodayOrToday(
+                                      i18n('AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere'),
+                                  )(fødselsdato);
                         },
                     ]}
                 />

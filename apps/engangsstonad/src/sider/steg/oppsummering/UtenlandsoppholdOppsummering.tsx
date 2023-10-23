@@ -1,7 +1,8 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-import LandOppsummering from './LandOppsummering';
+import { notEmpty } from '@navikt/fp-validation';
+import { useCustomIntl } from '@navikt/fp-ui';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
     Utenlandsopphold,
@@ -9,7 +10,7 @@ import {
     UtenlandsoppholdTidligere,
     UtenlandsoppholdPeriode,
 } from 'types/Utenlandsopphold';
-import { notEmpty } from '@navikt/fp-validation';
+import LandOppsummering from './LandOppsummering';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
@@ -43,7 +44,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
 }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
 
@@ -65,7 +66,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                 <BodyShort>
                     <FormattedMessage
                         id={'UtenlandsoppholdOppsummering.BoddSisteTolv'}
-                        values={{ country: intl.formatMessage({ id: 'UtenlandsoppholdOppsummering.Norge' }) }}
+                        values={{ country: i18n('UtenlandsoppholdOppsummering.Norge') }}
                     />
                 </BodyShort>
             )}
@@ -73,7 +74,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                 <BodyShort>
                     <FormattedMessage
                         id="UtenlandsoppholdOppsummering.BoNesteTolv"
-                        values={{ country: intl.formatMessage({ id: 'UtenlandsoppholdOppsummering.Norge' }) }}
+                        values={{ country: i18n('UtenlandsoppholdOppsummering.Norge') }}
                     />
                 </BodyShort>
             )}
@@ -83,15 +84,13 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                         <FormattedMessage
                             id={'UtenlandsoppholdOppsummering.Text.OgKommerPåFødselstidspunktet'}
                             values={{
-                                country: intl.formatMessage({
-                                    id: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                        omBarnet.termindato!,
-                                        tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                                        senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                                    )
-                                        ? 'UtenlandsoppholdOppsummering.Utlandet'
-                                        : 'UtenlandsoppholdOppsummering.Norge',
-                                }),
+                                country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                    omBarnet.termindato!,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                                )
+                                    ? i18n('UtenlandsoppholdOppsummering.Utlandet')
+                                    : i18n('UtenlandsoppholdOppsummering.Norge'),
                             }}
                         />
                     </BodyShort>
@@ -102,15 +101,13 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                     <FormattedMessage
                         id={'UtenlandsoppholdOppsummering.VarPåFødselstidspunktet'}
                         values={{
-                            country: intl.formatMessage({
-                                id: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    omBarnet.fødselsdatoer[0].dato,
-                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                                )
-                                    ? 'UtenlandsoppholdOppsummering.Utlandet'
-                                    : 'UtenlandsoppholdOppsummering.Norge',
-                            }),
+                            country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                omBarnet.fødselsdatoer[0].dato,
+                                tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                            )
+                                ? i18n('UtenlandsoppholdOppsummering.Utlandet')
+                                : i18n('UtenlandsoppholdOppsummering.Norge'),
                         }}
                     />
                 </BodyShort>
