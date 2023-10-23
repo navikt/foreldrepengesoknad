@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { Attachment } from 'app/types/Attachment';
 import { IntlShape, useIntl } from 'react-intl';
 import OppsummeringAvDokumentasjon from '../oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
-import { intlUtils } from '@navikt/fp-common';
-import { assertUnreachable } from 'app/utils/globalUtil';
+import { Attachment, MorsAktivitet, assertUnreachable, intlUtils } from '@navikt/fp-common';
 
 interface MorsAktivitetDetaljerProps {
     morsAktivitet: MorsAktivitet;

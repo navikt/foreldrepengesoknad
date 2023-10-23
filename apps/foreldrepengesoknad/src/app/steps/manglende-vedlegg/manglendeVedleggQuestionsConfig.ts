@@ -1,6 +1,6 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { ManglendeVedleggFormData, ManglendeVedleggFormField } from './manglendeVedleggFormConfig';
-import { AttachmentType } from 'app/types/AttachmentType';
+import { AttachmentType } from '@navikt/fp-common';
 
 export interface ManglendeVedleggQuestionsPayload extends ManglendeVedleggFormData {
     manglendeVedleggTyper: AttachmentType[];

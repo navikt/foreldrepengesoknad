@@ -1,5 +1,4 @@
-import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment, TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
 
 export enum AnnenInntektType {
     SLUTTPAKKE = 'ETTERLØNN_SLUTTPAKKE',

@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
-import { Block, intlUtils, PictureScanningGuide } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import {
+    Attachment,
+    AttachmentType,
+    Block,
+    deleteAttachment,
+    intlUtils,
+    isAttachmentWithError,
+    mapFilTilVedlegg,
+    PictureScanningGuide,
+    Skjemanummer,
+} from '@navikt/fp-common';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
-import { deleteAttachment } from 'app/utils/globalUtil';
 import { IntlShape, useIntl } from 'react-intl';
-import { isAttachmentWithError, mapFilTilVedlegg } from 'app/utils/vedleggUtils';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;

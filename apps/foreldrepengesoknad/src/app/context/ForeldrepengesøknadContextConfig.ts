@@ -1,14 +1,9 @@
 import SøknadRoutes from 'app/routes/routes';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import { Sak } from 'app/types/Sak';
-import { Situasjon } from 'app/types/Situasjon';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import { Søkerrolle } from 'app/types/Søkerrolle';
-import { Periode } from 'uttaksplan/types/Periode';
-import { BarnFraNesteSak } from './types/Barn';
+import { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import { Søknad } from './types/Søknad';
 import UttaksplanInfo from './types/UttaksplanInfo';
+import { EksisterendeSak, Periode, Sak, Situasjon, Søkerinfo, Søkerrolle } from '@navikt/fp-common';
 
 export interface ForeldrepengesøknadContextState {
     version: number;

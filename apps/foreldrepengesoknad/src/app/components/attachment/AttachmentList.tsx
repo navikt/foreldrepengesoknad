@@ -1,8 +1,8 @@
 import * as React from 'react';
 import AttachmentComponent from './Attachment';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment, guid } from '@navikt/fp-common';
+
 import './attachment.less';
-import { guid } from '@navikt/fp-common';
 
 export interface Props {
     attachments: Attachment[];

@@ -1,4 +1,4 @@
-import { TilgjengeligStønadskonto } from './TilgjengeligStønadskonto';
+import { TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 export interface TilgjengeligeDager {
     dagerTotalt: number;

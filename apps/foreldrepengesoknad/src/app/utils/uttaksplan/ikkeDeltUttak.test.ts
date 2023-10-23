@@ -1,8 +1,6 @@
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import MockDate from 'mockdate';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
-import { Uttaksperiode } from 'uttaksplan/types/Periode';
+import { StønadskontoType, TilgjengeligStønadskonto, Uttaksperiode } from '@navikt/fp-common';
 
 describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     beforeAll(() => {

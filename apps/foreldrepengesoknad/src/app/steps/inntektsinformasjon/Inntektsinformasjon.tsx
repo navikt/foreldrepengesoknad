@@ -1,4 +1,12 @@
-import { Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    Block,
+    getAktiveArbeidsforhold,
+    intlUtils,
+    isFarEllerMedmor,
+    ISOStringToDate,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 import { useState } from 'react';
@@ -22,12 +30,9 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { BodyShort, Button } from '@navikt/ds-react';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { Link } from 'react-router-dom';
 
 const Inntektsinformasjon = () => {

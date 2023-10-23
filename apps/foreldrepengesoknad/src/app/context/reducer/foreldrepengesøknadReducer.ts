@@ -1,5 +1,4 @@
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
+import { Attachment, AttachmentType } from '@navikt/fp-common';
 import { ForeldrepengesøknadContextAction, ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 

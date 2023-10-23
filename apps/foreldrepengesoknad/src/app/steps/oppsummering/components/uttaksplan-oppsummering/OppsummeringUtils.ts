@@ -1,13 +1,13 @@
-import { intlUtils } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { IntlShape } from 'react-intl';
 import {
+    Arbeidsforhold,
     Arbeidsform,
     Overføringsperiode,
-    Periodetype,
     PeriodeUtenUttakUtsettelse,
+    Periodetype,
     Utsettelsesperiode,
-} from 'uttaksplan/types/Periode';
+    intlUtils,
+} from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
 
 type MessageValue = string | number | boolean | Date | null | undefined;
 

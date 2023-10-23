@@ -1,22 +1,24 @@
-import { hasValue } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import Barn, {
+import {
     AdoptertBarn,
+    Arbeidsforhold,
+    AttachmentType,
+    Barn,
     BarnType,
     FødtBarn,
+    ISOStringToDate,
     IkkeUtfyltTypeBarn,
+    Situasjon,
+    Skjemanummer,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
-} from 'app/context/types/Barn';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Situasjon } from 'app/types/Situasjon';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 

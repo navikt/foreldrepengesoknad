@@ -1,14 +1,21 @@
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import Barn, { BarnType, FødtBarn } from 'app/context/types/Barn';
 import { Søknad } from 'app/context/types/Søknad';
-import { Periode, PeriodeHull, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
     AnnenForelderOppgittForInnsending,
     cleanSøknad,
     getPeriodeVedTidspunkt,
     getUttaksplanMedFriUtsettelsesperiode,
 } from './apiUtils';
+import {
+    AnnenForelder,
+    Barn,
+    BarnType,
+    FødtBarn,
+    Periode,
+    PeriodeHull,
+    Periodetype,
+    StønadskontoType,
+    Uttaksperiode,
+} from '@navikt/fp-common';
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,

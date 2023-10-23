@@ -1,35 +1,41 @@
 import MockDate from 'mockdate';
 import {
-    dateRangeValidation,
     isDateABeforeDateB,
-    isDateInTheFuture,
     getEldsteRegistrerteBarn,
-    getUkerOgDagerFromDager,
-    getVarighetString,
-    formaterDato,
-    formaterDatoUtenDag,
     dateIsSameOrBefore,
     dateIsSameOrAfter,
-    formaterDatoKompakt,
     findEldsteDato,
     getAlderFraDato,
-    convertTidsperiodeToTidsperiodeDate,
     getRelevantFamiliehendelseDato,
-    ISOStringToDate,
-    isDateToday,
     getEndringstidspunkt,
-    andreAugust2022ReglerGjelder,
-    tidperiodeOverlapperDato,
-    getToTetteReglerGjelder,
     getEldsteDato,
     sorterDatoEtterEldst,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
-import { RegistrertBarn } from 'app/types/Person';
-import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { guid } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    Periode,
+    PeriodeHull,
+    Periodetype,
+    RegistrertBarn,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    Uttaksperiode,
+    andreAugust2022ReglerGjelder,
+    convertTidsperiodeToTidsperiodeDate,
+    dateRangeValidation,
+    formaterDato,
+    formaterDatoKompakt,
+    formaterDatoUtenDag,
+    getToTetteReglerGjelder,
+    getUkerOgDagerFromDager,
+    getVarighetString,
+    guid,
+    isDateInTheFuture,
+    isDateToday,
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 describe('dateUtils', () => {

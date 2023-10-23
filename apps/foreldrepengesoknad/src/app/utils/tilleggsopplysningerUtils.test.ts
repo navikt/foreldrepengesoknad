@@ -1,5 +1,5 @@
+import { Tilleggsopplysninger } from '@navikt/fp-common';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from './tilleggsopplysningerUtils';
-import { Tilleggsopplysninger } from '../context/types/Tilleggsopplysninger';
 
 const tilleggsopplysningerMedBegrunnelse = {
     begrunnelseForSenEndring: { tekst: 'Begrunnelse\u0009med\u0009blanke\u0009tegn.' },

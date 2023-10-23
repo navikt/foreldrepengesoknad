@@ -1,8 +1,13 @@
-import { Forelder } from 'app/types/Forelder';
-import { Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import {
+    Forelder,
+    OppholdÅrsakType,
+    Periode,
+    PeriodeInfoType,
+    Periodetype,
+    StønadskontoType,
+    UttakAnnenPartInfoPeriode,
+    Uttaksperiode,
+} from '@navikt/fp-common';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 
 const familiehendelseDatoForMorsPerioderFørWLB = new Date('2021-08-04');

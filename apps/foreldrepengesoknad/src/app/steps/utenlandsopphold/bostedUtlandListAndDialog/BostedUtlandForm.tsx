@@ -1,7 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BostedUtland, isValidBostedUtland } from './types';
-import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
-import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
+import { Block, ISOStringToDate, dateRangeValidation, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { Heading } from '@navikt/ds-react';
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';

@@ -1,4 +1,4 @@
-import { Situasjon } from 'app/types/Situasjon';
+import { Situasjon } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 
 export const skalViseInfoOmPrematuruker = (

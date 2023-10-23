@@ -1,5 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
-import links from 'app/links/links';
+import { intlUtils, links } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import Feilside from '../feilside/Feilside';

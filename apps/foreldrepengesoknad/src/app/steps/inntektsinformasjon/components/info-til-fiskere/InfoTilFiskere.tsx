@@ -1,6 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { Block } from '@navikt/fp-common';
-import links from 'app/links/links';
+import { Block, links } from '@navikt/fp-common';
 import { BodyLong, ExpansionCard, Label } from '@navikt/ds-react';
 
 const InfoTilFiskere = () => {

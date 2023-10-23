@@ -1,4 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
+import { ISOStringToDate, getAktiveArbeidsforhold, intlUtils, isFarEllerMedmor } from '@navikt/fp-common';
 import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 import HarIkkeArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -10,9 +10,6 @@ import FrilansOppsummering from './FrilansOppsummering';
 import SelvstendigNæringsdrivendeOppsummering from './SelvstendigNæringsdrivendeOppsummering';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
     const intl = useIntl();

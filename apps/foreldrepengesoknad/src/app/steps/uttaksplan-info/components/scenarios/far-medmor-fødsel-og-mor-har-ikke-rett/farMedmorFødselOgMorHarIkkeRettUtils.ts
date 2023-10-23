@@ -1,9 +1,10 @@
 import { FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+
 import {
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorFødselOgMorHarIkkeRettValues: FarMedmorFødselOgMorHarIkkeRettFormData = {
     [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: '',

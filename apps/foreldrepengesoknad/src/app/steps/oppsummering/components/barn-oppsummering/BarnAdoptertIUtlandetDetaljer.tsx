@@ -1,5 +1,11 @@
-import { formatDate, hasValue, intlUtils } from '@navikt/fp-common';
-import { AdoptertAnnetBarn, AdoptertStebarn, isAdoptertStebarn } from 'app/context/types/Barn';
+import {
+    AdoptertAnnetBarn,
+    AdoptertStebarn,
+    formatDate,
+    hasValue,
+    intlUtils,
+    isAdoptertStebarn,
+} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';

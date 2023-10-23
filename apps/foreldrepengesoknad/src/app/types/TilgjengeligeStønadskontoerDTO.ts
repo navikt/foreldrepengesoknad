@@ -1,4 +1,4 @@
-import { MinsterettType } from 'uttaksplan/types/MinsterettType';
+import { MinsterettType } from '@navikt/fp-common';
 
 export interface TilgjengeligeMinsterettskontoer {
     [MinsterettType.farRundtFødsel]: number;

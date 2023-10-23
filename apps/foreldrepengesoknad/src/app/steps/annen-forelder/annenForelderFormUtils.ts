@@ -1,17 +1,23 @@
-import { hasValue, intlUtils } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    AttachmentType,
+    Barn,
+    RegistrertAnnenForelder,
+    Skjemanummer,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
+    intlUtils,
+    isAnnenForelderIkkeOppgitt,
+    isAnnenForelderOppgitt,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { RegistrertAnnenForelder } from 'app/types/Person';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { IntlShape } from 'react-intl';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,

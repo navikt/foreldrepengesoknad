@@ -6,14 +6,14 @@ import {
     hasValue,
     intlUtils,
     erIUke22Pluss3,
+    Søkersituasjon,
+    isFarEllerMedmor,
+    links,
+    AttachmentType,
+    Skjemanummer,
 } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import links from 'app/links/links';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';

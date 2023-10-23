@@ -1,18 +1,22 @@
-import { Sak } from 'app/types/Sak';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
-import { Familiehendelse } from 'app/types/Familiehendelse';
-import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
-import { erEldreEnn3ÅrOg3Måneder } from 'app/utils/personUtils';
-import { getRelevantFamiliehendelseDato, ISOStringToDate } from 'app/utils/dateUtils';
-import { BarnFraNesteSak } from 'app/context/types/Barn';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import {
     getAndreBarnFødtSammenMedBarnet,
     getDødeBarnetForMerEnn3MånederSiden,
     getLeverBarnet,
 } from 'app/utils/barnUtils';
-import { guid } from '@navikt/fp-common';
+import {
+    BarnFraNesteSak,
+    ISOStringToDate,
+    RegistrertAnnenForelder,
+    RegistrertBarn,
+    Sak,
+    Uttaksdagen,
+    erEldreEnn3ÅrOg3Måneder,
+    guid,
+} from '@navikt/fp-common';
+import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
+import { getRelevantFamiliehendelseDato } from '../../utils/dateUtils';
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],

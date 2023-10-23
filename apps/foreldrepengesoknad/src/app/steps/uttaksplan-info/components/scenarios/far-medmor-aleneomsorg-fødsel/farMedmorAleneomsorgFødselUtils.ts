@@ -1,11 +1,11 @@
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import dayjs from 'dayjs';
 import {
     FarMedmorAleneomsorgFødselFormData,
     FarMedmorAleneomsorgFødselFormField,
 } from './farMedmorAleneomsorgFødselFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorAleneomsorgFødselValues: FarMedmorAleneomsorgFødselFormData = {
     [FarMedmorAleneomsorgFødselFormField.dekningsgrad]: '',

@@ -1,7 +1,4 @@
-import { hasValue } from '@navikt/fp-common';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { Situasjon } from 'app/types/Situasjon';
-import { Søkerrolle } from 'app/types/Søkerrolle';
+import { Situasjon, Søkerrolle, Søkersituasjon, hasValue } from '@navikt/fp-common';
 import { SøkersituasjonFormData } from './søkersituasjonFormConfig';
 
 export const mapSøkersituasjonFormDataToState = (formData: Partial<SøkersituasjonFormData>): Søkersituasjon => {

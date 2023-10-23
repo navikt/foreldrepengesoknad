@@ -1,12 +1,12 @@
 import { IntlShape } from 'react-intl';
 
-const intlHelper = (
+const intlUtils = (
     intl: IntlShape,
     id: string,
     value?: Record<string, string | number | boolean | null | undefined | Date>,
 ): string => intl.formatMessage({ id }, value);
 
-export function typedIntlHelper<Keys extends string>(intl: IntlShape) {
+export const typedIntlHelper = <Keys extends string>(intl: IntlShape) => {
     return {
         intlText: (id: Keys, values?: any): string => {
             return intl.formatMessage({ id }, values);
@@ -15,6 +15,9 @@ export function typedIntlHelper<Keys extends string>(intl: IntlShape) {
             return intl.formatMessage({ id }, values);
         },
     };
-}
+};
+export const intlHasKey = (intl: IntlShape, key: string) => {
+    return intl.messages[key] !== undefined;
+};
 
-export default intlHelper;
+export default intlUtils;

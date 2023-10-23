@@ -1,30 +1,34 @@
 import { FunctionComponent } from 'react';
-import { formatDate, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysningerUtils';
-import { useIntl } from 'react-intl';
 import {
+    AnnenForelder,
+    appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
+    Arbeidsforhold,
+    finnesPeriodeIOpprinneligPlan,
+    formatDate,
+    getPeriodeTittel,
+    getStønadskontoNavn,
+    intlUtils,
+    NavnPåForeldre,
     Oppholdsperiode,
     Overføringsperiode,
     Periode,
     Periodetype,
     PeriodeUtenUttakUtsettelse,
+    Situasjon,
+    StønadskontoType,
+    TidsperiodeDate,
+    Tilleggsopplysning,
     Utsettelsesperiode,
     Uttaksperiode,
-} from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { finnesPeriodeIOpprinneligPlan, getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
-import { getStønadskontoNavn } from 'uttaksplan/utils/stønadskontoerUtils';
+    uttaksperiodeKanJusteresVedFødsel,
+} from '@navikt/fp-common';
+import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysningerUtils';
+import { useIntl } from 'react-intl';
 import Feltoppsummering from './feltoppsummering/Feltoppsummering';
 import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeringsliste/Oppsummeringsliste';
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
-import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor, uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
-import { Situasjon } from 'app/types/Situasjon';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];

@@ -1,7 +1,13 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
+import {
+    Barn,
+    RegistrertBarn,
+    formatDate,
+    intlUtils,
+    isFødtBarn,
+    isIkkeUtfyltTypeBarn,
+    isUfødtBarn,
+} from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import Barn, { isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from 'app/context/types/Barn';
-import { RegistrertBarn } from 'app/types/Person';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';

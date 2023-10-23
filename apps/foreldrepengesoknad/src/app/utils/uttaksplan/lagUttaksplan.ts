@@ -1,11 +1,8 @@
-import { Situasjon } from 'app/types/Situasjon';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { UttaksplanSkjemadata } from 'app/types/UttaksplanSkjemaData';
-import { finnOgSettInnHull } from 'uttaksplan/builder/uttaksplanbuilderUtils';
-import { Periode } from 'uttaksplan/types/Periode';
-import { ISOStringToDate } from '../dateUtils';
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
+import { ISOStringToDate, Periode, Situasjon, TilgjengeligStønadskonto } from '@navikt/fp-common';
+import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 
 export interface LagUttaksplanParams {
     situasjon: Situasjon;

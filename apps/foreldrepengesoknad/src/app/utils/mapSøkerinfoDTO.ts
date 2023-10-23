@@ -1,12 +1,9 @@
-import { erMyndig } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
-import { Søkerinfo } from 'app/types/Søkerinfo';
+import { Arbeidsforhold, ISOStringToDate, Søkerinfo, erMyndig } from '@navikt/fp-common';
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { ISOStringToDate } from './dateUtils';
+import Person, { RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-common/src/common/types/Person';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

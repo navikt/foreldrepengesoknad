@@ -1,7 +1,11 @@
-import { Forelder } from 'app/types/Forelder';
-import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import {
+    Forelder,
+    Periode,
+    Periodetype,
+    StønadskontoType,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+} from '@navikt/fp-common';
 import { finnEndringerIUttaksplan } from './submitUtils';
 
 describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i planen', () => {

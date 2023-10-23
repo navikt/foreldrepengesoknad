@@ -7,13 +7,11 @@ import withIntlProvider from 'storybook/decorators/withIntl';
 import withRouter from 'storybook/decorators/withRouter';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
-import { lagSendSenereDokument } from 'app/utils/vedleggUtils';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import _context from 'storybook/storyData/soknad/soknadNedEttUfodtBarn.json';
 import ManglendeVedlegg from './ManglendeVedlegg';
+import { AttachmentType, Skjemanummer, lagSendSenereDokument } from '@navikt/fp-common';
 
 const søkerinfo = _søkerinfo as any;
 const context = _context as any;

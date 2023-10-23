@@ -1,19 +1,19 @@
-import { hasValue } from '@navikt/fp-common';
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { RegistrertBarn } from 'app/types/Person';
-import { Situasjon } from 'app/types/Situasjon';
-import { Søkerrolle } from 'app/types/Søkerrolle';
 import {
+    Arbeidsforhold,
+    ISOStringToDate,
+    RegistrertBarn,
+    Situasjon,
+    Søkerrolle,
     andreAugust2022ReglerGjelder,
     førsteOktober2021ReglerGjelder,
-    getEldsteRegistrerteBarn,
-    ISOStringToDate,
-} from 'app/utils/dateUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+    hasValue,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
+import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { getEldsteRegistrerteBarn } from '../../utils/dateUtils';
 
 export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     situasjon: Situasjon;

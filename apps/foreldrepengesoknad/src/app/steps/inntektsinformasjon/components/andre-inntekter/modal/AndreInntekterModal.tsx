@@ -1,4 +1,4 @@
-import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { AttachmentType, bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -15,7 +15,6 @@ import {
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import andreInntekterModalQuestionsConfig from './andreInntekterModalQuestionsConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { AttachmentType } from 'app/types/AttachmentType';
 import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validation/andreInntekterValidation';
 import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';

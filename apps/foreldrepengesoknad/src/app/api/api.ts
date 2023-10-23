@@ -1,5 +1,4 @@
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { Kvittering } from 'app/types/Kvittering';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
@@ -8,9 +7,8 @@ import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { formaterDato } from 'app/utils/dateUtils';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
-import { hasValue } from '@navikt/fp-common';
+import { Dekningsgrad, formaterDato, hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { RequestStatus } from 'app/types/RequestState';

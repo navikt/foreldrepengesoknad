@@ -1,15 +1,25 @@
-import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Forelder } from 'app/types/Forelder';
-import { Situasjon } from 'app/types/Situasjon';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
-import { isUttaksperiode, Periode, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from '../dateUtils';
-import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from '../wlbUtils';
-import { guid } from '@navikt/fp-common';
+import {
+    Forelder,
+    Periode,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    Tidsperioden,
+    TilgjengeligStønadskonto,
+    Uttaksdagen,
+    Uttaksperiode,
+    andreAugust2022ReglerGjelder,
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    getTidsperiode,
+    guid,
+    isUttaksperiode,
+    sorterPerioder,
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-common';
+import {
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,

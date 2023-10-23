@@ -1,5 +1,4 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { ISOStringToDate, formatDate, intlUtils } from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';

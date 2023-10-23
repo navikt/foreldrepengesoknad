@@ -1,8 +1,12 @@
-import { hasValue } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring, EndringAvNæringsinntektInformasjon, Næringsrelasjon } from 'app/context/types/Næring';
-import { date4YearsAgo, ISOStringToDate } from 'app/utils/dateUtils';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { date4YearsAgo } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';

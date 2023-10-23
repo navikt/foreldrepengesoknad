@@ -1,7 +1,10 @@
-import { hasValue } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    andreAugust2022ReglerGjelder,
+    getSisteUttaksdag6UkerEtterFødsel,
+    hasValue,
+} from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
-import { getSisteUttaksdag6UkerEtterFødsel } from 'app/utils/wlbUtils';
 import dayjs from 'dayjs';
 import {
     FarMedmorFødselBeggeHarRettFormData,

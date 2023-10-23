@@ -1,9 +1,8 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { hasValue, intlUtils } from '@navikt/fp-common';
+import { hasValue, intlUtils, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { isDateInTheFuture, isDateABeforeDateB } from 'app/utils/dateUtils';
-import { validateTextInputField } from 'app/utils/validationUtil';
 import { IntlShape } from 'react-intl';
+import { isDateABeforeDateB } from '../../../../../utils/dateUtils';
 
 export const validateNavnPåOppdragsgiver = (intl: IntlShape, label: string) => (navn: string) => {
     if (!hasValue(navn) || navn.trim() === '') {

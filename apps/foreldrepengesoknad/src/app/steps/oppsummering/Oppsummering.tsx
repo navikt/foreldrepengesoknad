@@ -1,4 +1,15 @@
-import { bemUtils, Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    bemUtils,
+    Block,
+    getErSøkerFarEllerMedmor,
+    getFarMedmorErAleneOmOmsorg,
+    getNavnPåForeldre,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    ISOStringToDate,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import { useEffect, useMemo, useState } from 'react';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -32,11 +43,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { getErSøkerFarEllerMedmor, getFarMedmorErAleneOmOmsorg, getNavnPåForeldre } from 'app/utils/personUtils';
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';

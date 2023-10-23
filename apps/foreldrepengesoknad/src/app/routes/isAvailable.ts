@@ -1,6 +1,6 @@
 import { Søknad } from 'app/context/types/Søknad';
-import { uttaksplanInneholderPerioderUtenKonto } from 'app/utils/uttaksplan/uttaksplanUtils';
 import SøknadRoutes from './routes';
+import { uttaksplanInneholderPerioderUtenKonto } from '@navikt/uttaksplan';
 
 const isAvailable = (route: SøknadRoutes, søknad: Søknad): boolean => {
     switch (route) {

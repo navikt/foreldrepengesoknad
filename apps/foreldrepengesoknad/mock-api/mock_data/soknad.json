@@ -7,16 +7,18 @@
             "rolle": "far"
         },
         "barn": {
-            "type": "ufødt",
+            "type": "født",
+            "fødselsdatoer": [
+                "2023-10-23T00:00:00.000Z"
+            ],
             "antallBarn": 1,
-            "termindato": "2023-09-23T00:00:00.000Z"
+            "termindato": "2023-10-23T00:00:00.000Z"
         },
         "annenForelder": {
-            "etternavn": "asd",
-            "fornavn": "asd",
-            "fnr": "asd",
-            "bostedsland": "BS",
-            "utenlandskFnr": true,
+            "etternavn": "sdasdasd",
+            "fornavn": "asda",
+            "fnr": "02068629902",
+            "utenlandskFnr": false,
             "kanIkkeOppgis": false,
             "harRettPåForeldrepengerINorge": true,
             "harRettPåForeldrepengerIEØS": false,
@@ -34,12 +36,20 @@
         "dekningsgrad": "100",
         "uttaksplan": [
             {
-                "id": "0328728638-10266-1056-05199-125270514027046",
+                "id": "976023935-5859-05562-1222-0576296585584",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2023-10-23T00:00:00.000Z",
+                    "tom": "2023-10-31T00:00:00.000Z"
+                }
+            },
+            {
+                "id": "0860112756-6643-1060-15952-20550226808746",
                 "forelder": "farMedmor",
                 "konto": "FEDREKVOTE",
                 "tidsperiode": {
-                    "fom": "2023-09-25T00:00:00.000Z",
-                    "tom": "2023-10-06T00:00:00.000Z"
+                    "fom": "2023-11-01T00:00:00.000Z",
+                    "tom": "2023-11-14T00:00:00.000Z"
                 },
                 "type": "uttak",
                 "erArbeidstaker": false,
@@ -59,18 +69,26 @@
     "uttaksplanInfo": {
         "antallDagerFellesperiode": "0",
         "antallUkerFellesperiode": "0",
-        "farMedmorsFørsteDag": "2023-09-25",
+        "farMedmorsFørsteDag": "2023-11-01",
         "morsSisteDag": ""
     },
     "antallUkerIUttaksplan": 49,
     "perioderSomSkalSendesInn": [
         {
-            "id": "0328728638-10266-1056-05199-125270514027046",
+            "id": "976023935-5859-05562-1222-0576296585584",
+            "type": "periodeUtenUttak",
+            "tidsperiode": {
+                "fom": "2023-10-23T00:00:00.000Z",
+                "tom": "2023-10-31T00:00:00.000Z"
+            }
+        },
+        {
+            "id": "0860112756-6643-1060-15952-20550226808746",
             "forelder": "farMedmor",
             "konto": "FEDREKVOTE",
             "tidsperiode": {
-                "fom": "2023-09-25T00:00:00.000Z",
-                "tom": "2023-10-06T00:00:00.000Z"
+                "fom": "2023-11-01T00:00:00.000Z",
+                "tom": "2023-11-14T00:00:00.000Z"
             },
             "type": "uttak",
             "erArbeidstaker": false,

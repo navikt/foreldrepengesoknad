@@ -1,4 +1,4 @@
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
+import { EksisterendeSak } from '@navikt/fp-common';
 
 export type UttaksplanInfoScenario =
     | 'farMedmorAleneomsorgFødselAdopsjon'
