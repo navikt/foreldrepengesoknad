@@ -2,8 +2,6 @@ name: Bygg og deploy Svangerskapspengesøknad
 on:
   workflow_dispatch:
   push:
-    branches:
-      - '**'
     branches-ignore:
       - 'ny-svp'
     paths:

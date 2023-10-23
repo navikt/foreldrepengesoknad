@@ -14,7 +14,7 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'ny-svp' }}
       push-image: ${{ github.ref_name == 'ny-svp' }}
-      app: svangerskapspengesoknad-rework
+      app: svangerskapspengesoknad
     secrets: inherit
 
   deploy-dev:
