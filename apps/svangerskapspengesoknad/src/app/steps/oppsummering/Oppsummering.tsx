@@ -104,7 +104,7 @@ const Oppsummering = () => {
         if (sendtSøknad) {
             let navigateTo = Environment.INNSYN;
             if (sendtSøknad.saksNr) {
-                navigateTo = `${Environment.INNSYN_SAK}${sendtSøknad.saksNr}`;
+                navigateTo = `${Environment.INNSYN}/sak/${sendtSøknad.saksNr}`;
             }
             redirect(navigateTo);
         }

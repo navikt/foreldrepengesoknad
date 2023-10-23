@@ -7,7 +7,6 @@ const Environment = () => {
         LOGIN_URL: appSettings.LOGIN_URL,
         LOG_VALIDATION: appSettings.LOG_VALIDATION,
         INNSYN: appSettings.INNSYN,
-        INNSYN_SAK: appSettings.INNSYN_SAK,
     };
 };
 
