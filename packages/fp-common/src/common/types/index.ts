@@ -2,6 +2,7 @@ export * from './AktivitetDTO';
 export * from './AnnenForelder';
 export * from './ÅpenBehandling';
 export * from './Arbeidsforhold';
+export * from './Arbeidsform';
 export * from './ArbeidsgiverInfo';
 export * from './Attachment';
 export * from './AttachmentType';

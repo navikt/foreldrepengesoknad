@@ -1,3 +1,4 @@
+import { Arbeidsform } from './Arbeidsform';
 import { Attachment } from './Attachment';
 import { Forelder } from './Forelder';
 import { MorsAktivitet } from './MorsAktivitet';
@@ -17,12 +18,6 @@ export enum Periodetype {
     Hull = 'ubegrunnetOpphold',
     Info = 'info',
     PeriodeUtenUttak = 'periodeUtenUttak',
-}
-
-export enum Arbeidsform {
-    arbeidstaker = 'ARBEIDSTAKER',
-    frilans = 'FRILANS',
-    selvstendignæringsdrivende = 'SELVSTENDIG_NÆRINGSDRIVENDE',
 }
 
 export interface PeriodeBase {
