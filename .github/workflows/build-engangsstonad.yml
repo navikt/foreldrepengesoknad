@@ -27,7 +27,7 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      app: engangsstonad
+      image_suffix: 'engangsstonad'
     secrets: inherit
 
 
@@ -42,7 +42,8 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: dev-gcp
-      app: /engangsstonad
+      image_suffix: '/engangsstonad'
+      deploy_context: '/engangsstonad'
     secrets: inherit
 
   deploy-prod:
@@ -56,5 +57,6 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: prod-gcp
-      app: /engangsstonad
+      image_suffix: '/engangsstonad'
+      deploy_context: '/engangsstonad'
     secrets: inherit

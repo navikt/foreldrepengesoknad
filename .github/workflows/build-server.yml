@@ -21,7 +21,7 @@ jobs:
       push-image: ${{ github.ref_name == 'master' }}
       docker_context: './server'
       dockerfile: './server/Dockerfile'
-      app_name: '/server'
+      image_suffix: '/server'
     secrets: inherit
 
   summary:
