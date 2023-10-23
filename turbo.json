@@ -36,23 +36,15 @@
     },
     "globalEnv": [
         "APPRES_CMS_URL",
-        "FORELDREPENGESOKNAD_API_URL",
-        "LOGINSERVICE_URL",
-        "FP_UTTAK_SERVICE_URL",
-        "FORELDREPENGESOKNAD_API_URL_VTP",
-        "LOGINSERVICE_URL_VTP",
-        "FP_UTTAK_SERVICE_URL_VTP",
-        "FAMILIE",
+        "REST_API_URL",
+        "LOGIN_URL",
         "FEATURE_VIS_FEILSIDE",
         "FEATURE_VIS_ALERTSTRIPE",
         "APP_VERSION",
-        "KLAGE_URL",
         "LOG_VALIDATION",
         "NODE_ENV",
         "VITE_APPRES_CMS_URL",
-        "VITE_FORELDREPENGESOKNAD_API_URL",
-        "VITE_LOGINSERVICE_URL",
-        "VITE_FP_UTTAK_SERVICE_URL",
-        "VITE_KLAGE_URL"
+        "VITE_REST_API_URL",
+        "VITE_LOGIN_URL"
     ]
 }

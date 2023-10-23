@@ -21,7 +21,7 @@ export const validerUttaksplan = (søknadsinfo: Søknadsinfo): UttaksplanRegelTe
     const avvik = getRegelAvvik(resultat);
     const avvikPerPeriode = groupBy(
         avvik.filter((a) => a.periodeId !== undefined),
-        (r) => r.periodeId
+        (r) => r.periodeId,
     );
 
     const harFeil = hasRegelFeil(avvik);

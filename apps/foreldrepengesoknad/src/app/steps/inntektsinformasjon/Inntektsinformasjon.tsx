@@ -38,13 +38,13 @@ const Inntektsinformasjon = () => {
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const [frilansoppdrag, setFrilansoppdrag] = useState(
-        søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : []
+        søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : [],
     );
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
-        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : []
+        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
     );
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
-        søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : []
+        søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
 
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
@@ -53,7 +53,7 @@ const Inntektsinformasjon = () => {
             søker,
             andreInntekterInformasjon,
             frilansoppdrag,
-            egenNæringInformasjon
+            egenNæringInformasjon,
         );
 
         return [actionCreator.setSøker(updatedSøker)];
@@ -62,7 +62,7 @@ const Inntektsinformasjon = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.OPPSUMMERING,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -74,7 +74,7 @@ const Inntektsinformasjon = () => {
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
-                    formValues as InntektsinformasjonFormData
+                    formValues as InntektsinformasjonFormData,
                 );
 
                 return (
@@ -98,7 +98,7 @@ const Inntektsinformasjon = () => {
                                     arbeidsforhold,
                                     erAdopsjon,
                                     erFarEllerMedmor,
-                                    ISOStringToDate(familiehendelsesdato)
+                                    ISOStringToDate(familiehendelsesdato),
                                 )}
                             />
 

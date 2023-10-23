@@ -32,7 +32,7 @@ const sorterAvvik = (a1: RegelAvvik, a2: RegelAvvik): number => {
 const ensureRegelAvvikIntlKey = (
     regel: Regel,
     intlRegelPrefix: string,
-    info?: Partial<RegelTestresultatInfo>
+    info?: Partial<RegelTestresultatInfo>,
 ): RegelAvvikInfo => ({
     ...info,
     intlKey: info ? info.intlKey || getRegelIntlKey(regel, intlRegelPrefix) : getRegelIntlKey(regel, intlRegelPrefix),
@@ -51,7 +51,7 @@ const overstyrerAndreFilter = (avvik: RegelAvvik, _idx: number, alleAvvik: Regel
             ? rb.regel.overstyrerRegler.some((rbo) => {
                   return rbo === avvik.regel.key;
               })
-            : false
+            : false,
     );
     return overstyresAvAndre === false;
 };
@@ -60,7 +60,7 @@ export const regelHarAvvik = (
     regel: Regel,
     intlRegelPrefix: string,
     info?: RegelTestresultatInfoObject,
-    periodeId?: string
+    periodeId?: string,
 ): RegelStatus => {
     const mapInfoToRegelAvvik = (i?: Partial<RegelTestresultatInfo>): RegelAvvik => ({
         id: guid(),
@@ -93,7 +93,7 @@ export const getRegelAvvikForPeriode = (resultat: UttaksplanRegelTestresultat, p
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
         return flatten(
-            resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!)
+            resultat.filter((r) => r.passerer === false && r.regelAvvik !== undefined).map((r) => r.regelAvvik!),
         ).sort(sorterAvvik);
     }
     return [];
@@ -113,7 +113,7 @@ export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[], grupperAvvik: boole
 
 export const getRegelIntlValues = (
     intl: IntlShape,
-    info: RegelTestresultatInfo
+    info: RegelTestresultatInfo,
 ): { [key: string]: string } | undefined => {
     const { values } = info;
     if (values === undefined) {

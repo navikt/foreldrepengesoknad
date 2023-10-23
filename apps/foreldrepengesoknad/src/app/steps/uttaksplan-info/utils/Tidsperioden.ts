@@ -39,7 +39,7 @@ const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
     const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
-        ANTALL_UTTAKSDAGER_SEKS_UKER
+        ANTALL_UTTAKSDAGER_SEKS_UKER,
     );
     return erTidsperiodeFomEllerEtterDato(tidsperiode, førsteUttaksdagEtterSeksUker) === false;
 };
@@ -162,7 +162,7 @@ function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
         {
             fom: fom ? formaterDatoUtenDag(fom) : '',
             tom: tom ? formaterDatoUtenDag(tom) : '',
-        }
+        },
     );
 }
 
@@ -176,7 +176,7 @@ function tidsperiodeToStringKort(tidsperiode: TidsperiodeDate, intl: IntlShape) 
         {
             fom: fom ? formaterDatoUtenDag(fom) : '',
             tom: tom ? formaterDatoUtenDag(tom) : '',
-        }
+        },
     );
 }
 

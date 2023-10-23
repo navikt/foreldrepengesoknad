@@ -17,7 +17,7 @@ export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
 ): boolean => {
     if (
         erAleneOmOmsorg ||
@@ -41,7 +41,7 @@ export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
                 konto,
                 søkerErFarEllerMedmor,
                 termindato,
-                situasjon
+                situasjon,
             )
         ) {
             return true;

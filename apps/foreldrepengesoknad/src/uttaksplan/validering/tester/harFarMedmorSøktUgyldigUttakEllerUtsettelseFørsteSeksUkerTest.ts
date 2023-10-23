@@ -5,7 +5,7 @@ import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../utils/uttakValideringUtils';
 
 export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     const wlbReglerGjelder = andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato);
     if (grunnlag.søkerErFarEllerMedmor && !wlbReglerGjelder) {
@@ -18,7 +18,7 @@ export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: Re
             grunnlag.søkerErAleneOmOmsorg,
             grunnlag.søkerHarMidlertidigOmsorg,
             grunnlag.søkerErFarEllerMedmor,
-            grunnlag.termindato
+            grunnlag.termindato,
         );
         const passerer = ugyldigePerioder.length === 0;
         return {

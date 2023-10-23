@@ -37,7 +37,7 @@ const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?
     return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
 };
 
-const uttakBaseUrl = Environment.UTTAK_API_URL;
+const uttakBaseUrl = Environment.REST_API_URL;
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -65,7 +65,7 @@ const useGetAnnenPartsVedtak = (
     annenPartFnr: string | undefined,
     barnFnr: string | undefined,
     familiehendelsesdato: string | undefined,
-    isSuspended: boolean
+    isSuspended: boolean,
 ) => {
     const body = {
         annenPartFødselsnummer: annenPartFnr,
@@ -141,7 +141,7 @@ const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => 
             brukerSvarteJaPåAutoJustering,
             annenPartsUttakErLagtTilIPlan,
         },
-        { withCredentials: true }
+        { withCredentials: true },
     );
 };
 
@@ -194,7 +194,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
         morHarUføretrygd,
         familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
             familieHendelseDatoNesteSak,
-            fpUttakServiceDateFormat
+            fpUttakServiceDateFormat,
         ),
     };
 

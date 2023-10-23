@@ -103,7 +103,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
             dateToISOString(ankomstdato),
-            values.søkersFørsteDag
+            values.søkersFørsteDag,
         );
 
         return [
@@ -118,7 +118,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -142,7 +142,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg,
                     }),
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -150,7 +150,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     if (!shouldRender || !isAdoptertBarn(barn)) {
@@ -187,7 +187,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     return (
@@ -284,7 +284,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 visibility.isAnswered(MorFarAdopsjonFormField.søkersFørsteDag) &&
                                 !dateIsSameOrAfter(
                                     ISOStringToDate(formValues.annenForeldersSisteDag),
-                                    ISOStringToDate(formValues.søkersFørsteDag)
+                                    ISOStringToDate(formValues.søkersFørsteDag),
                                 ) &&
                                 formValues.harAnnenForelderSøktFP === YesOrNo.YES
                             }
@@ -312,10 +312,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                             formValues.annenStartdatoAdopsjon,
                                             dateToISOString(barn.adopsjonsdato),
                                             dateToISOString(ankomstdato),
-                                            formValues.søkersFørsteDag
-                                        )
+                                            formValues.søkersFørsteDag,
+                                        ),
                                     ),
-                                    'day'
+                                    'day',
                                 ) &&
                                 !isAdoptertStebarn(barn) &&
                                 !erDeltUttak

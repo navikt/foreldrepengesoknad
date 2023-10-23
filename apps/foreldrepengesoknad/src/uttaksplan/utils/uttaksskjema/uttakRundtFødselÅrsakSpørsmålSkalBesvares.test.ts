@@ -24,7 +24,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(true);
     });
@@ -40,7 +40,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            true //bareFarMedmorHarRett
+            true, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -56,7 +56,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -72,7 +72,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -88,7 +88,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -105,7 +105,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', // situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -121,7 +121,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -137,7 +137,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'adopsjon', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });
@@ -164,7 +164,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB ikke gjelder'
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel', //situasjon
-            false //bareFarMedmorHarRett
+            false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
     });

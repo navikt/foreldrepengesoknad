@@ -26,9 +26,10 @@ on:
 jobs:
   deploy:
     name: Deploy
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy-app-pnpm.yml@main
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
-      image: ghcr.io/${{ github.repository }}/${{ inputs.app }}:${{ inputs.image }}
+      gar: true
+      image: ${{ inputs.image }}
       cluster: ${{ inputs.environment }}-gcp
-      app: ${{ inputs.app }}
+      app: /${{ inputs.app }}
     secrets: inherit

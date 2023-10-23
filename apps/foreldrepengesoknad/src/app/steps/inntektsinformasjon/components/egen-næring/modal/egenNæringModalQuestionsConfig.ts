@@ -119,7 +119,7 @@ const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenN
 };
 
 const egenNæringModalQuestionsConfig = Questions<EgenNæringModalFormData, EgenNæringModalFormField>(
-    EgenNæringModalFormConfig
+    EgenNæringModalFormConfig,
 );
 
 export default egenNæringModalQuestionsConfig;

@@ -60,7 +60,7 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                         navnPåForeldre,
                                         familiehendelsesdato,
                                         termindato,
-                                        situasjon
+                                        situasjon,
                                     )}
                                 </BodyShort>
                             </div>

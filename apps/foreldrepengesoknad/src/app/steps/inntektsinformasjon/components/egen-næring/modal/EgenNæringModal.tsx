@@ -62,7 +62,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
     const navnPåNæringLabel = intlUtils(intl, 'inntektsinformasjon.egenNæringModal.navnPåNæring');
     const varigEndringForklaringLabel = intlUtils(
         intl,
-        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring'
+        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring',
     );
 
     return (
@@ -79,7 +79,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                 onSubmit={(values: Partial<EgenNæringModalFormData>) => onValidSubmit(values)}
                 renderForm={({ values: formValues }) => {
                     const visibility = egenNæringModalQuestionsConfig.getVisbility(
-                        formValues as EgenNæringModalFormData
+                        formValues as EgenNæringModalFormData,
                     );
 
                     return (
@@ -101,28 +101,28 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         {
                                             label: intlUtils(
                                                 intl,
-                                                'inntektsinformasjon.egenNæringModal.næringstype.dagmamma'
+                                                'inntektsinformasjon.egenNæringModal.næringstype.dagmamma',
                                             ),
                                             value: Næringstype.DAGMAMMA,
                                         },
                                         {
                                             label: intlUtils(
                                                 intl,
-                                                'inntektsinformasjon.egenNæringModal.næringstype.fiske'
+                                                'inntektsinformasjon.egenNæringModal.næringstype.fiske',
                                             ),
                                             value: Næringstype.FISKER,
                                         },
                                         {
                                             label: intlUtils(
                                                 intl,
-                                                'inntektsinformasjon.egenNæringModal.næringstype.jordbrukSkogbruk'
+                                                'inntektsinformasjon.egenNæringModal.næringstype.jordbrukSkogbruk',
                                             ),
                                             value: Næringstype.JORDBRUK,
                                         },
                                         {
                                             label: intlUtils(
                                                 intl,
-                                                'inntektsinformasjon.egenNæringModal.næringstype.annen'
+                                                'inntektsinformasjon.egenNæringModal.næringstype.annen',
                                             ),
                                             value: Næringstype.ANNET,
                                         },
@@ -151,7 +151,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         'inntektsinformasjon.egenNæringModal.erNæringenRegistrertINorge',
                                         {
                                             navnPåNæringen: formValues.navnPåNæringen,
-                                        }
+                                        },
                                     )}
                                     validate={(value: YesOrNo) => {
                                         if (value === YesOrNo.UNANSWERED) {
@@ -184,7 +184,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         'inntektsinformasjon.egenNæringModal.startetNæring.pågående',
                                         {
                                             navnPåNæringen: formValues.navnPåNæringen,
-                                        }
+                                        },
                                     )}
                                 />
                             </Block>
@@ -211,13 +211,13 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringsinntekt')}
                                     validate={validateNumber(
                                         intl,
-                                        'valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat'
+                                        'valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat',
                                     )}
                                 />
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel'
+                                        'inntektsinformasjon.egenNæringModal.næringsinntekt.info.apneLabel',
                                     )}
                                 >
                                     <BodyShort>
@@ -228,7 +228,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(
-                                    EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                                    EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
                                 )}
                             >
                                 <EgenNæringModalFormComponents.YesOrNoQuestion
@@ -237,13 +237,13 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     }
                                     legend={intlUtils(
                                         intl,
-                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År'
+                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År',
                                     )}
                                 />
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel'
+                                        'inntektsinformasjon.egenNæringModal.blittYrkesaktivSiste3År.info.apneLabel',
                                     )}
                                 >
                                     <BodyShort>
@@ -268,14 +268,14 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                             <Block
                                 padBottom="l"
                                 visible={visibility.isVisible(
-                                    EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                                    EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                                 )}
                             >
                                 <EgenNæringModalFormComponents.YesOrNoQuestion
                                     name={EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår}
                                     legend={intlUtils(
                                         intl,
-                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt'
+                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt',
                                     )}
                                 />
                             </Block>
@@ -287,7 +287,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     name={EgenNæringModalFormField.datoForEndring}
                                     label={intlUtils(
                                         intl,
-                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato'
+                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato',
                                     )}
                                     placeholder="dd.mm.åååå"
                                     fullscreenOverlay={true}
@@ -305,7 +305,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.inntektEtterEndring')}
                                     validate={validateNumber(
                                         intl,
-                                        'valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat'
+                                        'valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat',
                                     )}
                                 />
                             </Block>

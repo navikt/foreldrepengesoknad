@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
 import { Modal } from '@navikt/ds-react';
-import { ErrorBoundary } from '@navikt/fp-ui';
 import AppContainer from './AppContainer';
 import { initAmplitude } from '@navikt/fp-metrics';
 import Environment from 'appData/Environment';
@@ -33,8 +32,4 @@ initAmplitude();
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
-root.render(
-    <ErrorBoundary>
-        <AppContainer />
-    </ErrorBoundary>,
-);
+root.render(<AppContainer />);

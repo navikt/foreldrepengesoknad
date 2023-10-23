@@ -85,7 +85,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
                         ukerForelder: value,
                         ukerTotalt: ukerFellesperiode,
                         navnForelder: mor || intl.formatMessage({ id: 'uttaksplan.mor' }),
-                    }
+                    },
                 )
             }
             valueLabelRenderer={(options) => (

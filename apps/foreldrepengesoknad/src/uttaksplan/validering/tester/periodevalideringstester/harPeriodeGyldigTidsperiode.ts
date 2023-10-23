@@ -14,7 +14,7 @@ export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: Søknadsinfo): 
                         periode,
                         grunnlag.familiehendelsesdato,
                         grunnlag.søkerErFarEllerMedmor,
-                        grunnlag.termindato
+                        grunnlag.termindato,
                     ) === false
                 );
             case Periodetype.Utsettelse:
@@ -23,7 +23,7 @@ export const harPeriodeGyldigTidsperiode: RegelTest = (grunnlag: Søknadsinfo): 
                         periode,
                         grunnlag.familiehendelsesdato,
                         grunnlag.søkerErFarEllerMedmor,
-                        grunnlag.termindato
+                        grunnlag.termindato,
                     ) === false
                 );
         }

@@ -31,7 +31,7 @@ export const slåSammenLikePerioder = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
-    annenPartsUttak?: Periode[]
+    annenPartsUttak?: Periode[],
 ): Periode[] => {
     if (perioder.length <= 1) {
         return perioder;
@@ -76,13 +76,13 @@ export const slåSammenLikePerioder = (
             if (
                 (dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
                     dayjs(periode.tidsperiode.tom).isSameOrAfter(
-                        Uttaksdagen(familiehendelsesdato).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
                     )) ||
                 (førsteUttaksdagNesteBarnsSak !== undefined &&
                     dayjs(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
                     dayjs(periode.tidsperiode.fom).isSameOrAfter(
                         Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
-                        'day'
+                        'day',
                     ))
             ) {
                 nyePerioder.push(forrigePeriode);
@@ -109,7 +109,7 @@ export const slåSammenLikePerioder = (
 
 const getSplittetPeriodeOmNødvendig = (
     nyHullPeriode: PeriodeHull | PeriodeUtenUttak,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Array<PeriodeHull | PeriodeUtenUttak> => {
     if (
         førsteUttaksdagNesteBarnsSak !== undefined &&
@@ -130,7 +130,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
-    årsak: PeriodeHullÅrsak = PeriodeHullÅrsak.fridag
+    årsak: PeriodeHullÅrsak = PeriodeHullÅrsak.fridag,
 ): Array<PeriodeHull | PeriodeUtenUttak> => {
     const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
@@ -138,7 +138,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
         const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
         const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
         const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
-            ANTALL_UTTAKSDAGER_SEKS_UKER
+            ANTALL_UTTAKSDAGER_SEKS_UKER,
         );
         const tidsperiodeErInnenFørsteSeksUker =
             Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato);
@@ -224,7 +224,7 @@ export const getNyPeriodeUtenUttak = (tidsperiode: TidsperiodeDate): PeriodeUten
 
 export const getTidsperiodeMellomPerioder = (
     tidsperiode1: TidsperiodeDate,
-    tidsperiode2: TidsperiodeDate
+    tidsperiode2: TidsperiodeDate,
 ): TidsperiodeDate | undefined => {
     const tidsperiodeMellomPerioder: TidsperiodeDate = {
         fom: Uttaksdagen(tidsperiode1.tom).neste(),
@@ -269,7 +269,7 @@ export const finnOgSettInnHull = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
     if (perioder.length === 0) {
         return perioder;
@@ -284,7 +284,7 @@ export const finnOgSettInnHull = (
                     tom: Uttaksdagen(periode.tidsperiode.fom).forrige(),
                 };
                 const uttaksdagerITidsperiode = Tidsperioden(
-                    tidsperiodeMellom6ukerEtterFødselOgPerioden
+                    tidsperiodeMellom6ukerEtterFødselOgPerioden,
                 ).getAntallUttaksdager();
 
                 if (uttaksdagerITidsperiode > 0) {
@@ -296,8 +296,8 @@ export const finnOgSettInnHull = (
                             erAdopsjon,
                             bareFarHarRett,
                             erFarEllerMedmor,
-                            førsteUttaksdagNesteBarnsSak
-                        )
+                            førsteUttaksdagNesteBarnsSak,
+                        ),
                     );
                 }
             }
@@ -335,8 +335,8 @@ export const finnOgSettInnHull = (
                     erAdopsjon,
                     bareFarHarRett,
                     erFarEllerMedmor,
-                    førsteUttaksdagNesteBarnsSak
-                )
+                    førsteUttaksdagNesteBarnsSak,
+                ),
             );
         }
 
@@ -353,7 +353,7 @@ interface SplittetDatoType {
 
 const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]) => {
     const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
-        Tidsperioden(periode.tidsperiode).inneholderDato(datoWrapper.dato)
+        Tidsperioden(periode.tidsperiode).inneholderDato(datoWrapper.dato),
     );
     const oppsplittetPeriode: Periode[] = [];
 
@@ -420,7 +420,7 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
 
     const alleUnikeDatoer = alleDatoer.filter(
         (date, i, self) =>
-            self.findIndex((d) => d.dato.getTime() === date.dato.getTime() && d.erFom === date.erFom) === i
+            self.findIndex((d) => d.dato.getTime() === date.dato.getTime() && d.erFom === date.erFom) === i,
     );
 
     const normaliserteEgnePerioder: Periode[] = [];
@@ -447,7 +447,7 @@ export const settInnAnnenPartsUttak = (
     annenPartsUttak: Periode[],
     familiehendelsesdato: Date,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
-    initiellMappingFraSaksperioder = false
+    initiellMappingFraSaksperioder = false,
 ) => {
     if (annenPartsUttak.length === 0) {
         return perioder;
@@ -503,18 +503,18 @@ export const settInnAnnenPartsUttak = (
 
     const førstePeriodeStartdato = perioder[0].tidsperiode.fom;
     const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
-        dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day')
+        dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day'),
     );
 
     const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
     const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
-        dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day')
+        dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day'),
     );
 
     return slåSammenLikePerioder(
         [...annenPartsUttakSomSlutterFørFørstePeriode, ...result, ...annenPartsUttakSomStarterEtterSistePeriode],
         familiehendelsesdato,
         førsteUttaksdagNesteBarnsSak,
-        annenPartsUttak
+        annenPartsUttak,
     );
 };

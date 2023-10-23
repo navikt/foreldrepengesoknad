@@ -14,7 +14,7 @@ describe('wlbUtils - getFørsteUttaksdag2UkerFørFødsel', () => {
     it('skal returnere riktig startdato mandagen etter søndager 2 uker før for perioden før fødsel hvis termin er på en søndag og fødsel ikke har skjedd (famhendelsesdato = termindato)', () => {
         const result = getFørsteUttaksdag2UkerFørFødsel(
             new Date('2022-05-29T00:00:00.000Z'),
-            new Date('2022-05-29T00:00:00.000Z')
+            new Date('2022-05-29T00:00:00.000Z'),
         );
         expect(result).toEqual(new Date('2022-05-16T00:00:00.000Z'));
     });
@@ -22,7 +22,7 @@ describe('wlbUtils - getFørsteUttaksdag2UkerFørFødsel', () => {
     it('skal returnere riktig startdat to uker før for perioden før fødsel hvis termin er på en fredag og fødsel ikke har skjedd (famhendelsesdato = termindato)', () => {
         const result = getFørsteUttaksdag2UkerFørFødsel(
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(new Date('2022-05-13T00:00:00.000Z'));
     });
@@ -30,7 +30,7 @@ describe('wlbUtils - getFørsteUttaksdag2UkerFørFødsel', () => {
     it('skal returnere riktig startdato fra 2 uker før termin for perioden før fødsel hvis fødsel har inntruffet og termin-2 uker er før fødsel', () => {
         const result = getFørsteUttaksdag2UkerFørFødsel(
             new Date('2022-05-14T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(new Date('2022-05-13T00:00:00.000Z'));
     });
@@ -38,7 +38,7 @@ describe('wlbUtils - getFørsteUttaksdag2UkerFørFødsel', () => {
     it('skal returnere riktig startdatofor perioden før fødsel hvis fødsel har inntruffet og fødsel er før termin - 2 uker', () => {
         const result = getFørsteUttaksdag2UkerFørFødsel(
             new Date('2022-05-12T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(new Date('2022-05-12T00:00:00.000Z'));
     });
@@ -66,7 +66,7 @@ describe('wlbUtils - starterTidsperiodeEtter2UkerFørFødsel', () => {
         const result = starterTidsperiodeEtter2UkerFørFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(true);
     });
@@ -76,7 +76,7 @@ describe('wlbUtils - starterTidsperiodeEtter2UkerFørFødsel', () => {
         const result = starterTidsperiodeEtter2UkerFørFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(false);
     });
@@ -88,7 +88,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(true);
     });
@@ -97,7 +97,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(false);
     });
@@ -106,7 +106,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-29T00:00:00.000Z'),
-            new Date('2022-05-29T00:00:00.000Z')
+            new Date('2022-05-29T00:00:00.000Z'),
         );
         expect(result).toEqual(true);
     });
@@ -115,7 +115,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-29T00:00:00.000Z'),
-            new Date('2022-05-29T00:00:00.000Z')
+            new Date('2022-05-29T00:00:00.000Z'),
         );
         expect(result).toEqual(false);
     });
@@ -125,7 +125,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-25T00:00:00.000Z')
+            new Date('2022-05-25T00:00:00.000Z'),
         );
         expect(result).toEqual(true);
     });
@@ -135,7 +135,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            undefined
+            undefined,
         );
         expect(result).toEqual(true);
     });
@@ -145,7 +145,7 @@ describe('wlbUtils - starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtter
         const result = starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             tidsperiode,
             new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z')
+            new Date('2022-05-27T00:00:00.000Z'),
         );
         expect(result).toEqual(false);
     });
@@ -165,7 +165,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
             true,
-            undefined
+            undefined,
         );
         expect(result).toEqual(true);
     });
@@ -183,7 +183,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
             true,
-            undefined
+            undefined,
         );
         expect(result).toEqual(false);
     });
@@ -201,7 +201,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
             true,
-            undefined
+            undefined,
         );
         expect(result).toEqual(false);
     });
@@ -218,7 +218,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
             true,
-            undefined
+            undefined,
         );
         expect(result).toEqual(false);
     });
@@ -233,7 +233,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
             false,
-            undefined
+            undefined,
         );
         expect(result).toEqual(true);
     });
@@ -248,7 +248,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             periode,
             new Date('2022-05-27T00:00:00.000Z'),
             true,
-            undefined
+            undefined,
         );
         expect(result).toEqual(false);
     });
@@ -262,7 +262,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             StønadskontoType.Fedrekvote,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel'
+            'fødsel',
         );
         expect(result).toEqual(true);
     });
@@ -274,7 +274,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             StønadskontoType.Fedrekvote,
             false, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel'
+            'fødsel',
         );
         expect(result).toEqual(false);
     });
@@ -286,7 +286,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             StønadskontoType.Fellesperiode,
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
-            'fødsel'
+            'fødsel',
         );
         expect(result).toEqual(false);
     });
@@ -300,7 +300,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB ikke gjelder', () 
             StønadskontoType.Fedrekvote,
             true, //erFarEllerMedmor
             new Date('2022-08-01T00:00:00.000Z'), //termindato,
-            'fødsel'
+            'fødsel',
         );
         expect(result).toEqual(false);
     });

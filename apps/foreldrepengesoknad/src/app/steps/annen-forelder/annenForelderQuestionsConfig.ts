@@ -116,5 +116,5 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
 };
 
 export const annenForelderQuestionsConfig = Questions<AnnenForelderQuestionsPayload, AnnenForelderFormField>(
-    AnnenForelderFormConfig
+    AnnenForelderFormConfig,
 );

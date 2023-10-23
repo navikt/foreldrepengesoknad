@@ -1,0 +1,62 @@
+name: Bygg og deploy Foreldrepengeoversikt
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - 'ny-svp'
+    paths:
+      - 'apps/foreldrepengeoversikt/**'
+      - 'packages/**'
+      - '.deploy/foreldrepengeoversikt/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-foreldrepengeoversikt.yml'
+  # Only trigger, when the build workflow succeeded
+  workflow_run:
+    workflows: [ "Bygg server" ]
+    branches: 'master'
+    types:
+      - completed
+
+jobs:
+  build-app:
+    name: Build
+    permissions:
+      packages: write
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
+    with:
+      build-image: ${{ github.ref_name == 'master' }} # default: true
+      push-image: ${{ github.ref_name == 'master' }} # default: false
+      image_suffix: 'foreldrepengeoversikt'
+    secrets: inherit
+
+
+  deploy-dev:
+    name: Deploy dev
+    permissions:
+      id-token: write
+    if: github.ref_name == 'master'
+    needs: build-app
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
+    with:
+      gar: true
+      image: ${{ needs.build-app.outputs.build-version }}
+      cluster: dev-gcp
+      image_suffix: '/foreldrepengeoversikt'
+      deploy_context: '/foreldrepengeoversikt'
+    secrets: inherit
+
+  deploy-prod:
+    name: Deploy prod
+    permissions:
+      id-token: write
+    if: github.ref_name == 'master'
+    needs: [build-app, deploy-dev]
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
+    with:
+      gar: true
+      image: ${{ needs.build-app.outputs.build-version }}
+      cluster: prod-gcp
+      image_suffix: '/foreldrepengeoversikt'
+      deploy_context: '/foreldrepengeoversikt'
+    secrets: inherit

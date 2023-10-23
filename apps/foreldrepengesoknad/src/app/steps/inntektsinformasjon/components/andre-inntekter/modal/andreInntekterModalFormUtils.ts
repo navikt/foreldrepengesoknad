@@ -31,7 +31,7 @@ export const getSkjemanummer = (values: AndreInntekterFormData): Skjemanummer =>
 
 export const cleanupAndreInntekterForm = (
     values: AndreInntekterFormData,
-    visibility: QuestionVisibility<AndreInntekterFormField, undefined>
+    visibility: QuestionVisibility<AndreInntekterFormField, undefined>,
 ): AndreInntekterFormData => {
     return {
         type: visibility.isVisible(AndreInntekterFormField.type) ? values.type : initialAndreInntekterFormValues.type,
@@ -39,7 +39,7 @@ export const cleanupAndreInntekterForm = (
             ? lagSendSenereDokumentNårIngenAndreFinnes(
                   values.dokumentasjon,
                   AttachmentType.ANNEN_INNTEKT,
-                  getSkjemanummer(values)
+                  getSkjemanummer(values),
               )
             : initialAndreInntekterFormValues.dokumentasjon,
         fom: visibility.isVisible(AndreInntekterFormField.fom) ? values.fom : initialAndreInntekterFormValues.fom,

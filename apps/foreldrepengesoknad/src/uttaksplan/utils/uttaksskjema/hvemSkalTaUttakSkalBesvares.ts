@@ -7,7 +7,7 @@ const hvemSkalTaUttakSkalBesvares = (
     erDeltUttakINorge: boolean,
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ): boolean => {
     if (erFarEllerMedmor) {
         if (
@@ -16,7 +16,7 @@ const hvemSkalTaUttakSkalBesvares = (
                 familiehendelsesdato,
                 erFarEllerMedmor,
                 erDeltUttakINorge,
-                situasjon
+                situasjon,
             )
         ) {
             return false;

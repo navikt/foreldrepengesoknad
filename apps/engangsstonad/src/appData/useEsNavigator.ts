@@ -33,7 +33,7 @@ const useEsNavigator = () => {
 
     const goToNextDefaultStep = useCallback(() => {
         const index = stepConfig.findIndex((s) => s.id === activeStepId) + 1;
-        const nextPath = stepConfig[index]?.id || Path.KVITTERING;
+        const nextPath = stepConfig[index]?.id;
         navigate(nextPath);
     }, [navigate, stepConfig, activeStepId]);
 

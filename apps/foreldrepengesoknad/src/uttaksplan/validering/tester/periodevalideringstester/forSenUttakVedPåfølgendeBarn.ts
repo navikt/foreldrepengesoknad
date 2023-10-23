@@ -7,7 +7,7 @@ import { formatDate } from '@navikt/fp-common';
 
 export const laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn = (
     periode: Periode,
-    førsteUttaksdagForPåfølgendeBarn: Date | undefined
+    førsteUttaksdagForPåfølgendeBarn: Date | undefined,
 ) => {
     if (
         førsteUttaksdagForPåfølgendeBarn !== undefined &&
@@ -36,7 +36,7 @@ export const forSenUttakVedPåfølgendeBarn: RegelTest = (grunnlag: Søknadsinfo
         };
     }
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) =>
-        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak),
     );
     const sisteMuligeUttaksdag = Uttaksdagen(grunnlag.førsteUttaksdagNesteBarnsSak).trekkFra(1);
     return {

@@ -78,7 +78,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
-            dateToISOString(ankomstdato)
+            dateToISOString(ankomstdato),
         );
 
         return [
@@ -93,7 +93,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -113,7 +113,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -121,7 +121,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     if (!erAdopsjon || !isAdoptertBarn(barn)) {
@@ -148,7 +148,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     return (
@@ -169,7 +169,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block
                             padBottom="xl"
                             visible={visibility.isIncluded(
-                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad,
                             )}
                         >
                             <DekningsgradSpørsmål
@@ -181,7 +181,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         </Block>
                         <Block
                             visible={visibility.isIncluded(
-                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg,
                             )}
                         >
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
@@ -198,10 +198,10 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                             formValues.startdatoAdopsjonValg!,
                                             undefined,
                                             dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato)
-                                        )
+                                            dateToISOString(ankomstdato),
+                                        ),
                                     ),
-                                    'day'
+                                    'day',
                                 ) &&
                                 !isAdoptertStebarn(barn) &&
                                 !erDeltUttak

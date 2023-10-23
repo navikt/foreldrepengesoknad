@@ -9,7 +9,7 @@ import { groupBy } from 'lodash';
 export const veilederMessageAvsnitt = (
     førsteTekst: VeilederMessage[],
     andreTekst: VeilederMessage[],
-    visInfoOmPrematuruker: boolean
+    visInfoOmPrematuruker: boolean,
 ): VeilederMessage[] => {
     return visInfoOmPrematuruker === false ? førsteTekst : førsteTekst.concat(andreTekst);
 };
@@ -33,7 +33,7 @@ const mapAvvikTilMessage = (avvik: RegelAvvik, intl: IntlShape): VeilederMessage
 export const getUttaksplanVeilederinfo = (
     avvik: RegelAvvik[],
     intl: IntlShape,
-    grupperAvvik: boolean
+    grupperAvvik: boolean,
 ): VeilederMessage[] => {
     return trimRelaterteRegelAvvik(avvik, grupperAvvik).map((a) => mapAvvikTilMessage(a, intl));
 };

@@ -9,14 +9,14 @@ import {
 import { formaterDatoKompakt } from 'app/utils/dateUtils';
 
 export const slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     if (
         !gjelderWLBReglerFarMedmorRundtFødsel(
             grunnlag.familiehendelsesdato,
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.morHarRett,
-            grunnlag.søkersituasjon.situasjon
+            grunnlag.søkersituasjon.situasjon,
         )
     ) {
         return {
@@ -29,7 +29,7 @@ export const slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel: RegelTest =
         .filter((p) => !slutterTidsperiodeInnen6UkerEtterFødsel(p.tidsperiode, grunnlag.familiehendelsesdato));
 
     const sisteUttaksdagSeksUkerEtterFødsel = formaterDatoKompakt(
-        getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato)
+        getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato),
     );
     return {
         passerer: perioderFarMedmorSomIkkeSlutterFør6UkerEtterFødsel.length === 0,

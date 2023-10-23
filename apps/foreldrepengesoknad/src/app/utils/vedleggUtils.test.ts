@@ -72,7 +72,7 @@ describe('vedleggUtils', () => {
         const behandledeVedlegg = lagSendSenereDokumentNårIngenAndreFinnes(
             alleVedlegg,
             AttachmentType.ALENEOMSORG,
-            Skjemanummer.DOK_AV_ALENEOMSORG
+            Skjemanummer.DOK_AV_ALENEOMSORG,
         );
 
         expect(behandledeVedlegg).toHaveLength(1);
@@ -95,7 +95,7 @@ describe('vedleggUtils', () => {
         const behandledeVedlegg = lagSendSenereDokumentNårIngenAndreFinnes(
             alleVedlegg,
             AttachmentType.ALENEOMSORG,
-            Skjemanummer.DOK_AV_ALENEOMSORG
+            Skjemanummer.DOK_AV_ALENEOMSORG,
         );
 
         expect(behandledeVedlegg).toHaveLength(1);
@@ -121,7 +121,7 @@ describe('vedleggUtils', () => {
         const behandledeVedlegg = lagSendSenereDokumentNårIngenAndreFinnes(
             alleVedlegg,
             AttachmentType.ALENEOMSORG,
-            Skjemanummer.DOK_AV_ALENEOMSORG
+            Skjemanummer.DOK_AV_ALENEOMSORG,
         );
 
         expect(behandledeVedlegg).toHaveLength(1);

@@ -14,7 +14,7 @@ const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFor
 };
 
 export const mapFarMedmorFødselBeggeHarRettToState = (
-    values: Partial<FarMedmorFødselBeggeHarRettFormData>
+    values: Partial<FarMedmorFødselBeggeHarRettFormData>,
 ): FarMedmorFødselBeggeHarRettUttaksplanInfo => {
     return {
         antallDagerFellesperiode:
@@ -32,7 +32,7 @@ export const mapFarMedmorFødselBeggeHarRettToState = (
 
 export const getInitialFarMedmorFødselBeggeHarRettValues = (
     state: FarMedmorFødselBeggeHarRettUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): FarMedmorFødselBeggeHarRettFormData => {
     if (!state) {
         return initialFarMedmorFødselBeggeHarRettValues;

@@ -31,7 +31,7 @@ const Block: React.FunctionComponent<BlockProps> = ({
         {
             [bem.modifier('textAlignCenter')]: textAlignCenter,
             [`${className}`]: className !== undefined,
-        }
+        },
     );
 
     if (!visible) {

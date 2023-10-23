@@ -41,7 +41,7 @@ export const oppdaterPeriode = ({
         }),
         familiehendelsesdato,
         førsteUttaksdagNesteBarnsSak,
-        annenPartsUttak
+        annenPartsUttak,
     );
 
     return slåSammenLikePerioder(
@@ -57,6 +57,6 @@ export const oppdaterPeriode = ({
         }),
         familiehendelsesdato,
         førsteUttaksdagNesteBarnsSak,
-        annenPartsUttak
+        annenPartsUttak,
     );
 };

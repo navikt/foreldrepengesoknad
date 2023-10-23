@@ -9,12 +9,12 @@ import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
 const PATH_TO_LABEL_MAP = {
     [Path.SØKERSITUASJON]: 'SøkersituasjonSteg.Søkersituasjon',
     [Path.OM_BARNET]: 'OmBarnetSteg.OmBarnet',
-    [Path.TERMINBEKREFTELSE]: 'søknad.termin',
-    [Path.ADOPSJONSBEKREFTELSE]: 'søknad.adopsjon',
+    [Path.TERMINBEKREFTELSE]: 'UseStepData.Termin',
+    [Path.ADOPSJONSBEKREFTELSE]: 'UseStepData.Adopsjon',
     [Path.UTENLANDSOPPHOLD]: 'UtenlandsoppholdSteg.Utenlandsopphold',
     [Path.TIDLIGERE_UTENLANDSOPPHOLD]: 'TidligereUtenlandsoppholdSteg.Tidligere',
     [Path.SENERE_UTENLANDSOPPHOLD]: 'SenereUtenlandsoppholdSteg.Fremtidig',
-    [Path.OPPSUMMERING]: 'søknad.oppsummering',
+    [Path.OPPSUMMERING]: 'OppsummeringSteg.Oppsummering',
 } as Record<string, string>;
 
 const isAfterStep = (previousStepPath: Path, currentStepPath: Path): boolean => {

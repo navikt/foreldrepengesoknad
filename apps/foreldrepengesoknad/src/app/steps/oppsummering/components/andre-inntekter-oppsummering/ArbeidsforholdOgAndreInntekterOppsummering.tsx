@@ -25,7 +25,7 @@ const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
         arbeidsforhold,
         erAdopsjon,
         erFarEllerMedmor,
-        ISOStringToDate(familiehendelsesdato)
+        ISOStringToDate(familiehendelsesdato),
     );
     const harArbeidsforhold = aktiveArbeidsForhold !== undefined && aktiveArbeidsForhold.length > 0;
 

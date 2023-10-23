@@ -48,7 +48,7 @@ export interface UttakSkjemaReglerProps {
 
 export const getUttakSkjemaregler = (
     formValues: PeriodeUttakFormData,
-    regelProps: UttakSkjemaReglerProps
+    regelProps: UttakSkjemaReglerProps,
 ): UttakSkjemaregler => {
     const {
         erFarEllerMedmor,
@@ -87,7 +87,7 @@ export const getUttakSkjemaregler = (
                 termindato,
                 situasjon,
                 stønadskontoer,
-                !morHarRett
+                !morHarRett,
             ),
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
@@ -104,7 +104,7 @@ export const getUttakSkjemaregler = (
                 false, // TODO Midlertidig omsorg,
                 familiehendelsesdato,
                 termindato,
-                !morHarRett
+                !morHarRett,
             ),
         samtidigUttakSkalBesvares: (): boolean =>
             samtidigUttakSkalBesvares(
@@ -123,7 +123,7 @@ export const getUttakSkjemaregler = (
                 familiehendelsesdato,
                 termindato,
                 situasjon,
-                !morHarRett
+                !morHarRett,
             ),
         kontoSkalBesvares: (): boolean =>
             kontoSkalBesvares(periodetype, tidsperiode, stønadskontoer, familiehendelsesdato, erFarEllerMedmor),
@@ -139,7 +139,7 @@ export const getUttakSkjemaregler = (
                 antallBarn,
                 erAleneOmOmsorg,
                 erDeltUttakINorge,
-                formValues.uttakRundtFødselÅrsak === '' ? undefined : formValues.uttakRundtFødselÅrsak
+                formValues.uttakRundtFødselÅrsak === '' ? undefined : formValues.uttakRundtFødselÅrsak,
             );
         },
         hvemSkalTaUttakSkalBesvares: (): boolean =>
@@ -148,7 +148,7 @@ export const getUttakSkjemaregler = (
                 erDeltUttakINorge,
                 familiehendelsesdato,
                 erFarEllerMedmor,
-                situasjon
+                situasjon,
             ),
         graderingSkalBesvares: (): boolean => {
             return graderingSkalBesvares(
@@ -157,7 +157,7 @@ export const getUttakSkjemaregler = (
                 familiehendelsesdato,
                 erFarEllerMedmor,
                 convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
-                tidsperiode
+                tidsperiode,
             );
         },
         graderingSkalBesvaresPgaWLBUttakRundtFødsel: (): boolean => {
@@ -168,7 +168,7 @@ export const getUttakSkjemaregler = (
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 termindato,
-                situasjon
+                situasjon,
             );
         },
         overføringsårsakSkalBesvares: (): boolean => {
@@ -176,7 +176,7 @@ export const getUttakSkjemaregler = (
                 periodetype,
                 erFarEllerMedmor,
                 konto as StønadskontoType,
-                annenForelder
+                annenForelder,
             );
         },
         uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => {
@@ -191,7 +191,7 @@ export const getUttakSkjemaregler = (
                 familiehendelsesdato,
                 termindato,
                 situasjon,
-                !morHarRett
+                !morHarRett,
             );
         },
     };

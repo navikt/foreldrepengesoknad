@@ -119,7 +119,7 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.omsorgsovertagelse,
         barn.alleBarnaLever,
         barn.antallBarn,
-        intl
+        intl,
     );
     const fødselsdatoerTekst = formaterFødselsdatoerPåBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =

@@ -21,5 +21,5 @@ const PeriodeFørFødselFormConfig: QuestionConfig<PeriodeFørFødselFormData, P
 };
 
 export const periodeFørFødselFormQuestionsConfig = Questions<PeriodeFørFødselFormData, PeriodeFørFødselFormField>(
-    PeriodeFørFødselFormConfig
+    PeriodeFørFødselFormConfig,
 );

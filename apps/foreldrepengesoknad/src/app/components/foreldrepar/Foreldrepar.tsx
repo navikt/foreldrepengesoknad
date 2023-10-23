@@ -20,20 +20,20 @@ const Foreldrepar: React.FunctionComponent<Props> = ({ forelder1, forelder2, var
                 forelder1,
                 bem.classNames(
                     bem.element('firstParent'),
-                    bem.modifierConditional('halfOpacity', variant === 'førsteForelderHalvtSynlig')
+                    bem.modifierConditional('halfOpacity', variant === 'førsteForelderHalvtSynlig'),
                 ),
                 31,
-                45
+                45,
             )}
             {forelder2 &&
                 getForeldreparIkon(
                     forelder2,
                     bem.classNames(
                         bem.element('secondParent'),
-                        bem.modifierConditional('halfOpacity', variant === 'andreForelderHalvtSynlig')
+                        bem.modifierConditional('halfOpacity', variant === 'andreForelderHalvtSynlig'),
                     ),
                     31,
-                    45
+                    45,
                 )}
         </div>
     );

@@ -84,7 +84,7 @@ describe('InntektsinformasjonFormUtils', () => {
         expect(cleanedNæring.oppstartsdato).toEqual(næring.oppstartsdato);
         expect(cleanedNæring.regnskapsfører!.telefonnummer).toEqual(næring.regnskapsfører?.telefonnummer);
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring).toEqual(
-            næring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring
+            næring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring,
         );
     });
     it('skal ikke feile med manglende info om regnskapsfører eller endring', async () => {

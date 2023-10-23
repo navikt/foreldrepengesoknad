@@ -5,10 +5,8 @@ const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
-    FORELDREPENGESOKNAD_API_URL: 'test',
-    LOGINSERVICE_URL: 'test',
-    FP_UTTAK_SERVICE_URL: 'uttak-url',
-    KLAGE_URL: 'klage-url',
+    REST_API_URL: 'test',
+    LOGIN_URL: 'test',
 });
 document.head.appendChild(scriptTag);
 

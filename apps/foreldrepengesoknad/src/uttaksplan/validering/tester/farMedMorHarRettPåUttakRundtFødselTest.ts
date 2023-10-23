@@ -19,7 +19,7 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
             grunnlag.familiehendelsesdato,
             grunnlag.søkerErFarEllerMedmor,
             grunnlag.morHarRett,
-            grunnlag.søkersituasjon.situasjon
+            grunnlag.søkersituasjon.situasjon,
         ) ||
         tattUtForMangeDagerIPlanen
     ) {
@@ -30,13 +30,13 @@ export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: S�
     const perioderRundtFødsel = getFarMedmorUttakRundtFødsel(
         grunnlag.perioder,
         grunnlag.familiehendelsesdato,
-        grunnlag.termindato
+        grunnlag.termindato,
     );
 
     let dagerIgjenRundtFødsel;
     const førsteUttaksdag2UkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(
         grunnlag.familiehendelsesdato,
-        grunnlag.termindato
+        grunnlag.termindato,
     );
     const sisteUttak6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(grunnlag.familiehendelsesdato);
 

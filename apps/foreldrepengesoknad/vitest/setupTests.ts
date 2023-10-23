@@ -18,12 +18,10 @@ vi.mock('./../src/app/Environment.ts', async () => {
     return {
         default: {
             REST_API_URL: 'http://localhost:8888/rest',
-            UTTAK_API_URL: 'uttak-url',
             LOGIN_URL: 'http://localhost:8888/local/cookie',
             APP_VERSION: 'dev',
-            FAMILIE: 'https://familie.dev.nav.no',
-            FEATURE_VIS_FEILSIDE: 'off',
-            FEATURE_VIS_ALERTSTRIPE: 'on',
+            FEATURE_VIS_FEILSIDE: 'on',
+            FEATURE_VIS_ALERTSTRIPE: 'off',
         },
     };
 });

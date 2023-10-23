@@ -28,7 +28,7 @@ export interface Props {
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => void;
+    ) => Promise<void>;
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
@@ -51,22 +51,21 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
             setIsError(true);
         } else {
             sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
-            navigator.goToNextDefaultStep();
         }
     }, [isChecked]);
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'søknad.oppsummering' })}
+            pageTitle={intl.formatMessage({ id: 'OppsummeringSteg.Oppsummering' })}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
             useNoTempSavingText
         >
             <VStack gap="10">
-                <Accordion>
-                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'søknad.omDeg' })}>
+                <Accordion indent={false}>
+                    <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.OmDeg' })}>
                         <VStack gap="4">
                             <BodyShort>{fullNameFormat(person.fornavn, person.etternavn, person.mellomnavn)}</BodyShort>
                             <BodyShort>{person.fnr}</BodyShort>
@@ -85,7 +84,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     </Oppsummeringspunkt>
                 </Accordion>
                 <ConfirmationPanel
-                    label={intl.formatMessage({ id: 'oppsummering.text.samtykke' })}
+                    label={intl.formatMessage({ id: 'OppsummeringSteg.Samtykke' })}
                     onChange={() => setChecked((state) => !state)}
                     checked={isChecked}
                     error={
@@ -96,7 +95,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText={intl.formatMessage({ id: 'oppsummering.button.sendSøknad' })}
+                    nextButtonText={intl.formatMessage({ id: 'OppsummeringSteg.Button.SendSøknad' })}
                     nextButtonOnClick={send}
                 />
             </VStack>

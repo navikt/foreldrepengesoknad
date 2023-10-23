@@ -27,7 +27,7 @@ const Veileder = (props: Props) => {
             `veileder--tema-${farge}`,
             `veileder--${ansikt}`,
             `veileder--${stil}`,
-            props.className
+            props.className,
         ),
     };
 

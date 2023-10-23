@@ -42,7 +42,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
                     periodeResultat,
                     morsAktivitet,
                     erFarEllerMedmor,
-                    erAleneOmOmsorg
+                    erAleneOmOmsorg,
                 )}
             />
         </IconBox>

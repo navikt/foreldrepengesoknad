@@ -20,14 +20,14 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
 
     let antallBarnSummaryText;
     if (omBarnet.antallBarn === 1) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'oppsummering.omBarnet.ettBarn' });
+        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.EttBarn' });
     } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'oppsummering.omBarnet.tvillinger' });
+        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.Tvillinger' });
     } else if (omBarnet.antallBarn === 2 && harAdoptert) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'oppsummering.omBarnet.toBarn' });
+        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.ToBarn' });
     } else {
         antallBarnSummaryText = intl.formatMessage(
-            { id: 'oppsummering.omBarnet.flereBarn' },
+            { id: 'OmBarnetOppsummering.FlereBarn' },
             {
                 antall: omBarnet.antallBarn,
             },
@@ -38,7 +38,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
         <VStack gap="4">
             <HStack gap="2">
                 <BodyShort>
-                    <FormattedMessage id={'oppsummering.text.soknadenGjelder'} />
+                    <FormattedMessage id={'OmBarnetOppsummering.SoknadenGjelder'} />
                 </BodyShort>
                 <BodyShort>{antallBarnSummaryText}</BodyShort>
             </HStack>
@@ -46,7 +46,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                 <>
                     <HStack gap="2">
                         <BodyShort>
-                            <FormattedMessage id={'oppsummering.text.medAdopsjonsdato'} />
+                            <FormattedMessage id={'OmBarnetOppsummering.MedAdopsjonsdato'} />
                         </BodyShort>
                         <BodyShort>{formatDate(omBarnet.adopsjonsdato!)}</BodyShort>
                     </HStack>
@@ -55,8 +55,8 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                             <FormattedMessage
                                 id={
                                     omBarnet.fødselsdatoer.length > 1
-                                        ? 'oppsummering.text.medFødselsdatoer'
-                                        : 'oppsummering.text.medFødselsdato'
+                                        ? 'OmBarnetOppsummering.MedFødselsdatoer'
+                                        : 'OmBarnetOppsummering.MedFødselsdato'
                                 }
                             />
                         </BodyShort>
@@ -69,7 +69,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                         </BodyLong>
                     </HStack>
                     <Label>
-                        <FormattedMessage id={'oppsummering.text.vedlagtOmsorgsovertakelseBekreftelse'} />
+                        <FormattedMessage id={'OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse'} />
                     </Label>
                     <AttachmentList attachments={notEmpty(dokumentasjon).vedlegg} />
                 </>
@@ -77,7 +77,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
             {harFødt && (
                 <HStack gap="2">
                     <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.medFødselsdato'} />
+                        <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} />
                     </BodyShort>
                     <BodyShort>{formatDate(omBarnet.fødselsdatoer[0].dato)}</BodyShort>
                 </HStack>
@@ -86,18 +86,18 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                 <>
                     <HStack gap="2">
                         <BodyShort>
-                            <FormattedMessage id={'oppsummering.text.medTermindato'} />
+                            <FormattedMessage id={'OmBarnetOppsummering.MedTermindato'} />
                         </BodyShort>
                         <BodyShort>{formatDate(omBarnet.termindato)}</BodyShort>
                     </HStack>
                     <HStack gap="2">
                         <BodyShort>
-                            <FormattedMessage id={'oppsummering.text.somErDatert'} />
+                            <FormattedMessage id={'OmBarnetOppsummering.SomErDatert'} />
                         </BodyShort>
                         <BodyShort>{formatDate(dokumentasjon.terminbekreftelsedato)}</BodyShort>
                     </HStack>
                     <Label>
-                        <FormattedMessage id={'oppsummering.text.vedlagtTerminbekreftelse'} />
+                        <FormattedMessage id={'OmBarnetOppsummering.VedlagtTerminbekreftelse'} />
                     </Label>
                     <AttachmentList attachments={dokumentasjon.vedlegg} />
                 </>

@@ -14,15 +14,15 @@ const validateDateInRange = (
 ) => {
     if (date === undefined) {
         if (isFomDate) {
-            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' });
+            return intl.formatMessage({ id: 'Valideringsfeil.FraOgMedDato.GyldigDato' });
         }
 
-        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
+        return intl.formatMessage({ id: 'Valideringsfeil.TilOgMedDato.GyldigDato' });
     }
 
     if (!isDateWithinRange(date, minDate, maxDate)) {
         return intl.formatMessage(
-            { id: 'valideringsfeil.dateOutsideRange' },
+            { id: 'Valideringsfeil.DateOutsideRange' },
             {
                 fom: formatDateExtended(minDate),
                 tom: formatDateExtended(maxDate),
@@ -46,7 +46,7 @@ export const validateFromDate = (
     }
     if (toDate && dayjs(date).isAfter(toDate, 'day')) {
         // TODO Bør ha generell id
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.førTilDato' });
+        return intl.formatMessage({ id: 'Valideringsfeil.Utenlandsopphold.FørTilDato' });
     }
     return undefined;
 };
@@ -64,7 +64,7 @@ export const validateToDate = (
     }
     if (fromDate && dayjs(date).isBefore(fromDate, 'day')) {
         // TODO Bør ha generell id
-        return intl.formatMessage({ id: 'valideringsfeil.utenlandsopphold.etterFraDato' });
+        return intl.formatMessage({ id: 'Valideringsfeil.Utenlandsopphold.EtterFraDato' });
     }
     return undefined;
 };

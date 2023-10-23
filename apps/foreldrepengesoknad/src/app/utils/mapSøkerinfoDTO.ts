@@ -12,7 +12,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const mapArbeidsforholdDTOToArbeidsforhold = (
-    arbeidsforhold: SøkerinfoDTOArbeidsforhold[] | undefined
+    arbeidsforhold: SøkerinfoDTOArbeidsforhold[] | undefined,
 ): Arbeidsforhold[] => {
     if (!arbeidsforhold) {
         return [];

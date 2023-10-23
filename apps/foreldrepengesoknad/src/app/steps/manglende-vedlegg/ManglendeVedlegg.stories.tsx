@@ -36,7 +36,7 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
             { data: {} },
             {
                 location: '',
-            }
+            },
         );
     };
     return (
@@ -87,7 +87,7 @@ ManglerVedleggForUlikePerioder.args = {
                         vedlegg: [
                             lagSendSenereDokument(
                                 AttachmentType.ANNEN_INNTEKT,
-                                Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+                                Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
                             ),
                         ],
                     },
@@ -101,7 +101,7 @@ ManglerVedleggForUlikePerioder.args = {
                         vedlegg: [
                             lagSendSenereDokument(
                                 AttachmentType.ANNEN_INNTEKT,
-                                Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+                                Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
                             ),
                         ],
                     },

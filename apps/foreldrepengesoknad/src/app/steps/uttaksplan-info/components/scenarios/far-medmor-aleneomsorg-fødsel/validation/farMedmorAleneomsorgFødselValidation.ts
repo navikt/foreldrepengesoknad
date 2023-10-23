@@ -12,7 +12,7 @@ export const validateStartdatoUttakFarMedmorAleneomsorgFødsel =
         if (!isISODateString(startdatoUttak)) {
             return intlUtils(
                 intl,
-                'valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.gyldigDato'
+                'valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.gyldigDato',
             );
         }
 
@@ -20,7 +20,7 @@ export const validateStartdatoUttakFarMedmorAleneomsorgFødsel =
             return intlUtils(
                 intl,
                 'valideringsfeil.uttaksplaninfo.farMedmorAleneomsorgFødsel.startdatoUttak.etterFamiliehendelsesdato',
-                { familiehendelsesdato: formatDate(familiehendelsesdato) }
+                { familiehendelsesdato: formatDate(familiehendelsesdato) },
             );
         }
 

@@ -3,7 +3,7 @@ import { RegelTest, RegelTestresultat } from 'uttaksplan/validering/utils/types/
 import { laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn } from './periodevalideringstester/forSenUttakVedPåfølgendeBarn';
 
 export const harPerioderEtterFørsteStønadsdagNesteBarnDerToTette: RegelTest = (
-    grunnlag: Søknadsinfo
+    grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
     if (grunnlag.minsterettUkerToTette === undefined || grunnlag.minsterettUkerToTette === 0) {
         return {
@@ -11,7 +11,7 @@ export const harPerioderEtterFørsteStønadsdagNesteBarnDerToTette: RegelTest = 
         };
     }
     const perioderEtterFørsteStønadsperiodeNyttBarn = grunnlag.perioder.filter((periode) =>
-        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak)
+        laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn(periode, grunnlag.førsteUttaksdagNesteBarnsSak),
     );
 
     const tekstKey = grunnlag.søkerErFarEllerMedmor

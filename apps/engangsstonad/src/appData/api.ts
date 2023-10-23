@@ -15,6 +15,17 @@ import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 // TODO Flytt generell api-logikk til api-pakka
 
+const UKJENT_UUID = 'ukjent uuid';
+const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+
+const isAxiosError = (candidate: unknown): candidate is AxiosError<any> => {
+    if (candidate && typeof candidate === 'object' && 'isAxiosError' in candidate) {
+        return true;
+    }
+    return false;
+};
+
 export const engangsstønadApi = axios.create({
     baseURL: Environment.REST_API_URL,
     withCredentials: true,
@@ -73,7 +84,7 @@ const mapBostedUtlandTilUtenlandsopphold = (perioder: UtenlandsoppholdPeriode[] 
 };
 
 const sendSøknad =
-    (locale: Locale, setKvittering: (kvittering: Kvittering) => void) =>
+    (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
@@ -102,12 +113,28 @@ const sendSøknad =
             vedlegg: dokumentasjon?.vedlegg || [],
         };
 
-        const response = await engangsstønadApi.post('/soknad', søknad, {
-            headers: {
-                'content-type': 'application/json;',
-            },
-        });
-        setKvittering(response.data);
+        try {
+            const response = await engangsstønadApi.post<Kvittering>('/soknad', søknad, {
+                headers: {
+                    'content-type': 'application/json;',
+                },
+            });
+            setKvittering(response.data);
+        } catch (error: unknown) {
+            // TODO Håndter på same måte i alle appar. Flytt til api-pakke
+            if (isAxiosError(error)) {
+                const submitErrorCallId =
+                    error.response && error.response.data && error.response.data.uuid
+                        ? error.response.data.uuid
+                        : UKJENT_UUID;
+                const callIdForBruker =
+                    submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
+                // KAst feilmelding inne funksjon som set state => hack for å at ErrorBoundary skal snappa opp feilen
+                setKvittering(() => {
+                    throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                });
+            }
+        }
     };
 
 const Api = { getPerson, sendSøknad };
