@@ -72,11 +72,7 @@ const FødselPanel: React.FunctionComponent = () => {
 
             <RadioGroupPanel
                 name="antallBarn"
-                label={
-                    <FormattedMessage
-                        id={erBarnetFødt ? i18n('FødselPanel.AntallBarn.Født') : i18n('FødselPanel.AntallBarn.Termin')}
-                    />
-                }
+                label={erBarnetFødt ? i18n('FødselPanel.AntallBarn.Født') : i18n('FødselPanel.AntallBarn.Termin')}
                 validate={[
                     isRequired(
                         erBarnetFødt
