@@ -19,7 +19,7 @@ jobs:
     with:
       push-image: ${{ github.ref_name == 'master' }}
       docker_context: './server_for_redirect'
-      app_name: /fp-planlegger-redirect
+      app_name: '/fp-planlegger-redirect'
     secrets: inherit
 
   promote-prod:
@@ -31,7 +31,7 @@ jobs:
     with:
       gar: true
       image: ${{ needs.build.outputs.build-version }}
-      cluster: prod-gcp
-      app: /fp-planlegger-redirect
-      naiserator_file: planlegger_redirect.yaml
+      cluster: 'prod-gcp'
+      app: '/fp-planlegger-redirect'
+      naiserator_file: 'planlegger_redirect.yaml'
     secrets: inherit
