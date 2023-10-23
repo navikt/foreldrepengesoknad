@@ -5,13 +5,10 @@ import { ForeldrepengesøknadContextState } from 'app/context/Foreldrepengesøkn
 import withIntlProvider from 'storybook/decorators/withIntl';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import { RettighetType } from 'app/types/RettighetType';
-import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
-import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
-import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
-import { Sak } from 'app/types/Sak';
 import withRouter from 'storybook/decorators/withRouter';
 import Velkommen from './Velkommen';
+import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
+import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 
 export default {
     title: 'pages/Velkommen',

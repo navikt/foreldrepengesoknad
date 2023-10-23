@@ -7,10 +7,13 @@ import { renderHook, waitFor } from '@testing-library/react';
 
 const mockedNavigator = vi.fn();
 
-vi.mock('react-router-dom', () => ({
-    ...(vi.importActual('react-router-dom') as any),
-    useNavigate: () => mockedNavigator,
-}));
+vi.mock('react-router-dom', async () => {
+    const original = await vi.importActual<any>('react-router-dom');
+    return {
+        ...original,
+        useNavigate: () => mockedNavigator,
+    };
+});
 
 describe('useOnValidSubmit', () => {
     it('skal returnere funksjon for å lagre data til state og så til server', () => {
@@ -32,8 +35,8 @@ describe('useOnValidSubmit', () => {
 
         const { result: lagre } = renderHook(() =>
             useOnValidSubmit(submitHandler, SøknadRoutes.ANNEN_FORELDER, (state: ForeldrepengesøknadContextState) =>
-                storeAppState(state)
-            )
+                storeAppState(state),
+            ),
         );
 
         expect(lagre).not.toBeUndefined;
@@ -62,8 +65,8 @@ describe('useOnValidSubmit', () => {
 
         const { result } = renderHook(() =>
             useOnValidSubmit(submitHandler, SøknadRoutes.ANNEN_FORELDER, (state: ForeldrepengesøknadContextState) =>
-                storeAppState(state)
-            )
+                storeAppState(state),
+            ),
         );
 
         await waitFor(async () => {

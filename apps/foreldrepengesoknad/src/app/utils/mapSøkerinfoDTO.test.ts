@@ -1,8 +1,6 @@
-import { Kjønn } from '@navikt/fp-common';
+import { ISOStringToDate, Kjønn, SivilstandType } from '@navikt/fp-common';
 import mapSøkerinfoDTOToSøkerinfo from './mapSøkerinfoDTO';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ISOStringToDate } from './dateUtils';
-import { SivilstandType } from 'app/types/SivilstandType';
 
 describe('mapSøkerinfoDTO', () => {
     it('skal konvertere dto til app-format', () => {

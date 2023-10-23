@@ -24,7 +24,7 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
 export const getNavnPåForeldre = (
     sak: Foreldrepengesak,
     navnPåSøker: string,
-    navnAnnenForelder: string
+    navnAnnenForelder: string,
 ): NavnPåForeldre => {
     const søkerErFarEllerMedmor = !sak.sakTilhørerMor;
     return {

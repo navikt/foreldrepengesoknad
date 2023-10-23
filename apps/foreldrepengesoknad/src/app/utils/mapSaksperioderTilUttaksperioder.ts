@@ -1,41 +1,44 @@
 import dayjs from 'dayjs';
+import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
+import { getRelevantFamiliehendelseDato } from './dateUtils';
 import {
     AvslåttPeriode,
-    isInfoPeriode,
-    isUttaksperiode,
+    FamiliehendelseType,
+    Forelder,
+    ISOStringToDate,
+    MorsAktivitet,
+    OppholdÅrsakType,
     Overføringsperiode,
     Periode,
+    PeriodeInfoType,
+    PeriodeResultatÅrsak,
+    Perioden,
     Periodetype,
+    Saksgrunnlag,
+    Saksperiode,
+    StønadskontoType,
+    Tidsperioden,
     UtsettelseAnnenPartInfoPeriode,
     Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    UtsettelseÅrsakTypeDTO,
     UttakAnnenPartInfoPeriode,
+    Uttaksdagen,
     Uttaksperiode,
-} from 'uttaksplan/types/Periode';
-import { Perioden } from 'app/steps/uttaksplan-info/utils/Perioden';
-import { isValidTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { erUttaksdag, Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Saksperiode } from 'app/types/Saksperiode';
-import { Forelder } from 'app/types/Forelder';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
-import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import {
     convertTidsperiodeToTidsperiodeDate,
-    getRelevantFamiliehendelseDato,
-    ISOStringToDate,
+    erUttaksdag,
+    guid,
+    isInfoPeriode,
+    isUttaksperiode,
+    isValidTidsperiode,
+    sorterPerioder,
     tidperiodeOverlapperDato,
-} from './dateUtils';
-import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
-import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
-import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
-import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { splittUttaksperiodePåFamiliehendelsesdato, splittPeriodePåDato } from 'uttaksplan/builder/leggTilPeriode';
-import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
-import { guid } from '@navikt/fp-common';
+} from '@navikt/fp-common';
+import {
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;

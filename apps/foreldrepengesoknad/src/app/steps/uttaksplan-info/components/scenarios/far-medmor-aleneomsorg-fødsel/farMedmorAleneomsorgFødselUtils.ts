@@ -1,11 +1,11 @@
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import dayjs from 'dayjs';
 import {
     FarMedmorAleneomsorgFødselFormData,
     FarMedmorAleneomsorgFødselFormField,
 } from './farMedmorAleneomsorgFødselFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorAleneomsorgFødselValues: FarMedmorAleneomsorgFødselFormData = {
     [FarMedmorAleneomsorgFødselFormField.dekningsgrad]: '',
@@ -15,7 +15,7 @@ const initialFarMedmorAleneomsorgFødselValues: FarMedmorAleneomsorgFødselFormD
 
 export const mapFarMedmorAleneomsorgFødselFormToState = (
     values: Partial<FarMedmorAleneomsorgFødselFormData>,
-    datoForAleneomsorg: string
+    datoForAleneomsorg: string,
 ): FarMedmorAleneomsorgFødselUttaksplanInfo => {
     return {
         fellesperiodeukerMor: undefined,
@@ -26,12 +26,12 @@ export const mapFarMedmorAleneomsorgFødselFormToState = (
 export const getInitialFarMedmorAleneomsorgFødselValues = (
     lagretUttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo | undefined,
     datoForAleneomsorg: string,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): FarMedmorAleneomsorgFødselFormData => {
     if (lagretUttaksplanInfo) {
         const startetPåOmsorgsovertakelse = dayjs(lagretUttaksplanInfo.startdatoUttak).isSame(
             dayjs(datoForAleneomsorg),
-            'day'
+            'day',
         );
 
         return {

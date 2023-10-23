@@ -12,7 +12,7 @@ export const mapMinidialogInputTilDTO = (
     values: Partial<MinidialogFormData>,
     saksnummer: string,
     sakstype: Ytelse,
-    minidialogId: string
+    minidialogId: string,
 ): EttersendingDto => {
     const brukerØnskerÅUttaleSeg = values.brukerØnskerÅUttaleSeg === YesOrNo.YES;
     const vedlegg =

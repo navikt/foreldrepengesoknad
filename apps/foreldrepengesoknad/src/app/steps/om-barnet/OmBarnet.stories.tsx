@@ -8,11 +8,11 @@ import withRouter from 'storybook/decorators/withRouter';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import { BarnType } from 'app/context/types/Barn';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedTreBarn.json';
 import _søkerinfoMedDødTrilling from 'storybook/storyData/sokerinfo/søkerinfoMedDødTrilling.json';
 import _context from 'storybook/storyData/soknad/soknadOmBarnet.json';
 import OmBarnet from './OmBarnet';
+import { BarnType } from '@navikt/fp-common';
 
 const søkerinfo = _søkerinfo as any;
 const context = _context as any;
@@ -36,7 +36,7 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
             { data: {} },
             {
                 location: '',
-            }
+            },
         );
         apiMock.onPost('/storage').reply(200, undefined);
     };

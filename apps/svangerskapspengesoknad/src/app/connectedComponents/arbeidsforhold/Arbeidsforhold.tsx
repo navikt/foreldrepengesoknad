@@ -74,7 +74,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
     const søknadsgrunnlagOptions = mapArbeidsforholdToSøknadsgrunnlagOptions(
         cleanupSøker(values.søker) as Søker,
         arbeidsforhold,
-        barn.termindato!
+        barn.termindato!,
     );
 
     const harLagtTilFørstegangstjeneste = søker.andreInntekterSiste10Mnd
@@ -110,7 +110,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
 
     const createSøknadsgrunnlag = (
         søknadsgrunnlag: Søknadsgrunnlag[],
-        søknadsgrunnlagOptions: SøknadsgrunnlagOption[]
+        søknadsgrunnlagOptions: SøknadsgrunnlagOption[],
     ): Søknadsgrunnlag[] => {
         const filteredOptions = søknadsgrunnlagOptions.filter((option) => {
             return søknadsgrunnlag.some((grunnlag) => (grunnlag as any) === option.value);
@@ -123,19 +123,19 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
     };
 
     const skalViseVeilederinfo = createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions).some(
-        (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET
+        (s: Søknadsgrunnlag) => s.type === Arbeidsforholdstype.VIRKSOMHET,
     );
 
     let tilrettelegging = mergeSøknadsgrunnlagIntoTilrettelegging(
         createSøknadsgrunnlag(values.søknadsgrunnlag, søknadsgrunnlagOptions),
-        values.tilrettelegging
+        values.tilrettelegging,
     );
     const prepareTilrettelegging = () => {
         if (frilansInformasjon === undefined) {
             tilrettelegging = tilrettelegging.filter(
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Fiks
-                (til: UferdigTilrettelegging) => til.arbeidsforhold.type !== Arbeidsforholdstype.FRILANSER
+                (til: UferdigTilrettelegging) => til.arbeidsforhold.type !== Arbeidsforholdstype.FRILANSER,
             );
         }
 
@@ -143,7 +143,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
             tilrettelegging = tilrettelegging.filter(
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Fiks
-                (til: UferdigTilrettelegging) => til.arbeidsforhold.type !== Arbeidsforholdstype.SELVSTENDIG
+                (til: UferdigTilrettelegging) => til.arbeidsforhold.type !== Arbeidsforholdstype.SELVSTENDIG,
             );
         }
 
@@ -189,7 +189,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
                     <InformasjonOmArbeidsforholdWrapper
                         arbeidsforhold={getAktiveArbeidsforhold(
                             arbeidsforhold,
-                            dayjs(formikProps.values.barn.termindato).toDate()
+                            dayjs(formikProps.values.barn.termindato).toDate(),
                         )}
                     />
                 </Block>

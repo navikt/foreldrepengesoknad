@@ -9,7 +9,7 @@ export const mapFileToAttachment = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType
+    innsendingsType?: InnsendingsType,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,

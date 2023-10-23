@@ -7,13 +7,13 @@ describe('<DinePlikter>', () => {
         render(
             <IntlProvider locale="nb">
                 <DinePlikter />
-            </IntlProvider>
+            </IntlProvider>,
         );
 
         expect(
             screen.queryByText(
-                'Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.'
-            )
+                'Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.',
+            ),
         ).toBeInTheDocument();
     });
 });

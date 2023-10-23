@@ -7,10 +7,13 @@ import { AxiosInstance } from 'app/api/apiInterceptor';
 
 const mockedNavigator = vi.fn();
 
-vi.mock('react-router-dom', () => ({
-    ...(vi.importActual('react-router-dom') as any),
-    useNavigate: () => mockedNavigator,
-}));
+vi.mock('react-router-dom', async () => {
+    const original = await vi.importActual<any>('react-router-dom');
+    return {
+        ...original,
+        useNavigate: () => mockedNavigator,
+    };
+});
 
 describe('useAvbrytSøknad', () => {
     it('skal returnere funksjon for å avbryte søknad', () => {

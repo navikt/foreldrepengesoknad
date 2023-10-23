@@ -1,15 +1,16 @@
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
-import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
-import LandOppsummering from './LandOppsummering';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { notEmpty } from '@navikt/fp-validation';
+import { useCustomIntl } from '@navikt/fp-ui';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import {
-    UtenlandsoppholdPeriode,
     Utenlandsopphold,
-    UtenlandsoppholdNeste,
-    UtenlandsoppholdSiste,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
 } from 'types/Utenlandsopphold';
-import { notEmpty } from '@navikt/fp-validation';
+import LandOppsummering from './LandOppsummering';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
@@ -33,98 +34,83 @@ const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
 interface Props {
     omBarnet: OmBarnet;
     utenlandsopphold: Utenlandsopphold;
-    utenlandsoppholdSiste?: UtenlandsoppholdSiste;
-    utenlandsoppholdNeste?: UtenlandsoppholdNeste;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
 }
 
 const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
     omBarnet,
     utenlandsopphold,
-    utenlandsoppholdSiste,
-    utenlandsoppholdNeste,
+    tidligereUtenlandsopphold,
+    senereUtenlandsopphold,
 }) => {
+    const { i18n } = useCustomIntl();
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
 
     return (
-        <VStack gap="4">
-            {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false ? (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage id={'norge'} />
-                    </BodyShort>
-                </HStack>
-            ) : (
-                <div>
-                    <Label className="textWithLabel__label">
-                        <FormattedMessage id={'oppsummering.text.boddSisteTolv'} />
-                    </Label>
+        <VStack gap="5">
+            <VStack gap="2">
+                {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd && (
                     <LandOppsummering
-                        utenlandsoppholdListe={notEmpty(utenlandsoppholdSiste).utenlandsoppholdSiste12Mnd}
+                        utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
                     />
-                </div>
+                )}
+                {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd && (
+                    <LandOppsummering
+                        utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
+                    />
+                )}
+            </VStack>
+            {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false && (
+                <BodyShort>
+                    <FormattedMessage
+                        id={'UtenlandsoppholdOppsummering.BoddSisteTolv'}
+                        values={{ country: i18n('UtenlandsoppholdOppsummering.Norge') }}
+                    />
+                </BodyShort>
             )}
-            {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false ? (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id="oppsummering.text.neste12mnd" />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage id="medlemmskap.radiobutton.boNorge" />
-                    </BodyShort>
-                </HStack>
-            ) : (
-                <div>
-                    <Label className="textWithLabel__label">
-                        <FormattedMessage id="oppsummering.text.neste12mnd" />
-                    </Label>
-                    <LandOppsummering
-                        utenlandsoppholdListe={notEmpty(utenlandsoppholdNeste).utenlandsoppholdNeste12Mnd}
+            {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false && (
+                <BodyShort>
+                    <FormattedMessage
+                        id="UtenlandsoppholdOppsummering.BoNesteTolv"
+                        values={{ country: i18n('UtenlandsoppholdOppsummering.Norge') }}
                     />
-                </div>
+                </BodyShort>
             )}
             {harTermin && (
                 <HStack gap="2">
                     <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.ogKommerPåFødselstidspunktet'} />
-                    </BodyShort>
-                    <BodyShort>
                         <FormattedMessage
-                            id={
-                                erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                            id={'UtenlandsoppholdOppsummering.Text.OgKommerPåFødselstidspunktet'}
+                            values={{
+                                country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
                                     omBarnet.termindato!,
-                                    utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
-                                    utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )
-                                    ? 'medlemmskap.radiobutton.vareUtlandet'
-                                    : 'medlemmskap.radiobutton.vareNorge'
-                            }
+                                    ? i18n('UtenlandsoppholdOppsummering.Utlandet')
+                                    : i18n('UtenlandsoppholdOppsummering.Norge'),
+                            }}
                         />
                     </BodyShort>
                 </HStack>
             )}
             {harFødt && (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id={'oppsummering.text.varPåFødselstidspunktet'} />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage
-                            id={
-                                erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    omBarnet.fødselsdatoer[0].dato,
-                                    utenlandsoppholdSiste?.utenlandsoppholdSiste12Mnd,
-                                    utenlandsoppholdNeste?.utenlandsoppholdNeste12Mnd,
-                                )
-                                    ? 'oppsummering.utenlandsopphold.iUtlandet'
-                                    : 'oppsummering.utenlandsopphold.iNorge'
-                            }
-                        />
-                    </BodyShort>
-                </HStack>
+                <BodyShort>
+                    <FormattedMessage
+                        id={'UtenlandsoppholdOppsummering.VarPåFødselstidspunktet'}
+                        values={{
+                            country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                omBarnet.fødselsdatoer[0].dato,
+                                tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                            )
+                                ? i18n('UtenlandsoppholdOppsummering.Utlandet')
+                                : i18n('UtenlandsoppholdOppsummering.Norge'),
+                        }}
+                    />
+                </BodyShort>
             )}
         </VStack>
     );

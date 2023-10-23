@@ -1,16 +1,19 @@
-import { intlUtils } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { shouldPeriodeHaveAttachment } from 'app/utils/manglendeVedleggUtils';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    AttachmentType,
+    PeriodeUtenUttakUtsettelse,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    intlUtils,
+} from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import { PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from 'uttaksplan/types/Periode';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from '../oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import { getÅrsakTekst } from '../OppsummeringUtils';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
-import AnnenForelder from 'app/context/types/AnnenForelder';
+import { shouldPeriodeHaveAttachment } from '@navikt/uttaksplan';
 
 interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;
@@ -41,7 +44,7 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 periode.årsak !== UtsettelseÅrsakType.Fri && (
                     <OppsummeringAvDokumentasjon
                         vedlegg={(vedlegg || []).filter(
-                            (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                            (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                         )}
                     />
                 )}
@@ -55,7 +58,7 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 <MorsAktivitetDetaljer
                     morsAktivitet={morsAktivitetIPerioden}
                     dokumentasjonAvMorsAktivitet={(vedlegg || []).filter(
-                        (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                        (currentVedlegg) => currentVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     )}
                     visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
                 />

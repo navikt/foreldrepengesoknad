@@ -1,8 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { MissingAttachment } from 'app/types/MissingAttachment';
-import { AdvarselIkon, bemUtils, Block, guid, intlUtils } from '@navikt/fp-common';
-import CheckmarkIkon from 'app/assets/CheckmarkIkon';
+import { AdvarselIkon, bemUtils, Block, CheckmarkIkon, guid, intlUtils, MissingAttachment } from '@navikt/fp-common';
 import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 
 import './kvitteringSuksess.less';
@@ -21,7 +19,7 @@ const KvitteringSuksess: FunctionComponent<Props> = ({ missingAttachments }) => 
             <div
                 className={bem.classNames(
                     bem.element('suksess'),
-                    bem.modifierConditional('mangler-vedlegg', isMissingAttachments)
+                    bem.modifierConditional('mangler-vedlegg', isMissingAttachments),
                 )}
             >
                 <div className={bem.element('ikon')}>{isMissingAttachments ? <AdvarselIkon /> : <CheckmarkIkon />}</div>

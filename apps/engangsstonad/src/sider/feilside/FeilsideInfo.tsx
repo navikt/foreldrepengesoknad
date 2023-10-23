@@ -1,7 +1,7 @@
-import { useIntl } from 'react-intl';
 import { Locale } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import Feilside from 'fpcommon/feilside/Feilside';
+import Feilside from '../../fpcommon/feilside/Feilside';
+import { useCustomIntl } from '@navikt/fp-ui';
 
 export interface Props {
     locale: Locale;
@@ -9,20 +9,20 @@ export interface Props {
 }
 
 const FeilsideInfo: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
     return (
         <Feilside
-            dokumenttittel={intl.formatMessage({ id: 'Søknad.Pageheading' })}
+            dokumenttittel={i18n('Søknad.Pageheading')}
             ingress=""
             tittel=""
             illustrasjon={{
-                tittel: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Tittel' }),
-                tekst: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Ingress' }),
+                tittel: i18n('FeilsideInfo.GenerellFeil.Tittel'),
+                tekst: i18n('FeilsideInfo.GenerellFeil.Ingress'),
                 veileder: {
                     ansikt: 'skeptisk',
                 },
                 lenke: {
-                    tekst: intl.formatMessage({ id: 'FeilsideInfo.GenerellFeil.Brukerstøtte' }),
+                    tekst: i18n('FeilsideInfo.GenerellFeil.Brukerstøtte'),
                     url: links.brukerstøtte,
                 },
             }}

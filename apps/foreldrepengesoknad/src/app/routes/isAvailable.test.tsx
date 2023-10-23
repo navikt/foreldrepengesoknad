@@ -1,9 +1,7 @@
 import SøknadRoutes from './routes';
 import isAvailable from './isAvailable';
 import { Søknad } from 'app/context/types/Søknad';
-import { Periodetype } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { Forelder } from 'app/types/Forelder';
+import { Forelder, Periodetype, StønadskontoType } from '@navikt/fp-common';
 
 describe('<isAvailable>', () => {
     it('skal vere tilgjengelig når rute er SØKERSITUASJON og en har godkjent vilkår', () => {

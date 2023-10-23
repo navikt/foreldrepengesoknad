@@ -1,11 +1,11 @@
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
-import Person from 'app/types/Person';
 import { Kvittering } from 'app/types/Kvittering';
 import { bemUtils, Block, VedleggIkon } from '@navikt/fp-common';
 import { openPdfPreview } from 'app/utils/pdfUtils';
 import SpotlightLetter from 'app/assets/SpotlightLetter';
 import { BodyShort, Heading, Link } from '@navikt/ds-react';
+import Person from '@navikt/fp-common/src/common/types/Person';
 
 import './kvitteringHeader.less';
 

@@ -1,14 +1,17 @@
-import { intlUtils } from '@navikt/fp-common';
-import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { shouldPeriodeHaveAttachment } from 'app/utils/manglendeVedleggUtils';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    StønadskontoType,
+    UttaksperiodeBase,
+    intlUtils,
+    isAnnenForelderOppgitt,
+} from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import { UttaksperiodeBase } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
 import { getArbeidsformTekst } from '../OppsummeringUtils';
+import { shouldPeriodeHaveAttachment } from '@navikt/uttaksplan';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;

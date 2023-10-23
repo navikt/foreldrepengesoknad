@@ -46,7 +46,7 @@ const getDateTekst = (
     type: TidslinjehendelseType,
     date: Date,
     førsteUttaksdagISaken: Date | undefined,
-    tidligstBehandlingsDato: Date | undefined
+    tidligstBehandlingsDato: Date | undefined,
 ) => {
     if (type === TidslinjehendelseType.VENTER_INNTEKTSMELDING) {
         const tidligstDato = getTidligstDatoForInntektsmelding(førsteUttaksdagISaken);
@@ -94,8 +94,8 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
                         isActiveStep && finnesHendelserFørAktivtSteg && !visHeleTidslinjen
                             ? 'aktiv_er_ikke_første_hendelse'
                             : ''
-                    }`
-                )
+                    }`,
+                ),
             )}
         >
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>

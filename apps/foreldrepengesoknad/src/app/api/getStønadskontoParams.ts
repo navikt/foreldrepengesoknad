@@ -1,13 +1,21 @@
-import AnnenForelder, { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { TilgjengeligeStønadskontoerParams } from './api';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import {
+    AnnenForelder,
+    Barn,
+    Dekningsgrad,
+    ISOStringToDate,
+    Søkersituasjon,
+    andreAugust2022ReglerGjelder,
+    getErMorUfør,
+    isAdoptertAnnetBarn,
+    isAdoptertStebarn,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-common';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -51,7 +59,7 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
 
 export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     termindatoSaksgrunnlag?: string,
-    termindatoSaksgrunnlagAnnenPart?: string
+    termindatoSaksgrunnlagAnnenPart?: string,
 ) => {
     if (termindatoSaksgrunnlagAnnenPart) {
         return termindatoSaksgrunnlagAnnenPart;
@@ -63,7 +71,7 @@ export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
 export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     erFarEllerMedmor: boolean,
     antallBarnSaksgrunnlag: number,
-    antallBarnSaksgrunnlagAnnenPart?: number
+    antallBarnSaksgrunnlagAnnenPart?: number,
 ): number => {
     if (erFarEllerMedmor && antallBarnSaksgrunnlagAnnenPart) {
         return antallBarnSaksgrunnlagAnnenPart;
@@ -81,7 +89,7 @@ const getStønadskontoParams = (
     morHarAleneomsorg: boolean,
     familieHendelseDatoNesteSak: string | undefined,
     antallBarn: number,
-    oppgittTermindato?: string
+    oppgittTermindato?: string,
 ): TilgjengeligeStønadskontoerParams => {
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));

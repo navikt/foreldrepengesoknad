@@ -11,7 +11,7 @@ const getIntlMock = () => {
             defaultLocale: 'nb',
             messages,
         },
-        cache
+        cache,
     );
 };
 

@@ -20,8 +20,8 @@ const HarIkkeSaker: FunctionComponent<Props> = ({ oppdatertData }) => {
         <>
             {oppdatertData && (
                 <Alert variant="info" className={bem.element('ingen-søknad')}>
-                    Vi finner ingen søknader fra deg om foreldrepenger. Hvis du har sendt en søknad i posten kan det ta
-                    to uker før søknaden registreres i NAVs systemer.{' '}
+                    Vi finner ingen søknader fra deg. Hvis du har sendt en søknad i posten kan det ta to uker før
+                    søknaden registreres i NAVs systemer.
                 </Alert>
             )}
             <ContentSection>

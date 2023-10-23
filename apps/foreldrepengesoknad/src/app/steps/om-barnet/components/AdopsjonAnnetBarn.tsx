@@ -1,10 +1,14 @@
-import { Block, guid, intlUtils } from '@navikt/fp-common';
+import {
+    AttachmentType,
+    Block,
+    ISOStringToDate,
+    Skjemanummer,
+    Søkersituasjon,
+    guid,
+    intlUtils,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import { FunctionComponent } from 'react';

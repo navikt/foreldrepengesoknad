@@ -31,7 +31,7 @@ const Veileder = (props: Props) => {
             `veileder--tema-${farge}`,
             `veileder--${ansikt}`,
             `veileder--${stil}`,
-            props.className
+            props.className,
         ),
     };
     return stil === 'normal' ? <VeilederNormal svgProps={svgProps} /> : <VeilederKompakt svgProps={svgProps} />;

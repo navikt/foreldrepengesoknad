@@ -28,8 +28,20 @@ const generateHTML = (packages) => `
   </head>
   <body>
     <h1 class="main-header">Storybook for fp-selvbetjening</h1>
+    <h2 class="header">Apps:</h3>
     <div class="grid-container">
-      ${packages.map(generateRow).join('')}
+      ${packages
+          .filter((p) => !p.name.includes('@navikt/fp-'))
+          .map(generateRow)
+          .join('')}
+    </div>
+    <br />
+    <h2 class="header">Packages:</h3>
+    <div class="grid-container">
+      ${packages
+          .filter((p) => p.name.includes('@navikt/fp-'))
+          .map(generateRow)
+          .join('')}
     </div>
   </body>
   </html>
@@ -38,61 +50,56 @@ const generateHTML = (packages) => `
 const DEPLOY_FOLDER = '../.storybook-static-build';
 
 const copyFiles = (subPackage) => {
-  shell.cd(subPackage);
-  if (!fs.existsSync('package.json') || !fs.existsSync('.storybook-static-build')) {
-    return null;
-  }
+    shell.cd(subPackage);
+    if (!fs.existsSync('package.json') || !fs.existsSync('.storybook-static-build')) {
+        return null;
+    }
 
-  const packagesJson = JSON.parse(
-    fs.readFileSync(path.resolve('package.json'), 'utf8'),
-  );
+    const packagesJson = JSON.parse(fs.readFileSync(path.resolve('package.json'), 'utf8'));
 
-  const packageDestFolder = path.join(__dirname, DEPLOY_FOLDER, packagesJson.name);
-  shell.mkdir(packageDestFolder);
-  shell.cp('-r', path.join(subPackage, '.storybook-static-build', '*'), packageDestFolder);
+    const packageDestFolder = path.join(__dirname, DEPLOY_FOLDER, packagesJson.name);
+    shell.mkdir(packageDestFolder);
+    shell.cp('-r', path.join(subPackage, '.storybook-static-build', '*'), packageDestFolder);
 
-  return packagesJson;
-}
+    return packagesJson;
+};
 
 const creatIndexHtml = () => {
-  // Lag folder-struktur for innholdet som skal deployes
-  shell.mkdir(path.join(__dirname, DEPLOY_FOLDER));
-  shell.mkdir(path.join(__dirname, DEPLOY_FOLDER, '@navikt'));
+    // Lag folder-struktur for innholdet som skal deployes
+    shell.mkdir(path.join(__dirname, DEPLOY_FOLDER));
+    shell.mkdir(path.join(__dirname, DEPLOY_FOLDER, '@navikt'));
 
-  // Kopier storybook fra pakkene og inn i folder som skal deployes
-  const origDir = process.cwd();
-  const packagesApps = glob
-    .sync(path.join(origDir, 'apps', '**', 'package.json').split(path.sep).join("/"), {
-      ignore: '**/node_modules/**',
-    })
-    .map(path.dirname)
-    .map(copyFiles)
-    .filter((subPackage) => subPackage);
-  const packagesPackages = glob
-    .sync(path.join(origDir, 'packages', '**', 'package.json').split(path.sep).join("/"), {
-      ignore: '**/node_modules/**',
-    })
-    .map(path.dirname)
-    .map(copyFiles)
-    .filter((subPackage) => subPackage);
+    // Kopier storybook fra pakkene og inn i folder som skal deployes
+    const origDir = process.cwd();
+    const packagesApps = glob
+        .sync(path.join(origDir, 'apps', '**', 'package.json').split(path.sep).join('/'), {
+            ignore: '**/node_modules/**',
+        })
+        .map(path.dirname)
+        .map(copyFiles)
+        .filter((subPackage) => subPackage);
+    const packagesPackages = glob
+        .sync(path.join(origDir, 'packages', '**', 'package.json').split(path.sep).join('/'), {
+            ignore: '**/node_modules/**',
+        })
+        .map(path.dirname)
+        .map(copyFiles)
+        .filter((subPackage) => subPackage);
 
-  // Lag index-fil
-  const index = generateHTML(packagesApps.concat(packagesPackages));
-  fs.writeFileSync(path.join(__dirname, DEPLOY_FOLDER, 'index.html'), index);
+    // Lag index-fil
+    const index = generateHTML(packagesApps.concat(packagesPackages));
+    fs.writeFileSync(path.join(__dirname, DEPLOY_FOLDER, 'index.html'), index);
 
-  // Kopier css fil til folder som skal deployes
-  shell.cp(
-    path.join(__dirname, 'storybook-monorepo-index.css'),
-    path.join(__dirname, DEPLOY_FOLDER, 'monorepo-index.css'),
-  );
+    // Kopier css fil til folder som skal deployes
+    shell.cp(
+        path.join(__dirname, 'storybook-monorepo-index.css'),
+        path.join(__dirname, DEPLOY_FOLDER, 'monorepo-index.css'),
+    );
 
-  // For å støtte filer med '_' (Skip Jekyll-prosessering)
-  shell.cp(
-    path.join(__dirname, '.nojekyll'),
-    path.join(__dirname, DEPLOY_FOLDER, '.nojekyll'),
-  );
+    // For å støtte filer med '_' (Skip Jekyll-prosessering)
+    shell.cp(path.join(__dirname, '.nojekyll'), path.join(__dirname, DEPLOY_FOLDER, '.nojekyll'));
 
-  console.log('Done copying files');
+    console.log('Done copying files');
 };
 
 creatIndexHtml();

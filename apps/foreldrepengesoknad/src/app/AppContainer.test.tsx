@@ -24,7 +24,7 @@ describe('<AppContainer>', () => {
         render(
             <div id="app">
                 <AppContainer />
-            </div>
+            </div>,
         );
 
         expect(screen.getByText('venter...')).toBeInTheDocument();

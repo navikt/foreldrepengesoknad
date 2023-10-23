@@ -1,6 +1,5 @@
-import { Kjønn } from '@navikt/fp-common';
-import Bankkonto from './Bankkonto';
-import { Sivilstand } from './Sivilstand';
+import { Kjønn, Sivilstand } from '@navikt/fp-common';
+import Bankkonto from '@navikt/fp-common/src/common/types/Bankkonto';
 
 export interface SøkerinfoDTOPerson {
     fnr: string;

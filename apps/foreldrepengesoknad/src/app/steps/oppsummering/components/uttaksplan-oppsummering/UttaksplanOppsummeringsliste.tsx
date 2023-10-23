@@ -1,30 +1,34 @@
 import { FunctionComponent } from 'react';
-import { formatDate, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysningerUtils';
-import { useIntl } from 'react-intl';
 import {
+    AnnenForelder,
+    appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
+    Arbeidsforhold,
+    finnesPeriodeIOpprinneligPlan,
+    formatDate,
+    getPeriodeTittel,
+    getStønadskontoNavn,
+    intlUtils,
+    NavnPåForeldre,
     Oppholdsperiode,
     Overføringsperiode,
     Periode,
     Periodetype,
     PeriodeUtenUttakUtsettelse,
+    Situasjon,
+    StønadskontoType,
+    TidsperiodeDate,
+    Tilleggsopplysning,
     Utsettelsesperiode,
     Uttaksperiode,
-} from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { finnesPeriodeIOpprinneligPlan, getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
-import { getStønadskontoNavn } from 'uttaksplan/utils/stønadskontoerUtils';
+    uttaksperiodeKanJusteresVedFødsel,
+} from '@navikt/fp-common';
+import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysningerUtils';
+import { useIntl } from 'react-intl';
 import Feltoppsummering from './feltoppsummering/Feltoppsummering';
 import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeringsliste/Oppsummeringsliste';
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
-import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor, uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
-import { Situasjon } from 'app/types/Situasjon';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -69,7 +73,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             periode,
             situasjon,
             familiehendelsesdato,
-            termindato
+            termindato,
         );
     };
 
@@ -86,7 +90,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
     const createOppsummeringslisteelementPropsForUttaksperiode = (
         periode: Uttaksperiode,
-        periodeErNyEllerEndret = true
+        periodeErNyEllerEndret = true,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: getUttaksperiodeNavn(periode),
@@ -104,7 +108,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
 
     const createOppsummeringslisteelementPropsForOppholdsperiode = (
-        periode: Oppholdsperiode
+        periode: Oppholdsperiode,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: getPeriodeTittel(
@@ -113,7 +117,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
                 navnPåForeldre,
                 familiehendelsesdato,
                 termindato,
-                situasjon
+                situasjon,
             ),
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
         };
@@ -121,7 +125,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
 
     const createOppsummeringslisteelementPropsForUtsettelsesperiode = (
         periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse,
-        periodeErNyEllerEndret: boolean
+        periodeErNyEllerEndret: boolean,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: intlUtils(intl, 'oppsummering.utsettelse.pga'),
@@ -140,7 +144,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
 
     const createOppsummeringslisteelementPropsForOverføringsperiode = (
         periode: Overføringsperiode,
-        periodeErNyEllerEndret: boolean
+        periodeErNyEllerEndret: boolean,
     ): OppsummeringslisteelementProps => {
         const kontonavn = getStønadskontoNavnFromKonto(periode.konto);
         return {
@@ -160,7 +164,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
 
     const createOppsummeringslisteelementPropsForBegrunnelseForSenEndring = (
-        begrunnelse: TilleggsopplysningMedBeskrivelse
+        begrunnelse: TilleggsopplysningMedBeskrivelse,
     ): OppsummeringslisteelementProps => {
         return {
             venstrestiltTekst: begrunnelse.beskrivelse,

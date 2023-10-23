@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-types';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdNeste, UtenlandsoppholdSiste } from 'types/Utenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { EsDataType } from 'appData/EsDataContext';
@@ -13,6 +13,8 @@ import Dokumentasjon from 'types/Dokumentasjon';
 
 import OppsummeringSteg from './OppsummeringSteg';
 import { initAmplitude } from '@navikt/fp-metrics';
+import dayjs from 'dayjs';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const person = {
     fnr: '11111111111',
@@ -30,7 +32,7 @@ const person = {
 const barnet = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdatoer: [{ dato: '2023-01-01' }],
+    fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
 } as BarnetErFødt;
 
 const utenlandsoppholdDefault = {
@@ -56,20 +58,20 @@ const Template: StoryFn<{
         omBarnet: OmBarnet,
         utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
-        sisteUtenlandsopphold?: UtenlandsoppholdSiste,
-        nesteUtenlandsopphold?: UtenlandsoppholdNeste,
-    ) => void;
+        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+        senereUtenlandsopphold?: UtenlandsoppholdSenere,
+    ) => Promise<void>;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
-    nesteUtenlandsopphold?: UtenlandsoppholdNeste;
-    sisteUtenlandsopphold?: UtenlandsoppholdSiste;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
 }> = ({
     sendSøknad,
     omBarnet = barnet,
     utenlandsopphold = utenlandsoppholdDefault,
-    nesteUtenlandsopphold,
-    sisteUtenlandsopphold,
+    senereUtenlandsopphold,
+    tidligereUtenlandsopphold,
     dokumentasjon = vedleggDefault,
 }) => {
     initAmplitude();
@@ -79,8 +81,8 @@ const Template: StoryFn<{
                 initialState={{
                     [EsDataType.OM_BARNET]: omBarnet,
                     [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_NESTE]: nesteUtenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_SISTE]: sisteUtenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                    [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
                     [EsDataType.DOKUMENTASJON]: dokumentasjon,
                 }}
             >
@@ -92,12 +94,12 @@ const Template: StoryFn<{
 
 export const BarnetErFodt = Template.bind({});
 BarnetErFodt.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
 };
 
 export const AdopsjonAvEktefellesBarn = Template.bind({});
 AdopsjonAvEktefellesBarn.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -122,7 +124,7 @@ AdopsjonAvEktefellesBarn.args = {
 
 export const AdopsjonAvEktefellesFlereBarn = Template.bind({});
 AdopsjonAvEktefellesFlereBarn.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -147,7 +149,7 @@ AdopsjonAvEktefellesFlereBarn.args = {
 
 export const BarnetErIkkeFodt = Template.bind({});
 BarnetErIkkeFodt.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
@@ -172,30 +174,30 @@ BarnetErIkkeFodt.args = {
 
 export const HarTidligereOgFremtidigeUtenlandsopphold = Template.bind({});
 HarTidligereOgFremtidigeUtenlandsopphold.args = {
-    sendSøknad: action('button-click'),
+    sendSøknad: action('button-click') as (data: any) => Promise<any>,
     utenlandsopphold: {
         harBoddUtenforNorgeSiste12Mnd: true,
         skalBoUtenforNorgeNeste12Mnd: true,
     },
-    nesteUtenlandsopphold: {
+    senereUtenlandsopphold: {
         utenlandsoppholdNeste12Mnd: [
             {
-                fom: '2025-01-01',
-                tom: '2026-01-01',
+                fom: dayjs().format(ISO_DATE_FORMAT),
+                tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
                 landkode: 'SE',
             },
             {
-                fom: '2027-01-01',
-                tom: '2028-01-01',
+                fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
                 landkode: 'DK',
             },
         ],
     },
-    sisteUtenlandsopphold: {
+    tidligereUtenlandsopphold: {
         utenlandsoppholdSiste12Mnd: [
             {
-                fom: '2021-01-01',
-                tom: '2022-01-01',
+                fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().format(ISO_DATE_FORMAT),
                 landkode: 'IS',
             },
         ],

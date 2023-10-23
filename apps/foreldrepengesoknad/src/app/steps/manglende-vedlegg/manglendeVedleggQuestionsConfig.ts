@@ -1,6 +1,6 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { ManglendeVedleggFormData, ManglendeVedleggFormField } from './manglendeVedleggFormConfig';
-import { AttachmentType } from 'app/types/AttachmentType';
+import { AttachmentType } from '@navikt/fp-common';
 
 export interface ManglendeVedleggQuestionsPayload extends ManglendeVedleggFormData {
     manglendeVedleggTyper: AttachmentType[];
@@ -16,12 +16,12 @@ const ManglendeVedleggFormConfig: QuestionConfig<ManglendeVedleggQuestionsPayloa
                       vedlegg
                           .filter((vedlegg) => !!vedlegg)
                           .flat()
-                          .some((v) => v.type === type)
+                          .some((v) => v.type === type),
                   ),
         isIncluded: () => true,
     },
 };
 
 export const manglendeVedleggQuestionsConfig = Questions<ManglendeVedleggQuestionsPayload, ManglendeVedleggFormField>(
-    ManglendeVedleggFormConfig
+    ManglendeVedleggFormConfig,
 );

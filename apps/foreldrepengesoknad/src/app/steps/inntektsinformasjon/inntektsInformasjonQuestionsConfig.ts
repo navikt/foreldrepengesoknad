@@ -42,7 +42,7 @@ const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData,
 };
 
 const inntektsinforMasjonQuestionsConfig = Questions<InntektsinformasjonFormData, InntektsinformasjonFormField>(
-    InntektsinformasjonFormConfig
+    InntektsinformasjonFormConfig,
 );
 
 export default inntektsinforMasjonQuestionsConfig;

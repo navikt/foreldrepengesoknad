@@ -1,8 +1,12 @@
-import { hasValue } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Næring, EndringAvNæringsinntektInformasjon, Næringsrelasjon } from 'app/context/types/Næring';
-import { date4YearsAgo, ISOStringToDate } from 'app/utils/dateUtils';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
+import { date4YearsAgo } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -31,7 +35,7 @@ export const initialEgenNæringModalValues: EgenNæringModalFormData = {
 
 export const cleanupEgenNæringForm = (
     values: EgenNæringModalFormData,
-    visibility: QuestionVisibility<EgenNæringModalFormField, undefined>
+    visibility: QuestionVisibility<EgenNæringModalFormField, undefined>,
 ): EgenNæringModalFormData => {
     return {
         type: visibility.isVisible(EgenNæringModalFormField.type) ? values.type : undefined,
@@ -52,12 +56,12 @@ export const cleanupEgenNæringForm = (
             ? values.næringsresultat
             : initialEgenNæringModalValues.næringsresultat,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: visibility.isVisible(
-            EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+            EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
         )
             ? values.hattVarigEndringAvNæringsinntektSiste4Kalenderår
             : initialEgenNæringModalValues.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: visibility.isVisible(
-            EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+            EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         )
             ? values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
             : initialEgenNæringModalValues.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
@@ -83,7 +87,7 @@ export const cleanupEgenNæringForm = (
             ? values.telefonRegnskapsfører
             : initialEgenNæringModalValues.telefonRegnskapsfører,
         regnskapsførerNærVennEllerFamilie: visibility.isVisible(
-            EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie
+            EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie,
         )
             ? values.regnskapsførerNærVennEllerFamilie
             : initialEgenNæringModalValues.regnskapsførerNærVennEllerFamilie,
@@ -109,10 +113,10 @@ export const getInitialEgenNæringModalValues = (næring: Næring | undefined): 
         pågående: convertBooleanOrUndefinedToYesOrNo(næring.pågående),
         næringsresultat: næring.næringsinntekt?.toString() || '',
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: convertBooleanOrUndefinedToYesOrNo(
-            næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+            næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
         ),
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertBooleanOrUndefinedToYesOrNo(
-            næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+            næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         ),
         yrkesAktivDato: dateToISOString(næring.oppstartsdato) || '',
         datoForEndring: næring.endringAvNæringsinntektInformasjon
@@ -128,7 +132,7 @@ export const getInitialEgenNæringModalValues = (næring: Næring | undefined): 
         navnRegnskapsfører: næring.regnskapsfører ? næring.regnskapsfører.navn : '',
         telefonRegnskapsfører: næring.regnskapsfører ? næring.regnskapsfører.telefonnummer : '',
         regnskapsførerNærVennEllerFamilie: convertBooleanOrUndefinedToYesOrNo(
-            næring.regnskapsfører ? næring.regnskapsfører.erNærVennEllerFamilie : undefined
+            næring.regnskapsfører ? næring.regnskapsfører.erNærVennEllerFamilie : undefined,
         ),
     };
 };
@@ -166,10 +170,10 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
         pågående: convertYesOrNoOrUndefinedToBoolean(values.pågående)!,
         næringsinntekt: hasValue(values.næringsresultat) ? parseInt(values.næringsresultat!, 10) : undefined,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: convertYesOrNoOrUndefinedToBoolean(
-            values.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+            values.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
         ),
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: convertYesOrNoOrUndefinedToBoolean(
-            values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+            values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         ),
         oppstartsdato: hasValue(values.yrkesAktivDato) ? ISOStringToDate(values.yrkesAktivDato) : undefined,
         endringAvNæringsinntektInformasjon: endringAvNæringsinntektInformasjon,

@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
 import { Modal } from '@navikt/ds-react';
-import { ErrorBoundary } from '@navikt/fp-ui';
 import AppContainer from './AppContainer';
 import { initAmplitude } from '@navikt/fp-metrics';
 import Environment from 'appData/Environment';
@@ -11,7 +10,7 @@ import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import * as langEN from 'i18n-iso-countries/langs/en.json';
 
 import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
+import 'styles/globals.less';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
@@ -33,8 +32,4 @@ initAmplitude();
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
-root.render(
-    <ErrorBoundary>
-        <AppContainer />
-    </ErrorBoundary>,
-);
+root.render(<AppContainer />);

@@ -32,7 +32,7 @@ const FormikWrapper: FunctionComponent<Props> = ({ contentRenderer }) => {
             logValidationErrors(currentPath, errors);
             return errors;
         },
-        [currentPath]
+        [currentPath],
     );
 
     const onSubmit = useCallback((_søknad: UferdigSøknad, { setSubmitting, setFormikState }: FormikBag) => {

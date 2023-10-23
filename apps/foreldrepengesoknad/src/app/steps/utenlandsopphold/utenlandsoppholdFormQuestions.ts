@@ -25,5 +25,5 @@ const UtenlandsoppholdFormConfig: QuestionConfig<UtenlandsoppholdFormData, Utenl
 };
 
 export const utenlandsoppholdFormQuestions = Questions<UtenlandsoppholdFormData, UtenlandsoppholdFieldNames>(
-    UtenlandsoppholdFormConfig
+    UtenlandsoppholdFormConfig,
 );

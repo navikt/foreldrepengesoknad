@@ -1,5 +1,4 @@
-import { SaksperiodeDTO } from './SaksperiodeDTO';
-import { DekningsgradDTO } from './DekningsgradDTO';
+import { DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 
 export interface AnnenPartVedtakDTO {
     perioder: SaksperiodeDTO[];

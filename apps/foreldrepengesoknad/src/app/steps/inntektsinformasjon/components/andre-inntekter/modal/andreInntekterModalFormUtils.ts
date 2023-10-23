@@ -1,11 +1,14 @@
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import {
+    AttachmentType,
+    Skjemanummer,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.type]: undefined,
@@ -31,7 +34,7 @@ export const getSkjemanummer = (values: AndreInntekterFormData): Skjemanummer =>
 
 export const cleanupAndreInntekterForm = (
     values: AndreInntekterFormData,
-    visibility: QuestionVisibility<AndreInntekterFormField, undefined>
+    visibility: QuestionVisibility<AndreInntekterFormField, undefined>,
 ): AndreInntekterFormData => {
     return {
         type: visibility.isVisible(AndreInntekterFormField.type) ? values.type : initialAndreInntekterFormValues.type,
@@ -39,7 +42,7 @@ export const cleanupAndreInntekterForm = (
             ? lagSendSenereDokumentNårIngenAndreFinnes(
                   values.dokumentasjon,
                   AttachmentType.ANNEN_INNTEKT,
-                  getSkjemanummer(values)
+                  getSkjemanummer(values),
               )
             : initialAndreInntekterFormValues.dokumentasjon,
         fom: visibility.isVisible(AndreInntekterFormField.fom) ? values.fom : initialAndreInntekterFormValues.fom,

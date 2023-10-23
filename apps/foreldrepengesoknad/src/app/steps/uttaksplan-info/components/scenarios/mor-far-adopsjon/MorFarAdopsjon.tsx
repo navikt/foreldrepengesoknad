@@ -1,19 +1,29 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    Forelder,
+    ISOStringToDate,
+    StepButtonWrapper,
+    Uttaksdagen,
+    formaterNavn,
+    getFlerbarnsuker,
+    getNavnGenitivEierform,
+    intlUtils,
+    isAdoptertAnnetBarn,
+    isAdoptertBarn,
+    isAdoptertStebarn,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { getNavnGenitivEierform, formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getInitialMorFarAdopsjonValues, mapMorFarAdopsjonFormToState } from './morFarAdopsjonUtils';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { Forelder } from 'app/types/Forelder';
-import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
-import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { dateIsSameOrAfter, findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
+import { dateIsSameOrAfter, findEldsteDato } from 'app/utils/dateUtils';
 import {
     MorFarAdopsjonFormComponents,
     MorFarAdopsjonFormData,
@@ -35,18 +45,16 @@ import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -103,7 +111,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
             dateToISOString(ankomstdato),
-            values.søkersFørsteDag
+            values.søkersFørsteDag,
         );
 
         return [
@@ -118,7 +126,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -142,7 +150,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg,
                     }),
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -150,7 +158,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     if (!shouldRender || !isAdoptertBarn(barn)) {
@@ -187,7 +195,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     return (
@@ -284,7 +292,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 visibility.isAnswered(MorFarAdopsjonFormField.søkersFørsteDag) &&
                                 !dateIsSameOrAfter(
                                     ISOStringToDate(formValues.annenForeldersSisteDag),
-                                    ISOStringToDate(formValues.søkersFørsteDag)
+                                    ISOStringToDate(formValues.søkersFørsteDag),
                                 ) &&
                                 formValues.harAnnenForelderSøktFP === YesOrNo.YES
                             }
@@ -312,10 +320,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                             formValues.annenStartdatoAdopsjon,
                                             dateToISOString(barn.adopsjonsdato),
                                             dateToISOString(ankomstdato),
-                                            formValues.søkersFørsteDag
-                                        )
+                                            formValues.søkersFørsteDag,
+                                        ),
                                     ),
-                                    'day'
+                                    'day',
                                 ) &&
                                 !isAdoptertStebarn(barn) &&
                                 !erDeltUttak

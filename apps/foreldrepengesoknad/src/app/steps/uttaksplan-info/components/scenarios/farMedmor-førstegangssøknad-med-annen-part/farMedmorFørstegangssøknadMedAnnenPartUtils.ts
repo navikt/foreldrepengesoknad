@@ -2,7 +2,7 @@ import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/cont
 import { FarMedmorFørstegangssøknadMedAnnenPartFormData } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 
 export const getFarMedmorFørstegangssøknadMedAnnenPartInitialValues = (
-    state: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo | undefined
+    state: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo | undefined,
 ): FarMedmorFørstegangssøknadMedAnnenPartFormData => {
     if (!state) {
         return {

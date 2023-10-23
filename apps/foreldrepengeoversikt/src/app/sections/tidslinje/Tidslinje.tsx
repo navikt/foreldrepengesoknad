@@ -83,19 +83,19 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         sak,
         barnFraSak,
         erAvslåttForeldrepengesøknad,
-        intl
+        intl,
     );
 
     const hendelserForVisning = getHendelserForVisning(
         visHeleTidslinjen,
         alleSorterteHendelser,
-        erAvslåttForeldrepengesøknad
+        erAvslåttForeldrepengesøknad,
     );
     const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
-        dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')
+        dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'),
     );
     const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
-        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd')
+        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd'),
     );
     return (
         <div>
@@ -117,7 +117,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                             hendelse.tidligstBehandlingsDato,
                             manglendeVedleggData,
                             barnFraSak,
-                            sak
+                            sak,
                         )}
                         key={guid()}
                         isActiveStep={isActiveStep}

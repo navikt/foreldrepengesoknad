@@ -1,16 +1,18 @@
-import { intlUtils } from '@navikt/fp-common';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import {
+    AnnenForelder,
+    Arbeidsforhold,
+    Dekningsgrad,
+    NavnPåForeldre,
+    Periode,
+    Situasjon,
+    Tilleggsopplysning,
+    intlUtils,
+} from '@navikt/fp-common';
 
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';
-import { Periode } from 'uttaksplan/types/Periode';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import { Tilleggsopplysning } from 'app/context/types/Tilleggsopplysninger';
-import { Situasjon } from 'app/types/Situasjon';
 import { BodyShort } from '@navikt/ds-react';
 
 interface Props {

@@ -1,9 +1,14 @@
-import { Block, formatDate, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    ISOStringToDate,
+    Situasjon,
+    Uttaksdagen,
+    andreAugust2022ReglerGjelder,
+    formatDate,
+    intlUtils,
+    uttaksplanDatoavgrensninger,
+} from '@navikt/fp-common';
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import { Situasjon } from 'app/types/Situasjon';
-import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { validateStartdatoFarMedmor } from '../far-medmor-fødsel-og-mor-har-ikke-rett/validation/farMedmorFødselOgMorHarIkkeRettValidering';
@@ -34,10 +39,10 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const maxDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).maxDate
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).maxDate,
     );
     const minDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).minDate
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).minDate,
     );
 
     return (

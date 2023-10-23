@@ -1,15 +1,24 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, StepButtonWrapper, hasValue, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    ISOStringToDate,
+    StepButtonWrapper,
+    Tidsperioden,
+    Uttaksdagen,
+    formaterNavn,
+    getFlerbarnsuker,
+    hasValue,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    uttaksConstants,
+} from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -19,12 +28,9 @@ import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/contex
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import {
     morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
     MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
@@ -39,13 +45,12 @@ import {
     mapMorFarFødselAnnenForelderHarRettIEØSFormToState,
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
-import uttaksConstants from 'app/constants';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -92,7 +97,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -112,7 +117,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -120,7 +125,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     if (!shouldRender) {
@@ -142,7 +147,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const antallBarn = barn.antallBarn;
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     const visInfoOmPrematuruker =
@@ -159,7 +164,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             initialValues={getInitialMorFarFødselAnnenForelderHarRettIEØSValues(
                 defaultPermisjonStartdato,
                 lagretUttaksplanInfo,
-                dekningsgrad
+                dekningsgrad,
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {

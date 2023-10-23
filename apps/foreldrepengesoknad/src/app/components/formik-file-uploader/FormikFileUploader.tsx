@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
-import { Block, intlUtils, PictureScanningGuide } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import {
+    Attachment,
+    AttachmentType,
+    Block,
+    deleteAttachment,
+    intlUtils,
+    isAttachmentWithError,
+    mapFilTilVedlegg,
+    PictureScanningGuide,
+    Skjemanummer,
+} from '@navikt/fp-common';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
-import { deleteAttachment } from 'app/utils/globalUtil';
 import { IntlShape, useIntl } from 'react-intl';
-import { isAttachmentWithError, mapFilTilVedlegg } from 'app/utils/vedleggUtils';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
@@ -33,7 +38,7 @@ const KILOBYTES_IN_BYTE = 0.0009765625;
 const mapFilerTilPendingVedlegg = (
     filer: File[],
     attachmentType: AttachmentType,
-    skjemanummer: Skjemanummer
+    skjemanummer: Skjemanummer,
 ): Attachment[] => {
     return filer.map((fil) => {
         const nyttVedlegg = mapFilTilVedlegg(fil, attachmentType, skjemanummer);
@@ -55,13 +60,13 @@ const fileSizeIsValid = (filesizeInB: number): boolean => {
 const sjekkVedlegg = (
     alleNyeVedlegg: Attachment[],
     setErrors: React.Dispatch<React.SetStateAction<string[]>>,
-    intl: IntlShape
+    intl: IntlShape,
 ): Attachment[] => {
     return alleNyeVedlegg.filter((vedlegg) => {
         const erGyldigFiltype = fileExtensionIsValid(vedlegg.filename);
         if (!erGyldigFiltype) {
             setErrors((oldState) =>
-                oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename }))
+                oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename })),
             );
         }
         const erGyldigFilstørrelse = fileSizeIsValid(vedlegg.filesize);
@@ -71,8 +76,8 @@ const sjekkVedlegg = (
                     intlUtils(intl, 'vedlegg.feilmelding.ugyldig.størrelse', {
                         filename: vedlegg.filename,
                         maxStørrelse: MAX_FIL_STØRRELSE_KB,
-                    })
-                )
+                    }),
+                ),
             );
         }
         return erGyldigFiltype && erGyldigFilstørrelse;
@@ -85,7 +90,7 @@ const lastOppVedlegg = (
     removeFn: FieldArrayRemoveFn,
     setErrors: React.Dispatch<React.SetStateAction<string[]>>,
     antallEksisterendeVedlegg: number,
-    intl: IntlShape
+    intl: IntlShape,
 ): void => {
     alleNyeVedlegg.forEach(async (vedlegg, index) => {
         try {
@@ -99,8 +104,8 @@ const lastOppVedlegg = (
             removeFn(antallEksisterendeVedlegg + index);
             setErrors((oldState) =>
                 oldState.concat(
-                    intlUtils(intl, 'vedlegg.feilmelding.opplasting.feilet', { filename: vedlegg.filename })
-                )
+                    intlUtils(intl, 'vedlegg.feilmelding.opplasting.feilet', { filename: vedlegg.filename }),
+                ),
             );
         }
     });

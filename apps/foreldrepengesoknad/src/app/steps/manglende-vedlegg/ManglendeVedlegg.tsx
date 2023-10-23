@@ -1,9 +1,19 @@
-import { Block, formatDate, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    AttachmentType,
+    Block,
+    formatDate,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isInfoPeriode,
+    Periode,
+    sorterPerioder,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import _ from 'lodash';
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -15,11 +25,8 @@ import {
 } from './manglendeVedleggFormConfig';
 import dayjs from 'dayjs';
 import { manglendeVedleggQuestionsConfig, ManglendeVedleggQuestionsPayload } from './manglendeVedleggQuestionsConfig';
-import { sorterPerioder } from '../uttaksplan-info/utils/Periodene';
 import { finnSendSenereVedlegg, isAttachmentForPeriode } from './util';
-import { AttachmentType } from 'app/types/AttachmentType';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { getInitValues } from './manglendeVedleggFormUtils';
 import { FieldArray } from 'formik';
 import { storeAppState } from 'app/utils/submitUtils';
@@ -72,7 +79,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.OPPSUMMERING,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -143,14 +150,14 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                             {intlUtils(
                                                 intl,
                                                 `manglendeVedlegg.title.${sendSenereVedlegg.type}`,
-                                                getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder)
+                                                getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder),
                                             )}
                                         </Label>
                                         <ReadMore
                                             header={intlUtils(
                                                 intl,
                                                 `manglendeVedlegg.apneLabel.${sendSenereVedlegg.type}`,
-                                                getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder)
+                                                getManglendeVedleggValues(sendSenereVedlegg.type, fornavnAnnenForelder),
                                             )}
                                         >
                                             <div style={{ backgroundColor: '#f1f1f1', padding: '1.5rem' }}>
@@ -160,8 +167,8 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                         `manglendeVedlegg.info.${sendSenereVedlegg.type}`,
                                                         getManglendeVedleggValues(
                                                             sendSenereVedlegg.type,
-                                                            fornavnAnnenForelder
-                                                        )
+                                                            fornavnAnnenForelder,
+                                                        ),
                                                     )}
                                                 </BodyShort>
                                             </div>
@@ -179,13 +186,13 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                                 intl,
                                                                 sendSenereVedlegg.type === AttachmentType.ANNEN_INNTEKT
                                                                     ? `inntektstype.${periode.type.toLowerCase()}`
-                                                                    : periode.type
+                                                                    : periode.type,
                                                             ),
                                                             fom: formatDate(periode.tidsperiode.fom),
                                                             tom: periode.tidsperiode.tom
                                                                 ? formatDate(periode.tidsperiode.tom)
                                                                 : '-',
-                                                        }
+                                                        },
                                                     )}
                                                 </BodyShort>
                                             </Block>
@@ -200,7 +207,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                                                         legend=""
                                                         label={intlUtils(
                                                             intl,
-                                                            'manglendeVedlegg.lastopp.manglende.vedlegg'
+                                                            'manglendeVedlegg.lastopp.manglende.vedlegg',
                                                         )}
                                                         attachments={
                                                             formValues.vedlegg &&

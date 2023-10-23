@@ -1,9 +1,9 @@
-import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
+import { FamiliehendelseType } from '@navikt/fp-common';
 
 export const getFamiliehendelseType = (
     fødselsdato: string | undefined,
     termindato: string | undefined,
-    omsorgsovertagelsesdato: string | undefined
+    omsorgsovertagelsesdato: string | undefined,
 ) => {
     if (omsorgsovertagelsesdato !== undefined) {
         return FamiliehendelseType.ADOPSJON;

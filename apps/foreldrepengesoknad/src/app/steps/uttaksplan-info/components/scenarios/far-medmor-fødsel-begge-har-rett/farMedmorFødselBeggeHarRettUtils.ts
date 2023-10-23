@@ -1,9 +1,9 @@
 import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFormData = {
     [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: '',
@@ -14,7 +14,7 @@ const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFor
 };
 
 export const mapFarMedmorFødselBeggeHarRettToState = (
-    values: Partial<FarMedmorFødselBeggeHarRettFormData>
+    values: Partial<FarMedmorFødselBeggeHarRettFormData>,
 ): FarMedmorFødselBeggeHarRettUttaksplanInfo => {
     return {
         antallDagerFellesperiode:
@@ -32,7 +32,7 @@ export const mapFarMedmorFødselBeggeHarRettToState = (
 
 export const getInitialFarMedmorFødselBeggeHarRettValues = (
     state: FarMedmorFødselBeggeHarRettUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): FarMedmorFødselBeggeHarRettFormData => {
     if (!state) {
         return initialFarMedmorFødselBeggeHarRettValues;

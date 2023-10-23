@@ -14,9 +14,9 @@
     font-weight: var(--a-font-weight-regular);
 }
 
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
     .periode-liste__block {
-        margin-bottom: 2rem; 
+        margin-bottom: 2rem;
         padding: 0;
     }
 }

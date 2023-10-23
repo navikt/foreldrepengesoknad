@@ -1,7 +1,11 @@
-import { Forelder } from 'app/types/Forelder';
-import { Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import {
+    Forelder,
+    Periode,
+    Periodetype,
+    StønadskontoType,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+} from '@navikt/fp-common';
 import { finnEndringerIUttaksplan } from './submitUtils';
 
 describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i planen', () => {
@@ -64,7 +68,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             opprinneligPlan,
             opprinneligPlan,
             endringstidspunkt,
-            erFarEllerMedmor
+            erFarEllerMedmor,
         );
         expect(endringerIPlan.length).toEqual(0);
     });
@@ -75,7 +79,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             opprinneligPlan,
             nyPlanMedSlettetSistePeriode,
             endringstidspunkt,
-            erFarEllerMedmor
+            erFarEllerMedmor,
         );
         expect(endringerIPlan.length).toEqual(1);
         const utsettelseForSlettetPeriode = endringerIPlan[0] as Utsettelsesperiode;
@@ -93,7 +97,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             opprinneligPlan,
             nyPlanMedToSistePerioderSlettet,
             endringstidspunkt,
-            erFarEllerMedmor
+            erFarEllerMedmor,
         );
         expect(endringerIPlan.length).toEqual(1);
         const utsettelseForSlettedePerioder = endringerIPlan[0] as Utsettelsesperiode;
@@ -111,7 +115,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             opprinneligPlanMedKunEnPeriode,
             nyPlanIngenPerioder,
             endringstidspunkt,
-            erFarEllerMedmor
+            erFarEllerMedmor,
         );
         expect(endringerIPlan.length).toEqual(1);
         const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
@@ -155,12 +159,12 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             opprinneligPlanAnnenPartsPeriodePåSlutten,
             nyPlanSlettetMorsSistePeriode,
             endringstidspunkt,
-            erFarEllerMedmor
+            erFarEllerMedmor,
         );
         expect(endringerIPlan.length).toEqual(1);
         const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
         expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(
-            opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.fom
+            opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.fom,
         );
         expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.tom);
         expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);

@@ -1,5 +1,4 @@
-import { doesTidsperiodeContainDate, intlUtils } from '@navikt/fp-common';
-import Barn, { isAdoptertAnnetBarn, isAdoptertStebarn } from 'app/context/types/Barn';
+import { Barn, doesTidsperiodeContainDate, intlUtils, isAdoptertAnnetBarn, isAdoptertStebarn } from '@navikt/fp-common';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { FunctionComponent } from 'react';
@@ -16,7 +15,7 @@ interface Props {
 const getErINorgePåFamiliehendelsedato = (
     familiehendelsedato: string,
     tidligereOpphold: Utenlandsopphold[],
-    senereOpphold: Utenlandsopphold[]
+    senereOpphold: Utenlandsopphold[],
 ): boolean => {
     let erINorge = true;
 
@@ -46,7 +45,7 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
     const erINorgePåFamiliehendelsedato = getErINorgePåFamiliehendelsedato(
         familiehendelsedato,
         tidligereOpphold,
-        senereOpphold
+        senereOpphold,
     );
 
     return (

@@ -1,6 +1,4 @@
-import { Periode, isUttaksperiode } from 'uttaksplan/types/Periode';
-import { getFloatFromString } from 'app/utils/numberUtils';
-import { Perioden } from './Perioden';
+import { Periode, Perioden, getFloatFromString, isUttaksperiode } from '@navikt/fp-common';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const dager = Perioden(periode).getAntallUttaksdager();

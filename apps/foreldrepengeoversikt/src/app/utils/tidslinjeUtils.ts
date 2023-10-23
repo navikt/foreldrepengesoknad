@@ -1,6 +1,6 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
 import { AktørType } from 'app/types/AktørType';
-import { ÅpenBehandling } from 'app/types/ÅpenBehandling';
+import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from 'app/types/ÅpenBehandling';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
@@ -15,6 +15,7 @@ import { Familiehendelse } from 'app/types/Familiehendelse';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 import { BarnGruppering } from 'app/types/BarnGruppering';
 import { Sak } from 'app/types/Sak';
+import { Tilretteleggingstype } from 'app/types/TilretteleggingsperiodeSVP';
 
 export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -41,7 +42,7 @@ export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: Date |
 export const getTidslinjetekstForAntallBarn = (
     antallBarn: number,
     intl: IntlShape,
-    gjelderAdopsjon: boolean | undefined
+    gjelderAdopsjon: boolean | undefined,
 ): string => {
     if (antallBarn === 1 || antallBarn === 0) {
         return intlUtils(intl, 'barnet');
@@ -59,7 +60,7 @@ const getTidslinjeTittelForBarnTreÅr = (
     barnFraSak: BarnGruppering,
     antallBarn: number,
     omsorgsovertakelse: string | undefined,
-    intl: IntlShape
+    intl: IntlShape,
 ) => {
     let barnNavnTekst = '';
     if (omsorgsovertakelse) {
@@ -94,7 +95,7 @@ const getTidslinjeTittelForFamiliehendelseForeldrepenger = (
     antallBarn: number,
     gjelderAdopsjon: boolean | undefined,
     familiehendelse: Familiehendelse,
-    intl: IntlShape
+    intl: IntlShape,
 ) => {
     let barnNavnTekst = '';
     if (barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever) {
@@ -117,7 +118,7 @@ const getTidslinjeTittelForFamiliehendelse = (
     barnFraSak: BarnGruppering,
     antallBarn: number,
     ytelse: Ytelse,
-    intl: IntlShape
+    intl: IntlShape,
 ): string => {
     if (ytelse === Ytelse.FORELDREPENGER) {
         return getTidslinjeTittelForFamiliehendelseForeldrepenger(
@@ -125,7 +126,7 @@ const getTidslinjeTittelForFamiliehendelse = (
             antallBarn,
             gjelderAdopsjon,
             familiehendelse,
-            intl
+            intl,
         );
     } else {
         if (familiehendelse.omsorgsovertakelse) {
@@ -144,7 +145,7 @@ export const getTidslinjehendelseTittel = (
     tidlistBehandlingsdato: Date | undefined,
     manglendeVedleggData: Skjemanummer[] | undefined,
     barnFraSak: BarnGruppering,
-    sak: Sak
+    sak: Sak,
 ): string => {
     const { familiehendelse, ytelse, gjelderAdopsjon } = sak;
     const antallBarn = familiehendelse?.antallBarn;
@@ -172,7 +173,7 @@ export const getTidslinjehendelseTittel = (
             barnFraSak,
             antallBarn,
             ytelse,
-            intl
+            intl,
         );
     }
     if (
@@ -227,22 +228,42 @@ export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): 
     return undefined;
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknad = (åpenBehandling: ÅpenBehandling): Date => {
+export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: ÅpenBehandlingFP): Date => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
     const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
-    return Uttaksdagen(førsteUttaksdagISaken).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+    return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+};
+
+export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: ÅpenBehandlingSVP): Date => {
+    const tilretteleggingerFomDatoer =
+        åpenBehandling.søknad.arbeidsforhold
+            .map((a) => {
+                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== Tilretteleggingstype.HEL);
+                return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
+            })
+            .flat(1) || [];
+    const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.toDate();
+    return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+};
+
+export const getTidligstBehandlingsDatoForTidligSøknad = (ytelse: Ytelse, åpenBehandling: ÅpenBehandling): Date => {
+    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+        return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as ÅpenBehandlingSVP);
+    }
+
+    return getTidligstBehandlingsDatoForTidligSøknadFP(åpenBehandling);
 };
 
 const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: Tidslinjehendelse[]): Date | undefined => {
     const hendelseFørsteSøknad = tidslinjeHendelser.find(
-        (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD
+        (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD,
     );
     return hendelseFørsteSøknad ? hendelseFørsteSøknad.opprettet : undefined;
 };
 
 export const getTidslinjehendelserDetaljer = (
     tidslinjeHendelserData: Tidslinjehendelse[],
-    intl: IntlShape
+    intl: IntlShape,
 ): Tidslinjehendelse[] => {
     return tidslinjeHendelserData.map((hendelse) => {
         switch (hendelse.tidslinjeHendelseType) {
@@ -286,7 +307,7 @@ export const getTidslinjeBarnTreÅrHendelse = (
     omsorgsovertakelse: string | undefined,
     antallBarn: number,
     gjelderAdopsjon: boolean,
-    intl: IntlShape
+    intl: IntlShape,
 ): Tidslinjehendelse => {
     let dato;
     let merInformasjon = '';
@@ -334,7 +355,8 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
 export const getTidslinjehendelserFraBehandlingPåVent = (
     åpenBehandling: ÅpenBehandling,
     manglendeVedleggData: Skjemanummer[],
-    intl: IntlShape
+    intl: IntlShape,
+    ytelse: Ytelse,
 ): Tidslinjehendelse[] => {
     let hendelseVenterPåDokumentasjon = undefined;
     if (
@@ -357,6 +379,10 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
             tidligstBehandlingsDato: undefined,
         };
     }
+    const merInfo =
+        åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
+            ? intlUtils(intl, `tidslinje.${åpenBehandling.tilstand}.informasjon.${ytelse}`)
+            : intlUtils(intl, `tidslinje.${åpenBehandling.tilstand}.informasjon`);
     const tidslinjeHendelse = {
         type: 'søknad',
         opprettet: dayjs(new Date()).add(1, 'd').toDate(),
@@ -364,7 +390,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
         tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandling.tilstand),
         dokumenter: [],
         manglendeVedlegg: [],
-        merInformasjon: intlUtils(intl, `tidslinje.${åpenBehandling.tilstand}.informasjon`),
+        merInformasjon: merInfo,
         linkTittel: intlUtils(intl, `tidslinje.${åpenBehandling.tilstand}.linkTittel`),
         eksternalUrl: getTidlinjeHendelseEksternUrl(åpenBehandling.tilstand),
         internalUrl:
@@ -373,7 +399,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
                 : undefined,
         tidligstBehandlingsDato:
             åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
-                ? getTidligstBehandlingsDatoForTidligSøknad(åpenBehandling)
+                ? getTidligstBehandlingsDatoForTidligSøknad(ytelse, åpenBehandling)
                 : undefined,
     };
 
@@ -401,7 +427,7 @@ const getNesteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
 const getSisteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
     const dateNow = new Date();
     const sisteHendelser = sorterteHendelser.filter((hendelse) =>
-        dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd')
+        dayjs(hendelse.opprettet).isSameOrBefore(dateNow, 'd'),
     );
     if (sisteHendelser.length <= 3) {
         return sisteHendelser;
@@ -414,7 +440,7 @@ const getSisteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
 export const getHendelserForVisning = (
     visHeleTidslinjen: boolean,
     sorterteHendelser: Tidslinjehendelse[],
-    erAvslåttForeldrepengesøknad: boolean
+    erAvslåttForeldrepengesøknad: boolean,
 ): Tidslinjehendelse[] => {
     const hendelserForVisning = [] as Tidslinjehendelse[];
     if (visHeleTidslinjen) {
@@ -443,11 +469,11 @@ export const getAlleTidslinjehendelser = (
     sak: Sak,
     barnFraSak: BarnGruppering,
     erAvslåttForeldrepengesøknad: boolean,
-    intl: IntlShape
+    intl: IntlShape,
 ): Tidslinjehendelse[] => {
     const tidslinjeHendelser = getTidslinjehendelserDetaljer(tidslinjeHendelserData, intl);
     const venteHendelser = åpenBehandlingPåVent
-        ? getTidslinjehendelserFraBehandlingPåVent(åpenBehandlingPåVent, manglendeVedleggData, intl)
+        ? getTidslinjehendelserFraBehandlingPåVent(åpenBehandlingPåVent, manglendeVedleggData, intl, sak.ytelse)
         : undefined;
     if (venteHendelser) {
         tidslinjeHendelser.push(...venteHendelser);
@@ -471,7 +497,7 @@ export const getAlleTidslinjehendelser = (
             sak.familiehendelse.antallBarn,
             sak.gjelderAdopsjon,
 
-            intl
+            intl,
         );
         tidslinjeHendelser.push(barn3ÅrHendelse);
     }

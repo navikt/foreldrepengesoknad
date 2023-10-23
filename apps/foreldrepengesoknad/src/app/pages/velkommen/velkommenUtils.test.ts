@@ -1,9 +1,7 @@
-import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
-import { RegistrertBarn } from 'app/types/Person';
-import { RettighetType } from 'app/types/RettighetType';
+import { DekningsgradDTO, RegistrertBarn, Sak } from '@navikt/fp-common';
 import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
-import { Sak } from 'app/types/Sak';
+import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 
 const fødselsdato = '2022-01-01';
 const fødselsdatoDate = new Date(fødselsdato);

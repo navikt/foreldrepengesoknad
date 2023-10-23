@@ -1,7 +1,7 @@
 import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialMorFødselValues: MorFødselFormData = {
     [MorFødselFormField.dekningsgrad]: '',
@@ -21,7 +21,7 @@ export const mapMorFødselFormToState = (values: Partial<MorFødselFormData>): M
 export const getInitialMorFødselValues = (
     defaultPermisjonStartdato: Date,
     lagretUttaksplanInfo: MorFødselUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): MorFødselFormData => {
     if (lagretUttaksplanInfo) {
         return {

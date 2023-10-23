@@ -1,18 +1,25 @@
-import AnnenForelder from 'app/context/types/AnnenForelder';
-import Barn, { BarnType, FødtBarn } from 'app/context/types/Barn';
 import { Søknad } from 'app/context/types/Søknad';
-import { Periode, PeriodeHull, Periodetype, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
     AnnenForelderOppgittForInnsending,
     cleanSøknad,
     getPeriodeVedTidspunkt,
     getUttaksplanMedFriUtsettelsesperiode,
 } from './apiUtils';
+import {
+    AnnenForelder,
+    Barn,
+    BarnType,
+    FødtBarn,
+    Periode,
+    PeriodeHull,
+    Periodetype,
+    StønadskontoType,
+    Uttaksperiode,
+} from '@navikt/fp-common';
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
-    erForSykInput: boolean | undefined
+    erForSykInput: boolean | undefined,
 ): AnnenForelder => {
     return {
         fornavn: 'Mor',
@@ -112,7 +119,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.uttaksplan[0], 'erMorForSyk')).toBe(
-            false
+            false,
         );
         const { erMorForSyk, ...expectedPeriodeUttak } = periodeUttak;
         expect(cleanedSøknadUtenUførInfo.uttaksplan[0]).toEqual(expectedPeriodeUttak);
@@ -294,7 +301,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     it('inserts correct fri utsettelsesperiode that ends last day of February in leap year', () => {
         const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(
             [...uttaksplanMedAllePerioder],
-            new Date('2024-02-27')
+            new Date('2024-02-27'),
         );
         expect(nyUttaksplan.length === uttaksplanMedAllePerioder.length + 1);
         const friUtsettelsePeriode = nyUttaksplan[6];

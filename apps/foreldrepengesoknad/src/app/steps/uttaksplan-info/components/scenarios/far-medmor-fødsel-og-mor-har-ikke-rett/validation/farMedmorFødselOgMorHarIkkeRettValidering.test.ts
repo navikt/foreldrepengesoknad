@@ -27,14 +27,14 @@ describe('farMedmorFødselOgMorHarIkkeRettValidering', () => {
         const permisjonStartdato = '2020-12-31';
         const resultat = validateStartdatoFarMedmor(intlMock, minDato, maxDato)(permisjonStartdato);
         expect(resultat).toEqual(
-            'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 01. Jan 2021 til 01. Jan 2024'
+            'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 01. Jan 2021 til 01. Jan 2024',
         );
     });
     it('skal feile validering når dato er etter maxdato', () => {
         const permisjonStartdato = '2025-01-02';
         const resultat = validateStartdatoFarMedmor(intlMock, minDato, maxDato)(permisjonStartdato);
         expect(resultat).toEqual(
-            'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 01. Jan 2021 til 01. Jan 2024'
+            'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 01. Jan 2021 til 01. Jan 2024',
         );
     });
 });

@@ -10,7 +10,7 @@ import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 const useOnValidSubmit = <T>(
     submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
     nextRoute: SøknadRoutes,
-    postSubmit: (state: ForeldrepengesøknadContextState) => Promise<any>
+    postSubmit: (state: ForeldrepengesøknadContextState) => Promise<any>,
 ) => {
     const { dispatch, state } = useForeldrepengesøknadContext();
     const navigate = useNavigate();

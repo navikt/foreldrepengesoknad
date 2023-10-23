@@ -3,9 +3,14 @@ import classnames from 'classnames';
 
 import { useIntl } from 'react-intl';
 
-import { bemUtils, intlUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
-import { Attachment as AttachmentType } from 'app/types/Attachment';
-import { bytesString } from 'app/utils/globalUtil';
+import {
+    Attachment as AttachmentType,
+    bemUtils,
+    bytesString,
+    intlUtils,
+    SlettKnapp,
+    VedleggIkon,
+} from '@navikt/fp-common';
 import { Link, Loader } from '@navikt/ds-react';
 
 import './attachment.less';

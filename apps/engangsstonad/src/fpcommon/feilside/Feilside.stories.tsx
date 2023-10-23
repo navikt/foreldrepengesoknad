@@ -3,9 +3,6 @@ import Feilside from './Feilside';
 import IntlProvider from 'intl/IntlProvider';
 import { links } from '@navikt/fp-constants';
 
-import '@navikt/ds-css';
-import 'fpcommon/styles/globals.less';
-
 export default {
     title: 'Feilside',
     component: Feilside,

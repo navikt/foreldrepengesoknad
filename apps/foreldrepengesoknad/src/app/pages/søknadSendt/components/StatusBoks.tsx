@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import links from 'app/links/links';
-import { bemUtils, Block } from '@navikt/fp-common';
+import { bemUtils, Block, links } from '@navikt/fp-common';
 import { BodyShort, Heading, Ingress, LinkPanel, Tag } from '@navikt/ds-react';
 
 import './statusBoks.less';

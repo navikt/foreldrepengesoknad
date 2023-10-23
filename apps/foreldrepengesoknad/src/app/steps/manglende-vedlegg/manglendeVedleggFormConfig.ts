@@ -1,5 +1,5 @@
+import { Attachment } from '@navikt/fp-common';
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { Attachment } from 'app/types/Attachment';
 
 export enum ManglendeVedleggFormField {
     vedlegg = 'vedlegg',

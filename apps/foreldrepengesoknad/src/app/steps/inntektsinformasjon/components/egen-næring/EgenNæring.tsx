@@ -73,7 +73,7 @@ const EgenNæring: FunctionComponent<Props> = ({
                                 if (egenNæringInformasjon.length === 0) {
                                     return intlUtils(
                                         intl,
-                                        'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet'
+                                        'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet',
                                     );
                                 }
                             }

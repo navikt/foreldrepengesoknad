@@ -160,7 +160,7 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
                                 name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
                                 legend={getMessage(
                                     intl,
-                                    'arbeidsforhold.selvstendig.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene'
+                                    'arbeidsforhold.selvstendig.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene',
                                 )}
                             />
                         </Block>
@@ -198,7 +198,7 @@ const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => 
                                 name="kanInnhenteOpplsyningerFraRevisor"
                                 legend={getMessage(
                                     intl,
-                                    'arbeidsforhold.selvstendig.kanInnhenteOpplsyningerFraRevisor'
+                                    'arbeidsforhold.selvstendig.kanInnhenteOpplsyningerFraRevisor',
                                 )}
                             />
                         </Block>

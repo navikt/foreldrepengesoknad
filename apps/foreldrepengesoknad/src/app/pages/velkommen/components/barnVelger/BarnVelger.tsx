@@ -1,4 +1,4 @@
-import { Block, formatDate, intlUtils } from '@navikt/fp-common';
+import { Block, RegistrertAnnenForelder, Sak, formatDate, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { VelkommenFormComponents, VelkommenFormData, VelkommenFormField } from '../../velkommenFormConfig';
@@ -6,11 +6,9 @@ import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import SøknadStatusEtikett from '../SøknadStatus';
 import { validateHarValgtEtBarn } from '../../validation/velkommenValidation';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
-import { Sak } from 'app/types/Sak';
-import { RegistrertAnnenForelder } from 'app/types/Person';
+import { BodyShort } from '@navikt/ds-react';
 
 import './barnVelger.less';
-import { BodyShort } from '@navikt/ds-react';
 
 export enum SelectableBarnType {
     FØDT = 'født',
@@ -119,7 +117,7 @@ const getRadioForFødtEllerAdoptertBarn = (barn: SelectableBarn, intl: IntlShape
         barn.omsorgsovertagelse,
         barn.alleBarnaLever,
         barn.antallBarn,
-        intl
+        intl,
     );
     const fødselsdatoerTekst = formaterFødselsdatoerPåBarn(barn.fødselsdatoer);
     const fødtAdoptertDatoTekst =

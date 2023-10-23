@@ -46,7 +46,7 @@ const FrilansOppsummering: FunctionComponent = () => {
                     <BodyShort>
                         {intlUtils(
                             intl,
-                            'oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
+                            'oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd',
                         )}
                     </BodyShort>
                 </Block>
@@ -60,7 +60,7 @@ const FrilansOppsummering: FunctionComponent = () => {
                                     fom: formatDate(tidsperiode.fom!),
                                     tom: pågående ? 'pågående' : formatDate(tidsperiode.tom!),
                                 }),
-                            })
+                            }),
                         )}
                     />
                 </Block>

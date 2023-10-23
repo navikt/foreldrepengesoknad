@@ -1,5 +1,4 @@
-import { Attachment, InnsendingsType } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
+import { Attachment, AttachmentType, InnsendingsType } from '@navikt/fp-common';
 
 const isArrayOfAttachments = (object: any) => {
     return (
@@ -19,7 +18,7 @@ export const isAttachmentForPeriode = (type: AttachmentType) =>
 export const finnSendSenereVedlegg = (
     object: any,
     currentKey?: string,
-    previousEntries?: Map<string, Attachment[]>
+    previousEntries?: Map<string, Attachment[]>,
 ): Map<string, Attachment> => {
     if (object === null || object === undefined) {
         return new Map();

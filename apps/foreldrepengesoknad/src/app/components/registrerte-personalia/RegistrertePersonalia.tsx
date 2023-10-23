@@ -1,9 +1,7 @@
 import * as React from 'react';
 
-import { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
 import { FormattedMessage } from 'react-intl';
-import { formaterNavn } from 'app/utils/personUtils';
-import { bemUtils } from '@navikt/fp-common';
+import { RegistrertAnnenForelder, RegistrertBarn, bemUtils, formaterNavn } from '@navikt/fp-common';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './registrertePersonalia.less';

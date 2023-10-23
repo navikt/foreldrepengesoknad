@@ -9,10 +9,10 @@ export type UtenlandsoppholdPeriode = {
     landkode: string;
 };
 
-export type UtenlandsoppholdNeste = {
+export type UtenlandsoppholdSenere = {
     utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
 };
 
-export type UtenlandsoppholdSiste = {
+export type UtenlandsoppholdTidligere = {
     utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
 };

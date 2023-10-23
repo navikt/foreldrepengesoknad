@@ -1,29 +1,39 @@
 import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
-import SituasjonSirkel from './illustrasjoner/situasjon-sirkel/SituasjonSirkel';
-import UkerSirkel from './illustrasjoner/uker-sirkel/UkerSirkel';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { bemUtils, Block, formatDate, hasValue, intlUtils } from '@navikt/fp-common';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { Forelder } from 'app/types/Forelder';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
+import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
+import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
 import {
+    bemUtils,
+    Block,
+    EksisterendeSak,
+    Forelder,
+    formatDate,
+    formaterDato,
     getFarMedmorErAleneOmOmsorg,
+    getForeldreparSituasjon,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
     getNavnGenitivEierform,
     getNavnPåForeldre,
-} from 'app/utils/personUtils';
-import { InfoPeriode, isInfoPeriode, Periodetype } from 'uttaksplan/types/Periode';
-import InnholdMedIllustrasjon from '../innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import { formaterDato, getToTetteReglerGjelder, getVarighetString, ISOStringToDate } from 'app/utils/dateUtils';
-import links from 'app/links/links';
-import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
+    getToTetteReglerGjelder,
+    getVarighetString,
+    hasValue,
+    InfoPeriode,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    isInfoPeriode,
+    ISOStringToDate,
+    links,
+    Periodene,
+    Periodetype,
+    TilgjengeligStønadskonto,
+    Uttaksdagen,
+} from '@navikt/fp-common';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+
+import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
@@ -43,7 +53,7 @@ const getHvem = (
     intl: IntlShape,
     erDeltUttak: boolean,
     navnAnnenForelder: string | undefined,
-    erAnnenPartsEksisterendeSak?: boolean
+    erAnnenPartsEksisterendeSak?: boolean,
 ): string => {
     if (erDeltUttak && navnAnnenForelder !== undefined) {
         return erAnnenPartsEksisterendeSak
@@ -90,7 +100,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         erDeltUttak,
         morErAleneOmOmsorg,
         farMedmorErAleneOmOmsorg,
-        rolle
+        rolle,
     );
     const skalViseInfoOmMorsSak = hasValue(annenForelderNavn) && erFarEllerMedmor && erDeltUttak;
 
@@ -100,7 +110,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         intl,
         erDeltUttakINorge,
         annenForelderNavn,
-        eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false
+        eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false,
     );
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsedatoNesteBarn =

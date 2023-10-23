@@ -1,10 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import FormikFileUploader from './FormikFileUploader';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import IntlProvider from 'app/intl/IntlProvider';
 import { Formik } from 'formik';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-common';
 
 describe('<FormikFileUploader>', () => {
     it('skal vise opplastingskomponent men ingen opplastede vedlegg', () => {
@@ -20,7 +18,7 @@ describe('<FormikFileUploader>', () => {
                         skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
                     />
                 </IntlProvider>
-            </Formik>
+            </Formik>,
         );
 
         expect(screen.getByText('Opplastingsikon')).toBeInTheDocument();
@@ -54,7 +52,7 @@ describe('<FormikFileUploader>', () => {
                         skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
                     />
                 </IntlProvider>
-            </Formik>
+            </Formik>,
         );
 
         expect(screen.getByText('Dette er et filnavn')).toBeInTheDocument();

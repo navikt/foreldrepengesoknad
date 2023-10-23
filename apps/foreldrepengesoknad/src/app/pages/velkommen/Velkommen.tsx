@@ -1,4 +1,4 @@
-import { bemUtils, Block, intlUtils, LanguageToggle, Locale } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, LanguageToggle, links, Locale, Sak } from '@navikt/fp-common';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -30,11 +30,9 @@ import { Søknad } from 'app/context/types/Søknad';
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { Sak } from 'app/types/Sak';
 import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 
 import './velkommen.less';
-import links from 'app/links/links';
 
 interface Props {
     fornavn: string;

@@ -1,5 +1,12 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
-import Barn, { BarnType, isAdoptertAnnetBarn, isAdoptertStebarn, isUfødtBarn } from 'app/context/types/Barn';
+import {
+    Barn,
+    BarnType,
+    formatDate,
+    intlUtils,
+    isAdoptertAnnetBarn,
+    isAdoptertStebarn,
+    isUfødtBarn,
+} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';

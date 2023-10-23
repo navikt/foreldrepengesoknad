@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { ErrorBoundary } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
 import Engangsstønad from './Engangsstønad';
 import IntlProvider from './intl/IntlProvider';
@@ -18,11 +19,13 @@ const AppContainer = () => {
     }, []);
 
     return (
-        <IntlProvider språkkode={locale}>
-            <BrowserRouter>
-                <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
-            </BrowserRouter>
-        </IntlProvider>
+        <ErrorBoundary>
+            <IntlProvider språkkode={locale}>
+                <BrowserRouter>
+                    <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                </BrowserRouter>
+            </IntlProvider>
+        </ErrorBoundary>
     );
 };
 

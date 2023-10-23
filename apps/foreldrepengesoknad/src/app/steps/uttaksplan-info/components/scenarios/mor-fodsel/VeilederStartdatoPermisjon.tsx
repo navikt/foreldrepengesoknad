@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Block, intlUtils } from '@navikt/fp-common';
-import { formaterDato, getVarighetString } from 'app/utils/dateUtils';
-import { Uttaksdagen } from '../../../utils/Uttaksdagen';
+import { Block, Uttaksdagen, formaterDato, getVarighetString, intlUtils } from '@navikt/fp-common';
 import { GuidePanel } from '@navikt/ds-react';
 
 type ugyldigStartdatoÅrsak = undefined | 'helgedag' | 'fortidlig';
@@ -19,7 +17,7 @@ export interface Props {
 
 export const getÅrsakDersomUgyldigStartdato = (
     startdato: Date | undefined,
-    førsteMuligeStartdato: Date | undefined
+    førsteMuligeStartdato: Date | undefined,
 ): ugyldigStartdatoÅrsak => {
     if (startdato === undefined) {
         return;

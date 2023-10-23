@@ -1,8 +1,6 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
-import { Søkerrolle } from 'app/types/Søkerrolle';
-import { hasValue } from '@navikt/fp-common';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { Søkerrolle, hasValue, isFarEllerMedmor } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export interface AnnenForelderQuestionsPayload extends AnnenForelderFormData {
@@ -116,5 +114,5 @@ const AnnenForelderFormConfig: QuestionConfig<AnnenForelderQuestionsPayload, Ann
 };
 
 export const annenForelderQuestionsConfig = Questions<AnnenForelderQuestionsPayload, AnnenForelderFormField>(
-    AnnenForelderFormConfig
+    AnnenForelderFormConfig,
 );
