@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - '**'
+    branches-ignore:
+      - 'ny-svp'
     paths:
       - 'apps/engangsstonad/**'
       - 'packages/**'
