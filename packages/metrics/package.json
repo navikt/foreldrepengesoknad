@@ -1,0 +1,17 @@
+{
+    "name": "@navikt/fp-metrics",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {
+        "prettier": "prettier --write src"
+    },
+    "dependencies": {
+        "amplitude-js": "^8.21.9"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.0.0",
+        "@types/amplitude-js": "^8.16.2",
+        "@types/react": "^18.2.20",
+        "tsconfig": "workspace:*"
+    }
+}

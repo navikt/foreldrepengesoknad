@@ -14,7 +14,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin,
-            undefined
+            undefined,
         )(permisjonStartdato!);
 
         expect(resultat).toBe('Startdato for foreldrepengeperioden må være en gyldig dato på formatet dd.mm.åååå');
@@ -29,7 +29,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin,
-            undefined
+            undefined,
         )(permisjonStartdato);
 
         expect(resultat).toBe('Du kan ikke starte foreldrepengene på en lørdag eller søndag, du må velge en ukedag');
@@ -44,7 +44,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin,
-            undefined
+            undefined,
         )(permisjonStartdato);
 
         expect(resultat).toBe('Startdatoen må være innen de 12 første ukene før termin eller fødsel');
@@ -59,13 +59,13 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin,
-            undefined
+            undefined,
         )(permisjonStartdato);
 
         expect(resultat).toBeUndefined();
     });
 
-    it('skal tillate persmisjonsstartdato 12 uker før termin selv om termin er før fødsel, når termin er oppgitt', () => {
+    it('skal tillate permisjonsstartdato 12 uker før termin selv om termin er før fødsel, når termin er oppgitt', () => {
         const familiehendelsedato = dayjs('2023-06-15').toDate();
         const termindato = dayjs('2023-06-13').toDate();
         const skalIkkeHaUttakFørTermin = false;
@@ -75,13 +75,13 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin,
-            termindato
+            termindato,
         )(permisjonStartdato);
 
         expect(resultat).toBeUndefined();
     });
 
-    it('skal ikke tillate persmisjonsstartdato mer enn 12 uker før termin når termin er oppgitt', () => {
+    it('skal ikke tillate permisjonsstartdato mer enn 12 uker før termin når termin er oppgitt', () => {
         const familiehendelsedato = dayjs('2023-06-15').toDate();
         const termindato = dayjs('2023-06-13').toDate();
         const skalIkkeHaUttakFørTermin = false;
@@ -91,7 +91,7 @@ describe('morFodselValidering', () => {
             intlMock,
             familiehendelsedato,
             skalIkkeHaUttakFørTermin,
-            termindato
+            termindato,
         )(permisjonStartdato);
 
         expect(resultat).toBe('Startdatoen må være innen de 12 første ukene før termin eller fødsel');

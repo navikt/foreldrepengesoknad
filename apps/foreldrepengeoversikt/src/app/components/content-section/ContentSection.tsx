@@ -58,7 +58,7 @@ const ContentSection: FunctionComponent<Props> = ({
                     bem.modifier(`bg-${backgroundColor}`),
                     bem.modifier(`padding-${padding}`),
                     bem.modifier(`corner-style-${cornerStyle}`),
-                    bem.modifier(`margin-${marginBottom}`)
+                    bem.modifier(`margin-${marginBottom}`),
                 )}
             >
                 {children}

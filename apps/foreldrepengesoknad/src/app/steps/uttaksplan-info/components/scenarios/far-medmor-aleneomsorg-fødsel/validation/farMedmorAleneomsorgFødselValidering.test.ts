@@ -9,7 +9,7 @@ describe('farMedmorFødselOgMorHarIkkeRettValidering', () => {
         const startdatoUttak = undefined;
         const resultat = validateStartdatoUttakFarMedmorAleneomsorgFødsel(
             intlMock,
-            familiehendelsesdato
+            familiehendelsesdato,
         )(startdatoUttak!);
         expect(resultat).toBe('Du må oppgi dato for start av perioden');
     });
@@ -19,7 +19,7 @@ describe('farMedmorFødselOgMorHarIkkeRettValidering', () => {
         const startdatoUttak = '202-01-01';
         const resultat = validateStartdatoUttakFarMedmorAleneomsorgFødsel(
             intlMock,
-            familiehendelsesdato
+            familiehendelsesdato,
         )(startdatoUttak);
         expect(resultat).toBe('Dato for start av perioden må være en gyldig dato på formatet dd.mm.åååå');
     });
@@ -29,7 +29,7 @@ describe('farMedmorFødselOgMorHarIkkeRettValidering', () => {
         const startdatoUttak = '2021-01-01';
         const resultat = validateStartdatoUttakFarMedmorAleneomsorgFødsel(
             intlMock,
-            familiehendelsesdato
+            familiehendelsesdato,
         )(startdatoUttak);
         expect(resultat).toBe('Perioden må starte på eller etter 02.01.2021');
     });
@@ -39,7 +39,7 @@ describe('farMedmorFødselOgMorHarIkkeRettValidering', () => {
         const startdatoUttak = '2021-01-02';
         const resultat = validateStartdatoUttakFarMedmorAleneomsorgFødsel(
             intlMock,
-            familiehendelsesdato
+            familiehendelsesdato,
         )(startdatoUttak);
         expect(resultat).toBeUndefined();
     });

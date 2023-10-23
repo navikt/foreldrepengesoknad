@@ -12,6 +12,7 @@ export interface LanguageToggleProps {
     toggle: (locale: Locale) => void;
     locale: Locale;
     availableLocales: Locale[];
+    isCleanVersion?: boolean;
 }
 
 const renderMenuItem = (intl: IntlShape, locale: Locale) => {
@@ -33,12 +34,13 @@ const LanguageToggle: React.FunctionComponent<LanguageToggleProps> = ({
     locale,
     toggle: toggleLanguage,
     availableLocales,
+    isCleanVersion = false,
 }) => {
     const selectableOtherMenuLanguages: Locale[] = [...availableLocales].filter((code) => code !== locale) as Locale[];
     const intl = useIntl();
 
     return (
-        <div className="languageToggle">
+        <div className={isCleanVersion ? 'languageToggle__without_background' : 'languageToggle__background'}>
             <Wrapper
                 className="languageToggle__wrapper"
                 onSelection={(element: JSX.Element[]) => toggleLanguage(element[1].props['data-locale'])}

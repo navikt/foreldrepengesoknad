@@ -43,7 +43,7 @@ const Veilederinfo: React.FunctionComponent<VeilederInfoProps> = ({
                 maxWidth ? `veilederinfo--maxWidth-${maxWidth}` : null,
                 {
                     'veilederinfo--utenVeileder': !visVeileder,
-                }
+                },
             )}
         >
             {visVeileder && (

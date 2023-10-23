@@ -38,14 +38,14 @@ export const getAllSteps = (søknadsgrunnlag: Søknadsgrunnlag[]): SøknadStep[]
         mainSteps.map((step) => ({ step })),
         mainSteps.indexOf(StepID.TILRETTELEGGING),
         1,
-        ...tilretteleggingSteps
+        ...tilretteleggingSteps,
     );
 };
 
 export const getAdjacentSteps = (currentStep: SøknadStep, allSteps: SøknadStep[]): [SøknadStep, SøknadStep] => {
     const invalidStep = { step: StepID.INGEN };
     const indexOfCurrentStep = allSteps.findIndex(
-        ({ step, subStep }) => step === currentStep.step && subStep === currentStep.subStep
+        ({ step, subStep }) => step === currentStep.step && subStep === currentStep.subStep,
     );
 
     if (indexOfCurrentStep === -1) {

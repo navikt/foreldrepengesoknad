@@ -136,7 +136,7 @@ export const getSisteMuligeTerminbekreftelsesdato = () => dayjs(new Date()).endO
 export const dateRangesCollide = (ranges: DateRange[]): boolean => {
     if (ranges.length > 0) {
         const sortedDates = [...ranges].sort(sortDateRange);
-        const hasOverlap = ranges.find((d, idx) => {
+        const hasOverlap = sortedDates.find((d, idx) => {
             if (idx < sortedDates.length - 1) {
                 return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1].from);
             }

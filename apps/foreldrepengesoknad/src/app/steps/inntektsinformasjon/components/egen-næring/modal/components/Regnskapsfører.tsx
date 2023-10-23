@@ -37,7 +37,7 @@ const Regnskapsfører: FunctionComponent<Props> = ({ visibility }) => {
                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.regnskapsførerTlf')}
                     validate={validateNumber(
                         intl,
-                        'valideringsfeil.inntektsinformasjon.regnskapsførerTelefonnummer.ugyldigFormat'
+                        'valideringsfeil.inntektsinformasjon.regnskapsførerTelefonnummer.ugyldigFormat',
                     )}
                 />
             </Block>

@@ -37,7 +37,6 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import * as toggleUtils from './toggleUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -934,7 +933,6 @@ const førsteAugust2022 = '2022-08-01T00:00:00.000Z';
 const førsteAugust2022Date = new Date(førsteAugust2022);
 const andreAugust2022 = '2022-08-02T00:00:00.000Z';
 const andreAugust2022Date = new Date(andreAugust2022);
-const førsteJanuarDate = new Date('2022-01-01');
 
 describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 1. august 2022', () => {
     beforeAll(() => {
@@ -960,9 +958,7 @@ describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 
     });
 });
 
-describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 2022', () => {
-    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
-
+describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
     beforeAll(() => {
         MockDate.set(andreAugust2022);
     });
@@ -972,8 +968,6 @@ describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 202
     });
 
     it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
-        featureIsEnabledMock.mockImplementation(() => false);
-
         //Sjekk at dagens dato er riktig satt
         expect(new Date()).toEqual(andreAugust2022Date);
 
@@ -981,34 +975,14 @@ describe('dateUtils - WLB regler I prod og dev for dagens dato fom 2. august 202
         expect(gjelderWLB).toEqual(false);
     });
     it('skal returnere at WLB regler i prod gjelder med familiehendelsesdato etter 2. august 2022', () => {
-        featureIsEnabledMock.mockImplementation(() => false);
         expect(new Date()).toEqual(andreAugust2022Date);
 
         const gjelderWLB = andreAugust2022ReglerGjelder(andreAugust2022Date);
         expect(gjelderWLB).toEqual(true);
     });
-
-    it('skal returnere at WLB regler i dev ikke gjelder med familiehendelsesdato før 1. januar 2022', () => {
-        featureIsEnabledMock.mockImplementation(() => true);
-        const dateFør1Jan = new Date('2021-12-31');
-        const gjelderWLB = andreAugust2022ReglerGjelder(dateFør1Jan);
-        expect(gjelderWLB).toEqual(false);
-    });
-    it('skal returnere at WLB regler i dev gjelder med familiehendelsesdato from 1. januar 2022', () => {
-        featureIsEnabledMock.mockImplementation(() => true);
-        const gjelderWLB = andreAugust2022ReglerGjelder(førsteJanuarDate);
-        expect(gjelderWLB).toEqual(true);
-    });
 });
 
 describe('To tette - WLB i prod', () => {
-    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
-    beforeAll(() => {
-        featureIsEnabledMock.mockImplementation(() => false);
-    });
-    afterAll(() => {
-        featureIsEnabledMock.mockClear();
-    });
     it('Skal returnere at to tette regler ikke gjelder hvis første barnet sin familihendelse dato er undefined', () => {
         const result = getToTetteReglerGjelder(undefined, new Date('2023-01-01'));
         expect(result).toEqual(false);
@@ -1037,28 +1011,6 @@ describe('To tette - WLB i prod', () => {
     it('Skal returnere at to tette regler ikke gjelder hvis det er akkurat 48 uker mellom barna', () => {
         const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-05'));
         expect(result).toEqual(false);
-    });
-});
-
-describe('To tette - WLB i dev', () => {
-    const featureIsEnabledMock = vi.spyOn(toggleUtils, 'isFeatureEnabled');
-    beforeAll(() => {
-        featureIsEnabledMock.mockImplementation(() => true);
-    });
-    afterAll(() => {
-        featureIsEnabledMock.mockClear();
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis det første barnet sin familihendelse dato er før 1 jan 2022', () => {
-        const result = getToTetteReglerGjelder(new Date('2021-12-31'), new Date('2023-01-01'));
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis det andre barnet sin familihendelse dato er før 1 jan 2022', () => {
-        const result = getToTetteReglerGjelder(new Date('2023-01-01'), new Date('2021-12-31'));
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at to tette gjelder hvis begge barna er født fra og med 1 jan 2022', () => {
-        const result = getToTetteReglerGjelder(new Date('2022-01-01'), new Date('2022-01-01'));
-        expect(result).toEqual(true);
     });
 });
 

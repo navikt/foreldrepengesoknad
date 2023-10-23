@@ -4,7 +4,7 @@ import { Periode } from './Periode';
 import PersonFnrDTO from './PersonFnrDTO';
 import { RettighetType } from './RettighetType';
 import { Ytelse } from './Ytelse';
-import { ÅpenBehandling } from './ÅpenBehandling';
+import { ÅpenBehandlingFP } from './ÅpenBehandling';
 
 export interface ForeldrepengesakDTO {
     saksnummer: string;
@@ -24,7 +24,7 @@ export interface ForeldrepengesakDTO {
     };
     barn: PersonFnrDTO[];
     dekningsgrad: Dekningsgrad;
-    åpenBehandling?: ÅpenBehandling;
+    åpenBehandling?: ÅpenBehandlingFP;
 }
 
 export interface Foreldrepengesak extends ForeldrepengesakDTO {

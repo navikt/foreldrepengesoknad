@@ -21,7 +21,7 @@ const getAxiosInstance = (fnr?: string) => {
         },
         (response: AxiosError) => {
             return Promise.reject(response);
-        }
+        },
     );
 
     return AxiosInstance;

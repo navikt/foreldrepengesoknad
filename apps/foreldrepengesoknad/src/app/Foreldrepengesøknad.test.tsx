@@ -32,7 +32,7 @@ describe('<Foreldrepengesøknad>', () => {
                 <IntlProvider locale="nb">
                     <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
                 </IntlProvider>
-            </ForeldrepengesøknadContextProvider>
+            </ForeldrepengesøknadContextProvider>,
         );
 
         expect(screen.getByText('venter...')).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe('<Foreldrepengesøknad>', () => {
                 <IntlProvider locale="nb">
                     <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
                 </IntlProvider>
-            </ForeldrepengesøknadContextProvider>
+            </ForeldrepengesøknadContextProvider>,
         );
 
         expect(screen.getByText('Søknad om foreldrepenger')).toBeInTheDocument();

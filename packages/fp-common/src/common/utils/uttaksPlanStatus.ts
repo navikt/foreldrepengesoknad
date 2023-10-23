@@ -141,7 +141,7 @@ const getUttakFraAvslåttePerioder = (perioder: AvslåttPeriode[]): Uttaksperiod
     }
 
     return perioder
-        .filter((p) => p.avslåttPeriodeType === Periodetype.Uttak)
+        .filter((p) => p.avslåttPeriodeType === Periodetype.Uttak || p.avslåttPeriodeType === Periodetype.Utsettelse)
         .map(
             (periode): Uttaksperiode => ({
                 type: Periodetype.Uttak,

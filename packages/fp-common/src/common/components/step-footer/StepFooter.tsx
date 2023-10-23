@@ -8,9 +8,10 @@ import { Button } from '@navikt/ds-react';
 interface Props {
     onAvbrytOgFortsettSenere?: () => void;
     onAvbrytOgSlett?: () => void;
+    useNoTempSavingText?: boolean;
 }
 
-function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
+function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett, useNoTempSavingText }: Props) {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
 
     const bem = bemUtils('stepFooter');
@@ -24,6 +25,7 @@ function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
                         setIsOpen={setAvsluttIsOpen}
                         onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
                         onAvbrytOgSlett={onAvbrytOgSlett}
+                        useNoTempSavingText={useNoTempSavingText}
                     />
                     <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
                         Avslutt

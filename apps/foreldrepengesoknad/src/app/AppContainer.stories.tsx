@@ -29,7 +29,7 @@ const Template: Story = ({
     apiMock.onGet('/sokerinfo').reply(200, søkerinfoData);
     apiMock.onGet('/innsyn/v2/saker').reply(200, sakerData);
     apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartVedtakData);
-    apiMock.onGet('/uttak-url/konto').reply(200, stønadskontoerData);
+    apiMock.onGet('/konto').reply(200, stønadskontoerData);
     apiMock.onGet('/storage/kvittering/foreldrepenger').reply(200, storageKvitteringData);
 
     apiMock.onPost('/storage').reply(200, {});

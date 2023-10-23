@@ -3,6 +3,12 @@ name: "Deploy storybook"
 on:
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - 'server_for_redirect/**'
+      - '.github/workflows/build-redirect.yml'
+      - '.deploy/planlegger_redirect.yaml'
+      - 'server/**'
+      - '.github/workflows/build-server.yml'
 
 jobs:
   deploy-storybook:

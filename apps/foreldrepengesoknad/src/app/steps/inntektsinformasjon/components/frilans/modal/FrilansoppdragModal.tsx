@@ -75,7 +75,7 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                 onSubmit={(values: Partial<FrilansoppdragModalFormData>) => onValidSubmit(values)}
                 renderForm={({ values: formValues }) => {
                     const visibility = frilansoppdragModalQuestionsConfig.getVisbility(
-                        formValues as FrilansoppdragModalFormData
+                        formValues as FrilansoppdragModalFormData,
                     );
 
                     return (
@@ -121,7 +121,7 @@ const FrilansoppdragModal: FunctionComponent<Props> = ({
                                         intl,
                                         formValues.pågående!,
                                         formValues.fom!,
-                                        oppstartsdato
+                                        oppstartsdato,
                                     )}
                                     minDate={dayjs(formValues.fom).toDate()}
                                     maxDate={dayjs().toDate()}

@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import dayjs from 'dayjs';
 import * as stories from './AnnenForelder.stories';
-import { act } from 'react-dom/test-utils';
 
 const {
     Default,
@@ -40,7 +39,6 @@ const LINK_TIL_FARSKAPSPORTAL_MOR = 'Her kan far erklære farskap digitalt';
 const LINK_TIL_FARSKAPSPORTAL_FAR = 'Her kan du erklære farskap digitalt';
 describe('<AnnenForelder>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
-        const user = userEvent.setup();
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -49,14 +47,13 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText(ALENE_OM_OMSORG_JA));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText(INFO_TEKST)).toBeInTheDocument();
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {
-        const user = userEvent.setup();
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -64,19 +61,18 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[0]);
+        await userEvent.click(screen.getAllByText(NEI)[0]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[1]);
+        await userEvent.click(screen.getAllByText(NEI)[1]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet, ikke rett til foreldrepenger i Norge, opphold men ikke optjening i EØS', async () => {
-        const user = userEvent.setup();
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -84,21 +80,20 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[0]);
+        await userEvent.click(screen.getAllByText(NEI)[0]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(HAR_FAR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
-        user.click(screen.getAllByText(JA)[2]);
+        await userEvent.click(screen.getAllByText(JA)[2]);
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[2]);
+        await userEvent.click(screen.getAllByText(NEI)[2]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(INFO_TEKST)).not.toBeInTheDocument();
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har ikke orientert annen part', async () => {
-        const user = userEvent.setup();
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -106,17 +101,17 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        user.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(JA)[1]);
 
         expect(await screen.findByText(HAR_DU_ORIENTERT_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        user.click(screen.getAllByText(NEI)[1]);
+        await userEvent.click(screen.getAllByText(NEI)[1]);
 
         expect(await screen.findByText(DU_MÅ_INFORMERE_INFO_TEKST)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
@@ -124,7 +119,6 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har orientert annen part', async () => {
-        const user = userEvent.setup();
         render(<Default />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
@@ -132,17 +126,17 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
 
         expect(await screen.findByText(HAR_FAR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        user.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(JA)[1]);
 
         expect(await screen.findByText(HAR_DU_ORIENTERT_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        user.click(screen.getAllByText(JA)[2]);
+        await userEvent.click(screen.getAllByText(JA)[2]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(DU_MÅ_INFORMERE_INFO_TEKST)).not.toBeInTheDocument();
@@ -150,14 +144,13 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal velge at en ikke kan oppgi personalia til den andre forelderen', async () => {
-        const user = userEvent.setup();
         render(<SkalOppgiPersonalia />);
 
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByRole('checkbox'));
+        await userEvent.click(screen.getByRole('checkbox'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -175,7 +168,6 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
-        const user = userEvent.setup();
         render(<SkalOppgiPersonalia />);
 
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
@@ -183,36 +175,29 @@ describe('<AnnenForelder>', () => {
         expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Espen');
-        });
+        await userEvent.type(fornavnInput, 'Espen');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
 
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923424');
-        });
+        await userEvent.type(fødselsnrInput, '05057923424');
 
-        user.click(screen.getAllByRole('checkbox')[1]);
+        await userEvent.click(screen.getAllByRole('checkbox')[1]);
 
         expect(await screen.findByText('Hvor bor Espen?')).toBeInTheDocument();
 
         const hvorBorSelect = screen.getByLabelText('Hvor bor Espen?');
-        user.selectOptions(hvorBorSelect, 'Oman');
+        await userEvent.selectOptions(hvorBorSelect, 'Oman');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_JA));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal oppgi personalia til den andre forelderen men ikke velge at han har utenlandsk fødselsnummer', async () => {
-        const user = userEvent.setup();
         render(<SkalOppgiPersonalia />);
 
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
@@ -220,29 +205,22 @@ describe('<AnnenForelder>', () => {
         expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Espen');
-        });
+        await userEvent.type(fornavnInput, 'Espen');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
 
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923424');
-        });
+        await userEvent.type(fødselsnrInput, '05057923424');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_JA));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
 
     it('skal søke som far og ha aleneomsorg for barnet', async () => {
-        const user = userEvent.setup();
         render(<ForFar />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
@@ -250,16 +228,14 @@ describe('<AnnenForelder>', () => {
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
 
-        user.click(screen.getByText(ALENE_OM_OMSORG_JA));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_JA));
 
         expect(await screen.findByText('Dato du ble alene om omsorgen')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
         const datoAleneInput = screen.getByLabelText('Dato du ble alene om omsorgen');
-        await act(async () => {
-            await user.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
-        });
-        user.tab();
+        await userEvent.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
 
@@ -270,207 +246,146 @@ describe('<AnnenForelder>', () => {
     });
 
     it('Skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
-        const user = userEvent.setup();
         render(<ForFar />);
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.getByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
-        });
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_NORGE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[0]);
+        await userEvent.click(screen.getAllByText(NEI)[0]);
         expect(await screen.findByText(HAR_MOR_HATT_OPPHOLD_I_EØS_LAND, { exact: false })).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getAllByText(JA)[2]);
-        });
+        await userEvent.click(screen.getAllByText(JA)[2]);
         expect(await screen.findByText(HAR_MOR_RETT_TIL_FP_I_EØS_LABEL, { exact: false })).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getAllByText(JA)[3]);
-        });
+        await userEvent.click(screen.getAllByText(JA)[3]);
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getAllByText(NEI)[2]);
-        });
+        await userEvent.click(screen.getAllByText(NEI)[2]);
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(await screen.findByText(ER_ANNEN_FORELDER_UFØR)).toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getAllByText(NEI)[3]);
-        });
+        await userEvent.click(screen.getAllByText(NEI)[3]);
         expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
     it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder er far og har rett i Norge', async () => {
-        const user = userEvent.setup();
-        render(<MorUfødtBarn />);
+        const screen = render(<MorUfødtBarn />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Espen');
-        });
+        await userEvent.type(fornavnInput, 'Espen');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
 
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923524');
-        });
+        await userEvent.type(fødselsnrInput, '05057923524');
 
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Espen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[0]);
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).not.toBeInTheDocument();
-        user.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(NEI)[0]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).not.toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[1]);
         expect(await screen.findByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).toBeInTheDocument();
     });
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
-        const user = userEvent.setup();
         render(<MorUfødtBarn />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Medmor');
-        });
+        await userEvent.type(fornavnInput, 'Medmor');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Medmor?')).toBeInTheDocument();
 
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Medmor?');
         //Endrer fnr på annen forelder til en kvinnelig fnr:
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923824');
-        });
+        await userEvent.type(fødselsnrInput, '05057923824');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Medmor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        user.click(screen.getAllByText(JA)[1]);
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).not.toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[1]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).not.toBeInTheDocument();
     });
     it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder har utenlandsk fnr og har rett i Norge', async () => {
-        const user = userEvent.setup();
         render(<MorUfødtBarn />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
         expect(screen.getByText(KAN_IKKE_OPPGI_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
 
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Eksotisk');
-        });
+        await userEvent.type(fornavnInput, 'Eksotisk');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Eksotisk?')).toBeInTheDocument();
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Eksotisk?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '0000000000000000');
-        });
-        await act(async () => {
-            await user.click(screen.getAllByRole('checkbox')[1]);
-        });
+        await userEvent.type(fødselsnrInput, '0000000000000000');
+        await userEvent.click(screen.getAllByRole('checkbox')[1]);
         expect(await screen.findByText('Hvor bor Eksotisk?')).toBeInTheDocument();
         const hvorBorSelect = screen.getByLabelText('Hvor bor Eksotisk?');
-        user.selectOptions(hvorBorSelect, 'Oman');
+        await userEvent.selectOptions(hvorBorSelect, 'Oman');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
-        });
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Eksotisk rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getAllByText(JA)[1]);
-        });
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[1]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_MOR, { exact: false })).toBeInTheDocument();
     });
     it('skal vise infoboks om farskapsportal når far søker på termin, ikke er gift og uansett om mor har rett til foreldrepenger', async () => {
-        const user = userEvent.setup();
         render(<FarUfødtBarn />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Mor');
-        });
+        await userEvent.type(fornavnInput, 'Mor');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Mor?')).toBeInTheDocument();
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Mor?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923424');
-        });
+        await userEvent.type(fødselsnrInput, '05057923424');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Mor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await act(async () => {
-            await user.click(screen.getAllByText(NEI)[0]);
-        });
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).toBeInTheDocument();
-        user.click(screen.getAllByText(JA)[1]);
+        await userEvent.click(screen.getAllByText(NEI)[0]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[1]);
         expect(await screen.findByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).toBeInTheDocument();
     });
     it('skal ikke vise infoboks om farskapsportal når medmor søker', async () => {
-        const user = userEvent.setup();
         render(<MedmorUfødtBarn />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Mor');
-        });
+        await userEvent.type(fornavnInput, 'Mor');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Mor?')).toBeInTheDocument();
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Mor?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923424');
-        });
+        await userEvent.type(fødselsnrInput, '05057923424');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Mor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        user.click(screen.getAllByText(NEI)[0]);
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
-        user.click(screen.getAllByText(JA)[1]);
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(NEI)[0]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[1]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
     });
     it('skal ikke vise infoboks om farskapsportal når far er gift', async () => {
-        const user = userEvent.setup();
         render(<FarGiftUfødtBarn />);
         expect(await screen.findByText(NAVN_ANNEN_FORELDER_LABEL)).toBeInTheDocument();
         const fornavnInput = screen.getByLabelText('Fornavn:');
-        await act(async () => {
-            await user.type(fornavnInput, 'Mor');
-        });
+        await userEvent.type(fornavnInput, 'Mor');
         const etternavnInput = screen.getByLabelText('Etternavn:');
-        await act(async () => {
-            await user.type(etternavnInput, 'Utvikler');
-        });
+        await userEvent.type(etternavnInput, 'Utvikler');
         expect(await screen.findByText('Hva er fødselsnummeret eller D-nummeret til Mor?')).toBeInTheDocument();
         const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Mor?');
-        await act(async () => {
-            await user.type(fødselsnrInput, '05057923424');
-        });
+        await userEvent.type(fødselsnrInput, '05057923424');
         expect(await screen.findByText(ALENE_OMSORG_LABEL)).toBeInTheDocument();
-        user.click(screen.getByText(ALENE_OM_OMSORG_NEI));
+        await userEvent.click(screen.getByText(ALENE_OM_OMSORG_NEI));
         expect(await screen.findByText('Har Mor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        user.click(screen.getAllByText(JA)[1]);
-        expect(await screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(JA)[1]);
+        expect(screen.queryByText(LINK_TIL_FARSKAPSPORTAL_FAR, { exact: false })).not.toBeInTheDocument();
     });
 });

@@ -77,6 +77,7 @@ import {
     getKanJustereAutomatiskVedFødsel,
     getVisAutomatiskJusteringForm,
 } from './automatisk-justering-form/automatiskJusteringUtils';
+import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -254,7 +255,7 @@ const UttaksplanStep = () => {
                     ) {
                         if (!p.ønskerSamtidigUttak) {
                             p.ønskerSamtidigUttak = true;
-                            p.samtidigUttakProsent = '100';
+                            p.samtidigUttakProsent = getSamtidigUttaksprosent(p.gradert, p.stillingsprosent);
                         }
                     }
                 }

@@ -68,3 +68,5 @@ export * from './utils/globalUtil';
 export { uttaksplanDatoavgrensninger } from './utils/uttaksplanDatoavgrensninger';
 export { default as links } from './links/links';
 export { guid } from './utils/guid';
+
+export type { VeilederProps } from './components/veileder/Veileder';

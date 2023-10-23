@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './MorFarAdopsjon.stories';
 import dayjs from 'dayjs';
-import { act } from 'react-dom/test-utils';
 
 const { UttaksplanMedAleneomsorg, UttaksplanMedDeltUttakDerFarSøker, UttaksplanMedDeltUttakDerMorSøker } =
     composeStories(stories);
@@ -22,7 +21,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
         //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
@@ -33,7 +32,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
+        await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(VELG_DATO_DATOFELT)).not.toBeInTheDocument();
@@ -46,7 +45,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 46 uker')).toBeInTheDocument();
         //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
@@ -57,7 +56,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
+        await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
         expect(screen.queryByText(VELG_DATO_DATOFELT)).not.toBeInTheDocument();
@@ -69,7 +68,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
         //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
@@ -80,14 +79,12 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Annen dato'));
+        await userEvent.click(screen.getByText('Annen dato'));
 
         expect(await screen.findByText(VELG_DATO_DATOFELT)).toBeInTheDocument();
         const datoInput = screen.getByLabelText(VELG_DATO_DATOFELT);
-        await act(async () => {
-            await userEvent.type(datoInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(datoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(
             await screen.findByText('Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.'),
@@ -101,7 +98,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText(PERIODE_LENGDE_LABEL)).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
         //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
@@ -112,14 +109,12 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Annen dato'));
+        await userEvent.click(screen.getByText('Annen dato'));
 
         expect(await screen.findByText(VELG_DATO_DATOFELT)).toBeInTheDocument();
         const datoInput = screen.getByLabelText(VELG_DATO_DATOFELT);
-        await act(async () => {
-            await userEvent.type(datoInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(datoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(
             await screen.findByText('Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.'),
@@ -133,7 +128,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText(JA));
 
         expect(
             await screen.findByText(
@@ -141,7 +136,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
             ),
         ).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 19 uker')).toBeInTheDocument();
         expect(screen.getByText('18 uker')).toBeInTheDocument();
@@ -151,17 +146,13 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
         const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
-        await act(async () => {
-            await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
-        await act(async () => {
-            await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -172,7 +163,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText(JA));
 
         expect(
             await screen.findByText(
@@ -180,7 +171,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
             ),
         ).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 15 uker')).toBeInTheDocument();
         expect(screen.getByText('16 uker')).toBeInTheDocument();
@@ -190,17 +181,13 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
         const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
-        await act(async () => {
-            await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
-        await act(async () => {
-            await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });
@@ -211,7 +198,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText(NEI));
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
         expect(
@@ -227,7 +214,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Har Espen foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText(JA));
 
         expect(
             await screen.findByText(
@@ -235,7 +222,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
             ),
         ).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(await screen.findByText('3 + 19 uker')).toBeInTheDocument();
         expect(screen.getByText('18 uker')).toBeInTheDocument();
@@ -245,17 +232,13 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
         expect(await screen.findByText('siste dag med foreldrepenger?', { exact: false })).toBeInTheDocument();
         const sisteDagInput = screen.getByLabelText('siste dag med foreldrepenger?', { exact: false });
-        await act(async () => {
-            await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
         const førsteDagInput = screen.getByLabelText('Når er din første dag med foreldrepenger?');
-        await act(async () => {
-            await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
-        });
-        userEvent.tab();
+        await userEvent.type(førsteDagInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });

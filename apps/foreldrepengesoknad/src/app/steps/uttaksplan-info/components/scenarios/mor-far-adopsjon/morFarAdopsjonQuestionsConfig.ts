@@ -65,5 +65,5 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, M
 };
 
 export const morFarAdopsjonQuestionsConfig = Questions<MorFarAdopsjonQuestionsPayload, MorFarAdopsjonFormField>(
-    MorFarAdopsjonFormConfig
+    MorFarAdopsjonFormConfig,
 );

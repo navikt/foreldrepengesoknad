@@ -4,6 +4,7 @@ import {
     normaliserPerioder,
     settInnAnnenPartsUttak,
 } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import { getSamtidigUttaksprosent } from 'app/utils/uttaksplanInfoUtils';
 
 export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     annenPartsPerioder: Periode[],
@@ -31,11 +32,14 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
                 if (overlappendePeriodeAnnenPart !== undefined && isUttakAnnenPart(overlappendePeriodeAnnenPart)) {
                     if (!p.ønskerSamtidigUttak) {
                         p.ønskerSamtidigUttak = true;
-                        p.samtidigUttakProsent = '100';
+                        p.samtidigUttakProsent = getSamtidigUttaksprosent(p.gradert, p.stillingsprosent);
                     }
                     if (!overlappendePeriodeAnnenPart.ønskerSamtidigUttak) {
                         overlappendePeriodeAnnenPart.ønskerSamtidigUttak = true;
-                        overlappendePeriodeAnnenPart.samtidigUttakProsent = '100';
+                        overlappendePeriodeAnnenPart.samtidigUttakProsent = getSamtidigUttaksprosent(
+                            overlappendePeriodeAnnenPart.gradert,
+                            overlappendePeriodeAnnenPart.stillingsprosent,
+                        );
                     }
                 }
             }
