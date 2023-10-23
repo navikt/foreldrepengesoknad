@@ -41,16 +41,12 @@ describe('intl messages', () => {
     });
 
     const regex = /(?<=(isRequired|isValidDate|isMaxOneYearIntoTheFuture)\(')[^']*/gm;
-    //const regex = /(?<=(getMessage\(intl,\s'))[^']*/gm;
+    //const regex = /(?<=(intlUtils\(intl,\s'))[^']*/gm;
 
     const getAdditionalIntlString = (fileLoc: string) => {
-        let matches = [] as string[];
         const fileBuffer = fs.readFileSync(fileLoc);
-        const m = fileBuffer.toString().match(regex);
-        if (m) {
-            matches = m;
-        }
-        return matches;
+        const matches = fileBuffer.toString().match(regex);
+        return matches || [];
     };
 
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
