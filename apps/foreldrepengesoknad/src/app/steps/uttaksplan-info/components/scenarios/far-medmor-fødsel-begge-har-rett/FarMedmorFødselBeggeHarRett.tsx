@@ -1,8 +1,18 @@
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { FunctionComponent } from 'react';
-import { getNavnGenitivEierform } from 'app/utils/personUtils';
-import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    EksisterendeSak,
+    Forelder,
+    ISOStringToDate,
+    StepButtonWrapper,
+    Uttaksdagen,
+    andreAugust2022ReglerGjelder,
+    getErMorUfør,
+    getNavnGenitivEierform,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -26,9 +36,6 @@ import farMedmorFødselBeggeHarRettQuestionsConfig, {
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import { getErMorUfør } from 'app/utils/annenForelderUtils';
-import { Forelder } from 'app/types/Forelder';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
@@ -37,10 +44,8 @@ import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { Button, GuidePanel } from '@navikt/ds-react';
@@ -76,7 +81,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
@@ -97,7 +102,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: erFødsel ? 'fødsel' : 'adopsjon',
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -114,14 +119,14 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     termindato,
                     harAktivitetskravIPeriodeUtenUttak: false,
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     return (
@@ -220,7 +225,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         <Block
                             padBottom="xl"
                             visible={visibility.isVisible(
-                                FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode
+                                FarMedmorFødselBeggeHarRettFormField.antallDagerFellesperiode,
                             )}
                         >
                             {tilgjengeligeDager && (

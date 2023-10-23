@@ -12,14 +12,13 @@ import {
     NavnPåForeldre,
     Periode,
     Periodetype,
+    PeriodeValidState,
     Situasjon,
     TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
 import classNames from 'classnames';
 import { FunctionComponent } from 'react';
-import { VeilederMessage } from 'validering/veilederInfo/types';
-import VeilederMeldinger from 'validering/veilederInfo/VeilederMeldinger';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
 import PeriodeHull from '../perioder/PeriodeHull';
 import PeriodeInfo from '../perioder/PeriodeInfo';
@@ -28,10 +27,11 @@ import PeriodeFørFødselForm from '../uttaks-forms/periode-før-fødsel-form/Pe
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
 import { Accordion } from '@navikt/ds-react';
-import { PeriodeValidState } from 'Uttaksplan';
 import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
 
 import './periodelisteItem.less';
+import { VeilederMessage } from '../../validering/veilederInfo/types';
+import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 
 interface Props {
     egenPeriode: boolean;

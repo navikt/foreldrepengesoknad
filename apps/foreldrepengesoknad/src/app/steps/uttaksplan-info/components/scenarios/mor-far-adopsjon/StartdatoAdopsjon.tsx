@@ -1,24 +1,30 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    ISOStringToDate,
+    formaterDatoUtenDag,
+    hasValue,
+    intlUtils,
+    isAdoptertAnnetBarn,
+    isAdoptertBarn,
+    uttaksplanDatoavgrensninger,
+} from '@navikt/fp-common';
 import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { isAdoptertAnnetBarn, isAdoptertBarn } from 'app/context/types/Barn';
-import { formaterDatoUtenDag, ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
 import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/morFarAdopsjonValidering';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { assertUnreachable } from 'app/utils/globalUtil';
 import { DatepickerDateRange } from '@navikt/ds-datepicker';
 import { DateRange } from '@navikt/sif-common-formik-ds/lib';
+import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil';
 
 export const finnStartdatoAdopsjon = (
     startdatoAdopsjonValg: AdopsjonStartdatoValg,
     annenStartdatoAdopsjon?: string,
     adopsjonsdato?: string,
     ankomstdato?: string,
-    søkersFørsteDag?: string
+    søkersFørsteDag?: string,
 ): string => {
     if (hasValue(søkersFørsteDag)) {
         return søkersFørsteDag!;

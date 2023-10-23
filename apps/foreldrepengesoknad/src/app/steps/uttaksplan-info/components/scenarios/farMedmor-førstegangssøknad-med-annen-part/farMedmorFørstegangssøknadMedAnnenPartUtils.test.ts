@@ -1,8 +1,13 @@
-import { Forelder } from 'app/types/Forelder';
-import { Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
+import {
+    Forelder,
+    OppholdÅrsakType,
+    Periode,
+    PeriodeInfoType,
+    Periodetype,
+    StønadskontoType,
+    UttakAnnenPartInfoPeriode,
+    Uttaksperiode,
+} from '@navikt/fp-common';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 
 const familiehendelseDatoForMorsPerioderFørWLB = new Date('2021-08-04');
@@ -98,7 +103,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             false,
             false,
             true,
-            undefined
+            undefined,
         );
 
         expect(nyPlan.length).toBe(3);
@@ -126,7 +131,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker før WLB', 
             false,
             false,
             true,
-            undefined
+            undefined,
         );
 
         expect(nyPlan.length).toBe(4);
@@ -166,7 +171,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            undefined
+            undefined,
         );
 
         expect(nyPlan.length).toBe(5);
@@ -208,7 +213,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            undefined
+            undefined,
         );
         expect(nyPlan.length).toBe(4);
         expect(nyPlan[0]).toEqual(morsPerioderEtterWLB[0]);
@@ -238,7 +243,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            undefined
+            undefined,
         );
         expect(nyPlan.length).toBe(6);
         expect(nyPlan[0]).toEqual(morsPerioderEtterWLB[0]);
@@ -307,7 +312,7 @@ describe('farMedmorsFørstegangssøknadMedAnnenPartUtils - for saker etter WLB',
             false,
             false,
             true,
-            undefined
+            undefined,
         );
         expect(nyPlan.length).toBe(7);
         const morsPeriodeFørFødselDel1 = nyPlan[0] as UttakAnnenPartInfoPeriode;

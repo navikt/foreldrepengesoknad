@@ -1,10 +1,10 @@
-import { Situasjon } from 'app/types/Situasjon';
+import { Situasjon } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 
 export const skalViseInfoOmPrematuruker = (
     fødselsdato: Date | undefined,
     termindato: Date | undefined,
-    situasjon: Situasjon
+    situasjon: Situasjon,
 ): boolean => {
     if (fødselsdato === undefined || termindato === undefined || situasjon !== 'fødsel') {
         return false;

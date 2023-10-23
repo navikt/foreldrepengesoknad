@@ -8,12 +8,9 @@ import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrep
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import Søker from 'app/context/types/Søker';
 import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import dayjs from 'dayjs';
-import { Periode, Periodetype } from 'uttaksplan/types/Periode';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import InfoOmSøknaden from './InfoOmSøknaden';
+import { EksisterendeSak, Periode, Periodetype, StønadskontoType, Søkerinfo } from '@navikt/fp-common';
 
 const context = {
     søknad: {

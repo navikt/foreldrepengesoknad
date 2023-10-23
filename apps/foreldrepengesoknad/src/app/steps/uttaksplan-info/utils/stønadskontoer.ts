@@ -1,5 +1,4 @@
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
+import { StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
@@ -9,7 +8,7 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
                 kontoType.konto === StønadskontoType.Fedrekvote ||
                 kontoType.konto === StønadskontoType.Mødrekvote ||
                 kontoType.konto === StønadskontoType.Foreldrepenger ||
-                kontoType.konto === StønadskontoType.AktivitetsfriKvote
+                kontoType.konto === StønadskontoType.AktivitetsfriKvote,
         )
         .map((kontoType) => kontoType.konto);
 

@@ -1,6 +1,5 @@
-import { isUttaksperiode } from '@navikt/fp-common';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
-import { Søknadsinfo } from 'validering/utils/types/Søknadsinfo';
+import { Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const harUttaksperiodeStønadskonto: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const uttaksperioderUtenStønadskonto = grunnlag.perioder.filter(

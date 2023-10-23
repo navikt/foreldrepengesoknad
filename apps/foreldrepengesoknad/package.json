@@ -78,6 +78,7 @@
         "@navikt/fp-common": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
+        "@navikt/uttaksplan": "workspace:*",
         "@sentry/browser": "^7.64.0",
         "@snyk/protect": "^1.1203.0",
         "amplitude-js": "^8.21.9",

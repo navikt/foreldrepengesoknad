@@ -1,8 +1,7 @@
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { graderingSkalBesvares } from 'utils/uttaksskjema/graderingSkalBesvares';
 import dayjs from 'dayjs';
-import { Periode, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, Søknadsinfo, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { graderingSkalBesvares } from '../../utils/uttaksskjema/graderingSkalBesvares';
 
 export const inneholderUttaksperioderMedUbesvartGradering = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p)) as Uttaksperiode[];

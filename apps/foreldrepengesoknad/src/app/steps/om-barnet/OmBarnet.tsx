@@ -1,4 +1,17 @@
-import { Block, hasValue, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    andreAugust2022ReglerGjelder,
+    Block,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
+    intlUtils,
+    isFarEllerMedmor,
+    isFødtBarn,
+    ISOStringToDate,
+    isUfødtBarn,
+    RegistrertBarn,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 
@@ -19,13 +32,8 @@ import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataT
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
-import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
-import { RegistrertBarn } from 'app/types/Person';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';

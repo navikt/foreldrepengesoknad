@@ -1,6 +1,11 @@
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { Periode, StønadskontoUttak, TilgjengeligStønadskonto, beregnGjenståendeUttaksdager } from '@navikt/fp-common';
+import {
+    Periode,
+    StønadskontoUttak,
+    Søknadsinfo,
+    TilgjengeligStønadskonto,
+    beregnGjenståendeUttaksdager,
+} from '@navikt/fp-common';
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],

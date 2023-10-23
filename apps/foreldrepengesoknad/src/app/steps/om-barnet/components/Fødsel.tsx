@@ -1,6 +1,5 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, Søkersituasjon, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import { FunctionComponent } from 'react';

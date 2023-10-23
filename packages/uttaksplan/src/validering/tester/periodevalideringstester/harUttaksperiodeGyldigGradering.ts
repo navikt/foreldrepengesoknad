@@ -1,6 +1,6 @@
-import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
 import { gradertUttaksperiodeErUgyldig } from '../../utils/periodeValideringUtils';
+import { Søknadsinfo } from '@navikt/fp-common';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const harUttaksperiodeGyldigGradering: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const ugyldigePerioder = grunnlag.perioder.filter(gradertUttaksperiodeErUgyldig);

@@ -17,11 +17,10 @@ import {
     ISOStringToDate,
     getSlettPeriodeTekst,
     Attachment,
+    PeriodeValidState,
 } from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
-import UtsettelseEndreTidsperiodeSpørsmål from 'components/utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import {
@@ -42,7 +41,9 @@ import {
 import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import { Button } from '@navikt/ds-react';
-import { PeriodeValidState } from 'Uttaksplan';
+import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
+import UtsettelseEndreTidsperiodeSpørsmål from '../../utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
+
 import './periodeUtsettelseForm.less';
 
 interface Props {

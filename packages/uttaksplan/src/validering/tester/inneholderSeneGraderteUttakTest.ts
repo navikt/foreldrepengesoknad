@@ -1,5 +1,4 @@
-import { erPeriodeInnvilget, erSentGradertUttak } from '@navikt/fp-common';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import { Søknadsinfo, erPeriodeInnvilget, erSentGradertUttak } from '@navikt/fp-common';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 
 export function inneholderSeneGraderteUttakTest(grunnlag: Søknadsinfo): RegelTestresultat {

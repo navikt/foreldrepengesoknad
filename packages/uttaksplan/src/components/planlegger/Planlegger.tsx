@@ -16,16 +16,16 @@ import {
     Periodene,
     Utsettelsesperiode,
     Attachment,
+    PeriodeValidState,
 } from '@navikt/fp-common';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { VeiledermeldingerPerPeriode } from 'validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
 import { Button, Heading } from '@navikt/ds-react';
-import { PeriodeValidState } from 'Uttaksplan';
 
 import './planlegger.less';
+import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 
 interface Props {
     uttaksplan: Periode[];

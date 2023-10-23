@@ -2,8 +2,8 @@ import { renderHook } from '@testing-library/react';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import useUttaksplanInfo from './useUttaksplanInfo';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 describe('useUttaksplanInfo', () => {
     it('skal hente uttaksplan-info fra state', () => {

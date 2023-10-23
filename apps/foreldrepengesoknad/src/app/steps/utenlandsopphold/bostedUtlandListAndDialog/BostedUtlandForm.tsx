@@ -1,7 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BostedUtland, isValidBostedUtland } from './types';
-import { Block, intlUtils, validateRequiredField } from '@navikt/fp-common';
-import { dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
+import { Block, ISOStringToDate, dateRangeValidation, intlUtils, validateRequiredField } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { Heading } from '@navikt/ds-react';
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
@@ -132,11 +131,11 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                     erFremtidigOpphold
                                         ? intlUtils(
                                               intl,
-                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandSkalDuBoI'
+                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandSkalDuBoI',
                                           )
                                         : intlUtils(
                                               intl,
-                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI'
+                                              'utenlandsopphold.leggTilUtenlandsopphold.spørsmål.hvilketLandHarDuBoddI',
                                           )
                                 }
                                 validate={(country) =>
@@ -146,8 +145,8 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({
                                             intl,
                                             erFremtidigOpphold
                                                 ? 'valideringsfeil.utenlandsopphold.landDuSkalBoIPåkrevd'
-                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd'
-                                        )
+                                                : 'valideringsfeil.utenlandsopphold.landDuHarBoddIPåkrevd',
+                                        ),
                                     )
                                 }
                                 useAlpha3Code={false}

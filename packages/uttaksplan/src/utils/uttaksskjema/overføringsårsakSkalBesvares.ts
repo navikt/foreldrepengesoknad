@@ -1,6 +1,4 @@
-import { AnnenForelder, StønadskontoType } from '@navikt/fp-common';
-import { harAnnenForelderRettIEØS } from 'app/utils/annenForelderUtils';
-import { Periodetype } from 'types/Periode';
+import { AnnenForelder, Periodetype, StønadskontoType, harAnnenForelderRettIEØS } from '@navikt/fp-common';
 
 const overføringsårsakSkalBesvares = (
     periodetype: Periodetype,

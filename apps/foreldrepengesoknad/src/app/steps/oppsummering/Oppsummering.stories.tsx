@@ -10,11 +10,10 @@ import { Næringstype } from 'app/context/types/Næring';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import MockAdapter from 'axios-mock-adapter/types';
-import Barn from 'app/context/types/Barn';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import _context from 'storybook/storyData/soknad/soknadMedUttaksplan.json';
 import Oppsummering from './Oppsummering';
+import { Barn, ISOStringToDate } from '@navikt/fp-common';
 
 export default {
     title: 'steps/Oppsummering',

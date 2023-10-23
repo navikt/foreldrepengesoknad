@@ -1,14 +1,17 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getNavnGenitivEierform } from 'app/utils/personUtils';
-import { bemUtils, intlUtils } from '@navikt/fp-common';
-import { UttaksplanHexColor } from 'uttaksplan/types/UttaksplanHexColor';
-import { getVarighetString } from 'app/utils/dateUtils';
+import {
+    Personkort,
+    UttaksplanHexColor,
+    bemUtils,
+    getNavnGenitivEierform,
+    getVarighetString,
+    intlUtils,
+} from '@navikt/fp-common';
 import Multibar from './multibar/Multibar';
 import { TilgjengeligeDager } from 'app/types/TilgjengeligeDager';
-import Personkort from 'app/components/personkort/Personkort';
+import { Label } from '@navikt/ds-react';
 
 import './tilgjengeligeDagerGraf.less';
-import { Label } from '@navikt/ds-react';
 
 interface Props {
     tilgjengeligeDager: TilgjengeligeDager;
@@ -20,7 +23,7 @@ interface Props {
 
 export const getProsentFordelingPerDel = (
     tilgjengeligeDager: TilgjengeligeDager,
-    inkluderForeldrepengerFørTermin: boolean
+    inkluderForeldrepengerFørTermin: boolean,
 ): {
     pstMor: number;
     pstFelles: number;
@@ -56,7 +59,7 @@ const DeltOmsorgGraf: React.FunctionComponent<Props> = ({
             ? `${tilgjengeligeDager.dagerForeldrepengerFørFødsel / 5} + ${tilgjengeligeDager.dagerMor / 5} ${intlUtils(
                   intl,
                   'uker',
-                  { uker: 15 }
+                  { uker: 15 },
               )}`
             : getVarighetString(tilgjengeligeDager.dagerMor, intl);
     return (

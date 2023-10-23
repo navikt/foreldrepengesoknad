@@ -1,6 +1,5 @@
-import { isUtsettelsePgaArbeid } from '@navikt/fp-common';
-import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
+import { Søknadsinfo, isUtsettelsePgaArbeid } from '@navikt/fp-common';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const harBekreftet100ProsentArbeidIUtsettelsePgaArbeid: RegelTest = (
     grunnlag: Søknadsinfo,

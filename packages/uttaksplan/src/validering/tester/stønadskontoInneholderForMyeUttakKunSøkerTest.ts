@@ -1,8 +1,7 @@
 import { IntlShape } from 'react-intl';
 import { getUttaksstatus } from '../../utils/uttaksstatus';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
-import { getStønadskontoNavn, getVarighetString } from '@navikt/fp-common';
+import { Søknadsinfo, getStønadskontoNavn, getVarighetString } from '@navikt/fp-common';
 
 export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const {

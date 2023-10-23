@@ -1,5 +1,5 @@
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
+import { Søknadsinfo } from '@navikt/fp-common';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn } from './periodevalideringstester/forSenUttakVedPåfølgendeBarn';
 
 export const harPerioderEtterFørsteStønadsdagNesteBarnDerToTette: RegelTest = (

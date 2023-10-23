@@ -1,35 +1,41 @@
 import MockDate from 'mockdate';
 import {
-    dateRangeValidation,
     isDateABeforeDateB,
-    isDateInTheFuture,
     getEldsteRegistrerteBarn,
-    getUkerOgDagerFromDager,
-    getVarighetString,
-    formaterDato,
-    formaterDatoUtenDag,
     dateIsSameOrBefore,
     dateIsSameOrAfter,
-    formaterDatoKompakt,
     findEldsteDato,
     getAlderFraDato,
-    convertTidsperiodeToTidsperiodeDate,
     getRelevantFamiliehendelseDato,
-    ISOStringToDate,
-    isDateToday,
     getEndringstidspunkt,
-    andreAugust2022ReglerGjelder,
-    tidperiodeOverlapperDato,
-    getToTetteReglerGjelder,
     getEldsteDato,
     sorterDatoEtterEldst,
 } from './dateUtils';
 
 import getIntlMock from 'utils-test/intl-test-helper';
-import { RegistrertBarn } from 'app/types/Person';
-import { Periode, PeriodeHull, Periodetype, Utsettelsesperiode, Uttaksperiode } from 'uttaksplan/types/Periode';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { guid } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    Periode,
+    PeriodeHull,
+    Periodetype,
+    RegistrertBarn,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    Uttaksperiode,
+    andreAugust2022ReglerGjelder,
+    convertTidsperiodeToTidsperiodeDate,
+    dateRangeValidation,
+    formaterDato,
+    formaterDatoKompakt,
+    formaterDatoUtenDag,
+    getToTetteReglerGjelder,
+    getUkerOgDagerFromDager,
+    getVarighetString,
+    guid,
+    isDateInTheFuture,
+    isDateToday,
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import * as toggleUtils from './toggleUtils';
 
@@ -85,7 +91,7 @@ describe('dateUtils', () => {
             });
 
             expect(dato).toBe(
-                'Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021'
+                'Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021',
             );
         });
 
@@ -147,7 +153,7 @@ describe('dateUtils', () => {
             });
 
             expect(validering).toBe(
-                'Du har en utsettelse fra 10.08.2022 til 15.08.2022 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.'
+                'Du har en utsettelse fra 10.08.2022 til 15.08.2022 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.',
             );
         });
     });
@@ -185,7 +191,7 @@ describe('dateUtils', () => {
             });
 
             expect(dato).toBe(
-                'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021'
+                'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021',
             );
         });
 
@@ -252,7 +258,7 @@ describe('dateUtils', () => {
             });
 
             expect(validering).toBe(
-                'Du har en utsettelse fra 01.05.2021 til 10.06.2021 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.'
+                'Du har en utsettelse fra 01.05.2021 til 10.06.2021 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.',
             );
         });
         it('skal ikke gi feilmelding om overlappende utsettelser når fra-dato settes på selve utsettelsen', () => {
@@ -522,7 +528,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlan as Periode[],
                 [...opprinneligPlan] as Periode[],
-                true
+                true,
             );
 
             expect(endringstidspunkt).toBe(undefined);
@@ -659,7 +665,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlanMedHull as Periode[],
                 endretPlanMedHull as Periode[],
-                true
+                true,
             );
             expect(endringstidspunkt).toEqual(nyFom);
         });
@@ -686,7 +692,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlanMedHull as Periode[],
                 endretPlanMedHull as Periode[],
-                true
+                true,
             );
             expect(endringstidspunkt).toEqual(nyPeriodeUtenUttak.tidsperiode.fom);
         });
@@ -713,7 +719,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlanMedHull as Periode[],
                 endretPlanMedHull as Periode[],
-                true
+                true,
             );
             expect(endringstidspunkt).toEqual(nyPeriodeUttak.tidsperiode.fom);
         });
@@ -731,7 +737,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlan as Periode[],
                 endretPlanMedForkortetSistePeriode as Periode[],
-                true
+                true,
             );
             expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2].tidsperiode?.fom);
         });
@@ -749,7 +755,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlan as Periode[],
                 endretPlanMedForkortetSistePeriode as Periode[],
-                true
+                true,
             );
             expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2].tidsperiode?.fom);
         });
@@ -776,7 +782,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlanMedHull as Periode[],
                 endretPlanMedHull as Periode[],
-                true
+                true,
             );
             expect(endringstidspunkt).toEqual(nyPeriodeUtenUttak.tidsperiode.fom);
         });
@@ -876,7 +882,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlanMedAnnenPart as Periode[],
                 endretPlanMedAnnenPart as Periode[],
-                true
+                true,
             );
 
             expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3].tidsperiode?.fom);
@@ -916,7 +922,7 @@ describe('dateUtils', () => {
             const endringstidspunkt = getEndringstidspunkt(
                 opprinneligPlanMedAnnenPart as Periode[],
                 nyPlan as Periode[],
-                true
+                true,
             );
 
             expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1].tidsperiode?.fom);

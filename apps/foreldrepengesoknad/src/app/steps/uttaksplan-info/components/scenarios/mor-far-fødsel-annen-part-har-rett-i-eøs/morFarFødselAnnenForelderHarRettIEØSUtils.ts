@@ -1,10 +1,10 @@
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     MorFarFødselAnnenForelderHarRettIEØSFormField,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
 } from './morFarFødselAnnenForelderHarRettIEØSFormConfig';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialMorFarFødselAnnenForelderHarRettIEØSValues: MorFarFødselAnnenForelderHarRettIEØSFormData = {
     [MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad]: '',
@@ -12,7 +12,7 @@ const initialMorFarFødselAnnenForelderHarRettIEØSValues: MorFarFødselAnnenFor
     [MorFarFødselAnnenForelderHarRettIEØSFormField.skalIkkeHaUttakFørTermin]: undefined,
 };
 export const mapMorFarFødselAnnenForelderHarRettIEØSFormToState = (
-    values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>
+    values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>,
 ): MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo => {
     return {
         dekningsgrad: values.dekningsgrad!,
@@ -23,7 +23,7 @@ export const mapMorFarFødselAnnenForelderHarRettIEØSFormToState = (
 export const getInitialMorFarFødselAnnenForelderHarRettIEØSValues = (
     defaultPermisjonStartdato: Date,
     lagretUttaksplanInfo: MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad
+    dekningsgrad: Dekningsgrad,
 ): MorFarFødselAnnenForelderHarRettIEØSFormData => {
     if (lagretUttaksplanInfo) {
         return {

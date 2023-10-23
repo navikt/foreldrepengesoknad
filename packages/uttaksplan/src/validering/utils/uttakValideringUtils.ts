@@ -1,4 +1,3 @@
-import { uttaksdatoer } from 'utils/uttaksdatoerUtils';
 import {
     AnnenForelder,
     Forelder,
@@ -19,6 +18,7 @@ import {
     Periodetype,
     isPeriodeUtenUttak,
 } from '@navikt/fp-common';
+import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 

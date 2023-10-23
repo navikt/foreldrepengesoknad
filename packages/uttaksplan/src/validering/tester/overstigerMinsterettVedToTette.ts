@@ -1,7 +1,7 @@
+import { getBrukteDager } from '../../utils/brukteDagerUtils';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
-import { getBrukteDager } from 'utils/brukteDagerUtils';
 import { laTilPeriodeEtterFørsteStønadsdagPåfølgendeBarn } from './periodevalideringstester/forSenUttakVedPåfølgendeBarn';
+import { Søknadsinfo } from '@navikt/fp-common';
 
 export const overstigerMinsterettVedToTette = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const { familiehendelsesdato, perioder, stønadskontoer, søkerErFarEllerMedmor, minsterettUkerToTette } = grunnlag;

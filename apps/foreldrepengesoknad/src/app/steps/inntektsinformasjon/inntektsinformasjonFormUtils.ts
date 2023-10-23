@@ -2,11 +2,14 @@ import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Frilans, FrilansOppdrag } from 'app/context/types/Frilans';
 import { Næring } from 'app/context/types/Næring';
 import Søker from 'app/context/types/Søker';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
+import {
+    ISOStringToDate,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+} from '@navikt/fp-common';
 
 export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: YesOrNo.UNANSWERED,

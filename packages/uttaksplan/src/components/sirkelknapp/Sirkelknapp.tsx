@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import AriaText from '../aria-text/AriaText';
-import preventDoubleTapZoom from 'utils/preventDoubleTapZoom';
 import { guid } from '@navikt/fp-common';
 
 import './sirkelknapp.less';
+import preventDoubleTapZoom from '../../utils/preventDoubleTapZoom';
 
 export type Stil = 'hvit' | 'bla' | 'info';
 

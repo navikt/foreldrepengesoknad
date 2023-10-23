@@ -1,9 +1,9 @@
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import {
     erPeriodeInnvilget,
     erSenUtsettelsePgaFerieEllerArbeid,
     Periodetype,
+    Søknadsinfo,
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 

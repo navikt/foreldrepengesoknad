@@ -1,6 +1,5 @@
-import { Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { Periodetype } from 'types/Periode';
 import { erInnenFørsteSeksUkerFødselFarMedmor, Uttaksdatoer } from '../uttaksdatoerUtils';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 

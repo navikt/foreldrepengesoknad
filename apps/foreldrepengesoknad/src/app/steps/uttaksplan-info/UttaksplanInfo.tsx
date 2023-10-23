@@ -1,4 +1,13 @@
-import { intlUtils, Step } from '@navikt/fp-common';
+import {
+    Dekningsgrad,
+    getFarMedmorErAleneOmOmsorg,
+    getMorErAleneOmOmsorg,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    isFødtBarn,
+    Step,
+} from '@navikt/fp-common';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
@@ -10,17 +19,12 @@ import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import actionCreator from 'app/context/action/actionCreator';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
-import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { isFødtBarn } from 'app/context/types/Barn';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import SøknadRoutes from 'app/routes/routes';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
@@ -53,7 +57,7 @@ const UttaksplanInfo = () => {
             annenPartFnr,
             barnFnr,
             familiehendelsesdato,
-            eksisterendeSakAnnenPartRequestIsSuspended
+            eksisterendeSakAnnenPartRequestIsSuspended,
         );
 
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
@@ -66,22 +70,22 @@ const UttaksplanInfo = () => {
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             ),
-        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak]
+        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
 
     useSaveLoadedRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,
-        eksisterendeVedtakAnnenPart?.grunnlag.termindato
+        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
 
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
         barn.antallBarn,
-        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
     );
 
     useEffect(() => {
@@ -118,11 +122,11 @@ const UttaksplanInfo = () => {
                 morErAleneOmOmsorg,
                 dateToISOString(familieHendelseDatoNesteSak),
                 saksgrunnlagsAntallBarn,
-                saksgrunnlagsTermindato
+                saksgrunnlagsTermindato,
             ),
             eksisterendeSakAnnenPartRequestIsSuspended
                 ? false
-                : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+                : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED,
         );
     const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
         getStønadskontoParams(
@@ -134,11 +138,11 @@ const UttaksplanInfo = () => {
             morErAleneOmOmsorg,
             dateToISOString(familieHendelseDatoNesteSak),
             saksgrunnlagsAntallBarn,
-            saksgrunnlagsTermindato
+            saksgrunnlagsTermindato,
         ),
         eksisterendeSakAnnenPartRequestIsSuspended
             ? false
-            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED,
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -147,13 +151,13 @@ const UttaksplanInfo = () => {
         if (tilgjengeligeStønadskontoerError) {
             sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
             throw new Error(
-                `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
         if (eksisterendeSakAnnenPartError) {
             sendErrorMessageToSentry(eksisterendeSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`
+                `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError]);

@@ -1,8 +1,6 @@
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import MockDate from 'mockdate';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
-import { Uttaksperiode } from 'uttaksplan/types/Periode';
+import { StønadskontoType, TilgjengeligStønadskonto, Uttaksperiode } from '@navikt/fp-common';
 
 describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     beforeAll(() => {
@@ -34,7 +32,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             morErUfør,
             bareFarMedmorHarRett,
             terminato,
-            undefined
+            undefined,
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
@@ -55,7 +53,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             morErUfør,
             bareFarMedmorHarRett,
             terminato,
-            undefined
+            undefined,
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(3);
         expect(perioder[0].tidsperiode.fom).toEqual(startDato1UkeFørFødsel);
@@ -79,7 +77,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             morErUfør,
             bareFarMedmorHarRett,
             terminato,
-            undefined
+            undefined,
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
@@ -100,7 +98,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             morErUfør,
             bareFarMedmorHarRett,
             terminato,
-            undefined
+            undefined,
         ) as Uttaksperiode[];
         expect(perioder.length).toEqual(3);
         expect(perioder[0].tidsperiode.fom).toEqual(startDato1DagFørFødsel);

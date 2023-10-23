@@ -11,8 +11,6 @@ import {
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
-import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
-import UttakEndreTidsperiodeSpørsmål from 'components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
 import {
@@ -22,6 +20,8 @@ import {
 } from './periodeFørFødselFormConfig';
 import { periodeFørFødselFormQuestionsConfig } from './periodeFørFødselFormQuestionsConfig';
 import { getPeriodeFørFødselFormInitialValues, mapPeriodeFørFødselFormToPeriode } from './periodeFørFødselFormUtils';
+import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
+import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 
 interface Props {
     periode: ForeldrepengerFørFødselUttaksperiode;

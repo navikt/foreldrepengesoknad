@@ -1,12 +1,15 @@
-import { bemUtils, guid } from '@navikt/fp-common';
-import { NavnPåForeldre } from 'app/types/NavnPåForeldre';
-import { Situasjon } from 'app/types/Situasjon';
-import { formaterDato } from 'app/utils/dateUtils';
-import { getNavnGenitivEierform } from 'app/utils/personUtils';
+import {
+    NavnPåForeldre,
+    Periode,
+    Situasjon,
+    bemUtils,
+    formaterDato,
+    getNavnGenitivEierform,
+    getPeriodeTittel,
+    guid,
+} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Periode } from 'uttaksplan/types/Periode';
-import { getPeriodeTittel } from 'uttaksplan/utils/periodeUtils';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './infoEksisterendePerioder.less';
@@ -60,7 +63,7 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                         navnPåForeldre,
                                         familiehendelsesdato,
                                         termindato,
-                                        situasjon
+                                        situasjon,
                                     )}
                                 </BodyShort>
                             </div>

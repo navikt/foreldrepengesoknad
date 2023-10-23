@@ -1,18 +1,24 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Block, intlUtils, bemUtils } from '@navikt/fp-common';
+import {
+    Block,
+    intlUtils,
+    bemUtils,
+    getVarighetString,
+    isFødtBarn,
+    Uttaksdagen,
+    getValidTidsperiode,
+    ISOStringToDate,
+    Tidsperioden,
+    uttaksConstants,
+    uttaksplanDatoavgrensninger,
+} from '@navikt/fp-common';
 import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { isFødtBarn } from 'app/context/types/Barn';
-import { Tidsperioden, getValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import uttaksConstants from 'app/constants';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { validateErStartdatoFørTermindato } from './validation/morFodselValidering';
 import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
-import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import { getVarighetString, ISOStringToDate } from 'app/utils/dateUtils';
 
 import './startdatoPermisjonMor.less';
 
@@ -82,7 +88,7 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({
                             intl,
                             familiehendelsesdatoDate,
                             skalIkkeHaUttakFørTermin,
-                            termindato
+                            termindato,
                         )}
                         disableWeekend
                         placeholder={'dd.mm.åååå'}

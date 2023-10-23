@@ -1,11 +1,9 @@
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { Dekningsgrad, StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],
-    generellMinsterett: number
+    generellMinsterett: number,
 ): TilgjengeligStønadskonto[] => {
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
     nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - generellMinsterett });
@@ -14,7 +12,7 @@ const opprettAktivitetsFriKonto = (
 };
 
 const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
-    stønadskontoerDTO: TilgjengeligeStønadskontoerDTO
+    stønadskontoerDTO: TilgjengeligeStønadskontoerDTO,
 ): TilgjengeligStønadskonto[] => {
     let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
 
@@ -37,7 +35,7 @@ const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
 
 export const getValgtStønadskontoFor80Og100Prosent = (
     kontoer80: TilgjengeligeStønadskontoerDTO,
-    kontoer100: TilgjengeligeStønadskontoerDTO
+    kontoer100: TilgjengeligeStønadskontoerDTO,
 ) => {
     const åttiProsent = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(kontoer80);
     const hundreProsent = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(kontoer100);

@@ -5,6 +5,7 @@ import {
     Block,
     NavnPåForeldre,
     Periode,
+    PeriodeValidState,
     Periodetype,
     Situasjon,
     TilgjengeligStønadskonto,
@@ -15,7 +16,6 @@ import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
-import { PeriodeValidState } from 'Uttaksplan';
 
 interface Props {
     familiehendelsesdato: Date;

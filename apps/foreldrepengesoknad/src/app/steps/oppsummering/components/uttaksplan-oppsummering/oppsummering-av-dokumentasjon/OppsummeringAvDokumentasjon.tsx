@@ -1,6 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
-import { isAttachmentWithError } from 'app/utils/vedleggUtils';
+import { Attachment, intlUtils, isAttachmentWithError } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';

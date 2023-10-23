@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { Block, intlUtils } from '@navikt/fp-common';
-import lenker from 'app/links/links';
+import { Block, TilgjengeligStønadskonto, intlUtils, links } from '@navikt/fp-common';
 import RangeInput from './range-input/RangeInput';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -63,7 +61,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
             hjelpetekst={
                 <BodyShort as="div">
                     <Block padBottom="l">{infotekst}</Block>
-                    <Link href={lenker.nav_aktivitetskrav} target="_blank">
+                    <Link href={links.nav_aktivitetskrav} target="_blank">
                         <FormattedMessage id="uttaksplaninfo.fordeling.veiledning.lenketekst" />
                     </Link>
                 </BodyShort>
@@ -85,7 +83,7 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
                         ukerForelder: value,
                         ukerTotalt: ukerFellesperiode,
                         navnForelder: mor || intl.formatMessage({ id: 'uttaksplan.mor' }),
-                    }
+                    },
                 )
             }
             valueLabelRenderer={(options) => (

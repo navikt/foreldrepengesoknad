@@ -3,8 +3,8 @@ import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrep
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import links from 'app/links/links';
 import { StoryFn } from '@storybook/react';
+import { links } from '@navikt/fp-common';
 
 const defaultExport = {
     title: 'pages/Feilside',

@@ -1,6 +1,5 @@
-import { hasValue } from '@navikt/fp-common';
+import { ISOStringToDate, hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 import { erVirksomhetRegnetSomNyoppstartet } from './egenNæringModalFormUtils';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -119,7 +118,7 @@ const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenN
 };
 
 const egenNæringModalQuestionsConfig = Questions<EgenNæringModalFormData, EgenNæringModalFormField>(
-    EgenNæringModalFormConfig
+    EgenNæringModalFormConfig,
 );
 
 export default egenNæringModalQuestionsConfig;

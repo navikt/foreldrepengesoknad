@@ -1,6 +1,6 @@
-import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
+import { Søknadsinfo } from '@navikt/fp-common';
 import { samtidigUttaksperiodeErUgyldig } from '../../utils/periodeValideringUtils';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const erSamtidigUttakGyldig: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const perioderMedUgyldigTidsperiode = grunnlag.perioder.filter((periode) =>

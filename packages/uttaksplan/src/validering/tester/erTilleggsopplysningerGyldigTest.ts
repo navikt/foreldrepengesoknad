@@ -1,5 +1,5 @@
+import { Søknadsinfo } from '@navikt/fp-common';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const tilleggsopplysningerMaxLength = 1000;
 

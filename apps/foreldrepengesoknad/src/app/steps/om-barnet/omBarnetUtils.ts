@@ -1,22 +1,24 @@
-import { hasValue } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import Barn, {
+import {
     AdoptertBarn,
+    Arbeidsforhold,
+    AttachmentType,
+    Barn,
     BarnType,
     FødtBarn,
+    ISOStringToDate,
     IkkeUtfyltTypeBarn,
+    Situasjon,
+    Skjemanummer,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
-} from 'app/context/types/Barn';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Situasjon } from 'app/types/Situasjon';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
@@ -37,7 +39,7 @@ const getInitValues = (): Readonly<OmBarnetFormData> => ({
 
 export const cleanupOmBarnetFormData = (
     values: OmBarnetFormData,
-    visibility: QuestionVisibility<OmBarnetFormField, undefined>
+    visibility: QuestionVisibility<OmBarnetFormField, undefined>,
 ): OmBarnetFormData => {
     const cleanedData: OmBarnetFormData = {
         erBarnetFødt: visibility.isVisible(OmBarnetFormField.erBarnetFødt) ? values.erBarnetFødt : YesOrNo.UNANSWERED,
@@ -67,7 +69,7 @@ export const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
     situasjon: Situasjon,
     values: Partial<OmBarnetFormData>,
-    barnSøktOmFørMenIkkeRegistrert: boolean
+    barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
     if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
         return {
@@ -82,7 +84,7 @@ export const mapOmDetValgteBarnetFormDataToState = (
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
         values.omsorgsovertakelse!,
         AttachmentType.OMSORGSOVERTAKELSE,
-        Skjemanummer.OMSORGSOVERTAKELSESDATO
+        Skjemanummer.OMSORGSOVERTAKELSESDATO,
     );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
@@ -109,14 +111,14 @@ export const mapOmBarnetFormDataToState = (
     arbeidsforhold: Arbeidsforhold[],
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
-    barnSøktOmFørMenIkkeRegistrert: boolean
+    barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
     if (valgtRegistrertBarn !== undefined) {
         return mapOmDetValgteBarnetFormDataToState(
             valgtRegistrertBarn as FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
             situasjon,
             values,
-            barnSøktOmFørMenIkkeRegistrert
+            barnSøktOmFørMenIkkeRegistrert,
         );
     }
     const antallBarn =
@@ -137,7 +139,7 @@ export const mapOmBarnetFormDataToState = (
         const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
             values.terminbekreftelse!,
             AttachmentType.TERMINBEKREFTELSE,
-            Skjemanummer.TERMINBEKREFTELSE
+            Skjemanummer.TERMINBEKREFTELSE,
         );
 
         if (arbeidsforhold.length === 0) {
@@ -159,7 +161,7 @@ export const mapOmBarnetFormDataToState = (
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
         values.omsorgsovertakelse!,
         AttachmentType.OMSORGSOVERTAKELSE,
-        Skjemanummer.OMSORGSOVERTAKELSESDATO
+        Skjemanummer.OMSORGSOVERTAKELSESDATO,
     );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {

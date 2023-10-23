@@ -1,9 +1,11 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import {
+    Periodetype,
+    StønadskontoUttak,
+    TidsperiodeDate,
+    andreAugust2022ReglerGjelder,
+    isValidTidsperiode,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { Periodetype } from 'types/Periode';
-import { StønadskontoUttak } from 'types/StønadskontoUttak';
 
 const kontoSkalBesvares = (
     periodetype: Periodetype,

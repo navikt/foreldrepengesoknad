@@ -24,6 +24,7 @@ import {
     convertYesOrNoOrUndefinedToBoolean,
     lagSendSenereDokumentNårIngenAndreFinnes,
     getMorsAktivitet,
+    UttakRundtFødselÅrsak,
 } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
@@ -33,7 +34,6 @@ import {
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 import { getMorsAktivitetSkjemanummer } from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 
 const getInitialKonto = (

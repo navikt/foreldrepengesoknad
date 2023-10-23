@@ -4,12 +4,8 @@ import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import advanced from 'dayjs/plugin/advancedFormat';
-import { IntlShape } from 'react-intl';
 import {
-    formatDate,
-    formatDateExtended,
     hasValue,
-    intlUtils,
     isInfoPeriode,
     ISOStringToDate,
     isPeriodeUtenUttak,
@@ -18,9 +14,7 @@ import {
     Periode,
     Perioden,
     RegistrertBarn,
-    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { Alder } from 'app/types/Alder';
 import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import FeatureToggle from 'app/FeatureToggle';
@@ -36,147 +30,6 @@ dayjs.extend(timezone);
 dayjs.extend(advanced);
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
-
-export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
-    return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
-};
-
-const validateDateInRange = (
-    intl: IntlShape,
-    date: Date | undefined,
-    minDate: Date,
-    maxDate: Date,
-    isFomDate: boolean,
-) => {
-    if (date === undefined) {
-        if (isFomDate) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
-        }
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
-    }
-
-    if (!dateIsWithinRange(date, minDate, maxDate)) {
-        if (isFomDate) {
-            return intlUtils(intl, 'valideringsfeil.dateOutsideRange.fom', {
-                fom: formatDateExtended(minDate),
-                tom: formatDateExtended(maxDate),
-            });
-        }
-
-        return intlUtils(intl, 'valideringsfeil.dateOutsideRange.tom', {
-            fom: formatDateExtended(minDate),
-            tom: formatDateExtended(maxDate),
-        });
-    }
-
-    return undefined;
-};
-
-const getMeldingOmOverlappendeUtsettelser = (
-    utsettelserIPlan: Utsettelsesperiode[] | undefined,
-    dato: Date | undefined,
-    intl: IntlShape,
-    periodeId: string | undefined,
-): string | undefined => {
-    if (dato === undefined || utsettelserIPlan === undefined) {
-        return undefined;
-    }
-    const overlappendeUtsettelsesPerioder = utsettelserIPlan.filter(
-        (up) =>
-            dayjs(dato).isSameOrAfter(up.tidsperiode.fom, 'day') &&
-            dayjs(dato).isSameOrBefore(up.tidsperiode.tom, 'day') &&
-            up.id !== periodeId,
-    );
-    if (overlappendeUtsettelsesPerioder.length > 0) {
-        return intlUtils(intl, 'valideringsfeil.overlapperEnUtsettelse', {
-            fom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.fom),
-            tom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.tom),
-        });
-    }
-
-    return undefined;
-};
-
-const validateFromDateInRange = ({
-    intl,
-    date,
-    minDate,
-    maxDate,
-    errorKey,
-    disableWeekend,
-    periodeId,
-    utsettelserIPlan,
-    toDate,
-}: {
-    intl: IntlShape;
-    date: Date | undefined;
-    minDate: Date;
-    maxDate: Date;
-    errorKey: string;
-    disableWeekend: boolean;
-    periodeId?: string;
-    utsettelserIPlan?: Utsettelsesperiode[];
-    toDate?: Date;
-}): SkjemaelementFeil => {
-    if (toDate && date && dayjs(date).isAfter(toDate, 'day')) {
-        return intlUtils(intl, errorKey);
-    }
-
-    const error = validateDateInRange(intl, date, minDate, maxDate, true);
-
-    if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.fraDatoErHelgedag');
-    }
-
-    if (error !== undefined) {
-        return error;
-    }
-
-    return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);
-};
-
-const validateToDateInRange = ({
-    intl,
-    date,
-    minDate,
-    maxDate,
-    errorKey,
-    disableWeekend,
-    periodeId,
-    utsettelserIPlan,
-    fromDate,
-}: {
-    intl: IntlShape;
-    date: Date | undefined;
-    minDate: Date;
-    maxDate: Date;
-    errorKey: string;
-    disableWeekend: boolean;
-    periodeId?: string;
-    utsettelserIPlan?: Utsettelsesperiode[];
-    fromDate?: Date;
-}): SkjemaelementFeil => {
-    if (fromDate && date && dayjs(date).isBefore(fromDate, 'day')) {
-        return intlUtils(intl, errorKey);
-    }
-
-    const error = validateDateInRange(intl, date, minDate, maxDate, false);
-
-    if (error !== undefined) {
-        return error;
-    }
-
-    if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
-    }
-
-    return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);
-};
-
-export const dateRangeValidation = {
-    validateToDateInRange,
-    validateFromDateInRange,
-};
 
 export const isDateABeforeDateB = (a: string, b: string): boolean => {
     if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {

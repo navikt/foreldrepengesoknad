@@ -1,4 +1,4 @@
-import RangeIcon from 'assets/RangeIcon';
+import RangeIcon from '../../assets/RangeIcon';
 import Sirkelknapp from '../sirkelknapp/Sirkelknapp';
 
 export type Direction = 'next' | 'previous';

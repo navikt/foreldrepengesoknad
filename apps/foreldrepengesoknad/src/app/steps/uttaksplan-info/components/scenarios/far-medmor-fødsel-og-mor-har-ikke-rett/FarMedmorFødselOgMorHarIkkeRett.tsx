@@ -1,7 +1,5 @@
 import { FunctionComponent } from 'react';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import {
     FarMedmorFødselOgMorHarIkkeRettFormComponents,
@@ -18,7 +16,21 @@ import actionCreator from 'app/context/action/actionCreator';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import SøknadRoutes from 'app/routes/routes';
 import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
-import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    Forelder,
+    ISOStringToDate,
+    StepButtonWrapper,
+    Tidsperioden,
+    Uttaksdagen,
+    andreAugust2022ReglerGjelder,
+    formaterNavn,
+    getErMorUfør,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    uttaksplanDatoavgrensninger,
+} from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     FarMedmorFødselOgMorHarIkkeRettQuestionsPayload,
@@ -27,21 +39,13 @@ import {
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import { Forelder } from 'app/types/Forelder';
-import { formaterNavn } from 'app/utils/personUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { uttaksplanDatoavgrensninger } from 'app/steps/uttaksplan-info/utils/uttaksplanDatoavgrensninger';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { andreAugust2022ReglerGjelder, ISOStringToDate } from 'app/utils/dateUtils';
-import { getErMorUfør } from 'app/utils/annenForelderUtils';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { DatepickerDateRange } from '@navikt/ds-datepicker';
@@ -49,6 +53,7 @@ import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -106,7 +111,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -124,7 +129,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                         søkerErAleneOmOmsorg: false,
                     }),
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -132,7 +137,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     const shouldRender = erFarEllerMedmor && erFødsel && annenForelderHarIkkeRett;
@@ -150,7 +155,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
         familiehendelsesdatoDate!,
         termindato,
-        søkersituasjon.situasjon
+        søkersituasjon.situasjon,
     );
     const fødselsdato = getFødselsdato(barn);
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
@@ -160,7 +165,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     return (
@@ -205,7 +210,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                     tilgjengeligeDager={getTilgjengeligeDager(
                                         valgtStønadskonto,
                                         erDeltUttak,
-                                        Forelder.farMedmor
+                                        Forelder.farMedmor,
                                     )}
                                 />
                             )}
@@ -235,7 +240,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                 validate={validateStartdatoFarMedmor(
                                     intl,
                                     ISOStringToDate(datoAvgrensinger.minDate)!,
-                                    ISOStringToDate(datoAvgrensinger.maxDate)!
+                                    ISOStringToDate(datoAvgrensinger.maxDate)!,
                                 )}
                                 placeholder={'dd.mm.åååå'}
                             />

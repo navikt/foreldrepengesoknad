@@ -1,5 +1,4 @@
-import { hasValue, intlUtils } from '@navikt/fp-common';
-import { getFloatFromString } from 'app/utils/numberUtils';
+import { getFloatFromString, hasValue, intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 
 export const prosentValideringSamtidigUttak = (intl: IntlShape) => (value: string) => {

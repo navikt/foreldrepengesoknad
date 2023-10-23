@@ -1,11 +1,11 @@
 import {
+    Søknadsinfo,
     andreAugust2022ReglerGjelder,
     getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
     getBareFarHarRettKontoUtenAktivitetskravUker,
     links,
 } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 import { IntlShape } from 'react-intl';
 

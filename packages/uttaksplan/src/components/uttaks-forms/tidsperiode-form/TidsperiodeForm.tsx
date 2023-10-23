@@ -1,19 +1,32 @@
-import { intlUtils, Tidsperiode, Block, TidsperiodeDate, Situasjon } from '@navikt/fp-common';
+import {
+    intlUtils,
+    Tidsperiode,
+    Block,
+    TidsperiodeDate,
+    Situasjon,
+    Periode,
+    Utsettelsesperiode,
+    isUtsettelsesperiode,
+    isUttaksperiodeFarMedmorPgaFødsel,
+    andreAugust2022ReglerGjelder,
+    isUttaksperiodeBareFarMedmorHarRett,
+    isUttaksperiode,
+    mapTidsperiodeStringToTidsperiode,
+    ISOStringToDate,
+    dateRangeValidation,
+    getFørsteUttaksdagPåEllerEtterFødsel,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isUtsettelsesperiode, isUttaksperiode, Periode, Utsettelsesperiode } from 'types/Periode';
-import { andreAugust2022ReglerGjelder, dateRangeValidation, ISOStringToDate } from 'app/utils/dateUtils';
+import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { Button } from '@navikt/ds-react';
+import { getFørsteMuligeUttaksdag } from '../../../utils/uttaksdatoerUtils';
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
     getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
     getDatoavgrensningerForStønadskonto,
-} from 'utils/datoAvgrensningerUtils';
-import { mapTidsperiodeStringToTidsperiode } from 'utils/periodeUtils';
-import { getFørsteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from 'utils/uttaksdatoerUtils';
-import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from 'app/utils/wlbUtils';
-import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-import { Button } from '@navikt/ds-react';
+} from '../../../utils/datoAvgrensningerUtils';
 
 interface Props {
     periode?: Periode;

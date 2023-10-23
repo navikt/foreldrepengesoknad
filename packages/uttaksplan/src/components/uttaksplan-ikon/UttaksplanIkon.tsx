@@ -1,10 +1,10 @@
 import { SVGProps } from 'react';
-import ArbeidIkon from 'assets/ArbeidIkon';
-import FerieIkon from 'assets/FerieIkon';
-import SykdomIkon from 'assets/SykdomIkon';
-import TerminIkon from 'assets/TerminIkon';
-import UttakIkon from 'assets/UttakIkon';
 import { XMarkOctagonFillIcon, ExclamationmarkTriangleFillIcon, InformationSquareIcon } from '@navikt/aksel-icons';
+import ArbeidIkon from '../../assets/ArbeidIkon';
+import FerieIkon from '../../assets/FerieIkon';
+import SykdomIkon from '../../assets/SykdomIkon';
+import TerminIkon from '../../assets/TerminIkon';
+import UttakIkon from '../../assets/UttakIkon';
 
 export interface UttaksplanIkonProps extends SVGProps<any> {
     title: string;

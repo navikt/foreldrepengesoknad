@@ -14,6 +14,7 @@ import {
     getMorErAleneOmOmsorg,
     getNavnGenitivEierform,
     getNavnPåForeldre,
+    getToTetteReglerGjelder,
     getVarighetString,
     hasValue,
     InfoPeriode,
@@ -31,7 +32,6 @@ import {
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import { getToTetteReglerGjelder } from 'app/utils/dateUtils';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';

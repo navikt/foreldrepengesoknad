@@ -1,42 +1,47 @@
 import { Søknad } from 'app/context/types/Søknad';
-import AnnenForelder, { AnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import {
-    Periode,
-    UttaksperiodeBase,
-    Periodetype,
-    isForeldrepengerFørFødselUttaksperiode,
-    isUttaksperiode,
-    Arbeidsform,
-    Utsettelsesperiode,
-} from 'uttaksplan/types/Periode';
-import Barn, { isAdoptertBarn, isAdoptertStebarn, isFødtBarn } from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { Situasjon } from 'app/types/Situasjon';
-import { Søkerrolle } from 'app/types/Søkerrolle';
-import { assertUnreachable } from 'app/utils/globalUtil';
-import {
-    isArrayOfAttachments,
-    removeAttachmentsWithUploadError,
-    removeDuplicateAttachments,
-} from 'app/utils/vedleggUtils';
-import { isValidTidsperiode } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import dayjs from 'dayjs';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { Forelder } from 'app/types/Forelder';
-import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { Attachment } from 'app/types/Attachment';
-import { Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
-import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { uttaksperiodeKanJusteresVedFødsel } from 'app/utils/wlbUtils';
 import { getTermindato } from 'app/utils/barnUtils';
 import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/browser';
-import { extractAttachments, guid } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    AnnenForelderIkkeOppgitt,
+    Arbeidsform,
+    Attachment,
+    Barn,
+    Forelder,
+    MorsAktivitet,
+    Periode,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    Søkerrolle,
+    Søkersituasjon,
+    Tilleggsopplysninger,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    Uttaksdagen,
+    UttaksperiodeBase,
+    andreAugust2022ReglerGjelder,
+    assertUnreachable,
+    extractAttachments,
+    førsteOktober2021ReglerGjelder,
+    guid,
+    isAdoptertBarn,
+    isAdoptertStebarn,
+    isAnnenForelderOppgitt,
+    isArrayOfAttachments,
+    isFarEllerMedmor,
+    isForeldrepengerFørFødselUttaksperiode,
+    isFødtBarn,
+    isUttaksperiode,
+    isValidTidsperiode,
+    removeAttachmentsWithUploadError,
+    removeDuplicateAttachments,
+    sorterPerioder,
+    uttaksperiodeKanJusteresVedFødsel,
+} from '@navikt/fp-common';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,

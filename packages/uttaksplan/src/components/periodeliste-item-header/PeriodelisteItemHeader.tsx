@@ -24,13 +24,13 @@ import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
-import { getIkonForVeilederMelding } from 'validering/veilederInfo/components/VeilederMelding';
-import { VeilederMessage } from 'validering/veilederInfo/types';
-import UttaksplanAdvarselIkon from 'assets/UttaksplanAdvarselIkon';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './periodelisteItemHeader.less';
 import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
+import { VeilederMessage } from '../../validering/veilederInfo/types';
+import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
+import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
 
 interface Props {
     egenPeriode: boolean;

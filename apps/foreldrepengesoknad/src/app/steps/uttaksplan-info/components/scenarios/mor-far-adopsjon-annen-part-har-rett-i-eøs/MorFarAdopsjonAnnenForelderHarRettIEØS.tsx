@@ -1,17 +1,26 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    ISOStringToDate,
+    StepButtonWrapper,
+    Uttaksdagen,
+    formaterNavn,
+    getFlerbarnsuker,
+    intlUtils,
+    isAdoptertAnnetBarn,
+    isAdoptertBarn,
+    isAdoptertStebarn,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { formaterNavn } from 'app/utils/personUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import { getFlerbarnsuker } from 'app/steps/uttaksplan-info/utils/uttaksplanHarForMangeFlerbarnsuker';
-import { isAdoptertAnnetBarn, isAdoptertBarn, isAdoptertStebarn } from 'app/context/types/Barn';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { findEldsteDato, ISOStringToDate } from 'app/utils/dateUtils';
+import { findEldsteDato } from 'app/utils/dateUtils';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
@@ -20,12 +29,9 @@ import { MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/conte
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import StartdatoAdopsjon, { finnStartdatoAdopsjon } from '../mor-far-adopsjon/StartdatoAdopsjon';
 import { morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 import {
@@ -44,6 +50,7 @@ import { Button, GuidePanel } from '@navikt/ds-react';
 import { MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -78,7 +85,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
             dateToISOString(barnAdopsjonsdato),
-            dateToISOString(ankomstdato)
+            dateToISOString(ankomstdato),
         );
 
         return [
@@ -93,7 +100,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     erEnkelEndringssøknad: erEndringssøknad,
                     familiehendelsesdato: familiehendelsesdatoDate!,
                     førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()
+                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
                     ).leggTil(30),
                     situasjon: søkersituasjon.situasjon,
                     søkerErFarEllerMedmor: erFarEllerMedmor,
@@ -113,7 +120,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                     }),
                     annenForelderHarRettPåForeldrepengerIEØS: true,
                     førsteUttaksdagNesteBarnsSak,
-                })
+                }),
             ),
         ];
     };
@@ -121,7 +128,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 
     if (!erAdopsjon || !isAdoptertBarn(barn)) {
@@ -148,7 +155,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
-        tilgjengeligeStønadskontoer100DTO
+        tilgjengeligeStønadskontoer100DTO,
     );
 
     return (
@@ -169,7 +176,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block
                             padBottom="xl"
                             visible={visibility.isIncluded(
-                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad,
                             )}
                         >
                             <DekningsgradSpørsmål
@@ -181,7 +188,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         </Block>
                         <Block
                             visible={visibility.isIncluded(
-                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg
+                                MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg,
                             )}
                         >
                             <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
@@ -198,10 +205,10 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                             formValues.startdatoAdopsjonValg!,
                                             undefined,
                                             dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato)
-                                        )
+                                            dateToISOString(ankomstdato),
+                                        ),
                                     ),
-                                    'day'
+                                    'day',
                                 ) &&
                                 !isAdoptertStebarn(barn) &&
                                 !erDeltUttak

@@ -1,8 +1,8 @@
 import { Barn, bemUtils, formaterDatoUtenDag, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
 import { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import HjerteIkon from 'assets/HjerteIkon';
 import { BodyShort } from '@navikt/ds-react';
+import HjerteIkon from '../../assets/HjerteIkon';
 
 import './familiehendelsesdatoDisplay.less';
 

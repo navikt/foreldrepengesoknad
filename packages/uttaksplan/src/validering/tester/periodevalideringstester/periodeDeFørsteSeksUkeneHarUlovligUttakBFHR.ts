@@ -1,11 +1,11 @@
-import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
 import {
     StønadskontoType,
+    Søknadsinfo,
     andreAugust2022ReglerGjelder,
     isUttaksperiode,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-common';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const periodeDeFørsteSeksUkeneHarUlovligUttakBFHR: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     if (

@@ -1,9 +1,9 @@
 import throttle from 'lodash.throttle';
 import { injectIntl, IntlShape } from 'react-intl';
 import { Attachment, Block, intlUtils } from '@navikt/fp-common';
-import { tilleggsopplysningerMaxLength } from 'validering/tester/erTilleggsopplysningerGyldigTest';
 import { BodyLong, Label, ReadMore, Textarea } from '@navikt/ds-react';
 import { ChangeEvent, Component } from 'react';
+import { tilleggsopplysningerMaxLength } from '../../validering/tester/erTilleggsopplysningerGyldigTest';
 
 interface OwnProps {
     begrunnelse?: string;

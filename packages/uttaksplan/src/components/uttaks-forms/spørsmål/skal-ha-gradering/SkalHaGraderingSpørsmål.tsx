@@ -1,12 +1,19 @@
-import { intlUtils, Block, hasValue, TidsperiodeDate, Arbeidsforhold, Arbeidsform } from '@navikt/fp-common';
-import { getKunArbeidsforholdForValgtTidsperiode } from 'app/utils/arbeidsforholdUtils';
+import {
+    intlUtils,
+    Block,
+    hasValue,
+    TidsperiodeDate,
+    Arbeidsforhold,
+    Arbeidsform,
+    getKunArbeidsforholdForValgtTidsperiode,
+} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { prosentValideringGradering } from 'utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { prosentValideringGradering } from '../../../../utils/prosentValidering';
 
 interface Props {
     graderingsprosentVisible: boolean;

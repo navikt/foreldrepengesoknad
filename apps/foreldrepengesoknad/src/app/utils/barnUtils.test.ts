@@ -1,6 +1,5 @@
+import { Barn, BarnType, RegistrertBarn } from '@navikt/fp-common';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
-import Barn, { BarnType } from 'app/context/types/Barn';
-import { RegistrertBarn } from 'app/types/Person';
 
 describe('barnUtils', () => {
     it('skal returnere fødselsdato når barn er født', () => {

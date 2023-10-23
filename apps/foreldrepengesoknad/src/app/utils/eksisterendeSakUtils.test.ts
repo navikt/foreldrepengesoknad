@@ -1,8 +1,4 @@
-import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
-import { Sak } from 'app/types/Sak';
-import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
-import { UttakArbeidType } from 'app/types/UttakArbeidType';
-import { Arbeidsform } from 'uttaksplan/types/Periode';
+import { Arbeidsform, DekningsgradDTO, Sak, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
 import {
     getArbeidsformFromUttakArbeidstype,
     mapSaksperiodeFromDTO,

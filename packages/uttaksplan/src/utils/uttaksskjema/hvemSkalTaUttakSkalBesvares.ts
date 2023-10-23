@@ -1,5 +1,5 @@
 import { Situasjon, TidsperiodeDate } from '@navikt/fp-common';
-import { erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB } from 'components/uttaks-forms/periode-uttak-form/periodeUttakFormQuestionsConfig';
+import { erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormQuestionsConfig';
 
 const hvemSkalTaUttakSkalBesvares = (
     tidsperiode: TidsperiodeDate,

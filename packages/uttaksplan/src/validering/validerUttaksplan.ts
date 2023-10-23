@@ -1,8 +1,8 @@
 import { groupBy } from 'lodash';
 import uttaksplanRegler from '.';
 import { getRegelAvvik, hasRegelFeil, regelHarAvvik, regelPasserer } from './utils/regelUtils';
-import { Søknadsinfo } from './utils/types/Søknadsinfo';
 import { RegelStatus, UttaksplanRegelTestresultat } from './utils/types/regelTypes';
+import { Søknadsinfo } from '@navikt/fp-common';
 
 const REGEL_INTL_PREFIX = 'uttaksplan.validering';
 

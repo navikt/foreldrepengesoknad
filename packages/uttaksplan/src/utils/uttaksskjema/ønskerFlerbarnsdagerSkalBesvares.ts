@@ -1,8 +1,11 @@
-import { StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
-import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import {
+    Periodetype,
+    StønadskontoType,
+    TidsperiodeDate,
+    UttakRundtFødselÅrsak,
+    andreAugust2022ReglerGjelder,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { Periodetype } from 'types/Periode';
-import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 
 export const ønskerFlerbarnsdagerSkalBesvares = (
     periodetype: Periodetype,

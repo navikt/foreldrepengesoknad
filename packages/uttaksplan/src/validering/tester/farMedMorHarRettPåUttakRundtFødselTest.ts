@@ -1,5 +1,6 @@
 import {
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
+    Søknadsinfo,
     formaterDatoKompakt,
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
@@ -8,7 +9,6 @@ import {
     gjelderWLBReglerFarMedmorRundtFødsel,
 } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 import dayjs from 'dayjs';
 

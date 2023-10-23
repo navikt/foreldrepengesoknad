@@ -1,5 +1,4 @@
-import { Periode, getFloatFromString, isUttaksperiode } from '@navikt/fp-common';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import { Periode, Søknadsinfo, getFloatFromString, isUttaksperiode } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const uttaksplanGraderingStørreEnnSamtidigUttak = (uttaksplan: Periode[]) => {

@@ -1,8 +1,8 @@
 import { IntlShape } from 'react-intl';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import {
     Periodene,
+    Søknadsinfo,
     Tidsperioden,
     getNavnGenitivEierform,
     getPeriodeForelderNavn,

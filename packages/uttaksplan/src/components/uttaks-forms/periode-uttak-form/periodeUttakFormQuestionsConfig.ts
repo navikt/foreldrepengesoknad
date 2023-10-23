@@ -10,14 +10,17 @@ import {
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
+    UttakRundtFødselÅrsak,
 } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
-import hvemSkalTaUttakSkalBesvares from 'utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
-import getUttakSkjemaregler, { UttakSkjemaregler, UttakSkjemaReglerProps } from 'utils/uttaksskjema/uttakSkjemaregler';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { UttakRundtFødselÅrsak } from 'types/UttakRundtFødselÅrsak';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import getUttakSkjemaregler, {
+    UttakSkjemaregler,
+    UttakSkjemaReglerProps,
+} from '../../../utils/uttaksskjema/uttakSkjemaregler';
+import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
 export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;

@@ -1,8 +1,6 @@
-import { formatDateExtended, intlUtils } from '@navikt/fp-common';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { ISOStringToDate, Uttaksdagen, formatDateExtended, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Uttaksdagen } from '../../../../utils/Uttaksdagen';
 import { isISODateString } from '@navikt/ds-datepicker';
 
 export const validateStartdatoFarMedmor =

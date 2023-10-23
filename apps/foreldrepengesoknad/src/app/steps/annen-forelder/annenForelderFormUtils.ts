@@ -1,17 +1,23 @@
-import { hasValue, intlUtils } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    AttachmentType,
+    Barn,
+    RegistrertAnnenForelder,
+    Skjemanummer,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
+    intlUtils,
+    isAnnenForelderIkkeOppgitt,
+    isAnnenForelderOppgitt,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Barn from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { RegistrertAnnenForelder } from 'app/types/Person';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { IntlShape } from 'react-intl';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,
@@ -33,7 +39,7 @@ export const initialAnnenForelderValues: AnnenForelderFormData = {
 export const cleanAnnenForelderFormData = (
     values: AnnenForelderFormData,
     visibility: QuestionVisibility<AnnenForelderFormField, undefined>,
-    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined
+    annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
 ): AnnenForelderFormData => {
     const cleanedData: AnnenForelderFormData = {
         aleneOmOmsorg: visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg)
@@ -47,7 +53,7 @@ export const cleanAnnenForelderFormData = (
             ? lagSendSenereDokumentNårIngenAndreFinnes(
                   values.dokumentasjonAvAleneomsorg,
                   AttachmentType.ALENEOMSORG,
-                  Skjemanummer.DOK_AV_ALENEOMSORG
+                  Skjemanummer.DOK_AV_ALENEOMSORG,
               )
             : [],
         erInformertOmSøknaden: visibility.isVisible(AnnenForelderFormField.erInformertOmSøknaden)
@@ -116,13 +122,13 @@ export const getAnnenForelderFormInitialValues = (
     barn: Barn,
     søker: Søker,
     annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
-    intl: IntlShape
+    intl: IntlShape,
 ): AnnenForelderFormData => {
     if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
             ...initialAnnenForelderValues,
             harRettPåForeldrepengerINorge: convertBooleanOrUndefinedToYesOrNo(
-                annenForelder.harRettPåForeldrepengerINorge
+                annenForelder.harRettPåForeldrepengerINorge,
             ),
             harOppholdtSegIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harOppholdtSegIEØS),
             harRettPåForeldrepengerIEØS: convertBooleanOrUndefinedToYesOrNo(annenForelder.harRettPåForeldrepengerIEØS),

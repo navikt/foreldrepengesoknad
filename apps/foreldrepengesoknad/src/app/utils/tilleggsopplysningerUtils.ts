@@ -1,5 +1,5 @@
-import { Tilleggsopplysning, Tilleggsopplysninger } from 'app/context/types/Tilleggsopplysninger';
-import { replaceInvisibleCharsWithSpace } from './stringUtils';
+import { Tilleggsopplysning, Tilleggsopplysninger } from '@navikt/fp-common';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 const TIL_SAKSBEHANDLER = {
     'tilleggsopplysning.begrunnelseForSenEndring': 'Begrunnelse for å søke om utsettelse',
@@ -30,7 +30,7 @@ export const beskrivTilleggsopplysning = (tilleggsopplysning: Tilleggsopplysning
 };
 
 export const cleanupInvisibleCharsFromTilleggsopplysninger = (
-    tilleggsopplysninger: Tilleggsopplysninger
+    tilleggsopplysninger: Tilleggsopplysninger,
 ): Tilleggsopplysninger => {
     return tilleggsopplysninger.begrunnelseForSenEndring
         ? {

@@ -12,21 +12,21 @@ import {
     isValidTidsperiode,
     NavnPåForeldre,
     Periode,
+    PeriodeValidState,
     Situasjon,
     TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
 
-import { VeiledermeldingerPerPeriode } from 'validering/veilederInfo/types';
 import dayjs from 'dayjs';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { Alert } from '@navikt/ds-react';
-import { PeriodeValidState } from 'Uttaksplan';
+import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
+import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 
 import './periodeliste.less';
-import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
 
 interface Props {
     uttaksplan: Periode[];

@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Arbeidsforhold, Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 interface Props {

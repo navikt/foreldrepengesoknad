@@ -1,12 +1,12 @@
 import {
+    Søknadsinfo,
     formaterDatoKompakt,
     getFørsteUttaksdag2UkerFørFødsel,
     gjelderWLBReglerFarMedmorRundtFødsel,
     isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel,
     starterTidsperiodeEtter2UkerFørFødsel,
 } from '@navikt/fp-common';
-import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const starterUttaksperiodeRundtFødselEtter2UkerFørFødsel: RegelTest = (
     grunnlag: Søknadsinfo,

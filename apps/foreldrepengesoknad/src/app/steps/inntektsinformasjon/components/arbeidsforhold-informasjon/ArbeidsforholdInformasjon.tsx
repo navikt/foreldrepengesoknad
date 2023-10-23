@@ -1,10 +1,9 @@
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 import HarArbeidsforhold from './HarArbeidsforhold';
 import { BodyShort, Label, ReadMore } from '@navikt/ds-react';
+import { Arbeidsforhold, Block } from '@navikt/fp-common';
 
 import './arbeidsforholdInformasjon.less';
-import { Block } from '@navikt/fp-common';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];

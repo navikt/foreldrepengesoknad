@@ -1,4 +1,4 @@
-import { UttaksplanIkonProps } from 'components/uttaksplan-ikon/UttaksplanIkon';
+import { UttaksplanIkonProps } from '../components/uttaksplan-ikon/UttaksplanIkon';
 
 interface OwnProps {
     fylt?: boolean;

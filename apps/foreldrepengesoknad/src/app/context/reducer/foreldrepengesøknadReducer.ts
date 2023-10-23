@@ -1,5 +1,4 @@
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
+import { Attachment, AttachmentType } from '@navikt/fp-common';
 import { ForeldrepengesøknadContextAction, ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
 
@@ -10,7 +9,7 @@ const finnVedleggAvType = (type: AttachmentType, alleVedlegg: Attachment[]): Att
 
 const foreldrepengesøknadReducer = (
     state: ForeldrepengesøknadContextState,
-    action: ForeldrepengesøknadContextAction
+    action: ForeldrepengesøknadContextAction,
 ): ForeldrepengesøknadContextState => {
     switch (action.type) {
         case ForeldrepengesøknadContextActionKeys.SET_HARGODKJENTVILKÅR:

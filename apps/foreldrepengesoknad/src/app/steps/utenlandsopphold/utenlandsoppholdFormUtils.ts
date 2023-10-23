@@ -1,8 +1,8 @@
 import { initialUtenlandsoppholdFormData, UtenlandsoppholdFormData } from './utenlandsoppholdFormTypes';
 import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { BostedUtland } from './bostedUtlandListAndDialog/types';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common';
 
 const mapUtenlandsoppholdTilBostedUtland = (opphold: Utenlandsopphold): BostedUtland => ({
     fom: opphold.tidsperiode.fom,
@@ -11,7 +11,7 @@ const mapUtenlandsoppholdTilBostedUtland = (opphold: Utenlandsopphold): BostedUt
 });
 
 export const getInitialUtenlandsoppholdValuesFromState = (
-    init: InformasjonOmUtenlandsopphold
+    init: InformasjonOmUtenlandsopphold,
 ): UtenlandsoppholdFormData => {
     return {
         ...initialUtenlandsoppholdFormData,
@@ -33,7 +33,7 @@ const mapBostedUtlandToUtenlandsopphold = (bostedUtland: BostedUtland[]): Utenla
 };
 
 export const mapUtenlandsoppholdFormDataToState = (
-    formValues: Partial<UtenlandsoppholdFormData>
+    formValues: Partial<UtenlandsoppholdFormData>,
 ): InformasjonOmUtenlandsopphold => {
     const { harBoddINorgeSiste12Mnd, skalBoINorgeNeste12Mnd, utenlandsoppholdNeste12Mnd, utenlandsoppholdSiste12Mnd } =
         formValues;

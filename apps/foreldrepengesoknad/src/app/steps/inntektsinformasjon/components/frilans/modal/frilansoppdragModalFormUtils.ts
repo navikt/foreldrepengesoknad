@@ -1,8 +1,11 @@
-import { hasValue } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    hasValue,
+} from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FrilansOppdrag } from 'app/context/types/Frilans';
-import { ISOStringToDate } from 'app/utils/dateUtils';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
 import { FrilansoppdragModalFormData, FrilansoppdragModalFormField } from './frilansoppdragModalFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
@@ -15,7 +18,7 @@ export const initialFrilansoppdragModalValues: FrilansoppdragModalFormData = {
 
 export const cleanupFrilansoppdragForm = (
     values: FrilansoppdragModalFormData,
-    visibility: QuestionVisibility<FrilansoppdragModalFormField, undefined>
+    visibility: QuestionVisibility<FrilansoppdragModalFormField, undefined>,
 ): FrilansoppdragModalFormData => {
     return {
         navnOppdragsgiver: visibility.isVisible(FrilansoppdragModalFormField.navnOppdragsgiver)
@@ -41,7 +44,7 @@ export const mapFrilansoppdragModalValuesToState = (values: Partial<Frilansoppdr
 };
 
 export const getInitialFrilansoppdragModalValues = (
-    oppdrag: FrilansOppdrag | undefined
+    oppdrag: FrilansOppdrag | undefined,
 ): FrilansoppdragModalFormData => {
     if (!oppdrag) {
         return {

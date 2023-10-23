@@ -1,5 +1,4 @@
-import { bemUtils, intlUtils } from '@navikt/fp-common';
-import links from 'app/links/links';
+import { bemUtils, intlUtils, links } from '@navikt/fp-common';
 
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyLong, Link } from '@navikt/ds-react';

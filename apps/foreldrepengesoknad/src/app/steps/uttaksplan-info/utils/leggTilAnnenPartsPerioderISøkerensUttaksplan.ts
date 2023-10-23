@@ -1,10 +1,9 @@
+import { Periode, Periodene, isUttakAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 import {
     finnOgSettInnHull,
     normaliserPerioder,
     settInnAnnenPartsUttak,
-} from 'uttaksplan/builder/uttaksplanbuilderUtils';
-import { isUttakAnnenPart, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
-import { Periodene } from './Periodene';
+} from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 
 export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     annenPartsPerioder: Periode[],
@@ -14,11 +13,11 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: Date | undefined
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(
         uttaksplan,
-        annenPartsPerioder
+        annenPartsPerioder,
     );
 
     if (normaliserteAnnenPartsPerioder.length > 0) {
@@ -46,14 +45,14 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
                 normaliserteEgnePerioder,
                 normaliserteAnnenPartsPerioder,
                 familiehendelsedato,
-                førsteUttaksdagNesteBarnsSak
+                førsteUttaksdagNesteBarnsSak,
             ),
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsedato,
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor,
-            førsteUttaksdagNesteBarnsSak
+            førsteUttaksdagNesteBarnsSak,
         );
     }
 

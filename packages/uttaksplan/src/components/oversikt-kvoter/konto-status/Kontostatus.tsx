@@ -8,10 +8,10 @@ import {
     StønadskontoType,
     StønadskontoUttak,
 } from '@navikt/fp-common';
-import StønadskontoIkon from 'components/stønadskonto-ikon/StønadskontoIkon';
 import { BodyShort } from '@navikt/ds-react';
 import { getStønadskontoNavn } from '@navikt/fp-common/src/common/utils/stønadskontoerUtils';
 import './kontostatus.less';
+import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 
 export interface Props {
     uttak: StønadskontoUttak;

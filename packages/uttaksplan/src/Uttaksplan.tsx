@@ -12,6 +12,7 @@ import {
     ForeldreparSituasjon,
     ISOStringToDate,
     Periode,
+    SenEndringÅrsak,
     Situasjon,
     Søkersituasjon,
     TilgjengeligStønadskonto,
@@ -34,13 +35,12 @@ import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { useIntl } from 'react-intl';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/OppgiTilleggsopplysninger';
-import { SenEndringÅrsak } from './types/SenEndringÅrsak';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'utils/uttaksplanUtils';
+import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -347,6 +347,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     annenForelderHarRettINorge={annenForelderHarRettINorge}
                     toTetteReglerGjelder={toTetteReglerGjelder}
                     intl={intl}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
+                    erEndringssøknad={erEndringssøknad}
+                    rolle={søkersituasjon.rolle}
+                    situasjon={søkersituasjon.situasjon}
+                    navnPåForeldre={navnPåForeldre}
                 />
             </Block>
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">

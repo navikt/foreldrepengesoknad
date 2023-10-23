@@ -1,14 +1,27 @@
-import { Block, hasValue, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    AttachmentType,
+    Barn,
+    Block,
+    convertYesOrNoOrUndefinedToBoolean,
+    getKjønnFromFnrString,
+    hasValue,
+    intlUtils,
+    isAdoptertStebarn,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    ISOStringToDate,
+    isUfødtBarn,
+    links,
+    SivilstandType,
+    Skjemanummer,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import actionCreator from 'app/context/action/actionCreator';
-import Barn, { isAdoptertStebarn, isUfødtBarn } from 'app/context/types/Barn';
 import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 import { useCallback } from 'react';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
@@ -32,15 +45,10 @@ import RegistrertePersonalia from '../../components/registrerte-personalia/Regis
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import links from 'app/links/links';
-import { getKjønnFromFnrString } from 'app/utils/personUtils';
-import { SivilstandType } from 'app/types/SivilstandType';
 import { Link } from 'react-router-dom';
 
 const AnnenForelder = () => {
@@ -104,13 +112,13 @@ const AnnenForelder = () => {
                 actionCreator.setOmBarnet(newBarn),
             ];
         },
-        [søker, barn]
+        [søker, barn],
     );
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(
         onValidSubmitHandler,
         SøknadRoutes.UTTAKSPLAN_INFO,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state)
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
     const onAvbrytSøknad = useAvbrytSøknad();
     const onForstettSøknadSenere = useFortsettSøknadSenere();
@@ -123,7 +131,7 @@ const AnnenForelder = () => {
                 barn,
                 søker,
                 annenForelderFraRegistrertBarn,
-                intl
+                intl,
             )}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
@@ -238,7 +246,7 @@ const AnnenForelder = () => {
                                         legend="Dokumentasjon for aleneomsorg"
                                         label={intlUtils(
                                             intl,
-                                            'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp'
+                                            'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp',
                                         )}
                                         name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
                                         attachments={formValues.dokumentasjonAvAleneomsorg || []}
@@ -260,7 +268,7 @@ const AnnenForelder = () => {
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel'
+                                        'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel',
                                     )}
                                 >
                                     <Block padBottom="m">
@@ -341,7 +349,7 @@ const AnnenForelder = () => {
                                 <ReadMore
                                     header={intlUtils(
                                         intl,
-                                        'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel'
+                                        'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
                                     )}
                                 >
                                     <Block padBottom="l">

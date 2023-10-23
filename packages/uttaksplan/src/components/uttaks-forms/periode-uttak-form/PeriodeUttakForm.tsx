@@ -21,6 +21,7 @@ import {
     NavnPåForeldre,
     Periode,
     Periodetype,
+    PeriodeValidState,
     Situasjon,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     StønadskontoType,
@@ -29,8 +30,6 @@ import {
     Utsettelsesperiode,
 } from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
-import TidsperiodeDisplay from 'components/tidsperiode-display/TidsperiodeDisplay';
-import UttakEndreTidsperiodeSpørsmål from 'components/uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
@@ -55,10 +54,11 @@ import {
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
+import { Button, GuidePanel } from '@navikt/ds-react';
+import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
+import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 
 import './periodeUttakForm.less';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import { PeriodeValidState } from 'Uttaksplan';
 
 interface Props {
     periode: Periode;

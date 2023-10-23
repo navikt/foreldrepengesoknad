@@ -1,7 +1,6 @@
-import { NavnPåForeldre, StønadskontoType, hasValue, intlUtils } from '@navikt/fp-common';
+import { NavnPåForeldre, StønadskontoType, getStønadskontoNavn, hasValue, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 

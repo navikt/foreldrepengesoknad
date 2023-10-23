@@ -1,5 +1,5 @@
 import { intlUtils } from '@navikt/fp-common';
-import { assertUnreachable } from 'app/utils/globalUtil';
+import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil';
 import { IntlShape } from 'react-intl';
 
 type SøkersituasjonStepId = 'søkersituasjon';

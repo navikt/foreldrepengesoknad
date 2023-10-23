@@ -1,6 +1,5 @@
-import { andreAugust2022ReglerGjelder, erPeriodeInnvilget } from '@navikt/fp-common';
+import { Søknadsinfo, andreAugust2022ReglerGjelder, erPeriodeInnvilget } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../utils/uttakValideringUtils';
 
 export const harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest: RegelTest = (

@@ -1,6 +1,5 @@
-import { getIllegalChars, validateTextHasLegalChars } from '@navikt/fp-common';
+import { Søknadsinfo, getIllegalChars, validateTextHasLegalChars } from '@navikt/fp-common';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export function harTilleggsopplysningerGyldigeCharsTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const { begrunnelseForSenEndring } = grunnlag.tilleggsopplysninger;

@@ -2,8 +2,8 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { VeilederMessage } from './types';
 import VeilederMeldinger from './VeilederMeldinger';
-import AriaText from 'components/aria-text/AriaText';
 import { GuidePanel } from '@navikt/ds-react';
+import AriaText from '../../components/aria-text/AriaText';
 
 interface Props {
     messages: VeilederMessage[];

@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/browser';
 import Feilside from 'app/pages/feilside/Feilside';
-import links from 'app/links/links';
 import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 import { Component } from 'react';
+import { links } from '@navikt/fp-common';
 
 interface State {
     hasError: boolean;

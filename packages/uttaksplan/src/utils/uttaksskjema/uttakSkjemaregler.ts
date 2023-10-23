@@ -1,8 +1,13 @@
-import { AnnenForelder, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { PeriodeUttakFormData } from 'components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
-import { Periodetype } from 'types/Periode';
+import {
+    AnnenForelder,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    StønadskontoUttak,
+    TidsperiodeDate,
+    Tidsperioden,
+    convertYesOrNoOrUndefinedToBoolean,
+} from '@navikt/fp-common';
 import { getUttaksdatoer } from '../uttaksdatoerUtils';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
@@ -12,9 +17,9 @@ import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 import kontoSkalBesvares from './kontoSkalBesvarer';
-import { StønadskontoUttak } from 'types/StønadskontoUttak';
 import hvemSkalTaUttakSkalBesvares from './hvemSkalTaUttakSkalBesvares';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
+import { PeriodeUttakFormData } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
 export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;

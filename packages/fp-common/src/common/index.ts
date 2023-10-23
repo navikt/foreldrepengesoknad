@@ -63,5 +63,8 @@ export * from './utils/vedleggUtils';
 export * from './utils/minsterettUtils';
 export * from './utils/uttaksplanHarForMangeFlerbarnsuker';
 export * from './utils/fridagerUtils';
+export * from './utils/arbeidsforholdUtils';
+export * from './utils/globalUtil';
+export { uttaksplanDatoavgrensninger } from './utils/uttaksplanDatoavgrensninger';
 export { default as links } from './links/links';
 export { guid } from './utils/guid';

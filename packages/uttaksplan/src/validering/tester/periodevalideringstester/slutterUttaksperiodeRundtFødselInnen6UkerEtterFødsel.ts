@@ -1,12 +1,12 @@
 import {
+    Søknadsinfo,
     formaterDatoKompakt,
     getSisteUttaksdag6UkerEtterFødsel,
     gjelderWLBReglerFarMedmorRundtFødsel,
     isUttaksperiodeFarMedmorPgaFødsel,
     slutterTidsperiodeInnen6UkerEtterFødsel,
 } from '@navikt/fp-common';
-import { Søknadsinfo } from '../../utils/types/Søknadsinfo';
-import { RegelTest, RegelTestresultat } from 'validering/utils/types/regelTypes';
+import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel: RegelTest = (
     grunnlag: Søknadsinfo,

@@ -1,6 +1,5 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-common';
-import { Oppholdsperiode, Periode, Periodetype } from 'types/Periode';
-import { UttaksplanColor } from 'types/UttaksplanColor';
+import { Forelder, Oppholdsperiode, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { UttaksplanColor } from '../types/UttaksplanColor';
 
 export const getForelderFarge = (forelder: Forelder) => {
     return forelder === Forelder.mor ? UttaksplanColor.purple : UttaksplanColor.blue;

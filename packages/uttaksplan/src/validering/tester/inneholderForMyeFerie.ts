@@ -1,8 +1,8 @@
 import { IntlShape } from 'react-intl';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import {
     Perioden,
+    Søknadsinfo,
     UtsettelseÅrsakType,
     getVarighetString,
     isUtsettelsesperiode,

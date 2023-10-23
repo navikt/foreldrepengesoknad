@@ -1,5 +1,6 @@
-import { getIllegalChars, validateFødselsnummer } from './validationUtil';
 import getIntlMock from 'utils-test/intl-test-helper';
+import { validateFødselsnummer } from './validationUtil';
+import { getIllegalChars } from '@navikt/fp-common';
 
 describe('validationUtil', () => {
     const intl = getIntlMock();
@@ -85,7 +86,7 @@ describe('getIllegalChars', () => {
     });
     it('should return \uFFFD (replacement char) as invalid char', () => {
         const result = getIllegalChars(
-            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \uFFFDer ikke lov'
+            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \uFFFDer ikke lov',
         );
         expect(result).toEqual('\uFFFD');
     });

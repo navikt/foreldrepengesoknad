@@ -9,24 +9,22 @@ import {
     Situasjon,
     StønadskontoType,
     StønadskontoUttak,
+    Søkerrolle,
     TilgjengeligStønadskonto,
     bemUtils,
-    getNavnPåForeldre,
     getSituasjonForelderSvg,
     getVarighetString,
     guid,
     intlUtils,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { BrukteDager, getBrukteDager } from 'utils/brukteDagerUtils';
-import { getUttaksstatus, Uttaksstatus } from 'utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import TilesList from './tilesList/TilesList';
 import './oversiktKvoter.less';
 import { Heading } from '@navikt/ds-react';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
+import { Uttaksstatus, getUttaksstatus } from '../../utils/uttaksstatus';
 
 const bem = bemUtils('oversiktKvoter');
 
@@ -146,6 +144,11 @@ interface Props {
     annenForelderHarRettINorge: boolean;
     toTetteReglerGjelder: boolean;
     intl: IntlShape;
+    rolle: Søkerrolle;
+    erEndringssøknad: boolean;
+    situasjon: Situasjon;
+    erAleneOmOmsorg: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const OversiktKvoter: FunctionComponent<Props> = ({
@@ -155,15 +158,16 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     foreldreparSituasjon,
     familiehendelsesdato,
     annenForelderHarRettINorge,
-    intl,
+    rolle,
+    erEndringssøknad,
+    situasjon,
+    erAleneOmOmsorg,
+    navnPåForeldre,
 }) => {
-    const søker = useSøkerinfo();
-    const søknad = useSøknad();
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søker.person, søknad.annenForelder, søkerErFarEllerMedmor, intl);
+    const søkerErFarEllerMedmor = isFarEllerMedmor(rolle);
     const uttaksstatus = getUttaksstatus({
         erDeltUttak: erDeltUttak,
-        erEndringssøknad: søknad.erEndringssøknad,
+        erEndringssøknad: erEndringssøknad,
         harKomplettUttaksplan: true,
         erFarEllerMedmor: søkerErFarEllerMedmor,
         tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer,
@@ -183,11 +187,11 @@ const OversiktKvoter: FunctionComponent<Props> = ({
             <OversiktPerKvote
                 erDeltUttakINorge={erDeltUttakINorge}
                 navnPåForeldre={navnPåForeldre}
-                erEndringssøknad={søknad.erEndringssøknad}
+                erEndringssøknad={erEndringssøknad}
                 uttaksstatus={uttaksstatus}
                 erFarEllerMedmor={søkerErFarEllerMedmor}
-                situasjon={søknad.søkersituasjon.situasjon}
-                erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
+                situasjon={situasjon}
+                erAleneOmOmsorg={erAleneOmOmsorg}
             />
         </div>
     );

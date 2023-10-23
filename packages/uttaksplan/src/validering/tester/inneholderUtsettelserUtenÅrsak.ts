@@ -1,6 +1,5 @@
-import { hasValue, isUtsettelsesperiode } from '@navikt/fp-common';
+import { Søknadsinfo, hasValue, isUtsettelsesperiode } from '@navikt/fp-common';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
 
 export const inneholderUtsettelserUtenÅrsak = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const utsettelserUtenÅrsak = grunnlag.perioder.filter((p) => isUtsettelsesperiode(p) && !hasValue(p.årsak));

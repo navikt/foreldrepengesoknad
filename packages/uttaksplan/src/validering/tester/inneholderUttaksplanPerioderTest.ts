@@ -1,5 +1,4 @@
-import { isHull, isInfoPeriode, isPeriodeUtenUttak, isValidTidsperiode } from '@navikt/fp-common';
-import { Søknadsinfo } from '../utils/types/Søknadsinfo';
+import { Søknadsinfo, isHull, isInfoPeriode, isPeriodeUtenUttak, isValidTidsperiode } from '@navikt/fp-common';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const inneholderUttaksplanPerioderTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

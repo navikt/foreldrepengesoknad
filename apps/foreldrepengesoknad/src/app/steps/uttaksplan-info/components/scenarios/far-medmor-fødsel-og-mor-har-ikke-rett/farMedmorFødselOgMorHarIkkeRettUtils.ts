@@ -1,9 +1,10 @@
 import { FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+
 import {
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorFødselOgMorHarIkkeRettValues: FarMedmorFødselOgMorHarIkkeRettFormData = {
     [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: '',
@@ -11,7 +12,7 @@ const initialFarMedmorFødselOgMorHarIkkeRettValues: FarMedmorFødselOgMorHarIkk
 };
 
 export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
-    values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>
+    values: Partial<FarMedmorFødselOgMorHarIkkeRettFormData>,
 ): FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo => {
     return {
         permisjonStartdato: values.permisjonStartdato!,
@@ -20,7 +21,7 @@ export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
 
 export const getInitialFarMedmorFødselOgMorHarIkkeRettValues = (
     dekningsgrad: Dekningsgrad,
-    lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined
+    lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined,
 ): FarMedmorFødselOgMorHarIkkeRettFormData => {
     if (lagretUttaksplanInfo) {
         return {

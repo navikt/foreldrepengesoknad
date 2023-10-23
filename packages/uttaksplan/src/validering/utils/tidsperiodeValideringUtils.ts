@@ -7,9 +7,9 @@ import {
     isValidTidsperiode,
 } from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { uttaksdatoer } from 'utils/uttaksdatoerUtils';
 import { DatoValidatorer, Validator } from './types/validatorTypes';
 import { allValidatorsPass } from './validatorUtils';
+import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 
 type DateValue = Date | undefined;
 
