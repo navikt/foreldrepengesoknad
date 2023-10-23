@@ -5,6 +5,18 @@ import { EgenNæringFormData, EgenNæringFormField } from './egenNæringFormConf
 import { ISOStringToDate } from '@navikt/fp-common';
 import { erVirksomhetRegnetSomNyoppstartet } from './egenNæringFormUtils';
 
+export const visVarigEndringInput = (
+    egenNæringFom: string,
+    egenNæringHattVarigEndringDeSiste4Årene: YesOrNo,
+): boolean => {
+    return (
+        hasValue(egenNæringFom) &&
+        !erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(egenNæringFom)) &&
+        hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
+        egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES
+    );
+};
+
 const EgenNæringSubformConfig: QuestionConfig<EgenNæringFormData, EgenNæringFormField> = {
     [EgenNæringFormField.egenNæringType]: {
         isIncluded: () => true,
@@ -60,21 +72,18 @@ const EgenNæringSubformConfig: QuestionConfig<EgenNæringFormData, EgenNæringF
         isAnswered: ({ egenNæringHattVarigEndringDeSiste4Årene }) => hasValue(egenNæringHattVarigEndringDeSiste4Årene),
     },
     [EgenNæringFormField.egenNæringVarigEndringDato]: {
-        isIncluded: ({ egenNæringHattVarigEndringDeSiste4Årene }) =>
-            hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
-            egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES,
+        isIncluded: ({ egenNæringFom, egenNæringHattVarigEndringDeSiste4Årene }) =>
+            visVarigEndringInput(egenNæringFom, egenNæringHattVarigEndringDeSiste4Årene),
         isAnswered: ({ egenNæringVarigEndringDato }) => hasValue(egenNæringVarigEndringDato),
     },
     [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: {
-        isIncluded: ({ egenNæringHattVarigEndringDeSiste4Årene }) =>
-            hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
-            egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES,
+        isIncluded: ({ egenNæringFom, egenNæringHattVarigEndringDeSiste4Årene }) =>
+            visVarigEndringInput(egenNæringFom, egenNæringHattVarigEndringDeSiste4Årene),
         isAnswered: ({ egenNæringVarigEndringBeskrivelse }) => hasValue(egenNæringVarigEndringBeskrivelse),
     },
     [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: {
-        isIncluded: ({ egenNæringHattVarigEndringDeSiste4Årene }) =>
-            hasValue(egenNæringHattVarigEndringDeSiste4Årene) &&
-            egenNæringHattVarigEndringDeSiste4Årene === YesOrNo.YES,
+        isIncluded: ({ egenNæringFom, egenNæringHattVarigEndringDeSiste4Årene }) =>
+            visVarigEndringInput(egenNæringFom, egenNæringHattVarigEndringDeSiste4Årene),
         isAnswered: ({ egenNæringVarigEndringInntektEtterEndring }) =>
             hasValue(egenNæringVarigEndringInntektEtterEndring),
     },
