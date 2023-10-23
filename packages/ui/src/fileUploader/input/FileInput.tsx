@@ -51,13 +51,8 @@ const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSe
                 icon={<UploadIcon />}
                 iconPosition="right"
             >
-                <FormattedMessage
-                    id={
-                        hasUplodedAttachements
-                            ? 'FileInput.Vedlegg.Lastoppknapp.Flere'
-                            : 'FileInput.Vedlegg.Lastoppknapp'
-                    }
-                />
+                {hasUplodedAttachements && <FormattedMessage id="FileInput.Vedlegg.Lastoppknapp.Flere" />}
+                {!hasUplodedAttachements && <FormattedMessage id="FileInput.Vedlegg.Lastoppknapp" />}
             </Button>
         </>
     );
