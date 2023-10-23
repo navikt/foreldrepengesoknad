@@ -1,5 +1,6 @@
 import { BodyLong, BodyShort, ExpansionCard, Heading, Link } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
+import links from 'app/links/links';
 import { FormattedMessage } from 'react-intl';
 
 const InformasjonOmUtenlandsopphold = () => {
@@ -46,7 +47,7 @@ const InformasjonOmUtenlandsopphold = () => {
                         id="utenlandsopphold.oppholdOgStøtte.seksjon5"
                         values={{
                             a: (msg: any) => (
-                                <Link href="https://nav.no/foreldrepenger#utland" rel="noreferrer" target="_blank">
+                                <Link href={links.utenlandsinformasjon} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>
                             ),

@@ -26,4 +26,5 @@ export default {
     søknadsveileder: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     veiviser: 'https://familie.nav.no/veiviser',
     scanneDokument: 'https://www.nav.no/brukerstotte#bilde-vedlegg',
+    utenlandsinformasjon: 'https://www.nav.no/no/person/familie/relatert-informasjon/svangerskapspenger-og-utland',
 };
