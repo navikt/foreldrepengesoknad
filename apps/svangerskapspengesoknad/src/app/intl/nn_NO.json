@@ -288,7 +288,6 @@
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale, prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
     "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}KB.",
-    "valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd": "Du må stadfeste at du har gjort deg kjent med vilkåra.",
     "utenlandsopphold.infoOmFødselsattest": "Du har opplyst at du skal vere i {land} når du har termin {termindato}. Dersom du føder i utlandet må du ettersende fødselsattest til oss slik at vi får registrert fødselsdatoen til barnet. Grunnen til at du må sende inn fødselsattest er at vi ikkje får inn opplysningar om fødselen automatisk når du ikkje føder i Norge.",
     "utenlandsopphold.infotekst": "Opphald i utlandet vert rekna som ferie dersom du ikkje har arbeidsinntekt under opphaldet og opphaldet ikkje varer lenger enn 12 månader. Ferie vert ikkje rekna som å bu i utlandet.",
     "utenlandsopphold.neste12Måneder.spørsmål": "Kor skal du bu dei neste 12 månadene?",
@@ -438,7 +437,7 @@
     "oppsummering.skalboINorge": "Du skal bu i Noreg dei neste 12 månadene.",
     "umyndig.tittel": "Fordi du er under 18 år, må du sende papirsøknad",
     "umyndig.tekst": "Fordi du er under 18 år, må ein av foreldra dine eller ein føresett skriva under på søknaden din saman med deg. Difor må du fylla ut søknaden på papir og senda ho i posten til NAV.",
-    "umyndig.knapp.papirsøknad": "Gå til papirsøknad"
+    "umyndig.knapp.papirsøknad": "Gå til papirsøknad",
     "ikkeKvinne.tittel": "Kun kvinner har rett på svangerskapspengar",
     "ikkeKvinne.tekst": "Du har dessverre ikkje rett på svangerskapspengar. Svangerskapspengar er meint for kvinner som er gravide og som må gå ut av arbeidet sitt då arbeidet kan føra til skade hos fosteret.",
     "ikkeKvinne.knappetekst": "Gå til nav.no",
