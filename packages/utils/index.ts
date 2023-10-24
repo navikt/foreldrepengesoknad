@@ -17,4 +17,5 @@ export {
     isSameOrBeforeToday,
     isDateWithinRange,
     isToday,
+    isDateRangesOverlapping,
 } from './src/dateUtils';

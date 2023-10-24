@@ -26,7 +26,7 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; t
     return disabledDays;
 };
 
-export interface DatepickerProps {
+export interface Props {
     name: string;
     label?: string | ReactNode;
     description?: string;
@@ -35,9 +35,10 @@ export interface DatepickerProps {
     minDate?: Date;
     maxDate?: Date;
     defaultMonth?: Date;
+    showMonthAndYearDropdowns?: boolean;
 }
 
-const Datepicker: FunctionComponent<DatepickerProps> = ({
+const Datepicker: FunctionComponent<Props> = ({
     name,
     label,
     description,
@@ -46,6 +47,7 @@ const Datepicker: FunctionComponent<DatepickerProps> = ({
     minDate,
     maxDate,
     defaultMonth,
+    showMonthAndYearDropdowns,
 }): JSX.Element => {
     const {
         formState: { errors },
@@ -96,7 +98,14 @@ const Datepicker: FunctionComponent<DatepickerProps> = ({
     );
 
     return (
-        <DatePicker {...datepickerProps} disabled={disabledDays} strategy="fixed">
+        <DatePicker
+            {...datepickerProps}
+            disabled={disabledDays}
+            strategy="fixed"
+            dropdownCaption={showMonthAndYearDropdowns}
+            fromDate={minDate}
+            toDate={maxDate}
+        >
             <DatePicker.Input
                 {...inputProps}
                 ref={field.ref}

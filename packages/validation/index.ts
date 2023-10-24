@@ -8,4 +8,8 @@ export {
     isLessThanThreeWeeksAgo,
     isMaxOneYearIntoTheFuture,
     isValidDate,
+    isDateWithinRange,
+    isBeforeOrSame,
+    isAfterOrSame,
+    isPeriodNotOverlappingOthers,
 } from './src/form/dateFormValidation';
