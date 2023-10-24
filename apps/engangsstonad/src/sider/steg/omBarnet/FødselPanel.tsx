@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import { Radio } from '@navikt/ds-react';
-import { RadioGroupPanel, Select, Datepicker } from '@navikt/fp-form-hooks';
+import { RadioGroup, Select, Datepicker } from '@navikt/fp-form-hooks';
 
 import { Fødsel } from 'types/OmBarnet';
 import { useCustomIntl } from '@navikt/fp-ui';
@@ -29,7 +29,7 @@ const FødselPanel: React.FunctionComponent = () => {
 
     return (
         <>
-            <RadioGroupPanel
+            <RadioGroup
                 name="erBarnetFødt"
                 label={<FormattedMessage id="FødselPanel.Spørsmål.ErBarnetFødt" />}
                 validate={[isRequired(i18n('FødselPanel.Spørsmål.ErBarnetFødt.Required'))]}
@@ -40,7 +40,7 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Radio value={false}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Nei" />
                 </Radio>
-            </RadioGroupPanel>
+            </RadioGroup>
             {erBarnetFødt && (
                 <Datepicker
                     name="fødselsdatoer.0"
@@ -70,7 +70,7 @@ const FødselPanel: React.FunctionComponent = () => {
                 />
             )}
 
-            <RadioGroupPanel
+            <RadioGroup
                 name="antallBarn"
                 label={erBarnetFødt ? i18n('FødselPanel.AntallBarn.Født') : i18n('FødselPanel.AntallBarn.Termin')}
                 validate={[
@@ -90,7 +90,7 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Radio value={3}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Flere" />
                 </Radio>
-            </RadioGroupPanel>
+            </RadioGroup>
             {antallBarn >= 3 && (
                 <Select
                     name="antallBarnDropDown"

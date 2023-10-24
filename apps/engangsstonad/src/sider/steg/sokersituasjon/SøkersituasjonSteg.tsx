@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { useCustomIntl } from '@navikt/fp-ui';
-import { RadioGroupPanel, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
@@ -46,7 +46,7 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <RadioGroupPanel
+                    <RadioGroup
                         name="situasjon"
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
                         validate={[isRequired(i18n('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon'))]}
@@ -57,7 +57,7 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                         <Radio value={SøkersituasjonEnum.ADOPSJON}>
                             <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
                         </Radio>
-                    </RadioGroupPanel>
+                    </RadioGroup>
                     <StepButtonsHookForm
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={lagreSøkersituasjon}

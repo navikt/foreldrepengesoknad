@@ -28,6 +28,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
+
     const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
     const lagreSenereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SENERE);
 

@@ -1,9 +1,9 @@
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
-import { RadioGroup } from '@navikt/ds-react';
+import { RadioGroup as DsRadioGroup } from '@navikt/ds-react';
 import { getError, getValidationRules } from './formUtils';
 
-interface RadioGroupPanelProps {
+interface Props {
     name: string;
     description?: string | ReactNode;
     label?: string | ReactNode;
@@ -12,14 +12,7 @@ interface RadioGroupPanelProps {
     children: ReactElement[];
 }
 
-const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
-    label,
-    description,
-    name,
-    validate = [],
-    onChange,
-    children,
-}) => {
+const RadioGroup: FunctionComponent<Props> = ({ label, description, name, validate = [], onChange, children }) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -31,7 +24,7 @@ const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
     });
 
     return (
-        <RadioGroup
+        <DsRadioGroup
             name={name}
             value={field.value !== undefined ? field.value : null}
             legend={label}
@@ -52,8 +45,8 @@ const RadioGroupPanel: FunctionComponent<RadioGroupPanelProps> = ({
                 }
                 return child;
             })}
-        </RadioGroup>
+        </DsRadioGroup>
     );
 };
 
-export default RadioGroupPanel;
+export default RadioGroup;

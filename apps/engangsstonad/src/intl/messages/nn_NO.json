@@ -141,6 +141,11 @@
     "TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuHarBoddIPåkreved": "Du må velja ein til og med dato",
     "TidligereUtenlandsoppholdSteg.TomErLikFom": "Til og med dato kan ikkje vera same som frå og med dato",
     "TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
+    "TidligereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
+    "TidligereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRange": "Ugyldig dato",
+    "TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen",
+    "TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
 
     "SenereUtenlandsoppholdSteg.Fremtidig": "Skal bu i utlandet",
     "SenereUtenlandsoppholdSteg.Knapp.LeggTilLand": "Legg til flere opphold i utlandet",
@@ -154,6 +159,11 @@
     "SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed": "Til og med",
     "SenereUtenlandsoppholdSteg.TomErLikFom": "Til og med dato kan ikkje vera same som frå og med dato",
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
+    "SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
+    "SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
+    "SenereUtenlandsoppholdSteg.DateOutsideRange": "Ugyldig dato",
+    "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen",
+    "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
 
     "OppsummeringSteg.Validering.BekrefteOpplysninger": "Du må stadfeste at du har oppgitt korrekte opplysningar",
     "OppsummeringSteg.Utenlandsopphold": "Bu i utlandet",
@@ -184,11 +194,5 @@
     "LandOppsummering.SkalBo": "Du skal bu i {country} i løpet av dei neste 12 månadene",
 
     "UseStepData.Termin": "Stadfest termin",
-    "UseStepData.Adopsjon": "Stadfest adopsjon",
-
-    "Valideringsfeil.DateOutsideRange": "Ugyldig dato",
-    "Valideringsfeil.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "Valideringsfeil.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "Valideringsfeil.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
-    "Valideringsfeil.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen"
+    "UseStepData.Adopsjon": "Stadfest adopsjon"
 }
