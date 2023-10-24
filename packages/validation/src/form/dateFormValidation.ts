@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { DATE_TODAY, SIX_MONTHS_AGO } from '@navikt/fp-constants';
+import { DATE_TODAY, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
+import { isDateRangesOverlapping } from '@navikt/fp-utils';
 import isBetween from 'dayjs/plugin/isBetween';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
@@ -21,15 +22,25 @@ export const isBeforeTodayOrToday =
     (date: string): FormValidationResult =>
         dayjs(date).isAfter(DATE_TODAY) ? i18nText : null;
 
+export const isBeforeOrSame =
+    (i18nText: string, endDate: string) =>
+    (startDate: string): FormValidationResult =>
+        endDate && dayjs(startDate).isAfter(endDate, 'day') ? i18nText : null;
+
 export const isAfterOrSameAsSixMonthsAgo =
     (i18nText: string) =>
     (date: string): FormValidationResult =>
         dayjs(date).isBefore(SIX_MONTHS_AGO) ? i18nText : null;
 
+export const isAfterOrSame =
+    (i18nText: string, fromDate: string) =>
+    (endDate: string): FormValidationResult =>
+        fromDate && dayjs(endDate).isBefore(fromDate, 'day') ? i18nText : null;
+
 export const isDatesNotTheSame =
     (i18nText: string, date1?: string) =>
     (date2?: string): FormValidationResult =>
-        date1 && date2 && dayjs(date1).isSame(date2) ? i18nText : null;
+        date1 && date2 && dayjs(date1).isSame(date2, 'day') ? i18nText : null;
 
 export const isLessThanThreeWeeksAgo =
     (i18nText: string) =>
@@ -46,3 +57,30 @@ export const isMaxOneYearIntoTheFuture =
     (i18nText: string) =>
     (date: string): FormValidationResult =>
         dayjs(date).isAfter(ONE_YEAR_AFTER_TODAY) ? i18nText : null;
+
+export const isDateWithinRange =
+    (i18nText: string, start: Date, end: Date) =>
+    (date: string): FormValidationResult =>
+        isDateWithinRange(date, start, end) ? null : i18nText;
+
+export const isPeriodNotOverlappingOthers =
+    (
+        i18nText: string,
+        otherDateInfo: { date: Date | string; isStartDate: boolean },
+        otherPeriods: { fom: Date | string; tom: Date | string }[],
+    ) =>
+    (date: string): FormValidationResult => {
+        const dateRanges = otherPeriods.map((u) => ({
+            from: dayjs(u.fom).toDate(),
+            to: u.tom ? dayjs(u.tom).toDate() : TIDENES_ENDE,
+        }));
+
+        const toDate = otherDateInfo.isStartDate ? date : otherDateInfo.date;
+
+        const allDateRanges = dateRanges.concat({
+            from: dayjs(otherDateInfo.isStartDate ? otherDateInfo.date : date).toDate(),
+            to: toDate ? dayjs(toDate).toDate() : TIDENES_ENDE,
+        });
+
+        return isDateRangesOverlapping(allDateRanges) ? i18nText : null;
+    };

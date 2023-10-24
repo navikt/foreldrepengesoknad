@@ -8,6 +8,8 @@ dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
+type Period = { from: Date; to: Date };
+
 const DATE_FORMAT = 'DD.MM.YYYY';
 
 export const formatDate = (date: Date | string) => dayjs(date).format(DATE_FORMAT);
@@ -19,3 +21,21 @@ export const isSameOrBeforeToday = (date: string): boolean => dayjs(date).isSame
 export const isToday = (date: string): boolean => dayjs(date).isSame(DATE_TODAY, 'day');
 export const isDateWithinRange = (date: Date, minDate: Date, maxDate: Date): boolean =>
     dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
+
+const sortDateRange = (d1: Period, d2: Period) => {
+    return dayjs(d1.from).isSameOrBefore(d2.from) ? -1 : 1;
+};
+
+export const isDateRangesOverlapping = (ranges: Period[]) => {
+    if (ranges.length > 0) {
+        const sortedDates = [...ranges].sort(sortDateRange);
+        const hasOverlap = sortedDates.find((d, idx) => {
+            if (idx < sortedDates.length - 1) {
+                return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1].from);
+            }
+            return false;
+        });
+        return hasOverlap !== undefined;
+    }
+    return false;
+};

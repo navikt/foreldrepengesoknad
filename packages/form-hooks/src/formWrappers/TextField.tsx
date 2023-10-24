@@ -1,28 +1,33 @@
 import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
-import { Select as DsSelect } from '@navikt/ds-react';
+import { useController, useFormContext } from 'react-hook-form';
+import { TextField as DsTextField } from '@navikt/ds-react';
+
 import { getError, getValidationRules } from './formUtils';
 
 export interface Props {
     name: string;
     label: string | ReactNode;
-    onChange?: (event: any) => void;
-    validate?: Array<(value: string) => any>;
-    children: React.ReactElement[];
-    description?: ReactNode;
+    validate?: ((value: string) => any)[] | ((value: number) => any)[];
+    description?: string;
+    onChange?: (value: any) => void;
+    autoFocus?: boolean;
+    maxLength?: number;
     disabled?: boolean;
+    type?: 'email' | 'password' | 'tel' | 'text' | 'url';
     className?: string;
 }
 
-const Select: FunctionComponent<Props> = ({
+const TextField: FunctionComponent<Props> = ({
     name,
     label,
     validate = [],
-    description,
+    type,
     onChange,
+    description,
+    autoFocus,
+    maxLength,
     disabled,
     className,
-    children,
 }) => {
     const {
         formState: { errors },
@@ -36,29 +41,31 @@ const Select: FunctionComponent<Props> = ({
     });
 
     const onChangeFn = useCallback(
-        (evt: React.ChangeEvent) => {
-            if (onChange) {
-                onChange(evt);
-            }
+        (evt: React.ChangeEvent<HTMLInputElement>) => {
             field.onChange(evt);
+            if (onChange) {
+                onChange(evt.currentTarget.value);
+            }
         },
         [field, onChange],
     );
 
     return (
-        <DsSelect
+        <DsTextField
             ref={field.ref}
             value={field.value}
-            className={className}
-            error={getError(errors, name)}
             label={label}
             description={description}
+            type={type}
+            error={getError(errors, name)}
+            autoFocus={autoFocus}
+            autoComplete="off"
+            maxLength={maxLength}
             disabled={disabled}
+            className={className}
             onChange={onChangeFn}
-        >
-            <option style={{ display: 'none' }} />,{children}
-        </DsSelect>
+        />
     );
 };
 
-export default Select;
+export default TextField;

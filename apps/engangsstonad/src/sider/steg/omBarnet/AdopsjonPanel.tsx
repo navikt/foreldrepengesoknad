@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
 import { Radio } from '@navikt/ds-react';
 import { Kjønn } from '@navikt/fp-common';
-import { RadioGroupPanel, Datepicker, Select } from '@navikt/fp-form-hooks';
+import { RadioGroup, Datepicker, Select } from '@navikt/fp-form-hooks';
 
 import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
 import { Adopsjon } from 'types/OmBarnet';
@@ -27,7 +27,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
 
     return (
         <>
-            <RadioGroupPanel
+            <RadioGroup
                 name="adopsjonAvEktefellesBarn"
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.Stebarnsadopsjon" />}
                 validate={[isRequired(i18n('AdopsjonPanel.Spørsmål.Required'))]}
@@ -38,7 +38,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                 <Radio value={false}>
                     <FormattedMessage id="AdopsjonPanel.Nei" />
                 </Radio>
-            </RadioGroupPanel>
+            </RadioGroup>
             <Datepicker
                 name="adopsjonsdato"
                 label={
@@ -61,7 +61,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                     isMaxOneYearIntoTheFuture(i18n('AdopsjonPanel.AdopsjonDato.ForLangtFremITid')),
                 ]}
             />
-            <RadioGroupPanel
+            <RadioGroup
                 name="antallBarn"
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert" />}
                 description={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert.Beskrivelse" />}
@@ -76,7 +76,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                 <Radio value={3}>
                     <FormattedMessage id="AdopsjonPanel.Radiobutton.Flere" />
                 </Radio>
-            </RadioGroupPanel>
+            </RadioGroup>
             {antallBarn && antallBarn >= 3 && (
                 <Select
                     name="antallBarnDropDown"
@@ -98,7 +98,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                 antallBarnDropDown={antallBarnDropDown}
             />
             {kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
-                <RadioGroupPanel
+                <RadioGroup
                     name="søkerAdopsjonAlene"
                     label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AdoptererDuAlene" />}
                     validate={[isRequired(i18n('AdopsjonPanel.AdoptererDuAlene.Required'))]}
@@ -109,7 +109,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                     <Radio value={false}>
                         <FormattedMessage id="AdopsjonPanel.Nei" />
                     </Radio>
-                </RadioGroupPanel>
+                </RadioGroup>
             )}
         </>
     );

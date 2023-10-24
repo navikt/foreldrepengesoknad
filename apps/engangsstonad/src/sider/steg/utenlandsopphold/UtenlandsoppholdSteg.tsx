@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Step } from '@navikt/fp-common';
 import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
-import { Form, ErrorSummaryHookForm, RadioGroupPanel, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Form, ErrorSummaryHookForm, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { links } from '@navikt/fp-constants';
 
 import { Utenlandsopphold } from 'types/Utenlandsopphold';
@@ -64,7 +64,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                     <BodyLong>
                         <FormattedMessage id="UtenlandsoppholdSteg.Info" />
                     </BodyLong>
-                    <RadioGroupPanel
+                    <RadioGroup
                         name="harBoddUtenforNorgeSiste12Mnd"
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Siste12Måneder.Spørsmål" />}
                         validate={[isRequired(i18n('UtenlandsoppholdSteg.Siste12Måneder.IsRequired'))]}
@@ -75,8 +75,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                         <Radio value={true}>
                             <FormattedMessage id="UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
-                    </RadioGroupPanel>
-                    <RadioGroupPanel
+                    </RadioGroup>
+                    <RadioGroup
                         name="skalBoUtenforNorgeNeste12Mnd"
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Neste12Måneder.Spørsmål" />}
                         validate={[isRequired(i18n('UtenlandsoppholdSteg.Neste12Måneder.IsRequired'))]}
@@ -87,7 +87,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                         <Radio value={true}>
                             <FormattedMessage id="UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
-                    </RadioGroupPanel>
+                    </RadioGroup>
                     <ExpansionCard size="small" aria-label={i18n('UtenlandsoppholdSteg.StotteFraNav')}>
                         <ExpansionCard.Header>
                             <ExpansionCard.Title size="small">
