@@ -13,6 +13,6 @@
     margin-top: 12px;
 }
 
-.oppsummeringsPanel__specificity > .oppsummeringsPanel__header {
+.accordion__specificity > .accordion__header {
     box-shadow: var(--a-deepblue-50);
 }

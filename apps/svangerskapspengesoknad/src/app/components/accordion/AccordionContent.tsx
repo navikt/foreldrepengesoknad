@@ -8,7 +8,7 @@ interface Props {
 
 const Accordion: FunctionComponent<Props> = ({ visible, children }) => {
     return (
-        <Block padBottom="l" visible={visible}>
+        <Block className="content_margin" padBottom="l" visible={visible}>
             {children}
         </Block>
     );

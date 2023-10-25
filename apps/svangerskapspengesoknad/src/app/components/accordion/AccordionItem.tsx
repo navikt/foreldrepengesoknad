@@ -2,7 +2,7 @@ import { bemUtils } from '@navikt/fp-common';
 import { FunctionComponent, useCallback, useState, ReactNode } from 'react';
 import { Accordion } from '@navikt/ds-react';
 
-import './../accordion/accordion.css';
+import '../accordion/accordion.css';
 
 interface Props {
     title: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AccordionContent: FunctionComponent<Props> = ({ title, children }) => {
-    const bem = bemUtils('oppsummeringsPanel');
+    const bem = bemUtils('accordion');
 
     const [isOpen, toggleOpen] = useState(false);
     const toggle = useCallback(() => toggleOpen((open) => !open), []);
