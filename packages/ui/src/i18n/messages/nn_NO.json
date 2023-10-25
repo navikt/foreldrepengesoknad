@@ -11,6 +11,9 @@
     "StepButtons.Forrige": "Forrige steg",
     "StepButtons.Neste": "Neste steg",
 
+    "ErrorPage.Engangsstønad": "Eingongsstønad",
+    "ErrorPage.Foreldrepenger": "Foreldrepenger",
+    "ErrorPage.Svangerskapspenger": "Svangerskapspenger",
     "ErrorPage.Heading": "Beklager, noko har gått feil med søknaden din på grunn av ein teknisk feil hjå oss",
     "ErrorPage.Message": "Du kan venta litt og deretter prøva å søka på nytt. Dersom det fortsatt er problem kan du kontakta brukarstøtte for å få hjelp.",
     "ErrorPage.Contact": "Kontakt brukerstøtte",

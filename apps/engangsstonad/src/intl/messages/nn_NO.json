@@ -1,14 +1,9 @@
 {
     "Søknad.Pageheading": "Søknad om eingongsstønad",
-    "Søknad.Type": "Eingongsstønad",
 
     "Umyndig.Bobletittel": "Hei, {name}!",
     "Umyndig.Under18.Bobletekst": "Sidan du er under 18 år, må ein av foreldra dine eller ein føresett skrive under på søknaden saman med deg. Du må derfor fylle ut søknaden på papir og sende han i posten. ",
     "Umyndig.Under18.Boblelenketekst": "Her kan du laste ned papirsøknaden",
-
-    "FeilsideInfo.GenerellFeil.Tittel": "Oops,",
-    "FeilsideInfo.GenerellFeil.Ingress": "Noko gjekk dessverre gale. Ver vennleg og prøv igjen seinare. Dersom det framleis oppstår feil kontakt brukarstøtte.",
-    "FeilsideInfo.GenerellFeil.Brukerstøtte": "Kontakt brukarstøtte her",
 
     "Velkommen.Dokumenttittel": "NAV eingongsstønad",
     "Velkommen.Ingress.Del1": "Eingongsstønad kan du få om du ventar barn og ikkje har hatt inntekt som gjev rett til foreldrepengar i 6 av dei siste 10 månadene. Med eingongsstønad får du heile beløpet utbetalt med ein gong. Om du har foreldrepenger får du penger ein gong i månaden.",

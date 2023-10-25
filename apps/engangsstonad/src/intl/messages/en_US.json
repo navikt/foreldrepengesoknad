@@ -1,14 +1,9 @@
 {
     "Søknad.Pageheading": "Application for lump-sum grant",
-    "Søknad.Type": "Lump-sum grant",
 
     "Umyndig.Bobletittel": "Hi, {name}!",
     "Umyndig.Under18.Bobletekst": "Because you are under the age of 18, one of your parents or a guardian must sign the application together with you. You therefore have to fill out the application in paper form and send this by mail. ",
     "Umyndig.Under18.Boblelenketekst": "A paper application can be downloaded here.",
-
-    "FeilsideInfo.GenerellFeil.Tittel": "Oops,",
-    "FeilsideInfo.GenerellFeil.Ingress": "Unfortunately, something went wrong. Please try again later. If there are still errors please contact support.",
-    "FeilsideInfo.GenerellFeil.Brukerstøtte": "Contact support here",
 
     "Velkommen.Dokumenttittel": "NAV Lump-sum grant",
     "Velkommen.Ingress.Del1": "You can get lump-sum grant if you are expecting a child and have not had income that entitles you to parental benefit for 6 of the last 10 months. With a lump sum gant, you get the entire amount paid at once. If you have parental benefit, you will receive money once a month.",

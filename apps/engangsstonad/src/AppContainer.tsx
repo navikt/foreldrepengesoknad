@@ -5,7 +5,6 @@ import { ErrorBoundary } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
 import Engangsstønad from './Engangsstønad';
 import IntlProvider from './intl/IntlProvider';
-import { FormattedMessage } from 'react-intl';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
@@ -21,7 +20,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider språkkode={locale}>
-            <ErrorBoundary søknadsnavn={<FormattedMessage id="Søknad.Type" />} søkPåNytt={() => location.reload()}>
+            <ErrorBoundary appnavn="Engangsstønad">
                 <BrowserRouter>
                     <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
                 </BrowserRouter>

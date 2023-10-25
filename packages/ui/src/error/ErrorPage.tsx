@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useCallback } from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import { links } from '@navikt/fp-constants';
 import { Alert, BodyShort, Button, HStack, Heading, Label, Link, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
@@ -6,19 +6,22 @@ import UiIntlProvider from '../i18n/UiIntlProvider';
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
 interface Props {
-    søknadsnavn: string | ReactNode;
-    feilmelding: string | ReactNode;
-    søkPåNytt: () => void;
+    appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    feilmelding: string;
 }
 
-const ErrorPage: FunctionComponent<Props> = ({ søknadsnavn, feilmelding, søkPåNytt }) => {
-    const søk = useCallback(() => søkPåNytt(), [søkPåNytt]);
+const ErrorPage: FunctionComponent<Props> = ({ appnavn, feilmelding }) => {
+    const søkPåNytt = useCallback(() => location.reload(), []);
     //TODO Bytt ut div under med Box frå ds-react når oppdatert til siste versjon
     return (
         <UiIntlProvider>
             <ContentWrapper>
                 <VStack gap="20">
-                    <Heading size="large">{søknadsnavn}</Heading>
+                    <Heading size="large">
+                        {appnavn === 'Engangsstønad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
+                        {appnavn === 'Foreldrepenger' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
+                        {appnavn === 'Svangerskapspenger' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
+                    </Heading>
                     <VStack gap="10">
                         <Alert variant="warning">
                             <VStack gap="4">
@@ -36,7 +39,7 @@ const ErrorPage: FunctionComponent<Props> = ({ søknadsnavn, feilmelding, søkP�
                                     <FormattedMessage id="ErrorPage.Contact" />
                                 </Button>
                             </Link>
-                            <Button type="button" variant="primary" onClick={søk}>
+                            <Button type="button" variant="primary" onClick={søkPåNytt}>
                                 <FormattedMessage id="ErrorPage.TryAgain" />
                             </Button>
                         </HStack>

@@ -1,10 +1,9 @@
 import * as Sentry from '@sentry/browser';
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
 import ErrorPage from './ErrorPage';
 
 interface Props {
-    søknadsnavn?: string | ReactNode;
-    søkPåNytt?: () => void;
+    appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     children: React.ReactNode;
 }
 
@@ -31,12 +30,12 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        const { søknadsnavn, søkPåNytt } = this.props;
+        const { appnavn } = this.props;
         const { errorMessage, errorInfo } = this.state;
 
         if (this.state.hasError) {
-            return søknadsnavn && søkPåNytt && errorMessage ? (
-                <ErrorPage søknadsnavn={søknadsnavn} søkPåNytt={søkPåNytt} feilmelding={errorMessage} />
+            return errorMessage ? (
+                <ErrorPage appnavn={appnavn} feilmelding={errorMessage} />
             ) : (
                 <div>{errorMessage || errorInfo}</div>
             );
