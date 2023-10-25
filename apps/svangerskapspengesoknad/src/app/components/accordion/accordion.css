@@ -1,0 +1,18 @@
+.accordion_headerOpen {
+    background-color: var(--a-deepblue-50);
+}
+.accordion_headerOpen:hover {
+    background-color: var(--a-deepblue-50);
+
+}
+.accordion_header:hover {
+    background-color: var(--a-deepblue-50);
+}
+
+.content_margin {
+    margin-top: 12px;
+}
+
+.oppsummeringsPanel__specificity > .oppsummeringsPanel__header {
+    box-shadow: var(--a-deepblue-50);
+}
