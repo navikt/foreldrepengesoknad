@@ -15,11 +15,12 @@ import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import { Path } from 'appData/paths';
 import { EsDataContext } from 'appData/EsDataContext';
 import Kvittering from 'types/Kvittering';
-import FeilsideInfo from './sider/feilside/FeilsideInfo';
 import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import { redirect } from '@navikt/fp-utils';
 import Environment from 'appData/Environment';
+import { ErrorPage } from '@navikt/fp-ui';
+import { FormattedMessage } from 'react-intl';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -50,7 +51,13 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         if (error.response?.status === 401 || error.response?.status === 403) {
             return <Spinner />;
         }
-        return <FeilsideInfo onChangeLocale={onChangeLocale} locale={locale} />;
+        return (
+            <ErrorPage
+                søknadsnavn={<FormattedMessage id="Søknad.Type" />}
+                feilmelding={error.message}
+                søkPåNytt={() => location.reload()}
+            />
+        );
     }
 
     if (loading || !person) {

@@ -1,5 +1,6 @@
 {
     "Søknad.Pageheading": "Application for lump-sum grant",
+    "Søknad.Type": "Lump-sum grant",
 
     "Umyndig.Bobletittel": "Hi, {name}!",
     "Umyndig.Under18.Bobletekst": "Because you are under the age of 18, one of your parents or a guardian must sign the application together with you. You therefore have to fill out the application in paper form and send this by mail. ",
