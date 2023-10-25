@@ -5,7 +5,7 @@ import { FunctionComponent, useState } from 'react';
 import './bytt-browser-modal.css';
 import bemUtils from './../../utils/bemUtils';
 import AdvarselIkon from './../../assets/advarsel-ikon/AdvarselIkon';
-import { intlUtils } from './../../../common';
+import intlUtils from 'common/utils/intlUtils';
 export interface Props {
     skalEndreNettleser: boolean;
 }
