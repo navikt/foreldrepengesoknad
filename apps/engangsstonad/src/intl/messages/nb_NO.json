@@ -161,7 +161,7 @@
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
     "SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Fra og med dato må være en gyldig dato på formatet dd.mm.åååå",
     "SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må være en gyldig dato på formatet dd.mm.åååå",
-    "SenereUtenlandsoppholdSteg.DateOutsideRange": "Ugyldig dato",
+    "SenereUtenlandsoppholdSteg.DateOutsideRange": "Dato er utenfor gyldig intervall",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legge inn en dato som er før til-datoen",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legge inn en dato som er etter fra-datoen",
 
