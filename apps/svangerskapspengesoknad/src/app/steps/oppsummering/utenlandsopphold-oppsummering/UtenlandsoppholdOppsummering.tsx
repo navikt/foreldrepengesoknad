@@ -39,7 +39,7 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
                 </Block>
             )}
             {visINorgePåHendelsestidspunktet && (
-                <Block padBottom="xl">
+                <Block>
                     <BodyShort>
                         {informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet
                             ? intlUtils(intl, 'oppsummering.iNorgePåHendelsestidspunktet')

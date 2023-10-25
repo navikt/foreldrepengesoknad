@@ -4,14 +4,13 @@ import useSøknad from 'app/utils/hooks/useSøknad';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getBackLinkForOppsummeringSteg } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { Link } from 'react-router-dom';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
 
 import './oppsummering.css';
+
 import {
     OppsummeringFormComponents,
     OppsummeringFormData,
@@ -25,18 +24,22 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 import Api from 'app/api/api';
 import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirect, redirectToLogin } from 'app/utils/redirectUtils';
-import EgenNæringVisning from '../../components/egen-næring-visning/EgenNæringVisning';
-import ArbeidIUtlandetVisning from '../../components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
-import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
-import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
 import { SendtSøknad } from 'app/types/SendtSøknad';
 import Environment from 'app/Environment';
+import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
+import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
+import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
+import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
+import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
+import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
+import AccordionItem from 'app/components/accordion/AccordionItem';
+import AccordionContent from 'app/components/accordion/AccordionContent';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -55,6 +58,7 @@ const Oppsummering = () => {
     const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
+    const formatertFødselsdato = formatDate(barn.fødselsdato!);
     const bem = bemUtils('oppsummering');
     const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
     const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato!);
@@ -125,162 +129,161 @@ const Oppsummering = () => {
                             onCancel={onAvbrytSøknad}
                             useNoTempSavingText={true}
                         >
-                            <Accordion>
-                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                                    <Accordion.Header>
-                                        <FormattedMessage id="oppsummering.omDeg" />
-                                    </Accordion.Header>
-                                    <Accordion.Content>
-                                        <Block padBottom="xl" margin="m">
-                                            <BodyShort>{`${søkerinfo.person.fornavn} ${søkerinfo.person.etternavn}`}</BodyShort>
-                                        </Block>
-                                        <BodyShort>{søkerinfo.person.fnr}</BodyShort>
-                                    </Accordion.Content>
-                                </Accordion.Item>
-                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                                    <Accordion.Header>
-                                        <FormattedMessage id="oppsummering.omBarnet" />
-                                    </Accordion.Header>
-                                    <Accordion.Content>
-                                        <Block margin="m" padBottom={barn.erBarnetFødt ? 'xl' : 'none'}>
-                                            <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
-                                        </Block>
-                                        {barn.erBarnetFødt && barn.fødselsdato && (
-                                            <Block margin="m">
-                                                <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
-                                            </Block>
-                                        )}
-                                    </Accordion.Content>
-                                </Accordion.Item>
-                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                                    <Accordion.Header>
-                                        <FormattedMessage id="oppsummering.omUtenlandsopphold" />
-                                    </Accordion.Header>
-                                    <Accordion.Content>
-                                        <UtenlandsoppholdOppsummering
-                                            informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
-                                        />
-                                    </Accordion.Content>
-                                </Accordion.Item>
-                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                                    <Accordion.Header>
-                                        <FormattedMessage id="oppsummering.omArbeidsforhold" />
-                                    </Accordion.Header>
-                                    <Accordion.Content>
-                                        <Block padBottom="xl">
-                                            {aktiveArbeidsforhold.length > 0 && (
-                                                <ArbeidsforholdInformasjon
-                                                    visManglerInfo={false}
-                                                    arbeidsforhold={aktiveArbeidsforhold}
-                                                />
-                                            )}
-                                            {søker.harJobbetSomFrilans && søker.frilansInformasjon && (
-                                                <FrilansVisning frilans={søker.frilansInformasjon}></FrilansVisning>
-                                            )}
-                                            {søker.harJobbetSomSelvstendigNæringsdrivende &&
-                                                søker.selvstendigNæringsdrivendeInformasjon && (
-                                                    <EgenNæringVisning
-                                                        næring={søker.selvstendigNæringsdrivendeInformasjon}
-                                                    ></EgenNæringVisning>
-                                                )}
-                                            {søker.harHattAnnenInntekt &&
-                                                søker.andreInntekter &&
-                                                søker.andreInntekter.map((arbeid) => {
-                                                    return (
-                                                        <ArbeidIUtlandetVisning
-                                                            key={guid()}
-                                                            arbeidIUtlandet={arbeid}
-                                                        ></ArbeidIUtlandetVisning>
-                                                    );
-                                                })}
-                                            {(!søker.harJobbetSomFrilans ||
-                                                !søker.harJobbetSomSelvstendigNæringsdrivende ||
-                                                !søker.harHattAnnenInntekt) && (
-                                                <Block padBottom="m">
-                                                    <BodyShort>
-                                                        {getTekstOmManglendeArbeidsforhold(søker, intl)}
-                                                    </BodyShort>
-                                                </Block>
-                                            )}
-                                        </Block>
-                                    </Accordion.Content>
-                                </Accordion.Item>
-                                <Accordion.Item className={bem.element('header-reverse-chevron')}>
-                                    <Accordion.Header>
-                                        <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
-                                    </Accordion.Header>
-                                    <Accordion.Content>
-                                        {tilretteleggingMedFrilans && (
-                                            <>
-                                                <Block padBottom="l">
-                                                    <BodyShort className={bem.element('label')}>
-                                                        {intlUtils(intl, 'oppsummering.risikofaktorer.frilans')}
-                                                    </BodyShort>
-                                                    <BodyShort>{tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
-                                                </Block>
-                                                <Block padBottom="l">
-                                                    <BodyShort className={bem.element('label')}>
-                                                        {intlUtils(intl, 'oppsummering.tilretteleggingstiltak.frilans')}
-                                                    </BodyShort>
-                                                    <BodyShort>
-                                                        {tilretteleggingMedFrilans.tilretteleggingstiltak}
-                                                    </BodyShort>
-                                                </Block>
-                                            </>
-                                        )}
-                                        {tilretteleggingMedSN && (
-                                            <>
-                                                <Block padBottom="l">
-                                                    <BodyShort className={bem.element('label')}>
-                                                        {intlUtils(intl, 'oppsummering.risikofaktorer.SN', {
-                                                            navn: tilretteleggingMedSN.arbeidsforhold.navn,
-                                                        })}
-                                                    </BodyShort>
-                                                    <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
-                                                </Block>
-                                                <Block padBottom="l">
-                                                    <BodyShort className={bem.element('label')}>
-                                                        {intlUtils(intl, 'oppsummering.tilretteleggingstiltak.SN', {
-                                                            navn: tilretteleggingMedSN.arbeidsforhold.navn,
-                                                        })}
-                                                    </BodyShort>
-                                                    <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
-                                                </Block>
-                                            </>
-                                        )}
-                                        <PeriodeOppsummering
-                                            perioder={allePerioderMedFomOgTom}
-                                            sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
-                                        />
-                                    </Accordion.Content>
-                                </Accordion.Item>
-                            </Accordion>
-                            <Block margin="xl" padBottom="xl">
-                                <OppsummeringFormComponents.ConfirmationCheckbox
-                                    name={OppsummeringFormField.harGodkjentOppsummering}
-                                    label={intlUtils(intl, 'oppsummering.bekreft')}
-                                    validate={validateHarGodkjentOppsummering(intl)}
-                                />
-                            </Block>
                             <Block padBottom="l">
-                                <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={getBackLinkForOppsummeringSteg(tilrettelegging)}
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
-                                    <Button
-                                        icon={<PaperplaneIcon />}
-                                        iconPosition="right"
-                                        type="submit"
-                                        disabled={formSubmitted}
-                                        loading={formSubmitted}
-                                    >
-                                        {intlUtils(intl, 'send.søknad')}
-                                    </Button>
-                                </StepButtonWrapper>
+                                <div className={bem.block}>
+                                    <Accordion>
+                                        <AccordionItem title={intlUtils(intl, 'oppsummering.omDeg')}>
+                                            <AccordionContent>
+                                                <Block padBottom="m">
+                                                    <BodyShort>{`${søkerinfo.person.fornavn} ${søkerinfo.person.etternavn}`}</BodyShort>
+                                                </Block>
+                                                <Block>
+                                                    <BodyShort>{søkerinfo.person.fnr}</BodyShort>
+                                                </Block>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                        <AccordionItem title={intlUtils(intl, 'oppsummering.omBarnet')}>
+                                            <AccordionContent>
+                                                <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+                                                {barn.erBarnetFødt && barn.fødselsdato && (
+                                                    <Block margin="m">
+                                                        <BodyShort>{`Fødselsdato: ${formatertFødselsdato}`}</BodyShort>
+                                                    </Block>
+                                                )}
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                        <AccordionItem title={intlUtils(intl, 'oppsummering.omUtenlandsopphold')}>
+                                            <AccordionContent>
+                                                <Block padBottom="l"> </Block>
+                                                <Block>
+                                                    <UtenlandsoppholdOppsummering
+                                                        informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
+                                                    />
+                                                </Block>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                        <AccordionItem title={intlUtils(intl, 'oppsummering.omArbeidsforhold')}>
+                                            <AccordionContent>
+                                                <Block padBottom="xl">
+                                                    {aktiveArbeidsforhold.length > 0 && (
+                                                        <ArbeidsforholdInformasjon
+                                                            visManglerInfo={false}
+                                                            arbeidsforhold={aktiveArbeidsforhold}
+                                                        />
+                                                    )}
+                                                    {søker.harJobbetSomFrilans && søker.frilansInformasjon && (
+                                                        <FrilansVisning
+                                                            frilans={søker.frilansInformasjon}
+                                                        ></FrilansVisning>
+                                                    )}
+                                                    {søker.harJobbetSomSelvstendigNæringsdrivende &&
+                                                        søker.selvstendigNæringsdrivendeInformasjon && (
+                                                            <EgenNæringVisning
+                                                                næring={søker.selvstendigNæringsdrivendeInformasjon}
+                                                            ></EgenNæringVisning>
+                                                        )}
+                                                    {søker.harHattAnnenInntekt &&
+                                                        søker.andreInntekter &&
+                                                        søker.andreInntekter.map((arbeid) => {
+                                                            return (
+                                                                <ArbeidIUtlandetVisning
+                                                                    key={guid()}
+                                                                    arbeidIUtlandet={arbeid}
+                                                                ></ArbeidIUtlandetVisning>
+                                                            );
+                                                        })}
+                                                    {(!søker.harJobbetSomFrilans ||
+                                                        !søker.harJobbetSomSelvstendigNæringsdrivende ||
+                                                        !søker.harHattAnnenInntekt) && (
+                                                        <Block padBottom="m">
+                                                            <BodyShort>
+                                                                {getTekstOmManglendeArbeidsforhold(søker, intl)}
+                                                            </BodyShort>
+                                                        </Block>
+                                                    )}
+                                                </Block>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                        <AccordionItem
+                                            title={intlUtils(intl, 'oppsummering.periodeMedSvangerskapspenger')}
+                                        >
+                                            <AccordionContent>
+                                                {tilretteleggingMedFrilans && (
+                                                    <>
+                                                        <Block padBottom="l">
+                                                            <BodyShort className={bem.element('label')}>
+                                                                {'Risikofaktorer i jobben din som frilanser:'}
+                                                            </BodyShort>
+                                                            <BodyShort>
+                                                                ${tilretteleggingMedFrilans.risikofaktorer}
+                                                            </BodyShort>
+                                                        </Block>
+                                                        <Block padBottom="l">
+                                                            <BodyShort className={bem.element('label')}>
+                                                                {'Tilretteleggingstiltak i jobben din som frilanser:'}
+                                                            </BodyShort>
+                                                            <BodyShort>
+                                                                {tilretteleggingMedFrilans.tilretteleggingstiltak}
+                                                            </BodyShort>
+                                                        </Block>
+                                                    </>
+                                                )}
+                                                {tilretteleggingMedSN && (
+                                                    <>
+                                                        <Block padBottom="l">
+                                                            <BodyShort
+                                                                className={bem.element('label')}
+                                                            >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
+                                                            <BodyShort>
+                                                                ${tilretteleggingMedSN.risikofaktorer}
+                                                            </BodyShort>
+                                                        </Block>
+                                                        <Block padBottom="l">
+                                                            <BodyShort className={bem.element('label')}>
+                                                                {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
+                                                            </BodyShort>
+                                                            <BodyShort>
+                                                                {tilretteleggingMedSN.tilretteleggingstiltak}
+                                                            </BodyShort>
+                                                        </Block>
+                                                    </>
+                                                )}
+                                                <PeriodeOppsummering
+                                                    perioder={allePerioderMedFomOgTom}
+                                                    sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+                                                />
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
+
+                                    <Block margin="xl" padBottom="xl">
+                                        <OppsummeringFormComponents.ConfirmationCheckbox
+                                            name={OppsummeringFormField.harGodkjentOppsummering}
+                                            label={intlUtils(intl, 'oppsummering.bekreft')}
+                                            validate={validateHarGodkjentOppsummering(intl)}
+                                        />
+                                    </Block>
+                                    <Block padBottom="l">
+                                        <StepButtonWrapper>
+                                            <Button
+                                                variant="secondary"
+                                                as={Link}
+                                                to={getBackLinkForOppsummeringSteg(tilrettelegging)}
+                                            >
+                                                <FormattedMessage id="backlink.label" />
+                                            </Button>
+                                            <Button
+                                                icon={<PaperplaneIcon />}
+                                                iconPosition="right"
+                                                type="submit"
+                                                disabled={formSubmitted}
+                                                loading={formSubmitted}
+                                            >
+                                                {intlUtils(intl, 'send.søknad')}
+                                            </Button>
+                                        </StepButtonWrapper>
+                                    </Block>
+                                </div>
                             </Block>
                         </Step>
                     </OppsummeringFormComponents.Form>
