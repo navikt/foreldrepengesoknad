@@ -211,9 +211,6 @@ const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
     const mappedSøker: SøkerDTO = {
         rolle: søker.rolle,
         språkkode: søker.språkkode,
-        harJobbetSomFrilansSiste10Mnd: søker.harJobbetSomFrilans,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: søker.harJobbetSomSelvstendigNæringsdrivende,
-        harHattAnnenInntektSiste10Mnd: søker.harHattAnnenInntekt,
         frilansInformasjon: søker.harJobbetSomFrilans ? mapFrilansForInnsending(søker.frilansInformasjon) : undefined,
         selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : undefined,
         andreInntekterSiste10Mnd: mappedArbeidIUtlandet,

@@ -31,7 +31,4 @@ export interface SøkerDTO
     frilansInformasjon?: FrilansDTO;
     selvstendigNæringsdrivendeInformasjon?: EgenNæringDTO[];
     andreInntekterSiste10Mnd?: ArbeidIUtlandetDTO[];
-    harJobbetSomFrilansSiste10Mnd: boolean;
-    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-    harHattAnnenInntektSiste10Mnd: boolean;
 }
