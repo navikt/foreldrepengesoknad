@@ -1,4 +1,4 @@
-import { usynligeCharsRegex } from './regexUtils';
+import { usynligeCharsRegex } from './validationUtils';
 
 export const replaceInvisibleCharsWithSpace = (inputString: string): string => {
     return inputString.replace(usynligeCharsRegex, '\u0020');

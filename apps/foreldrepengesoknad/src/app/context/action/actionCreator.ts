@@ -1,20 +1,22 @@
-import { Locale } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    Attachment,
+    Dekningsgrad,
+    EksisterendeSak,
+    Locale,
+    Periode,
+    Sak,
+    Søkerinfo,
+    Søkersituasjon,
+    Tilleggsopplysninger,
+} from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
-import { Attachment } from 'app/types/Attachment';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
 import { Kvittering } from 'app/types/Kvittering';
-import { Sak } from 'app/types/Sak';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import { Periode } from 'uttaksplan/types/Periode';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
-import AnnenForelder from '../types/AnnenForelder';
-import Barn, { BarnFraNesteSak } from '../types/Barn';
+import Barn, { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
-import Søkersituasjon from '../types/Søkersituasjon';
 import { Søknad } from '../types/Søknad';
-import { Tilleggsopplysninger } from '../types/Tilleggsopplysninger';
 import UttaksplanInfo from '../types/UttaksplanInfo';
 
 export enum ForeldrepengesøknadContextActionKeys {

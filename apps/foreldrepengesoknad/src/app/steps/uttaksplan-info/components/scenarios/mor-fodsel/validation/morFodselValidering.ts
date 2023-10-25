@@ -1,10 +1,12 @@
-import { intlUtils } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    Uttaksdagen,
+    intlUtils,
+    uttaksConstants,
+    uttaksplanDatoavgrensninger,
+} from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import uttaksConstants from 'app/constants';
-import { Uttaksdagen } from '../../../../utils/Uttaksdagen';
-import { uttaksplanDatoavgrensninger } from '../../../../utils/uttaksplanDatoavgrensninger';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { isISODateString } from '@navikt/ds-datepicker';
 
 export const validateErStartdatoFørTermindato =

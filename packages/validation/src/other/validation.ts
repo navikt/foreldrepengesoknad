@@ -1,11 +1,3 @@
-import { DATE_TODAY } from '@navikt/fp-constants';
-import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isSameOrAfter);
-
 // Throw Error when undefined or null, otherwise return non-nullable version of object
 export const notEmpty = <T>(data: T): NonNullable<T> => {
     if (data === undefined || data === null) {
@@ -13,11 +5,3 @@ export const notEmpty = <T>(data: T): NonNullable<T> => {
     }
     return data;
 };
-
-export const isAfterToday = (date: string): boolean => dayjs(date).isAfter(DATE_TODAY, 'day');
-export const isBeforeToday = (date: string): boolean => dayjs(date).isBefore(DATE_TODAY, 'day');
-export const isSameOrAfterToday = (date: string): boolean => dayjs(date).isSameOrAfter(DATE_TODAY, 'day');
-export const isSameOrBeforeToday = (date: string): boolean => dayjs(date).isSameOrBefore(DATE_TODAY, 'day');
-export const isToday = (date: string): boolean => dayjs(date).isSame(DATE_TODAY, 'day');
-export const isDateWithinRange = (date: Date, minDate: Date, maxDate: Date): boolean =>
-    dayjs(date).isBetween(minDate, maxDate, 'day', '[]');

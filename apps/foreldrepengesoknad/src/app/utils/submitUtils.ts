@@ -1,22 +1,22 @@
 import Api from 'app/api/api';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { Forelder } from 'app/types/Forelder';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
 
 import { AxiosResponse } from 'axios';
 
 import dayjs from 'dayjs';
 import {
+    Forelder,
+    Periode,
+    Periodetype,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    dateIsWithinRange,
+    guid,
     isOppholdsperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
     isUttaksperiode,
-    Periode,
-    Periodetype,
-    Utsettelsesperiode,
-} from 'uttaksplan/types/Periode';
-import { dateIsWithinRange } from './dateUtils';
-import { guid } from '@navikt/fp-common';
+} from '@navikt/fp-common';
 
 export const storeAppState = (state: ForeldrepengesøknadContextState): Promise<AxiosResponse<any>> => {
     return Api.storeAppState(state, state.søkerinfo.person.fnr);

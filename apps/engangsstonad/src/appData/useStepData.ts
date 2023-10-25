@@ -1,21 +1,22 @@
 import { useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { notEmpty } from '@navikt/fp-validation';
 import { EsDataType, EsDataMap, useEsStateAllDataFn } from './EsDataContext';
 import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
+import { I18nFn, useCustomIntl } from '@navikt/fp-ui';
 
 // TODO Denne bør flyttast ut
-const PATH_TO_LABEL_MAP = {
-    [Path.SØKERSITUASJON]: 'SøkersituasjonSteg.Søkersituasjon',
-    [Path.OM_BARNET]: 'OmBarnetSteg.OmBarnet',
-    [Path.TERMINBEKREFTELSE]: 'UseStepData.Termin',
-    [Path.ADOPSJONSBEKREFTELSE]: 'UseStepData.Adopsjon',
-    [Path.UTENLANDSOPPHOLD]: 'UtenlandsoppholdSteg.Utenlandsopphold',
-    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: 'TidligereUtenlandsoppholdSteg.Tidligere',
-    [Path.SENERE_UTENLANDSOPPHOLD]: 'SenereUtenlandsoppholdSteg.Fremtidig',
-    [Path.OPPSUMMERING]: 'OppsummeringSteg.Oppsummering',
-} as Record<string, string>;
+const getPathToLabelMap = (i18n: I18nFn) =>
+    ({
+        [Path.SØKERSITUASJON]: i18n('SøkersituasjonSteg.Søkersituasjon'),
+        [Path.OM_BARNET]: i18n('OmBarnetSteg.OmBarnet'),
+        [Path.TERMINBEKREFTELSE]: i18n('UseStepData.Termin'),
+        [Path.ADOPSJONSBEKREFTELSE]: i18n('UseStepData.Adopsjon'),
+        [Path.UTENLANDSOPPHOLD]: i18n('UtenlandsoppholdSteg.Utenlandsopphold'),
+        [Path.TIDLIGERE_UTENLANDSOPPHOLD]: i18n('TidligereUtenlandsoppholdSteg.Tidligere'),
+        [Path.SENERE_UTENLANDSOPPHOLD]: i18n('SenereUtenlandsoppholdSteg.Fremtidig'),
+        [Path.OPPSUMMERING]: i18n('OppsummeringSteg.Oppsummering'),
+    }) as Record<string, string>;
 
 const isAfterStep = (previousStepPath: Path, currentStepPath: Path): boolean => {
     return PATH_ORDER.indexOf(currentStepPath) > PATH_ORDER.indexOf(previousStepPath);
@@ -71,7 +72,9 @@ const showDokumentasjonStep = (
 };
 
 const useStepData = () => {
-    const intl = useIntl();
+    const { i18n } = useCustomIntl();
+    const pathToLabelMap = getPathToLabelMap(i18n);
+
     const location = useLocation();
     const getStateData = useEsStateAllDataFn();
 
@@ -97,7 +100,7 @@ const useStepData = () => {
             activeStepId: currentPath,
             stepConfig: appPathList.map((p, index) => ({
                 id: p,
-                label: intl.formatMessage({ id: PATH_TO_LABEL_MAP[p] }),
+                label: pathToLabelMap[p],
                 index,
             })),
         }),

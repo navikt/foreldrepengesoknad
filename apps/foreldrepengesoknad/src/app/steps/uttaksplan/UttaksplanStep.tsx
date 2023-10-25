@@ -1,65 +1,67 @@
-import { Block, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    Block,
+    Dekningsgrad,
+    Forelder,
+    getAktiveArbeidsforhold,
+    getErMorUfør,
+    getFarMedmorErAleneOmOmsorg,
+    getForeldreparSituasjon,
+    getKjønnFromFnr,
+    getMorErAleneOmOmsorg,
+    getMorHarRettPåForeldrepengerINorgeEllerEØS,
+    getNavnPåForeldre,
+    getPerioderMedUttakRundtFødsel,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    ISOStringToDate,
+    isUfødtBarn,
+    isUttakAnnenPart,
+    isUttakAvForeldrepengerFørFødsel,
+    isUttaksperiode,
+    Periode,
+    Periodene,
+    SenEndringÅrsak,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import Uttaksplan from 'uttaksplan/Uttaksplan';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import {
-    getFarMedmorErAleneOmOmsorg,
-    getKjønnFromFnr,
-    getMorErAleneOmOmsorg,
-    getMorHarRettPåForeldrepengerINorgeEllerEØS,
-    getNavnPåForeldre,
-} from 'app/utils/personUtils';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
-import { getForeldreparSituasjon } from 'app/utils/foreldreparSituasjonUtils';
-import { Forelder } from 'app/types/Forelder';
-import { isUttakAnnenPart, isUttakAvForeldrepengerFørFødsel, isUttaksperiode, Periode } from 'uttaksplan/types/Periode';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import actionCreator from 'app/context/action/actionCreator';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import Api from 'app/api/api';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
 import { getPerioderSomSkalSendesInn, storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { SenEndringÅrsak } from 'uttaksplan/types/SenEndringÅrsak';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getEndringstidspunkt, getMorsSisteDag, ISOStringToDate } from 'app/utils/dateUtils';
+import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
-import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormConfig';
-
-import { getPerioderMedUttakRundtFødsel } from 'app/utils/wlbUtils';
-import uttaksplanQuestionsConfig, { UttaksplanQuestionPayload } from './uttaksplanQuestionConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 
-import {
-    getVisAutomatiskJusteringForm,
-    getKanJustereAutomatiskVedFødsel,
-} from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
+// import {
+//     getVisAutomatiskJusteringForm,
+//     getKanJustereAutomatiskVedFødsel,
+// } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { FormikValues } from 'formik';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,
 } from 'app/utils/eksisterendeSakUtils';
-import { getHarAktivitetskravIPeriodeUtenUttak } from 'app/utils/uttaksplan/uttaksplanUtils';
 import { RequestStatus } from 'app/types/RequestState';
-import { Periodene } from '../uttaksplan-info/utils/Periodene';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from 'uttaksplan/builder/uttaksplanbuilderUtils';
-import { isUfødtBarn } from 'app/context/types/Barn';
 import dayjs from 'dayjs';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
@@ -67,7 +69,15 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Alert, Button, Loader } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
-import { getSamtidigUttaksprosent } from 'app/utils/uttaksplanInfoUtils';
+import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
+import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
+import AttachmentApi from '../../api/attachmentApi';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import {
+    getKanJustereAutomatiskVedFødsel,
+    getVisAutomatiskJusteringForm,
+} from './automatisk-justering-form/automatiskJusteringUtils';
+import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -520,13 +530,7 @@ const UttaksplanStep = () => {
             initialValues={getUttaksplanFormInitialValues(state.søknad.ønskerJustertUttakVedFødsel)}
             onSubmit={handleSubmit}
             innerRef={ref}
-            renderForm={({ values: formValues }) => {
-                const visibility = uttaksplanQuestionsConfig.getVisbility({
-                    ...formValues,
-                    termindato,
-                    perioderMedUttakRundtFødsel,
-                } as UttaksplanQuestionPayload);
-
+            renderForm={() => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -536,6 +540,14 @@ const UttaksplanStep = () => {
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl, erEndringssøknad)}
                     >
+                        <Block padBottom="l">
+                            <InfoOmSøknaden
+                                eksisterendeSak={eksisterendeSak}
+                                erIUttaksplanenSteg={true}
+                                tilgjengeligeStønadskontoer={valgteStønadskontoer}
+                                minsterettUkerToTette={minsterettUkerToTette}
+                            />
+                        </Block>
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}
                             forelderVedAleneomsorg={forelderVedAleneomsorg}
@@ -575,7 +587,7 @@ const UttaksplanStep = () => {
                             handleResetUttaksplan={handleResetUttaksplan}
                             termindato={termindato}
                             barn={barn}
-                            visibility={visibility}
+                            saveAttachment={AttachmentApi.saveAttachment}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}

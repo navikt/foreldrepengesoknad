@@ -1,6 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { formatDate, hasValue, intlUtils } from '@navikt/fp-common';
-import { validateTextInputField } from 'app/utils/validationUtil';
+import { formatDate, hasValue, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 

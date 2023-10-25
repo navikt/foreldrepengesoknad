@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { RegistrertBarn } from 'app/types/Person';
 import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, RegistrertBarn, intlUtils } from '@navikt/fp-common';
 import { OmBarnetFormComponents, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
 import { FormattedMessage, useIntl } from 'react-intl';

@@ -15,9 +15,9 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "baseUrl": "./src",
-        "noUnusedLocals": true
+        "baseUrl": "src",
+        "noUnusedLocals": true,
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "include": ["src/common/**/*"]
 }

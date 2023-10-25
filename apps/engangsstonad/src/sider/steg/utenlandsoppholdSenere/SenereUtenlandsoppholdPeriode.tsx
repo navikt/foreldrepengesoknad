@@ -1,40 +1,23 @@
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { date1YearFromNow, dateRangesCollide, dateToday } from '@navikt/fp-common';
+import { date1YearFromNow, dateToday } from '@navikt/fp-common';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
-import { useFormValidators } from '@navikt/fp-validation';
-import { TIDENES_ENDE } from '@navikt/fp-constants';
+import {
+    isAfterOrSame,
+    isBeforeOrSame,
+    isDateWithinRange,
+    isDatesNotTheSame,
+    isPeriodNotOverlappingOthers,
+    isRequired,
+    isValidDate,
+} from '@navikt/fp-validation';
+import { useCustomIntl } from '@navikt/fp-ui';
 
-import { validateFromDate, validateToDate } from './valideringsregler';
 import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
-
-const validerPeriodeOverlapp = (
-    intl: IntlShape,
-    alleAndrePerioder: UtenlandsoppholdPeriode[],
-    fom: string,
-    tom?: string,
-): string | null => {
-    const dateRanges = alleAndrePerioder.map((u) => ({
-        from: dayjs(u.fom).toDate(),
-        to: u.tom ? dayjs(u.tom).toDate() : TIDENES_ENDE,
-    }));
-
-    const allDateRanges = dateRanges.concat({
-        from: dayjs(fom).toDate(),
-        to: tom ? dayjs(tom).toDate() : TIDENES_ENDE,
-    });
-
-    if (dateRangesCollide(allDateRanges)) {
-        return intl.formatMessage({
-            id: 'SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp',
-        });
-    }
-    return null;
-};
 
 interface OwnProps {
     index: number;
@@ -42,11 +25,7 @@ interface OwnProps {
 }
 
 const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
-    const intl = useIntl();
-    const {
-        isRequired,
-        date: { isDatesNotTheSame },
-    } = useFormValidators();
+    const { i18n } = useCustomIntl();
 
     const {
         watch,
@@ -73,7 +52,9 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                         id={'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI'}
                     />
                 }
-                validate={[isRequired('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandDuSkalBoIPåkreved')]}
+                validate={[
+                    isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandDuSkalBoIPåkreved')),
+                ]}
             >
                 {createCountryOptions().map((o: Record<string, any>) => (
                     <option key={o[0]} value={o[0]}>
@@ -87,20 +68,16 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                 minDate={dayjs(dateToday).toDate()}
                 maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate()}
                 validate={[
-                    isRequired('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved'),
-                    isDatesNotTheSame('SenereUtenlandsoppholdSteg.FomErLikTom', tom),
-                    (fomValue) => {
-                        return validateFromDate(
-                            intl,
-                            dayjs(fomValue).toDate(),
-                            minDateFom,
-                            maxDateFom,
-                            dayjs(tom).toDate(),
-                        );
-                    },
-                    (fomValue) => {
-                        return validerPeriodeOverlapp(intl, alleAndreUtenlandsopphold, fomValue, tom);
-                    },
+                    isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved')),
+                    isValidDate(i18n('SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato')),
+                    isDatesNotTheSame(i18n('SenereUtenlandsoppholdSteg.FomErLikTom'), tom),
+                    isBeforeOrSame(i18n('SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato'), tom),
+                    isDateWithinRange(i18n('SenereUtenlandsoppholdSteg.DateOutsideRange'), minDateFom, maxDateFom),
+                    isPeriodNotOverlappingOthers(
+                        i18n('SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
+                        { date: tom, isStartDate: false },
+                        alleAndreUtenlandsopphold,
+                    ),
                 ]}
                 onChange={() => isSubmitted && trigger()}
             />
@@ -110,21 +87,16 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                 minDate={minDateTom}
                 maxDate={maxDateTom}
                 validate={[
-                    isRequired('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuSkalBoIPåkreved'),
-                    isDatesNotTheSame('SenereUtenlandsoppholdSteg.TomErLikFom', fom),
-                    (tomValue) => {
-                        const tom = tomValue || TIDENES_ENDE;
-                        return validateToDate(
-                            intl,
-                            dayjs(tom).toDate(),
-                            dayjs(fom || dateToday).toDate(),
-                            dayjs(date1YearFromNow).toDate(),
-                            dayjs(fom).toDate(),
-                        );
-                    },
-                    (tomValue) => {
-                        return validerPeriodeOverlapp(intl, alleAndreUtenlandsopphold, fom, tomValue);
-                    },
+                    isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuSkalBoIPåkreved')),
+                    isValidDate(i18n('SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato')),
+                    isDatesNotTheSame(i18n('SenereUtenlandsoppholdSteg.TomErLikFom'), fom),
+                    isAfterOrSame(i18n('SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato'), fom),
+                    isDateWithinRange(i18n('SenereUtenlandsoppholdSteg.DateOutsideRange'), minDateTom, maxDateTom),
+                    isPeriodNotOverlappingOthers(
+                        i18n('SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
+                        { date: fom, isStartDate: true },
+                        alleAndreUtenlandsopphold,
+                    ),
                 ]}
                 onChange={() => isSubmitted && trigger()}
             />

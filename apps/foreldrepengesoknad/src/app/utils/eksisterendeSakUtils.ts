@@ -1,42 +1,47 @@
-import { UttakArbeidType } from 'app/types/UttakArbeidType';
-import { Arbeidsform, isInfoPeriode } from 'uttaksplan/types/Periode';
-import { OppholdÅrsakTypeDTO } from 'app/types/OppholdÅrsakTypeDTO';
-import { EksisterendeSak } from 'app/types/EksisterendeSak';
-import { Saksperiode } from 'app/types/Saksperiode';
-import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { getFamiliehendelseType } from './getFamiliehendelseType';
-import {
-    convertTidsperiodeToTidsperiodeDate,
-    getRelevantFamiliehendelseDato,
-    ISOStringToDate,
-    sorterDatoEtterEldst,
-} from './dateUtils';
-import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
+import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
-import { Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import { Søkerrolle } from 'app/types/Søkerrolle';
 import { Søknad } from 'app/context/types/Søknad';
-import AnnenForelder from 'app/context/types/AnnenForelder';
 import Søker from 'app/context/types/Søker';
-import Person, { RegistrertAnnenForelder, RegistrertBarn } from 'app/types/Person';
-import { Situasjon } from 'app/types/Situasjon';
-import Barn, { BarnType, isAdoptertBarn, isFødtBarn, isUfødtBarn } from 'app/context/types/Barn';
-import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
-import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
-import { RettighetType } from 'app/types/RettighetType';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { SelectableBarn } from 'app/pages/velkommen/components/barnVelger/BarnVelger';
-import Søkersituasjon from 'app/context/types/Søkersituasjon';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
-import { guid, intlUtils } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    Arbeidsform,
+    Barn,
+    BarnType,
+    Dekningsgrad,
+    DekningsgradDTO,
+    EksisterendeSak,
+    FamiliehendelseType,
+    ISOStringToDate,
+    OppholdÅrsakType,
+    OppholdÅrsakTypeDTO,
+    Sak,
+    Saksgrunnlag,
+    Saksperiode,
+    SaksperiodeDTO,
+    Situasjon,
+    StønadskontoType,
+    Søkerinfo,
+    Søkerrolle,
+    Søkersituasjon,
+    Tidsperioden,
+    UttakArbeidType,
+    convertTidsperiodeToTidsperiodeDate,
+    guid,
+    intlUtils,
+    isAdoptertBarn,
+    isFødtBarn,
+    isInfoPeriode,
+    isUfødtBarn,
+} from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
-import { Sak } from 'app/types/Sak';
-import PersonFnrDTO from 'app/types/PersonFnrDTO';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
+import Person, { RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-common/src/common/types/Person';
+import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {

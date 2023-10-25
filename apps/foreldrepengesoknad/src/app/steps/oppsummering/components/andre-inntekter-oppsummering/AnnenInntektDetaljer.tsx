@@ -3,9 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import { useIntl } from 'react-intl';
-import { intlUtils } from '@navikt/fp-common';
-import { Attachment } from 'app/types/Attachment';
-import { isAttachmentWithError } from 'app/utils/vedleggUtils';
+import { Attachment, intlUtils, isAttachmentWithError } from '@navikt/fp-common';
 import { BodyShort, Link, Tag } from '@navikt/ds-react';
 
 interface Props {

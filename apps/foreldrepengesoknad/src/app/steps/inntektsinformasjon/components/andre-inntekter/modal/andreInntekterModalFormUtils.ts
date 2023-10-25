@@ -1,11 +1,14 @@
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from 'app/utils/formUtils';
-import { lagSendSenereDokumentNårIngenAndreFinnes } from 'app/utils/vedleggUtils';
 import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import {
+    AttachmentType,
+    Skjemanummer,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.type]: undefined,

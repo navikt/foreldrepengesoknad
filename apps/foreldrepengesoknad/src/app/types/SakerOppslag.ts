@@ -1,4 +1,4 @@
-import { Sak } from './Sak';
+import { Sak } from '@navikt/fp-common';
 
 export interface SakerOppslag {
     engangsstønad: any[];

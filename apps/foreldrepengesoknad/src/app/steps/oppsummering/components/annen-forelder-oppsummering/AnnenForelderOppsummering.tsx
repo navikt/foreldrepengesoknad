@@ -1,9 +1,13 @@
-import { intlUtils } from '@navikt/fp-common';
-import AnnenForelder, { isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
-import Barn from 'app/context/types/Barn';
+import {
+    AnnenForelder,
+    Barn,
+    Søkerrolle,
+    intlUtils,
+    isAnnenForelderIkkeOppgitt,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
-import { Søkerrolle } from 'app/types/Søkerrolle';
-import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';

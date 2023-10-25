@@ -13,10 +13,10 @@ Du må på forhånd ha installert Node.js (v.18). Vi anbefaler å bruke Git Bash
 5. For å sjekke om alt fungerer, kjør testene med `turbo test`
 
 For å kjøre opp appen i dev:
-
-1. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
-2. Kjør `pnpm run dev-api`
-3. Kjør `pnpm run dev`
+1. cd til `server` og kjør `pnpm build`
+2. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
+3. Kjør `pnpm run dev-api`
+4. Kjør `pnpm run dev`
 
 For å kjøre tester for en app:
 

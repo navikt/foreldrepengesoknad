@@ -1,7 +1,5 @@
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { Dekningsgrad, StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],

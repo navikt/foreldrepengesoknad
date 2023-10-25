@@ -1,10 +1,10 @@
 import { MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { finnEnum } from '../mor-far-adopsjon/adopsjonStartdatoValg';
 import {
     MorFarAdopsjonAnnenForelderHarRettIEØSFormField,
     MorFarAdopsjonAnnenForelderHarRettIEØSFormData,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSFormConfig';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialMorFarAdopsjonAnnenForelderHarRettIEØSValues: MorFarAdopsjonAnnenForelderHarRettIEØSFormData = {
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad]: '',

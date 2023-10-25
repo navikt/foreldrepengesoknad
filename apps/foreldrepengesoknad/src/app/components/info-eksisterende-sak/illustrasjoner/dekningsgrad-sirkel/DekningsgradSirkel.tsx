@@ -1,5 +1,4 @@
-import { bemUtils } from '@navikt/fp-common';
-import Sirkelmaske from 'app/components/sirkelmaske/Sirkelmaske';
+import { Sirkelmaske, bemUtils } from '@navikt/fp-common';
 import PengerIkon from 'app/assets/PengerIkon';
 
 import './dekningsgradSirkel.less';

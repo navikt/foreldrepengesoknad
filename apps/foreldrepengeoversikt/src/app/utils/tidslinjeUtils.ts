@@ -382,7 +382,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
     const merInfo =
         åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
             ? intlUtils(intl, `tidslinje.${åpenBehandling.tilstand}.informasjon.${ytelse}`)
-            : `tidslinje.${åpenBehandling.tilstand}.informasjon${ytelse}`;
+            : intlUtils(intl, `tidslinje.${åpenBehandling.tilstand}.informasjon`);
     const tidslinjeHendelse = {
         type: 'søknad',
         opprettet: dayjs(new Date()).add(1, 'd').toDate(),

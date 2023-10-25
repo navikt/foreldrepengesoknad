@@ -1,25 +1,29 @@
-import { sorterPerioder } from 'app/steps/uttaksplan-info/utils/Periodene';
-import { getTidsperiode, Tidsperioden } from 'app/steps/uttaksplan-info/utils/Tidsperioden';
-import { Uttaksdagen } from 'app/steps/uttaksplan-info/utils/Uttaksdagen';
-import { Forelder } from 'app/types/Forelder';
-import { Situasjon } from 'app/types/Situasjon';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { isUttaksperiode, Periode, Periodetype } from 'uttaksplan/types/Periode';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
 import {
+    Forelder,
+    Periode,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    Tidsperioden,
+    TilgjengeligStønadskonto,
+    UtsettelseÅrsakType,
+    Uttaksdagen,
     andreAugust2022ReglerGjelder,
     dateIsSameOrAfter,
-    skalFarUtsetteEtterMorSinSisteUttaksdag,
-    tidperiodeOverlapperDato,
-} from '../dateUtils';
-import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getLengdePåForeslåttWLBUttakFarMedmor,
+    getTidsperiode,
+    guid,
+    isUttaksperiode,
+    sorterPerioder,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-} from '../wlbUtils';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from 'uttaksplan/builder/leggTilPeriode';
-import { guid } from '@navikt/fp-common';
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-common';
+import {
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
+import { skalFarUtsetteEtterMorSinSisteUttaksdag } from '../dateUtils';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,

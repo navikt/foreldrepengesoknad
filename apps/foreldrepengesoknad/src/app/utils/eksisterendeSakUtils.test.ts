@@ -1,18 +1,18 @@
-import { DekningsgradDTO } from 'app/types/DekningsgradDTO';
-import { Sak } from 'app/types/Sak';
-import { SaksperiodeDTO } from 'app/types/SaksperiodeDTO';
-import { UttakArbeidType } from 'app/types/UttakArbeidType';
-import { Arbeidsform } from 'uttaksplan/types/Periode';
+import { Arbeidsform, DekningsgradDTO, Sak, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
 import {
     getArbeidsformFromUttakArbeidstype,
     mapSaksperiodeFromDTO,
     mapSøkerensEksisterendeSakFromDTO,
 } from './eksisterendeSakUtils';
 
-vi.mock('@navikt/fp-common', () => ({
-    ...(vi.importActual('@navikt/fp-common') as any),
-    guid: () => '1',
-}));
+vi.mock('@navikt/fp-common', async () => {
+    const original = await vi.importActual<any>('@navikt/fp-common');
+    debugger;
+    return {
+        ...original,
+        guid: () => '1',
+    };
+});
 
 describe('eksisterendeSakUtils', () => {
     const eksisterendeSakMorTermin = {

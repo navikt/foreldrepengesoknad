@@ -1,8 +1,6 @@
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import { MinsterettType } from 'uttaksplan/types/MinsterettType';
 import { getValgtStønadskontoFor80Og100Prosent } from './stønadskontoUtils';
+import { Dekningsgrad, MinsterettType, StønadskontoType } from '@navikt/fp-common';
 
 describe('<stønadskontoUtils>', () => {
     const minsteretter0 = {

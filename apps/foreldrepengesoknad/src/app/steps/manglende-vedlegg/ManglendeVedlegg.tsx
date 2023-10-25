@@ -1,9 +1,19 @@
-import { Block, formatDate, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import {
+    AttachmentType,
+    Block,
+    formatDate,
+    intlUtils,
+    isAnnenForelderOppgitt,
+    isInfoPeriode,
+    Periode,
+    sorterPerioder,
+    Step,
+    StepButtonWrapper,
+} from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import _ from 'lodash';
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isInfoPeriode, Periode } from 'uttaksplan/types/Periode';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -15,11 +25,8 @@ import {
 } from './manglendeVedleggFormConfig';
 import dayjs from 'dayjs';
 import { manglendeVedleggQuestionsConfig, ManglendeVedleggQuestionsPayload } from './manglendeVedleggQuestionsConfig';
-import { sorterPerioder } from '../uttaksplan-info/utils/Periodene';
 import { finnSendSenereVedlegg, isAttachmentForPeriode } from './util';
-import { AttachmentType } from 'app/types/AttachmentType';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { isAnnenForelderOppgitt } from 'app/context/types/AnnenForelder';
 import { getInitValues } from './manglendeVedleggFormUtils';
 import { FieldArray } from 'formik';
 import { storeAppState } from 'app/utils/submitUtils';

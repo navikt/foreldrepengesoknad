@@ -1,26 +1,26 @@
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
-import mapSaksperioderTilUttaksperioder, { getKontotypeBareFarHarRett } from './mapSaksperioderTilUttaksperioder';
-import { OppholdÅrsakType } from 'uttaksplan/types/OppholdÅrsakType';
-import { FamiliehendelseType } from 'app/types/FamiliehendelseType';
-import { UtsettelseÅrsakTypeDTO } from 'app/types/UtsettelseÅrsakTypeDTO';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     Arbeidsform,
+    ArbeidsgiverInfoType,
     AvslåttPeriode,
+    Dekningsgrad,
+    FamiliehendelseType,
+    Forelder,
+    MorsAktivitet,
+    OppholdÅrsakType,
+    PeriodeInfoType,
+    PeriodeResultatÅrsak,
     Periodetype,
+    Saksgrunnlag,
+    Saksperiode,
+    StønadskontoType,
     Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    UtsettelseÅrsakTypeDTO,
     UttakAnnenPartInfoPeriode,
+    UttakArbeidType,
     Uttaksperiode,
-} from 'uttaksplan/types/Periode';
-import { Saksperiode } from 'app/types/Saksperiode';
-import { PeriodeResultatÅrsak } from 'uttaksplan/types/PeriodeResultatÅrsak';
-import { Saksgrunnlag } from 'app/types/Saksgrunnlag';
-import { UttakArbeidType } from 'app/types/UttakArbeidType';
-import { ArbeidsgiverInfoType } from 'app/types/ArbeidsgiverInfo';
-import { Forelder } from 'app/types/Forelder';
-import { MorsAktivitet } from 'uttaksplan/types/MorsAktivitet';
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
-import { PeriodeInfoType } from 'uttaksplan/types/PeriodeInfoType';
+} from '@navikt/fp-common';
+import mapSaksperioderTilUttaksperioder, { getKontotypeBareFarHarRett } from './mapSaksperioderTilUttaksperioder';
 
 describe('getKontotypeBareFarHarRett', () => {
     const periodeTrekkerMinsterett = true;

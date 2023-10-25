@@ -1,11 +1,10 @@
 import classnames from 'classnames';
-import { bemUtils, guid } from '@navikt/fp-common';
-import Fieldset from 'app/components/fieldset/Fieldset';
-import AriaText from './AriaText';
+import { Fieldset, bemUtils, guid } from '@navikt/fp-common';
 import RangeStepper from './RangeStepper';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 import './rangeInput.less';
 import { Component } from 'react';
+import AriaText from './AriaText';
 
 export interface RangeInputElementRendererOptions {
     value: number;

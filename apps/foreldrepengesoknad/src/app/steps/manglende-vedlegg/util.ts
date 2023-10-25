@@ -1,5 +1,4 @@
-import { Attachment, InnsendingsType } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
+import { Attachment, AttachmentType, InnsendingsType } from '@navikt/fp-common';
 
 const isArrayOfAttachments = (object: any) => {
     return (

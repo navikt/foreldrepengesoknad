@@ -3,7 +3,7 @@ import { useFormContext, useController } from 'react-hook-form';
 import { Select as DsSelect } from '@navikt/ds-react';
 import { getError, getValidationRules } from './formUtils';
 
-export interface OwnProps {
+export interface Props {
     name: string;
     label: string | ReactNode;
     onChange?: (event: any) => void;
@@ -14,7 +14,7 @@ export interface OwnProps {
     className?: string;
 }
 
-const Select: FunctionComponent<OwnProps> = ({
+const Select: FunctionComponent<Props> = ({
     name,
     label,
     validate = [],
@@ -48,11 +48,11 @@ const Select: FunctionComponent<OwnProps> = ({
     return (
         <DsSelect
             ref={field.ref}
+            value={field.value}
             className={className}
             error={getError(errors, name)}
             label={label}
             description={description}
-            value={field.value}
             disabled={disabled}
             onChange={onChangeFn}
         >

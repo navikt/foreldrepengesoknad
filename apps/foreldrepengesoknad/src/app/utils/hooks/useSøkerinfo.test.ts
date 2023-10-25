@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
-import Person from 'app/types/Person';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import useSøkerinfo from './useSøkerinfo';
+import Person from '@navikt/fp-common/src/common/types/Person';
+import { Søkerinfo } from '@navikt/fp-common';
 
 describe('useSøkerinfo', () => {
     it('skal hente søkerinfo fra state', () => {

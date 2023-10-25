@@ -1,4 +1,4 @@
-import { UtsettelseÅrsakType } from 'uttaksplan/types/UtsettelseÅrsakType';
+import { UtsettelseÅrsakType } from '@navikt/fp-common';
 
 export enum ValgalternativerAdopsjonStartdato {
     'ankomst' = 'ankomst',

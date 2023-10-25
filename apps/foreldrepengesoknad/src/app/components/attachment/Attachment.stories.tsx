@@ -1,6 +1,6 @@
 import { StoryFn } from '@storybook/react';
 
-import { Attachment as AttachmentType } from 'app/types/Attachment';
+import { Attachment as AttachmentType } from '@navikt/fp-common';
 import withIntlProvider from 'storybook/decorators/withIntl';
 import Attachment, { Props } from './Attachment';
 

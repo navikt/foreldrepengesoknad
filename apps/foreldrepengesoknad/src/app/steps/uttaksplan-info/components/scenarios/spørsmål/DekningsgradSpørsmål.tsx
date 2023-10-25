@@ -1,9 +1,7 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, intlUtils } from '@navikt/fp-common';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
+import { Block, Dekningsgrad, TilgjengeligStønadskonto, intlUtils } from '@navikt/fp-common';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
 import { TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { ReadMore } from '@navikt/ds-react';
 

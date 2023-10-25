@@ -1,5 +1,4 @@
-import { TilgjengeligStønadskonto } from 'app/types/TilgjengeligStønadskonto';
-import { StønadskontoType } from 'uttaksplan/types/StønadskontoType';
+import { StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { deltUttak } from './deltUttak';
 import MockDate from 'mockdate';
 

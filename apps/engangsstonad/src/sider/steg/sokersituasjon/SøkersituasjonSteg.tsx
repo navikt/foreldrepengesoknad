@@ -1,19 +1,19 @@
 import { useCallback } from 'react';
 import { Radio, VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Step } from '@navikt/fp-common';
+import { useCustomIntl } from '@navikt/fp-ui';
+import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
 
-import { RadioGroupPanel, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
-import { useFormValidators } from '@navikt/fp-validation';
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
-    const intl = useIntl();
-    const { isRequired } = useFormValidators();
+    const { i18n } = useCustomIntl();
 
     const stepData = useStepData();
     const navigator = useEsNavigator();
@@ -36,8 +36,8 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
 
     return (
         <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            pageTitle={intl.formatMessage({ id: 'SøkersituasjonSteg.Søkersituasjon' })}
+            bannerTitle={i18n('Søknad.Pageheading')}
+            pageTitle={i18n('SøkersituasjonSteg.Søkersituasjon')}
             onCancel={navigator.avbrytSøknad}
             steps={stepData.stepConfig}
             activeStepId={stepData.activeStepId}
@@ -46,10 +46,10 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <RadioGroupPanel
+                    <RadioGroup
                         name="situasjon"
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
-                        validate={[isRequired('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon')]}
+                        validate={[isRequired(i18n('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon'))]}
                     >
                         <Radio value={SøkersituasjonEnum.FØDSEL}>
                             <FormattedMessage id="SøkersituasjonSteg.Fødsel" />
@@ -57,7 +57,7 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                         <Radio value={SøkersituasjonEnum.ADOPSJON}>
                             <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
                         </Radio>
-                    </RadioGroupPanel>
+                    </RadioGroup>
                     <StepButtonsHookForm
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={lagreSøkersituasjon}

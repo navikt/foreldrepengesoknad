@@ -5,17 +5,22 @@ import KvitteringHeader from './components/KvitteringHeader';
 import KvitteringSuksess from './components/KvitteringSuksess';
 import StatusBoks from './components/StatusBoks';
 import SøknadSendtSectionHeader from './components/SøknadSendtSectionHeader';
-import { bemUtils, Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+import {
+    bemUtils,
+    Block,
+    formaterDato,
+    intlUtils,
+    links,
+    Periode,
+    Periodene,
+    useDocumentTitle,
+} from '@navikt/fp-common';
 import { openPdfPreview } from 'app/utils/pdfUtils';
-import links from 'app/links/links';
 import { logAmplitudeEvent, PageKeys } from 'app/amplitude/amplitude';
 import dayjs from 'dayjs';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { Periodene } from 'app/steps/uttaksplan-info/utils/Periodene';
 import SøknadSendtTittel from './components/SøknadSendtTittel';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { Periode } from 'uttaksplan/types/Periode';
-import { formaterDato } from 'app/utils/dateUtils';
 import { finnSendSenereVedlegg } from 'app/steps/manglende-vedlegg/util';
 import { BodyShort, Ingress, Link, Loader } from '@navikt/ds-react';
 

@@ -1,9 +1,9 @@
 import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { Dekningsgrad } from 'app/types/Dekningsgrad';
 import {
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFormData = {
     [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: '',

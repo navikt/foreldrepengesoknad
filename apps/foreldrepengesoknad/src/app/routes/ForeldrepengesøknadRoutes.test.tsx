@@ -4,10 +4,10 @@ import SøknadRoutes from './routes';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import { Søknad } from 'app/context/types/Søknad';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import IntlProvider from '../intl/IntlProvider';
-import Person from 'app/types/Person';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import Person from '@navikt/fp-common/src/common/types/Person';
+import { Søkerinfo } from '@navikt/fp-common';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
