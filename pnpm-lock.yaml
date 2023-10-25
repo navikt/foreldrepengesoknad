@@ -1252,19 +1252,19 @@ importers:
         version: 4.6.1
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.6.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0)
+        version: 4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0)
       '@navikt/ds-icons':
         specifier: 3.4.3
         version: 3.4.3(@types/react@18.2.20)(react@18.2.0)
       '@navikt/ds-react':
-        specifier: 4.6.1
-        version: 4.6.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 4.12.1
+        version: 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
-        version: 0.25.0(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0)
+        version: 0.25.0(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.12.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0)
       '@types/node':
         specifier: ^20.5.0
         version: 20.5.0
@@ -3872,7 +3872,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.1.6)
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
@@ -4012,7 +4012,7 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.6.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0):
+  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0):
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==}
     peerDependencies:
       '@navikt/ds-css': '>=2'
@@ -4025,7 +4025,7 @@ packages:
       uuid: '9'
     dependencies:
       '@navikt/ds-css': 4.6.1
-      '@navikt/ds-react': 4.6.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/ds-react': 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
       date-fns: 2.30.0
       dayjs: 1.11.9
@@ -4053,29 +4053,6 @@ packages:
 
   /@navikt/ds-react@4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-fw3UcwLzq84fqFAgK0yZj6cADZy8uhHXK3mNnLJWXo8OxbVx3TEx5dR0Aa3mWASeTYFXdcp/n5Cj6Mu2ZnRlHw==}
-    peerDependencies:
-      '@types/react': ^17.0.30 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@floating-ui/react': 0.24.1(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 4.12.1
-      '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@types/react': 18.2.20
-      clsx: 1.2.1
-      date-fns: 2.29.3
-      react: 18.2.0
-      react-day-picker: 8.3.4(date-fns@2.29.3)(react@18.2.0)
-      react-modal: 3.15.1(react-dom@18.2.0)(react@18.2.0)
-    transitivePeerDependencies:
-      - react-dom
-    dev: false
-
-  /@navikt/ds-react@4.6.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-miZ7AmownZuOnZ1TEOzYctiaMSk6qucExUK9ME3lr76yDVKATHAZUJuK8fcdNy7uT12/93gHYYW/y6wqcYLJ0A==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -4127,7 +4104,7 @@ packages:
       - react
     dev: false
 
-  /@navikt/sif-common-formik-ds@0.25.0(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.6.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0):
+  /@navikt/sif-common-formik-ds@0.25.0(@navikt/ds-css@4.6.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.12.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0):
     resolution: {integrity: sha512-C5VWPWMSUQ/uD2bFYkc57Iq5yzec3LQxAgtFfkYawdhccWVnH0fQkltCXJwmOCmf7iyGzCDNiqY/mvm2/UDo8A==}
     peerDependencies:
       '@navikt/ds-css': '3'
@@ -4137,9 +4114,9 @@ packages:
       react-intl: 6.x
     dependencies:
       '@navikt/ds-css': 4.6.1
-      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.6.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0)
+      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@4.6.1)(@navikt/ds-react@4.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.9)(react-day-picker@8.8.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.0)
       '@navikt/ds-icons': 3.4.3(@types/react@18.2.20)(react@18.2.0)
-      '@navikt/ds-react': 4.6.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/ds-react': 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
       formik: 2.4.3(react@18.2.0)
       i18n-iso-countries: 7.6.0
@@ -6194,7 +6171,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -7160,7 +7137,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.10)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -16956,7 +16933,7 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.8

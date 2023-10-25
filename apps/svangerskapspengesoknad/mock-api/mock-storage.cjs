@@ -20,7 +20,7 @@ const getSoknad = function () {
 };
 
 const getFilePath = function (filnavn) {
-    const directories = ['./mock-api/', 'mock_data', filnavn];
+    const directories = ['mock-api', 'mock_data', filnavn];
     return directories.join(path.sep);
 };
 
