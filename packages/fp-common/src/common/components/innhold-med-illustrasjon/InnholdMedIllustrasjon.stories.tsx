@@ -1,28 +1,28 @@
-// import { StoryFn } from '@storybook/react';
-// import InnholdMedIllustrasjon from './InnholdMedIllustrasjon';
-// import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
+import { StoryFn } from '@storybook/react';
+import InnholdMedIllustrasjon from './InnholdMedIllustrasjon';
+import UkerSirkel from '../uker-sirkel/UkerSirkel';
 
-// export default {
-//     title: 'components/InnholdMedIllustrasjon',
-//     component: InnholdMedIllustrasjon,
-// };
+export default {
+    title: 'components/InnholdMedIllustrasjon',
+    component: InnholdMedIllustrasjon,
+};
 
-// const Template: StoryFn<any> = (args) => <InnholdMedIllustrasjon {...args} />;
+const Template: StoryFn<any> = (args) => <InnholdMedIllustrasjon {...args} />;
 
-// export const Default = Template.bind({});
-// Default.args = {
-//     tittel: 'Dette er en tittel',
-// };
+export const Default = Template.bind({});
+Default.args = {
+    tittel: 'Dette er en tittel',
+};
 
-// export const MedIllustrasjon = Template.bind({});
-// MedIllustrasjon.args = {
-//     tittel: 'Dette er en tittel',
-//     illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
-// };
+export const MedIllustrasjon = Template.bind({});
+MedIllustrasjon.args = {
+    tittel: 'Dette er en tittel',
+    illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
+};
 
-// export const MedIllustrasjonOgInfoboks = Template.bind({});
-// MedIllustrasjonOgInfoboks.args = {
-//     tittel: 'Dette er en tittel',
-//     illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
-//     infoboks: <div>Dette er en infoboks</div>,
-// };
+export const MedIllustrasjonOgInfoboks = Template.bind({});
+MedIllustrasjonOgInfoboks.args = {
+    tittel: 'Dette er en tittel',
+    illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
+    infoboks: <div>Dette er en infoboks</div>,
+};

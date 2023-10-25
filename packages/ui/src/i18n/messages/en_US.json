@@ -9,5 +9,14 @@
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - The attachment must be less than {maxStørrelse} KB.",
 
     "StepButtons.Forrige": "Previous step",
-    "StepButtons.Neste": "Next step"
+    "StepButtons.Neste": "Next step",
+
+    "ErrorPage.Engangsstønad": "Lump-sum grant",
+    "ErrorPage.Foreldrepenger": "Parental benefit",
+    "ErrorPage.Svangerskapspenger": "Pregnancy allowance",
+    "ErrorPage.Heading": "Sorry, something has gone wrong with your application due to a technical error on our part",
+    "ErrorPage.Message": "You can wait a while and then try to search again. If there are still problems, you can contact user support for help.",
+    "ErrorPage.Contact": "Contact user support",
+    "ErrorPage.TryAgain": "Search again",
+    "ErrorPage.ErrorMessage": "Error message"
 }

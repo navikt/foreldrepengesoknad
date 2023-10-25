@@ -19,13 +19,13 @@ const AppContainer = () => {
     }, []);
 
     return (
-        <ErrorBoundary>
-            <IntlProvider språkkode={locale}>
+        <IntlProvider språkkode={locale}>
+            <ErrorBoundary appnavn="Engangsstønad">
                 <BrowserRouter>
                     <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
                 </BrowserRouter>
-            </IntlProvider>
-        </ErrorBoundary>
+            </ErrorBoundary>
+        </IntlProvider>
     );
 };
 
