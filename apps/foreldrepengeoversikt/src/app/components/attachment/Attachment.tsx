@@ -28,7 +28,9 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
             <div className={bem.element('filename')}>
                 {attachment.url ? (
                     <Link href={attachment.url} target="_blank">
-                        {attachment.filename}
+                        {attachment.isDuplicate
+                            ? attachment.filename + ' (er duplikat - vil ikke bli sendt inn)'
+                            : attachment.filename}
                     </Link>
                 ) : (
                     <span>{attachment.filename}</span>

@@ -78,10 +78,22 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const onSubmit = (values: Partial<EttersendingFormData>) => {
         setIsEttersending(true);
 
+        const vedleggToSend = values
+            .vedlegg!.filter((a) => !a.isDuplicate)
+            .map((a) => {
+                return {
+                    id: a.id,
+                    beskrivelse: a.beskrivelse,
+                    skjemanummer: a.skjemanummer,
+                    uuid: a.uuid,
+                    url: a.url,
+                };
+            });
+
         const valuesToSend: EttersendingDto = {
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
-            vedlegg: values.vedlegg!,
+            vedlegg: vedleggToSend,
         };
 
         Api.sendEttersending(valuesToSend)

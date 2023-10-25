@@ -1,6 +1,8 @@
 import { Attachment } from './Attachment';
 import { Ytelse } from './Ytelse';
 
+export type AttachmentDto = Pick<Attachment, 'id' | 'beskrivelse' | 'skjemanummer' | 'uuid' | 'url'>;
+
 export default interface EttersendingDto {
     brukerTekst?: {
         dokumentType: string;
@@ -10,5 +12,5 @@ export default interface EttersendingDto {
     dialogId?: string;
     saksnummer: string;
     type: Ytelse;
-    vedlegg: Attachment[];
+    vedlegg: AttachmentDto[];
 }
