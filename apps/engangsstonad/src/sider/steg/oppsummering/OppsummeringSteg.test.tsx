@@ -54,10 +54,6 @@ describe('<OppsummeringSteg>', () => {
                 erBarnetFødt: true,
                 fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
             },
-            {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
-            },
             { vedlegg: [] },
             undefined,
             undefined,
@@ -96,10 +92,6 @@ describe('<OppsummeringSteg>', () => {
                 adopsjonsdato: '2023-01-01',
                 antallBarn: 1,
                 fødselsdatoer: [{ dato: '2023-01-01' }],
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
             },
             {
                 vedlegg: [
@@ -152,10 +144,6 @@ describe('<OppsummeringSteg>', () => {
                 antallBarn: 1,
                 erBarnetFødt: false,
                 termindato: '2023-01-02',
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
             },
             {
                 terminbekreftelsedato: '2023-01-01',
@@ -220,10 +208,6 @@ describe('<OppsummeringSteg>', () => {
                 antallBarn: 1,
                 erBarnetFødt: true,
                 fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: true,
-                skalBoUtenforNorgeNeste12Mnd: true,
             },
             {
                 vedlegg: [],
