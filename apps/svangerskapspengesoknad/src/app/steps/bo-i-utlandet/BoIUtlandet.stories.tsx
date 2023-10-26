@@ -6,27 +6,29 @@ import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerCo
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
 import BoIUtlandet from '../bo-i-utlandet/BoIUtlandet';
 import _sokerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
-import _soknad from 'storybook/storydata/soknad/soknad.json';
+import _context from 'storybook/storydata/soknad/soknad.json';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
-export default {
+const defaultExport = {
     title: 'steps/BoIUtlandet',
     component: BoIUtlandet,
     decorators: [withRouterProvider, withIntlProvider, withSvangerskapspengerContextProvider],
 };
 
+export default defaultExport;
+
 interface BoIUtlandetStoryProps {
-    søknad: SvangerskapspengerContextState;
+    context: SvangerskapspengerContextState;
     søkerinfo: SøkerinfoDTO;
     oppgirBostedIFortid: boolean;
 }
 
 const søkerinfo = _sokerinfo as any;
-const søknad = _soknad as any;
+const context = _context as any;
 
-const Template: StoryFn<BoIUtlandetStoryProps> = ({ søknad, søkerinfo, oppgirBostedIFortid }) => {
+const Template: StoryFn<BoIUtlandetStoryProps> = ({ context, søkerinfo, oppgirBostedIFortid }) => {
     return (
-        <SvangerskapspengerStateMock søknad={søknad} søkerinfo={søkerinfo}>
+        <SvangerskapspengerStateMock context={context} søkerinfo={søkerinfo}>
             <BoIUtlandet oppgirIFortid={oppgirBostedIFortid} />
         </SvangerskapspengerStateMock>
     );
@@ -34,14 +36,14 @@ const Template: StoryFn<BoIUtlandetStoryProps> = ({ søknad, søkerinfo, oppgirB
 
 export const OppgirIFortid = Template.bind({});
 OppgirIFortid.args = {
-    søknad,
+    context,
     søkerinfo,
     oppgirBostedIFortid: true,
 };
 
 export const OppgirIFremtid = Template.bind({});
 OppgirIFremtid.args = {
-    søknad,
+    context,
     søkerinfo,
     oppgirBostedIFortid: false,
 };

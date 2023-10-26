@@ -3,39 +3,16 @@ import { composeStories } from '@storybook/testing-react';
 import * as stories from './BoIUtlandet.stories';
 import * as context from 'app/context/hooks/useSvangerskapspengerContext';
 import { render, screen } from '@testing-library/react';
-import { Søknad } from 'app/types/Søknad';
-import {
-    SvangerskapspengerContextState,
-    svangerskapspengerInitialState,
-} from 'app/context/SvangerskapspengerContextConfig';
 
 const { OppgirIFortid, OppgirIFremtid } = composeStories(stories);
 
 const NESTE_STEG = 'Neste steg';
 const HVILKET_LAND_HAR_DU_BODD = 'Hvilket land har du bodd i?';
 const HVILKET_LAND_SKAL_DU_BO = 'Hvilket land skal du bo i?';
-const initState = svangerskapspengerInitialState;
-const mockState = {
-    ...initState,
-    søknad: {
-        ...initState.søknad,
-        harGodkjentVilkår: true,
-        barn: {
-            erBarnetFødt: false,
-            fødselsdato: undefined,
-            termindato: '2024-02-14',
-        },
-    } as Søknad,
-} as SvangerskapspengerContextState;
 
 describe('<BoIUtlandet> - oppgir bosted i fortid', () => {
     const user = userEvent.setup();
-    beforeAll(() => {
-        vi.spyOn(context, 'useSvangerskapspengerContext').mockImplementation(() => ({
-            state: mockState,
-            dispatch: () => vi.fn(),
-        }));
-    });
+
     it('skal stille riktig spørsmål om opphold i fortid', async () => {
         render(<OppgirIFortid />);
 
@@ -66,12 +43,6 @@ describe('<BoIUtlandet> - oppgir bosted i fortid', () => {
 });
 
 describe('<BoIUtlandet> - oppgir bosted i fremtid', () => {
-    beforeAll(() => {
-        vi.spyOn(context, 'useSvangerskapspengerContext').mockImplementation(() => ({
-            state: mockState,
-            dispatch: () => vi.fn(),
-        }));
-    });
     it('skal stille riktig spørsmål om opphold i fremtid', async () => {
         render(<OppgirIFremtid />);
 
