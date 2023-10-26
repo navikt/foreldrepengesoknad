@@ -301,7 +301,7 @@
     "valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen": "Du må oppgi fra hvilken dato du skal tilbake i jobb.",
     "valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis": "Du må oppgi fra hvilken dato du skal tilbake til din opprinnelige stillingsprosent.",
     "valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen": "Datoen du skal tilbake i jobb på være på formatet dd.mm.åååå.",
-    "valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis": "Datoen du skal tilbake til din opprinnelige stillingsprosent på være på formatet dd.mm.åååå.",
+    "valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis": "Datoen du skal tilbake til din opprinnelige stillingsprosent må være på formatet dd.mm.åååå.",
     "valideringsfeil.sammePeriodeFremTilTerminTom.førBehovForTilretteleggingFom": "Datoen du skal tilbake i jobb kan ikke være før datoen for behov for tilrettelegging.",
     "valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.ingen": "Datoen du skal tilbake i jobb kan ikke være før datoen du skal bli borte fra jobb.",
     "valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.delvis": "Datoen du skal tilbake til din opprinnelige stillingsprosent ikke være før datoen du skal begynne å jobbe redusert.",
