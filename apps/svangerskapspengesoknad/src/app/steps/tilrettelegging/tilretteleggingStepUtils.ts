@@ -48,11 +48,10 @@ export const mapOmTilretteleggingFormDataToState = (
     tilretteleggingFraState: Tilrettelegging[],
     tilretteleggingForOppdatering: Tilrettelegging,
 ): Tilrettelegging[] => {
-    const oppdaterteVarierendePerioder =
+    const harVariertePerioder =
         values.tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
-        values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-            ? tilretteleggingForOppdatering?.varierendePerioder
-            : [];
+        values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER;
+    const oppdaterteVarierendePerioder = harVariertePerioder ? tilretteleggingForOppdatering?.varierendePerioder : [];
     const oppdatert = {
         ...tilretteleggingForOppdatering,
         varierendePerioder: oppdaterteVarierendePerioder,
@@ -61,10 +60,14 @@ export const mapOmTilretteleggingFormDataToState = (
             ...tilretteleggingForOppdatering!.arbeidsforhold,
         },
         type: values.tilretteleggingType,
-        enPeriodeMedTilretteleggingFom: values.enPeriodeMedTilretteleggingFom,
-        enPeriodeMedTilretteleggingStillingsprosent: values.enPeriodeMedTilretteleggingStillingsprosent,
-        enPeriodeMedTilretteleggingTomType: values.enPeriodeMedTilretteleggingTomType,
-        enPeriodeMedTilretteleggingTilbakeIJobbDato: values.enPeriodeMedTilretteleggingTilbakeIJobbDato,
+        enPeriodeMedTilretteleggingFom: harVariertePerioder ? undefined : values.enPeriodeMedTilretteleggingFom,
+        enPeriodeMedTilretteleggingStillingsprosent: harVariertePerioder
+            ? undefined
+            : values.enPeriodeMedTilretteleggingStillingsprosent,
+        enPeriodeMedTilretteleggingTomType: harVariertePerioder ? undefined : values.enPeriodeMedTilretteleggingTomType,
+        enPeriodeMedTilretteleggingTilbakeIJobbDato: harVariertePerioder
+            ? undefined
+            : values.enPeriodeMedTilretteleggingTilbakeIJobbDato,
         delvisTilretteleggingPeriodeType: values.delvisTilretteleggingPeriodeType,
         risikofaktorer: hasValue(values.risikofaktorer)
             ? replaceInvisibleCharsWithSpace(values.risikofaktorer!)
