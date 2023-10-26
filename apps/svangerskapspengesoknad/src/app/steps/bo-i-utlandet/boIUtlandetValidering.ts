@@ -6,30 +6,26 @@ import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-export const validerOverlappendeUtenlandsperioder = (
+export const validerDatoOverlapperAndreUtenlandsperioder = (
     utenlandsperioder: UtenlandsoppholdInput[] | undefined,
-    fom: string | undefined,
-    tom: string | undefined,
+    dato: string | undefined,
     intl: IntlShape,
-    currentOppholdIndex: number | undefined,
+    currentOppholdIndex: number,
+    isFraOgMedDato: boolean,
 ): string | undefined => {
-    if (!hasValue(fom) || !hasValue(tom) || !utenlandsperioder) {
+    if (!hasValue(dato) || !utenlandsperioder) {
         return undefined;
     }
     const utenlandsperioderMedDatoer = utenlandsperioder.filter((p) => p.fom && p.tom);
-    const overlappendePerioder = utenlandsperioderMedDatoer.filter(
-        (tp, index) =>
-            (dayjs(fom).isBetween(tp.fom, tp.tom, 'day', '[]') ||
-                dayjs(tom).isBetween(tp.fom, tp.tom, 'day', '[]') ||
-                dayjs(tp.fom).isBetween(fom, tom, 'day', '[]') ||
-                dayjs(tp.tom).isBetween(fom, tom, 'day', '[]')) &&
-            currentOppholdIndex !== index,
+    const overlappendePerioderLagtTilFørDennePerioden = utenlandsperioderMedDatoer.filter(
+        (tp, index) => dayjs(dato).isBetween(tp.fom, tp.tom, 'day', '[]') && index < currentOppholdIndex,
     );
-    if (overlappendePerioder.length > 0) {
-        return intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapper', {
-            land: getCountryName(overlappendePerioder[0].land, intl.locale),
-            fom: formatDate(overlappendePerioder[0].fom),
-            tom: formatDate(overlappendePerioder[0].tom),
+    if (overlappendePerioderLagtTilFørDennePerioden.length > 0) {
+        const fomOrTom = isFraOgMedDato ? 'fraOgMed' : 'tilOgMed';
+        return intlUtils(intl, `valideringsfeil.utenlandsopphold.overlapper.${fomOrTom}`, {
+            land: getCountryName(overlappendePerioderLagtTilFørDennePerioden[0].land, intl.locale),
+            fom: formatDate(overlappendePerioderLagtTilFørDennePerioden[0].fom),
+            tom: formatDate(overlappendePerioderLagtTilFørDennePerioden[0].tom),
         });
     }
 
@@ -37,27 +33,13 @@ export const validerOverlappendeUtenlandsperioder = (
 };
 
 export const validateBostedUtlandFom =
-    (
-        tom: string | undefined,
-        oppgirIFortid: boolean,
-        intl: IntlShape,
-        alleOpphold: UtenlandsoppholdInput[] | undefined,
-        index: number,
-    ) =>
+    (oppgirIFortid: boolean, intl: IntlShape, alleOpphold: UtenlandsoppholdInput[] | undefined, index: number) =>
     (fom: string) => {
         if (!hasValue(fom)) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fraOgMedDato.påkrevd');
         }
         if (hasValue(fom) && !isISODateString(fom)) {
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fraOgMedDato.gyldigDato');
-        }
-
-        if (tom && fom && dayjs(tom).isSame(fom, 'day')) {
-            return intlUtils(intl, 'valideringsfeil.bostedUtland.fom.sammeSomTom');
-        }
-
-        if (tom && dayjs(fom).isAfter(tom, 'day')) {
-            return intlUtils(intl, 'valideringsfeil.bostedUtland.fom.etterTom');
         }
 
         if (oppgirIFortid && fom && dayjs(fom).isAfter(dayjs(), 'day')) {
@@ -72,7 +54,7 @@ export const validateBostedUtlandFom =
             return intlUtils(intl, 'valideringsfeil.bostedUtland.fom.merEnn1ÅrFremITid');
         }
 
-        return validerOverlappendeUtenlandsperioder(alleOpphold, fom, tom, intl, index);
+        return validerDatoOverlapperAndreUtenlandsperioder(alleOpphold, fom, intl, index, true);
     };
 
 export const validateBostedUtlandTom =
@@ -109,7 +91,7 @@ export const validateBostedUtlandTom =
             return intlUtils(intl, 'valideringsfeil.bostedUtland.tom.merEnn1ÅrSiden');
         }
 
-        return validerOverlappendeUtenlandsperioder(alleOpphold, fom, tom, intl, index);
+        return validerDatoOverlapperAndreUtenlandsperioder(alleOpphold, tom, intl, index, false);
     };
 
 export const validateBostedUtlandLand = (intl: IntlShape) => (land: string) => {

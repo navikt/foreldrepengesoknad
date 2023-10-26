@@ -95,7 +95,6 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                     name={`bostedIUtlandet.${index}.fom`}
                                                     label={intlUtils(intl, 'boIUtlandet.fraogmed')}
                                                     validate={validateBostedUtlandFom(
-                                                        formValues.bostedIUtlandet![index].tom,
                                                         oppgirIFortid,
                                                         intl,
                                                         formValues.bostedIUtlandet,
