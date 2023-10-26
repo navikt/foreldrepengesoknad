@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import UiIntlProvider from '../i18n/UiIntlProvider';
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
-interface Props {
+export interface Props {
     appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     feilmelding: string;
 }
