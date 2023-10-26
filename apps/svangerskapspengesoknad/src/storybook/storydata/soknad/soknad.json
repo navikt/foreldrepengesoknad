@@ -77,7 +77,32 @@
             "rolle": "mor",
             "språkkode": "nb"
         },
-        "tilrettelegging": [],
+        "tilrettelegging": [
+            {
+                "id": "263929546-6215-9868-5127-161910165730101",
+                "arbeidsforhold": {
+                    "arbeidsgiverId": "990322244",
+                    "type": "virksomhet",
+                    "navn": "Omsorgspartner Vestfold AS",
+                    "opprinneligstillingsprosent": 100
+                },
+                "varierendePerioder": [],
+                "vedlegg": [
+                    {
+                        "id": "V134300149934973076055420920289127108",
+                        "file": {},
+                        "filename": "vedlegg – Kopi (7).png",
+                        "filesize": 7477,
+                        "uploaded": true,
+                        "pending": false,
+                        "type": "tilrettelegging",
+                        "skjemanummer": "I000109",
+                        "url": "http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108",
+                        "uuid": "Created"
+                    }
+                ]
+            }
+        ],
         "informasjonOmUtenlandsopphold": {
             "iNorgePåHendelsestidspunktet": true,
             "iNorgeSiste12Mnd": true,

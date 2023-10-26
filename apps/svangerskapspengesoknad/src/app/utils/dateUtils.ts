@@ -15,6 +15,7 @@ export const halvannetÅrSiden = (dato: Date) =>
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 export const treUkerSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(3, 'weeks').toDate();
 export const fireUkerSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(4, 'weeks').toDate();
+export const femMånederSiden = () => dayjs().startOf('day').subtract(5, 'month').toDate();
 export const dagenFør = (dato: Date) => dayjs(dato).startOf('day').toDate();
 
 export const dagenFør3UkerFørFamiliehendelse = (familiehendelsesdato: string) => {

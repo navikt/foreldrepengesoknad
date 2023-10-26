@@ -935,6 +935,9 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@storybook/addon-essentials':
         specifier: ^7.3.1
         version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -3872,7 +3875,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.1.6)
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
@@ -6171,7 +6174,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -7137,7 +7140,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.10)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -16933,7 +16936,7 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.8

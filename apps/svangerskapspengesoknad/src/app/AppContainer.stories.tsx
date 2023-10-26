@@ -15,6 +15,7 @@ const Template: Story = ({ søkerinfo }) => {
     apiMock.onGet('/sokerinfo').reply(200, søkerinfo);
     apiMock.onPost('/soknad').reply(200, {});
     apiMock.onPost('/sendSøknadUrl').reply(200, {});
+    apiMock.onPost('/storage/vedlegg').reply(200);
 
     return <AppContainer />;
 };

@@ -1,5 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { SkjemaelementFeil, intlUtils } from '@navikt/fp-common';
+import { SkjemaelementFeil, getFloatFromString, intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, {
     TilOgMedDatoType,
     TilretteleggingPeriode,
@@ -109,7 +109,7 @@ const mappedTilretteleggingMedEnPeriode = (
     const perioder = [] as TilretteleggingPeriode[];
     const stillingsprosent =
         tilrettelegging.type === TilretteleggingstypeOptions.DELVIS
-            ? parseInt(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent!, 10)
+            ? getFloatFromString(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent!)
             : 0;
     const fom = tilrettelegging.enPeriodeMedTilretteleggingFom!;
     const tom =
@@ -120,7 +120,7 @@ const mappedTilretteleggingMedEnPeriode = (
         tilrettelegging.type === TilretteleggingstypeOptions.DELVIS
             ? Tilretteleggingstype.DELVIS
             : Tilretteleggingstype.INGEN;
-    const mappedPeriode = mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent, fom, tom);
+    const mappedPeriode = mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent!, fom, tom);
     perioder.push(mappedPeriode);
     if (!dayjs(mappedPeriode.tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
         perioder.push(getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(mappedPeriode, sisteDagForSvangerskapspenger));
@@ -133,7 +133,7 @@ const mappedTilretteleggingMedVarierendePerioder = (
     sisteDagForSvangerskapspenger: Date,
 ): TilretteleggingPeriode[] => {
     const allePerioder = tilrettelegging.varierendePerioder!.map((periode) => {
-        const stillingsprosent = parseInt(periode.stillingsprosent, 10);
+        const stillingsprosent = getFloatFromString(periode.stillingsprosent);
         let type =
             periode.type === TilretteleggingstypeOptions.DELVIS
                 ? Tilretteleggingstype.DELVIS
@@ -147,7 +147,7 @@ const mappedTilretteleggingMedVarierendePerioder = (
             periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN
                 ? dateToISOString(sisteDagForSvangerskapspenger)
                 : periode.tom!;
-        return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent, periode.fom, tom);
+        return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent!, periode.fom, tom);
     });
     const sistePeriode = allePerioder[allePerioder.length - 1];
     if (!dayjs(sistePeriode.tom).isSame(sisteDagForSvangerskapspenger, 'day')) {

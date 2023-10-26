@@ -1,5 +1,5 @@
 import { Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, date20YearsAgo, date4WeeksAgo, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -139,10 +139,10 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                         intl,
                                                         formValues.arbeidIUtlandet![index].fom,
                                                     )}
-                                                    maxDate={dayjs().toDate()}
+                                                    maxDate={dayjs().add(9, 'month').toDate()}
                                                     minDate={getMinInputTilOgMedValue(
                                                         formValues.arbeidIUtlandet![index].fom,
-                                                        date4WeeksAgo,
+                                                        date5MonthsAgo,
                                                     )}
                                                 />
                                             </Block>

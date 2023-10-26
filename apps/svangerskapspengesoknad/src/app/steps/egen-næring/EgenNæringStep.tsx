@@ -11,7 +11,7 @@ import {
     Step,
     StepButtonWrapper,
     date20YearsAgo,
-    date4WeeksAgo,
+    date5MonthsAgo,
     intlUtils,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
@@ -190,8 +190,8 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringTom(intl, formValues.egenNæringFom!)}
-                                    maxDate={dayjs().toDate()}
-                                    minDate={getMinInputTilOgMedValue(formValues.egenNæringFom, date4WeeksAgo)}
+                                    maxDate={dayjs().add(9, 'month').toDate()}
+                                    minDate={getMinInputTilOgMedValue(formValues.egenNæringFom, date5MonthsAgo)}
                                 />
                             </Block>
                             <VarigEndringSpørsmål
