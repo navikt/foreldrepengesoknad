@@ -26,7 +26,8 @@ import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 const FrilansStep: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn, tilrettelegging } = useSøknad();
+    const søknad = useSøknad();
+    const { søker, barn, tilrettelegging } = søknad;
 
     const onValidSubmitHandler = (values: Partial<FrilansFormData>) => {
         const søkerMedFrilans = mapFrilansDataToSøkerState(søker, values as FrilansFormData);
@@ -58,7 +59,7 @@ const FrilansStep: React.FunctionComponent = () => {
                         activeStepId="frilans"
                         pageTitle={intlUtils(intl, 'steps.label.frilans')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <FrilansFormComponents.Form

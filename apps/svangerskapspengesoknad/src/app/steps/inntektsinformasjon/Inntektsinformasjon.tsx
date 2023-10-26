@@ -37,7 +37,8 @@ import Tilrettelegging from 'app/types/Tilrettelegging';
 const Inntektsinformasjon: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn, tilrettelegging, informasjonOmUtenlandsopphold } = useSøknad();
+    const søknad = useSøknad();
+    const { søker, barn, tilrettelegging, informasjonOmUtenlandsopphold } = søknad;
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.ARBEID.toString());
     const [autoValgtTilrettelegging, setAutoValgtTilrettelegging] = useState<Tilrettelegging | undefined>(undefined);
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -68,7 +69,7 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                         activeStepId="arbeid"
                         pageTitle={intlUtils(intl, 'steps.label.arbeid')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>

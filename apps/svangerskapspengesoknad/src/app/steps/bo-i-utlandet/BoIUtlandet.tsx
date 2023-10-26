@@ -23,13 +23,16 @@ import {
 } from './boIUtlandetFormUtils';
 import { validateBostedUtlandLand, validateBostedUtlandFom, validateBostedUtlandTom } from './boIUtlandetValidering';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 interface Props {
     oppgirIFortid: boolean;
 }
 const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
     const intl = useIntl();
-    const { informasjonOmUtenlandsopphold, barn } = useSøknad();
+    const søknad = useSøknad();
+    const { informasjonOmUtenlandsopphold, barn } = søknad;
+    const { arbeidsforhold } = useSøkerinfo();
 
     const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
     const utenlandsopphold = oppgirIFortid
@@ -69,7 +72,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                         activeStepId={stepId}
                         pageTitle={intlUtils(intl, `steps.label.${stepId}`)}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <BoIUtlandetFormComponents.Form includeButtons={false} includeValidationSummary={true}>

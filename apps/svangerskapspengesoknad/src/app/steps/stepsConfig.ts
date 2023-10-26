@@ -18,6 +18,7 @@ import {
 import { hasValue } from 'app/utils/validationUtils';
 import { frilansId } from 'app/types/Frilans';
 import { egenNæringId } from 'app/types/EgenNæring';
+import { Søknad } from 'app/types/Søknad';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -49,87 +50,144 @@ type StepIdWithComputedBackHref =
 export type StepId = BarnetStepId | StepIdWithSetBackHref | StepIdWithComputedBackHref;
 
 interface StepConfig {
-    id: StepId;
+    id: StepId | string;
     index: number;
     label: string;
 }
 
-//TODO: må beregne antall steg for periode her og hvilken index oppsummering skal ha.
-const stepConfigFørstegangssøknad = (intl: IntlShape, navn: string | undefined): StepConfig[] => [
-    {
-        id: 'barnet',
-        index: 0,
-        label: intlUtils(intl, 'steps.label.barnet'),
-    },
-    {
-        id: 'utenlandsopphold',
-        index: 1,
-        label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-    },
+const stepConfigFørstegangssøknad = (
+    intl: IntlShape,
+    søknad: Søknad,
+    arbeidsforhold: Arbeidsforhold[],
+): StepConfig[] => {
+    const steps = [
+        {
+            id: 'barnet',
+            index: 0,
+            label: intlUtils(intl, 'steps.label.barnet'),
+        },
+        {
+            id: 'utenlandsopphold',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+    ] as StepConfig[];
+    if (søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false) {
+        steps.push({
+            id: 'boIUtlandetIFortid',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.boIUtlandetIFortid'),
+        });
+    }
+    if (søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false) {
+        steps.push({
+            id: 'boIUtlandetIFremtid',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.boIUtlandetIFremtid'),
+        });
+    }
 
-    {
-        id: 'boIUtlandetIFremtid',
-        index: 2,
-        label: intlUtils(intl, 'steps.label.boIUtlandetIFremtid'),
-    },
-    {
-        id: 'boIUtlandetIFortid',
-        index: 3,
-        label: intlUtils(intl, 'steps.label.boIUtlandetIFortid'),
-    },
-    {
+    steps.push({
         id: 'arbeid',
-        index: 4,
+        index: steps.length,
         label: intlUtils(intl, 'steps.label.arbeid'),
-    },
-    {
-        id: 'frilans',
-        index: 5,
-        label: intlUtils(intl, 'steps.label.frilans'),
-    },
-    {
-        id: 'næring',
-        index: 6,
-        label: intlUtils(intl, 'steps.label.næring'),
-    },
-    {
-        id: 'arbeidIUtlandet',
-        index: 7,
-        label: intlUtils(intl, 'steps.label.arbeidIUtlandet'),
-    },
-    {
-        id: 'velgArbeid',
-        index: 8,
-        label: intlUtils(intl, 'steps.label.velgArbeid'),
-    },
-    {
-        id: 'skjema',
-        index: 9,
-        label: navn ? intlUtils(intl, 'steps.label.skjema.flere', { navn }) : intlUtils(intl, 'steps.label.skjema.en'),
-    },
-    {
-        id: 'tilrettelegging',
-        index: 10,
-        label: navn
-            ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
-            : intlUtils(intl, 'steps.label.tilrettelegging.en'),
-    },
-    {
-        id: 'periode',
-        index: 11,
-        label: navn
-            ? intlUtils(intl, 'steps.label.periode.flere', { navn })
-            : intlUtils(intl, 'steps.label.periode.en'),
-    },
-    {
-        id: 'oppsummering',
-        index: 12,
-        label: intlUtils(intl, 'steps.label.oppsummering'),
-    },
-];
+    });
 
-const stepConfig = (intl: IntlShape, navn?: string): StepConfig[] => {
-    return stepConfigFørstegangssøknad(intl, navn);
+    if (søknad.søker.harJobbetSomFrilans) {
+        steps.push({
+            id: 'frilans',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.frilans'),
+        });
+    }
+
+    if (søknad.søker.harJobbetSomSelvstendigNæringsdrivende) {
+        steps.push({
+            id: 'næring',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.næring'),
+        });
+    }
+
+    if (søknad.søker.harHattAnnenInntekt) {
+        steps.push({
+            id: 'arbeidIUtlandet',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.arbeidIUtlandet'),
+        });
+    }
+
+    const harKunEtArbeid =
+        søknad.barn && søknad.barn.termindato
+            ? søkerHarKunEtAktivtArbeid(
+                  søknad.barn.termindato,
+                  arbeidsforhold,
+                  søknad.søker.harJobbetSomFrilans,
+                  søknad.søker.harJobbetSomSelvstendigNæringsdrivende,
+              )
+            : true;
+    if (!harKunEtArbeid) {
+        steps.push({
+            id: 'velgArbeid',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.velgArbeid'),
+        });
+    }
+
+    if (søknad.tilrettelegging.length > 0) {
+        søknad.tilrettelegging.forEach((tilrettelegging: Tilrettelegging) => {
+            const navn = tilrettelegging.arbeidsforhold.navn;
+            steps.push({
+                id: `skjema-${tilrettelegging.id}`,
+                index: steps.length,
+                label: navn
+                    ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
+                    : intlUtils(intl, 'steps.label.skjema.en'),
+            });
+            steps.push({
+                id: `tilrettelegging-${tilrettelegging.id}`,
+                index: steps.length,
+                label: navn
+                    ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
+                    : intlUtils(intl, 'steps.label.tilrettelegging.en'),
+            });
+            if (
+                tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
+                tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+            ) {
+                steps.push({
+                    id: `periode-${tilrettelegging.id}`,
+                    index: steps.length,
+                    label: navn
+                        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
+                        : intlUtils(intl, 'steps.label.periode.en'),
+                });
+            }
+        });
+    } else {
+        steps.push({
+            id: 'skjema',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.skjema.en'),
+        });
+        steps.push({
+            id: 'tilrettelegging',
+            index: steps.length,
+            label: intlUtils(intl, 'steps.label.tilrettelegging.en'),
+        });
+    }
+
+    steps.push({
+        id: 'oppsummering',
+        index: steps.length,
+        label: intlUtils(intl, 'steps.label.oppsummering'),
+    });
+
+    return steps;
+};
+
+const stepConfig = (intl: IntlShape, søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): StepConfig[] => {
+    return stepConfigFørstegangssøknad(intl, søknad, arbeidsforhold);
 };
 
 export const getNæringRouteIfNæring = (søker: Søker): SøknadRoutes | undefined => {

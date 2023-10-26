@@ -41,7 +41,8 @@ import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbe
 
 const EgenNæringStep: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { søker, barn, tilrettelegging } = useSøknad();
+    const søknad = useSøknad();
+    const { søker, barn, tilrettelegging } = søknad;
     const { arbeidsforhold } = useSøkerinfo();
     const onValidSubmitHandler = (values: Partial<EgenNæringFormData>) => {
         const søkerMedNæring = mapNæringDataToSøkerState(søker, values as EgenNæringFormData);
@@ -82,7 +83,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                         activeStepId="næring"
                         pageTitle={intlUtils(intl, 'steps.label.næring')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <EgenNæringFormComponents.Form

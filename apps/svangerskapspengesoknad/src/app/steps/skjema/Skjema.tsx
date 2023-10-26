@@ -36,7 +36,8 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn, tilrettelegging } = useSøknad();
+    const søknad = useSøknad();
+    const { søker, barn, tilrettelegging } = søknad;
     const onAvbrytSøknad = useAvbrytSøknad();
     const [antallForMangeVedlegg, setAntallForMangeVedlegg] = useState(0);
     const [submitClicked, setSubmitClicked] = useState(false);
@@ -83,10 +84,10 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="skjema"
+                        activeStepId={`skjema-${id}`}
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <SkjemaFormComponents.Form includeButtons={false} includeValidationSummary={true}>

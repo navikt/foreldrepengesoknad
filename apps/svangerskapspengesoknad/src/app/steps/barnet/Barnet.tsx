@@ -18,10 +18,13 @@ import dayjs from 'dayjs';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { niMånederFremITid, halvannetÅrSiden } from 'app/utils/dateUtils';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const Barnet: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { barn } = useSøknad();
+    const søknad = useSøknad();
+    const { barn } = søknad;
+    const { arbeidsforhold } = useSøkerinfo();
     const onValidSubmitHandler = (values: Partial<BarnetFormData>) => {
         const barn = mapOmBarnetFormDataToState(values);
         return [actionCreator.setBarn(barn)];
@@ -45,7 +48,7 @@ const Barnet: React.FunctionComponent = () => {
                         activeStepId="barnet"
                         pageTitle={intlUtils(intl, 'steps.label.barnet')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <BarnetFormComponents.Form

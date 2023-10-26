@@ -29,6 +29,7 @@ import { isISODateString } from '@navikt/ds-datepicker';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
 import './perioderStep.css';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 interface Props {
     id: string;
     navn: string;
@@ -38,8 +39,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const bem = bemUtils('perioderStep');
-    const { tilrettelegging: tilretteleggingFraState, barn } = useSøknad();
+    const søknad = useSøknad();
+    const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
     const { state } = useSvangerskapspengerContext();
+    const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
@@ -89,10 +92,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="periode"
+                        activeStepId={`periode-${id}`}
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, erFlereTilrettelegginger ? navn : undefined)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>

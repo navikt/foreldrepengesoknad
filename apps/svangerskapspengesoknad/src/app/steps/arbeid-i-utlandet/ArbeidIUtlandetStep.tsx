@@ -39,7 +39,8 @@ import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 const ArbeidIUtlandetStep: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn } = useSøknad();
+    const søknad = useSøknad();
+    const { søker, barn } = søknad;
     const arbeidIUtlandet = søker.andreInntekter;
 
     const onValidSubmitHandler = (values: Partial<ArbeidIUtlandetFormData>) => {
@@ -64,7 +65,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                         activeStepId="arbeidIUtlandet"
                         pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <ArbeidIUtlandetFormComponents.Form
