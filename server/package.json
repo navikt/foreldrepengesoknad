@@ -5,7 +5,6 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "npm ci --frozen-lockfile",
         "start": "node ./server.cjs"
     },
     "dependencies": {
