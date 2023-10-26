@@ -41,6 +41,26 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const bem = bemUtils('saksoversikt');
+
+    if (!oppdatertData) {
+        return (
+            <div className={bem.block}>
+                <Block padBottom="l">
+                    <Heading size="large">Søknaden din er sendt!</Heading>
+                </Block>
+                <Block padBottom="l">
+                    <Alert variant="warning">
+                        Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
+                        kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
+                    </Alert>
+                </Block>
+                <Block padBottom="l">
+                    <Link to={`${OversiktRoutes.SAKSOVERSIKT}`}>{intlUtils(intl, 'saksoversikt')}</Link>
+                </Block>
+            </div>
+        );
+    }
+
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
     const navnPåSøker = søkerinfo.søker.fornavn;
@@ -83,7 +103,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
 
-    return oppdatertData ? (
+    return (
         <div className={bem.block}>
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
@@ -136,21 +156,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     />
                 </ContentSection>
             )}
-        </div>
-    ) : (
-        <div className={bem.block}>
-            <Block padBottom="l">
-                <Heading size="large">Søknaden din er sendt!</Heading>
-            </Block>
-            <Block padBottom="l">
-                <Alert variant="warning">
-                    Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
-                    vente litt og komme tilbake senere for å se alle detaljene i saken din.
-                </Alert>
-            </Block>
-            <Block padBottom="l">
-                <Link to={`${OversiktRoutes.SAKSOVERSIKT}`}>{intlUtils(intl, 'saksoversikt')}</Link>
-            </Block>
         </div>
     );
 };
