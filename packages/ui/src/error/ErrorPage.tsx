@@ -8,10 +8,10 @@ import ContentWrapper from '../contentWrapper/ContentWrapper';
 export interface Props {
     appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     feilmelding: string;
+    søkPåNytt: () => void;
 }
 
-const ErrorPage: FunctionComponent<Props> = ({ appnavn, feilmelding }) => {
-    const søkPåNytt = useCallback(() => location.reload(), []);
+const ErrorPage: FunctionComponent<Props> = ({ appnavn, feilmelding, søkPåNytt }) => {
     //TODO Bytt ut div under med Box frå ds-react når oppdatert til siste versjon
     return (
         <UiIntlProvider>
