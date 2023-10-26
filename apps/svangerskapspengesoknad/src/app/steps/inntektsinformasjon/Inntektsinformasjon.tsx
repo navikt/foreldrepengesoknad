@@ -34,7 +34,7 @@ import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOm
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 
-const Inntektsinformasjon = () => {
+const Inntektsinformasjon: React.FunctionComponent = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const { søker, barn, tilrettelegging, informasjonOmUtenlandsopphold } = useSøknad();
