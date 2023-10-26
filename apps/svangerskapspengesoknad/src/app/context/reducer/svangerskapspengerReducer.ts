@@ -86,6 +86,10 @@ const svangerskapspengerReducer = (
                     },
                 },
             };
+        case SvangerskapspengerContextActionKeys.APPLY_STORED_STATE:
+            return {
+                ...action.payload,
+            };
         default:
             return state;
     }

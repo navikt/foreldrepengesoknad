@@ -7,22 +7,24 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 interface Props {
     children: any;
-    søknad: SvangerskapspengerContextState;
+    context: SvangerskapspengerContextState;
     søkerinfo: SøkerinfoDTO;
 }
 
-const SvangerskapspengerStateMock: FunctionComponent<Props> = ({ children, søknad, søkerinfo }) => {
+const SvangerskapspengerStateMock: FunctionComponent<Props> = ({ children, context, søkerinfo }) => {
     const [erFerdig, setFerdig] = useState(false);
     const { dispatch } = useSvangerskapspengerContext();
 
     useEffect(() => {
         if (!erFerdig) {
             Promise.all([
-                dispatch(actionCreator.applyStoredState(søknad)),
+                dispatch(actionCreator.applyStoredState(context)),
                 dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfo))),
-            ]).then(() => setFerdig(true));
+            ]).then(() => {
+                setFerdig(true);
+            });
         }
-    }, [dispatch, søkerinfo, erFerdig, søknad]);
+    }, [dispatch, søkerinfo, erFerdig, context]);
 
     return erFerdig ? children : null;
 };
