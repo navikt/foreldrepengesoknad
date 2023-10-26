@@ -215,7 +215,7 @@ const Oppsummering = () => {
                                                                 {'Risikofaktorer i jobben din som frilanser:'}
                                                             </BodyShort>
                                                             <BodyShort>
-                                                                ${tilretteleggingMedFrilans.risikofaktorer}
+                                                                {tilretteleggingMedFrilans.risikofaktorer}
                                                             </BodyShort>
                                                         </Block>
                                                         <Block padBottom="l">
@@ -234,9 +234,7 @@ const Oppsummering = () => {
                                                             <BodyShort
                                                                 className={bem.element('label')}
                                                             >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
-                                                            <BodyShort>
-                                                                ${tilretteleggingMedSN.risikofaktorer}
-                                                            </BodyShort>
+                                                            <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
                                                         </Block>
                                                         <Block padBottom="l">
                                                             <BodyShort className={bem.element('label')}>
