@@ -139,7 +139,8 @@
     "TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Delete stay abroad",
     "TidligereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "As of and including date must be a valid date in the format dd.mm.yyyy",
     "TidligereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Even and including date must be a valid date in the format dd.mm.yyyy",
-    "TidligereUtenlandsoppholdSteg.DateOutsideRange": "Invalid date",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRangeFom": "As of and including date of stay abroad must be between {min} and {max}",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRangeTom": "Even and including date of stay abroad must be between {min} and {max}",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "The date has to before the to date",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "The date has to be after the from date",
 
@@ -157,7 +158,8 @@
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Delete stay abroad",
     "SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "As of and including date must be a valid date in the format dd.mm.yyyy",
     "SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Even and including date must be a valid date in the format dd.mm.yyyy",
-    "SenereUtenlandsoppholdSteg.DateOutsideRange": "Date is outside the valid interval",
+    "SenereUtenlandsoppholdSteg.DateOutsideRangeFom": "As of and including date of stay abroad must be between {min} and {max}",
+    "SenereUtenlandsoppholdSteg.DateOutsideRangeTom": "Even and including date of stay abroad must be between {min} and {max}",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "The date has to before the to date",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "The date has to be after the from date",
 

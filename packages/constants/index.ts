@@ -6,4 +6,6 @@ export {
     TIDENES_MORGEN,
     DATE_TODAY,
     SIX_MONTHS_AGO,
+    DATE_1_YEAR_FROM_NOW,
+    DATE_1_YEAR_AGO,
 } from './src/dates';

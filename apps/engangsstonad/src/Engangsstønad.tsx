@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Loader } from '@navikt/ds-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Locale, erMyndig } from '@navikt/fp-common';
+import { Locale } from '@navikt/fp-common';
 import SøkersituasjonSteg from './sider/steg/sokersituasjon/SøkersituasjonSteg';
 import Velkommen from './sider/velkommen/Velkommen';
 import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
@@ -17,7 +17,7 @@ import { EsDataContext } from 'appData/EsDataContext';
 import Kvittering from 'types/Kvittering';
 import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import { redirect } from '@navikt/fp-utils';
+import { erMyndig, redirect } from '@navikt/fp-utils';
 import Environment from 'appData/Environment';
 import { ErrorPage } from '@navikt/fp-ui';
 
@@ -41,6 +41,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     if (kvittering) {
         if (Environment.INNSYN_SAK) {
             redirect(kvittering.saksNr ? `${Environment.INNSYN_SAK}${kvittering.saksNr}` : Environment.INNSYN);
+            return <Spinner />;
         }
         return <div>Redirected to Innsyn</div>;
     }
