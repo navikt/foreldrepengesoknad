@@ -10,7 +10,7 @@ import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
+import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
 import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
@@ -23,7 +23,6 @@ export interface Props {
     person: Person;
     sendSøknad: (
         omBarnet: OmBarnet,
-        utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
@@ -45,13 +44,17 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const send = useCallback(() => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
-            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
-        }
-    }, [isChecked]);
+    const send = useCallback(
+        (setButtonsDisabled: (isDisabled: boolean) => void) => {
+            if (!isChecked) {
+                setIsError(true);
+            } else {
+                setButtonsDisabled(true);
+                sendSøknad(omBarnet, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
+            }
+        },
+        [isChecked],
+    );
 
     return (
         <Step

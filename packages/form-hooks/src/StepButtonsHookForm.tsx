@@ -6,7 +6,7 @@ interface Props<DATA_TYPE extends FieldValues> {
     goToPreviousStep: () => void;
     saveDataOnPreviousClick?: (data: DATA_TYPE) => void;
     nextButtonText?: string;
-    nextButtonOnClick?: () => void;
+    nextButtonOnClick?: (setButtonsDisabled: (isDisabled: boolean) => void) => void;
 }
 
 const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({

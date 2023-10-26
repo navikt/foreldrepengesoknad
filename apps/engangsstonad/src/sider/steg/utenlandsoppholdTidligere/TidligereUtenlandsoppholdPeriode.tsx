@@ -3,11 +3,11 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { date1YearAgo, dateToday } from '@navikt/fp-common';
 
-import { createCountryOptions } from '@navikt/fp-utils';
+import { createCountryOptions, formatDate } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
+import { DATE_TODAY, DATE_1_YEAR_AGO } from '@navikt/fp-constants';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -37,11 +37,11 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
     const fom = watch(`utenlandsoppholdSiste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
 
-    const minDateFom = dayjs(date1YearAgo).toDate();
-    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(dateToday).toDate();
+    const minDateFom = dayjs(DATE_1_YEAR_AGO).toDate();
+    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(DATE_TODAY).toDate();
 
-    const minDateTom = fom ? dayjs(fom).toDate() : dayjs(date1YearAgo).toDate();
-    const maxDateTom = dayjs(dateToday).toDate();
+    const minDateTom = fom ? dayjs(fom).toDate() : dayjs(DATE_1_YEAR_AGO).toDate();
+    const maxDateTom = dayjs(DATE_TODAY).toDate();
 
     return (
         <VStack gap="5" align="start">
@@ -68,7 +68,14 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
                     isValidDate(i18n('TidligereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato')),
                     isDatesNotTheSame(i18n('TidligereUtenlandsoppholdSteg.FomErLikTom'), tom),
                     isBeforeOrSame(i18n('TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato'), tom),
-                    isDateWithinRange(i18n('TidligereUtenlandsoppholdSteg.DateOutsideRange'), minDateFom, maxDateFom),
+                    isDateWithinRange(
+                        i18n('TidligereUtenlandsoppholdSteg.DateOutsideRangeFom', {
+                            min: formatDate(minDateFom),
+                            max: formatDate(maxDateFom),
+                        }),
+                        minDateFom,
+                        maxDateFom,
+                    ),
                     isPeriodNotOverlappingOthers(
                         i18n('TidligereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
                         { date: tom, isStartDate: false },
@@ -87,7 +94,14 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
                     isValidDate(i18n('TidligereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato')),
                     isDatesNotTheSame(i18n('TidligereUtenlandsoppholdSteg.TomErLikFom'), fom),
                     isAfterOrSame(i18n('TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato'), fom),
-                    isDateWithinRange(i18n('TidligereUtenlandsoppholdSteg.DateOutsideRange'), minDateTom, maxDateTom),
+                    isDateWithinRange(
+                        i18n('TidligereUtenlandsoppholdSteg.DateOutsideRangeTom', {
+                            min: formatDate(minDateTom),
+                            max: formatDate(maxDateTom),
+                        }),
+                        minDateTom,
+                        maxDateTom,
+                    ),
                     isPeriodNotOverlappingOthers(
                         i18n('TidligereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
                         { date: fom, isStartDate: true },
