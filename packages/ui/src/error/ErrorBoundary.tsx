@@ -35,7 +35,7 @@ class ErrorBoundary extends Component<Props, State> {
 
         if (this.state.hasError) {
             return errorMessage ? (
-                <ErrorPage appnavn={appnavn} feilmelding={errorMessage} />
+                <ErrorPage appnavn={appnavn} feilmelding={errorMessage} søkPåNytt={() => location.reload()} />
             ) : (
                 <div>{errorMessage || errorInfo}</div>
             );
