@@ -1,4 +1,4 @@
-import { bemUtils, intlUtils } from '@navikt/fp-common';
+import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
@@ -17,20 +17,28 @@ import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'ap
 import { AxiosError } from 'axios';
 
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
+import { Alert, Heading } from '@navikt/ds-react';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
     minidialogerError: AxiosError | null;
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
+    oppdatertData: any;
 }
 
-const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidialogerError, saker, søkerinfo }) => {
+const Saksoversikt: React.FunctionComponent<Props> = ({
+    minidialogerData,
+    minidialogerError,
+    saker,
+    søkerinfo,
+    oppdatertData,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('saksoversikt');
     useSetBackgroundColor('blue');
@@ -75,7 +83,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
 
-    return (
+    return oppdatertData ? (
         <div className={bem.block}>
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
@@ -128,6 +136,21 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
                     />
                 </ContentSection>
             )}
+        </div>
+    ) : (
+        <div className={bem.block}>
+            <Block padBottom="l">
+                <Heading size="large">Søknaden din er sendt!</Heading>
+            </Block>
+            <Block padBottom="l">
+                <Alert variant="warning">
+                    Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
+                    vente litt og komme tilbake senere for å se alle detaljene i saken din.
+                </Alert>
+            </Block>
+            <Block padBottom="l">
+                <Link to={`${OversiktRoutes.SAKSOVERSIKT}`}>{intlUtils(intl, 'saksoversikt')}</Link>
+            </Block>
         </div>
     );
 };

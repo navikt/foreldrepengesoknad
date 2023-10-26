@@ -99,6 +99,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                     minidialogerError={minidialogerError}
                                     saker={saker}
                                     søkerinfo={søkerinfo}
+                                    oppdatertData={false}
                                 />
                             }
                         />
