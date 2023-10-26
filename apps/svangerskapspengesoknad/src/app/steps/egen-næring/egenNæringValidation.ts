@@ -9,9 +9,11 @@ import {
     validateTextInputField,
 } from '@navikt/fp-common';
 import { erGyldigNorskOrgnummer } from '@navikt/fp-common/src/common/utils/organisasjonUtils';
+import { isDateAAfterDateB } from '@navikt/fp-utils';
 import { getNumberFromNumberInputValue, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { date4YearsAgo, fireUkerSiden } from 'app/utils/dateUtils';
+import { date4YearsAgo, femMånederSiden } from 'app/utils/dateUtils';
 import { hasValue, validateTextAreaInput } from 'app/utils/validationUtils';
+import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 export const validateEgenNæringFom =
@@ -46,12 +48,12 @@ export const validateEgenNæringTom =
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
         }
 
-        if (isDateInTheFuture(tom)) {
+        if (isDateAAfterDateB(tom, dayjs().add(9, 'month'))) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
         }
 
-        if (isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.egenNæring.merEnn4UkerSiden');
+        if (isDateABeforeDateB(tom, dateToISOString(femMånederSiden()))) {
+            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden');
         }
 
         if (isDateABeforeDateB(tom, fom)) {

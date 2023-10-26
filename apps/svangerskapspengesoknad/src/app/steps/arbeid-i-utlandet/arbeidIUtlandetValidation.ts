@@ -1,9 +1,11 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { intlUtils, isDateABeforeDateB, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
-import { fireUkerSiden } from 'app/utils/dateUtils';
+import { isDateAAfterDateB } from '@navikt/fp-utils';
+import { femMånederSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
 import { IntlShape } from 'react-intl';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import dayjs from 'dayjs';
 
 export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefined) => (fom: string) => {
     if (!hasValue(fom)) {
@@ -28,19 +30,19 @@ export const validateArbeidIUtlandetTom = (intl: IntlShape, fom: string | undefi
     if (!hasValue(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
     }
-    if (hasValue(tom) && !isISODateString(tom)) {
+    if (!isISODateString(tom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
     }
 
-    if (hasValue(tom) && isDateInTheFuture(tom)) {
+    if (isDateAAfterDateB(tom, dayjs().add(9, 'month'))) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
     }
 
-    if (hasValue(tom) && isDateABeforeDateB(tom, dateToISOString(fireUkerSiden(new Date())))) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn4UkerSiden');
+    if (isDateABeforeDateB(tom, dateToISOString(femMånederSiden()))) {
+        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn5MånederSiden');
     }
 
-    if (hasValue(tom) && fom && isDateABeforeDateB(tom, fom)) {
+    if (fom && isDateABeforeDateB(tom, fom)) {
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 
