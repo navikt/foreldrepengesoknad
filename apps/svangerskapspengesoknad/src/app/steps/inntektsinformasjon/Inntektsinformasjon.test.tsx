@@ -1,15 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './Inntektsinformasjon.stories';
-import * as context from 'app/context/hooks/useSvangerskapspengerContext';
 import { render, screen } from '@testing-library/react';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import {
-    SvangerskapspengerContextState,
-    svangerskapspengerInitialState,
-} from 'app/context/SvangerskapspengerContextConfig';
-import { Søknad } from 'app/types/Søknad';
-import { Arbeidsforhold } from '@navikt/fp-common';
 
 const { Default } = composeStories(stories);
 

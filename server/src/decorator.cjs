@@ -23,6 +23,7 @@ const extractDecoratorFragments = (html) => {
             LOGIN_URL: `${process.env.LOGIN_URL}`,
             LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
             APP_VERSION: `${process.env.APP_VERSION}`,
+            INNSYN: `${process.env.INNSYN}`,
         }),
     };
 };

@@ -1,7 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './BoIUtlandet.stories';
-import * as context from 'app/context/hooks/useSvangerskapspengerContext';
 import { render, screen } from '@testing-library/react';
 
 const { OppgirIFortid, OppgirIFremtid } = composeStories(stories);
