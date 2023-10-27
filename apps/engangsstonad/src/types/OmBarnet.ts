@@ -1,9 +1,7 @@
 export type BarnetErFødt = {
     erBarnetFødt: true;
     antallBarn: number;
-    fødselsdatoer: Array<{
-        dato: string;
-    }>;
+    fødselsdato: string;
 };
 
 export type BarnetErIkkeFødt = {
