@@ -19,6 +19,7 @@
     "license": "MIT",
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-api": "workspace:*",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/cli": "^7.3.1",
         "@storybook/react": "^7.3.1",
