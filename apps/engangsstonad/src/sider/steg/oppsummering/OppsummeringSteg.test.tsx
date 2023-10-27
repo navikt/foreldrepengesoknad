@@ -55,7 +55,7 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
+                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
             },
             { vedlegg: [] },
             undefined,
@@ -219,7 +219,7 @@ describe('<OppsummeringSteg>', () => {
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
+                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
             },
             {
                 vedlegg: [],

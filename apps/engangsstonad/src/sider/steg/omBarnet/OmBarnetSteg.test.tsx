@@ -195,7 +195,7 @@ describe('<OmBarnetSteg>', () => {
             data: {
                 erBarnetFødt: true,
                 antallBarn: 1,
-                fødselsdatoer: [dayjs().format(ISO_DATE_FORMAT)],
+                fødselsdato: dayjs().format(ISO_DATE_FORMAT),
                 termindato: undefined,
             },
             key: 'OM_BARNET',
