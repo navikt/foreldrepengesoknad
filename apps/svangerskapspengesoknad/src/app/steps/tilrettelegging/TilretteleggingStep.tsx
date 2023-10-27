@@ -48,14 +48,9 @@ import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
         return intlUtils(intl, 'skjema.risikofaktorer.frilanser');
-    }
-    if (typeArbeid === Arbeidsforholdstype.SELVSTENDIG) {
+    } else {
         return intlUtils(intl, 'skjema.risikofaktorer.selvstendig');
     }
-    if (typeArbeid === Arbeidsforholdstype.VIRKSOMHET) {
-        return intlUtils(intl, 'skjema.risikofaktorer.virksomhet');
-    }
-    throw Error('Har ingen tekst for type: ' + typeArbeid);
 };
 
 interface Props {

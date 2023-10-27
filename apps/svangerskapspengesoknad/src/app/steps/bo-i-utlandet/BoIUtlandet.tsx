@@ -49,8 +49,8 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
         : intlUtils(intl, 'boIUtlandet.spørsmål.hvilketLandSkalDuBoI');
     const stepId = `boIUtlandet${oppgirIFortid ? 'IFortid' : 'IFremtid'}`;
     const pageTitle = oppgirIFortid
-        ? intlUtils(intl, `steps.label.boIUtlandetIFortid`)
-        : intlUtils(intl, `steps.label.boIUtlandetIFremtid`);
+        ? intlUtils(intl, 'steps.label.boIUtlandetIFortid')
+        : intlUtils(intl, 'steps.label.boIUtlandetIFremtid');
 
     const onValidSubmitHandler = (values: Partial<BoIUtlandetFormData>) => {
         const utenlandsopphold = mapBostedUtland(
