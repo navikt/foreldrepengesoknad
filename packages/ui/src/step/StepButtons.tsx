@@ -26,7 +26,7 @@ const StepButtons: FunctionComponent<Props> = ({ goToPreviousStep, nextButtonTex
                     <FormattedMessage id="StepButtons.Forrige" />
                 </Button>
                 <Button type="submit" onClick={onClickNextButton} disabled={disabled}>
-                    {nextButtonText && nextButtonText}
+                    {nextButtonText !== undefined && nextButtonText}
                     {!nextButtonText && <FormattedMessage id={'StepButtons.Neste'} />}
                 </Button>
             </StepButtonWrapper>
