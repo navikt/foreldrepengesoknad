@@ -5,9 +5,7 @@ import withRouterProvider from 'storybook/decorators/withRouter';
 import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
 import BoIUtlandet from '../bo-i-utlandet/BoIUtlandet';
-import _sokerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
 import _context from 'storybook/storydata/soknad/soknad.json';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 const defaultExport = {
     title: 'steps/BoIUtlandet',
@@ -18,17 +16,28 @@ const defaultExport = {
 export default defaultExport;
 
 interface BoIUtlandetStoryProps {
-    context: SvangerskapspengerContextState;
-    søkerinfo: SøkerinfoDTO;
+    contextWithUtenlandsopphold: SvangerskapspengerContextState;
     oppgirBostedIFortid: boolean;
 }
 
-const søkerinfo = _sokerinfo as any;
 const context = _context as any;
+const contextWithUtenlandsopphold = {
+    ...context,
+    søknad: {
+        ...context.søknad,
+        informasjonOmUtenlandsopphold: {
+            iNorgePåHendelsestidspunktet: undefined!,
+            iNorgeSiste12Mnd: false,
+            iNorgeNeste12Mnd: false,
+            tidligereOpphold: [],
+            senereOpphold: [],
+        },
+    },
+} as SvangerskapspengerContextState;
 
-const Template: StoryFn<BoIUtlandetStoryProps> = ({ context, søkerinfo, oppgirBostedIFortid }) => {
+const Template: StoryFn<BoIUtlandetStoryProps> = ({ contextWithUtenlandsopphold, oppgirBostedIFortid }) => {
     return (
-        <SvangerskapspengerStateMock context={context} søkerinfo={søkerinfo}>
+        <SvangerskapspengerStateMock context={contextWithUtenlandsopphold}>
             <BoIUtlandet oppgirIFortid={oppgirBostedIFortid} />
         </SvangerskapspengerStateMock>
     );
@@ -36,14 +45,12 @@ const Template: StoryFn<BoIUtlandetStoryProps> = ({ context, søkerinfo, oppgirB
 
 export const OppgirIFortid = Template.bind({});
 OppgirIFortid.args = {
-    context,
-    søkerinfo,
+    contextWithUtenlandsopphold,
     oppgirBostedIFortid: true,
 };
 
 export const OppgirIFremtid = Template.bind({});
 OppgirIFremtid.args = {
-    context,
-    søkerinfo,
+    contextWithUtenlandsopphold,
     oppgirBostedIFortid: false,
 };

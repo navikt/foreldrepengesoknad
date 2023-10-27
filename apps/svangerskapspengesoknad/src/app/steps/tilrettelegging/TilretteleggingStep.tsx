@@ -43,6 +43,7 @@ import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/util
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import dayjs from 'dayjs';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
@@ -67,7 +68,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.OPPSUMMERING.toString());
-    const { tilrettelegging: tilretteleggingFraState, barn } = useSøknad();
+    const { arbeidsforhold } = useSøkerinfo();
+    const søknad = useSøknad();
+    const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
     const { termindato, fødselsdato, erBarnetFødt } = barn;
     const { state } = useSvangerskapspengerContext();
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -142,10 +145,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="tilrettelegging"
+                        activeStepId={`tilrettelegging-${id}`}
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, erFlereTilrettelegginger ? navn : undefined)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <TilretteleggingFormComponents.Form

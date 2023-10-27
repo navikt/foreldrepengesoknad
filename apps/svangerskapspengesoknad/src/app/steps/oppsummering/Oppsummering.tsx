@@ -125,7 +125,7 @@ const Oppsummering = () => {
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                             activeStepId="oppsummering"
                             pageTitle="Oppsummering"
-                            steps={stepConfig(intl)}
+                            steps={stepConfig(intl, søknad, arbeidsforhold)}
                             onCancel={onAvbrytSøknad}
                             useNoTempSavingText={true}
                         >

@@ -2,33 +2,38 @@ import { StoryFn } from '@storybook/react';
 import withIntlProvider from 'storybook/decorators/withIntl';
 import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
 import withRouterProvider from 'storybook/decorators/withRouter';
-import Inntektsinformasjon from './Inntektsinformasjon';
+import VelgArbeid from './VelgArbeid';
 import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
+import _sokerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
 import _context from 'storybook/storydata/soknad/soknad.json';
 
 const defaultExport = {
-    title: 'steps/Inntektsinformasjon',
-    component: Inntektsinformasjon,
+    title: 'steps/VelgArbeid',
+    component: VelgArbeid,
     decorators: [withIntlProvider, withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;
 
-interface InntektsinformasjonStoryProps {
-    context: SvangerskapspengerContextState;
+interface VelgArbeidStoryProps {
+    contextUtenTilretteleggingValg: SvangerskapspengerContextState;
 }
 
 const context = _context as any;
+const contextUtenTilretteleggingValg = {
+    ...context,
+    søknad: { ...context.søknad, tilrettelegging: [] },
+} as SvangerskapspengerContextState;
 
-const Template: StoryFn<InntektsinformasjonStoryProps> = ({ context }) => {
+const Template: StoryFn<VelgArbeidStoryProps> = ({ contextUtenTilretteleggingValg }) => {
     return (
-        <SvangerskapspengerStateMock context={context}>
-            <Inntektsinformasjon />
+        <SvangerskapspengerStateMock context={contextUtenTilretteleggingValg}>
+            <VelgArbeid />
         </SvangerskapspengerStateMock>
     );
 };
 export const Default = Template.bind({});
 Default.args = {
-    context,
+    contextUtenTilretteleggingValg,
 };

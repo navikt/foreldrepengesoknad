@@ -37,7 +37,7 @@ describe('<Utlandsopphold>', () => {
     });
     it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
         render(<Default />);
-
+        expect(await screen.findByText(NESTE_STEG)).toBeInTheDocument();
         await user.click(screen.getByText(NESTE_STEG));
 
         expect(

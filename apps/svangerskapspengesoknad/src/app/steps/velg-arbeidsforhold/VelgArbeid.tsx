@@ -26,7 +26,8 @@ import FlereArbeidsforholdGuidePanel from './components/guidepanel/FlereArbeidsf
 const VelgArbeid: React.FunctionComponent = () => {
     useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
-    const { søker, tilrettelegging, barn } = useSøknad();
+    const søknad = useSøknad();
+    const { søker, tilrettelegging, barn } = søknad;
     const { termindato } = barn;
     const { arbeidsforhold } = useSøkerinfo();
 
@@ -55,7 +56,7 @@ const VelgArbeid: React.FunctionComponent = () => {
                         activeStepId="velgArbeid"
                         pageTitle={intlUtils(intl, 'steps.label.velgArbeid')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <VelgArbeidFormComponents.Form

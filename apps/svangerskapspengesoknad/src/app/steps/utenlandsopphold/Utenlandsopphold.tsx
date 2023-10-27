@@ -20,10 +20,13 @@ import SøknadRoutes from 'app/routes/routes';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useState } from 'react';
+import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
-    const { informasjonOmUtenlandsopphold } = useSøknad();
+    const { arbeidsforhold } = useSøkerinfo();
+    const søknad = useSøknad();
+    const { informasjonOmUtenlandsopphold } = søknad;
     const [nextRoute, setNextRoute] = useState(SøknadRoutes.ARBEID);
 
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -47,7 +50,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         activeStepId="utenlandsopphold"
                         pageTitle={intlUtils(intl, 'steps.label.utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl)}
+                        steps={stepConfig(intl, søknad, arbeidsforhold)}
                         useNoTempSavingText={true}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
