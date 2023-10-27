@@ -3,7 +3,6 @@ import links from 'app/links/links';
 import { StoryFn } from '@storybook/react';
 import withSvangerskapspengerContextProvider from './../../../storybook/decorators/withSvangerskapspengerContext';
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 const defaultExport = {
     title: 'pages/Feilside',
@@ -14,20 +13,10 @@ const defaultExport = {
 export default defaultExport;
 
 const context = {} as any;
-const søkerinfo = {
-    søker: {
-        fnr: '19047815714',
-        fornavn: 'HØYGRAVID',
-        etternavn: 'FLUE',
-        kjønn: 'K',
-        fødselsdato: '1986-04-19',
-        barn: [],
-    },
-} as SøkerinfoDTO;
 
 const Template: StoryFn<FeilsideProps> = (args: FeilsideProps) => {
     return (
-        <SvangerskapspengerStateMock context={context} søkerinfo={søkerinfo}>
+        <SvangerskapspengerStateMock context={context}>
             <Feilside {...args}></Feilside>
         </SvangerskapspengerStateMock>
     );

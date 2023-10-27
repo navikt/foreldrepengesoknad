@@ -6,9 +6,9 @@ import { render, screen } from '@testing-library/react';
 const { Default } = composeStories(stories);
 
 const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
-const HVOR_SKAL_DU_JOBBE = 'Hvor skal du jobbe mindre eller slutte å jobbe midlertidig i på grunn av svangerskapet?';
-const SYKEHUSET = 'SYKEHUSET I VESTFOLD';
-const RE = 'RE KOMMUNE';
+const HVOR_SKAL_DU_JOBBE = 'Hvor skal du jobbe mindre eller slutte å jobbe midlertidig på grunn av svangerskapet?';
+const SYKEHUSET = 'Sykehuset i Vestfold';
+const RE = 'Re Kommune';
 const NESTE_STEG = 'Neste steg';
 
 describe('<Velg arbeid>', () => {
@@ -19,6 +19,7 @@ describe('<Velg arbeid>', () => {
 
         expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
         expect(await screen.findByText(HVOR_SKAL_DU_JOBBE)).toBeInTheDocument();
+        expect(await screen.findByText(NESTE_STEG)).toBeInTheDocument();
 
         await user.click(screen.getByText(NESTE_STEG));
 
@@ -32,6 +33,8 @@ describe('<Velg arbeid>', () => {
         expect(await screen.findByText(SYKEHUSET)).toBeInTheDocument();
 
         await user.click(screen.getByText(SYKEHUSET));
+
+        expect(await screen.findByText(NESTE_STEG)).toBeInTheDocument();
         await user.click(screen.getByText(NESTE_STEG));
 
         expect(

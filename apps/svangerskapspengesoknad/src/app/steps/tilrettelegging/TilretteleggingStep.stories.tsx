@@ -4,7 +4,6 @@ import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvan
 import withRouterProvider from 'storybook/decorators/withRouter';
 import TilretteleggingStep from './TilretteleggingStep';
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import _sokerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
@@ -23,12 +22,11 @@ interface TilretteleggingStepStoryProps {
     context: SvangerskapspengerContextState;
 }
 
-const søkerinfo = _sokerinfo as any;
 const context = _context as any;
 
 const Template: StoryFn<TilretteleggingStepStoryProps> = () => {
     return (
-        <SvangerskapspengerStateMock søkerinfo={søkerinfo} context={context}>
+        <SvangerskapspengerStateMock context={context}>
             <TilretteleggingStep
                 id={'263929546-6215-9868-5127-161910165730101'}
                 typeArbeid={Arbeidsforholdstype.VIRKSOMHET}
@@ -38,3 +36,6 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = () => {
     );
 };
 export const Default = Template.bind({});
+Default.args = {
+    context,
+};

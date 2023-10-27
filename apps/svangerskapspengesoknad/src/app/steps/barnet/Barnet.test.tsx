@@ -100,6 +100,7 @@ describe('<Barnet>', () => {
     it('validering av for sen termindato', async () => {
         render(<Default />);
 
+        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
         await user.click(screen.getByText(NEI));
 
         const termindatoInput = screen.getByLabelText(TERMINDATO);
@@ -111,6 +112,7 @@ describe('<Barnet>', () => {
     it('validering av termindato på feil format', async () => {
         render(<Default />);
 
+        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
         await user.click(screen.getByText(NEI));
 
         const termindatoInput = screen.getByLabelText(TERMINDATO);
@@ -124,6 +126,7 @@ describe('<Barnet>', () => {
     it('validering av for tidlig fødselsdato', async () => {
         render(<Default />);
 
+        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
         await user.click(screen.getByText(JA));
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
@@ -139,7 +142,7 @@ describe('<Barnet>', () => {
     });
     it('validering av for sen fødselsdato', async () => {
         render(<Default />);
-
+        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
         await user.click(screen.getByText(JA));
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
@@ -156,6 +159,7 @@ describe('<Barnet>', () => {
     it('validering av manglende fødselsdato', async () => {
         render(<Default />);
 
+        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
         await user.click(screen.getByText(JA));
 
         await user.click(screen.getByText(NESTE_STEG));
@@ -165,6 +169,7 @@ describe('<Barnet>', () => {
     it('validering av fødselsdato på feil format', async () => {
         render(<Default />);
 
+        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
         await user.click(screen.getByText(JA));
 
         const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);

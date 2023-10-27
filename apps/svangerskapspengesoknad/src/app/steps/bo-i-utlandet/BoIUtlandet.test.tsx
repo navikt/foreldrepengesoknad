@@ -66,11 +66,10 @@ describe('<BoIUtlandet> - oppgir bosted i fortid', () => {
         const tilOgMedInput = screen.getByLabelText(TOM);
         await user.type(fraOgMedInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
         await user.type(tilOgMedInput, dayjs('2023-11-30').format('DD.MM.YYYY'));
+        expect(await screen.findByText(NESTE_STEG)).toBeInTheDocument();
         await user.click(screen.getByText(NESTE_STEG));
 
-        expect(
-            await screen.getAllByText('Fra og med dato kan ikke være etter til og med dato.')[0],
-        ).toBeInTheDocument();
+        expect(await screen.getAllByText('Til og med dato kan ikke være før fra og med dato.')[0]).toBeInTheDocument();
     });
     it('skal vise feilmelding hvis man legger til overlappende opphold i utlandet', async () => {
         //TODO
