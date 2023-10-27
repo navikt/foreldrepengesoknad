@@ -131,7 +131,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.tom`}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.tom')}
-                                                    description={intlUtils(intl, 'egenNæring.næring.tom.description')}
+                                                    description={intlUtils(intl, 'egenNæring.arbeid.tom.description')}
                                                     placeholder="dd.mm.åååå"
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
