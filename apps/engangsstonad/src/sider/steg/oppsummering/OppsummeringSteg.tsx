@@ -23,8 +23,8 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 export interface Props {
     person: Person;
     sendSøknad: (
-        omBarnet: OmBarnet,
         abortSignal: AbortSignal,
+        omBarnet: OmBarnet,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
@@ -53,7 +53,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 setIsError(true);
             } else {
                 setButtonsDisabled(true);
-                sendSøknad(omBarnet, abortSignal, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
+                sendSøknad(abortSignal, omBarnet, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
             }
         },
         [isChecked],

@@ -91,8 +91,8 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 const sendSøknad =
     (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
-        omBarnet: OmBarnet,
         abortSignal: AbortSignal,
+        omBarnet: OmBarnet,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,

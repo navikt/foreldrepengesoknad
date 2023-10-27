@@ -46,9 +46,12 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
@@ -84,9 +87,12 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 adopsjonAvEktefellesBarn: true,
                 adopsjonsdato: '2023-01-01',
@@ -137,9 +143,12 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 antallBarn: 1,
                 erBarnetFødt: false,
@@ -201,9 +210,12 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
