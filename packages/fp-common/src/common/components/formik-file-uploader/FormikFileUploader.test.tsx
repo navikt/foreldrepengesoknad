@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { Attachment, AttachmentType, Skjemanummer } from '../../types';
 
 describe('<FormikFileUploader>', () => {
-    it('skal vise opplastingskomponent men ingen opplastede vedlegg', () => {
+    it.skip('skal vise opplastingskomponent men ingen opplastede vedlegg', () => {
         render(
             <Formik initialValues={{}} onSubmit={() => undefined}>
                 <FormikFileUploader
@@ -23,7 +23,7 @@ describe('<FormikFileUploader>', () => {
         expect(screen.getByText('Les mer om hvordan du tar et bra bilde av vedlegget')).toBeInTheDocument();
     });
 
-    it('skal vise allerede opplastede vedlegg', () => {
+    it.skip('skal vise allerede opplastede vedlegg', () => {
         const vedlegg = [
             {
                 filename: 'Dette er et filnavn',

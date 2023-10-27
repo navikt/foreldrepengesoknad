@@ -19,5 +19,5 @@
         "noUnusedLocals": true,
         "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/common/**/*"]
+    "include": ["src/common/**/*", "vitest"]
 }
