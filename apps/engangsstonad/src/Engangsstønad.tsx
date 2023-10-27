@@ -7,19 +7,20 @@ import Velkommen from './sider/velkommen/Velkommen';
 import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
 import UtenlandsoppholdSteg from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { useRequest } from '@navikt/fp-api';
+import { erMyndig, redirect } from '@navikt/fp-utils';
+import { ErrorPage } from '@navikt/fp-ui';
+
 import Api from 'appData/api';
+import { Path } from 'appData/paths';
+import { EsDataContext } from 'appData/EsDataContext';
+import Environment from 'appData/Environment';
+import Kvittering from 'types/Kvittering';
 import Person from './types/Person';
 import Umyndig from './sider/umyndig/Umyndig';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
-import { Path } from 'appData/paths';
-import { EsDataContext } from 'appData/EsDataContext';
-import Kvittering from 'types/Kvittering';
 import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import { erMyndig, redirect } from '@navikt/fp-utils';
-import Environment from 'appData/Environment';
-import { ErrorPage } from '@navikt/fp-ui';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -62,7 +63,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         return <Umyndig person={person} />;
     }
 
-    const sendSøknad = Api.sendSøknad(locale, setKvittering);
+    const sendSøknad = Api.getSendSøknad(locale, setKvittering);
 
     return (
         <EsDataContext>

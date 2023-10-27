@@ -70,7 +70,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
         return {
             type: 'fødsel',
             antallBarn: omBarnet.antallBarn,
-            fødselsdato: omBarnet.fødselsdatoer[0].dato,
+            fødselsdato: omBarnet.fødselsdato,
             vedleggreferanser: [],
         };
     }
@@ -88,7 +88,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
-const sendSøknad =
+const getSendSøknad =
     (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
         abortSignal: AbortSignal,
@@ -133,5 +133,5 @@ const sendSøknad =
         }
     };
 
-const Api = { getPerson, sendSøknad };
+const Api = { getPerson, getSendSøknad };
 export default Api;

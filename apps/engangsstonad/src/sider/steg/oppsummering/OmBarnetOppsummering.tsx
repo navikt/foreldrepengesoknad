@@ -72,7 +72,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                     <BodyShort>
                         <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} />
                     </BodyShort>
-                    <BodyShort>{formatDate(omBarnet.fødselsdatoer[0].dato)}</BodyShort>
+                    <BodyShort>{formatDate(omBarnet.fødselsdato)}</BodyShort>
                 </HStack>
             )}
             {harTermin && dokumentasjon && erTerminDokumentasjon(dokumentasjon) && (

@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
-
+import { useAbortSignal } from '@navikt/fp-api';
+import { notEmpty } from '@navikt/fp-validation';
+import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
@@ -11,10 +13,7 @@ import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
-import { notEmpty } from '@navikt/fp-validation';
-import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
-import useAbortSignal from '../../../appData/useAbortSignal';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
