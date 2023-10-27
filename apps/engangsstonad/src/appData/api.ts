@@ -92,6 +92,7 @@ const sendSøknad =
     (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
         omBarnet: OmBarnet,
+        abortSignal: AbortSignal,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
@@ -112,11 +113,12 @@ const sendSøknad =
                 headers: {
                     'content-type': 'application/json;',
                 },
+                signal: abortSignal,
             });
             setKvittering(response.data);
         } catch (error: unknown) {
             // TODO Håndter på same måte i alle appar. Flytt til api-pakke
-            if (isAxiosError(error)) {
+            if (isAxiosError(error) && error.code !== 'ERR_CANCELED') {
                 const submitErrorCallId =
                     error.response && error.response.data && error.response.data.uuid
                         ? error.response.data.uuid

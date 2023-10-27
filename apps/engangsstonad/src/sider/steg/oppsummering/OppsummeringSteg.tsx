@@ -14,6 +14,7 @@ import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlan
 import { notEmpty } from '@navikt/fp-validation';
 import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Dokumentasjon from 'types/Dokumentasjon';
+import useAbortSignal from '../../../appData/useAbortSignal';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
@@ -23,6 +24,7 @@ export interface Props {
     person: Person;
     sendSøknad: (
         omBarnet: OmBarnet,
+        abortSignal: AbortSignal,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
@@ -40,6 +42,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
     const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
+    const abortSignal = useAbortSignal();
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -50,7 +53,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 setIsError(true);
             } else {
                 setButtonsDisabled(true);
-                sendSøknad(omBarnet, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
+                sendSøknad(omBarnet, abortSignal, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
             }
         },
         [isChecked],

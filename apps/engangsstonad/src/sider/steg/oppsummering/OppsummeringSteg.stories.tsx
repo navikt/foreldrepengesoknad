@@ -56,6 +56,7 @@ export default {
 const Template: StoryFn<{
     sendSøknad: (
         omBarnet: OmBarnet,
+        abortSignal: AbortSignal,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
