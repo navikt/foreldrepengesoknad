@@ -238,11 +238,11 @@ export const containsWhiteSpace = (s: string): boolean => {
     return /\s/.test(s);
 };
 
-export const validateStringAsNumberInput = (value: string, intl: IntlShape, errorKey: string) => {
+export const validateStringAsNumberInput = (value: string, errorMessage: string) => {
     const valueNumber = getNumberFromNumberInputValue(value);
 
     if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
-        return intlUtils(intl, errorKey);
+        return errorMessage;
     }
     return undefined;
 };

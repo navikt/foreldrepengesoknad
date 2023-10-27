@@ -12,7 +12,7 @@ import { erGyldigNorskOrgnummer } from '@navikt/fp-common/src/common/utils/organ
 import { isDateAAfterDateB } from '@navikt/fp-utils';
 import { getNumberFromNumberInputValue, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { date4YearsAgo, femMånederSiden } from 'app/utils/dateUtils';
-import { hasValue, validateTextAreaInput } from 'app/utils/validationUtils';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -115,20 +115,6 @@ export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) 
     return undefined;
 };
 
-export const validateNumber =
-    (intl: IntlShape, errorKey: string) =>
-    (value: string): SkjemaelementFeil => {
-        if (hasValue(value)) {
-            const valueNumber = getNumberFromNumberInputValue(value);
-
-            if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
-                return intlUtils(intl, errorKey);
-            }
-        }
-
-        return undefined;
-    };
-
 export const validateEgenNæringVarigEndringDato =
     (intl: IntlShape, fom: string, tom: string | undefined) =>
     (endringDato: string): SkjemaelementFeil => {
@@ -170,13 +156,24 @@ export const validateEgenNæringVarigEndringInntekt =
         if (valueNumber && valueNumber < 0) {
             return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.mindreEnnNull');
         }
-        return validateStringAsNumberInput(value, intl, 'valideringsfeil.varigEndringInntekt.ugyldigFormat');
+        return validateStringAsNumberInput(value, intlUtils(intl, 'valideringsfeil.varigEndringInntekt.ugyldigFormat'));
     };
 
-export const validateEgenNæringVarigEndringBeskrivelse =
-    (intl: IntlShape, label: string, fieldName: string) => (value: string) => {
-        return validateTextAreaInput(value, intl, label, fieldName);
-    };
+export const validateEgenNæringVarigEndringBeskrivelse = (intl: IntlShape, label: string) => (value: string) => {
+    if (!hasValue(value) || value.trim() === '') {
+        return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd');
+    }
+
+    if (value.length > TEXT_INPUT_MAX_LENGTH) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forLang');
+    }
+
+    if (value.length < TEXT_INPUT_MIN_LENGTH) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forKort');
+    }
+
+    return validateTextInputField(value, label, intl);
+};
 
 export const validateEgenNæringNavn = (intl: IntlShape, label: string) => (value: string) => {
     if (!hasValue(value)) {

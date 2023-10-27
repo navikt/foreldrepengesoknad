@@ -21,12 +21,14 @@ export const validerDatoOverlapperAndreUtenlandsperioder = (
         (tp, index) => dayjs(dato).isBetween(tp.fom, tp.tom, 'day', '[]') && index < currentOppholdIndex,
     );
     if (overlappendePerioderLagtTilFørDennePerioden.length > 0) {
-        const fomOrTom = isFraOgMedDato ? 'fraOgMed' : 'tilOgMed';
-        return intlUtils(intl, `valideringsfeil.utenlandsopphold.overlapper.${fomOrTom}`, {
+        const values = {
             land: getCountryName(overlappendePerioderLagtTilFørDennePerioden[0].land, intl.locale),
             fom: formatDate(overlappendePerioderLagtTilFørDennePerioden[0].fom),
             tom: formatDate(overlappendePerioderLagtTilFørDennePerioden[0].tom),
-        });
+        };
+        return isFraOgMedDato
+            ? intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapper.fraOgMed', values)
+            : intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapper.tilOgMed', values);
     }
 
     return undefined;

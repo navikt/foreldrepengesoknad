@@ -2,7 +2,7 @@ import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@nav
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg } from '../stepsConfig';
 import { BodyLong, BodyShort, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import {
     TilretteleggingFormComponents,
     TilretteleggingFormData,
@@ -44,6 +44,19 @@ import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import dayjs from 'dayjs';
 
+const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
+    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'skjema.risikofaktorer.frilanser');
+    }
+    if (typeArbeid === Arbeidsforholdstype.SELVSTENDIG) {
+        return intlUtils(intl, 'skjema.risikofaktorer.selvstendig');
+    }
+    if (typeArbeid === Arbeidsforholdstype.VIRKSOMHET) {
+        return intlUtils(intl, 'skjema.risikofaktorer.virksomhet');
+    }
+    throw Error('Har ingen tekst for type: ' + typeArbeid);
+};
+
 interface Props {
     id: string;
     typeArbeid: Arbeidsforholdstype;
@@ -80,7 +93,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
-    const risikofaktorerLabel = intlUtils(intl, `skjema.risikofaktorer.${typeArbeid}`);
+    const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeid);
 
     let tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.en');
     let behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.en');
@@ -110,18 +123,18 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     ...formValues,
                     arbeidsType: typeArbeid,
                 } as TilretteleggingFormQuestionsPayload);
-                const labelPeriodeFom =
+                const labelPeriodeFomTekst =
                     formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'
-                        : 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis';
-                const labelPeriodeTomType =
+                        ? intlUtils(intl, 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen')
+                        : intlUtils(intl, 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis');
+                const labelPeriodeTomTypeTekst =
                     formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen'
-                        : 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis';
-                const labelPeriodeTom =
+                        ? intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen')
+                        : intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis');
+                const labelPeriodeTomTekst =
                     formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen'
-                        : 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis';
+                        ? intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen')
+                        : intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis');
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
@@ -174,12 +187,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     label={risikofaktorerLabel}
                                     minLength={TEXT_INPUT_MIN_LENGTH}
                                     maxLength={TEXT_INPUT_MAX_LENGTH}
-                                    validate={validateRisikofaktorer(
-                                        intl,
-                                        risikofaktorerLabel,
-                                        typeArbeid,
-                                        TilretteleggingFormField.risikofaktorer,
-                                    )}
+                                    validate={validateRisikofaktorer(intl, risikofaktorerLabel, typeArbeid)}
                                     description={intlUtils(intl, 'skjema.risikofaktorer.description')}
                                 />
                             </Block>
@@ -193,11 +201,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         label={labelTiltak}
                                         minLength={TEXT_INPUT_MIN_LENGTH}
                                         maxLength={TEXT_INPUT_MAX_LENGTH}
-                                        validate={validateTilretteleggingstiltak(
-                                            intl,
-                                            labelTiltak,
-                                            TilretteleggingFormField.tilretteleggingstiltak,
-                                        )}
+                                        validate={validateTilretteleggingstiltak(intl, labelTiltak)}
                                     />
                                 </Block>
                                 <ReadMore size="small" header={intlUtils(intl, 'tilrettelegging.tiltak.info.title')}>
@@ -310,7 +314,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             >
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.enPeriodeMedTilretteleggingFom}
-                                    label={intlUtils(intl, labelPeriodeFom)}
+                                    label={labelPeriodeFomTekst}
                                     description={
                                         harSkjema
                                             ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
@@ -336,7 +340,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             >
                                 <TilretteleggingFormComponents.RadioGroup
                                     name={TilretteleggingFormField.enPeriodeMedTilretteleggingTomType}
-                                    legend={intlUtils(intl, labelPeriodeTomType)}
+                                    legend={labelPeriodeTomTypeTekst}
                                     radios={[
                                         {
                                             label: intlUtils(intl, 'perioder.varierende.tomType.valgfriDato'),
@@ -365,7 +369,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             >
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato}
-                                    label={intlUtils(intl, labelPeriodeTom)}
+                                    label={labelPeriodeTomTekst}
                                     minDate={
                                         hasValue(formValues.enPeriodeMedTilretteleggingFom)
                                             ? dayjs(formValues.enPeriodeMedTilretteleggingFom!).add(1, 'day').toDate()

@@ -38,5 +38,6 @@
     "psg.lenkepanel.url": "https://www.nav.no/brukerstotte#bilde-vedlegg",
     "psg.lenkepanel.text": "More help on how to upload an attachment (is opened in a new window).",
     "byttBrowser.ingress": "In order for you to get the best user experience, we recommend that you use a modern web browser that supports modern web standards and is much more secure.",
-    "byttBrowser.tittel": "You are using an outdated browser."
+    "byttBrowser.tittel": "You are using an outdated browser.",
+    "sesjonUtløpt.tittel": "You are now logged out."
 }

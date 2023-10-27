@@ -41,10 +41,13 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
     const backLink = oppgirIFortid
         ? getPreviousSetStepHref('boIUtlandetIFortid')
         : getBackLinkForBostedIFremtid(informasjonOmUtenlandsopphold);
-    const spmId = oppgirIFortid
-        ? 'boIUtlandet.spørsmål.hvilketLandHarDuBoddI'
-        : 'boIUtlandet.spørsmål.hvilketLandSkalDuBoI';
+    const spmTekst = oppgirIFortid
+        ? intlUtils(intl, 'boIUtlandet.spørsmål.hvilketLandHarDuBoddI')
+        : intlUtils(intl, 'boIUtlandet.spørsmål.hvilketLandSkalDuBoI');
     const stepId = `boIUtlandet${oppgirIFortid ? 'IFortid' : 'IFremtid'}`;
+    const pageTitle = oppgirIFortid
+        ? intlUtils(intl, `steps.label.boIUtlandetIFortid`)
+        : intlUtils(intl, `steps.label.boIUtlandetIFremtid`);
 
     const onValidSubmitHandler = (values: Partial<BoIUtlandetFormData>) => {
         const utenlandsopphold = mapBostedUtland(
@@ -67,7 +70,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId={stepId}
-                        pageTitle={intlUtils(intl, `steps.label.${stepId}`)}
+                        pageTitle={pageTitle}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl)}
                         useNoTempSavingText={true}
@@ -85,7 +88,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                 <BoIUtlandetFormComponents.CountrySelect
                                                     style={{ width: 'var(--app-text-input-width)' }}
                                                     name={`bostedIUtlandet.${index}.land`}
-                                                    label={intlUtils(intl, spmId)}
+                                                    label={spmTekst}
                                                     validate={validateBostedUtlandLand(intl)}
                                                     useAlpha3Code={false}
                                                 />

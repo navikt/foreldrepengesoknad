@@ -77,11 +77,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ visibility, formValu
                     label={egenNæringVarigEndringBeskrivelseLabel}
                     minLength={TEXT_INPUT_MIN_LENGTH}
                     maxLength={TEXT_INPUT_MAX_LENGTH}
-                    validate={validateEgenNæringVarigEndringBeskrivelse(
-                        intl,
-                        egenNæringVarigEndringBeskrivelseLabel,
-                        EgenNæringFormField.egenNæringVarigEndringBeskrivelse,
-                    )}
+                    validate={validateEgenNæringVarigEndringBeskrivelse(intl, egenNæringVarigEndringBeskrivelseLabel)}
                 />
             </Block>
         </>
