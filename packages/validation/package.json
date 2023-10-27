@@ -14,7 +14,6 @@
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^6.0.0",
         "@types/bytes": "^3.1.1",
         "@types/react": "^18.2.20",
         "tsconfig": "workspace:*"

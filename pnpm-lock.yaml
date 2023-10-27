@@ -1066,9 +1066,6 @@ importers:
         specifier: ^1.11.9
         version: 1.11.9
     devDependencies:
-      '@testing-library/jest-dom':
-        specifier: ^6.0.0
-        version: 6.0.0(vitest@0.34.2)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1375,9 +1372,6 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
     devDependencies:
-      '@testing-library/jest-dom':
-        specifier: ^6.0.0
-        version: 6.0.0(vitest@0.34.2)
       '@types/amplitude-js':
         specifier: ^8.16.2
         version: 8.16.2
@@ -1626,9 +1620,6 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@testing-library/jest-dom':
-        specifier: ^6.0.0
-        version: 6.0.0(vitest@0.34.2)
       '@types/bytes':
         specifier: ^3.1.1
         version: 3.1.1
