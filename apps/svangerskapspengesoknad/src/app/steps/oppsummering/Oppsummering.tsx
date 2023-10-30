@@ -110,7 +110,8 @@ const Oppsummering = () => {
             if (sendtSøknad.saksNr) {
                 navigateTo = `${Environment.INNSYN}/sak/${sendtSøknad.saksNr}`;
             }
-            redirect(navigateTo);
+            const navigateToMedURLParams = `${navigateTo}?redirectFromSoknad=true`;
+            redirect(navigateToMedURLParams);
         }
     }, [sendtSøknad]);
 
