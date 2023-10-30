@@ -107,7 +107,8 @@
     "AdopsjonDokPanel.Dok.Storrelse": "Fil kan ikkje vera større enn 9MB og kan vera i formata pdf, png og jpg.",
 
     "UtenlandsoppholdSteg.Utenlandsopphold": "Bu i utlandet",
-    "UtenlandsoppholdSteg.Info": "Det regnes som å bu i utlandet dersom du har arbeidsinntekt i utlandet og eller at du oppheld deg der lenger enn 12 månader.",
+    "UtenlandsoppholdSteg.InfoFodsel": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for fødsel.",
+    "UtenlandsoppholdSteg.InfoAdopsjon": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for omsorgsovertakelse ved adopsjon.",
     "UtenlandsoppholdSteg.Siste12Måneder.Spørsmål": "Kvar har du budd dei siste 12 månadene?",
     "UtenlandsoppholdSteg.Siste12Måneder.IsRequired": "Du må oppgje kor du har budd dei siste 12 månadene",
     "UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge": "Eg har budd i Noreg",
