@@ -110,6 +110,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
+    const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
+    const minDatoBehovFom = sluttDatoArbeid
+        ? dayjs.min(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(sluttDatoArbeid))!.toDate()
+        : tiMånederSidenDato(termindatoDate!);
+    const maxDatoBehovFom = sluttDatoArbeid
+        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
+        : sisteDagForSvangerskapspenger;
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -165,8 +172,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')
                                             : ''
                                     }
-                                    minDate={tiMånederSidenDato(termindatoDate!)}
-                                    maxDate={sisteDagForSvangerskapspenger}
+                                    minDate={minDatoBehovFom}
+                                    maxDate={maxDatoBehovFom}
                                     validate={validateBehovForTilretteleggingFom(
                                         intl,
                                         sisteDagForSvangerskapspenger,
