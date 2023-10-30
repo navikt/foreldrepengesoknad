@@ -111,9 +111,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
     const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
-    const minDatoBehovFom = sluttDatoArbeid
-        ? dayjs.min(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(sluttDatoArbeid))!.toDate()
-        : tiMånederSidenDato(termindatoDate!);
     const maxDatoBehovFom = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
@@ -172,7 +169,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')
                                             : ''
                                     }
-                                    minDate={minDatoBehovFom}
+                                    minDate={tiMånederSidenDato(termindatoDate!)}
                                     maxDate={maxDatoBehovFom}
                                     validate={validateBehovForTilretteleggingFom(
                                         intl,
@@ -180,7 +177,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         termindatoDate!,
                                         erBarnetFødt,
                                         currentTilrettelegging!.arbeidsforhold.navn,
-                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                        sluttDatoArbeid,
                                     )}
                                 />
                             </Block>
@@ -327,7 +324,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             : ''
                                     }
                                     minDate={new Date(minDatoPeriodeFom)}
-                                    maxDate={sisteDagForSvangerskapspenger}
+                                    maxDate={maxDatoBehovFom}
                                     validate={validateSammePeriodeFremTilTerminFom(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
@@ -335,7 +332,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         fødselsdato,
                                         formValues.tilretteleggingType!,
                                         currentTilrettelegging!.arbeidsforhold.navn,
-                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                        sluttDatoArbeid,
                                     )}
                                 />
                             </Block>
@@ -365,7 +362,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,
                                         currentTilrettelegging!.arbeidsforhold.navn,
-                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                        sluttDatoArbeid,
                                     )}
                                 />
                             </Block>
@@ -383,7 +380,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             ? dayjs(formValues.enPeriodeMedTilretteleggingFom!).add(1, 'day').toDate()
                                             : new Date(formValues.behovForTilretteleggingFom!)
                                     }
-                                    maxDate={sisteDagForSvangerskapspenger}
+                                    maxDate={maxDatoBehovFom}
                                     validate={validateSammePeriodeFremTilTerminTilbakeIJobbDato(
                                         intl,
                                         formValues.behovForTilretteleggingFom,
@@ -392,7 +389,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.enPeriodeMedTilretteleggingFom,
                                         formValues.tilretteleggingType!,
                                         currentTilrettelegging!.arbeidsforhold.navn,
-                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                        sluttDatoArbeid,
                                     )}
                                 />
                             </Block>

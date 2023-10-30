@@ -30,6 +30,7 @@ import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
 import './perioderStep.css';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import dayjs from 'dayjs';
 interface Props {
     id: string;
     navn: string;
@@ -67,7 +68,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     }
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-
+    const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
+    const maxDato = sluttDatoArbeid
+        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
+        : sisteDagForSvangerskapspenger;
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -153,7 +157,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                     <PerioderFormComponents.DatePicker
                                                         key={`varierendePerioder.${index}.fom`}
                                                         minDate={new Date(minDatoPeriodeFom)}
-                                                        maxDate={sisteDagForSvangerskapspenger}
+                                                        maxDate={maxDato}
                                                         name={`varierendePerioder.${index}.fom`}
                                                         label={intlUtils(intl, 'perioder.varierende.fom.label')}
                                                         validate={validatePeriodeFom(
@@ -164,7 +168,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             sisteDagForSvangerskapspenger,
                                                             barn.erBarnetFødt,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
-                                                            currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                                            sluttDatoArbeid,
                                                         )}
                                                     />
                                                 </Block>
@@ -193,7 +197,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             intl,
                                                             sisteDagForSvangerskapspenger,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
-                                                            currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                                            sluttDatoArbeid,
                                                         )}
                                                     />
                                                 </Block>
@@ -215,10 +219,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             sisteDagForSvangerskapspenger,
                                                             barn.fødselsdato,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
-                                                            currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                                            sluttDatoArbeid,
                                                         )}
                                                         minDate={minDatoTom}
-                                                        maxDate={sisteDagForSvangerskapspenger}
+                                                        maxDate={maxDato}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
