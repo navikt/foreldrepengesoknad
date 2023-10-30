@@ -17,7 +17,7 @@ import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRo
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 
-import { validatePeriodeFom, validatePeriodeTom } from './perioderValidation';
+import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
 import { FieldArray } from 'formik';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
@@ -163,6 +163,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             currentTilrettelegging!.behovForTilretteleggingFom,
                                                             sisteDagForSvangerskapspenger,
                                                             barn.erBarnetFødt,
+                                                            currentTilrettelegging!.arbeidsforhold.navn,
+                                                            currentTilrettelegging!.arbeidsforhold.sluttdato,
                                                         )}
                                                     />
                                                 </Block>
@@ -187,15 +189,12 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                                 value: TilOgMedDatoType.TRE_UKER_FØR_TERMIN,
                                                             },
                                                         ]}
-                                                        validate={(value: string) => {
-                                                            if (!hasValue(value)) {
-                                                                return intlUtils(
-                                                                    intl,
-                                                                    'valideringsfeil.tomType.påkrevd.delvis',
-                                                                );
-                                                            }
-                                                            return undefined;
-                                                        }}
+                                                        validate={validatePeriodeTomType(
+                                                            intl,
+                                                            sisteDagForSvangerskapspenger,
+                                                            currentTilrettelegging!.arbeidsforhold.navn,
+                                                            currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                                        )}
                                                     />
                                                 </Block>
                                                 <Block
@@ -215,6 +214,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             formValues.varierendePerioder,
                                                             sisteDagForSvangerskapspenger,
                                                             barn.fødselsdato,
+                                                            currentTilrettelegging!.arbeidsforhold.navn,
+                                                            currentTilrettelegging!.arbeidsforhold.sluttdato,
                                                         )}
                                                         minDate={minDatoTom}
                                                         maxDate={sisteDagForSvangerskapspenger}

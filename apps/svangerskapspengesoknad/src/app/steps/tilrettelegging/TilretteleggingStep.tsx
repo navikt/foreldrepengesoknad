@@ -24,11 +24,6 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato } from 'app/utils/dateUtils';
-import {
-    validateTilrettelagtArbeidFom,
-    validateTilrettelagtArbeidType,
-    validateTilretteleggingPeriodetype,
-} from 'app/utils/tilretteleggingUtils';
 import tilretteleggingQuestionsConfig, {
     TilretteleggingFormQuestionsPayload,
 } from './tilretteleggingStepQuestionsConfig';
@@ -38,6 +33,10 @@ import {
     validateSammePeriodeFremTilTerminTilbakeIJobbDato,
     validateStillingsprosent,
     validateTilretteleggingstiltak,
+    validateBehovForTilretteleggingFom,
+    validateTilrettelagtArbeidType,
+    validateTilretteleggingPeriodetype,
+    validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -168,11 +167,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     }
                                     minDate={tiMånederSidenDato(termindatoDate!)}
                                     maxDate={sisteDagForSvangerskapspenger}
-                                    validate={validateTilrettelagtArbeidFom(
+                                    validate={validateBehovForTilretteleggingFom(
                                         intl,
                                         sisteDagForSvangerskapspenger,
                                         termindatoDate!,
                                         erBarnetFødt,
+                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
                                     )}
                                 />
                             </Block>
@@ -326,6 +327,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         sisteDagForSvangerskapspenger,
                                         fødselsdato,
                                         formValues.tilretteleggingType!,
+                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
                                     )}
                                 />
                             </Block>
@@ -349,14 +352,14 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             value: TilOgMedDatoType.TRE_UKER_FØR_TERMIN,
                                         },
                                     ]}
-                                    validate={(value: string) => {
-                                        if (!hasValue(value)) {
-                                            return formValues.tilretteleggingType === TilretteleggingstypeOptions.DELVIS
-                                                ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis')
-                                                : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen');
-                                        }
-                                        return undefined;
-                                    }}
+                                    validate={validerTilretteleggingTomType(
+                                        intl,
+                                        formValues.tilretteleggingType!,
+                                        formValues.behovForTilretteleggingFom,
+                                        sisteDagForSvangerskapspenger,
+                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
+                                    )}
                                 />
                             </Block>
                             <Block
@@ -381,6 +384,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         fødselsdato,
                                         formValues.enPeriodeMedTilretteleggingFom,
                                         formValues.tilretteleggingType!,
+                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging!.arbeidsforhold.sluttdato,
                                     )}
                                 />
                             </Block>

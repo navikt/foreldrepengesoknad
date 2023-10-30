@@ -26,6 +26,7 @@ export const getNæringTilretteleggingOption = (
             type: Arbeidsforholdstype.SELVSTENDIG,
             navn: næring.navnPåNæringen,
             opprinneligstillingsprosent: 100,
+            sluttdato: næring.tidsperiode.tom,
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
@@ -93,6 +94,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
                         ? forhold.arbeidsgiverNavn
                         : intlUtils(intl, 'privat.arbeidsgiver'),
                 opprinneligstillingsprosent: forhold.stillingsprosent,
+                sluttdato: forhold.tom,
             },
             varierendePerioder: tilretteleggingFraState?.varierendePerioder || [],
             vedlegg: tilretteleggingFraState?.vedlegg || [],

@@ -1,6 +1,8 @@
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
+import { IntlShape } from 'react-intl';
+import { intlUtils } from '@navikt/fp-common';
 
 dayjs.extend(minMax);
 
@@ -16,4 +18,8 @@ export const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: 
         min = minDayjs ? minDayjs.toDate() : otherMinDate;
     }
     return min;
+};
+
+export const getSlutteTekst = (sluttDatoArbeid: string, intl: IntlShape) => {
+    return dayjs().isBefore(dayjs(sluttDatoArbeid), 'd') ? intlUtils(intl, 'slutter') : intlUtils(intl, 'sluttet');
 };

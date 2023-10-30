@@ -23,9 +23,9 @@ const mapArbeidsforholdDTOToArbeidsforhold = (
             arbeidsgiverId: arbforhold.arbeidsgiverId,
             arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
             arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,
-            fom: dayjs.utc(arbforhold.fom).toDate(),
+            fom: arbforhold.fom,
             stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
+            tom: arbforhold.tom ? arbforhold.tom : undefined,
         };
     });
 };

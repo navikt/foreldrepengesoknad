@@ -1,8 +1,14 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
-import { Arbeidsforholdstype, PeriodeMedVariasjon, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
+import {
+    Arbeidsforholdstype,
+    PeriodeMedVariasjon,
+    TilOgMedDatoType,
+    TilretteleggingstypeOptions,
+} from 'app/types/Tilrettelegging';
+import { dagenFør, tiMånederSidenDato } from 'app/utils/dateUtils';
 import { getFloatFromString } from 'app/utils/numberUtils';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -100,6 +106,8 @@ export const validateSammePeriodeFremTilTerminFom =
         sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
         tilretteleggingstype: TilretteleggingstypeOptions,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
     ) =>
     (value: string) => {
         const erDelvis = tilretteleggingstype === TilretteleggingstypeOptions.DELVIS;
@@ -134,6 +142,25 @@ export const validateSammePeriodeFremTilTerminFom =
                 ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.delvis')
                 : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.ingen');
         }
+        if (
+            sluttDatoArbeid &&
+            hasValue(behovForTilretteleggingFom) &&
+            dayjs(behovForTilretteleggingFom).isSameOrBefore(dayjs(sluttDatoArbeid), 'd') &&
+            dayjs(value).isAfter(dayjs(sluttDatoArbeid), 'd')
+        ) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return erDelvis
+                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterSluttDatoArbeid.delvis', {
+                      dato: formatDate(sluttDatoArbeid),
+                      navn: arbeidNavn,
+                      slutteTekst,
+                  })
+                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterSluttDatoArbeid.ingen', {
+                      dato: formatDate(sluttDatoArbeid),
+                      navn: arbeidNavn,
+                      slutteTekst,
+                  });
+        }
         return undefined;
     };
 
@@ -145,6 +172,8 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         fødselsdato: string | undefined,
         fom: string | undefined,
         type: TilretteleggingstypeOptions,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
     ) =>
     (value: string) => {
         const erDelvis = type === TilretteleggingstypeOptions.DELVIS;
@@ -186,6 +215,113 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
             return erDelvis
                 ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.delvis')
                 : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.ingen');
+        }
+        if (
+            sluttDatoArbeid &&
+            hasValue(behovForTilretteleggingFom) &&
+            dayjs(behovForTilretteleggingFom).isSameOrBefore(dayjs(sluttDatoArbeid), 'd') &&
+            dayjs(value).isAfter(dayjs(sluttDatoArbeid), 'd')
+        ) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterSluttDatoArbeid', {
+                dato: formatDate(sluttDatoArbeid),
+                navn: arbeidNavn,
+                slutteTekst,
+            });
+        }
+        return undefined;
+    };
+
+export const validateBehovForTilretteleggingFom =
+    (
+        intl: IntlShape,
+        sisteDagForSvangerskapspenger: Date,
+        termindato: Date,
+        erBarnetFødt: boolean,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
+    ) =>
+    (fom: string): SkjemaelementFeil => {
+        if (!hasValue(fom)) {
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.mangler');
+        }
+        if (!isISODateString(fom)) {
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.gyldigDato');
+        }
+
+        if (dayjs(fom).isBefore(tiMånederSidenDato(termindato), 'd')) {
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin');
+        }
+        if (dayjs(fom).isAfter(dagenFør(sisteDagForSvangerskapspenger), 'd')) {
+            return erBarnetFødt
+                ? intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørFødsel')
+                : intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin');
+        }
+        if (dayjs(fom).isAfter(dagenFør(termindato), 'd')) {
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.etterTermin');
+        }
+        if (sluttDatoArbeid && dayjs(fom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.etterSluttDatoArbeid', {
+                dato: formatDate(sluttDatoArbeid),
+                navn: arbeidNavn,
+                slutteTekst,
+            });
+        }
+        return undefined;
+    };
+
+export const validateTilrettelagtArbeidType =
+    (intl: IntlShape) =>
+    (type: TilretteleggingstypeOptions): SkjemaelementFeil => {
+        if (!hasValue(type)) {
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidType.mangler');
+        }
+        return undefined;
+    };
+
+export const validerTilretteleggingTomType =
+    (
+        intl: IntlShape,
+        tilretteleggingType: TilretteleggingstypeOptions,
+        behovForTilretteleggingFom: string | undefined,
+        sisteDagForSvangerskapspenger: Date,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
+    ) =>
+    (value: TilOgMedDatoType): SkjemaelementFeil => {
+        const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
+        if (!hasValue(value)) {
+            return erDelvis
+                ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis')
+                : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen');
+        }
+        if (
+            sluttDatoArbeid &&
+            hasValue(behovForTilretteleggingFom) &&
+            value === TilOgMedDatoType.TRE_UKER_FØR_TERMIN &&
+            dayjs(behovForTilretteleggingFom).isSameOrBefore(dayjs(sluttDatoArbeid), 'd') &&
+            dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
+        ) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return erDelvis
+                ? intlUtils(intl, 'valideringsfeil.tomType.etterSluttDatoArbeid.delvis', {
+                      slutteTekst,
+                      navn: arbeidNavn,
+                  })
+                : intlUtils(intl, 'valideringsfeil.tomType.etterSluttDatoArbeid.ingen', {
+                      slutteTekst,
+                      navn: arbeidNavn,
+                  });
+        }
+        return undefined;
+    };
+
+export const validateTilretteleggingPeriodetype =
+    (intl: IntlShape) =>
+    (type: TilretteleggingstypeOptions): SkjemaelementFeil => {
+        if (!hasValue(type)) {
+            return intlUtils(intl, 'valideringsfeil.tilretteleggingPeriodeType.mangler');
         }
         return undefined;
     };

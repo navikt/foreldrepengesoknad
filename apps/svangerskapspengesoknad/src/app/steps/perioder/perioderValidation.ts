@@ -3,7 +3,7 @@ import { formatDate, intlUtils, isDateABeforeDateB } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { PeriodeMedVariasjon, TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { getTidsperiode, overlapperTidsperioder } from 'app/utils/tidsperiodeUtils';
-import { hasValue } from 'app/utils/validationUtils';
+import { getSlutteTekst, hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -15,6 +15,8 @@ export const validatePeriodeFom =
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: Date,
         erBarnetFødt: boolean,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
     ) =>
     (fom: string) => {
         const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
@@ -44,6 +46,15 @@ export const validatePeriodeFom =
                 : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
         }
 
+        if (sluttDatoArbeid && dayjs(fom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return intlUtils(intl, 'valideringsfeil.periode.fom.etterSluttDatoArbeid', {
+                dato: formatDate(sluttDatoArbeid),
+                navn: arbeidNavn,
+                slutteTekst,
+            });
+        }
+
         const overlappendePerioderFeil = validateAtPeriodeIkkeOverlapper(
             fom,
             tom,
@@ -67,6 +78,8 @@ export const validatePeriodeTom =
         allePerioder: PeriodeMedVariasjon[] | undefined,
         sisteDagForSvangerskapspenger: Date,
         fødselsdato: string | undefined,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
     ) =>
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;
@@ -86,7 +99,35 @@ export const validatePeriodeTom =
                 ? intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørFødsel')
                 : intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin');
         }
+        if (sluttDatoArbeid && dayjs(tom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return intlUtils(intl, 'valideringsfeil.periode.tom.etterSluttDatoArbeid', {
+                dato: formatDate(sluttDatoArbeid),
+                navn: arbeidNavn,
+                slutteTekst,
+            });
+        }
 
+        return undefined;
+    };
+
+export const validatePeriodeTomType =
+    (intl: IntlShape, sisteDagForSvangerskapspenger: Date, arbeidNavn: string, sluttDatoArbeid: string | undefined) =>
+    (value: TilOgMedDatoType) => {
+        if (!hasValue(value)) {
+            return intlUtils(intl, 'valideringsfeil.periode.tomType.påkrevd');
+        }
+        if (
+            sluttDatoArbeid &&
+            value === TilOgMedDatoType.TRE_UKER_FØR_TERMIN &&
+            dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
+        ) {
+            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
+            return intlUtils(intl, 'valideringsfeil.periode.tomType.etterSluttDatoArbeid', {
+                navn: arbeidNavn,
+                slutteTekst,
+            });
+        }
         return undefined;
     };
 

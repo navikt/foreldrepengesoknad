@@ -35,8 +35,8 @@ export const getUnikeArbeidsforhold = (
 
         return uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
             ...forhold,
-            fom: new Date(forhold.fom),
-            tom: forhold.tom !== undefined ? new Date(forhold.tom) : undefined,
+            fom: forhold.fom,
+            tom: forhold.tom !== undefined ? forhold.tom : undefined,
             guid: forhold.id,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
             // forhold.arbeidsgiverNavn !== undefined ? normalizeName(forhold.arbeidsgiverNavn) : undefined,
