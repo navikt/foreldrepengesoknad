@@ -8,7 +8,7 @@ import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
-import { getInitialSkjemaValuesFromState, mapTilretteleggingMedSkjema } from './skjemaFormUtils';
+import { getInitialSkjemaValuesFromState, getSkjemaLegend, mapTilretteleggingMedSkjema } from './skjemaFormUtils';
 import { Link } from 'react-router-dom';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -74,6 +74,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
             handleSubmit(values);
         }
     };
+    const legend = getSkjemaLegend(typeArbeid, intl);
     return (
         <SkjemaFormComponents.FormikWrapper
             initialValues={getInitialSkjemaValuesFromState(currentTilrettelegging!)}
@@ -117,7 +118,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                                         <FormikFileUploader
                                             name={SkjemaFormField.vedlegg}
                                             buttonLabel={intlUtils(intl, 'skjema.vedlegg.buttonLabel')}
-                                            legend=""
+                                            legend={legend}
                                             label={`Last opp dokument`}
                                             attachments={formValues.vedlegg || []}
                                             attachmentType={AttachmentType.TILRETTELEGGING}

@@ -1,5 +1,7 @@
+import { intlUtils } from '@navikt/fp-common';
 import { SkjemaFormData, initialSkjemaFormData } from './skjemaFormTypes';
-import Tilrettelegging from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { IntlShape } from 'react-intl';
 
 export const getInitialSkjemaValuesFromState = (currentTilrettelegging: Tilrettelegging): SkjemaFormData => {
     const vedleggForTilrettelegging = currentTilrettelegging.vedlegg;
@@ -23,4 +25,14 @@ export const mapTilretteleggingMedSkjema = (
         return t.id === currentTilrettelegging.id ? oppdatert : t;
     });
     return nyTilretteleggingISøknad;
+};
+
+export const getLegend = (typeArbeid: Arbeidsforholdstype, intl: IntlShape) => {
+    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'skjema.legend.frilanser');
+    }
+    if (typeArbeid === Arbeidsforholdstype.SELVSTENDIG) {
+        return intlUtils(intl, 'skjema.legend.selvstendig');
+    }
+    return intlUtils(intl, 'skjema.legend.virksomhet');
 };
