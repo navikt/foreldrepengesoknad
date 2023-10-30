@@ -327,16 +327,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     saveAttachment={saveAttachment}
                 />
             </Block>
-            {/* {visAutomatiskJusteringForm && (
-                <Block padBottom="l">
-                    <AutomatiskJusteringForm
-                        termindato={termindato!}
-                        perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
-                        antallBarn={barn.antallBarn}
-                        visibility={visibility}
-                    />
-                </Block>
-            )} */}
+
             <Block padBottom="xl">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}
