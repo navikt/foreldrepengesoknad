@@ -10,6 +10,9 @@ import SakLink from 'app/components/sak-link/SakLink';
 import { Alert, Heading } from '@navikt/ds-react';
 
 import './forside.css';
+import { useParams } from 'react-router-dom';
+import { RedirectSource } from 'app/types/RedirectSource';
+import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 
 interface Props {
     alleYtelser: Sak[];
@@ -28,10 +31,12 @@ const Forside: React.FunctionComponent<Props> = ({
 }) => {
     const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
-
+    const params = useParams();
+    const redirectedFromSoknad = params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD;
     return (
         <div className={bem.block}>
             <Block padBottom="xl">
+                {redirectedFromSoknad && <BekreftelseSendtSøknad oppdatertData={oppdatertData} visesPåForside={true} />}
                 {!oppdatertData && (
                     <Alert variant="warning">
                         Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du

@@ -1,0 +1,10 @@
+.bekreftelse-sendt-søknad__tittel {
+    font-weight: bold;
+    color: var(--a-deepblue-600);
+    text-align: center;
+}
+
+.bekreftelse-sendt-søknad__info {
+    color: var(--a-deepblue-600);
+    text-align: center;
+}

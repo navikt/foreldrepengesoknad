@@ -22,7 +22,9 @@ import { Link, useParams } from 'react-router-dom';
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
-import { Alert, Heading } from '@navikt/ds-react';
+import { Alert } from '@navikt/ds-react';
+import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import { RedirectSource } from 'app/types/RedirectSource';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -41,13 +43,14 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const bem = bemUtils('saksoversikt');
-
+    const params = useParams();
+    const redirectedFromSoknad = params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD;
     if (!oppdatertData) {
         return (
             <div className={bem.block}>
-                <Block padBottom="l">
-                    <Heading size="large">Søknaden din er sendt!</Heading>
-                </Block>
+                {redirectedFromSoknad && (
+                    <BekreftelseSendtSøknad oppdatertData={oppdatertData} visesPåForside={false} />
+                )}
                 <Block padBottom="l">
                     <Alert variant="warning">
                         Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
@@ -64,7 +67,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
     const navnPåSøker = søkerinfo.søker.fornavn;
-    const params = useParams();
     const alleSaker = getAlleYtelser(saker);
 
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
@@ -105,6 +107,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
+            {redirectedFromSoknad && <BekreftelseSendtSøknad oppdatertData={oppdatertData} visesPåForside={false} />}
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
                     <Oppgaver
