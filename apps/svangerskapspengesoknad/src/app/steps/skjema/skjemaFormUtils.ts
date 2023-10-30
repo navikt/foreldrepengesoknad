@@ -27,7 +27,7 @@ export const mapTilretteleggingMedSkjema = (
     return nyTilretteleggingISøknad;
 };
 
-export const getLegend = (typeArbeid: Arbeidsforholdstype, intl: IntlShape) => {
+export const getSkjemaLegend = (typeArbeid: Arbeidsforholdstype, intl: IntlShape) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
         return intlUtils(intl, 'skjema.legend.frilanser');
     }
