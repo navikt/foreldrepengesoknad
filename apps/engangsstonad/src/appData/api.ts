@@ -1,15 +1,9 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { Locale } from '@navikt/fp-common';
 import { redirectToLogin } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
-import {
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from 'types/Utenlandsopphold';
+import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import Kvittering from 'types/Kvittering';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
@@ -46,7 +40,7 @@ engangsstønadApi.interceptors.response.use(
             error.response &&
             error.response.status === 401 &&
             error?.config?.url &&
-            !error.config.url.includes('/soknad')
+            !error.config.url.includes('/soknad/engangssoknad')
         ) {
             redirectToLogin(Environment.LOGIN_URL);
         }
@@ -59,77 +53,79 @@ const getPerson = () => {
 };
 
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
-    if (erAdopsjon(omBarnet) || erBarnetFødt(omBarnet)) {
+    // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det, men
+    // avvent og sjekk om det er realistisk å gjera det på den måten i dei andre appane.
+    const vedleggreferanser = dokumentasjon?.vedlegg.map((v) => v.id) || [];
+    if (erAdopsjon(omBarnet)) {
         return {
-            ...omBarnet,
+            type: 'adopsjon',
+            antallBarn: omBarnet.antallBarn,
             fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
+            adopsjonsdato: omBarnet.adopsjonsdato,
+            adopsjonAvEktefellesBarn: omBarnet.adopsjonAvEktefellesBarn,
+            vedleggreferanser,
+        };
+    }
+    if (erBarnetFødt(omBarnet)) {
+        return {
+            type: 'fødsel',
+            antallBarn: omBarnet.antallBarn,
+            fødselsdato: omBarnet.fødselsdato,
+            vedleggreferanser: [],
         };
     }
 
     if (erBarnetIkkeFødt(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
-        return { ...omBarnet, terminbekreftelsedato: dokumentasjon.terminbekreftelsedato };
+        return {
+            type: 'termin',
+            antallBarn: omBarnet.antallBarn,
+            termindato: omBarnet.termindato,
+            terminbekreftelseDato: dokumentasjon.terminbekreftelsedato,
+            vedleggreferanser,
+        };
     }
 
     throw Error('Det er feil i data om barnet');
 };
 
-const mapBostedUtlandTilUtenlandsopphold = (perioder: UtenlandsoppholdPeriode[] = []) => {
-    return perioder.map((periode) => ({
-        land: periode.landkode,
-        tidsperiode: {
-            fom: periode.fom,
-            tom: periode.tom,
-        },
-    }));
-};
-
-const sendSøknad =
+const getSendSøknad =
     (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
+        abortSignal: AbortSignal,
         omBarnet: OmBarnet,
-        utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
     ) => {
-        notEmpty(utenlandsopphold);
-
-        //TODO Bør få vekk mappinga her. Bruk samme navngiving på variablane frontend og backend.
         const søknad = {
-            barn: mapBarn(omBarnet, dokumentasjon),
             type: 'engangsstønad',
-            erEndringssøknad: false,
-            informasjonOmUtenlandsopphold: {
-                iNorgeSiste12Mnd: utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
-                iNorgeNeste12Mnd: utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
-                tidligereOpphold: mapBostedUtlandTilUtenlandsopphold(
-                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                ),
-                senereOpphold: mapBostedUtlandTilUtenlandsopphold(senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd),
-            },
-            søker: {
-                språkkode: locale,
+            språkkode: locale,
+            barn: mapBarn(omBarnet, dokumentasjon),
+            utenlandsopphold: {
+                utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || [],
+                utenlandsoppholdNeste12Mnd: senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || [],
             },
             vedlegg: dokumentasjon?.vedlegg || [],
         };
 
         try {
-            const response = await engangsstønadApi.post<Kvittering>('/soknad', søknad, {
+            const response = await engangsstønadApi.post<Kvittering>('/soknad/engangssoknad', søknad, {
                 headers: {
                     'content-type': 'application/json;',
                 },
+                signal: abortSignal,
             });
             setKvittering(response.data);
         } catch (error: unknown) {
             // TODO Håndter på same måte i alle appar. Flytt til api-pakke
-            if (isAxiosError(error)) {
+            if (isAxiosError(error) && error.code !== 'ERR_CANCELED') {
                 const submitErrorCallId =
                     error.response && error.response.data && error.response.data.uuid
                         ? error.response.data.uuid
                         : UKJENT_UUID;
                 const callIdForBruker =
                     submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-                // KAst feilmelding inne funksjon som set state => hack for å at ErrorBoundary skal snappa opp feilen
+                // Kast feilmelding inne funksjon som set state => hack for å at ErrorBoundary skal snappa opp feilen
                 setKvittering(() => {
                     throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                 });
@@ -137,5 +133,5 @@ const sendSøknad =
         }
     };
 
-const Api = { getPerson, sendSøknad };
+const Api = { getPerson, getSendSøknad };
 export default Api;

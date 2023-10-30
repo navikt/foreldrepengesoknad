@@ -27,6 +27,12 @@ export default {
                     data: true,
                 },
             },
+            {
+                url: 'test/minidialog',
+                method: 'GET',
+                status: 200,
+                response: miniDialog,
+            },
         ],
     },
 };

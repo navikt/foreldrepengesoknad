@@ -3,6 +3,7 @@ import { intlUtils } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 import IconBox from '../icon-box/IconBox';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
+import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 import { UttaksplanColor } from 'app/types/UttaksplanColor';
 
@@ -37,7 +38,11 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak }) => {
         <IconBox color={getUtsettelseFarge()}>
             <UttaksplanIkon
                 ikon={getIkonForÅrsak(årsak)}
-                title={intlUtils(intl, `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}`)}
+                title={
+                    årsak
+                        ? finnTekstForUtsettelseÅrsak(intl, årsak)
+                        : intlUtils(intl, 'uttaksplan.utsettelsesårsak.ukjent')
+                }
             />
         </IconBox>
     );

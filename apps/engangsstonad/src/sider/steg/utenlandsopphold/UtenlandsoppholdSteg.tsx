@@ -13,6 +13,7 @@ import { EsDataType, useEsStateSaveFn, useEsStateData } from 'appData/EsDataCont
 import useStepData from 'appData/useStepData';
 import { useCustomIntl } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
+import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
@@ -27,6 +28,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const stepData = useStepData();
     const navigator = useEsNavigator();
 
+    const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
     const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
@@ -62,7 +64,12 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <BodyLong>
-                        <FormattedMessage id="UtenlandsoppholdSteg.Info" />
+                        {søkersituasjon?.situasjon === SøkersituasjonEnum.FØDSEL && (
+                            <FormattedMessage id="UtenlandsoppholdSteg.InfoFodsel" />
+                        )}
+                        {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && (
+                            <FormattedMessage id="UtenlandsoppholdSteg.InfoAdopsjon" />
+                        )}
                     </BodyLong>
                     <RadioGroup
                         name="harBoddUtenforNorgeSiste12Mnd"
@@ -122,7 +129,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                                             <FormattedMessage id="UtenlandsoppholdSteg.Info.Del6" />
                                         </BodyShort>
                                         <BodyShort>
-                                            <Link href={links.foreldrepengerUtland}>nav.no/foreldrepenger#utland</Link>
+                                            <Link href={links.engangsstonadHvem}>nav.no/engangsstonad#hvem</Link>
                                         </BodyShort>
                                     </HStack>
                                 </VStack>

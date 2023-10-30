@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { DATE_TODAY } from '@navikt/fp-constants';
+import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -10,11 +10,9 @@ dayjs.extend(isSameOrAfter);
 
 type Period = { from: Date; to: Date };
 
-const DATE_FORMAT = 'DD.MM.YYYY';
-
 type DateTypes = string | Date | dayjs.Dayjs;
-
-export const formatDate = (date: DateTypes) => dayjs(date).format(DATE_FORMAT);
+export const formatDate = (date: Date | string) => dayjs(date).format(DDMMYYYY_DATE_FORMAT);
+export const formatDateIso = (date: Date | string) => dayjs(date).format(ISO_DATE_FORMAT);
 
 export const isToday = (date: DateTypes): boolean => dayjs(date).isSame(DATE_TODAY, 'day');
 
@@ -30,6 +28,12 @@ export const isDateAAfterDateB = (dateA: DateTypes, dateB: DateTypes): boolean =
 
 export const isDateWithinRange = (date: DateTypes, minDate: DateTypes, maxDate: DateTypes): boolean =>
     dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
+
+export const erMyndig = (fødselsdato: string) => {
+    const now = dayjs();
+    const momentDate = dayjs(fødselsdato);
+    return now.diff(momentDate, 'years') >= 18;
+};
 
 const sortDateRange = (d1: Period, d2: Period) => {
     return dayjs(d1.from).isSameOrBefore(d2.from) ? -1 : 1;

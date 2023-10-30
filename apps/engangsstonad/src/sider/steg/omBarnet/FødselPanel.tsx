@@ -43,7 +43,7 @@ const FødselPanel: React.FunctionComponent = () => {
             </RadioGroup>
             {erBarnetFødt && (
                 <Datepicker
-                    name="fødselsdatoer.0"
+                    name="fødselsdato"
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}

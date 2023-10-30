@@ -10,7 +10,6 @@
         "dayjs": "^1.11.9"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^6.0.0",
         "tsconfig": "workspace:*"
     }
 }

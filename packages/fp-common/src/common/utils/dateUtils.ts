@@ -2,6 +2,8 @@ import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperi
 import { isISODateString } from '@navikt/ds-datepicker';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isBetween from 'dayjs/plugin/isBetween';
 import { IntlShape } from 'react-intl';
 import { Uttaksdagen } from './Uttaksdagen';
 import { TidsperiodeDate, Utsettelsesperiode } from '../types';
@@ -10,6 +12,8 @@ import { SkjemaelementFeil, hasValue } from './validationUtils';
 import intlUtils from './intlUtils';
 
 dayjs.extend(utc);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isBetween);
 
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';

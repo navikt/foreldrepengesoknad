@@ -16,6 +16,13 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import dayjs from 'dayjs';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 const person = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
@@ -32,7 +39,7 @@ const person = {
 const barnet = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
+    fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
 } as BarnetErFødt;
 
 const utenlandsoppholdDefault = {
@@ -55,8 +62,8 @@ export default {
 
 const Template: StoryFn<{
     sendSøknad: (
+        abortSignal: AbortSignal,
         omBarnet: OmBarnet,
-        utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
@@ -94,12 +101,12 @@ const Template: StoryFn<{
 
 export const BarnetErFodt = Template.bind({});
 BarnetErFodt.args = {
-    sendSøknad: action('button-click') as (data: any) => Promise<any>,
+    sendSøknad: promiseAction(),
 };
 
 export const AdopsjonAvEktefellesBarn = Template.bind({});
 AdopsjonAvEktefellesBarn.args = {
-    sendSøknad: action('button-click') as (data: any) => Promise<any>,
+    sendSøknad: promiseAction(),
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -124,7 +131,7 @@ AdopsjonAvEktefellesBarn.args = {
 
 export const AdopsjonAvEktefellesFlereBarn = Template.bind({});
 AdopsjonAvEktefellesFlereBarn.args = {
-    sendSøknad: action('button-click') as (data: any) => Promise<any>,
+    sendSøknad: promiseAction(),
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         antallBarn: 1,
@@ -149,7 +156,7 @@ AdopsjonAvEktefellesFlereBarn.args = {
 
 export const BarnetErIkkeFodt = Template.bind({});
 BarnetErIkkeFodt.args = {
-    sendSøknad: action('button-click') as (data: any) => Promise<any>,
+    sendSøknad: promiseAction(),
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
@@ -174,7 +181,7 @@ BarnetErIkkeFodt.args = {
 
 export const HarTidligereOgFremtidigeUtenlandsopphold = Template.bind({});
 HarTidligereOgFremtidigeUtenlandsopphold.args = {
-    sendSøknad: action('button-click') as (data: any) => Promise<any>,
+    sendSøknad: promiseAction(),
     utenlandsopphold: {
         harBoddUtenforNorgeSiste12Mnd: true,
         skalBoUtenforNorgeNeste12Mnd: true,

@@ -50,8 +50,8 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { sendErrorMessageToSentry } from '../../api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Button } from '@navikt/ds-react';
-import useAbortSignal from 'app/utils/hooks/useAbortSignal';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
+import { useAbortSignal } from '@navikt/fp-api';
 
 import './oppsummering.less';
 

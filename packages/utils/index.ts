@@ -11,6 +11,7 @@ export { omitOne, omitMany } from './src/objectUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
 export {
     formatDate,
+    formatDateIso,
     isAfterToday,
     isBeforeToday,
     isSameOrAfterToday,
@@ -20,4 +21,5 @@ export {
     isDateRangesOverlapping,
     isDateAAfterDateB,
     isDateASameOrBeforeDateB,
+    erMyndig,
 } from './src/dateUtils';

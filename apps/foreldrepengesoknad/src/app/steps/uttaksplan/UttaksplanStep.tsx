@@ -49,7 +49,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
-import { UttaksplanFormComponents } from 'app/steps/uttaksplan/UttaksplanFormConfig';
+import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 
 // import {
@@ -67,7 +67,7 @@ import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoe
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Alert, Button, Loader } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
@@ -78,6 +78,8 @@ import {
     getVisAutomatiskJusteringForm,
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
+import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
+import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 
 const UttaksplanStep = () => {
     const intl = useIntl();
@@ -530,7 +532,13 @@ const UttaksplanStep = () => {
             initialValues={getUttaksplanFormInitialValues(state.søknad.ønskerJustertUttakVedFødsel)}
             onSubmit={handleSubmit}
             innerRef={ref}
-            renderForm={() => {
+            renderForm={({ values }) => {
+                const visibility = uttaksplanQuestionsConfig.getVisbility({
+                    ønskerAutomatiskJustering: values[UttaksplanFormField.ønskerAutomatiskJustering] ?? YesOrNo.NO,
+                    termindato,
+                    perioderMedUttakRundtFødsel,
+                });
+
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -595,6 +603,16 @@ const UttaksplanStep = () => {
                             førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
                             minsterettUkerToTette={minsterettUkerToTette}
                         />
+                        {visAutomatiskJusteringForm && (
+                            <Block padBottom="l">
+                                <AutomatiskJusteringForm
+                                    termindato={termindato!}
+                                    perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                                    antallBarn={barn.antallBarn}
+                                    visibility={visibility}
+                                />
+                            </Block>
+                        )}
                         <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
                         {!uttaksplanErGyldig && submitIsClicked && (
                             <Block textAlignCenter={true} padBottom="l">

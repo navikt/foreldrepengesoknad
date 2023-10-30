@@ -107,7 +107,8 @@
     "AdopsjonDokPanel.Dok.Storrelse": "Fil kan ikkje vera større enn 9MB og kan vera i formata pdf, png og jpg.",
 
     "UtenlandsoppholdSteg.Utenlandsopphold": "Bu i utlandet",
-    "UtenlandsoppholdSteg.Info": "Det regnes som å bu i utlandet dersom du har arbeidsinntekt i utlandet og eller at du oppheld deg der lenger enn 12 månader.",
+    "UtenlandsoppholdSteg.InfoFodsel": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for fødsel.",
+    "UtenlandsoppholdSteg.InfoAdopsjon": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for omsorgsovertakelse ved adopsjon.",
     "UtenlandsoppholdSteg.Siste12Måneder.Spørsmål": "Kvar har du budd dei siste 12 månadene?",
     "UtenlandsoppholdSteg.Siste12Måneder.IsRequired": "Du må oppgje kor du har budd dei siste 12 månadene",
     "UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge": "Eg har budd i Noreg",
@@ -139,7 +140,8 @@
     "TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
     "TidligereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
     "TidligereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "TidligereUtenlandsoppholdSteg.DateOutsideRange": "Ugyldig dato",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRangeFom": "Fra og med dato for utenlandsopphold må vera mellom {min} og {max}",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRangeTom": "Til og med dato for utenlandsopphold må vera mellom {min} og {max}",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
 
@@ -157,7 +159,8 @@
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
     "SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
     "SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "SenereUtenlandsoppholdSteg.DateOutsideRange": "Dato er utanfor gyldig intervall",
+    "SenereUtenlandsoppholdSteg.DateOutsideRangeFom": "Fra og med dato for utenlandsopphold må vera mellom {min} og {max}",
+    "SenereUtenlandsoppholdSteg.DateOutsideRangeTom": "Til og med dato for utenlandsopphold må vera mellom {min} og {max}",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
 
