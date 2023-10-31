@@ -7,15 +7,12 @@ import dayjs from 'dayjs';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
-import { DokumentType } from 'app/types/DokumentType';
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import { sorterTidslinjehendelser } from 'app/utils/tidslinjeUtils';
 
 interface Props {
     oppdatertData: boolean;
-    visesPåForside: boolean;
     tidslinjehendelser: Tidslinjehendelse[] | undefined;
-    saksnummer: string | undefined;
 }
 
 const getTidspunktTekst = (mottattDato: Date | undefined) => {
@@ -30,7 +27,7 @@ const getTidspunktTekst = (mottattDato: Date | undefined) => {
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
 };
 
-const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ oppdatertData, tidslinjehendelser, saksnummer }) => {
+const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ oppdatertData, tidslinjehendelser }) => {
     const bem = bemUtils('bekreftelse-sendt-søknad');
     const søknadHendelser = [
         TidslinjehendelseType.FØRSTEGANGSSØKNAD,
@@ -40,24 +37,18 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ oppdatertData
     const sorterteHendelser = tidslinjehendelser
         ? [...tidslinjehendelser].sort(sorterTidslinjehendelser).reverse()
         : undefined;
-    if (sorterteHendelser) {
-        console.log(sorterteHendelser);
-    }
     const relevantNyHendelse = sorterteHendelser
         ? sorterteHendelser.find(
               (hendelse) =>
                   søknadHendelser.includes(hendelse.tidslinjeHendelseType) &&
-                  saksnummer &&
-                  hendelse.dokumenter.find((dok) => dok.saksnummer === saksnummer) &&
+                  hendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad')) &&
                   dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),
           )
         : undefined;
 
     const relevantDokument =
-        relevantNyHendelse &&
-        relevantNyHendelse.dokumenter &&
-        relevantNyHendelse.dokumenter[0].type === DokumentType.INNGÅENDE_DOKUMENT
-            ? relevantNyHendelse.dokumenter[0]
+        relevantNyHendelse && relevantNyHendelse.dokumenter
+            ? relevantNyHendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
             : undefined;
     const mottattDato = relevantNyHendelse ? relevantNyHendelse.opprettet : undefined;
     const sendtInfoTekst = getTidspunktTekst(mottattDato);

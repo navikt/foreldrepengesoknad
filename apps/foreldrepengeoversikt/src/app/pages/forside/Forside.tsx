@@ -46,12 +46,7 @@ const Forside: React.FunctionComponent<Props> = ({
         <div className={bem.block}>
             <Block padBottom="xl">
                 {redirectedFromSoknad && (
-                    <BekreftelseSendtSøknad
-                        oppdatertData={oppdatertData}
-                        visesPåForside={true}
-                        tidslinjehendelser={[]}
-                        saksnummer={undefined}
-                    />
+                    <BekreftelseSendtSøknad oppdatertData={oppdatertData} tidslinjehendelser={[]} />
                 )}
                 {!oppdatertData && (
                     <Alert variant="warning">
