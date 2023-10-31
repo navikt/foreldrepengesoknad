@@ -26,8 +26,8 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
                 <FormattedMessage id="AdopsjonDokPanel.Dok.Storrelse" />
             </BodyLong>
             <FileUploader
-                attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
+                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
                 saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
