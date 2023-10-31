@@ -59,7 +59,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
         return (
             <div className={bem.block}>
                 {redirectedFromSoknad && (
-                    <BekreftelseSendtSøknad oppdatertData={oppdatertData} visesPåForside={false} />
+                    <BekreftelseSendtSøknad
+                        oppdatertData={oppdatertData}
+                        visesPåForside={false}
+                        tidslinjehendelser={[]}
+                        saksnummer={params.saksnummer}
+                    />
                 )}
                 <Block padBottom="l">
                     <Alert variant="warning">
@@ -117,7 +122,14 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            {redirectedFromSoknad && <BekreftelseSendtSøknad oppdatertData={oppdatertData} visesPåForside={false} />}
+            {redirectedFromSoknad && (
+                <BekreftelseSendtSøknad
+                    oppdatertData={oppdatertData}
+                    visesPåForside={false}
+                    tidslinjehendelser={tidslinjeHendelserData}
+                    saksnummer={params.saksnummer}
+                />
+            )}
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
                     <Oppgaver

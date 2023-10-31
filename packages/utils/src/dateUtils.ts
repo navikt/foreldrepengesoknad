@@ -3,6 +3,7 @@ import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-co
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
+import { TIME_FORMAT } from '@navikt/fp-constants/src/dates';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -12,7 +13,7 @@ type Period = { from: Date; to: Date };
 
 export const formatDate = (date: Date | string) => dayjs(date).format(DDMMYYYY_DATE_FORMAT);
 export const formatDateIso = (date: Date | string) => dayjs(date).format(ISO_DATE_FORMAT);
-
+export const formatTime = (date: Date | string) => dayjs(date).format(TIME_FORMAT);
 export const isAfterToday = (date: string): boolean => dayjs(date).isAfter(DATE_TODAY, 'day');
 export const isBeforeToday = (date: string): boolean => dayjs(date).isBefore(DATE_TODAY, 'day');
 export const isSameOrAfterToday = (date: string): boolean => dayjs(date).isSameOrAfter(DATE_TODAY, 'day');

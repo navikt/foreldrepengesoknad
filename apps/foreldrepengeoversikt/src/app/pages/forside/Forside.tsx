@@ -45,7 +45,14 @@ const Forside: React.FunctionComponent<Props> = ({
     return (
         <div className={bem.block}>
             <Block padBottom="xl">
-                {redirectedFromSoknad && <BekreftelseSendtSøknad oppdatertData={oppdatertData} visesPåForside={true} />}
+                {redirectedFromSoknad && (
+                    <BekreftelseSendtSøknad
+                        oppdatertData={oppdatertData}
+                        visesPåForside={true}
+                        tidslinjehendelser={[]}
+                        saksnummer={undefined}
+                    />
+                )}
                 {!oppdatertData && (
                     <Alert variant="warning">
                         Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du

@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
 export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
+export const TIME_FORMAT = 'HH:mm';
 
 // TODO Er dette greie datoar eller bør ein velga noko anna?
 export const TIDENES_MORGEN = dayjs('1000-01-01').toDate();
