@@ -57,7 +57,13 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
     } catch (error) {
         // TODO Burde få ut feilmelding frå backend og vise denne
         attachment.pending = false;
-        attachment.error = FileUploadError.GENERAL;
+
+        // @ts-ignore TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
+        if (error?.response?.status === 408) {
+            attachment.error = FileUploadError.TIMEOUT;
+        } else {
+            attachment.error = FileUploadError.GENERAL;
+        }
     }
 };
 
@@ -97,7 +103,12 @@ const FileUploader: React.FunctionComponent<Props> = ({
         const allPendingAttachments = files.map((file) =>
             getPendingAttachmentFromFile(file, attachmentType, skjemanummber),
         );
-        setAttachments((currentAttachments) => currentAttachments.concat(allPendingAttachments));
+        setAttachments((currentAttachments) => {
+            const otherAttachments = currentAttachments.filter(
+                (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
+            );
+            return otherAttachments.concat(allPendingAttachments);
+        });
         uploadAttachments(allPendingAttachments);
     }, []);
 

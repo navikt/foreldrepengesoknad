@@ -20,6 +20,12 @@ const FailedAttachment: React.FunctionComponent<OwnProps> = ({ failedAttachment,
                     values={{ filename: failedAttachment.filename }}
                 />
             )}
+            {failedAttachment.error === FileUploadError.TIMEOUT && (
+                <FormattedMessage
+                    id="FailedAttachment.Vedlegg.Feilmelding.Timeout"
+                    values={{ filename: failedAttachment.filename }}
+                />
+            )}
             {failedAttachment.error === FileUploadError.MAX_SIZE && (
                 <FormattedMessage
                     id="FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse"

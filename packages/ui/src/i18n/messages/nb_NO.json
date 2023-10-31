@@ -7,6 +7,7 @@
     "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "{filename} - Ops noe gikk galt prøv igjen",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - Vedlegg er ikke av gyldig type",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}KB.",
+    "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Opplasting av vedlegg gikk ut på tid",
 
     "StepButtons.Forrige": "Forrige steg",
     "StepButtons.Neste": "Neste steg",
