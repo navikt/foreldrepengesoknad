@@ -141,8 +141,8 @@ export const validateAtPeriodeIkkeOverlapper = (
     sisteDagForSvangerskapspenger: Date,
 ) => {
     if ((hasValue(tom) || hasValue(tomType)) && hasValue(fom) && allePerioder && allePerioder.length > 0) {
-        const andrePerioder = allePerioder.filter((_p, i) => i !== index);
-        const overlappendePerioder = andrePerioder.filter((p) => {
+        const andrePerioderLagtTilEtter = allePerioder.filter((_p, i) => i > index);
+        const overlappendePerioder = andrePerioderLagtTilEtter.filter((p) => {
             let periodeTom = undefined;
             if (hasValue(p.tomType) && p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {
                 periodeTom = dateToISOString(sisteDagForSvangerskapspenger);
