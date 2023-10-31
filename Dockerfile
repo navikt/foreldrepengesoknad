@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
 
 ARG NODE_IMG=node:18.17-alpine
+ARG APP="foreldrepengesoknad"
 
 #########################################
 # PREPARE DEPS FOR BUILD
 ######################################### 
-FROM --platform=$BUILDPLATFORM ${NODE_IMG} as prepare
+FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as prepare
 WORKDIR /usr/src/app
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
 COPY packages packages
@@ -16,51 +17,57 @@ RUN find packages \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs
 RUN find server \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs rm -rf
 
 #########################################
-# BUILD - Builds all node code
+# BUILDER IMAGE - INSTALL PACKAGES AND COPY SOURCE
 ######################################### 
-FROM --platform=$BUILDPLATFORM ${NODE_IMG} as build
+FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as builder
 WORKDIR /usr/src/app
 RUN apk fix \
     && apk add --no-cache --update libc6-compat \
     && rm -rf /var/cache/apk/*
-ENV npm_config_package_import_method=clone-or-copy
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install -g pnpm \
     && pnpm install -g pnpm turbo \
     && npm uninstall -g pnpm
 COPY --from=prepare /usr/src/app ./
-RUN pnpm fetch
-RUN pnpm install --frozen-lockfile --offline
+RUN pnpm install --frozen-lockfile
 COPY . .
-RUN turbo build \
-    && rm -rf "node_modules" apps/*/node_modules packages/*/node_modules
-    
+
 #########################################
-# PNPM - Dependency of all images
+# BUILD SERVER
 ######################################### 
-FROM ${NODE_IMG} as pnpm
-LABEL org.opencontainers.image.source=https://github.com/navikt/foreldrepengesoknad
+FROM --platform=${BUILDPLATFORM} builder as server-build
+RUN cd ./server && turbo build
+
+#########################################
+# Client
+######################################### 
+FROM --platform=${BUILDPLATFORM} builder as client
+ARG APP="foreldrepengesoknad"
+
+# change build to test
+RUN cd ./apps/${APP} && turbo build \ 
+    && mv /usr/src/app/apps/${APP}/dist /public
+
+#########################################
+# Server
+######################################### 
+FROM ${NODE_IMG} as server
 WORKDIR /usr/src/app
 
 RUN apk fix \
     && apk add --no-cache --update libc6-compat tini \
     && rm -rf /var/cache/apk/*
-ENV npm_config_package_import_method=clone-or-copy
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install -g pnpm \
-    && pnpm install -g pnpm \
-    && npm uninstall -g pnpm
+
+COPY --from=server-build /usr/src/app/server/dist ./
+
+ENTRYPOINT ["/sbin/tini", "--"]
 
 #########################################
-# Server
+# App
 ######################################### 
-FROM pnpm as server
+FROM server
 
-COPY --from=prepare /usr/src/app ./
+COPY --from=client /public ./public
 
-RUN pnpm install --frozen-lockfile --prod --filter server \
-    && rm -rf "/root/.local/share/pnpm/store"
-
-# COPY --from=build  /usr/src/app ./
+CMD ["node", "index.cjs"]
