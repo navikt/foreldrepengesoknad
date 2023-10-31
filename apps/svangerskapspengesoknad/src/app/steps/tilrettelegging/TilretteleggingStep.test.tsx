@@ -8,7 +8,7 @@ const { Default } = composeStories(stories);
 const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
 const TILRETTELEGGINGSDATO = 'Fra hvilken dato har du behov for tilrettelegging eller omplassering?';
 const TERMINDATO = '2024-02-18';
-const HVOR_MMYE_KAN_DU_JOBBE = 'Hvor mye kan du jobbe?';
+const HVOR_MYE_KAN_DU_JOBBE = 'Hvor mye kan du jobbe?';
 const REDUSERT = 'Jeg kan jobbe med redusert arbeidstid';
 const SAMME_STILLINGSPROSENT = 'Skal du ha den samme stillingsprosenten gjennom hele svangerskapet?';
 const JA = 'Ja';
@@ -17,7 +17,6 @@ const FRA_DATO_REDUSERT = 'Fra hvilken dato skal du jobbe redusert?';
 const TIL_DATO_REDUSERT = 'Frem til hvilken dato skal du jobbe redusert?';
 const FREM_TIL_DATO = 'Frem til en dato';
 const DATO_TILBAKE = 'Dato du skal tilbake til din opprinnelige stillingsprosent';
-//const PERIODER = 'Jeg skal ha perioder med ulik arbeidsprosent';
 const IKKE_JOBBE = 'Jeg kan ikke jobbe';
 const FRA_DATO_BORTE_FRA_JOBB = 'Fra hvilken dato skal du være borte fra jobb?';
 const NESTE_STEG = 'Neste steg';
@@ -44,8 +43,8 @@ describe('<Behov for tilrettelegging>', () => {
         await user.type(tilretteleggingsdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
         await user.tab();
 
-        expect(await screen.findByText(HVOR_MMYE_KAN_DU_JOBBE)).toBeInTheDocument();
-
+        expect(await screen.findByText(HVOR_MYE_KAN_DU_JOBBE)).toBeInTheDocument();
+        // Fiks skrivefeil i mmye
         await user.click(screen.getByText(REDUSERT));
         await user.click(screen.getByText(NESTE_STEG));
 
@@ -83,7 +82,7 @@ describe('<Behov for tilrettelegging>', () => {
 
         expect(await screen.getByText(SAMME_STILLINGSPROSENT)).toBeInTheDocument();
     });
-    it('kan ikke jobbe valgt', async () => {
+    it('spørsmål om fra-dato vises når man har valgt at man ikke kan jobbe', async () => {
         render(<Default />);
         expect(await screen.findByText(IKKE_JOBBE)).toBeInTheDocument();
         await user.click(screen.getByText(IKKE_JOBBE));
@@ -106,13 +105,12 @@ describe('<Behov for tilrettelegging>', () => {
             )[0],
         ).toBeInTheDocument();
     });
-    it('redusert arbeidstid, samme stillingsprosent', async () => {
+    it('spørsmål om stillingsprosent skal vises når redusert arbeidstid og samme stillingsprosent er valgt', async () => {
         render(<Default />);
         expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
 
         await user.click(screen.getByText(REDUSERT));
         await user.click(screen.getByText(JA));
-        await user.click(screen.getByText(NESTE_STEG));
 
         expect(await screen.getByText(HVILKEN_STILLINGSPROSENT)).toBeInTheDocument();
     });
