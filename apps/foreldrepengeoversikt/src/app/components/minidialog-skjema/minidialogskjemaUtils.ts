@@ -7,12 +7,12 @@ import { isAttachmentWithError } from 'app/utils/attachmentUtils';
 import { replaceInvisibleCharsWithSpace } from 'app/utils/formUtils';
 
 export const mapMinidialogInputTilDTO = (
-    brukerØnskerÅUttaleSeg: boolean,
-    vedlegg: Attachment[],
-    tilbakemelding: string,
     saksnummer: string,
     sakstype: Ytelse,
     minidialogId: string,
+    brukerØnskerÅUttaleSeg: boolean,
+    vedlegg: Attachment[],
+    tilbakemelding?: string,
 ): EttersendingDto => {
     return {
         vedlegg: brukerØnskerÅUttaleSeg && vedlegg ? vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)) : [],

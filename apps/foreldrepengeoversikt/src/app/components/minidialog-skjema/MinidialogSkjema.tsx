@@ -1,22 +1,33 @@
-import { useIntl, FormattedMessage } from 'react-intl';
-import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
-import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
-import { formatDate, intlUtils, Block } from '@navikt/fp-common';
-import { Alert, Button, Chat, ErrorMessage, GuidePanel, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react';
-import { Ytelse } from 'app/types/Ytelse';
-import EttersendingDto from 'app/types/EttersendingDTO';
+import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
-import { validateFritekstFelt } from 'app/utils/validationUtils';
-import ScrollToTop from '../scroll-to-top/ScrollToTop';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useQuery } from '@tanstack/react-query';
-import Environment from 'app/Environment';
-import { useState } from 'react';
-import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
+import {
+    Alert,
+    Button,
+    Chat,
+    ErrorSummary,
+    GuidePanel,
+    HStack,
+    Radio,
+    RadioGroup,
+    Textarea,
+    VStack,
+} from '@navikt/ds-react';
+import { formatDate, intlUtils } from '@navikt/fp-common';
 import { FileUploader } from '@navikt/fp-ui';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { Attachment } from '@navikt/fp-types';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { Ytelse } from 'app/types/Ytelse';
+import EttersendingDto from 'app/types/EttersendingDTO';
+import { validateFritekstFelt } from 'app/utils/validationUtils';
+import Environment from 'app/Environment';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
+import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
+import ScrollToTop from '../scroll-to-top/ScrollToTop';
+import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
+import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
 
 export interface Props {
     ettersendelseErSendt: boolean;
@@ -38,14 +49,14 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
-    const [brukerØnskerÅUttaleSeg, settBrukerØnskerÅUttaleSeg] = useState(false);
+    const [brukerØnskerÅUttaleSeg, settBrukerØnskerÅUttaleSeg] = useState<boolean>();
     const [tilbakemelding, settTilbakemelding] = useState<string>();
     const [tilbakemeldingValideringsfeil, settTilbakemeldingValideringsfeil] = useState<string>();
 
     const [fetchCounter, setFetchCounter] = useState(0);
     const [allowedToFetch, setAllowedToFetch] = useState(true);
 
-    const minidialogQuery = useQuery<MinidialogInnslag[]>({
+    useQuery<MinidialogInnslag[]>({
         queryKey: ['minidialog'],
         queryFn: async () => {
             setFetchCounter((prev) => prev + 1);
@@ -66,91 +77,89 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         enabled: ettersendelseErSendt && fetchCounter < 30 && allowedToFetch,
     });
 
-    if (!minidialogQuery.isLoading) {
-        console.log(minidialogQuery.data);
-    }
+    const finnesPendingVedlegg = vedlegg ? vedlegg.some((file) => file.pending) : false;
 
-    if (ettersendelseErSendt) {
-        return (
-            <div>
-                <ScrollToTop />
-                <MinidialogVenterPåSvar
-                    fetchCounter={fetchCounter}
-                    allowedToFetch={allowedToFetch}
-                    saksnummer={minidialog.saksnr}
-                />
-            </div>
-        );
-    }
+    const handleSubmit = (e: FormEvent<any>) => {
+        e.preventDefault();
 
-    if (ettersendelseError) {
-        return (
-            <div>
-                <ScrollToTop />
-                <Block padBottom="l">
-                    <Alert variant="error"> {ettersendelseError}</Alert>
-                </Block>
-                <Block padBottom="l">
-                    <Link to={`/sak/${minidialog.saksnr}`}>
-                        <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
-                    </Link>
-                </Block>
-            </div>
-        );
-    }
-
-    const finnesPendingVedlegg = vedlegg ? !!vedlegg.find((file) => file.pending) : false;
-
-    const handleSubmit = () => {
-        const feilmelding = validateFritekstFelt(
-            intl,
-            intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label').replace(':', ''),
-        )(tilbakemelding);
+        const feilmelding = brukerØnskerÅUttaleSeg
+            ? validateFritekstFelt(
+                  intl,
+                  intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label').replace(':', ''),
+                  tilbakemelding,
+              )
+            : undefined;
 
         if (feilmelding) {
             settTilbakemeldingValideringsfeil(feilmelding);
-        } else {
+        } else if (brukerØnskerÅUttaleSeg !== undefined) {
             const submitData = mapMinidialogInputTilDTO(
-                brukerØnskerÅUttaleSeg,
-                vedlegg,
-                tilbakemelding,
                 minidialog.saksnr,
                 sakstype,
                 minidialog.dialogId,
+                brukerØnskerÅUttaleSeg,
+                vedlegg,
+                tilbakemelding,
             );
             onSubmit(submitData);
         }
     };
 
+    if (ettersendelseErSendt) {
+        return (
+            <MinidialogVenterPåSvar
+                fetchCounter={fetchCounter}
+                allowedToFetch={allowedToFetch}
+                saksnummer={minidialog.saksnr}
+            />
+        );
+    }
+
+    if (ettersendelseError) {
+        return (
+            <VStack gap="4">
+                <ScrollToTop />
+                <Alert variant="error"> {ettersendelseError}</Alert>
+                <Link to={`/sak/${minidialog.saksnr}`}>
+                    <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
+                </Link>
+            </VStack>
+        );
+    }
+
     return (
         <form onSubmit={handleSubmit}>
-            <VStack gap="10">
-                <Chat
-                    avatar="NAV"
-                    name="NAV"
-                    avatarBgColor="rgba(255, 236, 204, 1)"
-                    backgroundColor="rgba(255, 249, 240, 1)"
-                    timestamp={formatDate(minidialog.opprettet)}
-                >
-                    <Chat.Bubble>
-                        <FormattedMessage id="miniDialog.tilbakekreving.tittel" />
-                    </Chat.Bubble>
-                </Chat>
-                <HvaLeggerNAVVektPå />
+            <VStack gap="8">
+                <VStack gap="5">
+                    <Chat
+                        avatar="NAV"
+                        name="NAV"
+                        avatarBgColor="rgba(255, 236, 204, 1)"
+                        backgroundColor="rgba(255, 249, 240, 1)"
+                        timestamp={formatDate(minidialog.opprettet)}
+                    >
+                        <Chat.Bubble>
+                            <FormattedMessage id="miniDialog.tilbakekreving.tittel" values={{ sakstype }} />
+                        </Chat.Bubble>
+                    </Chat>
+                    <HvaLeggerNAVVektPå />
+                </VStack>
                 <RadioGroup
                     legend={intlUtils(intl, 'miniDialog.tilbakekreving.radioPanelGruppe.legend')}
-                    onChange={(val: any) => settBrukerØnskerÅUttaleSeg(val)}
+                    onChange={settBrukerØnskerÅUttaleSeg}
                 >
                     <Radio value={true}>Ja</Radio>
                     <Radio value={false}>Nei</Radio>
                 </RadioGroup>
                 {brukerØnskerÅUttaleSeg === true && (
                     <>
-                        <Textarea
-                            label={intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label')}
-                            onChange={(e) => settTilbakemelding(e.target.value)}
-                        />
-                        {tilbakemeldingValideringsfeil && <ErrorMessage>{tilbakemeldingValideringsfeil}</ErrorMessage>}
+                        <div>
+                            <Textarea
+                                label={intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label')}
+                                onChange={(e) => settTilbakemelding(e.target.value)}
+                                error={tilbakemeldingValideringsfeil}
+                            />
+                        </div>
                         <FileUploader
                             updateAttachments={(attachment: Attachment[]) =>
                                 setVedlegg((oldAttachments) => oldAttachments.concat(attachment))
@@ -163,20 +172,25 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                     </>
                 )}
                 {brukerØnskerÅUttaleSeg === false && (
-                    <div className="blokk-xs">
-                        <GuidePanel>
-                            <FormattedMessage id="minidialog.tilbakekreving.veilederpanel" />
-                        </GuidePanel>
-                    </div>
+                    <GuidePanel>
+                        <FormattedMessage id="minidialog.tilbakekreving.veilederpanel" />
+                    </GuidePanel>
                 )}
-                {brukerØnskerÅUttaleSeg && (
-                    <Button
-                        type="submit"
-                        loading={isSendingEttersendelse || finnesPendingVedlegg}
-                        disabled={isSendingEttersendelse || finnesPendingVedlegg}
-                    >
-                        <FormattedMessage id="miniDialog.tilbakekreving.sendButton" />
-                    </Button>
+                {brukerØnskerÅUttaleSeg !== undefined && (
+                    <HStack>
+                        <Button
+                            type="submit"
+                            loading={isSendingEttersendelse || finnesPendingVedlegg}
+                            disabled={isSendingEttersendelse || finnesPendingVedlegg}
+                        >
+                            <FormattedMessage id="miniDialog.tilbakekreving.sendButton" />
+                        </Button>
+                    </HStack>
+                )}
+                {brukerØnskerÅUttaleSeg && tilbakemeldingValideringsfeil && (
+                    <ErrorSummary heading="Feil i skjema">
+                        <ErrorSummary.Item href="#1">{tilbakemeldingValideringsfeil}</ErrorSummary.Item>
+                    </ErrorSummary>
                 )}
             </VStack>
         </form>

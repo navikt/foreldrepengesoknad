@@ -1,4 +1,4 @@
-export const enum Skjemanummer {
+export enum Skjemanummer {
     ANNET = 'I000060',
     TERMINBEKREFTELSE = 'I000062',
     OMSORGSOVERTAKELSE = 'I000042',
