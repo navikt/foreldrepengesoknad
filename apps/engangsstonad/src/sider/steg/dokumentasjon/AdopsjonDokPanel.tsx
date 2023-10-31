@@ -1,7 +1,7 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
 import { FileUploader } from '@navikt/fp-ui';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 import { getSaveAttachment } from '@navikt/fp-api';
 
 import Environment from 'appData/Environment';
@@ -26,8 +26,8 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
                 <FormattedMessage id="AdopsjonDokPanel.Dok.Storrelse" />
             </BodyLong>
             <FileUploader
-                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
+                attachmentType="omsorgsovertakelse"
+                skjemanummer="I000042"
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
                 saveAttachment={getSaveAttachment(Environment.REST_API_URL)}

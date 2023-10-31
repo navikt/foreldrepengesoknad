@@ -1,0 +1,44 @@
+import { StoryFn } from '@storybook/react';
+import MockAdapter from 'axios-mock-adapter';
+import { attachmentApi } from '@navikt/fp-api';
+import IntlProvider from 'app/intl/IntlProvider';
+import { Ytelse } from 'app/types/Ytelse';
+import MinidialogSkjema from './MinidialogSkjema';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import '@navikt/ds-css';
+
+const queryClient = new QueryClient();
+
+export default {
+    title: 'MinidialogSkjema',
+    component: MinidialogSkjema,
+};
+
+const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasting }) => {
+    const apiMock = new MockAdapter(attachmentApi);
+    if (!skalFeileOpplasting) {
+        apiMock.onPost('test/storage/vedlegg').reply(200);
+    }
+
+    return (
+        <IntlProvider locale="nb">
+            <QueryClientProvider client={queryClient}>
+                <MinidialogSkjema
+                    ettersendelseErSendt={false}
+                    isSendingEttersendelse={false}
+                    minidialog={{
+                        dialogId: '1',
+                        opprettet: '2020-01-01',
+                        saksnr: '1',
+                    }}
+                    ettersendelseError={undefined}
+                    onSubmit={() => undefined}
+                    sakstype={Ytelse.FORELDREPENGER}
+                />
+            </QueryClientProvider>
+        </IntlProvider>
+    );
+};
+
+export const Default = Template.bind({});

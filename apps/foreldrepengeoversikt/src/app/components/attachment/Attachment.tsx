@@ -1,5 +1,5 @@
 import { bemUtils } from '@navikt/fp-common';
-import { Attachment as AttachmentType } from 'app/types/Attachment';
+import { Attachment as AttachmentType } from '@navikt/fp-types';
 import { Button, Link, Loader } from '@navikt/ds-react';
 import { bytesString } from 'app/utils/attachmentUtils';
 import { FileSuccess } from '@navikt/ds-icons';

@@ -1,35 +1,33 @@
+import { useState } from 'react';
+import { IntlShape, useIntl, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { Add } from '@navikt/ds-icons';
-import { Alert, BodyLong, BodyShort, Button, Heading, Link as NAVLink } from '@navikt/ds-react';
-import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { Attachment } from '@navikt/fp-types';
+import { Skjemanummer } from '@navikt/fp-constants';
+import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack } from '@navikt/ds-react';
+import { bemUtils, Block } from '@navikt/fp-common';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { FileUploader } from '@navikt/fp-ui';
 import Api from 'app/api/api';
-import AttachmentList from 'app/components/attachment/AttachmentList';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
-import { Attachment } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { Sak } from 'app/types/Sak';
 import { SakOppslag } from 'app/types/SakOppslag';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import { deleteAttachment, isAttachmentWithError } from 'app/utils/attachmentUtils';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 import { getRelevanteSkjemanummer } from 'app/utils/skjemanummerUtils';
-import { useState } from 'react';
-import { IntlShape, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
-import { EttersendingFormComponents, EttersendingFormField, EttersendingFormData } from './ettersendFormConfig';
+import Environment from 'app/Environment';
 
 import './ettersending-page.css';
-import Environment from 'app/Environment';
 
 export const getListOfUniqueSkjemanummer = (attachments: Attachment[]) => {
     return attachments
         .map((a: Attachment) => a.skjemanummer)
         .filter((s: Skjemanummer, index, self) => self.indexOf(s) === index);
 };
+
+const DEFAULT_OPTION = 'default';
 
 export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undefined) => {
     if (!sak) {
@@ -38,8 +36,8 @@ export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undef
 
     return (
         <>
-            <option value="default" disabled={false} hidden={false}>
-                {intl.formatMessage({ id: `ettersendelse.select.defaultValue` })}
+            <option value={DEFAULT_OPTION} disabled={false} hidden={false}>
+                <FormattedMessage id="ettersendelse.select.defaultValue" />
             </option>
             {getRelevanteSkjemanummer(sak)
                 .map((skjemanummer) => ({
@@ -58,15 +56,8 @@ export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undef
 
 export interface Props {
     saker: SakOppslag;
-    valgtSaksnr: string;
+    valgtSaksnr?: string;
 }
-
-const validerDokumentType = (value: Skjemanummer | string, intl: IntlShape, vedlegg: Attachment[] | undefined) => {
-    if (value === 'default' && (vedlegg === undefined || vedlegg.length === 0)) {
-        return intlUtils(intl, 'ettersendelse.select.defaultValue');
-    }
-    return undefined;
-};
 
 const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }) => {
     const intl = useIntl();
@@ -79,16 +70,19 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
     const [ettersendingDone, setEttersendingDone] = useState(false);
     const [ettersendingError, setEttersendingError] = useState<string | undefined>(undefined);
 
+    const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
+    const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
+
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((sak) => sak.saksnummer === valgtSaksnr);
 
-    const onSubmit = (values: Partial<EttersendingFormData>) => {
+    const onSubmit = () => {
         setIsEttersending(true);
 
         const valuesToSend: EttersendingDto = {
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
-            vedlegg: values.vedlegg!,
+            vedlegg,
         };
 
         Api.sendEttersending(valuesToSend)
@@ -104,110 +98,66 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
             });
     };
 
-    if (ettersendingError) {
+    if (ettersendingDone || ettersendingError) {
         return (
             <div>
                 <ScrollToTop />
                 <Block padBottom="l">
-                    <Alert variant="error">{ettersendingError}</Alert>
+                    {ettersendingDone && <Alert variant="success">Dokumentene er sendt</Alert>}
+                    {ettersendingError && <Alert variant="error">{ettersendingError}</Alert>}
                 </Block>
                 <Block padBottom="l">
                     <Link to={`/sak/${sak!.saksnummer}`}>
-                        {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
+                        <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                     </Link>
                 </Block>
             </div>
         );
     }
 
-    if (ettersendingDone) {
-        return (
-            <div>
-                <ScrollToTop />
-                <Block padBottom="l">
-                    <Alert variant="success">Dokumentene er sendt</Alert>
-                </Block>
-                <Block padBottom="l">
-                    <Link to={`/sak/${sak!.saksnummer}`}>
-                        {intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}
-                    </Link>
-                </Block>
-            </div>
-        );
-    }
+    const finnesPendingVedlegg = vedlegg ? !!vedlegg.find((file) => file.pending) : false;
 
     return (
-        <EttersendingFormComponents.FormikWrapper
-            initialValues={{ type: 'default', vedlegg: [] }}
-            onSubmit={onSubmit}
-            renderForm={({ values, setFieldValue }) => {
-                const finnesPendingVedlegg = values.vedlegg ? !!values.vedlegg.find((file) => file.pending) : false;
-                return (
-                    <EttersendingFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <BodyLong className={bem.element('beskrivelse')}>
-                            Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene
-                            inneholder for at saksbehandlerene i NAV skal kunne behandle saken din.
-                        </BodyLong>
-                        <BodyShort className={bem.element('beskrivelse')}>
-                            Du kan laste opp dokumenter i formatene pdf, png og jpg.
-                        </BodyShort>
-                        <Block padBottom="l">
-                            <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
-                                Les om hvordan du kan ta bilde av dokumenter med mobilen
-                            </NAVLink>
-                        </Block>
-                        <EttersendingFormComponents.Select
-                            className={bem.element('select')}
-                            label="Hva inneholder dokumentene dine?"
-                            name={EttersendingFormField.type}
-                            validate={(value) => validerDokumentType(value, intl, values.vedlegg)}
-                        >
-                            {getAttachmentTypeSelectOptions(intl, sak)}
-                        </EttersendingFormComponents.Select>
-                        {values.type !== 'default' && (
-                            <FileUploader
-                                updateAttachments={() => undefined}
-                                existingAttachments={values.vedlegg || []}
-                                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-                                skjemanummer={values.type!}
-                                saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
-                            />
-                        )}
-                        <Block padBottom="l" visible={values.vedlegg!.length > 0}>
-                            {getListOfUniqueSkjemanummer(values.vedlegg!).map((skjemanummer: Skjemanummer) => (
-                                <div className={bem.element('vedleggsliste')} key={skjemanummer}>
-                                    <Heading size="small" level="2" className={bem.element('vedleggsliste-tittel')}>
-                                        {intlUtils(intl, `ettersendelse.${skjemanummer}`)}
-                                    </Heading>
-                                    <AttachmentList
-                                        attachments={values.vedlegg!.filter(
-                                            (a) => !isAttachmentWithError(a) && a.skjemanummer === skjemanummer,
-                                        )}
-                                        showFileSize={true}
-                                        onDelete={(file: Attachment) => {
-                                            setFieldValue(
-                                                EttersendingFormField.vedlegg,
-                                                deleteAttachment(values.vedlegg!, file),
-                                            );
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </Block>
-                        <Block padBottom="l" visible={values.vedlegg ? values.vedlegg.length > 0 : false}>
-                            <Button
-                                type="submit"
-                                icon={<Add />}
-                                loading={isEttersending || finnesPendingVedlegg}
-                                disabled={isEttersending || finnesPendingVedlegg}
-                            >
-                                Legg ved sak
-                            </Button>
-                        </Block>
-                    </EttersendingFormComponents.Form>
-                );
-            }}
-        />
+        <form onSubmit={onSubmit}>
+            <VStack gap="4">
+                <BodyLong>
+                    Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
+                    at saksbehandlerene i NAV skal kunne behandle saken din.
+                </BodyLong>
+                <BodyShort>Du kan laste opp dokumenter i formatene pdf, png og jpg.</BodyShort>
+                <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
+                    Les om hvordan du kan ta bilde av dokumenter med mobilen
+                </NAVLink>
+                <Select
+                    className={bem.element('select')}
+                    label="Hva inneholder dokumentene dine?"
+                    onChange={(event) => setType(event.target.value as Skjemanummer | typeof DEFAULT_OPTION)}
+                >
+                    {getAttachmentTypeSelectOptions(intl, sak)}
+                </Select>
+                {type !== DEFAULT_OPTION && (
+                    <FileUploader
+                        updateAttachments={(attachment: Attachment[]) =>
+                            setVedlegg((oldAttachments) => oldAttachments.concat(attachment))
+                        }
+                        existingAttachments={[]}
+                        attachmentType="morsaktivitetdokumentasjon"
+                        skjemanummer={type!}
+                        saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
+                    />
+                )}
+                <Block visible={vedlegg ? vedlegg.length > 0 : false}>
+                    <Button
+                        type="submit"
+                        icon={<Add />}
+                        loading={isEttersending || finnesPendingVedlegg}
+                        disabled={isEttersending || finnesPendingVedlegg}
+                    >
+                        Legg ved sak
+                    </Button>
+                </Block>
+            </VStack>
+        </form>
     );
 };
 

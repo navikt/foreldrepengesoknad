@@ -1,10 +1,10 @@
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import getAxiosInstance from './apiInterceptor';

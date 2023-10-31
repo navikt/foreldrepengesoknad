@@ -1,4 +1,6 @@
 import { StoryFn } from '@storybook/react';
+import MockAdapter from 'axios-mock-adapter';
+import { attachmentApi } from '@navikt/fp-api';
 import IntlProvider from 'app/intl/IntlProvider';
 import { Ytelse } from 'app/types/Ytelse';
 import EttersendingPage from './EttersendingPage';
@@ -10,7 +12,12 @@ export default {
     component: EttersendingPage,
 };
 
-const Template: StoryFn = () => {
+const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasting }) => {
+    const apiMock = new MockAdapter(attachmentApi);
+    if (!skalFeileOpplasting) {
+        apiMock.onPost('test/storage/vedlegg').reply(200);
+    }
+
     return (
         <IntlProvider locale="nb">
             <EttersendingPage
@@ -36,4 +43,12 @@ const Template: StoryFn = () => {
     );
 };
 
-export const Default = Template.bind({});
+export const SkalIkkeFeileOpplasting = Template.bind({});
+SkalIkkeFeileOpplasting.args = {
+    skalFeileOpplasting: false,
+};
+
+export const SkalFeileOpplasting = Template.bind({});
+SkalFeileOpplasting.args = {
+    skalFeileOpplasting: true,
+};

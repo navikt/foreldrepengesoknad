@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import OversiktRoutes, { NavRoutes } from 'app/routes/routes';
 import { Uttaksdagen, UTTAKSDAGER_PER_UKE } from 'app/utils/Uttaksdagen';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Ytelse } from 'app/types/Ytelse';
 import { formaterDato } from './dateUtils';
 import { Familiehendelse } from 'app/types/Familiehendelse';

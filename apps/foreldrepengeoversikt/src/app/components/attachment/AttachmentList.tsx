@@ -1,5 +1,6 @@
 import AttachmentComponent from './Attachment';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment } from '@navikt/fp-types';
+
 import './attachment-list.css';
 
 interface Props {

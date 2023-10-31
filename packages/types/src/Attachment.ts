@@ -1,3 +1,10 @@
+import { Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType } from './AttachmentType';
+
+export enum InnsendingsType {
+    SEND_SENERE = 'SEND_SENERE',
+}
+
 export interface Attachment {
     id: string;
     filename: string;
@@ -9,15 +16,7 @@ export interface Attachment {
     uploaded: boolean;
     type: AttachmentType;
     skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
     error?: any;
-}
-
-export enum AttachmentType {
-    TERMINBEKREFTELSE = 'terminbekreftelse',
-    OMSORGSOVERTAKELSE = 'omsorgsovertakelse',
-}
-
-export enum Skjemanummer {
-    TERMINBEKREFTELSE = 'I000062',
-    OMSORGSOVERTAKELSE = 'I000042',
+    beskrivelse?: string;
 }

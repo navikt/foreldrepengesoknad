@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { VStack } from '@navikt/ds-react';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment, AttachmentType } from '@navikt/fp-types';
 import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
@@ -19,9 +20,9 @@ type SaveAttachment = (attachment: Attachment) => Promise<any>;
 const getPendingAttachmentFromFile = (
     file: File,
     attachmentType: AttachmentType,
-    skjemanummber: Skjemanummer,
+    skjemanummer: Skjemanummer,
 ): Attachment => {
-    const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummber);
+    const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
     newAttachment.pending = true;
     return newAttachment;
 };
@@ -72,7 +73,7 @@ const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 export interface Props {
     updateAttachments: (attachments: Attachment[]) => void;
     attachmentType: AttachmentType;
-    skjemanummber: Skjemanummer;
+    skjemanummer: Skjemanummer;
     existingAttachments?: Attachment[];
     saveAttachment: SaveAttachment;
 }
@@ -81,7 +82,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
     existingAttachments = EMPTY_ATTACHMENT_LIST,
     updateAttachments,
     attachmentType,
-    skjemanummber,
+    skjemanummer,
     saveAttachment,
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
@@ -101,7 +102,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     const saveFiles = useCallback((files: File[]) => {
         const allPendingAttachments = files.map((file) =>
-            getPendingAttachmentFromFile(file, attachmentType, skjemanummber),
+            getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
         );
         setAttachments((currentAttachments) => {
             const otherAttachments = currentAttachments.filter(

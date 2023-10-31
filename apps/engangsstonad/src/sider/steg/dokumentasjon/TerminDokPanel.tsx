@@ -4,7 +4,7 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { I18nFn, FileUploader, useCustomIntl } from '@navikt/fp-ui';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 
 import Environment from 'appData/Environment';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
@@ -61,8 +61,8 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     <FormattedMessage id="TerminDokPanel.Dok.Storrelse" />
                 </BodyLong>
                 <FileUploader
-                    attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                    skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
+                    attachmentType="terminbekreftelse"
+                    skjemanummer="I000062"
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}
                     saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
