@@ -20,25 +20,27 @@ const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasti
 
     return (
         <IntlProvider locale="nb">
-            <EttersendingPage
-                saker={{
-                    engangsstønad: [
-                        {
-                            ytelse: Ytelse.ENGANGSSTØNAD,
-                            saksnummer: '1',
-                            sakAvsluttet: false,
-                            gjelderAdopsjon: false,
-                            familiehendelse: {
-                                fødselsdato: '2020-01-01',
-                                antallBarn: 1,
+            <div style={{ backgroundColor: 'white', padding: '50px' }}>
+                <EttersendingPage
+                    saker={{
+                        engangsstønad: [
+                            {
+                                ytelse: Ytelse.ENGANGSSTØNAD,
+                                saksnummer: '1',
+                                sakAvsluttet: false,
+                                gjelderAdopsjon: false,
+                                familiehendelse: {
+                                    fødselsdato: '2020-01-01',
+                                    antallBarn: 1,
+                                },
                             },
-                        },
-                    ],
-                    foreldrepenger: [],
-                    svangerskapspenger: [],
-                }}
-                valgtSaksnr="1"
-            />
+                        ],
+                        foreldrepenger: [],
+                        svangerskapspenger: [],
+                    }}
+                    valgtSaksnr="1"
+                />
+            </div>
         </IntlProvider>
     );
 };

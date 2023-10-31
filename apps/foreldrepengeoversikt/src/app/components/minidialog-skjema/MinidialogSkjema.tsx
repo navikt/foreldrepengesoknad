@@ -161,10 +161,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             />
                         </div>
                         <FileUploader
-                            updateAttachments={(attachment: Attachment[]) =>
-                                setVedlegg((oldAttachments) => oldAttachments.concat(attachment))
-                            }
-                            existingAttachments={[]}
+                            updateAttachments={setVedlegg}
                             attachmentType="tilbakebetaling"
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
                             saveAttachment={getSaveAttachment(Environment.REST_API_URL)}

@@ -1,4 +1,5 @@
 import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter';
 import { attachmentApi } from '@navikt/fp-api';
 import IntlProvider from 'app/intl/IntlProvider';
@@ -15,7 +16,7 @@ export default {
     component: MinidialogSkjema,
 };
 
-const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasting }) => {
+const Template: StoryFn<{ skalFeileOpplasting: boolean; send: () => void }> = ({ skalFeileOpplasting, send }) => {
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
         apiMock.onPost('test/storage/vedlegg').reply(200);
@@ -24,21 +25,33 @@ const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasti
     return (
         <IntlProvider locale="nb">
             <QueryClientProvider client={queryClient}>
-                <MinidialogSkjema
-                    ettersendelseErSendt={false}
-                    isSendingEttersendelse={false}
-                    minidialog={{
-                        dialogId: '1',
-                        opprettet: '2020-01-01',
-                        saksnr: '1',
-                    }}
-                    ettersendelseError={undefined}
-                    onSubmit={() => undefined}
-                    sakstype={Ytelse.FORELDREPENGER}
-                />
+                <div style={{ backgroundColor: 'white', padding: '50px' }}>
+                    <MinidialogSkjema
+                        ettersendelseErSendt={false}
+                        isSendingEttersendelse={false}
+                        minidialog={{
+                            dialogId: '1',
+                            opprettet: '2020-01-01',
+                            saksnr: '1',
+                        }}
+                        ettersendelseError={undefined}
+                        onSubmit={send}
+                        sakstype={Ytelse.FORELDREPENGER}
+                    />
+                </div>
             </QueryClientProvider>
         </IntlProvider>
     );
 };
 
-export const Default = Template.bind({});
+export const SkalIkkeFeileOpplasting = Template.bind({});
+SkalIkkeFeileOpplasting.args = {
+    send: action('button-click'),
+    skalFeileOpplasting: false,
+};
+
+export const SkalFeileOpplasting = Template.bind({});
+SkalFeileOpplasting.args = {
+    send: action('button-click'),
+    skalFeileOpplasting: true,
+};

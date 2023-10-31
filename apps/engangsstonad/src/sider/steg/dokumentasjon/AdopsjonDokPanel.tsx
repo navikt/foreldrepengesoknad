@@ -5,6 +5,7 @@ import { Attachment } from '@navikt/fp-types';
 import { getSaveAttachment } from '@navikt/fp-api';
 
 import Environment from 'appData/Environment';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 interface Props {
     attachments?: Attachment[];
@@ -27,7 +28,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
             </BodyLong>
             <FileUploader
                 attachmentType="omsorgsovertakelse"
-                skjemanummer="I000042"
+                skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
                 saveAttachment={getSaveAttachment(Environment.REST_API_URL)}

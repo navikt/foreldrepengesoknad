@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { Add } from '@navikt/ds-icons';
 import { Attachment } from '@navikt/fp-types';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack } from '@navikt/ds-react';
-import { bemUtils, Block } from '@navikt/fp-common';
+import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack, HStack } from '@navikt/ds-react';
+import { bemUtils } from '@navikt/fp-common';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { FileUploader } from '@navikt/fp-ui';
 import Api from 'app/api/api';
@@ -100,18 +100,16 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
 
     if (ettersendingDone || ettersendingError) {
         return (
-            <div>
+            <>
                 <ScrollToTop />
-                <Block padBottom="l">
+                <VStack gap="2">
                     {ettersendingDone && <Alert variant="success">Dokumentene er sendt</Alert>}
                     {ettersendingError && <Alert variant="error">{ettersendingError}</Alert>}
-                </Block>
-                <Block padBottom="l">
                     <Link to={`/sak/${sak!.saksnummer}`}>
                         <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                     </Link>
-                </Block>
-            </div>
+                </VStack>
+            </>
         );
     }
 
@@ -137,25 +135,24 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
-                        updateAttachments={(attachment: Attachment[]) =>
-                            setVedlegg((oldAttachments) => oldAttachments.concat(attachment))
-                        }
-                        existingAttachments={[]}
+                        updateAttachments={setVedlegg}
                         attachmentType="morsaktivitetdokumentasjon"
                         skjemanummer={type!}
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                     />
                 )}
-                <Block visible={vedlegg ? vedlegg.length > 0 : false}>
-                    <Button
-                        type="submit"
-                        icon={<Add />}
-                        loading={isEttersending || finnesPendingVedlegg}
-                        disabled={isEttersending || finnesPendingVedlegg}
-                    >
-                        Legg ved sak
-                    </Button>
-                </Block>
+                {vedlegg && vedlegg.length > 0 && (
+                    <HStack>
+                        <Button
+                            type="submit"
+                            icon={<Add />}
+                            loading={isEttersending || finnesPendingVedlegg}
+                            disabled={isEttersending || finnesPendingVedlegg}
+                        >
+                            Legg ved sak
+                        </Button>
+                    </HStack>
+                )}
             </VStack>
         </form>
     );
