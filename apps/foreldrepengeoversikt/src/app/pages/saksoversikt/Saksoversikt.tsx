@@ -17,13 +17,15 @@ import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'ap
 import { AxiosError } from 'axios';
 
 import { useIntl } from 'react-intl';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
 import { Alert } from '@navikt/ds-react';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
+import React from 'react';
 import { RedirectSource } from 'app/types/RedirectSource';
 
 interface Props {
@@ -32,6 +34,7 @@ interface Props {
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     oppdatertData: any;
+    isFirstRender: React.MutableRefObject<boolean>;
 }
 
 const Saksoversikt: React.FunctionComponent<Props> = ({
@@ -40,11 +43,18 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     saker,
     søkerinfo,
     oppdatertData,
+    isFirstRender,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('saksoversikt');
     const params = useParams();
-    const redirectedFromSoknad = params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD;
+    const navigate = useNavigate();
+    useSetIsRedirectedFromSøknad(params.redirect, isFirstRender);
+    if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
+        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
+    }
+    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
+
     if (!oppdatertData) {
         return (
             <div className={bem.block}>

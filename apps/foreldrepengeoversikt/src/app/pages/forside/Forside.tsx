@@ -10,9 +10,10 @@ import SakLink from 'app/components/sak-link/SakLink';
 import { Alert, Heading } from '@navikt/ds-react';
 
 import './forside.css';
-import { useParams } from 'react-router-dom';
-import { RedirectSource } from 'app/types/RedirectSource';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
+import { useNavigate, useParams } from 'react-router-dom';
+import { RedirectSource } from 'app/types/RedirectSource';
 
 interface Props {
     alleYtelser: Sak[];
@@ -20,6 +21,7 @@ interface Props {
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
     oppdatertData: boolean;
     storageData: any;
+    isFirstRender: React.MutableRefObject<boolean>;
 }
 
 const Forside: React.FunctionComponent<Props> = ({
@@ -28,11 +30,18 @@ const Forside: React.FunctionComponent<Props> = ({
     avslåttSvangerskapspengesak,
     oppdatertData,
     storageData,
+    isFirstRender,
 }) => {
     const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
+
     const params = useParams();
-    const redirectedFromSoknad = params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD;
+    useSetIsRedirectedFromSøknad(params.redirect, isFirstRender);
+    const navigate = useNavigate();
+    if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
+        navigate(OversiktRoutes.HOVEDSIDE);
+    }
+    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
     return (
         <div className={bem.block}>
             <Block padBottom="xl">

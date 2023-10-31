@@ -39,6 +39,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     storageData,
 }) => {
     const bem = bemUtils('routesWrapper');
+    const isFirstRender = useRef(true);
     const hasNavigated = useRef(false);
     const navigate = useNavigate();
 
@@ -87,6 +88,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
                                 oppdatertData={oppdatertData}
                                 storageData={storageData}
+                                isFirstRender={isFirstRender}
                             />
                         }
                     />
@@ -100,6 +102,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                     saker={saker}
                                     søkerinfo={søkerinfo}
                                     oppdatertData={oppdatertData}
+                                    isFirstRender={isFirstRender}
                                 />
                             }
                         />
