@@ -7,7 +7,7 @@
     "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "{filename} - Something went wrong. Try again.",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - Attachment type is not valid",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - The attachment must be less than {maxStørrelse} KB.",
-    "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Attachment upload timed out",
+    "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Your document took too long to upload. Check your network or try uploading fewer documents at once",
 
     "StepButtons.Forrige": "Previous step",
     "StepButtons.Neste": "Next step",
