@@ -136,38 +136,38 @@ describe('<Perioder>', () => {
     it('feilmelding ved overlappende perioder', async () => {
         render(<Default />);
 
-        expect(await screen.getAllByText(FRA_DATO)[0]).toBeInTheDocument();
-        const førsteFradatoInput = screen.getAllByText(FRA_DATO)[0];
-        await user.type(førsteFradatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
-        await user.tab();
-
-        expect(await screen.getAllByText(TIL_DATO)[0]).toBeInTheDocument();
-        const førsteTildatoInput = screen.getAllByText(TIL_DATO)[0];
-        await user.type(førsteTildatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
-        await user.tab();
-
-        const førstePeriode = '30.10.2023 - 27.01.2024';
-        expect(await screen.findByText(førstePeriode)).toBeInTheDocument();
-
         expect(await screen.findByText(LEGG_TIL_NY_PERIODE)).toBeInTheDocument();
         await user.click(screen.getByText(LEGG_TIL_NY_PERIODE));
 
         expect(await screen.getAllByText(FRA_DATO)[1]).toBeInTheDocument();
         const andreFradatoInput = screen.getAllByText(FRA_DATO)[1];
-        await user.type(andreFradatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
+        await user.type(andreFradatoInput, dayjs('2024-01-01').format('DD.MM.YYYY'));
         await user.tab();
 
         expect(await screen.getAllByText(TIL_DATO)[1]).toBeInTheDocument();
         await user.click(screen.getAllByText(FREM_TIL_TERMIN)[1]);
 
-        const nyPeriode = '30.10.2023 - 27.01.2024';
+        const nyPeriode = '01.01.2024 - 27.01.2024';
         expect(await screen.findByText(nyPeriode)).toBeInTheDocument();
+
+        expect(await screen.getAllByText(FRA_DATO)[0]).toBeInTheDocument();
+        const førsteFradatoInput = screen.getAllByText(FRA_DATO)[0];
+        await user.type(førsteFradatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
+        await user.tab();
+
+        expect(await screen.getAllByText(FREM_TIL_DATO)[0]).toBeInTheDocument();
+        await user.click(screen.getAllByText(FREM_TIL_DATO)[0]);
+
+        expect(await screen.findByText(TOM)).toBeInTheDocument();
+        const førsteTildatoInput = screen.getByText(TOM);
+        await user.type(førsteTildatoInput, dayjs('2024-01-27').format('DD.MM.YYYY'));
+        await user.tab();
+
+        const førstePeriode = '30.10.2023 - 27.01.2024';
+        expect(await screen.findByText(førstePeriode)).toBeInTheDocument();
 
         await user.click(screen.getByText(NESTE_STEG));
 
         expect(await screen.getAllByText('Perioden overlapper med perioden ' + nyPeriode + '.')[0]).toBeInTheDocument();
-        expect(
-            await screen.getAllByText('Perioden overlapper med perioden ' + førstePeriode + '.')[0],
-        ).toBeInTheDocument();
     });
 });
