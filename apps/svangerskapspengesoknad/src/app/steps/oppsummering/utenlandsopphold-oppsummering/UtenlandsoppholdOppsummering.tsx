@@ -16,18 +16,22 @@ const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmU
         informasjonOmUtenlandsopphold.tidligereOpphold.length > 0;
     return (
         <>
-            <Block padBottom="l">
-                <UtenlandsoppholdListe
-                    utenlandsopphold={informasjonOmUtenlandsopphold.tidligereOpphold}
-                    tidligereOpphold={true}
-                />
-            </Block>
-            <Block padBottom="l">
-                <UtenlandsoppholdListe
-                    utenlandsopphold={informasjonOmUtenlandsopphold.senereOpphold}
-                    tidligereOpphold={false}
-                />
-            </Block>
+            {informasjonOmUtenlandsopphold.tidligereOpphold.length > 0 && (
+                <Block padBottom="l">
+                    <UtenlandsoppholdListe
+                        utenlandsopphold={informasjonOmUtenlandsopphold.tidligereOpphold}
+                        tidligereOpphold={true}
+                    />
+                </Block>
+            )}
+            {informasjonOmUtenlandsopphold.senereOpphold.length > 0 && (
+                <Block padBottom="l">
+                    <UtenlandsoppholdListe
+                        utenlandsopphold={informasjonOmUtenlandsopphold.senereOpphold}
+                        tidligereOpphold={false}
+                    />
+                </Block>
+            )}
             {informasjonOmUtenlandsopphold.tidligereOpphold.length === 0 && (
                 <Block padBottom="l">
                     <BodyShort>{intlUtils(intl, 'oppsummering.boddINorge')} </BodyShort>

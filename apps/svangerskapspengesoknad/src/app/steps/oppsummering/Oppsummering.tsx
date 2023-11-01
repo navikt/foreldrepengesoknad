@@ -155,12 +155,9 @@ const Oppsummering = () => {
                                         </AccordionItem>
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.omUtenlandsopphold')}>
                                             <AccordionContent>
-                                                <Block padBottom="l"> </Block>
-                                                <Block>
-                                                    <UtenlandsoppholdOppsummering
-                                                        informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
-                                                    />
-                                                </Block>
+                                                <UtenlandsoppholdOppsummering
+                                                    informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
+                                                />
                                             </AccordionContent>
                                         </AccordionItem>
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.omArbeidsforhold')}>
