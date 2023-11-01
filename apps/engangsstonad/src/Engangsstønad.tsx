@@ -40,8 +40,12 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
 
     if (kvittering) {
-        if (Environment.INNSYN_SAK) {
-            redirect(kvittering.saksNr ? `${Environment.INNSYN_SAK}${kvittering.saksNr}` : Environment.INNSYN);
+        if (Environment.INNSYN) {
+            redirect(
+                kvittering.saksNr
+                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
+                    : `${Environment.INNSYN}/redirectFromSoknad`,
+            );
             return <Spinner />;
         }
         return <div>Redirected to Innsyn</div>;
