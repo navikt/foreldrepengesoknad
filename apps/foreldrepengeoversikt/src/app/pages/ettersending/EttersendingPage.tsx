@@ -3,7 +3,7 @@ import { IntlShape, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Add } from '@navikt/ds-icons';
 import { Attachment } from '@navikt/fp-types';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack, HStack } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 import { getSaveAttachment } from '@navikt/fp-api';
@@ -136,7 +136,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
                         updateAttachments={setVedlegg}
-                        attachmentType="morsaktivitetdokumentasjon"
+                        attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type!}
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                     />

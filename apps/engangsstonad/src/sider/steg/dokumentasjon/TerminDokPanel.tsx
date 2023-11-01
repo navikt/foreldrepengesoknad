@@ -9,7 +9,7 @@ import { Attachment } from '@navikt/fp-types';
 import Environment from 'appData/Environment';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
@@ -62,7 +62,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     <FormattedMessage id="TerminDokPanel.Dok.Storrelse" />
                 </BodyLong>
                 <FileUploader
-                    attachmentType="terminbekreftelse"
+                    attachmentType={AttachmentType.TERMINBEKREFTELSE}
                     skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}

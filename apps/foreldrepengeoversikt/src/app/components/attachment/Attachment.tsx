@@ -1,5 +1,5 @@
 import { bemUtils } from '@navikt/fp-common';
-import { Attachment as AttachmentType } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 import { Button, Link, Loader } from '@navikt/ds-react';
 import { bytesString } from 'app/utils/attachmentUtils';
 import { FileSuccess } from '@navikt/ds-icons';
@@ -9,8 +9,8 @@ import classNames from 'classnames';
 import './attachment.css';
 
 export interface Props {
-    attachment: AttachmentType;
-    onDelete?: (file: AttachmentType) => void;
+    attachment: Attachment;
+    onDelete?: (file: Attachment) => void;
     showFileSize?: boolean;
 }
 

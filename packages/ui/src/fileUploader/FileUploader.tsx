@@ -4,7 +4,8 @@ import { Skjemanummer } from '@navikt/fp-constants';
 
 import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
-import { Attachment, AttachmentType } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
+import { AttachmentType } from '@navikt/fp-constants';
 import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
@@ -76,6 +77,7 @@ export interface Props {
     skjemanummer: Skjemanummer;
     existingAttachments?: Attachment[];
     saveAttachment: SaveAttachment;
+    multiple?: boolean;
 }
 
 const FileUploader: React.FunctionComponent<Props> = ({
@@ -84,6 +86,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
     attachmentType,
     skjemanummer,
     saveAttachment,
+    multiple = true,
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
 
@@ -128,6 +131,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
                     accept={VALID_EXTENSIONS.join(', ')}
                     onFilesSelect={saveFiles}
                     hasUplodedAttachements={uploadedAttachments.length > 0}
+                    multiple={multiple}
                 />
                 <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
             </VStack>

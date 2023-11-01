@@ -18,7 +18,7 @@ import { formatDate, intlUtils } from '@navikt/fp-common';
 import { FileUploader } from '@navikt/fp-ui';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { Attachment } from '@navikt/fp-types';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
 import { Ytelse } from 'app/types/Ytelse';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { validateFritekstFelt } from 'app/utils/validationUtils';
@@ -162,7 +162,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                         </div>
                         <FileUploader
                             updateAttachments={setVedlegg}
-                            attachmentType="tilbakebetaling"
+                            attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
                             saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                         />

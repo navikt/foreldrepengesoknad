@@ -1,11 +1,10 @@
-import { Skjemanummer } from '@navikt/fp-constants';
-import { AttachmentType } from './AttachmentType';
+import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
 
 export enum InnsendingsType {
     SEND_SENERE = 'SEND_SENERE',
 }
 
-export interface Attachment {
+export type Attachment = {
     id: string;
     filename: string;
     filesize: number;
@@ -19,4 +18,4 @@ export interface Attachment {
     innsendingsType?: InnsendingsType;
     error?: any;
     beskrivelse?: string;
-}
+};
