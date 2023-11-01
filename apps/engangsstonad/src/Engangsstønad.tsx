@@ -52,7 +52,6 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     }
 
     if (error !== null) {
-        //TODO Kva er logikken med å visa spinner ved 401/403?
         if (error.response?.status === 401 || error.response?.status === 403) {
             return <Spinner />;
         }
