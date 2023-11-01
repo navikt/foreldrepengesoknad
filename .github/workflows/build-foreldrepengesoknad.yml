@@ -5,15 +5,13 @@ on:
     paths:
       - 'apps/foreldrepengesoknad/**'
       - 'packages/**'
+      - 'server/**'
       - '.deploy/foreldrepengesoknad/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-foreldrepengesoknad.yml'
-  # Only trigger, when the build workflow succeeded
-  workflow_run:
-    workflows: [ "Bygg server" ]
-    branches: 'master'
-    types:
-      - completed
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
 
 jobs:
   build-app:

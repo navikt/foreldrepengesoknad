@@ -16,19 +16,16 @@ group "default" {
 
 target "docker-metadata-action" {}
 
-target "base" {
+target "foreldrepengesoknad" {
+  inherits = ["docker-metadata-action"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
   dockerfile = "Dockerfile"
 
-  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/build-cache:${CACHE_TAG},mode=max"]
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad/build-cache:${CACHE_TAG},mode=max"]
   cache-from = [
-    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/build-cache:${CACHE_TAG}",
-    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/build-cache:master"
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad/build-cache:master"
   ]
-}
-
-target "foreldrepengesoknad" {
-  inherits = ["base", "docker-metadata-action"]
-  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad:${TAG}"]
 
   args = {
     APP = "foreldrepengesoknad"
@@ -36,8 +33,15 @@ target "foreldrepengesoknad" {
 }
 
 target "svangerskapspengesoknad" {
-  inherits = ["base", "docker-metadata-action"]
+  inherits = ["docker-metadata-action"]
   //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad/build-cache:master"
+  ]
 
   args = {
     APP = "svangerskapspengesoknad"
@@ -45,8 +49,15 @@ target "svangerskapspengesoknad" {
 }
 
 target "engangsstonad" {
-  inherits = ["base", "docker-metadata-action"]
+  inherits = ["docker-metadata-action"]
   //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/engangsstonad:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/engangsstonad/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/engangsstonad/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/engangsstonad/build-cache:master"
+  ]
 
   args = {
     APP = "engangsstonad"
@@ -54,8 +65,15 @@ target "engangsstonad" {
 }
 
 target "foreldrepengeoversikt" {
-  inherits = ["base", "docker-metadata-action"]
+  inherits = ["docker-metadata-action"]
   //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengeoversikt/build-cache:master"
+  ]
 
   args = {
     APP = "foreldrepengeoversikt"
