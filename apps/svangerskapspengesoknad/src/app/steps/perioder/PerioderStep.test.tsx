@@ -13,6 +13,7 @@ const TOM = 'Til og med dato';
 const FREM_TIL_TERMIN = 'Frem til tre uker før termin';
 const STILLINGSPROSENT = 'Hvilken stillingsprosent skal du jobbe i denne perioden?';
 const LEGG_TIL_NY_PERIODE = 'Legg til ny periode';
+const NY_PERIODE = 'Ny periode';
 const SLETT_PERIODEN = 'Slett perioden';
 const NESTE_STEG = 'Neste steg';
 
@@ -106,13 +107,30 @@ describe('<Perioder>', () => {
     it('vis ny periode når legg til ny periode er valgt', async () => {
         render(<Default />);
 
-        // TODO fiks denne?
         expect(await screen.findByText(LEGG_TIL_NY_PERIODE)).toBeInTheDocument();
         await user.click(screen.getByText(LEGG_TIL_NY_PERIODE));
 
-        expect(await screen.findByText(SLETT_PERIODEN)).toBeInTheDocument();
+        expect(await screen.getAllByText(NY_PERIODE)[1]).toBeInTheDocument();
     });
     it('fjern perioden hvis slett perioden er klikket på', async () => {
         render(<Default />);
+
+        expect(await screen.findByText(LEGG_TIL_NY_PERIODE)).toBeInTheDocument();
+        await user.click(screen.getByText(LEGG_TIL_NY_PERIODE));
+
+        expect(await screen.getAllByText(FRA_DATO)[1]).toBeInTheDocument();
+        const fradatoInput = screen.getAllByText(FRA_DATO)[1];
+        await user.type(fradatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
+        await user.tab();
+
+        expect(await screen.getAllByText(TIL_DATO)[1]).toBeInTheDocument();
+        await user.click(screen.getAllByText(FREM_TIL_TERMIN)[1]);
+
+        const nyPeriode = '30.10.2023 - 27.01.2024';
+
+        expect(await screen.getAllByText(SLETT_PERIODEN, { exact: false })[0]).toBeInTheDocument();
+        await user.click(screen.getAllByText(SLETT_PERIODEN)[0]);
+
+        expect(await screen.queryByText(nyPeriode)).not.toBeInTheDocument();
     });
 });
