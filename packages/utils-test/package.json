@@ -7,7 +7,6 @@
         "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
     },
     "dependencies": {
-        "@navikt/fp-form-hooks": "workspace:*",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "7.45.4",
