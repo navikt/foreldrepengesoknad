@@ -9,6 +9,7 @@
         "amplitude-js": "^8.21.9"
     },
     "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@types/amplitude-js": "^8.16.2",
         "@types/react": "^18.2.20",
         "tsconfig": "workspace:*"

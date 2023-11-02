@@ -10,6 +10,7 @@
         "dayjs": "^1.11.9"
     },
     "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "tsconfig": "workspace:*"
     }
 }

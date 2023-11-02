@@ -19,7 +19,6 @@
         "extract": "formatjs extract"
     },
     "dependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/aksel-icons": "^4.12.1",
         "@navikt/ds-css": "4.12.1",
         "@navikt/ds-react": "4.12.1",
@@ -70,6 +69,7 @@
         "autoprefixer": "^10.4.15",
         "axios-mock-adapter": "1.21.5",
         "cross-env": "^7.0.3",
+        "eslint": "^8.38.0",
         "fast-glob": "^3.3.1",
         "less": "^4.2.0",
         "multer": "1.4.5-lts.1",
@@ -79,6 +79,7 @@
         "typescript": "^5.1.6",
         "vite": "^4.4.9",
         "vite-plugin-checker": "^0.6.1",
+        "vite-plugin-eslint": "^1.8.1",
         "vitest": "^0.34.2"
     },
     "overrides": {

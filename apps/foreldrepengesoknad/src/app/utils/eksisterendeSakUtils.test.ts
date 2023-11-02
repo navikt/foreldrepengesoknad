@@ -7,7 +7,6 @@ import {
 
 vi.mock('@navikt/fp-common', async () => {
     const original = await vi.importActual<any>('@navikt/fp-common');
-    debugger;
     return {
         ...original,
         guid: () => '1',

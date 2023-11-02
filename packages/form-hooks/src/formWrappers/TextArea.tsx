@@ -8,7 +8,7 @@ export interface Props {
     name: string;
     label: string | ReactNode;
     maxLength?: number;
-    validate?: ((value: string) => any)[];
+    validate?: Array<(value: string) => any>;
     className?: string;
     description?: string;
 }

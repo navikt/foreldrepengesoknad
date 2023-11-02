@@ -10,7 +10,7 @@ export type ErrorSummaryError = {
 
 interface Props {
     errorRef: React.RefObject<HTMLDivElement>;
-    errors: Array<ErrorSummaryError>;
+    errors: ErrorSummaryError[];
 }
 
 //TODO Fjern FP postfix. Er litt misvisande da det kan sjå ut som denne er spesifikk for FP-appen

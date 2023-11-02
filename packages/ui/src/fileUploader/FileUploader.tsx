@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { VStack } from '@navikt/ds-react';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
 import { Attachment } from '@navikt/fp-types';
-import { AttachmentType } from '@navikt/fp-constants';
 import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';

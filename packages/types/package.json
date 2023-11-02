@@ -4,5 +4,8 @@
     "types": "index.ts",
     "dependencies": {
         "@navikt/fp-constants": "workspace:*"
+    },
+    "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*"
     }
 }

@@ -8,7 +8,7 @@ interface CheckboxPanelProps {
     name: string;
     label: string | ReactNode;
     description?: string;
-    validate?: ((value: string | number) => any)[];
+    validate?: Array<(value: string | number) => any>;
     onChange?: (value: any) => void;
     disabled?: boolean;
     children: ReactElement[];
