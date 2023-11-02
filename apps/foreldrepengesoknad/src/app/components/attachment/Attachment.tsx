@@ -3,15 +3,22 @@ import classnames from 'classnames';
 
 import { useIntl } from 'react-intl';
 
-import { Attachment, bemUtils, bytesString, intlUtils, SlettKnapp, VedleggIkon } from '@navikt/fp-common';
+import {
+    Attachment as AttachmentType,
+    bemUtils,
+    bytesString,
+    intlUtils,
+    SlettKnapp,
+    VedleggIkon,
+} from '@navikt/fp-common';
 import { Link, Loader } from '@navikt/ds-react';
 
 import './attachment.less';
 
 export interface Props {
-    attachment: Attachment;
+    attachment: AttachmentType;
     showFileSize?: boolean;
-    onDelete?: (file: Attachment) => void;
+    onDelete?: (file: AttachmentType) => void;
 }
 
 const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, onDelete }) => {
