@@ -20,7 +20,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider språkkode={locale}>
-            <ErrorBoundary appnavn="Engangsstønad">
+            <ErrorBoundary appnavn="Foreldrepengeplanlegger">
                 <BrowserRouter>
                     <Planlegger locale={locale} onChangeLocale={changeLocale} />
                 </BrowserRouter>
