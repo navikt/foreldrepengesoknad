@@ -1,4 +1,11 @@
 {
+    "Umyndig.Pageheading.Engangsstonad": "Application for lump-sum grant",
+    "Umyndig.Pageheading.Foreldrepenger": "Application for parental benefit",
+    "Umyndig.Pageheading.Svangerskapspenger": "Application for pregnancy allowance",
+    "Umyndig.Tittel": "Because you are under 18 years of age, you must send a paper application",
+    "Umyndig.Tekst": "Because you are under 18, one of your parents or a guardian must sign your application with you. You must therefore complete the application on paper and send it by post to NAV.",
+    "Umyndig.Knapp.Papirsøknad": "Go to the paper application",
+
     "ErrorSummaryFp.Tittel": "You have to correct the following errors:",
 
     "FileInput.Vedlegg.Lastoppknapp": "Upload file",
