@@ -7,7 +7,7 @@ import './fileInput.less';
 
 interface Props {
     onFilesSelect: (files: File[]) => void;
-    multiple?: boolean;
+    multiple: boolean;
     accept: string;
     hasUplodedAttachements: boolean;
 }

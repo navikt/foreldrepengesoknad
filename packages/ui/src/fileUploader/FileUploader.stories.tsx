@@ -1,7 +1,8 @@
 import { StoryFn } from '@storybook/react';
 import { RawIntlProvider, createIntl } from 'react-intl';
 import FileUploader from './FileUploader';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 export default {
     title: 'FileUploader',
@@ -16,8 +17,8 @@ const Template: StoryFn<{
         <RawIntlProvider value={createIntl({ locale: 'nb', messages: {} })}>
             <FileUploader
                 attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
                 saveAttachment={saveAttachment}
-                skjemanummber={Skjemanummer.OMSORGSOVERTAKELSE}
                 existingAttachments={existingAttachments}
                 updateAttachments={() => undefined}
             />

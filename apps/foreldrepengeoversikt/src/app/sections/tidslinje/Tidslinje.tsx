@@ -23,7 +23,7 @@ import { SakOppslag } from 'app/types/SakOppslag';
 import OversiktRoutes from 'app/routes/routes';
 import { AxiosError } from 'axios';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 interface Params {
     saker: SakOppslag;

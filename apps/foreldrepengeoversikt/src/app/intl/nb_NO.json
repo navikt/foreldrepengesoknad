@@ -39,7 +39,6 @@
     "miniDialog.tilbakekreving.sendButton": "Send",
     "minidialog.tilbakekreving.veilederpanel": "Saken vil bli behandlet med de opplysningene vi har tilgjengelig. Vi sender deg et vedtak når saken er ferdig behandlet.",
     "miniDialog.tilbakekreving.radioPanelGruppe.legend": "Ønsker du å uttale deg i saken før vi behandler den?",
-    "miniDialog.lastOppDokumentasjon": "Last opp dokumentasjon",
     "miniDialog.kvittering.gåTilbakeTilSaken": "Gå tilbake til saken",
     "ettersendelse.select.defaultValue": "Velg type dokument",
     "ettersendelse.I000001": "Tilretteleggings- og omplasseringsskjema for frilans eller selvstendig",
@@ -148,8 +147,5 @@
     "tidslinje.navVenterPå": "Du må sende inn {dokumentasjon}",
     "periodeOversikt.ingenPerioder.visKunNåværendeOgNeste": "Du har ingen løpende perioder med foreldrepenger. Klikk på 'Se hele planen' for en oversikt over tidligere perioder med foreldrepenger.",
     "periodeOversikt.ingenPerioder.visHelePlanen": "Du har ingen perioder med foreldrepenger. ",
-    "vedlegg.feilmelding.opplasting.feilet": "Opplasting av dokument feilet",
-    "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type",
-    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}KB.",
     "ok": "Ok"
 }

@@ -40,15 +40,18 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
 
     if (kvittering) {
-        if (Environment.INNSYN_SAK) {
-            redirect(kvittering.saksNr ? `${Environment.INNSYN_SAK}${kvittering.saksNr}` : Environment.INNSYN);
+        if (Environment.INNSYN) {
+            redirect(
+                kvittering.saksNr
+                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
+                    : `${Environment.INNSYN}/redirectFromSoknad`,
+            );
             return <Spinner />;
         }
         return <div>Redirected to Innsyn</div>;
     }
 
     if (error !== null) {
-        //TODO Kva er logikken med å visa spinner ved 401/403?
         if (error.response?.status === 401 || error.response?.status === 403) {
             return <Spinner />;
         }

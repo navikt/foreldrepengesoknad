@@ -2,20 +2,20 @@ import { VStack, Link, Loader, HStack, Spacer } from '@navikt/ds-react';
 import { XMarkIcon, FileCheckmarkIcon } from '@navikt/aksel-icons';
 
 import { useCustomIntl } from '../../i18n/hooks/useCustomI18n';
-import { Attachment as AttachmentType } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 import { bytesString } from '../fileUtils';
 
-import './attachment.less';
+import './attachmentInfo.less';
 
 interface OwnProps {
-    attachment: AttachmentType;
+    attachment: Attachment;
     showFileSize?: boolean;
-    onDelete?: (file: AttachmentType) => void;
+    onDelete?: (file: Attachment) => void;
 }
 
 type Props = OwnProps;
 
-const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, onDelete }) => {
+const AttachmentInfo: React.FunctionComponent<Props> = ({ attachment, showFileSize, onDelete }) => {
     const { i18n } = useCustomIntl();
 
     return (
@@ -50,4 +50,4 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
     );
 };
 
-export default Attachment;
+export default AttachmentInfo;

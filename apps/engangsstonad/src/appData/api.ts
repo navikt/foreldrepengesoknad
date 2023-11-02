@@ -31,6 +31,8 @@ engangsstønadApi.interceptors.request.use((config) => {
     return config;
 });
 
+const ERROR_STATUS_CODES = [401, 403];
+
 engangsstønadApi.interceptors.response.use(
     (response: AxiosResponse) => {
         return response;
@@ -38,7 +40,7 @@ engangsstønadApi.interceptors.response.use(
     (error: AxiosError) => {
         if (
             error.response &&
-            error.response.status === 401 &&
+            ERROR_STATUS_CODES.includes(error.response.status) &&
             error?.config?.url &&
             !error.config.url.includes('/soknad/engangssoknad')
         ) {

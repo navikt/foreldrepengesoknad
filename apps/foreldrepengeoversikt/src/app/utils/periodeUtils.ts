@@ -1,4 +1,4 @@
-import { guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import { guid, intlUtils, ISOStringToDate, TidsperiodeDate } from '@navikt/fp-common';
 import { Periode } from 'app/types/Periode';
 import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { StønadskontoType } from 'app/types/StønadskontoType';
@@ -7,8 +7,8 @@ import { IntlShape } from 'react-intl';
 import { getNavnGenitivEierform, NavnPåForeldre } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import dayjs from 'dayjs';
-import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik-ds/lib';
 import { isEqual } from 'lodash';
+import { formatDateIso } from '@navikt/fp-utils';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
@@ -400,21 +400,21 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
         if (index === 0) {
             oppsplittetPeriode.push({
                 ...periode,
-                fom: dateToISOString(datoWrapper.dato),
+                fom: formatDateIso(datoWrapper.dato),
                 tom: undefined!,
             });
             return;
         }
 
         oppsplittetPeriode[index - 1].tom = datoWrapper.erFom
-            ? dateToISOString(Uttaksdagen(datoWrapper.dato).forrige())
-            : dateToISOString(datoWrapper.dato);
+            ? formatDateIso(Uttaksdagen(datoWrapper.dato).forrige())
+            : formatDateIso(datoWrapper.dato);
 
         if (index < datoerIPerioden.length - 1) {
             oppsplittetPeriode.push({
                 ...periode,
                 id: guid(),
-                fom: dateToISOString(datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste()),
+                fom: formatDateIso(datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste()),
                 tom: undefined!,
             });
         }

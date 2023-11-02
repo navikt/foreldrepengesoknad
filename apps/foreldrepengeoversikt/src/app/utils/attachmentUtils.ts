@@ -1,7 +1,6 @@
 import { guid } from '@navikt/fp-common';
-import { Attachment, InnsendingsType } from 'app/types/Attachment';
-import { AttachmentType } from 'app/types/AttachmentType';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
+import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import Bytes from 'bytes';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));

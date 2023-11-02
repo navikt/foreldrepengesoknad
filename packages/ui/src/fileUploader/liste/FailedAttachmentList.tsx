@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import { VStack } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-types';
 import FailedAttachment from './FailedAttachment';
-import './attachment.less';
 import { guid } from '@navikt/fp-common';
 
 interface Props {

@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IntlProvider from 'intl/IntlProvider';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import withRouter from 'storybookHelpers/withRouter';
@@ -14,7 +14,6 @@ import Dokumentasjon from 'types/Dokumentasjon';
 import OppsummeringSteg from './OppsummeringSteg';
 import { initAmplitude } from '@navikt/fp-metrics';
 import dayjs from 'dayjs';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const promiseAction =
     () =>

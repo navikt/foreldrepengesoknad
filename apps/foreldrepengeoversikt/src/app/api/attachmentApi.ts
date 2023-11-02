@@ -1,5 +1,5 @@
+import { Attachment } from '@navikt/fp-types';
 import Environment from 'app/Environment';
-import { Attachment } from 'app/types/Attachment';
 import axios from 'axios';
 
 function saveAttachment(attachment: Attachment) {
