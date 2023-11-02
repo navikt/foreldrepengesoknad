@@ -63,7 +63,7 @@ export const søkerHarKunEtAktivtArbeid = (
     erFrilanser: boolean,
     harEgenNæring: boolean,
 ) => {
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const aktiveArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
     return (
         (aktiveArbeidsforhold.length === 1 && !erFrilanser && !harEgenNæring) ||
         (aktiveArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
