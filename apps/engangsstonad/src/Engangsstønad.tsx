@@ -8,7 +8,7 @@ import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
 import UtenlandsoppholdSteg from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { useRequest } from '@navikt/fp-api';
 import { erMyndig, redirect } from '@navikt/fp-utils';
-import { ErrorPage } from '@navikt/fp-ui';
+import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 
 import Api from 'appData/api';
 import { Path } from 'appData/paths';
@@ -16,7 +16,6 @@ import { EsDataContext } from 'appData/EsDataContext';
 import Environment from 'appData/Environment';
 import Kvittering from 'types/Kvittering';
 import Person from './types/Person';
-import Umyndig from './sider/umyndig/Umyndig';
 import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
@@ -63,7 +62,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     }
 
     if (!erMyndig(person.fødselsdato)) {
-        return <Umyndig person={person} />;
+        return <Umyndig appnavn="Engangsstønad" />;
     }
 
     const sendSøknad = Api.getSendSøknad(locale, setKvittering);

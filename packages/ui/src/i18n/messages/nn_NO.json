@@ -1,4 +1,11 @@
 {
+    "Umyndig.Pageheading.Engangsstonad": "Søknad om eingongsstønad",
+    "Umyndig.Pageheading.Foreldrepenger": "Søknad om foreldrepenger",
+    "Umyndig.Pageheading.Svangerskapspenger": "Søknad om svangerskapspenger",
+    "Umyndig.Tittel": "Fordi du er under 18 år, må du senda papirsøknad",
+    "Umyndig.Tekst": "Fordi du er under 18 år, må ein av foreldrene dine eller ein føresatt skriva under på søknaden din samen med deg. Derfor må du fylla ut søknaden på papir og senda den i posten til NAV.",
+    "Umyndig.Knapp.Papirsøknad": "Gå til papirsøknaden",
+
     "ErrorSummaryFp.Tittel": "Du må rette opp i følgende feil:",
 
     "FileInput.Vedlegg.Lastoppknapp": "Last opp fil",

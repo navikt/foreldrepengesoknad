@@ -3,7 +3,7 @@ import { bemUtils } from '@navikt/fp-common';
 import './contentWrapper.less';
 
 interface Props {
-    children: React.ReactElement;
+    children: React.ReactElement | React.ReactElement[];
 }
 
 const ContentWrapper: React.FunctionComponent<Props> = ({ children }) => {

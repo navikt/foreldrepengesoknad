@@ -1428,6 +1428,9 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
+      '@navikt/fp-metrics':
+        specifier: workspace:*
+        version: link:../metrics
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
