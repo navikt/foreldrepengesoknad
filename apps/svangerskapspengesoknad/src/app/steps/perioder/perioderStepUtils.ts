@@ -2,6 +2,7 @@ import { PeriodeMedVariasjon, Tilrettelegging, TilretteleggingstypeOptions } fro
 import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
+import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
@@ -13,7 +14,9 @@ export const getMåSendeNySøknad = (
         hasValue(currentPeriode.fom) &&
         hasValue(currentPeriode.stillingsprosent) &&
         dayjs(currentPeriode.fom).isAfter(periodeDerSøkerErTilbakeIOpprinneligStilling.fom, 'day') &&
-        parseInt(currentPeriode.stillingsprosent!, 10) < opprinneligStillingsprosent
+        ((opprinneligStillingsprosent > 0 &&
+            parseFloat(currentPeriode.stillingsprosent) < opprinneligStillingsprosent) ||
+            (opprinneligStillingsprosent === 0 && parseFloat(currentPeriode.stillingsprosent) < 100))
     );
 };
 
@@ -54,4 +57,32 @@ export const mapPerioderFormDataToState = (
         return t.id === id ? oppdatert : t;
     });
     return nyTilretteleggingISøknad;
+};
+
+export const getPeriodeDerSøkerErTilbakeIFullStilling = (
+    varierendePerioder: PeriodeMedVariasjon[] | undefined,
+    opprinneligStillingsprosent: number,
+): PeriodeMedVariasjon | undefined => {
+    return varierendePerioder
+        ? varierendePerioder.find((p) => {
+              if (opprinneligStillingsprosent > 0) {
+                  return hasValue(p.stillingsprosent) && parseFloat(p.stillingsprosent) === opprinneligStillingsprosent;
+              } else {
+                  return hasValue(p.stillingsprosent) && parseFloat(p.stillingsprosent) === 100;
+              }
+          })
+        : undefined;
+};
+
+export const getUferdigPeriodeInput = (
+    formValues: Partial<PerioderFormData>,
+    sisteDagForSvangerskapspenger: Date,
+): PeriodeMedVariasjon => {
+    return {
+        fom: getNesteDagEtterSistePeriode(formValues, sisteDagForSvangerskapspenger),
+        tom: '',
+        stillingsprosent: '',
+        tomType: undefined!,
+        type: TilretteleggingstypeOptions.DELVIS,
+    } as PeriodeMedVariasjon;
 };

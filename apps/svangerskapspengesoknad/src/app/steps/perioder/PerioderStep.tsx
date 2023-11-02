@@ -7,7 +7,7 @@ import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './p
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { PeriodeMedVariasjon, TilOgMedDatoType, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
 import { FunctionComponent } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -18,10 +18,14 @@ import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from '
 import { FieldArray } from 'formik';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
-import { getMåSendeNySøknad, getPerioderInitialValues, mapPerioderFormDataToState } from './perioderStepUtils';
-import { hasValue } from 'app/utils/validationUtils';
+import {
+    getMåSendeNySøknad,
+    getPeriodeDerSøkerErTilbakeIFullStilling,
+    getPerioderInitialValues,
+    getUferdigPeriodeInput,
+    mapPerioderFormDataToState,
+} from './perioderStepUtils';
 import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleggingValidation';
-import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
 import { isISODateString } from '@navikt/ds-datepicker';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
@@ -47,56 +51,51 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
+    const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
 
     const onValidSubmitHandler = (values: Partial<PerioderFormData>) => {
         const mappedTilrettelegging = mapPerioderFormDataToState(id, values, tilretteleggingFraState);
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
 
-    const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
-    const sideTittel = erFlereTilrettelegginger
-        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
-        : intlUtils(intl, 'steps.label.periode.en');
-
     const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, state.currentTilretteleggingId);
     let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
     if (nesteTilretteleggingId) {
         nextRoute = `${SøknadRoutes.SKJEMA}/${nesteTilretteleggingId}`;
     }
-
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
+
     const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
     const maxDato = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
+    const minDatoPeriodeFom = currentTilrettelegging!.behovForTilretteleggingFom;
+    const sideTittel = erFlereTilrettelegginger
+        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
+        : intlUtils(intl, 'steps.label.periode.en');
     const sisteDagMedSvpLabel = kanHaSVPFremTilTreUkerFørTermin
         ? intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin')
         : intlUtils(intl, 'perioder.varierende.tomType.dagenFørFødsel');
+    const descriptionTekst = kanHaSVPFremTilTreUkerFørTermin
+        ? intlUtils(intl, 'perioder.varierende.description.termin')
+        : intlUtils(intl, 'perioder.varierende.description.fødsel');
+
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
             initialValues={getPerioderInitialValues(currentTilrettelegging!)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const minDatoPeriodeFom = currentTilrettelegging!.behovForTilretteleggingFom;
-                const periodeDerSøkerErTilbakeIOpprinneligStilling = formValues.varierendePerioder
-                    ? formValues.varierendePerioder.find(
-                          (p) =>
-                              hasValue(p.stillingsprosent) &&
-                              parseInt(p.stillingsprosent, 10) === opprinneligStillingsprosent,
-                      )
-                    : undefined;
-                const uferdigDelvisTilretteleggingInput = {
-                    fom: getNesteDagEtterSistePeriode(formValues, sisteDagForSvangerskapspenger),
-                    tom: '',
-                    stillingsprosent: '',
-                    tomType: undefined!,
-                    type: TilretteleggingstypeOptions.DELVIS,
-                } as PeriodeMedVariasjon;
-                const descriptionTekst = kanHaSVPFremTilTreUkerFørTermin
-                    ? intlUtils(intl, 'perioder.varierende.description.termin')
-                    : intlUtils(intl, 'perioder.varierende.description.fødsel');
+                const periodeDerSøkerErTilbakeIOpprinneligStilling = getPeriodeDerSøkerErTilbakeIFullStilling(
+                    formValues.varierendePerioder,
+                    opprinneligStillingsprosent,
+                );
+
+                const uferdigDelvisTilretteleggingInput = getUferdigPeriodeInput(
+                    formValues,
+                    sisteDagForSvangerskapspenger,
+                );
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -123,13 +122,12 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                     formValues.varierendePerioder &&
                                     formValues.varierendePerioder.length > 0 &&
                                     formValues.varierendePerioder.map((p, index) => {
-                                        const måSøkeSendeNySøknad = getMåSendeNySøknad(
+                                        const måSendeNySøknad = getMåSendeNySøknad(
                                             periodeDerSøkerErTilbakeIOpprinneligStilling,
                                             p,
                                             opprinneligStillingsprosent,
                                         );
-                                        const fomInputDate =
-                                            formValues.varierendePerioder && formValues.varierendePerioder[index].fom;
+                                        const fomInputDate = formValues.varierendePerioder![index].fom;
                                         const minDatoTom =
                                             fomInputDate && isISODateString(fomInputDate)
                                                 ? ISOStringToDate(fomInputDate)
@@ -243,7 +241,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             validate={validateStillingsprosentPerioder(
                                                                 intl,
                                                                 opprinneligStillingsprosent,
-                                                                måSøkeSendeNySøknad,
+                                                                måSendeNySøknad,
                                                                 periodeDerSøkerErTilbakeIOpprinneligStilling,
                                                                 formValues.varierendePerioder,
                                                             )}
@@ -269,7 +267,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         </Block>
                                                     </ReadMore>
                                                 </Block>
-                                                {måSøkeSendeNySøknad && (
+                                                {måSendeNySøknad && (
                                                     <Block padBottom="xxl">
                                                         <Alert variant="warning">
                                                             <Block padBottom="m">

@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { TilretteleggingPeriode } from 'app/types/Tilrettelegging';
+import { TilretteleggingPeriode, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { BodyShort, Label } from '@navikt/ds-react';
 
@@ -37,6 +37,18 @@ const getDatoText = (
     }
 };
 
+const getStillingsprosentTekst = (periode: TilretteleggingPeriode, intl: IntlShape): string => {
+    if (periode.type === Tilretteleggingstype.HEL) {
+        return intlUtils(intl, 'oppsummering.periode.tilbakeIFullJobb');
+    }
+    if (periode.type === Tilretteleggingstype.INGEN) {
+        return intlUtils(intl, 'oppsummering.periode.ikkeJobbe');
+    }
+    return intlUtils(intl, 'oppsummering.periode.stillingsprosent', {
+        stillingsprosent: periode.stillingsprosent,
+    });
+};
+
 const PeriodeVisning: FunctionComponent<Props> = ({
     periode,
     sisteDagForSvangerskapspenger,
@@ -45,15 +57,7 @@ const PeriodeVisning: FunctionComponent<Props> = ({
     const intl = useIntl();
     let labelText = getDatoText(intl, sisteDagForSvangerskapspenger, periode, kanHaSvpFremTilTreUkerFørTermin);
 
-    let stillingsprosentText = intlUtils(intl, 'oppsummering.periode.stillingsprosent', {
-        stillingsprosent: periode.stillingsprosent,
-    });
-    if (periode.stillingsprosent === 0) {
-        stillingsprosentText = intlUtils(intl, 'oppsummering.periode.ikkeJobbe');
-    }
-    if (periode.stillingsprosent === periode.arbeidsforhold.opprinneligstillingsprosent) {
-        stillingsprosentText = intlUtils(intl, 'oppsummering.periode.tilbakeIFullJobb');
-    }
+    const stillingsprosentText = getStillingsprosentTekst(periode, intl);
     const bem = bemUtils('periodeVisningInfoBox');
 
     return (

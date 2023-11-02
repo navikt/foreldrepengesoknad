@@ -35,7 +35,7 @@ import {
     validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
     validateSammePeriodeFremTilTerminTilbakeIJobbDato,
-    validateStillingsprosent,
+    validateStillingsprosentEnDelvisPeriode,
     validateTilretteleggingstiltak,
     validateBehovForTilretteleggingFom,
     validateTilrettelagtArbeidType,
@@ -297,7 +297,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                                 ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.description')
                                                 : ''
                                         }
-                                        validate={validateStillingsprosent(intl, opprinneligStillingsprosent)}
+                                        validate={validateStillingsprosentEnDelvisPeriode(
+                                            intl,
+                                            opprinneligStillingsprosent,
+                                        )}
                                     />
                                 </Block>
                                 <ReadMore

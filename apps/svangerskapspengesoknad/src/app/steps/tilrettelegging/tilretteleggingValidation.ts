@@ -12,36 +12,14 @@ import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue 
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-export const validerStillingsprosentInput = (
-    intl: IntlShape,
-    value: string,
-    opprinneligStillingsProsent: number,
-    lovÅOppgiOpprinneligStillingsprosent: boolean,
-    lovÅOppgiNullStillingsprosent: boolean,
-) => {
-    const stillingsprosent = getFloatFromString(value);
-
+export const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!hasValue(value) || value.trim() === '') {
         return intlUtils(intl, 'valideringsfeil.stillingsprosent.required');
     }
+    const stillingsprosent = getFloatFromString(value);
 
     if (stillingsprosent === undefined) {
         return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreEtTall');
-    }
-
-    if (!lovÅOppgiNullStillingsprosent && stillingsprosent <= 0) {
-        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
-    }
-
-    if (lovÅOppgiOpprinneligStillingsprosent && stillingsprosent > opprinneligStillingsProsent) {
-        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
-            prosent: opprinneligStillingsProsent,
-        });
-    }
-    if (!lovÅOppgiOpprinneligStillingsprosent && stillingsprosent >= opprinneligStillingsProsent) {
-        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnnOpprinneligStillingsprosent', {
-            prosent: opprinneligStillingsProsent,
-        });
     }
 
     return undefined;
@@ -56,22 +34,48 @@ export const validateStillingsprosentPerioder =
         allePerioder: PeriodeMedVariasjon[] | undefined,
     ) =>
     (value: string) => {
-        const valideringsFeil = validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, true, true);
+        const valideringsFeil = validerStillingsprosentInput(intl, value);
         if (valideringsFeil) {
             return valideringsFeil;
         }
+        const stillingsprosent = getFloatFromString(value);
+        if (stillingsprosent && opprinneligStillingsProsent > 0 && stillingsprosent > opprinneligStillingsProsent) {
+            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
+                prosent: opprinneligStillingsProsent,
+            });
+        }
+
+        if (stillingsprosent && opprinneligStillingsProsent === 0 && stillingsprosent > 100) {
+            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLik100Prosent', {
+                prosent: opprinneligStillingsProsent,
+            });
+        }
+
         if (
+            opprinneligStillingsProsent > 0 &&
             allePerioder &&
             allePerioder?.every(
                 (periode) =>
                     hasValue(periode.stillingsprosent) &&
-                    parseInt(periode.stillingsprosent!, 10) === opprinneligStillingsProsent,
+                    parseFloat(periode.stillingsprosent) === opprinneligStillingsProsent,
             )
         ) {
             return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kunFullTilrettelegging', {
                 prosent: opprinneligStillingsProsent,
             });
         }
+        if (
+            opprinneligStillingsProsent === 0 &&
+            allePerioder &&
+            allePerioder?.every(
+                (periode) => hasValue(periode.stillingsprosent) && parseFloat(periode.stillingsprosent) === 100,
+            )
+        ) {
+            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kun100Prosent', {
+                prosent: opprinneligStillingsProsent,
+            });
+        }
+
         if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
             return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.nySøknad', {
                 fom: formatDate(periodeDerTilbakeIFullJobb.fom),
@@ -80,9 +84,27 @@ export const validateStillingsprosentPerioder =
         return undefined;
     };
 
-export const validateStillingsprosent = (intl: IntlShape, opprinneligStillingsProsent: number) => (value: string) => {
-    return validerStillingsprosentInput(intl, value, opprinneligStillingsProsent, false, false);
-};
+export const validateStillingsprosentEnDelvisPeriode =
+    (intl: IntlShape, opprinneligStillingsProsent: number) => (value: string) => {
+        const initValidering = validerStillingsprosentInput(intl, value);
+        if (initValidering) {
+            return initValidering;
+        }
+        const stillingsprosent = parseFloat(value);
+        if (stillingsprosent <= 0) {
+            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
+        }
+        if (opprinneligStillingsProsent === 0 && stillingsprosent >= 100) {
+            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnn100Prosent', {
+                prosent: opprinneligStillingsProsent,
+            });
+        }
+        if (opprinneligStillingsProsent > 0 && stillingsprosent >= opprinneligStillingsProsent) {
+            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnnOpprinneligStillingsprosent', {
+                prosent: opprinneligStillingsProsent,
+            });
+        }
+    };
 export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) => (value: string) => {
     if (!hasValue(value) || value.trim() === '') {
         return intlUtils(intl, 'valideringsfeil.tilretteleggingstiltak.påkrevd');
