@@ -104,6 +104,7 @@ export const validateStillingsprosentEnDelvisPeriode =
                 prosent: opprinneligStillingsProsent,
             });
         }
+        return undefined;
     };
 export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) => (value: string) => {
     if (!hasValue(value) || value.trim() === '') {
