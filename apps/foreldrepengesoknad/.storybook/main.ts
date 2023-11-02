@@ -8,6 +8,11 @@ const config = {
     docs: {
         autodocs: false,
     },
+    viteFinal: async (config) => ({
+        ...config,
+        // @ts-ignore
+        plugins: config.plugins?.filter((p) => p?.name !== 'vite-plugin-eslint'),
+    }),
 };
 
 export default config;

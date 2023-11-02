@@ -1,0 +1,20 @@
+{
+    "name": "@navikt/fp-utils-test",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {
+        "eslint": "eslint \"src/**/*.ts*\" --color",
+        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+    },
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-hook-form": "7.45.4",
+        "react-intl": "^6.4.4",
+        "@storybook/react-vite": "7.3.1"
+    },
+    "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "tsconfig": "workspace:*"
+    }
+}

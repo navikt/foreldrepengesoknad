@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import IntlProvider from 'intl/IntlProvider';
 import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
@@ -82,19 +81,17 @@ const Template: StoryFn<{
 }) => {
     initAmplitude();
     return (
-        <IntlProvider språkkode="nb">
-            <EsContextStorybookHelper
-                initialState={{
-                    [EsDataType.OM_BARNET]: omBarnet,
-                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
-                    [EsDataType.DOKUMENTASJON]: dokumentasjon,
-                }}
-            >
-                <OppsummeringSteg person={person} sendSøknad={sendSøknad} />
-            </EsContextStorybookHelper>
-        </IntlProvider>
+        <EsContextStorybookHelper
+            initialState={{
+                [EsDataType.OM_BARNET]: omBarnet,
+                [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
+                [EsDataType.DOKUMENTASJON]: dokumentasjon,
+            }}
+        >
+            <OppsummeringSteg person={person} sendSøknad={sendSøknad} />
+        </EsContextStorybookHelper>
     );
 };
 

@@ -8,9 +8,11 @@ const config = {
     docs: {
         autodocs: false,
     },
-    core: {
-        builder: '@storybook/builder-vite',
-    },
+    viteFinal: async (config) => ({
+        ...config,
+        // @ts-ignore
+        plugins: config.plugins?.filter((p) => p?.name !== 'vite-plugin-eslint'),
+    }),
 };
 
 export default config;
