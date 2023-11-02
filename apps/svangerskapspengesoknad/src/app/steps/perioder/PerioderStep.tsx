@@ -4,7 +4,6 @@ import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
 import { Alert, BodyShort, Button, Heading, ReadMore, Tag } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
-
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -15,8 +14,6 @@ import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
-
 import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
 import { FieldArray } from 'formik';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
@@ -31,6 +28,7 @@ import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
 import './perioderStep.css';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import dayjs from 'dayjs';
+import { getSisteDagForSvangerskapspenger, getKanHaSvpFremTilTreUkerFørTermin } from 'app/utils/dateUtils';
 interface Props {
     id: string;
     navn: string;
@@ -42,14 +40,14 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const bem = bemUtils('perioderStep');
     const søknad = useSøknad();
     const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
+    const { erBarnetFødt, fødselsdato } = barn;
     const { state } = useSvangerskapspengerContext();
     const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
-    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
-    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato!);
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
     const onValidSubmitHandler = (values: Partial<PerioderFormData>) => {
         const mappedTilrettelegging = mapPerioderFormDataToState(id, values, tilretteleggingFraState);
@@ -72,18 +70,22 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const maxDato = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
+    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
+    const sisteDagMedSvpLabel = kanHaSVPFremTilTreUkerFørTermin
+        ? intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin')
+        : intlUtils(intl, 'perioder.varierende.tomType.dagenFørFødsel');
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
             initialValues={getPerioderInitialValues(currentTilrettelegging!)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
-                const minDatoPeriodeFom = currentTilrettelegging!.behovForTilretteleggingFom!;
+                const minDatoPeriodeFom = currentTilrettelegging!.behovForTilretteleggingFom;
                 const periodeDerSøkerErTilbakeIOpprinneligStilling = formValues.varierendePerioder
                     ? formValues.varierendePerioder.find(
                           (p) =>
                               hasValue(p.stillingsprosent) &&
-                              parseInt(p.stillingsprosent!, 10) === opprinneligStillingsprosent,
+                              parseInt(p.stillingsprosent, 10) === opprinneligStillingsprosent,
                       )
                     : undefined;
                 const uferdigDelvisTilretteleggingInput = {
@@ -166,7 +168,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             formValues.varierendePerioder,
                                                             currentTilrettelegging!.behovForTilretteleggingFom,
                                                             sisteDagForSvangerskapspenger,
-                                                            barn.erBarnetFødt,
+                                                            erBarnetFødt,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                         )}
@@ -186,11 +188,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                                 value: TilOgMedDatoType.VALGFRI_DATO,
                                                             },
                                                             {
-                                                                label: intlUtils(
-                                                                    intl,
-                                                                    'perioder.varierende.tomType.treUkerFørTermin',
-                                                                ),
-                                                                value: TilOgMedDatoType.TRE_UKER_FØR_TERMIN,
+                                                                label: intlUtils(intl, sisteDagMedSvpLabel),
+                                                                value: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                                             },
                                                         ]}
                                                         validate={validatePeriodeTomType(
@@ -217,7 +216,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             index,
                                                             formValues.varierendePerioder,
                                                             sisteDagForSvangerskapspenger,
-                                                            barn.fødselsdato,
+                                                            fødselsdato,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                         )}

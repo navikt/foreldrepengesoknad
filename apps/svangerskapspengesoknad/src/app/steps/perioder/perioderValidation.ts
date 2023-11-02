@@ -119,7 +119,7 @@ export const validatePeriodeTomType =
         }
         if (
             sluttDatoArbeid &&
-            value === TilOgMedDatoType.TRE_UKER_FØR_TERMIN &&
+            value === TilOgMedDatoType.SISTE_DAG_MED_SVP &&
             dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
         ) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
@@ -144,7 +144,7 @@ export const validateAtPeriodeIkkeOverlapper = (
         const andrePerioderLagtTilEtter = allePerioder.filter((_p, i) => i > index);
         const overlappendePerioder = andrePerioderLagtTilEtter.filter((p) => {
             let periodeTom = undefined;
-            if (hasValue(p.tomType) && p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {
+            if (hasValue(p.tomType) && p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
                 periodeTom = dateToISOString(sisteDagForSvangerskapspenger);
             }
             if (hasValue(p.tom)) {
@@ -186,9 +186,9 @@ export const validateSammenhengendePerioderFom = (
     }
     const alleTom = allePerioder
         ? allePerioder
-              .filter((p) => (p.tom && isISODateString(p.tom)) || p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN)
+              .filter((p) => (p.tom && isISODateString(p.tom)) || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
               .map((periode) => {
-                  return periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN
+                  return periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
                       ? dayjs(sisteDagForSvangerskapspenger)
                       : dayjs(periode.tom);
               })

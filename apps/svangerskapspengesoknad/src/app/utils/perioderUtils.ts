@@ -16,11 +16,11 @@ export const getPeriodeInfoTekst = (
         formValues.varierendePerioder[index] &&
         formValues.varierendePerioder[index].fom &&
         isISODateString(formValues.varierendePerioder[index].fom) &&
-        (formValues.varierendePerioder[index].tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN ||
+        (formValues.varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ||
             (formValues.varierendePerioder[index].tom && isISODateString(formValues.varierendePerioder[index].tom)))
     ) {
         const tomDato =
-            formValues.varierendePerioder[index].tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN
+            formValues.varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
                 ? sisteDagForSvangerskapspenger
                 : ISOStringToDate(formValues.varierendePerioder[index].tom)!;
         return `${formatDate(formValues.varierendePerioder[index].fom)} - ${formatDate(tomDato)}`;

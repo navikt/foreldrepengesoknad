@@ -5,25 +5,46 @@ import { BodyShort, Label } from '@navikt/ds-react';
 
 import './periodeVisning.css';
 import dayjs from 'dayjs';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
 interface Props {
     periode: TilretteleggingPeriode;
     sisteDagForSvangerskapspenger: Date;
+    kanHaSvpFremTilTreUkerFørTermin: boolean;
 }
 
-const PeriodeVisning: FunctionComponent<Props> = ({ periode, sisteDagForSvangerskapspenger }) => {
-    const intl = useIntl();
+const getDatoText = (
+    intl: IntlShape,
+    sisteDagForSvangerskapspenger: Date,
+    periode: TilretteleggingPeriode,
+    kanHaSvpFremTilTreUkerFørTermin: boolean,
+) => {
+    const varerTilSisteDagMedSvp = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger, 'd');
 
-    const tilTreUkerFørFødsel = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger, 'd');
-    const labelText = !tilTreUkerFørFødsel
-        ? intlUtils(intl, 'oppsummering.periode.fraTil', {
-              fraDato: formatDate(periode.fom),
-              tilDato: formatDate(periode.tom),
-          })
-        : intlUtils(intl, 'oppsummering.periode.fraTilFødsel', {
-              fraDato: formatDate(periode.fom),
-          });
+    if (!varerTilSisteDagMedSvp) {
+        return intlUtils(intl, 'oppsummering.periode.fraTil', {
+            fraDato: formatDate(periode.fom),
+            tilDato: formatDate(periode.tom),
+        });
+    } else if (kanHaSvpFremTilTreUkerFørTermin) {
+        return intlUtils(intl, 'oppsummering.periode.fremTilTreUkerFørTermin', {
+            fraDato: formatDate(periode.fom),
+        });
+    } else {
+        return intlUtils(intl, 'oppsummering.periode.fremTilFødsel', {
+            fraDato: formatDate(periode.fom),
+        });
+    }
+};
+
+const PeriodeVisning: FunctionComponent<Props> = ({
+    periode,
+    sisteDagForSvangerskapspenger,
+    kanHaSvpFremTilTreUkerFørTermin,
+}) => {
+    const intl = useIntl();
+    let labelText = getDatoText(intl, sisteDagForSvangerskapspenger, periode, kanHaSvpFremTilTreUkerFørTermin);
+
     let stillingsprosentText = intlUtils(intl, 'oppsummering.periode.stillingsprosent', {
         stillingsprosent: periode.stillingsprosent,
     });

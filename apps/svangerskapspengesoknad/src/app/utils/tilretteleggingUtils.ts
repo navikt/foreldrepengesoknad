@@ -99,7 +99,7 @@ const mappedTilretteleggingMedVarierendePerioder = (
             type = Tilretteleggingstype.HEL;
         }
         const tom =
-            periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN
+            periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
                 ? dateToISOString(sisteDagForSvangerskapspenger)
                 : periode.tom!;
         return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent!, periode.fom, tom);
@@ -156,9 +156,9 @@ export const getNesteDagEtterSistePeriode = (
         return '';
     }
     const alleTomDatoer = formvalues.varierendePerioder
-        .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN)
+        .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
         .map((periode) => {
-            if (periode.tomType === TilOgMedDatoType.TRE_UKER_FØR_TERMIN) {
+            if (periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
                 return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');
             } else {
                 return dayjs(periode.tom);

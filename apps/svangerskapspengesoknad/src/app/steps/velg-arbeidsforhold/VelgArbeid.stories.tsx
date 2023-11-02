@@ -5,7 +5,6 @@ import withRouterProvider from 'storybook/decorators/withRouter';
 import VelgArbeid from './VelgArbeid';
 import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import _sokerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
 import _context from 'storybook/storydata/soknad/soknad.json';
 
 const defaultExport = {

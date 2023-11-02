@@ -8,9 +8,6 @@ import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/
 import { Link } from 'react-router-dom';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-
-import './oppsummering.css';
-
 import {
     OppsummeringFormComponents,
     OppsummeringFormData,
@@ -26,7 +23,6 @@ import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirect, redirectToLogin } from 'app/utils/redirectUtils';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
-import { dagenFør3UkerFørFamiliehendelse } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
@@ -40,6 +36,8 @@ import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/Arb
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import AccordionItem from 'app/components/accordion/AccordionItem';
 import AccordionContent from 'app/components/accordion/AccordionContent';
+import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
+import './oppsummering.css';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -60,8 +58,7 @@ const Oppsummering = () => {
     const formatertTermindato = formatDate(barn.termindato);
     const formatertFødselsdato = formatDate(barn.fødselsdato!);
     const bem = bemUtils('oppsummering');
-    const familiehendelsedato = barn.erBarnetFødt ? barn.fødselsdato : barn.termindato;
-    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato!);
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(
         () => mapTilretteleggingTilPerioder(søknad.tilrettelegging, sisteDagForSvangerskapspenger),
         [søknad.tilrettelegging, sisteDagForSvangerskapspenger],
@@ -247,6 +244,7 @@ const Oppsummering = () => {
                                                 <PeriodeOppsummering
                                                     perioder={allePerioderMedFomOgTom}
                                                     sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+                                                    barn={barn}
                                                 />
                                             </AccordionContent>
                                         </AccordionItem>

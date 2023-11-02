@@ -23,7 +23,11 @@ import { FunctionComponent, useState } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { dagenFør3UkerFørFamiliehendelse, tiMånederSidenDato } from 'app/utils/dateUtils';
+import {
+    getSisteDagForSvangerskapspenger,
+    getKanHaSvpFremTilTreUkerFørTermin,
+    tiMånederSidenDato,
+} from 'app/utils/dateUtils';
 import tilretteleggingQuestionsConfig, {
     TilretteleggingFormQuestionsPayload,
 } from './tilretteleggingStepQuestionsConfig';
@@ -69,8 +73,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const { state } = useSvangerskapspengerContext();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
-    const familiehendelsedato = erBarnetFødt ? fødselsdato! : termindato;
-    const sisteDagForSvangerskapspenger = dagenFør3UkerFørFamiliehendelse(familiehendelsedato);
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const termindatoDate = ISOStringToDate(termindato);
     const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
@@ -114,6 +117,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const maxDatoBehovFom = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
+    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
+    const sisteDagMedSvpLabel = kanHaSVPFremTilTreUkerFørTermin
+        ? intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin')
+        : intlUtils(intl, 'perioder.varierende.tomType.dagenFørFødsel');
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -352,8 +359,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             value: TilOgMedDatoType.VALGFRI_DATO,
                                         },
                                         {
-                                            label: intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin'),
-                                            value: TilOgMedDatoType.TRE_UKER_FØR_TERMIN,
+                                            label: sisteDagMedSvpLabel,
+                                            value: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                         },
                                     ]}
                                     validate={validerTilretteleggingTomType(

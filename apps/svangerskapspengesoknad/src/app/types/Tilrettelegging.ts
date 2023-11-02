@@ -30,7 +30,7 @@ export interface ArbeidsforholdForTilrettelegging {
 
 export enum TilOgMedDatoType {
     VALGFRI_DATO = 'VALGFRI_DATO',
-    TRE_UKER_FØR_TERMIN = 'TRE_UKER_FØR_TERMIN',
+    SISTE_DAG_MED_SVP = 'SISTE_DAG_MED_SVP',
 }
 
 export interface TilretteleggingPeriode {

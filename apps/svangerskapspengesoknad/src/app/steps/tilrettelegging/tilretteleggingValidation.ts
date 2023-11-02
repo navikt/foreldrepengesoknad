@@ -299,7 +299,7 @@ export const validerTilretteleggingTomType =
         if (
             sluttDatoArbeid &&
             hasValue(behovForTilretteleggingFom) &&
-            value === TilOgMedDatoType.TRE_UKER_FØR_TERMIN &&
+            value === TilOgMedDatoType.SISTE_DAG_MED_SVP &&
             dayjs(behovForTilretteleggingFom).isSameOrBefore(dayjs(sluttDatoArbeid), 'd') &&
             dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
         ) {
