@@ -56,7 +56,7 @@ const Forside: React.FunctionComponent<Props> = ({
                 )}
             </Block>
             <Block>
-                {storageData && storageData.søknad.harGodkjentVilkår && (
+                {storageData?.søknad.harGodkjentVilkår && (
                     <Heading level="1" size="large">
                         Dette er en mellomlagret søknad av typen: {storageData.søknad.type}
                     </Heading>

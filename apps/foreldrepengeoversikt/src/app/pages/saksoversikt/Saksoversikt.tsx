@@ -49,11 +49,53 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const bem = bemUtils('saksoversikt');
     const params = useParams();
     const navigate = useNavigate();
+
     useSetIsRedirectedFromSøknad(params.redirect, isFirstRender);
+    useSetBackgroundColor('blue');
+    useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
+
+    const alleSaker = getAlleYtelser(saker);
+    console.log(alleSaker);
+    console.log(params);
+    const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
+    console.log(gjeldendeSak);
+    useSetSelectedSak(gjeldendeSak);
+
+    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
+
+    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
+    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+
+    const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
+    let familiehendelsesdato = undefined;
+    let annenPartFnr = undefined;
+    let barnFnr = undefined;
+    let annenPartVedtakIsSuspended = true;
+
+    if (gjeldendeSak?.ytelse === Ytelse.FORELDREPENGER) {
+        familiehendelsesdato = gjeldendeSak?.familiehendelse
+            ? getFamiliehendelseDato(gjeldendeSak.familiehendelse)
+            : undefined;
+        annenPartFnr = gjeldendeSak?.annenPart?.fnr;
+
+        const barnFraSak =
+            gjeldendeSak?.barn && gjeldendeSak?.barn.length > 0
+                ? gjeldendeSak.barn.find((barn) => barn.fnr !== undefined)
+                : undefined;
+        barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
+        annenPartVedtakIsSuspended =
+            !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
+    }
+    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
+        annenPartFnr,
+        barnFnr,
+        familiehendelsesdato,
+        annenPartVedtakIsSuspended,
+    );
+
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
-    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
 
     if (!oppdatertData) {
         return (
@@ -68,52 +110,21 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     </Alert>
                 </Block>
                 <Block padBottom="l">
-                    <Link to={`${OversiktRoutes.SAKSOVERSIKT}`}>{intlUtils(intl, 'saksoversikt')}</Link>
+                    <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intlUtils(intl, 'saksoversikt')}</Link>
                 </Block>
             </div>
         );
     }
 
-    useSetBackgroundColor('blue');
-    useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
+    if (!gjeldendeSak) {
+        return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
+    }
+
     const navnPåSøker = søkerinfo.søker.fornavn;
-    const alleSaker = getAlleYtelser(saker);
-
-    const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
-    useSetSelectedSak(gjeldendeSak);
-
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-
     const aktiveMinidialogerForSaken = minidialogerData
         ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
         : undefined;
-    const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
-    let familiehendelsesdato = undefined;
-    let annenPartFnr = undefined;
-    let barnFnr = undefined;
-    let annenPartVedtakIsSuspended = true;
-
-    if (gjeldendeSak.ytelse === Ytelse.FORELDREPENGER) {
-        familiehendelsesdato = getFamiliehendelseDato(gjeldendeSak.familiehendelse);
-        annenPartFnr = gjeldendeSak.annenPart?.fnr;
-
-        const barnFraSak =
-            gjeldendeSak.barn && gjeldendeSak.barn.length > 0
-                ? gjeldendeSak.barn.find((barn) => barn.fnr !== undefined)
-                : undefined;
-        barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
-        annenPartVedtakIsSuspended =
-            !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
-    }
-    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
-        annenPartFnr,
-        barnFnr,
-        familiehendelsesdato,
-        annenPartVedtakIsSuspended,
-    );
-
-    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
-    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
 
     return (
         <div className={bem.block}>
