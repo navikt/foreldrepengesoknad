@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { Path } from 'appData/paths';
@@ -25,16 +24,14 @@ export default {
 const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <IntlProvider språkkode="nb">
-            <EsContextStorybookHelper
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                }}
-            >
-                <TidligereUtenlandsoppholdSteg />
-            </EsContextStorybookHelper>
-        </IntlProvider>
+        <EsContextStorybookHelper
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+            }}
+        >
+            <TidligereUtenlandsoppholdSteg />
+        </EsContextStorybookHelper>
     );
 };
 

@@ -28,6 +28,7 @@
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/addon-interactions": "^7.3.1",
         "@storybook/addon-links": "^7.2.1",

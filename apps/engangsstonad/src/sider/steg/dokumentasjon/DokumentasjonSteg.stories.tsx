@@ -8,7 +8,6 @@ import { attachmentApi } from '@navikt/fp-api';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Action, EsDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
-import IntlProvider from 'intl/IntlProvider';
 import DokumentasjonSteg from './DokumentasjonSteg';
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -33,16 +32,14 @@ const Template: StoryFn<{
     }
 
     return (
-        <IntlProvider språkkode="nb">
-            <EsContextStorybookHelper
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [EsDataType.OM_BARNET]: omBarnet,
-                }}
-            >
-                <DokumentasjonSteg />
-            </EsContextStorybookHelper>
-        </IntlProvider>
+        <EsContextStorybookHelper
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [EsDataType.OM_BARNET]: omBarnet,
+            }}
+        >
+            <DokumentasjonSteg />
+        </EsContextStorybookHelper>
     );
 };
 

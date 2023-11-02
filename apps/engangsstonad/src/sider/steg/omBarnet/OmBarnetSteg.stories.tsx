@@ -2,7 +2,6 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import OmBarnetSteg from './OmBarnetSteg';
-import IntlProvider from 'intl/IntlProvider';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { Action, EsDataType } from 'appData/EsDataContext';
 import withRouter from 'storybookHelpers/withRouter';
@@ -26,14 +25,12 @@ const Template: StoryFn<{
 }> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <IntlProvider språkkode="nb">
-            <EsContextStorybookHelper
-                initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
-                onDispatch={gåTilNesteSide}
-            >
-                <OmBarnetSteg kjønn={kjønn} />
-            </EsContextStorybookHelper>
-        </IntlProvider>
+        <EsContextStorybookHelper
+            initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
+            onDispatch={gåTilNesteSide}
+        >
+            <OmBarnetSteg kjønn={kjønn} />
+        </EsContextStorybookHelper>
     );
 };
 

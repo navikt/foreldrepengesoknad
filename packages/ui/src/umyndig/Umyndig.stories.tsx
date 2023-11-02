@@ -1,5 +1,4 @@
 import { StoryFn } from '@storybook/react';
-import { RawIntlProvider, createIntl } from 'react-intl';
 import Umyndig, { Props } from './Umyndig';
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -10,11 +9,7 @@ export default {
 
 const Template: StoryFn<Props> = ({ appnavn }) => {
     initAmplitude();
-    return (
-        <RawIntlProvider value={createIntl({ locale: 'nb', messages: {} })}>
-            <Umyndig appnavn={appnavn} />
-        </RawIntlProvider>
-    );
+    return <Umyndig appnavn={appnavn} />;
 };
 
 export const UmyndigForeldrepenger = Template.bind({});

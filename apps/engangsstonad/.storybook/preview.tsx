@@ -1,4 +1,10 @@
 import React from 'react';
+import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { Preview } from '@storybook/react';
+
+import nnMessages from '../src/intl/messages/nn_NO.json';
+import nbMessages from '../src/intl/messages/nb_NO.json';
+import enMessages from '../src/intl/messages/en_US.json';
 
 import '@navikt/ds-css';
 import 'styles/globals.less';
@@ -11,10 +17,39 @@ scriptTag.innerHTML = JSON.stringify({
 });
 document.head.appendChild(scriptTag);
 
+const withIntlProvider = getIntlDecorator({
+    nn: nnMessages,
+    nb: nbMessages,
+    en: enMessages,
+});
+
 export const decorators = [
+    withIntlProvider,
     (Story) => (
         <div id="app" style={{ backgroundColor: 'white', padding: '40px' }}>
             <Story />
         </div>
     ),
 ];
+
+export const globalTypes = {
+    locale: {
+        description: 'Internationalization locale',
+        toolbar: {
+            title: 'Språk',
+            icon: 'globe',
+            items: [
+                { value: 'nb', title: 'Bokmål' },
+                { value: 'nn', title: 'Nynorsk' },
+                { value: 'en', title: 'English' },
+            ],
+            dynamicTitle: true,
+        },
+    },
+};
+
+const preview: Preview = {
+    decorators: [withIntlProvider],
+};
+
+export default preview;
