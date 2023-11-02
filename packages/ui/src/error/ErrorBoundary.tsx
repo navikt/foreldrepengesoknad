@@ -4,7 +4,7 @@ import { Component } from 'react';
 import ErrorPage from './ErrorPage';
 
 interface Props {
-    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger' | 'Foreldrepengeplanlegger';
     children: React.ReactNode;
     retryCallback: () => void;
 }
