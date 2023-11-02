@@ -23,20 +23,18 @@ describe('<Perioder>', () => {
         render(<Default />);
 
         expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(FRA_DATO)).toBeInTheDocument();
-        expect(await screen.findByText(TIL_DATO)).toBeInTheDocument();
-        expect(await screen.findByText(STILLINGSPROSENT)).toBeInTheDocument();
+        expect(screen.getByText(FRA_DATO)).toBeInTheDocument();
+        expect(screen.getByText(TIL_DATO)).toBeInTheDocument();
+        expect(screen.getByText(STILLINGSPROSENT)).toBeInTheDocument();
 
-        expect(await screen.findByText(NESTE_STEG)).toBeInTheDocument();
+        expect(screen.getByText(NESTE_STEG)).toBeInTheDocument();
         await user.click(screen.getByText(NESTE_STEG));
 
-        expect(await screen.getAllByText('Du må oppgi fra og med datoen på perioden.')[0]).toBeInTheDocument();
+        expect(await screen.findAllByText('Du må oppgi fra og med datoen på perioden.')).toHaveLength(2);
         expect(
-            await screen.getAllByText(
-                'Du må oppgi om du skal jobbe redusert frem til tre uker før termin eller frem til en annen dato.',
-            )[0],
-        ).toBeInTheDocument();
-        expect(await screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')[0]).toBeInTheDocument();
+            screen.getAllByText('Du må oppgi om perioden slutter tre uker før termin eller en annen dato.'),
+        ).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')).toHaveLength(2);
     });
     it('skal ikke vise feilmelding når alt er utfylt', async () => {
         render(<Default />);

@@ -9,7 +9,7 @@ const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
 const TILRETTELEGGINGSDATO = 'Fra hvilken dato har du behov for tilrettelegging eller omplassering?';
 const TERMINDATO = '2024-02-18';
 const HVOR_MYE_KAN_DU_JOBBE = 'Hvor mye kan du jobbe?';
-const REDUSERT = 'Jeg kan jobbe med redusert arbeidstid';
+const REDUSERT = 'Du kan jobbe med redusert arbeidstid';
 const SAMME_STILLINGSPROSENT = 'Skal du ha den samme stillingsprosenten gjennom hele svangerskapet?';
 const JA = 'Ja';
 const HVILKEN_STILLINGSPROSENT = 'Hvilken stillingsprosent skal du jobbe?';
@@ -17,7 +17,7 @@ const FRA_DATO_REDUSERT = 'Fra hvilken dato skal du jobbe redusert?';
 const TIL_DATO_REDUSERT = 'Frem til hvilken dato skal du jobbe redusert?';
 const FREM_TIL_DATO = 'Frem til en dato';
 const DATO_TILBAKE = 'Dato du skal tilbake til din opprinnelige stillingsprosent';
-const IKKE_JOBBE = 'Jeg kan ikke jobbe';
+const IKKE_JOBBE = 'Du kan ikke jobbe';
 const FRA_DATO_BORTE_FRA_JOBB = 'Fra hvilken dato skal du være borte fra jobb?';
 const NESTE_STEG = 'Neste steg';
 describe('<Behov for tilrettelegging>', () => {
@@ -26,7 +26,7 @@ describe('<Behov for tilrettelegging>', () => {
         render(<Default />);
 
         expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(TILRETTELEGGINGSDATO)).toBeInTheDocument();
+        expect(screen.getByText(TILRETTELEGGINGSDATO)).toBeInTheDocument();
 
         await user.click(screen.getByText(NESTE_STEG));
 
