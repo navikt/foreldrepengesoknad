@@ -40,7 +40,6 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const bem = bemUtils('perioderStep');
     const søknad = useSøknad();
     const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
-    const { erBarnetFødt, fødselsdato } = barn;
     const { state } = useSvangerskapspengerContext();
     const { arbeidsforhold } = useSøkerinfo();
     const onAvbrytSøknad = useAvbrytSøknad();
@@ -95,6 +94,9 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                     tomType: undefined!,
                     type: TilretteleggingstypeOptions.DELVIS,
                 } as PeriodeMedVariasjon;
+                const descriptionTekst = kanHaSVPFremTilTreUkerFørTermin
+                    ? intlUtils(intl, 'perioder.varierende.description.termin')
+                    : intlUtils(intl, 'perioder.varierende.description.fødsel');
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -112,7 +114,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                             )}
                             <Block padBottom="xl">
                                 <Heading size="small">{intlUtils(intl, 'perioder.varierende.heading')}</Heading>
-                                <BodyShort>{intlUtils(intl, 'perioder.varierende.description')}</BodyShort>
+                                <BodyShort>{descriptionTekst}</BodyShort>
                             </Block>
                             <FieldArray
                                 validateOnChange={false}
@@ -168,9 +170,9 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             formValues.varierendePerioder,
                                                             currentTilrettelegging!.behovForTilretteleggingFom,
                                                             sisteDagForSvangerskapspenger,
-                                                            erBarnetFødt,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
+                                                            kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
                                                     />
                                                 </Block>
@@ -197,6 +199,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             sisteDagForSvangerskapspenger,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
+                                                            kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
                                                     />
                                                 </Block>
@@ -216,9 +219,9 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             index,
                                                             formValues.varierendePerioder,
                                                             sisteDagForSvangerskapspenger,
-                                                            fødselsdato,
                                                             currentTilrettelegging!.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
+                                                            kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
                                                         minDate={minDatoTom}
                                                         maxDate={maxDato}

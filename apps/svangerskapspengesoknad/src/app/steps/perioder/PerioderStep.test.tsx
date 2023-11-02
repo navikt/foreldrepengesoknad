@@ -32,7 +32,7 @@ describe('<Perioder>', () => {
 
         expect(await screen.findAllByText('Du må oppgi fra og med datoen på perioden.')).toHaveLength(2);
         expect(
-            screen.getAllByText('Du må oppgi om perioden slutter tre uker før termin eller en annen dato.'),
+            screen.getAllByText('Du må oppgi om perioden varer frem til tre uker før termin eller en annen dato.'),
         ).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')).toHaveLength(2);
     });

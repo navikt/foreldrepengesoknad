@@ -69,7 +69,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const { arbeidsforhold } = useSøkerinfo();
     const søknad = useSøknad();
     const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
-    const { termindato, fødselsdato, erBarnetFødt } = barn;
+    const { termindato } = barn;
     const { state } = useSvangerskapspengerContext();
     const onAvbrytSøknad = useAvbrytSøknad();
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
@@ -182,9 +182,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         intl,
                                         sisteDagForSvangerskapspenger,
                                         termindatoDate!,
-                                        erBarnetFødt,
                                         currentTilrettelegging!.arbeidsforhold.navn,
                                         sluttDatoArbeid,
+                                        kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                 />
                             </Block>
@@ -336,10 +336,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         intl,
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,
-                                        fødselsdato,
                                         formValues.tilretteleggingType!,
                                         currentTilrettelegging!.arbeidsforhold.navn,
                                         sluttDatoArbeid,
+                                        kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                 />
                             </Block>
@@ -370,6 +370,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         sisteDagForSvangerskapspenger,
                                         currentTilrettelegging!.arbeidsforhold.navn,
                                         sluttDatoArbeid,
+                                        kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                 />
                             </Block>
@@ -384,7 +385,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     label={labelPeriodeTomTekst}
                                     minDate={
                                         hasValue(formValues.enPeriodeMedTilretteleggingFom)
-                                            ? dayjs(formValues.enPeriodeMedTilretteleggingFom!).add(1, 'day').toDate()
+                                            ? dayjs(formValues.enPeriodeMedTilretteleggingFom).add(1, 'day').toDate()
                                             : new Date(formValues.behovForTilretteleggingFom!)
                                     }
                                     maxDate={maxDatoBehovFom}
@@ -392,11 +393,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         intl,
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,
-                                        fødselsdato,
                                         formValues.enPeriodeMedTilretteleggingFom,
                                         formValues.tilretteleggingType!,
                                         currentTilrettelegging!.arbeidsforhold.navn,
                                         sluttDatoArbeid,
+                                        kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                 />
                             </Block>

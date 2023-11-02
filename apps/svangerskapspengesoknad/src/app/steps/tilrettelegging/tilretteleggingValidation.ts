@@ -104,10 +104,10 @@ export const validateSammePeriodeFremTilTerminFom =
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: Date,
-        fødselsdato: string | undefined,
         tilretteleggingstype: TilretteleggingstypeOptions,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
+        kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
         const erDelvis = tilretteleggingstype === TilretteleggingstypeOptions.DELVIS;
@@ -133,14 +133,14 @@ export const validateSammePeriodeFremTilTerminFom =
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
-            if (fødselsdato) {
+            if (kanHaSVPFremTilTreUkerFørTermin) {
                 return erDelvis
-                    ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørFødsel.delvis')
-                    : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørFødsel.ingen');
+                    ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.delvis')
+                    : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.ingen');
             }
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.ingen');
+                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterFødsel.delvis')
+                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterFødsel.ingen');
         }
         if (
             sluttDatoArbeid &&
@@ -169,11 +169,11 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: Date,
-        fødselsdato: string | undefined,
         fom: string | undefined,
         type: TilretteleggingstypeOptions,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
+        kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
         const erDelvis = type === TilretteleggingstypeOptions.DELVIS;
@@ -207,14 +207,14 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
-            if (fødselsdato) {
+            if (kanHaSVPFremTilTreUkerFørTermin) {
                 return erDelvis
-                    ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørFødsel.delvis')
-                    : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørFødsel.ingen');
+                    ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.delvis')
+                    : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.ingen');
             }
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.ingen');
+                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterFødsel.delvis')
+                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterFødsel.ingen');
         }
         if (
             sluttDatoArbeid &&
@@ -237,9 +237,9 @@ export const validateBehovForTilretteleggingFom =
         intl: IntlShape,
         sisteDagForSvangerskapspenger: Date,
         termindato: Date,
-        erBarnetFødt: boolean,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
+        kanHaSvpFremTilTreUkerFørTermin: boolean,
     ) =>
     (fom: string): SkjemaelementFeil => {
         if (!hasValue(fom)) {
@@ -253,13 +253,11 @@ export const validateBehovForTilretteleggingFom =
             return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin');
         }
         if (dayjs(fom).isAfter(dagenFør(sisteDagForSvangerskapspenger), 'd')) {
-            return erBarnetFødt
-                ? intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørFødsel')
-                : intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin');
+            return kanHaSvpFremTilTreUkerFørTermin
+                ? intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin')
+                : intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreFørFødsel');
         }
-        if (dayjs(fom).isAfter(dagenFør(termindato), 'd')) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.etterTermin');
-        }
+
         if (sluttDatoArbeid && dayjs(fom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
             return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.etterSluttDatoArbeid', {
@@ -288,13 +286,20 @@ export const validerTilretteleggingTomType =
         sisteDagForSvangerskapspenger: Date,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
+        kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: TilOgMedDatoType): SkjemaelementFeil => {
         const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
         if (!hasValue(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis')
-                : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen');
+            if (erDelvis) {
+                return kanHaSVPFremTilTreUkerFørTermin
+                    ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis.tilTermin')
+                    : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis.tilFødsel');
+            } else {
+                return kanHaSVPFremTilTreUkerFørTermin
+                    ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen.tilTermin')
+                    : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel');
+            }
         }
         if (
             sluttDatoArbeid &&

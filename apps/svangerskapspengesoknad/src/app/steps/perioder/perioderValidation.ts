@@ -14,9 +14,9 @@ export const validatePeriodeFom =
         allePerioder: PeriodeMedVariasjon[] | undefined,
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: Date,
-        erBarnetFødt: boolean,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
+        kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (fom: string) => {
         const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
@@ -41,9 +41,9 @@ export const validatePeriodeFom =
         }
 
         if (hasValue(fom) && dayjs(fom).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
-            return erBarnetFødt
-                ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørFødsel')
-                : intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin');
+            return kanHaSVPFremTilTreUkerFørTermin
+                ? intlUtils(intl, 'valideringsfeil.periode.fom.etterTreUkerFørTermin')
+                : intlUtils(intl, 'valideringsfeil.periode.fom.etterFødsel');
         }
 
         if (sluttDatoArbeid && dayjs(fom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
@@ -77,9 +77,9 @@ export const validatePeriodeTom =
         index: number,
         allePerioder: PeriodeMedVariasjon[] | undefined,
         sisteDagForSvangerskapspenger: Date,
-        fødselsdato: string | undefined,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
+        kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (tom: string) => {
         const fom = allePerioder && allePerioder.length > 0 ? allePerioder[index].fom : undefined;
@@ -95,9 +95,9 @@ export const validatePeriodeTom =
         }
 
         if (hasValue(tom) && dayjs(tom).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
-            return fødselsdato
-                ? intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørFødsel')
-                : intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin');
+            return kanHaSVPFremTilTreUkerFørTermin
+                ? intlUtils(intl, 'valideringsfeil.periode.tom.etterTreUkerFørTermin')
+                : intlUtils(intl, 'valideringsfeil.periode.tom.etterFødsel');
         }
         if (sluttDatoArbeid && dayjs(tom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
@@ -112,10 +112,18 @@ export const validatePeriodeTom =
     };
 
 export const validatePeriodeTomType =
-    (intl: IntlShape, sisteDagForSvangerskapspenger: Date, arbeidNavn: string, sluttDatoArbeid: string | undefined) =>
+    (
+        intl: IntlShape,
+        sisteDagForSvangerskapspenger: Date,
+        arbeidNavn: string,
+        sluttDatoArbeid: string | undefined,
+        kanHaSVPFremTilTreUkerFørTermin: boolean,
+    ) =>
     (value: TilOgMedDatoType) => {
         if (!hasValue(value)) {
-            return intlUtils(intl, 'valideringsfeil.periode.tomType.påkrevd');
+            return kanHaSVPFremTilTreUkerFørTermin
+                ? intlUtils(intl, 'valideringsfeil.periode.tomType.påkrevd.termin')
+                : intlUtils(intl, 'valideringsfeil.periode.tomType.påkrevd.fødsel');
         }
         if (
             sluttDatoArbeid &&
