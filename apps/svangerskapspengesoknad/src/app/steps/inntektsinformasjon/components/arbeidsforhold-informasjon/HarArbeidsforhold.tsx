@@ -21,7 +21,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
     return (
         <ul className={bem.element('arbeidsforholdList')}>
             {arbeidsforhold.map((arbforhold: Arbeidsforhold) => (
-                <li key={arbforhold.arbeidsgiverId}>
+                <li key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}>
                     <div className={bem.block}>
                         <div className={bem.element('topRow')}>
                             <Label>

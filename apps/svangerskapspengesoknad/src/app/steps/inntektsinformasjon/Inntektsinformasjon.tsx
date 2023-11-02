@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import {
     getAktiveArbeidsforhold,
     getAutomatiskValgtTilretteleggingHvisKunEtArbeid,
+    getUnikeArbeidsforhold,
 } from 'app/utils/arbeidsforholdUtils';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
@@ -44,6 +45,7 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
     const onAvbrytSøknad = useAvbrytSøknad();
     const { termindato } = barn;
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const aktiveUnikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
     const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
         const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
         if (autoValgtTilrettelegging) {
@@ -153,7 +155,7 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                                                 let automatiskValgtTilrettelegging =
                                                     getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
                                                         formValues,
-                                                        aktiveArbeidsforhold,
+                                                        aktiveUnikeArbeidsforhold,
                                                         termindato,
                                                         tilrettelegging,
                                                         intl,

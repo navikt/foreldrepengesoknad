@@ -39,6 +39,7 @@ export const validateStillingsprosentPerioder =
             return valideringsFeil;
         }
         const stillingsprosent = getFloatFromString(value);
+
         if (stillingsprosent && opprinneligStillingsProsent > 0 && stillingsprosent > opprinneligStillingsProsent) {
             return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
                 prosent: opprinneligStillingsProsent,

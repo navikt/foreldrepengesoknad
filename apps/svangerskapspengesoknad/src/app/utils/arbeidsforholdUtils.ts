@@ -21,7 +21,7 @@ export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termin
 };
 
 const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
-    return arbeidsforhold.arbeidsgiverId !== undefined ? arbeidsforhold.arbeidsgiverId : '';
+    return arbeidsforhold.arbeidsgiverId || '';
 };
 
 export const getUnikeArbeidsforhold = (
@@ -31,14 +31,27 @@ export const getUnikeArbeidsforhold = (
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
         const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
-        return uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
+        const unike = uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
             ...forhold,
             fom: forhold.fom,
-            tom: forhold.tom !== undefined ? forhold.tom : undefined,
+            tom: forhold.tom,
             guid: forhold.id,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
-            // forhold.arbeidsgiverNavn !== undefined ? normalizeName(forhold.arbeidsgiverNavn) : undefined,
         }));
+        const unikeMedSummertStillingsprosent = unike.map((arbeid) => {
+            const likeArbeidsforhold = aktiveArbeidsforhold.filter(
+                (a) => getArbeidsgiverId(a) === arbeid.arbeidsgiverId,
+            );
+            if (likeArbeidsforhold && likeArbeidsforhold.length > 1) {
+                return {
+                    ...arbeid,
+                    stillingsprosent: likeArbeidsforhold.reduce((ar, { stillingsprosent }) => ar + stillingsprosent, 0),
+                };
+            } else {
+                return arbeid;
+            }
+        });
+        return unikeMedSummertStillingsprosent;
     }
 
     return [];
