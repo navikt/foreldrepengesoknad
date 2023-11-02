@@ -15,7 +15,7 @@ interface Props {
     tidslinjehendelser: Tidslinjehendelse[] | undefined;
 }
 
-const getTidspunktTekst = (mottattDato: Date | undefined) => {
+const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined => {
     if (!mottattDato) {
         return undefined;
     }
@@ -46,10 +46,9 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ oppdatertData
           )
         : undefined;
 
-    const relevantDokument =
-        relevantNyHendelse && relevantNyHendelse.dokumenter
-            ? relevantNyHendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
-            : undefined;
+    const relevantDokument = relevantNyHendelse?.dokumenter
+        ? relevantNyHendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
+        : undefined;
     const mottattDato = relevantNyHendelse ? relevantNyHendelse.opprettet : undefined;
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
     return (
