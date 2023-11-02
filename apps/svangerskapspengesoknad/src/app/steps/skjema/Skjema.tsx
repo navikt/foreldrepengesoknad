@@ -58,10 +58,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
         ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
         : intlUtils(intl, 'steps.label.skjema.en');
     const key = id;
-    const skjemanummer =
-        typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT
-            ? Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING
-            : Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG;
+    const skjemanummer = Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING;
 
     const erSNEllerFrilans =
         typeArbeid === Arbeidsforholdstype.FRILANSER || typeArbeid === Arbeidsforholdstype.SELVSTENDIG;
