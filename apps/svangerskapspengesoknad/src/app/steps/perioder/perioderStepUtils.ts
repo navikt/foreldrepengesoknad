@@ -6,6 +6,7 @@ import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
 import { ISOStringToDate, intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 import { isISODateString } from '@navikt/ds-datepicker';
+import { getFloatFromString } from 'app/utils/numberUtils';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
@@ -18,8 +19,8 @@ export const getMåSendeNySøknad = (
         hasValue(currentPeriode.stillingsprosent) &&
         dayjs(currentPeriode.fom).isAfter(periodeDerSøkerErTilbakeIOpprinneligStilling.fom, 'day') &&
         ((opprinneligStillingsprosent > 0 &&
-            parseFloat(currentPeriode.stillingsprosent) < opprinneligStillingsprosent) ||
-            (opprinneligStillingsprosent === 0 && parseFloat(currentPeriode.stillingsprosent) < 100))
+            getFloatFromString(currentPeriode.stillingsprosent)! < opprinneligStillingsprosent) ||
+            (opprinneligStillingsprosent === 0 && getFloatFromString(currentPeriode.stillingsprosent)! < 100))
     );
 };
 
@@ -69,9 +70,12 @@ export const getPeriodeDerSøkerErTilbakeIFullStilling = (
     return varierendePerioder
         ? varierendePerioder.find((p) => {
               if (opprinneligStillingsprosent > 0) {
-                  return hasValue(p.stillingsprosent) && parseFloat(p.stillingsprosent) === opprinneligStillingsprosent;
+                  return (
+                      hasValue(p.stillingsprosent) &&
+                      getFloatFromString(p.stillingsprosent) === opprinneligStillingsprosent
+                  );
               } else {
-                  return hasValue(p.stillingsprosent) && parseFloat(p.stillingsprosent) === 100;
+                  return hasValue(p.stillingsprosent) && getFloatFromString(p.stillingsprosent) === 100;
               }
           })
         : undefined;

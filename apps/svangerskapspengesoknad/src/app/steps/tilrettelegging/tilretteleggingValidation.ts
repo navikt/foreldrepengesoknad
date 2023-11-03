@@ -39,7 +39,6 @@ export const validateStillingsprosentPerioder =
             return valideringsFeil;
         }
         const stillingsprosent = getFloatFromString(value);
-
         if (stillingsprosent && opprinneligStillingsProsent > 0 && stillingsprosent > opprinneligStillingsProsent) {
             return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
                 prosent: opprinneligStillingsProsent,
@@ -58,7 +57,7 @@ export const validateStillingsprosentPerioder =
             allePerioder?.every(
                 (periode) =>
                     hasValue(periode.stillingsprosent) &&
-                    parseFloat(periode.stillingsprosent) === opprinneligStillingsProsent,
+                    getFloatFromString(periode.stillingsprosent) === opprinneligStillingsProsent,
             )
         ) {
             return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kunFullTilrettelegging', {
@@ -69,7 +68,7 @@ export const validateStillingsprosentPerioder =
             opprinneligStillingsProsent === 0 &&
             allePerioder &&
             allePerioder?.every(
-                (periode) => hasValue(periode.stillingsprosent) && parseFloat(periode.stillingsprosent) === 100,
+                (periode) => hasValue(periode.stillingsprosent) && getFloatFromString(periode.stillingsprosent) === 100,
             )
         ) {
             return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kun100Prosent', {
@@ -91,7 +90,8 @@ export const validateStillingsprosentEnDelvisPeriode =
         if (initValidering) {
             return initValidering;
         }
-        const stillingsprosent = parseFloat(value);
+
+        const stillingsprosent = getFloatFromString(value)!;
         if (stillingsprosent <= 0) {
             return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
         }

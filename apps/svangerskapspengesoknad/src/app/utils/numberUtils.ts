@@ -11,7 +11,7 @@ export const getFloatFromString = (value: string | undefined): number | undefine
         if (numberOfPoints > 1) {
             return undefined;
         }
-        return parseFloat(trimmedValue);
+        return parseFloat(trimmedValue.replace(',', '.'));
     }
     return undefined;
 };
