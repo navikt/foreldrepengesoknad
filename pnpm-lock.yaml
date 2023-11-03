@@ -1104,6 +1104,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
 
   packages/constants:
     dependencies:
@@ -1117,6 +1120,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
 
   packages/eslint-config-custom:
     dependencies:
@@ -1441,6 +1447,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
 
   packages/tsconfig: {}
 
@@ -1550,6 +1559,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
       vite:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
@@ -1593,6 +1605,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
 
   packages/utils-test:
     dependencies:
@@ -1767,6 +1782,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
 
   server:
     dependencies:

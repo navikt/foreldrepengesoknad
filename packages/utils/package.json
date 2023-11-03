@@ -3,8 +3,10 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
-        "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+        "lint": "eslint \"src/**/*.ts*\" --color",
+        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "tsc": "tsc --pretty",
+        "prettier": "prettier --write src"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
@@ -18,6 +20,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.0.0",
         "@types/react": "^18.2.20",
-        "tsconfig": "workspace:*"
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6"
     }
 }
