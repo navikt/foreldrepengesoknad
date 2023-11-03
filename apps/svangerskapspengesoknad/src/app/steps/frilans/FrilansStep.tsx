@@ -38,7 +38,9 @@ const FrilansStep: React.FunctionComponent = () => {
             søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende,
         );
         if (harKunEtAktivtArbeid) {
-            const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegging)];
+            const tilretteleggingOptions = [
+                getFrilansTilretteleggingOption(tilrettelegging, søkerMedFrilans.frilansInformasjon!),
+            ];
             return [actionCreator.setSøker(søkerMedFrilans), actionCreator.setTilrettelegging(tilretteleggingOptions)];
         }
         return [actionCreator.setSøker(søkerMedFrilans)];

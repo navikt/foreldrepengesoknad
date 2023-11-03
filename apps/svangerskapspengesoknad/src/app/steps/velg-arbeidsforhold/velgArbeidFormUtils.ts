@@ -6,7 +6,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
-import { frilansId } from 'app/types/Frilans';
+import { Frilans, frilansId } from 'app/types/Frilans';
 
 export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[]): VelgArbeidFormData => {
     return {
@@ -21,11 +21,12 @@ export const getNæringTilretteleggingOption = (
     const næringTilretteleggingFraState = tilrettelegginger.find((t) => t.id == egenNæringId);
     return {
         id: egenNæringId,
-        arbeidsforhold: næringTilretteleggingFraState?.arbeidsforhold || {
+        arbeidsforhold: {
             arbeidsgiverId: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
             type: Arbeidsforholdstype.SELVSTENDIG,
             navn: næring.navnPåNæringen,
             opprinneligstillingsprosent: 100,
+            startdato: næring.tidsperiode.fom,
             sluttdato: næring.tidsperiode.tom,
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
@@ -45,14 +46,18 @@ export const getNæringTilretteleggingOption = (
     };
 };
 
-export const getFrilansTilretteleggingOption = (tilrettelegginger: Tilrettelegging[]): Tilrettelegging => {
+export const getFrilansTilretteleggingOption = (
+    tilrettelegginger: Tilrettelegging[],
+    frilans: Frilans,
+): Tilrettelegging => {
     const frilansTilretteleggingFraState = tilrettelegginger.find((t) => t.id == frilansId);
     return {
         id: frilansId,
-        arbeidsforhold: frilansTilretteleggingFraState?.arbeidsforhold || {
+        arbeidsforhold: {
             arbeidsgiverId: frilansId,
             navn: frilansId,
             type: Arbeidsforholdstype.FRILANSER,
+            startdato: frilans.oppstart,
             opprinneligstillingsprosent: 100,
         },
         vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
@@ -82,8 +87,8 @@ export const getArbeidsforholdTilretteleggingOptions = (
     const arbeidsforholdOptions = unikeArbeidsforhold.map((forhold) => {
         const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == forhold.id);
         return {
-            id: tilretteleggingFraState?.id || forhold.id,
-            arbeidsforhold: tilretteleggingFraState?.arbeidsforhold || {
+            id: tilretteleggingFraState?.id ?? forhold.id,
+            arbeidsforhold: tilretteleggingFraState?.arbeidsforhold ?? {
                 arbeidsgiverId: forhold.arbeidsgiverId,
                 type:
                     forhold.arbeidsgiverIdType === 'orgnr'
@@ -94,20 +99,21 @@ export const getArbeidsforholdTilretteleggingOptions = (
                         ? forhold.arbeidsgiverNavn
                         : intlUtils(intl, 'privat.arbeidsgiver'),
                 opprinneligstillingsprosent: forhold.stillingsprosent,
+                startdato: forhold.fom,
                 sluttdato: forhold.tom,
             },
-            varierendePerioder: tilretteleggingFraState?.varierendePerioder || [],
-            vedlegg: tilretteleggingFraState?.vedlegg || [],
-            behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
-            type: tilretteleggingFraState?.type || undefined!,
-            enPeriodeMedTilretteleggingFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
+            varierendePerioder: tilretteleggingFraState?.varierendePerioder ?? [],
+            vedlegg: tilretteleggingFraState?.vedlegg ?? [],
+            behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom ?? undefined!,
+            type: tilretteleggingFraState?.type ?? undefined!,
+            enPeriodeMedTilretteleggingFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom ?? undefined,
             enPeriodeMedTilretteleggingStillingsprosent:
-                tilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent || undefined,
-            delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent ?? undefined,
+            delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType ?? undefined,
             enPeriodeMedTilretteleggingTomType:
-                tilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingTomType ?? undefined,
             enPeriodeMedTilretteleggingTilbakeIJobbDato:
-                tilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato || undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato ?? undefined,
         };
     });
     return arbeidsforholdOptions;
@@ -134,7 +140,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     const næringValg = harNæring && næring ? [getNæringTilretteleggingOption(tilrettelegginger, næring)] : [];
 
     const frilansValg =
-        erFrilanser && frilans !== undefined ? [getFrilansTilretteleggingOption(tilrettelegginger)] : [];
+        erFrilanser && frilans !== undefined ? [getFrilansTilretteleggingOption(tilrettelegginger, frilans)] : [];
     return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
 };
 
@@ -149,7 +155,7 @@ export const cleanupOmValgArbeidFormData = (
     values: VelgArbeidFormData,
     options: Tilrettelegging[],
 ): VelgArbeidFormData => {
-    const filteredValues = values.arbeidMedTilrettelegging!.filter((val) =>
+    const filteredValues = values.arbeidMedTilrettelegging.filter((val) =>
         options.find((tilrettelegging) => tilrettelegging.id === val),
     );
     return { arbeidMedTilrettelegging: filteredValues };

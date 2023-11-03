@@ -23,7 +23,7 @@ interface OppsummeringProps {
 
 const context = _context as any;
 
-const Template: StoryFn<OppsummeringProps> = ({}) => {
+const Template: StoryFn<OppsummeringProps> = () => {
     return (
         <SvangerskapspengerStateMock context={context}>
             <Oppsummering />

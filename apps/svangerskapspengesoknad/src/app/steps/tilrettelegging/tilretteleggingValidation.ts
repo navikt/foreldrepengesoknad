@@ -262,8 +262,10 @@ export const validateBehovForTilretteleggingFom =
         sisteDagForSvangerskapspenger: Date,
         termindato: Date,
         arbeidNavn: string,
+        startDatoArbeid: string,
         sluttDatoArbeid: string | undefined,
         kanHaSvpFremTilTreUkerFørTermin: boolean,
+        erFrilansTilrettelegging: boolean,
     ) =>
     (fom: string): SkjemaelementFeil => {
         if (!hasValue(fom)) {
@@ -280,6 +282,14 @@ export const validateBehovForTilretteleggingFom =
             return kanHaSvpFremTilTreUkerFørTermin
                 ? intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin')
                 : intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreFørFødsel');
+        }
+
+        if (dayjs(fom).isBefore(dayjs(startDatoArbeid), 'd')) {
+            const navnTekst = erFrilansTilrettelegging ? intlUtils(intl, 'somFrilanser') : `i ${arbeidNavn}`;
+            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.førStartDatoArbeid', {
+                dato: formatDate(startDatoArbeid),
+                navnTekst,
+            });
         }
 
         if (sluttDatoArbeid && dayjs(fom).isAfter(dayjs(sluttDatoArbeid), 'd')) {

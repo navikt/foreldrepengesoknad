@@ -56,7 +56,7 @@ const Oppsummering = () => {
     const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
     const formatertTermindato = formatDate(barn.termindato);
-    const formatertFødselsdato = formatDate(barn.fødselsdato!);
+    const formatertFødselsdato = barn.fødselsdato ? formatDate(barn.fødselsdato) : undefined;
     const bem = bemUtils('oppsummering');
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(

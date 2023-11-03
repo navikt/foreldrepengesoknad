@@ -25,6 +25,7 @@ export interface ArbeidsforholdForTilrettelegging {
     type: Arbeidsforholdstype;
     navn: string;
     opprinneligstillingsprosent: number;
+    startdato: string;
     sluttdato?: string;
 }
 

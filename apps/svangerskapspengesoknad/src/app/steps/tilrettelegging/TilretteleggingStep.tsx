@@ -114,6 +114,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
     const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
+    const startDatoArbeid = currentTilrettelegging!.arbeidsforhold.startdato;
+    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(startDatoArbeid))?.toDate();
     const maxDatoBehovFom = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
@@ -146,7 +148,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
 
                 const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
                     ? formValues.behovForTilretteleggingFom!
-                    : dateToISOString(tiMånederSidenDato(termindatoDate!));
+                    : dateToISOString(minDatoBehovFom);
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -176,15 +178,17 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                             ? intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.description')
                                             : ''
                                     }
-                                    minDate={tiMånederSidenDato(termindatoDate!)}
+                                    minDate={minDatoBehovFom}
                                     maxDate={maxDatoBehovFom}
                                     validate={validateBehovForTilretteleggingFom(
                                         intl,
                                         sisteDagForSvangerskapspenger,
                                         termindatoDate!,
                                         currentTilrettelegging!.arbeidsforhold.navn,
+                                        startDatoArbeid,
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
+                                        typeArbeid === Arbeidsforholdstype.FRILANSER,
                                     )}
                                 />
                             </Block>
