@@ -40,7 +40,14 @@ export const globalTypes = {
 };
 
 const preview: Preview = {
-    decorators: [withIntlProvider],
+    decorators: [
+        withIntlProvider,
+        (Story) => (
+            <div id="app" style={{ padding: '40px' }}>
+                <Story />
+            </div>
+        ),
+    ],
 };
 
 export default preview;
