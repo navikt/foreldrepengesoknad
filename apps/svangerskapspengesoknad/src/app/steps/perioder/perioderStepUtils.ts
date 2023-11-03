@@ -3,6 +3,9 @@ import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
+import { ISOStringToDate, intlUtils } from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
@@ -85,4 +88,20 @@ export const getUferdigPeriodeInput = (
         tomType: undefined!,
         type: TilretteleggingstypeOptions.DELVIS,
     } as PeriodeMedVariasjon;
+};
+
+export const getPeriodeSideTittel = (erFlereTilrettelegginger: boolean, navn: string, intl: IntlShape): string => {
+    return erFlereTilrettelegginger
+        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
+        : intlUtils(intl, 'steps.label.periode.en');
+};
+
+export const getDescriptionTekst = (kanHaSVPFremTilTreUkerFørTermin: boolean, intl: IntlShape): string => {
+    return kanHaSVPFremTilTreUkerFørTermin
+        ? intlUtils(intl, 'perioder.varierende.description.termin')
+        : intlUtils(intl, 'perioder.varierende.description.fødsel');
+};
+
+export const getMinDatoTom = (fom: string | undefined, minDatoFom: Date): Date => {
+    return hasValue(fom) && isISODateString(fom) ? ISOStringToDate(fom)! : minDatoFom;
 };

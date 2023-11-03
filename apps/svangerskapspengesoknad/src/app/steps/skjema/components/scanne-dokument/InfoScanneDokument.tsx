@@ -18,14 +18,20 @@ const InfoScanneDokument = () => {
                     </BodyLong>
                 </Block>
                 <Block padBottom="l">
-                    <BodyLong>
-                        <ul>
-                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt1" />
-                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt2" />
-                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt3" />
-                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt4" />
-                        </ul>
-                    </BodyLong>
+                    <ul>
+                        <BodyLong>
+                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt1" />{' '}
+                        </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt2" />{' '}
+                        </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt3" />{' '}
+                        </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage tagName="li" id="scanneDokument.liste.punkt4" />{' '}
+                        </BodyLong>
+                    </ul>
                 </Block>
                 <Block padBottom="l">
                     <BodyLong>

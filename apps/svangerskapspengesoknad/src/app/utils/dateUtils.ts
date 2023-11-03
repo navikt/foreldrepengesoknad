@@ -39,3 +39,7 @@ export const getSisteDagForSvangerskapspenger = (barn: Barn): Date => {
     const dagenFørFødsel = dagenFør(new Date(barn.fødselsdato));
     return dagenFørFødsel;
 };
+
+export const getDefaultMonth = (minDato: Date, maxDato: Date): Date => {
+    return dayjs().isBetween(dayjs(minDato), dayjs(maxDato), 'd') ? dayjs().toDate() : maxDato;
+};

@@ -36,3 +36,9 @@ export const getSkjemaLegend = (typeArbeid: Arbeidsforholdstype, intl: IntlShape
     }
     return intlUtils(intl, 'skjema.legend.virksomhet');
 };
+
+export const getSkjemaSideTittel = (erFlereTilrettelegginger: boolean, intl: IntlShape, navn: string): string => {
+    return erFlereTilrettelegginger
+        ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
+        : intlUtils(intl, 'steps.label.skjema.en');
+};

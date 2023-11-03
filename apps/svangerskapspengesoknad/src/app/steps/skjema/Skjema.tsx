@@ -8,7 +8,12 @@ import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import actionCreator from 'app/context/action/actionCreator';
-import { getInitialSkjemaValuesFromState, getSkjemaLegend, mapTilretteleggingMedSkjema } from './skjemaFormUtils';
+import {
+    getInitialSkjemaValuesFromState,
+    getSkjemaLegend,
+    getSkjemaSideTittel,
+    mapTilretteleggingMedSkjema,
+} from './skjemaFormUtils';
 import { Link } from 'react-router-dom';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
@@ -54,9 +59,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
         return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
     };
     const erFlereTilrettelegginger = tilrettelegging.length > 1;
-    const sideTittel = erFlereTilrettelegginger
-        ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
-        : intlUtils(intl, 'steps.label.skjema.en');
+    const sideTittel = getSkjemaSideTittel(erFlereTilrettelegginger, intl, navn);
     const key = id;
     const skjemanummer = Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING;
 

@@ -19,6 +19,9 @@ import { hasValue } from 'app/utils/validationUtils';
 import { frilansId } from 'app/types/Frilans';
 import { egenNæringId } from 'app/types/EgenNæring';
 import { Søknad } from 'app/types/Søknad';
+import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
+import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
+import { getSkjemaSideTittel } from './skjema/skjemaFormUtils';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -137,21 +140,18 @@ const stepConfigFørstegangssøknad = (
     }
 
     if (søknad.tilrettelegging.length > 0) {
+        const erFlereTilrettelegginger = søknad.tilrettelegging.length > 1;
         søknad.tilrettelegging.forEach((tilrettelegging: Tilrettelegging) => {
             const navn = tilrettelegging.arbeidsforhold.navn;
             steps.push({
                 id: `skjema-${tilrettelegging.id}`,
                 index: steps.length,
-                label: navn
-                    ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
-                    : intlUtils(intl, 'steps.label.skjema.en'),
+                label: getSkjemaSideTittel(erFlereTilrettelegginger, intl, navn),
             });
             steps.push({
                 id: `tilrettelegging-${tilrettelegging.id}`,
                 index: steps.length,
-                label: navn
-                    ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
-                    : intlUtils(intl, 'steps.label.tilrettelegging.en'),
+                label: getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn),
             });
             if (
                 tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
@@ -160,9 +160,7 @@ const stepConfigFørstegangssøknad = (
                 steps.push({
                     id: `periode-${tilrettelegging.id}`,
                     index: steps.length,
-                    label: navn
-                        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
-                        : intlUtils(intl, 'steps.label.periode.en'),
+                    label: getPeriodeSideTittel(erFlereTilrettelegginger, navn, intl),
                 });
             }
         });

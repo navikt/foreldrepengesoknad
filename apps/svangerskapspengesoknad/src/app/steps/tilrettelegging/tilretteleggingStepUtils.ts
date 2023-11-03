@@ -3,10 +3,18 @@ import {
     TilretteleggingFormData,
     TilretteleggingFormField,
 } from './tilretteleggingStepFormConfig';
-import { Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import {
+    Arbeidsforholdstype,
+    TilOgMedDatoType,
+    Tilrettelegging,
+    TilretteleggingstypeOptions,
+} from 'app/types/Tilrettelegging';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 import { hasValue } from 'app/utils/validationUtils';
+import dayjs from 'dayjs';
+import { intlUtils } from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
 
 export const getInitTilretteleggingFormDataValues = (): Readonly<TilretteleggingFormData> => ({
     [TilretteleggingFormField.behovForTilretteleggingFom]: undefined!,
@@ -122,4 +130,102 @@ export const cleanUpTilretteleggingStepFormValues = (
     };
 
     return cleanedData;
+};
+
+export const getLabelPeriodeFom = (
+    tilretteleggingType: TilretteleggingstypeOptions | undefined,
+    intl: IntlShape,
+): string => {
+    return tilretteleggingType === TilretteleggingstypeOptions.INGEN
+        ? intlUtils(intl, 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen')
+        : intlUtils(intl, 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis');
+};
+
+export const getLabelPeriodeTomType = (
+    tilretteleggingType: TilretteleggingstypeOptions | undefined,
+    intl: IntlShape,
+): string => {
+    return tilretteleggingType === TilretteleggingstypeOptions.INGEN
+        ? intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen')
+        : intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis');
+};
+
+export const getLabelPeriodeTom = (
+    tilretteleggingType: TilretteleggingstypeOptions | undefined,
+    intl: IntlShape,
+): string => {
+    return tilretteleggingType === TilretteleggingstypeOptions.INGEN
+        ? intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen')
+        : intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis');
+};
+
+export const getMinDatoPeriodeFom = (formValues: Partial<TilretteleggingFormData>, minDatoBehovFom: Date): Date => {
+    return hasValue(formValues.behovForTilretteleggingFom)
+        ? new Date(formValues.behovForTilretteleggingFom!)
+        : minDatoBehovFom;
+};
+
+export const getMinDatoTilbakeIJobb = (formValues: Partial<TilretteleggingFormData>): Date => {
+    return hasValue(formValues.enPeriodeMedTilretteleggingFom)
+        ? dayjs(formValues.enPeriodeMedTilretteleggingFom).add(1, 'day').toDate()
+        : new Date(formValues.behovForTilretteleggingFom!);
+};
+
+export const getTilretteleggingTypeLabel = (
+    erFlereTilrettelegginger: boolean,
+    typeArbeid: Arbeidsforholdstype,
+    navnArbeidsgiver: string,
+    intl: IntlShape,
+): string => {
+    if (erFlereTilrettelegginger && typeArbeid !== Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.flere', {
+            navnArbeidsgiver,
+        });
+    }
+    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.frilanser');
+    }
+    return intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.en');
+};
+
+export const getBehovForTilretteleggingFomLabel = (
+    erFlereTilrettelegginger: boolean,
+    typeArbeid: Arbeidsforholdstype,
+    navnArbeidsgiver: string,
+    intl: IntlShape,
+): string => {
+    if (erFlereTilrettelegginger && typeArbeid !== Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.flere', {
+            navnArbeidsgiver,
+        });
+    }
+    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.frilanser');
+    }
+    return intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.en');
+};
+
+export const getRadioOptionsTomType = (intl: IntlShape, kanHaSVPFremTilTreUkerFørTermin: boolean) => {
+    return [
+        {
+            label: intlUtils(intl, 'perioder.varierende.tomType.valgfriDato'),
+            value: TilOgMedDatoType.VALGFRI_DATO,
+        },
+        {
+            label: kanHaSVPFremTilTreUkerFørTermin
+                ? intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin')
+                : intlUtils(intl, 'perioder.varierende.tomType.dagenFørFødsel'),
+            value: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+        },
+    ];
+};
+
+export const getTilretteleggingSideTittel = (
+    erFlereTilrettelegginger: boolean,
+    intl: IntlShape,
+    navn: string,
+): string => {
+    return erFlereTilrettelegginger
+        ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
+        : intlUtils(intl, 'steps.label.tilrettelegging.en');
 };

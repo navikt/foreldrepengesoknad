@@ -1,4 +1,4 @@
-import { Block, ISOStringToDate, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
 import { Alert, BodyShort, Button, Heading, ReadMore, Tag } from '@navikt/ds-react';
@@ -19,20 +19,27 @@ import { FieldArray } from 'formik';
 import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import {
+    getDescriptionTekst,
+    getMinDatoTom,
     getMåSendeNySøknad,
     getPeriodeDerSøkerErTilbakeIFullStilling,
+    getPeriodeSideTittel,
     getPerioderInitialValues,
     getUferdigPeriodeInput,
     mapPerioderFormDataToState,
 } from './perioderStepUtils';
 import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleggingValidation';
-import { isISODateString } from '@navikt/ds-datepicker';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
 import './perioderStep.css';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import dayjs from 'dayjs';
-import { getSisteDagForSvangerskapspenger, getKanHaSvpFremTilTreUkerFørTermin } from 'app/utils/dateUtils';
+import {
+    getSisteDagForSvangerskapspenger,
+    getKanHaSvpFremTilTreUkerFørTermin,
+    getDefaultMonth,
+} from 'app/utils/dateUtils';
+import { getRadioOptionsTomType } from '../tilrettelegging/tilretteleggingStepUtils';
 interface Props {
     id: string;
     navn: string;
@@ -66,20 +73,14 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
+    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const maxDato = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
-    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
-    const minDatoPeriodeFom = currentTilrettelegging!.behovForTilretteleggingFom;
-    const sideTittel = erFlereTilrettelegginger
-        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
-        : intlUtils(intl, 'steps.label.periode.en');
-    const sisteDagMedSvpLabel = kanHaSVPFremTilTreUkerFørTermin
-        ? intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin')
-        : intlUtils(intl, 'perioder.varierende.tomType.dagenFørFødsel');
-    const descriptionTekst = kanHaSVPFremTilTreUkerFørTermin
-        ? intlUtils(intl, 'perioder.varierende.description.termin')
-        : intlUtils(intl, 'perioder.varierende.description.fødsel');
+    const minDatoFom = new Date(currentTilrettelegging!.behovForTilretteleggingFom);
+    const sideTittel = getPeriodeSideTittel(erFlereTilrettelegginger, navn, intl);
+    const descriptionTekst = getDescriptionTekst(kanHaSVPFremTilTreUkerFørTermin, intl);
+    const defaultMonthFom = getDefaultMonth(minDatoFom, maxDato);
 
     return (
         <PerioderFormComponents.FormikWrapper
@@ -127,11 +128,11 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                             p,
                                             opprinneligStillingsprosent,
                                         );
-                                        const fomInputDate = formValues.varierendePerioder![index].fom;
-                                        const minDatoTom =
-                                            fomInputDate && isISODateString(fomInputDate)
-                                                ? ISOStringToDate(fomInputDate)
-                                                : undefined;
+                                        const minDatoTom = getMinDatoTom(
+                                            formValues.varierendePerioder![index].fom,
+                                            minDatoFom,
+                                        );
+                                        const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
                                         return (
                                             <div key={index}>
                                                 <Block padBottom="xxl">
@@ -158,7 +159,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                     </Block>
                                                     <PerioderFormComponents.DatePicker
                                                         key={`varierendePerioder.${index}.fom`}
-                                                        minDate={new Date(minDatoPeriodeFom)}
+                                                        minDate={minDatoFom}
                                                         maxDate={maxDato}
                                                         name={`varierendePerioder.${index}.fom`}
                                                         label={intlUtils(intl, 'perioder.varierende.fom.label')}
@@ -172,6 +173,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
+                                                        dayPickerProps={{ defaultMonth: defaultMonthFom }}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
@@ -179,19 +181,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         name={`varierendePerioder.${index}.tomType`}
                                                         key={`varierendePerioder.${index}.tomType`}
                                                         legend={intlUtils(intl, 'perioder.varierende.tomType.label')}
-                                                        radios={[
-                                                            {
-                                                                label: intlUtils(
-                                                                    intl,
-                                                                    'perioder.varierende.tomType.valgfriDato',
-                                                                ),
-                                                                value: TilOgMedDatoType.VALGFRI_DATO,
-                                                            },
-                                                            {
-                                                                label: intlUtils(intl, sisteDagMedSvpLabel),
-                                                                value: TilOgMedDatoType.SISTE_DAG_MED_SVP,
-                                                            },
-                                                        ]}
+                                                        radios={getRadioOptionsTomType(
+                                                            intl,
+                                                            kanHaSVPFremTilTreUkerFørTermin,
+                                                        )}
                                                         validate={validatePeriodeTomType(
                                                             intl,
                                                             sisteDagForSvangerskapspenger,
@@ -223,6 +216,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         )}
                                                         minDate={minDatoTom}
                                                         maxDate={maxDato}
+                                                        dayPickerProps={{ defaultMonth: defaultMonthTom }}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">

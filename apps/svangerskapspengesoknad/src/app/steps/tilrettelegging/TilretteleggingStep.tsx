@@ -11,13 +11,22 @@ import {
 } from './tilretteleggingStepFormConfig';
 import {
     cleanUpTilretteleggingStepFormValues,
+    getBehovForTilretteleggingFomLabel,
+    getLabelPeriodeFom,
+    getLabelPeriodeTom,
+    getLabelPeriodeTomType,
+    getMinDatoPeriodeFom,
+    getMinDatoTilbakeIJobb,
+    getRadioOptionsTomType,
     getTilretteleggingInitialValues,
+    getTilretteleggingSideTittel,
+    getTilretteleggingTypeLabel,
     mapOmTilretteleggingFormDataToState,
 } from './tilretteleggingStepUtils';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import actionCreator from 'app/context/action/actionCreator';
 import useSøknad from 'app/utils/hooks/useSøknad';
-import { Arbeidsforholdstype, TilOgMedDatoType, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { Link } from 'react-router-dom';
 import { FunctionComponent, useState } from 'react';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -27,6 +36,7 @@ import {
     getSisteDagForSvangerskapspenger,
     getKanHaSvpFremTilTreUkerFørTermin,
     tiMånederSidenDato,
+    getDefaultMonth,
 } from 'app/utils/dateUtils';
 import tilretteleggingQuestionsConfig, {
     TilretteleggingFormQuestionsPayload,
@@ -42,8 +52,7 @@ import {
     validateTilretteleggingPeriodetype,
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import dayjs from 'dayjs';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
@@ -87,29 +96,24 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     };
 
     const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
-    const sideTittel = erFlereTilrettelegginger
-        ? intlUtils(intl, 'steps.label.tilrettelegging.flere', { navn })
-        : intlUtils(intl, 'steps.label.tilrettelegging.en');
+    const sideTittel = getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn);
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeid);
 
-    let tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.en');
-    let behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.en');
-
-    if (erFlereTilrettelegginger && typeArbeid !== Arbeidsforholdstype.FRILANSER) {
-        tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.flere', {
-            navnArbeidsgiver,
-        });
-        behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.flere', {
-            navnArbeidsgiver,
-        });
-    }
-    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
-        tilretteleggingTypeLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidType.label.frilanser');
-        behovForTilretteleggingFomLabel = intlUtils(intl, 'tilrettelegging.tilrettelagtArbeidFom.label.frilanser');
-    }
+    const tilretteleggingTypeLabel = getTilretteleggingTypeLabel(
+        erFlereTilrettelegginger,
+        typeArbeid,
+        navnArbeidsgiver,
+        intl,
+    );
+    const behovForTilretteleggingFomLabel = getBehovForTilretteleggingFomLabel(
+        erFlereTilrettelegginger,
+        typeArbeid,
+        navnArbeidsgiver,
+        intl,
+    );
     const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
@@ -120,9 +124,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
-    const sisteDagMedSvpLabel = kanHaSVPFremTilTreUkerFørTermin
-        ? intlUtils(intl, 'perioder.varierende.tomType.treUkerFørTermin')
-        : intlUtils(intl, 'perioder.varierende.tomType.dagenFørFødsel');
+    const defaultMonthBehovFomDato = getDefaultMonth(minDatoBehovFom!, maxDatoBehovFom);
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -133,22 +135,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     ...formValues,
                     arbeidsType: typeArbeid,
                 } as TilretteleggingFormQuestionsPayload);
-                const labelPeriodeFomTekst =
-                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? intlUtils(intl, 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen')
-                        : intlUtils(intl, 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis');
-                const labelPeriodeTomTypeTekst =
-                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen')
-                        : intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis');
-                const labelPeriodeTomTekst =
-                    formValues.tilretteleggingType === TilretteleggingstypeOptions.INGEN
-                        ? intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen')
-                        : intlUtils(intl, 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis');
-
-                const minDatoPeriodeFom = hasValue(formValues.behovForTilretteleggingFom)
-                    ? formValues.behovForTilretteleggingFom!
-                    : dateToISOString(minDatoBehovFom);
+                const labelPeriodeFomTekst = getLabelPeriodeFom(formValues.tilretteleggingType, intl);
+                const labelPeriodeTomTypeTekst = getLabelPeriodeTomType(formValues.tilretteleggingType, intl);
+                const labelPeriodeTomTekst = getLabelPeriodeTom(formValues.tilretteleggingType, intl);
+                const minDatoPeriodeFom = getMinDatoPeriodeFom(formValues, minDatoBehovFom!);
+                const defaultMonthPeriodeFom = getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom);
+                const minDatoTilbakeIJobb = getMinDatoTilbakeIJobb(formValues);
+                const defaultMonthTilbakeIJobb = getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom);
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -190,6 +183,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         kanHaSVPFremTilTreUkerFørTermin,
                                         typeArbeid === Arbeidsforholdstype.FRILANSER,
                                     )}
+                                    dayPickerProps={{ defaultMonth: defaultMonthBehovFomDato }}
                                 />
                             </Block>
                             <Block
@@ -348,6 +342,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
+                                    dayPickerProps={{ defaultMonth: defaultMonthPeriodeFom }}
                                 />
                             </Block>
 
@@ -360,16 +355,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                 <TilretteleggingFormComponents.RadioGroup
                                     name={TilretteleggingFormField.enPeriodeMedTilretteleggingTomType}
                                     legend={labelPeriodeTomTypeTekst}
-                                    radios={[
-                                        {
-                                            label: intlUtils(intl, 'perioder.varierende.tomType.valgfriDato'),
-                                            value: TilOgMedDatoType.VALGFRI_DATO,
-                                        },
-                                        {
-                                            label: sisteDagMedSvpLabel,
-                                            value: TilOgMedDatoType.SISTE_DAG_MED_SVP,
-                                        },
-                                    ]}
+                                    radios={getRadioOptionsTomType(intl, kanHaSVPFremTilTreUkerFørTermin)}
                                     validate={validerTilretteleggingTomType(
                                         intl,
                                         formValues.tilretteleggingType!,
@@ -390,11 +376,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                 <TilretteleggingFormComponents.DatePicker
                                     name={TilretteleggingFormField.enPeriodeMedTilretteleggingTilbakeIJobbDato}
                                     label={labelPeriodeTomTekst}
-                                    minDate={
-                                        hasValue(formValues.enPeriodeMedTilretteleggingFom)
-                                            ? dayjs(formValues.enPeriodeMedTilretteleggingFom).add(1, 'day').toDate()
-                                            : new Date(formValues.behovForTilretteleggingFom!)
-                                    }
+                                    minDate={minDatoTilbakeIJobb}
                                     maxDate={maxDatoBehovFom}
                                     validate={validateSammePeriodeFremTilTerminTilbakeIJobbDato(
                                         intl,
@@ -406,6 +388,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
+                                    dayPickerProps={{ defaultMonth: defaultMonthTilbakeIJobb }}
                                 />
                             </Block>
                             <Block padBottom="xxl">
