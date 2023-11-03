@@ -1,0 +1,24 @@
+import{j as s}from"./jsx-runtime-69eee039.js";import{w as F}from"./withRouter-b443adb0.js";import{w as O,F as A}from"./ForeldrepengerStateMock-2b2feb9e.js";import{A as N}from"./AxiosMock-79cf94ea.js";import{R as U}from"./api-b158b98d.js";import{s as l,a as f}from"./stønadskontoDeltUttak100-ce558aaf.js";import{U as g}from"./UttaksplanInfo-2d69d631.js";import"./index-7c191284.js";import"./useSøknad-5c5bca2e.js";import"./validationUtils-481ea31b.js";import"./index-b3a39e30.js";import"./Link-b834ea2b.js";import"./index-e13aeee6.js";import"./_createSet-a53deccd.js";import"./_baseToString-4b695375.js";import"./v4-a960c1f4.js";import"./mapSøkerinfoDTO-dbaf167a.js";import"./AttachmentType-f6ad37cf.js";import"./useSaveLoadedRoute-aa81b91f.js";import"./amplitude-bdf1e125.js";import"./submitUtils-3b67bade.js";import"./Periodene-bb8992e3.js";import"./apiInterceptor-7ea9ce80.js";import"./leggTilPeriode-e7d72d5c.js";import"./Uttaksplan-95167d8c.js";import"./index-f5a253d5.js";import"./FormikFileUploader-9cabf58c.js";import"./AttachmentList-8e6ebcfc.js";import"./Attachment-a20808c3.js";import"./links-b36d21ab.js";import"./arbeidsforholdUtils-9eed17db.js";import"./_baseIteratee-9b4fb880.js";import"./_baseUniq-b203cb38.js";import"./formUtils-29ccf6bd.js";import"./useSøkerinfo-d70607f2.js";import"./LenkeKnapp-a5650a66.js";import"./InfoOmSøknaden-14062de2.js";import"./useOnValidSubmit-626a50a3.js";import"./dateUtils-38a630e5.js";import"./eksisterendeSakUtils-3bcd6ced.js";import"./velkommenUtils-4b72f618.js";const R={søker:{fnr:"19047815714",fornavn:"TALENTFULL",etternavn:"MYGG",kjønn:"M",fødselsdato:"1978-04-19",barn:[{fnr:"21091981146",fødselsdato:"2021-03-15",annenForelder:{fnr:"12038517080",fødselsdato:"1985-03-12",fornavn:"LEALAUS",etternavn:"BÆREPOSE"},fornavn:"KLØKTIG",etternavn:"MIDTPUNKT",kjønn:"M"}]}},T=4,x="/soknad/uttaksplan-info",L={søknad:{type:"foreldrepenger",harGodkjentVilkår:!0,søkersituasjon:{situasjon:"fødsel",rolle:"far"},barn:{type:"født",fødselsdatoer:["2021-06-14"],antallBarn:"1",datoForAleneomsorg:"",dokumentasjonAvAleneomsorg:[]},annenForelder:{etternavn:"dfg",fornavn:"dfg",fnr:"02068629902",utenlandskFnr:!1,kanIkkeOppgis:!1,harRettPåForeldrepengerINorge:!0,erInformertOmSøknaden:!0},søker:{erAleneOmOmsorg:!1,språkkode:"nb"},informasjonOmUtenlandsopphold:{tidligereOpphold:[],senereOpphold:[]},erEndringssøknad:!1},version:T,currentRoute:x,søknadGjelderEtNyttBarn:!0},I="/innsyn/v2/annenPartVedtak",a="/konto",u=R,r=L,ue={title:"steps/uttaksplan-info/FarMedmorFødselBeggeHarRett",component:g,decorators:[F,O]},M=o=>{const S=n=>{n.onPost(I).replyOnce(200,void 0,U.FINISHED),n.onGet(a).replyOnce(200,o.stønadskonto100),n.onGet(a).replyOnce(200,o.stønadskonto80)};return s.jsx(N,{mock:S,children:s.jsx(A,{søknad:o.context,søkerinfo:o.søkerinfo,children:s.jsx(g,{})})})},e=M.bind({});e.args={stønadskonto100:l,stønadskonto80:f,context:r,søkerinfo:u};const t=M.bind({});t.args={stønadskonto100:l,stønadskonto80:f,context:{...r,søknad:{...r.søknad,barn:{...r.søknad.barn,fødselsdatoer:["2022-08-02"]}}},søkerinfo:u};var p,d,i;e.parameters={...e.parameters,docs:{...(p=e.parameters)==null?void 0:p.docs,source:{originalSource:`args => {
+  const restMock = (apiMock: MockAdapter) => {
+    apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
+    apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
+    apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+  };
+  return <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock søknad={(args.context as ForeldrepengesøknadContextState)} søkerinfo={(args.søkerinfo as SøkerinfoDTO)}>
+                <UttaksplanInfo />
+            </ForeldrepengerStateMock>
+        </AxiosMock>;
+}`,...(i=(d=e.parameters)==null?void 0:d.docs)==null?void 0:i.source}}};var k,m,c;t.parameters={...t.parameters,docs:{...(k=t.parameters)==null?void 0:k.docs,source:{originalSource:`args => {
+  const restMock = (apiMock: MockAdapter) => {
+    apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
+    apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
+    apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+  };
+  return <AxiosMock mock={restMock}>
+            <ForeldrepengerStateMock søknad={(args.context as ForeldrepengesøknadContextState)} søkerinfo={(args.søkerinfo as SøkerinfoDTO)}>
+                <UttaksplanInfo />
+            </ForeldrepengerStateMock>
+        </AxiosMock>;
+}`,...(c=(m=t.parameters)==null?void 0:m.docs)==null?void 0:c.source}}};const Me=["UttaksplanInfoFarMedmorFødselBeggeHarRett","UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB"];export{e as UttaksplanInfoFarMedmorFødselBeggeHarRett,t as UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB,Me as __namedExportsOrder,ue as default};
+//# sourceMappingURL=FarMedmorFodselBeggeHarRett.stories-6a242478.js.map

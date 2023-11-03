@@ -1,2 +1,0 @@
-import{j as e}from"./index-896908b3.js";/* empty css            */import"./index-7c191284.js";const t=document.createElement("script");t.type="text/json";t.id="nav:appSettings";t.innerHTML=JSON.stringify({REST_API_URL:"test",LOGIN_URL:"test"});document.head.appendChild(t);const r=[i=>e.jsx("div",{id:"app",style:{padding:"40px"},children:e.jsx(i,{})})];export{r as decorators};
-//# sourceMappingURL=preview-d8f727a4.js.map
