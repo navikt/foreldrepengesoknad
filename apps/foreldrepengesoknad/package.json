@@ -5,7 +5,7 @@
     "description": "NAV Foreldrepengesøknad",
     "scripts": {
         "build": "vite build",
-        "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
+        "lint": "eslint './src/**/*.{js,ts,tsx}'",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --write src",
         "dev-api": "node ./mock-api/mock-api-server.cjs",

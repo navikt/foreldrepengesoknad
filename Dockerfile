@@ -5,7 +5,7 @@ ARG APP="foreldrepengesoknad"
 
 #########################################
 # PREPARE DEPS FOR BUILD
-######################################### 
+#########################################
 FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as prepare
 WORKDIR /usr/src/app
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
@@ -18,7 +18,7 @@ RUN find server \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xargs r
 
 #########################################
 # BUILDER IMAGE - INSTALL PACKAGES AND COPY SOURCE
-######################################### 
+#########################################
 FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as builder
 WORKDIR /usr/src/app
 RUN apk fix \
@@ -35,23 +35,22 @@ COPY . .
 
 #########################################
 # BUILD SERVER
-######################################### 
+#########################################
 FROM --platform=${BUILDPLATFORM} builder as server-build
 RUN cd ./server && turbo build
 
 #########################################
 # Client
-######################################### 
+#########################################
 FROM --platform=${BUILDPLATFORM} builder as client
 ARG APP="foreldrepengesoknad"
 
-# change build to test
-RUN cd ./apps/${APP} && turbo build \ 
+RUN cd ./apps/${APP} && turbo test \
     && mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
 # Server
-######################################### 
+#########################################
 FROM ${NODE_IMG} as server
 WORKDIR /usr/src/app
 
@@ -65,7 +64,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 #########################################
 # App
-######################################### 
+#########################################
 FROM server
 
 COPY --from=client /public ./public

@@ -47,11 +47,15 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
                 const erNavHomeLink = p.displayName === 'nav.no';
 
                 if (lastBreadcrumb) {
-                    return <BodyShort className={bem.element('flex-align')}>{p.displayName}</BodyShort>;
+                    return (
+                        <BodyShort key={p.route} className={bem.element('flex-align')}>
+                            {p.displayName}
+                        </BodyShort>
+                    );
                 }
 
                 return (
-                    <div className={bem.element('flex-align')}>
+                    <div key={p.route} className={bem.element('flex-align')}>
                         {p.isExternalLink ? (
                             <DSLink key={p.displayName} className={bem.element('link-wrapper')} href={p.route}>
                                 {erNavHomeLink && <Home width="24" height="24" style={{ marginRight: '0.5rem' }} />}

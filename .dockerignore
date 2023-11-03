@@ -2,4 +2,6 @@ dist/
 node_modules/
 .turbo/
 .git/
+
+# Do not remove. It kills docker cache
 gha-creds-*

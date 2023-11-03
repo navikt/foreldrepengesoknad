@@ -8,7 +8,7 @@
         "build": "vite build",
         "dev": "node ./dev-server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
-        "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
+        "lint": "eslint './src/**/*.{js,ts,tsx}'",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --write src",
         "test": "vitest run",
