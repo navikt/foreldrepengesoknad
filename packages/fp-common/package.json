@@ -6,7 +6,9 @@
         "build-storybook": "storybook build -o .storybook-static-build",
         "prettier": "prettier --write src",
         "storybook": "storybook dev --quiet -p 6006",
-        "tsc": "tsc --pretty",
+        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "test": "vitest run"
     },
     "dependencies": {

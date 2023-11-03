@@ -7,9 +7,9 @@
     "scripts": {
         "build": "vite build",
         "test": "vitest run",
-        "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
-        "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
-        "tsc": "tsc --pretty",
+        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --quiet --fix './src/**/*.{js,ts,tsx}'",
         "prettier": "prettier --write src",
         "start-express": "node ./server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",

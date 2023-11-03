@@ -7,9 +7,9 @@
         "test": "vitest run",
         "test:watch": "vitest --watch=true",
         "test:coverage": "vitest --coverage",
-        "tsc": "tsc --pretty",
-        "lint": "eslint \"src/**/*.ts*\" --color",
-        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003"

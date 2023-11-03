@@ -2,18 +2,18 @@ name: Bygg og deploy Foreldrepengesøknad
 on:
   workflow_dispatch:
   push:
+    branches:
+      - '**'
     paths:
       - 'apps/foreldrepengesoknad/**'
       - 'packages/**'
+      - 'server/**'
       - '.deploy/foreldrepengesoknad/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-foreldrepengesoknad.yml'
-  # Only trigger, when the build workflow succeeded
-  workflow_run:
-    workflows: [ "Bygg server" ]
-    branches: 'master'
-    types:
-      - completed
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
 
 jobs:
   build-app:
@@ -21,12 +21,12 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
-      build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      image_suffix: 'foreldrepengesoknad'
+      bake-target: 'foreldrepengesoknad'
+      bake-platform: amd64
     secrets: inherit
 
   deploy-dev:

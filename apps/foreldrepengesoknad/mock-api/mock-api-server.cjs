@@ -9,7 +9,7 @@ app.disable('x-powered-by');
 const allowCrossDomain = function (_req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location,Fnr');
     res.setHeader('Access-Control-Expose-Headers', 'Location');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();

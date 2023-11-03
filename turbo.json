@@ -2,23 +2,44 @@
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
         "test": {
-            "dependsOn": ["build"],
-            "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+            "dependsOn": [
+                "build",
+                "lint"
+            ],
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts"
+            ]
         },
         "build": {
-            "dependsOn": ["^build"],
-            "outputs": ["dist/**", "lib/**"]
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "dist/**",
+                "lib/**"
+            ]
         },
         "dev": {
             "persistent": true
         },
-        "lint": {},
-        "tsc": {},
+        "lint": {
+            "dependsOn": [
+                "lint:eslint",
+                "lint:tsc"
+            ]
+        },
+        "lint:eslint": {},
+        "lint:tsc": {},
         "build-storybook": {
-            "dependsOn": ["build"]
+            "dependsOn": [
+                "build"
+            ]
         },
         "prettier": {
-            "dependsOn": ["build"]
+            "dependsOn": [
+                "build"
+            ]
         }
     },
     "globalEnv": [

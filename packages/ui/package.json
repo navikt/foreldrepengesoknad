@@ -5,9 +5,9 @@
     "types": "index.ts",
     "scripts": {
         "test": "vitest run",
-        "lint": "eslint \"src/**/*.ts*\" --color",
-        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
-        "tsc": "tsc --pretty",
+        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003"
