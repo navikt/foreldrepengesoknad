@@ -3,8 +3,9 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
-        "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+        "lint": "eslint \"src/**/*.ts*\" --color",
+        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "prettier": "prettier --write src"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",

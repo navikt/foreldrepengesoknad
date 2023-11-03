@@ -4,11 +4,12 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
-        "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "test": "vitest run",
+        "lint": "eslint \"src/**/*.ts*\" --color",
+        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
-        "storybook": "storybook dev --quiet -p 7003",
-        "test": "vitest run"
+        "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
         "@navikt/aksel-icons": "^4.12.1",

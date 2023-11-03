@@ -3,6 +3,8 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
+        "lint": "eslint \"src/**/*.ts*\" --color",
+        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
         "prettier": "prettier --write src"
     },
     "dependencies": {

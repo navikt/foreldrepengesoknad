@@ -8,8 +8,8 @@
         "test:watch": "vitest --watch=true",
         "test:coverage": "vitest --coverage",
         "tsc": "tsc --pretty",
-        "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "lint": "eslint \"src/**/*.ts*\" --color",
+        "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003"

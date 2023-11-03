@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Radio, VStack, Checkbox as DsCheckbox, HStack, Alert, BodyShort, Label } from '@navikt/ds-react';
 import dayjs from 'dayjs';
-import { StoryFn } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { StoryFn } from '@storybook/react';
 import Form from './Form';
 import Datepicker from './Datepicker';
 import Select from './Select';
@@ -103,7 +103,7 @@ const Template: StoryFn = () => {
                         <VStack gap="5">
                             <Label>Values in form state:</Label>
                             {Object.entries(stateVerdier).map((entry) => (
-                                <BodyShort>{entry[0] + ': ' + entry[1]}</BodyShort>
+                                <BodyShort key={entry[0]}>{entry[0] + ': ' + entry[1]}</BodyShort>
                             ))}
                         </VStack>
                     </Alert>
