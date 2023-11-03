@@ -7,15 +7,13 @@ on:
     paths:
       - 'apps/svangerskapspengesoknad/**'
       - 'packages/**'
+      - 'server/**'
       - '.deploy/svangerskapspengesoknad/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-svangerskapspengesoknad.yml'
-  # Only trigger, when the build workflow succeeded
-  workflow_run:
-    workflows: [ "Bygg server" ]
-    branches: 'master'
-    types:
-      - completed
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
 
 jobs:
   build-app:
@@ -25,11 +23,11 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-frontend-monorepo.yml@main
     with:
-      build-image: ${{ github.ref_name == 'master' }} # default: true
+      runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      image_suffix: 'svangerskapspengesoknad'
+      bake-target: 'svangerskapspengesoknad'
+      bake-platform: amd64
     secrets: inherit
-
 
   deploy-dev:
     name: Deploy dev
