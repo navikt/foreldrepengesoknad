@@ -1,6 +1,6 @@
-import React from 'react';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
-import { Preview } from '@storybook/react';
+import { Preview, StoryFn } from '@storybook/react';
+import { allCommonMessages } from '@navikt/fp-common';
 
 import nnMessages from '../src/intl/messages/nn_NO.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
@@ -18,14 +18,14 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nn: nnMessages,
-    nb: nbMessages,
-    en: enMessages,
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nn: { ...nnMessages, ...allCommonMessages.nn },
+    en: { ...enMessages, ...allCommonMessages.en },
 });
 
 export const decorators = [
     withIntlProvider,
-    (Story) => (
+    (Story: StoryFn) => (
         <div id="app" style={{ backgroundColor: 'white', padding: '40px' }}>
             <Story />
         </div>
