@@ -5,6 +5,7 @@
     "scripts": {
         "lint": "eslint \"src/**/*.ts*\" --color",
         "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "tsc": "tsc --pretty",
         "prettier": "prettier --write src"
     },
     "dependencies": {
@@ -12,6 +13,7 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
-        "tsconfig": "workspace:*"
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6"
     }
 }

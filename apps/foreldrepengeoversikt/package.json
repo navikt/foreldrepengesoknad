@@ -9,6 +9,7 @@
         "test": "vitest run",
         "lint": "eslint --quiet \"./src/**/*.{js,ts,tsx}\"",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
+        "tsc": "tsc --pretty",
         "prettier": "prettier --write src",
         "start-express": "node ./server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",

@@ -6,6 +6,7 @@
         "build": "turbo build",
         "test": "turbo test",
         "lint": "turbo lint",
+        "tsc": "turbo tsc",
         "prettier": "turbo prettier",
         "fp": "pnpm --filter foreldrepengesoknad run dev",
         "fp-prod": "pnpm --filter foreldrepengesoknad run start",

@@ -7,6 +7,7 @@
         "test": "vitest run",
         "lint": "eslint \"src/**/*.ts*\" --color",
         "lint:fix": "eslint --fix \"src/**/*.ts*\" --color",
+        "tsc": "tsc --pretty",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003"
@@ -45,6 +46,7 @@
         "fast-glob": "^3.3.1",
         "storybook": "7.3.1",
         "tsconfig": "workspace:*",
+        "typescript": "^5.1.6",
         "vite": "^4.4.9",
         "vite-plugin-checker": "^0.6.1",
         "vitest": "^0.34.2"
