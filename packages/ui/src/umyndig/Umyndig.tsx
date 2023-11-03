@@ -4,7 +4,8 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Button, GuidePanel, Heading, VStack, HStack } from '@navikt/ds-react';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { links } from '@navikt/fp-constants';
-import UiIntlProvider, { useUiIntl } from '../i18n/UiIntlProvider';
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
+import useUiIntl from '../i18n/ui/useUiIntl';
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
 export interface Props {

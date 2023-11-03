@@ -8,7 +8,7 @@ import { Attachment } from '@navikt/fp-types';
 import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
-import UiIntlProvider from '../i18n/UiIntlProvider';
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_KB = 16777;

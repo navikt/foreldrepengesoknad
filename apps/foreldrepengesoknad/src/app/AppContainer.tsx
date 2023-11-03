@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
-import IntlProvider from './intl/IntlProvider';
+import { Modal } from '@navikt/ds-react';
+import { IntlProvider } from '@navikt/fp-ui';
+import { allCommonMessages, getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
 import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
-import { Modal } from '@navikt/ds-react';
 import { shouldChangeBrowser } from './utils/browserUtils';
+import nnMessages from './intl/nn_NO.json';
+import nbMessages from './intl/nb_NO.json';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
+
+const MESSAGES_GROUPED_BY_LOCALE = {
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nn: { ...nnMessages, ...allCommonMessages.nn },
+    en: { ...allCommonMessages.en },
+};
 
 dayjs.locale(localeFromSessionStorage);
 
@@ -25,7 +33,7 @@ const AppContainer = () => {
     return (
         <ForeldrepengesøknadContextProvider>
             <ErrorBoundary>
-                <IntlProvider locale={locale}>
+                <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
                     <Foreldrepengesøknad
                         locale={locale}

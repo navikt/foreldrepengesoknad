@@ -1,7 +1,7 @@
 import { VStack, Link, Loader, HStack, Spacer } from '@navikt/ds-react';
 import { XMarkIcon, FileCheckmarkIcon } from '@navikt/aksel-icons';
 
-import { useCustomIntl } from '../../i18n/hooks/useCustomI18n';
+import { useCustomIntl } from '../../i18n/useCustomI18n';
 import { Attachment } from '@navikt/fp-types';
 import { bytesString } from '../fileUtils';
 

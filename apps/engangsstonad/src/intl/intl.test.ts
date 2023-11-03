@@ -41,7 +41,6 @@ describe('intl messages', () => {
     });
 
     const regex = /(?<=(i18n)\(')[^']*/gm;
-    //const regex = /(?<=(intlUtils\(intl,\s'))[^']*/gm;
 
     const getAdditionalIntlString = (fileLoc: string) => {
         const fileBuffer = fs.readFileSync(fileLoc);

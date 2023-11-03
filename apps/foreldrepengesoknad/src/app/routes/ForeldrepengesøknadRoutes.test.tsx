@@ -1,13 +1,21 @@
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+import { allCommonMessages, Søkerinfo } from '@navikt/fp-common';
 import SøknadRoutes from './routes';
 import * as context from 'app/context/hooks/useForeldrepengesøknadContext';
 import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import { Søknad } from 'app/context/types/Søknad';
-import IntlProvider from '../intl/IntlProvider';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import Person from '@navikt/fp-common/src/common/types/Person';
-import { Søkerinfo } from '@navikt/fp-common';
+import { IntlProvider } from '@navikt/fp-ui';
+
+import nbMessages from '../intl/nb_NO.json';
+
+const MESSAGES_GROUPED_BY_LOCALE = {
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nn: { ...allCommonMessages.nn },
+    en: { ...allCommonMessages.en },
+};
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -47,7 +55,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         }));
         render(
             <BrowserRouter>
-                <IntlProvider locale="nb">
+                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ForeldrepengesøknadRoutes
                         fornavn="Espen"
                         locale="nb"
@@ -91,7 +99,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         }));
         render(
             <BrowserRouter>
-                <IntlProvider locale="nb">
+                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ForeldrepengesøknadRoutes
                         fornavn="Espen"
                         locale="nb"
