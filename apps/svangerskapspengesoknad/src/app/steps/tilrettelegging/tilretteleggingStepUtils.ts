@@ -57,7 +57,7 @@ export const mapOmTilretteleggingFormDataToState = (
         varierendePerioder: oppdaterteVarierendePerioder,
         behovForTilretteleggingFom: values.behovForTilretteleggingFom,
         arbeidsforhold: {
-            ...tilretteleggingForOppdatering!.arbeidsforhold,
+            ...tilretteleggingForOppdatering.arbeidsforhold,
         },
         type: values.tilretteleggingType,
         enPeriodeMedTilretteleggingFom: harVariertePerioder ? undefined : values.enPeriodeMedTilretteleggingFom,

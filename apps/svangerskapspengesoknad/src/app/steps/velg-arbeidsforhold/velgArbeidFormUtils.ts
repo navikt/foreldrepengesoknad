@@ -102,18 +102,18 @@ export const getArbeidsforholdTilretteleggingOptions = (
                 startdato: forhold.fom,
                 sluttdato: forhold.tom,
             },
-            varierendePerioder: tilretteleggingFraState?.varierendePerioder ?? [],
-            vedlegg: tilretteleggingFraState?.vedlegg ?? [],
-            behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom ?? undefined!,
-            type: tilretteleggingFraState?.type ?? undefined!,
-            enPeriodeMedTilretteleggingFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom ?? undefined,
+            varierendePerioder: tilretteleggingFraState?.varierendePerioder || [],
+            vedlegg: tilretteleggingFraState?.vedlegg || [],
+            behovForTilretteleggingFom: tilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
+            type: tilretteleggingFraState?.type || undefined!,
+            enPeriodeMedTilretteleggingFom: tilretteleggingFraState?.enPeriodeMedTilretteleggingFom || undefined,
             enPeriodeMedTilretteleggingStillingsprosent:
-                tilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent ?? undefined,
-            delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType ?? undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingStillingsprosent || undefined,
+            delvisTilretteleggingPeriodeType: tilretteleggingFraState?.delvisTilretteleggingPeriodeType || undefined,
             enPeriodeMedTilretteleggingTomType:
-                tilretteleggingFraState?.enPeriodeMedTilretteleggingTomType ?? undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingTomType || undefined,
             enPeriodeMedTilretteleggingTilbakeIJobbDato:
-                tilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato ?? undefined,
+                tilretteleggingFraState?.enPeriodeMedTilretteleggingTilbakeIJobbDato || undefined,
         };
     });
     return arbeidsforholdOptions;

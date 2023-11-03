@@ -72,6 +72,7 @@ const stepConfigFørstegangssøknad = (
             label: intlUtils(intl, 'steps.label.utenlandsopphold'),
         },
     ] as StepConfig[];
+
     if (søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false) {
         steps.push({
             id: 'boIUtlandetIFortid',
@@ -126,6 +127,7 @@ const stepConfigFørstegangssøknad = (
                   søknad.søker.harJobbetSomSelvstendigNæringsdrivende,
               )
             : true;
+
     if (!harKunEtArbeid) {
         steps.push({
             id: 'velgArbeid',
@@ -267,14 +269,14 @@ export const getBackLinkForNæringSteg = (søker: Søker | undefined) => {
     if (!søker) {
         return SøknadRoutes.ARBEID;
     }
-    return getFrilansRouteIfFrilans(søker) || SøknadRoutes.ARBEID;
+    return getFrilansRouteIfFrilans(søker) ?? SøknadRoutes.ARBEID;
 };
 
 export const getBackLinkForArbeidIUtlandetSteg = (søker: Søker | undefined) => {
     if (!søker) {
         return SøknadRoutes.ARBEID;
     }
-    return getNæringRouteIfNæring(søker) || getFrilansRouteIfFrilans(søker) || SøknadRoutes.ARBEID;
+    return getNæringRouteIfNæring(søker) ?? getFrilansRouteIfFrilans(søker) ?? SøknadRoutes.ARBEID;
 };
 
 export const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined) => {
@@ -282,9 +284,9 @@ export const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined) => {
         return SøknadRoutes.ARBEID;
     }
     return (
-        getArbeidUtlandRouteIfArbeidUtland(søker) ||
-        getNæringRouteIfNæring(søker) ||
-        getFrilansRouteIfFrilans(søker) ||
+        getArbeidUtlandRouteIfArbeidUtland(søker) ??
+        getNæringRouteIfNæring(søker) ??
+        getFrilansRouteIfFrilans(søker) ??
         SøknadRoutes.ARBEID
     );
 };
@@ -406,15 +408,15 @@ export const getNextRouteValgAvArbeidEllerSkjema = (
 
 export const getNextRouteForFrilans = (søker: Søker, termindato: string, arbeidsforhold: Arbeidsforhold[]) => {
     return (
-        getNæringRouteIfNæring(søker) ||
-        getArbeidUtlandRouteIfArbeidUtland(søker) ||
+        getNæringRouteIfNæring(søker) ??
+        getArbeidUtlandRouteIfArbeidUtland(søker) ??
         getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, søker)
     );
 };
 
 export const getNextRouteForNæring = (søker: Søker, termindato: string, arbeidsforhold: Arbeidsforhold[]) => {
     return (
-        getArbeidUtlandRouteIfArbeidUtland(søker) ||
+        getArbeidUtlandRouteIfArbeidUtland(søker) ??
         getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, søker)
     );
 };

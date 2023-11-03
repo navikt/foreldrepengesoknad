@@ -162,9 +162,10 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                                         onClick={() => {
                                             const antallVedleggAndreTilrettelegginger = tilrettelegging
                                                 .filter((t) => t.id !== currentTilrettelegging!.id)
-                                                .reduce((total, tilrettelegging) => {
-                                                    return (total += tilrettelegging.vedlegg.length);
-                                                }, 0);
+                                                .reduce(
+                                                    (total, tilrettelegging) => total + tilrettelegging.vedlegg.length,
+                                                    0,
+                                                );
                                             const antallNyeVedlegg = formValues.vedlegg ? formValues.vedlegg.length : 0;
                                             const antallVedlegg =
                                                 antallVedleggAndreTilrettelegginger + antallNyeVedlegg;

@@ -160,8 +160,7 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
                     ? næring.oppstartsdato
                     : undefined,
             };
-        }
-        if (!erNyoppstartet) {
+        } else {
             return {
                 ...mappedNæring,
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår:
@@ -175,7 +174,6 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
                     : undefined,
             };
         }
-        return mappedNæring;
     }
     return undefined;
 };
