@@ -11,6 +11,7 @@ export const getIntlDecorator = (messagesForAllLanguages: Record<string, Record<
 
 const withIntlProvider = (story: any, context: any) => {
     const locale = context.globals.locale || 'nb';
+
     return <RawIntlProvider value={createIntl({ locale, messages: {} })}>{story()}</RawIntlProvider>;
 };
 

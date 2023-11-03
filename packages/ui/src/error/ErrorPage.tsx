@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { links } from '@navikt/fp-constants';
 import { Alert, BodyShort, Button, HStack, Heading, Label, Link, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
-import UiIntlProvider from '../i18n/UiIntlProvider';
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
 export interface Props {
