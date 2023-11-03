@@ -2,6 +2,7 @@ export const links = {
     brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
     brukerstøtte:
         'https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Teknisk+brukerstotte/hjelp-til-personbruker?kap=398749',
+    kontaktOss: 'https://www.nav.no/person/kontakt-oss/nb/tilbakemeldinger/feil-og-mangler',
     dittNav: 'https://tjenester.nav.no/dittnav/oversikt',
     foreldrepenger: 'https://foreldrepenger.nav.no',
     nav: 'https://www.nav.no',
@@ -16,4 +17,5 @@ export const links = {
     farMedmor: 'https://www.nav.no/engangsstonad#far_medmor',
     barn: 'https://www.nav.no/barn',
     foreldrepengerUtland: 'https://www.nav.no/foreldrepenger#utland',
+    engangsstonadHvem: 'https://www.nav.no/engangsstonad#hvem',
 };

@@ -1,0 +1,32 @@
+{
+    "name": "@navikt/fp-utils-test",
+    "main": "index.ts",
+    "types": "index.ts",
+    "scripts": {
+        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier": "prettier --write src"
+    },
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-hook-form": "7.45.4",
+        "react-intl": "^6.4.4",
+        "@storybook/react-vite": "7.3.1"
+    },
+    "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@testing-library/jest-dom": "^6.0.0",
+        "@testing-library/react": "^14.0.0",
+        "@testing-library/user-event": "^14.4.3",
+        "@types/react": "^18.2.20",
+        "@types/react-dom": "^18.2.7",
+        "@vitejs/plugin-react": "^4.0.4",
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6",
+        "vite": "^4.4.9",
+        "vite-plugin-checker": "^0.6.1",
+        "vitest": "^0.34.2"
+    }
+}

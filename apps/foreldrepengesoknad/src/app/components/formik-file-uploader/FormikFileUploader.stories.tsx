@@ -1,5 +1,4 @@
 import { StoryFn } from '@storybook/react';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import { Formik, Form } from 'formik';
 import FormikFileUploader, { Props } from './FormikFileUploader';
 import { Attachment } from '@navikt/fp-common/src/common/types/Attachment';
@@ -9,7 +8,6 @@ import { AttachmentType } from '@navikt/fp-common';
 export default {
     title: 'components/FormikFileUploader',
     component: FormikFileUploader,
-    decorators: [withIntlProvider],
 };
 
 const Template: StoryFn<Props> = (args) => (

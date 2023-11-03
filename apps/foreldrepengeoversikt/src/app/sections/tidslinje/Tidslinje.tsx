@@ -23,7 +23,7 @@ import { SakOppslag } from 'app/types/SakOppslag';
 import OversiktRoutes from 'app/routes/routes';
 import { AxiosError } from 'axios';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 interface Params {
     saker: SakOppslag;
@@ -102,7 +102,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
             {hendelserForVisning.map((hendelse, index) => {
                 const isActiveStep = index === aktivtStegIndex;
                 const alleDokumenter = hendelse.dokumenter.map((dokument) => {
-                    return <DokumentHendelse dokument={dokument} key={dokument.url} />;
+                    return <DokumentHendelse dokument={dokument} key={dokument.url} visesITidslinjen={true} />;
                 });
                 const visKlokkeslett =
                     hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&

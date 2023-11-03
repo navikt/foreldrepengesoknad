@@ -1,4 +1,4 @@
-import { bemUtils, intlUtils } from '@navikt/fp-common';
+import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
@@ -17,48 +17,69 @@ import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'ap
 import { AxiosError } from 'axios';
 
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
+import { Alert } from '@navikt/ds-react';
+import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
+import React from 'react';
+import { RedirectSource } from 'app/types/RedirectSource';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
     minidialogerError: AxiosError | null;
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
+    oppdatertData: any;
+    isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidialogerError, saker, søkerinfo }) => {
+const Saksoversikt: React.FunctionComponent<Props> = ({
+    minidialogerData,
+    minidialogerError,
+    saker,
+    søkerinfo,
+    oppdatertData,
+    isFirstRender,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('saksoversikt');
+    const params = useParams();
+    const navigate = useNavigate();
+
+    useSetIsRedirectedFromSøknad(params.redirect, isFirstRender);
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
-    const navnPåSøker = søkerinfo.søker.fornavn;
-    const params = useParams();
-    const alleSaker = getAlleYtelser(saker);
 
+    const alleSaker = getAlleYtelser(saker);
+    console.log(alleSaker);
+    console.log(params);
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
+    console.log(gjeldendeSak);
     useSetSelectedSak(gjeldendeSak);
 
-    const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
+    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
 
-    const aktiveMinidialogerForSaken = minidialogerData
-        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
-        : undefined;
-    const planErVedtatt = gjeldendeSak.åpenBehandling === undefined;
+    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
+    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+
+    const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
     let annenPartFnr = undefined;
     let barnFnr = undefined;
     let annenPartVedtakIsSuspended = true;
 
-    if (gjeldendeSak.ytelse === Ytelse.FORELDREPENGER) {
-        familiehendelsesdato = getFamiliehendelseDato(gjeldendeSak.familiehendelse);
-        annenPartFnr = gjeldendeSak.annenPart?.fnr;
+    if (gjeldendeSak?.ytelse === Ytelse.FORELDREPENGER) {
+        familiehendelsesdato = gjeldendeSak?.familiehendelse
+            ? getFamiliehendelseDato(gjeldendeSak.familiehendelse)
+            : undefined;
+        annenPartFnr = gjeldendeSak?.annenPart?.fnr;
 
         const barnFraSak =
-            gjeldendeSak.barn && gjeldendeSak.barn.length > 0
+            gjeldendeSak?.barn && gjeldendeSak?.barn.length > 0
                 ? gjeldendeSak.barn.find((barn) => barn.fnr !== undefined)
                 : undefined;
         barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
@@ -72,11 +93,44 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ minidialogerData, minidi
         annenPartVedtakIsSuspended,
     );
 
-    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
-    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+    if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
+        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
+    }
+
+    if (!oppdatertData) {
+        return (
+            <div className={bem.block}>
+                {redirectedFromSoknad && (
+                    <BekreftelseSendtSøknad oppdatertData={oppdatertData} tidslinjehendelser={[]} />
+                )}
+                <Block padBottom="l">
+                    <Alert variant="warning">
+                        Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
+                        kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
+                    </Alert>
+                </Block>
+                <Block padBottom="l">
+                    <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intlUtils(intl, 'saksoversikt')}</Link>
+                </Block>
+            </div>
+        );
+    }
+
+    if (!gjeldendeSak) {
+        return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
+    }
+
+    const navnPåSøker = søkerinfo.søker.fornavn;
+    const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
+    const aktiveMinidialogerForSaken = minidialogerData
+        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
+        : undefined;
 
     return (
         <div className={bem.block}>
+            {redirectedFromSoknad && (
+                <BekreftelseSendtSøknad oppdatertData={oppdatertData} tidslinjehendelser={tidslinjeHendelserData} />
+            )}
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
                 <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
                     <Oppgaver

@@ -8,11 +8,11 @@
         "build": "vite build",
         "dev": "node ./dev-server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
-        "lint": "eslint './src/**/*.{js,ts,tsx}'",
-        "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
+        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --quiet --fix './src/**/*.{js,ts,tsx}'",
         "prettier": "prettier --write src",
         "test": "vitest run",
-        "tsc": "tsc  --pretty",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001"
     },
@@ -25,7 +25,6 @@
         "@storybook/cli": "^7.3.1",
         "@storybook/react": "^7.3.1",
         "@storybook/react-vite": "7.3.1",
-        "@storybook/testing-react": "^2.0.1",
         "@testing-library/dom": "^9.3.1",
         "@testing-library/jest-dom": "^6.0.0",
         "@testing-library/react": "^14.0.0",
@@ -47,6 +46,7 @@
         "axios-mock-adapter": "1.21.5",
         "cross-env": "^7.0.3",
         "dotenv": "^16.3.1",
+        "eslint": "^8.38.0",
         "fs-extra": "^11.1.1",
         "identity-obj-proxy": "^3.0.0",
         "less": "^4.2.0",
@@ -61,6 +61,7 @@
         "typescript": "^5.1.6",
         "vite": "^4.4.9",
         "vite-plugin-checker": "^0.6.1",
+        "vite-plugin-eslint": "^1.8.1",
         "vitest": "^0.34.2"
     },
     "dependencies": {

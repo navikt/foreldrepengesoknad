@@ -1,7 +1,9 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import checker from 'vite-plugin-checker';
+import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
     plugins: [
@@ -9,6 +11,7 @@ export default defineConfig({
             include: '**/*.{jsx,tsx}',
         }),
         checker({ typescript: true }),
+        eslint(),
     ],
     build: {
         sourcemap: true,
@@ -22,5 +25,18 @@ export default defineConfig({
     },
     server: {
         port: 8080,
+    },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './vitest/setupTests.ts',
+        deps: {
+            inline: ['@navikt/ds-react'],
+        },
+        coverage: {
+            include: ['src/**/*'],
+            exclude: [],
+        },
+        testTimeout: 10000,
     },
 });

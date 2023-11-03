@@ -3,9 +3,9 @@ import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { date1YearFromNow, dateToday } from '@navikt/fp-common';
-import { createCountryOptions } from '@navikt/fp-utils';
+import { createCountryOptions, formatDate } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
+import { DATE_1_YEAR_FROM_NOW, DATE_TODAY } from '@navikt/fp-constants';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -37,11 +37,11 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
 
-    const minDateFom = dayjs(dateToday).toDate();
-    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate();
+    const minDateFom = dayjs(DATE_TODAY).toDate();
+    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(DATE_1_YEAR_FROM_NOW).toDate();
 
-    const minDateTom = dayjs(fom || dateToday).toDate();
-    const maxDateTom = dayjs(date1YearFromNow).toDate();
+    const minDateTom = dayjs(fom || DATE_TODAY).toDate();
+    const maxDateTom = dayjs(DATE_1_YEAR_FROM_NOW).toDate();
 
     return (
         <VStack gap="5" align="start">
@@ -65,14 +65,21 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
-                minDate={dayjs(dateToday).toDate()}
-                maxDate={tom ? dayjs(tom).toDate() : dayjs(date1YearFromNow).toDate()}
+                minDate={dayjs(DATE_TODAY).toDate()}
+                maxDate={tom ? dayjs(tom).toDate() : dayjs(DATE_1_YEAR_FROM_NOW).toDate()}
                 validate={[
                     isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved')),
                     isValidDate(i18n('SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato')),
                     isDatesNotTheSame(i18n('SenereUtenlandsoppholdSteg.FomErLikTom'), tom),
                     isBeforeOrSame(i18n('SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato'), tom),
-                    isDateWithinRange(i18n('SenereUtenlandsoppholdSteg.DateOutsideRange'), minDateFom, maxDateFom),
+                    isDateWithinRange(
+                        i18n('SenereUtenlandsoppholdSteg.DateOutsideRangeFom', {
+                            min: formatDate(minDateFom),
+                            max: formatDate(maxDateFom),
+                        }),
+                        minDateFom,
+                        maxDateFom,
+                    ),
                     isPeriodNotOverlappingOthers(
                         i18n('SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
                         { date: tom, isStartDate: false },
@@ -91,7 +98,14 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                     isValidDate(i18n('SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato')),
                     isDatesNotTheSame(i18n('SenereUtenlandsoppholdSteg.TomErLikFom'), fom),
                     isAfterOrSame(i18n('SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato'), fom),
-                    isDateWithinRange(i18n('SenereUtenlandsoppholdSteg.DateOutsideRange'), minDateTom, maxDateTom),
+                    isDateWithinRange(
+                        i18n('SenereUtenlandsoppholdSteg.DateOutsideRangeTom', {
+                            min: formatDate(minDateTom),
+                            max: formatDate(maxDateTom),
+                        }),
+                        minDateTom,
+                        maxDateTom,
+                    ),
                     isPeriodNotOverlappingOthers(
                         i18n('SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
                         { date: fom, isStartDate: true },

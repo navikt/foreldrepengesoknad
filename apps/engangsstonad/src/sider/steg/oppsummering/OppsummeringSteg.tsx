@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
-
+import { useAbortSignal } from '@navikt/fp-api';
+import { notEmpty } from '@navikt/fp-validation';
+import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
@@ -10,9 +12,7 @@ import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
-import { notEmpty } from '@navikt/fp-validation';
-import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
+import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import Dokumentasjon from 'types/Dokumentasjon';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
@@ -22,8 +22,8 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 export interface Props {
     person: Person;
     sendSøknad: (
+        abortSignal: AbortSignal,
         omBarnet: OmBarnet,
-        utenlandsopphold: Utenlandsopphold,
         dokumentasjon?: Dokumentasjon,
         tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
         senereUtenlandsopphold?: UtenlandsoppholdSenere,
@@ -41,17 +41,22 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
     const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
+    const abortSignal = useAbortSignal();
 
     const [isChecked, setChecked] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const send = useCallback(() => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
-            sendSøknad(omBarnet, utenlandsopphold, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
-        }
-    }, [isChecked]);
+    const send = useCallback(
+        (setButtonsDisabled: (isDisabled: boolean) => void) => {
+            if (!isChecked) {
+                setIsError(true);
+            } else {
+                setButtonsDisabled(true);
+                sendSøknad(abortSignal, omBarnet, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
+            }
+        },
+        [isChecked],
+    );
 
     return (
         <Step

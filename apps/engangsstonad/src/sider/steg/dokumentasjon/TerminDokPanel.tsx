@@ -4,11 +4,12 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { I18nFn, FileUploader, useCustomIntl } from '@navikt/fp-ui';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 
 import Environment from 'appData/Environment';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
@@ -62,7 +63,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                 </BodyLong>
                 <FileUploader
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                    skjemanummber={Skjemanummer.TERMINBEKREFTELSE}
+                    skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}
                     saveAttachment={getSaveAttachment(Environment.REST_API_URL)}

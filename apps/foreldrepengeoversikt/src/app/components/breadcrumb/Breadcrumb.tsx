@@ -48,14 +48,14 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
 
                 if (lastBreadcrumb) {
                     return (
-                        <BodyShort key={p.route} className={bem.element('flex-align')}>
+                        <BodyShort key={`${p.displayName}-short`} className={bem.element('flex-align')}>
                             {p.displayName}
                         </BodyShort>
                     );
                 }
 
                 return (
-                    <div key={p.route} className={bem.element('flex-align')}>
+                    <div key={`${p.displayName}-content`} className={bem.element('flex-align')}>
                         {p.isExternalLink ? (
                             <DSLink key={p.displayName} className={bem.element('link-wrapper')} href={p.route}>
                                 {erNavHomeLink && <Home width="24" height="24" style={{ marginRight: '0.5rem' }} />}

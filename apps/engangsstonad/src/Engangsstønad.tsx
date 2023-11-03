@@ -1,25 +1,25 @@
 import { useState } from 'react';
 import { Loader } from '@navikt/ds-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Locale, erMyndig } from '@navikt/fp-common';
+import { Locale } from '@navikt/fp-common';
 import SøkersituasjonSteg from './sider/steg/sokersituasjon/SøkersituasjonSteg';
 import Velkommen from './sider/velkommen/Velkommen';
 import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
 import UtenlandsoppholdSteg from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { useRequest } from '@navikt/fp-api';
+import { erMyndig, redirect } from '@navikt/fp-utils';
+import { ErrorPage, Umyndig } from '@navikt/fp-ui';
+
 import Api from 'appData/api';
-import Person from './types/Person';
-import Umyndig from './sider/umyndig/Umyndig';
-import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
-import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import { Path } from 'appData/paths';
 import { EsDataContext } from 'appData/EsDataContext';
+import Environment from 'appData/Environment';
 import Kvittering from 'types/Kvittering';
-import FeilsideInfo from './sider/feilside/FeilsideInfo';
+import Person from './types/Person';
+import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
+import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import { redirect } from '@navikt/fp-utils';
-import Environment from 'appData/Environment';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -39,18 +39,22 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
 
     if (kvittering) {
-        if (Environment.INNSYN_SAK) {
-            redirect(kvittering.saksNr ? `${Environment.INNSYN_SAK}${kvittering.saksNr}` : Environment.INNSYN);
+        if (Environment.INNSYN) {
+            redirect(
+                kvittering.saksNr
+                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
+                    : `${Environment.INNSYN}/redirectFromSoknad`,
+            );
+            return <Spinner />;
         }
         return <div>Redirected to Innsyn</div>;
     }
 
     if (error !== null) {
-        //TODO Kva er logikken med å visa spinner ved 401/403?
         if (error.response?.status === 401 || error.response?.status === 403) {
             return <Spinner />;
         }
-        return <FeilsideInfo onChangeLocale={onChangeLocale} locale={locale} />;
+        return <ErrorPage appnavn="Engangsstønad" feilmelding={error.message} søkPåNytt={() => location.reload()} />;
     }
 
     if (loading || !person) {
@@ -58,10 +62,10 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     }
 
     if (!erMyndig(person.fødselsdato)) {
-        return <Umyndig person={person} />;
+        return <Umyndig appnavn="Engangsstønad" />;
     }
 
-    const sendSøknad = Api.sendSøknad(locale, setKvittering);
+    const sendSøknad = Api.getSendSøknad(locale, setKvittering);
 
     return (
         <EsDataContext>

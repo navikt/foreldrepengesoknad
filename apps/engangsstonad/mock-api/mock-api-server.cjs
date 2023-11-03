@@ -1,6 +1,5 @@
 const express = require('express');
 const server = express();
-const multer = require('multer');
 const morgan = require('morgan');
 require('dotenv').config();
 
@@ -61,7 +60,7 @@ const startServer = (html) => {
         res.sendStatus(204);
     });
 
-    server.post('/rest/soknad', (req, res) => {
+    server.post('/rest/soknad/engangssoknad', (req, res) => {
         res.send(kvittering);
     });
 
@@ -70,7 +69,5 @@ const startServer = (html) => {
         console.log(`Mock-api listening on port: ${port}`);
     });
 };
-
-const logError = (errorMessage, details) => console.log(errorMessage, details);
 
 startServer();

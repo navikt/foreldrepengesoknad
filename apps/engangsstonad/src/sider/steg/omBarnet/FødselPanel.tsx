@@ -43,8 +43,9 @@ const FødselPanel: React.FunctionComponent = () => {
             </RadioGroup>
             {erBarnetFødt && (
                 <Datepicker
-                    name="fødselsdatoer.0"
+                    name="fødselsdato"
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
+                    description={i18n('FødselPanel.TermindatoFodselsdato.beskrivelse')}
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
                     validate={[
@@ -59,6 +60,7 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Datepicker
                     name="termindato"
                     label={<FormattedMessage id="FødselPanel.Termindato" />}
+                    description={i18n('FødselPanel.TermindatoFodselsdato.beskrivelse')}
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     validate={[
@@ -73,6 +75,7 @@ const FødselPanel: React.FunctionComponent = () => {
             <RadioGroup
                 name="antallBarn"
                 label={erBarnetFødt ? i18n('FødselPanel.AntallBarn.Født') : i18n('FødselPanel.AntallBarn.Termin')}
+                description={i18n('FødselPanel.AntallBarn.TerminBeskrivelse')}
                 validate={[
                     isRequired(
                         erBarnetFødt

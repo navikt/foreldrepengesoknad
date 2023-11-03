@@ -1,12 +1,10 @@
 import { StoryFn } from '@storybook/react';
 
-import withIntlProvider from 'storybook/decorators/withIntl';
 import EksternUrl, { Props } from './EksternUrl';
 
 export default {
     title: 'components/EksternUrl',
     component: EksternUrl,
-    decorators: [withIntlProvider],
 };
 
 const Template: StoryFn<Props> = (args) => <EksternUrl {...args} />;

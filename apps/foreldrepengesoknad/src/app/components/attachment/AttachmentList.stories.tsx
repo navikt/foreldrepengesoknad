@@ -1,13 +1,11 @@
 import { StoryFn } from '@storybook/react';
 
-import withIntlProvider from 'storybook/decorators/withIntl';
 import AttachmentList from './AttachmentList';
 import { Attachment } from '@navikt/fp-common';
 
 export default {
     title: 'components/AttachmentList',
     component: AttachmentList,
-    decorators: [withIntlProvider],
 };
 
 const Template: StoryFn<any> = (args) => <AttachmentList {...args} />;

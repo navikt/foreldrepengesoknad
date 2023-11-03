@@ -23,7 +23,14 @@
         "dev": {
             "persistent": true
         },
-        "lint": {},
+        "lint": {
+            "dependsOn": [
+                "lint:eslint",
+                "lint:tsc"
+            ]
+        },
+        "lint:eslint": {},
+        "lint:tsc": {},
         "build-storybook": {
             "dependsOn": [
                 "build"

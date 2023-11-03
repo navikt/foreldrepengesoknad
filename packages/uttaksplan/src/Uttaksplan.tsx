@@ -27,6 +27,7 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
     tidperiodeOverlapperDato,
+    NavnPåForeldre,
 } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
@@ -39,7 +40,6 @@ import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttak
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
-import { NavnPåForeldre } from '@navikt/fp-common';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 
 interface Props {
@@ -327,16 +327,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     saveAttachment={saveAttachment}
                 />
             </Block>
-            {/* {visAutomatiskJusteringForm && (
-                <Block padBottom="l">
-                    <AutomatiskJusteringForm
-                        termindato={termindato!}
-                        perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
-                        antallBarn={barn.antallBarn}
-                        visibility={visibility}
-                    />
-                </Block>
-            )} */}
+
             <Block padBottom="xl">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}

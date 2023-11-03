@@ -3,7 +3,6 @@ import MockAdapter from 'axios-mock-adapter/types';
 
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import withRouter from 'storybook/decorators/withRouter';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
@@ -18,7 +17,7 @@ const context = _context as any;
 export default {
     title: 'steps/AnnenForelder',
     component: AnnenForelder,
-    decorators: [withRouter, withIntlProvider, withForeldrepengersøknadContext],
+    decorators: [withRouter, withForeldrepengersøknadContext],
 };
 
 interface Props {

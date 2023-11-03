@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/testing-react';
+import { composeStories } from '@storybook/react';
 import * as stories from './Utenlandsopphold.stories';
 
 const { Default } = composeStories(stories);

@@ -1,8 +1,8 @@
 import { FormattedMessage } from 'react-intl';
-import { formatDate } from '@navikt/fp-common';
 import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 import { AttachmentList, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
+import { formatDate } from '@navikt/fp-utils';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
@@ -72,7 +72,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                     <BodyShort>
                         <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} />
                     </BodyShort>
-                    <BodyShort>{formatDate(omBarnet.fødselsdatoer[0].dato)}</BodyShort>
+                    <BodyShort>{formatDate(omBarnet.fødselsdato)}</BodyShort>
                 </HStack>
             )}
             {harTermin && dokumentasjon && erTerminDokumentasjon(dokumentasjon) && (

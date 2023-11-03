@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -19,14 +18,7 @@ export default {
 const Template: StoryFn<{ startSøknad: (start: boolean) => void }> = ({ startSøknad }) => {
     initAmplitude();
     return (
-        <IntlProvider språkkode="nb">
-            <Velkommen
-                startSøknad={startSøknad}
-                onChangeLocale={action('button-click')}
-                locale="nb"
-                erVelkommen={false}
-            />
-        </IntlProvider>
+        <Velkommen startSøknad={startSøknad} onChangeLocale={action('button-click')} locale="nb" erVelkommen={false} />
     );
 };
 

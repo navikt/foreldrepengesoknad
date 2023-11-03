@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { DATE_TODAY, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
-import { isDateRangesOverlapping } from '@navikt/fp-utils';
+import { isDateRangesOverlapping, isDateWithinRange as isDateWithinRangeUtil } from '@navikt/fp-utils';
 import isBetween from 'dayjs/plugin/isBetween';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
@@ -61,13 +61,13 @@ export const isMaxOneYearIntoTheFuture =
 export const isDateWithinRange =
     (i18nText: string, start: Date, end: Date) =>
     (date: string): FormValidationResult =>
-        isDateWithinRange(date, start, end) ? null : i18nText;
+        isDateWithinRangeUtil(dayjs(date).toDate(), start, end) ? null : i18nText;
 
 export const isPeriodNotOverlappingOthers =
     (
         i18nText: string,
         otherDateInfo: { date: Date | string; isStartDate: boolean },
-        otherPeriods: { fom: Date | string; tom: Date | string }[],
+        otherPeriods: Array<{ fom: Date | string; tom: Date | string }>,
     ) =>
     (date: string): FormValidationResult => {
         const dateRanges = otherPeriods.map((u) => ({

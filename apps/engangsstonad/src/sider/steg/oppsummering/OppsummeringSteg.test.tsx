@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/testing-react';
+import { composeStories } from '@storybook/react';
 import * as stories from './OppsummeringSteg.stories';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import dayjs from 'dayjs';
@@ -46,17 +46,16 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
+                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
             },
             { vedlegg: [] },
             undefined,
@@ -88,18 +87,17 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 adopsjonAvEktefellesBarn: true,
                 adopsjonsdato: '2023-01-01',
                 antallBarn: 1,
                 fødselsdatoer: [{ dato: '2023-01-01' }],
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
             },
             {
                 vedlegg: [
@@ -145,17 +143,16 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 antallBarn: 1,
                 erBarnetFødt: false,
                 termindato: '2023-01-02',
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
             },
             {
                 terminbekreftelsedato: '2023-01-01',
@@ -213,17 +210,16 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
+        const abortController = new AbortController();
+
         await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
+            abortController.signal,
             {
                 antallBarn: 1,
                 erBarnetFødt: true,
-                fødselsdatoer: [{ dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT) }],
-            },
-            {
-                harBoddUtenforNorgeSiste12Mnd: true,
-                skalBoUtenforNorgeNeste12Mnd: true,
+                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
             },
             {
                 vedlegg: [],

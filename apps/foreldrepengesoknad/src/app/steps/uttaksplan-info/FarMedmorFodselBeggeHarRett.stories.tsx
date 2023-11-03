@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import withIntl from 'storybook/decorators/withIntl';
 import withRouter from 'storybook/decorators/withRouter';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import AxiosMock from 'storybook/utils/AxiosMock';
@@ -25,7 +24,7 @@ const context = _context as any;
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselBeggeHarRett',
     component: UttaksplanInfo,
-    decorators: [withRouter, withIntl, withForeldrepengersøknadContext],
+    decorators: [withRouter, withForeldrepengersøknadContext],
 };
 
 const Template: StoryFn<UttaksplanInfoTestData> = (args) => {

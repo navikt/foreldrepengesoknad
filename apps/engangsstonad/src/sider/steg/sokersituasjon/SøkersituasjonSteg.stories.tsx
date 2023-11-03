@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
-import IntlProvider from 'intl/IntlProvider';
 import withRouter from 'storybookHelpers/withRouter';
 import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 import { Path } from 'appData/paths';
@@ -20,11 +19,9 @@ export default {
 const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <IntlProvider språkkode="nb">
-            <EsContextStorybookHelper onDispatch={gåTilNesteSide}>
-                <SøkersituasjonSteg />
-            </EsContextStorybookHelper>
-        </IntlProvider>
+        <EsContextStorybookHelper onDispatch={gåTilNesteSide}>
+            <SøkersituasjonSteg />
+        </EsContextStorybookHelper>
     );
 };
 

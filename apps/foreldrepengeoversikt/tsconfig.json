@@ -9,7 +9,7 @@
             "storybook/*": ["storybook/*"]
         },
         "rootDir": "src",
-        "types": ["vite/client", "node"]
+        "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]
     },
     "include": ["src"],
     "exclude": ["node_modules", "react-day-picker"]

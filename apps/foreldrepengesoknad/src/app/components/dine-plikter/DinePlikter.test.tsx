@@ -1,14 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import DinePlikter from './DinePlikter';
-import IntlProvider from 'app/intl/IntlProvider';
+import { composeStories } from '@storybook/react';
+import * as stories from './DinePlikter.stories';
+
+const { Default } = composeStories(stories);
 
 describe('<DinePlikter>', () => {
     it('skal returnere spinner når data blir hentet', () => {
-        render(
-            <IntlProvider locale="nb">
-                <DinePlikter />
-            </IntlProvider>,
-        );
+        render(<Default />);
 
         expect(
             screen.queryByText(

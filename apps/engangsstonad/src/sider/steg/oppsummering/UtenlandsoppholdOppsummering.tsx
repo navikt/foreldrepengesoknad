@@ -102,7 +102,7 @@ const UtenlandsoppholdOppsummering: React.FunctionComponent<Props> = ({
                         id={'UtenlandsoppholdOppsummering.VarPåFødselstidspunktet'}
                         values={{
                             country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                omBarnet.fødselsdatoer[0].dato,
+                                omBarnet.fødselsdato,
                                 tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
                                 senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                             )

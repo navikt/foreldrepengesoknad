@@ -1,14 +1,14 @@
 import { Alert } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
 
-import { Attachment as AttachmentType } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 import { FileUploadError } from '../typer/FileUploadError';
 
 const MAX_FIL_STØRRELSE_KB = 16777;
 
 interface OwnProps {
-    failedAttachment: AttachmentType;
-    onDelete: (file: AttachmentType) => void;
+    failedAttachment: Attachment;
+    onDelete: (file: Attachment) => void;
 }
 
 const FailedAttachment: React.FunctionComponent<OwnProps> = ({ failedAttachment, onDelete }) => {
@@ -17,6 +17,12 @@ const FailedAttachment: React.FunctionComponent<OwnProps> = ({ failedAttachment,
             {failedAttachment.error === FileUploadError.GENERAL && (
                 <FormattedMessage
                     id="FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet"
+                    values={{ filename: failedAttachment.filename }}
+                />
+            )}
+            {failedAttachment.error === FileUploadError.TIMEOUT && (
+                <FormattedMessage
+                    id="FailedAttachment.Vedlegg.Feilmelding.Timeout"
                     values={{ filename: failedAttachment.filename }}
                 />
             )}

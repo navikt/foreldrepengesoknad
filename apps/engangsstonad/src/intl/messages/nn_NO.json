@@ -1,14 +1,6 @@
 {
     "Søknad.Pageheading": "Søknad om eingongsstønad",
 
-    "Umyndig.Bobletittel": "Hei, {name}!",
-    "Umyndig.Under18.Bobletekst": "Sidan du er under 18 år, må ein av foreldra dine eller ein føresett skrive under på søknaden saman med deg. Du må derfor fylle ut søknaden på papir og sende han i posten. ",
-    "Umyndig.Under18.Boblelenketekst": "Her kan du laste ned papirsøknaden",
-
-    "FeilsideInfo.GenerellFeil.Tittel": "Oops,",
-    "FeilsideInfo.GenerellFeil.Ingress": "Noko gjekk dessverre gale. Ver vennleg og prøv igjen seinare. Dersom det framleis oppstår feil kontakt brukarstøtte.",
-    "FeilsideInfo.GenerellFeil.Brukerstøtte": "Kontakt brukarstøtte her",
-
     "Velkommen.Dokumenttittel": "NAV eingongsstønad",
     "Velkommen.Ingress.Del1": "Eingongsstønad kan du få om du ventar barn og ikkje har hatt inntekt som gjev rett til foreldrepengar i 6 av dei siste 10 månadene. Med eingongsstønad får du heile beløpet utbetalt med ein gong. Om du har foreldrepenger får du penger ein gong i månaden.",
     "Velkommen.Ingress.Del2": "Det er fyrst og fremst mødre som kan søkje om eingongsstønad, men far/medmor kan få eingongsstønad i nokre tilfeller, desse er skildra ",
@@ -82,6 +74,7 @@
     "FødselPanel.Fødselsdato.Gyldig": "Fødselsdato må vera ein gyldig dato på formatet dd.mm.åååå",
     "FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere": "Fødselsdato må vere i dag eller tidlegare",
     "FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake": "Du kan ikkje søka om engangsstønad for barn som er eldre enn 6 månader",
+    "FødselPanel.TermindatoFodselsdato.beskrivelse": "Du kan tidlegast søkja i 22 svangerskapsveke og seinast 6 mnd etter at barnet er født.",
     "FødselPanel.Termindato": "Termindato",
     "FødselPanel.Termindato.DuMåOppgi": "Du må gi opp termindato",
     "FødselPanel.Termindato.Gyldig": "Termindato må vera ein gyldig dato på formatet dd.mm.åååå",
@@ -89,6 +82,7 @@
     "FødselPanel.Termindato.DuMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
     "FødselPanel.AntallBarn.Født": "Kor mange barn har du fått?",
     "FødselPanel.AntallBarn.Termin": "Kor mange barn ventar du?",
+    "FødselPanel.AntallBarn.TerminBeskrivelse": "Du får eingongsstønad per barn",
     "FødselPanel.AntallBarn.Født.Required": "Du må oppgje kor mange barn du har fått",
     "FødselPanel.AntallBarn.Venter.Required": "Du må oppgje kor mange barn du ventar",
     "FødselPanel.Radiobutton.Ettbarn": "Eitt barn",
@@ -111,7 +105,8 @@
     "AdopsjonDokPanel.Dok.Storrelse": "Fil kan ikkje vera større enn 9MB og kan vera i formata pdf, png og jpg.",
 
     "UtenlandsoppholdSteg.Utenlandsopphold": "Bu i utlandet",
-    "UtenlandsoppholdSteg.Info": "Det regnes som å bu i utlandet dersom du har arbeidsinntekt i utlandet og eller at du oppheld deg der lenger enn 12 månader.",
+    "UtenlandsoppholdSteg.InfoFodsel": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for fødsel.",
+    "UtenlandsoppholdSteg.InfoAdopsjon": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for omsorgsovertakelse ved adopsjon.",
     "UtenlandsoppholdSteg.Siste12Måneder.Spørsmål": "Kvar har du budd dei siste 12 månadene?",
     "UtenlandsoppholdSteg.Siste12Måneder.IsRequired": "Du må oppgje kor du har budd dei siste 12 månadene",
     "UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge": "Eg har budd i Noreg",
@@ -143,7 +138,8 @@
     "TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
     "TidligereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
     "TidligereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "TidligereUtenlandsoppholdSteg.DateOutsideRange": "Ugyldig dato",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRangeFom": "Fra og med dato for utenlandsopphold må vera mellom {min} og {max}",
+    "TidligereUtenlandsoppholdSteg.DateOutsideRangeTom": "Til og med dato for utenlandsopphold må vera mellom {min} og {max}",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
 
@@ -161,7 +157,8 @@
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette oppholdet",
     "SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
     "SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
-    "SenereUtenlandsoppholdSteg.DateOutsideRange": "Ugyldig dato",
+    "SenereUtenlandsoppholdSteg.DateOutsideRangeFom": "Fra og med dato for utenlandsopphold må vera mellom {min} og {max}",
+    "SenereUtenlandsoppholdSteg.DateOutsideRangeTom": "Til og med dato for utenlandsopphold må vera mellom {min} og {max}",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Du må legga inn ein dato som er før til-datoen",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Du må legga inn ein dato som er etter fra-datoen",
 

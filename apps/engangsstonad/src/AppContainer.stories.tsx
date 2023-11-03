@@ -24,7 +24,7 @@ const Template: StoryFn<{ person: Person }> = ({ person }) => {
 
     const apiMock = new MockAdapter(engangsstønadApi);
     apiMock.onGet('/personinfo').reply(200, person);
-    apiMock.onPost('/soknad').reply(200, kvittering);
+    apiMock.onPost('/soknad/engangssoknad').reply(200, kvittering);
 
     const attachmentApiMock = new MockAdapter(attachmentApi);
     attachmentApiMock.onPost('/storage/vedlegg').reply(200); //story

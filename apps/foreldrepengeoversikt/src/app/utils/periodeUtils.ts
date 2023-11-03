@@ -1,13 +1,14 @@
-import { guid, intlUtils, TidsperiodeDate } from '@navikt/fp-common';
+import { guid, intlUtils, ISOStringToDate, TidsperiodeDate } from '@navikt/fp-common';
 import { Periode } from 'app/types/Periode';
 import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { StønadskontoType } from 'app/types/StønadskontoType';
+import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 import { IntlShape } from 'react-intl';
 import { getNavnGenitivEierform, NavnPåForeldre } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import dayjs from 'dayjs';
-import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik-ds/lib';
 import { isEqual } from 'lodash';
+import { formatDateIso } from '@navikt/fp-utils';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
@@ -237,7 +238,32 @@ export const getStønadskontoForelderNavn = (
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
         }
     }
-    return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
+
+    if (!konto) {
+        //TODO Denne skal jo ikkje kun skje (ref typen), men Andreas meinar at det kanskje skjer?
+        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.undefined' });
+    }
+
+    return finnTekstForStønadskontoType(intl, konto);
+};
+
+const finnTekstForStønadskontoType = (intl: IntlShape, konto: StønadskontoType) => {
+    switch (konto) {
+        case StønadskontoType.Fedrekvote:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FEDREKVOTE' });
+        case StønadskontoType.Fellesperiode:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FELLESPERIODE' });
+        case StønadskontoType.Foreldrepenger:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FORELDREPENGER' });
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FORELDREPENGER_FØR_FØDSEL' });
+        case StønadskontoType.Mødrekvote:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MØDREKVOTE' });
+        case StønadskontoType.AktivitetsfriKvote:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE' });
+        case StønadskontoType.Flerbarnsdager:
+            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FLERBARNSDAGER' });
+    }
 };
 
 export const getUttaksprosentFromStillingsprosent = (
@@ -266,6 +292,27 @@ export const getOppholdskontoNavn = (
     return erMor
         ? intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn: navn })
         : intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn: navn });
+};
+
+export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsakType) => {
+    switch (utsettelseÅrsak) {
+        case UtsettelseÅrsakType.Arbeid:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
+        case UtsettelseÅrsakType.Ferie:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
+        case UtsettelseÅrsakType.Fri:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FRI' });
+        case UtsettelseÅrsakType.HvØvelse:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.HV_ØVELSE' });
+        case UtsettelseÅrsakType.InstitusjonBarnet:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.BARN_INNLAGT' });
+        case UtsettelseÅrsakType.InstitusjonSøker:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_INNLAGT' });
+        case UtsettelseÅrsakType.NavTiltak:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
+        case UtsettelseÅrsakType.Sykdom:
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_SYKDOM' });
+    }
 };
 
 export const getPeriodeTittel = (
@@ -324,7 +371,7 @@ export const getPeriodeTittel = (
     }
     if (isUtsettelsesperiode(periode)) {
         if (periode.utsettelseÅrsak) {
-            return intlUtils(intl, `uttaksplan.utsettelsesårsak.${periode.utsettelseÅrsak}`);
+            return finnTekstForUtsettelseÅrsak(intl, periode.utsettelseÅrsak);
         }
         return intlUtils(intl, 'uttaksplan.utsettelsesårsak.ukjent');
     }
@@ -353,21 +400,21 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
         if (index === 0) {
             oppsplittetPeriode.push({
                 ...periode,
-                fom: dateToISOString(datoWrapper.dato),
+                fom: formatDateIso(datoWrapper.dato),
                 tom: undefined!,
             });
             return;
         }
 
         oppsplittetPeriode[index - 1].tom = datoWrapper.erFom
-            ? dateToISOString(Uttaksdagen(datoWrapper.dato).forrige())
-            : dateToISOString(datoWrapper.dato);
+            ? formatDateIso(Uttaksdagen(datoWrapper.dato).forrige())
+            : formatDateIso(datoWrapper.dato);
 
         if (index < datoerIPerioden.length - 1) {
             oppsplittetPeriode.push({
                 ...periode,
                 id: guid(),
-                fom: dateToISOString(datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste()),
+                fom: formatDateIso(datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste()),
                 tom: undefined!,
             });
         }

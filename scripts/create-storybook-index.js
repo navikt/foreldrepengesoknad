@@ -72,16 +72,13 @@ const creatIndexHtml = () => {
     // Kopier storybook fra pakkene og inn i folder som skal deployes
     const origDir = process.cwd();
     const packagesApps = glob
-        .sync(path.join(origDir, 'apps', '**', 'package.json').split(path.sep).join('/'), {
-            ignore: '**/node_modules/**',
-        })
+        .sync(path.join(origDir, 'apps', '*', 'package.json').split(path.sep).join('/'))
         .map(path.dirname)
         .map(copyFiles)
         .filter((subPackage) => subPackage);
+
     const packagesPackages = glob
-        .sync(path.join(origDir, 'packages', '**', 'package.json').split(path.sep).join('/'), {
-            ignore: '**/node_modules/**',
-        })
+        .sync(path.join(origDir, 'packages', '*', 'package.json').split(path.sep).join('/'))
         .map(path.dirname)
         .map(copyFiles)
         .filter((subPackage) => subPackage);

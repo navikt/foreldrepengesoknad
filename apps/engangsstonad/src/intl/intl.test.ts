@@ -1,6 +1,6 @@
 import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
-import fs from 'fs';
+import fs from 'node:fs';
 
 import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
@@ -41,7 +41,6 @@ describe('intl messages', () => {
     });
 
     const regex = /(?<=(i18n)\(')[^']*/gm;
-    //const regex = /(?<=(intlUtils\(intl,\s'))[^']*/gm;
 
     const getAdditionalIntlString = (fileLoc: string) => {
         const fileBuffer = fs.readFileSync(fileLoc);
