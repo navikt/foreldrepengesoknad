@@ -3,7 +3,6 @@ import MockAdapter from 'axios-mock-adapter/types';
 
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import withIntl from 'storybook/decorators/withIntl';
 import withRouter from 'storybook/decorators/withRouter';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import AxiosMock from 'storybook/utils/AxiosMock';
@@ -32,7 +31,7 @@ const søkerinfoFarSøker = _søkerinfoFarSøker as any;
 export default {
     title: 'steps/uttaksplan-info/MorFarAnnenForelderHarRettIEØS',
     component: UttaksplanInfo,
-    decorators: [withRouter, withIntl, withForeldrepengersøknadContext],
+    decorators: [withRouter, withForeldrepengersøknadContext],
 };
 
 const Template: StoryFn<UttaksplanInfoTestData> = (args) => {

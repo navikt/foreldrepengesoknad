@@ -2,7 +2,6 @@ import { StoryFn } from '@storybook/react';
 
 import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import withRouter from 'storybook/decorators/withRouter';
@@ -13,7 +12,7 @@ import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType'
 export default {
     title: 'pages/Velkommen',
     component: Velkommen,
-    decorators: [withIntlProvider, withForeldrepengersøknadContext, withRouter],
+    decorators: [withForeldrepengersøknadContext, withRouter],
 };
 
 interface Props {
