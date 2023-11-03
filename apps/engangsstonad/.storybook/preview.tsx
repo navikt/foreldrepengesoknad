@@ -1,5 +1,5 @@
 import { getIntlDecorator } from '@navikt/fp-utils-test';
-import { Preview, StoryFn } from '@storybook/react';
+import { Preview } from '@storybook/react';
 import { allCommonMessages } from '@navikt/fp-common';
 
 import nnMessages from '../src/intl/messages/nn_NO.json';
@@ -22,15 +22,6 @@ const withIntlProvider = getIntlDecorator({
     nn: { ...nnMessages, ...allCommonMessages.nn },
     en: { ...enMessages, ...allCommonMessages.en },
 });
-
-export const decorators = [
-    withIntlProvider,
-    (Story: StoryFn) => (
-        <div id="app" style={{ backgroundColor: 'white', padding: '40px' }}>
-            <Story />
-        </div>
-    ),
-];
 
 export const globalTypes = {
     locale: {

@@ -3,14 +3,13 @@ import { StoryFn } from '@storybook/react';
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold } from 'app/types/SøkerinfoDTO';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import SøknadSendt from 'app/pages/søknadSendt/SøknadSendt';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 
 export default {
     title: 'pages/SøknadSendt',
     component: SøknadSendt,
-    decorators: [withIntlProvider, withForeldrepengersøknadContext],
+    decorators: [withForeldrepengersøknadContext],
 };
 
 interface Props {

@@ -1,5 +1,11 @@
+import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { Preview } from '@storybook/react';
+import { allCommonMessages } from '@navikt/fp-common';
+
 import '@navikt/ds-css';
 import '../src/app/styles/app.css';
+
+import nbMessages from '../src/app/intl/nb_NO.json';
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
@@ -10,10 +16,12 @@ scriptTag.innerHTML = JSON.stringify({
 });
 document.head.appendChild(scriptTag);
 
-export const decorators = [
-    (Story) => (
-        <div id="app" style={{ padding: '40px' }}>
-            <Story />
-        </div>
-    ),
-];
+const withIntlProvider = getIntlDecorator({
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+});
+
+const preview: Preview = {
+    decorators: [withIntlProvider],
+};
+
+export default preview;
