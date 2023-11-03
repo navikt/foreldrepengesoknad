@@ -20,11 +20,11 @@ const Planlegger: FunctionComponent<Props> = () => {
                 <Heading size="medium">
                     <FormattedMessage id="hvem.tittel" />
                     <RadioGroup name="test">
-                        <Radio value="option1">Mor og far</Radio>
-                        <Radio value="option2">Mor og medmor</Radio>
-                        <Radio value="option2">Far og far</Radio>
-                        <Radio value="option2">Bare mor</Radio>
-                        <Radio value="option2">Bare far</Radio>
+                        <Radio value="morFar">Mor og far</Radio>
+                        <Radio value="morMedmor">Mor og medmor</Radio>
+                        <Radio value="farFar">Far og far</Radio>
+                        <Radio value="mor">Bare mor</Radio>
+                        <Radio value="far">Bare far</Radio>
                     </RadioGroup>
                 </Heading>
             </Form>
