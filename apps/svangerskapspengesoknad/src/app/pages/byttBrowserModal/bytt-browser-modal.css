@@ -1,13 +1,10 @@
 .bytt-browser-modal {
-    display: flex;
-    justify-content: center;
-    text-align: center;
+    display: block;
     padding: 1rem;
 }
 
 .bytt-browser-modal__ikon {
     width: 100%;
-    justify-self: center;
     margin-bottom: 1rem;
 }
 

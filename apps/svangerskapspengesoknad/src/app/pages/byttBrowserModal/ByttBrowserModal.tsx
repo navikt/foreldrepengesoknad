@@ -3,9 +3,7 @@ import { Button, Heading, Modal, BodyShort } from '@navikt/ds-react';
 import { FunctionComponent, useState } from 'react';
 
 import './bytt-browser-modal.css';
-import bemUtils from './../../utils/bemUtils';
-import AdvarselIkon from './../../assets/advarsel-ikon/AdvarselIkon';
-import intlUtils from '../../utils/intlUtils';
+import { AdvarselIkon, bemUtils, intlUtils } from '@navikt/fp-common';
 
 export interface Props {
     skalEndreNettleser: boolean;

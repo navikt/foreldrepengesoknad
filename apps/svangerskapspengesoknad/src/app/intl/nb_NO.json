@@ -1,4 +1,5 @@
 {
+    "ok": "OK",
     "backlink.label": "Forrige steg",
     "pågående": "pågående",
     "privat.arbeidsgiver": "Privat arbeidsgiver",
@@ -7,6 +8,8 @@
     "slutter": "slutter",
     "sluttet": "sluttet",
     "somFrilanser": "som frilanser",
+    "byttBrowser.ingress": "For at du skal få den beste brukeropplevelsen så anbefaler vi at du bruker en moderne nettleser som støtter moderne webstandarder, og som er betydelig sikrere.",
+    "byttBrowser.tittel": "Du bruker en utdatert nettleser.",
     "forside.begynnMedSøknad": "Start søknaden",
     "forside.tittel": "Søknad om svangerskapspenger",
     "forside.guidepanel": "Det er tre krav du må oppfylle for å motta svangerskapspenger:",
@@ -414,5 +417,6 @@
     "bedriftsbanner.detail": "Om ditt arbeidsforhold i",
     "bedriftsbanner.detail.frilans": "Om ditt arbeid som",
     "bedriftsbanner.tittel.frilansarbeid": "Frilanser",
-    "ny.periode": "Ny periode"
+    "ny.periode": "Ny periode",
+    "sesjonUtløpt.tittel": "Du er nå logget ut."
 }

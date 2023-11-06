@@ -1,5 +1,4 @@
-import { intlUtils } from '@navikt/fp-common';
-import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtils';
+import { assertUnreachable, intlUtils } from '@navikt/fp-common';
 import { getForrigeTilrettelegging, getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from 'app/routes/routes';
 import { Søker } from 'app/types/Søker';
