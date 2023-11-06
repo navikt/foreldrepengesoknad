@@ -295,7 +295,7 @@
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikke av gyldig type.",
     "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}kB.",
     "valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd": "Du må bekrefte at du har gjort deg kjent med vilkårene.",
-    "utenlandsopphold.infotekst": "Opphold i utlandet regnes som ferie dersom du ikke har arbeidsinntekt under oppholdet og oppholdet ikke varer lenger enn 12 måneder. Ferie regnes ikke som å bo i utlandet.",
+    "utenlandsopphold.infotekst": "For å få rett til svangerskapspenger må du være medlem av folketrygden i Norge.",
     "utenlandsopphold.neste12Måneder.spørsmål": "Hvor skal du bo de neste 12 månedene?",
     "utenlandsopphold.neste12MånederInfotekst.radiobutton.boddINorge": "Du skal bo i Norge",
     "utenlandsopphold.neste12MånederInfotekst.radiobutton.boddIUtlandet": "Du skal bo helt eller delvis i utlandet",
