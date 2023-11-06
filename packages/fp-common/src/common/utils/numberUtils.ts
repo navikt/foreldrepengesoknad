@@ -2,7 +2,7 @@ import { hasValue } from './validationUtils';
 
 const onlyNumbersRegExp = /^[0-9]*$/;
 
-const getMod11 = (strValue: string): number => {
+export const getMod11 = (strValue: string): number => {
     let checkNbr = 2;
     let mod = 0;
 

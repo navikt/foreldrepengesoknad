@@ -16,7 +16,6 @@ export default {
     omLottOgHyre: 'https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2021/fiske/F-13.014/F-13.048/',
     arbeidstilsynetSkjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
-    brukerprofil: 'https://tjenester.nav.no/brukerprofil/',
     dittNav: 'https://tjenester.nav.no/dittnav/oversikt',
     foreldrepenger: 'https://foreldrepenger.nav.no',
     nav: 'https://www.nav.no',
