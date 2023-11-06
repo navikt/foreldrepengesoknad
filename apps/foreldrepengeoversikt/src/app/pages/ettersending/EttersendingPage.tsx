@@ -54,6 +54,10 @@ export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undef
     );
 };
 
+const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT_OPTION => {
+    return selectText === DEFAULT_OPTION ? selectText : Skjemanummer[selectText as keyof typeof Skjemanummer];
+};
+
 export interface Props {
     saker: SakOppslag;
     valgtSaksnr?: string;
@@ -129,7 +133,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
                 <Select
                     className={bem.element('select')}
                     label="Hva inneholder dokumentene dine?"
-                    onChange={(event) => setType(event.target.value as Skjemanummer | typeof DEFAULT_OPTION)}
+                    onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
                 >
                     {getAttachmentTypeSelectOptions(intl, sak)}
                 </Select>

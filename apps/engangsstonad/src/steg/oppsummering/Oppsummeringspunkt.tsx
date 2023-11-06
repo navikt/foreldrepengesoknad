@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { Accordion, Heading } from '@navikt/ds-react';
+import { bemUtils } from '@navikt/fp-common';
 
 import './oppsummeringspunkt.css';
 
@@ -14,12 +15,14 @@ const Oppsummeringspunkt = ({ tittel, children }: Props) => {
 
     return (
         <Accordion.Item>
-            <Accordion.Header className={isOpen ? 'accordian_header' : undefined} onClick={toggle}>
+            <Accordion.Header className={isOpen ? bemUtils('accordian_header').block : undefined} onClick={toggle}>
                 <Heading level="2" size="small">
                     {tittel}
                 </Heading>
             </Accordion.Header>
-            <Accordion.Content className="content_margin">{children}</Accordion.Content>
+            <Accordion.Content>
+                <div className={bemUtils('content_margin').block}>{children}</div>
+            </Accordion.Content>
         </Accordion.Item>
     );
 };
