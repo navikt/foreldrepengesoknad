@@ -57,7 +57,7 @@ const Oppholdsspørsmål: FunctionComponent<Props> = (props) => {
         if (verdi === true) {
             formik.setFieldValue(land, []);
         }
-    }, [verdi]);
+    }, [verdi, formik, land]);
 
     return (
         <>

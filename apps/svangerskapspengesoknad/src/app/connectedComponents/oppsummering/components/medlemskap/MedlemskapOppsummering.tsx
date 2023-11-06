@@ -56,7 +56,7 @@ const MedlemskapOppsummering: FunctionComponent<Props> = ({
     senereOpphold,
 }) => {
     const intl = useIntl();
-    const countries = useMemo(() => getCountries(true, false, intl.locale), []);
+    const countries = useMemo(() => getCountries(true, false, intl.locale), [intl.locale]);
 
     return (
         <>

@@ -8,6 +8,7 @@
         "build": "vite build",
         "dev": "node ./dev-server.cjs",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
         "lint:tsc": "tsc --noEmit",
         "lint:fix": "eslint --quiet --fix './src/**/*.{js,ts,tsx}'",
         "prettier": "prettier --write src",

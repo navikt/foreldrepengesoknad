@@ -75,6 +75,7 @@ const Arbeidsforhold: FunctionComponent<Props> = (props: Props) => {
         cleanupSøker(values.søker) as Søker,
         arbeidsforhold,
         barn.termindato!,
+        intl,
     );
 
     const harLagtTilFørstegangstjeneste = søker.andreInntekterSiste10Mnd

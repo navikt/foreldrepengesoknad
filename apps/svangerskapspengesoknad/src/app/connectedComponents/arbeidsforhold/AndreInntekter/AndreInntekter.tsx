@@ -53,7 +53,7 @@ const AndreInntekter: FunctionComponent<Props> = (props) => {
         skjulFørstegangstjeneste,
     } = props;
 
-    const countries = useMemo(() => getCountries(true, false, intl.locale), []);
+    const countries = useMemo(() => getCountries(true, false, intl.locale), [intl.locale]);
     const onSubmit = (annenInntekt: AnnenInntekt) => {
         onAdd(cleanupAnnenInntekt(annenInntekt) as AnnenInntekt);
     };
