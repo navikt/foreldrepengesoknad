@@ -20,25 +20,17 @@ const ArbeidsgiverVisning: FunctionComponent<Props> = ({
     frilans,
     egenNæring,
 }) => {
+    const currentArbeidsForhold = arbeidsforhold.find(
+        (a: Arbeidsforhold) => a.arbeidsgiverNavn === currentTilrettelegging.arbeidsforhold.navn,
+    );
     switch (currentTilrettelegging.arbeidsforhold.type) {
         case Arbeidsforholdstype.VIRKSOMHET:
         case Arbeidsforholdstype.PRIVAT:
-            const currentArbeidsForhold = arbeidsforhold.find(
-                (a) => a.arbeidsgiverNavn === currentTilrettelegging?.arbeidsforhold.navn,
-            );
             return <HarArbeidsforhold harArbeidsforhold={true} arbeidsforhold={[currentArbeidsForhold!]} />;
-
         case Arbeidsforholdstype.FRILANSER:
-            if (frilans) {
-                return <FrilansVisning frilans={frilans} />;
-            }
-            return null;
-
+            return frilans ? <FrilansVisning frilans={frilans} /> : null;
         case Arbeidsforholdstype.SELVSTENDIG:
-            if (egenNæring) {
-                return <EgenNæringVisning næring={egenNæring} />;
-            }
-            return null;
+            return egenNæring ? <EgenNæringVisning næring={egenNæring} /> : null;
         default:
             return null;
     }
