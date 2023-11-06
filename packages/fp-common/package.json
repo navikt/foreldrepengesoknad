@@ -52,7 +52,7 @@
         "@testing-library/jest-dom": "^6.0.0",
         "@testing-library/react": "^14.0.0",
         "@types/bytes": "^3.1.1",
-        "@types/lodash": "^4.14.197",
+        "@types/lodash": "^4.14.200",
         "@types/node": "^20.5.0",
         "@types/react": "^18.2.20",
         "@types/react-aria-menubutton": "^6.2.9",
