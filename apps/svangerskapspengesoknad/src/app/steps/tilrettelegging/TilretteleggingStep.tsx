@@ -119,12 +119,12 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
     const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
     const startDatoArbeid = currentTilrettelegging!.arbeidsforhold.startdato;
-    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(startDatoArbeid))?.toDate();
+    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(startDatoArbeid))!.toDate();
     const maxDatoBehovFom = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
-    const defaultMonthBehovFomDato = getDefaultMonth(minDatoBehovFom!, maxDatoBehovFom);
+    const defaultMonthBehovFomDato = getDefaultMonth(minDatoBehovFom, maxDatoBehovFom);
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -138,7 +138,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                 const labelPeriodeFomTekst = getLabelPeriodeFom(formValues.tilretteleggingType, intl);
                 const labelPeriodeTomTypeTekst = getLabelPeriodeTomType(formValues.tilretteleggingType, intl);
                 const labelPeriodeTomTekst = getLabelPeriodeTom(formValues.tilretteleggingType, intl);
-                const minDatoPeriodeFom = getMinDatoPeriodeFom(formValues, minDatoBehovFom!);
+                const minDatoPeriodeFom = getMinDatoPeriodeFom(formValues, minDatoBehovFom);
                 const defaultMonthPeriodeFom = getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom);
                 const minDatoTilbakeIJobb = getMinDatoTilbakeIJobb(formValues);
                 const defaultMonthTilbakeIJobb = getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom);
