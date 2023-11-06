@@ -19,5 +19,5 @@
         "noUnusedLocals": true,
         "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/common/**/*", "vitest", "../../apps/svangerskapspengesoknad/src/app/utils/browserUtils.ts"]
+    "include": ["src/common/**/*", "vitest"]
 }

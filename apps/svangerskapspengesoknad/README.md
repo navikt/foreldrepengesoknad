@@ -5,7 +5,7 @@ svangerskapspenger.
 
 # Komme i gang
 
-For å kjøre opp app-en i dev (med parcel og mock-API):
+For å kjøre opp app-en lokalt (med mock-API):
 
 1.  `pnpm install`
 2.  `pnpm run dev-api`

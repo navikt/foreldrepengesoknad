@@ -13,5 +13,5 @@
     },
 
     "include": ["src/app/**/*", "src/@types", "src/storybook"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "build", "src/build", "dist", "**.js"]
 }
