@@ -46,7 +46,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                 navigator.goToNextDefaultStep();
             }
         },
-        [erBarnetAdoptert, formMethods, i18n, lagreDokumentasjon],
+        [erBarnetAdoptert, formMethods, i18n, lagreDokumentasjon, navigator],
     );
 
     const updateAttachments = useCallback(
