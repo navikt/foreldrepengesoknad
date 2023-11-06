@@ -1,2 +1,0 @@
-import{j as l,P as a,c as n}from"./index-c6d741e6.js";const s=e=>(r,c)=>{const o=c.globals.locale||"nb",i=e[o];return l.jsx(a,{value:n({locale:o,messages:i}),children:r()})},p=(e,t)=>{const r=t.globals.locale||"nb";return l.jsx(a,{value:n({locale:r,messages:{}}),children:e()})};try{s.displayName="getIntlDecorator",s.__docgenInfo={description:"",displayName:"getIntlDecorator",props:{}}}catch{}export{p as w};
-//# sourceMappingURL=withIntlProvider-423c7e7f.js.map
