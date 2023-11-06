@@ -5,9 +5,17 @@ import * as stories from './EttersendingPage.stories';
 
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
 
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom');
+    return {
+        // @ts-ignore
+        ...actual,
+        useParams: () => ({ saksnummer: '1' }),
+    };
+});
+
 describe('<EttersendingPage>', () => {
-    // TODO FIX
-    it.skip('skal rendre side', async () => {
+    it('skal rendre side', async () => {
         const utils = render(<SkalIkkeFeileOpplasting />);
 
         expect(
