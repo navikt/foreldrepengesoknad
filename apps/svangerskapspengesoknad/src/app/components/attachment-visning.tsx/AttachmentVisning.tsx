@@ -42,7 +42,7 @@ const AttachmentVisning: FunctionComponent<Props> = ({ vedlegg, onDelete }) => {
                     )}
                 </Block>
                 <Block padBottom="s">
-                    <BodyShort size="small">{`${filstørrelseKB} kb`}</BodyShort>
+                    <BodyShort size="small">{`${filstørrelseKB} kB`}</BodyShort>
                 </Block>
             </div>
 

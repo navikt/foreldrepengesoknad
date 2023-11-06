@@ -300,7 +300,7 @@
     "perioder.alert.nySøknad.del2": "Hvis det ikkje stemmer, må du justere periodane sånn at du ikkje har periode med redusert arbeid etter ein periode der du er tilbake i full stilling.",
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale, prøv igjen.",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type.",
-    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}KB.",
+    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}kB.",
     "valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd": "Du må stadfeste at du har gjort deg kjent med vilkåra.",
     "utenlandsopphold.infotekst": "Opphald i utlandet vert rekna som ferie dersom du ikkje har arbeidsinntekt under opphaldet og opphaldet ikkje varer lenger enn 12 månader. Ferie vert ikkje rekna som å bu i utlandet.",
     "utenlandsopphold.neste12Måneder.spørsmål": "Kor skal du bu dei neste 12 månadene?",
