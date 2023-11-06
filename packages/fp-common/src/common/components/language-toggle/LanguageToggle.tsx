@@ -35,7 +35,7 @@ const LanguageToggle = <T extends LocaleAll>({
     availableLocales,
     isCleanVersion = false,
 }: LanguageToggleProps<T>) => {
-    const selectableOtherMenuLanguages: T[] = [...availableLocales].filter((code) => code !== locale) as T[];
+    const selectableOtherMenuLanguages: T[] = [...availableLocales].filter((code) => code !== locale);
     const intl = useIntl();
 
     return (

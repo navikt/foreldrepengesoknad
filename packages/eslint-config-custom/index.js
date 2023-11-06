@@ -12,6 +12,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     rules: {
         'no-duplicate-imports': 'error',
+        'react-hooks/exhaustive-deps': 'error',
         '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-var-requires': 'off',
