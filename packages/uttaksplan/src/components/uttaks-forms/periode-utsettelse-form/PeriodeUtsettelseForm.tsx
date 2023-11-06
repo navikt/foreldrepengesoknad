@@ -104,7 +104,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
         setPerioderErGyldige((previousState: PeriodeValidState[]) => {
             return getIsValidStateForPerioder(previousState, periode, periodeIsValid);
         });
-    }, [periodeIsValid]);
+    }, [periodeIsValid, periode, setPerioderErGyldige]);
 
     return (
         <PeriodeUtsettelseFormComponents.FormikWrapper

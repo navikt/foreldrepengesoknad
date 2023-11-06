@@ -6,6 +6,9 @@
     "type": "module",
     "main": "src/index.ts",
     "types": "src/index.ts",
+    "scripts": {
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
+    },
     "dependencies": {
         "@navikt/aksel-icons": "^4.12.1",
         "@navikt/ds-css": "^4.12.1",
