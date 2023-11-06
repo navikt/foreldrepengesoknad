@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IntlShape, useIntl, FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Add } from '@navikt/ds-icons';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -60,13 +60,13 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
 
 export interface Props {
     saker: SakOppslag;
-    valgtSaksnr?: string;
 }
 
-const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }) => {
+const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const intl = useIntl();
 
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
+    const params = useParams();
 
     const bem = bemUtils('ettersending-page');
 
@@ -78,7 +78,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
 
     const alleYtelser = getAlleYtelser(saker);
-    const sak = alleYtelser.find((sak) => sak.saksnummer === valgtSaksnr);
+    const sak = alleYtelser.find((sak) => sak.saksnummer === params.saksnummer);
 
     const onSubmit = () => {
         setIsEttersending(true);

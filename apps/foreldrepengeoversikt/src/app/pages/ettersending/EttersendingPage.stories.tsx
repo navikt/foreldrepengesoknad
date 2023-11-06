@@ -36,7 +36,6 @@ const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasti
                     foreldrepenger: [],
                     svangerskapspenger: [],
                 }}
-                valgtSaksnr="1"
             />
         </div>
     );
