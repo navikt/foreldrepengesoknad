@@ -28,7 +28,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
                     useAlpha3Code={false}
                     validate={(value) => {
                         if (!hasValue(value)) {
-                            return intlUtils(intl, 'valideringsfeil.egenNæring.land');
+                            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.egenNæring.land');
                         }
 
                         return undefined;

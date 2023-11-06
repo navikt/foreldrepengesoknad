@@ -27,7 +27,6 @@
         "date-fns": "^2.30.0",
         "date-holidays": "^3.21.3",
         "dayjs": "^1.11.9",
-        "detect-browser": "^5.3.0",
         "formik": "^2.4.3",
         "history": "^5.3.0",
         "lodash": "^4.17.21",
