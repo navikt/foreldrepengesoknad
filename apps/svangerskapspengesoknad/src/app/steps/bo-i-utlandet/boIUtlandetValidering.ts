@@ -16,15 +16,17 @@ export const validerDatoOverlapperAndreUtenlandsperioder = (
     if (!hasValue(dato) || !utenlandsperioder) {
         return undefined;
     }
-    const utenlandsperioderMedDatoer = utenlandsperioder.filter((p) => p.fom && p.tom);
-    const overlappendePerioderLagtTilFørDennePerioden = utenlandsperioderMedDatoer.filter(
-        (tp, index) => dayjs(dato).isBetween(tp.fom, tp.tom, 'day', '[]') && index < currentOppholdIndex,
+    const utenlandsperioderLagtTilEtterPerioden = utenlandsperioder
+        .filter((p) => p.fom && p.tom)
+        .filter((_t, index) => index > currentOppholdIndex);
+    const overlappendePerioder = utenlandsperioderLagtTilEtterPerioden.filter((tp) =>
+        dayjs(dato).isBetween(tp.fom, tp.tom, 'day', '[]'),
     );
-    if (overlappendePerioderLagtTilFørDennePerioden.length > 0) {
+    if (overlappendePerioder.length > 0) {
         const values = {
-            land: getCountryName(overlappendePerioderLagtTilFørDennePerioden[0].land, intl.locale),
-            fom: formatDate(overlappendePerioderLagtTilFørDennePerioden[0].fom),
-            tom: formatDate(overlappendePerioderLagtTilFørDennePerioden[0].tom),
+            land: getCountryName(overlappendePerioder[0].land, intl.locale),
+            fom: formatDate(overlappendePerioder[0].fom),
+            tom: formatDate(overlappendePerioder[0].tom),
         };
         return isFraOgMedDato
             ? intlUtils(intl, 'valideringsfeil.utenlandsopphold.overlapper.fraOgMed', values)
