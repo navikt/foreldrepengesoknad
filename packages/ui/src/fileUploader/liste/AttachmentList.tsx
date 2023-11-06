@@ -1,10 +1,8 @@
 import { Fragment } from 'react';
 import { VStack } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-types';
-import AttachmentComponent from './Attachment';
+import AttachmentInfo from './AttachmentInfo';
 import { guid } from '@navikt/fp-common';
-
-import './attachment.less';
 
 interface Props {
     attachments: Attachment[];
@@ -21,11 +19,7 @@ const AttachmentList: React.FunctionComponent<Props> = (props) => {
                 <VStack gap="2">
                     {attachments.map((attachment) => (
                         <Fragment key={guid()}>
-                            <AttachmentComponent
-                                attachment={attachment}
-                                onDelete={onDelete}
-                                showFileSize={showFileSize}
-                            />
+                            <AttachmentInfo attachment={attachment} onDelete={onDelete} showFileSize={showFileSize} />
                         </Fragment>
                     ))}
                 </VStack>

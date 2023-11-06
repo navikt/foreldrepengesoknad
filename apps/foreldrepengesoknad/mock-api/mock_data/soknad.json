@@ -3,26 +3,24 @@
         "type": "foreldrepenger",
         "harGodkjentVilkår": true,
         "søkersituasjon": {
-            "situasjon": "fødsel",
+            "situasjon": "adopsjon",
             "rolle": "far"
         },
         "barn": {
-            "type": "ufødt",
+            "type": "født",
             "antallBarn": 1,
-            "termindato": "2023-11-04T00:00:00.000Z"
+            "fødselsdatoer": ["2023-02-01T00:00:00.000Z"]
         },
         "annenForelder": {
-            "etternavn": "asdasd",
-            "fornavn": "MOR",
-            "fnr": "02068629902",
-            "utenlandskFnr": false,
-            "kanIkkeOppgis": false,
+            "fornavn": "annen forelder",
+            "etternavn": "",
+            "fnr": "05489305072",
             "harRettPåForeldrepengerINorge": true,
             "harRettPåForeldrepengerIEØS": false,
-            "erInformertOmSøknaden": true
+            "kanIkkeOppgis": false,
+            "erUfør": false
         },
         "søker": {
-            "erAleneOmOmsorg": false,
             "språkkode": "nb"
         },
         "informasjonOmUtenlandsopphold": {
@@ -30,56 +28,14 @@
             "senereOpphold": []
         },
         "erEndringssøknad": false,
-        "dekningsgrad": "100",
-        "uttaksplan": [
-            {
-                "id": "1603414521-26750-12042-13232-091690732902998",
-                "forelder": "farMedmor",
-                "konto": "FEDREKVOTE",
-                "tidsperiode": {
-                    "fom": "2023-11-06T00:00:00.000Z",
-                    "tom": "2023-11-17T00:00:00.000Z"
-                },
-                "type": "uttak",
-                "erArbeidstaker": false,
-                "gradert": false,
-                "orgnumre": [],
-                "ønskerSamtidigUttak": true,
-                "samtidigUttakProsent": "100",
-                "vedlegg": []
-            }
-        ],
+        "uttaksplan": [],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/uttaksplan",
-    "uttaksplanInfo": {
-        "antallDagerFellesperiode": "0",
-        "antallUkerFellesperiode": "0",
-        "farMedmorsFørsteDag": "2023-11-06",
-        "morsSisteDag": ""
-    },
-    "antallUkerIUttaksplan": 49,
-    "perioderSomSkalSendesInn": [
-        {
-            "id": "1603414521-26750-12042-13232-091690732902998",
-            "forelder": "farMedmor",
-            "konto": "FEDREKVOTE",
-            "tidsperiode": {
-                "fom": "2023-11-06T00:00:00.000Z",
-                "tom": "2023-11-17T00:00:00.000Z"
-            },
-            "type": "uttak",
-            "erArbeidstaker": false,
-            "gradert": false,
-            "orgnumre": [],
-            "ønskerSamtidigUttak": true,
-            "samtidigUttakProsent": "100",
-            "vedlegg": []
-        }
-    ],
+    "currentRoute": "/soknad/sokersituasjon",
+    "perioderSomSkalSendesInn": [],
     "harUttaksplanBlittSlettet": false,
-    "søknadGjelderEtNyttBarn": true
+    "søknadGjelderEtNyttBarn": false
 }

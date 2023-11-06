@@ -3,13 +3,17 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
-        "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier": "prettier --write src"
     },
     "dependencies": {
         "dayjs": "^1.11.9"
     },
     "devDependencies": {
-        "tsconfig": "workspace:*"
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6"
     }
 }

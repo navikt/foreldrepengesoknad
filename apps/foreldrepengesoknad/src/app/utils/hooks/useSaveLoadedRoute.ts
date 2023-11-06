@@ -20,7 +20,7 @@ const useSaveLoadedRoute = (currentRoute: SøknadRoutes, kvittering?: Kvittering
                 }
             });
         }
-    }, [currentRoute, dispatch, state]);
+    }, [currentRoute, dispatch, state, kvittering]);
 };
 
 export default useSaveLoadedRoute;

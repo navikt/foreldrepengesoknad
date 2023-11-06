@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { composeStories } from '@storybook/testing-react';
+import { composeStories } from '@storybook/react';
 import * as stories from './Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';

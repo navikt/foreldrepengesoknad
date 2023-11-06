@@ -12,14 +12,14 @@
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
         "test": "vitest run",
-        "lint": "eslint src/**",
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "lint:tsc": "tsc --noEmit",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001",
         "extract": "formatjs extract"
     },
     "dependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/aksel-icons": "^4.12.1",
         "@navikt/ds-css": "4.12.1",
         "@navikt/ds-react": "4.12.1",
@@ -54,11 +54,11 @@
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/cli": "^7.3.1",
         "@storybook/react": "^7.3.1",
         "@storybook/react-vite": "7.3.1",
-        "@storybook/testing-react": "^2.0.1",
         "@testing-library/jest-dom": "^6.0.0",
         "@testing-library/react": "^14.0.0",
         "@testing-library/user-event": "^14.4.3",
@@ -70,6 +70,7 @@
         "autoprefixer": "^10.4.15",
         "axios-mock-adapter": "1.21.5",
         "cross-env": "^7.0.3",
+        "eslint": "^8.38.0",
         "fast-glob": "^3.3.1",
         "less": "^4.2.0",
         "multer": "1.4.5-lts.1",
@@ -79,6 +80,7 @@
         "typescript": "^5.1.6",
         "vite": "^4.4.9",
         "vite-plugin-checker": "^0.6.1",
+        "vite-plugin-eslint": "^1.8.1",
         "vitest": "^0.34.2"
     },
     "overrides": {

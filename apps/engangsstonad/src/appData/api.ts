@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { Locale } from '@navikt/fp-common';
+import { LocaleAll } from '@navikt/fp-types';
 import { redirectToLogin } from '@navikt/fp-utils';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
@@ -31,6 +31,8 @@ engangsstønadApi.interceptors.request.use((config) => {
     return config;
 });
 
+const ERROR_STATUS_CODES = [401, 403];
+
 engangsstønadApi.interceptors.response.use(
     (response: AxiosResponse) => {
         return response;
@@ -38,7 +40,7 @@ engangsstønadApi.interceptors.response.use(
     (error: AxiosError) => {
         if (
             error.response &&
-            error.response.status === 401 &&
+            ERROR_STATUS_CODES.includes(error.response.status) &&
             error?.config?.url &&
             !error.config.url.includes('/soknad/engangssoknad')
         ) {
@@ -89,7 +91,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 };
 
 const getSendSøknad =
-    (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
+    (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
         abortSignal: AbortSignal,
         omBarnet: OmBarnet,

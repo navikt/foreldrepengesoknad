@@ -67,7 +67,7 @@ export const isPeriodNotOverlappingOthers =
     (
         i18nText: string,
         otherDateInfo: { date: Date | string; isStartDate: boolean },
-        otherPeriods: { fom: Date | string; tom: Date | string }[],
+        otherPeriods: Array<{ fom: Date | string; tom: Date | string }>,
     ) =>
     (date: string): FormValidationResult => {
         const dateRanges = otherPeriods.map((u) => ({

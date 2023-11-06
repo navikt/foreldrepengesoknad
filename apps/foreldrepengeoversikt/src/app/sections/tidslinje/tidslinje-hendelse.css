@@ -11,7 +11,7 @@
 }
 
 .tidslinje-hendelse__tekst {
-    padding-left: 7px;
+    padding-left: 0.5rem;
 }
 
 .tidslinje-hendelse__ikon svg {
@@ -20,7 +20,7 @@
     z-index: 2;
     background-color: var(--a-white);
     padding: 0px;
-    margin: 0px;
+    margin-left: 7px;
 }
 
 .tidslinje-hendelse__ikon_active svg {
@@ -47,7 +47,7 @@
     height: 100%;
     position: absolute;
     top: 0;
-    left: 9px;
+    left: 1rem;
     z-index: 0;
 }
 

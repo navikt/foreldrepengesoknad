@@ -1,5 +1,5 @@
 import { Sak } from 'app/types/Sak';
-import { Skjemanummer } from 'app/types/Skjemanummer';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Ytelse } from 'app/types/Ytelse';
 
 export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
@@ -41,7 +41,7 @@ export const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skj
         case Skjemanummer.DOK_INNLEGGELSE:
         case Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM:
         case Skjemanummer.DOK_OVERFØRING_FOR_SYK:
-        case Skjemanummer.OMSORGSOVERTAKELSESDATO:
+        case Skjemanummer.OMSORGSOVERTAKELSE:
         case Skjemanummer.TILBAKEBETALING:
         case Skjemanummer.HV_ØVELSE:
         case Skjemanummer.NAV_TILTAK:

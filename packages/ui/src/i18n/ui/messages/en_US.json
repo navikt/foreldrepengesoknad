@@ -1,0 +1,30 @@
+{
+    "Umyndig.Pageheading.Engangsstonad": "Application for lump-sum grant",
+    "Umyndig.Pageheading.Foreldrepenger": "Application for parental benefit",
+    "Umyndig.Pageheading.Svangerskapspenger": "Application for pregnancy allowance",
+    "Umyndig.Tittel": "Because you are under 18 years of age, you must send a paper application",
+    "Umyndig.Tekst": "Because you are under 18, one of your parents or a guardian must sign your application with you. You must therefore complete the application on paper and send it by post to NAV.",
+    "Umyndig.Knapp.Papirsøknad": "Go to the paper application",
+
+    "ErrorSummaryFp.Tittel": "You have to correct the following errors:",
+
+    "FileInput.Vedlegg.Lastoppknapp": "Upload file",
+    "FileInput.Vedlegg.Lastoppknapp.Flere": "Upload more files",
+    "Attachment.Vedlegg.Slett": "Remove attachment {navn}",
+    "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "{filename} - Something went wrong. Try again.",
+    "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - Attachment type is not valid",
+    "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - The attachment must be less than {maxStørrelse} KB.",
+    "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Your document took too long to upload. Check your network or try uploading fewer documents at once",
+
+    "StepButtons.Forrige": "Previous step",
+    "StepButtons.Neste": "Next step",
+
+    "ErrorPage.Engangsstønad": "Lump-sum grant",
+    "ErrorPage.Foreldrepenger": "Parental benefit",
+    "ErrorPage.Svangerskapspenger": "Pregnancy allowance",
+    "ErrorPage.Heading": "Sorry, something has gone wrong with your application due to a technical error on our part",
+    "ErrorPage.Message": "You can wait a while and then try to search again. If there are still problems, you can contact user support for help.",
+    "ErrorPage.Contact": "Contact user support",
+    "ErrorPage.TryAgain": "Search again",
+    "ErrorPage.ErrorMessage": "Error message"
+}

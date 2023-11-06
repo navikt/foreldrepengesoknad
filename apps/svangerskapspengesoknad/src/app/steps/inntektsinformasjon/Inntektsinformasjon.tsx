@@ -152,7 +152,7 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                                             disabled={isSubmitting}
                                             loading={isSubmitting}
                                             onClick={() => {
-                                                let automatiskValgtTilrettelegging =
+                                                const automatiskValgtTilrettelegging =
                                                     getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
                                                         formValues,
                                                         aktiveUnikeArbeidsforhold,

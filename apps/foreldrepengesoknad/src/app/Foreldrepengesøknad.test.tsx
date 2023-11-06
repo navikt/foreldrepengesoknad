@@ -2,11 +2,17 @@ import { render, screen } from '@testing-library/react';
 import Api from './api/api';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import { SøkerinfoDTO } from './types/SøkerinfoDTO';
+import { allCommonMessages } from '@navikt/fp-common';
 import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
 import { ForeldrepengesøknadContextState } from './context/ForeldrepengesøknadContextConfig';
-import IntlProvider from './intl/IntlProvider';
 import MockAdapter from 'axios-mock-adapter';
 import { AxiosInstance } from './api/apiInterceptor';
+import { IntlProvider } from '@navikt/fp-ui';
+import nbMessages from './intl/nb_NO.json';
+
+const MESSAGES_GROUPED_BY_LOCALE = {
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+};
 
 describe('<Foreldrepengesøknad>', () => {
     afterEach(() => {
@@ -29,7 +35,7 @@ describe('<Foreldrepengesøknad>', () => {
 
         render(
             <ForeldrepengesøknadContextProvider>
-                <IntlProvider locale="nb">
+                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
                 </IntlProvider>
             </ForeldrepengesøknadContextProvider>,
@@ -72,7 +78,7 @@ describe('<Foreldrepengesøknad>', () => {
 
         render(
             <ForeldrepengesøknadContextProvider>
-                <IntlProvider locale="nb">
+                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
                 </IntlProvider>
             </ForeldrepengesøknadContextProvider>,

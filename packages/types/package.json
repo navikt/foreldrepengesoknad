@@ -1,5 +1,11 @@
 {
     "name": "@navikt/fp-types",
     "main": "index.ts",
-    "types": "index.ts"
+    "types": "index.ts",
+    "dependencies": {
+        "@navikt/fp-constants": "workspace:*"
+    },
+    "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*"
+    }
 }

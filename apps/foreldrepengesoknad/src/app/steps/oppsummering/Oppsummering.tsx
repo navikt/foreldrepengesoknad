@@ -133,7 +133,15 @@ const Oppsummering = () => {
                     }
                 });
         }
-    }, [dispatch, søkerinfo.person.fnr, formSubmitted, cleanedSøknad, isSendingSøknad]);
+    }, [
+        dispatch,
+        søkerinfo.person.fnr,
+        formSubmitted,
+        cleanedSøknad,
+        isSendingSøknad,
+        abortSignal,
+        setIsSendingSøknad,
+    ]);
 
     useEffect(() => {
         if (kvittering !== undefined) {

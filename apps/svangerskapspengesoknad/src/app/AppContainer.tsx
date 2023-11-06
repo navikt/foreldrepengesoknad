@@ -6,13 +6,15 @@ import ByttBrowserModal from '@navikt/fp-common/src/common/pages/byttBrowserModa
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import { shouldChangeBrowser } from '@navikt/fp-common/src/common/utils/browserUtils';
 import SvangerskapspengerContextProvider from './context/SvangerskapspengerContext';
-import { getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
-const localeFromSessionStorage = getLocaleFromSessionStorage();
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
+
+const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
 dayjs.locale(localeFromSessionStorage);
 
 const AppContainer: FunctionComponent = () => {
-    const [locale, setLocale] = useState<Locale>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
         <SvangerskapspengerContextProvider>
@@ -21,7 +23,7 @@ const AppContainer: FunctionComponent = () => {
                     <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
                     <Svangerskapspengesøknad
                         locale={locale}
-                        onChangeLocale={(activeLocale: Locale) => {
+                        onChangeLocale={(activeLocale: LocaleNo) => {
                             setLocaleInSessionStorage(activeLocale);
                             setLocale(activeLocale);
                         }}

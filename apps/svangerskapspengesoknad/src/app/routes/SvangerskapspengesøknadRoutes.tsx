@@ -1,4 +1,3 @@
-import { Locale } from '@navikt/fp-common';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import SøknadRoutes from './routes';
@@ -21,11 +20,11 @@ import BoIUtlandet from 'app/steps/bo-i-utlandet/BoIUtlandet';
 import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import PerioderStep from 'app/steps/perioder/PerioderStep';
-
+import { LocaleNo } from '@navikt/fp-types';
 interface Props {
     currentRoute: SøknadRoutes;
-    locale: Locale;
-    onChangeLocale: (locale: Locale) => void;
+    locale: LocaleNo;
+    onChangeLocale: (locale: LocaleNo) => void;
 }
 
 export const getForrigeTilrettelegging = (

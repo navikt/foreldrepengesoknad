@@ -1,4 +1,6 @@
 export { links } from './src/links';
+export { Skjemanummer } from './src/skjemanummer';
+export { AttachmentType } from './src/attachmentType';
 export {
     ISO_DATE_FORMAT,
     DDMMYYYY_DATE_FORMAT,

@@ -33,8 +33,8 @@ export const validateTextInputField = (value: any, feltNavn: string, intl: IntlS
     return undefined;
 };
 
-export const validateFritekstFelt = (intl: IntlShape, label: string) => (inputText: string) => {
-    if (inputText.length < 25) {
+export const validateFritekstFelt = (intl: IntlShape, label: string, inputText?: string) => {
+    if (inputText === undefined || inputText === null || inputText.length === 0 || inputText.length < 25) {
         return intlUtils(intl, 'valideringsfeil.fritekst.forKort', { feltNavn: label });
     }
 

@@ -38,7 +38,7 @@ const getSokerInfo = function () {
 };
 
 const getSoknadSendt = function () {
-    const fileName = getFilePath('soknad_sendt.json');
+    const fileName = getFilePath('mock_data/soknad_sendt.json');
     if (!fs.existsSync(fileName)) {
         return {};
     } else {

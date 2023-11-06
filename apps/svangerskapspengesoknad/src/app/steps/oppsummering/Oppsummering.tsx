@@ -19,7 +19,6 @@ import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapsp
 import { useEffect, useMemo, useState } from 'react';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
 import Api from 'app/api/api';
-import useAbortSignal from 'app/hooks/useAbortSignal';
 import { redirect, redirectToLogin } from 'app/utils/redirectUtils';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
@@ -37,6 +36,7 @@ import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import AccordionItem from 'app/components/accordion/AccordionItem';
 import AccordionContent from 'app/components/accordion/AccordionContent';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
+import { useAbortSignal } from '@navikt/fp-api';
 import './oppsummering.css';
 
 const Oppsummering = () => {
@@ -63,7 +63,10 @@ const Oppsummering = () => {
         () => mapTilretteleggingTilPerioder(søknad.tilrettelegging, sisteDagForSvangerskapspenger),
         [søknad.tilrettelegging, sisteDagForSvangerskapspenger],
     );
-    const søknadForInnsending = useMemo(() => getSøknadForInnsending(søknad, allePerioderMedFomOgTom), [søknad, intl]);
+    const søknadForInnsending = useMemo(
+        () => getSøknadForInnsending(søknad, allePerioderMedFomOgTom),
+        [søknad, allePerioderMedFomOgTom],
+    );
     const handleSubmit = (values: Partial<OppsummeringFormData>) => {
         dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
         setFormSubmitted(true);
@@ -89,7 +92,7 @@ const Oppsummering = () => {
                     }
                 });
         }
-    });
+    }, [formSubmitted, isSendingSøknad, søknadForInnsending, abortSignal]);
 
     useEffect(() => {
         if (submitError !== undefined) {

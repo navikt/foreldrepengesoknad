@@ -2,7 +2,7 @@ import { FunctionComponent, useCallback, useState } from 'react';
 import { StepButtonWrapper } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
 import { Button } from '@navikt/ds-react';
-import UiIntlProvider from '../i18n/UiIntlProvider';
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 
 interface Props {
     goToPreviousStep: () => void;

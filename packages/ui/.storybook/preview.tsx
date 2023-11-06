@@ -1,3 +1,6 @@
+import { withIntlProvider } from '@navikt/fp-utils-test';
+import { Preview } from '@storybook/react';
+
 import '@navikt/ds-css';
 
 export const parameters = {
@@ -9,3 +12,25 @@ export const parameters = {
         },
     },
 };
+
+export const globalTypes = {
+    locale: {
+        description: 'Internationalization locale',
+        toolbar: {
+            title: 'Språk',
+            icon: 'globe',
+            items: [
+                { value: 'nb', title: 'Bokmål' },
+                { value: 'nn', title: 'Nynorsk' },
+                { value: 'en', title: 'English' },
+            ],
+            dynamicTitle: true,
+        },
+    },
+};
+
+const preview: Preview = {
+    decorators: [withIntlProvider],
+};
+
+export default preview;

@@ -3,7 +3,6 @@ import {
     Attachment,
     Dekningsgrad,
     EksisterendeSak,
-    Locale,
     Periode,
     Sak,
     Søkerinfo,
@@ -12,6 +11,7 @@ import {
 } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
+import { LocaleNo } from '@navikt/fp-types';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import Barn, { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
@@ -318,10 +318,10 @@ const setKvittering = (payload: Kvittering): SetKvittering => ({
 
 interface SetSpråkkode {
     type: ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE;
-    payload: Locale;
+    payload: LocaleNo;
 }
 
-const setSpråkkode = (payload: Locale): SetSpråkkode => ({
+const setSpråkkode = (payload: LocaleNo): SetSpråkkode => ({
     type: ForeldrepengesøknadContextActionKeys.SET_SPRÅKKODE,
     payload,
 });

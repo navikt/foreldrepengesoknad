@@ -25,7 +25,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
             saveDataOnPreviousClick(getValues());
         }
         goToPreviousStep();
-    }, [dirtyFields]);
+    }, [dirtyFields, getValues, goToPreviousStep, saveDataOnPreviousClick]);
 
     return (
         <StepButtons

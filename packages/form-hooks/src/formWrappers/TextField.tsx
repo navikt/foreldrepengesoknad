@@ -7,7 +7,7 @@ import { getError, getValidationRules } from './formUtils';
 export interface Props {
     name: string;
     label: string | ReactNode;
-    validate?: ((value: string) => any)[] | ((value: number) => any)[];
+    validate?: Array<(value: string) => any> | Array<(value: number) => any>;
     description?: string;
     onChange?: (value: any) => void;
     autoFocus?: boolean;

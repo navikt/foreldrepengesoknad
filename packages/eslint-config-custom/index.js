@@ -5,11 +5,13 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
         'plugin:react/jsx-runtime',
     ],
     plugins: ['@typescript-eslint', 'jest-dom', 'testing-library'],
     parser: '@typescript-eslint/parser',
     rules: {
+        'no-duplicate-imports': 'error',
         '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-var-requires': 'off',

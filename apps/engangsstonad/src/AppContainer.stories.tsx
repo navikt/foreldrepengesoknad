@@ -1,11 +1,11 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { attachmentApi } from '@navikt/fp-api';
 
 import { engangsstønadApi } from 'appData/api';
-import { attachmentApi } from '@navikt/fp-api';
-import AppContainer from './AppContainer';
 import Person, { Kjønn } from 'types/Person';
-import { initAmplitude } from '@navikt/fp-metrics';
+import AppContainer from './AppContainer';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',

@@ -1,9 +1,10 @@
+import dayjs from 'dayjs';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/testing-react';
-import * as stories from './AppContainer.stories';
-import dayjs from 'dayjs';
+import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+
+import * as stories from './AppContainer.stories';
 
 const { SøkerErKvinne } = composeStories(stories);
 

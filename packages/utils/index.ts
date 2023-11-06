@@ -12,6 +12,7 @@ export { redirect, redirectToLogin } from './src/loginUtils';
 export {
     formatDate,
     formatDateIso,
+    formatTime,
     isAfterToday,
     isBeforeToday,
     isSameOrAfterToday,

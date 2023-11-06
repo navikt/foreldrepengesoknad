@@ -1,25 +1,36 @@
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { ErrorBoundary } from '@navikt/fp-ui';
-import { getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
+import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { LocaleAll } from '@navikt/fp-types';
+import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
+
 import Engangsstønad from './Engangsstønad';
-import IntlProvider from './intl/IntlProvider';
+
+import nnMessages from './intl/messages/nn_NO.json';
+import nbMessages from './intl/messages/nb_NO.json';
+import enMessages from './intl/messages/en_US.json';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
+
+const MESSAGES_GROUPED_BY_LOCALE = {
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nn: { ...nnMessages, ...allCommonMessages.nn },
+    en: { ...enMessages, ...allCommonMessages.en },
+};
 
 dayjs.locale(localeFromSessionStorage);
 
 const AppContainer = () => {
-    const [locale, setLocale] = useState<Locale>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<LocaleAll>(localeFromSessionStorage);
 
-    const changeLocale = useCallback((activeLocale: Locale) => {
+    const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocaleInSessionStorage(activeLocale);
         setLocale(activeLocale);
     }, []);
 
     return (
-        <IntlProvider språkkode={locale}>
+        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appnavn="Engangsstønad">
                 <BrowserRouter>
                     <Engangsstønad locale={locale} onChangeLocale={changeLocale} />

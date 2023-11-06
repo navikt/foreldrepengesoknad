@@ -3,16 +3,17 @@ import { IntlProvider as Provider } from 'react-intl';
 import dayjs from 'dayjs';
 import nbMessages from './nb_NO.json';
 import nnMessages from './nn_NO.json';
-import { allCommonMessages, Locale } from '@navikt/fp-common';
+import { allCommonMessages } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 
 interface Props {
     children: React.ReactNode;
-    locale: Locale;
+    locale: LocaleNo;
 }
 
 dayjs.locale('nb');
 
-const getLanguageMessages = (locale: Locale) => {
+const getLanguageMessages = (locale: LocaleNo) => {
     if (locale === 'nb') {
         return { ...nbMessages, ...allCommonMessages.nb };
     } else {

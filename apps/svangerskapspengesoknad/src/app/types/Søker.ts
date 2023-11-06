@@ -1,7 +1,7 @@
 import { ArbeidIUtlandet, ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
 import { Frilans, FrilansDTO } from './Frilans';
 import { EgenNæring, EgenNæringDTO } from './EgenNæring';
-import { Locale } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 
 export enum Søkerrolle {
     'MOR' = 'mor',
@@ -15,7 +15,7 @@ export interface Søker {
     selvstendigNæringsdrivendeInformasjon?: EgenNæring;
     harHattAnnenInntekt: boolean;
     andreInntekter?: ArbeidIUtlandet[];
-    språkkode: Locale;
+    språkkode: LocaleNo;
 }
 
 export interface SøkerDTO

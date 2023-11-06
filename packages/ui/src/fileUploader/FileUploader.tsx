@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { VStack } from '@navikt/ds-react';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
-import UiIntlProvider from '../i18n/UiIntlProvider';
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_KB = 16777;
@@ -19,9 +20,9 @@ type SaveAttachment = (attachment: Attachment) => Promise<any>;
 const getPendingAttachmentFromFile = (
     file: File,
     attachmentType: AttachmentType,
-    skjemanummber: Skjemanummer,
+    skjemanummer: Skjemanummer,
 ): Attachment => {
-    const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummber);
+    const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
     newAttachment.pending = true;
     return newAttachment;
 };
@@ -57,7 +58,13 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
     } catch (error) {
         // TODO Burde få ut feilmelding frå backend og vise denne
         attachment.pending = false;
-        attachment.error = FileUploadError.GENERAL;
+
+        // @ts-ignore TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
+        if (error?.response?.status === 408) {
+            attachment.error = FileUploadError.TIMEOUT;
+        } else {
+            attachment.error = FileUploadError.GENERAL;
+        }
     }
 };
 
@@ -66,40 +73,52 @@ const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 export interface Props {
     updateAttachments: (attachments: Attachment[]) => void;
     attachmentType: AttachmentType;
-    skjemanummber: Skjemanummer;
+    skjemanummer: Skjemanummer;
     existingAttachments?: Attachment[];
     saveAttachment: SaveAttachment;
+    multiple?: boolean;
 }
 
 const FileUploader: React.FunctionComponent<Props> = ({
     existingAttachments = EMPTY_ATTACHMENT_LIST,
     updateAttachments,
     attachmentType,
-    skjemanummber,
+    skjemanummer,
     saveAttachment,
+    multiple = true,
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
 
     useEffect(() => {
         updateAttachments(attachments.filter((a) => !a.error && a.pending === false));
-    }, [attachments]);
+    }, [attachments, updateAttachments]);
 
-    const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
-        for (const pendingAttachment of allPendingAttachments) {
-            await uploadAttachment(pendingAttachment, saveAttachment);
-            setAttachments((currentAttachments) =>
-                currentAttachments.map((a) => (a.filename === pendingAttachment.filename ? pendingAttachment : a)),
+    const saveFiles = useCallback(
+        (files: File[]) => {
+            const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
+                for (const pendingAttachment of allPendingAttachments) {
+                    await uploadAttachment(pendingAttachment, saveAttachment);
+                    setAttachments((currentAttachments) =>
+                        currentAttachments.map((a) =>
+                            a.filename === pendingAttachment.filename ? pendingAttachment : a,
+                        ),
+                    );
+                }
+            };
+
+            const allPendingAttachments = files.map((file) =>
+                getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
             );
-        }
-    };
-
-    const saveFiles = useCallback((files: File[]) => {
-        const allPendingAttachments = files.map((file) =>
-            getPendingAttachmentFromFile(file, attachmentType, skjemanummber),
-        );
-        setAttachments((currentAttachments) => currentAttachments.concat(allPendingAttachments));
-        uploadAttachments(allPendingAttachments);
-    }, []);
+            setAttachments((currentAttachments) => {
+                const otherAttachments = currentAttachments.filter(
+                    (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
+                );
+                return otherAttachments.concat(allPendingAttachments);
+            });
+            uploadAttachments(allPendingAttachments);
+        },
+        [attachmentType, skjemanummer, saveAttachment],
+    );
 
     const deleteAttachment = useCallback((file: Attachment) => {
         setAttachments((currentAttachments) => currentAttachments.filter((a) => a.filename !== file.filename));
@@ -116,6 +135,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
                     accept={VALID_EXTENSIONS.join(', ')}
                     onFilesSelect={saveFiles}
                     hasUplodedAttachements={uploadedAttachments.length > 0}
+                    multiple={multiple}
                 />
                 <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
             </VStack>

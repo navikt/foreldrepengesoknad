@@ -3,6 +3,10 @@ import matchers from '@testing-library/jest-dom/matchers';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { Modal } from '@navikt/ds-react';
+import { setProjectAnnotations } from '@storybook/react';
+import * as globalStorybookConfig from '../.storybook/preview';
+
+setProjectAnnotations(globalStorybookConfig);
 
 dayjs.extend(isSameOrAfter);
 

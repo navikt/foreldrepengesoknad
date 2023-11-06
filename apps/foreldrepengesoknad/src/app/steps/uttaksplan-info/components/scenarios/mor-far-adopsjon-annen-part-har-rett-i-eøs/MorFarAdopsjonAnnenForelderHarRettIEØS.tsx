@@ -33,7 +33,10 @@ import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import StartdatoAdopsjon, { finnStartdatoAdopsjon } from '../mor-far-adopsjon/StartdatoAdopsjon';
-import { morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
+import {
+    morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig,
+    MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload,
+} from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 import {
     MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents,
     MorFarAdopsjonAnnenForelderHarRettIEØSFormData,
@@ -47,7 +50,6 @@ import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel } from '@navikt/ds-react';
-import { MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload } from './morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig';
 import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';

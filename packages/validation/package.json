@@ -3,8 +3,10 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
-        "eslint": "eslint \"src/**/*.ts*\" --color",
-        "eslint:fix": "eslint --fix \"src/**/*.ts*\" --color"
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier": "prettier --write src"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
@@ -14,8 +16,10 @@
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@types/bytes": "^3.1.1",
         "@types/react": "^18.2.20",
-        "tsconfig": "workspace:*"
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6"
     }
 }

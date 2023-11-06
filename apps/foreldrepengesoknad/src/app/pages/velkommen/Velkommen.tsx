@@ -1,4 +1,5 @@
-import { bemUtils, Block, intlUtils, LanguageToggle, links, Locale, Sak } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils, LanguageToggle, links, Sak } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -36,8 +37,8 @@ import './velkommen.less';
 
 interface Props {
     fornavn: string;
-    onChangeLocale: (locale: Locale) => void;
-    locale: Locale;
+    onChangeLocale: (locale: LocaleNo) => void;
+    locale: LocaleNo;
     saker: Sak[];
     fnr: string;
 }
@@ -150,11 +151,7 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
                         : intlUtils(intl, 'velkommen.begynnMedSøknad');
                 return (
                     <VelkommenFormComponents.Form includeButtons={false}>
-                        <LanguageToggle
-                            locale={locale}
-                            availableLocales={['nb', 'nn']}
-                            toggle={(l: Locale) => onChangeLocale(l)}
-                        />
+                        <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggle={onChangeLocale} />
                         <div className={bem.block}>
                             <Block>
                                 <Heading size="xlarge" className={`${bem.element('tittel')}`}>

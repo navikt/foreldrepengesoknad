@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import OversiktRoutes from './routes';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import { bemUtils } from '@navikt/fp-common';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
@@ -39,8 +39,10 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     storageData,
 }) => {
     const bem = bemUtils('routesWrapper');
+    const isFirstRender = useRef(true);
     const hasNavigated = useRef(false);
     const navigate = useNavigate();
+    const params = useParams();
 
     useEffect(() => {
         if (!hasNavigated.current) {
@@ -87,6 +89,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
                                 oppdatertData={oppdatertData}
                                 storageData={storageData}
+                                isFirstRender={isFirstRender}
                             />
                         }
                     />
@@ -100,6 +103,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                     saker={saker}
                                     søkerinfo={søkerinfo}
                                     oppdatertData={oppdatertData}
+                                    isFirstRender={isFirstRender}
                                 />
                             }
                         />
@@ -122,7 +126,10 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 />
                             }
                         />
-                        <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
+                        <Route
+                            path={OversiktRoutes.ETTERSEND}
+                            element={<EttersendingPage saker={saker} valgtSaksnr={params.saksnummer} />}
+                        />
                     </Route>
                     <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                 </Routes>

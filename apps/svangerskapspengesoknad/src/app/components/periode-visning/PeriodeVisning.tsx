@@ -55,7 +55,7 @@ const PeriodeVisning: FunctionComponent<Props> = ({
     kanHaSvpFremTilTreUkerFørTermin,
 }) => {
     const intl = useIntl();
-    let labelText = getDatoText(intl, sisteDagForSvangerskapspenger, periode, kanHaSvpFremTilTreUkerFørTermin);
+    const labelText = getDatoText(intl, sisteDagForSvangerskapspenger, periode, kanHaSvpFremTilTreUkerFørTermin);
 
     const stillingsprosentText = getStillingsprosentTekst(periode, intl);
     const bem = bemUtils('periodeVisningInfoBox');

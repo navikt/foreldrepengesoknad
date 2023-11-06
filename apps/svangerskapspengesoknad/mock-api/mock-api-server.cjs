@@ -6,7 +6,7 @@ const MockStorage = require('./mock-storage.cjs');
 
 app.disable('x-powered-by');
 
-const allowCrossDomain = function (req, res, next) {
+const allowCrossDomain = function (_req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -15,7 +15,7 @@ const allowCrossDomain = function (req, res, next) {
     next();
 };
 const delayAllResponses = function (millis) {
-    return function (req, res, next) {
+    return function (_req, _res, next) {
         setTimeout(next, millis);
     };
 };
@@ -24,13 +24,13 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-router.get(['/rest/sokerinfo'], (req, res) => {
+router.get(['/rest/sokerinfo'], (_req, res) => {
     res.send(MockStorage.getSokerInfo());
 });
 
-router.post('/rest/engangsstonad', (req, res) => res.sendStatus(200));
+router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
 
-router.post('/rest/soknad', (req, res) => {
+router.post('/rest/soknad', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
@@ -41,7 +41,7 @@ router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res)
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg/:id', (req, res) => {
+router.delete('/rest/storage/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
 });
 

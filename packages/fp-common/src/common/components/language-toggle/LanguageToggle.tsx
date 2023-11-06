@@ -1,21 +1,20 @@
-import React from 'react';
 import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
 import { IntlShape, useIntl } from 'react-intl';
-import { Locale } from '../../types/Locale';
+import { LocaleAll } from '@navikt/fp-types';
 import intlHelper from '../../utils/intlUtils';
 import NorwayFlagSVG from './NorwayFlag';
 import { Expand } from '@navikt/ds-icons';
 
 import './languageToggle.less';
 
-export interface LanguageToggleProps {
-    toggle: (locale: Locale) => void;
-    locale: Locale;
-    availableLocales: Locale[];
+export interface LanguageToggleProps<T extends LocaleAll> {
+    toggle: (locale: T) => void;
+    locale: T;
+    availableLocales: T[];
     isCleanVersion?: boolean;
 }
 
-const renderMenuItem = (intl: IntlShape, locale: Locale) => {
+const renderMenuItem = (intl: IntlShape, locale: LocaleAll) => {
     return (
         <li key={locale}>
             <MenuItem className="languageToggle__menu__item">
@@ -30,13 +29,13 @@ const renderMenuItem = (intl: IntlShape, locale: Locale) => {
     );
 };
 
-const LanguageToggle: React.FunctionComponent<LanguageToggleProps> = ({
+const LanguageToggle = <T extends LocaleAll>({
     locale,
     toggle: toggleLanguage,
     availableLocales,
     isCleanVersion = false,
-}) => {
-    const selectableOtherMenuLanguages: Locale[] = [...availableLocales].filter((code) => code !== locale) as Locale[];
+}: LanguageToggleProps<T>) => {
+    const selectableOtherMenuLanguages: T[] = [...availableLocales].filter((code) => code !== locale) as T[];
     const intl = useIntl();
 
     return (

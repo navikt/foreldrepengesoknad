@@ -35,7 +35,7 @@ const VelgArbeid: React.FunctionComponent = () => {
     const [valgtTilrettelegging, setValgtTilrettelegging] = useState<Tilrettelegging[]>([]);
     const tilretteleggingOptions = useMemo(
         () => mapArbeidsforholdToVelgArbeidOptions(tilrettelegging, søker, arbeidsforhold, termindato, intl),
-        [tilrettelegging, søker, arbeidsforhold, barn.termindato, intl],
+        [tilrettelegging, søker, arbeidsforhold, termindato, intl],
     );
     const onValidSubmitHandler = () => {
         return [actionCreator.setTilrettelegging(valgtTilrettelegging)];

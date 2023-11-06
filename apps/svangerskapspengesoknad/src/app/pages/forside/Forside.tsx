@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
-import { Block, LanguageToggle, bemUtils, intlUtils, Locale } from '@navikt/fp-common';
+import { Block, LanguageToggle, bemUtils, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     ForsideFormComponents,
@@ -16,10 +16,11 @@ import actionCreator, { SvangerskapspengerContextAction } from 'app/context/acti
 import SøknadRoutes from 'app/routes/routes';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { useEffect } from 'react';
+import { LocaleNo } from '@navikt/fp-types';
 
 interface Props {
-    onChangeLocale: (locale: Locale) => void;
-    locale: Locale;
+    onChangeLocale: (locale: LocaleNo) => void;
+    locale: LocaleNo;
 }
 
 const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
@@ -55,7 +56,7 @@ const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => 
                             <LanguageToggle
                                 locale={locale}
                                 availableLocales={['nb', 'nn']}
-                                toggle={(l: Locale) => onChangeLocale(l)}
+                                toggle={(l: LocaleNo) => onChangeLocale(l)}
                             />
                         </Block>
                         <div className={bem.block}>

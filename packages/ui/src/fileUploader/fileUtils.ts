@@ -1,5 +1,6 @@
 import Bytes from 'bytes';
-import { Attachment, AttachmentType, Skjemanummer } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
+import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
 
 const s4 = (): string =>
     Math.floor((1 + Math.random()) * 0x10000)

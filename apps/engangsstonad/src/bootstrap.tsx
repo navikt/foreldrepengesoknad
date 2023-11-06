@@ -1,16 +1,17 @@
 import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
-import * as countries from 'i18n-iso-countries';
 import { Modal } from '@navikt/ds-react';
-import AppContainer from './AppContainer';
 import { initAmplitude } from '@navikt/fp-metrics';
-import Environment from 'appData/Environment';
+import * as countries from 'i18n-iso-countries';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import * as langEN from 'i18n-iso-countries/langs/en.json';
 
+import Environment from 'appData/Environment';
+import AppContainer from './AppContainer';
+
 import '@navikt/ds-css';
-import 'styles/globals.less';
+import 'styles/globals.css';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);

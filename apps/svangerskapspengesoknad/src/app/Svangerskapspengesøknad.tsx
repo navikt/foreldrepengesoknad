@@ -9,12 +9,13 @@ import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
-import { erMyndig, erKvinne, Locale } from '@navikt/fp-common';
+import { erMyndig, erKvinne } from '@navikt/fp-common';
 import Umyndig from './pages/umyndig/Umyndig';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
+import { LocaleNo } from '@navikt/fp-types';
 
 interface Props {
-    locale: Locale;
+    locale: LocaleNo;
     onChangeLocale: any;
 }
 
@@ -32,7 +33,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         if (søkerinfoData !== undefined) {
             dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
         }
-    }, [søkerinfoData]);
+    }, [søkerinfoData, dispatch]);
 
     useEffect(() => {
         if (søkerinfoError) {

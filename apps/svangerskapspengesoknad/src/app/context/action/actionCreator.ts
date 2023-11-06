@@ -3,7 +3,7 @@ import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsoppho
 import { Søker } from 'app/types/Søker';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Tilrettelegging } from 'app/types/Tilrettelegging';
-import { Locale } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 import { SvangerskapspengerContextState } from '../SvangerskapspengerContextConfig';
 
 export enum SvangerskapspengerContextActionKeys {
@@ -120,10 +120,10 @@ const setGodkjentOppsummering = (payload: boolean): GodkjentOppsummering => ({
 
 interface SetSpråkkode {
     type: SvangerskapspengerContextActionKeys.SET_SPRÅKKODE;
-    payload: Locale;
+    payload: LocaleNo;
 }
 
-const setSpråkkode = (payload: Locale): SetSpråkkode => ({
+const setSpråkkode = (payload: LocaleNo): SetSpråkkode => ({
     type: SvangerskapspengerContextActionKeys.SET_SPRÅKKODE,
     payload,
 });

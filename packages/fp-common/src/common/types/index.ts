@@ -18,7 +18,6 @@ export * from './ForeldreparSituasjonTypes';
 export * from './GjeldendeVedtak';
 export * from './GraderingDTO';
 export * from './Kjønn';
-export * from './Locale';
 export * from './MinsterettType';
 export * from './MissingAttachment';
 export * from './MorsAktivitet';
