@@ -137,7 +137,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker, valgtSaksnr }
                     <FileUploader
                         updateAttachments={setVedlegg}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-                        skjemanummer={type!}
+                        skjemanummer={type}
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                     />
                 )}
