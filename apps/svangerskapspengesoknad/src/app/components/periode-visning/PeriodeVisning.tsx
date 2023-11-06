@@ -61,23 +61,19 @@ const PeriodeVisning: FunctionComponent<Props> = ({
     const bem = bemUtils('periodeVisningInfoBox');
 
     return (
-        <ul className={bem.element('periodeVisningList')}>
-            <li>
-                <div className={bem.block}>
-                    <div className={bem.element('topRow')}>
-                        <Label>{labelText}</Label>
-                        <div className={bem.element('arbeidsgiverNavn')}>
-                            <BodyShort>
-                                <BodyShort>{periode.arbeidsforhold.navn.toUpperCase()}</BodyShort>
-                            </BodyShort>
-                        </div>
-                    </div>
-                    <Block padBottom="m">
-                        <BodyShort className={bem.element('stillingsprosent')}>{stillingsprosentText}</BodyShort>
-                    </Block>
+        <div className={bem.block}>
+            <div className={bem.element('topRow')}>
+                <Label>{labelText}</Label>
+                <div className={bem.element('arbeidsgiverNavn')}>
+                    <BodyShort>
+                        <BodyShort>{periode.arbeidsforhold.navn.toUpperCase()}</BodyShort>
+                    </BodyShort>
                 </div>
-            </li>
-        </ul>
+            </div>
+            <Block padBottom="m">
+                <BodyShort className={bem.element('stillingsprosent')}>{stillingsprosentText}</BodyShort>
+            </Block>
+        </div>
     );
 };
 
