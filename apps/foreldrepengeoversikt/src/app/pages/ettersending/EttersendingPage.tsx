@@ -55,7 +55,16 @@ export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undef
 };
 
 const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT_OPTION => {
-    return selectText === DEFAULT_OPTION ? selectText : Skjemanummer[selectText as keyof typeof Skjemanummer];
+    if (selectText === DEFAULT_OPTION) {
+        return selectText;
+    }
+
+    const snr = Object.values(Skjemanummer).find((value) => value === selectText);
+    if (snr) {
+        return snr;
+    }
+
+    throw Error('Valgt skjemanr finnes ikke');
 };
 
 export interface Props {
