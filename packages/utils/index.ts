@@ -20,5 +20,7 @@ export {
     isDateWithinRange,
     isToday,
     isDateRangesOverlapping,
+    isDateAAfterDateB,
+    isDateASameOrBeforeDateB,
     erMyndig,
 } from './src/dateUtils';

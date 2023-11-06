@@ -2,6 +2,8 @@ name: Bygg og deploy Foreldrepengesøknad
 on:
   workflow_dispatch:
   push:
+    branches-ignore:
+      - 'ny-svp'
     branches:
       - '**'
     paths:

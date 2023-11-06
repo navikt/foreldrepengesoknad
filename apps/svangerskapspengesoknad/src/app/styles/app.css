@@ -1,0 +1,10 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.app {
+    background-color: var(--a-white);
+    min-width: 320px;
+}

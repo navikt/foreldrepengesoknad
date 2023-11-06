@@ -2,8 +2,8 @@ name: Bygg og deploy Engangsstønad
 on:
   workflow_dispatch:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - 'ny-svp'
     paths:
       - 'apps/engangsstonad/**'
       - 'packages/**'

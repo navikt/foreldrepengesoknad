@@ -3,22 +3,27 @@ import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { YesOrNo, DateRange } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo, DateRange, getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { IntlShape } from 'react-intl';
 import intlUtils from './intlUtils';
+import { Kjønn } from './../../common';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
+export type SkjemaelementFeil = string | undefined;
+
 export const dateToday = dayjs().toDate();
+export const date4WeeksAgo = dayjs().subtract(4, 'week').startOf('day').toDate();
+export const date5MonthsAgo = dayjs().subtract(5, 'month').startOf('day').toDate();
 export const date1YearFromNow = dayjs().add(1, 'years').toDate();
 export const date1YearAgo = dayjs().subtract(1, 'years').toDate();
-export const date20YearsAgo = dayjs().subtract(20, 'years').toDate();
 export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day').toDate();
 export const sixMonthsAgo = dayjs().subtract(6, 'month').startOf('day').toDate();
 export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day').toDate();
+export const date20YearsAgo = dayjs().subtract(20, 'years').startOf('day').toDate();
 
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
@@ -33,7 +38,7 @@ export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey: string)
 };
 
 export const validateRequiredField = (value: any, errorMsg: string): string | undefined => {
-    if (!hasValue(value)) {
+    if (!hasValue(value) || (typeof value === 'string' && value.trim() === '')) {
         return errorMsg;
     }
 
@@ -104,6 +109,10 @@ export const erMyndig = (fødselsdato: string) => {
     const now = dayjs();
     const momentDate = dayjs(fødselsdato);
     return now.diff(momentDate, 'years') >= 18;
+};
+
+export const erKvinne = (kjønn: Kjønn) => {
+    return kjønn === 'K';
 };
 
 export const getFørsteMuligeTermindato = () => dayjs().subtract(21, 'days').startOf('day').toDate();
@@ -205,13 +214,35 @@ export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: 
     });
 };
 
-export type SkjemaelementFeil = string | undefined;
-
 export const validateTextHasLegalChars = (value: any): boolean => textRegex.test(value);
 
 export const validateTextInputField = (value: any, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
     if (!validateTextHasLegalChars(value)) {
         return getIllegalCharsErrorMessage(value, feltNavn, intl);
+    }
+    return undefined;
+};
+
+export const validateRequiredTextInputField =
+    (feltNavn: string, intl: IntlShape) =>
+    (value: string): SkjemaelementFeil => {
+        const errorMsgEmpty = intlUtils(intl, 'valideringsfeil.inputfelt.required', { inputFeltLabel: feltNavn });
+        const requiredFieldIsEmptyError = validateRequiredField(value, errorMsgEmpty);
+        if (requiredFieldIsEmptyError) {
+            return requiredFieldIsEmptyError;
+        }
+        return validateTextInputField(value, feltNavn, intl);
+    };
+
+export const containsWhiteSpace = (s: string): boolean => {
+    return /\s/.test(s);
+};
+
+export const validateStringAsNumberInput = (value: string, errorMessage: string) => {
+    const valueNumber = getNumberFromNumberInputValue(value);
+
+    if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
+        return errorMessage;
     }
     return undefined;
 };

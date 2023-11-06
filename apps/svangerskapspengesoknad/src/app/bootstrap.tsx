@@ -1,47 +1,33 @@
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import countries from 'i18n-iso-countries';
 import * as Sentry from '@sentry/browser';
-import { BrowserRouter } from 'react-router-dom';
-import { Modal } from '@navikt/ds-react';
+import '@navikt/ds-css';
+
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
-
-import store from './redux/store';
-import IntlProvider from './intl/IntlProvider';
-import Svangerskapspengesøknad from './connectedComponents/svangerskapspengesoknad/Svangerskapspengesøknad';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import * as countries from 'i18n-iso-countries';
+import { initAmplitude } from './amplitude/amplitude';
+import AppContainer from './AppContainer';
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/nb';
 import 'dayjs/locale/nb.js';
-
-import '@navikt/ds-css';
-import './styles/global.less';
-import './styles/app.less';
+import 'dayjs/locale/nn.js';
 import dayjs from 'dayjs';
-
-dayjs.locale('nb');
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
 
-Modal.setAppElement('#app');
+dayjs.locale('nb');
 
 Sentry.init({
     dsn: 'https://b28b752e32e846dd9818f2eb7a9fc013@sentry.gc.nav.no/7',
+    release: (window as any).APP_VERSION,
     environment: window.location.hostname,
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
 
+initAmplitude();
+
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
-root.render(
-    <ErrorBoundary>
-        <Provider store={store}>
-            <IntlProvider>
-                <BrowserRouter basename="/">
-                    <Svangerskapspengesøknad />
-                </BrowserRouter>
-            </IntlProvider>
-        </Provider>
-    </ErrorBoundary>,
-);
+root.render(<AppContainer />);

@@ -9,9 +9,7 @@
         "barn": {
             "type": "født",
             "antallBarn": 1,
-            "fødselsdatoer": [
-                "2023-02-01T00:00:00.000Z"
-            ]
+            "fødselsdatoer": ["2023-02-01T00:00:00.000Z"]
         },
         "annenForelder": {
             "fornavn": "annen forelder",

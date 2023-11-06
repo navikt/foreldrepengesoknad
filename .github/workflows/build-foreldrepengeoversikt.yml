@@ -2,8 +2,8 @@ name: Bygg og deploy Foreldrepengeoversikt
 on:
   workflow_dispatch:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - 'ny-svp'
     paths:
       - 'apps/foreldrepengeoversikt/**'
       - 'packages/**'

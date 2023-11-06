@@ -1,0 +1,18 @@
+@import './variables.css';
+
+
+.contentWrapper {
+        --max-width: 704px;
+        --margin: 0 auto;
+        --padding: 2rem;
+
+        @media (max-width: var(mobile-breakpoint)) {
+            --max-width: 100%;
+        }
+    }
+
+.grayBlockMobileFullWidth {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
+}

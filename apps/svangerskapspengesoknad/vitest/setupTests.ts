@@ -15,6 +15,7 @@ vi.mock('./../src/app/Environment.ts', async () => {
         default: {
             REST_API_URL: 'rest-api',
             LOGIN_URL: '',
+            INNSYN: 'https://foreldrepenger.intern.dev.nav.no',
         },
     };
 });

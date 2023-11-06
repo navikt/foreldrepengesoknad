@@ -15,7 +15,7 @@ server.set('views', `${__dirname}`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
-server.use((req, res, next) => {
+server.use((_req, res, next) => {
     res.removeHeader('X-Powered-By');
     res.set('X-Frame-Options', 'SAMEORIGIN');
     res.set('X-XSS-Protection', '1; mode=block');
@@ -37,8 +37,8 @@ const renderApp = (decoratorFragments) =>
     });
 
 const startServer = async (html) => {
-    server.get('/health/isAlive', (req, res) => res.sendStatus(200));
-    server.get('/health/isReady', (req, res) => res.sendStatus(200));
+    server.get('/health/isAlive', (_req, res) => res.sendStatus(200));
+    server.get('/health/isReady', (_req, res) => res.sendStatus(200));
 
     const fs = require('fs');
     fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);

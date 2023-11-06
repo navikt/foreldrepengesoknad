@@ -1,0 +1,36 @@
+.attachmentVisning {
+    border-top: 1px solid var(--border-subtle-hover, rgba(5, 23, 51, 0.34));
+    border-bottom: 1px solid var(--border-subtle-hover, rgba(5, 23, 51, 0.34));
+    background: #fff;
+    display: grid;
+    grid-template-columns: 7% 1fr 5%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.attachmentVisning__filename {
+    font-weight: bold;
+}
+
+.attachmentVisning__icon {
+    width: 2rem;
+    height: 2rem;
+    align-self: center;
+}
+
+.attachmentVisning__slett {
+    width: 2rem;
+    height: 2rem;
+    align-self: center;
+    color: black;
+}
+
+.attachmentVisning--pending {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .attachmentVisning {
+        grid-template-columns: 12% 1fr 10%;
+    }
+}

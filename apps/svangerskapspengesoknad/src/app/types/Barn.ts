@@ -1,13 +1,7 @@
-interface Barn {
+export interface Barn {
     erBarnetFødt: boolean;
+    fødselsdato: string | undefined;
     termindato: string;
-    fødselsdatoer?: string[];
-}
-
-export interface UferdigBarn {
-    termindato?: string;
-    erBarnetFødt?: boolean;
-    fødselsdato?: string;
 }
 
 export interface BarnDTO {
@@ -15,5 +9,3 @@ export interface BarnDTO {
     termindato: Date;
     fødselsdatoer?: Date[];
 }
-
-export default Barn;

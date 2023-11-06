@@ -8,13 +8,14 @@ import { IntlShape } from 'react-intl';
 import { Uttaksdagen } from './Uttaksdagen';
 import { TidsperiodeDate, Utsettelsesperiode } from '../types';
 import uttaksConstants from '../constants/constants';
-import { SkjemaelementFeil } from './validationUtils';
+import { SkjemaelementFeil, hasValue } from './validationUtils';
 import intlUtils from './intlUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 
+dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
 const dateFormatExtended = 'DD. MMM YYYY';
 
@@ -111,6 +112,18 @@ export const isDateTodayOrInTheFuture = (date: string): boolean => {
 
 export const isDateInTheFuture = (date: string): boolean => {
     if (dayjs().isBefore(date, 'day')) {
+        return true;
+    }
+
+    return false;
+};
+
+export const isDateABeforeDateB = (a: string, b: string): boolean => {
+    if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {
+        return false;
+    }
+
+    if (dayjs(a).isBefore(b, 'day')) {
         return true;
     }
 

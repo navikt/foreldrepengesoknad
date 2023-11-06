@@ -13,14 +13,16 @@ export default defineConfig({
         checker({ typescript: true }),
         eslint(),
     ],
-    build: {
-        sourcemap: true,
-    },
     resolve: {
         alias: {
             app: path.resolve(__dirname, './src/app'),
             common: path.resolve(__dirname, './src/common/'),
+            stories: path.resolve(__dirname, './src/storybook/stories'),
+            storybook: path.resolve(__dirname, './src/storybook'),
         },
+    },
+    build: {
+        sourcemap: true,
     },
     test: {
         globals: true,

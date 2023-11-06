@@ -1,49 +1,31 @@
-/* eslint-disable */
-
+import * as React from 'react';
 import { IntlProvider as Provider } from 'react-intl';
-import { connect } from 'react-redux';
-import moment from 'moment';
-import { Språkkode } from 'common/intl/types';
-import { State } from 'app/redux/store';
+import dayjs from 'dayjs';
 import nbMessages from './nb_NO.json';
-import nbMessagesCommon from '../../common/intl/nb_NO.json';
 import nnMessages from './nn_NO.json';
-import nnMessagesCommon from '../../common/intl/nn_NO.json';
-import { Component } from 'react';
+import { allCommonMessages } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 
-interface StateProps {
-    språkkode: Språkkode;
+interface Props {
+    children: React.ReactNode;
+    locale: LocaleNo;
 }
 
-moment.locale('nb');
+dayjs.locale('nb');
 
-class IntlProvider extends Component<any, StateProps> {
-    constructor(props: StateProps) {
-        super(props);
+const getLanguageMessages = (locale: LocaleNo) => {
+    if (locale === 'nb') {
+        return { ...nbMessages, ...allCommonMessages.nb };
+    } else {
+        return { ...nnMessages, ...allCommonMessages.nn };
     }
+};
 
-    render() {
-        const messages =
-            this.props.språkkode === 'nb'
-                ? {
-                      ...nbMessages,
-                      ...nbMessagesCommon,
-                  }
-                : {
-                      ...nnMessages,
-                      ...nnMessagesCommon,
-                  };
-        return (
-            <Provider key={this.props.språkkode} locale={this.props.språkkode} messages={messages || {}}>
-                {this.props.children}
-            </Provider>
-        );
-    }
-}
-
-const mapStateToProps = (state: State): StateProps => ({
-    språkkode: state.common.språkkode,
-});
-
-// @ts-ignore Fiks
-export default connect(mapStateToProps)(IntlProvider);
+const IntlProvider: React.FunctionComponent<Props> = ({ locale, children }) => {
+    return (
+        <Provider locale={locale} messages={getLanguageMessages(locale)}>
+            {children}
+        </Provider>
+    );
+};
+export default IntlProvider;

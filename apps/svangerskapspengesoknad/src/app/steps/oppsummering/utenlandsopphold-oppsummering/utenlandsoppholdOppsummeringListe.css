@@ -1,0 +1,7 @@
+@import './../../../styles/variables.css';
+
+.utenlandsoppholdOppsummering {
+    padding: 1rem;
+    margin: 0;
+    background-color: var(--a-deepblue-50);
+}

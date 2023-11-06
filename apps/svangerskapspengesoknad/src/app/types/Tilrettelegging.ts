@@ -1,8 +1,16 @@
-export enum Tilretteleggingstype {
-    'HEL' = 'hel',
-    'DELVIS' = 'delvis',
+import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
+import { ArbeidsforholdDTO } from './Arbeidsforhold';
+import { Attachment } from './Attachment';
+
+export enum TilretteleggingstypeOptions {
     'INGEN' = 'ingen',
-    'NOE' = 'noe',
+    'DELVIS' = 'delvis',
+}
+
+export enum Tilretteleggingstype {
+    'INGEN' = 'ingen',
+    'DELVIS' = 'delvis',
+    'HEL' = 'hel',
 }
 
 export enum Arbeidsforholdstype {
@@ -12,50 +20,78 @@ export enum Arbeidsforholdstype {
     'PRIVAT' = 'privat',
 }
 
-export interface TilretteleggingArbeidsforhold {
-    id?: string;
+export interface ArbeidsforholdForTilrettelegging {
+    arbeidsgiverId?: string;
     type: Arbeidsforholdstype;
+    navn: string;
+    opprinneligstillingsprosent: number;
+    startdato: string;
+    sluttdato?: string;
 }
 
-export interface DelvisTilrettelegging {
-    tilrettelagtArbeidFom: string;
+export enum TilOgMedDatoType {
+    VALGFRI_DATO = 'VALGFRI_DATO',
+    SISTE_DAG_MED_SVP = 'SISTE_DAG_MED_SVP',
+}
+
+export interface TilretteleggingPeriode {
+    type: Tilretteleggingstype;
+    behovForTilretteleggingFom: string;
+    fom: string;
+    tom: string;
     stillingsprosent: number;
+    arbeidsforhold: ArbeidsforholdForTilrettelegging;
+    vedlegg: string[];
+    risikofaktorer?: string;
+    tilretteleggingstiltak?: string;
 }
 
-export interface HelTilrettelegging {
-    tilrettelagtArbeidFom: string;
-}
-
-export interface IngenTilrettelegging {
-    slutteArbeidFom: string;
+export interface PeriodeMedVariasjon {
+    type: TilretteleggingstypeOptions;
+    tomType: TilOgMedDatoType;
+    fom: string;
+    tom?: string;
+    stillingsprosent: string;
 }
 
 export interface Tilrettelegging {
     id: string;
     behovForTilretteleggingFom: string;
-    arbeidsforhold: TilretteleggingArbeidsforhold;
-    vedlegg: string[];
-    helTilrettelegging?: HelTilrettelegging[];
-    delvisTilrettelegging?: DelvisTilrettelegging[];
-    ingenTilrettelegging?: IngenTilrettelegging[];
+    arbeidsforhold: ArbeidsforholdForTilrettelegging;
+    type: TilretteleggingstypeOptions;
+    enPeriodeMedTilretteleggingFom?: string;
+    enPeriodeMedTilretteleggingStillingsprosent?: string;
+    enPeriodeMedTilretteleggingTomType?: TilOgMedDatoType;
+    enPeriodeMedTilretteleggingTilbakeIJobbDato?: string;
+    vedlegg: Attachment[];
+    delvisTilretteleggingPeriodeType?: DelivisTilretteleggingPeriodeType;
+    varierendePerioder?: PeriodeMedVariasjon[];
+    risikofaktorer?: string;
+    tilretteleggingstiltak?: string;
 }
 
-export type UferdigTilrettelegging = Tilrettelegging & {
-    behovForTilretteleggingFom?: string;
-    type: Tilretteleggingstype[];
-    helTilrettelegging?: [
-        {
-            tilrettelagtArbeidFom?: string;
-        },
-    ];
-    delvisTilrettelegging?: DelvisTilrettelegging[];
-    ingenTilrettelegging?: [
-        {
-            slutteArbeidFom?: string;
-        },
-    ];
-    risikoFaktorer?: string;
-    tilretteleggingstiltak?: string;
-};
+interface TilretteleggingDTOBase {
+    type: Tilretteleggingstype;
+    behovForTilretteleggingFom: Date;
+    arbeidsforhold: ArbeidsforholdDTO;
+    vedlegg: string[];
+}
+export interface DelvisTilretteleggingDTO extends TilretteleggingDTOBase {
+    type: Tilretteleggingstype.DELVIS;
+    tilrettelagtArbeidFom: Date;
+    stillingsprosent: number;
+}
+
+export interface IngenTilretteleggingDTO extends TilretteleggingDTOBase {
+    type: Tilretteleggingstype.INGEN;
+    slutteArbeidFom: Date;
+}
+
+export interface HelTilretteleggingDTO extends TilretteleggingDTOBase {
+    type: Tilretteleggingstype.HEL;
+    tilrettelagtArbeidFom: Date;
+}
+
+export type TilretteleggingDTO = DelvisTilretteleggingDTO | IngenTilretteleggingDTO | HelTilretteleggingDTO;
 
 export default Tilrettelegging;

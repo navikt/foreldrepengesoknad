@@ -1,9 +1,12 @@
+import '../src/app/styles/app.css';
+import '@navikt/ds-css';
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     REST_API_URL: 'rest-api',
     LOGIN_URL: '',
+    INNSYN: 'test',
 });
 document.head.appendChild(scriptTag);
 

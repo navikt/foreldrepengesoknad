@@ -1,162 +1,182 @@
-import { Søknadsgrunnlag } from 'app/types/Søknad';
-import {
-    Arbeidsforholdstype,
-    UferdigTilrettelegging,
-    Tilrettelegging,
+import { isISODateString } from '@navikt/ds-datepicker';
+import { getFloatFromString } from '@navikt/fp-common';
+import Tilrettelegging, {
+    TilOgMedDatoType,
+    TilretteleggingPeriode,
     Tilretteleggingstype,
-    HelTilrettelegging,
-    DelvisTilrettelegging,
-    IngenTilrettelegging,
+    TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
-import {
-    ArbeidsforholdDTO,
-    HelTilretteleggingDTO,
-    IngenTilretteleggingDTO,
-    DelvisTilretteleggingDTO,
-    TilretteleggingDTO,
-} from '../types/TilretteleggingDTO';
+import dayjs from 'dayjs';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 
-export const mapGrunnlagTilTilrettelegging = (søknadsgrunnlag: Søknadsgrunnlag[]) => {
-    return søknadsgrunnlag.map(({ id, type }) => {
-        const arbeidsgiversId =
-            type === Arbeidsforholdstype.VIRKSOMHET || type === Arbeidsforholdstype.PRIVAT ? { id } : {};
-
-        return {
-            id,
-            vedlegg: [],
-            arbeidsforhold: {
-                ...arbeidsgiversId,
-                type,
-            },
-        };
-    });
-};
-
-export const mergeSøknadsgrunnlagIntoTilrettelegging = (
-    søknadsgrunnlag: Søknadsgrunnlag[],
-    existingTilrettelegging: UferdigTilrettelegging[],
+export const getValgtTilrettelegging = (
+    allTilretteleggingOptions: Tilrettelegging[],
+    valgtTilrettelegging: string[],
 ) => {
-    const nyeTilrettelegginger = mapGrunnlagTilTilrettelegging(
-        søknadsgrunnlag.filter(
-            (grunnlag: Søknadsgrunnlag) =>
-                !existingTilrettelegging.find((t: UferdigTilrettelegging) => t.id === grunnlag.id),
-        ),
+    const selectedTilrettelegging = allTilretteleggingOptions.filter((o) =>
+        valgtTilrettelegging.find((t) => t === o.id),
     );
-
-    const selectedTilrettelegging = existingTilrettelegging.filter((t) =>
-        søknadsgrunnlag.map((s) => s.id).includes(t.id),
-    );
-
-    return [...selectedTilrettelegging, ...nyeTilrettelegginger];
+    return selectedTilrettelegging;
 };
 
-const mapHelTilrettelegging = (
+const mapTilretteleggingTilPeriode = (
     tilrettelegging: Tilrettelegging,
-    arbeidsforhold: ArbeidsforholdDTO,
-    helTilrettelegging: HelTilrettelegging,
-): HelTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.helTilrettelegging || !helTilrettelegging.tilrettelagtArbeidFom) {
-        return undefined;
-    }
+    type: Tilretteleggingstype,
+    stillingsprosent: number,
+    fom: string,
+    tom: string,
+): TilretteleggingPeriode => {
+    return {
+        type,
+        behovForTilretteleggingFom: tilrettelegging.behovForTilretteleggingFom,
+        arbeidsforhold: tilrettelegging.arbeidsforhold,
+        vedlegg: tilrettelegging.vedlegg.map((v) => v.id),
+        fom,
+        tom,
+        stillingsprosent,
+        risikofaktorer: tilrettelegging.risikofaktorer,
+        tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak,
+    };
+};
+
+const getPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
+    sistePeriode: TilretteleggingPeriode,
+    sisteDagForSvangerskapspenger: Date,
+    opprinneligStillingsprosent: number,
+): TilretteleggingPeriode => {
     return {
         type: Tilretteleggingstype.HEL,
-        behovForTilretteleggingFom: new Date(tilrettelegging.behovForTilretteleggingFom),
-        arbeidsforhold,
-        vedlegg: tilrettelegging.vedlegg,
-        tilrettelagtArbeidFom: new Date(helTilrettelegging.tilrettelagtArbeidFom),
+        behovForTilretteleggingFom: sistePeriode.behovForTilretteleggingFom,
+        fom: dateToISOString(dayjs(sistePeriode.tom).add(1, 'd').toDate()),
+        tom: dateToISOString(sisteDagForSvangerskapspenger),
+        arbeidsforhold: sistePeriode.arbeidsforhold,
+        vedlegg: sistePeriode.vedlegg,
+        risikofaktorer: sistePeriode.risikofaktorer,
+        tilretteleggingstiltak: sistePeriode.tilretteleggingstiltak,
+        stillingsprosent: opprinneligStillingsprosent,
     };
 };
 
-const mapDelvisTilrettelegging = (
+const mappedTilretteleggingMedEnPeriode = (
     tilrettelegging: Tilrettelegging,
-    arbeidsforhold: ArbeidsforholdDTO,
-    delvisTilrettelegging: DelvisTilrettelegging,
-): DelvisTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.delvisTilrettelegging || !delvisTilrettelegging.tilrettelagtArbeidFom) {
-        return undefined;
+    sisteDagForSvangerskapspenger: Date,
+): TilretteleggingPeriode[] => {
+    const perioder = [] as TilretteleggingPeriode[];
+    const stillingsprosent =
+        tilrettelegging.type === TilretteleggingstypeOptions.DELVIS
+            ? getFloatFromString(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent)
+            : 0;
+    const fom = tilrettelegging.enPeriodeMedTilretteleggingFom!;
+    const tom =
+        tilrettelegging.enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO
+            ? dayjs(tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato).subtract(1, 'day').toString()!
+            : dateToISOString(sisteDagForSvangerskapspenger);
+    const type =
+        tilrettelegging.type === TilretteleggingstypeOptions.DELVIS && stillingsprosent && stillingsprosent > 0
+            ? Tilretteleggingstype.DELVIS
+            : Tilretteleggingstype.INGEN;
+    const mappedPeriode = mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent!, fom, tom);
+    perioder.push(mappedPeriode);
+    if (!dayjs(mappedPeriode.tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
+        perioder.push(
+            getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(
+                mappedPeriode,
+                sisteDagForSvangerskapspenger,
+                tilrettelegging.arbeidsforhold.opprinneligstillingsprosent,
+            ),
+        );
     }
-    return {
-        type: Tilretteleggingstype.DELVIS,
-        behovForTilretteleggingFom: new Date(tilrettelegging.behovForTilretteleggingFom),
-        arbeidsforhold,
-        vedlegg: tilrettelegging.vedlegg,
-        tilrettelagtArbeidFom: new Date(delvisTilrettelegging.tilrettelagtArbeidFom),
-        stillingsprosent: delvisTilrettelegging.stillingsprosent,
-    };
+    return perioder;
 };
 
-const mapIngenTilrettelegging = (
+const mappedTilretteleggingMedVarierendePerioder = (
     tilrettelegging: Tilrettelegging,
-    arbeidsforhold: ArbeidsforholdDTO,
-    ingenTilrettelegging: IngenTilrettelegging,
-): IngenTilretteleggingDTO | undefined => {
-    if (!tilrettelegging.ingenTilrettelegging || !ingenTilrettelegging.slutteArbeidFom) {
-        return undefined;
-    }
-    return {
-        type: Tilretteleggingstype.INGEN,
-        behovForTilretteleggingFom: new Date(tilrettelegging.behovForTilretteleggingFom),
-        arbeidsforhold,
-        vedlegg: tilrettelegging.vedlegg,
-        slutteArbeidFom: new Date(ingenTilrettelegging.slutteArbeidFom),
-    };
-};
-
-const mapArbeidsforholdForTilrettelegging = (tilrettelegging: UferdigTilrettelegging): ArbeidsforholdDTO => {
-    switch (tilrettelegging.arbeidsforhold.type) {
-        case Arbeidsforholdstype.FRILANSER:
-            return {
-                type: Arbeidsforholdstype.FRILANSER,
-                risikoFaktorer: tilrettelegging.risikoFaktorer,
-                tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak,
-            };
-        case Arbeidsforholdstype.SELVSTENDIG:
-            return {
-                type: Arbeidsforholdstype.SELVSTENDIG,
-                risikoFaktorer: tilrettelegging.risikoFaktorer,
-                tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak,
-            };
-        case Arbeidsforholdstype.PRIVAT:
-            return {
-                type: Arbeidsforholdstype.PRIVAT,
-                id: tilrettelegging.arbeidsforhold.id || tilrettelegging.id,
-            };
-        case Arbeidsforholdstype.VIRKSOMHET:
-            return {
-                type: Arbeidsforholdstype.VIRKSOMHET,
-                id: tilrettelegging.arbeidsforhold.id || tilrettelegging.id,
-            };
-    }
-};
-
-export const mapTilretteleggingerTilDTO = (tilrettelegging: UferdigTilrettelegging[]): TilretteleggingDTO[] => {
-    const dto: TilretteleggingDTO[] = [];
-    tilrettelegging.forEach((t) => {
-        const arbeidsforhold = mapArbeidsforholdForTilrettelegging(t);
-        if (t.helTilrettelegging && t.helTilrettelegging.length > 0) {
-            t.helTilrettelegging.forEach((helTil: HelTilrettelegging) => {
-                const helTilrettelegging = mapHelTilrettelegging(t, arbeidsforhold, helTil);
-                if (helTilrettelegging) {
-                    dto.push(helTilrettelegging);
-                }
-            });
+    sisteDagForSvangerskapspenger: Date,
+): TilretteleggingPeriode[] => {
+    const opprinneligStillingsprosent = tilrettelegging.arbeidsforhold.opprinneligstillingsprosent;
+    const allePerioder = tilrettelegging.varierendePerioder!.map((periode) => {
+        const stillingsprosent = getFloatFromString(periode.stillingsprosent);
+        let type =
+            periode.type === TilretteleggingstypeOptions.DELVIS
+                ? Tilretteleggingstype.DELVIS
+                : Tilretteleggingstype.INGEN;
+        if (stillingsprosent === 0) {
+            type = Tilretteleggingstype.INGEN;
+        } else if (opprinneligStillingsprosent === 0 && stillingsprosent === 100) {
+            type = Tilretteleggingstype.HEL;
+        } else if (stillingsprosent === opprinneligStillingsprosent) {
+            type = Tilretteleggingstype.HEL;
         }
-        if (t.delvisTilrettelegging && t.delvisTilrettelegging.length > 0) {
-            t.delvisTilrettelegging.forEach((delTil: DelvisTilrettelegging) => {
-                const delvisTilrettelegging = mapDelvisTilrettelegging(t, arbeidsforhold, delTil);
-                if (delvisTilrettelegging) {
-                    dto.push(delvisTilrettelegging);
-                }
-            });
-        }
-        if (t.ingenTilrettelegging && t.ingenTilrettelegging.length > 0) {
-            t.ingenTilrettelegging.forEach((ingenTil: IngenTilrettelegging) => {
-                const ingenTilrettelegging = mapIngenTilrettelegging(t, arbeidsforhold, ingenTil);
-                if (ingenTilrettelegging) {
-                    dto.push(ingenTilrettelegging);
-                }
-            });
-        }
+        const tom =
+            periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
+                ? dateToISOString(sisteDagForSvangerskapspenger)
+                : periode.tom!;
+        return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent!, periode.fom, tom);
     });
-    return dto;
+    const sistePeriode = allePerioder[allePerioder.length - 1];
+    if (!dayjs(sistePeriode.tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
+        allePerioder.push(
+            getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(
+                sistePeriode,
+                sisteDagForSvangerskapspenger,
+                tilrettelegging.arbeidsforhold.opprinneligstillingsprosent,
+            ),
+        );
+    }
+    return allePerioder;
+};
+
+export const sorterTilretteleggingsperioder = (p1: TilretteleggingPeriode, p2: TilretteleggingPeriode) => {
+    if (dayjs(p1.fom).isBefore(p2.fom, 'day')) {
+        return -1;
+    }
+    if (dayjs(p1.fom).isSame(p2.fom, 'day')) {
+        return dayjs(p1.tom).isBefore(p2.tom, 'day') ? -1 : 1;
+    }
+    return 1;
+};
+
+export const mapTilretteleggingTilPerioder = (
+    tilrettelegging: Tilrettelegging[],
+    sisteDagForSvangerskapspenger: Date,
+): TilretteleggingPeriode[] => {
+    const tilretteleggingMedEnPeriode = tilrettelegging.filter(
+        (t) => !t.varierendePerioder || t.varierendePerioder.length === 0,
+    );
+    const tilretteleggingMedVarierendePerioder = tilrettelegging.filter(
+        (t) => t.varierendePerioder && t.varierendePerioder.length > 0,
+    );
+    const mappedTilretteleggingerMedEnPeriode = tilretteleggingMedEnPeriode.map((t) => {
+        return mappedTilretteleggingMedEnPeriode(t, sisteDagForSvangerskapspenger);
+    });
+    const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedVarierendePerioder.map((t) => {
+        return mappedTilretteleggingMedVarierendePerioder(t, sisteDagForSvangerskapspenger);
+    });
+    const allePerioder = [
+        ...mappedTilretteleggingerMedEnPeriode.flat(1),
+        ...mappedTilretteleggingAvFlerePerioder.flat(1),
+    ];
+    return [...allePerioder].sort(sorterTilretteleggingsperioder);
+};
+
+export const getNesteDagEtterSistePeriode = (
+    formvalues: Partial<PerioderFormData>,
+    sisteDagForSvangerskapspenger: Date,
+): string => {
+    if (!formvalues.varierendePerioder || formvalues.varierendePerioder.length === 0) {
+        return '';
+    }
+    const alleTomDatoer = formvalues.varierendePerioder
+        .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
+        .map((periode) => {
+            if (periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
+                return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');
+            } else {
+                return dayjs(periode.tom);
+            }
+        });
+
+    const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;
+    return maxTomDato ? dateToISOString(maxTomDato.add(1, 'd').toDate()) : '';
 };

@@ -1,44 +1,33 @@
-import { FormikErrors } from 'formik';
-import { SummaryError } from 'common/lib/validation/types';
-import { UferdigSøknad } from 'app/types/Søknad';
-import { IntlShape } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
+import { AxiosError } from 'axios';
+import * as Sentry from '@sentry/browser';
 
-export const flattenErrors = (errors: FormikErrors<UferdigSøknad>, pathPrefix = ''): SummaryError[] => {
-    let flattened: SummaryError[] = [];
+export const UKJENT_UUID = 'ukjent uuid';
+export const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
-    for (const key of Object.keys(errors)) {
-        const prefix = pathPrefix ? `${pathPrefix}.${key}` : key;
-        const value = (errors as any)[key];
-
-        if (typeof value === 'string') {
-            flattened.push({
-                name: prefix,
-                text: value,
-            });
-        } else if (typeof value === 'object') {
-            if (value.intlKey) {
-                const { intlKey, values } = value;
-                flattened.push({
-                    name: prefix,
-                    text: {
-                        intlKey,
-                        values,
-                    },
-                });
-            } else {
-                flattened = flattened.concat(flattenErrors(value, prefix));
-            }
-        }
-    }
-
-    return flattened;
+export const getErrorCallId = (error: AxiosError<any>): string => {
+    return error.response && error.response.data && error.response.data.uuid ? error.response.data.uuid : UKJENT_UUID;
 };
 
-export const translateError = (intl: IntlShape, error?: any) => {
-    if (error && error.intlKey) {
-        return getMessage(intl, error.intlKey, error.values);
-    }
+export const getErrorTimestamp = (error: AxiosError<any>): string => {
+    return error.response && error.response.data && error.response.data.timestamp ? error.response.data.timestamp : '';
+};
 
-    return typeof error === 'string' ? getMessage(intl, error) : '';
+export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
+    const errorCallId = getErrorCallId(error) + '. ';
+    const errorTimestamp = getErrorTimestamp(error) + '. ';
+    const hideNumbersAndTrim = (tekst: string): string => {
+        return tekst.replace(/\d/g, '*').slice(0, 250) + '...';
+    };
+
+    let errorString = errorCallId + errorTimestamp;
+    if (error.request && error.request.data && error.request.data.messages) {
+        errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
+    } else if (error.response && error.response.data && error.response.data.messages) {
+        errorString = errorString + hideNumbersAndTrim(error.response.data.messages);
+    }
+    if (error.message) {
+        errorString = errorString + error.message;
+    }
+    Sentry.captureMessage(errorString);
 };

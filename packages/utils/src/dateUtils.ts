@@ -11,14 +11,19 @@ dayjs.extend(isSameOrAfter);
 
 type Period = { from: Date; to: Date };
 
+type DateTypes = string | Date | dayjs.Dayjs;
 export const formatDate = (date: Date | string) => dayjs(date).format(DDMMYYYY_DATE_FORMAT);
 export const formatDateIso = (date: Date | string) => dayjs(date).format(ISO_DATE_FORMAT);
 export const formatTime = (date: Date | string) => dayjs(date).format(TIME_FORMAT);
-export const isAfterToday = (date: string): boolean => dayjs(date).isAfter(DATE_TODAY, 'day');
-export const isBeforeToday = (date: string): boolean => dayjs(date).isBefore(DATE_TODAY, 'day');
-export const isSameOrAfterToday = (date: string): boolean => dayjs(date).isSameOrAfter(DATE_TODAY, 'day');
-export const isSameOrBeforeToday = (date: string): boolean => dayjs(date).isSameOrBefore(DATE_TODAY, 'day');
-export const isToday = (date: string): boolean => dayjs(date).isSame(DATE_TODAY, 'day');
+
+export const isToday = (date: DateTypes): boolean => dayjs(date).isSame(DATE_TODAY, 'day');
+export const isAfterToday = (date: DateTypes): boolean => dayjs(date).isAfter(DATE_TODAY, 'day');
+export const isBeforeToday = (date: DateTypes): boolean => dayjs(date).isBefore(DATE_TODAY, 'day');
+export const isSameOrAfterToday = (date: DateTypes): boolean => dayjs(date).isSameOrAfter(DATE_TODAY, 'day');
+export const isSameOrBeforeToday = (date: DateTypes): boolean => dayjs(date).isSameOrBefore(DATE_TODAY, 'day');
+export const isDateASameOrBeforeDateB = (dateA: DateTypes, dateB: DateTypes): boolean =>
+    dayjs(dateA).isSameOrBefore(dateB, 'day');
+export const isDateAAfterDateB = (dateA: DateTypes, dateB: DateTypes): boolean => dayjs(dateA).isAfter(dateB, 'day');
 export const isDateWithinRange = (date: Date, minDate: Date, maxDate: Date): boolean =>
     dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 

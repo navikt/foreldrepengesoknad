@@ -1,6 +1,16 @@
-import { TidsperiodeDTO } from 'common/types';
-import { Tidsperiode } from './Tidsperiode';
+import { Tidsperiode } from '@navikt/fp-common';
+import { TidsperiodeDTO } from './TidsperiodeDTO';
 
+export interface UtenlandsoppholdInput {
+    land: string;
+    fom: string;
+    tom: string;
+}
+
+export interface UtenlandsoppholdDTO {
+    land: string;
+    tidsperiode: TidsperiodeDTO;
+}
 export interface Utenlandsopphold {
     land: string;
     tidsperiode: Tidsperiode;
@@ -16,14 +26,8 @@ interface InformasjonOmUtenlandsopphold {
     iNorgeSiste12Mnd: boolean;
     iNorgeNeste12Mnd: boolean;
     jobbetINorgeSiste12Mnd: boolean;
-
     tidligereOpphold: Utenlandsopphold[];
     senereOpphold: Utenlandsopphold[];
-}
-
-export interface UtenlandsoppholdDTO {
-    land: string;
-    tidsperiode: TidsperiodeDTO;
 }
 
 export interface InformasjonOmUtenlandsoppholdDTO {
@@ -34,16 +38,6 @@ export interface InformasjonOmUtenlandsoppholdDTO {
 
     tidligereOpphold: UtenlandsoppholdDTO[];
     senereOpphold: UtenlandsoppholdDTO[];
-}
-
-export interface InformasjonOmUtenlandsoppholdPartial {
-    iNorgePåHendelsestidspunktet?: boolean;
-    iNorgeSiste12Mnd?: boolean;
-    iNorgeNeste12Mnd?: boolean;
-    jobbetINorgeSiste12Mnd?: boolean;
-
-    tidligereOpphold: Utenlandsopphold[];
-    senereOpphold: Utenlandsopphold[];
 }
 
 export default InformasjonOmUtenlandsopphold;

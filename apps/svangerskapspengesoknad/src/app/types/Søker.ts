@@ -1,7 +1,7 @@
-import { FrilansInformasjonPartial, FrilansInformasjonPartialDTO } from './FrilansInformasjon';
-import { Næring, NæringDTO } from './SelvstendigNæringsdrivende';
-import { AnnenInntekt } from './AnnenInntekt';
-import { Språkkode } from 'common/types';
+import { ArbeidIUtlandet, ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
+import { Frilans, FrilansDTO } from './Frilans';
+import { EgenNæring, EgenNæringDTO } from './EgenNæring';
+import { LocaleNo } from '@navikt/fp-types';
 
 export enum Søkerrolle {
     'MOR' = 'mor',
@@ -9,24 +9,26 @@ export enum Søkerrolle {
 
 export interface Søker {
     rolle: Søkerrolle.MOR;
-    harJobbetSomFrilansSiste10Mnd: boolean;
-    frilansInformasjon?: FrilansInformasjonPartial;
-    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-    selvstendigNæringsdrivendeInformasjon?: Næring[];
-    harHattAnnenInntektSiste10Mnd: boolean;
-    andreInntekterSiste10Mnd?: AnnenInntekt[];
-    språkkode: Språkkode;
+    harJobbetSomFrilans: boolean;
+    frilansInformasjon?: Frilans;
+    harJobbetSomSelvstendigNæringsdrivende: boolean;
+    selvstendigNæringsdrivendeInformasjon?: EgenNæring;
+    harHattAnnenInntekt: boolean;
+    andreInntekter?: ArbeidIUtlandet[];
+    språkkode: LocaleNo;
 }
 
-export interface SøkerDTO {
-    rolle: Søkerrolle.MOR;
-    harJobbetSomFrilansSiste10Mnd: boolean;
-    frilansInformasjon?: FrilansInformasjonPartialDTO;
-    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-    selvstendigNæringsdrivendeInformasjon?: NæringDTO[];
-    harHattAnnenInntektSiste10Mnd: boolean;
-    andreInntekterSiste10Mnd?: AnnenInntekt[];
-    språkkode: Språkkode;
+export interface SøkerDTO
+    extends Omit<
+        Søker,
+        | 'frilansInformasjon'
+        | 'selvstendigNæringsdrivendeInformasjon'
+        | 'andreInntekter'
+        | 'harJobbetSomFrilans'
+        | 'harJobbetSomSelvstendigNæringsdrivende'
+        | 'harHattAnnenInntekt'
+    > {
+    frilansInformasjon?: FrilansDTO;
+    selvstendigNæringsdrivendeInformasjon?: EgenNæringDTO[];
+    andreInntekterSiste10Mnd?: ArbeidIUtlandetDTO[];
 }
-
-export default Søker;
