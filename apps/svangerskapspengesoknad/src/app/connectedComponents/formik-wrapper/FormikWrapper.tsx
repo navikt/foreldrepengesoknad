@@ -26,14 +26,11 @@ const FormikWrapper: FunctionComponent<Props> = ({ contentRenderer }) => {
 
     const currentPath = parsePathFromLocation(location);
 
-    const validate = useCallback(
-        (values: any) => {
-            const errors = validateSøknad(currentPath)(values);
-            logValidationErrors(currentPath, errors);
-            return errors;
-        },
-        [currentPath],
-    );
+    const validate = useCallback((values: any) => {
+        const errors = validateSøknad(currentPath)(values);
+        logValidationErrors(currentPath, errors);
+        return errors;
+    }, []);
 
     const onSubmit = useCallback((_søknad: UferdigSøknad, { setSubmitting, setFormikState }: FormikBag) => {
         setSubmitting(false);
