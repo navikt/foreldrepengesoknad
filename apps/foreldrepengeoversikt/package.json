@@ -68,7 +68,7 @@
         "react-transition-group": "^4.4.5",
         "request": "^2.88.2",
         "url-search-params-polyfill": "^8.2.4",
-        "winston": "^3.10.0"
+        "winston": "^3.11.0"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.0",
