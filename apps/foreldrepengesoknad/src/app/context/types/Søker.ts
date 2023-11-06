@@ -1,4 +1,4 @@
-import { Locale } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 import { AnnenInntekt } from './AnnenInntekt';
 import { Frilans } from './Frilans';
 import { Næring } from './Næring';
@@ -11,7 +11,7 @@ interface Søker {
     frilansInformasjon?: Frilans;
     harHattAnnenInntektSiste10Mnd: boolean;
     andreInntekterSiste10Mnd?: AnnenInntekt[];
-    språkkode: Locale;
+    språkkode: LocaleNo;
 }
 
 export default Søker;

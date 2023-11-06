@@ -12,8 +12,6 @@ const queryClient = new QueryClient();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...allCommonMessages.nn },
-    en: { ...allCommonMessages.en },
 };
 
 dayjs.locale('nb');

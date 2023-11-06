@@ -2,7 +2,9 @@ import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
-import { allCommonMessages, getLocaleFromSessionStorage, Locale, setLocaleInSessionStorage } from '@navikt/fp-common';
+import { LocaleAll } from '@navikt/fp-types';
+import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
+
 import Engangsstønad from './Engangsstønad';
 
 import nnMessages from './intl/messages/nn_NO.json';
@@ -20,9 +22,9 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 dayjs.locale(localeFromSessionStorage);
 
 const AppContainer = () => {
-    const [locale, setLocale] = useState<Locale>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<LocaleAll>(localeFromSessionStorage);
 
-    const changeLocale = useCallback((activeLocale: Locale) => {
+    const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocaleInSessionStorage(activeLocale);
         setLocale(activeLocale);
     }, []);

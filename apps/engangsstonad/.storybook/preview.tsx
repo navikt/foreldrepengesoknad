@@ -7,7 +7,7 @@ import nbMessages from '../src/intl/messages/nb_NO.json';
 import enMessages from '../src/intl/messages/en_US.json';
 
 import '@navikt/ds-css';
-import 'styles/globals.less';
+import 'styles/globals.css';
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';

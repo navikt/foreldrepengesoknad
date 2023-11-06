@@ -52,12 +52,15 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = useCallback((a: Action) => {
-        if (testDispatcher) {
-            testDispatcher(a);
-        }
-        dispatch(a);
-    }, []);
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (testDispatcher) {
+                testDispatcher(a);
+            }
+            dispatch(a);
+        },
+        [testDispatcher],
+    );
 
     return (
         <EsStateContext.Provider value={state}>
@@ -69,21 +72,27 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
 /** Hook returns save function for one specific data type */
 export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: EsDataMap[TYPE]) => void) => {
     const dispatch = useContext(EsDispatchContext);
-    return useCallback((data: EsDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    }, []);
+    return useCallback(
+        (data: EsDataMap[TYPE]) => {
+            if (dispatch) {
+                dispatch({ type: 'update', key, data });
+            }
+        },
+        [dispatch, key],
+    );
 };
 
 /** Hook returns save function usable with all data types  */
 export const useAllStateSaveFn = () => {
     const dispatch = useContext(EsDispatchContext);
-    return useCallback(<TYPE extends EsDataType>(key: TYPE, data: EsDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    }, []);
+    return useCallback(
+        <TYPE extends EsDataType>(key: TYPE, data: EsDataMap[TYPE]) => {
+            if (dispatch) {
+                dispatch({ type: 'update', key, data });
+            }
+        },
+        [dispatch],
+    );
 };
 
 /** Hook returns state reset function  */
@@ -93,7 +102,7 @@ export const useEsStateResetFn = () => {
         if (dispatch) {
             dispatch({ type: 'reset' });
         }
-    }, []);
+    }, [dispatch]);
 };
 
 /** Hook returns data for one specific data type  */
@@ -106,7 +115,10 @@ export const useEsStateData = <TYPE extends EsDataType>(key: TYPE): EsDataMap[TY
 export const useEsStateAllDataFn = () => {
     const state = useContext(EsStateContext);
 
-    return useCallback(<TYPE extends EsDataType>(key: TYPE) => {
-        return state[key];
-    }, []);
+    return useCallback(
+        <TYPE extends EsDataType>(key: TYPE) => {
+            return state[key];
+        },
+        [state],
+    );
 };

@@ -19,5 +19,5 @@ export const useSetIsRedirectedFromSøknad = (
             isFirstRender.current = false;
             setIsRedirectedFromSøknad(isRedirected);
         }
-    }, [setIsRedirectedFromSøknad, isRedirected]);
+    }, [setIsRedirectedFromSøknad, isRedirected, isFirstRender]);
 };

@@ -16,7 +16,7 @@ const useEsNavigator = () => {
             team: 'foreldrepenger',
             pageKey: activeStepId,
         });
-    }, []);
+    }, [activeStepId]);
 
     const goToPreviousDefaultStep = useCallback(() => {
         const index = stepConfig.findIndex((s) => s.id === activeStepId) - 1;
@@ -40,7 +40,7 @@ const useEsNavigator = () => {
     const avbrytSøknad = useCallback(() => {
         resetEsData();
         navigate(Path.VELKOMMEN);
-    }, []);
+    }, [navigate, resetEsData]);
 
     return useMemo(
         () => ({
@@ -49,7 +49,7 @@ const useEsNavigator = () => {
             goToNextDefaultStep,
             avbrytSøknad,
         }),
-        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep],
+        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],
     );
 };
 

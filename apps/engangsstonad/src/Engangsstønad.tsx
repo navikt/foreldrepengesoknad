@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Loader } from '@navikt/ds-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Locale } from '@navikt/fp-common';
-import SøkersituasjonSteg from './sider/steg/sokersituasjon/SøkersituasjonSteg';
-import Velkommen from './sider/velkommen/Velkommen';
-import OmBarnetSteg from './sider/steg/omBarnet/OmBarnetSteg';
-import UtenlandsoppholdSteg from './sider/steg/utenlandsopphold/UtenlandsoppholdSteg';
+import { LocaleAll } from '@navikt/fp-types';
 import { useRequest } from '@navikt/fp-api';
 import { erMyndig, redirect } from '@navikt/fp-utils';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
@@ -16,10 +12,14 @@ import { EsDataContext } from 'appData/EsDataContext';
 import Environment from 'appData/Environment';
 import Kvittering from 'types/Kvittering';
 import Person from './types/Person';
-import OppsummeringSteg from './sider/steg/oppsummering/OppsummeringSteg';
-import DokumentasjonSteg from './sider/steg/dokumentasjon/DokumentasjonSteg';
-import SenereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from './sider/steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
+import Velkommen from './velkommen/Velkommen';
+import OmBarnetSteg from './steg/omBarnet/OmBarnetSteg';
+import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
+import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
+import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
+import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -28,8 +28,8 @@ const Spinner: React.FunctionComponent = () => (
 );
 
 interface Props {
-    locale: Locale;
-    onChangeLocale: (locale: Locale) => void;
+    locale: LocaleAll;
+    onChangeLocale: (locale: LocaleAll) => void;
 }
 
 const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {

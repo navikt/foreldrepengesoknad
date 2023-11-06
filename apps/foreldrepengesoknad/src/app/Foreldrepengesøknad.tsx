@@ -1,4 +1,4 @@
-import { Locale } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
@@ -12,7 +12,7 @@ import { shouldApplyStorage } from './utils/mellomlagringUtils';
 import { Loader } from '@navikt/ds-react';
 
 interface Props {
-    locale: Locale;
+    locale: LocaleNo;
     onChangeLocale: any;
 }
 

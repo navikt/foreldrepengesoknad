@@ -1,4 +1,4 @@
-import { Locale } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import Velkommen from 'app/pages/velkommen/Velkommen';
@@ -18,8 +18,8 @@ import SøknadRoutes from './routes';
 
 interface Props {
     fornavn: string;
-    locale: Locale;
-    onChangeLocale: (locale: Locale) => void;
+    locale: LocaleNo;
+    onChangeLocale: (locale: LocaleNo) => void;
     currentRoute: SøknadRoutes;
 }
 

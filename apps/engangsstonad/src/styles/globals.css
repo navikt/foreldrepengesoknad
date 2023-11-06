@@ -1,0 +1,27 @@
+#app {
+    background-color: white;
+    min-width: 320px;
+}
+#app > .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#app .capitalizeName {
+    text-transform: capitalize;
+}
+
+@media screen {
+    .print-only {
+        display: none;
+    }
+}
+
+@media print {
+    .no-print {
+        display: none;
+    }
+    .print-only {
+        display: block;
+    }
+}
