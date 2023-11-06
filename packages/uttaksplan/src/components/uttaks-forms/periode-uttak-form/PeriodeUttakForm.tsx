@@ -176,7 +176,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         setPerioderErGyldige((previousState: PeriodeValidState[]) => {
             return getIsValidStateForPerioder(previousState, periode, periodeIsValid);
         });
-    }, [periodeIsValid]);
+    }, [periodeIsValid, periode, setPerioderErGyldige]);
 
     const handleCleanup = (
         values: PeriodeUttakFormData,

@@ -18,6 +18,7 @@ import { AxiosError } from 'axios';
 
 import { useIntl } from 'react-intl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 import './saksoversikt.css';
 import { RequestStatus } from 'app/types/RequestStatus';
@@ -27,6 +28,8 @@ import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/Be
 import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
 import React from 'react';
 import { RedirectSource } from 'app/types/RedirectSource';
+
+const EMPTY_ARRAY = [] as Skjemanummer[];
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -151,7 +154,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     visHeleTidslinjen={false}
                     tidslinjeHendelserError={tidslinjeHendelserError}
                     tidslinjeHendelserData={tidslinjeHendelserData!}
-                    manglendeVedleggData={manglendeVedleggData!}
+                    manglendeVedleggData={manglendeVedleggData || EMPTY_ARRAY}
                     manglendeVedleggError={manglendeVedleggError}
                     søkersBarn={søkerinfo.søker.barn}
                 />

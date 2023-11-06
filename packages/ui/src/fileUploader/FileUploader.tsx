@@ -29,7 +29,7 @@ const getPendingAttachmentFromFile = (
 
 const fileExtensionIsValid = (filename: string): boolean => {
     const ext = filename.split('.').pop();
-    return VALID_EXTENSIONS.includes(`.${ext!.toLowerCase()}`);
+    return ext ? VALID_EXTENSIONS.includes(`.${ext.toLowerCase()}`) : false;
 };
 
 const fileSizeIsValid = (filesizeInB: number): boolean => {

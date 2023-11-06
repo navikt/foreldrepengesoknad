@@ -1,4 +1,3 @@
-import { hasValue } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -23,8 +22,8 @@ export const mapMinidialogInputTilDTO = (
             dokumentType: Skjemanummer.TILBAKEBETALING,
             overskrift: 'Svar på tilbakebetalingen',
             tekst:
-                brukerØnskerÅUttaleSeg && hasValue(tilbakemelding)
-                    ? replaceInvisibleCharsWithSpace(tilbakemelding!)
+                brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
+                    ? replaceInvisibleCharsWithSpace(tilbakemelding)
                     : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som NAV har tilgjengelig.',
         },
     };
