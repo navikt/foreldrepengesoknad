@@ -7,6 +7,6 @@ const { Default } = composeStories(stories);
 describe('<ByttBrowserModal>', () => {
     it('skal vise modal for browser bytte', () => {
         render(<Default />);
-        expect(screen.getByText('Du bruker en utdatert nettleser.')).toBeInTheDocument();
+        expect(screen.getByText('Vi ser du bruker en utdatert nettleser')).toBeInTheDocument();
     });
 });

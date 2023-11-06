@@ -34,6 +34,5 @@ export default defineConfig({
             exclude: [],
         },
         maxConcurrency: 10,
-        testTimeout: 10000,
     },
 });
