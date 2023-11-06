@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
-import { bemUtils, Block, LanguageToggle, Locale, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
+import { bemUtils, Block, LanguageToggle, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
 import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import actionCreator from 'app/context/action/actionCreator';
@@ -21,7 +22,7 @@ export interface FeilsideProps {
     tittel: React.ReactNode;
     ingress: React.ReactNode;
     skalKunneGåTilbakeTilSøknad: boolean;
-    språkkode?: Locale;
+    språkkode?: LocaleNo;
     setLanguage?: (languageCode: string) => void;
 }
 

@@ -6,7 +6,7 @@
         "build-storybook": "storybook build -o .storybook-static-build",
         "prettier": "prettier --write src",
         "storybook": "storybook dev --quiet -p 6006",
-        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
         "lint:tsc": "tsc --noEmit",
         "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "test": "vitest run"
@@ -17,6 +17,7 @@
         "@navikt/ds-icons": "3.4.3",
         "@navikt/ds-react": "4.12.1",
         "@navikt/fnrvalidator": "^1.3.0",
+        "@navikt/fp-types": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@types/node": "^20.5.0",
         "@types/react": "^18.2.20",

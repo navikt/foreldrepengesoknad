@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { Locale } from '@navikt/fp-common';
+import { LocaleAll } from '@navikt/fp-types';
 import { redirectToLogin } from '@navikt/fp-utils';
 import Environment from './Environment';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
@@ -91,7 +91,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 };
 
 const getSendSøknad =
-    (locale: Locale, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
+    (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) =>
     async (
         abortSignal: AbortSignal,
         omBarnet: OmBarnet,

@@ -9,7 +9,7 @@ const useFormikSubmit = (isSubmitting: boolean, isValid: boolean, onSubmit: () =
         }
 
         setSubmittingForm(isSubmitting);
-    }, [isSubmitting, isValid]);
+    }, [isSubmitting, isValid, onSubmit, wasSubmitting]);
 };
 
 export default useFormikSubmit;

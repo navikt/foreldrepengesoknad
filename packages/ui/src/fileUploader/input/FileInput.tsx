@@ -30,7 +30,7 @@ const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSe
         if (inputElement.current) {
             inputElement.current.click();
         }
-    }, [inputElement.current]);
+    }, []);
 
     return (
         <>

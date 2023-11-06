@@ -7,7 +7,7 @@
         "test": "vitest run",
         "test:watch": "vitest --watch=true",
         "test:coverage": "vitest --coverage",
-        "lint:eslint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
         "lint:tsc": "tsc --noEmit",
         "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier": "prettier --write src",

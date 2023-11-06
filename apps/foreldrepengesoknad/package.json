@@ -5,8 +5,9 @@
     "description": "NAV Foreldrepengesøknad",
     "scripts": {
         "build": "vite build",
-        "lint": "eslint './src/**/*.{js,ts,tsx}'",
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
+        "lint:tsc": "tsc --noEmit",
         "prettier": "prettier --write src",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
@@ -30,6 +31,7 @@
         "@navikt/fnrvalidator": "^1.3.0",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",

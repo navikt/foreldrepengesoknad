@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Sirkelknapp, { Stil } from 'common/components/sirkelknapp/Sirkelknapp';
 import LukkInfoIkon from 'common/components/ikoner/LukkInfoIkon';
 import InfoIkon from 'common/components/ikoner/InfoIkon';
@@ -30,7 +30,7 @@ const Infoboks: React.FunctionComponent<InfoboksProps> = ({
         setIsExpanded(!isExpanded);
     };
 
-    const getComponentSize = () => {
+    const getComponentSize = useCallback(() => {
         const cls = fieldsetClsName ? fieldsetClsName : '';
         if (cls.length > 1) {
             const overskriftTilblockElement = document.querySelector('.' + cls + ' .skjema__legend');
@@ -39,7 +39,7 @@ const Infoboks: React.FunctionComponent<InfoboksProps> = ({
                 : 0;
             setWindowPos(overskriftTilblockElementBredde);
         }
-    };
+    }, [fieldsetClsName]);
 
     useEffect(() => {
         getComponentSize();

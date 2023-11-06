@@ -80,7 +80,7 @@ const useStepData = () => {
 
     const currentPath = useMemo(
         () => notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname))),
-        [],
+        [location.pathname],
     );
 
     const appPathList = useMemo(
@@ -92,7 +92,7 @@ const useStepData = () => {
                     ? [path]
                     : [],
             ),
-        [],
+        [currentPath, getStateData],
     );
 
     return useMemo(
@@ -104,7 +104,7 @@ const useStepData = () => {
                 index,
             })),
         }),
-        [],
+        [appPathList, currentPath, pathToLabelMap],
     );
 };
 

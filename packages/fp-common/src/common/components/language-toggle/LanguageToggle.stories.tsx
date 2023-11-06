@@ -1,4 +1,5 @@
 import { ComponentMeta, Story } from '@storybook/react';
+import { LocaleAll } from '@navikt/fp-types';
 import LanguageToggle, { LanguageToggleProps } from './LanguageToggle';
 
 export default {
@@ -6,7 +7,7 @@ export default {
     component: LanguageToggle,
 } as ComponentMeta<typeof LanguageToggle>;
 
-const Template: Story<LanguageToggleProps> = (args) => <LanguageToggle {...args} />;
+const Template: Story<LanguageToggleProps<LocaleAll>> = (args) => <LanguageToggle {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

@@ -1,12 +1,12 @@
-import { Locale } from '../types/Locale';
+import { LocaleAll } from '@navikt/fp-types';
 
 const LocaleSessionKey = 'selectedLocale';
 
-export const getLocaleFromSessionStorage = (): Locale => {
-    return (sessionStorage.getItem(LocaleSessionKey) as Locale) || 'nb';
+export const getLocaleFromSessionStorage = <T extends LocaleAll>(): T => {
+    return (sessionStorage.getItem(LocaleSessionKey) as T) || 'nb';
 };
 
-export const setLocaleInSessionStorage = (locale: Locale): void => {
+export const setLocaleInSessionStorage = (locale: LocaleAll): void => {
     sessionStorage.setItem(LocaleSessionKey, locale);
 };
 
@@ -24,7 +24,7 @@ export const getBokmålLocale = () => {
     return 'nb';
 };
 
-export const getLocaleForApi = (locale: string): Locale => {
+export const getLocaleForApi = (locale: string): LocaleAll => {
     switch (locale) {
         case 'nn':
         case 'no-NN':

@@ -1,13 +1,13 @@
 import { IntlProvider as Provider } from 'react-intl';
-import { Locale } from '@navikt/fp-types';
+import { LocaleAll } from '@navikt/fp-types';
 
-interface Props {
-    locale: Locale;
-    messagesGroupedByLocale: Record<Locale, Record<string, string>>;
+interface Props<T extends LocaleAll> {
+    locale: T;
+    messagesGroupedByLocale: Record<T, Record<string, string>>;
     children: React.ReactNode;
 }
 
-const IntlProvider: React.FunctionComponent<Props> = ({ locale, messagesGroupedByLocale, children }) => {
+const IntlProvider = <T extends LocaleAll>({ locale, messagesGroupedByLocale, children }: Props<T>) => {
     const messages = messagesGroupedByLocale[locale];
     return (
         <Provider locale={locale} messages={messages || {}}>
@@ -15,4 +15,5 @@ const IntlProvider: React.FunctionComponent<Props> = ({ locale, messagesGroupedB
         </Provider>
     );
 };
+
 export default IntlProvider;

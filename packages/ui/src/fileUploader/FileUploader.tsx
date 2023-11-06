@@ -91,29 +91,34 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     useEffect(() => {
         updateAttachments(attachments.filter((a) => !a.error && a.pending === false));
-    }, [attachments]);
+    }, [attachments, updateAttachments]);
 
-    const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
-        for (const pendingAttachment of allPendingAttachments) {
-            await uploadAttachment(pendingAttachment, saveAttachment);
-            setAttachments((currentAttachments) =>
-                currentAttachments.map((a) => (a.filename === pendingAttachment.filename ? pendingAttachment : a)),
-            );
-        }
-    };
+    const saveFiles = useCallback(
+        (files: File[]) => {
+            const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
+                for (const pendingAttachment of allPendingAttachments) {
+                    await uploadAttachment(pendingAttachment, saveAttachment);
+                    setAttachments((currentAttachments) =>
+                        currentAttachments.map((a) =>
+                            a.filename === pendingAttachment.filename ? pendingAttachment : a,
+                        ),
+                    );
+                }
+            };
 
-    const saveFiles = useCallback((files: File[]) => {
-        const allPendingAttachments = files.map((file) =>
-            getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
-        );
-        setAttachments((currentAttachments) => {
-            const otherAttachments = currentAttachments.filter(
-                (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
+            const allPendingAttachments = files.map((file) =>
+                getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
             );
-            return otherAttachments.concat(allPendingAttachments);
-        });
-        uploadAttachments(allPendingAttachments);
-    }, []);
+            setAttachments((currentAttachments) => {
+                const otherAttachments = currentAttachments.filter(
+                    (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
+                );
+                return otherAttachments.concat(allPendingAttachments);
+            });
+            uploadAttachments(allPendingAttachments);
+        },
+        [attachmentType, skjemanummer, saveAttachment],
+    );
 
     const deleteAttachment = useCallback((file: Attachment) => {
         setAttachments((currentAttachments) => currentAttachments.filter((a) => a.filename !== file.filename));

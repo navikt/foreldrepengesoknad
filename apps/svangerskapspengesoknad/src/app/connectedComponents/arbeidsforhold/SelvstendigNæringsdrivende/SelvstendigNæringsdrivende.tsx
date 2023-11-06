@@ -32,7 +32,7 @@ type Props = ModalFormProps<Næring>;
 const SelvstendigNæringsdrivende: FunctionComponent<Props> = (props: Props) => {
     const intl = useIntl();
     const { endre, onCancel, element = { næringstyper: [] }, onAdd } = props;
-    const countries = useMemo(() => getCountries(true, true, intl.locale), []);
+    const countries = useMemo(() => getCountries(true, true, intl.locale), [intl.locale]);
     const onSubmit = (næring: Næring) => {
         onAdd(cleanupNæring(næring) as Næring);
     };

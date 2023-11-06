@@ -12,8 +12,6 @@ import nbMessages from './intl/nb_NO.json';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...allCommonMessages.nn },
-    en: { ...allCommonMessages.en },
 };
 
 describe('<Foreldrepengesøknad>', () => {
