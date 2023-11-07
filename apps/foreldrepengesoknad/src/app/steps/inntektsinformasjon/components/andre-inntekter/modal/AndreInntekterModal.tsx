@@ -55,12 +55,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
         if (values.type === AnnenInntektType.MILITÆRTJENESTE) {
             return 'inntektsinformasjon.andreInntekterModal.veileder.militær';
         }
-
-        if (values.type === AnnenInntektType.SLUTTPAKKE) {
-            return 'inntektsinformasjon.andreInntekterModal.veileder.sluttpakke';
-        }
-
-        return 'inntektsinformasjon.andreInntekterModal.veileder.ventelønn';
+        return 'inntektsinformasjon.andreInntekterModal.veileder.sluttpakke';
     };
 
     const navnPåArbeidsgiverLabel = intlUtils(intl, 'annenInntekt.spørsmål.arbeidsgiver');
