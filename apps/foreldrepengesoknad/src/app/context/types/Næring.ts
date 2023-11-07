@@ -20,8 +20,6 @@ export interface Næring {
     oppstartsdato?: Date;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
-    harRegnskapsfører: boolean;
-    regnskapsfører?: Næringsrelasjon;
 }
 
 export interface EndringAvNæringsinntektInformasjon {
@@ -32,10 +30,4 @@ export interface EndringAvNæringsinntektInformasjon {
 
 export interface EndringAvNæringsinntektInformasjonInnsending extends Omit<EndringAvNæringsinntektInformasjon, 'dato'> {
     dato: Date;
-}
-
-export interface Næringsrelasjon {
-    navn: string;
-    telefonnummer: string;
-    erNærVennEllerFamilie: boolean;
 }

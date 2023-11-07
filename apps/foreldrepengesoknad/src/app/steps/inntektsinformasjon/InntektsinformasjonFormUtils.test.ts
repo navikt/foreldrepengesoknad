@@ -19,20 +19,6 @@ const næring = {
         næringsinntektEtterEndring: 130000,
         forklaring: 'Forklaring\u0009med blanke\u0009tegn',
     } as EndringAvNæringsinntektInformasjon,
-    harRegnskapsfører: true,
-    regnskapsfører: {
-        navn: 'Regnskapsfører\u034Fmed blanke\u00adtegn',
-        telefonnummer: '123456',
-        erNærVennEllerFamilie: false,
-    },
-} as Næring;
-
-const næringUtenEndringEllerRegnskapsfører = {
-    næringsinntekt: 220000,
-    pågående: true,
-    navnPåNæringen: 'Navn\u2002med blanke\u2003tegn',
-    hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
-    harRegnskapsfører: false,
 } as Næring;
 
 const andreInntekter = [
@@ -59,7 +45,6 @@ const andreInntekter = [
 
 const cleanedNavnPåNæringen = 'Navn med blanke tegn';
 const cleanedForklaring = 'Forklaring med blanke tegn';
-const cleanedRegnskapsførerNavn = 'Regnskapsfører med blanke tegn';
 const cleanedNavnPåArbeidsgiver = 'Navn på arbeid ';
 
 describe('InntektsinformasjonFormUtils', () => {
@@ -67,18 +52,10 @@ describe('InntektsinformasjonFormUtils', () => {
         const cleanedNæring = cleanupInvisibleCharsFromNæring(næring);
         expect(cleanedNæring.navnPåNæringen).toEqual(cleanedNavnPåNæringen);
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.forklaring).toEqual(cleanedForklaring);
-        expect(cleanedNæring.regnskapsfører!.navn).toEqual(cleanedRegnskapsførerNavn);
         expect(cleanedNæring.oppstartsdato).toEqual(næring.oppstartsdato);
-        expect(cleanedNæring.regnskapsfører!.telefonnummer).toEqual(næring.regnskapsfører?.telefonnummer);
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring).toEqual(
             næring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring,
         );
-    });
-    it('skal ikke feile med manglende info om regnskapsfører eller endring', async () => {
-        const cleanedNæring = cleanupInvisibleCharsFromNæring(næringUtenEndringEllerRegnskapsfører);
-        expect(cleanedNæring.navnPåNæringen).toEqual(cleanedNavnPåNæringen);
-        expect(cleanedNæring.harRegnskapsfører).toEqual(false);
-        expect(cleanedNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår).toEqual(false);
     });
     it('skal erstatte alle ulovlige blanke tegn fra AnnenIntekt med space og beholde resten av informasjonen intakt', async () => {
         const cleanedAndreInntekter = cleanupInvisibleCharsFromAndreInntekter(andreInntekter);
