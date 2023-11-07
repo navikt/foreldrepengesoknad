@@ -153,6 +153,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         updateAttachments={setVedlegg}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
+                        existingAttachments={vedlegg}
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
                     />
                 )}
