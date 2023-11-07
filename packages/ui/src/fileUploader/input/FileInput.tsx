@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { UploadIcon } from '@navikt/aksel-icons';
 
 import './fileInput.less';
+import { bemUtils } from '@navikt/fp-common';
 
 interface Props {
     onFilesSelect: (files: File[]) => void;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSelect, hasUplodedAttachements }) => {
+    const bem = bemUtils('fileInput');
     const onFileSelect = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.files) {
@@ -36,7 +38,7 @@ const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSe
         <>
             <input
                 ref={inputElement}
-                className="fileInput"
+                className={bem.element('input')}
                 type="file"
                 accept={accept}
                 onChange={(e) => onFileSelect(e)}
@@ -44,7 +46,7 @@ const FileInput: React.FunctionComponent<Props> = ({ multiple, accept, onFilesSe
                 data-testid="file-upload"
             />
             <Button
-                className="upload_button"
+                className={bem.element('upload_button')}
                 variant={hasUplodedAttachements ? 'secondary' : 'primary'}
                 type="button"
                 onClick={openFileDialog}
