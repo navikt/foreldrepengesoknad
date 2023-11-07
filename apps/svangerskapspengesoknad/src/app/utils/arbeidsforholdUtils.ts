@@ -9,6 +9,7 @@ import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/innte
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
 import Tilrettelegging from 'app/types/Tilrettelegging';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -38,20 +39,25 @@ export const getUnikeArbeidsforhold = (
             guid: forhold.id,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
         }));
-        const unikeMedSummertStillingsprosent = unike.map((arbeid) => {
+        const unikeMedSummertStillingsprosentOgDatoer = unike.map((arbeid) => {
             const likeArbeidsforhold = aktiveArbeidsforhold.filter(
                 (a) => getArbeidsgiverId(a) === arbeid.arbeidsgiverId,
             );
             if (likeArbeidsforhold && likeArbeidsforhold.length > 1) {
+                const alleTom = likeArbeidsforhold.map((a) => a.tom);
                 return {
                     ...arbeid,
                     stillingsprosent: likeArbeidsforhold.reduce((ar, { stillingsprosent }) => ar + stillingsprosent, 0),
+                    fom: dateToISOString(dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.toDate()),
+                    tom: alleTom.includes(undefined)
+                        ? undefined
+                        : dateToISOString(dayjs.max(alleTom.map((tom) => dayjs(tom)))!.toDate()),
                 };
             } else {
                 return arbeid;
             }
         });
-        return unikeMedSummertStillingsprosent;
+        return unikeMedSummertStillingsprosentOgDatoer;
     }
 
     return [];
