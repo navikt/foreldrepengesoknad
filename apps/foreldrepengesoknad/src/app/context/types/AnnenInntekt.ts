@@ -3,7 +3,6 @@ import { Attachment, TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttd
 export enum AnnenInntektType {
     SLUTTPAKKE = 'ETTERLØNN_SLUTTPAKKE',
     MILITÆRTJENESTE = 'MILITÆR_ELLER_SIVILTJENESTE',
-    VENTELØNN = 'VENTELØNN_VARTPENGER',
     JOBB_I_UTLANDET = 'JOBB_I_UTLANDET',
 }
 
@@ -28,11 +27,7 @@ export interface JobbIUtlandetInntekt extends AnnenInntektBase {
     land: string;
 }
 
-export interface VentelønnInntekt extends AnnenInntektBase {
-    type: AnnenInntektType.VENTELØNN;
-}
-
-export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt | VentelønnInntekt;
+export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt;
 
 export interface AnnenInntektBaseInnsending extends Omit<AnnenInntektBase, 'tidsperiode'> {
     tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
@@ -52,12 +47,7 @@ export interface JobbIUtlandetInntektInnsending extends AnnenInntektBaseInnsendi
     land: string;
 }
 
-export interface VentelønnInntektInnsending extends AnnenInntektBaseInnsending {
-    type: AnnenInntektType.VENTELØNN;
-}
-
 export type AnnenInntektInnsending =
     | SluttpakkeInntektInnsending
     | MilitærtjenesteInntektInnsending
-    | JobbIUtlandetInntektInnsending
-    | VentelønnInntektInnsending;
+    | JobbIUtlandetInntektInnsending;
