@@ -14,6 +14,7 @@ import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/Be
 import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RedirectSource } from 'app/types/RedirectSource';
+import Bankkonto from 'app/types/Bankkonto';
 
 interface Props {
     alleYtelser: Sak[];
@@ -22,6 +23,7 @@ interface Props {
     oppdatertData: boolean;
     storageData: any;
     isFirstRender: React.MutableRefObject<boolean>;
+    bankkonto: Bankkonto | undefined;
 }
 
 const Forside: React.FunctionComponent<Props> = ({
@@ -31,6 +33,7 @@ const Forside: React.FunctionComponent<Props> = ({
     oppdatertData,
     storageData,
     isFirstRender,
+    bankkonto,
 }) => {
     const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
@@ -46,7 +49,12 @@ const Forside: React.FunctionComponent<Props> = ({
         <div className={bem.block}>
             <Block padBottom="xl">
                 {redirectedFromSoknad && (
-                    <BekreftelseSendtSøknad oppdatertData={oppdatertData} tidslinjehendelser={[]} />
+                    <BekreftelseSendtSøknad
+                        oppdatertData={oppdatertData}
+                        tidslinjehendelser={[]}
+                        bankkonto={bankkonto}
+                        ytelse={undefined}
+                    />
                 )}
                 {!oppdatertData && (
                     <Alert variant="warning">

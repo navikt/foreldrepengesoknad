@@ -89,6 +89,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 oppdatertData={oppdatertData}
                                 storageData={storageData}
                                 isFirstRender={isFirstRender}
+                                bankkonto={søkerinfo.søker.bankkonto}
                             />
                         }
                     />
