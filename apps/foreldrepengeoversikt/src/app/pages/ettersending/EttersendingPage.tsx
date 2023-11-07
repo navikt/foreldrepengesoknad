@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { IntlShape, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 import { Add } from '@navikt/ds-icons';
@@ -89,7 +89,9 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((sak) => sak.saksnummer === params.saksnummer);
 
-    const onSubmit = () => {
+    const onSubmit = (e: FormEvent<any>) => {
+        e.preventDefault();
+
         setIsEttersending(true);
 
         const valuesToSend: EttersendingDto = {
