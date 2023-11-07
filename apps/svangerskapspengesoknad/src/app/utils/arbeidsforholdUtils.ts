@@ -25,6 +25,22 @@ const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
     return arbeidsforhold.arbeidsgiverId || '';
 };
 
+const getUnikStillingsprosent = (likeArbeidsforhold: Arbeidsforhold[]): number => {
+    const stillingsprosenterIOverlappendePerioder = likeArbeidsforhold.map((p) => {
+        const overlappendePerioder = likeArbeidsforhold.filter(
+            (a) =>
+                dayjs(p.fom).isBetween(dayjs(a.fom), dayjs(a.tom), 'day', '[]') ||
+                dayjs(p.tom).isBetween(dayjs(a.fom), dayjs(a.tom), 'day', '[]'),
+        );
+        if (overlappendePerioder) {
+            return overlappendePerioder.reduce((ar, { stillingsprosent }) => ar + stillingsprosent, 0);
+        } else {
+            return p.stillingsprosent;
+        }
+    });
+    return Math.max(...stillingsprosenterIOverlappendePerioder);
+};
+
 export const getUnikeArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[] | undefined,
     termindato: string,
@@ -47,7 +63,7 @@ export const getUnikeArbeidsforhold = (
                 const alleTom = likeArbeidsforhold.map((a) => a.tom);
                 return {
                     ...arbeid,
-                    stillingsprosent: likeArbeidsforhold.reduce((ar, { stillingsprosent }) => ar + stillingsprosent, 0),
+                    stillingsprosent: getUnikStillingsprosent(likeArbeidsforhold),
                     fom: dateToISOString(dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.toDate()),
                     tom: alleTom.includes(undefined)
                         ? undefined
