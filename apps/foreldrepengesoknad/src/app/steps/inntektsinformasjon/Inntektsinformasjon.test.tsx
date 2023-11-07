@@ -54,19 +54,11 @@ describe('<Inntektsinformasjon>', () => {
         expect(await screen.findByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(JA)[1]);
 
-        expect(
-            await screen.findByText('Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?'),
-        ).toBeInTheDocument();
+        expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText(NEI)[2]);
 
-        expect(await screen.findByText('Har du inntekt som fosterforelder?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[3]);
-
-        expect(await screen.findByText(SELVSTENDIG_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[4]);
-
         expect(await screen.findByText(ANDRE_SISTE_10_MÅNEDER_LABEL)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[5]);
+        await userEvent.click(screen.getAllByText(NEI)[3]);
 
         expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
     });

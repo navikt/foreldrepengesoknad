@@ -156,8 +156,6 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('01.01.2019')).toBeInTheDocument();
         expect(screen.getByText('Jeg jobber fremdeles som frilans')).toBeInTheDocument();
         expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
-        expect(screen.getByText('Jeg driver fosterhjem')).toBeInTheDocument();
-        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
     });
     it('skal vise informasjon om uttaksplan', async () => {
         render(<FarMedUførMor />);
