@@ -288,7 +288,10 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     )}
                                 >
                                     <BodyShort>
-                                        <FormattedMessage id="inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTekst" />
+                                        {intlUtils(
+                                            intl,
+                                            'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTekst',
+                                        )}
                                     </BodyShort>
                                 </ReadMore>
                             </Block>
