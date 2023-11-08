@@ -57,6 +57,10 @@ describe('InntektsinformasjonFormUtils', () => {
             næring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring,
         );
     });
+    it('skal erstatte alle ulovlige tegn fra Næring med space', async () => {
+        const cleanedNæring = cleanupInvisibleCharsFromNæring(næring);
+        expect(cleanedNæring.navnPåNæringen).toEqual(cleanedNavnPåNæringen);
+    });
     it('skal erstatte alle ulovlige blanke tegn fra AnnenIntekt med space og beholde resten av informasjonen intakt', async () => {
         const cleanedAndreInntekter = cleanupInvisibleCharsFromAndreInntekter(andreInntekter);
         expect(cleanedAndreInntekter.length).toEqual(2);
