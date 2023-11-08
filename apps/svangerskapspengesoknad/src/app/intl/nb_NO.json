@@ -113,6 +113,8 @@
     "egenNæring.blittYrkesaktivSiste3År": "Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?",
     "egenNæring.yrkesaktivDato": "Når ble du yrkesaktiv?",
     "egenNæring.egenNæringHattVarigEndringDeSiste4Årene": "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste 4 årene?",
+    "egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel": "Hva menes med varig endring?",
+    "egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info": "Med varig endring mener vi at noe er forandret i arbeidssituasjonen eller virksomheten din. Dette kan være en omlegging av hvordan du jobber, en utvidelse av driften din, eller en konkret endring i markedet ditt. En inntektsendring alene (økt eller redusert inntekt) er ikke nok for å telle som en varig endring.",
     "egenNæring.egenNæringVarigEndringDato": "Hva var datoen for endringen?",
     "egenNæring.egenNæringVarigEndringInntektEtterEndring": "Hva var næringsinntekten din etter endringen?",
     "egenNæring.egenNæringVarigEndringInntektEtterEndring.description": "Oppgi årsinntekten i hele kroner.",
