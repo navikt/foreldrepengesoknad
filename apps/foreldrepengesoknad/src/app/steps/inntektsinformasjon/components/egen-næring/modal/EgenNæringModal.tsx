@@ -281,6 +281,19 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt',
                                     )}
                                 />
+                                <ReadMore
+                                    header={intlUtils(
+                                        intl,
+                                        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTittel',
+                                    )}
+                                >
+                                    <BodyShort>
+                                        {intlUtils(
+                                            intl,
+                                            'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTekst',
+                                        )}
+                                    </BodyShort>
+                                </ReadMore>
                             </Block>
                             <Block
                                 padBottom="l"
