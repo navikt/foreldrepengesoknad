@@ -1,3 +1,15 @@
 .saksoversikt__oppgaver {
     background-color: var(--a-orange-100);
 }
+
+.saksoversikt__se-hele-prosessen {
+    padding-bottom: 3rem;
+}
+
+.saksoversikt__dokumenter {
+    padding-bottom: 1rem;
+}
+
+.saksoversikt__ettersend-dokumenter {
+    padding-bottom: 1rem;
+}

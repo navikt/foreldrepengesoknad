@@ -34,6 +34,14 @@
     margin-bottom: 2rem;
 }
 
+.content-section--margin-large {
+    margin-bottom: 3rem;
+}
+
+.content-section--margin-medium {
+    margin-bottom: 1rem;
+}
+
 .content-section--margin-small {
     margin-bottom: 0.5rem;
 }

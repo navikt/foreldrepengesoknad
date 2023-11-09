@@ -28,6 +28,7 @@ import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/Be
 import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
 import React from 'react';
 import { RedirectSource } from 'app/types/RedirectSource';
+import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
 
 const EMPTY_ARRAY = [] as Skjemanummer[];
 
@@ -169,11 +170,14 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     søkersBarn={søkerinfo.søker.barn}
                 />
             </ContentSection>
-            <ContentSection padding="none">
+            <ContentSection padding="none" marginBottom="large">
                 <SeHeleProsessen />
             </ContentSection>
-            <ContentSection padding="none">
+            <ContentSection padding="none" marginBottom="medium">
                 <SeDokumenter />
+            </ContentSection>
+            <ContentSection padding="none" marginBottom="large">
+                <EttersendDokumenter />
             </ContentSection>
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
