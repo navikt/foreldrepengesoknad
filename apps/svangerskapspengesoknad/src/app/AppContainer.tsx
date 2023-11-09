@@ -1,15 +1,23 @@
 import { FunctionComponent, useState } from 'react';
-import Svangerskapspengesøknad from './Svangerskapspengesøknad';
-import IntlProvider from './intl/IntlProvider';
 import dayjs from 'dayjs';
+import { IntlProvider } from '@navikt/fp-ui';
+import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
+
+import Svangerskapspengesøknad from './Svangerskapspengesøknad';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import SvangerskapspengerContextProvider from './context/SvangerskapspengerContext';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
-import { LocaleNo } from '@navikt/fp-types';
 import { shouldChangeBrowser } from './utils/browserUtils';
 import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
+import nbMessages from './intl/nb_NO.json';
+import nnMessages from './intl/nn_NO.json';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
+
+const MESSAGES_GROUPED_BY_LOCALE = {
+    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nn: { ...nnMessages, ...allCommonMessages.nn },
+};
 
 dayjs.locale(localeFromSessionStorage);
 
@@ -19,7 +27,7 @@ const AppContainer: FunctionComponent = () => {
     return (
         <SvangerskapspengerContextProvider>
             <ErrorBoundary>
-                <IntlProvider locale={locale}>
+                <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
                     <Svangerskapspengesøknad
                         locale={locale}
