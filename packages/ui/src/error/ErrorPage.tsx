@@ -6,21 +6,21 @@ import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
 export interface Props {
-    appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
-    feilmelding: string;
-    søkPåNytt: () => void;
+    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    errorMessage: string;
+    tryAgainCallback: () => void;
 }
 
-const ErrorPage: FunctionComponent<Props> = ({ appnavn, feilmelding, søkPåNytt }) => {
+const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, tryAgainCallback }) => {
     //TODO Bytt ut div under med Box frå ds-react når oppdatert til siste versjon
     return (
         <UiIntlProvider>
             <ContentWrapper>
                 <VStack gap="20">
                     <Heading size="large">
-                        {appnavn === 'Engangsstønad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
-                        {appnavn === 'Foreldrepenger' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
-                        {appnavn === 'Svangerskapspenger' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
+                        {appName === 'Engangsstønad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
+                        {appName === 'Foreldrepenger' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
+                        {appName === 'Svangerskapspenger' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
                     </Heading>
                     <VStack gap="10">
                         <Alert variant="warning">
@@ -39,7 +39,7 @@ const ErrorPage: FunctionComponent<Props> = ({ appnavn, feilmelding, søkPåNytt
                                     <FormattedMessage id="ErrorPage.Contact" />
                                 </Button>
                             </Link>
-                            <Button type="button" variant="primary" onClick={søkPåNytt}>
+                            <Button type="button" variant="primary" onClick={tryAgainCallback}>
                                 <FormattedMessage id="ErrorPage.TryAgain" />
                             </Button>
                         </HStack>
@@ -48,7 +48,7 @@ const ErrorPage: FunctionComponent<Props> = ({ appnavn, feilmelding, søkPåNytt
                                 <Label>
                                     <FormattedMessage id="ErrorPage.ErrorMessage" />
                                 </Label>
-                                <BodyShort>Error: {feilmelding}</BodyShort>
+                                <BodyShort>Error: {errorMessage}</BodyShort>
                             </VStack>
                         </div>
                     </VStack>

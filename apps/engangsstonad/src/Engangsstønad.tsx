@@ -54,7 +54,13 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         if (error.response?.status === 401 || error.response?.status === 403) {
             return <Spinner />;
         }
-        return <ErrorPage appnavn="Engangsstønad" feilmelding={error.message} søkPåNytt={() => location.reload()} />;
+        return (
+            <ErrorPage
+                appName="Engangsstønad"
+                errorMessage={error.message}
+                tryAgainCallback={() => location.reload()}
+            />
+        );
     }
 
     if (loading || !person) {

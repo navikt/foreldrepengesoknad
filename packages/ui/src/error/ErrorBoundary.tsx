@@ -3,8 +3,9 @@ import { Component } from 'react';
 import ErrorPage from './ErrorPage';
 
 interface Props {
-    appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     children: React.ReactNode;
+    tryAgainCallback: () => void;
 }
 
 interface State {
@@ -30,12 +31,12 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        const { appnavn } = this.props;
+        const { appName, tryAgainCallback } = this.props;
         const { errorMessage, errorInfo } = this.state;
 
         if (this.state.hasError) {
             return errorMessage ? (
-                <ErrorPage appnavn={appnavn} feilmelding={errorMessage} søkPåNytt={() => location.reload()} />
+                <ErrorPage appName={appName} errorMessage={errorMessage} tryAgainCallback={tryAgainCallback} />
             ) : (
                 <div>{errorMessage || errorInfo}</div>
             );
