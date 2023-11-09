@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
-import { ExpansionCard, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { PictureScanningGuide, Step } from '@navikt/fp-common';
+import { Step } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import { useCustomIntl } from '@navikt/fp-ui';
+import { ScanDocumentInfo, useCustomIntl } from '@navikt/fp-ui';
 import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 
 import useEsNavigator from 'appData/useEsNavigator';
@@ -79,16 +78,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                             omBarnet={omBarnet}
                         />
                     )}
-                    <ExpansionCard size="small" aria-label="">
-                        <ExpansionCard.Header>
-                            <ExpansionCard.Title>
-                                <FormattedMessage id="DokumentasjonSteg.HvordanTaBilder" />
-                            </ExpansionCard.Title>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <PictureScanningGuide backgroundColor="white" />
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
+                    <ScanDocumentInfo />
                     <StepButtonsHookForm<Dokumentasjon>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={lagreDokumentasjon}

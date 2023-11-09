@@ -34,11 +34,8 @@ describe('<DokumentasjonSteg>', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByTestId('file-upload');
         await fireEvent.change(fileInput, {
-            target: { files: [file] },
+            target: { files: { item: () => file, length: 1, 0: file } },
         });
-
-        // TODO Bør sjekke denne (usikker på kvifor det ikkje funkar)
-        //expect(await screen.findByText('hello.png')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
         await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
@@ -85,9 +82,6 @@ describe('<DokumentasjonSteg>', () => {
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });
-
-        // TODO Bør sjekke denne (usikker på kvifor det ikkje funkar)
-        //expect(await screen.findByText('hello.png')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
         await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
