@@ -1,2 +1,0 @@
-import{j as r}from"./jsx-runtime-69eee039.js";import{S as t}from"./links-18ac8084.js";const p=e=>r.jsx(t,{children:r.jsx(e,{})});try{withSvangerskapspengerContext.displayName="withSvangerskapspengerContext",withSvangerskapspengerContext.__docgenInfo={description:"",displayName:"withSvangerskapspengerContext",props:{}}}catch{}export{p as w};
-//# sourceMappingURL=withSvangerskapspengerContext-4172dfe6.js.map

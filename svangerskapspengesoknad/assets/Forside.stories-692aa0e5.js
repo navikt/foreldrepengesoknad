@@ -1,0 +1,4 @@
+import{j as s}from"./fridagerUtils-ae0395cd.js";import{F as a}from"./Forside-3de9d8ca.js";import{w as i}from"./withSvangerskapspengerContext-e8f22bb0.js";import{w as n}from"./withRouter-1ec66e8f.js";import"./_baseToString-eff6580f.js";import"./index-141b66e5.js";import"./_createSet-2af3afe7.js";import"./v4-a960c1f4.js";import"./links-21420ab3.js";import"./useSvangerskapspengerContext-ccee97f1.js";import"./index-5f63170e.js";import"./message-301963f8.js";const b={title:"pages/Forside",component:a,decorators:[i,n]},p=()=>s.jsx(a,{onChangeLocale:()=>{},locale:"nb"}),r=p.bind({});var o,e,t;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`() => {
+  return <Forside onChangeLocale={() => undefined} locale="nb" />;
+}`,...(t=(e=r.parameters)==null?void 0:e.docs)==null?void 0:t.source}}};const j=["Default"];export{r as Default,j as __namedExportsOrder,b as default};
+//# sourceMappingURL=Forside.stories-692aa0e5.js.map
