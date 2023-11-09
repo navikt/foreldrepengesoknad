@@ -10,9 +10,9 @@ import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
 import { erMyndig, erKvinne } from '@navikt/fp-common';
-import Umyndig from './pages/umyndig/Umyndig';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
 import { LocaleNo } from '@navikt/fp-types';
+import { Umyndig } from '@navikt/fp-ui';
 
 interface Props {
     locale: LocaleNo;
@@ -58,7 +58,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
     return (
         <div>
             {!erPersonMyndig ? (
-                <Umyndig />
+                <Umyndig appnavn="Svangerskapspenger" />
             ) : (
                 <BrowserRouter>
                     <SvangerskapspengesøknadRoutes

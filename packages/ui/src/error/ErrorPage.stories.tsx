@@ -12,9 +12,9 @@ const Template: StoryFn<{
 }> = ({ søkPåNytt }) => {
     return (
         <ErrorPage
-            appnavn="Engangsstønad"
-            feilmelding="Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet"
-            søkPåNytt={søkPåNytt}
+            appName="Engangsstønad"
+            errorMessage="Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet"
+            tryAgainCallback={søkPåNytt}
         />
     );
 };

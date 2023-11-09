@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import Utenlandsopphold from './Utenlandsopphold';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import _context from 'storybook/storydata/soknad/soknad.json';
@@ -10,7 +9,7 @@ import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerCo
 const defaultExport = {
     title: 'steps/Utenlandsopphold',
     component: Utenlandsopphold,
-    decorators: [withIntlProvider, withSvangerskapspengerContextProvider, withRouterProvider],
+    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;

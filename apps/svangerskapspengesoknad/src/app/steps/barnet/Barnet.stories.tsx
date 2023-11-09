@@ -1,5 +1,4 @@
 import { StoryFn } from '@storybook/react';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import Barnet from './Barnet';
@@ -10,7 +9,7 @@ import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerCo
 const defaultExport = {
     title: 'steps/Barnet',
     component: Barnet,
-    decorators: [withIntlProvider, withSvangerskapspengerContextProvider, withRouterProvider],
+    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;
