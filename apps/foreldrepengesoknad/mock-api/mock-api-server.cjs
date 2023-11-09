@@ -92,8 +92,9 @@ router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res)
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg/:id', (_req, res) => {
-    res.sendStatus(204);
+router.delete('/rest/storage/vedlegg', (_req, res) => {
+    MockStorage.deleteSoknad();
+    return res.sendStatus(200);
 });
 
 app.use('', router);

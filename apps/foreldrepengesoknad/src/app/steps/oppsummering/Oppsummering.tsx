@@ -121,17 +121,37 @@ const Oppsummering = () => {
             if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
                 throw new Error('Søknaden din inneholder ingen nye perioder.');
             }
-            Api.sendSøknad(cleanedSøknad, søkerinfo.person.fnr, abortSignal)
-                .then((response) => {
-                    dispatch(actionCreator.setKvittering(response.data));
-                })
-                .catch((error) => {
+
+            const sendInnsøknad = async () => {
+                const fnr = søkerinfo.person.fnr;
+                let kvitteringsData = undefined;
+
+                try {
+                    const response = await Api.sendSøknad(cleanedSøknad, fnr, abortSignal);
+                    kvitteringsData = response.data;
+                } catch (error: any) {
                     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                         redirectToLogin();
-                    } else {
-                        setSubmitError(error);
                     }
-                });
+
+                    setSubmitError(error);
+                }
+
+                try {
+                    await Api.deleteMellomlagretSøknad(fnr, abortSignal);
+                } catch (error) {
+                    setSubmitError(error);
+                }
+
+                try {
+                    await Api.deleteMellomlagredeVedlegg(fnr, cleanedSøknad.vedlegg, abortSignal);
+                } catch (error) {
+                    setSubmitError(error);
+                }
+
+                dispatch(actionCreator.setKvittering(kvitteringsData));
+            };
+            sendInnsøknad();
         }
     }, [dispatch, søkerinfo.person.fnr, formSubmitted, cleanedSøknad, isSendingSøknad, abortSignal]);
 
