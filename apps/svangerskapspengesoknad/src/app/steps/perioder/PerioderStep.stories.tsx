@@ -1,5 +1,4 @@
 import { StoryFn } from '@storybook/react';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import _context from 'storybook/storydata/soknad/soknad.json';
@@ -13,7 +12,7 @@ import { DelivisTilretteleggingPeriodeType } from '../tilrettelegging/tilrettele
 const defaultExport = {
     title: 'steps/PerioderStep',
     component: PerioderStep,
-    decorators: [withIntlProvider, withSvangerskapspengerContextProvider, withRouterProvider],
+    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;

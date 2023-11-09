@@ -841,12 +841,18 @@ importers:
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
+      '@navikt/fp-api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
         version: 0.25.0(@navikt/ds-css@4.12.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.12.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0)
@@ -949,9 +955,6 @@ importers:
       react-motion:
         specifier: ^0.5.2
         version: 0.5.2(react@18.2.0)
-      react-redux:
-        specifier: ^8.1.2
-        version: 8.1.2(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
       react-router-dom:
         specifier: ^6.15.0
         version: 6.15.0(react-dom@18.2.0)(react@18.2.0)
@@ -961,12 +964,6 @@ importers:
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
-      redux:
-        specifier: ^4.2.1
-        version: 4.2.1
-      redux-saga:
-        specifier: ^1.2.3
-        version: 1.2.3
       request:
         specifier: ^2.88.2
         version: 2.88.2
@@ -980,15 +977,12 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      '@navikt/fp-api':
-        specifier: workspace:*
-        version: link:../../packages/api
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@navikt/fp-utils':
+      '@navikt/fp-utils-test':
         specifier: workspace:*
-        version: link:../../packages/utils
+        version: link:../../packages/utils-test
       '@storybook/addon-essentials':
         specifier: ^7.3.1
         version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -1079,9 +1073,6 @@ importers:
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
-      identity-obj-proxy:
-        specifier: ^3.0.0
-        version: 3.0.0
       less:
         specifier: ^4.2.0
         version: 4.2.0
@@ -1103,9 +1094,6 @@ importers:
       storybook-addon-react-router-v6:
         specifier: ^2.0.4
         version: 2.0.4(@storybook/blocks@7.3.1)(@storybook/channels@7.3.1)(@storybook/components@7.3.1)(@storybook/core-events@7.3.1)(@storybook/manager-api@7.3.1)(@storybook/preview-api@7.3.1)(@storybook/theming@7.3.1)(react-dom@18.2.0)(react-router-dom@6.15.0)(react-router@6.15.0)(react@18.2.0)
-      ts-loader:
-        specifier: ^9.4.4
-        version: 9.4.4(typescript@5.1.6)(webpack@5.80.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -4993,44 +4981,6 @@ packages:
       '@babel/runtime': 7.22.10
     dev: true
 
-  /@redux-saga/core@1.2.3:
-    resolution: {integrity: sha512-U1JO6ncFBAklFTwoQ3mjAeQZ6QGutsJzwNBjgVLSWDpZTRhobUzuVDS1qH3SKGJD8fvqoaYOjp6XJ3gCmeZWgA==}
-    dependencies:
-      '@babel/runtime': 7.22.10
-      '@redux-saga/deferred': 1.2.1
-      '@redux-saga/delay-p': 1.2.1
-      '@redux-saga/is': 1.1.3
-      '@redux-saga/symbols': 1.1.3
-      '@redux-saga/types': 1.2.1
-      redux: 4.2.1
-      typescript-tuple: 2.2.1
-    dev: false
-
-  /@redux-saga/deferred@1.2.1:
-    resolution: {integrity: sha512-cmin3IuuzMdfQjA0lG4B+jX+9HdTgHZZ+6u3jRAOwGUxy77GSlTi4Qp2d6PM1PUoTmQUR5aijlA39scWWPF31g==}
-    dev: false
-
-  /@redux-saga/delay-p@1.2.1:
-    resolution: {integrity: sha512-MdiDxZdvb1m+Y0s4/hgdcAXntpUytr9g0hpcOO1XFVyyzkrDu3SKPgBFOtHn7lhu7n24ZKIAT1qtKyQjHqRd+w==}
-    dependencies:
-      '@redux-saga/symbols': 1.1.3
-    dev: false
-
-  /@redux-saga/is@1.1.3:
-    resolution: {integrity: sha512-naXrkETG1jLRfVfhOx/ZdLj0EyAzHYbgJWkXbB3qFliPcHKiWbv/ULQryOAEKyjrhiclmr6AMdgsXFyx7/yE6Q==}
-    dependencies:
-      '@redux-saga/symbols': 1.1.3
-      '@redux-saga/types': 1.2.1
-    dev: false
-
-  /@redux-saga/symbols@1.1.3:
-    resolution: {integrity: sha512-hCx6ZvU4QAEUojETnX8EVg4ubNLBFl1Lps4j2tX7o45x/2qg37m3c6v+kSp8xjDJY+2tJw4QB3j8o8dsl1FDXg==}
-    dev: false
-
-  /@redux-saga/types@1.2.1:
-    resolution: {integrity: sha512-1dgmkh+3so0+LlBWRhGA33ua4MYr7tUOj+a9Si28vUi0IUFNbff1T3sgpeDJI/LaC75bBYnQ0A3wXjn0OrRNBA==}
-    dev: false
-
   /@remix-run/router@1.8.0:
     resolution: {integrity: sha512-mrfKqIHnSZRyIzBcanNJmVQELTnX+qagEDlcKO90RgRBVOZGSGvZKeDihTRfWcqoDn5N/NkUcwWTccnpN18Tfg==}
     engines: {node: '>=14.0.0'}
@@ -6897,10 +6847,6 @@ packages:
 
   /@types/unist@2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
-
-  /@types/use-sync-external-store@0.0.3:
-    resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
-    dev: false
 
   /@types/yargs-parser@21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
@@ -14247,6 +14193,7 @@ packages:
 
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+    dev: true
 
   /react-lifecycles-compat@3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
@@ -14291,40 +14238,6 @@ packages:
       prop-types: 15.8.1
       raf: 3.4.1
       react: 18.2.0
-    dev: false
-
-  /react-redux@8.1.2(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1):
-    resolution: {integrity: sha512-xJKYI189VwfsFc4CJvHqHlDrzyFTY/3vZACbE+rr/zQ34Xx1wQfB4OTOSeOSNrF6BDVe8OOdxIrAnMGXA3ggfw==}
-    peerDependencies:
-      '@types/react': ^16.8 || ^17.0 || ^18.0
-      '@types/react-dom': ^16.8 || ^17.0 || ^18.0
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
-      react-native: '>=0.59'
-      redux: ^4 || ^5.0.0-beta.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-dom':
-        optional: true
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-      redux:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.22.10
-      '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.2.20
-      '@types/react-dom': 18.2.7
-      '@types/use-sync-external-store': 0.0.3
-      hoist-non-react-statics: 3.3.2
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-is: 18.2.0
-      redux: 4.2.1
-      use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
   /react-refresh@0.14.0:
@@ -14587,16 +14500,11 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
-  /redux-saga@1.2.3:
-    resolution: {integrity: sha512-HDe0wTR5nhd8Xr5xjGzoyTbdAw6rjy1GDplFt3JKtKN8/MnkQSRqK/n6aQQhpw5NI4ekDVOaW+w4sdxPBaCoTQ==}
-    dependencies:
-      '@redux-saga/core': 1.2.3
-    dev: false
-
   /redux@4.2.1:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
     dependencies:
       '@babel/runtime': 7.22.10
+    dev: true
 
   /regenerate-unicode-properties@10.1.0:
     resolution: {integrity: sha512-d1VudCLoIGitcU/hEg2QqvyGZQmdC0Lf8BqdOMXGFSvJP4bNV1+XqbPQeHHLD51Jh4QJJ225dlIFvY4Ly6MXmQ==}
@@ -16008,21 +15916,6 @@ packages:
       yargs-parser: 21.1.1
     dev: true
 
-  /ts-loader@9.4.4(typescript@5.1.6)(webpack@5.80.0):
-    resolution: {integrity: sha512-MLukxDHBl8OJ5Dk3y69IsKVFRA/6MwzEqBgh+OXMPB/OD01KQuWPFd1WAQP8a5PeSCAxfnkhiuWqfmFJzJQt9w==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      typescript: '*'
-      webpack: ^5.0.0
-    dependencies:
-      chalk: 4.1.2
-      enhanced-resolve: 5.13.0
-      micromatch: 4.0.5
-      semver: 7.5.4
-      typescript: 5.1.6
-      webpack: 5.80.0(esbuild@0.18.20)
-    dev: true
-
   /tsconfig-paths@3.14.2:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==}
     dependencies:
@@ -16191,22 +16084,6 @@ packages:
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: true
-
-  /typescript-compare@0.0.2:
-    resolution: {integrity: sha512-8ja4j7pMHkfLJQO2/8tut7ub+J3Lw2S3061eJLFQcvs3tsmJKp8KG5NtpLn7KcY2w08edF74BSVN7qJS0U6oHA==}
-    dependencies:
-      typescript-logic: 0.0.0
-    dev: false
-
-  /typescript-logic@0.0.0:
-    resolution: {integrity: sha512-zXFars5LUkI3zP492ls0VskH3TtdeHCqu0i7/duGt60i5IGPIpAHE/DWo5FqJ6EjQ15YKXrt+AETjv60Dat34Q==}
-    dev: false
-
-  /typescript-tuple@2.2.1:
-    resolution: {integrity: sha512-Zcr0lbt8z5ZdEzERHAMAniTiIKerFCMgd7yjq1fPnDJ43et/k9twIFQMUYff9k5oXcsQ0WpvFcgzK2ZKASoW6Q==}
-    dependencies:
-      typescript-compare: 0.0.2
-    dev: false
 
   /typescript@5.0.2:
     resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
