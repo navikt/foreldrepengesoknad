@@ -229,7 +229,14 @@ const deleteMellomlagretSøknad = (fnr: string, signal: AbortSignal) => {
 };
 
 const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {
-    return getAxiosInstance(fnr).delete('/storage/vedlegg', { withCredentials: true, data: vedlegg, signal });
+    const attachmentUUIDs = vedlegg.reduce((result: string[], current: Attachment) => {
+        if (current.uuid) {
+            result.push(current.uuid);
+        }
+
+        return result;
+    }, []);
+    return getAxiosInstance(fnr).delete('/storage/vedlegg', { withCredentials: true, data: attachmentUUIDs, signal });
 };
 
 const Api = {
