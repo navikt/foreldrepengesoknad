@@ -3,6 +3,7 @@ import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachment-list/AttachmentList';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { ScanDocumentInfo } from '@navikt/fp-ui';
 import { SkjemaFormComponents, SkjemaFormData, SkjemaFormField } from './skjemaFormTypes';
 import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -23,7 +24,6 @@ import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentT
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import InfoScanneDokument from './components/scanne-dokument/InfoScanneDokument';
 import SøknadRoutes from 'app/routes/routes';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
@@ -131,7 +131,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                             </Block>
 
                             <Block padBottom="xxl">
-                                <InfoScanneDokument />
+                                <ScanDocumentInfo />
                             </Block>
                             {antallForMangeVedlegg > 0 && submitClicked && (
                                 <Block padBottom="l">

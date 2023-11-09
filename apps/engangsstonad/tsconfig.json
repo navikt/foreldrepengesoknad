@@ -7,7 +7,7 @@
             "styles/*": ["styles/*"],
             "types/*": ["types/*"],
             "appData/*": ["appData/*"],
-            "storybookHelpers/*": ["storybookHelpers/*"]
+            "storybook/*": ["storybook/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals"]
     },

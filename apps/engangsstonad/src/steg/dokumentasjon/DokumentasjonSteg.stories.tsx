@@ -5,9 +5,8 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { attachmentApi } from '@navikt/fp-api';
 
 import { Path } from 'appData/paths';
-import withRouter from 'storybookHelpers/withRouter';
-import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
-import { Action, EsDataType } from 'appData/EsDataContext';
+import withRouter from 'storybook/decorators/withRouter';
+import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import DokumentasjonSteg from './DokumentasjonSteg';
 
@@ -32,14 +31,14 @@ const Template: StoryFn<{
     }
 
     return (
-        <EsContextStorybookHelper
+        <EsDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
                 [EsDataType.OM_BARNET]: omBarnet,
             }}
         >
             <DokumentasjonSteg />
-        </EsContextStorybookHelper>
+        </EsDataContext>
     );
 };
 

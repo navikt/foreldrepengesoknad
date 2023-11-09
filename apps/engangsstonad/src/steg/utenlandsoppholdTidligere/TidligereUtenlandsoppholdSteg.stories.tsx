@@ -1,11 +1,10 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybookHelpers/withRouter';
+import withRouter from 'storybook/decorators/withRouter';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
-import { Action, EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
-import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
 
 const utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: true,
@@ -24,14 +23,14 @@ export default {
 const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <EsContextStorybookHelper
+        <EsDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
                 [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
             }}
         >
             <TidligereUtenlandsoppholdSteg />
-        </EsContextStorybookHelper>
+        </EsDataContext>
     );
 };
 

@@ -6,6 +6,7 @@ export { default as ErrorPage } from './src/error/ErrorPage';
 export { default as FileUploader } from './src/fileUploader/FileUploader';
 export { default as AttachmentList } from './src/fileUploader/liste/AttachmentList';
 export { default as StepButtons } from './src/step/StepButtons';
+export { default as ScanDocumentInfo } from './src/scanDocumentInfo/ScanDocumentInfo';
 export { default as Umyndig } from './src/umyndig/Umyndig';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
 export { useCustomIntl } from './src/i18n/useCustomI18n';

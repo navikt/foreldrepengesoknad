@@ -3,9 +3,8 @@ import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
-import { Action, EsDataType } from 'appData/EsDataContext';
-import withRouter from 'storybookHelpers/withRouter';
-import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
+import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
+import withRouter from 'storybook/decorators/withRouter';
 import { Path } from 'appData/paths';
 import OmBarnetSteg from './OmBarnetSteg';
 
@@ -25,12 +24,12 @@ const Template: StoryFn<{
 }> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <EsContextStorybookHelper
+        <EsDataContext
             initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
             onDispatch={gåTilNesteSide}
         >
             <OmBarnetSteg kjønn={kjønn} />
-        </EsContextStorybookHelper>
+        </EsDataContext>
     );
 };
 

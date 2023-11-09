@@ -92,8 +92,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(await screen.findByText('Neste side: /soknad/oppsummering')).toBeInTheDocument();
     });
 
-    // TODO Legg til denne testen når valideringa er avklart
-    it.skip('skal fylle ut to perioder og kryssvalidere', async () => {
+    it('skal fylle ut to perioder og kryssvalidere', async () => {
         const nesteStegFn = vi.fn();
 
         const utils = render(<Default gåTilNesteSide={nesteStegFn} />);
@@ -124,9 +123,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(
-            await screen.findByText('Du har allerede lagt inn utenlandsopphold i denne perioden'),
-        ).toBeInTheDocument();
+        expect(await screen.findAllByText('Det kan ikke være flere utenlandsopphold i samme periode')).toHaveLength(5);
     });
 
     it('skal legge til periode og så fjerne den', async () => {
