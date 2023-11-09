@@ -1,0 +1,2 @@
+import{j as l}from"./jsx-runtime-4ca860c5.js";import{P as a,c as n}from"./index-5e19d261.js";const s=e=>(r,c)=>{const o=c.globals.locale||"nb",i=e[o];return l.jsx(a,{value:n({locale:o,messages:i}),children:r()})},g=(e,t)=>{const r=t.globals.locale||"nb";return l.jsx(a,{value:n({locale:r,messages:{}}),children:e()})};try{s.displayName="getIntlDecorator",s.__docgenInfo={description:"",displayName:"getIntlDecorator",props:{}}}catch{}export{g as w};
+//# sourceMappingURL=withIntlProvider-036879e4.js.map
