@@ -26,5 +26,14 @@
     "ErrorPage.Message": "You can wait a while and then try to search again. If there are still problems, you can contact user support for help.",
     "ErrorPage.Contact": "Contact user support",
     "ErrorPage.TryAgain": "Search again",
-    "ErrorPage.ErrorMessage": "Error message"
+    "ErrorPage.ErrorMessage": "Error message",
+
+    "ScanDocumentInfo.Tittel": "How to take a picture of an attachment with your mobile phone?",
+    "ScanDocumentInfo.Del1": "If you have a document on paper, you can take a photo of the document and send it to us.",
+    "ScanDocumentInfo.Liste.Punkt1": "Take a picture of the document with your smartphone or tablet.",
+    "ScanDocumentInfo.Liste.Punkt2": "Check that the document is easy to read.",
+    "ScanDocumentInfo.Liste.Punkt3": "If you use a PC or Mac, you can send the image(s) to your private email account and save the image on your device.",
+    "ScanDocumentInfo.Liste.Punkt4": "Upload the images.",
+    "ScanDocumentInfo.Del2": "If you have a scanner, you can scan documents.",
+    "ScanDocumentInfo.Link": "More information about sending attachments at nav.no."
 }

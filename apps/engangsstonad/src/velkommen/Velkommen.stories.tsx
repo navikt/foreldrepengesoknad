@@ -1,6 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybookHelpers/withRouter';
+import withRouter from 'storybook/decorators/withRouter';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
