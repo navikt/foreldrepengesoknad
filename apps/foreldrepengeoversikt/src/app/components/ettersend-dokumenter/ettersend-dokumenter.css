@@ -13,3 +13,12 @@
 .ettersend-dokumenter__link {
     margin: auto;
 }
+
+@media (max-width: 768px) {
+    .ettersend-dokumenter__link {
+        width: 170px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+}
