@@ -29,7 +29,7 @@ const getKontonummerInfoTekst = (harKontonummer: boolean, ytelse: Ytelse | undef
     if (harKontonummer && ytelse === Ytelse.SVANGERSKAPSPENGER) {
         return 'NAV vil utbetale svangerskapspengene til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.';
     }
-    return 'NAV vil utbetale til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.”';
+    return 'NAV vil utbetale til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.';
 };
 
 const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) => {
