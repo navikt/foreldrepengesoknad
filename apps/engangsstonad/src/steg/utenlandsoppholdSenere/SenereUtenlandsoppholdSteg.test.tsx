@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -22,14 +22,14 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
         expect(screen.getAllByText('Du må velge et land du skal oppholde deg i')).toHaveLength(2);
         expect(screen.getAllByText('Du må velge en fra og med dato')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        expect(await screen.findByText('Slett dette oppholdet')).toBeInTheDocument();
+        expect(screen.getByText('Slett dette oppholdet')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -68,7 +68,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(1));
+        expect(nesteStegFn).toHaveBeenCalledTimes(1);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 utenlandsoppholdNeste12Mnd: [
@@ -122,7 +122,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Det kan ikke være flere utenlandsopphold i samme periode')).toHaveLength(5);
     });
 
@@ -133,10 +133,10 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        expect(await screen.findAllByText('Hvilket land skal du bo i?')).toHaveLength(2);
+        expect(screen.getAllByText('Hvilket land skal du bo i?')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Slett dette oppholdet'));
 
-        expect(await screen.findByText('Hvilket land skal du bo i?')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land skal du bo i?')).toBeInTheDocument();
     });
 });

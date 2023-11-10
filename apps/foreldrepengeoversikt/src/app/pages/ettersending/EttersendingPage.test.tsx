@@ -26,6 +26,6 @@ describe('<EttersendingPage>', () => {
 
         await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
 
-        expect(await screen.findByText('Last opp fil')).toBeInTheDocument();
+        expect(screen.getByText('Last opp fil')).toBeInTheDocument();
     });
 });

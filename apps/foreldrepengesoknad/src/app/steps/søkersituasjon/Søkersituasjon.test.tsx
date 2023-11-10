@@ -5,8 +5,6 @@ import * as stories from './Søkersituasjon.stories';
 
 const { Default } = composeStories(stories);
 
-const GÅ_VIDERE_KNAPP = 'Neste steg';
-
 describe('<Søkersituasjon>', () => {
     it('skal ha født og søke som mor', async () => {
         render(<Default />);
@@ -14,10 +12,10 @@ describe('<Søkersituasjon>', () => {
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
 
-        expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
+        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal ha født og søke som medmor', async () => {
@@ -26,10 +24,10 @@ describe('<Søkersituasjon>', () => {
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
 
-        expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
+        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Medmor'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal adoptere og søke som mor', async () => {
@@ -38,10 +36,10 @@ describe('<Søkersituasjon>', () => {
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Adopsjon'));
 
-        expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
+        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal adoptere og søke som medmor', async () => {
@@ -50,9 +48,9 @@ describe('<Søkersituasjon>', () => {
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Adopsjon'));
 
-        expect(await screen.findByText('Hva søker du som?')).toBeInTheDocument();
+        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Medmor'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 });

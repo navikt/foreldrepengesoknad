@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -37,7 +37,7 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknad'));
 
-        expect(await screen.findByText('Du må bekrefte at du har oppgitt rigtige opplysninger')).toBeInTheDocument();
+        expect(screen.getByText('Du må bekrefte at du har oppgitt rigtige opplysninger')).toBeInTheDocument();
 
         await userEvent.click(
             screen.getByText(
@@ -49,7 +49,7 @@ describe('<OppsummeringSteg>', () => {
 
         const abortController = new AbortController();
 
-        await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
+        expect(sendSøknad).toHaveBeenCalledTimes(1);
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
             abortController.signal,
@@ -90,7 +90,7 @@ describe('<OppsummeringSteg>', () => {
 
         const abortController = new AbortController();
 
-        await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
+        expect(sendSøknad).toHaveBeenCalledTimes(1);
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
             abortController.signal,
@@ -146,7 +146,7 @@ describe('<OppsummeringSteg>', () => {
 
         const abortController = new AbortController();
 
-        await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
+        expect(sendSøknad).toHaveBeenCalledTimes(1);
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
             abortController.signal,
@@ -213,7 +213,7 @@ describe('<OppsummeringSteg>', () => {
 
         const abortController = new AbortController();
 
-        await waitFor(() => expect(sendSøknad).toHaveBeenCalledTimes(1));
+        expect(sendSøknad).toHaveBeenCalledTimes(1);
         expect(sendSøknad).toHaveBeenNthCalledWith(
             1,
             abortController.signal,

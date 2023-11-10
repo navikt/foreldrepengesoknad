@@ -70,42 +70,42 @@ const andreInntekter = [
     } as AnnenInntekt,
 ] as AnnenInntekt[];
 
-const cleanedNavnPåNæringen = 'Navn med blanke tegn';
 const cleanedForklaring = 'Forklaring med blanke tegn';
-const cleanedRegnskapsførerNavn = 'Regnskapsfører med blanke tegn';
-const cleanedNavnPåArbeidsgiver = 'Navn på arbeid ';
 
 describe('InntektsinformasjonFormUtils', () => {
     it('skal erstatte alle ulovlige blanke tegn fra Næringsinformasjon med space og beholde resten av informasjonen intakt', async () => {
         const cleanedNæring = cleanupInvisibleCharsFromNæring(næring);
-        expect(cleanedNæring.navnPåNæringen).toEqual(cleanedNavnPåNæringen);
+        expect(cleanedNæring.navnPåNæringen).toEqual('Navn med blanke tegn');
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.forklaring).toEqual(cleanedForklaring);
-        expect(cleanedNæring.regnskapsfører!.navn).toEqual(cleanedRegnskapsførerNavn);
+        expect(cleanedNæring.regnskapsfører!.navn).toEqual('Regnskapsfører med blanke tegn');
         expect(cleanedNæring.oppstartsdato).toEqual(næring.oppstartsdato);
         expect(cleanedNæring.regnskapsfører!.telefonnummer).toEqual(næring.regnskapsfører?.telefonnummer);
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring).toEqual(
             næring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring,
         );
     });
+
     it('skal ikke feile med manglende info om regnskapsfører eller endring', async () => {
         const cleanedNæring = cleanupInvisibleCharsFromNæring(næringUtenEndringEllerRegnskapsfører);
-        expect(cleanedNæring.navnPåNæringen).toEqual(cleanedNavnPåNæringen);
+        expect(cleanedNæring.navnPåNæringen).toEqual('Navn med blanke tegn');
         expect(cleanedNæring.harRegnskapsfører).toEqual(false);
         expect(cleanedNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår).toEqual(false);
     });
+
     it('skal erstatte alle ulovlige blanke tegn fra FrilansOppdrag med space og beholde resten av informasjonen intakt', async () => {
         const cleanedFrilansoppdrag = cleanupInvisibleCharsFromFrilansinformasjon(frilansoppdrag);
         expect(cleanedFrilansoppdrag.length).toEqual(2);
-        expect(cleanedFrilansoppdrag[0].navnPåArbeidsgiver).toEqual(cleanedNavnPåArbeidsgiver);
+        expect(cleanedFrilansoppdrag[0].navnPåArbeidsgiver).toEqual('Navn på arbeid ');
         expect(cleanedFrilansoppdrag[0].pågående).toEqual(frilansoppdrag[0].pågående);
-        expect(cleanedFrilansoppdrag[1].navnPåArbeidsgiver).toEqual(cleanedNavnPåArbeidsgiver);
+        expect(cleanedFrilansoppdrag[1].navnPåArbeidsgiver).toEqual('Navn på arbeid ');
         expect(cleanedFrilansoppdrag[1].pågående).toEqual(frilansoppdrag[1].pågående);
     });
+
     it('skal erstatte alle ulovlige blanke tegn fra AnnenIntekt med space og beholde resten av informasjonen intakt', async () => {
         const cleanedAndreInntekter = cleanupInvisibleCharsFromAndreInntekter(andreInntekter);
         expect(cleanedAndreInntekter.length).toEqual(2);
         const inntektIUtlandet = cleanedAndreInntekter[0] as JobbIUtlandetInntekt;
-        expect(inntektIUtlandet.arbeidsgiverNavn).toEqual(cleanedNavnPåArbeidsgiver);
+        expect(inntektIUtlandet.arbeidsgiverNavn).toEqual('Navn på arbeid ');
         expect(inntektIUtlandet.pågående).toEqual(andreInntekter[0].pågående);
         expect(cleanedAndreInntekter[1]).toEqual(andreInntekter[1]);
     });

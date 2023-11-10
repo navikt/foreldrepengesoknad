@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -20,7 +20,7 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi om du adopterer ektefelles barn')).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi dato for omsorgsovertakelsen')).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi antall barn du skal adoptere')).toHaveLength(2);
@@ -39,7 +39,6 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 adopsjonAvEktefellesBarn: true,
@@ -81,14 +80,13 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi om du adopterer alene')).toHaveLength(2);
 
         await userEvent.click(screen.getAllByText('Ja')[1]);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 adopsjonAvEktefellesBarn: false,
@@ -124,7 +122,7 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi antall barn du skal overta omsorgen for')).toHaveLength(2);
 
         await userEvent.selectOptions(utils.getByLabelText('Hvor mange barn overtar du omsorgen for?'), '3');
@@ -143,7 +141,6 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 adopsjonAvEktefellesBarn: true,
@@ -191,7 +188,7 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(2));
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 erBarnetFødt: true,
@@ -228,14 +225,14 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi hvor mange barn du venter')).toHaveLength(2);
 
         await userEvent.selectOptions(utils.getByLabelText('Hvor mange barn venter du?'), '3');
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 3,
