@@ -20,8 +20,6 @@ export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
 export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING:
-        case Skjemanummer.TILRETTELEGGING_FOR_ARBEIDSTAKERE:
-        case Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG:
             return false;
         default:
             return true;
@@ -56,8 +54,7 @@ export const isSkjemanummerForSvangerskapspengesoknad = (skjemanummer: Skjemanum
         case Skjemanummer.ANNET:
         case Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE:
         case Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG:
-        case Skjemanummer.TILRETTELEGGING_FOR_ARBEIDSTAKERE:
-        case Skjemanummer.TILRETTELEGGING_FOR_FRILANS_ELLER_SELVSTENDIG:
+        case Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING:
         case Skjemanummer.TILBAKEBETALING:
         case Skjemanummer.TERMINBEKREFTELSE:
         case Skjemanummer.KOPI_SKATTEMELDING:
