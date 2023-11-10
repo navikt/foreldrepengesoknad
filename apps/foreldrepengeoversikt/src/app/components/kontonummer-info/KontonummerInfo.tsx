@@ -16,30 +16,20 @@ const getKontonummerTittel = (ytelse: Ytelse | undefined) => {
     return 'KONTONUMMER';
 };
 
-const getKontonummerArbeidsgiverInfoTekst = (ytelse: Ytelse | undefined) => {
-    if (ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) {
-        return 'Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg direkte eller om du får utbetaling fra NAV.';
-    }
-    return '';
-};
-
 const getKontonummerInfoTekst = (harKontonummer: boolean, ytelse: Ytelse | undefined) => {
-    if (!ytelse) {
-        return '';
-    }
-    if (!harKontonummer && ytelse === Ytelse.FORELDREPENGER) {
-        return 'Hvis NAV utbetaler til deg, vil NAV trenge et kontonummer å utbetale foreldrepengene dine til.';
-    }
-    if (!harKontonummer && ytelse === Ytelse.SVANGERSKAPSPENGER) {
-        return 'Hvis NAV utbetaler til deg, vil NAV trenge et kontonummer å utbetale svangerskapspengene dine til.';
-    }
-    if (!harKontonummer && ytelse === Ytelse.ENGANGSSTØNAD) {
-        return 'Du må registrere et kontonummer som NAV skal utbetale engangsstønaden din til.';
+    if (!harKontonummer) {
+        return 'Hvis søknaden din blir innvilget, må du ha kontonummer registrert for å motta utbetaling fra NAV.';
     }
     if (harKontonummer && ytelse === Ytelse.ENGANGSSTØNAD) {
-        return 'Dette er kontonummeret NAV kommer til å betale ut engangstønaden til. Hvis det er feil, kan du endre det.';
+        return 'NAV vil utbetale engangsstønaden til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.';
     }
-    return 'Dersom NAV utbetaler til deg, vil kontonummeret som er registrert være det du får utbetaling til.';
+    if (harKontonummer && ytelse === Ytelse.FORELDREPENGER) {
+        return 'NAV vil utbetale foreldrepengene til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.';
+    }
+    if (harKontonummer && ytelse === Ytelse.SVANGERSKAPSPENGER) {
+        return 'NAV vil utbetale svangerskapspengene til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.';
+    }
+    return 'NAV vil utbetale til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du endre det.”';
 };
 
 const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) => {
@@ -47,10 +37,9 @@ const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) 
 
     const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
     const kontonummerTittel = getKontonummerTittel(ytelse);
-    const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'NAV har ingen kontonummer registrert for deg';
-    const kontonummerArbeidsgiverTekst = getKontonummerArbeidsgiverInfoTekst(ytelse);
+    const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'Du har ikke kontonummer registrert hos NAV. ';
     const kontonummerInfoTekst = getKontonummerInfoTekst(harKontonummer, ytelse);
-    const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Legg til kontonummer';
+    const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
 
     return (
         <Accordion className={bem.block}>
@@ -63,7 +52,7 @@ const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) 
                 </Accordion.Header>
                 <Accordion.Content>
                     <VStack gap="7">
-                        <BodyShort>{kontonummerArbeidsgiverTekst + ' ' + kontonummerInfoTekst}</BodyShort>
+                        <BodyShort>{kontonummerInfoTekst}</BodyShort>
                         <Link href={links.brukerprofil}>{kontonummerEndreTekst}</Link>
                     </VStack>
                 </Accordion.Content>
