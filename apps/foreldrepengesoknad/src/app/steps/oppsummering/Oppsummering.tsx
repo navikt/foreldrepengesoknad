@@ -139,14 +139,9 @@ const Oppsummering = () => {
 
                 try {
                     await Api.deleteMellomlagretSøknad(fnr, abortSignal);
-                } catch (error) {
-                    setSubmitError(error);
-                }
-
-                try {
                     await Api.deleteMellomlagredeVedlegg(fnr, cleanedSøknad.vedlegg, abortSignal);
                 } catch (error) {
-                    setSubmitError(error);
+                    // Vi bryr oss ikke om feil her. Logges bare i backend
                 }
 
                 dispatch(actionCreator.setKvittering(kvitteringsData));
